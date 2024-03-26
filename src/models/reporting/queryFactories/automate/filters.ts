@@ -1,4 +1,4 @@
-import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {AutomationBillingEventMember} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {

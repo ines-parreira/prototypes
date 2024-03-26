@@ -2,7 +2,7 @@ import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventDimension,
     AutomationBillingEventMeasure,
-} from 'models/reporting/cubes/AutomationBillingEventCube'
+} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {AutomateStatsFiltersMembers, getFilterDateRange} from 'utils/reporting'

@@ -35,11 +35,9 @@ describe('reporting', () => {
         ),
         automationRateTrend: buildQuery(false, trendReportData),
         automatedInteractionTrend: buildQuery(false, trendReportData),
-        automationRateTimeSeries: buildQuery(false, [[timeSeriesData]]),
-        automatedInteractionTimeSeries: buildQuery(false, [[timeSeriesData]]),
-        automatedInteractionByEventTypesTimeSeries: buildQuery(false, [
-            [timeSeriesData],
-        ]),
+        automationRateTimeSeries: [[timeSeriesData]],
+        automatedInteractionTimeSeries: [[timeSeriesData]],
+        automatedInteractionByEventTypesTimeSeries: [[timeSeriesData]],
     }
     const period = {
         start_datetime: '2023-06-07',
@@ -94,9 +92,8 @@ describe('reporting', () => {
                         ...trendReportData,
                         value: null,
                     }),
-                    automatedInteractionTimeSeries: buildQuery(false),
-                    automatedInteractionByEventTypesTimeSeries:
-                        buildQuery(false),
+                    automatedInteractionTimeSeries: [],
+                    automatedInteractionByEventTypesTimeSeries: [],
                 },
             },
             period

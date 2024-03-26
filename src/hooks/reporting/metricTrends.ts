@@ -18,6 +18,10 @@ import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/q
 
 import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
 import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
+import {
+    automationDatasetQueryFactory,
+    billableTicketDatasetQueryFactory,
+} from 'models/reporting/queryFactories/automate_v2/metrics'
 
 export const useCustomerSatisfactionTrend = (
     filters: StatsFilters,
@@ -221,6 +225,29 @@ export const useAutomatedInteractionsTrend = (
     useMetricTrend(
         automatedInteractionsQueryFactory(filters, timezone),
         automatedInteractionsQueryFactory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone
+        )
+    )
+export const useAutomationDatasetTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
+    useMetricTrend(
+        automationDatasetQueryFactory(filters, timezone),
+        automationDatasetQueryFactory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone
+        )
+    )
+
+export const useBillableTicketDatasetTrend = (
+    filters: StatsFilters,
+    timezone: string
+) =>
+    useMetricTrend(
+        billableTicketDatasetQueryFactory(filters, timezone),
+        billableTicketDatasetQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )

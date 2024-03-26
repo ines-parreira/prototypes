@@ -11,6 +11,11 @@ import {StatsFilters} from 'models/stat/types'
 import {automatedInteractionsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
 import {automatedInteractionsByEventTypeQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractionsByEventType'
 import {automationRateTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
+import {
+    interactionsByEventTypeTimeSeriesQueryFactory,
+    interactionsTimeSeriesQueryFactory,
+    billableTicketDatasetTimeSeriesQueryFactory,
+} from 'models/reporting/queryFactories/automate_v2/timeseries'
 import useTimeSeries, {useTimeSeriesPerDimension} from './useTimeSeries'
 
 export function useTicketsCreatedTimeSeries(
@@ -103,6 +108,45 @@ export function useAutomatedInteractionByEventTypesTimeSeries(
 ) {
     return useTimeSeries(
         automatedInteractionsByEventTypeQueryFactory(
+            filters,
+            timezone,
+            granularity
+        )
+    )
+}
+
+// Automate V2
+export function useAutomationDatasetTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeries(
+        interactionsTimeSeriesQueryFactory(filters, timezone, granularity)
+    )
+}
+
+export function useAutomationDatasetByEventTypeTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeriesPerDimension(
+        interactionsByEventTypeTimeSeriesQueryFactory(
+            filters,
+            timezone,
+            granularity
+        )
+    )
+}
+
+export function useBillableTicketDatasetTimeSeries(
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity
+) {
+    return useTimeSeries(
+        billableTicketDatasetTimeSeriesQueryFactory(
             filters,
             timezone,
             granularity

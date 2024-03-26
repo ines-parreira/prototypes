@@ -1,5 +1,5 @@
 import {ReactNode} from 'react'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 
 export type AutomatedInteractionByFeatures = Exclude<
     AutomationBillingEventMeasure,

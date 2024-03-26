@@ -4,7 +4,7 @@ import {getHasAutomate} from 'state/billing/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import AutomatePaywallView from '../automate/common/components/AutomatePaywallView'
-import AutomateOverview from './AutomateOverview'
+import {AutomateOverview} from './AutomateOverview'
 
 const AutomateStatsPaywall: React.FC = () => {
     const hasAutomate = useAppSelector(getHasAutomate)

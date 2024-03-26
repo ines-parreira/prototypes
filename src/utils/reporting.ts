@@ -8,7 +8,7 @@ import {
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {AutomationBillingEventMember} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {AutomationBillingEventMember} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 
 import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {
@@ -24,6 +24,8 @@ import {
     ReportingQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {AutomationDatasetMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {BillableTicketDatasetMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -70,6 +72,17 @@ export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
     integrations: TicketMessagesMember.Integration,
     agents: HelpdeskMessageMember.SenderId,
     tags: TicketMember.Tags,
+}
+
+export const AutomateDatasetStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: AutomationDatasetMember.AutomationEventCreatedDatetime,
+    periodEnd: AutomationDatasetMember.AutomationEventCreatedDatetime,
+    channels: AutomationDatasetMember.Channel,
+}
+
+export const BillableTicketDatasetStatsFiltersMembers: StatsFiltersMembers = {
+    periodStart: BillableTicketDatasetMember.TicketCreatedDatetime,
+    periodEnd: BillableTicketDatasetMember.TicketCreatedDatetime,
 }
 
 export const AgentTimeTrackingStatsFiltersMembers: StatsFiltersMembers = {

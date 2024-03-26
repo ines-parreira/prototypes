@@ -13,12 +13,13 @@ import {
     AUTOMATION_RATE_LABEL,
 } from 'pages/stats/self-service/constants'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {FEATURE_LABELS} from 'pages/stats/constants'
+
 import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 import {
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
 } from 'pages/automate/automate-metrics/constants'
+import {AUTOMATE_STATS_MEASUR_LABEL_MAP} from 'hooks/reporting/automate/utils'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
@@ -31,15 +32,10 @@ export interface Period {
     start_datetime: string
 }
 
-interface Fetching<T> {
-    isFetching: boolean
-    data?: T
-}
-
 export interface AutomateReportData {
-    automationRateTimeSeries: Fetching<TimeSeriesDataItem[][]>
-    automatedInteractionTimeSeries: Fetching<TimeSeriesDataItem[][]>
-    automatedInteractionByEventTypesTimeSeries: Fetching<TimeSeriesDataItem[][]>
+    automationRateTimeSeries: TimeSeriesDataItem[][]
+    automatedInteractionTimeSeries: TimeSeriesDataItem[][]
+    automatedInteractionByEventTypesTimeSeries: TimeSeriesDataItem[][]
     firstResponseTimeTrend: MetricTrend
     decreaseInResolutionTimeWithAutomationTrend: MetricTrend
     automationRateTrend: MetricTrend
@@ -86,15 +82,15 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
 
     const performanceData = [
         [EMPTY_LABEL, AUTOMATED_INTERACTIONS_LABEL, AUTOMATION_RATE_LABEL],
-        ...(automatedInteractionTimeSeries.data?.[0].map((date) => [
+        ...(automatedInteractionTimeSeries?.[0]?.map((date) => [
             date.dateTime,
             ifNullNa(
-                automatedInteractionTimeSeries.data?.[0].find(
+                automatedInteractionTimeSeries?.[0]?.find(
                     ({dateTime}) => date.dateTime === dateTime
                 )?.value
             ),
             ifNullNa(
-                automationRateTimeSeries.data?.[0].find(
+                automationRateTimeSeries?.[0]?.find(
                     ({dateTime}) => date.dateTime === dateTime
                 )?.value
             ),
@@ -102,21 +98,21 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
     ]
 
     const labels =
-        automatedInteractionByEventTypesTimeSeries.data?.map(
+        automatedInteractionByEventTypesTimeSeries?.map(
             (item) =>
-                FEATURE_LABELS[item[0].label as AutomatedInteractionByFeatures]
+                AUTOMATE_STATS_MEASUR_LABEL_MAP[
+                    item[0].label as AutomatedInteractionByFeatures
+                ]
         ) || []
     const performanceFeatureData = [
         [EMPTY_LABEL, ...labels],
-        ...(automatedInteractionByEventTypesTimeSeries.data?.[0].map((date) => [
+        ...(automatedInteractionByEventTypesTimeSeries?.[0]?.map((date) => [
             date.dateTime,
-            ...(automatedInteractionByEventTypesTimeSeries.data?.map(
-                (timeseries) =>
-                    ifNullNa(
-                        timeseries.find(
-                            ({dateTime}) => date.dateTime === dateTime
-                        )?.value
-                    )
+            ...(automatedInteractionByEventTypesTimeSeries?.map((timeseries) =>
+                ifNullNa(
+                    timeseries.find(({dateTime}) => date.dateTime === dateTime)
+                        ?.value
+                )
             ) || []),
         ]) || []),
     ]

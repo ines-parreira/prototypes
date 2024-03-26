@@ -4,7 +4,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
-} from 'models/reporting/cubes/AutomationBillingEventCube'
+} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -17,9 +17,17 @@ import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
 import {
+    billableTicketDatasetTimeSeriesQueryFactory,
+    interactionsByEventTypeTimeSeriesQueryFactory,
+    interactionsTimeSeriesQueryFactory,
+} from 'models/reporting/queryFactories/automate_v2/timeseries'
+import {
     useAutomatedInteractionByEventTypesTimeSeries,
     useAutomatedInteractionTimeSeries,
+    useAutomationDatasetByEventTypeTimeSeries,
+    useAutomationDatasetTimeSeries,
     useAutomationRateTimeSeries,
+    useBillableTicketDatasetTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -253,6 +261,72 @@ describe('time series', () => {
                 )
 
                 expect(useTimeSeriesMock.mock.calls[0]).toMatchSnapshot()
+            })
+        })
+    })
+
+    describe('Automate V2', () => {
+        describe('useAutomationDatasetTimeSeries', () => {
+            it('should pass the query to the useTimeSeriesHook', () => {
+                renderHook(
+                    ({statsFilters, timezone}) =>
+                        useAutomationDatasetTimeSeries(
+                            statsFilters,
+                            timezone,
+                            granularity
+                        ),
+                    {initialProps: {statsFilters, timezone, granularity}}
+                )
+
+                expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+                    interactionsTimeSeriesQueryFactory(
+                        statsFilters,
+                        timezone,
+                        granularity
+                    ),
+                ])
+            })
+        })
+        describe('useAutomationDatasetTimeSeries', () => {
+            it('should pass the query to the useTimeSeriesHook', () => {
+                renderHook(
+                    ({statsFilters, timezone}) =>
+                        useAutomationDatasetByEventTypeTimeSeries(
+                            statsFilters,
+                            timezone,
+                            granularity
+                        ),
+                    {initialProps: {statsFilters, timezone, granularity}}
+                )
+
+                expect(useTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
+                    interactionsByEventTypeTimeSeriesQueryFactory(
+                        statsFilters,
+                        timezone,
+                        granularity
+                    ),
+                ])
+            })
+        })
+        describe('useBillableTicketDatasetTimeSeries', () => {
+            it('should pass the query to the useTimeSeriesHook', () => {
+                renderHook(
+                    ({statsFilters, timezone}) =>
+                        useBillableTicketDatasetTimeSeries(
+                            statsFilters,
+                            timezone,
+                            granularity
+                        ),
+                    {initialProps: {statsFilters, timezone, granularity}}
+                )
+
+                expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+                    billableTicketDatasetTimeSeriesQueryFactory(
+                        statsFilters,
+                        timezone,
+                        granularity
+                    ),
+                ])
             })
         })
     })

@@ -11,7 +11,7 @@ import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
 import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
-import {decreaseInResolutionTimeQueryFactory} from '../decreaseInResolutionTime'
+import {decreaseInResolutionTimeQueryFactory} from '../../automate/decreaseInResolutionTime'
 
 describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())

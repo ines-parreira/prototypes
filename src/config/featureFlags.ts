@@ -75,6 +75,7 @@ export enum FeatureFlagKey {
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityAIArticlesLibrary = 'observability-ai-articles-library',
+    ObservabilityAutomateAnalyticsv2 = 'observability-automate-analytics-v2',
     ObservabilityROICalculator = 'roi-calculator-for-automate',
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',

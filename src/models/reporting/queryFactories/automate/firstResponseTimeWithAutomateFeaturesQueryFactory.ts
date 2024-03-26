@@ -1,4 +1,4 @@
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/AutomationBillingEventCube'
+import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {StatsFilters} from 'models/stat/types'
 import {automateDefaultFilters} from 'models/reporting/queryFactories/automate/filters'
 

@@ -22,6 +22,10 @@ import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
 import {
+    automationDatasetQueryFactory,
+    billableTicketDatasetQueryFactory,
+} from 'models/reporting/queryFactories/automate_v2/metrics'
+import {
     useAutomatedInteractionsTrend,
     useAutomationRateTrend,
     useClosedTicketsTrend,
@@ -38,6 +42,8 @@ import {
     useTicketsRepliedTrend,
     useOneTouchTicketsTrend,
     useTicketHandleTimeTrend,
+    useAutomationDatasetTrend,
+    useBillableTicketDatasetTrend,
 } from '../metricTrends'
 
 jest.mock('../useMetricTrend')
@@ -153,6 +159,36 @@ describe('metric trends', () => {
                 'useAutomatedInteractionTrend',
                 useAutomatedInteractionsTrend,
                 automatedInteractionsQueryFactory,
+            ],
+        ])('%s', (_testName, useTrendFn, queryFactory) => {
+            it('should create reporting filters', () => {
+                renderHook(() => useTrendFn(statsFilters, timezone))
+
+                expect(useMetricTrendMock).toHaveBeenCalledWith(
+                    queryFactory(statsFilters, timezone),
+                    queryFactory(
+                        {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone
+                    )
+                )
+            })
+        })
+    })
+
+    describe('Automate V2', () => {
+        describe.each([
+            [
+                'useAutomationDatasetTrend',
+                useAutomationDatasetTrend,
+                automationDatasetQueryFactory,
+            ],
+            [
+                'useBillableTicketDatasetTrend',
+                useBillableTicketDatasetTrend,
+                billableTicketDatasetQueryFactory,
             ],
         ])('%s', (_testName, useTrendFn, queryFactory) => {
             it('should create reporting filters', () => {
