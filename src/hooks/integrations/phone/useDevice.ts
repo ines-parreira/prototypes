@@ -11,6 +11,7 @@ import {
     isRecoverableError,
 } from 'hooks/integrations/phone/utils'
 import {isActive} from 'state/currentUser/selectors'
+import {isDesktopDevice} from 'utils/device'
 
 export function useDevice() {
     useErrorHandling()
@@ -19,9 +20,14 @@ export function useDevice() {
         (state) => state.twilio
     )
     const isAgentActive = useAppSelector(isActive)
+    const isDesktop = isDesktopDevice()
 
     useEffect(() => {
         if (error && !isRecoverableError(error)) {
+            return
+        }
+
+        if (!isDesktop) {
             return
         }
 
@@ -54,5 +60,6 @@ export function useDevice() {
         isConnecting,
         isAgentActive,
         reconnectAttempts,
+        isDesktop,
     ])
 }
