@@ -169,6 +169,25 @@ exports[`CampaignTemplates get template configuration 4`] = `
 
 exports[`CampaignTemplates get template configuration 5`] = `
 {
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the correct URL links to your newsletter/SMS sign-up pages</strong> in your message.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "link": {
+      "tooltipContent": "Add sign-up links",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 6`] = `
+{
   "message_html": "<div>You&#x27;ve got great taste. 🛒</div><div><br></div><div>Is there anything else we can help you with <strong>before you check out?</strong> 💳</div>",
   "message_text": "You've got great taste. 🛒
 
@@ -200,7 +219,13 @@ Is there anything else we can help you with before you check out? 💳",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 6`] = `
+exports[`CampaignTemplates get template configuration 7`] = `
+{
+  "defaultStepOpened": "message",
+}
+`;
+
+exports[`CampaignTemplates get template configuration 8`] = `
 {
   "message_html": "<div>Before you go, check out our <strong>latest items on sale for <a href="" target="_blank">up to 30% OFF</a>!</strong>💸</div>",
   "message_text": "Before you go, check out our latest items on sale for up to 30% OFF!💸",
@@ -246,7 +271,26 @@ exports[`CampaignTemplates get template configuration 6`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 7`] = `
+exports[`CampaignTemplates get template configuration 9`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the correct URL link to your sale collection page</strong> in your message.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "link": {
+      "tooltipContent": "Add sale collection link",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 10`] = `
 {
   "message_html": "<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong></div>",
   "message_text": "🍀 You're lucky today: 10% off on your order over $150, with code test-code",
@@ -287,7 +331,32 @@ exports[`CampaignTemplates get template configuration 7`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 8`] = `
+exports[`CampaignTemplates get template configuration 11`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "You can <strong>update the cart values of Amount Added To Cart triggers</strong> to target shoppers with high cart values, depending on your store average order value.",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "You can customize the discount code by using one of your existing one",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "discount": {
+      "tooltipContent": "Select your own Shopify discount code",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 12`] = `
 {
   "attachments": [
     {
@@ -338,7 +407,32 @@ You're almost there! Add our accessories for only $25!",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 9`] = `
+exports[`CampaignTemplates get template configuration 13`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "You can <strong>update the cart values of Amount Added To Cart triggers</strong> based on your free shipping threshold value.",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "You can customise the product cards based on your Shopify product catalogue. We suggest to select small/accessory items.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "product": {
+      "tooltipContent": "Add up to 5 product cards",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 14`] = `
 {
   "message_html": "<div> 👋 Interested in this item? Check out our bundle, and<strong> save $10 </strong>😍</div>",
   "message_text": " 👋 Interested in this item? Check out our bundle, and save $10 😍",
@@ -379,7 +473,32 @@ exports[`CampaignTemplates get template configuration 9`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 10`] = `
+exports[`CampaignTemplates get template configuration 15`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "To target shoppers with a certain item in cart, <strong>please insert one of the Shopify product tag</strong> of the item to identify it.",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "Please <strong>select the bundle</strong> you want to recommend from your Shopify catalog.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "product": {
+      "tooltipContent": "Select the bundle product",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 16`] = `
 {
   "message_html": "<div><strong>JUST IN! </strong>✨ Check out our brand-new launch! </div>",
   "message_text": "JUST IN! ✨ Check out our brand-new launch! ",
@@ -413,7 +532,26 @@ exports[`CampaignTemplates get template configuration 10`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 11`] = `
+exports[`CampaignTemplates get template configuration 17`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Please <strong>select the new products</strong> you want to recommend from your Shopify catalog.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "product": {
+      "tooltipContent": "Add up to 5 product cards",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 18`] = `
 {
   "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>💸</em></div>",
   "message_text": "👉 Limited time offer — all under $99! 
@@ -448,7 +586,26 @@ Pss: 5% extra discount with code SAVE5 💸",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 12`] = `
+exports[`CampaignTemplates get template configuration 19`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Please <strong>remove or update the discount code</strong> to apply it only to your sales items.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "discount": {
+      "tooltipContent": "Select your own Shopify discount code",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 20`] = `
 {
   "message_html": "<div>This one is sold out, but we have<strong> similar styles ready for you </strong>✨</div>",
   "message_text": "This one is sold out, but we have similar styles ready for you ✨",
@@ -482,7 +639,32 @@ exports[`CampaignTemplates get template configuration 12`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 13`] = `
+exports[`CampaignTemplates get template configuration 21`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "Please <strong>update the URL trigger</strong> to target visitors on the product page of an out-of-stock product",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "Please <strong>select the similar products</strong> you want to recommend from your Shopify catalog.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "product": {
+      "tooltipContent": "Add up to 5 product cards",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 22`] = `
 {
   "message_html": "<div>🔍 I can help you<strong> find the best fit for you</strong>! What are you looking for?</div>",
   "message_text": "🔍 I can help you find the best fit for you! What are you looking for?",
@@ -507,7 +689,13 @@ exports[`CampaignTemplates get template configuration 13`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 14`] = `
+exports[`CampaignTemplates get template configuration 23`] = `
+{
+  "defaultStepOpened": "message",
+}
+`;
+
+exports[`CampaignTemplates get template configuration 24`] = `
 {
   "message_html": "<div>💡 Not sure which style to choose?</div><div><br></div><div><strong><a href="" target="_blank">Take our quiz</a></strong> or chat with our leather artisans now! 👇</div>",
   "message_text": "💡 Not sure which style to choose?
@@ -534,7 +722,26 @@ Take our quiz or chat with our leather artisans now! 👇",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 15`] = `
+exports[`CampaignTemplates get template configuration 25`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the correct URL link to your quizz</strong> in your message.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "link": {
+      "tooltipContent": "Add quizz link",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 26`] = `
 {
   "message_html": "<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong><a href="" target="_blank">custom express orders</a></strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>",
   "message_text": "Need help with last-minute purchase? Leave us a message or check out our guide on custom express orders 🚚
@@ -558,5 +765,24 @@ We'll be back at 9AM tomorrow for you. ",
       "value": 15,
     },
   ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 27`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the URL of a relevant resource</strong> in your message.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "link": {
+      "tooltipContent": "Add links",
+    },
+  },
 }
 `;

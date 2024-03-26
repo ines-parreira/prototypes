@@ -37,6 +37,11 @@ describe('CampaignTemplates', () => {
                 fromJS({})
             )
             expect(configuration).toMatchSnapshot()
+
+            if (template.getWizardConfiguration) {
+                const wizardConfiguration = template.getWizardConfiguration()
+                expect(wizardConfiguration).toMatchSnapshot()
+            }
         }
     )
 })
