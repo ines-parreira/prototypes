@@ -15,8 +15,8 @@ import {
     useAutomationRateTrend,
     useFirstResponseTimeWithAutomationTrend,
     useResolutionTimeWithAutomationTrend,
+    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import {useTicketAverageHandleTimeMetric} from 'hooks/reporting/metrics'
 import {getTimezone} from 'state/currentUser/selectors'
 import {getAgentCostsSettings} from 'state/currentAccount/selectors'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -102,7 +102,7 @@ const AutomateLandingPage = () => {
         filters,
         userTimezone
     )
-    const handleTimePerAgent = useTicketAverageHandleTimeMetric(
+    const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         filters,
         userTimezone
     )
@@ -115,7 +115,7 @@ const AutomateLandingPage = () => {
         automatedInteractionsTrend.isFetching ||
         resolutionTimeTrend.isFetching ||
         firstResponseTimeTrend.isFetching ||
-        handleTimePerAgent.isFetching
+        ticketHandleTimeTrend.isFetching
 
     if (isLoading) {
         return <Loader />
@@ -191,8 +191,8 @@ const AutomateLandingPage = () => {
                                     firstResponseTime={
                                         firstResponseTimeTrend.data?.value
                                     }
-                                    handleTimePerAgent={
-                                        handleTimePerAgent.data?.value
+                                    ticketHandleTime={
+                                        ticketHandleTimeTrend.data?.value
                                     }
                                     hasAgentCosts={!!agentCosts}
                                 />

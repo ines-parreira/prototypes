@@ -22,7 +22,7 @@ interface Props {
     automatedInteractions: Maybe<number>
     resolutionTime: Maybe<number>
     firstResponseTime: Maybe<number>
-    handleTimePerAgent: Maybe<number>
+    ticketHandleTime: Maybe<number>
     hasAgentCosts?: boolean
 }
 
@@ -31,7 +31,7 @@ export const AutomateSavingsCard = ({
     automatedInteractions,
     resolutionTime,
     firstResponseTime,
-    handleTimePerAgent,
+    ticketHandleTime,
     hasAgentCosts = false,
 }: Props) => {
     const isTicketTimeToHandleEnabled =
@@ -48,7 +48,7 @@ export const AutomateSavingsCard = ({
         (isAdmin(user) || hasAgentPrivileges(user))
 
     const timeSavedByAgents =
-        (automatedInteractions ?? 0) * (handleTimePerAgent ?? 0)
+        (automatedInteractions ?? 0) * (ticketHandleTime ?? 0)
 
     return (
         <div className={css.container}>
