@@ -113,31 +113,22 @@ const ConvertOnboardingView = () => {
         if (updateChannelConnection.isLoading) return
 
         if (!!channelConnection) {
+            const data = isSubscriber ? {is_onboarded: true} : {is_setup: true}
+
             await updateChannelConnection.mutateAsync([
                 undefined,
                 {channel_connection_id: channelConnection.id},
-                {is_setup: true},
+                data,
             ])
         }
-    }, [channelConnection, updateChannelConnection])
+    }, [channelConnection, isSubscriber, updateChannelConnection])
 
     useEffect(() => {
         // Once onboarding is done, redirect user to campaigns
-        if (
-            (!isSubscriber && isSetup && hasChat && isInstalled) ||
-            (isSubscriber && isOnboarded && hasChat && isInstalled && hasStore)
-        ) {
+        if ((!isSubscriber && isSetup) || (isSubscriber && isOnboarded)) {
             history.push(`/app/convert/${chatIntegrationId}/campaigns`)
         }
-    }, [
-        chatIntegrationId,
-        hasChat,
-        hasStore,
-        isSubscriber,
-        isInstalled,
-        isOnboarded,
-        isSetup,
-    ])
+    }, [chatIntegrationId, isSubscriber, isOnboarded, isSetup])
 
     const [isInstallOpen, setInstallOpen] = useState<boolean>(false)
     const handleInstallChange = useCallback(async () => {
@@ -171,7 +162,7 @@ const ConvertOnboardingView = () => {
                             'mt-lg-0'
                         )}
                     >
-                        {isSubscriber ? (
+                        {isSubscriber && (!hasChat || hasStore) ? (
                             <>
                                 <h1>
                                     Welcome to Convert, your onsite revenue

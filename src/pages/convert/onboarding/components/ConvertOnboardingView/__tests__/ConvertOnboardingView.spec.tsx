@@ -20,12 +20,18 @@ const queryClient = mockQueryClient()
 
 const mockStore = configureMockStore()
 
-const defaultState = {
+const defaultStateShopify = {
     integrations: fromJS({
         integrations: [
             {id: 123, type: 'gorgias_chat', meta: {shop_integration_id: 234}},
             {id: 234, type: 'shopify'},
         ],
+    }),
+}
+
+const defaultStateNoShopify = {
+    integrations: fromJS({
+        integrations: [{id: 123, type: 'gorgias_chat'}],
     }),
 }
 
@@ -67,11 +73,13 @@ describe('<ConvertOnboardingView />', () => {
     })
 
     it.each([
-        [true, 3],
-        [false, 2],
+        [true, defaultStateShopify, 3],
+        [false, defaultStateShopify, 2],
+        [true, defaultStateNoShopify, 2],
+        [false, defaultStateNoShopify, 2],
     ])(
         'redirects to campaigns page when onboarding is done',
-        async (isSubscriber, completedSteps) => {
+        async (isSubscriber, defaultState, completedSteps) => {
             // Mock useParams
             ;(useParams as jest.Mock).mockReturnValue({id: '123'})
 
@@ -79,8 +87,8 @@ describe('<ConvertOnboardingView />', () => {
             useGetOrCreateChannelConnectionMock.mockReturnValue({
                 channelConnection: {
                     ...channelConnection,
-                    is_onboarded: true,
-                    is_setup: true,
+                    is_onboarded: isSubscriber,
+                    is_setup: !isSubscriber,
                 },
             } as any)
 
@@ -110,7 +118,7 @@ describe('<ConvertOnboardingView />', () => {
             })
 
             const button = 'Get started with campaigns'
-            if (isSubscriber) {
+            if (completedSteps === 3) {
                 expect(queryByText(button)).not.toBeInTheDocument()
             } else {
                 expect(queryByText(button)).toBeInTheDocument()
