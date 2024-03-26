@@ -25,6 +25,8 @@ import {
     shopifyUrl,
     shopifyUrlMetafield,
     shopifyDimension,
+    shopifyWeight,
+    shopifyVolume,
 } from 'fixtures/shopify'
 import {
     IntegrationContext,
@@ -316,6 +318,26 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.getByText('123 cm'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyWeight', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyWeight()} />
+                </Provider>
+            )
+            expect(screen.getByText('123 oz'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyVolume', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyVolume()} />
+                </Provider>
+            )
+            expect(screen.getByText('123 us fl oz'))
             expect(screen.getByRole('button'))
         })
     })

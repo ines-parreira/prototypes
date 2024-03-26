@@ -21,6 +21,10 @@ import {
     DimensionShopifyMetafield,
 } from '@gorgias/api-types'
 import {
+    VolumeShopifyMetafield,
+    WeightShopifyMetafield,
+} from '@gorgias/api-queries'
+import {
     Image,
     Variant,
     Product,
@@ -1900,4 +1904,18 @@ export const shopifyDimension = (): DimensionShopifyMetafield => ({
     key: 'test_json',
     value: {value: '123', unit: 'cm'},
     type: 'dimension',
+})
+
+export const shopifyWeight = (): WeightShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: {value: '123', unit: 'oz'},
+    type: 'weight',
+})
+
+export const shopifyVolume = (): VolumeShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: {value: '123', unit: 'us_fl_oz'},
+    type: 'volume',
 })

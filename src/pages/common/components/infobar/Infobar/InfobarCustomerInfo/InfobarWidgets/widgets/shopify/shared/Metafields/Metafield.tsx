@@ -124,9 +124,12 @@ export default function Metafield({metafield}: Props) {
                 <RichTextFieldMetafield label={key} value={metafield.value} />
             )
 
+        case 'weight':
+        case 'volume':
         case 'dimension': {
-            const dimension = `${metafield.value.value} ${metafield.value.unit}`
-            return <FieldWithCopyButton label={key} value={dimension} />
+            const {value, unit} = metafield.value
+            const copiableValue = `${value} ${unit.replace(/_/g, ' ')}`
+            return <FieldWithCopyButton label={key} value={copiableValue} />
         }
 
         default: {
