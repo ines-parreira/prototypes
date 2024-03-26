@@ -19,9 +19,8 @@ type Props = Pick<
  * Small wrapper around <SelectField/> to inject the possible custom fields as options.
  */
 const CustomFieldSelect = ({onChange, viewMode, ...props}: Props) => {
-    // Load all ticket fields, active or not
     const customFields = useCustomFieldDefinitions({
-        archived: undefined,
+        archived: false,
         object_type: 'Ticket',
     })
 
