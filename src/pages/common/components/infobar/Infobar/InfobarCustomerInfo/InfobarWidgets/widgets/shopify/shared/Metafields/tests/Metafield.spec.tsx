@@ -78,7 +78,7 @@ describe('<MetaField/>', () => {
             expect(screen.getByRole('button'))
         })
 
-        it('should render with shopifyMultiLineTextFieldMetafield', () => {
+        it('should render with shopifyMultiLineTextFieldMetafield truncated to 80 characters', () => {
             render(
                 <Provider store={store}>
                     <Metafield
@@ -88,7 +88,23 @@ describe('<MetaField/>', () => {
             )
             expect(
                 screen.getByText(
-                    `testing\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\n\\n`
+                    `testing\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\n...`
+                )
+            )
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyMultiLineTextFieldMetafield', () => {
+            const metafield = shopifyMultiTextLineFieldMetafield()
+            metafield.value = 'testing metafield\\nwith less than 80 characters'
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={metafield} />
+                </Provider>
+            )
+            expect(
+                screen.getByText(
+                    `testing metafield\\nwith less than 80 characters`
                 )
             )
             expect(screen.getByRole('button'))

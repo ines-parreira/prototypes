@@ -1,5 +1,5 @@
 import React, {createRef, useContext} from 'react'
-import {isArray, map, startCase} from 'lodash'
+import {isArray, map, startCase, truncate} from 'lodash'
 import {ShopifyMetafield} from '@gorgias/api-queries'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
@@ -124,10 +124,11 @@ function FieldWithCopyButton({
     value,
     children,
 }: FieldWithCopyButtonProps) {
+    const shortenedValue = truncate(value, {length: 80})
     return (
         <div className={css.field}>
             <StaticField label={startCase(label)}>
-                {children ?? value}
+                {children ?? shortenedValue}
                 <span className={css.copyButton}>
                     <CopyButton value={value} />
                 </span>
@@ -194,11 +195,12 @@ function FieldWithCopyButtonAndTooltip({
 }: FieldWithCopyButtonAndTooltipProps) {
     const ref = createRef<HTMLDivElement>()
     const formattedJson = JSON.stringify(value, null, 4)
+    const shortenedValue = truncate(formattedJson, {length: 80})
     return (
         <>
             <div className={css.field} ref={ref}>
                 <StaticField label={startCase(label)}>
-                    {children ?? formattedJson}
+                    {children ?? shortenedValue}
                     <span className={css.copyButton}>
                         <CopyButton value={formattedJson} />
                     </span>
