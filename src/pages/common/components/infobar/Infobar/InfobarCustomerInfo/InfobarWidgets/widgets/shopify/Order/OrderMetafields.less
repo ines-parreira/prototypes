@@ -1,8 +1,18 @@
+@import (reference) '~css/typography';
+
 :local {
     .loader {
-        display: block;
-        margin: 0 auto;
-        max-width: 90%;
-        height: 50px;
+        padding-inline: 13.3px;
+    }
+
+    .errorMessage {
+        color: var(--feedback-error);
+        margin-left: 12.5px;
+        .body-regular();
+    }
+
+    .infoMessage {
+        margin-left: 12.5px;
+        .body-regular();
     }
 }

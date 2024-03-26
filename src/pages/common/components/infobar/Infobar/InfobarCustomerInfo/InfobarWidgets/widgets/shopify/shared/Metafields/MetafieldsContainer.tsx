@@ -28,9 +28,13 @@ export default function MetafieldsContainer({children}: Props) {
                     title={isOpen ? 'Fold this card' : 'Unfold this card'}
                 >
                     {isOpen ? (
-                        <i className="material-icons">expand_less</i>
+                        <i className={`material-icons ${css.toggle}`}>
+                            expand_less
+                        </i>
                     ) : (
-                        <i className="material-icons">expand_more</i>
+                        <i className={`material-icons ${css.toggle}`}>
+                            expand_more
+                        </i>
                     )}
                 </span>
             </div>

@@ -1,8 +1,6 @@
 import {useListShopifyOrderMetafields} from '@gorgias/api-queries'
 import React from 'react'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import StaticField from 'Infobar/features/Field/display/StaticField'
-import FieldLabel from 'Infobar/features/Field/display/FieldLabel'
 import Metafield from '../shared/Metafields/Metafield'
 import css from './OrderMetafields.less'
 
@@ -18,25 +16,23 @@ export default function OrderMetafields({integrationId, orderId}: Props) {
     )
 
     if (isLoading) {
-        return <Skeleton className={css.loader} />
+        return (
+            <div className={css.loader}>
+                <Skeleton />
+            </div>
+        )
     }
 
     if (isError) {
         return (
-            <StaticField>
-                <FieldLabel>
-                    Temporarily unavailable, try again later
-                </FieldLabel>
-            </StaticField>
+            <span className={css.errorMessage}>
+                Temporarily unavailable, try again later
+            </span>
         )
     }
 
     if (!data || data.data?.data?.length <= 0) {
-        return (
-            <StaticField>
-                <FieldLabel>No metafields setup yet</FieldLabel>
-            </StaticField>
-        )
+        return <span className={css.infoMessage}>No metafields setup yet</span>
     }
 
     const metafields = data.data.data
