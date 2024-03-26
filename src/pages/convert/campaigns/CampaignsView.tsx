@@ -16,6 +16,8 @@ import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
 import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
 import {getIntegrationById} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/constants'
+
 import {toJS} from 'utils'
 import history from 'pages/history'
 import {CONVERT_ROUTE_PARAM_NAME} from '../common/constants'
@@ -41,6 +43,16 @@ export const CampaignsView = () => {
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
+        [integration]
+    )
+
+    const hasStoreConnected = useMemo<boolean>(
+        () =>
+            Boolean(
+                integration.getIn(['meta', 'shop_integration_id']) &&
+                    integration.getIn(['meta', 'shop_type']) ===
+                        IntegrationType.Shopify
+            ),
         [integration]
     )
 
@@ -137,17 +149,26 @@ export const CampaignsView = () => {
     const shouldDisplayBanner = useMemo(() => {
         return (
             !isLoading &&
+            hasStoreConnected &&
             isConvertSubscriber &&
             isCampaignLibraryEnabled &&
             allCampaigns.length < 8
         )
-    }, [isLoading, isCampaignLibraryEnabled, isConvertSubscriber, allCampaigns])
+    }, [
+        isLoading,
+        hasStoreConnected,
+        isCampaignLibraryEnabled,
+        isConvertSubscriber,
+        allCampaigns,
+    ])
 
     return (
         <CampaignListOptions>
             <div className={classnames('full-width', css.pageWrapper)}>
                 <PageHeader title={'Campaigns'}>
-                    {isConvertSubscriber && isCampaignLibraryEnabled ? (
+                    {isConvertSubscriber &&
+                    isCampaignLibraryEnabled &&
+                    hasStoreConnected ? (
                         <>
                             <Link
                                 to={`/app/convert/${integrationId}/campaigns/new`}

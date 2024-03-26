@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import routerDom from 'react-router-dom'
 import _omit from 'lodash/omit'
+import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import {billingState} from 'fixtures/billing'
@@ -23,6 +24,8 @@ import {
 } from 'models/convert/campaign/queries'
 import {campaign} from 'fixtures/campaign'
 import {channelConnection} from 'fixtures/channelConnection'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import {Campaign} from '../types/Campaign'
 import {CampaignsView} from '../CampaignsView'
 import {CONVERT_ROUTE_PARAM_NAME} from '../../common/constants'
@@ -30,6 +33,7 @@ import {CampaignStatus} from '../types/enums/CampaignStatus.enum'
 import {useGetOrCreateChannelConnection} from '../../common/hooks/useGetOrCreateChannelConnection'
 
 jest.mock('utils/launchDarkly')
+
 jest.mock('hooks/useSearch')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -182,6 +186,67 @@ describe('<CampaignsView/>', () => {
 
         expect(getByText('Super campaign')).toBeInTheDocument()
         expect(getByText('Not so good campaign')).toBeInTheDocument()
+    })
+
+    describe('Campaigns library', () => {
+        beforeAll(() => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.ConvertCampaignLibraryUi]: true,
+            }))
+            useParamsMock.mockReturnValue({
+                [CONVERT_ROUTE_PARAM_NAME]: '118',
+            })
+        })
+
+        it('should display campaign library button', () => {
+            const state = {
+                ...defaultState,
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {
+                                app_id: '1',
+                                shop_integration_id: 1,
+                                shop_type: 'shopify',
+                            },
+                        },
+                    ],
+                }),
+            }
+
+            const {getByText} = renderComponent(state)
+
+            expect(getByText('Create Custom Campaign')).toBeInTheDocument()
+            expect(
+                getByText('Create Campaign From Library')
+            ).toBeInTheDocument()
+        })
+
+        it('should not display campaign library button', () => {
+            const state = {
+                ...defaultState,
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {},
+                        },
+                    ],
+                }),
+            }
+
+            const {getByText, queryByText} = renderComponent(state)
+
+            expect(getByText('Create Campaign')).toBeInTheDocument()
+            expect(
+                queryByText('Create Campaign From Library')
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('Campaign actions', () => {
