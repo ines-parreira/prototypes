@@ -186,27 +186,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                     <span
                       id="label-tooltip-5"
                     >
-                       campaign 1
-                    </span>
-                  </label>
-                </div>
-                <div
-                  class="wrapperItem"
-                >
-                  <label
-                    class="label label labelItem"
-                    for="checkbox-6"
-                  >
-                    <input
-                      class="input"
-                      id="checkbox-6"
-                      name="checkbox-6"
-                      type="checkbox"
-                    />
-                    <span
-                      id="label-tooltip-7"
-                    >
-                       campaign 2
+                       Welcome to the internet
                     </span>
                   </label>
                 </div>
@@ -798,7 +778,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   >
                     <span>
                       <span
-                        id="datetime-tooltip-8"
+                        id="datetime-tooltip-6"
                       >
                         12/16/2021
                       </span>
@@ -817,7 +797,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                   >
                     <span>
                       <span
-                        id="datetime-tooltip-9"
+                        id="datetime-tooltip-7"
                       >
                         12/16/2021
                       </span>

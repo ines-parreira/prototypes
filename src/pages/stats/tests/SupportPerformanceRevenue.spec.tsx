@@ -34,6 +34,10 @@ import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {useListCampaigns} from 'models/convert/campaign/queries'
+import {channelConnection} from 'fixtures/channelConnection'
+import {campaign} from 'fixtures/campaign'
 import TagsStatsFilter from '../TagsStatsFilter'
 import SupportPerformanceRevenue from '../SupportPerformanceRevenue'
 
@@ -60,6 +64,13 @@ jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
 ))
 
 jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
+const useGetOrCreateChannelConnectionMock = assumeMock(
+    useGetOrCreateChannelConnection
+)
+
+jest.mock('models/convert/campaign/queries')
+const useListCampaignMock = assumeMock(useListCampaigns)
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
@@ -77,17 +88,6 @@ export const integrationsState = {
                     linked_email_integration: 5,
                 },
                 shop_integration_id: 516,
-                campaigns: [
-                    {
-                        deactivated_datetime: '2023-01-05T14:55:57.437Z',
-                        id: 'f85a98e1-dc9e-40f1-9828-3b3c9908cacf',
-                        message: {
-                            html: '<div>simple campaign</div>',
-                            text: 'simple campaign',
-                        },
-                        name: 'campaign 1',
-                    },
-                ],
             },
             facebook: null,
             http: null,
@@ -112,17 +112,6 @@ export const integrationsState = {
                     linked_email_integration: 5,
                 },
                 shop_integration_id: 516,
-                campaigns: [
-                    {
-                        deactivated_datetime: '2023-01-05T14:55:57.437Z',
-                        id: 'g85a98e1-dc9e-40f1-9828-3b3c9908cacf',
-                        message: {
-                            html: '<div>simple campaign</div>',
-                            text: 'simple campaign',
-                        },
-                        name: 'campaign 2',
-                    },
-                ],
             },
             facebook: null,
             http: null,
@@ -147,17 +136,6 @@ export const integrationsState = {
                     linked_email_integration: 5,
                 },
                 shop_integration_id: 1,
-                campaigns: [
-                    {
-                        deactivated_datetime: '2023-01-05T14:55:57.437Z',
-                        id: 'f85a98e1-dc9e-40f1-9828-3b3c9908cacf',
-                        message: {
-                            html: '<div>simple campaign</div>',
-                            text: 'simple campaign',
-                        },
-                        name: 'campaign 3',
-                    },
-                ],
             },
             facebook: null,
             http: null,
@@ -222,7 +200,7 @@ describe('SupportPerformanceRevenue', () => {
                 integrations: [shopifyIntegration && shopifyIntegration.id],
                 agents: [agents[0].id],
                 tags: [1],
-                campaigns: ['f85a98e1-dc9e-40f1-9828-3b3c9908cacf'],
+                campaigns: [campaign.id],
             } as StatsFilters,
         }),
         agents: fromJS({
@@ -245,6 +223,12 @@ describe('SupportPerformanceRevenue', () => {
         mathRandomSpy = jest.spyOn(Math, 'random').mockImplementation(() => 42)
 
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
+        useGetOrCreateChannelConnectionMock.mockReturnValue({
+            channelConnection: channelConnection,
+        } as any)
+        useListCampaignMock.mockReturnValue({
+            data: [campaign],
+        } as any)
     })
 
     afterEach(() => {
