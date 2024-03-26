@@ -22,20 +22,22 @@ const WizardFooter = ({
     return (
         <div className={css.footer}>
             <div className={css.footerShadow}></div>
-            <div className={css.footerContent}>
-                <Link to={`/app/convert/${integrationId}/setup#later`}>
-                    <Button fillStyle="ghost">
-                        Save &amp; Customize Later
-                    </Button>
-                </Link>
+            <div className={css.footerBackground}>
+                <div className={css.footerContent}>
+                    <Link to={`/app/convert/${integrationId}/setup#later`}>
+                        <Button fillStyle="ghost">
+                            Save &amp; Customize Later
+                        </Button>
+                    </Link>
 
-                <div className={css.wizardButtons}>
-                    <Button intent="secondary" onClick={handleBack}>
-                        Previous
-                    </Button>
-                    <Button onClick={handleNextStep} isLoading={isLoading}>
-                        {nextStepLabel || 'Finish Setup'}
-                    </Button>
+                    <div className={css.wizardButtons}>
+                        <Button intent="secondary" onClick={handleBack}>
+                            Previous
+                        </Button>
+                        <Button onClick={handleNextStep} isLoading={isLoading}>
+                            {nextStepLabel || 'Finish Setup'}
+                        </Button>
+                    </div>
                 </div>
             </div>
         </div>

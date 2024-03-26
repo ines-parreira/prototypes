@@ -18,13 +18,18 @@
         z-index: 2;
     }
 
+    .footerBackground {
+        background: var(--neutral-grey-0);
+        padding: @layout-spacing-m;
+        position: relative;
+        z-index: 3;
+    }
+
     .footerContent {
         display: flex;
         justify-content: space-between;
-        position: relative;
-        z-index: 3;
-        background: var(--neutral-grey-0);
-        padding: @layout-spacing-m;
+        max-width: 1032px;
+        margin: 0 auto;
     }
 
     .wizardButtons {
