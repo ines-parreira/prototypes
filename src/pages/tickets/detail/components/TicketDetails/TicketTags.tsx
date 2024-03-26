@@ -27,6 +27,7 @@ const LIMIT_TAGS_SEARCH = 15
 
 type Props = {
     addTag: (tag: string) => void
+    className?: string
     dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
     isDisabled?: boolean
     removeTag: (tag: string) => void
@@ -38,6 +39,7 @@ type Props = {
 
 const TicketTags = ({
     addTag,
+    className,
     dropdownContainer,
     isDisabled = false,
     removeTag,
@@ -166,9 +168,13 @@ const TicketTags = ({
 
     return (
         <div
-            className={classnames(css.tags, {
-                [css.right]: right,
-            })}
+            className={classnames(
+                css.tags,
+                {
+                    [css.right]: right,
+                },
+                className
+            )}
         >
             {!isDisabled && (
                 <Dropdown

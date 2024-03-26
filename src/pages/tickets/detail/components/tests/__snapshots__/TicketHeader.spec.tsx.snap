@@ -98,7 +98,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
         </button>
       </span>
       <div
-        class="tags"
+        class="tags tags"
       >
         <div
           class="addTags dropdown"
@@ -210,7 +210,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
       class="statusAndTags"
     >
       <div
-        class="tags"
+        class="tags tags"
       >
         <div
           class="addTags dropdown"
@@ -368,7 +368,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
         </button>
       </span>
       <div
-        class="tags"
+        class="tags tags"
       >
         <div
           class="addTags dropdown"
@@ -526,7 +526,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
         </button>
       </span>
       <div
-        class="tags"
+        class="tags tags"
       >
         <div
           class="addTags dropdown"

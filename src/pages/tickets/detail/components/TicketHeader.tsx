@@ -331,6 +331,7 @@ const TicketHeader = ({
                     )}
 
                     <TicketTags
+                        className={css.tags}
                         ticketTags={ticket.get('tags')}
                         addTag={(tag) => dispatch(addTags(tag))}
                         removeTag={(tag) => dispatch(removeTag(tag))}
