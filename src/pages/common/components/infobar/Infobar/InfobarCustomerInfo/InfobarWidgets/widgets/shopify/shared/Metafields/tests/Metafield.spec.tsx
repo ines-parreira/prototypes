@@ -24,6 +24,7 @@ import {
     shopifySingleTextLineFieldMetafield,
     shopifyUrl,
     shopifyUrlMetafield,
+    shopifyDimension,
 } from 'fixtures/shopify'
 import {
     IntegrationContext,
@@ -288,6 +289,16 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.queryByText('test_rich_text_field'))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyDimension', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyDimension()} />
+                </Provider>
+            )
+            expect(screen.getByText('123 cm'))
             expect(screen.getByRole('button'))
         })
     })

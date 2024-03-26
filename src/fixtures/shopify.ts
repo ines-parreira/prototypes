@@ -18,6 +18,7 @@ import {
     SingleLineTextFieldShopifyMetafield,
     UrlShopifyMetafield,
     VariantReferenceShopifyMetafield,
+    DimensionShopifyMetafield,
 } from '@gorgias/api-types'
 import {
     Image,
@@ -1892,4 +1893,11 @@ export const shopifyRichTextField = (): RichTextShopifyMetafield => ({
         ],
     },
     type: 'rich_text_field',
+})
+
+export const shopifyDimension = (): DimensionShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: {value: '123', unit: 'cm'},
+    type: 'dimension',
 })
