@@ -236,7 +236,9 @@ const AutomateExploreDataModal = forwardRef<
                                         setCostValue(formatValue(val))
 
                                         setCostPerTicket(
-                                            parseFloat(val) /
+                                            parseFloat(
+                                                val.replace(/[^0-9.]/g, '')
+                                            ) /
                                                 (costType === 'hourly'
                                                     ? hourlyRateMultiplier
                                                     : annualSalaryMultiplier)

@@ -217,6 +217,43 @@ describe('<AutomateExploreDataModal />', () => {
         expect(agentCost).toHaveValue('100,800')
     })
 
+    it('should recalculate cost from yearly to hourly', () => {
+        const modal = React.createRef<AutomateExploreDataModalHandle>()
+
+        // Arrange
+        render(
+            <Provider store={mockStore({} as any)}>
+                <AutomateExploreDataModal
+                    resolutionTime={3600}
+                    firstResponseTime={2400}
+                    monthlySupportTickets={2400}
+                    hasAgentCosts={false}
+                    ref={modal}
+                />
+            </Provider>
+        )
+
+        // Act
+        modal.current?.open()
+
+        const agentCost = screen.getByTestId('agent-cost')
+        const yearly = screen.getByTestId('yearly')
+        const hourly = screen.getByTestId('hourly')
+
+        fireEvent.click(yearly)
+
+        // Assert
+        expect(yearly).toHaveAttribute('data-selected', 'true')
+
+        // Act
+        fireEvent.change(agentCost, {target: {value: '201600'}})
+        fireEvent.click(hourly)
+
+        // Assert
+        expect(hourly).toHaveAttribute('data-selected', 'true')
+        expect(agentCost).toHaveValue('100.00')
+    })
+
     it('update button should be disabled when no changes are made or input is empty', () => {
         const modal = React.createRef<AutomateExploreDataModalHandle>()
 

@@ -79,7 +79,7 @@ const ROICalculator = () => {
     const automationPrices = useAppSelector(getAutomationPrices)
 
     const [metricsType, setMetricsType] = useState('monthly_support_tickets')
-    const [salaryType, setSalaryType] = useState('annual_salary')
+    const [salaryType, setSalaryType] = useState('hourly_rate')
 
     const [metricsValue, setMetricsValue] = useState('0')
     const [salaryValue, setSalaryValue] = useState('15.5')

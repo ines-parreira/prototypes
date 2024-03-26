@@ -134,7 +134,7 @@ describe('<ROICalculator />', () => {
         expect(metricsValueInput).not.toBeDisabled()
         expect(metricsValueInput).toHaveValue('0')
 
-        expect(salaryValueInput).toHaveValue('31,248')
+        expect(salaryValueInput).toHaveValue('15.5')
 
         expect(resolutionTimeInput).not.toBeDisabled()
         expect(resolutionTimeInput).toHaveValue('0hrs')
@@ -145,7 +145,7 @@ describe('<ROICalculator />', () => {
         // Act
 
         fireEvent.change(metricsValueInput, {target: {value: '2000'}})
-        fireEvent.change(salaryValueInput, {target: {value: '30000'}})
+        fireEvent.change(salaryValueInput, {target: {value: '14.88'}})
 
         fireEvent.change(resolutionTimeInput, {target: {value: '12'}})
         fireEvent.blur(resolutionTimeInput)
@@ -155,14 +155,14 @@ describe('<ROICalculator />', () => {
 
         // Assert
         expect(metricsValueInput).toHaveValue('2,000')
-        expect(salaryValueInput).toHaveValue('30,000')
+        expect(salaryValueInput).toHaveValue('14.88')
         expect(resolutionTimeInput).toHaveValue('12hrs')
         expect(firstResponseTimeInput).toHaveValue('12hrs')
 
         const costWithAutomate = getByTestId('cost-with-automate')
         const costWithoutAutomate = getByTestId('cost-without-automate')
 
-        expect(costWithAutomate).toHaveTextContent('$6,077')
+        expect(costWithAutomate).toHaveTextContent('$6,076')
         expect(costWithoutAutomate).toHaveTextContent('$7,952')
     })
 })
