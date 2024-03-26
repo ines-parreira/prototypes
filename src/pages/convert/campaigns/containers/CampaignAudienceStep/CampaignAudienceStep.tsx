@@ -8,6 +8,7 @@ import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBan
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
+import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
 import {StatefulAccordion} from '../../components/StatefulAccordion'
 import {AdvancedTriggersForm} from '../../components/AdvancedTriggersForm'
 import {AdvancedTriggersSelect} from '../../components/AdvancedTriggersSelect'
@@ -22,7 +23,6 @@ import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {CampaignStepsKeys} from '../../types/CampaignSteps'
 
 import {TriggersProvider} from '../TriggersProvider'
-import ConvertSetupBanner from '../../components/ConvertSetupBanner/ConvertSetupBanner'
 import {AdvancedTriggersTooltip} from '../../components/AdvancedTriggersTooltip'
 import {isDeviceTypeValue} from '../../types/enums/CampaignTriggerDeviceTypeValue.enum'
 import {createTrigger} from '../../utils/createTrigger'

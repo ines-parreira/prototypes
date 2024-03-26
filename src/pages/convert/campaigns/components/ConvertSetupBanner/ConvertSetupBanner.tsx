@@ -2,13 +2,16 @@ import React, {useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {isAdmin} from 'utils'
+import {isAdmin, toJS} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetConvertStatus, {
     BundleOnboardingStatus,
 } from 'pages/settings/revenue/hooks/useGetConvertStatus'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useIsConvertCampaignBundleWarningEnabled} from 'pages/settings/revenue/hooks/useIsConvertCampaignBundleWarningEnabled'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {getIntegrationById} from 'state/integrations/selectors'
+import {useIsConvertOnboardingUiEnabled} from 'pages/convert/common/hooks/useIsConvertOnboardingUiEnabled'
 
 type Props = {
     classes?: string
@@ -32,6 +35,14 @@ export const ConvertSetupBanner = ({
         !!shopIntegrationId ? shopIntegrationId : chatIntegrationId
     )
 
+    const isOnboardingEnabled = useIsConvertOnboardingUiEnabled()
+    const chatIntegration = useAppSelector(
+        getIntegrationById(chatIntegrationId || 0)
+    )
+    const {channelConnection} = useGetOrCreateChannelConnection(
+        toJS(chatIntegration)
+    )
+
     const isBundleNotInstalled = useMemo(
         () =>
             convertStatus &&
@@ -46,6 +57,13 @@ export const ConvertSetupBanner = ({
     )
 
     if (!isBundleNotInstalled) return <></>
+
+    if (
+        isOnboardingEnabled &&
+        channelConnection &&
+        !channelConnection.is_onboarded
+    )
+        return <></>
 
     // don't show banner for non subscribers if flag is not enabled
     if (!isConvertCampaignBundleWarningEnabled && !isConvertSubscriber)

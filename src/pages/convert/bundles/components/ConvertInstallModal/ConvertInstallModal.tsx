@@ -44,6 +44,11 @@ const ConvertInstallModal = ({
         setBundleData(initialBundleData)
     }, [initialBundleData])
 
+    useEffect(() => {
+        // Reset on integration change
+        setShowManual(false)
+    }, [integration])
+
     const integrationId = useMemo(
         () => parseInt(integration.get('id')) || 0,
         [integration]

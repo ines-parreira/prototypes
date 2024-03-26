@@ -21,6 +21,7 @@ import {
     BundleActionResponse,
     BundleInstallationMethod,
 } from 'models/convert/bundle/types'
+import {IntegrationType} from 'models/integration/constants'
 import WizardFooter from '../WizardFooter'
 import WizardCampaignsStep from '../WizardCampaignsStep'
 import WizardInstallStep from '../WizardInstallStep'
@@ -47,7 +48,12 @@ const WizardLayout = ({
 
     // Install bundle
     const [installationMethod, setInstallationMethod] =
-        useState<BundleInstallationMethod>(BundleInstallationMethod.OneClick)
+        useState<BundleInstallationMethod>(
+            storeIntegration.get('type') === IntegrationType.Shopify
+                ? BundleInstallationMethod.OneClick
+                : BundleInstallationMethod.Manual
+        )
+
     const [bundleData, setBundleData] = useState<BundleActionResponse>()
 
     const [isInstallModalOpen, setInstallModalOpen] = useState(false)

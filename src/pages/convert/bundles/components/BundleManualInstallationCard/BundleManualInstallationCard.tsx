@@ -72,7 +72,7 @@ const BundleManualInstallationCard = ({
                         <a
                             target="_blank"
                             rel="noopener noreferrer"
-                            href="https://docs.gorgias.com/en-US/campaigns-81793"
+                            href="https://docs.gorgias.com/en-US/install-campaign-bundle-442715"
                         >
                             see this article
                         </a>

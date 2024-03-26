@@ -32,6 +32,11 @@ jest.mock(
         })
     }
 )
+jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-setup-banner" />
+    })
+})
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {integrations: fromJS(integrationsState)} as RootState
 

@@ -10,6 +10,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
 import {QuickFilters} from '../QuickFilters'
 
 import {QUICK_FILTERS} from '../../constants/filters'
@@ -26,7 +27,6 @@ import {Campaign} from '../../types/Campaign'
 
 import CampaignInfobarPaywall from '../../components/CampaignInfobarPaywall/CampaignInfobarPaywall'
 import {ConvertLimitBanner} from '../../components/ConvertLimitBanner/ConvertLimitBanner'
-import {ConvertSetupBanner} from '../../components/ConvertSetupBanner/ConvertSetupBanner'
 import css from './CampaignsList.less'
 
 type Props = {

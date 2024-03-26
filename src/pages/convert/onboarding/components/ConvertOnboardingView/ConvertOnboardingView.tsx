@@ -278,20 +278,28 @@ const ConvertOnboardingView = () => {
                         xl={5}
                         className={classnames(
                             css.preview,
-                            'px-4',
+                            'px-5',
                             'py-4',
                             'mt-sm-5',
                             'mt-lg-0'
                         )}
                     >
-                        <img
-                            src={assetsUrl(
-                                isSubscriber
-                                    ? '/img/presentationals/convert-campaign.png'
-                                    : '/img/presentationals/convert-basic-campaign.png'
-                            )}
-                            alt="Convert campaign preview"
-                        />
+                        {isSubscriber ? (
+                            <img
+                                src={assetsUrl(
+                                    '/img/presentationals/convert-campaign.png'
+                                )}
+                                className={css.forSubscribers}
+                                alt="Convert campaign preview"
+                            />
+                        ) : (
+                            <img
+                                src={assetsUrl(
+                                    '/img/presentationals/convert-basic-campaign.png'
+                                )}
+                                alt="Convert campaign preview"
+                            />
+                        )}
                     </Col>
                 </Row>
             </Container>

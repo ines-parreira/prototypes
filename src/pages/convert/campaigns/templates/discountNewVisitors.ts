@@ -77,6 +77,9 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
             status: CampaignStatus.Inactive,
             triggers: triggers,
             trigger_rule: createTriggerRule(triggers),
+            meta: {
+                noReply: true,
+            },
         })
 
         return Promise.resolve(b.build())

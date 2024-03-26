@@ -20,6 +20,8 @@ import {
     convertStatusNotInstalled,
 } from 'fixtures/convert'
 import {user} from 'fixtures/users'
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {channelConnection} from 'fixtures/channelConnection'
 import {CampaignStatus} from '../../../types/enums/CampaignStatus.enum'
 import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
 
@@ -33,9 +35,15 @@ import CampaignsList from '../CampaignsList'
 
 jest.mock('hooks/useSearch')
 jest.mock('../../../hooks/useCampaignListOptions')
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 
+jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
+
+jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
+const useGetOrCreateChannelConnectionMock = assumeMock(
+    useGetOrCreateChannelConnection
+)
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const campaignsList = Array.from({length: 19}, (_, i) => ({
@@ -86,6 +94,12 @@ describe('<CampaignsList />', () => {
                 }),
             }
         })
+        useGetOrCreateChannelConnectionMock.mockReturnValue({
+            channelConnection: {
+                ...channelConnection,
+                is_onboarded: true,
+            },
+        } as any)
     })
 
     describe('Campaigns search', () => {

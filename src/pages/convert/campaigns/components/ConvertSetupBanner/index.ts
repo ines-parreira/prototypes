@@ -1,1 +1,1 @@
-export * from './ConvertSetupBanner'
+export {default} from './ConvertSetupBanner'

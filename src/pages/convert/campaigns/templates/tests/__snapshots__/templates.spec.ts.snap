@@ -4,6 +4,9 @@ exports[`CampaignTemplates get template configuration 1`] = `
 {
   "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
   "message_text": "Hold on! Get 10% off your first order with code test-code 😉",
+  "meta": {
+    "noReply": true,
+  },
   "name": "Give 10% off for new visitors about to leave",
   "status": "inactive",
   "template_id": "discount-new-visitors",
