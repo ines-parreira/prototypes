@@ -234,6 +234,7 @@ const ROICalculator = () => {
                     <div className={css.inputsContainer}>
                         <SelectField
                             className={css.selectField}
+                            dropdownMenuClassName={css.selectFieldDropdown}
                             options={Object.values(SUPPORT_METRICS_TYPES)}
                             value={metricsType}
                             onChange={(value) => setMetricsType(String(value))}
@@ -266,6 +267,7 @@ const ROICalculator = () => {
                     <div className={css.inputsContainer}>
                         <SelectField
                             className={css.selectField}
+                            dropdownMenuClassName={css.selectFieldDropdown}
                             options={Object.values(SALARY_TYPES)}
                             value={salaryType}
                             onChange={(value) => setSalaryType(String(value))}

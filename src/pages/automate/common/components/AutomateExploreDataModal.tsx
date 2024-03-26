@@ -221,6 +221,9 @@ const AutomateExploreDataModal = forwardRef<
                                         )
                                     }
                                     options={agentCostTypeOptions}
+                                    dropdownMenuClassName={
+                                        css.selectFieldDropdown
+                                    }
                                 />
                                 <InputField
                                     placeholder={

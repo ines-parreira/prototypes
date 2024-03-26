@@ -31,7 +31,7 @@ export const formatOnFocus = (
     setValue: (val: string | number) => void,
     val: string | number
 ) => {
-    setValue(Number(val.toString().replace(/[^0-9.]/g, '')) || 0)
+    setValue(Number(val.toString().replace(/[^0-9.]/g, '')) || '')
 }
 export const formatOnBlur = (
     setValue: (val: string | number) => void,
