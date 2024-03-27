@@ -89,6 +89,9 @@ exports[`CampaignTemplates get template configuration 3`] = `
   ],
   "message_html": "<div>You&#x27;ve got great taste! Check out <strong>our fan-favorite selection</strong> 😍</div>",
   "message_text": "You've got great taste! Check out our fan-favorite selection 😍",
+  "meta": {
+    "noReply": true,
+  },
   "name": "Showcase products to cross-sell",
   "status": "inactive",
   "template_id": "product-card-showcase",

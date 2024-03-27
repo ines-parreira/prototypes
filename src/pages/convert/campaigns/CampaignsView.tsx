@@ -171,7 +171,7 @@ export const CampaignsView = () => {
             <NavigatedSuccessModal
                 name={NavigatedSuccessModalName.ConvertOnboarding}
                 icon={SuccessModalIcon.PartyPopper}
-                buttonLabel="Go To Convert Settings"
+                buttonLabel="Go To Campaigns"
             >
                 <div className="heading-page-semibold mb-2">All set!</div>
                 <div className="heading-subsection-regular">

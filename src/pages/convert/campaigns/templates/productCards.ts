@@ -66,6 +66,9 @@ export const PRODUCT_CARD_SHOWCASE: CampaignTemplate = {
             status: CampaignStatus.Inactive,
             triggers: triggers,
             trigger_rule: createTriggerRule(triggers),
+            meta: {
+                noReply: true,
+            },
         })
 
         await b.attachProductCards(storeIntegration, 3)
