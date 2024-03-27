@@ -3,6 +3,7 @@ import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
+import {replaceNewLinesWithBr} from '../HelpCenterCreationWizard/HelpCenterCreationWizardUtils'
 
 export const mapAILibraryArticlesData = (
     articles: AIArticle[],
@@ -19,6 +20,7 @@ export const mapAILibraryArticlesData = (
 
             return {
                 ...article,
+                html_content: replaceNewLinesWithBr(article.html_content) ?? '',
                 isNew,
             }
         })

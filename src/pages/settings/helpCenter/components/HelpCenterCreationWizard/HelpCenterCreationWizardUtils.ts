@@ -52,6 +52,10 @@ export const isHelpCenterCreationWizardStep = (
 const replaceNewLines = (input: string | undefined): string | undefined =>
     input?.replace(/\\n/g, '')
 
+export const replaceNewLinesWithBr = (
+    input: string | undefined
+): string | undefined => input?.replace(/\n/g, '<br />')
+
 /**
  * Map API Help Center to UI Help Center which is used in the UI
  * Some considerations:
@@ -347,7 +351,7 @@ export const mapAIHelpCenterArticleData = (
         (article) => ({
             ...article.translation,
             id: article.id,
-            content: replaceNewLines(article.translation?.content),
+            content: replaceNewLinesWithBr(article.translation?.content),
             isSelected: article.translation?.is_current,
             key: article.template_key!,
             availableLocales: article.available_locales,
@@ -365,7 +369,7 @@ export const mapAIHelpCenterArticleData = (
         orderBy(aiArticlesFilter, ['related_tickets_count'], ['desc']),
         (aiArticle) => ({
             ...aiArticle,
-            content: replaceNewLines(aiArticle.html_content),
+            content: replaceNewLinesWithBr(aiArticle.html_content),
             isSelected: !!!helpCenterAiArticles.length,
             type: ArticleTemplateType.AI,
             category: aiArticle.category,
