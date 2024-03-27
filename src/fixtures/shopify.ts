@@ -1932,6 +1932,6 @@ export const shopifyRating = (): RatingShopifyMetafield => ({
 export const shopifyMoney = (): MoneyShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {amount: '123', currency: 'USD'},
+    value: {amount: '123', currency_code: 'USD'},
     type: 'money',
 })

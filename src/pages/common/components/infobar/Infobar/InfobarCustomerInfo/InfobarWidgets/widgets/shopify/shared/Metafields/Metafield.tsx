@@ -140,14 +140,14 @@ export default function Metafield({metafield}: Props) {
         }
 
         case 'money': {
-            const {amount, currency} = metafield.value
-            const copiableValue = `${amount} ${currency}`
+            const {amount, currency_code} = metafield.value
+            const copiableValue = `${amount} ${currency_code}`
             return (
                 <FieldWithCopyButton label={key} value={copiableValue}>
                     <MoneyAmount
                         renderIfZero
                         amount={String(amount)}
-                        currencyCode={currency ? currency : null}
+                        currencyCode={currency_code ? currency_code : null}
                     />
                 </FieldWithCopyButton>
             )
@@ -198,10 +198,10 @@ function ColorMetafield({label, value}: {label: string; value: string}) {
                     />
                 </svg>
                 <span className={css.colorValue}>{value}</span>
+                <span className={css.copyButton}>
+                    <CopyButton value={value} />
+                </span>
             </StaticField>
-            <span className={css.copyButton}>
-                <CopyButton value={value} />
-            </span>
         </div>
     )
 }
