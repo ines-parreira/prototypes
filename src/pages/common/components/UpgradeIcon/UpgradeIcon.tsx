@@ -1,6 +1,5 @@
 import React from 'react'
 import classNames from 'classnames'
-import css from './UpgradeIcon.less'
 
 type Props = {
     iconRef?: React.RefObject<HTMLElement>
@@ -11,7 +10,7 @@ const UpgradeIcon = ({iconRef, onMouseEnter}: Props) => {
     return (
         <i
             ref={iconRef}
-            className={classNames('material-icons md-2', css.icon)}
+            className={classNames('material-icons md-2')}
             onMouseEnter={onMouseEnter}
         >
             arrow_circle_up

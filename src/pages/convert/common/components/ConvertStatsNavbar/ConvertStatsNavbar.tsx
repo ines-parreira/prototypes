@@ -11,7 +11,6 @@ import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import useAppSelector from 'hooks/useAppSelector'
 import {currentAccountHasFeature} from 'state/currentAccount/selectors'
 import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
-import ConvertNavbarAddOnPaywallNavbarLink from '../ConvertNavbarAddOnPaywallNavbarLink'
 
 export type ConvertNavbarLink = {
     label: ReactNode
@@ -70,11 +69,6 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
 
     const closeModal = () => setISubscriptionModalOpen(false)
 
-    const displayPaywallLink = (convertLink: ConvertNavbarLink) =>
-        convertLink.isPaywalled &&
-        convertLink.hasModal &&
-        !convertLink.requiresSubscriptionToBeSeen
-
     const displayLink = useCallback(
         (convertLink: ConvertNavbarLink) => {
             return (
@@ -88,34 +82,22 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
         <>
             {convertLinks.map((convertLink) => (
                 <div key={convertLink.to}>
-                    {displayPaywallLink(convertLink) ? (
-                        <ConvertNavbarAddOnPaywallNavbarLink
-                            to={convertLink.to}
-                            onSubscribeToAddOnClick={() => {
-                                setISubscriptionModalOpen(true)
-                            }}
+                    {displayLink(convertLink) && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
                         >
-                            {convertLink.label}
-                        </ConvertNavbarAddOnPaywallNavbarLink>
-                    ) : (
-                        displayLink(convertLink) && (
-                            <div
-                                className={classNames(
-                                    cssNavbar['link-wrapper'],
-                                    cssNavbar.isNested
-                                )}
+                            <NavbarLink
+                                {...commonNavLinkProps}
+                                to={convertLink.to}
                             >
-                                <NavbarLink
-                                    {...commonNavLinkProps}
-                                    to={convertLink.to}
-                                >
-                                    {convertLink.label}
-                                    {convertLink.isPaywalled && <UpgradeIcon />}
-                                    {!convertLink.isPaywalled &&
-                                        convertLink.extra}
-                                </NavbarLink>
-                            </div>
-                        )
+                                {convertLink.label}
+                                {convertLink.isPaywalled && <UpgradeIcon />}
+                                {!convertLink.isPaywalled && convertLink.extra}
+                            </NavbarLink>
+                        </div>
                     )}
                 </div>
             ))}
