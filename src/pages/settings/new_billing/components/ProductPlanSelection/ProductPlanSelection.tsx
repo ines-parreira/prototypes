@@ -16,6 +16,8 @@ import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentProducts} from 'state/billing/selectors'
+import {handleConvertProductRemoved} from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import CounterText from '../CounterText'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
@@ -59,6 +61,8 @@ const ProductPlanSelection = ({
     currentUsage,
     editingAvailable,
 }: ProductPlanSelectionProps) => {
+    const currentAccount = useAppSelector(getCurrentAccountState)
+
     const isActive = useMemo(() => {
         if (!product) return false
         if (isTrialing) return false
@@ -148,6 +152,14 @@ const ProductPlanSelection = ({
             },
         }))
     }, [setSelectedPlans, type])
+
+    const handleConvertClose = useCallback(() => {
+        handleClose()
+        handleConvertProductRemoved(
+            selectedPlan?.internal_id,
+            currentAccount.get('domain')
+        )
+    }, [handleClose, selectedPlan, currentAccount])
 
     const currentProducts = useAppSelector(getCurrentProducts)
     const currentSubscriptionProducts = currentProducts
@@ -268,7 +280,7 @@ const ProductPlanSelection = ({
                     fillStyle="ghost"
                     intent="secondary"
                     size="small"
-                    onClick={handleClose}
+                    onClick={handleConvertClose}
                 >
                     Remove product
                 </Button>
