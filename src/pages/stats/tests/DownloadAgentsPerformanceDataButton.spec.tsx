@@ -1,8 +1,10 @@
 import React from 'react'
 import {render, screen, fireEvent, act} from '@testing-library/react'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 
 import {agents} from 'fixtures/agents'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {
@@ -14,14 +16,17 @@ import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
 
 jest.mock('hooks/reporting/useAgentsMetrics')
 jest.mock('hooks/reporting/useAgentsSummaryMetrics')
+jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 jest.mock('services/reporting/agentsPerformanceReportingService')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
+const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 const saveReportMock = assumeMock(saveReport)
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 describe('DownloadAgentsPerformanceDataButton', () => {
+    const columnsOrder = Object.values(TableColumn)
     const metricReturnValue = {
         isFetching: false,
         isError: false,
@@ -44,6 +49,11 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             medianResolutionTimeMetric: metricReturnValue,
             ticketsRepliedMetric: metricReturnValue,
             oneTouchTicketsMetric: metricReturnValue,
+            repliedTicketsPerHourMetric: metricReturnValue,
+            onlineTimeMetric: metricReturnValue,
+            messagesSentPerHourMetric: metricReturnValue,
+            closedTicketsPerHourMetric: metricReturnValue,
+            ticketHandleTimeMetric: metricReturnValue,
         },
         isLoading: false,
         period: {
@@ -62,6 +72,11 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             medianResolutionTimeMetric: summaryMetricReturnValue,
             ticketsRepliedMetric: summaryMetricReturnValue,
             oneTouchTicketsMetric: summaryMetricReturnValue,
+            repliedTicketsPerHourMetric: summaryMetricReturnValue,
+            onlineTimeMetric: summaryMetricReturnValue,
+            messagesSentPerHourMetric: summaryMetricReturnValue,
+            closedTicketsPerHourMetric: summaryMetricReturnValue,
+            ticketHandleTimeMetric: summaryMetricReturnValue,
         },
         isLoading: false,
         period: {
@@ -75,6 +90,9 @@ describe('DownloadAgentsPerformanceDataButton', () => {
         useAgentsSummaryMetricsMock.mockReturnValue(
             agentsSummaryMetricsReturnValue
         )
+        useAgentsTableConfigSettingMock.mockReturnValue({
+            columnsOrder: columnsOrder,
+        } as any)
     })
 
     it('should render', () => {
@@ -90,6 +108,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
         expect(saveReportMock).toHaveBeenCalledWith(
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
+            columnsOrder,
             false,
             agentsMetricsReturnValue.period
         )

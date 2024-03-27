@@ -1,4 +1,13 @@
 import moment from 'moment/moment'
+import {
+    HandleTimeCube,
+    HandleTimeMeasure,
+} from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import {
+    AgentTimeTrackingCube,
+    AgentTimeTrackingDimension,
+    AgentTimeTrackingMeasure,
+} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
@@ -7,7 +16,7 @@ import {
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {Metric} from 'hooks/reporting/metrics'
-import {TableLabels} from 'pages/stats/AgentsTableConfig'
+import {MetricFormat, TableLabels} from 'pages/stats/AgentsTableConfig'
 import {User} from 'config/types/user'
 import {TableColumn} from 'state/ui/stats/types'
 import {createCsv, saveZippedFiles} from 'utils/file'
@@ -29,6 +38,29 @@ export interface Period {
     start_datetime: string
 }
 
+type AgentIdentifierDimension =
+    | TicketDimension.AssigneeUserId
+    | TicketMessagesDimension.FirstHelpdeskMessageUserId
+    | HelpdeskMessageMember.SenderId
+    | HelpdeskMessageDimension.SenderId
+    | AgentTimeTrackingDimension.UserId
+type AgentReportMetrics =
+    | HelpdeskMessageCubeWithJoins['dimensions']
+    | HelpdeskMessageCubeWithJoins['measures']
+    | AgentTimeTrackingCube['measures']
+    | HandleTimeCube['measures']
+
+type ReportDataMap = Record<
+    TableColumn,
+    {
+        column: TableColumn
+        metricData: Pick<MetricWithDecile, 'data'>
+        idField: AgentIdentifierDimension
+        metricField: AgentReportMetrics
+        summaryData: number | null | undefined
+    }
+>
+
 export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     agents: User[]
     customerSatisfactionMetric: T
@@ -39,57 +71,54 @@ export interface AgentsPerformanceReportData<T = MetricWithDecile> {
     ticketsRepliedMetric: T
     messagesSentMetric: T
     oneTouchTicketsMetric: T
+    repliedTicketsPerHourMetric: T
+    onlineTimeMetric: T
+    messagesSentPerHourMetric: T
+    closedTicketsPerHourMetric: T
+    ticketHandleTimeMetric: T
 }
 
-const formatMetric = {
-    decimal: (value?: number | null) =>
-        formatMetricValue(value, 'decimal', NOT_AVAILABLE_PLACEHOLDER),
-    percent: (value?: number | null) =>
-        formatMetricValue(value, 'percent', NOT_AVAILABLE_PLACEHOLDER),
-}
+const formatMetric = (column: TableColumn, value?: number | null) =>
+    formatMetricValue(
+        value,
+        MetricFormat[column].format,
+        NOT_AVAILABLE_PLACEHOLDER
+    )
 
 const getAgentMetric = (
     agentId: number,
-    data: MetricWithDecile,
-    agentIdField:
-        | TicketDimension.AssigneeUserId
-        | TicketMessagesDimension.FirstHelpdeskMessageUserId
-        | HelpdeskMessageMember.SenderId
-        | HelpdeskMessageDimension.SenderId,
-    metricField: `${
-        | HelpdeskMessageCubeWithJoins['dimensions']
-        | HelpdeskMessageCubeWithJoins['measures']}`
+    data: Pick<MetricWithDecile, 'data'>,
+    agentIdField: AgentIdentifierDimension,
+    metricField: AgentReportMetrics
 ) => {
-    const metricValue = (
-        data.data?.allData as {
-            [Property in
-                | HelpdeskMessageCubeWithJoins['dimensions']
-                | HelpdeskMessageCubeWithJoins['measures']]: string
-        }[]
-    ).find((item) => Number(item[agentIdField]) === agentId)?.[metricField]
+    const metricValue = data.data?.allData.find(
+        (item) => Number(item[agentIdField]) === agentId
+    )?.[metricField]
 
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
+}
+
+const getSummary = (
+    column: TableColumn,
+    summaryDataMap: ReportDataMap,
+    agents: number
+) => {
+    const summaryData = summaryDataMap[column].summaryData
+    if (MetricFormat[column].perAgent && summaryData) {
+        return summaryData / agents
+    }
+    return formatMetric(column, summaryData)
 }
 
 export const saveReport = async (
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
+    columnsOrder: TableColumn[],
     useEnrichedCubes: boolean,
     period?: Period
 ) => {
-    const {
-        agents,
-        customerSatisfactionMetric,
-        medianFirstResponseTimeMetric,
-        medianResolutionTimeMetric,
-        closedTicketsMetric,
-        percentageOfClosedTicketsMetric,
-        ticketsRepliedMetric,
-        messagesSentMetric,
-        oneTouchTicketsMetric,
-    } = data
-
-    const AssigneeUserId = useEnrichedCubes
+    const AssigneeUserId = TicketDimension.AssigneeUserId
+    const EnrichedAssigneeUserId = useEnrichedCubes
         ? renameMemberEnriched(TicketDimension.AssigneeUserId)
         : TicketDimension.AssigneeUserId
     const AvgSurveyScore = useEnrichedCubes
@@ -118,131 +147,137 @@ export const saveReport = async (
     const MessageCount = useEnrichedCubes
         ? renameMemberEnriched(HelpdeskMessageMeasure.MessageCount)
         : HelpdeskMessageMeasure.MessageCount
+    const OnlineTime = AgentTimeTrackingMeasure.OnlineTime
+    const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
+    const UserId = useEnrichedCubes
+        ? renameMemberEnriched(AgentTimeTrackingDimension.UserId)
+        : AgentTimeTrackingDimension.UserId
 
-    const getCustomerSatisfactionAgentMetric = (agentId: number) =>
-        formatMetric.decimal(
+    const getGenericMetric = (
+        column: TableColumn,
+        agent: User,
+        summaryDataMap: ReportDataMap
+    ) =>
+        formatMetric(
+            column,
             getAgentMetric(
-                agentId,
-                customerSatisfactionMetric,
-                AssigneeUserId,
-                AvgSurveyScore
+                agent.id,
+                summaryDataMap[column].metricData,
+                summaryDataMap[column].idField,
+                summaryDataMap[column].metricField
             )
         )
 
-    const getMedianFirstResponseTimeAgentMetric = (agentId: number) =>
-        getAgentMetric(
-            agentId,
-            medianFirstResponseTimeMetric,
-            FirstHelpdeskMessageUserId,
-            MedianFirstResponseTime
-        ) || NOT_AVAILABLE_PLACEHOLDER
-
-    const getMedianResolutionTimeAgentMetric = (agentId: number) =>
-        getAgentMetric(
-            agentId,
-            medianResolutionTimeMetric,
-            AssigneeUserId,
-            MedianResolutionTime
-        ) || NOT_AVAILABLE_PLACEHOLDER
-
-    const getClosedTicketsMetricAgentMetric = (agentId: number) =>
-        formatMetric.decimal(
-            getAgentMetric(
-                agentId,
-                closedTicketsMetric,
-                AssigneeUserId,
-                TicketCount
-            )
-        )
-
-    const getPercentageOfClosedTicketsAgentMetric = (agentId: number) =>
-        formatMetric.percent(
-            getAgentMetric(
-                agentId,
-                percentageOfClosedTicketsMetric,
-                AssigneeUserId,
-                TicketCount
-            )
-        )
-
-    const getTicketsRepliedAgentMetric = (agentId: number) =>
-        formatMetric.decimal(
-            getAgentMetric(
-                agentId,
-                ticketsRepliedMetric,
-                SenderId,
-                HelpdeskTicketCount
-            )
-        )
-
-    const getMessagesSentAgentMetric = (agentId: number) =>
-        formatMetric.decimal(
-            getAgentMetric(agentId, messagesSentMetric, SenderId, MessageCount)
-        )
-
-    const getOneTouchTicketsAgentMetric = (agentId: number) =>
-        formatMetric.percent(
-            getAgentMetric(
-                agentId,
-                oneTouchTicketsMetric,
-                AssigneeUserId,
-                TicketCount
-            )
-        )
+    const columnsToMetricDataMap: ReportDataMap = {
+        [TableColumn.AgentName]: {
+            column: TableColumn.AgentName,
+            metricData: {data: null},
+            idField: EnrichedAssigneeUserId,
+            metricField: AvgSurveyScore,
+            summaryData: null,
+        },
+        [TableColumn.CustomerSatisfaction]: {
+            column: TableColumn.CustomerSatisfaction,
+            metricData: data.customerSatisfactionMetric,
+            idField: EnrichedAssigneeUserId,
+            metricField: AvgSurveyScore,
+            summaryData: summary.customerSatisfactionMetric.data?.value,
+        },
+        [TableColumn.MedianFirstResponseTime]: {
+            column: TableColumn.MedianFirstResponseTime,
+            metricData: data.medianFirstResponseTimeMetric,
+            idField: FirstHelpdeskMessageUserId,
+            metricField: MedianFirstResponseTime,
+            summaryData: summary.medianFirstResponseTimeMetric.data?.value,
+        },
+        [TableColumn.MedianResolutionTime]: {
+            column: TableColumn.MedianResolutionTime,
+            metricData: data.medianResolutionTimeMetric,
+            idField: EnrichedAssigneeUserId,
+            metricField: MedianResolutionTime,
+            summaryData: summary.medianResolutionTimeMetric.data?.value,
+        },
+        [TableColumn.PercentageOfClosedTickets]: {
+            column: TableColumn.PercentageOfClosedTickets,
+            metricData: data.percentageOfClosedTicketsMetric,
+            idField: EnrichedAssigneeUserId,
+            metricField: TicketCount,
+            summaryData: 100,
+        },
+        [TableColumn.ClosedTickets]: {
+            column: TableColumn.ClosedTickets,
+            metricData: data.closedTicketsMetric,
+            idField: EnrichedAssigneeUserId,
+            metricField: TicketCount,
+            summaryData: summary.closedTicketsMetric.data?.value,
+        },
+        [TableColumn.MessagesSent]: {
+            column: TableColumn.MessagesSent,
+            metricData: data.messagesSentMetric,
+            idField: SenderId,
+            metricField: MessageCount,
+            summaryData: summary.messagesSentMetric.data?.value,
+        },
+        [TableColumn.RepliedTickets]: {
+            column: TableColumn.RepliedTickets,
+            metricData: data.ticketsRepliedMetric,
+            idField: SenderId,
+            metricField: HelpdeskTicketCount,
+            summaryData: summary.ticketsRepliedMetric.data?.value,
+        },
+        [TableColumn.OneTouchTickets]: {
+            column: TableColumn.OneTouchTickets,
+            metricData: data.oneTouchTicketsMetric,
+            idField: EnrichedAssigneeUserId,
+            metricField: TicketCount,
+            summaryData: summary.oneTouchTicketsMetric.data?.value,
+        },
+        [TableColumn.RepliedTicketsPerHour]: {
+            column: TableColumn.RepliedTicketsPerHour,
+            metricData: data.repliedTicketsPerHourMetric,
+            idField: SenderId,
+            metricField: HelpdeskTicketCount,
+            summaryData: summary.repliedTicketsPerHourMetric.data?.value,
+        },
+        [TableColumn.OnlineTime]: {
+            column: TableColumn.OnlineTime,
+            metricData: data.onlineTimeMetric,
+            idField: UserId,
+            metricField: OnlineTime,
+            summaryData: summary.onlineTimeMetric.data?.value,
+        },
+        [TableColumn.MessagesSentPerHour]: {
+            column: TableColumn.MessagesSentPerHour,
+            metricData: data.messagesSentPerHourMetric,
+            idField: SenderId,
+            metricField: MessageCount,
+            summaryData: summary.messagesSentPerHourMetric.data?.value,
+        },
+        [TableColumn.ClosedTicketsPerHour]: {
+            column: TableColumn.ClosedTicketsPerHour,
+            metricData: data.closedTicketsPerHourMetric,
+            idField: EnrichedAssigneeUserId,
+            metricField: TicketCount,
+            summaryData: summary.closedTicketsPerHourMetric.data?.value,
+        },
+        [TableColumn.TicketHandleTime]: {
+            column: TableColumn.TicketHandleTime,
+            metricData: data.ticketHandleTimeMetric,
+            idField: AssigneeUserId,
+            metricField: AverageHandleTime,
+            summaryData: summary.ticketHandleTimeMetric.data?.value,
+        },
+    }
 
     const agentsMetricData = [
-        [
-            TableLabels[TableColumn.AgentName],
-            TableLabels[TableColumn.CustomerSatisfaction],
-            TableLabels[TableColumn.MedianFirstResponseTime],
-            TableLabels[TableColumn.MedianResolutionTime],
-            TableLabels[TableColumn.ClosedTickets],
-            TableLabels[TableColumn.PercentageOfClosedTickets],
-            TableLabels[TableColumn.RepliedTickets],
-            TableLabels[TableColumn.MessagesSent],
-            TableLabels[TableColumn.OneTouchTickets],
-        ],
-        [
-            'Average',
-            formatMetric.decimal(
-                summary.customerSatisfactionMetric.data?.value
-            ),
-            summary.medianFirstResponseTimeMetric.data?.value,
-            summary.medianResolutionTimeMetric.data?.value,
-            formatMetric.decimal(
-                summary.closedTicketsMetric.data?.value
-                    ? summary.closedTicketsMetric.data.value / agents.length
-                    : summary.closedTicketsMetric.data?.value
-            ),
-            formatMetric.percent(100 / agents.length),
-            formatMetric.decimal(
-                summary.ticketsRepliedMetric.data?.value
-                    ? summary.ticketsRepliedMetric.data.value / agents.length
-                    : summary.ticketsRepliedMetric.data?.value
-            ),
-            formatMetric.decimal(
-                summary.messagesSentMetric.data?.value
-                    ? summary.messagesSentMetric.data.value / agents.length
-                    : summary.messagesSentMetric.data?.value
-            ),
-            formatMetric.percent(
-                summary.oneTouchTicketsMetric.data?.value
-                    ? summary.oneTouchTicketsMetric.data.value / agents.length
-                    : summary.oneTouchTicketsMetric.data?.value
-            ),
-        ],
-        ...agents.map((agent) => {
-            return [
-                agent.name,
-                getCustomerSatisfactionAgentMetric(agent.id),
-                getMedianFirstResponseTimeAgentMetric(agent.id),
-                getMedianResolutionTimeAgentMetric(agent.id),
-                getClosedTicketsMetricAgentMetric(agent.id),
-                getPercentageOfClosedTicketsAgentMetric(agent.id),
-                getTicketsRepliedAgentMetric(agent.id),
-                getMessagesSentAgentMetric(agent.id),
-                getOneTouchTicketsAgentMetric(agent.id),
-            ]
+        columnsOrder.map((column) => TableLabels[column]),
+        columnsOrder.map((column) =>
+            getSummary(column, columnsToMetricDataMap, data.agents.length)
+        ),
+        ...data.agents.map((agent) => {
+            return columnsOrder.map((column) =>
+                getGenericMetric(column, agent, columnsToMetricDataMap)
+            )
         }),
     ]
 

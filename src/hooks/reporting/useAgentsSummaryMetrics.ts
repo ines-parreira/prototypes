@@ -1,4 +1,7 @@
 import {useMemo} from 'react'
+import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
+import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
+import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useClosedTicketsMetric,
@@ -8,6 +11,8 @@ import {
     useTicketsRepliedMetric,
     useMessagesSentMetric,
     useOneTouchTicketsMetric,
+    useOnlineTimeMetric,
+    useTicketAverageHandleTimeMetric,
 } from 'hooks/reporting/metrics'
 
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
@@ -20,12 +25,10 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-
     const percentageOfClosedTicketsMetric = useClosedTicketsMetric(
         cleanStatsFilters,
         userTimezone
     )
-
     const closedTicketsMetric = useClosedTicketsMetric(
         cleanStatsFilters,
         userTimezone
@@ -50,6 +53,17 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
+    const repliedTicketsPerHourMetric = useTicketsRepliedPerHour()
+    const onlineTimeMetric = useOnlineTimeMetric(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const messagesSentPerHourMetric = useMessagesSentPerHour()
+    const closedTicketsPerHourMetric = useTicketsClosedPerHour()
+    const ticketHandleTimeMetric = useTicketAverageHandleTimeMetric(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const loading = useMemo(() => {
         return Object.values({
@@ -61,6 +75,11 @@ export function useAgentsSummaryMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            repliedTicketsPerHourMetric,
+            onlineTimeMetric,
+            messagesSentPerHourMetric,
+            closedTicketsPerHourMetric,
+            ticketHandleTimeMetric,
         }).some((metric) => metric.isFetching)
     }, [
         customerSatisfactionMetric,
@@ -71,6 +90,11 @@ export function useAgentsSummaryMetrics() {
         medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
+        repliedTicketsPerHourMetric,
+        onlineTimeMetric,
+        messagesSentPerHourMetric,
+        closedTicketsPerHourMetric,
+        ticketHandleTimeMetric,
     ])
 
     return {
@@ -83,6 +107,11 @@ export function useAgentsSummaryMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            repliedTicketsPerHourMetric,
+            onlineTimeMetric,
+            messagesSentPerHourMetric,
+            closedTicketsPerHourMetric,
+            ticketHandleTimeMetric,
         },
         isLoading: loading,
         period: cleanStatsFilters.period,

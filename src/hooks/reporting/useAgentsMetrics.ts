@@ -1,4 +1,7 @@
 import {useMemo} from 'react'
+import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
+import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
+import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {User} from 'config/types/user'
 import {
     useClosedTicketsMetricPerAgent,
@@ -7,6 +10,8 @@ import {
     useMessagesSentMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
     useTicketsRepliedMetricPerAgent,
+    useOnlineTimePerAgent,
+    useTicketAverageHandleTimePerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
@@ -24,13 +29,11 @@ export function useAgentsMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-
     const percentageOfClosedTicketsMetric =
         usePercentageOfClosedTicketsMetricPerAgent(
             cleanStatsFilters,
             userTimezone
         )
-
     const closedTicketsMetric = useClosedTicketsMetricPerAgent(
         cleanStatsFilters,
         userTimezone
@@ -56,6 +59,26 @@ export function useAgentsMetrics() {
         cleanStatsFilters,
         userTimezone
     )
+    const repliedTicketsPerHourMetric = useTicketsRepliedPerHourPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const onlineTimeMetric = useOnlineTimePerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const messagesSentPerHourMetric = useMessagesSentPerHourPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const closedTicketsPerHourMetric = useTicketsClosedPerHourPerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
+    const ticketHandleTimeMetric = useTicketAverageHandleTimePerAgent(
+        cleanStatsFilters,
+        userTimezone
+    )
 
     const loading = useMemo(() => {
         return Object.values({
@@ -67,6 +90,11 @@ export function useAgentsMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            repliedTicketsPerHourMetric,
+            onlineTimeMetric,
+            messagesSentPerHourMetric,
+            closedTicketsPerHourMetric,
+            ticketHandleTimeMetric,
         }).some((metric) => metric.isFetching)
     }, [
         customerSatisfactionMetric,
@@ -77,6 +105,11 @@ export function useAgentsMetrics() {
         medianResolutionTimeMetric,
         ticketsRepliedMetric,
         oneTouchTicketsMetric,
+        repliedTicketsPerHourMetric,
+        onlineTimeMetric,
+        messagesSentPerHourMetric,
+        closedTicketsPerHourMetric,
+        ticketHandleTimeMetric,
     ])
 
     return {
@@ -90,6 +123,11 @@ export function useAgentsMetrics() {
             medianResolutionTimeMetric,
             ticketsRepliedMetric,
             oneTouchTicketsMetric,
+            repliedTicketsPerHourMetric,
+            onlineTimeMetric,
+            messagesSentPerHourMetric,
+            closedTicketsPerHourMetric,
+            ticketHandleTimeMetric,
         },
         isLoading: loading,
         period: cleanStatsFilters.period,

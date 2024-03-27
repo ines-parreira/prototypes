@@ -1,6 +1,8 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
 import {MemoryRouter} from 'react-router-dom'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import {TableColumnsOrder} from 'pages/stats/AgentsTableConfig'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {useAgentsMetrics} from 'hooks/reporting/useAgentsMetrics'
 import {useAgentsSummaryMetrics} from 'hooks/reporting/useAgentsSummaryMetrics'
@@ -33,6 +35,8 @@ jest.mock('hooks/reporting/useAgentsMetrics')
 const useAgentsMetricsMock = assumeMock(useAgentsMetrics)
 jest.mock('hooks/reporting/useAgentsSummaryMetrics')
 const useAgentsSummaryMetricsMock = assumeMock(useAgentsSummaryMetrics)
+jest.mock('hooks/reporting/useAgentsTableConfigSetting')
+const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
@@ -61,6 +65,9 @@ describe('SupportPerformanceAgents', () => {
                 data: {value: 2},
             },
         },
+    } as any)
+    useAgentsTableConfigSettingMock.mockReturnValue({
+        columnsOrder: TableColumnsOrder,
     } as any)
 
     it('should render the page title and section title', () => {

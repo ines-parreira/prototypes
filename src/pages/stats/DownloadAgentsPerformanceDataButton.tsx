@@ -1,5 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -15,6 +16,7 @@ const DOWNLOAD_BUTTON_TITLE = 'Download Agents Performance Data'
 export const DownloadAgentsPerformanceDataButton = () => {
     const {reportData, isLoading, period} = useAgentsMetrics()
     const {summaryData, isLoading: summaryIsLoading} = useAgentsSummaryMetrics()
+    const {columnsOrder} = useAgentsTableConfigSetting()
     const isAnalyticsNewCubes: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewCubes]
 
@@ -29,6 +31,7 @@ export const DownloadAgentsPerformanceDataButton = () => {
                 await saveReport(
                     reportData,
                     summaryData,
+                    columnsOrder,
                     !!isAnalyticsNewCubes,
                     period
                 )

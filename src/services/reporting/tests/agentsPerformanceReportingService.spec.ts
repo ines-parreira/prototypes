@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {TableColumn} from 'state/ui/stats/types'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
@@ -59,6 +60,8 @@ const buildQuery = <T>(isFetching: boolean, data: T) => ({
     isError: false,
 })
 
+const columnsOrder: TableColumn[] = Object.values(TableColumn)
+
 const emptyAgents: User[] = []
 const agents: User[] = [
     {
@@ -98,6 +101,11 @@ const baseMetricBuilder = (reportData: any) => ({
     medianResolutionTimeMetric: buildQuery(false, reportData),
     ticketsRepliedMetric: buildQuery(false, reportData),
     oneTouchTicketsMetric: buildQuery(false, reportData),
+    repliedTicketsPerHourMetric: buildQuery(false, reportData),
+    onlineTimeMetric: buildQuery(false, reportData),
+    messagesSentPerHourMetric: buildQuery(false, reportData),
+    closedTicketsPerHourMetric: buildQuery(false, reportData),
+    ticketHandleTimeMetric: buildQuery(false, reportData),
 })
 
 const reportDataFactory = (
@@ -167,7 +175,7 @@ describe('agentsPerformanceReportingService', () => {
 
             const zipperMock = jest.spyOn(files, 'saveZippedFiles')
 
-            await saveReport(data, summaryData, false, period)
+            await saveReport(data, summaryData, columnsOrder, false, period)
 
             expect(zipperMock).toHaveBeenCalledWith(
                 {
@@ -192,7 +200,7 @@ describe('agentsPerformanceReportingService', () => {
 
             const zipperMock = jest.spyOn(files, 'saveZippedFiles')
 
-            await saveReport(data, summaryData, true, period)
+            await saveReport(data, summaryData, columnsOrder, true, period)
 
             expect(zipperMock).toHaveBeenCalledWith(
                 {

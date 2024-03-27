@@ -27,6 +27,11 @@ describe('useAgentsSummaryMetrics', () => {
             medianResolutionTimeMetric: metricData,
             ticketsRepliedMetric: metricData,
             oneTouchTicketsMetric: metricData,
+            repliedTicketsPerHourMetric: metricData,
+            onlineTimeMetric: metricData,
+            messagesSentPerHourMetric: metricData,
+            closedTicketsPerHourMetric: metricData,
+            ticketHandleTimeMetric: metricData,
         },
         isLoading: false,
         period: {
