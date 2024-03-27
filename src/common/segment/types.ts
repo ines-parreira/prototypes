@@ -287,6 +287,8 @@ export enum SegmentEvent {
     UserMergeClicked = 'user-merge-clicked',
     UserSettingsUpdated = 'user-settings-updated',
     ViewFilterAddClicked = 'view-filter-add-clicked',
+    SubscriptionCancellationAutoRenewalClicked = 'subscription/cancellation/cancel-auto-renewal-clicked',
+    SubscriptionCancellationChurnMitigationOfferDecision = 'subscription/cancellation/churn-mitigation-offer-decision',
 }
 
 export type SegmentEventToSend = {

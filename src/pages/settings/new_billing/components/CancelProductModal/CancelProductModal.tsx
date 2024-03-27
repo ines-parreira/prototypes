@@ -8,6 +8,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import CancellationReasons from './CancellationReasons'
 import ProductFeaturesFOMO from './ProductFeaturesFOMO'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
@@ -116,6 +117,21 @@ const CancelProductModal = ({
             )
             setIsSubmitting(false)
         }
+
+        logEvent(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                productType: productType,
+                productPlan: subscriptionProducts[productType]?.name,
+                primaryReason:
+                    cancellationReasonsState.primaryReason?.label || null,
+                secondaryReason:
+                    cancellationReasonsState.secondaryReason?.label || null,
+                otherReason:
+                    cancellationReasonsState.otherReason?.label || null,
+                accepted: true,
+            }
+        )
     }
 
     const handleSubmitCancellation = async () => {
@@ -187,7 +203,31 @@ const CancelProductModal = ({
                         footer={
                             <ChurnMitigationOfferFooter
                                 onAccept={handleAcceptOffer}
-                                onContinue={switchToNextStep}
+                                onContinue={() => {
+                                    switchToNextStep()
+                                    logEvent(
+                                        SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+                                        {
+                                            productType: productType,
+                                            productPlan:
+                                                subscriptionProducts[
+                                                    ProductType.Helpdesk
+                                                ]?.name,
+                                            primaryReason:
+                                                cancellationReasonsState
+                                                    .primaryReason?.label ||
+                                                null,
+                                            secondaryReason:
+                                                cancellationReasonsState
+                                                    .secondaryReason?.label ||
+                                                null,
+                                            otherReason:
+                                                cancellationReasonsState
+                                                    .otherReason?.label || null,
+                                            accepted: false,
+                                        }
+                                    )
+                                }}
                                 isLoading={isSubmitting}
                             />
                         }

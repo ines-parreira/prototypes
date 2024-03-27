@@ -19,6 +19,7 @@ import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
+import {logEvent, SegmentEvent} from 'common/segment'
 import CancelProductModal from '../CancelProductModal'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
 import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
@@ -90,8 +91,11 @@ jest.mock('../resources')
 const sendAcceptedChurnMitigationOfferToSupportMock = assumeMock(
     sendAcceptedChurnMitigationOfferToSupport
 )
+
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
 const mockSwitchToNextStep = jest.fn()
 
 // tests setup
@@ -418,6 +422,18 @@ describe('CancelProductModal: step 3', () => {
         })
         continueCancellingButtonElement.click()
         expect(mockSwitchToNextStep).toHaveBeenCalled()
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                productType: productType,
+                productPlan: subscriptionProducts[productType].name,
+                primaryReason: mockState.primaryReason.label,
+                secondaryReason: mockState.secondaryReason.label,
+                otherReason: mockState.otherReason,
+                accepted: false,
+            }
+        )
     })
 
     it('should close the modal when churn mitigation offer was successfully submitted', async () => {
@@ -463,6 +479,17 @@ describe('CancelProductModal: step 3', () => {
                 },
             },
         ])
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
+            {
+                productType: productType,
+                productPlan: subscriptionProducts[productType].name,
+                primaryReason: mockState.primaryReason.label,
+                secondaryReason: mockState.secondaryReason.label,
+                otherReason: mockState.otherReason,
+                accepted: true,
+            }
+        )
     })
 
     it('should not close the modal when churn mitigation offer submission failed', async () => {

@@ -12,6 +12,7 @@ import {
 } from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
 import {assumeMock} from 'utils/testing'
+import {logEvent, SegmentEvent} from 'common/segment'
 import ProductPlanSelection, {
     ProductPlanSelectionProps,
 } from '../ProductPlanSelection'
@@ -38,6 +39,10 @@ const useAutomatedHelpdeskCancellationFlowAvailableMock = assumeMock(
 jest.mock('react-router')
 jest.mock('../../CancelProductModal/CancelProductModal')
 const CancelProductModalMock = assumeMock(CancelProductModal)
+
+jest.mock('common/segment')
+const logEventMock = assumeMock(logEvent)
+
 describe('ProductPlanSelection', () => {
     beforeEach(() => {
         CancelProductModalMock.mockReset()
@@ -182,6 +187,14 @@ describe('ProductPlanSelection', () => {
         expect(CancelProductModalMock).toHaveBeenCalledWith(
             {...expectedProps, isOpen: true},
             {}
+        )
+
+        expect(logEventMock).toHaveBeenCalledWith(
+            SegmentEvent.SubscriptionCancellationAutoRenewalClicked,
+            {
+                productType: ProductType.Helpdesk,
+                productPlan: basicMonthlyHelpdeskPrice.name,
+            }
         )
     })
 

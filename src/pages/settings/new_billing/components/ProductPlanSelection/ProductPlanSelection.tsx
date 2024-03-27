@@ -18,6 +18,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentProducts} from 'state/billing/selectors'
 import {handleConvertProductRemoved} from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {logEvent, SegmentEvent} from 'common/segment'
 import CounterText from '../CounterText'
 import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
@@ -209,6 +210,13 @@ const ProductPlanSelection = ({
             },
         }))
     }
+    const handleOnCancelAutoRenewal = () => {
+        setIsCancellationFlowOpen(true)
+        logEvent(SegmentEvent.SubscriptionCancellationAutoRenewalClicked, {
+            productType: ProductType.Helpdesk,
+            productPlan: currentProducts?.helpdesk?.name,
+        })
+    }
 
     const renderHeader = () => {
         if (!selectedPlans[type].isSelected) {
@@ -258,7 +266,7 @@ const ProductPlanSelection = ({
                     fillStyle="ghost"
                     intent="destructive"
                     size="small"
-                    onClick={() => setIsCancellationFlowOpen(true)}
+                    onClick={handleOnCancelAutoRenewal}
                 >
                     Cancel auto-renewal
                 </Button>
