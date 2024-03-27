@@ -85,7 +85,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
             {
                 name: SCHEDULE_LIMITED_TIME_OFFER.name,
                 template_id: SCHEDULE_LIMITED_TIME_OFFER.slug,
-                message_html: `<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="${discountCode}" href="https://${shopName}.myshopify.com/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong>💸</em></div>`,
+                message_html: `<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="${discountCode}" href="https://${shopName}/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong>💸</em></div>`,
                 message_text:
                     '👉 Limited time offer — all under $99! \nPss: 5% extra discount with code SAVE5 💸',
 

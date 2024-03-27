@@ -41,7 +41,7 @@ exports[`CampaignTemplates get template configuration 2`] = `
 
 exports[`CampaignTemplates get template configuration 3`] = `
 {
-  "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
+  "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
   "message_text": "Hold on! Get 10% off your first order with code test-code 😉",
   "meta": {
     "noReply": true,
@@ -638,7 +638,7 @@ exports[`CampaignTemplates get template configuration 23`] = `
 
 exports[`CampaignTemplates get template configuration 24`] = `
 {
-  "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>💸</em></div>",
+  "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>💸</em></div>",
   "message_text": "👉 Limited time offer — all under $99! 
 Pss: 5% extra discount with code SAVE5 💸",
   "meta": {

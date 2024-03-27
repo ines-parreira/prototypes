@@ -142,6 +142,15 @@ export const CampaignDetailsForm = ({
         created_datetime: campaign?.created_datetime ?? null,
         updated_datetime: campaign?.updated_datetime ?? null,
     })
+
+    const [isFormLoading, setIsFormLoading] = useState<boolean>(false)
+    useEffect(() => {
+        // Make sure the form is loaded only when the campaign object is ready in context
+        setIsFormLoading(
+            isEditMode ? Boolean(isLoading && campaignData.id) : isLoading
+        )
+    }, [campaignData, isEditMode, isLoading])
+
     const {triggers, addTrigger, updateTrigger, deleteTrigger} =
         useManageTriggers(campaign.triggers)
 
@@ -492,7 +501,7 @@ export const CampaignDetailsForm = ({
                                     title="Back to Campaigns list"
                                 />
                             )}
-                            {!isLoading && (
+                            {!isFormLoading && (
                                 <div className={css.formContainer}>
                                     <Accordion
                                         defaultExpandedItem={defaultOpenedStep}
@@ -557,7 +566,7 @@ export const CampaignDetailsForm = ({
                                 </div>
                             )}
 
-                            {isLoading && (
+                            {isFormLoading && (
                                 <>
                                     <div className={css.loader}>
                                         <Skeleton height={70} />
@@ -572,7 +581,7 @@ export const CampaignDetailsForm = ({
                             )}
                         </div>
                         <div>
-                            {!isLoading && (
+                            {!isFormLoading && (
                                 <CampaignPreview
                                     {...chatPreviewProps}
                                     translatedTexts={

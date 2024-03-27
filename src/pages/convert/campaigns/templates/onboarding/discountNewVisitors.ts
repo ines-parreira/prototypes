@@ -88,7 +88,7 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
             name: DISCOUNT_NEW_VISITORS.name,
             template_id: DISCOUNT_NEW_VISITORS.slug,
             message_text: `Hold on! Get 10% off your first order with code ${discountCode} 😉`,
-            message_html: `<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="${discountCode}" href="https://${shopName}.myshopify.com/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong>😉</div>`,
+            message_html: `<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="${discountCode}" href="https://${shopName}/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong>😉</div>`,
             status: CampaignStatus.Inactive,
             triggers: triggers,
             trigger_rule: createTriggerRule(triggers),
