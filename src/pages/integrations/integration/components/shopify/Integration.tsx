@@ -21,6 +21,7 @@ import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
 
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
+import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 
 type Props = {
     integration: Map<any, any>
@@ -179,6 +180,8 @@ export default function Integration({
                             </ConfirmButton>
                         </div>
                     </form>
+
+                    <BackToConvertButton />
                 </Col>
             </Row>
         </Container>

@@ -61,7 +61,10 @@ describe('<ConvertNavbar />', () => {
 
     beforeEach(() => {
         isConvertOnboardingUiEnabledMock.mockReturnValue(true)
-        useGetOnboardingStatusMapSpy.mockReturnValue({'101': true})
+        useGetOnboardingStatusMapSpy.mockReturnValue({
+            onboardingMap: {'101': true},
+            isLoading: false,
+        })
     })
 
     describe('render()', () => {

@@ -35,7 +35,7 @@ const ConvertNavbarView = () => {
         ],
         exact: false,
     })
-    const onboardingMap = useGetOnboardingStatusMap()
+    const {onboardingMap} = useGetOnboardingStatusMap()
 
     const sortedIntegrations = useGetSortedIntegrations()
     const initialCollapsedSections = useMemo(

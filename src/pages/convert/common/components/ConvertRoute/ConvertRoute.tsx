@@ -1,13 +1,16 @@
 import React, {useMemo} from 'react'
 import {Redirect} from 'react-router-dom'
-import {useGetSortedIntegrations} from '../../hooks/useGetSortedIntegrations'
-import {useGetOnboardingStatusMap} from '../../../channelConnections/hooks/useGetOnboardingStatusMap'
-import {useIsConvertOnboardingUiEnabled} from '../../hooks/useIsConvertOnboardingUiEnabled'
+import {isEmpty} from 'lodash'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
+import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+import {useIsConvertOnboardingUiEnabled} from 'pages/convert/common/hooks/useIsConvertOnboardingUiEnabled'
 
 const ConvertRoute = () => {
     const sortedIntegrations = useGetSortedIntegrations()
-    const onboardingMap = useGetOnboardingStatusMap()
+    const {onboardingMap, isLoading} = useGetOnboardingStatusMap()
     const isOnboardingEnabled = useIsConvertOnboardingUiEnabled()
+    const flags = useFlags()
 
     const url = useMemo(() => {
         if (sortedIntegrations.length === 0) {
@@ -28,6 +31,10 @@ const ConvertRoute = () => {
         }
         return `/app/convert/${integration.id}/setup`
     }, [isOnboardingEnabled, onboardingMap, sortedIntegrations])
+
+    if (isEmpty(flags) || isLoading) {
+        return null
+    }
 
     return <Redirect to={url} />
 }

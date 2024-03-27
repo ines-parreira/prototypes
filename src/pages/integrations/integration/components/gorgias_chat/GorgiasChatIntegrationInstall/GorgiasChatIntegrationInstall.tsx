@@ -22,6 +22,7 @@ import warningIcon from 'assets/img/icons/warning.svg'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
@@ -250,6 +251,9 @@ const GorgiasChatIntegrationInstall = ({
                             </ConfirmButton>
                         )}
                     </div>
+                    <BackToConvertButton
+                        integrationId={integration.get('id')}
+                    />
                 </Container>
             </div>
         </>

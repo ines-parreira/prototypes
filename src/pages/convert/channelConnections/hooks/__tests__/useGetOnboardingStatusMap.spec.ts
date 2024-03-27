@@ -34,7 +34,7 @@ describe('useGetOnboardingStatusMap', () => {
 
             const {result} = renderHook(() => useGetOnboardingStatusMap())
 
-            expect(result.current).toEqual(expectedResult)
+            expect(result.current.onboardingMap).toEqual(expectedResult)
         }
     )
 })

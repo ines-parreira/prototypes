@@ -6,11 +6,11 @@ import {ChannelConnectionChannel} from 'models/convert/channelConnection/types'
 export const useGetOnboardingStatusMap = () => {
     const isSubscriber = useIsConvertSubscriber()
 
-    const {data: channelConnections} = useListChannelConnections({
+    const {data: channelConnections, isLoading} = useListChannelConnections({
         channel: ChannelConnectionChannel.Widget,
     })
 
-    return useMemo(() => {
+    const onboardingMap = useMemo(() => {
         const map: {[key: string]: boolean} = {}
         if (!!channelConnections && Array.isArray(channelConnections)) {
             channelConnections.map((channelConnection) => {
@@ -24,4 +24,6 @@ export const useGetOnboardingStatusMap = () => {
         }
         return map
     }, [isSubscriber, channelConnections])
+
+    return {onboardingMap, isLoading}
 }

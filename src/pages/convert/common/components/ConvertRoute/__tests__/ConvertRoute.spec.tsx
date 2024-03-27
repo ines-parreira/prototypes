@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {RedirectProps} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {assumeMock} from 'utils/testing'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
@@ -25,6 +26,12 @@ jest.mock('react-router-dom', () => {
         ),
     }
 })
+
+jest.mock('launchdarkly-react-client-sdk', () => ({
+    useFlags: jest.fn(),
+}))
+
+const useFlagsMock = assumeMock(useFlags)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -50,6 +57,15 @@ describe('ConvertRoute', () => {
 
     beforeEach(() => {
         isConvertOnboardingUiEnabledMock.mockReturnValue(true)
+
+        useGetOnboardingStatusMapMock.mockReturnValue({
+            onboardingMap: {},
+            isLoading: false,
+        })
+
+        useFlagsMock.mockReturnValue({
+            'any-flag': true,
+        })
     })
 
     it('redirects to /app/convert/setup when there are no sorted integrations', () => {
@@ -58,8 +74,6 @@ describe('ConvertRoute', () => {
                 integrations: [],
             }),
         }
-
-        useGetOnboardingStatusMapMock.mockReturnValueOnce({})
 
         const {getByText} = render(
             <Provider store={mockStore(state)}>
@@ -80,7 +94,6 @@ describe('ConvertRoute', () => {
         }
 
         isConvertOnboardingUiEnabledMock.mockReturnValue(false)
-        useGetOnboardingStatusMapMock.mockReturnValueOnce({})
 
         const {getByText} = render(
             <Provider store={mockStore(state)}>
@@ -100,7 +113,10 @@ describe('ConvertRoute', () => {
             integrations: fromJS({integrations}),
         }
 
-        useGetOnboardingStatusMapMock.mockReturnValueOnce({'2': true})
+        useGetOnboardingStatusMapMock.mockReturnValue({
+            onboardingMap: {'2': true},
+            isLoading: false,
+        })
 
         const {getByText} = render(
             <Provider store={mockStore(state)}>
@@ -118,8 +134,6 @@ describe('ConvertRoute', () => {
             integrations: fromJS({integrations}),
         }
 
-        useGetOnboardingStatusMapMock.mockReturnValueOnce({})
-
         const {getByText} = render(
             <Provider store={mockStore(state)}>
                 <ConvertRoute />
@@ -136,7 +150,6 @@ describe('ConvertRoute', () => {
             integrations: fromJS({integrations}),
         }
 
-        useGetOnboardingStatusMapMock.mockReturnValueOnce({})
         isConvertOnboardingUiEnabledMock.mockReturnValue(false)
 
         const {getByText} = render(

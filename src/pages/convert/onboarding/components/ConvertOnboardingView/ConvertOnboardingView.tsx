@@ -31,6 +31,7 @@ import {
     NavigatedSuccessModalLocationState,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {useBackToConvert} from 'pages/convert/onboarding/hooks/useBackToConvert'
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
 import css from './ConvertOnboardingView.less'
 
@@ -52,6 +53,8 @@ const ConvertOnboardingView = () => {
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Shopify)
     )
+
+    const {setBackIntegrationId} = useBackToConvert()
 
     const hasChat = useMemo(
         () =>
@@ -200,6 +203,9 @@ const ConvertOnboardingView = () => {
                                             ? `/app/settings/channels/gorgias_chat/${chatIntegrationId}/installation`
                                             : '/app/settings/integrations/shopify/'
                                     }
+                                    onClick={() => {
+                                        setBackIntegrationId(chatIntegrationId)
+                                    }}
                                     isDisabled={false}
                                     isCompleted={hasStore}
                                 />
@@ -210,6 +216,9 @@ const ConvertOnboardingView = () => {
                                     description="Add Chat to display campaigns on your website."
                                     action="Add Chat"
                                     actionLink="/app/settings/channels/gorgias_chat/new/create-wizard"
+                                    onClick={() =>
+                                        setBackIntegrationId(chatIntegrationId)
+                                    }
                                     isDisabled={!hasStore}
                                     isCompleted={hasChat}
                                 />
@@ -253,6 +262,9 @@ const ConvertOnboardingView = () => {
                                     description="Add Chat to display campaigns on your website."
                                     action="Add Chat"
                                     actionLink="/app/settings/channels/gorgias_chat/new/create-wizard"
+                                    onClick={() =>
+                                        setBackIntegrationId(chatIntegrationId)
+                                    }
                                     isDisabled={false}
                                     isCompleted={hasChat}
                                 />
