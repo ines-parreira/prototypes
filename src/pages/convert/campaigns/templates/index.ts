@@ -1,7 +1,9 @@
-import {DISCOUNT_NEW_VISITORS} from './discountNewVisitors'
 import {CampaignTemplate, CampaignTemplateSectionType} from './types'
-import {CART_ABANDONMENT} from './cartAbandonment'
-import {PRODUCT_CARD_SHOWCASE} from './productCards'
+
+// Onboarding Templates
+import {DISCOUNT_NEW_VISITORS} from './onboarding/discountNewVisitors'
+import {CART_ABANDONMENT} from './onboarding/cartAbandonment'
+import {PRODUCT_CARD_SHOWCASE} from './onboarding/productCards'
 
 // Library Templates
 import {PROMOTE_NEWSLETTER_FOR_NEW_VISITORS} from './library/promoteNewsletterForNewVisitors'

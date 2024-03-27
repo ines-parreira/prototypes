@@ -13,7 +13,7 @@ import {campaign} from 'fixtures/campaign'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/cartAbandonment'
+import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
 
 const mockStore = configureMockStore()

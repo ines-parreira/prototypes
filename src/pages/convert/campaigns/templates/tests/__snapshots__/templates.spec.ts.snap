@@ -2,6 +2,45 @@
 
 exports[`CampaignTemplates get template configuration 1`] = `
 {
+  "message_html": "<div>You&#x27;ve got great taste. 🛒</div><div><br></div><div>Is there anything else we can help you with <strong>before you check out?</strong> 💳</div>",
+  "message_text": "You've got great taste. 🛒
+
+Is there anything else we can help you with before you check out? 💳",
+  "name": "Engage with customers on the cart page",
+  "status": "inactive",
+  "template_id": "connect-customer-on-cart-with-team",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": "/cart",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 8,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "during",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 2`] = `
+{
+  "defaultStepOpened": "message",
+}
+`;
+
+exports[`CampaignTemplates get template configuration 3`] = `
+{
   "message_html": "<div>Hold on! Get <strong>10% off your first order</strong> with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>😉</div>",
   "message_text": "Hold on! Get 10% off your first order with code test-code 😉",
   "meta": {
@@ -40,7 +79,237 @@ exports[`CampaignTemplates get template configuration 1`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 2`] = `
+exports[`CampaignTemplates get template configuration 4`] = `
+{
+  "defaultStepOpened": "message",
+  "toolbarConfiguration": {
+    "DISCOUNTCODE": {
+      "tooltipContent": "Select your own Shopify discount code",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 5`] = `
+{
+  "attachments": [
+    {
+      "contentType": "application/productCard",
+      "extra": {
+        "currency": "EUR",
+        "price": 9.99,
+        "product_id": 1,
+        "product_link": "https://shopify.myshopify.com/products/",
+      },
+      "name": "Product 1",
+      "size": 0,
+      "url": "src",
+    },
+  ],
+  "message_html": "<div><strong>🚚 FREE SHIPPING for orders $100+</strong></div><div><br></div><div>You&#x27;re almost there! Add our accessories<strong> for only $25</strong>!</div>",
+  "message_text": "🚚 FREE SHIPPING for orders $100+
+
+You're almost there! Add our accessories for only $25!",
+  "meta": {
+    "delay": 15000,
+    "noReply": true,
+  },
+  "name": "Highlight free shipping benefit for customers near the threshold",
+  "status": "inactive",
+  "template_id": "free-shipping-benefits-for-customers-near-threshold",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "cart_value",
+      "value": 50,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "lt",
+      "type": "cart_value",
+      "value": 100,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 6`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "You can <strong>update the cart values of Amount Added To Cart triggers</strong> based on your free shipping threshold value.",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "You can customise the product cards based on your Shopify product catalogue. We suggest to select small/accessory items.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "PRODUCTPICKER": {
+      "tooltipContent": "Add up to 5 product cards",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 7`] = `
+{
+  "message_html": "<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong><a href="" target="_blank">custom express orders</a></strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>",
+  "message_text": "Need help with last-minute purchase? Leave us a message or check out our guide on custom express orders 🚚
+
+We'll be back at 9AM tomorrow for you. ",
+  "name": "Link valuable resources to help visitors while your team is offline",
+  "status": "inactive",
+  "template_id": "link-valuable-resource-to-help-visitors",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "outside",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 15,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 8`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the URL of a relevant resource</strong> in your message.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "LINK": {
+      "tooltipContent": "Add links",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 9`] = `
+{
+  "message_html": "<div>🔍 I can help you<strong> find the best fit for you</strong>! What are you looking for?</div>",
+  "message_text": "🔍 I can help you find the best fit for you! What are you looking for?",
+  "name": "Drive conversations with your visitors to find the right product",
+  "status": "inactive",
+  "template_id": "offer-chat-with-team-to-find-best-fit",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "contains",
+      "type": "current_url",
+      "value": "products",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 15,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 10`] = `
+{
+  "defaultStepOpened": "message",
+}
+`;
+
+exports[`CampaignTemplates get template configuration 11`] = `
+{
+  "message_html": "<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong></div>",
+  "message_text": "🍀 You're lucky today: 10% off on your order over $150, with code test-code",
+  "meta": {
+    "delay": 15000,
+    "noReply": true,
+  },
+  "name": "Offer 10% discount for visitors with high-value carts",
+  "status": "inactive",
+  "template_id": "offer-discount-for-high-value-cart",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "cart_value",
+      "value": 100,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "lt",
+      "type": "cart_value",
+      "value": 150,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 15,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 12`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "You can <strong>update the cart values of Amount Added To Cart triggers</strong> to target shoppers with high cart values, depending on your store average order value.",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "You can customize the discount code by using one of your existing one",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "DISCOUNTCODE": {
+      "tooltipContent": "Select your own Shopify discount code",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 13`] = `
 {
   "message_html": "<div>👋 Do you have any questions? <em>I&#x27;m online </em>and <strong>ready to help you</strong> 🙂</div>",
   "message_text": "👋 Do you have any questions? I'm online and ready to help you 🙂",
@@ -71,7 +340,7 @@ exports[`CampaignTemplates get template configuration 2`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 3`] = `
+exports[`CampaignTemplates get template configuration 14`] = `
 {
   "attachments": [
     {
@@ -125,380 +394,12 @@ exports[`CampaignTemplates get template configuration 3`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 4`] = `
-{
-  "message_html": "<div>🌟 Save <strong>$25 OFF</strong> your order over <strong>$75</strong> when you <strong><a href="" target="_blank">join our email list</a></strong> or <strong><a href="" target="_blank">sign up for SMS alerts</a></strong>!</div><div><br></div><div>(if you haven&#x27;t already) 😉</div>",
-  "message_text": "🌟 Save $25 OFF your order over $75 when you join our email list or sign up for SMS alerts!
-
-(if you haven't already) 😉",
-  "meta": {
-    "noReply": true,
-  },
-  "name": "Promote newsletter sign-up for new visitors about to leave",
-  "status": "inactive",
-  "template_id": "promote-newsletter-for-new-visitors",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "session_time",
-      "value": 10,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "time_spent_on_page",
-      "value": 5,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "exit_intent",
-      "value": "true",
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "lt",
-      "type": "visit_count",
-      "value": 4,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "anytime",
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 5`] = `
-{
-  "defaultStepOpened": "message",
-  "stepConfiguration": {
-    "message": {
-      "banner": {
-        "content": "Before activating the campaign, <strong>add the correct URL links to your newsletter/SMS sign-up pages</strong> in your message.",
-        "type": "info",
-      },
-    },
-  },
-  "toolbarConfiguration": {
-    "LINK": {
-      "tooltipContent": "Add sign-up links",
-    },
-  },
-}
-`;
-
-exports[`CampaignTemplates get template configuration 6`] = `
-{
-  "message_html": "<div>You&#x27;ve got great taste. 🛒</div><div><br></div><div>Is there anything else we can help you with <strong>before you check out?</strong> 💳</div>",
-  "message_text": "You've got great taste. 🛒
-
-Is there anything else we can help you with before you check out? 💳",
-  "name": "Engage with customers on the cart page",
-  "status": "inactive",
-  "template_id": "connect-customer-on-cart-with-team",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "contains",
-      "type": "current_url",
-      "value": "/cart",
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "time_spent_on_page",
-      "value": 8,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "during",
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 7`] = `
-{
-  "defaultStepOpened": "message",
-}
-`;
-
-exports[`CampaignTemplates get template configuration 8`] = `
-{
-  "message_html": "<div>Before you go, check out our <strong>latest items on sale for <a href="" target="_blank">up to 30% OFF</a>!</strong>💸</div>",
-  "message_text": "Before you go, check out our latest items on sale for up to 30% OFF!💸",
-  "meta": {
-    "noReply": true,
-  },
-  "name": "Promote your sale collection for visitors about to leave",
-  "status": "inactive",
-  "template_id": "promote-sale-collection-for-visitors-about-to-leave",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "session_time",
-      "value": 10,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "time_spent_on_page",
-      "value": 5,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "exit_intent",
-      "value": "true",
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "visit_count",
-      "value": 3,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "anytime",
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 9`] = `
-{
-  "defaultStepOpened": "message",
-  "stepConfiguration": {
-    "message": {
-      "banner": {
-        "content": "Before activating the campaign, <strong>add the correct URL link to your sale collection page</strong> in your message.",
-        "type": "warning",
-      },
-    },
-  },
-  "toolbarConfiguration": {
-    "LINK": {
-      "tooltipContent": "Add sale collection link",
-    },
-  },
-}
-`;
-
-exports[`CampaignTemplates get template configuration 10`] = `
-{
-  "message_html": "<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="test-code" href="https://shopify.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong></div>",
-  "message_text": "🍀 You're lucky today: 10% off on your order over $150, with code test-code",
-  "meta": {
-    "delay": 15000,
-    "noReply": true,
-  },
-  "name": "Offer 10% discount for visitors with high-value carts",
-  "status": "inactive",
-  "template_id": "offer-discount-for-high-value-cart",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "cart_value",
-      "value": 100,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "lt",
-      "type": "cart_value",
-      "value": 150,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "session_time",
-      "value": 15,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "anytime",
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 11`] = `
-{
-  "defaultStepOpened": "audience",
-  "stepConfiguration": {
-    "audience": {
-      "banner": {
-        "content": "You can <strong>update the cart values of Amount Added To Cart triggers</strong> to target shoppers with high cart values, depending on your store average order value.",
-        "type": "warning",
-      },
-    },
-    "message": {
-      "banner": {
-        "content": "You can customize the discount code by using one of your existing one",
-        "type": "info",
-      },
-    },
-  },
-  "toolbarConfiguration": {
-    "DISCOUNTCODE": {
-      "tooltipContent": "Select your own Shopify discount code",
-    },
-  },
-}
-`;
-
-exports[`CampaignTemplates get template configuration 12`] = `
-{
-  "attachments": [
-    {
-      "contentType": "application/productCard",
-      "extra": {
-        "currency": "EUR",
-        "price": 9.99,
-        "product_id": 1,
-        "product_link": "https://shopify.myshopify.com/products/",
-      },
-      "name": "Product 1",
-      "size": 0,
-      "url": "src",
-    },
-  ],
-  "message_html": "<div><strong>🚚 FREE SHIPPING for orders $100+</strong></div><div><br></div><div>You&#x27;re almost there! Add our accessories<strong> for only $25</strong>!</div>",
-  "message_text": "🚚 FREE SHIPPING for orders $100+
-
-You're almost there! Add our accessories for only $25!",
-  "meta": {
-    "delay": 15000,
-    "noReply": true,
-  },
-  "name": "Highlight free shipping benefit for customers near the threshold",
-  "status": "inactive",
-  "template_id": "free-shipping-benefits-for-customers-near-threshold",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "cart_value",
-      "value": 50,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "lt",
-      "type": "cart_value",
-      "value": 100,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "anytime",
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 13`] = `
-{
-  "defaultStepOpened": "audience",
-  "stepConfiguration": {
-    "audience": {
-      "banner": {
-        "content": "You can <strong>update the cart values of Amount Added To Cart triggers</strong> based on your free shipping threshold value.",
-        "type": "warning",
-      },
-    },
-    "message": {
-      "banner": {
-        "content": "You can customise the product cards based on your Shopify product catalogue. We suggest to select small/accessory items.",
-        "type": "info",
-      },
-    },
-  },
-  "toolbarConfiguration": {
-    "PRODUCTPICKER": {
-      "tooltipContent": "Add up to 5 product cards",
-    },
-  },
-}
-`;
-
-exports[`CampaignTemplates get template configuration 14`] = `
-{
-  "message_html": "<div> 👋 Interested in this item? Check out our bundle, and<strong> save $10 </strong>😍</div>",
-  "message_text": " 👋 Interested in this item? Check out our bundle, and save $10 😍",
-  "meta": {
-    "delay": 5000,
-    "noReply": true,
-  },
-  "name": "Suggest bundles when a single item is in cart",
-  "status": "inactive",
-  "template_id": "suggest-bundles-when-single-item",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "containsAny",
-      "type": "product_tags",
-      "value": "INSERTYOURTAG",
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "session_time",
-      "value": 10,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "time_spent_on_page",
-      "value": 5,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "anytime",
-    },
-  ],
-}
-`;
-
 exports[`CampaignTemplates get template configuration 15`] = `
 {
-  "defaultStepOpened": "audience",
-  "stepConfiguration": {
-    "audience": {
-      "banner": {
-        "content": "To target shoppers with a certain item in cart, <strong>please insert one of the Shopify product tag</strong> of the item to identify it.",
-        "type": "warning",
-      },
-    },
-    "message": {
-      "banner": {
-        "content": "Please <strong>select the bundle</strong> you want to recommend from your Shopify catalog.",
-        "type": "info",
-      },
-    },
-  },
+  "defaultStepOpened": "message",
   "toolbarConfiguration": {
     "PRODUCTPICKER": {
-      "tooltipContent": "Select the bundle product",
+      "tooltipContent": "Add up to 5 products",
     },
   },
 }
@@ -559,6 +460,184 @@ exports[`CampaignTemplates get template configuration 17`] = `
 
 exports[`CampaignTemplates get template configuration 18`] = `
 {
+  "message_html": "<div>🌟 Save <strong>$25 OFF</strong> your order over <strong>$75</strong> when you <strong><a href="" target="_blank">join our email list</a></strong> or <strong><a href="" target="_blank">sign up for SMS alerts</a></strong>!</div><div><br></div><div>(if you haven&#x27;t already) 😉</div>",
+  "message_text": "🌟 Save $25 OFF your order over $75 when you join our email list or sign up for SMS alerts!
+
+(if you haven't already) 😉",
+  "meta": {
+    "noReply": true,
+  },
+  "name": "Promote newsletter sign-up for new visitors about to leave",
+  "status": "inactive",
+  "template_id": "promote-newsletter-for-new-visitors",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 5,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "exit_intent",
+      "value": "true",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "lt",
+      "type": "visit_count",
+      "value": 4,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 19`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the correct URL links to your newsletter/SMS sign-up pages</strong> in your message.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "LINK": {
+      "tooltipContent": "Add sign-up links",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 20`] = `
+{
+  "message_html": "<div>💡 Not sure which style to choose?</div><div><br></div><div><strong><a href="" target="_blank">Take our quiz</a></strong> or chat with our leather artisans now! 👇</div>",
+  "message_text": "💡 Not sure which style to choose?
+
+Take our quiz or chat with our leather artisans now! 👇",
+  "name": "Promote educational content that help visitors choose their products",
+  "status": "inactive",
+  "template_id": "promote-quizzes-to-help-choose-products",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "lt",
+      "type": "visit_count",
+      "value": 4,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 15,
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 21`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the correct URL link to your quizz</strong> in your message.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "LINK": {
+      "tooltipContent": "Add quizz link",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 22`] = `
+{
+  "message_html": "<div>Before you go, check out our <strong>latest items on sale for <a href="" target="_blank">up to 30% OFF</a>!</strong>💸</div>",
+  "message_text": "Before you go, check out our latest items on sale for up to 30% OFF!💸",
+  "meta": {
+    "noReply": true,
+  },
+  "name": "Promote your sale collection for visitors about to leave",
+  "status": "inactive",
+  "template_id": "promote-sale-collection-for-visitors-about-to-leave",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 5,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "exit_intent",
+      "value": "true",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "visit_count",
+      "value": 3,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 23`] = `
+{
+  "defaultStepOpened": "message",
+  "stepConfiguration": {
+    "message": {
+      "banner": {
+        "content": "Before activating the campaign, <strong>add the correct URL link to your sale collection page</strong> in your message.",
+        "type": "warning",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "LINK": {
+      "tooltipContent": "Add sale collection link",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 24`] = `
+{
   "message_html": "<div>👉 <strong>Limited time offer</strong> — all under $99! </div><div><em>Pss: 5% extra discount with code <strong><a data-discount-code="test-code" href="https://shopify.myshopify.com.myshopify.com/discount/test-code" target="_blank" rel="noreferrer">test-code</a> </strong>💸</em></div>",
   "message_text": "👉 Limited time offer — all under $99! 
 Pss: 5% extra discount with code SAVE5 💸",
@@ -592,7 +671,7 @@ Pss: 5% extra discount with code SAVE5 💸",
 }
 `;
 
-exports[`CampaignTemplates get template configuration 19`] = `
+exports[`CampaignTemplates get template configuration 25`] = `
 {
   "defaultStepOpened": "message",
   "stepConfiguration": {
@@ -611,7 +690,73 @@ exports[`CampaignTemplates get template configuration 19`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 20`] = `
+exports[`CampaignTemplates get template configuration 26`] = `
+{
+  "message_html": "<div> 👋 Interested in this item? Check out our bundle, and<strong> save $10 </strong>😍</div>",
+  "message_text": " 👋 Interested in this item? Check out our bundle, and save $10 😍",
+  "meta": {
+    "delay": 5000,
+    "noReply": true,
+  },
+  "name": "Suggest bundles when a single item is in cart",
+  "status": "inactive",
+  "template_id": "suggest-bundles-when-single-item",
+  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id} && {ulid-generated-id}",
+  "triggers": [
+    {
+      "id": "ulid-generated-id",
+      "operator": "containsAny",
+      "type": "product_tags",
+      "value": "INSERTYOURTAG",
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "session_time",
+      "value": 10,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "gt",
+      "type": "time_spent_on_page",
+      "value": 5,
+    },
+    {
+      "id": "ulid-generated-id",
+      "operator": "eq",
+      "type": "business_hours",
+      "value": "anytime",
+    },
+  ],
+}
+`;
+
+exports[`CampaignTemplates get template configuration 27`] = `
+{
+  "defaultStepOpened": "audience",
+  "stepConfiguration": {
+    "audience": {
+      "banner": {
+        "content": "To target shoppers with a certain item in cart, <strong>please insert one of the Shopify product tag</strong> of the item to identify it.",
+        "type": "warning",
+      },
+    },
+    "message": {
+      "banner": {
+        "content": "Please <strong>select the bundle</strong> you want to recommend from your Shopify catalog.",
+        "type": "info",
+      },
+    },
+  },
+  "toolbarConfiguration": {
+    "PRODUCTPICKER": {
+      "tooltipContent": "Select the bundle product",
+    },
+  },
+}
+`;
+
+exports[`CampaignTemplates get template configuration 28`] = `
 {
   "message_html": "<div>This one is sold out, but we have<strong> similar styles ready for you </strong>✨</div>",
   "message_text": "This one is sold out, but we have similar styles ready for you ✨",
@@ -645,7 +790,7 @@ exports[`CampaignTemplates get template configuration 20`] = `
 }
 `;
 
-exports[`CampaignTemplates get template configuration 21`] = `
+exports[`CampaignTemplates get template configuration 29`] = `
 {
   "defaultStepOpened": "audience",
   "stepConfiguration": {
@@ -665,129 +810,6 @@ exports[`CampaignTemplates get template configuration 21`] = `
   "toolbarConfiguration": {
     "PRODUCTPICKER": {
       "tooltipContent": "Add up to 5 product cards",
-    },
-  },
-}
-`;
-
-exports[`CampaignTemplates get template configuration 22`] = `
-{
-  "message_html": "<div>🔍 I can help you<strong> find the best fit for you</strong>! What are you looking for?</div>",
-  "message_text": "🔍 I can help you find the best fit for you! What are you looking for?",
-  "name": "Drive conversations with your visitors to find the right product",
-  "status": "inactive",
-  "template_id": "offer-chat-with-team-to-find-best-fit",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "contains",
-      "type": "current_url",
-      "value": "products",
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "time_spent_on_page",
-      "value": 15,
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 23`] = `
-{
-  "defaultStepOpened": "message",
-}
-`;
-
-exports[`CampaignTemplates get template configuration 24`] = `
-{
-  "message_html": "<div>💡 Not sure which style to choose?</div><div><br></div><div><strong><a href="" target="_blank">Take our quiz</a></strong> or chat with our leather artisans now! 👇</div>",
-  "message_text": "💡 Not sure which style to choose?
-
-Take our quiz or chat with our leather artisans now! 👇",
-  "name": "Promote educational content that help visitors choose their products",
-  "status": "inactive",
-  "template_id": "promote-quizzes-to-help-choose-products",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "lt",
-      "type": "visit_count",
-      "value": 4,
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "time_spent_on_page",
-      "value": 15,
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 25`] = `
-{
-  "defaultStepOpened": "message",
-  "stepConfiguration": {
-    "message": {
-      "banner": {
-        "content": "Before activating the campaign, <strong>add the correct URL link to your quizz</strong> in your message.",
-        "type": "warning",
-      },
-    },
-  },
-  "toolbarConfiguration": {
-    "LINK": {
-      "tooltipContent": "Add quizz link",
-    },
-  },
-}
-`;
-
-exports[`CampaignTemplates get template configuration 26`] = `
-{
-  "message_html": "<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong><a href="" target="_blank">custom express orders</a></strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>",
-  "message_text": "Need help with last-minute purchase? Leave us a message or check out our guide on custom express orders 🚚
-
-We'll be back at 9AM tomorrow for you. ",
-  "name": "Link valuable resources to help visitors while your team is offline",
-  "status": "inactive",
-  "template_id": "link-valuable-resource-to-help-visitors",
-  "trigger_rule": "{ulid-generated-id} && {ulid-generated-id}",
-  "triggers": [
-    {
-      "id": "ulid-generated-id",
-      "operator": "eq",
-      "type": "business_hours",
-      "value": "outside",
-    },
-    {
-      "id": "ulid-generated-id",
-      "operator": "gt",
-      "type": "session_time",
-      "value": 15,
-    },
-  ],
-}
-`;
-
-exports[`CampaignTemplates get template configuration 27`] = `
-{
-  "defaultStepOpened": "message",
-  "stepConfiguration": {
-    "message": {
-      "banner": {
-        "content": "Before activating the campaign, <strong>add the URL of a relevant resource</strong> in your message.",
-        "type": "warning",
-      },
-    },
-  },
-  "toolbarConfiguration": {
-    "LINK": {
-      "tooltipContent": "Add links",
     },
   },
 }

@@ -12,11 +12,15 @@ jest.mock('ulidx', () => ({
 describe('CampaignTemplates', () => {
     let mockServer: MockAdapter
 
+    const orderedTemplates = Object.values(CAMPAIGN_TEMPLATES).sort((a, b) =>
+        a.slug < b.slug ? -1 : 1
+    )
+
     beforeEach(() => {
         mockServer = new MockAdapter(client)
     })
 
-    it.each(Object.values(CAMPAIGN_TEMPLATES))(
+    it.each(orderedTemplates)(
         'get template configuration',
         async (template) => {
             mockServer

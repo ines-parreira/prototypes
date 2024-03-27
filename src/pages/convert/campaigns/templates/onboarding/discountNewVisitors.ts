@@ -7,12 +7,17 @@ import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus
 import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
 import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {PlanName} from 'utils/paywalls'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import {
+    TooltipActionType,
+    WizardConfiguration,
+} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     CampaignConfiguration,
     CampaignTemplate,
     CampaignTemplateLabelType,
-} from './types'
-import {CampaignConfigurationBuilder} from './constructor'
+} from '../types'
+import {CampaignConfigurationBuilder} from '../constructor'
 
 export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
     slug: 'discount-new-visitors',
@@ -27,6 +32,16 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
     label: CampaignTemplateLabelType.IncreaseConversions,
     onboarding: true,
     preview: assetsUrl('img/campaigns/preview/discount-new-visitors.png'),
+    getWizardConfiguration: (): WizardConfiguration => {
+        return {
+            defaultStepOpened: CampaignStepsKeys.Message,
+            toolbarConfiguration: {
+                [TooltipActionType.Discount]: {
+                    tooltipContent: 'Select your own Shopify discount code',
+                },
+            },
+        }
+    },
     getConfiguration: async (
         storeIntegration: Map<string, any>
     ): Promise<CampaignConfiguration> => {

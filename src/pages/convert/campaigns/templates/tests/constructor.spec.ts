@@ -5,7 +5,7 @@ import client from 'models/api/resources'
 import {integrationDataItemProductFixture} from 'fixtures/shopify'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {CampaignConfigurationBuilder} from '../constructor'
-import {CART_ABANDONMENT} from '../cartAbandonment'
+import {CART_ABANDONMENT} from '../onboarding/cartAbandonment'
 
 const configuration = {
     name: CART_ABANDONMENT.name,
