@@ -151,4 +151,56 @@ describe('useAgentsTableConfigSetting', () => {
             submitActiveView: expect.any(Function),
         })
     })
+
+    it('should return columns in order they are stored in settings and ignore unsupported ones', () => {
+        const columnsSavedInCustomOrder = [
+            TableColumn.ClosedTickets,
+            TableColumn.AgentName,
+            TableColumn.CustomerSatisfaction,
+        ]
+        const unsupportedColumn = TableColumn.TicketHandleTime
+        const restOfTheColumns = TableColumnsOrder.filter(
+            (column) => !columnsSavedInCustomOrder.includes(column)
+        )
+        const metrics = Object.values([
+            ...columnsSavedInCustomOrder,
+            unsupportedColumn,
+        ]).map((column) => ({
+            id: column,
+            visibility: true,
+        }))
+        const viewId = 'test'
+        const view = {
+            id: viewId,
+            name: 'Test view',
+            metrics: metrics,
+        }
+        const tableSetting: AccountSettingAgentsTableConfig = {
+            id: 123,
+            type: AccountSettingType.AgentsTableConfig,
+            data: {
+                active_view: viewId,
+                views: [view],
+            } as any,
+        }
+
+        const state = {
+            currentAccount: fromJS({
+                ...account,
+                settings: [...account.settings, tableSetting],
+            }),
+        } as RootState
+
+        const {result} = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore(state)}>{children}</Provider>
+            ),
+        })
+
+        expect(result.current.columnsOrder).toEqual([
+            ...columnsSavedInCustomOrder,
+            ...restOfTheColumns,
+        ])
+        expect(result.current.columnsOrder).not.toContain(unsupportedColumn)
+    })
 })

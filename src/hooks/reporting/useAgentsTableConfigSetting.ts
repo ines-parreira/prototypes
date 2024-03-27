@@ -29,7 +29,18 @@ export const useAgentsTableConfigSetting = () => {
         ? TableColumnsOrderWithOnlineTime
         : TableColumnsOrder
 
-    currentView.metrics = columns.map((metric) => {
+    const currentViewColumnsInOrder = currentView.metrics
+        .map((metric) => metric.id)
+        .filter((column) => columns.includes(column))
+    const columnsMissingInSettings = columns.filter(
+        (column) => !currentViewColumnsInOrder.includes(column)
+    )
+    const columnsInOrder = [
+        ...currentViewColumnsInOrder,
+        ...columnsMissingInSettings,
+    ]
+
+    currentView.metrics = columnsInOrder.map((metric) => {
         const savedSetting = currentView.metrics.find(
             (entry) => entry.id === metric
         )
