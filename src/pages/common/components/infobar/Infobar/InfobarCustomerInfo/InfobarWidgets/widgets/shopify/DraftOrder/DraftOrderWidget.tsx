@@ -59,7 +59,7 @@ const OpenStatus = () => (
 )
 
 const InvoiceSentStatus = () => (
-    <Badge className={css.badge} type={ColorType.LightWarning}>
+    <Badge className={css.badge} type={ColorType.LightYellow}>
         Invoice Sent
     </Badge>
 )

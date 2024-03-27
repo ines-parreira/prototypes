@@ -30,6 +30,7 @@ export enum ColorType {
     LightWarning = 'light-warning',
     LightError = 'light-error',
     LightPurple = 'light-purple',
+    LightYellow = 'light-yellow',
     Magenta = 'magenta',
 }
 
