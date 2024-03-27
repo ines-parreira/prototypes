@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
@@ -12,8 +12,9 @@ import shortcutManager from 'services/shortcutManager'
 import {getIconFromType} from 'state/integrations/helpers'
 import {useModalManager} from 'hooks/useModalManager'
 
-import {ActionInjectedProps} from '../types'
+import {ActionInjectedProps, ActionName} from '../types'
 import {useToolbarContext} from '../ToolbarContext'
+import {getTooltipTourConfiguration} from '../utils'
 import {addDiscountCodeLink} from '../../utils'
 import Popover from './ButtonPopover'
 
@@ -37,6 +38,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         onInsertDiscountCodeOpen,
         onInsertDiscountCodeAdded,
         shopifyIntegrations,
+        toolbarTour,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedIntegration, setPickedIntegration] = useState(() => {
@@ -104,6 +106,13 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         ]
     )
 
+    const tour = useMemo(() => {
+        return getTooltipTourConfiguration(
+            ActionName.DiscountCodePicker,
+            toolbarTour
+        )
+    }, [toolbarTour])
+
     useEffect(() => {
         shortcutManager.bind('AddDiscountCode', {
             CLOSE_POPOVER: {
@@ -120,6 +129,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         <Popover
             icon="discount"
             name="Insert Discount Code"
+            tour={tour}
             isOpen={isOpen}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}

@@ -28,13 +28,14 @@ import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
-
+import {TooltipTourConfigurationType} from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField, {Props as RichFieldProps} from './RichField'
 
 type Props = {
     disableOutOfStockProducts?: boolean
     disableProductCards?: boolean
     disableVariantSelection?: boolean
+    toolbarTour?: Record<string, TooltipTourConfigurationType>
 } & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
@@ -44,6 +45,7 @@ const TicketRichField = (
         disableProductCards,
         disableVariantSelection,
         disableOutOfStockProducts,
+        toolbarTour,
         ...props
     }: Props,
     ref: ForwardedRef<RichField>
@@ -121,6 +123,7 @@ const TicketRichField = (
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
                     newMessageChannel
                 ),
+            toolbarTour: toolbarTour ?? {},
             disableOutOfStockProducts: disableOutOfStockProducts ?? false,
             disableVariantSelection: disableVariantSelection ?? false,
             onAddProductCardAttachment: (attachment) => {
@@ -148,6 +151,7 @@ const TicketRichField = (
             disableOutOfStockProducts,
             disableProductCards,
             disableVariantSelection,
+            toolbarTour,
             dispatch,
             currentAccount,
             ticket,

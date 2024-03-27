@@ -80,4 +80,69 @@ describe('Toolbar', () => {
 
         expect(container).toHaveTextContent(/3\/100/)
     })
+
+    describe('tooltip tour', () => {
+        const editorProps: ComponentProps<typeof RichFieldEditor> &
+            Omit<ComponentProps<typeof Toolbar>, 'getEditorState'> = {
+            ...defaultProps,
+
+            displayedActions: [ActionName.ProductPicker],
+            createToolbarPlugin: (imageDecorator) =>
+                //@ts-ignore
+                toolbarPlugin({
+                    imageDecorator,
+                    onLinkEdit: jest.fn(),
+                    onLinkCreate: jest.fn(),
+                    getDisplayedActions: () => [ActionName.ProductPicker],
+                }),
+        }
+
+        it('should not render tooltip tour', () => {
+            const {queryByText} = render(
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    onAddProductCardAttachment={jest.fn()}
+                    canAddDiscountCodeLink={true}
+                    canAddVideoPlayer={false}
+                    shopifyIntegrations={fromJS([{}])}
+                    toolbarTour={undefined}
+                >
+                    <Toolbar
+                        maxLength={100}
+                        {...editorProps}
+                        editorState={editorState}
+                        getEditorState={() => editorState}
+                    />
+                </ToolbarProvider>
+            )
+
+            expect(queryByText('lorem ipsum tooltip')).not.toBeInTheDocument()
+        })
+
+        it('should render tooltip tour', () => {
+            const {getByText} = render(
+                <ToolbarProvider
+                    canAddProductCard={true}
+                    onAddProductCardAttachment={jest.fn()}
+                    canAddDiscountCodeLink={true}
+                    canAddVideoPlayer={false}
+                    shopifyIntegrations={fromJS([{}])}
+                    toolbarTour={{
+                        [ActionName.ProductPicker]: {
+                            tooltipContent: 'lorem ipsum tooltip',
+                        },
+                    }}
+                >
+                    <Toolbar
+                        maxLength={100}
+                        {...editorProps}
+                        editorState={editorState}
+                        getEditorState={() => editorState}
+                    />
+                </ToolbarProvider>
+            )
+
+            expect(getByText('lorem ipsum tooltip')).toBeInTheDocument()
+        })
+    })
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {render, waitFor, screen, act} from '@testing-library/react'
 import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
@@ -12,13 +12,13 @@ import {campaign} from 'fixtures/campaign'
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from 'pages/convert/campaigns/templates/library/linkValuableResourcesToHelpVisitors'
 import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
 import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
 
 const mockStore = configureMockStore()
 
 jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
-jest.mock('pages/common/forms/RichField/RichFieldEditor')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
@@ -51,12 +51,35 @@ jest.mock(
 
 const defaultState = {
     integrations: fromJS({
-        integrations: [{id: 123, type: 'gorgias_chat', meta: {}}],
+        integrations: [
+            {
+                id: 123,
+                type: 'gorgias_chat',
+                meta: {},
+            },
+        ],
     }),
+    ui: {
+        editor: {},
+    },
 }
 
 describe('CampaignTemplateCustomizeView', () => {
-    beforeEach(() => {
+    const mockRange = {
+        selectNodeContents: jest.fn(),
+        setStart: jest.fn(),
+        setEnd: jest.fn(),
+    }
+    const mockSelection = {
+        removeAllRanges: jest.fn(),
+        addRange: jest.fn(),
+        getRangeAt: () => ({
+            setEnd: jest.fn(),
+            cloneRange: jest.fn(),
+        }),
+    }
+
+    beforeAll(() => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection,
         } as any)
@@ -79,6 +102,37 @@ describe('CampaignTemplateCustomizeView', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+
+        // It is used by draft-js somewhere deep in code
+        jest.spyOn(document, 'createRange').mockReturnValue(mockRange as any)
+        jest.spyOn(window, 'getSelection').mockReturnValue(mockSelection as any)
+    })
+
+    afterAll(() => {
+        // Restore the original methods and objects after testing
+        ;(document.createRange as jest.Mock).mockRestore()
+        ;(window.getSelection as jest.Mock).mockRestore()
+    })
+
+    it('should render tooptips', async () => {
+        ;(useParams as jest.Mock).mockReturnValue({
+            id: '123',
+            templateSlug: LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS.slug,
+        })
+
+        act(() => {
+            render(
+                <BrowserRouter>
+                    <Provider store={mockStore(defaultState)}>
+                        <CampaignTemplateCustomizeLibraryView />
+                    </Provider>
+                </BrowserRouter>
+            )
+        })
+
+        await waitFor(() => {
+            expect(screen.getByText('Add links')).toBeInTheDocument()
+        })
     })
 
     it('should render campaign form with template data and banners', async () => {

@@ -182,7 +182,7 @@ exports[`CampaignTemplates get template configuration 5`] = `
     },
   },
   "toolbarConfiguration": {
-    "link": {
+    "LINK": {
       "tooltipContent": "Add sign-up links",
     },
   },
@@ -286,7 +286,7 @@ exports[`CampaignTemplates get template configuration 9`] = `
     },
   },
   "toolbarConfiguration": {
-    "link": {
+    "LINK": {
       "tooltipContent": "Add sale collection link",
     },
   },
@@ -352,7 +352,7 @@ exports[`CampaignTemplates get template configuration 11`] = `
     },
   },
   "toolbarConfiguration": {
-    "discount": {
+    "DISCOUNTCODE": {
       "tooltipContent": "Select your own Shopify discount code",
     },
   },
@@ -428,7 +428,7 @@ exports[`CampaignTemplates get template configuration 13`] = `
     },
   },
   "toolbarConfiguration": {
-    "product": {
+    "PRODUCTPICKER": {
       "tooltipContent": "Add up to 5 product cards",
     },
   },
@@ -494,7 +494,7 @@ exports[`CampaignTemplates get template configuration 15`] = `
     },
   },
   "toolbarConfiguration": {
-    "product": {
+    "PRODUCTPICKER": {
       "tooltipContent": "Select the bundle product",
     },
   },
@@ -547,7 +547,7 @@ exports[`CampaignTemplates get template configuration 17`] = `
     },
   },
   "toolbarConfiguration": {
-    "product": {
+    "PRODUCTPICKER": {
       "tooltipContent": "Add up to 5 product cards",
     },
   },
@@ -601,7 +601,7 @@ exports[`CampaignTemplates get template configuration 19`] = `
     },
   },
   "toolbarConfiguration": {
-    "discount": {
+    "DISCOUNTCODE": {
       "tooltipContent": "Select your own Shopify discount code",
     },
   },
@@ -660,7 +660,7 @@ exports[`CampaignTemplates get template configuration 21`] = `
     },
   },
   "toolbarConfiguration": {
-    "product": {
+    "PRODUCTPICKER": {
       "tooltipContent": "Add up to 5 product cards",
     },
   },
@@ -737,7 +737,7 @@ exports[`CampaignTemplates get template configuration 25`] = `
     },
   },
   "toolbarConfiguration": {
-    "link": {
+    "LINK": {
       "tooltipContent": "Add quizz link",
     },
   },
@@ -783,7 +783,7 @@ exports[`CampaignTemplates get template configuration 27`] = `
     },
   },
   "toolbarConfiguration": {
-    "link": {
+    "LINK": {
       "tooltipContent": "Add links",
     },
   },

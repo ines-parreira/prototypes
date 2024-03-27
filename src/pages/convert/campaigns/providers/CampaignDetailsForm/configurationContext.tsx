@@ -3,12 +3,16 @@ import React, {ReactNode, createContext} from 'react'
 import {
     WizardConfiguration,
     WizardStepConfiguration,
+    ToolbarActionConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 export interface CampaignFormConfigurationType {
     isEditMode: boolean
     configuration?: WizardConfiguration
     getStepConfiguration: (step: string) => WizardStepConfiguration | undefined
+    getTourConfiguration: () =>
+        | Record<string, ToolbarActionConfiguration>
+        | undefined
 }
 
 export const CampaignFormConfigurationContext =
@@ -16,6 +20,8 @@ export const CampaignFormConfigurationContext =
         isEditMode: false,
         configuration: {} as WizardConfiguration,
         getStepConfiguration: () => ({} as WizardStepConfiguration),
+        getTourConfiguration: () =>
+            ({} as Record<string, ToolbarActionConfiguration>),
     })
 
 type OwnProps = {
@@ -35,9 +41,17 @@ export const CampaigFormConfigurationProvider = ({
         return value?.configuration?.stepConfiguration[step]
     }
 
+    const getTourConfiguration = () => {
+        if (!value?.configuration?.toolbarConfiguration) {
+            return
+        }
+
+        return value?.configuration?.toolbarConfiguration
+    }
+
     return (
         <CampaignFormConfigurationContext.Provider
-            value={{...value, getStepConfiguration}}
+            value={{...value, getStepConfiguration, getTourConfiguration}}
         >
             {children}
         </CampaignFormConfigurationContext.Provider>

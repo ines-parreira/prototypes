@@ -56,10 +56,14 @@ export const CampaignMessage = memo(
     }: Props): JSX.Element => {
         const {shopifyIntegration} = useIntegrationContext()
         const isAllowedToAddDiscountCode = useIsAllowedToAddDiscountCode()
-        const {getStepConfiguration} = useCampaignFormContext()
+        const {getStepConfiguration, getTourConfiguration} =
+            useCampaignFormContext()
         const stepConfiguration = useMemo(() => {
             return getStepConfiguration(CampaignStepsKeys.Message)
         }, [getStepConfiguration])
+        const tourConfiguration = useMemo(() => {
+            return getTourConfiguration()
+        }, [getTourConfiguration])
 
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
             number | null
@@ -223,6 +227,7 @@ export const CampaignMessage = memo(
                         value={value}
                         attachments={attachments}
                         allowExternalChanges
+                        toolbarTour={tourConfiguration}
                         disableOutOfStockProducts={true}
                         disableProductCards={!isConvertSubscriber}
                         disableVariantSelection={isConvertSubscriber}

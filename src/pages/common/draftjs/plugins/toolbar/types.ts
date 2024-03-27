@@ -30,3 +30,7 @@ export type Config = {
     onLinkEdit: (entityKey: string, text: string, url: string) => void
     onLinkCreate: (text: string) => void
 }
+
+export type TooltipTourConfigurationType = {
+    tooltipContent: string
+}

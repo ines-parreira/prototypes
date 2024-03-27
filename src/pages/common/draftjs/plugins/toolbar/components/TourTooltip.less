@@ -1,0 +1,34 @@
+:local {
+    .tooltipWrapper {
+        position: relative;
+        opacity: 1;
+    }
+
+    .tooltipTip {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        white-space: nowrap;
+        top: -45px;
+        box-shadow: 0px 2px 3px fade(black, 20%);
+        padding: 10px;
+        line-height: 1.33;
+        max-width: 350px;
+        background-color: var(--neutral-grey-6);
+    }
+
+    .tooltipTip::before {
+        content: ' ';
+        left: 50%;
+        border: solid transparent;
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-width: 6px;
+        margin-left: -6px;
+        top: 100%;
+        border-top-color: var(--neutral-grey-6);
+    }
+}

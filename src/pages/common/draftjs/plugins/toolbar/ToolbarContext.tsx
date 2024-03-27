@@ -5,6 +5,7 @@ import {List} from 'immutable'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails} from 'models/integration/types'
+import {TooltipTourConfigurationType} from './types'
 
 import {ProductCardAttachment} from './components/AddProductLink'
 
@@ -24,6 +25,7 @@ export type ToolbarContextType = {
     // AddProductLink
     canAddProductCard: boolean
     canAddProductLink: boolean
+    toolbarTour: Record<string, TooltipTourConfigurationType> | undefined
     disableOutOfStockProducts: boolean
     disableVariantSelection: boolean
     onAddProductCardAttachment: (attachment: ProductCardAttachment) => void
@@ -37,7 +39,7 @@ export type ToolbarContextType = {
     >[]
 }
 
-const ToolbarContext = createContext<ToolbarContextType>({
+export const ToolbarContext = createContext<ToolbarContextType>({
     canAddVideoPlayer: false,
     onInsertVideoAddedFromInsertLink: _noop,
     canAddVideoLink: false,
@@ -48,6 +50,7 @@ const ToolbarContext = createContext<ToolbarContextType>({
     onInsertDiscountCodeAdded: _noop,
     canAddProductCard: false,
     canAddProductLink: false,
+    toolbarTour: undefined,
     disableOutOfStockProducts: false,
     disableVariantSelection: false,
     onAddProductCardAttachment: _noop,

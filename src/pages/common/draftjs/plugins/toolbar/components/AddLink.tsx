@@ -1,5 +1,5 @@
 import {EditorState, Modifier} from 'draft-js'
-import React, {Component, KeyboardEvent} from 'react'
+import React, {Component, KeyboardEvent, ContextType} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import ReactPlayer from 'react-player'
 
@@ -19,8 +19,14 @@ import {
 import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
 import {linkify} from 'utils/linkify'
 
-import {ActionInjectedProps} from '../types'
-import {ToolbarContextType, withToolbarContext} from '../ToolbarContext'
+import {getTooltipTourConfiguration} from '../utils'
+import {ActionInjectedProps, ActionName} from '../types'
+
+import {
+    ToolbarContextType,
+    withToolbarContext,
+    ToolbarContext,
+} from '../ToolbarContext'
 import Popover from './ButtonPopover'
 
 import css from './AddLink.less'
@@ -42,6 +48,9 @@ type Props = {
     ConnectedProps<typeof connector>
 
 export class AddLinkContainer extends Component<Props> {
+    static contextType = ToolbarContext
+    context!: ContextType<typeof ToolbarContext>
+
     componentDidUpdate(prevProps: Props) {
         const {isOpen, linkEditionEnded, linkEditionStarted} = this.props
 
@@ -226,11 +235,15 @@ export class AddLinkContainer extends Component<Props> {
     }
 
     render() {
+        const {toolbarTour} = this.context
+        const tour = getTooltipTourConfiguration(ActionName.Link, toolbarTour)
+
         return (
             <Popover
                 icon="link"
                 name="Insert link"
                 isActive={!!this._getSelectedLinkEntityKey()}
+                tour={tour}
                 isOpen={this.props.isOpen}
                 onOpen={this._onPopoverOpen}
                 onClose={this.props.onClose}

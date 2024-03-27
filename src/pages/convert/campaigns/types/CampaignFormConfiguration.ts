@@ -1,14 +1,17 @@
+import {
+    ActionName,
+    TooltipTourConfigurationType,
+} from 'pages/common/draftjs/plugins/toolbar/types'
+
 import {CampaignStepsKeys} from './CampaignSteps'
 
 export enum TooltipActionType {
-    Link = 'link',
-    Product = 'product',
-    Discount = 'discount',
+    Link = ActionName.Link,
+    Product = ActionName.ProductPicker,
+    Discount = ActionName.DiscountCodePicker,
 }
 
-export type ToolbarActionConfiguration = {
-    tooltipContent: string
-}
+export type ToolbarActionConfiguration = TooltipTourConfigurationType
 
 export enum BannerType {
     Info = 'info',

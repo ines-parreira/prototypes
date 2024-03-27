@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
@@ -10,7 +10,8 @@ import {ProductCardDetails} from 'models/integration/types'
 import {insertLink, insertText} from 'utils'
 import {getIconFromType} from 'state/integrations/helpers'
 
-import {ActionInjectedProps} from '../types'
+import {ActionInjectedProps, ActionName} from '../types'
+import {getTooltipTourConfiguration} from '../utils'
 import {useToolbarContext} from '../ToolbarContext'
 import Popover from './ButtonPopover'
 
@@ -55,6 +56,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
         onInsertProductLinkOpen,
         onInsertProductLinkAdded,
         shopifyIntegrations,
+        toolbarTour,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedShopifyIntegration, setPickedShopifyIntegration] = useState(
@@ -85,6 +87,13 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
             mapIntegrationToPickedShopifyIntegration(integration)
         )
     }
+
+    const tour = useMemo(() => {
+        return getTooltipTourConfiguration(
+            ActionName.ProductPicker,
+            toolbarTour
+        )
+    }, [toolbarTour])
 
     const handleAddProductLink = useCallback(
         (productCardDetails: ProductCardDetails) => {
@@ -146,6 +155,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
         <Popover
             icon="shopify"
             name="Insert Shopify Product"
+            tour={tour}
             isOpen={isOpen}
             onOpen={handlePopoverOpen}
             onClose={handlePopoverClose}
