@@ -27,6 +27,10 @@ import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstall
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
 import {BundleStatus} from 'models/convert/bundle/types'
+import {
+    NavigatedSuccessModalLocationState,
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
 import css from './ConvertOnboardingView.less'
 
@@ -126,7 +130,13 @@ const ConvertOnboardingView = () => {
     useEffect(() => {
         // Once onboarding is done, redirect user to campaigns
         if ((!isSubscriber && isSetup) || (isSubscriber && isOnboarded)) {
-            history.push(`/app/convert/${chatIntegrationId}/campaigns`)
+            const locationState: NavigatedSuccessModalLocationState = {
+                showModal: NavigatedSuccessModalName.ConvertOnboarding,
+            }
+            history.push(
+                `/app/convert/${chatIntegrationId}/campaigns`,
+                locationState
+            )
         }
     }, [chatIntegrationId, isSubscriber, isOnboarded, isSetup])
 

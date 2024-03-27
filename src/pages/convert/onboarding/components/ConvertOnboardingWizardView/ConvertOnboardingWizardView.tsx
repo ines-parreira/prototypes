@@ -13,6 +13,10 @@ import {
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
+import {
+    NavigatedSuccessModalLocationState,
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {OnboardingWizardSteps} from './constants'
 import WizardLayout from './components/WizardLayout'
 
@@ -65,8 +69,12 @@ const ConvertOnboardingWizardView = () => {
     useEffect(() => {
         // Once onboarding is done, redirect user to campaigns
         if (channelConnection?.is_onboarded === true && chatIntegrationId) {
+            const locationState: NavigatedSuccessModalLocationState = {
+                showModal: NavigatedSuccessModalName.ConvertOnboarding,
+            }
             history.push(
-                `/app/convert/${chatIntegrationId}/campaigns#onboarding-complete`
+                `/app/convert/${chatIntegrationId}/campaigns`,
+                locationState
             )
         }
     }, [channelConnection, chatIntegrationId])

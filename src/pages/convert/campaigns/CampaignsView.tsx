@@ -20,6 +20,10 @@ import {IntegrationType} from 'models/integration/constants'
 
 import {toJS} from 'utils'
 import history from 'pages/history'
+import NavigatedSuccessModal, {
+    NavigatedSuccessModalName,
+} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import {CONVERT_ROUTE_PARAM_NAME} from '../common/constants'
 import {ConvertRouteParams} from '../common/types'
 import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
@@ -164,6 +168,17 @@ export const CampaignsView = () => {
 
     return (
         <CampaignListOptions>
+            <NavigatedSuccessModal
+                name={NavigatedSuccessModalName.ConvertOnboarding}
+                icon={SuccessModalIcon.PartyPopper}
+                buttonLabel="Go To Convert Settings"
+            >
+                <div className="heading-page-semibold mb-2">All set!</div>
+                <div className="heading-subsection-regular">
+                    You can now display campaigns on your website.
+                </div>
+            </NavigatedSuccessModal>
+
             <div className={classnames('full-width', css.pageWrapper)}>
                 <PageHeader title={'Campaigns'}>
                     {isConvertSubscriber &&

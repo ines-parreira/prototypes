@@ -9,6 +9,7 @@ import SuccessModal from './SuccessModal'
 export enum NavigatedSuccessModalName {
     GorgiasChatManualInstallation = 'gorgias-chat-manual-installation',
     GorgiasChatAutoInstallation = 'gorgias-chat-auto-installation',
+    ConvertOnboarding = 'convert-onboarding',
 }
 
 export type NavigatedSuccessModalLocationState = {

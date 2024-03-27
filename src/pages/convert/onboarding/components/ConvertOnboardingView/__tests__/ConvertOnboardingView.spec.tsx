@@ -14,6 +14,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {channelConnection} from 'fixtures/channelConnection'
 import {useListBundles} from 'models/convert/bundle/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import ConvertOnboardingView from '../ConvertOnboardingView'
 
 const queryClient = mockQueryClient()
@@ -114,7 +115,15 @@ describe('<ConvertOnboardingView />', () => {
 
             // Ensure redirection happens
             await waitFor(() => {
-                expect(spy.mock.calls).toEqual([['/app/convert/123/campaigns']])
+                expect(spy.mock.calls).toEqual([
+                    [
+                        '/app/convert/123/campaigns',
+                        {
+                            showModal:
+                                NavigatedSuccessModalName.ConvertOnboarding,
+                        },
+                    ],
+                ])
             })
 
             const button = 'Get started with campaigns'

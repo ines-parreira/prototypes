@@ -1,5 +1,5 @@
 import React from 'react'
-import {screen, fireEvent, waitFor} from '@testing-library/react'
+import {screen, fireEvent, waitFor, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,6 +8,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import routerDom from 'react-router-dom'
 import _omit from 'lodash/omit'
 import LD from 'launchdarkly-react-client-sdk'
+import {createBrowserHistory} from 'history'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import {billingState} from 'fixtures/billing'
@@ -26,6 +27,7 @@ import {campaign} from 'fixtures/campaign'
 import {channelConnection} from 'fixtures/channelConnection'
 import {FeatureFlagKey} from 'config/featureFlags'
 
+import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {Campaign} from '../types/Campaign'
 import {CampaignsView} from '../CampaignsView'
 import {CONVERT_ROUTE_PARAM_NAME} from '../../common/constants'
@@ -69,6 +71,8 @@ const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 const useDeleteCampaignMock = assumeMock(useDeleteCampaign)
 
 const queryClient = mockQueryClient()
+
+const mockHistory = createBrowserHistory()
 
 describe('<CampaignsView/>', () => {
     const mutateCreateMock = jest.fn()
@@ -156,7 +160,10 @@ describe('<CampaignsView/>', () => {
                 <Provider store={mockStore(state)}>
                     <CampaignsView />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
+            {
+                history: mockHistory,
+            }
         )
     }
 
@@ -186,6 +193,25 @@ describe('<CampaignsView/>', () => {
 
         expect(getByText('Super campaign')).toBeInTheDocument()
         expect(getByText('Not so good campaign')).toBeInTheDocument()
+    })
+
+    it('should display the success setup modal', () => {
+        useParamsMock.mockReturnValue({
+            [CONVERT_ROUTE_PARAM_NAME]: '118',
+        })
+
+        act(() =>
+            mockHistory.push('/', {
+                showModal: NavigatedSuccessModalName.ConvertOnboarding,
+            })
+        )
+
+        const {getByText} = renderComponent(defaultState)
+
+        expect(getByText('All set!')).toBeInTheDocument()
+        expect(
+            getByText('You can now display campaigns on your website.')
+        ).toBeInTheDocument()
     })
 
     describe('Campaigns library', () => {

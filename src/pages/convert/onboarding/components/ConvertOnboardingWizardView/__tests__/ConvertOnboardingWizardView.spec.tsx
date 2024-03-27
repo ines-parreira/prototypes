@@ -19,6 +19,7 @@ import {
 import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
+import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import ConvertOnboardingWizardView from '../ConvertOnboardingWizardView'
 
 const mockStore = configureMockStore()
@@ -128,7 +129,12 @@ describe('ConvertOnboardingWizardView', () => {
         // Ensure redirection happens
         await waitFor(() => {
             expect(spy.mock.calls).toEqual([
-                ['/app/convert/123/campaigns#onboarding-complete'],
+                [
+                    '/app/convert/123/campaigns',
+                    {
+                        showModal: NavigatedSuccessModalName.ConvertOnboarding,
+                    },
+                ],
             ])
         })
     })
