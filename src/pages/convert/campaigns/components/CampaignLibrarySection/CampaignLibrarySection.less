@@ -19,8 +19,24 @@
 
     .templatesContainer {
         display: grid;
-        grid-template-columns: repeat(auto-fit, 370px);
+        grid-template-columns: repeat(auto-fit, minmax(250px, 370px));
         gap: @layout-spacing-m;
         margin: @layout-spacing-m 0 @layout-spacing-xl 0;
+
+        @media @mobiles {
+            grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+        }
+
+        @media @tablets {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        @media @desktops {
+            grid-template-columns: repeat(2, minmax(250px, 1fr));
+        }
+
+        @media @large-desktops {
+            grid-template-columns: repeat(3, minmax(300px, 400px));
+        }
     }
 }
