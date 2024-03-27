@@ -136,7 +136,7 @@ export const RuleRecipeModal = ({
                             [css.disabledButton]: isInstallationDisabled,
                         })}
                         position="left"
-                        label="Add Automation Features to Install"
+                        label="Add Automate Features to Install"
                     />
                 </span>
                 {!!installationErrors.length && <ErrorTooltip />}

@@ -142,7 +142,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                     }}
                                 >
                                     <ButtonIconLabel icon="bolt">
-                                        Go to automate settings
+                                        Go to Automate settings
                                     </ButtonIconLabel>
                                 </Button>
                             ) : (

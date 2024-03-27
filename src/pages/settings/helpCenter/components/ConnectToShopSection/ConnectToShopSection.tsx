@@ -80,7 +80,7 @@ export const ConnectToShopSection = ({
                         </Button>
                         <ConfirmButton
                             confirmationButtonIntent="destructive"
-                            confirmationContent="Auto-embedding and automation features will no longer be available."
+                            confirmationContent="Auto-embedding and Automate features will no longer be available."
                             confirmationTitle={<b>Disconnect store?</b>}
                             confirmLabel="Disconnect"
                             fillStyle="ghost"

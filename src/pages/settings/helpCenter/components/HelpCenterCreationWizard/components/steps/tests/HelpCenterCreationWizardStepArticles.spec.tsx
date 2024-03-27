@@ -122,7 +122,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
     })
 
     describe('article footer', () => {
-        it('should render actions for automate account', () => {
+        it('should render actions for Automate account', () => {
             renderComponent({
                 automateType: HelpCenterAutomateType.AUTOMATE,
             })

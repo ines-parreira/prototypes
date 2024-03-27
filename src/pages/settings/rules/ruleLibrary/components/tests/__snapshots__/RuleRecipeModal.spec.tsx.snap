@@ -253,7 +253,7 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                         >
                           bolt
                         </i>
-                        Add Automation Features to Install
+                        Add Automate Features to Install
                       </span>
                     </button>
                   </div>

@@ -310,7 +310,7 @@ describe('helpCenterCreationWizardUtils', () => {
     })
 
     describe('mapEntrypointsToAutomationSettings', () => {
-        it('should correctly map entrypoints to automation settings', () => {
+        it('should correctly map entrypoints to Automate settings', () => {
             const entrypoints = [
                 {workflow_id: '1', enabled: true},
                 {workflow_id: '2', enabled: false},

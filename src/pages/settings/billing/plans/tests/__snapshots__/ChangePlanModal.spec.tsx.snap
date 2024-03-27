@@ -517,7 +517,7 @@ exports[`<ChangePlanModal /> should render a discount when discounted prices 1`]
 </body>
 `;
 
-exports[`<ChangePlanModal /> should render the automation plan features for the current automation plan 1`] = `
+exports[`<ChangePlanModal /> should render the Automate plan features for the current Automate plan 1`] = `
 <body
   class="modal-open"
 >

@@ -67,7 +67,7 @@ const useHelpCentersAutomationSettings = (
 
                 void dispatch(
                     notify({
-                        message: 'Failed to fetch automation settings',
+                        message: 'Failed to fetch Automate settings',
                         status: NotificationStatus.Error,
                     })
                 )
@@ -112,7 +112,7 @@ const useHelpCentersAutomationSettings = (
 
                 void dispatch(
                     notify({
-                        message: 'Failed to update automation settings',
+                        message: 'Failed to update Automate settings',
                         status: NotificationStatus.Error,
                     })
                 )

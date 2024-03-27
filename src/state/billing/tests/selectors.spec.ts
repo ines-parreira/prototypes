@@ -425,7 +425,7 @@ describe('billing selectors', () => {
     })
 
     describe('getAutomationProduct', () => {
-        it('should return the automation product', () => {
+        it('should return the Automate product', () => {
             expect(selectors.getAutomationProduct(state)).toMatchSnapshot()
         })
     })
@@ -439,7 +439,7 @@ describe('billing selectors', () => {
     })
 
     describe('getCurrentAutomationProduct', () => {
-        it('should return the current automation product', () => {
+        it('should return the current Automate product', () => {
             expect(
                 selectors.getCurrentAutomationProduct({
                     ...state,
@@ -698,7 +698,7 @@ describe('billing selectors', () => {
     })
 
     describe('getAutomationPrices', () => {
-        it('should return the automation prices', () => {
+        it('should return the Automate prices', () => {
             expect(selectors.getAutomationPrices(state)).toMatchSnapshot()
         })
     })

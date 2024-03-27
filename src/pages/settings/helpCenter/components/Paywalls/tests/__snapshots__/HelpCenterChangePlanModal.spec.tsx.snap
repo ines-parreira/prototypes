@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HelpCenterChangePlanModal should render the automation plan card when current plan has automation enabled 1`] = `
+exports[`HelpCenterChangePlanModal should render the Automate plan card when current plan has Automate enabled 1`] = `
 <body
   class="modal-open"
 >

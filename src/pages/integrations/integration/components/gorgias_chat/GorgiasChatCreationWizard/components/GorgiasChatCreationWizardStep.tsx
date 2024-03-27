@@ -82,7 +82,7 @@ const GorgiasChatCreationWizardStep: React.FC<Props> = ({
             <div className={css.preview}>
                 {showPreviewPlaceholder ? (
                     <div className={css.previewPlaceholder}>
-                        Connect a store to use automate features in Chat
+                        Connect a store to use Automate features in Chat
                     </div>
                 ) : (
                     <div className={css.previewCenter}>{preview}</div>

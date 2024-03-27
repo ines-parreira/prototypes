@@ -55,7 +55,7 @@ describe('isAutomationPrice', () => {
         [basicMonthlyHelpdeskPrice, false],
         [basicMonthlyAutomationPrice, true],
     ])(
-        'should validate if the price is of automation price',
+        'should validate if the price is of Automate price',
         (price, expectedResult) => {
             expect(isAutomationPrice(price)).toBe(expectedResult)
         }

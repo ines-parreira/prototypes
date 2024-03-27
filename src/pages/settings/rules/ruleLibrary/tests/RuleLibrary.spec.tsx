@@ -58,7 +58,7 @@ describe('<RuleLibrary/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render automation subscribe button', () => {
+        it('should render Automate subscribe button', () => {
             render(
                 <Provider store={defaultStore}>
                     <RuleLibrary {...minProps} />

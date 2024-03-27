@@ -162,8 +162,8 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     </div>
                     <div>
                         Add the chat widget to your Shopify store in one click.
-                        Note that this will automatically enable Automation
-                        Add-on features if available.
+                        Note that this will automatically enable Automate
+                        features if available.
                     </div>
                 </div>
                 {isInstalled ? (

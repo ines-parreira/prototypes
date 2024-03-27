@@ -114,7 +114,7 @@ const PaymentInformationView = ({
                     'To change billing frequency, upgrade your Helpdesk plan to Basic or higher'
             } else if (isAAOLegacy) {
                 toolTipContent =
-                    'To change billing frequency, update Automation to a non-legacy plan'
+                    'To change billing frequency, update Automate to a non-legacy plan'
             } else if (isCurrentSubscriptionCanceled) {
                 toolTipContent = (
                     <>

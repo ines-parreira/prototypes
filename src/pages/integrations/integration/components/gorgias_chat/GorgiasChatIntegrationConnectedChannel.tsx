@@ -105,7 +105,7 @@ const GorgiasChatIntegrationConnectedChannel = ({integration}: Props) => {
             <ButtonIconLabel icon="bolt">
                 {changeAutomateSettingButtomPosition
                     ? 'Automate Settings'
-                    : 'Go to automate settings'}
+                    : 'Go to Automate settings'}
             </ButtonIconLabel>
         </Button>
     )

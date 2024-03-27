@@ -58,7 +58,7 @@ describe('setHelpdeskNotification', () => {
 describe('setAutomationNotification', () => {
     const onClick = jest.fn()
 
-    it('renders new Automation subscription message', () => {
+    it('renders new Automate subscription message', () => {
         const oldProduct = undefined
         const newProduct = basicMonthlyAutomationPrice
 
@@ -75,9 +75,9 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            'Woohoo! You now have access to <strong>Automation!</strong>'
+            'Woohoo! You now have access to <strong>Automate!</strong>'
         )
-        expect(notification?.buttons?.[0].name).toBe('Set Up Automation')
+        expect(notification?.buttons?.[0].name).toBe('Set Up Automate')
     })
 
     it('renders upgrade message when new product amount is greater', () => {
@@ -86,7 +86,7 @@ describe('setAutomationNotification', () => {
             ...basicMonthlyAutomationPrice,
             amount: 20000,
             num_quota_tickets: 350,
-            name: 'New Automation Plan',
+            name: 'New Automate Plan',
         }
         const periodEnd = '2023-06-30'
         const interval = PlanInterval.Month
@@ -103,7 +103,7 @@ describe('setAutomationNotification', () => {
         expect(notification?.message).toContain(
             `Success! You now have <strong>${newProduct.num_quota_tickets} automated interactions per month</strong>`
         )
-        expect(notification?.buttons?.[0].name).toBe('Automation Settings')
+        expect(notification?.buttons?.[0].name).toBe('Automate Settings')
     })
 
     it('renders downgrade message when new product amount is less', () => {
@@ -112,7 +112,7 @@ describe('setAutomationNotification', () => {
             ...basicMonthlyAutomationPrice,
             amount: 1000,
             num_quota_tickets: 350,
-            name: 'New Automation Plan',
+            name: 'New Automate Plan',
         }
         const periodEnd = '2023-06-30'
         const interval = PlanInterval.Month
@@ -127,7 +127,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Your Automation subscription will change to <strong>${newProduct.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`
+            `Your Automate subscription will change to <strong>${newProduct.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`
         )
         expect(notification?.buttons?.length).toBe(0)
     })

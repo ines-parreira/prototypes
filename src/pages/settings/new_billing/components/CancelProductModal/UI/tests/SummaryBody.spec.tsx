@@ -30,7 +30,7 @@ describe('SummaryBody', () => {
                 strickenOut: true,
             },
             {
-                title: 'Automation',
+                title: 'Automate',
                 label: null,
                 interval: 'month',
                 quotaAmount: 1000,

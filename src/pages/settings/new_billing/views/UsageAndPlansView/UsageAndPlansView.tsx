@@ -273,8 +273,8 @@ const UsageAndPlansView = ({
                                 className={css.tooltip}
                                 autohide={false}
                             >
-                                To change billing frequency, update Automation
-                                to a non-legacy plan
+                                To change billing frequency, update Automate to
+                                a non-legacy plan
                             </Tooltip>
                         </div>
                     ) : !!scheduledToCancelAt ? (

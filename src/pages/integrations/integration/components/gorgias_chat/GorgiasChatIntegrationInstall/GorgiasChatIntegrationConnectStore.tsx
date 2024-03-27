@@ -146,8 +146,8 @@ const GorgiasChatIntegrationConnectStore = ({
                                 confirmationButtonIntent="destructive"
                                 confirmationContent={
                                     isOneClickInstallation
-                                        ? 'Disconnecting this store will remove automation features and uninstall the chat from your store, removing it from all pages.'
-                                        : 'Disconnecting this store will remove automation features from your chat widget.'
+                                        ? 'Disconnecting this store will remove Automate features and uninstall the chat from your store, removing it from all pages.'
+                                        : 'Disconnecting this store will remove Automate features from your chat widget.'
                                 }
                                 confirmationTitle={<b>Disconnect store?</b>}
                                 confirmLabel="Disconnect"

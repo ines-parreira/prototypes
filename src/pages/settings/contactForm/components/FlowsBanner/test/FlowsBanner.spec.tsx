@@ -30,7 +30,7 @@ describe('FlowsBanner', () => {
         expect(titleElement).toBeInTheDocument()
     })
 
-    it('renders banner when automation is not enabled', () => {
+    it('renders banner when Automate is not enabled', () => {
         const props = {
             ...mockProps,
             isSubscribedToAutomation: false,

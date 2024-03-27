@@ -99,7 +99,7 @@ describe('HelpCenterChangePlanModal', () => {
         ])
     })
 
-    it('should render the automation plan card when current plan has automation enabled', () => {
+    it('should render the Automate plan card when current plan has Automate enabled', () => {
         const state: Partial<RootState> = {
             billing: fromJS(billingState),
             currentAccount: fromJS({

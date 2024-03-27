@@ -217,7 +217,7 @@ export const mapLanguagePickerToHelpCenterLanguages = (
 }
 
 /**
- * Map entrypoints from workflow list to help center automation settings
+ * Map entrypoints from workflow list to help center Automate settings
  */
 export const mapEntrypointsToAutomationSettings = (
     entrypoints: Entrypoint[]

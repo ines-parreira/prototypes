@@ -90,24 +90,24 @@ export const setAutomationNotification = ({
     let buttonLabel = ''
 
     if (!oldProduct) {
-        // New Automation subscription
-        message = 'Woohoo! You now have access to <strong>Automation!</strong>'
-        buttonLabel = 'Set Up Automation'
+        // New Automate subscription
+        message = 'Woohoo! You now have access to <strong>Automate!</strong>'
+        buttonLabel = 'Set Up Automate'
     } else if (
-        // Downgrade Automation subscription
+        // Downgrade Automate subscription
         oldProduct.amount > (newProduct?.amount ?? 0)
     ) {
-        message = `Your Automation subscription will change to <strong>${
+        message = `Your Automate subscription will change to <strong>${
             newProduct?.num_quota_tickets ?? 0
         } ${
             PRODUCT_INFO.automation.counter
         }/${interval}</strong> on <strong>${periodEnd}</strong>.`
     } else {
-        // Upgrade Automation subscription
+        // Upgrade Automate subscription
         message = `Success! You now have <strong>${
             newProduct?.num_quota_tickets ?? ''
         } ${PRODUCT_INFO.automation.counter} per ${interval}</strong>`
-        buttonLabel = 'Automation Settings'
+        buttonLabel = 'Automate Settings'
     }
 
     // Add the notification

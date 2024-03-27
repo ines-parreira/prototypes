@@ -108,7 +108,7 @@ describe('<ChangePlanModal />', () => {
         expect(baseElement).toMatchSnapshot()
     })
 
-    it('should render the automation plan features for the current automation plan', () => {
+    it('should render the Automate plan features for the current Automate plan', () => {
         const {baseElement} = render(
             <Provider
                 store={mockStore({

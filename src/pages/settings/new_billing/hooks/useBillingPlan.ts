@@ -112,7 +112,7 @@ export const useBillingPlans = ({
         [helpdeskPriceIds, helpdeskProduct]
     )
 
-    // Automation
+    // Automate
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
     const automationPrices = useAppSelector(
         getAutomationProduct
@@ -480,7 +480,7 @@ export const useBillingPlans = ({
             }
         }
 
-        // handle subscribe for Automation plan
+        // handle subscribe for Automate plan
         if (selectedPlans[ProductType.Automation].isSelected) {
             if (isNewAutomationProduct && !isIntervalChanged) {
                 const notification = setAutomationNotification({
@@ -534,9 +534,9 @@ export const useBillingPlans = ({
             }
         }
 
-        // update subscription for Helpdesk and Automation plans
+        // update subscription for Helpdesk and Automate plans
         if (Object.keys(plansToBeUpdated).length > 0) {
-            // Automation has been removed while in free trial
+            // Automate has been removed while in free trial
             if (
                 notifications.length === 0 &&
                 !!automationProduct &&

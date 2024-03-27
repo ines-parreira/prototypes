@@ -454,7 +454,7 @@ describe('UsageAndPlansView', () => {
         )
     })
 
-    it('should render with active subscription containing Automation legacy product', () => {
+    it('should render with active subscription containing Automate legacy product', () => {
         const alteredBilling = {
             ...mockedBilling,
             products: [
@@ -547,7 +547,7 @@ describe('UsageAndPlansView', () => {
             {
                 autohide: false,
                 children:
-                    'To change billing frequency, update Automation to a non-legacy plan',
+                    'To change billing frequency, update Automate to a non-legacy plan',
                 className: 'tooltip',
                 placement: 'top',
                 target: 'update-billing-frequency',
