@@ -12,6 +12,12 @@ import {
     VoiceCallMeasure,
 } from 'models/reporting/cubes/VoiceCallCube'
 import {declinedVoiceCallsCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
+import {
+    VoiceEventsByAgentMeasure,
+    VoiceEventsByAgentMember,
+    VoiceEventsByAgentSegment,
+} from 'models/reporting/cubes/VoiceEventsByAgent'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 describe('useEnrichedCubes', () => {
     const query = closedTicketsQueryFactory(
@@ -34,7 +40,7 @@ describe('useEnrichedCubes', () => {
         expect(result.current).toEqual(query)
     })
 
-    it('should should rename Cubes in the query when the feature flag is on', () => {
+    it('should rename Cubes in the query when the feature flag is on', () => {
         jest.spyOn(LD, 'useFlags').mockReturnValue({
             [FeatureFlagKey.AnalyticsNewCubes]: true,
         })
@@ -48,7 +54,7 @@ describe('useEnrichedCubes', () => {
         VoiceCallMeasure.VoiceCallCount,
         VoiceCallMeasure.VoiceCallAverageTalkTime,
         VoiceCallMeasure.VoiceCallAverageWaitTime,
-    ])('should not rename Cubes for voiceCallQueries', (measure) => {
+    ])('should rename Cubes for voiceCallQueries', (measure) => {
         jest.spyOn(LD, 'useFlags').mockReturnValue({
             [FeatureFlagKey.AnalyticsNewCubes]: true,
         })
@@ -69,10 +75,22 @@ describe('useEnrichedCubes', () => {
 
         const {result} = renderHook(() => useEnrichedCubes(query))
 
-        expect(result.current).toEqual(query)
+        expect(result.current).toEqual({
+            measures: [measure],
+            dimensions: [],
+            timezone: 'UTC',
+            segments: [],
+            filters: [
+                {
+                    member: `TicketEnriched.tags`,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['bar'],
+                },
+            ],
+        })
     })
 
-    it('should not rename Cubes for VoiceEventsByAgentMeasure', () => {
+    it('should rename Cubes for VoiceEventsByAgentMeasure', () => {
         jest.spyOn(LD, 'useFlags').mockReturnValue({
             [FeatureFlagKey.AnalyticsNewCubes]: true,
         })
@@ -90,6 +108,36 @@ describe('useEnrichedCubes', () => {
 
         const {result} = renderHook(() => useEnrichedCubes(query))
 
-        expect(result.current).toEqual(query)
+        expect(result.current).toEqual({
+            measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
+            dimensions: [],
+            timezone: `UTC`,
+            segments: [VoiceEventsByAgentSegment.declinedCalls],
+            filters: [
+                {
+                    member: VoiceEventsByAgentMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [
+                        formatReportingQueryDate(
+                            '2020-01-16T03:04:56.789-10:00'
+                        ),
+                    ],
+                },
+                {
+                    member: VoiceEventsByAgentMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [
+                        formatReportingQueryDate(
+                            '2020-01-17T03:04:56.789-10:00'
+                        ),
+                    ],
+                },
+                {
+                    member: 'TicketEnriched.tags',
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+            ],
+        })
     })
 })
