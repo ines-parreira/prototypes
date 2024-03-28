@@ -7,7 +7,7 @@ type Props = {
     children: ReactNode
     onClick?: (event: MouseEvent<HTMLDivElement>) => void
     isSelected?: boolean
-    type: 'choice' | 'condition'
+    type: 'choice' | 'condition' | 'http_request'
 }
 
 const EdgeLabel = ({children, onClick, isSelected, type}: Props) => {

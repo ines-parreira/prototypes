@@ -86,7 +86,7 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
             ],
         })
         const httpRequestStepId = b.selection.id
-        b.insertMessageStepAndSelect({
+        b.insertHttpRequestConditionAndMessageStepAndSelect('success', {
             content: {
                 html: `<div>Here&#x27;s your point balance:</div><div>- Points spent: {{steps_state.${httpRequestStepId}.content.${pointsSpentVariableId}}} </div><div>- Available points: {{steps_state.${httpRequestStepId}.content.${pointsApprovedVariableId}}} </div><div>- Rewards claimed: {{steps_state.${httpRequestStepId}.content.${rewardsClaimedVariableId}}} </div>`,
                 text: `Here's your point balance:
@@ -96,6 +96,9 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
             },
         })
         b.insertHelpfulPromptStepAndSelect()
+        b.selectParentStep()
+        b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
         return b.build()
     },
 }

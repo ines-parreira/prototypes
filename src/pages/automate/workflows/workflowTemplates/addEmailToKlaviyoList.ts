@@ -73,13 +73,16 @@ export const ADD_EMAIL_TO_KLAVIYO_LIST: WorkflowTemplate = {
 }`,
             variables: [],
         })
-        b.insertMessageStepAndSelect({
+        b.insertHttpRequestConditionAndMessageStepAndSelect('success', {
             content: {
                 html: '<div>Thanks, you&#x27;re subscribed now! Keep an eye out for our upcoming announcements and special deals. Have a good day!</div>',
                 text: "Thanks, you're subscribed now! Keep an eye out for our upcoming announcements and special deals. Have a good day!",
             },
         })
         b.insertHelpfulPromptStepAndSelect()
+        b.selectParentStep()
+        b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
         return b.build()
     },
 }

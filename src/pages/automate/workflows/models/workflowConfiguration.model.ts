@@ -1,5 +1,6 @@
 import {ulid} from 'ulidx'
 import _omit from 'lodash/omit'
+import {getHttpRequestSuccessConditions} from '../hooks/useVisualBuilderGraphReducer/utils'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -444,6 +445,111 @@ export class WorkflowConfigurationBuilder {
             settings,
         }
         return this.insertChoiceAndStepTargetAndSelect(choiceLabel, step)
+    }
+
+    private insertConditionsAndStepTargetAndSelect(
+        step: WorkflowStep,
+        conditionName: string,
+        conditions?: WorkflowTransition['conditions']
+    ) {
+        if (
+            this._selection?.kind !== 'conditions' &&
+            this._selection?.kind !== 'http-request'
+        )
+            throw new Error(
+                `${step.kind} step can only be inserted after conditions or http-request step`
+            )
+        this.data.steps.push(step)
+        const transition: WorkflowTransition = {
+            id: ulid(),
+            name: conditionName,
+            conditions,
+            from_step_id: this._selection.id,
+            to_step_id: step.id,
+        }
+        this.data.transitions.push(transition)
+        this._selection = step
+    }
+
+    insertHttpRequestConditionAndHandOverStepAndSelect(
+        type: 'error' | 'success',
+        settings: WorkflowStepHandover['settings'] = {}
+    ) {
+        const step: WorkflowStepHandover = {
+            id: ulid(),
+            kind: 'handover',
+            settings,
+        }
+        const label = type === 'error' ? 'Error' : 'Success'
+        this.insertConditionsAndStepTargetAndSelect(
+            step,
+            label,
+            type === 'success'
+                ? getHttpRequestSuccessConditions(this._selection.id)
+                : undefined
+        )
+    }
+
+    insertHttpRequestConditionAndHttpRequestStepAndSelect(
+        type: 'error' | 'success',
+        settings: WorkflowStepHttpRequest['settings']
+    ) {
+        const step: WorkflowStepHttpRequest = {
+            id: ulid(),
+            kind: 'http-request',
+            settings,
+        }
+        const label = type === 'error' ? 'Error' : 'Success'
+        this.insertConditionsAndStepTargetAndSelect(
+            step,
+            label,
+            type === 'success'
+                ? getHttpRequestSuccessConditions(this._selection.id)
+                : undefined
+        )
+    }
+
+    insertHttpRequestConditionAndMultipleChoiceStepAndSelect(
+        type: 'error' | 'success',
+        message: WorkflowStepChoices['settings']['message']
+    ) {
+        const step: WorkflowStepChoices = {
+            id: ulid(),
+            kind: 'choices',
+            settings: {
+                choices: [],
+                message,
+            },
+        }
+        const label = type === 'error' ? 'Error' : 'Success'
+        this.insertConditionsAndStepTargetAndSelect(
+            step,
+            label,
+            type === 'success'
+                ? getHttpRequestSuccessConditions(this._selection.id)
+                : undefined
+        )
+    }
+
+    insertHttpRequestConditionAndMessageStepAndSelect(
+        type: 'error' | 'success',
+        message: WorkflowStepMessage['settings']['message']
+    ) {
+        const step: WorkflowStepMessage = {
+            id: ulid(),
+            kind: 'message',
+            settings: {
+                message,
+            },
+        }
+        const label = type === 'error' ? 'Error' : 'Success'
+        this.insertConditionsAndStepTargetAndSelect(
+            step,
+            label,
+            type === 'success'
+                ? getHttpRequestSuccessConditions(this._selection.id)
+                : undefined
+        )
     }
 
     insertChoiceAndAttachmentsInputStepAndSelect(

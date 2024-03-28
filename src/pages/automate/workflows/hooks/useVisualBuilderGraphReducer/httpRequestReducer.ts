@@ -10,14 +10,25 @@ import {
 import {
     cleanConditionsFromEmptyVariables,
     walkVisualBuilderGraph,
+    buildEdgeCommonProperties,
 } from '../../models/visualBuilderGraph.model'
 import {
     HttpRequestNodeType,
     VisualBuilderEdge,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
+import {
+    buildCreateTicketEndNode,
+    computeNodesPositions,
+    buildHttpRequestNode,
+    getHttpRequestSuccessConditions,
+} from './utils'
 
 export type VisualBuilderHttpRequestAction =
+    | {
+          type: 'INSERT_HTTP_REQUEST_NODE'
+          beforeNodeId: string
+      }
     | {
           type: 'SET_HTTP_REQUEST_NAME'
           httpRequestNodeId: string
@@ -108,6 +119,7 @@ type ActionTypes = {
     [K in VisualBuilderHttpRequestAction['type']]: true
 }
 const visualBuilderHttpRequestActionTypes: ActionTypes = {
+    INSERT_HTTP_REQUEST_NODE: true,
     SET_HTTP_REQUEST_NAME: true,
     SET_HTTP_REQUEST_URL: true,
     SET_HTTP_REQUEST_METHOD: true,
@@ -139,6 +151,10 @@ export function httpRequestReducer(
     action: VisualBuilderHttpRequestAction
 ): VisualBuilderGraph {
     switch (action.type) {
+        case 'INSERT_HTTP_REQUEST_NODE':
+            return computeNodesPositions(
+                insertHttpRequest(graph, action.beforeNodeId)
+            )
         case 'SET_HTTP_REQUEST_NAME':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
@@ -578,5 +594,37 @@ function rebuildGraphForVariableChange(
                 variable
             )
         }
+    })
+}
+
+function insertHttpRequest(graph: VisualBuilderGraph, beforeEndNodeId: string) {
+    return produce(graph, (draft) => {
+        const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
+        if (!edge) return
+        const httpRequestNode = buildHttpRequestNode()
+        const endNode = buildCreateTicketEndNode()
+        draft.nodes.push(httpRequestNode, endNode)
+        edge.target = httpRequestNode.id
+        draft.edges.push(
+            {
+                ...buildEdgeCommonProperties(),
+                source: httpRequestNode.id,
+                target: beforeEndNodeId,
+                data: {
+                    name: 'Success',
+                    conditions: getHttpRequestSuccessConditions(
+                        httpRequestNode.id
+                    ),
+                },
+            },
+            {
+                ...buildEdgeCommonProperties(),
+                source: httpRequestNode.id,
+                target: endNode.id,
+                data: {
+                    name: 'Error',
+                },
+            }
+        )
     })
 }

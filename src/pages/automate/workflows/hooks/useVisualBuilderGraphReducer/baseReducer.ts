@@ -21,7 +21,6 @@ import {
     buildAutomatedMessageNode,
     buildEndNode,
     buildFileUploadNode,
-    buildHttpRequestNode,
     buildOrderSelectionNode,
     buildShopperAuthenticationNode,
     buildTextReplyNode,
@@ -94,10 +93,6 @@ export type VisualBuilderBaseAction =
       }
     | {
           type: 'INSERT_ORDER_SELECTION_NODE'
-          beforeNodeId: string
-      }
-    | {
-          type: 'INSERT_HTTP_REQUEST_NODE'
           beforeNodeId: string
       }
     | {
@@ -229,14 +224,6 @@ export function baseReducer(
                 insertNodeBefore(
                     graph,
                     buildOrderSelectionNode(),
-                    action.beforeNodeId
-                )
-            )
-        case 'INSERT_HTTP_REQUEST_NODE':
-            return computeNodesPositions(
-                insertNodeBefore(
-                    graph,
-                    buildHttpRequestNode(),
                     action.beforeNodeId
                 )
             )

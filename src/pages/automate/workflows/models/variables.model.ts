@@ -204,7 +204,7 @@ export const buildWorkflowVariableFromNode = (
                 },
             ],
         }
-    } else if (node.type === 'http_request' && node.data.variables.length) {
+    } else if (node.type === 'http_request') {
         const {
             data: {name, variables},
         } = node
@@ -212,16 +212,33 @@ export const buildWorkflowVariableFromNode = (
         return {
             nodeType: 'http_request',
             name: name || 'Request name',
-            variables: variables.map((variable) => ({
-                name: variable.name || 'Name',
-                value: `steps_state.${node.id}.content.${variable.id}`,
-                nodeType: 'http_request',
-                type: variable.data_type,
-                filter:
-                    variable.data_type === 'date'
-                        ? 'format_datetime'
-                        : undefined,
-            })),
+            variables: variables
+                .map((variable) => ({
+                    name: variable.name || 'Name',
+                    value: `steps_state.${node.id}.content.${variable.id}`,
+                    nodeType: 'http_request' as const,
+                    type: variable.data_type,
+                    filter:
+                        variable.data_type === 'date'
+                            ? 'format_datetime'
+                            : undefined,
+                }))
+                .concat([
+                    {
+                        name: 'HTTP request success',
+                        nodeType: 'http_request',
+                        value: `steps_state.${node.id}.success`,
+                        type: 'boolean',
+                        filter: undefined,
+                    },
+                    {
+                        name: 'HTTP status code',
+                        nodeType: 'http_request',
+                        value: `steps_state.${node.id}.status_code`,
+                        type: 'number',
+                        filter: undefined,
+                    },
+                ]),
         }
     } else if (node.type === 'file_upload') {
         const {

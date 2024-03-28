@@ -39,13 +39,35 @@ export function useVisualBuilderNodeProps({
     const isSelected = visualBuilderNodeIdEditing === id
     const incomingChoice = getIncoming(visualBuilderGraph, id, 'choice')
     const incomingCondition = getIncoming(visualBuilderGraph, id, 'conditions')
+    const incomingHttpRequestCondition = getIncoming(
+        visualBuilderGraph,
+        id,
+        'http_request'
+    )
 
-    const isEdgeSelected =
-        incomingChoice?.nodeId === visualBuilderNodeIdEditing
-            ? true
-            : incomingCondition?.id
-            ? visualBuilderBranchIdsEditing.includes(incomingCondition.id)
-            : false
+    const isEdgeSelected = useMemo(() => {
+        const isChoiceSelected =
+            incomingChoice?.nodeId === visualBuilderNodeIdEditing
+        if (isChoiceSelected) return true
+
+        const isConditionsSelected =
+            incomingCondition?.id &&
+            visualBuilderBranchIdsEditing.includes(incomingCondition.id)
+        if (isConditionsSelected) return false
+
+        const isHttpRequestSelected =
+            incomingHttpRequestCondition?.nodeId === visualBuilderNodeIdEditing
+        if (isHttpRequestSelected) return true
+
+        return false
+    }, [
+        incomingChoice?.nodeId,
+        incomingCondition?.id,
+        incomingHttpRequestCondition,
+        visualBuilderBranchIdsEditing,
+        visualBuilderNodeIdEditing,
+    ])
+
     const edgeProps: VisualBuilderEdgeProps = useMemo(
         () => ({
             nodeId: id,
@@ -72,6 +94,18 @@ export function useVisualBuilderNodeProps({
                           isFallback: incomingCondition.isFallback,
                       }
                     : undefined,
+            httpRequestCondition:
+                incomingHttpRequestCondition?.nodeId &&
+                incomingHttpRequestCondition?.label &&
+                incomingHttpRequestCondition?.id &&
+                typeof incomingHttpRequestCondition?.isFallback !== 'undefined'
+                    ? {
+                          id: incomingHttpRequestCondition.id,
+                          label: incomingHttpRequestCondition.label,
+                          nodeId: incomingHttpRequestCondition.nodeId,
+                          isFallback: incomingHttpRequestCondition.isFallback,
+                      }
+                    : undefined,
             dispatch,
             isSelected: isEdgeSelected,
             setVisualBuilderNodeIdEditing,
@@ -90,6 +124,10 @@ export function useVisualBuilderNodeProps({
             incomingChoice?.eventId,
             incomingChoice?.nodeId,
             isEdgeSelected,
+            incomingHttpRequestCondition?.id,
+            incomingHttpRequestCondition?.label,
+            incomingHttpRequestCondition?.nodeId,
+            incomingHttpRequestCondition?.isFallback,
             dispatch,
             setVisualBuilderNodeIdEditing,
             setVisualBuilderChoiceEventIdEditing,

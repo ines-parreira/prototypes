@@ -41,6 +41,12 @@ export function isConditionsNodeType(
     return node.type === 'conditions'
 }
 
+export function isHttpRequestNodeType(
+    node: VisualBuilderNode
+): node is HttpRequestNodeType {
+    return node.type === 'http_request'
+}
+
 export type AutomatedMessageNodeType = Node<
     {
         content: MessageContent

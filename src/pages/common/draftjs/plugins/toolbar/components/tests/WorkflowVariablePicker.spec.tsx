@@ -43,6 +43,18 @@ const workflowVariables: WorkflowVariableList = [
             },
         ],
     },
+    {
+        nodeType: 'http_request',
+        name: 'HTTP request success',
+        value: 'success',
+        type: 'boolean',
+    },
+    {
+        nodeType: 'http_request',
+        name: 'HTTP status code',
+        value: 'status_code',
+        type: 'number',
+    },
 ]
 describe('WorkflowVariablePicker', () => {
     const renderWithToolbarProvider = (

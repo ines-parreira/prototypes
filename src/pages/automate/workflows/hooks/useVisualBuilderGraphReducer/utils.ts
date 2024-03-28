@@ -3,6 +3,8 @@ import {produce} from 'immer'
 import {FlextreeNode, flextree} from 'd3-flextree'
 import {Node, Position} from 'reactflow'
 
+import {WorkflowTransition} from '../../models/workflowConfiguration.types'
+
 import {
     buildNodeCommonProperties,
     walkVisualBuilderGraph,
@@ -182,6 +184,18 @@ export const buildEndNode = (): EndNodeType => {
     }
 }
 
+export const buildCreateTicketEndNode = (): EndNodeType => {
+    const id = ulid()
+    return {
+        ...buildNodeCommonProperties(),
+        id,
+        type: 'end',
+        data: {
+            action: 'create-ticket',
+        },
+    }
+}
+
 export const buildOrderSelectionNode = (): OrderSelectionNodeType => {
     const id = ulid()
     return {
@@ -282,5 +296,22 @@ export function computeNodesPositions(
     return {
         ...g,
         nodes: nextNodes,
+    }
+}
+
+export function getHttpRequestSuccessConditions(
+    httpRequestNodeId: string
+): WorkflowTransition['conditions'] {
+    return {
+        and: [
+            {
+                equals: [
+                    {
+                        var: `steps_state.${httpRequestNodeId}.success`,
+                    },
+                    true,
+                ],
+            },
+        ],
     }
 }

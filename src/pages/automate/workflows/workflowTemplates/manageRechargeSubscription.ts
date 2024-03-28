@@ -58,7 +58,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         const rechargeCustomerIdHttpRequestStepId = b.selection.id
         const rechargeSubscriptionIdVariableId = ulid()
         const rechargeAddressIdVariableId = ulid()
-        b.insertHttpRequestStepAndSelect({
+        b.insertHttpRequestConditionAndHttpRequestStepAndSelect('success', {
             name: 'Get Recharge subscription and address ID (make sure credentials are added)',
             url: `https://api.rechargeapps.com/subscriptions?customer_id={{steps_state.${rechargeCustomerIdHttpRequestStepId}.content.${rechargeCustomerIdVariableId}}}`,
             method: 'GET',
@@ -86,7 +86,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
             ],
         })
         const rechargeSubscriptionHttpRequestStepId = b.selection.id
-        b.insertChoicesStepAndSelect({
+        b.insertHttpRequestConditionAndMultipleChoiceStepAndSelect('success', {
             content: {
                 html: '<div>What would you like to do with your subscription?</div>',
                 text: 'What would you like to do with your subscription?',
@@ -119,7 +119,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
 }`,
             variables: [],
         })
-        b.insertMessageStepAndSelect({
+        b.insertHttpRequestConditionAndMessageStepAndSelect('success', {
             content: {
                 html: `<div>Your email has been updated to {{steps_state.${newEmailAddressTextInputStepId}.content.text}}!</div>`,
                 text: `Your email has been updated to {{steps_state.${newEmailAddressTextInputStepId}.content.text}}!`,
@@ -127,6 +127,8 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         })
         b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
+        b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
@@ -197,7 +199,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
 }`,
             variables: [],
         })
-        b.insertMessageStepAndSelect({
+        b.insertHttpRequestConditionAndMessageStepAndSelect('success', {
             content: {
                 html: `<div>Your shipping address has been updated!</div><div>-Street and number: {{steps_state.${address1TextInputStepId}.content.text}} </div><div>-Additional info: {{steps_state.${address2TextInputStepId}.content.text}} </div><div>-ZIP code: {{steps_state.${zipTextInputStepId}.content.text}} </div><div>-City: {{steps_state.${cityTextInputStepId}.content.text}} </div><div>-State: {{steps_state.${stateTextInputStepId}.content.text}} </div>`,
                 text: `Your shipping address has been updated!
@@ -210,6 +212,8 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
         })
         b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
+        b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
         b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
@@ -245,7 +249,7 @@ export const MANAGE_RECHARGE_SUBSCRIPTION: WorkflowTemplate = {
 }`,
             variables: [],
         })
-        b.insertMessageStepAndSelect({
+        b.insertHttpRequestConditionAndMessageStepAndSelect('success', {
             content: {
                 html: `<div>Your subscription has been canceled and we sent a confirmation to {{steps_state.${shopperAuthenticationStepId}.customer.email}}.</div><div><br></div><div><strong>Note:</strong> you will not receive a confirmation email if any of the following apply:</div><div>- Your subscription was created today </div><div>- Your subscription is for a membership</div><div>- You received an email about this subscription in the last 24 hours</div><div>- You have other active subscriptions</div>`,
                 text: `Your subscription has been canceled and we sent a confirmation to {{steps_state.${shopperAuthenticationStepId}.customer.email}}.
@@ -260,6 +264,8 @@ Note: you will not receive a confirmation email if any of the following apply:
         b.insertHelpfulPromptStepAndSelect()
         b.selectParentStep()
         b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
+        b.selectParentStep()
         b.selectParentStep()
         b.selectParentStep()
         b.insertChoiceAndTextInputStepAndSelect('Something else', {
@@ -271,6 +277,13 @@ Note: you will not receive a confirmation email if any of the following apply:
             },
         })
         b.insertHandoverStepAndSelect()
+        b.selectParentStep()
+        b.selectParentStep()
+        b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
+        b.selectParentStep()
+        b.selectParentStep()
+        b.insertHttpRequestConditionAndHandOverStepAndSelect('error')
         return b.build()
     },
 }

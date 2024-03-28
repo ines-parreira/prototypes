@@ -338,6 +338,12 @@ export type VisualBuilderEdgeProps = {
         nodeId: string
         isFallback: boolean
     }
+    httpRequestCondition?: {
+        id: string
+        label: string
+        nodeId: string
+        isFallback: boolean
+    }
 } & Pick<
     WorkflowEditorContext,
     | 'dispatch'
@@ -351,6 +357,7 @@ export default function EdgeBlock({
     nodeId,
     configurationId,
     incomingChoice,
+    httpRequestCondition,
     incomingCondition,
     isSelected,
     setVisualBuilderChoiceEventIdEditing,
@@ -406,6 +413,19 @@ export default function EdgeBlock({
                     type="choice"
                 >
                     {incomingChoice.label}
+                </EdgeLabel>
+            )}
+            {httpRequestCondition && (
+                <EdgeLabel
+                    onClick={() => {
+                        setVisualBuilderNodeIdEditing(
+                            httpRequestCondition.nodeId
+                        )
+                    }}
+                    isSelected={isSelected}
+                    type="http_request"
+                >
+                    {httpRequestCondition.label}
                 </EdgeLabel>
             )}
             {incomingCondition && (

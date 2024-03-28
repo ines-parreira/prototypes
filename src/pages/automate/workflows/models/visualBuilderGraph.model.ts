@@ -27,6 +27,7 @@ import {
     VisualBuilderNode,
     isMultipleChoicesNodeType,
     isConditionsNodeType,
+    isHttpRequestNodeType,
 } from './visualBuilderGraph.types'
 import {
     getWorkflowVariableListForNode,
@@ -411,7 +412,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
 export function getIncoming(
     visualBuilderGraph: VisualBuilderGraph,
     currentNodeId: string,
-    type: 'choice' | 'conditions'
+    type: 'choice' | 'conditions' | 'http_request'
 ) {
     const incomingEdge = visualBuilderGraph.edges.find(
         ({target}) => target === currentNodeId
@@ -446,6 +447,20 @@ export function getIncoming(
                     label: choice.label || `Option ${choiceIndex + 1}`,
                     eventId: choice.event_id,
                     nodeId: previousNode.id,
+                }
+            }
+            break
+        }
+        case 'http_request': {
+            const branchName = incomingEdge.data?.name
+            const branchId = incomingEdge.id
+
+            if (previousNode && isHttpRequestNodeType(previousNode)) {
+                return {
+                    id: branchId,
+                    label: branchName,
+                    nodeId: previousNode.id,
+                    isFallback: !incomingEdge.data?.conditions,
                 }
             }
             break
