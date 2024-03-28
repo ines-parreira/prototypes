@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useState, useRef} from 'react'
 
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import classnames from 'classnames'
@@ -43,6 +43,8 @@ const CampaignTemplateCustomizeBaseView = ({
     successBackUrl,
     backUrlTitle,
 }: OwnProps) => {
+    const ref = useRef<HTMLDivElement>(null)
+
     const {
         [CONVERT_ROUTE_PARAM_NAME]: integrationId,
         [CONVERT_ROUTE_TEMPLATE_PARAM_NAME]: templateSlug,
@@ -90,6 +92,18 @@ const CampaignTemplateCustomizeBaseView = ({
             enabled: !!campaignListOptions.channelConnectionId,
         }
     )
+
+    useEffect(() => {
+        if (!ref.current) {
+            return
+        }
+
+        // scroll to top
+        ref.current?.scrollTo({
+            top: 0,
+            behavior: 'smooth',
+        })
+    }, [ref])
 
     const [campaign, setCampaign] = useState<Campaign>({} as Campaign)
     const [isTemplateLoading, setIsTemplateLoading] = useState(false)
@@ -179,7 +193,7 @@ const CampaignTemplateCustomizeBaseView = ({
     )
 
     return (
-        <div className={classnames('full-width')}>
+        <div ref={ref} className={classnames('full-width')}>
             <PageHeader
                 title={
                     <Breadcrumb>

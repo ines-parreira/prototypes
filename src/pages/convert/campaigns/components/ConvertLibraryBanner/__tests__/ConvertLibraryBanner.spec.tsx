@@ -11,7 +11,6 @@ describe('ConvertLibraryBanner', () => {
         )
 
         expect(getByText('View campaign library')).toBeInTheDocument()
-        expect(getByText('Learn more')).toBeInTheDocument()
     })
 
     it('renders title and content', () => {

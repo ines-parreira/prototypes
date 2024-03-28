@@ -80,6 +80,8 @@ describe('CampaignTemplateCustomizeView', () => {
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
+
+        window.HTMLElement.prototype.scrollTo = jest.fn()
     })
 
     it('should render campaign form with template data', async () => {

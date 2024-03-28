@@ -2,10 +2,10 @@
 
 exports[`CampaignTemplates get template configuration 1`] = `
 {
-  "message_html": "<div>You&#x27;ve got great taste. 🛒</div><div><br></div><div>Is there anything else we can help you with <strong>before you check out?</strong> 💳</div>",
-  "message_text": "You've got great taste. 🛒
+  "message_html": "<div><strong>Great choice!</strong> 🛒</div><div><br></div><div>Can we <strong>help you</strong> with anything else before checkout?</div>",
+  "message_text": "Great choice! 🛒
 
-Is there anything else we can help you with before you check out? 💳",
+Can we help you with anything else before checkout?",
   "name": "Engage with customers on the cart page",
   "status": "inactive",
   "template_id": "connect-customer-on-cart-with-team",
@@ -168,7 +168,7 @@ exports[`CampaignTemplates get template configuration 6`] = `
 
 exports[`CampaignTemplates get template configuration 7`] = `
 {
-  "message_html": "<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong><a href="" target="_blank">custom express orders</a></strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>",
+  "message_html": "<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong>custom express orders</strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>",
   "message_text": "Need help with last-minute purchase? Leave us a message or check out our guide on custom express orders 🚚
 
 We'll be back at 9AM tomorrow for you. ",
@@ -460,10 +460,8 @@ exports[`CampaignTemplates get template configuration 17`] = `
 
 exports[`CampaignTemplates get template configuration 18`] = `
 {
-  "message_html": "<div>🌟 Save <strong>$25 OFF</strong> your order over <strong>$75</strong> when you <strong><a href="" target="_blank">join our email list</a></strong> or <strong><a href="" target="_blank">sign up for SMS alerts</a></strong>!</div><div><br></div><div>(if you haven&#x27;t already) 😉</div>",
-  "message_text": "🌟 Save $25 OFF your order over $75 when you join our email list or sign up for SMS alerts!
-
-(if you haven't already) 😉",
+  "message_html": "<div>🌟 Save <strong>10% OFF</strong> your order when you <strong>subscribe to our newsletter</strong> or <strong>our SMS alerts!</strong></div><div><br></div>",
+  "message_text": "🌟 Save 10% OFF your order when you subscribe to our newsletter or our SMS alerts!",
   "meta": {
     "noReply": true,
   },
@@ -513,7 +511,7 @@ exports[`CampaignTemplates get template configuration 19`] = `
     "message": {
       "banner": {
         "content": "Before activating the campaign, <strong>add the correct URL links to your newsletter/SMS sign-up pages</strong> in your message.",
-        "type": "info",
+        "type": "warning",
       },
     },
   },
@@ -527,7 +525,7 @@ exports[`CampaignTemplates get template configuration 19`] = `
 
 exports[`CampaignTemplates get template configuration 20`] = `
 {
-  "message_html": "<div>💡 Not sure which style to choose?</div><div><br></div><div><strong><a href="" target="_blank">Take our quiz</a></strong> or chat with our leather artisans now! 👇</div>",
+  "message_html": "<div>💡 Not sure which style to choose?</div><div><br></div><div><strong>Take our quiz</strong> or chat with our leather artisans now! 👇</div>",
   "message_text": "💡 Not sure which style to choose?
 
 Take our quiz or chat with our leather artisans now! 👇",
@@ -573,7 +571,7 @@ exports[`CampaignTemplates get template configuration 21`] = `
 
 exports[`CampaignTemplates get template configuration 22`] = `
 {
-  "message_html": "<div>Before you go, check out our <strong>latest items on sale for <a href="" target="_blank">up to 30% OFF</a>!</strong>💸</div>",
+  "message_html": "<div>Before you go, check out our <strong>latest items on sale for up to 30% OFF!</strong>💸</div>",
   "message_text": "Before you go, check out our latest items on sale for up to 30% OFF!💸",
   "meta": {
     "noReply": true,

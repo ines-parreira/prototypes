@@ -66,7 +66,7 @@ export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
                 name: PROMOTE_QUIZZES_TO_HELP_VISIOTOR.name,
                 template_id: PROMOTE_QUIZZES_TO_HELP_VISIOTOR.slug,
                 message_html:
-                    '<div>💡 Not sure which style to choose?</div><div><br></div><div><strong><a href="" target="_blank">Take our quiz</a></strong> or chat with our leather artisans now! 👇</div>',
+                    '<div>💡 Not sure which style to choose?</div><div><br></div><div><strong>Take our quiz</strong> or chat with our leather artisans now! 👇</div>',
                 message_text:
                     '💡 Not sure which style to choose?\n\nTake our quiz or chat with our leather artisans now! 👇',
 

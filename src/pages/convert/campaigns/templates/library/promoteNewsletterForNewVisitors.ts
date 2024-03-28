@@ -30,7 +30,7 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
             stepConfiguration: {
                 [CampaignStepsKeys.Message]: {
                     banner: {
-                        type: BannerType.Info,
+                        type: BannerType.Warning,
                         content:
                             'Before activating the campaign, <strong>add the correct URL links to your newsletter/SMS sign-up pages</strong> in your message.',
                     },
@@ -82,8 +82,8 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
             {
                 name: PROMOTE_NEWSLETTER_FOR_NEW_VISITORS.name,
                 template_id: PROMOTE_NEWSLETTER_FOR_NEW_VISITORS.slug,
-                message_text: `🌟 Save $25 OFF your order over $75 when you join our email list or sign up for SMS alerts!\n\n(if you haven't already) 😉`,
-                message_html: `<div>🌟 Save <strong>$25 OFF</strong> your order over <strong>$75</strong> when you <strong><a href=\"\" target=\"_blank\">join our email list</a></strong> or <strong><a href=\"\" target=\"_blank\">sign up for SMS alerts</a></strong>!</div><div><br></div><div>(if you haven&#x27;t already) 😉</div>`,
+                message_text: `🌟 Save 10% OFF your order when you subscribe to our newsletter or our SMS alerts!`,
+                message_html: `<div>🌟 Save <strong>10% OFF</strong> your order when you <strong>subscribe to our newsletter</strong> or <strong>our SMS alerts!</strong></div><div><br></div>`,
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),

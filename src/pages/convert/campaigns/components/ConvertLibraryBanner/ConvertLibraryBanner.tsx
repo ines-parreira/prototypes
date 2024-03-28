@@ -29,10 +29,6 @@ const ConvertLibraryBanner = ({integrationId}: Props) => {
                         >
                             <Button>View campaign library</Button>
                         </Link>
-
-                        <Link to={'#'} className={css.linkMargin}>
-                            <Button intent="secondary">Learn more</Button>
-                        </Link>
                     </div>
                 </div>
                 <div className={css.preview}>

@@ -66,7 +66,7 @@ export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
                 name: LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS.name,
                 template_id: LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS.slug,
                 message_html:
-                    '<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong><a href="" target="_blank">custom express orders</a></strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>',
+                    '<div>Need help with <strong>last-minute purchase</strong>? Leave us a message or check out our guide on <strong>custom express orders</strong> 🚚</div><div><br></div><div>We&#x27;ll be back at <strong>9AM tomorrow</strong> for you. </div>',
                 message_text:
                     "Need help with last-minute purchase? Leave us a message or check out our guide on custom express orders 🚚\n\nWe'll be back at 9AM tomorrow for you. ",
                 status: CampaignStatus.Inactive,

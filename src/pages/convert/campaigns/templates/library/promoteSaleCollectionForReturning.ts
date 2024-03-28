@@ -81,7 +81,7 @@ export const PROMOTE_SALE_COLLECTION: CampaignTemplate = {
             name: PROMOTE_SALE_COLLECTION.name,
             template_id: PROMOTE_SALE_COLLECTION.slug,
             message_html:
-                '<div>Before you go, check out our <strong>latest items on sale for <a href="" target="_blank">up to 30% OFF</a>!</strong>💸</div>',
+                '<div>Before you go, check out our <strong>latest items on sale for up to 30% OFF!</strong>💸</div>',
             message_text:
                 'Before you go, check out our latest items on sale for up to 30% OFF!💸',
             status: CampaignStatus.Inactive,

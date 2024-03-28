@@ -103,6 +103,8 @@ describe('CampaignTemplateCustomizeView', () => {
             'useIsConvertSubscriber'
         ).mockImplementation(() => true)
 
+        window.HTMLElement.prototype.scrollTo = jest.fn()
+
         // It is used by draft-js somewhere deep in code
         jest.spyOn(document, 'createRange').mockReturnValue(mockRange as any)
         jest.spyOn(window, 'getSelection').mockReturnValue(mockSelection as any)

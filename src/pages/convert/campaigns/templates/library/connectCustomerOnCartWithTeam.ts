@@ -53,9 +53,9 @@ export const CONNECT_CUSTOMER_ON_CART_WITH_TEAM: CampaignTemplate = {
                 name: CONNECT_CUSTOMER_ON_CART_WITH_TEAM.name,
                 template_id: CONNECT_CUSTOMER_ON_CART_WITH_TEAM.slug,
                 message_html:
-                    '<div>You&#x27;ve got great taste. 🛒</div><div><br></div><div>Is there anything else we can help you with <strong>before you check out?</strong> 💳</div>',
+                    '<div><strong>Great choice!</strong> 🛒</div><div><br></div><div>Can we <strong>help you</strong> with anything else before checkout?</div>',
                 message_text:
-                    "You've got great taste. 🛒\n\nIs there anything else we can help you with before you check out? 💳",
+                    'Great choice! 🛒\n\nCan we help you with anything else before checkout?',
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
