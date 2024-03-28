@@ -27,8 +27,8 @@ describe('<Editor/>', () => {
             {label: 'I am in snapshots too', action},
         ],
         templatePath: 'some.template',
-        templateAbsolutePath: ['some', 'absolute', 'template'],
-        source: fromJS({}),
+        absolutePath: ['some', 'absolute', 'template'],
+        source: {},
     }
 
     it('should render with buttons and "add button" button', () => {

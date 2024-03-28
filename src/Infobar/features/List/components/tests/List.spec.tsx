@@ -1,12 +1,11 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
-import {fromJS, Map, List as ImmutableList} from 'immutable'
 
 import * as widgetsFixtures from 'fixtures/widgets'
 import * as ticketFixtures from 'fixtures/ticket'
 import {assumeMock} from 'utils/testing'
 import UIList from 'Infobar/features/List/display/List'
-import {CardTemplate, ListTemplate} from 'models/widget/types'
+import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 
 import ListInfobarWidget from '../List'
@@ -41,19 +40,15 @@ describe('Infobar::Widgets::List', () => {
         )
     })
 
-    const source = fromJS(
-        (
-            ticketFixtures.ticket.customer!.integrations as Record<
-                string,
-                {orders: unknown}
-            >
-        )['5'].orders
-    ) as ImmutableList<Map<string, unknown>>
+    const source = (
+        ticketFixtures.ticket.customer!.integrations as Record<
+            string,
+            {orders: unknown}
+        >
+    )['5'].orders as Source[]
 
-    const widget = fromJS(widgetsFixtures.shopifyWidget) as Map<string, unknown>
-    const template = (
-        widget.getIn(['template', 'widgets', 1]) as Map<string, unknown>
-    ).toJS() as ListTemplate
+    const widget = widgetsFixtures.shopifyWidget
+    const template = widget.template.widgets?.[1] as ListTemplate
     template.templatePath = '0.template.widgets.1'
     template.absolutePath = [
         'ticket',
@@ -73,7 +68,10 @@ describe('Infobar::Widgets::List', () => {
 
     it('should return null when template widgets are an empty array', () => {
         const {container} = render(
-            <ListInfobarWidget {...minProps} template={fromJS({widgets: []})} />
+            <ListInfobarWidget
+                {...minProps}
+                template={{widgets: []} as unknown as ListTemplate}
+            />
         )
 
         expect(container.firstChild).toBeNull()
@@ -81,7 +79,7 @@ describe('Infobar::Widgets::List', () => {
 
     it('should return null when source is an empty list', () => {
         const {container} = render(
-            <ListInfobarWidget {...minProps} source={fromJS([])} />
+            <ListInfobarWidget {...minProps} source={[]} />
         )
 
         expect(container.firstChild).toBeNull()
@@ -89,7 +87,7 @@ describe('Infobar::Widgets::List', () => {
 
     it('should return null when source is not a list', () => {
         const {container} = render(
-            <ListInfobarWidget {...minProps} source={fromJS({})} />
+            <ListInfobarWidget {...minProps} source={{}} />
         )
 
         expect(container.firstChild).toBeNull()
@@ -115,11 +113,7 @@ describe('Infobar::Widgets::List', () => {
         }
 
         const {container} = render(
-            <ListInfobarWidget
-                {...minProps}
-                template={fromJS(list)}
-                source={fromJS({})}
-            />
+            <ListInfobarWidget {...minProps} template={list} source={{}} />
         )
 
         expect(container.firstChild).toBeNull()
@@ -141,7 +135,7 @@ describe('Infobar::Widgets::List', () => {
             1,
             expect.objectContaining({
                 isOpen: true,
-                source: source.get(0),
+                source: source[0],
                 hasNoBorderTop: true,
             }),
             {}
@@ -150,7 +144,7 @@ describe('Infobar::Widgets::List', () => {
             2,
             expect.objectContaining({
                 isOpen: false,
-                source: source.get(1),
+                source: source[1],
                 hasNoBorderTop: false,
             }),
             {}
@@ -184,7 +178,7 @@ describe('Infobar::Widgets::List', () => {
             expect.objectContaining({
                 isDraggable: !minProps.isParentList,
                 dataKey: `${template.path || ''}[]`,
-                listItems: source.toJS(),
+                listItems: source,
                 initialItemDisplayedNumber: Number(template.meta?.limit),
                 orderBy: undefined,
                 isEditing: minProps.isEditing,
@@ -219,7 +213,7 @@ describe('Infobar::Widgets::List', () => {
             2,
             expect.objectContaining({
                 isEditing: true,
-                listItems: source.setSize(1).toJS(),
+                listItems: source.slice(0, 1),
                 orderBy: {
                     key: 'name',
                     direction: 'ASC',

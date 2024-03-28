@@ -5,14 +5,15 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
+import {CardTemplate} from 'models/widget/types'
 import CustomActions from '../index'
 
 const mockStore = configureMockStore([thunk])
 
 describe('<ActionButtons/>', () => {
-    const template = fromJS({
+    const template = {
         templatePath: 'templatePath',
-        templateAbsolutePath: 'templateAbsolutePath',
+        absolutePath: ['absolutePath'],
         meta: {
             custom: {
                 links: [
@@ -28,8 +29,8 @@ describe('<ActionButtons/>', () => {
                 ],
             },
         },
-    })
-    const source = fromJS({})
+    } as CardTemplate
+    const source = {}
 
     it('should render links and buttons ', () => {
         const {container} = render(

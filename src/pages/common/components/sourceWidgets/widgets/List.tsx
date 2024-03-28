@@ -1,14 +1,13 @@
 import React from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
 
-import {Template} from 'models/widget/types'
+import {isSourceArray, Source, Template} from 'models/widget/types'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
 
 type Props = {
-    source: Map<string, unknown>
+    source: Source
     template: Template
     isParentList: boolean
 }
@@ -17,6 +16,7 @@ export default function List({source, template, isParentList = false}: Props) {
     const SourceWidget = widgetReference.Widget
 
     if (!template.widgets || !template.widgets[0]) return null
+    if (!isSourceArray(source)) return null
 
     const passedTemplate = {
         ...template.widgets[0],
@@ -32,19 +32,16 @@ export default function List({source, template, isParentList = false}: Props) {
 
     return (
         <div className={className} data-key={template.path}>
-            {source
-                .toList()
-                .take(1)
-                .map((d, i) => {
-                    return (
-                        <SourceWidget
-                            key={i}
-                            source={d as Map<string, unknown>}
-                            parent={updatedTemplate}
-                            template={passedTemplate}
-                        />
-                    )
-                })}
+            {source.slice(0, 1).map((subSource, i) => {
+                return (
+                    <SourceWidget
+                        key={i}
+                        source={subSource}
+                        parent={updatedTemplate}
+                        template={passedTemplate}
+                    />
+                )
+            })}
         </div>
     )
 }

@@ -1,47 +1,41 @@
 import React, {memo} from 'react'
 import classnames from 'classnames'
-import {List, Map, fromJS} from 'immutable'
+
+import {Source, CardTemplate} from 'models/widget/types'
 
 import Links from './Links'
 import ActionButtons from './ActionButtons'
 import css from './CustomActions.less'
 
 type Props = {
-    template: Map<string, unknown>
-    source: Map<string, unknown> | undefined
+    template: CardTemplate
+    source: Source
     isEditing: boolean
 }
 
 function CustomActions(props: Props) {
-    const {template, source = fromJS({}), isEditing} = props
-    const templatePath = template.get('templatePath', '') as string
-    const templateAbsolutePath = template.get('absolutePath', '') as string[]
-    const immutableLinks = template.getIn(
-        ['meta', 'custom', 'links'],
-        List<Map<string, unknown>>()
-    ) as List<Map<string, unknown>>
-    const immutableButtons = template.getIn(
-        ['meta', 'custom', 'buttons'],
-        List<Map<string, unknown>>()
-    ) as List<Map<string, unknown>>
+    const {template, source, isEditing} = props
+    const templatePath = template.templatePath || ''
+    const absolutePath = template.absolutePath || []
+    const links = template.meta?.custom?.links || []
+    const buttons = template.meta?.custom?.buttons || []
 
-    if (!isEditing && !immutableLinks.size && !immutableButtons.size)
-        return null
+    if (!isEditing && !links.length && !buttons.length) return null
 
     return (
         <div className={classnames(css.container)}>
             <ActionButtons
                 templatePath={templatePath}
-                templateAbsolutePath={templateAbsolutePath}
+                absolutePath={absolutePath}
                 source={source}
-                immutableButtons={immutableButtons}
+                buttons={buttons}
                 isEditing={isEditing}
             />
             <Links
                 templatePath={templatePath}
-                templateAbsolutePath={templateAbsolutePath}
+                absolutePath={absolutePath}
                 source={source}
-                immutableLinks={immutableLinks}
+                links={links}
                 isEditing={isEditing}
             />
         </div>

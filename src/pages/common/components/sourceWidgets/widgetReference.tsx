@@ -1,11 +1,10 @@
 import React, {FunctionComponent} from 'react'
-import {Map} from 'immutable'
 
-import {Template} from 'models/widget/types'
+import {Source, Template} from 'models/widget/types'
 
 export type WidgetProps = {
     parent?: Template
-    source: Map<string, unknown>
+    source: Source
     template: Template
 }
 

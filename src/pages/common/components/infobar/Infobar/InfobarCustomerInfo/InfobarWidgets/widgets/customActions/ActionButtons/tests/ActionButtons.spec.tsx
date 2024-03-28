@@ -5,7 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from '../../../../../../../../../../../fixtures/infobarCustomActions'
+import {actionFixture} from 'fixtures/infobarCustomActions'
+
 import ActionButtons from '../ActionButtons'
 
 const mockStore = configureMockStore([thunk])
@@ -14,12 +15,12 @@ describe('<ActionButtons/>', () => {
     const action = actionFixture()
 
     const props = {
-        immutableButtons: fromJS([
+        buttons: [
             {label: 'I am in snapshots', action},
             {label: 'I am in snapshots too', action},
-        ]),
+        ],
         templatePath: '',
-        templateAbsolutePath: [],
+        absolutePath: [],
         source: fromJS({}),
     }
 

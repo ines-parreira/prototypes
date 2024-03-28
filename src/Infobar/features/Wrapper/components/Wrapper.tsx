@@ -32,7 +32,7 @@ import {
 import WrapperEditActions from 'Infobar/features/Wrapper/display/WrapperEditActions'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 import {EXPAND_CONTAINER_MARKER} from 'Infobar/config/template'
-import {Template, WrapperTemplate} from 'models/widget/types'
+import {Source, Template, WrapperTemplate} from 'models/widget/types'
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
@@ -50,7 +50,7 @@ export const CUSTOMIZABLE_WIDGET_TYPES = [
 ]
 
 type Props = {
-    source: Map<string, unknown> | undefined
+    source: Source
     template: WrapperTemplate
 }
 
@@ -72,7 +72,7 @@ export default function Wrapper({template, source}: Props) {
     )
 
     const widgetName = getWidgetTitle({
-        source: source?.toJS(),
+        source: source,
         template: template,
         widgetType,
         appId: widget.app_id,

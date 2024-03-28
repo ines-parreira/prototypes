@@ -1,5 +1,4 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 
 import {isListTemplate} from 'models/widget/types'
 
@@ -20,18 +19,13 @@ export default function Widget({parent, source, template}: WidgetProps) {
 
     switch (updatedTemplate.type) {
         case 'wrapper': {
-            return (
-                <Wrapper
-                    source={data || fromJS({})}
-                    template={updatedTemplate}
-                />
-            )
+            return <Wrapper source={data} template={updatedTemplate} />
         }
         case 'list': {
             return (
                 <List
                     isParentList={isParentList}
-                    source={data || fromJS({})}
+                    source={data}
                     template={updatedTemplate}
                 />
             )
@@ -40,7 +34,7 @@ export default function Widget({parent, source, template}: WidgetProps) {
             return (
                 <Card
                     isParentList={isParentList}
-                    source={data || fromJS({})}
+                    source={data}
                     template={updatedTemplate}
                 />
             )

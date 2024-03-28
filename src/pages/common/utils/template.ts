@@ -3,9 +3,6 @@ import _unescape from 'lodash/unescape'
 import _trim from 'lodash/trim'
 import moment from 'moment'
 
-import {Customer} from 'models/customer/types'
-import {TicketStateWithoutImmutable} from 'state/ticket/types'
-
 export const filterRegex = /([\w_]+)\(([^(]*)\)/
 export const templateRegex =
     /{{([a-zA-Z0-9.\[\]"'_\-]+)\|?([\w_]+\([^(]*\))?}}/g
@@ -61,18 +58,12 @@ const filters = {
     },
 }
 
-export type Context = {
-    [key: string]: unknown
-    ticket?: TicketStateWithoutImmutable
-    user?: Customer | Record<string, never>
-}
-
 /**
  * Render a template like: `Order {self.id}` to `Order 37337`
  */
 export const renderTemplate = (
     body?: Maybe<string>,
-    context: Maybe<Context> = {}
+    context?: unknown
 ): string => {
     if (!body) {
         return ''
@@ -83,6 +74,7 @@ export const renderTemplate = (
         (match: string, variable: string, filter: string): string => {
             try {
                 let tempVariable = variable
+                if (typeof context !== 'object') return match
                 let obj = _.chain(context)
 
                 variable

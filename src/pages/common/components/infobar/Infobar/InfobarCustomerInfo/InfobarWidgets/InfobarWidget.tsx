@@ -1,5 +1,4 @@
-import React, {useContext, ElementType} from 'react'
-import {fromJS, Map, List} from 'immutable'
+import React, {useContext, ElementType, useMemo} from 'react'
 
 import {IntegrationType} from 'models/integration/constants'
 import {
@@ -24,6 +23,7 @@ import Field from 'Infobar/features/Field'
 import Wrapper from 'Infobar/features/Wrapper'
 import ListWidget from 'Infobar/features/List'
 
+import {isSourceRecord, Source} from 'models/widget/types'
 import http from './widgets/http'
 import magento2 from './widgets/magento2'
 import recharge from './widgets/recharge'
@@ -32,7 +32,6 @@ import smile from './widgets/smile'
 import yotpo from './widgets/yotpo'
 import bigcommerce from './widgets/bigcommerce'
 import woocommerce from './widgets/woocommerce'
-import {infobarWidgetShouldRender} from './predicates'
 import {WidgetProps} from './widgetReference'
 import {WidgetContext} from './WidgetContext'
 
@@ -45,13 +44,9 @@ export default function InfobarWidget({
 }: WidgetProps) {
     const {isEditing} = useContext(EditionContext)
     const widget = useContext(WidgetContext)
-    if (!infobarWidgetShouldRender(source)) {
-        return null
-    }
 
     const preparedData = updateAbsolutePathAndData(template, source, parent)
-    const {updatedTemplate} = preparedData
-    let {data} = preparedData
+    const {updatedTemplate, data} = preparedData
     const type = updatedTemplate.type
 
     const isParentList = (parent && parent.type === 'list') || false
@@ -70,12 +65,6 @@ export default function InfobarWidget({
         [STANDALONE_WIDGET_TYPE]: undefined,
     }
 
-    const passedData = {
-        template: updatedTemplate,
-        isEditing,
-        source: data,
-    }
-
     let extension: {
         AfterTitle?: ElementType
         BeforeContent?: ElementType
@@ -86,48 +75,16 @@ export default function InfobarWidget({
     } = {}
     const extensionMethod = extensionMethodsByType[widget.type]
     if (extensionMethod) {
-        extension = extensionMethod(passedData as any)
+        extension = extensionMethod({template: updatedTemplate})
     }
 
-    // Setting context
-    let data_source = '' // type of object we are editing in widget, e.g. Customer | Order ...
-    let widget_resource_ids: ShopifyContextType['widget_resource_ids'] = {
-        target_id: null,
-        customer_id: null,
-    }
-    /*
-            Provide proper context to children
-            For Shopify widget :
-            - data_source is either Customer or Order
-            - widget_resource_ids always has shopify customer_id because we need it for tracking and
-            target_id is either a customer_id or an order_id depending of the Shopify card targeted
-            (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
-        */
-    const data_source_endpoint =
-        source && source.get && source.get('admin_graphql_api_id')
-    if (data_source_endpoint) {
-        const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
-        const match = reg.exec(data_source_endpoint as string)
-
-        //extract the type Customer or Order from data_source_endpoint
-        if (match?.length === 2) data_source = match[1]
-
-        widget_resource_ids = {
-            target_id: source?.get('id') as number,
-            customer_id: source?.getIn(['customer', 'id']),
-        }
-    }
+    const shopifyContextData = useShopifyContextData(source)
 
     // DISPLAY
     let component = null
     switch (updatedTemplate.type) {
         case 'wrapper': {
-            component = (
-                <Wrapper
-                    source={data || fromJS({})}
-                    template={updatedTemplate}
-                />
-            )
+            component = <Wrapper source={data} template={updatedTemplate} />
             break
         }
         case 'list': {
@@ -135,11 +92,7 @@ export default function InfobarWidget({
                 <ListWidget
                     isEditing={isEditing}
                     isParentList={isParentList}
-                    source={
-                        (data || fromJS([])) as unknown as List<
-                            Map<string, unknown>
-                        >
-                    }
+                    source={data}
                     template={updatedTemplate}
                     hasNoBorderTop={hasNoBorderTop}
                 />
@@ -147,13 +100,12 @@ export default function InfobarWidget({
             break
         }
         case 'card': {
-            data = fromJS(data || {})
             if (widget.type !== STANDALONE_WIDGET_TYPE) {
-                if (!Map.isMap(data)) {
+                if (!isSourceRecord(data)) {
                     return null
                 }
                 // do not display card if there is no data to display in it
-                if (!isEditing && data?.isEmpty()) {
+                if (!isEditing && Object.keys(data).length === 0) {
                     return null
                 }
             }
@@ -187,13 +139,51 @@ export default function InfobarWidget({
     }
 
     return (
-        <ShopifyContext.Provider
-            value={{
-                data_source: data_source,
-                widget_resource_ids: widget_resource_ids,
-            }}
-        >
+        <ShopifyContext.Provider value={shopifyContextData}>
             {component}
         </ShopifyContext.Provider>
     )
+}
+
+function useShopifyContextData(source: Source) {
+    return useMemo(() => {
+        const contextData: ShopifyContextType = {
+            data_source: '',
+            widget_resource_ids: {
+                target_id: null,
+                customer_id: null,
+            },
+        }
+        /*
+                Provide proper context to children
+                For Shopify widget :
+                - data_source is either Customer or Order
+                - widget_resource_ids always has shopify customer_id because we need it for tracking and
+                target_id is either a customer_id or an order_id depending of the Shopify card targeted
+                (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
+            */
+
+        if (!isSourceRecord(source)) return contextData
+        if (!isSourceRecord(source.customer)) return contextData
+
+        const data_source_endpoint =
+            isSourceRecord(source) &&
+            typeof source.admin_graphql_api_id === 'string'
+                ? source.admin_graphql_api_id
+                : ''
+        if (data_source_endpoint) {
+            const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
+            const match = reg.exec(data_source_endpoint)
+
+            //extract the type Customer or Order from data_source_endpoint
+            if (match?.length === 2) contextData.data_source = match[1]
+
+            contextData.widget_resource_ids = {
+                target_id: source.id as number,
+                customer_id: source.customer.id as number,
+            }
+        }
+
+        return contextData
+    }, [source])
 }

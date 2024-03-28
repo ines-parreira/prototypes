@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useMemo} from 'react'
-import {Map} from 'immutable'
 
+import {isSourceRecord, Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
@@ -32,7 +32,7 @@ type Props = {
     index: number
     targetId: string
     link: LinkType
-    source: Map<string, any>
+    source: Source
     isEditing?: boolean
     onRemove: RemoveLink
     onSubmit: SubmitLink
@@ -72,7 +72,7 @@ export function Link(props: Props) {
         })
 
         return {
-            ...(source.toJS() as Record<string, unknown>),
+            ...(isSourceRecord(source) ? source : {}),
             ticket,
             user,
             current_user: trimmedCurrentUserData,

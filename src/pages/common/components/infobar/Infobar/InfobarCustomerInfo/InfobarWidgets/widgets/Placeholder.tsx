@@ -1,6 +1,5 @@
 import React, {MouseEvent, useContext} from 'react'
 import classnames from 'classnames'
-import {Map} from 'immutable'
 
 import {Template} from 'models/widget/types'
 import {getIntegrationById} from 'state/integrations/selectors'
@@ -16,12 +15,11 @@ import css from './Placeholder.less'
 const PLACEHOLDER_ACCENT_COLOR = 'var(--neutral-grey-4)'
 
 type Props = {
-    source: Map<any, any>
     template: Template
     isEditing?: boolean
 }
 
-export default function Placeholder({source, template, isEditing}: Props) {
+export default function Placeholder({template, isEditing}: Props) {
     const dispatch = useAppDispatch()
     const widget = useContext(WidgetContext)
     const integration = useAppSelector(
@@ -41,7 +39,7 @@ export default function Placeholder({source, template, isEditing}: Props) {
 
     const renderWidgetFor = () => {
         const widgetName = getWidgetTitle({
-            source: source?.toJS(),
+            source: null,
             widgetType: widget.type,
             appId: widget.app_id,
             template,

@@ -8,13 +8,13 @@ import React, {
     useRef,
 } from 'react'
 import {UncontrolledDropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {Map} from 'immutable'
 import classnames from 'classnames'
 
+import {isSourceRecord, Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
-import {renderTemplate, Context} from 'pages/common/utils/template'
+import {renderTemplate} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
 import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -39,7 +39,7 @@ const SHOW_MORE_WIDTH = 31
 
 type Props = {
     buttons: ButtonType[]
-    source: Map<string, unknown>
+    source: Source
 }
 
 type HandleSubmit = (action: Action) => void
@@ -50,7 +50,7 @@ function ButtonsGroup({buttons, source}: Props) {
     const user = useAppSelector(getActiveCustomer)
     const templateContext = useMemo(() => {
         return {
-            ...(source.toJS() as Record<string, unknown>),
+            ...(isSourceRecord(source) ? source : {}),
             ticket,
             user,
         }
@@ -176,7 +176,7 @@ export default memo(ButtonsGroup)
 
 function computeNbButtonDisplayed(
     buttons: ButtonType[],
-    templateContext: Context,
+    templateContext: Record<string, unknown>,
     availableSpace: number | undefined
 ) {
     if (buttons.length <= NB_MIN_BUTTON_DISPLAYED || !availableSpace)
@@ -217,7 +217,7 @@ function computeNbButtonDisplayed(
 
 export function computeButtonLength(
     button: ButtonType,
-    templateContext: Context
+    templateContext: Record<string, unknown>
 ) {
     return (
         renderTemplate(button.label, templateContext).length * FONT_SIZE +

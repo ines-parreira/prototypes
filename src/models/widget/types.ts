@@ -1,3 +1,6 @@
+import {Map, List} from 'immutable'
+
+import {isRecord} from 'utils/types'
 import {ApiPaginationParams} from 'models/api/types'
 import {THIRD_PARTY_APP_NAME_KEY} from 'state/widgets/constants'
 import {
@@ -7,16 +10,32 @@ import {
 
 import {LEAF_TYPES} from './constants'
 
-export type Source = {
-    [key: string]:
-        | Source
-        | string
-        | number
-        | boolean
-        | Array<Source>
-        | undefined
-        | null
-    [THIRD_PARTY_APP_NAME_KEY]?: string
+export type ImmutableSource =
+    | Map<string, unknown>
+    | List<Map<string, unknown>>
+    | undefined
+    | null
+
+export type Source =
+    | {
+          [key: string]: Source
+          [THIRD_PARTY_APP_NAME_KEY]?: string
+      }
+    | null
+    | undefined
+    | Array<Source>
+    | string
+    | number
+    | boolean
+
+export function isSourceRecord(
+    source: Source
+): source is Record<string, Source> {
+    return isRecord(source)
+}
+
+export function isSourceArray(source: Source): source is Source[] {
+    return Array.isArray(source)
 }
 
 export type LeafTypes = typeof LEAF_TYPES[keyof typeof LEAF_TYPES]

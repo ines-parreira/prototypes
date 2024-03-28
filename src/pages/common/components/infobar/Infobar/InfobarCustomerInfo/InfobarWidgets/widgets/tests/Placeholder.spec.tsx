@@ -18,7 +18,6 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 describe('PlaceholderWidget component', () => {
     const integrationId = 1
     const minProps: ComponentProps<typeof Placeholder> = {
-        source: fromJS({}),
         template: {
             absolutePath: ['ticket', 'customer', 'integrations', integrationId],
             templatePath: '0.template',

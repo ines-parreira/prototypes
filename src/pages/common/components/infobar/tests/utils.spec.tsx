@@ -13,6 +13,7 @@ import {
     TimeFormatType,
     DateAndTimeFormatting,
 } from 'constants/datetime'
+import {Template, Source} from 'models/widget/types'
 import * as utils from '../utils'
 
 describe('widgets infobar utils', () => {
@@ -584,8 +585,8 @@ describe('widgets infobar utils', () => {
     })
 
     describe('isWidgetEmpty()', () => {
-        const emptyValues = [
-            [{type: 'wrapper', path: 'foo'}, fromJS({})],
+        const emptyValues: [Template, Source][] = [
+            [{type: 'wrapper', path: 'foo'} as Template, {}],
             [
                 {
                     type: 'wrapper',
@@ -594,8 +595,8 @@ describe('widgets infobar utils', () => {
                         {type: 'wrapper', path: 'bar'},
                         {type: 'card', path: 'baz'},
                     ],
-                },
-                fromJS({}),
+                } as Template,
+                {},
             ],
             [
                 {
@@ -608,8 +609,8 @@ describe('widgets infobar utils', () => {
                             widgets: [{type: 'text', path: 'baz'}],
                         },
                     ],
-                },
-                fromJS({foo: {bar: {baz: null}}}),
+                } as Template,
+                {foo: {bar: {baz: null}}},
             ],
             [
                 {
@@ -622,8 +623,8 @@ describe('widgets infobar utils', () => {
                             widgets: [{type: 'text', path: 'baz'}],
                         },
                     ],
-                },
-                fromJS({foo: {bar: []}}),
+                } as Template,
+                {foo: {bar: []}},
             ],
             [
                 {
@@ -636,8 +637,8 @@ describe('widgets infobar utils', () => {
                             widgets: [{type: 'text', path: 'baz'}],
                         },
                     ],
-                },
-                fromJS({foo: {bar: [{baz: null}]}}),
+                } as Template,
+                {foo: {bar: [{baz: null}]}},
             ],
             [
                 {
@@ -647,8 +648,25 @@ describe('widgets infobar utils', () => {
                         {type: 'wrapper', path: 'bar'},
                         {type: 'card', path: 'baz'},
                     ],
-                },
+                } as Template,
                 undefined,
+            ],
+            [
+                {
+                    type: 'list',
+                    path: 'bar',
+                    widgets: [
+                        {
+                            type: 'card',
+                            path: '',
+                            widgets: [
+                                {type: 'text', path: 'baz'},
+                                {type: 'text', path: 'buz'},
+                            ],
+                        },
+                    ],
+                } as Template,
+                {bar: [{baz: '', buz: ''}]},
             ],
         ]
 
@@ -660,7 +678,7 @@ describe('widgets infobar utils', () => {
             }
         )
 
-        const validValues = [
+        const validValues: [Template, Source][] = [
             [
                 {
                     type: 'wrapper',
@@ -675,8 +693,8 @@ describe('widgets infobar utils', () => {
                             ],
                         },
                     ],
-                },
-                fromJS({foo: {bar: {baz: 'baz!', buz: ''}}}),
+                } as Template,
+                {foo: {bar: {baz: 'baz!', buz: ''}}},
             ],
             [
                 {
@@ -685,50 +703,28 @@ describe('widgets infobar utils', () => {
                         {
                             type: 'list',
                             path: 'bar',
+                            widgets: [{type: 'text', path: 'baz'}],
+                        },
+                    ],
+                } as Template,
+                {bar: [{baz: 'baz!', buz: ''}]},
+            ],
+            [
+                {
+                    type: 'list',
+                    path: 'bar',
+                    widgets: [
+                        {
+                            type: 'card',
+                            path: '',
                             widgets: [
                                 {type: 'text', path: 'baz'},
                                 {type: 'text', path: 'buz'},
                             ],
                         },
                     ],
-                },
-                fromJS({bar: [{baz: 'baz!', buz: ''}]}),
-            ],
-            [
-                {
-                    type: 'wrapper',
-                    path: 'foo',
-                    widgets: [
-                        {
-                            type: 'card',
-                            path: 'bar',
-                            meta: {
-                                custom: {
-                                    links: ['a link'],
-                                },
-                            },
-                        },
-                    ],
-                },
-                fromJS({}),
-            ],
-            [
-                {
-                    type: 'wrapper',
-                    path: 'foo',
-                    widgets: [
-                        {
-                            type: 'card',
-                            path: 'bar',
-                            meta: {
-                                custom: {
-                                    buttons: ['a button'],
-                                },
-                            },
-                        },
-                    ],
-                },
-                fromJS({}),
+                } as Template,
+                {bar: [{baz: '', buz: 'miam'}]},
             ],
         ]
 

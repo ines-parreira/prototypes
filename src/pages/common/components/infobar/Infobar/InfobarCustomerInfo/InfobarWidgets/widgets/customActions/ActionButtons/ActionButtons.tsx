@@ -1,5 +1,6 @@
-import React, {memo, useEffect, useState} from 'react'
-import {List, Map} from 'immutable'
+import React, {memo} from 'react'
+
+import {Source} from 'models/widget/types'
 
 import {Button as ButtonType} from '../types'
 
@@ -8,29 +9,24 @@ import ButtonsGroup from './Display'
 
 type Props = {
     templatePath: string
-    templateAbsolutePath: string[]
-    immutableButtons: List<Map<string, unknown>>
-    source: Map<string, unknown>
+    absolutePath: (string | number)[]
+    buttons: ButtonType[]
+    source: Source
     isEditing: boolean
 }
 
 function ActionButtons({
     templatePath,
-    templateAbsolutePath,
-    immutableButtons,
+    absolutePath,
+    buttons,
     source,
     isEditing,
 }: Props) {
-    const [buttons, setButtons] = useState<ButtonType[]>([])
-    useEffect(() => {
-        setButtons(immutableButtons.toJS())
-    }, [immutableButtons])
-
     if (isEditing)
         return (
             <Editor
                 templatePath={templatePath}
-                templateAbsolutePath={templateAbsolutePath}
+                absolutePath={absolutePath}
                 source={source}
                 buttons={buttons}
             />

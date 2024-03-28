@@ -1,6 +1,6 @@
 import React, {memo, useCallback, useMemo} from 'react'
-import {Map} from 'immutable'
 
+import {isSourceRecord, Source} from 'models/widget/types'
 import BasicButton from 'pages/common/components/button/Button'
 import {renderTemplate} from 'pages/common/utils/template'
 import {getTicket} from 'state/ticket/selectors'
@@ -16,7 +16,7 @@ import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/Inf
 type ButtonProps = {
     index: number
     button: ButtonType
-    source: Map<string, unknown>
+    source: Source
     onRemove: OnRemoveButton
     onOpenForm: OnOpenForm
 }
@@ -34,7 +34,7 @@ function Button(props: ButtonProps) {
     const user = useAppSelector(getActiveCustomer)
     const templateContext = useMemo(() => {
         return {
-            ...(source.toJS() as Record<string, unknown>),
+            ...(isSourceRecord(source) ? source : {}),
             ticket,
             user,
         }

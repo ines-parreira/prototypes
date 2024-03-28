@@ -1,6 +1,5 @@
 import React, {ComponentProps} from 'react'
 import {render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 
 import {
     SHOPIFY_INTEGRATION_TYPE,
@@ -16,7 +15,7 @@ import {WidgetContext} from '../WidgetContext'
 
 const defaultWidget = {} as Widget
 
-const defaultSource: Map<string, unknown> = fromJS({
+const defaultSource = {
     ticket: {
         customer: {
             integrations: [
@@ -26,7 +25,7 @@ const defaultSource: Map<string, unknown> = fromJS({
             ],
         },
     },
-})
+}
 
 const defaultTemplate: Template = {
     type: 'card',

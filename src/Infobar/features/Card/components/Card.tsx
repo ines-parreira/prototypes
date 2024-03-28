@@ -1,5 +1,5 @@
 import React, {ComponentProps, ElementType, useContext, useMemo} from 'react'
-import {fromJS, Map} from 'immutable'
+import {Map, fromJS} from 'immutable'
 
 import {updateRecord} from 'utils/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,6 +12,8 @@ import {
     Template,
     isListTemplate,
     CardTemplate,
+    Source,
+    isSourceRecord,
 } from 'models/widget/types'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {
@@ -56,7 +58,7 @@ type Props = {
     editionHiddenFields?: HiddenField[]
 
     parent?: Template
-    source?: Map<string, unknown> | undefined
+    source: Source
     template: CardTemplate
 
     isEditing: boolean
@@ -75,13 +77,7 @@ export const listMetaFields: Array<keyof ListMeta> = ['limit', 'orderBy']
 
 export default function Card(props: Props) {
     const {
-        extensions: {
-            AfterTitle,
-            BeforeContent,
-            AfterContent,
-            TitleWrapper,
-            Wrapper,
-        },
+        extensions,
         editionHiddenFields,
         template,
         parent,
@@ -181,7 +177,7 @@ export default function Card(props: Props) {
     const getCardTitle = () => {
         return isRootWidget(template.templatePath || '')
             ? getWidgetTitle({
-                  source: source?.toJS(),
+                  source: source,
                   widgetType: widget.type,
                   template,
                   appId: widget.app_id,
@@ -221,7 +217,7 @@ export default function Card(props: Props) {
     // providing a TitleWrapper instead of being defined here
     if (
         integrationContext.integration.get('type') !== IntegrationType.Http &&
-        Boolean(TitleWrapper)
+        Boolean(extensions.TitleWrapper)
     ) {
         enrichedEditionHiddenField.push('pictureUrl', 'color')
     }
@@ -238,39 +234,27 @@ export default function Card(props: Props) {
             return acc
         }, [] as {value: string; label: string}[])
 
-    const legacyProps = {
-        template: fromJS(template),
-        source,
-        isEditing,
-    }
-
-    const mappedExtensions = {
-        afterTitle: AfterTitle && <AfterTitle {...legacyProps} />,
-        beforeContent: BeforeContent && <BeforeContent {...legacyProps} />,
-        afterContent: AfterContent && <AfterContent {...legacyProps} />,
-        renderTitleWrapper: (children: React.ReactNode) => {
-            if (!TitleWrapper) return null
-            return <TitleWrapper {...legacyProps}>{children}</TitleWrapper>
-        },
-        renderWrapper: (children: React.ReactNode) => {
-            if (!Wrapper) return null
-            return <Wrapper {...legacyProps}>{children}</Wrapper>
-        },
-    }
-
     return (
         <UICard
-            extensions={mappedExtensions}
+            extensions={buildExtensions(props)}
             editionHiddenFields={enrichedEditionHiddenField}
             customActions={
                 isRootWidget(template.templatePath || '') ? (
-                    <CustomActions {...legacyProps} />
+                    <CustomActions
+                        template={template}
+                        source={source}
+                        isEditing={isEditing}
+                    />
                 ) : null
             }
             displayedTitle={
-                title && renderInfobarTemplate(title, source?.toJS())
+                title &&
+                renderInfobarTemplate(
+                    title,
+                    isSourceRecord(source) ? source : undefined
+                )
             }
-            dynamicLink={renderTemplate(link, source?.toJS())}
+            dynamicLink={renderTemplate(link, source)}
             cardData={cardData}
             orderByOptions={orderByOptions}
             isOpen={isOpen}
@@ -291,7 +275,8 @@ export default function Card(props: Props) {
             onSubmit={handleEditSubmit}
             onDelete={handleDelete}
         >
-            {!source || source?.isEmpty() ? (
+            {!isSourceRecord(source) ||
+            Object.values(source).every((value) => value === undefined) ? (
                 <StaticField>{NO_DATA_TEXT}</StaticField>
             ) : (
                 shouldDisplayContent && (
@@ -354,4 +339,58 @@ function isRootWidget(templatePath: string) {
         templatePath.match(/.template.widgets.(\d+)$/) ||
         templatePath.match(/.template.widgets.(\d+).widgets.0$/)
     )
+}
+
+function buildExtensions({
+    extensions,
+    template,
+    source,
+    isEditing,
+}: {
+    extensions: ComponentProps<typeof Card>['extensions']
+    template: CardTemplate
+    source: Source
+    isEditing: boolean
+}) {
+    const mappedExtensions: ComponentProps<typeof UICard>['extensions'] = {
+        afterTitle: undefined,
+        beforeContent: undefined,
+        afterContent: undefined,
+        renderTitleWrapper: () => null,
+        renderWrapper: () => null,
+    }
+    // We don’t want to convert object to immutable objects if card has no extensions
+    // Because it has a performance cost
+    if (hasExtension(extensions)) {
+        const {AfterTitle, BeforeContent, AfterContent, TitleWrapper, Wrapper} =
+            extensions
+        const legacyProps = {
+            template: fromJS(template) as Map<string, unknown>,
+            source: fromJS(source) as Map<string, unknown>,
+            isEditing,
+        }
+
+        mappedExtensions.afterTitle = AfterTitle && (
+            <AfterTitle {...legacyProps} />
+        )
+        mappedExtensions.beforeContent = BeforeContent && (
+            <BeforeContent {...legacyProps} />
+        )
+        mappedExtensions.afterContent = AfterContent && (
+            <AfterContent {...legacyProps} />
+        )
+        mappedExtensions.renderTitleWrapper = (children: React.ReactNode) => {
+            if (!TitleWrapper) return null
+            return <TitleWrapper {...legacyProps}>{children}</TitleWrapper>
+        }
+        mappedExtensions.renderWrapper = (children: React.ReactNode) => {
+            if (!Wrapper) return null
+            return <Wrapper {...legacyProps}>{children}</Wrapper>
+        }
+    }
+    return mappedExtensions
+}
+
+function hasExtension(extensions: Record<string, ElementType | undefined>) {
+    return Object.values(extensions).some((value) => Boolean(value))
 }

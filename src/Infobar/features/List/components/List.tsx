@@ -1,16 +1,19 @@
 import React, {useMemo} from 'react'
-import {fromJS} from 'immutable'
 
 import List from 'Infobar/features/List/display/List'
-import {isImmutable, isImmutableList} from 'common/utils'
-import {isCardTemplate, ListTemplate} from 'models/widget/types'
+import {
+    isCardTemplate,
+    isSourceArray,
+    ListTemplate,
+    Source,
+} from 'models/widget/types'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 
 type Props = {
-    source: unknown
+    source: Source
     template: ListTemplate
     isEditing?: boolean
     isParentList?: boolean
@@ -46,18 +49,12 @@ function ListInfobarWidget({
         [orderByString]
     )
 
+    if (!isSourceArray(source) || !source.length || !passedTemplate) return null
+
     // If the header of the children template is hidden
     // we only display one child. Same if first child is a list
-    const trimmedSource = useMemo(() => {
-        if (isImmutableList(source) && (hasOnlyContent || !isParentOfCard)) {
-            return source.setSize(1).toJS() as Record<string, unknown>[]
-        }
-        return isImmutable(source)
-            ? (source.toJS() as Record<string, unknown>[])
-            : []
-    }, [source, hasOnlyContent, isParentOfCard])
-
-    if (!isImmutableList(source) || !source.size || !passedTemplate) return null
+    const trimmedSource =
+        hasOnlyContent || !isParentOfCard ? source.slice(0, 1) : source
 
     const updatedTemplate = {
         ...template,
@@ -69,14 +66,14 @@ function ListInfobarWidget({
         templatePath: `${template.templatePath || ''}.widgets.0`,
     }
 
-    const children = (childrenSources: Record<string, unknown>[]) =>
+    const children = (childrenSources: Source[]) =>
         childrenSources.map((childSource, index) => (
             <WidgetListContext.Provider
                 value={{currentListIndex: index}}
                 key={index}
             >
                 <InfobarWidget
-                    source={fromJS(childSource)}
+                    source={childSource}
                     parent={updatedTemplate}
                     template={passedTemplate}
                     isOpen={index === 0}

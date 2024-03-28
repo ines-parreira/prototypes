@@ -1,18 +1,17 @@
 import React from 'react'
-import {Map} from 'immutable'
 import classnames from 'classnames'
 import _last from 'lodash/last'
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {stripLastListsFromPath} from 'pages/common/components/infobar/utils'
-import {Template} from 'models/widget/types'
+import {Source, Template} from 'models/widget/types'
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from '../widgetReference'
 import css from './Card.less'
 
 type Props = {
-    source: Map<string, unknown>
+    source: Source
     template: Template
     isParentList: boolean
 }

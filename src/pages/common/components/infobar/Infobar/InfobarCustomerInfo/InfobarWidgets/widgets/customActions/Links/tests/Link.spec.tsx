@@ -1,5 +1,4 @@
 import React from 'react'
-
 import {fromJS} from 'immutable'
 import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
@@ -19,10 +18,10 @@ describe('<Link/>', () => {
             url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}&partner={{user.name}}&agent={{current_user.name}}',
             label: 'Query {{ticket.someData}}',
         },
-        source: fromJS({
+        source: {
             last_name: 'John',
             first_name: 'Doe',
-        }),
+        },
         onRemove: jest.fn(),
         onSubmit: jest.fn(),
     }

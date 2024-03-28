@@ -2,24 +2,25 @@ import React, {useState, ReactNode, useMemo} from 'react'
 import cs from 'classnames'
 
 import {compare} from 'utils'
+import {isRecord} from 'utils/types'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Infobar/config/template'
 
 import css from './List.less'
 
-type Props = {
+type Props<I extends unknown[]> = {
     isDraggable: boolean
     dataKey: string
-    listItems: Record<string, unknown>[]
+    listItems: I
     initialItemDisplayedNumber?: number
     orderBy?: {
         key: string
         direction: 'ASC' | 'DESC'
     }
     isEditing: boolean
-    children: (listItems: Props['listItems']) => ReactNode
+    children: (listItems: I) => ReactNode
 }
 
-function List({
+function List<I extends unknown[]>({
     isDraggable,
     dataKey,
     listItems,
@@ -27,16 +28,19 @@ function List({
     orderBy,
     isEditing,
     children,
-}: Props) {
+}: Props<I>) {
     const [showMoreTimes, setShowMoreTimes] = useState(0)
 
     const sortedItems = useMemo(() => {
         const sortedItems = [...listItems]
         if (orderBy) {
             sortedItems.sort((a, b) => {
-                return orderBy.direction === 'ASC'
-                    ? compare(a[orderBy.key], b[orderBy.key])
-                    : compare(b[orderBy.key], a[orderBy.key])
+                if (isRecord(a) && isRecord(b)) {
+                    return orderBy.direction === 'ASC'
+                        ? compare(a[orderBy.key], b[orderBy.key])
+                        : compare(b[orderBy.key], a[orderBy.key])
+                }
+                return 0
             })
         }
         return sortedItems
@@ -76,7 +80,7 @@ function List({
         )
     }
 
-    const trimmedItems = sortedItems.slice(0, itemDisplayedLimit)
+    const trimmedItems = sortedItems.slice(0, itemDisplayedLimit) as I
 
     return (
         <div

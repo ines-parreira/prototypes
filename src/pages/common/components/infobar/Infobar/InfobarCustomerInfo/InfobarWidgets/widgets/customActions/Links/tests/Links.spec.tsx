@@ -1,5 +1,5 @@
 import React from 'react'
-import {fromJS, List} from 'immutable'
+import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
 import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
@@ -22,8 +22,8 @@ const removeEditedWidget = actions.removeEditedWidget as jest.Mock
 describe('<Links/>', () => {
     const props = {
         templatePath: 'template.path',
-        templateAbsolutePath: ['template', 'absolute', 'path'],
-        source: fromJS({}),
+        absolutePath: ['template', 'absolute', 'path'],
+        source: {},
     }
 
     const label = 'Gorgias'
@@ -44,7 +44,7 @@ describe('<Links/>', () => {
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={List()} />
+                <Links {...props} links={[]} />
             </Provider>
         )
 
@@ -59,7 +59,7 @@ describe('<Links/>', () => {
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={List()} isEditing />
+                <Links {...props} links={[]} isEditing />
             </Provider>
         )
 
@@ -70,14 +70,13 @@ describe('<Links/>', () => {
     })
 
     it('should render all the links without the `Add Redirection Link` button and without a `SHOW MORE` button', () => {
-        const links = getLinks(4)
         render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={fromJS(links)} />
+                <Links {...props} links={getLinks(4)} />
             </Provider>
         )
 
@@ -89,14 +88,13 @@ describe('<Links/>', () => {
     })
 
     it('should render some links and a `SHOW MORE` button but without an `Add Redirection Link` button', () => {
-        const links = getLinks(5)
         render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={fromJS(links)} />
+                <Links {...props} links={getLinks(5)} />
             </Provider>
         )
 
@@ -114,7 +112,7 @@ describe('<Links/>', () => {
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={List()} isEditing />
+                <Links {...props} links={[]} isEditing />
             </Provider>
         )
 
@@ -125,14 +123,13 @@ describe('<Links/>', () => {
     })
 
     it('should call only `removeEditedWidget` action when removing the last link', () => {
-        const links = getLinks(1)
         render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={fromJS(links)} isEditing />
+                <Links {...props} links={getLinks(1)} isEditing />
             </Provider>
         )
 
@@ -143,14 +140,13 @@ describe('<Links/>', () => {
     })
 
     it('should call all actions when removing a link', () => {
-        const links = getLinks(2)
         render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={fromJS(links)} isEditing />
+                <Links {...props} links={getLinks(2)} isEditing />
             </Provider>
         )
 
@@ -161,14 +157,13 @@ describe('<Links/>', () => {
     })
 
     it('should call widget actions when editing a link', async () => {
-        const links = getLinks(1)
         render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={fromJS(links)} isEditing />
+                <Links {...props} links={getLinks(1)} isEditing />
             </Provider>
         )
 
@@ -187,7 +182,7 @@ describe('<Links/>', () => {
                     customers: fromJS({active: {}}),
                 })}
             >
-                <Links {...props} immutableLinks={List()} isEditing />
+                <Links {...props} links={[]} isEditing />
             </Provider>
         )
 

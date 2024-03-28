@@ -40,14 +40,10 @@ jest.mock('../widgets/Placeholder', () => ({
     default: jest.fn(() => <div>Placeholder</div>),
 }))
 
-jest.mock(
-    '../WidgetContext',
-    () =>
-        ({
-            ...jest.requireActual('../WidgetContext'),
-            WidgetContextProvider: jest.fn(({children}) => <>{children}</>),
-        } as Record<string, unknown>)
-)
+jest.mock('../WidgetContext')
+assumeMock(WidgetContextProvider).mockImplementation(({children}) => (
+    <>{children}</>
+))
 
 const mockedInfobarWidget = assumeMock(InfobarWidget)
 const mockedPlaceholder = assumeMock(Placeholder)

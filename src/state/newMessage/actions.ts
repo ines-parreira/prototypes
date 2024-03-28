@@ -20,7 +20,7 @@ import {Attachment} from 'common/types'
 import {isImmutable, uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
-import {Context, renderTemplate} from 'pages/common/utils/template'
+import {renderTemplate} from 'pages/common/utils/template'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
@@ -993,7 +993,7 @@ export const prepareNewMessageDiscountCodes = (
 export const formatAction = (
     action: Map<any, any>,
     template: Map<any, any>,
-    context: Context
+    context: Record<string, unknown>
 ) => {
     /**
      * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :

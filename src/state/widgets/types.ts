@@ -37,7 +37,7 @@ export type Widget = {
     deactivated_datetime: string | null
     id: number
     integration_id: number | null
-    app_id?: string | null | undefined
+    app_id?: string | null
     updated_datetime: string | null
     uri: string
 }

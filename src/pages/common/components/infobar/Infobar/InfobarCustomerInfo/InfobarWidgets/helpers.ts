@@ -10,7 +10,7 @@ import {humanizeString} from 'utils'
 import {Integration} from 'models/integration/types'
 import {WidgetType} from 'state/widgets/types'
 import {renderTemplate} from 'pages/common/utils/template'
-import {Source, Template} from 'models/widget/types'
+import {isSourceRecord, Source, Template} from 'models/widget/types'
 
 export const LABELS: {[key: string]: string} = {
     // not sure this one is needed
@@ -53,7 +53,10 @@ export function getWidgetTitle({
     if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
         // If we can't find the third party app name then use the appId.
         // Can be the case for Placeholder names.
-        title = source[THIRD_PARTY_APP_NAME_KEY] || appId || ''
+        title =
+            (isSourceRecord(source) && source[THIRD_PARTY_APP_NAME_KEY]) ||
+            appId ||
+            ''
 
         if (title) return title
     }

@@ -1,6 +1,6 @@
 import React, {useCallback, useContext, useMemo, useState} from 'react'
-import {Map} from 'immutable'
 
+import {Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
@@ -28,17 +28,12 @@ import EditableButton from './Button'
 
 type Props = {
     templatePath: string
-    templateAbsolutePath: string[]
-    source: Map<string, unknown>
+    absolutePath: (number | string)[]
+    source: Source
     buttons: ButtonType[]
 }
 
-export function Editor({
-    templatePath,
-    templateAbsolutePath,
-    source,
-    buttons,
-}: Props) {
+export function Editor({templatePath, absolutePath, source, buttons}: Props) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
     const {integrationId} = useContext(IntegrationContext)
@@ -50,7 +45,7 @@ export function Editor({
             dispatch(
                 removeEditedWidget(
                     `${templatePath}.meta.custom.buttons`,
-                    templateAbsolutePath
+                    absolutePath
                 )
             )
 
@@ -73,7 +68,7 @@ export function Editor({
         },
         [
             buttons,
-            templateAbsolutePath,
+            absolutePath,
             templatePath,
             currentAccount,
             integrationId,

@@ -114,11 +114,12 @@ describe('Card', () => {
         isParentList: false,
         hasNoBorderTop: false,
         isOpen: true,
+        source: {yes: 'sure thing'},
     }
 
     const legacyProps = {
         template: fromJS(defaultProps.template),
-        source: defaultProps.source,
+        source: fromJS(defaultProps.source),
         isEditing: defaultProps.isEditing,
     }
 
@@ -161,7 +162,7 @@ describe('Card', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} />
+                        <Card {...defaultProps} source={undefined} />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -170,17 +171,16 @@ describe('Card', () => {
         })
 
         it('call InfobarWidget with correct props', () => {
-            const source = fromJS({ok: 'ok'})
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} source={source} />
+                        <Card {...defaultProps} />
                     </WidgetContext.Provider>
                 </Provider>
             )
 
             const expectedProps = {
-                source: source,
+                source: defaultProps.source,
                 parent: defaultProps.template,
             }
 
@@ -236,7 +236,7 @@ describe('Card', () => {
             expect(renderInfobarTemplateMock).toHaveBeenNthCalledWith(
                 1,
                 defaultTitle,
-                defaultProps.source?.toJS()
+                defaultProps.source
             )
 
             expect(getLastMockCall(UICardMock)[0].displayedTitle).toBe(title)
@@ -256,7 +256,7 @@ describe('Card', () => {
             expect(renderTemplateMock).toHaveBeenNthCalledWith(
                 1,
                 defaultProps.template.meta?.link || '',
-                defaultProps.source?.toJS()
+                defaultProps.source
             )
             expect(getLastMockCall(UICardMock)[0].dynamicLink).toBe(link)
         })
@@ -483,7 +483,11 @@ describe('Card', () => {
                 render(
                     <Provider store={mockStore(defaultState)}>
                         <WidgetContext.Provider value={shopifyWidget}>
-                            <Card {...defaultProps} isEditing />
+                            <Card
+                                {...defaultProps}
+                                isEditing
+                                source={undefined}
+                            />
                         </WidgetContext.Provider>
                     </Provider>
                 )
@@ -498,10 +502,7 @@ describe('Card', () => {
                 render(
                     <Provider store={mockStore(defaultState)}>
                         <WidgetContext.Provider value={shopifyWidget}>
-                            <Card
-                                {...defaultProps}
-                                source={fromJS({display: 'coucou'})}
-                            />
+                            <Card {...defaultProps} />
                         </WidgetContext.Provider>
                     </Provider>
                 )
@@ -570,7 +571,11 @@ describe('Card', () => {
 
                 expect(CustomActionsMock).toHaveBeenNthCalledWith(
                     1,
-                    legacyProps,
+                    {
+                        isEditing: false,
+                        template: defaultProps.template,
+                        source: defaultProps.source,
+                    },
                     {}
                 )
             })

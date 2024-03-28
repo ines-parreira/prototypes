@@ -1,4 +1,4 @@
-import {updateRecord} from '../types'
+import {updateRecord, isRecord} from '../types'
 
 describe('updateRecord', () => {
     it('should update value of the given object at the given key accordingly with the given value', () => {
@@ -6,4 +6,28 @@ describe('updateRecord', () => {
         updateRecord(record, 'a', 3)
         expect(record).toEqual({a: 3, b: 2})
     })
+})
+
+describe('isRecord', () => {
+    it.each([
+        [{a: 1, b: 2}, true],
+        [{}, true],
+        [new Set([]), true],
+        [new Map(), true],
+        [['no'], false],
+        ['hey', false],
+        ['', false],
+        [true, false],
+        [1, false],
+        [0, false],
+        [null, false],
+        [undefined, false],
+        [() => undefined, false],
+        [Symbol('ok'), false],
+    ])(
+        'should return correct outcome according to its input',
+        (input, outcome) => {
+            expect(isRecord(input)).toBe(outcome)
+        }
+    )
 })

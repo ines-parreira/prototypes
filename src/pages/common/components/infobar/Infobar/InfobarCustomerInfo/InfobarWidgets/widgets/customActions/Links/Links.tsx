@@ -1,18 +1,10 @@
-import React, {
-    memo,
-    useCallback,
-    useContext,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import React, {memo, useCallback, useContext, useMemo, useState} from 'react'
 import {Collapse} from 'reactstrap'
-import {List, Map} from 'immutable'
 
+import {Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -36,31 +28,19 @@ const MAX_VISIBLE_LINKS = 3
 
 type Props = {
     templatePath: string
-    templateAbsolutePath: string[]
-    source: Map<string, unknown>
-    immutableLinks: List<Map<string, unknown>>
+    absolutePath: (string | number)[]
+    source: Source
+    links: LinkType[]
     isEditing?: boolean
 }
 
 export function Links(props: Props) {
-    const {
-        templatePath,
-        templateAbsolutePath,
-        source,
-        immutableLinks,
-        isEditing = false,
-    } = props
+    const {templatePath, absolutePath, source, links, isEditing = false} = props
 
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integrationId} = useContext(IntegrationContext)
     const {appId} = useContext(AppContext)
-
-    const [links, setLinks] = useState<LinkType[]>([])
-
-    useEffect(() => {
-        setLinks(immutableLinks.toJS())
-    }, [immutableLinks])
 
     const [collapseOpen, setCollapseOpen] = useState(false)
     const handleToggle = useCallback(() => {
@@ -72,7 +52,7 @@ export function Links(props: Props) {
             dispatch(
                 removeEditedWidget(
                     `${templatePath}.meta.custom.links`,
-                    templateAbsolutePath
+                    absolutePath
                 )
             )
 
@@ -93,7 +73,7 @@ export function Links(props: Props) {
         },
         [
             links,
-            templateAbsolutePath,
+            absolutePath,
             templatePath,
             currentAccount,
             integrationId,

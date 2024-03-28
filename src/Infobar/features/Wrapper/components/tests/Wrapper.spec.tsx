@@ -66,7 +66,7 @@ const shopifyWidget = {
     order: 1,
 } as Widget
 
-const shopifySource = fromJS({foo: 'foo value'})
+const shopifySource = {foo: 'foo value'}
 
 const httpWidget = {
     id: 5,
@@ -76,7 +76,7 @@ const httpWidget = {
     order: 2,
 } as Widget
 
-const httpSource = fromJS({bar: 'bar value'})
+const httpSource = {bar: 'bar value'}
 
 const customerExternalDataWidget = {
     id: 6,
@@ -86,10 +86,10 @@ const customerExternalDataWidget = {
     order: 3,
 } as Widget
 
-const customerExternalDataSource = fromJS({
+const customerExternalDataSource = {
     bar: 'bar value',
     [THIRD_PARTY_APP_NAME_KEY]: 'my-wonderful-app-name',
-})
+}
 
 const woocommerceDataWidget = {
     id: 6,
@@ -99,12 +99,12 @@ const woocommerceDataWidget = {
     order: 3,
 } as Widget
 
-const woocommerceDataSource = fromJS({
+const woocommerceDataSource = {
     foo: 'bar',
     store: {
         helpdesk_integration_id: 3,
     },
-})
+}
 
 const MOCK_EDIT_FORM_COLOR_ID = 'edit-form-color'
 jest.mock('Infobar/features/Wrapper/display/WrapperEditActions', () =>

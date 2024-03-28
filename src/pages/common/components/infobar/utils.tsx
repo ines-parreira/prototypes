@@ -28,7 +28,12 @@ import {isImmutable} from 'common/utils'
 import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
 import * as utils from 'utils'
 import {reportError} from 'utils/errors'
-import {Template, CardTemplate} from 'models/widget/types'
+import {
+    Template,
+    CardTemplate,
+    Source,
+    isSourceRecord,
+} from 'models/widget/types'
 import {WidgetEnvironment} from 'state/widgets/types'
 import {getSourcePathFromContext} from 'state/widgets/utils'
 import {
@@ -193,79 +198,51 @@ export function areSourcesReady(
 }
 
 /**
- * Return true if can display the passed widget according to passed source
- * Passed widget should be a wrapper
+ * Return true if can display the passed template according to passed source
+ * Passed template should be a wrapper
  */
-export function canDisplayWidget(widget: Template, source: Map<any, any>) {
-    if (widget.type !== 'wrapper') {
+export function canDisplayWidget(
+    template: Template,
+    environmentData: Map<string, unknown>,
+    source: Source
+) {
+    if (template.type !== 'wrapper') {
         return false
     }
 
-    if (!widget.absolutePath?.length) {
+    if (!template.absolutePath?.length) {
         return false
     }
 
-    // ex : ticket, customer, etc.
-    const initialSourceName = widget.absolutePath[0] as WidgetEnvironment
-
-    const ready = areSourcesReady(
-        fromJS({
-            [initialSourceName]: source.get(initialSourceName, fromJS({})),
-        }),
-        initialSourceName
-    )
-
-    return ready && !isWidgetEmpty(widget, source.getIn(widget.absolutePath))
+    return !isWidgetEmpty(template, source)
 }
 
-export function isWidgetEmpty(
-    widget: Template,
-    source: Map<any, any> | List<any> | undefined,
-    // we could find a way to not need a path here
-    // by always matching source with current template
-    path: Template['absolutePath'] = []
-): boolean {
-    switch (widget.type) {
+export function isWidgetEmpty(template: Template, source: Source): boolean {
+    const data =
+        isSourceRecord(source) && template.path ? source[template.path] : source
+    switch (template.type) {
         case 'wrapper': {
-            const subWidgets = widget.widgets
-            if (!subWidgets || !subWidgets.length) return true
-            return subWidgets.every((subWidget) =>
-                isWidgetEmpty(
-                    subWidget,
-                    source,
-                    widget.path ? [widget.path] : undefined
-                )
+            const childTemplates = template.widgets
+            if (!childTemplates || !childTemplates.length) return true
+            return childTemplates.every((subWidget) =>
+                isWidgetEmpty(subWidget, data)
             )
         }
         case 'card': {
-            const subWidgets = widget.widgets
-            if (hasCustomAction(widget)) return false
-            if (!subWidgets || !subWidgets.length) return true
-            const subPath = widget.path ? [...path, widget.path] : path
-            return subWidgets.every((subWidget) =>
-                isWidgetEmpty(subWidget, source, subPath)
+            const childTemplates = template.widgets
+            if (hasCustomAction(template)) return false
+            if (!childTemplates || !childTemplates.length) return true
+            return childTemplates.every((subWidget) =>
+                isWidgetEmpty(subWidget, data)
             )
         }
         case 'list': {
-            const subWidgets = widget.widgets
-            if (!subWidgets || !subWidgets.length) return true
-            const subPath = widget.path ? [...path, widget.path] : path
-            const data =
-                (source?.getIn(subPath, fromJS([])) as List<any> | undefined) ||
-                (fromJS([]) as List<any>)
-            if (!List.isList(data)) return true
-            return data.every((value, index) =>
-                subWidgets.every((subWidget) =>
-                    isWidgetEmpty(subWidget, source, [
-                        ...subPath,
-                        index?.toString() || '0',
-                    ])
-                )
-            )
+            const childTemplate = template.widgets?.[0]
+            if (!childTemplate) return true
+            if (!Array.isArray(data)) return true
+            return data.every((value) => isWidgetEmpty(childTemplate, value))
         }
         default: {
-            const subPath = [...path, widget.path]
-            const data = source?.getIn(subPath)
             return typeof data !== 'number' && !data
         }
     }
@@ -587,7 +564,7 @@ export function canDrop(
  */
 export function updateAbsolutePathAndData(
     template: Template,
-    source?: Map<any, any>,
+    source?: Source,
     parent?: Template
 ) {
     // build absolute path of widget
@@ -607,9 +584,7 @@ export function updateAbsolutePathAndData(
     const updatedTemplate = {...template, absolutePath}
 
     // get set of data related to new path
-    const data = (ownPath ? source?.get(ownPath, undefined) : source) as
-        | Map<string, unknown>
-        | undefined
+    const data = ownPath && isSourceRecord(source) ? source[ownPath] : source
 
     return {
         updatedTemplate,

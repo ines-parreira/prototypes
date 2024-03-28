@@ -21,11 +21,10 @@ import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCus
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {Template} from 'models/widget/types'
+import {ImmutableSource, Source, Template} from 'models/widget/types'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
 import Placeholder from './widgets/Placeholder'
-import {infobarWidgetShouldRender} from './predicates'
 import InfobarWidget from './InfobarWidget'
 
 // This is to avoid circular dependencies while doing recursion
@@ -33,6 +32,23 @@ import {widgetReference} from './widgetReference'
 import {WidgetContextProvider} from './WidgetContext'
 
 widgetReference.Widget = InfobarWidget
+
+type DisplayList = Array<
+    | {
+          type: 'data'
+          integrationId: number
+      }
+    | {type: 'widget'; widget: Map<string, unknown> | undefined}
+>
+
+type PreparedDisplayList = {
+    type?: 'placeholder'
+    integration?: Maybe<Integration>
+    widget: Map<string, unknown>
+    template: Map<string, unknown>
+    open: boolean
+    source?: Source
+}[]
 
 type Props = {
     context: WidgetEnvironment
@@ -77,33 +93,28 @@ const InfobarWidgets = ({
     )
 
     // We build a single list of all elements we want to display
-    let displayList = fromJS([]) as List<Map<string, unknown>>
+    const displayList: DisplayList = []
 
     if (!isEditing) {
         integrationDatas.forEach((_, integrationId) => {
-            displayList = displayList.push(
-                fromJS({
-                    type: 'data',
-                    integrationId,
-                })
-            )
+            if (typeof integrationId === 'undefined') return
+            displayList.push({
+                type: 'data',
+                integrationId,
+            })
         })
         widgetsWithoutIntegration.forEach((widget) => {
-            displayList = displayList.push(
-                fromJS({
-                    type: 'widget',
-                    widget,
-                })
-            )
+            displayList.push({
+                type: 'widget',
+                widget,
+            })
         })
     } else {
         widgets.forEach((widget) => {
-            displayList = displayList.push(
-                fromJS({
-                    type: 'widget',
-                    widget,
-                })
-            )
+            displayList.push({
+                type: 'widget',
+                widget,
+            })
         })
     }
 
@@ -116,30 +127,17 @@ const InfobarWidgets = ({
         isEditing,
     })
 
-    const widgetTabNames = preparedDisplayList
-        .map((item = fromJS({})) => {
-            const widget = item.get('widget') as Map<string, unknown>
-            const title = getWidgetTitle({
-                source: (
-                    source.getIn(
-                        item.getIn(['template', 'absolutePath']),
-                        fromJS({})
-                    ) as Maybe<Map<string, unknown>>
-                )?.toJS(),
-                template: (
-                    item.getIn(['widget', 'template']) as Maybe<
-                        Map<string, unknown>
-                    >
-                )?.toJS(),
-                widgetType: item.getIn(['widget', 'type']) as WidgetType,
-                integration: (
-                    item.get('integration') as Maybe<Map<string, unknown>>
-                )?.toJS() as Maybe<Integration>,
-                appId: widget.get('app_id') as Maybe<string>,
-            })
-            return title
+    const widgetTabNames = preparedDisplayList.map((item) => {
+        const widget = item.widget
+        const title = getWidgetTitle({
+            source: item.source,
+            template: item.template.toJS() as Template,
+            widgetType: item.widget.get('type') as WidgetType,
+            integration: item.integration,
+            appId: widget.get('app_id') as Maybe<string>,
         })
-        .toJS() as string[]
+        return title
+    })
 
     return (
         <>
@@ -170,7 +168,6 @@ const InfobarWidgets = ({
                     }
                 >
                     <Widgets
-                        source={source}
                         isEditing={isEditing}
                         preparedDisplayList={preparedDisplayList}
                     />
@@ -182,71 +179,6 @@ const InfobarWidgets = ({
 
 export default memo(InfobarWidgets)
 
-// This is where we remove immutable and start using plain JS objects for now
-function Widgets({
-    source,
-    isEditing,
-    preparedDisplayList,
-}: {
-    source: Map<string, unknown>
-    isEditing: boolean
-    preparedDisplayList: List<Map<string, unknown>>
-}) {
-    if (!infobarWidgetShouldRender(source)) {
-        return null
-    }
-
-    // We create the components separately from the rest of the function because we want to assign `templatePath`
-    // AFTER having sorted the results by `widget.order`.
-    return preparedDisplayList
-        .map((item = fromJS({}), index) => {
-            if (typeof index === 'undefined') return null
-
-            const template = {
-                ...((
-                    item.get('template') as Map<unknown, unknown>
-                ).toJS() as Template),
-                templatePath: `${index}.template`,
-            }
-            const passedSource = source.getIn(
-                template.absolutePath || [],
-                source
-            ) as Map<string, unknown>
-            const widget = item.get('widget') as Map<string, unknown>
-
-            if (item.get('type') === 'placeholder') {
-                return (
-                    <WidgetContextProvider
-                        value={widget}
-                        key={`${
-                            template.absolutePath?.join('.') || ''
-                        }-${index}`}
-                    >
-                        <Placeholder
-                            isEditing={isEditing}
-                            source={passedSource}
-                            template={template}
-                        />
-                    </WidgetContextProvider>
-                )
-            }
-
-            return (
-                <WidgetContextProvider
-                    value={widget}
-                    key={`${template.absolutePath?.join('.') || ''}-${index}`}
-                >
-                    <InfobarWidget
-                        source={passedSource}
-                        template={template}
-                        isOpen={item.get('open') as boolean}
-                    />
-                </WidgetContextProvider>
-            )
-        })
-        .toJS() as React.JSX.Element
-}
-
 function getPreparedDisplayList({
     source,
     widgets,
@@ -257,12 +189,12 @@ function getPreparedDisplayList({
 }: {
     source: Map<string, unknown>
     widgets: List<Map<string, unknown>>
-    displayList: List<Map<string, unknown>>
+    displayList: DisplayList
     integrations: Integration[]
     genericSourcePath: string[]
     isEditing?: boolean
 }) {
-    let preparedDisplayList: List<Map<string, unknown>> = fromJS([])
+    let preparedDisplayList: PreparedDisplayList = []
 
     // Create a list `prepareDisplayList` of item containing enough data to generate widget components.
     // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the
@@ -272,8 +204,8 @@ function getPreparedDisplayList({
         let integration: Integration | undefined
         let sourcePath = genericSourcePath.slice()
 
-        if (item?.get('type') === 'widget') {
-            widget = item.get('widget', fromJS({})) as Map<string, unknown>
+        if (item.type === 'widget') {
+            widget = item.widget || fromJS({})
             const widgetType = widget.get('type') as string
 
             if (
@@ -364,10 +296,8 @@ function getPreparedDisplayList({
 
                 sourcePath.push(integration.id.toString())
             }
-        } else if (item?.get('type') === 'data') {
-            const integrationId = (
-                item.get('integrationId') as string
-            ).toString()
+        } else if (item.type === 'data') {
+            const integrationId = item.integrationId.toString()
 
             integration = integrations.find(
                 (integration) => integration.id.toString() === integrationId
@@ -397,28 +327,34 @@ function getPreparedDisplayList({
             sourcePath.push(integrationId)
         }
 
+        const widgetSource = (
+            source.getIn(sourcePath, fromJS({})) as ImmutableSource
+        )?.toJS() as Source
+
         const template = (
             widget.get('template', fromJS({})) as Map<string, unknown>
         ).set('absolutePath', sourcePath)
 
-        if (!isEditing && !canDisplayWidget(template.toJS(), source)) {
+        if (
+            !isEditing &&
+            !canDisplayWidget(template.toJS(), source, widgetSource)
+        ) {
             return
         }
 
-        preparedDisplayList = preparedDisplayList.push(
-            fromJS({
-                integration,
-                widget,
-                template,
-                open: displayListIndex === 0,
-            })
-        )
+        preparedDisplayList.push({
+            integration,
+            widget,
+            template,
+            open: displayListIndex === 0,
+            source: widgetSource,
+        })
     })
 
     // Here we add the non-displayed widgets to the list.
     if (isEditing) {
         const displayedWidgetsIds = preparedDisplayList.map(
-            (item) => item?.getIn(['widget', 'id']) as string
+            (item) => item.widget.get('id') as string
         )
 
         const nonDisplayedWidgets = widgets.filter(
@@ -426,29 +362,78 @@ function getPreparedDisplayList({
                 !displayedWidgetsIds.includes(widget.get('id') as string)
         )
 
-        const nonDisplayedItems = nonDisplayedWidgets.map(
-            (widget = fromJS({})) => {
-                const template = (
-                    widget.get('template', fromJS({})) as Map<string, unknown>
-                ).set('absolutePath', genericSourcePath)
+        const nonDisplayedItems: PreparedDisplayList = []
+        nonDisplayedWidgets.forEach((widget = fromJS({})) => {
+            const template = (
+                widget.get('template', fromJS({})) as Map<string, unknown>
+            ).set('absolutePath', genericSourcePath)
 
-                return fromJS({
-                    widget,
-                    template,
-                    open: false,
-                    type: 'placeholder',
-                }) as Map<string, unknown>
-            }
-        )
+            nonDisplayedItems.push({
+                widget,
+                template,
+                open: false,
+                type: 'placeholder',
+            })
+        })
 
-        preparedDisplayList = preparedDisplayList.concat(
-            nonDisplayedItems
-        ) as List<Map<string, unknown>>
+        preparedDisplayList = preparedDisplayList.concat(nonDisplayedItems)
     }
 
-    return preparedDisplayList
-        .sort((a, b) =>
-            compare(a.getIn(['widget', 'order']), b.getIn(['widget', 'order']))
-        )
-        .toList()
+    return preparedDisplayList.sort((a, b) =>
+        compare(a.widget.get('order'), b.widget.get('order'))
+    )
+}
+
+// This is where we remove immutable and start using plain JS objects for now
+function Widgets({
+    isEditing,
+    preparedDisplayList,
+}: {
+    isEditing: boolean
+    preparedDisplayList: PreparedDisplayList
+}) {
+    // We create the components separately from the rest of the function because we want to assign `templatePath`
+    // AFTER having sorted the results by `widget.order`.
+    return (
+        <>
+            {preparedDisplayList.map((item, index) => {
+                const template = {
+                    ...(item.template.toJS() as Template),
+                    templatePath: `${index}.template`,
+                }
+                const widget = item.widget
+
+                if (item.type === 'placeholder') {
+                    return (
+                        <WidgetContextProvider
+                            value={widget}
+                            key={`${
+                                template.absolutePath?.join('.') || ''
+                            }-${index}`}
+                        >
+                            <Placeholder
+                                isEditing={isEditing}
+                                template={template}
+                            />
+                        </WidgetContextProvider>
+                    )
+                }
+
+                return (
+                    <WidgetContextProvider
+                        value={widget}
+                        key={`${
+                            template.absolutePath?.join('.') || ''
+                        }-${index}`}
+                    >
+                        <InfobarWidget
+                            source={item.source}
+                            template={template}
+                            isOpen={item.open}
+                        />
+                    </WidgetContextProvider>
+                )
+            })}
+        </>
+    )
 }

@@ -28,7 +28,7 @@ const isValidIcon = (value: string): value is IconName => value in icons
  */
 export const renderInfobarTemplate = (
     body: string,
-    context: Record<string, Maybe<string>> = {}
+    context: Record<string, unknown> = {}
 ): ReactNode => {
     return renderTemplate(body, context)
         .split(iconRegex)

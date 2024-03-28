@@ -7,6 +7,10 @@ export function updateRecord<
     record[key] = value
 }
 
+export function isRecord(input: unknown): input is Record<string, unknown> {
+    return !!input && typeof input === 'object' && !Array.isArray(input)
+}
+
 export const notNull = <T>(val: T | null): val is T => {
     return val !== null
 }

@@ -16,7 +16,7 @@ describe('<Button/>', () => {
         onRemove: jest.fn(),
         onOpenForm: jest.fn(),
         button: {label: '{{label}}', action},
-        source: fromJS({label: 'should render'}),
+        source: {label: 'should render'},
         index: 2,
     }
 

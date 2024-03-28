@@ -1,13 +1,12 @@
 import React, {useContext} from 'react'
 import classnames from 'classnames'
-import {Map} from 'immutable'
 
 import {
     WOOCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {getIntegrationById} from 'state/integrations/selectors'
-import {WrapperTemplate} from 'models/widget/types'
+import {isSourceRecord, Source, WrapperTemplate} from 'models/widget/types'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
@@ -19,7 +18,7 @@ import {widgetReference} from '../widgetReference'
 import css from './Wrapper.less'
 
 type Props = {
-    source: Map<string, unknown>
+    source: Source
     template: WrapperTemplate
 }
 
@@ -33,7 +32,14 @@ export default function Wrapper({template, source}: Props) {
 
     let integrationId: number | undefined | string
     if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
-        integrationId = source?.getIn(['store', 'helpdesk_integration_id'])
+        const store = isSourceRecord(source) && source.store
+        const helpdesk_integration_id =
+            isSourceRecord(store) && store.helpdesk_integration_id
+        integrationId =
+            typeof helpdesk_integration_id === 'number' ||
+            typeof helpdesk_integration_id === 'string'
+                ? helpdesk_integration_id
+                : undefined
     } else {
         integrationId = absolutePath[absolutePath.length - 1]
     }
@@ -51,7 +57,7 @@ export default function Wrapper({template, source}: Props) {
     }
 
     const displayName = getWidgetTitle({
-        source: source?.toJS(),
+        source: source,
         template: template,
         widgetType: widgetType,
         appId: widget.app_id,

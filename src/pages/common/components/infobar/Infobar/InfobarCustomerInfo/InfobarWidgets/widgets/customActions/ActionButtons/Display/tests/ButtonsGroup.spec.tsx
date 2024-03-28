@@ -14,7 +14,6 @@ jest.mock('state/infobar/actions', () => ({
 
 import {actionFixture} from 'fixtures/infobarCustomActions'
 
-import {Context} from 'pages/common/utils/template'
 import ButtonsGroup, {computeButtonLength} from '../ButtonsGroup'
 
 const mockStore = configureMockStore([thunk])
@@ -37,12 +36,10 @@ describe('<ButtonsGroup/>', () => {
         },
     ]
 
-    const _source = {
+    const source = {
         label_0: 'renders',
         label_1: 'renders inside dropdow',
     }
-
-    const source = fromJS(_source)
 
     it('should render with correct label and without a dropdown ', () => {
         const {container} = render(
@@ -57,7 +54,7 @@ describe('<ButtonsGroup/>', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        expect(screen.queryByText(_source.label_0)).toBeTruthy()
+        expect(screen.queryByText(source.label_0)).toBeTruthy()
         expect(screen.queryByText('more_horiz')).toBeFalsy()
     })
 
@@ -90,7 +87,7 @@ describe('<ButtonsGroup/>', () => {
         expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
             'false'
         )
-        expect(screen.queryByText(_source.label_1)).toBeTruthy()
+        expect(screen.queryByText(source.label_1)).toBeTruthy()
     })
 
     it('should render 5 buttons without a dropdown', () => {
@@ -195,7 +192,7 @@ describe('<ButtonsGroup/>', () => {
         ['label{{var}}', {var: 'xxx'}, 114],
     ])(
         'computeButtonLength(%p) with context %p should equal %p',
-        (label: string, context: Context, expected: number) => {
+        (label: string, context: Record<string, unknown>, expected: number) => {
             expect(computeButtonLength({label, action}, context)).toBe(expected)
         }
     )

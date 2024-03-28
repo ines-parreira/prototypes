@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {Template} from 'models/widget/types'
+import {Source, Template} from 'models/widget/types'
 
 import {WidgetContextProvider} from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 import css from './Widgets.less'
@@ -53,7 +53,14 @@ export default function Widgets({source, widgets}: Props) {
                         >
                             <Widget
                                 key={`${sourcePath.join('-')}-${i.toString()}`}
-                                source={source.getIn(sourcePath, source)}
+                                source={
+                                    (
+                                        source.getIn(sourcePath, source) as Map<
+                                            string,
+                                            unknown
+                                        >
+                                    ).toJS() as Source
+                                }
                                 template={passedTemplate}
                             />
                         </WidgetContextProvider>
