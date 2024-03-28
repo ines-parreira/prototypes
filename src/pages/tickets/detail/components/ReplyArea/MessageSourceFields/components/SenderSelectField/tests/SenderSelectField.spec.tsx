@@ -1,11 +1,13 @@
 import React from 'react'
-import {render, waitFor} from '@testing-library/react'
+import {render, waitFor, fireEvent} from '@testing-library/react'
 
-import userEvent from '@testing-library/user-event'
 import {TicketMessageSourceType} from 'business/types/ticket'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
+import history from 'pages/history'
 
 import SenderSelectField from '../SenderSelectField'
+
+jest.mock('pages/history')
 
 const initialState = {
     senders: [
@@ -13,14 +15,21 @@ const initialState = {
             name: 'John',
             address: 'john@shop.com',
             displayName: 'John (john@shop.com)',
+            channel: 'email',
         },
         {
             name: 'Mary',
             address: 'mary@shop.com',
             displayName: 'Mary (mary@shop.com)',
+            channel: 'email',
         },
     ],
-    selectedSender: {address: 'test', name: 'test', displayName: 'test (test)'},
+    selectedSender: {
+        address: 'test',
+        name: 'test',
+        displayName: 'test (test)',
+        channel: TicketMessageSourceType.Email,
+    } as useOutboundChannels.Sender,
     selectedChannel: undefined,
     selectSender: (sender: useOutboundChannels.Sender) => {
         initialState.selectedSender = sender
@@ -34,7 +43,7 @@ const useSendersForSelectedChannel = jest
 describe('<SenderSelectField />', () => {
     it('should render a list of senders', async () => {
         const {getByText} = render(<SenderSelectField />)
-        userEvent.click(getByText('arrow_drop_down'))
+        fireEvent.click(getByText('arrow_drop_down'))
         await waitFor(() => {
             expect(getByText('John (john@shop.com)')).toBeInTheDocument()
             expect(getByText('Mary (mary@shop.com)')).toBeInTheDocument()
@@ -45,8 +54,8 @@ describe('<SenderSelectField />', () => {
         const {container, getByText, getByTestId} = render(
             <SenderSelectField />
         )
-        userEvent.click(getByText('arrow_drop_down'))
-        userEvent.click(getByTestId('John-item'))
+        fireEvent.click(getByText('arrow_drop_down'))
+        fireEvent.click(getByTestId('John-item'))
         await waitFor(() => {
             const [input] = container.getElementsByClassName('input')
             expect(input.textContent).toBe('John (john@shop.com)')
@@ -57,7 +66,12 @@ describe('<SenderSelectField />', () => {
         [undefined, ''],
         [null, ''],
         [
-            {name: `name`, address: 'address', displayName: 'name (address)'},
+            {
+                name: `name`,
+                address: 'address',
+                displayName: 'name (address)',
+                channel: 'email',
+            },
             'name (address)',
         ],
     ])(
@@ -83,12 +97,71 @@ describe('<SenderSelectField />', () => {
                     name: 'John',
                     address: '+12133734253',
                     displayName: 'John (+1 213 373 4253)',
+                    channel: TicketMessageSourceType.Phone,
                 },
             ],
         })
 
         const {getByText, queryByText} = render(<SenderSelectField />)
-        userEvent.click(getByText('arrow_drop_down'))
+        fireEvent.click(getByText('arrow_drop_down'))
         expect(queryByText('John (+1 213 373 4253)')).toBeInTheDocument()
+    })
+
+    describe('deactivated integrations', () => {
+        beforeEach(() => {
+            useSendersForSelectedChannel.mockReturnValue({
+                ...initialState,
+                selectedChannel: TicketMessageSourceType.Email,
+                senders: [
+                    ...initialState.senders,
+                    {
+                        name: 'Old John',
+                        address: 'old-john@shop.com',
+                        displayName: 'Old John (old-john@shop.com)',
+                        channel: 'email',
+                        isDeactivated: true,
+                    },
+                ],
+            })
+        })
+
+        it('it should render deactivated integrations', () => {
+            const {getByText, queryByText} = render(<SenderSelectField />)
+            fireEvent.click(getByText('arrow_drop_down'))
+            expect(
+                queryByText('Old John (old-john@shop.com)')
+            ).toBeInTheDocument()
+        })
+
+        it('it should not allow selecting deactivated integrations', async () => {
+            const {container, getByText, queryByText} = render(
+                <SenderSelectField />
+            )
+            fireEvent.click(getByText('arrow_drop_down'))
+            expect(
+                queryByText('Old John (old-john@shop.com)')
+            ).toBeInTheDocument()
+            fireEvent.click(getByText('Old John (old-john@shop.com)'))
+            await waitFor(() => {
+                const [input] = container.getElementsByClassName('input')
+                expect(input.textContent).toBe('John (john@shop.com)')
+            })
+        })
+
+        it('it should render a reconnect button for deactivated integrations', () => {
+            const {container, getByText, queryByText} = render(
+                <SenderSelectField />
+            )
+            fireEvent.click(getByText('arrow_drop_down'))
+            expect(
+                queryByText('Old John (old-john@shop.com)')
+            ).toBeInTheDocument()
+            const [button] = container.getElementsByTagName('button')
+            expect(button).toBeInTheDocument()
+            fireEvent.click(button)
+            expect(history.push).toHaveBeenCalledWith(
+                `/app/settings/channels/email`
+            )
+        })
     })
 })

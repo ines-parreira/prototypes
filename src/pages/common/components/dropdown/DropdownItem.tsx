@@ -25,6 +25,7 @@ type Props<T extends boolean | number | string | null> = {
     className?: string
     onClick: (value: T) => void
     shouldCloseOnSelect?: boolean
+    isDisabled?: boolean
     tag?: keyof JSX.IntrinsicElements
     option: {
         label: string
@@ -38,6 +39,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
     className,
     onClick,
     shouldCloseOnSelect,
+    isDisabled,
     tag = 'li',
     option,
     ...rest
@@ -95,12 +97,15 @@ const DropdownItem = <T extends boolean | number | string | null>({
 
     const handleClick = useCallback(
         (value: T) => {
+            if (isDisabled) {
+                return
+            }
             onClick(value)
             if (shouldCloseOnSelect) {
                 onToggle(false)
             }
         },
-        [onClick, onToggle, shouldCloseOnSelect]
+        [onClick, onToggle, isDisabled, shouldCloseOnSelect]
     )
 
     const handleKeyDown = useCallback(
@@ -108,6 +113,10 @@ const DropdownItem = <T extends boolean | number | string | null>({
             const currentItem = itemRef?.current
 
             if (event.key === 'Enter' || event.key === ' ') {
+                if (isDisabled) {
+                    return
+                }
+
                 event.preventDefault()
                 onClick(value)
                 if (shouldCloseOnSelect) {
@@ -126,7 +135,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
                 }
             }
         },
-        [onClick, shouldCloseOnSelect, onToggle]
+        [onClick, shouldCloseOnSelect, onToggle, isDisabled]
     )
 
     const label = useMemo(
@@ -143,7 +152,9 @@ const DropdownItem = <T extends boolean | number | string | null>({
 
     return isContainingQuery ? (
         <Tag
-            className={classnames(css.item, className)}
+            className={classnames(css.item, className, {
+                [css.disabled]: isDisabled,
+            })}
             role="option"
             onClick={() => handleClick(option.value)}
             onKeyDown={(e: React.KeyboardEvent) =>
@@ -161,7 +172,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
                 />
             )}
             {label}
-            {!isMultiple && isSelected && (
+            {!isMultiple && isSelected && !isDisabled && (
                 <span className={classnames(css.icon, 'material-icons')}>
                     done
                 </span>

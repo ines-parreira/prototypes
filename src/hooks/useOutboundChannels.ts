@@ -27,8 +27,10 @@ import {TicketMessageSourceType} from 'business/types/ticket'
 
 import {
     Channel,
+    ChannelIdentifier,
     ChannelLike,
     getChannels,
+    isChannel,
     isNewChannel,
     toChannel,
 } from 'services/channels'
@@ -37,6 +39,8 @@ import {humanizeAddress} from 'state/ticket/utils'
 
 export type Sender = SourceAddress & {
     displayName: string
+    isDeactivated?: boolean
+    channel?: Maybe<ChannelIdentifier>
 }
 
 const LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION: Partial<
@@ -300,13 +304,13 @@ function getLegacyReplySourcesForTicket(
 
 function sourceAddressToSender(
     sourceAddress: SourceAddress,
-    channelLike: Maybe<ChannelLike>
+    channel: Maybe<ChannelLike>
 ): Sender {
     const {name, address} = sourceAddress
     return {
-        name,
-        address,
-        displayName: `${name} (${humanizeAddress(address, channelLike)})`,
+        ...sourceAddress,
+        displayName: `${name} (${humanizeAddress(address, channel)})`,
+        channel: isChannel(channel) ? channel.slug : channel,
     }
 }
 

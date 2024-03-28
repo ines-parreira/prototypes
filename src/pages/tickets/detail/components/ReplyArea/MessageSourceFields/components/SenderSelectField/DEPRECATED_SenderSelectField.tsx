@@ -32,16 +32,18 @@ const SenderSelectField = ({tabIndex}: Props) => {
                 }}
                 tabIndex={tabIndex}
             >
-                {senders.map((sender: SourceAddress) => (
-                    <option key={sender.address} value={sender.address}>
-                        {sender.name}{' '}
-                        {sender.address &&
-                            `(${humanizeAddress(
-                                sender.address,
-                                selectedChannel
-                            )})`}
-                    </option>
-                ))}
+                {senders
+                    .filter((sender) => !sender?.isDeactivated)
+                    .map((sender: SourceAddress) => (
+                        <option key={sender.address} value={sender.address}>
+                            {sender.name}{' '}
+                            {sender.address &&
+                                `(${humanizeAddress(
+                                    sender.address,
+                                    selectedChannel
+                                )})`}
+                        </option>
+                    ))}
             </select>
         </div>
     )

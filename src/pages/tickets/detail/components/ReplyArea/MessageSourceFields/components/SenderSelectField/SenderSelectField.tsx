@@ -39,19 +39,23 @@ const SenderSelectField = () => {
                             target={targetRef}
                             value={selectedSender?.address}
                             root={
-                                targetRef?.current?.parentElement
-                                    ? targetRef.current?.parentElement
-                                    : undefined
+                                targetRef?.current?.parentElement ?? undefined
                             }
                         >
                             <DropdownBody>
-                                {senders.map((sender) => (
-                                    <SenderDropDownItem
-                                        key={sender.address}
-                                        sender={sender}
-                                        onSelect={selectSender}
-                                    />
-                                ))}
+                                {senders
+                                    .sort(
+                                        (a, b) =>
+                                            Number(a?.isDeactivated) -
+                                            Number(b?.isDeactivated)
+                                    )
+                                    .map((sender) => (
+                                        <SenderDropDownItem
+                                            key={sender.address}
+                                            sender={sender}
+                                            onSelect={selectSender}
+                                        />
+                                    ))}
                             </DropdownBody>
                         </Dropdown>
                     )}

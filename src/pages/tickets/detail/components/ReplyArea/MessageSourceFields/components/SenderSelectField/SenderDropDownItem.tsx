@@ -3,6 +3,7 @@ import React from 'react'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {Sender} from 'hooks/useOutboundChannels'
 
+import ReconnectButton from './ReconnectButton'
 import css from './SenderDropDownItem.less'
 
 const SenderDropDownItem = ({
@@ -22,9 +23,13 @@ const SenderDropDownItem = ({
                 value: sender.address,
             }}
             onClick={() => onSelect(sender)}
+            isDisabled={sender?.isDeactivated}
             shouldCloseOnSelect
         >
             <span className={css.label}>{sender.displayName}</span>
+            {sender.isDeactivated && (
+                <ReconnectButton channel={sender?.channel} />
+            )}
         </DropdownItem>
     )
 }

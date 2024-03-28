@@ -142,6 +142,15 @@ describe('<DropdownItem />', () => {
         expect(minProps.onClick).toHaveBeenCalledWith(minProps.option.value)
     })
 
+    it('should not call onClick when it is disabled', () => {
+        const {container} = render(
+            MockedComponent({...minProps, isDisabled: true}, mockContext)
+        )
+
+        fireEvent.click(container.firstChild!)
+        expect(minProps.onClick).not.toHaveBeenCalled()
+    })
+
     it('should call the context toggle when clicked and when shouldCloseOnSelect is passed', () => {
         const {container} = render(
             MockedComponent(
@@ -159,6 +168,15 @@ describe('<DropdownItem />', () => {
 
         fireEvent.keyDown(container.firstChild!, {key: 'Enter'})
         expect(minProps.onClick).toHaveBeenCalledWith(minProps.option.value)
+    })
+
+    it('should not call onClick when when enter key is pressed if it is disabled', () => {
+        const {container} = render(
+            MockedComponent({...minProps, isDisabled: true}, mockContext)
+        )
+
+        fireEvent.keyDown(container.firstChild!, {key: 'Enter'})
+        expect(minProps.onClick).not.toHaveBeenCalled()
     })
 
     it('should call the context toggle when enter key is pressed and when shouldCloseOnSelect is passed', () => {
@@ -188,5 +206,31 @@ describe('<DropdownItem />', () => {
         expect(container.lastChild).toEqual(document.activeElement)
         fireEvent.keyDown(container.lastChild!, {key: 'ArrowUp'})
         expect(container.firstChild).toEqual(document.activeElement)
+    })
+
+    it('should render a selection icon', () => {
+        const {getByText} = render(
+            MockedComponent(
+                {...minProps, option: {value: 'x', label: 'x'}},
+                {...mockContext, value: 'x'}
+            )
+        )
+
+        expect(getByText('done')).toBeInTheDocument()
+    })
+
+    it('should not render the selection icon when disabled', () => {
+        const {queryByText} = render(
+            MockedComponent(
+                {
+                    ...minProps,
+                    option: {value: 'x', label: 'x'},
+                    isDisabled: true,
+                },
+                {...mockContext, value: 'x'}
+            )
+        )
+
+        expect(queryByText('done')).not.toBeInTheDocument()
     })
 })

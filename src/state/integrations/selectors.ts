@@ -395,6 +395,8 @@ export const makeGetPhoneChannels = (
                     type: integration.get('type'),
                     name: integration.get('name'),
                     address: phoneNumber?.phone_number,
+                    isDeactivated: !!integration.get('deactivated_datetime'),
+                    channel: type,
                 }) as Map<any, any>
             }) as List<any>
         }
@@ -418,6 +420,8 @@ export const getWhatsAppChannels = createSelector(
                     type: integration.type,
                     name: integration.name,
                     address: integration.meta.routing.phone_number,
+                    isDeactivated: !!integration.deactivated_datetime,
+                    channel: TicketMessageSourceType.WhatsAppMessage,
                 }
             }
         )
@@ -452,7 +456,7 @@ export const getChannelsForSourceType =
             case TicketMessageSourceType.WhatsAppMessage:
                 return getWhatsAppChannels(state)
             default:
-                return getActiveEmailChannels(state)
+                return getEmailChannels(state)
         }
     }
 
@@ -483,7 +487,11 @@ export const getSendersForChannel =
                 )
             )
             .filter(isAppIntegration)
-            .map(({name, meta: {address}}) => ({address, name}))
+            .map(({name, meta: {address}, deactivated_datetime}) => ({
+                address,
+                name,
+                isDeactivated: !!deactivated_datetime,
+            }))
     }
 
 export const getChannelByTypeAndAddress = (

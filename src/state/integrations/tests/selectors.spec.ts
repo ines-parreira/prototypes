@@ -358,6 +358,29 @@ describe('integrations selectors', () => {
                         verified: false,
                         isDeactivated: false,
                     },
+                    {
+                        id: 5,
+                        type: state.integrations.getIn([
+                            'integrations',
+                            '4',
+                            'type',
+                        ]),
+                        name: state.integrations.getIn([
+                            'integrations',
+                            '4',
+                            'name',
+                        ]),
+                        address: state.integrations.getIn([
+                            'integrations',
+                            '4',
+                            'meta',
+                            'address',
+                        ]),
+                        preferred: undefined,
+                        signature: undefined,
+                        verified: false,
+                        isDeactivated: true,
+                    },
                 ])
             )
         })
@@ -384,6 +407,8 @@ describe('integrations selectors', () => {
                             'name',
                         ]),
                         address: state.entities.newPhoneNumbers[1].phone_number,
+                        isDeactivated: false,
+                        channel: 'phone',
                     },
                 ])
             )
@@ -411,6 +436,8 @@ describe('integrations selectors', () => {
                             'name',
                         ]),
                         address: state.entities.newPhoneNumbers[1].phone_number,
+                        isDeactivated: false,
+                        channel: 'sms',
                     },
                 ])
             )
@@ -446,6 +473,8 @@ describe('integrations selectors', () => {
                             'routing',
                             'phone_number',
                         ]),
+                        isDeactivated: false,
+                        channel: 'whatsapp-message',
                     },
                 ])
             )
@@ -946,6 +975,7 @@ describe('integrations selectors', () => {
                 {
                     address: 'theshop',
                     name: 'The Shop',
+                    isDeactivated: false,
                 },
             ])
         })
