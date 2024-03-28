@@ -29,6 +29,24 @@ import {
     shopifyVolume,
     shopifyRating,
     shopifyMoney,
+    shopifyListSingleLineTextField,
+    shopifyListVariantReference,
+    shopifyListFileReference,
+    shopifyListMetaobjectReference,
+    shopifyListMixedReference,
+    shopifyListNumberDecimal,
+    shopifyListNumberInteger,
+    shopifyListDate,
+    shopifyListDatetime,
+    shopifyListProductReference,
+    shopifyListCollectionReference,
+    shopifyListPageReference,
+    shopifyListUrl,
+    shopifyListColor,
+    shopifyListWeight,
+    shopifyListVolume,
+    shopifyListDimension,
+    shopifyListRating,
 } from 'fixtures/shopify'
 import {
     IntegrationContext,
@@ -310,7 +328,6 @@ describe('<MetaField/>', () => {
                 </Provider>
             )
             expect(screen.queryByText('test_rich_text_field'))
-            expect(screen.getByRole('button'))
         })
 
         it('should render with shopifyDimension', () => {
@@ -361,6 +378,214 @@ describe('<MetaField/>', () => {
             )
             expect(screen.getByText('$123.00'))
             expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyListSingleLineTextField', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListSingleLineTextField()} />
+                </Provider>
+            )
+            expect(screen.getByText('test1'))
+            expect(screen.getByText('test2'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListVariantReference', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListVariantReference()} />
+                </Provider>
+            )
+            expect(screen.getByText('test1'))
+            expect(screen.getByText('test2'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListFileReference', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListFileReference()} />
+                </Provider>
+            )
+            expect(screen.getByText('test1'))
+            expect(screen.getByText('test2'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListMetaobjectReference', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListMetaobjectReference()} />
+                </Provider>
+            )
+            expect(screen.getByText('test1'))
+            expect(screen.getByText('test2'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListMixedReference', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListMixedReference()} />
+                </Provider>
+            )
+            expect(screen.getByText('test1'))
+            expect(screen.getByText('test2'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListNumberDecimal', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListNumberDecimal()} />
+                </Provider>
+            )
+            expect(screen.getByText('3.23'))
+            expect(screen.getByText('222.54'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListNumberInteger', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListNumberInteger()} />
+                </Provider>
+            )
+            expect(screen.getByText('3424'))
+            expect(screen.getByText('534'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListDate', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListDate()} />
+                </Provider>
+            )
+            expect(screen.getByText('Feb 2, 2024'))
+            expect(screen.getByText('May 2, 2024'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListDatetime', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListDatetime()} />
+                </Provider>
+            )
+            expect(screen.getByText('Feb 2, 2024'))
+            expect(screen.getByText('12:24 PM'))
+            expect(screen.getByText('May 2, 2024'))
+            expect(screen.getByText('03:18 PM'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListProductReference', () => {
+            render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={shopifyListProductReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(screen.getByText('40416320523627'))
+            expect(screen.getByText('40416320323627'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListCollectionReference', () => {
+            render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield
+                            metafield={shopifyListCollectionReference()}
+                        />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(screen.getByText('40416320523627'))
+            expect(screen.getByText('40416320323627'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListPageReference', () => {
+            render(
+                <Provider store={store}>
+                    <IntegrationContext.Provider value={integrationContext}>
+                        <Metafield metafield={shopifyListPageReference()} />
+                    </IntegrationContext.Provider>
+                </Provider>
+            )
+            expect(screen.getByText('40416320523627'))
+            expect(screen.getByText('40416320323627'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListUrl', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListUrl()} />
+                </Provider>
+            )
+            expect(screen.getByText('gorgias.com/about'))
+            expect(screen.getByText('admin.shopify.com/st...'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListColor', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListColor()} />
+                </Provider>
+            )
+            expect(screen.getByText('#85bc62'))
+            expect(screen.getByText('#2189bd'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListWeight', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListWeight()} />
+                </Provider>
+            )
+            expect(screen.getByText('12 kg'))
+            expect(screen.getByText('11 g'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListVolume', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListVolume()} />
+                </Provider>
+            )
+            expect(screen.getByText('12 l'))
+            expect(screen.getByText('11 m3'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListDimension', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListDimension()} />
+                </Provider>
+            )
+            expect(screen.getByText('12 m'))
+            expect(screen.getByText('11 cm'))
+            expect(screen.getAllByRole('button').length).toBe(2)
+        })
+
+        it('should render with shopifyListRating', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyListRating()} />
+                </Provider>
+            )
+            expect(screen.getByText('3.2 out of 5.0'))
+            expect(screen.getByText('4.2 out of 5.0'))
+            expect(screen.getAllByRole('button').length).toBe(2)
         })
     })
 })

@@ -47,10 +47,13 @@ export function prepareGidUrl(
     gid: string
 ) {
     switch (type) {
+        case 'list.product_reference':
         case 'product_reference':
             return `https://admin.shopify.com/store/${storeName}/products/${gid}`
+        case 'list.collection_reference':
         case 'collection_reference':
             return `https://admin.shopify.com/store/${storeName}/collections/${gid}`
+        case 'list.page_reference':
         case 'page_reference':
             return `https://admin.shopify.com/store/${storeName}/pages/${gid}`
         default: {

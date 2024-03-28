@@ -19,6 +19,24 @@ import {
     UrlShopifyMetafield,
     VariantReferenceShopifyMetafield,
     DimensionShopifyMetafield,
+    SingleLineTextFieldListShopifyMetafield,
+    VariantReferenceListShopifyMetafield,
+    FileReferenceListShopifyMetafield,
+    MetaobjectReferenceListShopifyMetafield,
+    MixedReferenceListShopifyMetafield,
+    NumberDecimalListShopifyMetafield,
+    NumberIntegerListShopifyMetafield,
+    DateListShopifyMetafield,
+    DateTimeListShopifyMetafield,
+    ProductReferenceListShopifyMetafield,
+    CollectionReferenceListShopifyMetafield,
+    PageReferenceListShopifyMetafield,
+    UrlListShopifyMetafield,
+    ColorListShopifyMetafield,
+    WeightListShopifyMetafield,
+    VolumeListShopifyMetafield,
+    DimensionListShopifyMetafield,
+    RatingListShopifyMetafield,
 } from '@gorgias/api-types'
 import {
     RatingShopifyMetafield,
@@ -1934,4 +1952,190 @@ export const shopifyMoney = (): MoneyShopifyMetafield => ({
     key: 'test_json',
     value: {amount: '123', currency_code: 'USD'},
     type: 'money',
+})
+
+export const shopifyListSingleLineTextField =
+    (): SingleLineTextFieldListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: ['test1', 'test2'],
+        type: 'list.single_line_text_field',
+    })
+
+export const shopifyListVariantReference =
+    (): VariantReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: ['test1', 'test2'],
+        type: 'list.variant_reference',
+    })
+
+export const shopifyListFileReference =
+    (): FileReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: ['test1', 'test2'],
+        type: 'list.file_reference',
+    })
+
+export const shopifyListMetaobjectReference =
+    (): MetaobjectReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: ['test1', 'test2'],
+        type: 'list.metaobject_reference',
+    })
+
+export const shopifyListMixedReference =
+    (): MixedReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: ['test1', 'test2'],
+        type: 'list.mixed_reference',
+    })
+
+export const shopifyListNumberDecimal =
+    (): NumberDecimalListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: ['3.23', '222.54'],
+        type: 'list.number_decimal',
+    })
+
+export const shopifyListNumberInteger =
+    (): NumberIntegerListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: [3424, 534],
+        type: 'list.number_integer',
+    })
+
+export const shopifyListDate = (): DateListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: ['02-02-2024', '05-02-2024'],
+    type: 'list.date',
+})
+
+export const shopifyListDatetime = (): DateTimeListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: ['02-02-2024 12:24:00', '05-02-2024 15:18:00'],
+    type: 'list.date_time',
+})
+
+export const shopifyListProductReference =
+    (): ProductReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: [
+            'gid://shopify/ProductReference/40416320523627',
+            'gid://shopify/ProductReference/40416320323627',
+        ],
+        type: 'list.product_reference',
+    })
+
+export const shopifyListCollectionReference =
+    (): CollectionReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: [
+            'gid://shopify/ProductReference/40416320523627',
+            'gid://shopify/ProductReference/40416320323627',
+        ],
+        type: 'list.collection_reference',
+    })
+
+export const shopifyListPageReference =
+    (): PageReferenceListShopifyMetafield => ({
+        namespace: 'custom',
+        key: 'test_json',
+        value: [
+            'gid://shopify/ProductReference/40416320523627',
+            'gid://shopify/ProductReference/40416320323627',
+        ],
+        type: 'list.page_reference',
+    })
+
+export const shopifyListUrl = (): UrlListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: [
+        'https://gorgias.com/about',
+        'https://admin.shopify.com/store/gorgias-milos/orders/5787961983254/metafields',
+    ],
+    type: 'list.url',
+})
+
+export const shopifyListColor = (): ColorListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: ['#85bc62', '#2189bd'],
+    type: 'list.color',
+})
+
+export const shopifyListWeight = (): WeightListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: [
+        {
+            value: '12',
+            unit: 'kg',
+        },
+        {
+            value: '11',
+            unit: 'g',
+        },
+    ],
+    type: 'list.weight',
+})
+
+export const shopifyListVolume = (): VolumeListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: [
+        {
+            value: '12',
+            unit: 'l',
+        },
+        {
+            value: '11',
+            unit: 'm3',
+        },
+    ],
+    type: 'list.volume',
+})
+
+export const shopifyListDimension = (): DimensionListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: [
+        {
+            value: '12',
+            unit: 'm',
+        },
+        {
+            value: '11',
+            unit: 'cm',
+        },
+    ],
+    type: 'list.dimension',
+})
+
+export const shopifyListRating = (): RatingListShopifyMetafield => ({
+    namespace: 'custom',
+    key: 'test_json',
+    value: [
+        {
+            value: '3.2',
+            scale_min: '0.0',
+            scale_max: '5.0',
+        },
+        {
+            value: '4.2',
+            scale_min: '0.0',
+            scale_max: '5.0',
+        },
+    ],
+    type: 'list.rating',
 })

@@ -1,23 +1,28 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
+    .fieldWrapper {
+        display: block;
+    }
+
     .field {
         display: block;
+        position: relative;
+        margin-right: 20px;
         &:hover {
             .copyButton {
-                display: inline-block;
+                visibility: visible;
             }
         }
-        position: relative;
     }
 
     .copyButton {
-        display: none;
+        display: inline-block;
+        visibility: hidden;
         margin-left: @layout-spacing-xxs;
         position: absolute;
-        right: -20px;
-        top: 50%;
-        margin-top: -10px;
+        top: 0;
+        right: -25px;
     }
 
     .colorBadge {
