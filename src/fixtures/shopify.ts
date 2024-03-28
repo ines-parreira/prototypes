@@ -1669,10 +1669,10 @@ export const shopifyMixedReference = (): MixedReferenceShopifyMetafield => ({
     type: 'mixed_reference',
 })
 
-export const shopifyBoolean = (): BooleanShopifyMetafield => ({
+export const shopifyBoolean = (value: boolean): BooleanShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_boolean',
-    value: true,
+    value: value,
     type: 'boolean',
 })
 

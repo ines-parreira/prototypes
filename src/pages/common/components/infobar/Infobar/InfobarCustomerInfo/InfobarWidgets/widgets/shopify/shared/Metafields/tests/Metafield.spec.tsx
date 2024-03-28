@@ -195,13 +195,23 @@ describe('<MetaField/>', () => {
             expect(screen.getByRole('button'))
         })
 
-        it('should render with shopifyBoolean', () => {
+        it('should render with shopifyBoolean true', () => {
             render(
                 <Provider store={store}>
-                    <Metafield metafield={shopifyBoolean()} />
+                    <Metafield metafield={shopifyBoolean(true)} />
                 </Provider>
             )
             expect(screen.getByText(`true`))
+            expect(screen.getByRole('button'))
+        })
+
+        it('should render with shopifyBoolean true', () => {
+            render(
+                <Provider store={store}>
+                    <Metafield metafield={shopifyBoolean(false)} />
+                </Provider>
+            )
+            expect(screen.getByText(`false`))
             expect(screen.getByRole('button'))
         })
 

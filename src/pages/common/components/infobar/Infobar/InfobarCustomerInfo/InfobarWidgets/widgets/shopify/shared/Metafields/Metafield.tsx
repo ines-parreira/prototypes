@@ -66,10 +66,9 @@ export default function Metafield({metafield}: Props) {
         }
 
         case 'boolean': {
-            const value = metafield.value ? 'true' : 'false'
             return (
                 <FieldWrapper label={label}>
-                    <BooleanMetafield value={value} />
+                    <BooleanMetafield value={metafield.value} />
                 </FieldWrapper>
             )
         }
@@ -297,14 +296,12 @@ function DateTimeMetafield({value}: MetafieldProps) {
     )
 }
 
-function BooleanMetafield({value}: MetafieldProps) {
+function BooleanMetafield({value}: {value: boolean}) {
+    const text = value ? 'true' : 'false'
+    const color = value ? 'accessoryGreen' : 'accessoryRed'
     return (
-        <FieldWithCopyButton value={value}>
-            <Badge
-                label={value}
-                color={'accessoryGreen'}
-                className={css.badge}
-            />
+        <FieldWithCopyButton value={text}>
+            <Badge label={text} color={color} className={css.badge} />
         </FieldWithCopyButton>
     )
 }
