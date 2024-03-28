@@ -97,6 +97,8 @@ const WizardLayout = ({
 
             if (data) {
                 setBundleData(data)
+            } else {
+                return
             }
 
             if (installationMethod === BundleInstallationMethod.Manual) {
