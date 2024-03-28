@@ -366,7 +366,7 @@ describe('<MetaField/>', () => {
                     <Metafield metafield={shopifyVolume()} />
                 </Provider>
             )
-            expect(screen.getByText('123 us fl oz'))
+            expect(screen.getByText('123 fl oz'))
             expect(screen.getByRole('button'))
         })
 
@@ -571,8 +571,8 @@ describe('<MetaField/>', () => {
                     <Metafield metafield={shopifyListVolume()} />
                 </Provider>
             )
-            expect(screen.getByText('12 l'))
-            expect(screen.getByText('11 m3'))
+            expect(screen.getByText('12 L'))
+            expect(screen.getByText('11 m³'))
             expect(screen.getAllByRole('button').length).toBe(2)
         })
 

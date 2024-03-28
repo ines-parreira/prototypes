@@ -314,7 +314,14 @@ function DimensionMetafield({
         | VolumeShopifyMetafieldData
         | WeightShopifyMetafieldData
 }) {
-    const copiableValue = `${value.value} ${value.unit.replace(/_/g, ' ')}`
+    let unit = String(value.unit)
+    if (unit === 'l') {
+        unit = 'L'
+    } else {
+        unit = unit.replace(/_/g, ' ').replace(/us/g, '').replace(/3/g, '³')
+    }
+    const copiableValue = `${value.value} ${unit}`
+
     return <FieldWithCopyButton value={copiableValue} />
 }
 
