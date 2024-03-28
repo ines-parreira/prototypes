@@ -71,7 +71,10 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             percentageOfClosedTicketsMetric: summaryMetricReturnValue,
             medianResolutionTimeMetric: summaryMetricReturnValue,
             ticketsRepliedMetric: summaryMetricReturnValue,
-            oneTouchTicketsMetric: summaryMetricReturnValue,
+            oneTouchTicketsMetric: {
+                ...summaryMetricReturnValue,
+                data: {...summaryMetricReturnValue.data, prevValue: 0},
+            },
             repliedTicketsPerHourMetric: summaryMetricReturnValue,
             onlineTimeMetric: summaryMetricReturnValue,
             messagesSentPerHourMetric: summaryMetricReturnValue,

@@ -2,7 +2,10 @@ import moment from 'moment'
 import {TableColumn} from 'state/ui/stats/types'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
+import {
+    saveReport,
+    SUMMARY_ROW_AGENT_COLUMN_LABEL,
+} from 'services/reporting/agentsPerformanceReportingService'
 import {UserRole, UserSettingType, User} from 'config/types/user'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
@@ -215,4 +218,25 @@ describe('agentsPerformanceReportingService', () => {
             )
         }
     )
+
+    it('should return agent name', async () => {
+        const reportData = testCasesData.find(
+            ({testName}) => testName === 'Report data with cube metrics'
+        )
+        const fakeReport1 = 'someString'
+        const createCsvMock = jest
+            .spyOn(files, 'createCsv')
+            .mockReturnValue(fakeReport1)
+        jest.spyOn(files, 'saveZippedFiles')
+
+        if (reportData) {
+            const {data, summaryData, period} = reportData
+            await saveReport(data, summaryData, columnsOrder, true, period)
+        }
+        const summaryRowAgentLabel = createCsvMock.mock.calls[0][0][1][0]
+        const firstAgentName = createCsvMock.mock.calls[0][0][2][0]
+
+        expect(summaryRowAgentLabel).toEqual(SUMMARY_ROW_AGENT_COLUMN_LABEL)
+        expect(firstAgentName).toEqual(agents[0].name)
+    })
 })

@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/useOneTouchTicketsPercentageMetricTrend'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
 import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
@@ -10,7 +11,6 @@ import {
     useMedianResolutionTimeMetric,
     useTicketsRepliedMetric,
     useMessagesSentMetric,
-    useOneTouchTicketsMetric,
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
 } from 'hooks/reporting/metrics'
@@ -49,7 +49,7 @@ export function useAgentsSummaryMetrics() {
         cleanStatsFilters,
         userTimezone
     )
-    const oneTouchTicketsMetric = useOneTouchTicketsMetric(
+    const oneTouchTicketsMetric = useOneTouchTicketsPercentageMetricTrend(
         cleanStatsFilters,
         userTimezone
     )
@@ -114,6 +114,5 @@ export function useAgentsSummaryMetrics() {
             ticketHandleTimeMetric,
         },
         isLoading: loading,
-        period: cleanStatsFilters.period,
     }
 }

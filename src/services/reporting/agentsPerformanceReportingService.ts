@@ -1,37 +1,39 @@
 import moment from 'moment/moment'
-import {
-    HandleTimeCube,
-    HandleTimeMeasure,
-} from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import {User} from 'config/types/user'
+import {Metric} from 'hooks/reporting/metrics'
+import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
+import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
-    TicketMessagesDimension,
-    TicketMessagesMeasure,
-} from 'models/reporting/cubes/TicketMessagesCube'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {Metric} from 'hooks/reporting/metrics'
-import {MetricFormat, TableLabels} from 'pages/stats/AgentsTableConfig'
-import {User} from 'config/types/user'
-import {TableColumn} from 'state/ui/stats/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
-import {
-    formatMetricValue,
-    NOT_AVAILABLE_PLACEHOLDER,
-} from 'pages/stats/common/utils'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+    HandleTimeCube,
+    HandleTimeMeasure,
+} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketMessagesDimension,
+    TicketMessagesMeasure,
+} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {MetricFormat, TableLabels} from 'pages/stats/AgentsTableConfig'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
+import {TableColumn} from 'state/ui/stats/types'
+import {createCsv, saveZippedFiles} from 'utils/file'
 import {DATE_TIME_FORMAT} from './constants'
+
+export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
 
 export interface Period {
     end_datetime: string
@@ -44,6 +46,7 @@ type AgentIdentifierDimension =
     | HelpdeskMessageMember.SenderId
     | HelpdeskMessageDimension.SenderId
     | AgentTimeTrackingDimension.UserId
+
 type AgentReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
     | HelpdeskMessageCubeWithJoins['measures']
@@ -84,7 +87,6 @@ const formatMetric = (column: TableColumn, value?: number | null) =>
         MetricFormat[column].format,
         NOT_AVAILABLE_PLACEHOLDER
     )
-
 const getAgentMetric = (
     agentId: number,
     data: Pick<MetricWithDecile, 'data'>,
@@ -94,21 +96,38 @@ const getAgentMetric = (
     const metricValue = data.data?.allData.find(
         (item) => Number(item[agentIdField]) === agentId
     )?.[metricField]
-
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
-
 const getSummary = (
     column: TableColumn,
     summaryDataMap: ReportDataMap,
     agents: number
 ) => {
+    if (column === TableColumn.AgentName) return SUMMARY_ROW_AGENT_COLUMN_LABEL
+
     const summaryData = summaryDataMap[column].summaryData
     if (MetricFormat[column].perAgent && summaryData) {
-        return summaryData / agents
+        return formatMetric(column, summaryData / agents)
     }
     return formatMetric(column, summaryData)
 }
+
+const getMetric = (
+    column: TableColumn,
+    agent: User,
+    summaryDataMap: ReportDataMap
+) =>
+    column === TableColumn.AgentName
+        ? agent.name
+        : formatMetric(
+              column,
+              getAgentMetric(
+                  agent.id,
+                  summaryDataMap[column].metricData,
+                  summaryDataMap[column].idField,
+                  summaryDataMap[column].metricField
+              )
+          )
 
 export const saveReport = async (
     data: AgentsPerformanceReportData,
@@ -117,8 +136,7 @@ export const saveReport = async (
     useEnrichedCubes: boolean,
     period?: Period
 ) => {
-    const AssigneeUserId = TicketDimension.AssigneeUserId
-    const EnrichedAssigneeUserId = useEnrichedCubes
+    const AssigneeUserId = useEnrichedCubes
         ? renameMemberEnriched(TicketDimension.AssigneeUserId)
         : TicketDimension.AssigneeUserId
     const AvgSurveyScore = useEnrichedCubes
@@ -153,33 +171,18 @@ export const saveReport = async (
         ? renameMemberEnriched(AgentTimeTrackingDimension.UserId)
         : AgentTimeTrackingDimension.UserId
 
-    const getGenericMetric = (
-        column: TableColumn,
-        agent: User,
-        summaryDataMap: ReportDataMap
-    ) =>
-        formatMetric(
-            column,
-            getAgentMetric(
-                agent.id,
-                summaryDataMap[column].metricData,
-                summaryDataMap[column].idField,
-                summaryDataMap[column].metricField
-            )
-        )
-
     const columnsToMetricDataMap: ReportDataMap = {
         [TableColumn.AgentName]: {
             column: TableColumn.AgentName,
             metricData: {data: null},
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: AvgSurveyScore,
             summaryData: null,
         },
         [TableColumn.CustomerSatisfaction]: {
             column: TableColumn.CustomerSatisfaction,
             metricData: data.customerSatisfactionMetric,
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: AvgSurveyScore,
             summaryData: summary.customerSatisfactionMetric.data?.value,
         },
@@ -193,21 +196,21 @@ export const saveReport = async (
         [TableColumn.MedianResolutionTime]: {
             column: TableColumn.MedianResolutionTime,
             metricData: data.medianResolutionTimeMetric,
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: MedianResolutionTime,
             summaryData: summary.medianResolutionTimeMetric.data?.value,
         },
         [TableColumn.PercentageOfClosedTickets]: {
             column: TableColumn.PercentageOfClosedTickets,
             metricData: data.percentageOfClosedTicketsMetric,
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: 100,
         },
         [TableColumn.ClosedTickets]: {
             column: TableColumn.ClosedTickets,
             metricData: data.closedTicketsMetric,
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.closedTicketsMetric.data?.value,
         },
@@ -228,7 +231,7 @@ export const saveReport = async (
         [TableColumn.OneTouchTickets]: {
             column: TableColumn.OneTouchTickets,
             metricData: data.oneTouchTicketsMetric,
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.oneTouchTicketsMetric.data?.value,
         },
@@ -256,7 +259,7 @@ export const saveReport = async (
         [TableColumn.ClosedTicketsPerHour]: {
             column: TableColumn.ClosedTicketsPerHour,
             metricData: data.closedTicketsPerHourMetric,
-            idField: EnrichedAssigneeUserId,
+            idField: AssigneeUserId,
             metricField: TicketCount,
             summaryData: summary.closedTicketsPerHourMetric.data?.value,
         },
@@ -276,7 +279,7 @@ export const saveReport = async (
         ),
         ...data.agents.map((agent) => {
             return columnsOrder.map((column) =>
-                getGenericMetric(column, agent, columnsToMetricDataMap)
+                getMetric(column, agent, columnsToMetricDataMap)
             )
         }),
     ]
