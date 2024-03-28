@@ -12,7 +12,16 @@ type Props = {
 export default function OrderMetafields({integrationId, orderId}: Props) {
     const {data, isLoading, isError} = useListShopifyOrderMetafields(
         integrationId,
-        orderId
+        orderId,
+        {
+            query: {
+                refetchInterval: false,
+                refetchIntervalInBackground: false,
+                refetchOnWindowFocus: false,
+                refetchOnReconnect: false,
+                refetchOnMount: false,
+            },
+        }
     )
 
     if (isLoading) {
