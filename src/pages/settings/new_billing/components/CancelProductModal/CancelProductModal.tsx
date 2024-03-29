@@ -8,7 +8,8 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {logEvent, SegmentEvent} from 'common/segment'
+import {SegmentEvent} from 'common/segment'
+import {trackBillingEvent} from '../../../../../models/billing/resources'
 import CancellationReasons from './CancellationReasons'
 import ProductFeaturesFOMO from './ProductFeaturesFOMO'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
@@ -118,16 +119,14 @@ const CancelProductModal = ({
             setIsSubmitting(false)
         }
 
-        logEvent(
+        await trackBillingEvent(
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
-                productType: productType,
-                productPlan: subscriptionProducts[productType]?.name,
-                primaryReason:
-                    cancellationReasonsState.primaryReason?.label || null,
-                secondaryReason:
+                product_type: productType,
+                primary_reason: cancellationReasonsState.primaryReason!.label,
+                secondary_reason:
                     cancellationReasonsState.secondaryReason?.label || null,
-                otherReason:
+                other_reason:
                     cancellationReasonsState.otherReason?.label || null,
                 accepted: true,
             }
@@ -203,25 +202,20 @@ const CancelProductModal = ({
                         footer={
                             <ChurnMitigationOfferFooter
                                 onAccept={handleAcceptOffer}
-                                onContinue={() => {
+                                onContinue={async () => {
                                     switchToNextStep()
-                                    logEvent(
+                                    await trackBillingEvent(
                                         SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
                                         {
-                                            productType: productType,
-                                            productPlan:
-                                                subscriptionProducts[
-                                                    ProductType.Helpdesk
-                                                ]?.name,
-                                            primaryReason:
-                                                cancellationReasonsState
-                                                    .primaryReason?.label ||
-                                                null,
-                                            secondaryReason:
+                                            product_type: productType,
+                                            primary_reason:
+                                                cancellationReasonsState.primaryReason!
+                                                    .label,
+                                            secondary_reason:
                                                 cancellationReasonsState
                                                     .secondaryReason?.label ||
                                                 null,
-                                            otherReason:
+                                            other_reason:
                                                 cancellationReasonsState
                                                     .otherReason?.label || null,
                                             accepted: false,

@@ -116,3 +116,11 @@ export type SubscriptionCycle = {
         scheduled_price_id: string | null
     }[]
 }
+
+export type ChurnMitigationOfferDecisionEvent = {
+    product_type: ProductType
+    primary_reason: string
+    secondary_reason: string | null
+    other_reason: string | null
+    accepted: boolean
+}

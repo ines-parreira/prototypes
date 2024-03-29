@@ -19,7 +19,8 @@ import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {logEvent, SegmentEvent} from 'common/segment'
+import {SegmentEvent} from 'common/segment'
+import {trackBillingEvent} from 'models/billing/resources'
 import CancelProductModal from '../CancelProductModal'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
 import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
@@ -94,8 +95,8 @@ const sendAcceptedChurnMitigationOfferToSupportMock = assumeMock(
 
 jest.mock('state/notifications/actions')
 const notifyMock = notify as jest.Mock
-jest.mock('common/segment')
-const logEventMock = assumeMock(logEvent)
+jest.mock('models/billing/resources')
+const trackBillingEventMock = assumeMock(trackBillingEvent)
 const mockSwitchToNextStep = jest.fn()
 
 // tests setup
@@ -423,14 +424,13 @@ describe('CancelProductModal: step 3', () => {
         continueCancellingButtonElement.click()
         expect(mockSwitchToNextStep).toHaveBeenCalled()
 
-        expect(logEventMock).toHaveBeenCalledWith(
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
-                productType: productType,
-                productPlan: subscriptionProducts[productType].name,
-                primaryReason: mockState.primaryReason.label,
-                secondaryReason: mockState.secondaryReason.label,
-                otherReason: mockState.otherReason,
+                product_type: productType,
+                primary_reason: mockState.primaryReason.label,
+                secondary_reason: mockState.secondaryReason.label,
+                other_reason: mockState.otherReason,
                 accepted: false,
             }
         )
@@ -479,14 +479,13 @@ describe('CancelProductModal: step 3', () => {
                 },
             },
         ])
-        expect(logEventMock).toHaveBeenCalledWith(
+        expect(trackBillingEventMock).toHaveBeenCalledWith(
             SegmentEvent.SubscriptionCancellationChurnMitigationOfferDecision,
             {
-                productType: productType,
-                productPlan: subscriptionProducts[productType].name,
-                primaryReason: mockState.primaryReason.label,
-                secondaryReason: mockState.secondaryReason.label,
-                otherReason: mockState.otherReason,
+                product_type: productType,
+                primary_reason: mockState.primaryReason.label,
+                secondary_reason: mockState.secondaryReason.label,
+                other_reason: mockState.otherReason,
                 accepted: true,
             }
         )
