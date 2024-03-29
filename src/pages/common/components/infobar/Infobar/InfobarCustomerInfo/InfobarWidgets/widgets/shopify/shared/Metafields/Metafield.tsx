@@ -260,7 +260,9 @@ type MetafieldProps = {
 function UrlMetafield({value}: MetafieldProps) {
     return (
         <FieldWithCopyButton value={value}>
-            <a href={value}>{shortenUrl(value)}</a>
+            <a href={value} target="_blank" rel="noreferrer">
+                {shortenUrl(value)}
+            </a>
         </FieldWithCopyButton>
     )
 }
@@ -375,7 +377,9 @@ function ReferenceMetafield({
         const url = prepareGidUrl(type, storeName as string, gid)
         return url ? (
             <FieldWithCopyButton value={gid}>
-                <a href={url}>{gid}</a>
+                <a href={url} target="_blank" rel="noreferrer">
+                    {gid}
+                </a>
             </FieldWithCopyButton>
         ) : null
     }
