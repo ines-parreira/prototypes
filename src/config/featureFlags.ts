@@ -7,7 +7,6 @@ export enum FeatureFlagKey {
     AnalyticsTimeBasedMetrics = 'analytics-time-based-metrics',
     AutomateLandingPage = 'automate-landing-page',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
-    AutoMergeAccountSetting = 'auto-merge-account-setting',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     CallOnHold = 'call-on-hold',

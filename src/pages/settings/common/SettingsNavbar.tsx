@@ -126,7 +126,6 @@ const CATEGORIES: Category[] = [
                 requiredRole: ADMIN_ROLE,
                 to: 'auto-merge',
                 text: 'Auto-merge',
-                requiredFeatureFlags: [FeatureFlagKey.AutoMergeAccountSetting],
             },
         ],
     },
