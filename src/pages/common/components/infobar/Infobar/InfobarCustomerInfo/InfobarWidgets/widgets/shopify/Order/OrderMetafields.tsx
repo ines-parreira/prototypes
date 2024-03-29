@@ -35,13 +35,17 @@ export default function OrderMetafields({integrationId, orderId}: Props) {
     if (isError) {
         return (
             <span className={css.errorMessage}>
-                Temporarily unavailable, try again later
+                Temporarily unavailable, try again later.
             </span>
         )
     }
 
     if (!data || data.data?.data?.length <= 0) {
-        return <span className={css.infoMessage}>No metafields setup yet</span>
+        return (
+            <span className={css.infoMessage}>
+                Order has no metafields populated.
+            </span>
+        )
     }
 
     const metafields = data.data.data

@@ -40,7 +40,7 @@ describe('<OrderMetafields/>', () => {
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Temporarily unavailable, try again later')
+            screen.getByText('Temporarily unavailable, try again later.')
         ).toBeInTheDocument()
     })
 
@@ -56,7 +56,9 @@ describe('<OrderMetafields/>', () => {
         render(<OrderMetafields integrationId={1} orderId={1} />)
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
-        expect(screen.getByText('No metafields setup yet')).toBeInTheDocument()
+        expect(
+            screen.getByText('Order has no metafields populated.')
+        ).toBeInTheDocument()
     })
 
     it('should return metafields', () => {
