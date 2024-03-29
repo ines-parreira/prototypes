@@ -318,4 +318,48 @@ describe(`App`, () => {
         )
         await screen.findByText(new RegExp(DEFAULT_VALUES.title))
     })
+    it('disables the disconnect button and shows tooltip when app has connections and supports multiple connections', async () => {
+        mockServer.onGet(`/api/apps/${appId}`).reply(200, {
+            ...dummyAppData,
+            is_installed: true,
+            supports_multiple_connections: true,
+            id: appId,
+        })
+
+        jest.mock('services/applications', () => ({
+            getApplicationById: jest.fn(),
+        }))
+        const mockedGetApplicationById =
+            getApplicationById as jest.Mock<Application>
+        mockedGetApplicationById.mockReturnValue({
+            ...mockApplications[0],
+            supports_multiple_connections: true,
+            id: appId,
+        })
+        const integrationsStore = mockStore({
+            integrations: fromJS({
+                integrations: [
+                    {
+                        id: 1,
+                        type: 'app',
+                        application_id: appId,
+                        name: 'my app',
+                        meta: {address: '@myapp'},
+                    } as Integration,
+                ],
+            }),
+        } as unknown as RootState)
+        const {getByText} = renderWithRouter(
+            <Provider store={integrationsStore}>
+                <App />
+            </Provider>,
+            {
+                path: '/integrations/app/:appId',
+                route: `/integrations/app/${appId}`,
+            }
+        )
+        await screen.findAllByText(new RegExp(dummyAppData.name))
+        const disconnectButton = getByText('Disconnect App')
+        expect(disconnectButton).toHaveClass('isDisabled')
+    })
 })

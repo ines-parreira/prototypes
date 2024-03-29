@@ -36,6 +36,7 @@ import ConnectLink from 'pages/integrations/components/ConnectLink'
 import {getApplicationById} from 'services/applications'
 import {fetchIntegrations} from 'state/integrations/actions'
 import useEffectOnce from 'hooks/useEffectOnce'
+import Tooltip from 'pages/common/components/Tooltip'
 import IntegrationsList from './IntegrationsList'
 
 export enum Tab {
@@ -192,6 +193,16 @@ function AppCTA({
     const [isAppInstalled, setAppInstalled] = useState<boolean>(isConnected)
     const [isModalOpen, setModalOpen] = useState(false)
 
+    const hasConnections = !isEmpty(
+        useAppSelector(getIntegrationsByAppId(appId))
+    )
+
+    const supportsMultipleConnections =
+        getApplicationById(appId)?.supports_multiple_connections || false
+
+    const isAppDisconnectionDisabled =
+        supportsMultipleConnections && hasConnections
+
     const handleAppDisconnection = async () => {
         logEvent(SegmentEvent.IntegrationDisconnectClicked, {
             integration: title.toLowerCase(),
@@ -233,9 +244,23 @@ function AppCTA({
                     name={title}
                 />
             ) : isAppInstalled ? (
-                <Button intent="destructive" onClick={() => setModalOpen(true)}>
-                    Disconnect App
-                </Button>
+                <>
+                    <Button
+                        intent="destructive"
+                        isDisabled={isAppDisconnectionDisabled}
+                        id="disconnect-app-button"
+                        onClick={() => setModalOpen(true)}
+                    >
+                        Disconnect App
+                    </Button>
+                    {isAppDisconnectionDisabled && (
+                        <Tooltip placement="top" target="disconnect-app-button">
+                            App cannot be disconnected while accounts are still
+                            integrated with Gorgias. Please disconnect all
+                            integrated accounts before disconnecting the app.
+                        </Tooltip>
+                    )}
+                </>
             ) : (
                 <>
                     <ConnectLink
