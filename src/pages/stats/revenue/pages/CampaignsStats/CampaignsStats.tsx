@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {Redirect, useParams} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {isEmpty} from 'lodash'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {getStatsStoreIntegrations} from 'state/stats/selectors'
@@ -34,13 +36,29 @@ const CampaignsStats = () => {
 }
 
 function CampaignStatsOrPaywallPage() {
+    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
+        useParams<ConvertRouteParams>()
+
     const isConvertSubscriber = useIsConvertSubscriber()
     const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
+    const flags = useFlags()
+
+    const redirectUrl = useMemo(() => {
+        if (chatIntegrationId) {
+            return `/app/convert/${chatIntegrationId}/performance/subscribe`
+        }
+        return '/app/stats/convert/campaigns/subscribe'
+    }, [chatIntegrationId])
+
+    // Wait for flags to be loaded before rendering the page
+    if (isEmpty(flags)) {
+        return null
+    }
 
     return storeIntegrations.length && isConvertSubscriber ? (
         <CampaignsStats />
     ) : (
-        <Redirect to="/app/stats/convert/campaigns/subscribe" />
+        <Redirect to={redirectUrl} />
     )
 }
 
