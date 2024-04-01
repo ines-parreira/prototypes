@@ -39,6 +39,7 @@ const ConvertSubscriptionModal = ({
 
     const defaultPrice = useMemo((): ConvertPrice | undefined => {
         const convertInitialIndex = getDefaultConvertPriceIndex(
+            helpdeskProduct?.interval,
             convertPrices,
             helpdeskProduct?.name
         )

@@ -1,22 +1,26 @@
 import {convertProduct} from 'fixtures/productPrices'
+import {PlanInterval} from 'models/billing/types'
 import {getDefaultConvertPriceIndex} from '../getDefaultConvertPriceIndex'
 
 describe('getDefaultConvertPriceIndex', () => {
     it.each([
-        [undefined, undefined, 0],
-        [[], undefined, -1],
-        [[], 'Pro', -1],
-        [convertProduct.prices, 'Unknown', 1],
-        [convertProduct.prices, 'Basic', 1],
-        [convertProduct.prices, 'Pro', 1],
-        [convertProduct.prices, 'Advanced', 3],
-        [convertProduct.prices, 'Custom', 3],
+        [undefined, undefined, undefined, 0],
+        [[], undefined, undefined, -1],
+        [[], PlanInterval.Month, 'Pro', -1],
+        [convertProduct.prices, PlanInterval.Month, 'Unknown', 1],
+        [convertProduct.prices, PlanInterval.Month, 'Starter', 1],
+        [convertProduct.prices, PlanInterval.Month, 'Basic', 1],
+        [convertProduct.prices, PlanInterval.Month, 'Pro', 1],
+        [convertProduct.prices, PlanInterval.Month, 'Advanced', 2],
+        [convertProduct.prices, PlanInterval.Month, 'Custom', 3],
+        [convertProduct.prices, PlanInterval.Year, 'Starter', 6],
+        [convertProduct.prices, PlanInterval.Year, 'Advanced', -1],
     ])(
         'should return the correct default convert price index',
-        (prices, helpdeskPlanName, expectedValue) => {
-            expect(getDefaultConvertPriceIndex(prices, helpdeskPlanName)).toBe(
-                expectedValue
-            )
+        (prices, interval, helpdeskPlanName, expectedValue) => {
+            expect(
+                getDefaultConvertPriceIndex(interval, prices, helpdeskPlanName)
+            ).toBe(expectedValue)
         }
     )
 })

@@ -835,6 +835,19 @@ export const convertPrice5: ConvertPrice = {
     tier: 5,
 }
 
+export const convertPrice6: ConvertPrice = {
+    amount: 36000,
+    currency: 'usd',
+    num_quota_tickets: 600,
+    internal_id: 'convert-01-yearly-usd-6',
+    interval: PlanInterval.Year,
+    name: 'Convert 600 Yearly',
+    price_id: 'price_2NmZrmH2GG3UYmlxBGfOOSL1',
+    product_id: 'prod_Mwy3exdalDFouZ',
+    extra_ticket_cost: 0,
+    tier: 1,
+}
+
 export const HELPDESK_PRODUCT_ID = 'prod_LsH6kV35G6zKWo'
 export const AUTOMATION_PRODUCT_ID = 'prod_LsHD5xmSqoFBBs'
 export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
@@ -889,6 +902,7 @@ export const convertProduct: Product<ConvertPrice> = {
         convertPrice3,
         convertPrice4,
         convertPrice5,
+        convertPrice6,
     ],
 }
 

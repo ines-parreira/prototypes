@@ -157,6 +157,7 @@ export const useBillingPlans = ({
         (price) => (filterByInterval ? price.interval === interval : true)
     )
     const convertInitialIndex = getDefaultConvertPriceIndex(
+        interval,
         convertPrices,
         helpdeskProduct?.name
     )
