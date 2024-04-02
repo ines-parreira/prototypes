@@ -168,6 +168,7 @@ import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrati
 import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
 import ConvertOnboardingView from './convert/onboarding/components/ConvertOnboardingView'
 import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
+import AiAgentPlaygroundContainer from './automate/aiAgent/AiAgentPlaygroundContainer'
 import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
 import ConvertOnboardingWizardView from './convert/onboarding/components/ConvertOnboardingWizardView'
 import {
@@ -1394,13 +1395,16 @@ function AutomationContent() {
     const showAiAgentSettings: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSettings]
 
+    const showAiAgentPlayground: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentPlayground]
+
     return (
         <Switch>
-            {!!showAiAgentSettings && (
+            {showAiAgentSettings !== false && (
                 <Route path={`${path}/:shopType/:shopName/ai-agent`}>
                     <SelfServiceHelpCentersProvider>
                         <Route
-                            path={`${path}/:shopType/:shopName/ai-agent`}
+                            path={`${path}/:shopType/:shopName/ai-agent/settings`}
                             exact
                             component={memoizedWithUserRoleRequired(
                                 AiAgentViewContainer,
@@ -1408,6 +1412,16 @@ function AutomationContent() {
                             )}
                         />
                     </SelfServiceHelpCentersProvider>
+                    {showAiAgentPlayground !== false && (
+                        <Route
+                            path={`${path}/:shopType/:shopName/ai-agent/playground`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                AiAgentPlaygroundContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    )}
                 </Route>
             )}
             <Route

@@ -13,8 +13,10 @@ import {AiAgentStoreView} from './AiAgentStoreView'
 
 const AiAgentViewContainer = () => {
     const dispatch = useAppDispatch()
-    const {shopType, shopName} =
-        useParams<{shopType: string; shopName: string}>()
+    const {shopType, shopName} = useParams<{
+        shopType: string
+        shopName: string
+    }>()
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountId = currentAccount.get('id')

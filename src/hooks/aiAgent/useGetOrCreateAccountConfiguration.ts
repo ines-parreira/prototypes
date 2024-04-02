@@ -10,7 +10,7 @@ import {
 import {
     getAccountConfiguration,
     createAccountConfiguration,
-} from 'models/aiAgent/resources'
+} from 'models/aiAgent/resources/account-configuration'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 

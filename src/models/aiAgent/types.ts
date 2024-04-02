@@ -14,6 +14,9 @@ export type GetAccountConfigurationResponse = {
 export type AccountConfiguration = {
     accountId: number
     gorgiasDomain: string
+    httpIntegration?: {
+        id: number
+    }
     helpdeskOAuth: {accessToken: string} | null
 }
 
@@ -65,4 +68,14 @@ type ConversationBot = {
 type EmailIntegration = {
     id: number
     email: string
+}
+
+// Playground
+export type AiAgentResponse = {
+    generate: {
+        output: {
+            generated_message: string
+            outcome: string
+        }
+    }
 }

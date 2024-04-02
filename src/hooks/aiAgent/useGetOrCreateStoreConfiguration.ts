@@ -10,7 +10,7 @@ import {
 import {
     getStoreConfiguration,
     upsertStoreConfiguration,
-} from 'models/aiAgent/resources'
+} from 'models/aiAgent/resources/account-configuration'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 import {DEFAULT_STORE_CONFIGURATION} from 'pages/automate/aiAgent/constants'

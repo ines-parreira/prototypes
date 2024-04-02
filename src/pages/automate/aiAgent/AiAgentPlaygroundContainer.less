@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .playgroundContainer {
+        padding: @layout-spacing-m;
+        form {
+            button {
+                margin-right: 10px;
+            }
+        }
+    }
+    .aiAgentResponseContainer {
+        margin-top: 30px;
+        .aiAgentFeedback {
+            background-color: #e7e3e3;
+            padding: 10px;
+            white-space: pre-line;
+            border-radius: 5px;
+        }
+    }
+}

@@ -7,7 +7,8 @@ import {
     getStoreConfiguration,
     upsertAccountConfiguration,
     upsertStoreConfiguration,
-} from './resources'
+} from './resources/account-configuration'
+import {createContextAndSubmitPlaygroundTicket} from './resources/message-processing'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -76,3 +77,12 @@ export const useUpsertStoreConfigurationPure = (
         ...overrides,
     })
 }
+
+// Playground
+export const useSubmitPlaygroundTicket = (
+    overrides?: MutationOverrides<typeof createContextAndSubmitPlaygroundTicket>
+) =>
+    useMutation({
+        mutationFn: (body) => createContextAndSubmitPlaygroundTicket(...body),
+        ...overrides,
+    })

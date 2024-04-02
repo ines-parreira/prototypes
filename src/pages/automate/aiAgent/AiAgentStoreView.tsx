@@ -6,7 +6,9 @@ import _isNull from 'lodash/isNull'
 import _isEqual from 'lodash/isEqual'
 
 import {useQueryClient} from '@tanstack/react-query'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import ToggleInput from '../../common/forms/ToggleInput'
@@ -223,6 +225,23 @@ export const AiAgentStoreView = ({
     shopName,
     accountDomain,
 }: AiAgentStoreViewProps) => {
+    const showAiAgentPlayground: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentPlayground]
+
+    const headerNavbarItems = [
+        {
+            route: `/app/automation/shopify/${shopName}/ai-agent/settings`,
+            title: 'Settings',
+        },
+    ]
+
+    if (showAiAgentPlayground) {
+        headerNavbarItems.push({
+            route: `/app/automation/shopify/${shopName}/ai-agent/playground`,
+            title: 'Playground',
+        })
+    }
+
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     /**
@@ -361,7 +380,11 @@ export const AiAgentStoreView = ({
     )
 
     return (
-        <AutomateView title={AI_AGENT} isLoading={storeConfigurationIsLoading}>
+        <AutomateView
+            title={AI_AGENT}
+            headerNavbarItems={headerNavbarItems}
+            isLoading={storeConfigurationIsLoading}
+        >
             {isDirty && (
                 <UnsavedChangesPrompt
                     onSave={handleOnSave}

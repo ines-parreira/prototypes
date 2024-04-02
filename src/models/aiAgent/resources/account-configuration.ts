@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {isProduction, isStaging} from '../../utils/environment'
+import {isProduction, isStaging} from '../../../utils/environment'
 
 import {
     AccountConfiguration,
@@ -7,7 +7,7 @@ import {
     GetStoreConfigurationParams,
     GetStoreConfigurationResponse,
     PutStoreConfigurationParams,
-} from './types'
+} from '../types'
 
 /**
  * Api Client for AI Agent
@@ -20,7 +20,7 @@ const baseURL = isProduction()
     : `http://localhost:8096`
 
 // eslint-disable-next-line no-restricted-properties
-const aiAgentApiClient = axios.create({
+const apiClient = axios.create({
     baseURL,
     headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const aiAgentApiClient = axios.create({
  */
 
 export const getAccountConfiguration = async (accountDomain: string) => {
-    const res = await aiAgentApiClient.get<GetAccountConfigurationResponse>(
+    const res = await apiClient.get<GetAccountConfigurationResponse>(
         `/accounts/${accountDomain}`
     )
     return res
@@ -41,7 +41,7 @@ export const getAccountConfiguration = async (accountDomain: string) => {
 export const createAccountConfiguration = async (
     accountConfiguration: AccountConfiguration & {helpdeskOAuth: null}
 ) => {
-    const res = await aiAgentApiClient.post<GetAccountConfigurationResponse>(
+    const res = await apiClient.post<GetAccountConfigurationResponse>(
         `/accounts`,
         accountConfiguration
     )
@@ -53,7 +53,7 @@ export async function upsertAccountConfiguration(
 ) {
     const accountDomain = accountConfiguration.gorgiasDomain
 
-    const response = await aiAgentApiClient.put(
+    const response = await apiClient.put(
         `/accounts/${accountDomain}`,
         accountConfiguration
     )
@@ -69,7 +69,7 @@ export const getStoreConfiguration = async (
 ) => {
     const {accountDomain, storeName} = params
 
-    const res = await aiAgentApiClient.get<GetStoreConfigurationResponse>(
+    const res = await apiClient.get<GetStoreConfigurationResponse>(
         `/accounts/${accountDomain}/stores/${storeName}`
     )
     return res
@@ -81,7 +81,7 @@ export async function upsertStoreConfiguration(
     const {accountDomain, storeName, storeConfiguration} = params
 
     // FIXME: adding the response type, conversation api should return the updated store configuration
-    const response = await aiAgentApiClient.put<GetStoreConfigurationResponse>(
+    const response = await apiClient.put<GetStoreConfigurationResponse>(
         `/accounts/${accountDomain}/stores/${storeName}`,
         storeConfiguration
     )
