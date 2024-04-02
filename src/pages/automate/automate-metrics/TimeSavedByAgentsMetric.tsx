@@ -13,6 +13,16 @@ type Props = {
     automatedInteractionTrend: MetricTrend
 }
 
+export const TIME_SAVED_BY_AGENTS_TOOLTIP = (
+    <>
+        How much time agents would have spent resolving customer inquiries
+        without Gorgias Automate.{' '}
+        <a target="_blank" href="https://link.gorgias.com/jax" rel="noreferrer">
+            How is it calculated?
+        </a>
+    </>
+)
+
 export const TimeSavedByAgentsMetric: React.FC<Props> = ({
     ticketHandleTimeTrend,
     automatedInteractionTrend,
@@ -37,7 +47,7 @@ export const TimeSavedByAgentsMetric: React.FC<Props> = ({
         <MetricCard
             title={TIME_SAVED_BY_AGENTS}
             hint={{
-                title: 'How much time agents would have spent resolving customer inquiries without Gorgias Automate.',
+                title: TIME_SAVED_BY_AGENTS_TOOLTIP,
             }}
             isLoading={combinedTrend.isFetching}
         >

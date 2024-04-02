@@ -8,8 +8,15 @@ import {AUTOMATED_INTERACTIONS_LABEL} from './constants'
 import {AutomateMetricProps} from './types'
 import {getTrendProps} from './utils'
 
-export const AUTOMATED_INTERACTION_TOOLTIP =
-    'Fully automated interactions solved without any agent intervention.'
+export const AUTOMATED_INTERACTION_TOOLTIP = (
+    <>
+        Fully automated interactions solved without any agent intervention.{' '}
+        <a target="_blank" href="https://link.gorgias.com/ppw" rel="noreferrer">
+            How is it calculated?
+        </a>
+    </>
+)
+
 export const AutomatedInteractionsMetric = ({
     trend: automatedInteractionsTrend,
     showTips,
