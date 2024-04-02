@@ -13,6 +13,7 @@ import {
     OutlookIntegration,
     OutboundVerificationStatusValue,
     DomainDNSRecord,
+    DNSRecordType,
 } from 'models/integration/types'
 
 export const isSingleSenderVerificationInProgress = (
@@ -139,8 +140,12 @@ export async function populateCurrentValuesForDNSRecords(
                             return {
                                 ...record,
                                 current_values:
-                                    response?.map((answer) => answer.data) ??
-                                    [],
+                                    response?.map((answer) =>
+                                        record.record_type.toLowerCase() ===
+                                        DNSRecordType.CNAME
+                                            ? answer.data.replace(/\.$/, '')
+                                            : answer.data
+                                    ) ?? [],
                             }
                         }
 

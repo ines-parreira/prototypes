@@ -47,6 +47,11 @@ export type EmailIntegrationMeta = {
         [OutboundVerificationType.Domain]: OutboundVerificationStatusValue
     }
 }
+export enum DNSRecordType {
+    CNAME = 'cname',
+    TXT = 'txt',
+    MX = 'mx',
+}
 
 export type DomainDNSRecord = {
     verified: boolean

@@ -417,5 +417,50 @@ describe('helpers', () => {
                 records
             )
         })
+        it('removes the trailing dot from current values of CNAME records', async () => {
+            mockedServer.onGet('https://dns.google/resolve').reply((config) => {
+                const {name} = config.params as {
+                    name: string
+                }
+                return [
+                    200,
+                    {
+                        Status: 0,
+                        Answer: [
+                            {
+                                name: name,
+                                TTL: 100,
+                                type: 5,
+                                data: `resolved.${name}.with-trailing-dot.`,
+                            },
+                        ],
+                    },
+                ]
+            })
+
+            const records = [
+                {
+                    host: 'gor._domainkey.gorgias.com',
+                    record_type: 'CNAME',
+                },
+                {
+                    host: 'gor2._domainkey.gorgias.com',
+                    record_type: 'CNAME',
+                },
+                {
+                    host: 'em6641.gorgias.com',
+                    record_type: 'CNAME',
+                },
+            ] as DomainDNSRecord[]
+
+            const populatedRecords = await populateCurrentValuesForDNSRecords(
+                records
+            )
+            populatedRecords.forEach((record) => {
+                expect(record.current_values).toEqual([
+                    `resolved.${record.host}.with-trailing-dot`,
+                ])
+            })
+        })
     })
 })
