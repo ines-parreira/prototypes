@@ -91,3 +91,20 @@ src/state/ui/editor @gorgias/core-frontend
 src/state/ui/ticketNavbar @gorgias/core-frontend
 src/state/ui/views @gorgias/core-frontend
 src/state/newMessage @gorgias/core-frontend
+
+# Phone scope @gorgias/phone
+
+src/models/integration/types/phone.ts @gorgias/phone
+src/pages/common/components/PhoneIntegrationBar @gorgias/phone
+src/pages/common/components/VoiceCallAgentLabel @gorgias/phone
+src/pages/integrations/integration/components/voice @gorgias/phone
+src/pages/integrations/integration/components/phone @gorgias/phone
+src/pages/phoneNumbers @gorgias/phone
+src/pages/tickets/detail/components/PhoneEvent @gorgias/phone
+src/pages/common/forms/PhoneNumberInput @gorgias/phone
+src/fixtures/phoneNumber.ts @gorgias/phone
+src/hooks/integrations/phone @gorgias/phone
+src/pages/stats/voice @gorgias/phone
+src/pages/common/components/VoiceCallStatusLabel @gorgias/phone
+src/pages/common/components/VoiceCallCustomerLabel @gorgias/phone
+src/pages/tickets/detail/components/TicketVoiceCall @gorgias/phone
