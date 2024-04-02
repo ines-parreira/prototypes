@@ -6,15 +6,14 @@ import React, {
     FormEvent,
     RefObject,
 } from 'react'
-import classnames from 'classnames'
 import {Button, Form, Popover, PopoverBody} from 'reactstrap'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {focusElement} from 'utils/html'
-import {ShopifyActionType} from '../../../types'
 
-import css from './TaxesPopover.less'
+import css from '../Popover.less'
 
 type Props = {
     id: string
@@ -128,7 +127,7 @@ export default class TaxesPopover extends Component<Props, State> {
                     id={id}
                     type="button"
                     color="link"
-                    className={classnames('p-0', css.focusable)}
+                    className={css.button}
                     disabled={!editable}
                     tabIndex={0}
                     innerRef={this._saveButtonRef}
@@ -137,6 +136,7 @@ export default class TaxesPopover extends Component<Props, State> {
                     <strong>{children}</strong>
                 </Button>
                 <Popover
+                    className={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
@@ -146,9 +146,7 @@ export default class TaxesPopover extends Component<Props, State> {
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="py-3">
-                            <p className={css.legend}>
-                                Taxes are automatically calculated.
-                            </p>
+                            <p>Taxes are automatically calculated.</p>
                             <CheckBox
                                 isChecked={!taxExempt}
                                 tabIndex={0}
@@ -163,7 +161,6 @@ export default class TaxesPopover extends Component<Props, State> {
                             <Button
                                 type="button"
                                 tabIndex={0}
-                                className={css.focusable}
                                 onClick={this._onClose}
                             >
                                 Close
@@ -172,7 +169,7 @@ export default class TaxesPopover extends Component<Props, State> {
                                 color="primary"
                                 type="submit"
                                 tabIndex={0}
-                                className={classnames('ml-auto', css.focusable)}
+                                className={css.apply}
                             >
                                 Apply
                             </Button>

@@ -220,6 +220,7 @@ const ManageTags = () => {
                             Create tag
                         </Button>
                         <Popover
+                            className="popoverDark"
                             placement="bottom"
                             isOpen={showCreationPopup}
                             target="create-tag-button"

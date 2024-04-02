@@ -20,21 +20,20 @@ import {
     PopoverBody,
 } from 'reactstrap'
 import {fromJS, Map} from 'immutable'
-import classnames from 'classnames'
 
-import {logEvent, SegmentEvent} from 'common/segment'
 import {getDiscountAmount} from 'business/shopify/discount'
+import {formatPrice} from 'business/shopify/number'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
 } from 'constants/integrations/types/shopify'
-import {formatPrice} from 'business/shopify/number'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import AmountInput from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/AmountInput/AmountInput'
 import {focusElement} from 'utils/html'
-import getShopifyMoneySymbol from '../../helpers'
-import AmountInput from '../../AmountInput/AmountInput'
-import {ShopifyActionType} from '../../../types'
 
-import css from './DiscountPopover.less'
+import css from '../Popover.less'
 
 type Props = {
     id: string
@@ -262,7 +261,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                     id={id}
                     type="button"
                     color="link"
-                    className={classnames('p-0', css.button, css.focusable)}
+                    className={css.button}
                     disabled={!editable}
                     tabIndex={0}
                     innerRef={this._saveButtonRef}
@@ -274,6 +273,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                     <span className={css.title}>{value.get('title')}</span>
                 ) : null}
                 <Popover
+                    className={css.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
@@ -291,7 +291,6 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                                     <InputGroupAddon addonType="prepend">
                                         <Button
                                             onClick={this._onFixedAmountClicked}
-                                            className={css.focusable}
                                             tabIndex={0}
                                         >
                                             {getShopifyMoneySymbol(
@@ -303,7 +302,6 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                                     <InputGroupAddon addonType="prepend">
                                         <Button
                                             onClick={this._onPercentageClicked}
-                                            className={css.focusable}
                                             tabIndex={0}
                                         >
                                             %
@@ -341,7 +339,6 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                                     type="button"
                                     color="danger"
                                     tabIndex={0}
-                                    className={css.focusable}
                                     onClick={this._onRemove}
                                 >
                                     Remove
@@ -350,7 +347,6 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                                 <Button
                                     type="button"
                                     tabIndex={0}
-                                    className={css.focusable}
                                     onClick={this._onClose}
                                 >
                                     Close
@@ -360,7 +356,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
                                 color="primary"
                                 type="submit"
                                 tabIndex={0}
-                                className={classnames('ml-auto', css.focusable)}
+                                className={css.apply}
                             >
                                 Apply
                             </Button>

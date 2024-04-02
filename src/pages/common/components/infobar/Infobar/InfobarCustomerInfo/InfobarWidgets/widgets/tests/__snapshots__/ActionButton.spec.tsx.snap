@@ -24,6 +24,7 @@ exports[`ActionButton component should display a single option with a checkbox p
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -100,6 +101,7 @@ exports[`ActionButton component should display a single option with a number par
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -180,6 +182,7 @@ exports[`ActionButton component should display a single option with a select par
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -278,6 +281,7 @@ exports[`ActionButton component should display a single option with a text param
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -355,6 +359,7 @@ exports[`ActionButton component should display a single option with no parameter
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -422,6 +427,7 @@ exports[`ActionButton component should display multiple options with a common pa
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -545,6 +551,7 @@ exports[`ActionButton component should display multiple options with different p
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"
@@ -668,6 +675,7 @@ exports[`ActionButton component should display multiple options without paramete
     </div>
   </ForwardRef(Button)>
   <Popover
+    className="popoverDark"
     isOpen={false}
     placement="bottom"
     placementPrefix="bs-popover"

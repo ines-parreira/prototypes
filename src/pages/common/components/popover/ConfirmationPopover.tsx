@@ -122,6 +122,7 @@ export default function ConfirmationPopover({
             {isMounted() && (
                 <Popover
                     container={container}
+                    className="popoverDark"
                     isOpen={isOpen || isOpened}
                     placement={placement}
                     target={uid}

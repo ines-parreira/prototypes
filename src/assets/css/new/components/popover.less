@@ -11,22 +11,16 @@
     &.bs-popover-auto {
         &[x-placement^='top'],
         &.bs-popover-top {
-            > .arrow::before {
-                border-top-color: var(--neutral-grey-3);
-            }
-        }
-
-        &[x-placement^='top'],
-        &.bs-popover-top {
             > .arrow::after {
                 border-top-color: var(--neutral-grey-1);
             }
-        }
 
-        &[x-placement^='right'],
-        &.bs-popover-right {
             > .arrow::before {
-                border-right-color: var(--neutral-grey-3);
+                border-top-color: var(--neutral-grey-3);
+            }
+
+            .popover-header::before {
+                display: none;
             }
         }
 
@@ -35,12 +29,13 @@
             > .arrow::after {
                 border-right-color: var(--neutral-grey-1);
             }
-        }
 
-        &[x-placement^='bottom'],
-        &.bs-popover-bottom {
             > .arrow::before {
-                border-bottom-color: var(--neutral-grey-3);
+                border-right-color: var(--neutral-grey-3);
+            }
+
+            .popover-header::before {
+                display: none;
             }
         }
 
@@ -49,12 +44,13 @@
             > .arrow::after {
                 border-bottom-color: var(--neutral-grey-1);
             }
-        }
 
-        &[x-placement^='left'],
-        &.bs-popover-left {
             > .arrow::before {
-                border-left-color: var(--neutral-grey-3);
+                border-bottom-color: var(--neutral-grey-3);
+            }
+
+            .popover-header::before {
+                display: none;
             }
         }
 
@@ -62,6 +58,14 @@
         &.bs-popover-left {
             > .arrow::after {
                 border-left-color: var(--neutral-grey-1);
+            }
+
+            > .arrow::before {
+                border-left-color: var(--neutral-grey-3);
+            }
+
+            .popover-header::before {
+                display: none;
             }
         }
     }
@@ -75,4 +79,23 @@
 .popover-header {
     background-color: var(--neutral-grey-0);
     border-color: var(--neutral-grey-3);
+
+    &:before {
+        display: none;
+    }
+}
+
+.popoverDark {
+    :global {
+        .popover {
+            &.bs-popover-auto {
+                &[x-placement^='bottom'],
+                &.bs-popover-bottom {
+                    > .arrow::after {
+                        border-bottom-color: var(--neutral-grey-0);
+                    }
+                }
+            }
+        }
+    }
 }

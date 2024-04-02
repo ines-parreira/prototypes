@@ -300,6 +300,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         return (
             <Popover
                 placement="bottom"
+                className="popoverDark"
                 isOpen={isUiOpen}
                 target={this.id}
                 toggle={this.toggleUi}

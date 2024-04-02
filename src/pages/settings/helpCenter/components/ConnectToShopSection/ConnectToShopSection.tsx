@@ -98,6 +98,7 @@ export const ConnectToShopSection = ({
 
                     <Tooltip
                         placement="top"
+                        className="popoverDark"
                         target={disconnectButtonRef}
                         disabled={disconnectModalOpen}
                     >

@@ -769,6 +769,7 @@ export const TicketListActions = ({
                 </UncontrolledButtonDropdown>
                 <Popover
                     placement="bottom"
+                    className="popoverDark"
                     isOpen={isDeleteConfirmationOpen}
                     target="bulk-more-button"
                     toggle={toggleDeleteConfirmation}

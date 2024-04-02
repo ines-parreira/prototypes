@@ -14,12 +14,13 @@ import classnames from 'classnames'
 import {formatPrice} from 'business/shopify/number'
 import {logEvent, SegmentEvent} from 'common/segment'
 import RadioButton from 'pages/common/components/RadioButton'
+import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
+import AmountInput from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/AmountInput/AmountInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {focusElement} from 'utils/html'
-import MoneyAmount from '../../../../MoneyAmount'
-import {ShopifyActionType} from '../../../types'
-import AmountInput from '../../AmountInput/AmountInput'
 
+import popoverCss from '../Popover.less'
 import css from './ShippingPopover.less'
 
 type Props = {
@@ -263,7 +264,7 @@ export default class ShippingPopover extends Component<Props, State> {
                     id={id}
                     type="button"
                     color="link"
-                    className={classnames('p-0', css.focusable)}
+                    className={popoverCss.button}
                     disabled={!editable}
                     tabIndex={0}
                     innerRef={this._saveButtonRef}
@@ -272,11 +273,12 @@ export default class ShippingPopover extends Component<Props, State> {
                     <strong>{children}</strong>
                 </Button>
                 {value && (
-                    <span className={css.title}>
+                    <span className={popoverCss.title}>
                         {this._getShippingRateTitle()}
                     </span>
                 )}
                 <Popover
+                    className={popoverCss.popover}
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
@@ -347,7 +349,10 @@ export default class ShippingPopover extends Component<Props, State> {
                                     placeholder="Custom rate name"
                                     autoComplete="off"
                                     value={title}
-                                    className={css.titleInput}
+                                    className={classnames(
+                                        popoverCss.titleInput,
+                                        css.titleInput
+                                    )}
                                     required={handle === 'custom'}
                                     disabled={handle !== 'custom'}
                                     onChange={this._onTitleChange}
@@ -368,7 +373,6 @@ export default class ShippingPopover extends Component<Props, State> {
                                     type="button"
                                     color="danger"
                                     tabIndex={0}
-                                    className={css.focusable}
                                     onClick={this._onRemove}
                                 >
                                     Remove
@@ -377,7 +381,6 @@ export default class ShippingPopover extends Component<Props, State> {
                                 <Button
                                     type="button"
                                     tabIndex={0}
-                                    className={css.focusable}
                                     onClick={this._onClose}
                                 >
                                     Close
@@ -387,7 +390,7 @@ export default class ShippingPopover extends Component<Props, State> {
                                 color="primary"
                                 type="submit"
                                 tabIndex={0}
-                                className={classnames('ml-auto', css.focusable)}
+                                className={popoverCss.apply}
                             >
                                 Apply
                             </Button>

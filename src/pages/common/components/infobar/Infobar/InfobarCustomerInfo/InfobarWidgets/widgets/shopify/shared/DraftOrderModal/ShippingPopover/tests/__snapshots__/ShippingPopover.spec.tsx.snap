@@ -5,7 +5,7 @@ exports[`<ShippingPopover/> render() should render with value 1`] = `
   <div>
     <div>
       <button
-        class="p-0 focusable btn btn-link"
+        class="button btn btn-link"
         id="shipping-lines"
         tabindex="0"
         type="button"
@@ -29,7 +29,7 @@ exports[`<ShippingPopover/> render() should render without value 1`] = `
   <div>
     <div>
       <button
-        class="p-0 focusable btn btn-link"
+        class="button btn btn-link"
         id="shipping-lines"
         tabindex="0"
         type="button"

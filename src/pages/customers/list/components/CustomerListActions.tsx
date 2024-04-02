@@ -142,6 +142,7 @@ class CustomerListActions extends Component<Props, State> {
                 </UncontrolledButtonDropdown>
                 <Popover
                     placement="bottom"
+                    className="popoverDark"
                     isOpen={this.state.displayDeleteConfirmation}
                     target="bulk-more-button"
                     toggle={this.toggleDeleteConfirmation}

@@ -68,7 +68,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
         </small>
         <div>
           <button
-            class="p-0 button focusable btn btn-link"
+            class="button btn btn-link"
             id="applied-discount-line-item"
             tabindex="0"
             type="button"
@@ -219,7 +219,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
       >
         <div>
           <button
-            class="p-0 button focusable btn btn-link"
+            class="button btn btn-link"
             id="applied-discount-line-item"
             tabindex="0"
             type="button"
@@ -370,7 +370,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product stock quan
       >
         <div>
           <button
-            class="p-0 button focusable btn btn-link"
+            class="button btn btn-link"
             id="applied-discount-line-item"
             tabindex="0"
             type="button"
@@ -510,7 +510,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
       >
         <div>
           <button
-            class="p-0 button focusable btn btn-link"
+            class="button btn btn-link"
             id="applied-discount-line-item"
             tabindex="0"
             type="button"
@@ -661,7 +661,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product stock q
       >
         <div>
           <button
-            class="p-0 button focusable btn btn-link"
+            class="button btn btn-link"
             id="applied-discount-line-item"
             tabindex="0"
             type="button"
@@ -800,7 +800,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
       >
         <div>
           <button
-            class="p-0 button focusable btn btn-link"
+            class="button btn btn-link"
             id="applied-discount-line-item"
             tabindex="0"
             type="button"

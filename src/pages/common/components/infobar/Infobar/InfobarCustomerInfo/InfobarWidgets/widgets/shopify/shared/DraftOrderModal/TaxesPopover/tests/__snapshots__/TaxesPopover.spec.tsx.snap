@@ -3,7 +3,7 @@
 exports[`<TaxesPopover/> render() should render with checked checkbox because we charge taxes 1`] = `
 <div>
   <button
-    class="p-0 focusable btn btn-link"
+    class="button btn btn-link"
     id="taxes"
     tabindex="0"
     type="button"
@@ -18,7 +18,7 @@ exports[`<TaxesPopover/> render() should render with checked checkbox because we
 exports[`<TaxesPopover/> render() should render with unchecked checkbox because we do not charge taxes 1`] = `
 <div>
   <button
-    class="p-0 focusable btn btn-link"
+    class="button btn btn-link"
     id="taxes"
     tabindex="0"
     type="button"

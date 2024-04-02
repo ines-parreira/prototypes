@@ -3,7 +3,7 @@
 exports[`<DiscountPopover/> render() should render with value 1`] = `
 <div>
   <Button
-    className="p-0 button focusable"
+    className="button"
     color="link"
     disabled={false}
     id="discount-popover"
@@ -23,6 +23,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
     foo
   </span>
   <Popover
+    className="popover"
     container={<body />}
     isOpen={false}
     placement="bottom"
@@ -68,7 +69,6 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
               tag="div"
             >
               <Button
-                className="focusable"
                 color="secondary"
                 onClick={[Function]}
                 tabIndex={0}
@@ -82,7 +82,6 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
               tag="div"
             >
               <Button
-                className="focusable"
                 color="secondary"
                 onClick={[Function]}
                 tabIndex={0}
@@ -143,7 +142,6 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
         tag="div"
       >
         <Button
-          className="focusable"
           color="danger"
           onClick={[Function]}
           tabIndex={0}
@@ -153,7 +151,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
           Remove
         </Button>
         <Button
-          className="ml-auto focusable"
+          className="apply"
           color="primary"
           tabIndex={0}
           tag="button"
@@ -170,7 +168,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
 exports[`<DiscountPopover/> render() should render without value 1`] = `
 <div>
   <Button
-    className="p-0 button focusable"
+    className="button"
     color="link"
     disabled={false}
     id="discount-popover"
@@ -185,6 +183,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
     </strong>
   </Button>
   <Popover
+    className="popover"
     container={<body />}
     isOpen={false}
     placement="bottom"
@@ -230,7 +229,6 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
               tag="div"
             >
               <Button
-                className="focusable"
                 color="secondary"
                 onClick={[Function]}
                 tabIndex={0}
@@ -244,7 +242,6 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
               tag="div"
             >
               <Button
-                className="focusable"
                 color="secondary"
                 onClick={[Function]}
                 tabIndex={0}
@@ -305,7 +302,6 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
         tag="div"
       >
         <Button
-          className="focusable"
           color="secondary"
           onClick={[Function]}
           tabIndex={0}
@@ -315,7 +311,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
           Close
         </Button>
         <Button
-          className="ml-auto focusable"
+          className="apply"
           color="primary"
           tabIndex={0}
           tag="button"

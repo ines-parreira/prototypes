@@ -116,7 +116,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                 >
                   <div>
                     <button
-                      class="p-0 button focusable btn btn-link"
+                      class="button btn btn-link"
                       id="applied-discount-8345093387_31128766316567"
                       tabindex="0"
                       type="button"
@@ -264,7 +264,7 @@ exports[`<DraftOrderModal/> should render a sent invoice 1`] = `
                 >
                   <div>
                     <button
-                      class="p-0 button focusable btn btn-link"
+                      class="button btn btn-link"
                       id="applied-discount-8345093387_31128766349335"
                       tabindex="0"
                       type="button"
@@ -628,7 +628,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                 >
                   <div>
                     <button
-                      class="p-0 button focusable btn btn-link"
+                      class="button btn btn-link"
                       id="applied-discount-8345093387_31128766316567"
                       tabindex="0"
                       type="button"
@@ -776,7 +776,7 @@ exports[`<DraftOrderModal/> should render with a default currency if missing fro
                 >
                   <div>
                     <button
-                      class="p-0 button focusable btn btn-link"
+                      class="button btn btn-link"
                       id="applied-discount-8345093387_31128766349335"
                       tabindex="0"
                       type="button"
@@ -1045,7 +1045,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                 >
                   <div>
                     <button
-                      class="p-0 button focusable btn btn-link"
+                      class="button btn btn-link"
                       id="applied-discount-8345093387_31128766316567"
                       tabindex="0"
                       type="button"
@@ -1193,7 +1193,7 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
                 >
                   <div>
                     <button
-                      class="p-0 button focusable btn btn-link"
+                      class="button btn btn-link"
                       id="applied-discount-8345093387_31128766349335"
                       tabindex="0"
                       type="button"

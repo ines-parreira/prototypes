@@ -1,6 +1,6 @@
-import classnames from 'classnames'
 import React, {useRef, useState, ReactNode, RefObject} from 'react'
 import {Popover, PopoverHeader, PopoverBody, PopoverProps} from 'reactstrap'
+import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
@@ -45,7 +45,7 @@ const PopoverModal = ({
             {isOpen && <div className={css.backdrop} />}
             {ref.current && (
                 <Popover
-                    className={css.popover}
+                    className={classnames(css.popover, {darkPopover: header})}
                     trigger="legacy"
                     placement={placement}
                     isOpen={isOpen}
