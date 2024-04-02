@@ -115,6 +115,7 @@ const CATEGORIES: Category[] = [
                 text: 'Tags',
             },
             {
+                requiredRole: AGENT_ROLE,
                 to: 'rules',
                 text: 'Rules',
             },
@@ -159,6 +160,7 @@ const CATEGORIES: Category[] = [
                 text: 'Access management',
             },
             {
+                requiredRole: ADMIN_ROLE,
                 to: 'ticket-assignment',
                 text: 'Ticket assignment',
             },
