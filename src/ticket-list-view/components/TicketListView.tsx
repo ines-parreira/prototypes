@@ -38,6 +38,7 @@ type Props = {
 export default function TicketListView({activeTicketId, viewId}: Props) {
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
+    const viewEmoji = view?.decoration?.emoji
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
     const {
@@ -137,7 +138,12 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
     return (
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
-                <div className={css.title}>{view?.name}</div>
+                <div className={css.viewName}>
+                    {!!viewEmoji && (
+                        <span className={css.emoji}>{viewEmoji}</span>
+                    )}
+                    <span className={css.title}>{view?.name}</span>
+                </div>
                 <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>
             <div className={css.list}>

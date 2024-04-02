@@ -160,4 +160,13 @@ describe('<TicketListView />', () => {
         rerender(<TicketListView viewId={123} />)
         expect(getByText('true')).toBeInTheDocument()
     })
+
+    it('should display view emoji decoration', () => {
+        useAppSelectorMock.mockReturnValue({
+            name: 'view name',
+            decoration: {emoji: '🎉'},
+        })
+        const {getByText} = render(<TicketListView viewId={123} />)
+        expect(getByText('🎉')).toBeInTheDocument()
+    })
 })
