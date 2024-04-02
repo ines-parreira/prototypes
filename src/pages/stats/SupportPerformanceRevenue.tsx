@@ -16,7 +16,6 @@ import {
     TwoDimensionalChart,
 } from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import ConvertLimitBanner from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import {SupportPerformanceRevenueFilters} from 'pages/stats/SupportPerformanceRevenueFilters'
 import {AccountFeature} from 'state/currentAccount/types'
 
@@ -25,6 +24,7 @@ import {
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import {BarStat} from './common/components/charts/BarStat'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'

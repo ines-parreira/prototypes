@@ -18,7 +18,7 @@ import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
 import {StatusCheck} from 'pages/common/components/StatusCheck'
 import {isDomain} from 'utils'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
+import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
 
 import {HelpText} from './components/HelpText'
 
@@ -40,7 +40,7 @@ const tooltips = {
 
 export const ClickTrackingCustomDomain = () => {
     const dispatch = useAppDispatch()
-    const {client} = useRevenueAddonApi()
+    const {client} = useConvertApi()
 
     const [domainValue, setDomainValue] = useState('')
     const [domainError, setDomainError] = useState('')

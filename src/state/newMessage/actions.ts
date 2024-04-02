@@ -65,7 +65,6 @@ import {search} from 'models/search/resources'
 import {CustomerChannel} from 'models/customerChannel/types'
 import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import {AttachmentPosition} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/types/CampaignAttachment'
 
 import {
     MacroAction,
@@ -83,6 +82,7 @@ import {isNewChannel} from 'services/channels'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 
+import {AttachmentPosition} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {
     MessageContext,
     selectionAfter,

@@ -25,9 +25,9 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn().mockReturnValue({}),
 }))
 
-jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => {
+jest.mock('pages/convert/common/hooks/useConvertApi', () => {
     return {
-        useRevenueAddonApi: jest.fn().mockReturnValue({
+        useConvertApi: jest.fn().mockReturnValue({
             isReady: true,
             client: {
                 get_custom_domain: () =>

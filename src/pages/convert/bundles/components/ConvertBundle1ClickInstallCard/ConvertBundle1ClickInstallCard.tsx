@@ -4,7 +4,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import client from 'models/api/resources'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {transformBundleError} from 'pages/settings/revenue/utils/transformBundleError'
+import {transformBundleError} from 'pages/convert/common/utils/transformBundleError'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'

@@ -50,8 +50,8 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection
 )
 
-jest.mock('pages/settings/revenue/hooks/useRevenueAddonApi', () => ({
-    useRevenueAddonApi: jest.fn(() => ({
+jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
+    useConvertApi: jest.fn(() => ({
         client: jest.fn(),
     })),
 }))

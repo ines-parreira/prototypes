@@ -7,14 +7,11 @@ import {getStateWithPrice} from 'utils/paywallTesting'
 import {ConvertFeatures} from '../constants'
 import ConvertPaywallView from '../ConvertPaywallView'
 
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 
 describe('ConvertPaywallView', () => {
     const renderWithStore = (state: Partial<RootState>) =>

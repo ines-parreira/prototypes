@@ -51,6 +51,7 @@ import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {periodToReportingGranularity} from 'utils/reporting'
 import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
 import {TimeSavedByAgentsMetric} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
+import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
@@ -67,7 +68,6 @@ import PeriodStatsFilter from './PeriodStatsFilter'
 import StatsPage from './StatsPage'
 import css from './AutomateOverview.less'
 
-import {DEFAULT_TIMEZONE} from './revenue/constants/components'
 import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
     AUTOMATED_INTERACTIONS_LABEL,

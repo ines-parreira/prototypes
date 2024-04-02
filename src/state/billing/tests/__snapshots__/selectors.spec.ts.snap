@@ -542,9 +542,6 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -694,9 +691,6 @@ exports[`billing selectors getCurrentProductsFeatures should return the current 
   "automation_track_order_flow": {
     "enabled": true,
   },
-  "chat_campaigns": {
-    "enabled": true,
-  },
   "facebook_comment": {
     "enabled": true,
   },
@@ -794,9 +788,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
       "automation_track_order_flow": {
         "enabled": false,
-      },
-      "chat_campaigns": {
-        "enabled": true,
       },
       "facebook_comment": {
         "enabled": true,
@@ -920,9 +911,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -1044,9 +1032,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
       "automation_track_order_flow": {
         "enabled": false,
-      },
-      "chat_campaigns": {
-        "enabled": true,
       },
       "facebook_comment": {
         "enabled": true,
@@ -1170,9 +1155,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -1295,9 +1277,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -1419,9 +1398,6 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
       },
       "automation_track_order_flow": {
         "enabled": false,
-      },
-      "chat_campaigns": {
-        "enabled": true,
       },
       "facebook_comment": {
         "enabled": true,
@@ -1552,9 +1528,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "automation_track_order_flow": {
           "enabled": false,
         },
-        "chat_campaigns": {
-          "enabled": true,
-        },
         "facebook_comment": {
           "enabled": true,
         },
@@ -1676,9 +1649,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
         "automation_track_order_flow": {
           "enabled": false,
-        },
-        "chat_campaigns": {
-          "enabled": true,
         },
         "facebook_comment": {
           "enabled": true,
@@ -1802,9 +1772,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "automation_track_order_flow": {
           "enabled": false,
         },
-        "chat_campaigns": {
-          "enabled": true,
-        },
         "facebook_comment": {
           "enabled": true,
         },
@@ -1926,9 +1893,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
         "automation_track_order_flow": {
           "enabled": false,
-        },
-        "chat_campaigns": {
-          "enabled": true,
         },
         "facebook_comment": {
           "enabled": true,
@@ -2052,9 +2016,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         "automation_track_order_flow": {
           "enabled": false,
         },
-        "chat_campaigns": {
-          "enabled": true,
-        },
         "facebook_comment": {
           "enabled": true,
         },
@@ -2176,9 +2137,6 @@ exports[`billing selectors getHelpdeskProduct should return the helpdesk product
         },
         "automation_track_order_flow": {
           "enabled": false,
-        },
-        "chat_campaigns": {
-          "enabled": true,
         },
         "facebook_comment": {
           "enabled": true,
@@ -2435,9 +2393,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -2644,9 +2599,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -2817,9 +2769,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -2953,9 +2902,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       },
       "automation_track_order_flow": {
         "enabled": false,
-      },
-      "chat_campaigns": {
-        "enabled": true,
       },
       "facebook_comment": {
         "enabled": true,
@@ -3139,9 +3085,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -3300,9 +3243,6 @@ exports[`billing selectors getPrices should return the prices 1`] = `
       "automation_track_order_flow": {
         "enabled": false,
       },
-      "chat_campaigns": {
-        "enabled": true,
-      },
       "facebook_comment": {
         "enabled": true,
       },
@@ -3433,9 +3373,6 @@ exports[`billing selectors getProducts should return products 1`] = `
           "automation_track_order_flow": {
             "enabled": false,
           },
-          "chat_campaigns": {
-            "enabled": true,
-          },
           "facebook_comment": {
             "enabled": true,
           },
@@ -3557,9 +3494,6 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
           "automation_track_order_flow": {
             "enabled": false,
-          },
-          "chat_campaigns": {
-            "enabled": true,
           },
           "facebook_comment": {
             "enabled": true,
@@ -3683,9 +3617,6 @@ exports[`billing selectors getProducts should return products 1`] = `
           "automation_track_order_flow": {
             "enabled": false,
           },
-          "chat_campaigns": {
-            "enabled": true,
-          },
           "facebook_comment": {
             "enabled": true,
           },
@@ -3807,9 +3738,6 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
           "automation_track_order_flow": {
             "enabled": false,
-          },
-          "chat_campaigns": {
-            "enabled": true,
           },
           "facebook_comment": {
             "enabled": true,
@@ -3933,9 +3861,6 @@ exports[`billing selectors getProducts should return products 1`] = `
           "automation_track_order_flow": {
             "enabled": false,
           },
-          "chat_campaigns": {
-            "enabled": true,
-          },
           "facebook_comment": {
             "enabled": true,
           },
@@ -4057,9 +3982,6 @@ exports[`billing selectors getProducts should return products 1`] = `
           },
           "automation_track_order_flow": {
             "enabled": false,
-          },
-          "chat_campaigns": {
-            "enabled": true,
           },
           "facebook_comment": {
             "enabled": true,

@@ -25,8 +25,6 @@ import {
     getEmailChannels,
     getActiveEmailChannels,
     getChannelSignature,
-    getChatIntegrationCampaignById,
-    getChatIntegrationCampaigns,
     getCurrentIntegration,
     getEmailIntegrations,
     getFacebookRedirectUri,
@@ -573,100 +571,6 @@ describe('integrations selectors', () => {
 
             const res = getShopifyIntegrationByShopName('bar')(state)
             expect(res.get('id')).toEqual(2)
-        })
-    })
-
-    describe('getChatIntegrationCampaigns()', () => {
-        it('should return the campaigns of the correct chat integration', () => {
-            const expectedCampaigns = [
-                {
-                    name: 'una campagnita',
-                },
-                {
-                    name: 'una otra campagnita',
-                },
-            ]
-
-            const state = {
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: IntegrationType.GorgiasChat,
-                            meta: {
-                                campaigns: [
-                                    {
-                                        name: 'some campaign',
-                                    },
-                                    {
-                                        name: 'another campaign',
-                                    },
-                                ],
-                            },
-                        },
-                        {
-                            id: 3,
-                            type: IntegrationType.GorgiasChat,
-                            meta: {
-                                campaigns: expectedCampaigns,
-                            },
-                        },
-                    ],
-                }),
-            } as RootState
-
-            const res = getChatIntegrationCampaigns(3)(state)
-
-            expect(res.toJS()).toEqual(expectedCampaigns)
-        })
-    })
-
-    describe('getChatIntegrationCampaignById()', () => {
-        it('should return the correct campaign of the correct chat integration', () => {
-            const expectedCampaign = {
-                name: 'campaign inte 3',
-                id: 123,
-            }
-
-            const state = {
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: IntegrationType.GorgiasChat,
-                            meta: {
-                                campaigns: [
-                                    {
-                                        name: 'campaign inte 1',
-                                        id: 123,
-                                    },
-                                    {
-                                        name: 'una otra campagnita',
-                                        id: 456,
-                                    },
-                                ],
-                            },
-                        },
-                        {
-                            id: 3,
-                            type: IntegrationType.GorgiasChat,
-                            meta: {
-                                campaigns: [
-                                    expectedCampaign,
-                                    {
-                                        name: 'una otra campagnita',
-                                        id: 456,
-                                    },
-                                ],
-                            },
-                        },
-                    ],
-                }),
-            } as RootState
-
-            const res = getChatIntegrationCampaignById(3, 123)(state)
-
-            expect(res.toJS()).toEqual(expectedCampaign)
         })
     })
 

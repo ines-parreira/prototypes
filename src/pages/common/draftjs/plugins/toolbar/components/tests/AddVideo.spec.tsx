@@ -149,7 +149,7 @@ describe('<AddVideo/>', () => {
             .mockImplementation((editorState) => editorState)
 
         window.location.pathname =
-            '/app/settings/channels/gorgias_chat/69/campaigns/04c1b674-8800-4d22-9b8f-e93db01ef5de'
+            '/app/convert/69/campaigns/04c1b674-8800-4d22-9b8f-e93db01ef5de'
 
         render(
             <ToolbarProvider canAddVideoPlayer>

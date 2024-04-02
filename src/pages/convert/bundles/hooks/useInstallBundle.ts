@@ -2,12 +2,12 @@ import {useQueryClient} from '@tanstack/react-query'
 import useAsyncFn from 'hooks/useAsyncFn'
 
 import client from 'models/api/resources'
-import {transformBundleError} from 'pages/settings/revenue/utils/transformBundleError'
+import {transformBundleError} from 'pages/convert/common/utils/transformBundleError'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {bundleKeys} from 'models/convert/bundle/queries'
-import {convertStatusKeys} from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import {convertStatusKeys} from 'pages/convert/common/hooks/useGetConvertStatus'
 import {
     BundleActionResponse,
     BundleInstallationMethod,

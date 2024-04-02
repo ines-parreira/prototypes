@@ -5,7 +5,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useGetConvertStatus, {
     BundleOnboardingStatus,
     UsageStatus,
-} from 'pages/settings/revenue/hooks/useGetConvertStatus'
+} from 'pages/convert/common/hooks/useGetConvertStatus'
 import {formatDatetime} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
@@ -13,7 +13,7 @@ import {isEnterprisePrice} from 'models/billing/utils'
 import {ProductType} from 'models/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentConvertProduct} from 'state/billing/selectors'
-import {isExceedingPlanLimit} from 'pages/settings/revenue/utils/isExceedingPlanLimit'
+import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
 
 type Props = {
     classes?: string

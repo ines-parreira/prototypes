@@ -5,12 +5,8 @@ import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal'
-import {AccountFeature} from 'state/currentAccount/types'
+import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
-import useAppSelector from 'hooks/useAppSelector'
-import {currentAccountHasFeature} from 'state/currentAccount/selectors'
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 
 export type ConvertNavbarLink = {
     label: ReactNode
@@ -29,36 +25,18 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
     const isConvertSubscriber = useIsConvertSubscriber()
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
-    const hasRevenueStatisticsFeature = useAppSelector(
-        currentAccountHasFeature(AccountFeature.RevenueStatistics)
-    )
 
     const convertLinks: ConvertNavbarLink[] = useMemo(() => {
-        const links = []
-        if (!isConvertUiDecouplingEnabled) {
-            links.push({
-                label: 'Overview',
-                to: '/app/stats/revenue',
-                isPaywalled: !hasRevenueStatisticsFeature,
-                hasModal: false,
-                requiresSubscriptionToBeSeen: true,
-            })
-        }
-
-        links.push({
-            label: 'Campaigns',
-            to: '/app/stats/convert/campaigns',
-            isPaywalled: !isConvertSubscriber,
-            hasModal: !isConvertSubscriber,
-            requiresSubscriptionToBeSeen: false,
-        })
-        return links
-    }, [
-        hasRevenueStatisticsFeature,
-        isConvertSubscriber,
-        isConvertUiDecouplingEnabled,
-    ])
+        return [
+            {
+                label: 'Campaigns',
+                to: '/app/stats/convert/campaigns',
+                isPaywalled: !isConvertSubscriber,
+                hasModal: !isConvertSubscriber,
+                requiresSubscriptionToBeSeen: false,
+            },
+        ]
+    }, [isConvertSubscriber])
 
     const isModalNeeded = useMemo(() => {
         return (

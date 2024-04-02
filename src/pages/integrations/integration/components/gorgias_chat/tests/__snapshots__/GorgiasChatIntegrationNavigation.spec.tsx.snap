@@ -8,13 +8,6 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
     <a
       class="link"
       data-active-class-name="active"
-      href="/app/settings/channels/gorgias_chat/16/campaigns"
-    >
-      Campaigns
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/16/quick_replies"
     >
@@ -35,6 +28,13 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
       href="/app/settings/channels/gorgias_chat/16/preferences"
     >
       Preferences
+    </a>
+    <a
+      class="link"
+      data-active-class-name="active"
+      href="/app/settings/channels/gorgias_chat/16/campaigns"
+    >
+      Campaigns
     </a>
     <a
       class="link"
@@ -56,13 +56,6 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
     <a
       class="link"
       data-active-class-name="active"
-      href="/app/settings/channels/gorgias_chat/16/campaigns"
-    >
-      Campaigns
-    </a>
-    <a
-      class="link"
-      data-active-class-name="active"
       data-exact="true"
       href="/app/settings/channels/gorgias_chat/16/quick_replies"
     >
@@ -83,6 +76,13 @@ exports[`<GorgiasChatIntegrationNavigation /> should render GorgiasChatIntegrati
       href="/app/settings/channels/gorgias_chat/16/preferences"
     >
       Preferences
+    </a>
+    <a
+      class="link"
+      data-active-class-name="active"
+      href="/app/settings/channels/gorgias_chat/16/campaigns"
+    >
+      Campaigns
     </a>
     <a
       class="link"

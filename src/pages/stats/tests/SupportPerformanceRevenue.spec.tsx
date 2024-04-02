@@ -31,7 +31,7 @@ import {StatsFilters} from 'models/stat/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {convertStatusOk} from 'fixtures/convert'
-import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
@@ -63,7 +63,7 @@ jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
     <div>ChannelsStatsFilter</div>
 ))
 
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
     useGetOrCreateChannelConnection

@@ -18,7 +18,7 @@ import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCus
 
 const mockStore = configureMockStore()
 
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
@@ -41,14 +41,11 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 
 const defaultState = {
     integrations: fromJS({

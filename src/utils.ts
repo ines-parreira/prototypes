@@ -774,9 +774,8 @@ export const isCurrentlyOnView = (
 /**
  * Return true if user is currently on a chat campaign details page (edit page) .
  */
-export const isCurrentlyOnChatCampaignDetailsPage = (): boolean => {
-    const regex =
-        /^\/app\/settings\/channels\/gorgias_chat\/\d+\/campaigns\/.+$/
+export const isCurrentlyOnCampaignDetailsPage = (): boolean => {
+    const regex = /^\/app\/convert\/\d+\/campaigns\/.+$/
 
     return regex.test(window.location.pathname)
 }
@@ -1229,7 +1228,7 @@ export function canAddVideoPlayer(
         // Or an internal note.
         isNewMessagePublic === false ||
         // Or currently editing a chat campaign content.
-        isCurrentlyOnChatCampaignDetailsPage()
+        isCurrentlyOnCampaignDetailsPage()
     )
 }
 

@@ -8,7 +8,7 @@ import convertIcon from 'assets/img/convert/convert-logo.svg'
 import Button from 'pages/common/components/button/Button'
 
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal'
+import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import css from './ConvertPaywallView.less'
 import {ConvertFeatures, PaywallConfig} from './constants'

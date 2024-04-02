@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 import {user} from 'fixtures/users'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import {initialState as initialStatsFiltersState} from 'state/stats/reducers'
 import {getPageStatsFilters} from 'state/stats/selectors'

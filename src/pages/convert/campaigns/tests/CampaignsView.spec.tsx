@@ -54,7 +54,7 @@ const useParamsMock = routerDom.useParams as jest.MockedFunction<
     typeof routerDom.useParams
 >
 
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
     return jest.fn(() => <div>Mocked Banner</div>)
 })

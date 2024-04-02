@@ -4,7 +4,7 @@ import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
 
-import {useGetCampaignsForStore} from 'pages/stats/revenue/hooks/useGetCampaignsForStore'
+import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import SelectFilter from './common/SelectFilter'
 
 type Props = {

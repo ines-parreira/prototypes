@@ -20,8 +20,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Navbar from 'pages/common/components/Navbar'
 
-import useGetConvertLinks from 'pages/settings/revenue/hooks/useGetConvertLinks'
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
 import SettingsNavbarLink from './SettingsNavbarLink'
@@ -236,8 +234,6 @@ const SettingsNavbar = () => {
     const featureFlags = useFlags()
     const isDecoupleContactFormEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.DecoupleContactForm]
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
-    const convertLinks = useGetConvertLinks()
 
     const categoriesInUse = React.useMemo<Category[]>(() => {
         return flatMap(CATEGORIES, (category) => {
@@ -250,25 +246,11 @@ const SettingsNavbar = () => {
                         ),
                     },
                 ]
-            } else if (
-                category.name === 'Convert' &&
-                !isConvertUiDecouplingEnabled
-            ) {
-                return [
-                    {
-                        ...category,
-                        links: convertLinks,
-                    },
-                ]
             }
 
             return [category]
         })
-    }, [
-        convertLinks,
-        isDecoupleContactFormEnabled,
-        isConvertUiDecouplingEnabled,
-    ])
+    }, [isDecoupleContactFormEnabled])
 
     return (
         <Navbar activeContent="settings">

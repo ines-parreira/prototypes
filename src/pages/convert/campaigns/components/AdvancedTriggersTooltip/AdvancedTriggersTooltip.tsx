@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import {Link} from 'react-router-dom'
 import Tooltip from 'pages/common/components/Tooltip'
-import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal'
+import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import css from './AdvancedTriggersTooltip.less'
 
 type Props = {

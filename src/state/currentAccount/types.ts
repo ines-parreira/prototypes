@@ -27,7 +27,6 @@ export enum AccountFeature {
     Api1stPartyRateLimit = 'api_1st_party_rate_limit',
     Api3rdPartyRateLimit = 'api_3rd_party_rate_limit',
     AutoAssignment = 'auto_assignment',
-    ChatCampaigns = 'chat_campaigns',
     FacebookComment = 'facebook_comment',
     InstagramComment = 'instagram_comment',
     InstagramDirectMessage = 'instagram_dm',

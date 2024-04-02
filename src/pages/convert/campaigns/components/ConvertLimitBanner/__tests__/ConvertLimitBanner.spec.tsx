@@ -8,7 +8,7 @@ import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscri
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import {billingState} from 'fixtures/billing'
-import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {assumeMock} from 'utils/testing'
 import {
     convertStatusLimitReached,
@@ -25,7 +25,7 @@ const defaultState = {
 } as RootState
 const store = createStore((state) => state as RootState, defaultState)
 
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 

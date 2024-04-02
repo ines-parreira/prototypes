@@ -19,7 +19,7 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
-import {DEFAULT_TIMEZONE} from 'pages/stats/revenue/constants/components'
+import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {

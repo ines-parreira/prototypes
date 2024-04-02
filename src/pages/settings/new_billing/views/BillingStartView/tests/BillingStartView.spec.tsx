@@ -13,7 +13,7 @@ import {
 } from 'fixtures/productPrices'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
-import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {
     convertStatusLimitReached,
     convertStatusOkWarning,
@@ -55,7 +55,7 @@ jest.mock('state/billing/actions', () => {
     }
 })
 
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 

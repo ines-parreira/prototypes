@@ -6,14 +6,11 @@ import {mockStore} from 'utils/testing'
 import {getStateWithPrice} from 'utils/paywallTesting'
 import ClickTrackingPaywallView from '../index'
 
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn().mockReturnValue({}),

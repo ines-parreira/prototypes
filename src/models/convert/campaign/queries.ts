@@ -1,5 +1,5 @@
 import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
-import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
+import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
 import {CONVERT_DEFAULT_OPTIONS} from 'models/convert/constants'
 import {MutationOverrides} from 'types/query'
 import {
@@ -29,7 +29,7 @@ export const useGetCampaign = (
         Campaign
     >
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useQuery({
         queryKey: campaignKeys.detail(params),
@@ -49,7 +49,7 @@ export const useListCampaigns = (
         Campaign[]
     >
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useQuery({
         queryKey: campaignKeys.list(params),
@@ -64,7 +64,7 @@ export const useListCampaigns = (
 export const useCreateCampaign = (
     overrides?: MutationOverrides<typeof createCampaign>
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
@@ -77,7 +77,7 @@ export const useCreateCampaign = (
 export const useUpdateCampaign = (
     overrides?: MutationOverrides<typeof updateCampaign>
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams, data]) =>
@@ -90,7 +90,7 @@ export const useUpdateCampaign = (
 export const useDeleteCampaign = (
     overrides?: MutationOverrides<typeof deleteCampaign>
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams]) =>

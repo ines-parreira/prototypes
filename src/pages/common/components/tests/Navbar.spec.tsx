@@ -48,9 +48,7 @@ describe('<Navbar />', () => {
         isTrialing: false,
         submitSetting: jest.fn(),
         isPreferencesLoading: false,
-        flags: {
-            [FeatureFlagKey.ConvertDecouplingUi]: true,
-        },
+        flags: {},
         savedTheme: Theme.Modern,
         theme: Theme.Modern as AcceptedThemes,
         setTheme: jest.fn(),
@@ -253,19 +251,6 @@ describe('<Navbar />', () => {
     it('should not render Convert if not have Admin privilege', () => {
         jest.spyOn(utils, 'hasRole').mockReturnValue(false)
         const {queryByText} = render(<Navbar {...minProps} />)
-
-        expect(queryByText('Convert')).not.toBeInTheDocument()
-    })
-
-    it('should not render Convert if flag is not enabled', () => {
-        jest.spyOn(utils, 'hasRole').mockReturnValue(true)
-        const props = {
-            ...minProps,
-            flags: {
-                [FeatureFlagKey.ConvertDecouplingUi]: false,
-            },
-        }
-        const {queryByText} = render(<Navbar {...props} />)
 
         expect(queryByText('Convert')).not.toBeInTheDocument()
     })

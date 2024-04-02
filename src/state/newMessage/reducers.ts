@@ -5,7 +5,6 @@ import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
 
 import {DiscountCode} from 'models/discountCodes/types'
-import {AttachmentPosition} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/types/CampaignAttachment'
 
 import {
     TicketMessageSourceType,
@@ -18,6 +17,7 @@ import {GorgiasAction} from 'state/types'
 import {getChannelFromSourceType, isPublic} from 'tickets/common/utils'
 
 import {MacroAction} from 'models/macroAction/types'
+import {AttachmentPosition} from 'pages/convert/campaigns/types/CampaignAttachment'
 import {addEmailExtra} from './actions'
 import * as types from './constants'
 import {

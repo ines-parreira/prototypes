@@ -686,26 +686,6 @@ export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
             ) as Map<any, any>) || fromJS({})
     )
 
-export const getChatIntegrationCampaigns = (id: number) =>
-    createSelector(
-        getIntegrationById(id),
-        (integration) =>
-            (integration.getIn(['meta', 'campaigns']) as List<any>) ||
-            fromJS([])
-    )
-
-export const getChatIntegrationCampaignById = (
-    id: number,
-    campaignId: number | string
-) =>
-    createSelector(
-        getChatIntegrationCampaigns(id),
-        (campaigns) =>
-            (campaigns.find(
-                (campaign: Map<any, any>) => campaign.get('id') === campaignId
-            ) || fromJS({})) as Map<any, any>
-    )
-
 export const getEmailForwardingActivated = (id: number) =>
     createSelector(
         getIntegrationById(id),

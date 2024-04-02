@@ -25,14 +25,11 @@ import {campaign} from 'fixtures/campaign'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import CampaignDetailsFactory from '../CampaignDetailsFactory'
 
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     ...(jest.requireActual('react-router-dom') as typeof routerDom),

@@ -41,7 +41,8 @@ import GorgiasApi from 'services/gorgiasApi'
 import {isGorgiasApiError} from 'models/api/types'
 import useGetConvertStatus, {
     convertStatusKeys,
-} from 'pages/settings/revenue/hooks/useGetConvertStatus'
+} from 'pages/convert/common/hooks/useGetConvertStatus'
+import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -57,7 +58,6 @@ import {
     setConvertNotification,
 } from '../views/BillingProcessView/utils'
 import {getDefaultConvertPriceIndex} from '../utils/getDefaultConvertPriceIndex'
-import {useRevenueAddonApi} from '../../revenue/hooks/useRevenueAddonApi'
 
 export type BillingPlansProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
@@ -162,7 +162,7 @@ export const useBillingPlans = ({
         helpdeskProduct?.name
     )
 
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
     const convertStatus = useGetConvertStatus()
     const convertAutoUpgrade = useMemo(() => {
         return (convertStatus && convertStatus.auto_upgrade_enabled) ?? false

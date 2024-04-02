@@ -6,8 +6,7 @@ import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {isTriggerValueNonNegative} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/utils/isTriggerValueNonNegative'
-
+import {isTriggerValueNonNegative} from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
 import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
 
 import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'

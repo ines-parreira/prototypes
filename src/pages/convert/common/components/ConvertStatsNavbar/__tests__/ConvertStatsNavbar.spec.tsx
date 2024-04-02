@@ -23,14 +23,11 @@ import {renderWithRouter} from 'utils/testing'
 import ConvertStatsNavbar from '../ConvertStatsNavbar'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 
 describe('ConvertStatsNavbar', () => {
     const getState = (price: HelpdeskPrice, enabled = false): RootState => {
@@ -92,7 +89,7 @@ describe('ConvertStatsNavbar', () => {
         expect(mockModal).not.toBeInTheDocument()
 
         const links = document.getElementsByClassName('link-wrapper')
-        expect(links.length).toBe(2)
+        expect(links.length).toBe(1)
     })
 
     it('should render links with subscription upgrade icon and modal', () => {

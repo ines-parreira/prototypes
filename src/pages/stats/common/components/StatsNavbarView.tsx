@@ -8,11 +8,9 @@ import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -23,9 +21,6 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
-
-    const isConvertSubscriber = useIsConvertSubscriber()
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     return (
         <>
@@ -129,21 +124,19 @@ export default function StatsNavbarView() {
                             Satisfaction
                         </NavbarLink>
                     </div>
-                    {(!isConvertSubscriber || isConvertUiDecouplingEnabled) && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/revenue"
                         >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/revenue"
-                            >
-                                Revenue
-                            </NavbarLink>
-                        </div>
-                    )}
+                            Revenue
+                        </NavbarLink>
+                    </div>
                     {isHelpCenterAnalyticsEnabled && (
                         <div
                             className={classNames(

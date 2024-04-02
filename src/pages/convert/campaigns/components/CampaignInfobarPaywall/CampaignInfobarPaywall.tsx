@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import ConvertSubscriptionModal from 'pages/settings/new_billing/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
+import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
 import css from './CampaignInfobarPaywall.less'
 
 const CampaignInfobarPaywall = () => {

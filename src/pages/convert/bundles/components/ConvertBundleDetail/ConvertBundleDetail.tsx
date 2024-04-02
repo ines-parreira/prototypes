@@ -15,7 +15,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import {Bundle, BundleActionResponse} from 'models/convert/bundle/types'
-import {convertStatusKeys} from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import {convertStatusKeys} from 'pages/convert/common/hooks/useGetConvertStatus'
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
 import css from './ConvertBundleDetail.less'
 

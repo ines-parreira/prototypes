@@ -106,7 +106,7 @@ import SupportPerformanceChannels from 'pages/stats/SupportPerformanceChannels'
 import SupportPerformanceAgents from 'pages/stats/SupportPerformanceAgents'
 import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisfaction'
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
-import RevenueCampaignsStats from 'pages/stats/revenue/pages/CampaignsStats'
+import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import SupportPerformanceOverview from 'pages/stats/SupportPerformanceOverview'
 import DEPRECATED_SupportPerformanceOverview from 'pages/stats/DEPRECATED_SupportPerformanceOverview'
 import SupportPerformanceBusiestTimesOfDays from 'pages/stats/SupportPerformanceBusiestTimesOfDays'
@@ -119,13 +119,13 @@ import TwilioSubaccountStatusForm from 'pages/tasks/detail/TwilioSubaccountStatu
 import CreditShopifyBillingIntegration from 'pages/tasks/detail/CreditShopifyBillingIntegration'
 import CreateShopifyCharge from 'pages/tasks/detail/CreateShopifyCharge'
 import EditTicketField from 'pages/settings/ticketFields/EditTicketField'
-import {RevenueAddonApiClientProvider} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
+import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
 import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from 'pages/stats/self-service/constants'
-import CampaignStatsPaywallView from 'pages/stats/revenue/pages/CampaignsStats/CampaignStatsPaywallView'
+import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
@@ -144,7 +144,6 @@ import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignD
 import {useSplitTicketPage} from '../tickets/pages/SplitTicketPage'
 import {useSplitViewPage} from '../tickets/pages/SplitViewPage'
 import {useTicketPage} from '../tickets/pages/TicketPage'
-import {useIsConvertUiDecouplingEnabled} from './convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import OrderManagementViewContainer from './automate/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from './automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import TrackOrderFlowViewContainer from './automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
@@ -796,8 +795,6 @@ export function SettingsRoutes() {
     const isHelpCenterCreationWizardEnabled: boolean =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
-
     return (
         <Switch>
             <Route
@@ -901,18 +898,10 @@ export function SettingsRoutes() {
             />
             <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
             <Route path={`${path}/users`} render={UsersSettingsRoutes} />
-            {!isConvertUiDecouplingEnabled && (
-                <Route
-                    path={`${path}/convert`}
-                    render={RevenueSettingsRoutes}
-                />
-            )}
-            {isConvertUiDecouplingEnabled && (
-                <Route
-                    path={`${path}/convert`}
-                    render={ConvertSettingsRedirectRoutes}
-                />
-            )}
+            <Route
+                path={`${path}/convert`}
+                render={ConvertSettingsRedirectRoutes}
+            />
             {/* TODO(@Irinel) remove this when new billing is fully released */}
             <Route path={`${path}/billing`} render={NewBillingSettingsRoutes} />
             <Route
@@ -1841,43 +1830,6 @@ export function ConvertContent() {
                 <Redirect to={`${path}`} />
             </Route>
         </Switch>
-    )
-}
-
-export function RevenueSettingsRoutes({match: {path}}: RouteComponentProps) {
-    return (
-        <RevenueAddonApiClientProvider>
-            <Switch>
-                <Route
-                    path={`${path}/click-tracking`}
-                    exact
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                ClickTrackingSettingsView as any,
-                                ADMIN_ROLE,
-                                PageSection.Users
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-                <Route
-                    path={`${path}/click-tracking/subscribe`}
-                    exact
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                ClickTrackingPaywallView as any,
-                                ADMIN_ROLE,
-                                PageSection.Users
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-            </Switch>
-        </RevenueAddonApiClientProvider>
     )
 }
 

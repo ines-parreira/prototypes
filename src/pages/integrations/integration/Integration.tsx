@@ -42,7 +42,6 @@ import {
 } from 'state/entities/chatInstallationStatus/actions'
 import useAppSelector from 'hooks/useAppSelector'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import history from '../../history'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -56,7 +55,6 @@ import FacebookIntegrationCustomerChat from './components/facebook/FacebookInteg
 
 import GorgiasChatCreationWizard from './components/gorgias_chat/GorgiasChatCreationWizard'
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
-import ChatCampaignDetailsFactory from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/containers/CampaignDetailsFactory'
 import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
@@ -120,7 +118,6 @@ export const IntegrationDetail = ({
     }>()
 
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
         useState(false)
@@ -183,11 +180,8 @@ export const IntegrationDetail = ({
     )
 
     const editLinkDefaultTab = useMemo(() => {
-        if (isConvertUiDecouplingEnabled) {
-            return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Appearance}`
-        }
-        return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Campaigns}`
-    }, [isConvertUiDecouplingEnabled, integrationId])
+        return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Appearance}`
+    }, [integrationId])
 
     const goToDefaultTab = () => history.replace(editLinkDefaultTab)
     if (
@@ -407,25 +401,15 @@ export const IntegrationDetail = ({
                     )
                 }
 
-                if (extra === Tab.Campaigns || !extra) {
-                    if (subId) {
-                        return (
-                            <ChatCampaignDetailsFactory
-                                integration={integration}
-                                id={subId}
-                            />
-                        )
-                    }
-
+                if (extra === Tab.Campaigns) {
                     return (
                         <GorgiasChatIntegrationCampaigns
                             integration={integration}
-                            currentUser={currentUser}
                         />
                     )
                 }
 
-                if (extra === Tab.Appearance) {
+                if (extra === Tab.Appearance || !extra) {
                     if (subId) {
                         return (
                             <GorgiasTranslateText integration={integration} />

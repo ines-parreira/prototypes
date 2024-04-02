@@ -13,7 +13,7 @@ import useSearch from 'hooks/useSearch'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {assumeMock} from 'utils/testing'
-import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {billingState} from 'fixtures/billing'
 import {
     convertStatusLimitReached,
@@ -35,8 +35,8 @@ import CampaignsList from '../CampaignsList'
 
 jest.mock('hooks/useSearch')
 jest.mock('../../../hooks/useCampaignListOptions')
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
 const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

@@ -7,7 +7,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
 import dotError from 'assets/img/icons/dot-error.svg'
-import {useIsConvertUiDecouplingEnabled} from 'pages/convert/common/hooks/useIsConvertUiDecouplingEnabled'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import {IntegrationType} from '../../../../../models/integration/types'
 
@@ -21,7 +20,6 @@ type Props = {
 
 const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
-    const isConvertUiDecouplingEnabled = useIsConvertUiDecouplingEnabled()
 
     const integrationId: number = integration.get('id')
 
@@ -38,9 +36,6 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
 
     return (
         <SecondaryNavbar>
-            {!isConvertUiDecouplingEnabled && (
-                <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
-            )}
             {isQuickRepliesEnabled && (
                 <NavLink to={`${baseURL}/quick_replies`} exact>
                     Quick replies
@@ -55,9 +50,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
             {isChatMultiLanguagesEnabled && (
                 <NavLink to={`${baseURL}/languages`}>Language</NavLink>
             )}
-            {isConvertUiDecouplingEnabled && (
-                <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
-            )}
+            <NavLink to={`${baseURL}/campaigns`}>Campaigns</NavLink>
             <NavLink to={`${baseURL}/installation`} exact>
                 Installation
                 {!installationStatus.installed && (

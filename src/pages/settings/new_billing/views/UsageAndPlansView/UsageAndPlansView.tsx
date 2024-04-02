@@ -29,7 +29,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {isAAOLegacyPrice} from 'models/billing/utils'
-import useGetConvertStatus from 'pages/settings/revenue/hooks/useGetConvertStatus'
+import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,

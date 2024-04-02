@@ -6,7 +6,7 @@ import {
     listChannelConnections,
     updateChannelConnection,
 } from 'models/convert/channelConnection/resources'
-import {useRevenueAddonApi} from 'pages/settings/revenue/hooks/useRevenueAddonApi'
+import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
 import {Paths} from 'rest_api/revenue_addon_api/client.generated'
 import {MutationOverrides} from 'types/query'
 import {
@@ -33,7 +33,7 @@ export const useGetChannelConnection = (
         ChannelConnection
     >
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useQuery({
         queryKey: channelConnectionKeys.detail(params),
@@ -53,7 +53,7 @@ export const useListChannelConnections = (
         ChannelConnection[]
     >
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useQuery({
         queryKey: channelConnectionKeys.list(params),
@@ -68,7 +68,7 @@ export const useListChannelConnections = (
 export const useCreateChannelConnection = (
     overrides?: MutationOverrides<typeof createChannelConnection>
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
@@ -81,7 +81,7 @@ export const useCreateChannelConnection = (
 export const useUpdateChannelConnection = (
     overrides?: MutationOverrides<typeof updateChannelConnection>
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams, data]) =>
@@ -94,7 +94,7 @@ export const useUpdateChannelConnection = (
 export const useDeleteChannelConnection = (
     overrides?: MutationOverrides<typeof deleteChannelConnection>
 ) => {
-    const {client: convertClient} = useRevenueAddonApi()
+    const {client: convertClient} = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams]) =>

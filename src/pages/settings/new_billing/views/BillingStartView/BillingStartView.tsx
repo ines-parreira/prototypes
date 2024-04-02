@@ -40,7 +40,11 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
 import {ProductType} from 'models/billing/types'
 import {isEnterprisePrice} from 'models/billing/utils'
-import {isExceedingPlanLimit} from 'pages/settings/revenue/utils/isExceedingPlanLimit'
+import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
+import useGetConvertStatus, {
+    BundleOnboardingStatus,
+    UsageStatus,
+} from 'pages/convert/common/hooks/useGetConvertStatus'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
@@ -61,10 +65,6 @@ import BillingInformationView from '../BillingInformationView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
 import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
-import useGetConvertStatus, {
-    BundleOnboardingStatus,
-    UsageStatus,
-} from '../../../revenue/hooks/useGetConvertStatus'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {

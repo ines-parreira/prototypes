@@ -1,4 +1,4 @@
-import {isTriggerValueNonNegative} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationCampaigns/utils/isTriggerValueNonNegative'
+import {isTriggerValueNonNegative} from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
 
 describe('isTriggerValueNonNegative', () => {
     it.each([

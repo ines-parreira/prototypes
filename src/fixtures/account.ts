@@ -61,7 +61,6 @@ export const account: Account = {
         [AccountFeature.Api3rdPartyRateLimit]: {enabled: true},
         [AccountFeature.AutoAssignment]: {enabled: true},
         [AccountFeature.FacebookComment]: {enabled: true},
-        [AccountFeature.ChatCampaigns]: {enabled: true},
         [AccountFeature.InstagramComment]: {enabled: true},
         [AccountFeature.InstagramDirectMessage]: {enabled: true},
         [AccountFeature.UsersLiveStatistics]: {enabled: true},

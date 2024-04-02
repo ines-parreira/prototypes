@@ -130,7 +130,6 @@ const mainMenu: MenuItem[] = [
         icon: 'monetization_on',
         segmentProp: {link: 'convert'},
         requiredRole: ADMIN_ROLE,
-        requiredFeatureFlag: FeatureFlagKey.ConvertDecouplingUi,
     },
     {
         url: '/app/customers',

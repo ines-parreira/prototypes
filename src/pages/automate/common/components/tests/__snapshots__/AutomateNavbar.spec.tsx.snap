@@ -67,6 +67,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               class="dropdown-item dropdown-item menu-item"
               role="menuitem"
               tabindex="0"
+              to="/app/convert"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                monetization_on
+              </i>
+              Convert
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
               to="/app/customers"
             >
               <i
@@ -486,6 +499,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               class="dropdown-item dropdown-item menu-item"
               role="menuitem"
               tabindex="0"
+              to="/app/convert"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                monetization_on
+              </i>
+              Convert
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
               to="/app/customers"
             >
               <i
@@ -818,6 +844,19 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
                 bolt
               </i>
               Automate
+            </a>
+            <a
+              class="dropdown-item dropdown-item menu-item"
+              role="menuitem"
+              tabindex="0"
+              to="/app/convert"
+            >
+              <i
+                class="material-icons mr-2 icon"
+              >
+                monetization_on
+              </i>
+              Convert
             </a>
             <a
               class="dropdown-item dropdown-item menu-item"

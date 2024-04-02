@@ -40,7 +40,6 @@ export type GorgiasChatMetaInstallation = {
 
 export type GorgiasChatIntegrationMeta = {
     app_id?: string
-    campaigns?: Campaign[]
     language?: string
     languages?: LanguageItem[]
     preferences?: {
@@ -87,21 +86,6 @@ export enum GorgiasChatEmailCaptureType {
     Optional = 'optional',
     RequiredOutsideBusinessHours = 'required-outside-business-hours',
     AlwaysRequired = 'always-required',
-}
-
-export type Campaign = {
-    id: string
-    message: {
-        author?: {
-            avatar_url: string
-            email: string
-            name: string
-        }
-        html: string
-        text: string
-    }
-    name: string
-    triggers: Record<string, unknown>
 }
 
 export type SelfServiceConfiguration = {

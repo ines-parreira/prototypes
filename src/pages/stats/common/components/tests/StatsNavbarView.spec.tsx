@@ -19,14 +19,11 @@ import StatsNavbarView from '../StatsNavbarView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -96,11 +93,7 @@ describe('StatsNavbarView', () => {
         })
     })
 
-    it('should render the link to the Convert Campaigns when having access to the beta', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.RevenueBetaTesters]: true,
-            [FeatureFlagKey.ConvertDecouplingUi]: true,
-        }))
+    it('should render the link to the Convert Campaigns', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>

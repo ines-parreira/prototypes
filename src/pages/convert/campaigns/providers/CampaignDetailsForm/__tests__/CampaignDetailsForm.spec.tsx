@@ -23,15 +23,12 @@ import {Campaign} from '../../../types/Campaign'
 
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
-jest.mock('pages/settings/revenue/hooks/useGetConvertStatus')
-jest.mock(
-    'pages/settings/new_billing/components/ConvertSubscriptionModal',
-    () => {
-        return jest.fn(() => {
-            return <div data-testid="mock-convert-subscription-modal" />
-        })
-    }
-)
+jest.mock('pages/convert/common/hooks/useGetConvertStatus')
+jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
+    return jest.fn(() => {
+        return <div data-testid="mock-convert-subscription-modal" />
+    })
+})
 jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
     return jest.fn(() => {
         return <div data-testid="mock-convert-setup-banner" />

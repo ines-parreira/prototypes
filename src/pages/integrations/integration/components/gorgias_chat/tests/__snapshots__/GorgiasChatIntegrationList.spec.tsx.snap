@@ -219,7 +219,7 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
               class="cellContent lastColumn"
             >
               <a
-                to="/app/settings/channels/gorgias_chat/1/campaigns"
+                to="/app/settings/channels/gorgias_chat/1/appearance"
               >
                 <i
                   class="material-icons md-2 align-middle icon-go-forward"
