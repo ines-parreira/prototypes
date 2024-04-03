@@ -113,11 +113,13 @@ export default class TicketUpdatesManager {
         ) {
             this.loading = true
 
-            const {data, meta} = await this.getPage(this.sortOrder, null)
-            this.nextCursor = meta.next_cursor
-            this.tickets = data.map(transformApiTicketPartial)
-            this.listener(this.tickets, this.nextCursor)
+            try {
+                const {data, meta} = await this.getPage(this.sortOrder, null)
+                this.nextCursor = meta.next_cursor
+                this.tickets = data.map(transformApiTicketPartial)
+            } catch (err) {}
 
+            this.listener(this.tickets, this.nextCursor)
             this.loading = false
             return
         }
@@ -128,23 +130,25 @@ export default class TicketUpdatesManager {
 
         this.loading = true
 
-        const {data} = await this.getTicketsUpTo(
-            this.sortOrder,
-            this.latestDatetime
-        )
+        try {
+            const {data} = await this.getTicketsUpTo(
+                this.sortOrder,
+                this.latestDatetime
+            )
 
-        const newTickets = data.map(transformApiTicketPartial)
-        const newTicketIds = newTickets.reduce(
-            (acc, t) => ({...acc, [t.id]: true}),
-            {} as {[k: number]: boolean}
-        )
-        const oldTickets = this.tickets
-            .slice(this.latestIndex + 1)
-            .filter((t) => !newTicketIds[t.id])
+            const newTickets = data.map(transformApiTicketPartial)
+            const newTicketIds = newTickets.reduce(
+                (acc, t) => ({...acc, [t.id]: true}),
+                {} as {[k: number]: boolean}
+            )
+            const oldTickets = this.tickets
+                .slice(this.latestIndex + 1)
+                .filter((t) => !newTicketIds[t.id])
 
-        this.tickets = [...newTickets, ...oldTickets]
+            this.tickets = [...newTickets, ...oldTickets]
+        } catch (err) {}
+
         this.listener(this.tickets, this.nextCursor)
-
         this.loading = false
     }
 

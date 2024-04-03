@@ -9,7 +9,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useTickets from '../../hooks/useTickets'
 import {TicketPartial} from '../../types'
 import Ticket from '../Ticket'
-import TicketListView from '../TicketListView'
+import TicketListView, {listInfoProps} from '../TicketListView'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -26,6 +26,8 @@ const useTicketsMock = useTickets as jest.Mock
 jest.mock('../Ticket', () => jest.fn())
 const TicketMock = Ticket as jest.Mock
 
+jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
+
 describe('<TicketListView />', () => {
     let loadMore: jest.Mock
     let setElement: jest.Mock
@@ -40,6 +42,7 @@ describe('<TicketListView />', () => {
                 data,
                 itemContent,
                 scrollerRef,
+                components: {EmptyPlaceholder},
             }: {
                 data: TicketPartial[]
                 itemContent: (
@@ -47,9 +50,11 @@ describe('<TicketListView />', () => {
                     ticket: TicketPartial
                 ) => ReactElement
                 scrollerRef: (ref: HTMLElement | Window | null) => void
+                components: {EmptyPlaceholder: () => ReactElement}
             }) => {
                 return (
                     <div ref={scrollerRef}>
+                        {data.length === 0 && <EmptyPlaceholder />}
                         {data.map((t) => itemContent(0, t))}
                     </div>
                 )
@@ -67,16 +72,19 @@ describe('<TicketListView />', () => {
             tickets: [ticket],
             newTickets: {},
             ticketIds: {current: [152]},
+            initialLoaded: true,
         })
     })
 
     it('should display a list of tickets', () => {
         const {getByText} = render(<TicketListView viewId={123} />)
+
         expect(getByText(ticket.id)).toBeInTheDocument()
     })
 
     it('should register the scrolling element', () => {
         render(<TicketListView viewId={123} />)
+
         expect(setElement).toHaveBeenCalledWith(expect.any(HTMLElement))
     })
 
@@ -87,6 +95,7 @@ describe('<TicketListView />', () => {
         ]
 
         endReached()
+
         expect(loadMore).toHaveBeenCalledWith()
     })
 
@@ -104,7 +113,9 @@ describe('<TicketListView />', () => {
             newTickets: {[ticket.id]: ticket},
             ticketIds: {current: [152]},
         })
+
         const {getByText} = render(<TicketListView viewId={123} />)
+
         expect(getByText('true')).toBeInTheDocument()
     })
 
@@ -155,9 +166,9 @@ describe('<TicketListView />', () => {
             newTickets: [],
             ticketIds: {current: [152]},
         })
+        rerender(<TicketListView viewId={123} />)
+        rerender(<TicketListView viewId={123} />)
 
-        rerender(<TicketListView viewId={123} />)
-        rerender(<TicketListView viewId={123} />)
         expect(getByText('true')).toBeInTheDocument()
     })
 
@@ -168,5 +179,51 @@ describe('<TicketListView />', () => {
         })
         const {getByText} = render(<TicketListView viewId={123} />)
         expect(getByText('🎉')).toBeInTheDocument()
+    })
+
+    it('should render empty placeholder', () => {
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [],
+            newTickets: {},
+            ticketIds: {current: []},
+            initialLoaded: true,
+        })
+
+        const {getByText} = render(<TicketListView viewId={123} />)
+
+        expect(getByText(listInfoProps.DEFAULT.text)).toBeInTheDocument()
+        expect(getByText(listInfoProps.DEFAULT.subText)).toBeInTheDocument()
+    })
+
+    it('should render invalid view filters placeholder', () => {
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [],
+            newTickets: {},
+            ticketIds: {current: []},
+            initialLoaded: true,
+        })
+        useAppSelectorMock.mockReturnValue({
+            name: 'view name',
+            deactivated_datetime: '2021-01-01T00:00:00Z',
+        })
+
+        const {getByText} = render(<TicketListView viewId={123} />)
+
+        expect(
+            getByText(listInfoProps.INVALID_FILTERS.text)
+        ).toBeInTheDocument()
+        expect(
+            getByText(listInfoProps.INVALID_FILTERS.subText, {
+                trim: false,
+                collapseWhitespace: false,
+            })
+        ).toBeInTheDocument()
+        expect(getByText('Fix filters')).toBeInTheDocument()
     })
 })

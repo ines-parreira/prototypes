@@ -169,6 +169,30 @@ describe('reducers', () => {
             ).toMatchSnapshot()
         })
 
+        it('should replace the active view with fetched view', () => {
+            const state = fromJS({
+                active: {
+                    id: 7,
+                    editMode: true,
+                    filter: {},
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.FETCH_VIEW_LIST_SUCCESS,
+                    resp: {data: [fixtures.view]},
+                    currentViewId: '7',
+                })
+            ).toEqual(
+                fromJS({
+                    active: {...fixtures.view, editMode: true},
+                    items: [fixtures.view],
+                    loading: false,
+                })
+            )
+        })
+
         it('should create a view', () => {
             expect(
                 reducers(initialState, {

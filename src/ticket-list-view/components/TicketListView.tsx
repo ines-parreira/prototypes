@@ -28,6 +28,7 @@ import {TicketSummary} from '../types'
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
+import InvalidFiltersAction from './InvalidFiltersAction'
 import css from './TicketListView.less'
 
 type Props = {
@@ -35,10 +36,20 @@ type Props = {
     viewId: number
 }
 
+export const listInfoProps = {
+    DEFAULT: {text: 'No tickets', subText: 'There are no tickets in this view'},
+    INVALID_FILTERS: {
+        text: 'Invalid filters',
+        subText: `This view is deactivated because at least one of its filters is invalid.\nPlease review its filters, and either fix them or delete this view.`,
+        action: <InvalidFiltersAction />,
+    },
+}
+
 export default function TicketListView({activeTicketId, viewId}: Props) {
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const viewEmoji = view?.decoration?.emoji
+    const areViewFiltersInvalid = !!view?.deactivated_datetime
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
     const {
@@ -51,6 +62,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
     } = useTickets(viewId, sortOrder, activeTicketId)
 
     const initialLoadedRef = useRef(initialLoaded)
+
     useEffect(() => {
         initialLoadedRef.current = initialLoaded
     }, [initialLoaded])
@@ -119,12 +131,13 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
             EmptyPlaceholder: () =>
                 initialLoadedRef.current ? (
                     <TicketListInfo
-                        text="No tickets"
-                        subText="There are no tickets in this view"
+                        {...(areViewFiltersInvalid
+                            ? listInfoProps.INVALID_FILTERS
+                            : listInfoProps.DEFAULT)}
                     />
                 ) : null,
         }),
-        [ticketIds]
+        [ticketIds, areViewFiltersInvalid]
     )
 
     const virtuosoRef = useRef<VirtuosoHandle>(null)

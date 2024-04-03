@@ -241,6 +241,8 @@ export default function reducer(
         case constants.FETCH_VIEW_LIST_SUCCESS: {
             items = fromJS((action.resp as {data: View[]}).data) as List<any>
 
+            const isEditMode = activeView.get('editMode')
+
             // also populate the active view state
             if (action.currentViewId) {
                 activeView = items.find(
@@ -250,6 +252,7 @@ export default function reducer(
                     null,
                     fromJS({})
                 )
+                isEditMode && (activeView = activeView.set('editMode', true))
             }
 
             return state.merge({

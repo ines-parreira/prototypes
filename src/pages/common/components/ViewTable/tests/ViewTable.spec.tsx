@@ -138,6 +138,7 @@ describe('<ViewTable />', () => {
             render(
                 <ViewTableContainer
                     {...minProps}
+                    activeView={minProps.activeView.set('id', 2)}
                     urlViewId={minProps.activeView.get('id')}
                 />
             )

@@ -11,4 +11,16 @@ describe('TicketListInfo', () => {
         expect(queryByText('title')).toBeInTheDocument()
         expect(queryByText('subtitle')).toBeInTheDocument()
     })
+
+    it('should allow passing an action node', () => {
+        const {queryByText} = render(
+            <TicketListInfo
+                text="title"
+                subText="subtitle"
+                action={<button>action</button>}
+            />
+        )
+
+        expect(queryByText('action')).toBeInTheDocument()
+    })
 })
