@@ -24,30 +24,36 @@ import {IntegrationType} from 'models/integration/constants'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {assumeMock} from 'utils/testing'
 import InfobarWidgets from '../InfobarWidgets'
+import {Widget} from '../Widget'
 import {widgetReference} from '../widgetReference'
 import InfobarWidget from '../InfobarWidget'
 import Placeholder from '../widgets/Placeholder'
 import {WidgetContextProvider} from '../WidgetContext'
 
-// mock InfobarWidget component
-jest.mock('../InfobarWidget', () => ({
-    __esModule: true,
-    default: jest.fn(() => <div>InfobarWidget</div>),
-}))
+jest.mock('../InfobarWidget')
+const mockedInfobarWidget = assumeMock(InfobarWidget)
+mockedInfobarWidget.mockImplementation(() => <div>InfobarWidget</div>)
 
-jest.mock('../widgets/Placeholder', () => ({
-    __esModule: true,
-    default: jest.fn(() => <div>Placeholder</div>),
-}))
+jest.mock('../widgets/Placeholder')
+const mockedPlaceholder = assumeMock(Placeholder)
+mockedPlaceholder.mockImplementation(() => <div>Placeholder</div>)
 
 jest.mock('../WidgetContext')
-assumeMock(WidgetContextProvider).mockImplementation(({children}) => (
-    <>{children}</>
-))
-
-const mockedInfobarWidget = assumeMock(InfobarWidget)
-const mockedPlaceholder = assumeMock(Placeholder)
 const mockedWidgetContextProvider = assumeMock(WidgetContextProvider)
+mockedWidgetContextProvider.mockImplementation(({children}) => <>{children}</>)
+
+// for some reason, spyOn doesn’t work with this import
+jest.mock('../Widget', () => {
+    const widgetExports =
+        jest.requireActual<Record<string, unknown>>('../Widget')
+    const Widget = widgetExports.Widget as React.FC
+    const WidgetMock = jest.fn((props) => <Widget {...props} />)
+    return {
+        ...widgetExports,
+        Widget: WidgetMock,
+    }
+})
+const mockedWidget = assumeMock(Widget)
 
 describe('InfobarWidgets component', () => {
     beforeEach(() => {
@@ -124,7 +130,7 @@ describe('InfobarWidgets component', () => {
                 },
             },
         },
-    })
+    }) as Map<string, unknown>
 
     const widgets = [
         {
@@ -402,6 +408,28 @@ describe('InfobarWidgets component', () => {
         ).toEqual('1.template')
     })
 
+    it('should set absolutePath in passed template', () => {
+        render(
+            <Provider store={store}>
+                <EditionContext.Provider value={{isEditing: true}}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetEnvironment.Ticket}
+                        source={baseSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+        expect(
+            mockedInfobarWidget.mock.calls[1][0].template.absolutePath
+        ).toEqual([
+            'ticket',
+            'customer',
+            'integrations',
+            httpIntegrationId.toString(),
+        ])
+    })
+
     it('should not break if data source is null with custom actions', () => {
         const widgets = fromJS([
             {
@@ -466,5 +494,43 @@ describe('InfobarWidgets component', () => {
                 />
             </Provider>
         )
+    })
+
+    // This test here is only to ensure we don't break the memoization set before starting
+    // the recursion in the InfobarWidget component
+    it('should not rerender all widgets if some unrelated data changes in ticket object', () => {
+        const isEditionValue = {isEditing: true}
+        const {rerender} = render(
+            <Provider store={store}>
+                <EditionContext.Provider value={isEditionValue}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetEnvironment.Ticket}
+                        source={baseSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+
+        mockedWidget.mockClear()
+
+        const newSource = baseSource.setIn(
+            ['ticket', 'customer', 'unrelated'],
+            'bar'
+        )
+
+        rerender(
+            <Provider store={store}>
+                <EditionContext.Provider value={isEditionValue}>
+                    <InfobarWidgets
+                        widgets={baseWidgets}
+                        context={WidgetEnvironment.Ticket}
+                        source={newSource}
+                    />
+                </EditionContext.Provider>
+            </Provider>
+        )
+        // For now standalone widget always rerenders on data change
+        expect(mockedWidget.mock.calls.length).toBe(1)
     })
 })

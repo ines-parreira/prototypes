@@ -1,4 +1,4 @@
-import React, {useContext, memo} from 'react'
+import React, {useContext} from 'react'
 import classnames from 'classnames'
 import {List, Map, fromJS} from 'immutable'
 
@@ -24,12 +24,13 @@ import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {ImmutableSource, Source, Template} from 'models/widget/types'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
-import Placeholder from './widgets/Placeholder'
 import InfobarWidget from './InfobarWidget'
+import {Widget as RootWidget} from './Widget'
+
+const Widget = React.memo(RootWidget)
 
 // This is to avoid circular dependencies while doing recursion
 import {widgetReference} from './widgetReference'
-import {WidgetContextProvider} from './WidgetContext'
 
 widgetReference.Widget = InfobarWidget
 
@@ -46,8 +47,8 @@ type PreparedDisplayList = {
     integration?: Maybe<Integration>
     widget: Map<string, unknown>
     template: Map<string, unknown>
+    absolutePath?: (number | string)[]
     open: boolean
-    source?: Source
 }[]
 
 type Props = {
@@ -130,7 +131,9 @@ const InfobarWidgets = ({
     const widgetTabNames = preparedDisplayList.map((item) => {
         const widget = item.widget
         const title = getWidgetTitle({
-            source: item.source,
+            source: (
+                source.getIn(item.absolutePath || []) as Map<string, unknown>
+            )?.toJS() as Source,
             template: item.template.toJS() as Template,
             widgetType: item.widget.get('type') as WidgetType,
             integration: item.integration,
@@ -167,17 +170,33 @@ const InfobarWidgets = ({
                         )
                     }
                 >
-                    <Widgets
-                        isEditing={isEditing}
-                        preparedDisplayList={preparedDisplayList}
-                    />
+                    {preparedDisplayList.map((item, index) => (
+                        // it is very important we get stable props here for memo to work
+                        <Widget
+                            key={`${
+                                item.absolutePath?.join('.') || ''
+                            }-${index}`}
+                            isEditing={isEditing}
+                            index={index}
+                            // Since we create a new array on each render, we need to stringify it
+                            // for memo to work. We will then parse it back in the component
+                            absolutePath={JSON.stringify(
+                                item.absolutePath || []
+                            )}
+                            source={source.getIn(item.absolutePath || [])}
+                            template={item.template}
+                            widget={item.widget}
+                            open={item.open}
+                            type={item.type}
+                        />
+                    ))}
                 </div>
             </DragWrapper>
         </>
     )
 }
 
-export default memo(InfobarWidgets)
+export default InfobarWidgets
 
 function getPreparedDisplayList({
     source,
@@ -205,7 +224,7 @@ function getPreparedDisplayList({
         let sourcePath = genericSourcePath.slice()
 
         if (item.type === 'widget') {
-            widget = item.widget || fromJS({})
+            widget = item.widget || widget
             const widgetType = widget.get('type') as string
 
             if (
@@ -327,27 +346,30 @@ function getPreparedDisplayList({
             sourcePath.push(integrationId)
         }
 
-        const widgetSource = (
-            source.getIn(sourcePath, fromJS({})) as ImmutableSource
-        )?.toJS() as Source
-
-        const template = (
-            widget.get('template', fromJS({})) as Map<string, unknown>
-        ).set('absolutePath', sourcePath)
+        const template = widget.get('template', fromJS({})) as Map<
+            string,
+            unknown
+        >
 
         if (
             !isEditing &&
-            !canDisplayWidget(template.toJS(), source, widgetSource)
+            !canDisplayWidget(
+                template.toJS(),
+                source,
+                (
+                    source.getIn(sourcePath, fromJS({})) as ImmutableSource
+                )?.toJS() as Source
+            )
         ) {
             return
         }
 
         preparedDisplayList.push({
-            integration,
             widget,
             template,
             open: displayListIndex === 0,
-            source: widgetSource,
+            integration,
+            absolutePath: sourcePath,
         })
     })
 
@@ -364,15 +386,15 @@ function getPreparedDisplayList({
 
         const nonDisplayedItems: PreparedDisplayList = []
         nonDisplayedWidgets.forEach((widget = fromJS({})) => {
-            const template = (
-                widget.get('template', fromJS({})) as Map<string, unknown>
-            ).set('absolutePath', genericSourcePath)
-
             nonDisplayedItems.push({
                 widget,
-                template,
+                template: widget.get('template', fromJS({})) as Map<
+                    string,
+                    unknown
+                >,
                 open: false,
                 type: 'placeholder',
+                absolutePath: genericSourcePath,
             })
         })
 
@@ -381,59 +403,5 @@ function getPreparedDisplayList({
 
     return preparedDisplayList.sort((a, b) =>
         compare(a.widget.get('order'), b.widget.get('order'))
-    )
-}
-
-// This is where we remove immutable and start using plain JS objects for now
-function Widgets({
-    isEditing,
-    preparedDisplayList,
-}: {
-    isEditing: boolean
-    preparedDisplayList: PreparedDisplayList
-}) {
-    // We create the components separately from the rest of the function because we want to assign `templatePath`
-    // AFTER having sorted the results by `widget.order`.
-    return (
-        <>
-            {preparedDisplayList.map((item, index) => {
-                const template = {
-                    ...(item.template.toJS() as Template),
-                    templatePath: `${index}.template`,
-                }
-                const widget = item.widget
-
-                if (item.type === 'placeholder') {
-                    return (
-                        <WidgetContextProvider
-                            value={widget}
-                            key={`${
-                                template.absolutePath?.join('.') || ''
-                            }-${index}`}
-                        >
-                            <Placeholder
-                                isEditing={isEditing}
-                                template={template}
-                            />
-                        </WidgetContextProvider>
-                    )
-                }
-
-                return (
-                    <WidgetContextProvider
-                        value={widget}
-                        key={`${
-                            template.absolutePath?.join('.') || ''
-                        }-${index}`}
-                    >
-                        <InfobarWidget
-                            source={item.source}
-                            template={template}
-                            isOpen={item.open}
-                        />
-                    </WidgetContextProvider>
-                )
-            })}
-        </>
     )
 }

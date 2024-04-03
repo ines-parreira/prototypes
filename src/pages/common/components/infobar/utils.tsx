@@ -210,10 +210,6 @@ export function canDisplayWidget(
         return false
     }
 
-    if (!template.absolutePath?.length) {
-        return false
-    }
-
     return !isWidgetEmpty(template, source)
 }
 
