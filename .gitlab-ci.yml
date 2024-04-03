@@ -16,26 +16,26 @@ stages:
   key:
     files:
       - yarn.lock
-      - "patches/*"
+      - 'patches/*'
   paths:
     - node_modules
   policy: pull
 
 default:
-  image: node:16
+  image: node:18
   tags:
     - non-gpu
   timeout: 30m
   retry:
     max: 2
     when:
-    - runner_system_failure
+      - runner_system_failure
 
 variables:
-  BUILD_DIR: "build"
-  ASSETS_DIR: "src/assets"
-  STORAGE_PATH: "web-app"
-  WEB_APP_RELEASE: "$CI_COMMIT_SHORT_SHA"
+  BUILD_DIR: 'build'
+  ASSETS_DIR: 'src/assets'
+  STORAGE_PATH: 'web-app'
+  WEB_APP_RELEASE: '$CI_COMMIT_SHORT_SHA'
 
 .staging_env:
   variables:
@@ -106,7 +106,7 @@ Jest:
     - .codecov
   stage: test
   variables:
-    NODE_OPTIONS: "--max-old-space-size=3072"
+    NODE_OPTIONS: '--max-old-space-size=3072'
     COVERAGE_DIR: ${CI_PROJECT_DIR}/coverage/
     CACHE_FALLBACK_KEY: ${CI_JOB_NAME}-${CI_DEFAULT_BRANCH}-non_protected
   artifacts:
@@ -181,8 +181,8 @@ Deploy staging:
   parallel:
     matrix:
       - CONTEXT:
-        - gorgias-helpdesk-staging-us-east1-86cc
-        - gorgias-helpdesk-staging-us-east4-a5a0
+          - gorgias-helpdesk-staging-us-east1-86cc
+          - gorgias-helpdesk-staging-us-east4-a5a0
   <<: *gitlab_environment
 
 .deploy production:
@@ -233,14 +233,14 @@ Deploy preview:
 
 Create preview release:
   extends: .sentry release
-  needs: 
+  needs:
     - Build preview
     - Deploy preview
   dependencies: [Build preview]
   rules:
     - if: $CI_COMMIT_REF_NAME != "main" && $CI_COMMIT_REF_NAME != "staging"
   variables:
-    SENTRY_PROJECT: "helpdesk-staging"
+    SENTRY_PROJECT: 'helpdesk-staging'
 
 Create staging release:
   extends: .sentry release
@@ -248,7 +248,7 @@ Create staging release:
   rules:
     - if: $CI_COMMIT_REF_NAME == "staging"
   variables:
-    SENTRY_PROJECT: "helpdesk-staging"
+    SENTRY_PROJECT: 'helpdesk-staging'
 
 Create production release:
   extends: .sentry release
@@ -256,7 +256,7 @@ Create production release:
   rules:
     - if: $CI_COMMIT_REF_NAME == "main"
   variables:
-    SENTRY_PROJECT: "helpdesk-web-app"
+    SENTRY_PROJECT: 'helpdesk-web-app'
 
 Publish Chromatic:
   stage: docs
