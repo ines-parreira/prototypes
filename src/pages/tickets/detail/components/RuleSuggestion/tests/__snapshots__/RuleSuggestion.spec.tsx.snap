@@ -147,15 +147,40 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                     class="tagsSelect"
                   >
                     <div
-                      class="tags right"
+                      class="wrapper"
+                      style="height: 24px;"
                     >
-                      <span
-                        class="badge-tag tagLabel badge badge-secondary"
+                      <div
+                        class="row"
                       >
-                        <span>
-                          auto-close
-                        </span>
-                      </span>
+                        <div
+                          class="tags right"
+                        >
+                          <span
+                            class="badge-tag tagLabel badge badge-secondary"
+                          >
+                            <span>
+                              auto-close
+                            </span>
+                          </span>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper hidden ghost primary small"
+                            type="button"
+                          >
+                            <span
+                              class="wrapper button"
+                            >
+                              Show less
+                              <i
+                                class="material-icons icon isRight small"
+                              >
+                                expand_less
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,15 +361,40 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                     class="tagsSelect"
                   >
                     <div
-                      class="tags right"
+                      class="wrapper"
+                      style="height: 24px;"
                     >
-                      <span
-                        class="badge-tag tagLabel badge badge-secondary"
+                      <div
+                        class="row"
                       >
-                        <span>
-                          auto-close
-                        </span>
-                      </span>
+                        <div
+                          class="tags right"
+                        >
+                          <span
+                            class="badge-tag tagLabel badge badge-secondary"
+                          >
+                            <span>
+                              auto-close
+                            </span>
+                          </span>
+                          <button
+                            aria-disabled="false"
+                            class="wrapper hidden ghost primary small"
+                            type="button"
+                          >
+                            <span
+                              class="wrapper button"
+                            >
+                              Show less
+                              <i
+                                class="material-icons icon isRight small"
+                              >
+                                expand_less
+                              </i>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>

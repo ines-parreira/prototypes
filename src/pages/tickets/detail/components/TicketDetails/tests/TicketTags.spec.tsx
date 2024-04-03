@@ -8,12 +8,25 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {UserRole} from 'config/types/user'
 import {agents} from 'fixtures/agents'
+import useElementSize from 'hooks/useElementSize'
 import client from 'models/api/resources'
-
 import {SEARCH_ENDPOINT} from 'models/search/resources'
+
 import TicketTags from '../TicketTags'
 
 const mockStore = configureMockStore([thunk])
+
+const mockNumberOfWrappedElements = 3
+
+jest.mock('common/utils/getElementWrapInfo', () => () => ({
+    wrappedElementCount: mockNumberOfWrappedElements,
+    width: 100,
+}))
+
+jest.mock('hooks/useElementSize')
+
+const useElementSizeMock = useElementSize as jest.Mock
+useElementSizeMock.mockReturnValue([160, 100])
 
 describe('<TicketTags />', () => {
     let mockServer: MockAdapter
@@ -34,6 +47,7 @@ describe('<TicketTags />', () => {
             {name: 'refund'},
             {name: 'angry'},
             {name: 'return'},
+            {name: 'customer'},
         ]),
     }
 
@@ -87,5 +101,21 @@ describe('<TicketTags />', () => {
         await waitFor(() =>
             expect(getByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
         )
+    })
+
+    it('should allow to show and hide overflowing tags', () => {
+        const {container, getByText} = render(
+            <Provider store={store}>
+                <TicketTags {...minProps} />
+            </Provider>
+        )
+        const expandButton = getByText(
+            new RegExp(`${mockNumberOfWrappedElements - 1}`)
+        )
+        expect(container.firstChild).toHaveStyle('height: 24px')
+        fireEvent.mouseOver(expandButton)
+
+        fireEvent.click(expandButton)
+        expect(container.firstChild).toHaveStyle('height: 100px')
     })
 })

@@ -1,12 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
 
+import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
 import type {TicketPartial} from '../../types'
 import useTickets from '../useTickets'
 import useTicketData from '../useTicketData'
 import useTicketPartials from '../useTicketPartials'
-import useElementSize from '../useElementSize'
 import useScrollOffset from '../useScrollOffset'
 
 jest.mock('../useTicketData', () => jest.fn())
@@ -15,7 +15,7 @@ const useTicketDataMock = useTicketData as jest.Mock
 jest.mock('../useTicketPartials', () => jest.fn())
 const useTicketPartialsMock = useTicketPartials as jest.Mock
 
-jest.mock('../useElementSize', () => jest.fn())
+jest.mock('hooks/useElementSize', () => jest.fn())
 const useElementSizeMock = useElementSize as jest.Mock
 
 jest.mock('../useScrollOffset', () => jest.fn())

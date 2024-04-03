@@ -1,6 +1,11 @@
 @import (reference) '~css/new/mixins';
 
 :local {
+    .wrapper {
+        transition: height 0.2s ease-out;
+        overflow: hidden;
+    }
+
     .tagLabel {
         padding: 4px 4px 4px 8px;
 
@@ -28,26 +33,58 @@
         }
     }
 
-    .addTag {
-        border-radius: 4px;
+    .addTags {
         height: 24px;
-        padding: 0 8px;
-        color: var(--neutral-grey-5) !important; // overrides reactstrap
 
-        &.transparent {
-            background: unset;
-            border: unset;
-            box-shadow: unset;
+        .toggle {
+            border-radius: 4px;
+            height: 24px;
+            padding: 0 8px;
+            color: var(--neutral-grey-5) !important; // overrides reactstrap
+
+            &.transparent {
+                background: unset;
+                border: unset;
+                box-shadow: unset;
+            }
+
+            &:hover,
+            &:focus {
+                background-color: var(--neutral-grey-2);
+            }
+
+            &:active {
+                background-color: var(--neutral-grey-3);
+                color: var(--neutral-grey-6) !important;
+            }
+        }
+    }
+
+    .displayMore {
+        position: relative;
+        min-width: 50px;
+        cursor: pointer;
+        display: flex;
+        height: 24px;
+        justify-content: center;
+
+        &:global.badge-tag {
+            padding: 4px 4px 4px 8px;
+            transition: unset;
         }
 
-        &:hover,
-        &:focus {
-            background-color: var(--neutral-grey-2);
+        .icon {
+            font-size: 16px;
+            vertical-align: top;
         }
+    }
 
-        &:active {
-            background-color: var(--neutral-grey-3);
-            color: var(--neutral-grey-6) !important;
-        }
+    .row {
+        display: flex;
+        gap: 8px;
+    }
+
+    .hidden {
+        display: none;
     }
 }
