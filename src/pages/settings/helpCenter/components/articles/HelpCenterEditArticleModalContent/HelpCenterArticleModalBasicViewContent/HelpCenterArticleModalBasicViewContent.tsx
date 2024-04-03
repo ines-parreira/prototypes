@@ -209,6 +209,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                 }
                 autoFocus={autoFocus}
                 domain={helpCenterDomain}
+                helpCenterHasDefaultLayout={!hasOnePagerLayout}
             />
             <HelpCenterEditor
                 articleId={articleId}

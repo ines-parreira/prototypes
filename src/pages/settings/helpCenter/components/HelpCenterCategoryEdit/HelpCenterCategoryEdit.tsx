@@ -39,6 +39,7 @@ import {
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
+    getHomePageItemHashUrl,
     getCategoryUrl,
     getHelpCenterDomain,
     slugify,
@@ -462,14 +463,22 @@ export const HelpCenterCategoryEdit = ({
             category.translation.visibility_status === 'UNLISTED' ||
             isParentUnlisted
 
-        const categoryUrl = getCategoryUrl({
-            domain,
-            locale: viewLanguage,
-            slug,
-            categoryId,
-            unlistedId,
-            isUnlisted,
-        })
+        const categoryUrl = hasDefaultLayout
+            ? getCategoryUrl({
+                  domain,
+                  locale: viewLanguage,
+                  slug,
+                  categoryId,
+                  unlistedId,
+                  isUnlisted,
+              })
+            : getHomePageItemHashUrl({
+                  itemType: 'category',
+                  domain,
+                  locale: viewLanguage,
+                  itemId: categoryId,
+                  isUnlisted,
+              })
 
         window.open(categoryUrl, '_blank')?.focus()
     }
@@ -484,14 +493,22 @@ export const HelpCenterCategoryEdit = ({
             isParentUnlisted
 
         copy(
-            getCategoryUrl({
-                domain,
-                locale: viewLanguage,
-                slug,
-                categoryId,
-                unlistedId,
-                isUnlisted,
-            })
+            hasDefaultLayout
+                ? getCategoryUrl({
+                      domain,
+                      locale: viewLanguage,
+                      slug,
+                      categoryId,
+                      unlistedId,
+                      isUnlisted,
+                  })
+                : getHomePageItemHashUrl({
+                      itemType: 'category',
+                      domain,
+                      locale: viewLanguage,
+                      itemId: categoryId,
+                      isUnlisted,
+                  })
         )
 
         void dispatch(
@@ -510,6 +527,14 @@ export const HelpCenterCategoryEdit = ({
     const slugPrefix = getCategoryUrl({domain, locale: viewLanguage})
     const slugSuffix = category?.id ? `-${category.id.toString()}` : ''
 
+    const isUnlisted =
+        (category?.translation &&
+            category.translation.visibility_status === 'UNLISTED') ||
+        isParentUnlisted
+
+    const showPreviewAndShareButton =
+        !isCreate && (hasDefaultLayout || !isUnlisted)
+
     return (
         <Drawer
             name="category-edit"
@@ -525,27 +550,27 @@ export const HelpCenterCategoryEdit = ({
                 <div className={css.headerTop}>
                     <h3 className={css.headerTitle}>Category Settings</h3>
                     <Drawer.HeaderActions>
-                        {!isCreate && (
-                            <IconButton
-                                onClick={onPreviewCategory}
-                                fillStyle="ghost"
-                                intent="secondary"
-                                size="medium"
-                                aria-label="preview category"
-                            >
-                                open_in_new
-                            </IconButton>
-                        )}
-                        {!isCreate && (
-                            <IconButton
-                                onClick={copyURL}
-                                fillStyle="ghost"
-                                intent="secondary"
-                                size="medium"
-                                aria-label="copy url"
-                            >
-                                share
-                            </IconButton>
+                        {showPreviewAndShareButton && (
+                            <>
+                                <IconButton
+                                    onClick={onPreviewCategory}
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    size="medium"
+                                    aria-label="preview category"
+                                >
+                                    open_in_new
+                                </IconButton>
+                                <IconButton
+                                    onClick={copyURL}
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                    size="medium"
+                                    aria-label="copy url"
+                                >
+                                    share
+                                </IconButton>
+                            </>
                         )}
                         <IconButton
                             onClick={handleCloseModalAttempt}

@@ -2,6 +2,7 @@ import {getSingleCustomDomainResponseFixture} from '../../fixtures/getCustomDoma
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
 import {
     getAbsoluteUrl,
+    getHomePageItemHashUrl,
     getArticleUrl,
     getCategoryUrl,
     getHelpCenterDomain,
@@ -194,6 +195,32 @@ describe('getCategoryUrl()', () => {
         ).toEqual(
             'http://acme.gorgias.rehab/en-US/articles/4-12345678901234567890123456789012'
         )
+    })
+})
+
+describe('getHomePageItemHashUrl()', () => {
+    it(`returns an absolute public article URL when type is article`, () => {
+        expect(
+            getHomePageItemHashUrl({
+                itemType: 'article',
+                domain: 'acme.gorgias.rehab',
+                locale: 'en-US',
+                itemId: 2,
+                isUnlisted: false,
+            })
+        ).toEqual('http://acme.gorgias.rehab/en-US#article-2')
+    })
+
+    it(`returns an absolute public category URL when type is category`, () => {
+        expect(
+            getHomePageItemHashUrl({
+                itemType: 'category',
+                domain: 'acme.gorgias.rehab',
+                locale: 'en-US',
+                itemId: 4,
+                isUnlisted: false,
+            })
+        ).toEqual('http://acme.gorgias.rehab/en-US#category-4')
     })
 })
 

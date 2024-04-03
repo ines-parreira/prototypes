@@ -15,6 +15,7 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import Tooltip from 'pages/common/components/Tooltip'
+import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
@@ -75,6 +76,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
     } = useEditionManager()
 
     const helpCenter = useCurrentHelpCenter()
+    const hasDefaultLayout = helpCenter.layout === HELP_CENTER_DEFAULT_LAYOUT
 
     if (!selectedArticle?.translation || !helpCenter) {
         return null
@@ -121,6 +123,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 onCopyLinkToClipboard={onCopyLinkToClipboard}
                 autoFocus={autoFocus}
                 domain={helpCenterDomain}
+                helpCenterHasDefaultLayout={hasDefaultLayout}
             />
             <HelpCenterEditAdvancedArticleForm
                 articleId={

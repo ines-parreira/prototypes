@@ -16,6 +16,8 @@ import {
     HELP_CENTER_DOMAIN,
     EMOJI_REGEX,
     HELP_CENTER_DEFAULT_LAYOUT,
+    CATEGORY_HASH_PREFIX,
+    ARTICLE_HASH_PREFIX,
 } from '../constants'
 import {HelpCenterLayout, isHelpCenterLayout} from '../types/layout.enum'
 
@@ -203,6 +205,36 @@ export const getArticleUrl = ({
     }
 
     return `${url}${slug}-${articleId.toString()}`
+}
+
+type ItemType = 'article' | 'category'
+export const getHomePageItemHashUrl = ({
+    itemType,
+    domain,
+    locale,
+    itemId,
+    isUnlisted,
+}: {
+    itemType: ItemType
+    domain: string
+    locale: string
+    itemId?: number
+    isUnlisted?: boolean
+}): string => {
+    const url = getAbsoluteUrl({domain, locale})
+    const isTrailingSlash = url.slice(-1) === '/'
+    const sanitizedUrl = isTrailingSlash ? url.slice(0, -1) : url
+
+    if (!itemId || isUnlisted) {
+        return sanitizedUrl
+    }
+
+    switch (itemType) {
+        case 'category':
+            return `${sanitizedUrl}#${CATEGORY_HASH_PREFIX}-${itemId.toString()}`
+        case 'article':
+            return `${sanitizedUrl}#${ARTICLE_HASH_PREFIX}-${itemId.toString()}`
+    }
 }
 
 // This function is used to replace "uploads.gorgias.io" to "attachments.gorgias.help"

@@ -34,6 +34,7 @@ import {
     HELP_CENTER_CREATE_ARTICLE_QUERY_KEY,
     HELP_CENTER_CREATE_ARTICLE_FROM_SCRATCH_QUERY_VALUE,
     MODALS,
+    HELP_CENTER_DEFAULT_LAYOUT,
 } from '../constants'
 import {useArticlesActions} from '../hooks/useArticlesActions'
 import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
@@ -41,6 +42,7 @@ import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import {
     articleRequiredFields,
+    getHomePageItemHashUrl,
     getArticleUrl,
     getHelpCenterDomain,
     getNewArticleTranslation,
@@ -145,6 +147,8 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     // template states
     const [showTemplates, setShowTemplates] = useState(false)
+
+    const hasDefaultLayout = helpCenter.layout === HELP_CENTER_DEFAULT_LAYOUT
 
     /**
      * Effects
@@ -649,14 +653,22 @@ export const HelpCenterArticlesView: React.FC = () => {
 
         try {
             copy(
-                getArticleUrl({
-                    domain,
-                    locale,
-                    slug,
-                    articleId,
-                    unlistedId,
-                    isUnlisted,
-                })
+                hasDefaultLayout
+                    ? getArticleUrl({
+                          domain,
+                          locale,
+                          slug,
+                          articleId,
+                          unlistedId,
+                          isUnlisted,
+                      })
+                    : getHomePageItemHashUrl({
+                          itemType: 'article',
+                          domain,
+                          locale,
+                          itemId: articleId,
+                          isUnlisted,
+                      })
             )
 
             void dispatch(

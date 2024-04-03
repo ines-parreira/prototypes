@@ -305,6 +305,9 @@ export enum HELP_CENTER_WIZARD_COMPLETED_STATE {
     AlmostDone = 'almost-done',
 }
 
+export const CATEGORY_HASH_PREFIX = 'category'
+export const ARTICLE_HASH_PREFIX = 'article'
+
 export const isHelpCenterWizardCompletedState = (
     value: string | undefined | null
 ): value is HELP_CENTER_WIZARD_COMPLETED_STATE => {

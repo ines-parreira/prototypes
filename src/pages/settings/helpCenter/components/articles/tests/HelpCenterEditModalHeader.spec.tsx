@@ -93,6 +93,7 @@ describe('<HelpCenterEditModalHeader />', () => {
             onDelete: mockedOnDelete,
         },
         domain,
+        helpCenterHasDefaultLayout: true,
     }
 
     it('should display the component correctly - without the category selector', () => {

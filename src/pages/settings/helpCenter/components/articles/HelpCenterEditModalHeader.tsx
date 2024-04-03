@@ -22,7 +22,11 @@ import {
 } from '../../constants'
 import {useEditionManager} from '../../providers/EditionManagerContext'
 import {useSupportedLocales} from '../../providers/SupportedLocales'
-import {getArticleUrl, isExistingArticle} from '../../utils/helpCenter.utils'
+import {
+    getHomePageItemHashUrl,
+    getArticleUrl,
+    isExistingArticle,
+} from '../../utils/helpCenter.utils'
 import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
 import {ArticleMode} from '../../types/articleMode'
 import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
@@ -59,6 +63,7 @@ export type Props = {
     lastUpdateDetailed?: string
     domain: string
     articleMode: ArticleMode
+    helpCenterHasDefaultLayout: boolean
 }
 
 export const HelpCenterEditModalHeader = ({
@@ -81,6 +86,7 @@ export const HelpCenterEditModalHeader = ({
     visibilityStatus = 'PUBLIC',
     lastUpdate,
     lastUpdateDetailed,
+    helpCenterHasDefaultLayout,
 }: Props) => {
     const locales = useSupportedLocales()
     const titleInputRef = useRef<HTMLInputElement | null>(null)
@@ -168,18 +174,40 @@ export const HelpCenterEditModalHeader = ({
         return EditingStateEnum.PUBLISHED
     }, [articleMode.mode])
 
-    const publishedPreviewUrl =
-        editingState === EditingStateEnum.PUBLISHED &&
-        isExistingArticle(selectedArticle)
-            ? getArticleUrl({
-                  domain,
-                  locale: selectedArticle.translation.locale,
-                  slug: selectedArticle.translation.slug,
-                  articleId: selectedArticle.id,
-                  unlistedId: selectedArticle.translation.article_unlisted_id,
-                  isUnlisted,
-              })
-            : undefined
+    const publishedPreviewUrl = useMemo(() => {
+        if (
+            editingState === EditingStateEnum.PUBLISHED &&
+            isExistingArticle(selectedArticle)
+        ) {
+            const locale = selectedArticle.translation.locale
+            const slug = selectedArticle.translation.slug
+            const articleId = selectedArticle.id
+            const unlistedId = selectedArticle.translation.article_unlisted_id
+            return helpCenterHasDefaultLayout
+                ? getArticleUrl({
+                      domain,
+                      locale,
+                      slug,
+                      articleId,
+                      unlistedId,
+                      isUnlisted,
+                  })
+                : getHomePageItemHashUrl({
+                      itemType: 'article',
+                      domain,
+                      locale,
+                      itemId: articleId,
+                      isUnlisted,
+                  })
+        }
+        return undefined
+    }, [
+        domain,
+        editingState,
+        helpCenterHasDefaultLayout,
+        isUnlisted,
+        selectedArticle,
+    ])
 
     const {isPassingRulesCheck} = useAbilityChecker()
 
@@ -203,6 +231,19 @@ export const HelpCenterEditModalHeader = ({
     const canUpdateArticle = isPassingRulesCheck(({can}) =>
         can('update', 'ArticleEntity')
     )
+
+    const showPreviewArticleButton =
+        publishedPreviewUrl && (helpCenterHasDefaultLayout || !isUnlisted)
+
+    const showCopyURLButton = helpCenterHasDefaultLayout
+        ? isExistingArticle(selectedArticle)
+        : publishedPreviewUrl && !isUnlisted
+
+    const handleCopyURL = () => {
+        if (isExistingArticle(selectedArticle)) {
+            onCopyLinkToClipboard(selectedArticle, isUnlisted)
+        }
+    }
 
     return (
         <header className={css.header}>
@@ -256,7 +297,7 @@ export const HelpCenterEditModalHeader = ({
                         />
                     )}
                     {onResize && getResizeModalButton()}
-                    {publishedPreviewUrl && (
+                    {showPreviewArticleButton && (
                         <>
                             <Tooltip
                                 placement="bottom-end"
@@ -280,7 +321,7 @@ export const HelpCenterEditModalHeader = ({
                             </IconButton>
                         </>
                     )}
-                    {isExistingArticle(selectedArticle) && (
+                    {showCopyURLButton && (
                         <>
                             <Tooltip
                                 placement="bottom-end"
@@ -290,12 +331,7 @@ export const HelpCenterEditModalHeader = ({
                             </Tooltip>
                             <IconButton
                                 id="copy-url-button"
-                                onClick={() =>
-                                    onCopyLinkToClipboard(
-                                        selectedArticle,
-                                        isUnlisted
-                                    )
-                                }
+                                onClick={handleCopyURL}
                                 fillStyle="ghost"
                                 intent="secondary"
                                 size="medium"
