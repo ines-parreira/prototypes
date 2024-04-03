@@ -102,7 +102,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             <span
               id="label-tooltip-3"
             >
-               Foo
+              Foo
             </span>
           </label>
         </div>
@@ -122,7 +122,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             <span
               id="label-tooltip-5"
             >
-               Phone team - +1 205-396-3441
+              Phone team - +1 205-396-3441
             </span>
           </label>
         </div>
@@ -142,7 +142,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             <span
               id="label-tooltip-7"
             >
-               Team: user meta null
+              Team: user meta null
             </span>
           </label>
         </div>
@@ -162,7 +162,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
             <span
               id="label-tooltip-9"
             >
-               Test
+              Test
             </span>
           </label>
         </div>
@@ -194,7 +194,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
           <span
             id="label-tooltip-11"
           >
-             Acme Support
+            Acme Support
           </span>
         </label>
       </div>
@@ -214,7 +214,7 @@ exports[`AgentsStatsFilter should render agents stats filter 1`] = `
           <span
             id="label-tooltip-13"
           >
-             Bob Smith
+            Bob Smith
           </span>
         </label>
       </div>

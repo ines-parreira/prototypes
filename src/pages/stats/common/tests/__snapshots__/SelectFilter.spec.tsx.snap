@@ -54,7 +54,7 @@ exports[`<SelectFilter /> should not render the component with quick selection o
           <span
             id="label-tooltip-10"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -74,7 +74,7 @@ exports[`<SelectFilter /> should not render the component with quick selection o
           <span
             id="label-tooltip-12"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -94,7 +94,7 @@ exports[`<SelectFilter /> should not render the component with quick selection o
           <span
             id="label-tooltip-14"
           >
-             Email
+            Email
           </span>
         </label>
       </div>
@@ -189,7 +189,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
           <span
             id="label-tooltip-17"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -214,7 +214,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
           <span
             id="label-tooltip-19"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -239,7 +239,7 @@ exports[`<SelectFilter /> should render the component with items having icons 1`
           <span
             id="label-tooltip-21"
           >
-             Email
+            Email
           </span>
         </label>
       </div>
@@ -329,7 +329,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
           <span
             id="label-tooltip-4"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -349,7 +349,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
           <span
             id="label-tooltip-6"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -369,7 +369,7 @@ exports[`<SelectFilter /> should render the component with selectable items 1`] 
           <span
             id="label-tooltip-8"
           >
-             Email
+            Email
           </span>
         </label>
       </div>
@@ -461,7 +461,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
           <span
             id="label-tooltip-24"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -482,7 +482,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
           <span
             id="label-tooltip-26"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -502,7 +502,7 @@ exports[`<SelectFilter /> should render the component with selected items 1`] = 
           <span
             id="label-tooltip-28"
           >
-             Email
+            Email
           </span>
         </label>
       </div>
@@ -661,7 +661,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
           <span
             id="label-tooltip-65"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -681,7 +681,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
           <span
             id="label-tooltip-67"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -701,7 +701,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
           <span
             id="label-tooltip-69"
           >
-             Email
+            Email
           </span>
         </label>
       </div>
@@ -721,7 +721,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
           <span
             id="label-tooltip-71"
           >
-             Group 1
+            Group 1
           </span>
         </label>
       </div>
@@ -741,7 +741,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
           <span
             id="label-tooltip-73"
           >
-             Group 2
+            Group 2
           </span>
         </label>
       </div>
@@ -761,7 +761,7 @@ exports[`<SelectFilter /> with groups should render the component with groups 1`
           <span
             id="label-tooltip-75"
           >
-             Group 3
+            Group 3
           </span>
         </label>
       </div>

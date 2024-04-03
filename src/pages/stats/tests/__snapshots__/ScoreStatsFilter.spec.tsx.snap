@@ -82,7 +82,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
           <span
             id="label-tooltip-3"
           >
-             ★☆☆☆☆
+            ★☆☆☆☆
           </span>
         </label>
       </div>
@@ -103,7 +103,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
           <span
             id="label-tooltip-5"
           >
-             ★★☆☆☆
+            ★★☆☆☆
           </span>
         </label>
       </div>
@@ -123,7 +123,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
           <span
             id="label-tooltip-7"
           >
-             ★★★☆☆
+            ★★★☆☆
           </span>
         </label>
       </div>
@@ -144,7 +144,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
           <span
             id="label-tooltip-9"
           >
-             ★★★★☆
+            ★★★★☆
           </span>
         </label>
       </div>
@@ -164,7 +164,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
           <span
             id="label-tooltip-11"
           >
-             ★★★★★
+            ★★★★★
           </span>
         </label>
       </div>
@@ -256,7 +256,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
           <span
             id="label-tooltip-14"
           >
-             ★★★
+            ★★★
           </span>
         </label>
       </div>
@@ -276,7 +276,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
           <span
             id="label-tooltip-16"
           >
-             ★★☆
+            ★★☆
           </span>
         </label>
       </div>
@@ -297,7 +297,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
           <span
             id="label-tooltip-18"
           >
-             ★☆☆
+            ★☆☆
           </span>
         </label>
       </div>

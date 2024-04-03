@@ -118,7 +118,7 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                     <span
                       id="label-tooltip-11"
                     >
-                       Auto Close
+                      Auto Close
                     </span>
                   </label>
                 </div>
@@ -138,7 +138,7 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                     <span
                       id="label-tooltip-13"
                     >
-                       Auto Tag
+                      Auto Tag
                     </span>
                   </label>
                 </div>
@@ -158,7 +158,7 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
                     <span
                       id="label-tooltip-15"
                     >
-                       Auto Reply
+                      Auto Reply
                     </span>
                   </label>
                 </div>
@@ -339,7 +339,7 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
                     <span
                       id="label-tooltip-3"
                     >
-                       Auto Close
+                      Auto Close
                     </span>
                   </label>
                 </div>
@@ -359,7 +359,7 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
                     <span
                       id="label-tooltip-5"
                     >
-                       Auto Tag
+                      Auto Tag
                     </span>
                   </label>
                 </div>
@@ -379,7 +379,7 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
                     <span
                       id="label-tooltip-7"
                     >
-                       Auto Reply
+                      Auto Reply
                     </span>
                   </label>
                 </div>

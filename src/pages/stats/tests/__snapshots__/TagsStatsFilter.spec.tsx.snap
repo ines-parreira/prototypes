@@ -100,7 +100,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             <span
               id="label-tooltip-3"
             >
-               billing
+              billing
             </span>
           </label>
         </div>
@@ -120,7 +120,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             <span
               id="label-tooltip-5"
             >
-               refund
+              refund
             </span>
           </label>
         </div>
@@ -141,7 +141,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             <span
               id="label-tooltip-7"
             >
-               refund accepted
+              refund accepted
             </span>
           </label>
         </div>
@@ -161,7 +161,7 @@ exports[`TagsStatsFilter should render the selected tags 1`] = `
             <span
               id="label-tooltip-9"
             >
-               rejected
+              rejected
             </span>
           </label>
         </div>

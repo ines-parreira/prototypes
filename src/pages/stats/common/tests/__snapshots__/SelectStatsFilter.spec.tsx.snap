@@ -81,7 +81,7 @@ exports[`<SelectStatsFilter /> should render a filter with items 1`] = `
           <span
             id="label-tooltip-3"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -101,7 +101,7 @@ exports[`<SelectStatsFilter /> should render a filter with items 1`] = `
           <span
             id="label-tooltip-5"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -121,7 +121,7 @@ exports[`<SelectStatsFilter /> should render a filter with items 1`] = `
           <span
             id="label-tooltip-7"
           >
-             Email
+            Email
           </span>
         </label>
       </div>

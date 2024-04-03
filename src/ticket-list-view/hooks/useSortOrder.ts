@@ -6,26 +6,34 @@ export const sortOrderOptions = [
     {
         value: 'last_message_datetime:asc',
         label: '↑ Last message',
+        tooltipText: 'Tickets with the oldest last message appear first',
     },
     {
         value: 'last_message_datetime:desc',
         label: '↓ Last message',
+        tooltipText: 'Tickets with the newest last message appear first',
     },
     {
         value: 'last_received_message_datetime:asc',
         label: '↑ Last received message',
+        tooltipText:
+            'Tickets with the oldest last received message appear first',
     },
     {
         value: 'last_received_message_datetime:desc',
         label: '↓ Last received message',
+        tooltipText:
+            'Tickets with the newest last received message appear first',
     },
     {
         value: 'created_datetime:asc',
         label: '↑ Created',
+        tooltipText: 'Oldest created tickets appear first',
     },
     {
         value: 'created_datetime:desc',
         label: '↓ Created',
+        tooltipText: 'Newest created tickets appear first',
     },
 ] as const
 

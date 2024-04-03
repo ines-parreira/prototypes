@@ -161,7 +161,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-3"
                       >
-                         Acme Billing
+                        Acme Billing
                       </span>
                     </label>
                   </div>
@@ -186,7 +186,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-5"
                       >
-                         Deactivated gmail
+                        Deactivated gmail
                       </span>
                     </label>
                   </div>
@@ -211,7 +211,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-7"
                       >
-                         Acme Support
+                        Acme Support
                       </span>
                     </label>
                   </div>
@@ -236,7 +236,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-9"
                       >
-                         Acme Contact
+                        Acme Contact
                       </span>
                     </label>
                   </div>
@@ -261,7 +261,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-11"
                       >
-                         Acme Unverified
+                        Acme Unverified
                       </span>
                     </label>
                   </div>
@@ -286,7 +286,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-13"
                       >
-                         Sendgrid Integration
+                        Sendgrid Integration
                       </span>
                     </label>
                   </div>
@@ -311,7 +311,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-15"
                       >
-                         Acme Phone
+                        Acme Phone
                       </span>
                     </label>
                   </div>
@@ -336,7 +336,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-17"
                       >
-                         Chitty chatty
+                        Chitty chatty
                       </span>
                     </label>
                   </div>
@@ -498,7 +498,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         <span
                           id="label-tooltip-21"
                         >
-                           Foo
+                          Foo
                         </span>
                       </label>
                     </div>
@@ -518,7 +518,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         <span
                           id="label-tooltip-23"
                         >
-                           Phone team - +1 205-396-3441
+                          Phone team - +1 205-396-3441
                         </span>
                       </label>
                     </div>
@@ -538,7 +538,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         <span
                           id="label-tooltip-25"
                         >
-                           Team: user meta null
+                          Team: user meta null
                         </span>
                       </label>
                     </div>
@@ -558,7 +558,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                         <span
                           id="label-tooltip-27"
                         >
-                           Test
+                          Test
                         </span>
                       </label>
                     </div>
@@ -590,7 +590,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-29"
                       >
-                         Acme Support
+                        Acme Support
                       </span>
                     </label>
                   </div>
@@ -610,7 +610,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       <span
                         id="label-tooltip-31"
                       >
-                         Bob Smith
+                        Bob Smith
                       </span>
                     </label>
                   </div>

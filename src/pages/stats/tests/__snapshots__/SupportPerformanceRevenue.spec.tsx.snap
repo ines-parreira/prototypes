@@ -97,7 +97,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                     <span
                       id="label-tooltip-2"
                     >
-                       My Shop
+                      My Shop
                     </span>
                   </label>
                 </div>
@@ -186,7 +186,7 @@ exports[`SupportPerformanceRevenue should render the filters and stats when stat
                     <span
                       id="label-tooltip-5"
                     >
-                       Welcome to the internet
+                      Welcome to the internet
                     </span>
                   </label>
                 </div>

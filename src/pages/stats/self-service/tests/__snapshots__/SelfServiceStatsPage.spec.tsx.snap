@@ -142,7 +142,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                     <span
                       id="label-tooltip-12"
                     >
-                       My Phone Integration 1
+                      My Phone Integration 1
                     </span>
                   </label>
                 </div>
@@ -1587,7 +1587,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                     <span
                       id="label-tooltip-18"
                     >
-                       My Phone Integration 1
+                      My Phone Integration 1
                     </span>
                   </label>
                 </div>

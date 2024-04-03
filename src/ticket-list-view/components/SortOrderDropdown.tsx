@@ -6,6 +6,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
+import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
 import {sortOrderOptions, SortOrder} from '../hooks/useSortOrder'
 import css from './SortOrderDropdown.less'
@@ -51,7 +52,18 @@ export default function SortingDropdown({onChange, value}: Props) {
                                     onClick={onChange}
                                     option={option}
                                     shouldCloseOnSelect
-                                />
+                                >
+                                    <LabelWithTooltip
+                                        label={option.label}
+                                        tooltipText={option.tooltipText}
+                                        className={css.sortingLabel}
+                                        tooltipProps={{
+                                            fade: false,
+                                            boundariesElement: 'viewport',
+                                            placement: 'right',
+                                        }}
+                                    />
+                                </DropdownItem>
                             ))}
                         </DropdownBody>
                     </Dropdown>

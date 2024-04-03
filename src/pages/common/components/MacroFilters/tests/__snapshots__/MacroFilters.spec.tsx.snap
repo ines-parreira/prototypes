@@ -57,7 +57,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
             <span
               id="label-tooltip-2"
             >
-               English
+              English
             </span>
           </label>
         </div>
@@ -78,7 +78,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
             <span
               id="label-tooltip-4"
             >
-               French
+              French
             </span>
           </label>
         </div>
@@ -167,7 +167,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
             <span
               id="label-tooltip-7"
             >
-               tag1
+              tag1
             </span>
           </label>
         </div>
@@ -188,7 +188,7 @@ exports[`<MacroFilters /> should render MacroFilters 1`] = `
             <span
               id="label-tooltip-9"
             >
-               tag2
+              tag2
             </span>
           </label>
         </div>

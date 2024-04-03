@@ -94,7 +94,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-3"
           >
-             TikTok Shop
+            TikTok Shop
           </span>
         </label>
       </div>
@@ -114,7 +114,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-5"
           >
-             Google Business Messenger
+            Google Business Messenger
           </span>
         </label>
       </div>
@@ -134,7 +134,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-7"
           >
-             Aircall
+            Aircall
           </span>
         </label>
       </div>
@@ -154,7 +154,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-9"
           >
-             Api
+            Api
           </span>
         </label>
       </div>
@@ -174,7 +174,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-11"
           >
-             Chat
+            Chat
           </span>
         </label>
       </div>
@@ -194,7 +194,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-13"
           >
-             Contact Form
+            Contact Form
           </span>
         </label>
       </div>
@@ -214,7 +214,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-15"
           >
-             Email
+            Email
           </span>
         </label>
       </div>
@@ -234,7 +234,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-17"
           >
-             Facebook
+            Facebook
           </span>
         </label>
       </div>
@@ -254,7 +254,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-19"
           >
-             Facebook Mention
+            Facebook Mention
           </span>
         </label>
       </div>
@@ -274,7 +274,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-21"
           >
-             Facebook Messenger
+            Facebook Messenger
           </span>
         </label>
       </div>
@@ -294,7 +294,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-23"
           >
-             Facebook Recommendations
+            Facebook Recommendations
           </span>
         </label>
       </div>
@@ -314,7 +314,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-25"
           >
-             Help Center
+            Help Center
           </span>
         </label>
       </div>
@@ -334,7 +334,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-27"
           >
-             Instagram Ad Comment
+            Instagram Ad Comment
           </span>
         </label>
       </div>
@@ -354,7 +354,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-29"
           >
-             Instagram Comment
+            Instagram Comment
           </span>
         </label>
       </div>
@@ -374,7 +374,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-31"
           >
-             Instagram Mention
+            Instagram Mention
           </span>
         </label>
       </div>
@@ -394,7 +394,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-33"
           >
-             Instagram Direct Message
+            Instagram Direct Message
           </span>
         </label>
       </div>
@@ -414,7 +414,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-35"
           >
-             Internal Note
+            Internal Note
           </span>
         </label>
       </div>
@@ -434,7 +434,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-37"
           >
-             Phone
+            Phone
           </span>
         </label>
       </div>
@@ -454,7 +454,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-39"
           >
-             SMS
+            SMS
           </span>
         </label>
       </div>
@@ -474,7 +474,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-41"
           >
-             Twitter
+            Twitter
           </span>
         </label>
       </div>
@@ -494,7 +494,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-43"
           >
-             Twitter Direct Message
+            Twitter Direct Message
           </span>
         </label>
       </div>
@@ -514,7 +514,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-45"
           >
-             Yotpo Review
+            Yotpo Review
           </span>
         </label>
       </div>
@@ -534,7 +534,7 @@ exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
           <span
             id="label-tooltip-47"
           >
-             WhatsApp
+            WhatsApp
           </span>
         </label>
       </div>

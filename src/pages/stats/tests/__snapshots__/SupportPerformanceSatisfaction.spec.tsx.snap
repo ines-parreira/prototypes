@@ -188,7 +188,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-4"
                     >
-                       ★★★★★
+                      ★★★★★
                     </span>
                   </label>
                 </div>
@@ -208,7 +208,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-6"
                     >
-                       ★★★★☆
+                      ★★★★☆
                     </span>
                   </label>
                 </div>
@@ -228,7 +228,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-8"
                     >
-                       ★★★☆☆
+                      ★★★☆☆
                     </span>
                   </label>
                 </div>
@@ -249,7 +249,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-10"
                     >
-                       ★★☆☆☆
+                      ★★☆☆☆
                     </span>
                   </label>
                 </div>
@@ -269,7 +269,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-12"
                     >
-                       ★☆☆☆☆
+                      ★☆☆☆☆
                     </span>
                   </label>
                 </div>
@@ -364,7 +364,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       <span
                         id="label-tooltip-15"
                       >
-                         Foo
+                        Foo
                       </span>
                     </label>
                   </div>
@@ -384,7 +384,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       <span
                         id="label-tooltip-17"
                       >
-                         Phone team - +1 205-396-3441
+                        Phone team - +1 205-396-3441
                       </span>
                     </label>
                   </div>
@@ -404,7 +404,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       <span
                         id="label-tooltip-19"
                       >
-                         Team: user meta null
+                        Team: user meta null
                       </span>
                     </label>
                   </div>
@@ -424,7 +424,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                       <span
                         id="label-tooltip-21"
                       >
-                         Test
+                        Test
                       </span>
                     </label>
                   </div>
@@ -456,7 +456,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-23"
                     >
-                       Acme Support
+                      Acme Support
                     </span>
                   </label>
                 </div>
@@ -476,7 +476,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     <span
                       id="label-tooltip-25"
                     >
-                       Bob Smith
+                      Bob Smith
                     </span>
                   </label>
                 </div>

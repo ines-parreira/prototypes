@@ -123,7 +123,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-3"
                     >
-                       Acme Billing
+                      Acme Billing
                     </span>
                   </label>
                 </div>
@@ -148,7 +148,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-5"
                     >
-                       Deactivated gmail
+                      Deactivated gmail
                     </span>
                   </label>
                 </div>
@@ -173,7 +173,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-7"
                     >
-                       Acme Support
+                      Acme Support
                     </span>
                   </label>
                 </div>
@@ -198,7 +198,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-9"
                     >
-                       Acme Contact
+                      Acme Contact
                     </span>
                   </label>
                 </div>
@@ -223,7 +223,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-11"
                     >
-                       Acme Unverified
+                      Acme Unverified
                     </span>
                   </label>
                 </div>
@@ -248,7 +248,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-13"
                     >
-                       Sendgrid Integration
+                      Sendgrid Integration
                     </span>
                   </label>
                 </div>
@@ -273,7 +273,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-15"
                     >
-                       Acme Phone
+                      Acme Phone
                     </span>
                   </label>
                 </div>
@@ -298,7 +298,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <span
                       id="label-tooltip-17"
                     >
-                       Chitty chatty
+                      Chitty chatty
                     </span>
                   </label>
                 </div>

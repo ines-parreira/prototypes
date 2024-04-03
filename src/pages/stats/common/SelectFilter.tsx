@@ -28,12 +28,12 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 import QuickSelectionOption from './QuickSelectionOption'
-import {LabelWithTooltip} from './LabelWithTooltip'
 import css from './SelectFilter.less'
 
 type Value = string | number

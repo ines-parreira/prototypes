@@ -117,7 +117,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-3"
           >
-             Slack Webhook
+            Slack Webhook
           </span>
         </label>
       </div>
@@ -143,7 +143,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-5"
           >
-             Acme Billing
+            Acme Billing
           </span>
         </label>
       </div>
@@ -168,7 +168,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-7"
           >
-             Deactivated gmail
+            Deactivated gmail
           </span>
         </label>
       </div>
@@ -193,7 +193,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-9"
           >
-             Backoffice Integration 2
+            Backoffice Integration 2
           </span>
         </label>
       </div>
@@ -218,7 +218,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-11"
           >
-             Backoffice Integration
+            Backoffice Integration
           </span>
         </label>
       </div>
@@ -243,7 +243,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-13"
           >
-             Acme Support
+            Acme Support
           </span>
         </label>
       </div>
@@ -268,7 +268,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-15"
           >
-             Acme Contact
+            Acme Contact
           </span>
         </label>
       </div>
@@ -293,7 +293,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-17"
           >
-             Acme Unverified
+            Acme Unverified
           </span>
         </label>
       </div>
@@ -318,7 +318,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-19"
           >
-             Sendgrid Integration
+            Sendgrid Integration
           </span>
         </label>
       </div>
@@ -343,7 +343,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-21"
           >
-             Acme Phone
+            Acme Phone
           </span>
         </label>
       </div>
@@ -368,7 +368,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-23"
           >
-             Chitty chatty
+            Chitty chatty
           </span>
         </label>
       </div>
@@ -392,7 +392,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-25"
           >
-             gorgiastest.mybigcommerce.com
+            gorgiastest.mybigcommerce.com
           </span>
         </label>
       </div>
@@ -416,7 +416,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-27"
           >
-             Contact Form (Morty)
+            Contact Form (Morty)
           </span>
         </label>
       </div>
@@ -440,7 +440,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
           <span
             id="label-tooltip-29"
           >
-             Help Center (Rick)
+            Help Center (Rick)
           </span>
         </label>
       </div>
@@ -453,7 +453,7 @@ exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] 
 <span
   id="label-tooltip-31"
 >
-   aircall integration
+  aircall integration
 </span>
 `;
 
@@ -461,7 +461,7 @@ exports[`IntegrationsStatsFilter should render icon for email integration 1`] = 
 <span
   id="label-tooltip-43"
 >
-   email integration
+  email integration
 </span>
 `;
 
@@ -469,7 +469,7 @@ exports[`IntegrationsStatsFilter should render icon for facebook integration 1`]
 <span
   id="label-tooltip-45"
 >
-   facebook integration
+  facebook integration
 </span>
 `;
 
@@ -477,7 +477,7 @@ exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = 
 <span
   id="label-tooltip-33"
 >
-   gmail integration
+  gmail integration
 </span>
 `;
 
@@ -485,7 +485,7 @@ exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration
 <span
   id="label-tooltip-53"
 >
-   gorgias_chat integration
+  gorgias_chat integration
 </span>
 `;
 
@@ -493,7 +493,7 @@ exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
 <span
   id="label-tooltip-47"
 >
-   http integration
+  http integration
 </span>
 `;
 
@@ -501,7 +501,7 @@ exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] 
 <span
   id="label-tooltip-35"
 >
-   outlook integration
+  outlook integration
 </span>
 `;
 
@@ -509,7 +509,7 @@ exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = 
 <span
   id="label-tooltip-49"
 >
-   phone integration
+  phone integration
 </span>
 `;
 
@@ -517,7 +517,7 @@ exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] 
 <span
   id="label-tooltip-37"
 >
-   shopify integration
+  shopify integration
 </span>
 `;
 
@@ -525,7 +525,7 @@ exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
 <span
   id="label-tooltip-51"
 >
-   sms integration
+  sms integration
 </span>
 `;
 
@@ -533,7 +533,7 @@ exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`]
 <span
   id="label-tooltip-41"
 >
-   whatsapp integration
+  whatsapp integration
 </span>
 `;
 
@@ -541,7 +541,7 @@ exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] 
 <span
   id="label-tooltip-39"
 >
-   zendesk integration
+  zendesk integration
 </span>
 `;
 
