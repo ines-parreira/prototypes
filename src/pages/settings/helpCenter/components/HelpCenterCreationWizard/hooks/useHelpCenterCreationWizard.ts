@@ -1,4 +1,5 @@
 import {useCallback, useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     useCreateHelpCenter,
     useCreateHelpCenterTranslation,
@@ -11,7 +12,6 @@ import {
 } from 'state/entities/helpCenter/helpCenters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     HELP_CENTER_WIZARD_COMPLETED_STATE,
@@ -30,6 +30,8 @@ import history from 'pages/history'
 import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {getCurrentDomain} from 'state/currentAccount/selectors'
+import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getHelpCenterWizardInitialData,
     getUpdatedFields,
@@ -50,7 +52,7 @@ const defaultHelpCenter: HelpCenterCreationWizard = {
     primaryColor: '#4A8DF9',
     primaryFontFamily: 'Inter',
     deactivated: true, // Unpublish help center by default
-    layout: HELP_CENTER_DEFAULT_LAYOUT,
+    layout: HelpCenterLayout.ONEPAGER,
 }
 
 type SuccessModalParams = {
@@ -100,6 +102,8 @@ export const useHelpCenterCreationWizard = (
     helpCenter: HelpCenter | undefined,
     step: HelpCenterCreationWizardStep
 ): HelpCenterWizardOutput => {
+    const isHelpCenterOnePagerEnabled =
+        useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
     const accountCurrentDomain = useAppSelector(getCurrentDomain)
     const dispatch = useAppDispatch()
     const enableArticleRecommendation = useEnableArticleRecommendation()
@@ -136,7 +140,8 @@ export const useHelpCenterCreationWizard = (
 
         const initialData = getHelpCenterWizardInitialData(
             accountCurrentDomain,
-            allStoreIntegrations
+            allStoreIntegrations,
+            isHelpCenterOnePagerEnabled
         )
 
         setNewHelpCenter(

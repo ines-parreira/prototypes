@@ -20,6 +20,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import useAppSelector from 'hooks/useAppSelector'
 import {StoreState} from 'state/types'
+import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
 import {useHelpCenterCreationWizard} from '../useHelpCenterCreationWizard'
 
 jest.mock(
@@ -93,6 +94,7 @@ describe('useHelpCenterCreationWizard', () => {
         expect(result.current.helpCenter).toMatchObject({
             ...EmptyHelpCenterUiFixture,
             name: accountDomain,
+            layout: HelpCenterLayout.DEFAULT,
         })
     })
 

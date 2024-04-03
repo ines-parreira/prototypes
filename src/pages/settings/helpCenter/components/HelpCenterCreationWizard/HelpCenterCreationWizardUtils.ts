@@ -30,6 +30,7 @@ import {reportError} from 'utils/errors'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
+import {HelpCenterLayout} from '../../types/layout.enum'
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
@@ -103,14 +104,19 @@ export const getHelpCenterWizardInitialData = (
         | IntegrationType.Shopify
         | IntegrationType.BigCommerce
         | IntegrationType.Magento2
-    >[]
+    >[],
+    isOnePager?: boolean
 ): Partial<HelpCenterCreationWizard> => {
     const shopName =
         allStoreIntegrations.length === 1 ? allStoreIntegrations[0].name : ''
+    const layout = isOnePager
+        ? HelpCenterLayout.ONEPAGER
+        : HelpCenterLayout.DEFAULT
 
     return {
         name: accountCurrentDomain,
         shopName,
+        layout,
     }
 }
 

@@ -21,6 +21,7 @@ import {
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {mapHelpCenterArticleItemToArticle} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
 import {
     findArticleByKey,
     getEnabledArticlesCount,
@@ -110,6 +111,16 @@ describe('helpCenterCreationWizardUtils', () => {
         it('should return subdomain as initial name', () => {
             const result = getHelpCenterWizardInitialData('test-subdomain', [])
             expect(result.name).toEqual('test-subdomain')
+        })
+
+        it('should return one pager layout when one pager enabled', () => {
+            const result = getHelpCenterWizardInitialData('test', [], true)
+            expect(result.layout).toBe(HelpCenterLayout.ONEPAGER)
+        })
+
+        it('should return default layout when one pager disabled', () => {
+            const result = getHelpCenterWizardInitialData('test', [])
+            expect(result.layout).toBe(HelpCenterLayout.DEFAULT)
         })
     })
 
