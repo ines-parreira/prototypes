@@ -530,7 +530,6 @@ describe('InfobarWidgets component', () => {
                 </EditionContext.Provider>
             </Provider>
         )
-        // For now standalone widget always rerenders on data change
-        expect(mockedWidget.mock.calls.length).toBe(1)
+        expect(mockedWidget.mock.calls.length).toBe(0)
     })
 })

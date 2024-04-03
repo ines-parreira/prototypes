@@ -170,26 +170,35 @@ const InfobarWidgets = ({
                         )
                     }
                 >
-                    {preparedDisplayList.map((item, index) => (
+                    {preparedDisplayList.map((item, index) => {
+                        let passedSource: Map<string, unknown> | undefined =
+                            undefined
+                        if (
+                            item.widget.get('type') !== STANDALONE_WIDGET_TYPE
+                        ) {
+                            passedSource = source.getIn(item.absolutePath || [])
+                        }
                         // it is very important we get stable props here for memo to work
-                        <Widget
-                            key={`${
-                                item.absolutePath?.join('.') || ''
-                            }-${index}`}
-                            isEditing={isEditing}
-                            index={index}
-                            // Since we create a new array on each render, we need to stringify it
-                            // for memo to work. We will then parse it back in the component
-                            absolutePath={JSON.stringify(
-                                item.absolutePath || []
-                            )}
-                            source={source.getIn(item.absolutePath || [])}
-                            template={item.template}
-                            widget={item.widget}
-                            open={item.open}
-                            type={item.type}
-                        />
-                    ))}
+                        return (
+                            <Widget
+                                key={`${
+                                    item.absolutePath?.join('.') || ''
+                                }-${index}`}
+                                isEditing={isEditing}
+                                index={index}
+                                // Since we create a new array on each render, we need to stringify it
+                                // for memo to work. We will then parse it back in the component
+                                absolutePath={JSON.stringify(
+                                    item.absolutePath || []
+                                )}
+                                source={passedSource}
+                                template={item.template}
+                                widget={item.widget}
+                                open={item.open}
+                                type={item.type}
+                            />
+                        )
+                    })}
                 </div>
             </DragWrapper>
         </>
@@ -227,14 +236,13 @@ function getPreparedDisplayList({
             widget = item.widget || widget
             const widgetType = widget.get('type') as string
 
-            if (
-                widgetType === CUSTOM_WIDGET_TYPE ||
-                widgetType === STANDALONE_WIDGET_TYPE
-            ) {
+            if (widgetType === CUSTOM_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
                     widget.get('context') as WidgetEnvironment,
                     widgetType
                 ) as string[]
+            } else if (widgetType === STANDALONE_WIDGET_TYPE) {
+                sourcePath = []
             } else if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
                     widget.get('context') as WidgetEnvironment,
@@ -353,6 +361,7 @@ function getPreparedDisplayList({
 
         if (
             !isEditing &&
+            !(widget.get('type') === STANDALONE_WIDGET_TYPE) &&
             !canDisplayWidget(
                 template.toJS(),
                 source,

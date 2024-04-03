@@ -28,7 +28,7 @@ export const Widget = ({
     type: 'placeholder' | undefined
 }) => {
     // Beware we want to assign `templatePath`
-    // AFTER having sorted the results by `widget.order`.
+    // AFTER having sorted the results by `widget.order` in parent component
     const passedTemplate = {
         ...(template.toJS() as Template),
         templatePath: `${index}.template`,
@@ -37,20 +37,14 @@ export const Widget = ({
 
     if (type === 'placeholder') {
         return (
-            <WidgetContextProvider
-                value={widget}
-                key={`${absolutePath || ''}-${index}`}
-            >
+            <WidgetContextProvider value={widget}>
                 <Placeholder isEditing={isEditing} template={passedTemplate} />
             </WidgetContextProvider>
         )
     }
 
     return (
-        <WidgetContextProvider
-            value={widget}
-            key={`${absolutePath || ''}-${index}`}
-        >
+        <WidgetContextProvider value={widget}>
             <InfobarWidget
                 source={source?.toJS() as Source}
                 template={passedTemplate}
