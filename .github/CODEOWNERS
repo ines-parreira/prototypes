@@ -108,3 +108,19 @@ src/pages/stats/voice @gorgias/phone
 src/pages/common/components/VoiceCallStatusLabel @gorgias/phone
 src/pages/common/components/VoiceCallCustomerLabel @gorgias/phone
 src/pages/tickets/detail/components/TicketVoiceCall @gorgias/phone
+
+# Ecommerce & DevRel @gorgias/apps-ecom-devrel
+
+src/models/widget @gorgias/apps-ecom-devrel
+src/models/integration @gorgias/apps-ecom-devrel
+src/pages/integrations @gorgias/apps-ecom-devrel
+src/pages/settings/ticketFields @gorgias/apps-ecom-devrel
+src/pages/settings/users @gorgias/apps-ecom-devrel
+src/Infobar @gorgias/apps-ecom-devrel
+src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets @gorgias/apps-ecom-devrel
+src/pages/common/components/sourceWidgets @gorgias/apps-ecom-devrel
+src/state/integrations @gorgias/apps-ecom-devrel
+src/state/infobarActions @gorgias/apps-ecom-devrel
+src/state/widgets @gorgias/apps-ecom-devrel
+src/services/channels.ts @gorgias/apps-ecom-devrel
+src/services/applications.ts @gorgias/apps-ecom-devrel
