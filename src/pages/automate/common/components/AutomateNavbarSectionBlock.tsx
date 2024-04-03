@@ -75,7 +75,7 @@ const AutomateNavbarSectionBlock = ({
                         >
                             <NavbarLink
                                 to={{
-                                    pathname: `/app/automation/shopify/${shopName}/ai-agent/settings`,
+                                    pathname: `/app/automation/shopify/${shopName}/ai-agent`,
                                     state: {from: FROM_LOCATION},
                                 }}
                             >

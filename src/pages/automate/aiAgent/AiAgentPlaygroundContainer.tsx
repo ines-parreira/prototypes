@@ -18,6 +18,7 @@ import {
 } from 'models/aiAgent/queries'
 import {AiAgentResponse} from 'models/aiAgent/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {sanitizeHtmlDefault} from 'utils/html'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import css from './AiAgentPlaygroundContainer.less'
@@ -33,7 +34,7 @@ const AiAgentPlaygroundContainer = () => {
 
     const headerNavbarItems = [
         {
-            route: `/app/automation/shopify/${shopName}/ai-agent/settings`,
+            route: `/app/automation/shopify/${shopName}/ai-agent`,
             title: 'Settings',
         },
     ]
@@ -98,23 +99,21 @@ const AiAgentPlaygroundContainer = () => {
     const handleSubmit = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault()
         setFirstSubmissionExecuted(true)
-        if (accountData && storeData) {
-            setAiAgentResponse(undefined)
-            submitPlaygroundTicket([
-                {
-                    customer_email: customerEmail,
-                    body_text: playgroundTicketMessage,
-                    http_integration_id:
-                        //asserting this property existence as we are checking above that it exists once account data is loaded
-                        accountData.data.accountConfiguration.httpIntegration!
-                            .id,
-                    account_id: accountId,
-                    email_integration_id:
-                        storeData.data.storeConfiguration
-                            .monitoredEmailIntegrations[0].id,
-                },
-            ])
-        }
+        setAiAgentResponse(undefined)
+        submitPlaygroundTicket([
+            {
+                customer_email: customerEmail,
+                body_text: playgroundTicketMessage,
+                http_integration_id:
+                    //asserting this property existence as we are checking above that it exists once account data is loaded
+                    accountData!.data.accountConfiguration.httpIntegration!.id,
+                account_id: accountId,
+                email_integration_id:
+                    storeData!.data.storeConfiguration
+                        .monitoredEmailIntegrations[0].id,
+            },
+        ])
+        setAiAgentResponse(undefined)
     }
 
     const handleReset = (e: MouseEvent<HTMLElement>) => {
@@ -155,17 +154,31 @@ const AiAgentPlaygroundContainer = () => {
                     )}
                     {aiAgentResponse && (
                         <div>
-                            <h2>Generated response</h2>
-                            <p>
-                                {
-                                    aiAgentResponse.generate.output
-                                        .generated_message
-                                }
-                            </p>
-                            <p>
-                                <strong>Outcome: </strong>
-                                {aiAgentResponse.generate.output.outcome}
-                            </p>
+                            <div>
+                                <h3>Generated response</h3>
+                                <p>
+                                    {
+                                        aiAgentResponse.generate.output
+                                            .generated_message
+                                    }
+                                </p>
+                                <p>
+                                    <strong>Outcome: </strong>
+                                    {aiAgentResponse.generate.output.outcome}
+                                </p>
+                            </div>
+                            <div>
+                                <h3>Internal Note</h3>
+                                <p
+                                    className={css.internalNoteContainer}
+                                    dangerouslySetInnerHTML={{
+                                        __html: sanitizeHtmlDefault(
+                                            aiAgentResponse.postProcessing
+                                                .internalNote
+                                        ),
+                                    }}
+                                />
+                            </div>
                         </div>
                     )}
                 </div>

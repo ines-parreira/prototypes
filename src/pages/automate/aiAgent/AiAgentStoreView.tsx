@@ -22,7 +22,7 @@ export const AiAgentStoreView = ({
 
     const headerNavbarItems = [
         {
-            route: `/app/automation/shopify/${shopName}/ai-agent/settings`,
+            route: `/app/automation/shopify/${shopName}/ai-agent`,
             title: 'Settings',
         },
     ]

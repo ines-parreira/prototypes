@@ -1404,7 +1404,7 @@ function AutomationContent() {
                 <Route path={`${path}/:shopType/:shopName/ai-agent`}>
                     <SelfServiceHelpCentersProvider>
                         <Route
-                            path={`${path}/:shopType/:shopName/ai-agent/settings`}
+                            path={`${path}/:shopType/:shopName/ai-agent`}
                             exact
                             component={memoizedWithUserRoleRequired(
                                 AiAgentViewContainer,

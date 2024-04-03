@@ -85,4 +85,7 @@ export type AiAgentResponse = {
             outcome: string
         }
     }
+    postProcessing: {
+        internalNote: string
+    }
 }
