@@ -74,7 +74,7 @@ export const SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT,
             {
                 name: SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT.name,
@@ -92,6 +92,6 @@ export const SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

@@ -94,20 +94,23 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(DISCOUNT_HIGH_VALUE_CARTS, {
-            name: DISCOUNT_HIGH_VALUE_CARTS.name,
-            template_id: DISCOUNT_HIGH_VALUE_CARTS.slug,
-            message_html: `<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="${discountCode}" href="https://${shopDomain}/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong></div>`,
-            message_text: `🍀 You're lucky today: 10% off on your order over $150, with code ${discountCode}`,
-            status: CampaignStatus.Inactive,
-            triggers: triggers,
-            trigger_rule: createTriggerRule(triggers),
-            meta: {
-                delay: 15000,
-                noReply: true,
-            },
-        })
+        const builder = new CampaignConfigurationBuilder(
+            DISCOUNT_HIGH_VALUE_CARTS,
+            {
+                name: DISCOUNT_HIGH_VALUE_CARTS.name,
+                template_id: DISCOUNT_HIGH_VALUE_CARTS.slug,
+                message_html: `<div>🍀 You&#x27;re lucky today: <strong>10% off</strong> on your order over $150, with <strong>code <a data-discount-code="${discountCode}" href="https://${shopDomain}/discount/${discountCode}" target="_blank" rel="noreferrer">${discountCode}</a> </strong></div>`,
+                message_text: `🍀 You're lucky today: 10% off on your order over $150, with code ${discountCode}`,
+                status: CampaignStatus.Inactive,
+                triggers: triggers,
+                trigger_rule: createTriggerRule(triggers),
+                meta: {
+                    delay: 15000,
+                    noReply: true,
+                },
+            }
+        )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

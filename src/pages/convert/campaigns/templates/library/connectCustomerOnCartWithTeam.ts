@@ -47,7 +47,7 @@ export const CONNECT_CUSTOMER_ON_CART_WITH_TEAM: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             CONNECT_CUSTOMER_ON_CART_WITH_TEAM,
             {
                 name: CONNECT_CUSTOMER_ON_CART_WITH_TEAM.name,
@@ -62,6 +62,6 @@ export const CONNECT_CUSTOMER_ON_CART_WITH_TEAM: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

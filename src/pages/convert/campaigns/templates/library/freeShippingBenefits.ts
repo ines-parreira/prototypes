@@ -76,24 +76,27 @@ export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(FREE_SHIPPING_BENEFITS, {
-            name: FREE_SHIPPING_BENEFITS.name,
-            template_id: FREE_SHIPPING_BENEFITS.slug,
-            message_html:
-                '<div><strong>🚚 FREE SHIPPING for orders $100+</strong></div><div><br></div><div>You&#x27;re almost there! Add our accessories<strong> for only $25</strong>!</div>',
-            message_text:
-                "🚚 FREE SHIPPING for orders $100+\n\nYou're almost there! Add our accessories for only $25!",
-            status: CampaignStatus.Inactive,
-            triggers: triggers,
-            trigger_rule: createTriggerRule(triggers),
-            meta: {
-                delay: 15000,
-                noReply: true,
-            },
-        })
+        const builder = new CampaignConfigurationBuilder(
+            FREE_SHIPPING_BENEFITS,
+            {
+                name: FREE_SHIPPING_BENEFITS.name,
+                template_id: FREE_SHIPPING_BENEFITS.slug,
+                message_html:
+                    '<div><strong>🚚 FREE SHIPPING for orders $100+</strong></div><div><br></div><div>You&#x27;re almost there! Add our accessories<strong> for only $25</strong>!</div>',
+                message_text:
+                    "🚚 FREE SHIPPING for orders $100+\n\nYou're almost there! Add our accessories for only $25!",
+                status: CampaignStatus.Inactive,
+                triggers: triggers,
+                trigger_rule: createTriggerRule(triggers),
+                meta: {
+                    delay: 15000,
+                    noReply: true,
+                },
+            }
+        )
 
-        await b.attachProductCards(storeIntegration, 3)
+        await builder.attachProductCards(storeIntegration, 3)
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

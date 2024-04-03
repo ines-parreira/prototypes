@@ -73,21 +73,24 @@ export const PRODUCT_CARD_SHOWCASE: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(PRODUCT_CARD_SHOWCASE, {
-            name: PRODUCT_CARD_SHOWCASE.name,
-            template_id: PRODUCT_CARD_SHOWCASE.slug,
-            message_text: `You've got great taste! Check out our fan-favorite selection 😍`,
-            message_html: `<div>You&#x27;ve got great taste! Check out <strong>our fan-favorite selection</strong> 😍</div>`,
-            status: CampaignStatus.Inactive,
-            triggers: triggers,
-            trigger_rule: createTriggerRule(triggers),
-            meta: {
-                noReply: true,
-            },
-        })
+        const builder = new CampaignConfigurationBuilder(
+            PRODUCT_CARD_SHOWCASE,
+            {
+                name: PRODUCT_CARD_SHOWCASE.name,
+                template_id: PRODUCT_CARD_SHOWCASE.slug,
+                message_text: `You've got great taste! Check out our fan-favorite selection 😍`,
+                message_html: `<div>You&#x27;ve got great taste! Check out <strong>our fan-favorite selection</strong> 😍</div>`,
+                status: CampaignStatus.Inactive,
+                triggers: triggers,
+                trigger_rule: createTriggerRule(triggers),
+                meta: {
+                    noReply: true,
+                },
+            }
+        )
 
-        await b.attachProductCards(storeIntegration, 3)
+        await builder.attachProductCards(storeIntegration, 3)
 
-        return b.build()
+        return builder.build()
     },
 }

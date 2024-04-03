@@ -80,7 +80,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             SCHEDULE_LIMITED_TIME_OFFER,
             {
                 name: SCHEDULE_LIMITED_TIME_OFFER.name,
@@ -98,6 +98,6 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

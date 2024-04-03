@@ -42,7 +42,7 @@ export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT,
             {
                 name: OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT.name,
@@ -58,6 +58,6 @@ export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

@@ -77,21 +77,24 @@ export const PROMOTE_SALE_COLLECTION: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(PROMOTE_SALE_COLLECTION, {
-            name: PROMOTE_SALE_COLLECTION.name,
-            template_id: PROMOTE_SALE_COLLECTION.slug,
-            message_html:
-                '<div>Before you go, check out our <strong>latest items on sale for up to 30% OFF!</strong>💸</div>',
-            message_text:
-                'Before you go, check out our latest items on sale for up to 30% OFF!💸',
-            status: CampaignStatus.Inactive,
-            triggers: triggers,
-            trigger_rule: createTriggerRule(triggers),
-            meta: {
-                noReply: true,
-            },
-        })
+        const builder = new CampaignConfigurationBuilder(
+            PROMOTE_SALE_COLLECTION,
+            {
+                name: PROMOTE_SALE_COLLECTION.name,
+                template_id: PROMOTE_SALE_COLLECTION.slug,
+                message_html:
+                    '<div>Before you go, check out our <strong>latest items on sale for up to 30% OFF!</strong>💸</div>',
+                message_text:
+                    'Before you go, check out our latest items on sale for up to 30% OFF!💸',
+                status: CampaignStatus.Inactive,
+                triggers: triggers,
+                trigger_rule: createTriggerRule(triggers),
+                meta: {
+                    noReply: true,
+                },
+            }
+        )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

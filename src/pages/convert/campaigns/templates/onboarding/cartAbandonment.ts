@@ -48,7 +48,7 @@ export const CART_ABANDONMENT: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(CART_ABANDONMENT, {
+        const builder = new CampaignConfigurationBuilder(CART_ABANDONMENT, {
             name: CART_ABANDONMENT.name,
             template_id: CART_ABANDONMENT.slug,
             message_text: `👋 Do you have any questions? I'm online and ready to help you 🙂`,
@@ -58,6 +58,6 @@ export const CART_ABANDONMENT: CampaignTemplate = {
             trigger_rule: createTriggerRule(triggers),
         })
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

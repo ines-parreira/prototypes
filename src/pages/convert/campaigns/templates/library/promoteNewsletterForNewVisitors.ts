@@ -77,7 +77,7 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             PROMOTE_NEWSLETTER_FOR_NEW_VISITORS,
             {
                 name: PROMOTE_NEWSLETTER_FOR_NEW_VISITORS.name,
@@ -93,6 +93,6 @@ export const PROMOTE_NEWSLETTER_FOR_NEW_VISITORS: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

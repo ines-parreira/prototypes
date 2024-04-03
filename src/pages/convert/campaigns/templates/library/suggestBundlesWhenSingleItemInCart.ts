@@ -80,7 +80,7 @@ export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD,
             {
                 name: SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.name,
@@ -100,6 +100,6 @@ export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

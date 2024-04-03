@@ -60,7 +60,7 @@ export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS,
             {
                 name: LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS.name,
@@ -75,6 +75,6 @@ export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

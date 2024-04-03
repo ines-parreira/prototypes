@@ -60,7 +60,7 @@ export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             PROMOTE_QUIZZES_TO_HELP_VISIOTOR,
             {
                 name: PROMOTE_QUIZZES_TO_HELP_VISIOTOR.name,
@@ -76,6 +76,6 @@ export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }

@@ -67,7 +67,7 @@ export const PROMOTE_NEW_PRODUCT_ON_COLLECTION_PAGE: CampaignTemplate = {
             },
         ]
 
-        const b = new CampaignConfigurationBuilder(
+        const builder = new CampaignConfigurationBuilder(
             PROMOTE_NEW_PRODUCT_ON_COLLECTION_PAGE,
             {
                 name: PROMOTE_NEW_PRODUCT_ON_COLLECTION_PAGE.name,
@@ -85,6 +85,6 @@ export const PROMOTE_NEW_PRODUCT_ON_COLLECTION_PAGE: CampaignTemplate = {
             }
         )
 
-        return Promise.resolve(b.build())
+        return Promise.resolve(builder.build())
     },
 }
