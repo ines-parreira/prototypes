@@ -226,4 +226,24 @@ describe('<TicketListView />', () => {
         ).toBeInTheDocument()
         expect(getByText('Fix filters')).toBeInTheDocument()
     })
+
+    it('should render inaccessible view placeholder', () => {
+        useTicketsMock.mockReturnValue({
+            loadMore,
+            setElement,
+            staleTickets: {},
+            tickets: [],
+            newTickets: {},
+            ticketIds: {current: []},
+            initialLoaded: true,
+        })
+        useAppSelectorMock.mockReturnValue(null)
+
+        const {getByText} = render(<TicketListView viewId={123} />)
+
+        expect(getByText(listInfoProps.INACCESSIBLE.text)).toBeInTheDocument()
+        expect(
+            getByText(listInfoProps.INACCESSIBLE.subText)
+        ).toBeInTheDocument()
+    })
 })

@@ -43,6 +43,11 @@ export const listInfoProps = {
         subText: `This view is deactivated because at least one of its filters is invalid.\nPlease review its filters, and either fix them or delete this view.`,
         action: <InvalidFiltersAction />,
     },
+    INACCESSIBLE: {
+        text: 'Can’t access view',
+        subText:
+            'This view does not exist or you do not have the correct permission to access.',
+    },
 }
 
 export default function TicketListView({activeTicketId, viewId}: Props) {
@@ -50,6 +55,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const viewEmoji = view?.decoration?.emoji
     const areViewFiltersInvalid = !!view?.deactivated_datetime
+    const isViewNull = view === null
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
     const [sortOrder, setSortOrder] = useSortOrder(viewId, defaultSortOrder)
     const {
@@ -68,7 +74,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
     }, [initialLoaded])
 
     useEffect(() => {
-        dispatch(setViewActive(fromJS(view)))
+        view && dispatch(setViewActive(fromJS(view)))
     }, [dispatch, view])
 
     const getItemContent = useCallback(
@@ -90,6 +96,16 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
             setElement(ref as HTMLElement)
         },
         [setElement]
+    )
+
+    const ticketListInfoProps = useMemo(
+        () =>
+            areViewFiltersInvalid
+                ? listInfoProps.INVALID_FILTERS
+                : isViewNull
+                ? listInfoProps.INACCESSIBLE
+                : listInfoProps.DEFAULT,
+        [areViewFiltersInvalid, isViewNull]
     )
 
     const virtuosoComponents: Components = useMemo(
@@ -130,14 +146,10 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
             )),
             EmptyPlaceholder: () =>
                 initialLoadedRef.current ? (
-                    <TicketListInfo
-                        {...(areViewFiltersInvalid
-                            ? listInfoProps.INVALID_FILTERS
-                            : listInfoProps.DEFAULT)}
-                    />
+                    <TicketListInfo {...ticketListInfoProps} />
                 ) : null,
         }),
-        [ticketIds, areViewFiltersInvalid]
+        [ticketIds, ticketListInfoProps]
     )
 
     const virtuosoRef = useRef<VirtuosoHandle>(null)
