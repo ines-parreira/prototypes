@@ -37,7 +37,7 @@ type SpotlightTicketRowProps = {
     onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
-    highlight: TicketHighlights
+    highlight?: TicketHighlights
 }
 
 export type TicketHighlights = {
@@ -61,7 +61,7 @@ const SpotlightTicketRow = ({
     highlight,
 }: SpotlightTicketRowProps) => {
     const itemWithHighlights = useMemo(
-        () => ticketHighlightTransform(highlight, item),
+        () => ticketHighlightTransform(item, highlight),
         [item, highlight]
     )
 
@@ -75,9 +75,7 @@ const SpotlightTicketRow = ({
                     status={itemWithHighlights.status}
                 />
             }
-            title={
-                itemWithHighlights.subject || itemWithHighlights.excerpt || ''
-            }
+            title={itemWithHighlights.title}
             info={
                 <SpotlightTicketInfo
                     customerName={itemWithHighlights.customer.name}
@@ -92,6 +90,7 @@ const SpotlightTicketRow = ({
             onHover={onHover}
             selected={selected}
             onClick={onClick}
+            message={itemWithHighlights.message}
         />
     )
 }

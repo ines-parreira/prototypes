@@ -90,4 +90,24 @@ describe('<SpotlightRow/>', () => {
         )
         expect(container).toMatchSnapshot()
     })
+
+    it('should render the row with message', () => {
+        const messageText = 'some message text'
+        const {getByText} = render(
+            <SpotlightRow {...minProps} message={messageText} />
+        )
+        expect(getByText(messageText)).toBeInTheDocument()
+    })
+
+    it('should render the row with message and message should have an em tag', () => {
+        const messageText = '<em>text with highlight</em>'
+        const messageWithouthEmTag = 'text with highlight'
+        const {getByText} = render(
+            <SpotlightRow {...minProps} message={messageText} />
+        )
+        expect(getByText(messageWithouthEmTag)).toBeInTheDocument()
+        expect(
+            getByText(messageWithouthEmTag).tagName.toLocaleLowerCase()
+        ).toEqual('em')
+    })
 })

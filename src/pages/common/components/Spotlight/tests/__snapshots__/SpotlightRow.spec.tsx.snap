@@ -6,23 +6,31 @@ exports[`<SpotlightRow/> should highlight the row 1`] = `
     class="container selected"
     to="/app/foo"
   >
-    <span
-      class="title"
-    >
-      This is the title
-    </span>
     <div
-      class="separator"
-    />
-    <span
-      class="info"
+      class="infoContent"
     >
-      And this is the info!
-    </span>
-    <div
-      class="wrapper arrowIcon"
-    >
-      ↩
+      <div
+        class="infoHeader"
+      >
+        <span
+          class="title"
+        >
+          This is the title
+        </span>
+        <div
+          class="separator"
+        />
+        <span
+          class="info"
+        >
+          And this is the info!
+        </span>
+        <div
+          class="wrapper arrowIcon"
+        >
+          ↩
+        </div>
+      </div>
     </div>
   </a>
 </div>
@@ -35,23 +43,31 @@ exports[`<SpotlightRow/> should render with icon 1`] = `
     to="/app/foo"
   >
     <div
-      class="icon"
+      class="infoContent"
     >
-      🚀
+      <div
+        class="infoHeader"
+      >
+        <div
+          class="icon"
+        >
+          🚀
+        </div>
+        <span
+          class="title"
+        >
+          This is the title
+        </span>
+        <div
+          class="separator"
+        />
+        <span
+          class="info"
+        >
+          And this is the info!
+        </span>
+      </div>
     </div>
-    <span
-      class="title"
-    >
-      This is the title
-    </span>
-    <div
-      class="separator"
-    />
-    <span
-      class="info"
-    >
-      And this is the info!
-    </span>
   </a>
 </div>
 `;
@@ -62,19 +78,27 @@ exports[`<SpotlightRow/> should render with minimal props 1`] = `
     class="container"
     to="/app/foo"
   >
-    <span
-      class="title"
-    >
-      This is the title
-    </span>
     <div
-      class="separator"
-    />
-    <span
-      class="info"
+      class="infoContent"
     >
-      And this is the info!
-    </span>
+      <div
+        class="infoHeader"
+      >
+        <span
+          class="title"
+        >
+          This is the title
+        </span>
+        <div
+          class="separator"
+        />
+        <span
+          class="info"
+        >
+          And this is the info!
+        </span>
+      </div>
+    </div>
   </a>
 </div>
 `;
@@ -85,19 +109,27 @@ exports[`<SpotlightRow/> should shrink info flex container 1`] = `
     class="container shrinkInfo"
     to="/app/foo"
   >
-    <span
-      class="title"
-    >
-      This is the title
-    </span>
     <div
-      class="separator"
-    />
-    <span
-      class="info"
+      class="infoContent"
     >
-      And this is the info!
-    </span>
+      <div
+        class="infoHeader"
+      >
+        <span
+          class="title"
+        >
+          This is the title
+        </span>
+        <div
+          class="separator"
+        />
+        <span
+          class="info"
+        >
+          And this is the info!
+        </span>
+      </div>
+    </div>
   </a>
 </div>
 `;

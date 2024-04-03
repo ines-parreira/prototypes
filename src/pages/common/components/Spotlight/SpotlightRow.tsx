@@ -21,6 +21,7 @@ type SpotlightRowProps = {
     id: number
     index: number
     onClick?: (e: MouseEvent) => void
+    message?: string
 }
 
 const SpotlightRow = ({
@@ -35,6 +36,7 @@ const SpotlightRow = ({
     id,
     index,
     onClick,
+    message,
 }: SpotlightRowProps) => {
     const searchRank = useContext(SearchRankScenarioContext)
 
@@ -56,18 +58,36 @@ const SpotlightRow = ({
             onClick={handleClick}
             onMouseEnter={onHover}
         >
-            {!!icon && <div className={css.icon}>{icon}</div>}
-            <span
-                className={css.title}
-                dangerouslySetInnerHTML={{__html: sanitizeHtmlDefault(title)}}
-            />
-            <div className={css.separator} />
-            <span className={css.info}>{info}</span>
-            {selected && (
-                <ShortcutIcon className={css.arrowIcon} fillStyle="ghost">
-                    ↩
-                </ShortcutIcon>
-            )}
+            <div className={css.infoContent}>
+                <div className={css.infoHeader}>
+                    {!!icon && <div className={css.icon}>{icon}</div>}
+                    <span
+                        className={css.title}
+                        dangerouslySetInnerHTML={{
+                            __html: sanitizeHtmlDefault(title),
+                        }}
+                    />
+                    <div className={css.separator} />
+                    <span className={css.info}>{info}</span>
+                    {selected && (
+                        <ShortcutIcon
+                            className={css.arrowIcon}
+                            fillStyle="ghost"
+                        >
+                            ↩
+                        </ShortcutIcon>
+                    )}
+                </div>
+                {message && (
+                    <div className={css.infoFooter}>
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(message),
+                            }}
+                        />
+                    </div>
+                )}
+            </div>
         </Link>
     )
 }

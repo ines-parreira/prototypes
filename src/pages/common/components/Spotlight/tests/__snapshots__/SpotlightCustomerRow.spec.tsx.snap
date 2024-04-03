@@ -5,17 +5,25 @@ exports[`<SpotlightCustomerRow/> should not render customer mail and phone secti
   class="container shrinkInfo"
   to="/app/customer/34"
 >
-  <span
-    class="title"
-  >
-    Jean Bon
-  </span>
   <div
-    class="separator"
-  />
-  <span
-    class="info"
-  />
+    class="infoContent"
+  >
+    <div
+      class="infoHeader"
+    >
+      <span
+        class="title"
+      >
+        Jean Bon
+      </span>
+      <div
+        class="separator"
+      />
+      <span
+        class="info"
+      />
+    </div>
+  </div>
 </a>
 `;
 
@@ -24,35 +32,43 @@ exports[`<SpotlightCustomerRow/> should render render customer information 1`] =
   class="container shrinkInfo"
   to="/app/customer/34"
 >
-  <span
-    class="title"
-  >
-    Jean Bon
-  </span>
   <div
-    class="separator"
-  />
-  <span
-    class="info"
+    class="infoContent"
   >
     <div
-      class="customerInfo"
+      class="infoHeader"
     >
       <span
-        class="infoText"
+        class="title"
       >
-        jeanbon@gorgias.io
+        Jean Bon
       </span>
+      <div
+        class="separator"
+      />
       <span
-        class="infoSeparator"
+        class="info"
       >
-        •
-      </span>
-      <span>
-        +1 415-548-9999
+        <div
+          class="customerInfo"
+        >
+          <span
+            class="infoText"
+          >
+            jeanbon@gorgias.io
+          </span>
+          <span
+            class="infoSeparator"
+          >
+            •
+          </span>
+          <span>
+            +1 415-548-9999
+          </span>
+        </div>
       </span>
     </div>
-  </span>
+  </div>
 </a>
 `;
 
@@ -61,34 +77,42 @@ exports[`<SpotlightCustomerRow/> should render with customer id when no customer
   class="container shrinkInfo"
   to="/app/customer/34"
 >
-  <span
-    class="title"
-  >
-    Customer #34
-  </span>
   <div
-    class="separator"
-  />
-  <span
-    class="info"
+    class="infoContent"
   >
     <div
-      class="customerInfo"
+      class="infoHeader"
     >
       <span
-        class="infoText"
+        class="title"
       >
-        jeanbon@gorgias.io
+        Customer #34
       </span>
+      <div
+        class="separator"
+      />
       <span
-        class="infoSeparator"
+        class="info"
       >
-        •
-      </span>
-      <span>
-        +1 415-548-9999
+        <div
+          class="customerInfo"
+        >
+          <span
+            class="infoText"
+          >
+            jeanbon@gorgias.io
+          </span>
+          <span
+            class="infoSeparator"
+          >
+            •
+          </span>
+          <span>
+            +1 415-548-9999
+          </span>
+        </div>
       </span>
     </div>
-  </span>
+  </div>
 </a>
 `;

@@ -1,6 +1,5 @@
 import _pick from 'lodash/pick'
 import {Ticket} from 'models/ticket/types'
-import {TicketChannel} from 'business/types/ticket'
 import {ticketHighlightTransform} from 'pages/common/components/Spotlight/helpers'
 import {TicketHighlights} from '../SpotlightTicketRow'
 
@@ -48,13 +47,8 @@ describe('useTicketHighlightTransform', () => {
             id: 1,
             name: 'John Smith',
             email: 'email@test.com',
-            channels: [
-                {
-                    type: TicketChannel.Phone,
-                    address: 'phone number',
-                },
-            ],
         },
+        excerpt: 'default excerpt text',
     } as unknown as Ticket
     it.each([
         {
@@ -73,7 +67,8 @@ describe('useTicketHighlightTransform', () => {
                         name: '<em>to name</em>',
                         email: '<em>to address</em>',
                     },
-                    subject: '<em>subject</em>',
+                    title: '<em>subject</em>',
+                    message: 'text here <em>body</em> and text here',
                 },
             },
         },
@@ -83,7 +78,8 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
-                    subject: '<em>subject</em>',
+                    title: '<em>subject</em>',
+                    message: item.excerpt,
                 },
             },
         },
@@ -93,7 +89,8 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
-                    subject: 'text here <em>body</em> and text here',
+                    title: item.subject,
+                    message: 'text here <em>body</em> and text here',
                 },
             },
         },
@@ -103,6 +100,8 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
+                    title: item.subject,
+                    message: item.excerpt,
                     customer: {
                         ...item.customer,
                         name: '<em>from name</em>',
@@ -116,6 +115,8 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
+                    title: item.subject,
+                    message: item.excerpt,
                     customer: {
                         ...item.customer,
                         email: '<em>from address</em>',
@@ -129,6 +130,8 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
+                    title: item.subject,
+                    message: item.excerpt,
                     assignee_user: {
                         ...item.assignee_user,
                         name: '<em>to name</em>',
@@ -142,6 +145,8 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
+                    title: item.subject,
+                    message: item.excerpt,
                     assignee_user: {
                         ...item.assignee_user,
                         email: '<em>to address</em>',
@@ -153,13 +158,28 @@ describe('useTicketHighlightTransform', () => {
             item: item,
             highlight: emptyHighlight,
             expectedResult: {
-                itemWithHighlights: item,
+                itemWithHighlights: {
+                    ...item,
+                    title: item.subject,
+                    message: item.excerpt,
+                },
+            },
+        },
+        {
+            item: item,
+            highlight: undefined,
+            expectedResult: {
+                itemWithHighlights: {
+                    ...item,
+                    title: item.subject,
+                    message: undefined,
+                },
             },
         },
     ])(
         'should check if highlight is passed and return right items with highlights',
         ({item, highlight, expectedResult}) => {
-            expect(ticketHighlightTransform(highlight, item)).toEqual(
+            expect(ticketHighlightTransform(item, highlight)).toEqual(
                 expectedResult.itemWithHighlights
             )
         }

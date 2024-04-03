@@ -44,7 +44,6 @@ const SpotlightScrollArea = (
             ref={ref}
             customScrollParent={scrollerRef.current || undefined}
             defaultItemHeight={ITEM_HEIGHT}
-            fixedItemHeight={ITEM_HEIGHT}
             style={{
                 // height will be recalculated by Virtuoso
                 // on first interaction with the scrollable content
