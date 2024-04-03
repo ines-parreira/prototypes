@@ -3,14 +3,15 @@ import {isProduction, isStaging} from '../../../utils/environment'
 
 import {
     AccountConfiguration,
-    GetAccountConfigurationResponse,
+    AccountConfigurationResponse,
+    CreateStoreConfigurationPayload,
     GetStoreConfigurationParams,
-    GetStoreConfigurationResponse,
-    PutStoreConfigurationParams,
+    StoreConfigurationResponse,
+    UpsertStoreConfigurationPayload,
 } from '../types'
 
 /**
- * Api Client for AI Agent
+ * API Client for AI Agent
  */
 
 const baseURL = isProduction()
@@ -32,20 +33,18 @@ const apiClient = axios.create({
  */
 
 export const getAccountConfiguration = async (accountDomain: string) => {
-    const res = await apiClient.get<GetAccountConfigurationResponse>(
+    return await apiClient.get<AccountConfigurationResponse>(
         `/accounts/${accountDomain}`
     )
-    return res
 }
 
 export const createAccountConfiguration = async (
     accountConfiguration: AccountConfiguration & {helpdeskOAuth: null}
 ) => {
-    const res = await apiClient.post<GetAccountConfigurationResponse>(
+    return await apiClient.post<AccountConfigurationResponse>(
         `/accounts`,
         accountConfiguration
     )
-    return res
 }
 
 export async function upsertAccountConfiguration(
@@ -53,11 +52,10 @@ export async function upsertAccountConfiguration(
 ) {
     const accountDomain = accountConfiguration.gorgiasDomain
 
-    const response = await apiClient.put(
+    return await apiClient.put<AccountConfigurationResponse>(
         `/accounts/${accountDomain}`,
         accountConfiguration
     )
-    return response
 }
 
 /**
@@ -69,21 +67,29 @@ export const getStoreConfiguration = async (
 ) => {
     const {accountDomain, storeName} = params
 
-    const res = await apiClient.get<GetStoreConfigurationResponse>(
+    return await apiClient.get<StoreConfigurationResponse>(
         `/accounts/${accountDomain}/stores/${storeName}`
     )
-    return res
 }
 
-export async function upsertStoreConfiguration(
-    params: PutStoreConfigurationParams
-) {
-    const {accountDomain, storeName, storeConfiguration} = params
+export const createStoreConfiguration = async (
+    accountDomain: string,
+    storeConfiguration: CreateStoreConfigurationPayload
+) => {
+    return await apiClient.post<StoreConfigurationResponse>(
+        `/accounts/${accountDomain}/stores`,
+        storeConfiguration
+    )
+}
 
-    // FIXME: adding the response type, conversation api should return the updated store configuration
-    const response = await apiClient.put<GetStoreConfigurationResponse>(
+export const upsertStoreConfiguration = async (
+    accountDomain: string,
+    storeConfiguration: UpsertStoreConfigurationPayload
+) => {
+    const storeName = storeConfiguration.storeName
+
+    return await apiClient.put<StoreConfigurationResponse>(
         `/accounts/${accountDomain}/stores/${storeName}`,
         storeConfiguration
     )
-    return response
 }

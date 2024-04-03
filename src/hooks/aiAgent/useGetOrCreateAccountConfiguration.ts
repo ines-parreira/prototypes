@@ -35,7 +35,7 @@ export function useGetOrCreateAccountConfiguration(params: {
 
                 void dispatch(
                     notify({
-                        message: 'Initializing account configuration',
+                        message: 'Initializing AI Agent',
                         status: NotificationStatus.Loading,
                         closeOnNext: true,
                     })
@@ -50,8 +50,7 @@ export function useGetOrCreateAccountConfiguration(params: {
         onError: () => {
             void dispatch(
                 notify({
-                    message:
-                        'An error occurred while fetching the account configuration',
+                    message: 'An error occurred while loading the AI Agent',
                     status: NotificationStatus.Error,
                 })
             )

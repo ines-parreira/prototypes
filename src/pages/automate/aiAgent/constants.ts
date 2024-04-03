@@ -1,4 +1,4 @@
-import {StoreConfiguration} from '../../../models/aiAgent/types'
+import {FormValues} from './types'
 
 export const SIGNATURE_MAX_LENGTH = 50
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
@@ -25,26 +25,16 @@ export const TONE_OF_VOICE_VALUE_TO_LABEL: Record<string, string> = {
         'Sophisticated',
 }
 
-// FIXME: Let the backend handle the default store configuration
-export const DEFAULT_STORE_CONFIGURATION: StoreConfiguration = {
-    storeName: '',
+export const DEFAULT_AI_AGENT_DISABLED_RATE = 0
+export const DEFAULT_AI_AGENT_ENABLED_RATE = 30
 
-    helpCenterId: 0,
-    helpCenterLocale: '',
-    helpCenterSubdomain: '',
-
-    toneOfVoice: TONE_OF_VOICE_LABEL_TO_VALUE['Friendly'],
-    signature: '',
-    excludedTopics: [],
-    tags: [],
-    conversationBot: {
-        id: 0,
-        email: '',
-    },
-    monitoredEmailIntegrations: [{id: 0, email: ''}],
-
-    dryRun: false,
-    isDraft: false,
-    silentHandover: false,
-    ticketSampleRate: 0,
+export const DEFAULT_FORM_VALUES: FormValues = {
+    ticketSampleRate: null,
+    silentHandover: null,
+    monitoredEmailIntegrations: null,
+    tags: null,
+    excludedTopics: null,
+    signature: null,
+    toneOfVoice: null,
+    helpCenter: null,
 }

@@ -7,7 +7,6 @@ import {getHasAutomate} from 'state/billing/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Loader from 'pages/common/components/Loader/Loader'
 import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import {useGetOrCreateStoreConfiguration} from 'hooks/aiAgent/useGetOrCreateStoreConfiguration'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {AiAgentStoreView} from './AiAgentStoreView'
 
@@ -25,27 +24,15 @@ const AiAgentViewContainer = () => {
     const {status: accountConfigRetrievalStatus} =
         useGetOrCreateAccountConfiguration({accountId, accountDomain, dispatch})
 
-    const {status: storeConfigRetrievalStatus} =
-        useGetOrCreateStoreConfiguration({
-            shopName,
-            enabled: accountConfigRetrievalStatus === 'success',
-            accountDomain,
-            dispatch,
-        })
-
     if (
         !hasAutomate ||
         shopType !== 'shopify' ||
-        accountConfigRetrievalStatus === 'error' ||
-        storeConfigRetrievalStatus === 'error'
+        accountConfigRetrievalStatus === 'error'
     ) {
         return <Redirect to="/app/automation" />
     }
 
-    if (
-        accountConfigRetrievalStatus !== 'success' ||
-        storeConfigRetrievalStatus !== 'success'
-    ) {
+    if (accountConfigRetrievalStatus !== 'success') {
         return <Loader />
     }
 
