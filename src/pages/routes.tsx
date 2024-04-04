@@ -46,6 +46,7 @@ import {
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
+import TicketList from 'pages/tickets/list/TicketList'
 import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import CustomerListContainer from 'pages/customers/list/CustomerListContainer'
 import CustomerNavbarContainer from 'pages/customers/common/CustomerNavbarContainer'
@@ -62,6 +63,7 @@ import APIView from 'pages/settings/api/APIView'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import NoMatch from 'pages/common/components/NoMatch'
+import OnboardingSidePanel from 'pages/tickets/list/OnboardingSidePanel'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import NewBilling from 'pages/settings/new_billing/views/BillingStartView'
 import ManageTagsContainer from 'pages/settings/tags/ManageTags'
@@ -142,7 +144,6 @@ import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignD
 import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
 import {useSplitViewPage} from 'tickets/pages/SplitViewPage'
 import {useTicketPage} from 'tickets/pages/TicketPage'
-import {useViewPage} from 'tickets/pages/ViewPage'
 import OrderManagementViewContainer from 'pages/automate/orderManagement/OrderManagementViewContainer'
 import ReturnOrderFlowViewContainer from 'pages/automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
 import TrackOrderFlowViewContainer from 'pages/automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
@@ -196,25 +197,20 @@ export function AppRoutes() {
     const splitTicketLayoutProps = useSplitTicketPage()
     const splitViewLayoutProps = useSplitViewPage()
     const fullWidthTicketLayoutProps = useTicketPage()
-    const fullWidthViewLayoutProps = useViewPage()
 
     return (
         <Switch>
-            <Route path={`${path}/`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets/:viewId/:viewSlug?`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets/new/:visibility?`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
-            <Route path={`${path}/tickets/search`} exact>
-                <PanelLayout {...fullWidthViewLayoutProps} />
-            </Route>
+            <Route
+                path={`${path}/`}
+                exact
+                render={() => (
+                    <App
+                        content={TicketList}
+                        navbar={TicketNavbar}
+                        infobar={OnboardingSidePanel}
+                    />
+                )}
+            />
             <Route path={`${path}/ticket/:ticketId`} exact>
                 <PanelLayout {...fullWidthTicketLayoutProps} />
             </Route>
@@ -223,6 +219,7 @@ export function AppRoutes() {
             <Route path={`${path}/users`} render={UsersRoutes} />
             <Route path={`${path}/user`} render={UserRoutes} />
             <Route path={`${path}/ticket`} render={TicketRoutes} />
+            <Route path={`${path}/tickets`} render={TicketsRoutes} />
             <Route path={`${path}/admin/tasks`} render={AdminTasksRoutes} />
             <Route path={`${path}/stats`}>
                 <StatsRoutes />
@@ -455,6 +452,57 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
                 path={`${path}/:ticketId/print`}
                 exact
                 render={() => <App content={TicketPrintContainer} />}
+            />
+        </Switch>
+    )
+}
+
+export function TicketsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={() => (
+                    <App
+                        content={TicketList}
+                        navbar={TicketNavbar}
+                        infobar={OnboardingSidePanel}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/new/:visibility?`}
+                exact
+                render={() => (
+                    <App
+                        content={TicketList}
+                        navbar={TicketNavbar}
+                        infobar={OnboardingSidePanel}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/search`}
+                exact
+                render={() => (
+                    <App
+                        content={TicketList}
+                        navbar={TicketNavbar}
+                        infobar={OnboardingSidePanel}
+                    />
+                )}
+            />
+            <Route
+                path={`${path}/:viewId/:viewSlug?`}
+                exact
+                render={() => (
+                    <App
+                        content={TicketList}
+                        navbar={TicketNavbar}
+                        infobar={OnboardingSidePanel}
+                    />
+                )}
             />
         </Switch>
     )

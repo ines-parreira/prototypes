@@ -15,7 +15,6 @@ jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)
 
 jest.mock('pages/App', () => () => <div>App</div>)
-jest.mock('pages/PanelLayout', () => () => <div>PanelLayout</div>)
 jest.mock('pages/stats/DefaultStatsFilters', () => () => (
     <div>Default stats filters</div>
 ))
