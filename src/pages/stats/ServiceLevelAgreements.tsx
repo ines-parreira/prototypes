@@ -13,7 +13,7 @@ export default function ServiceLevelAgreements() {
         <div className="full-width">
             <StatsPage
                 title={SERVICE_LEVEL_AGREEMENT_PAGE_TITLE}
-                filters={
+                titleExtra={
                     <>
                         <SupportPerformanceFilters />
                     </>
