@@ -11,6 +11,7 @@ import NavbarLink, {
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -21,6 +22,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
+    const isSLAsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsSLAs]
 
     return (
         <>
@@ -150,6 +153,27 @@ export default function StatsNavbarView() {
                                 to="/app/stats/help-center"
                             >
                                 Help Center
+                            </NavbarLink>
+                        </div>
+                    )}
+                    {!!isSLAsEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/slas"
+                            >
+                                SLAs{' '}
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    NEW
+                                </Badge>
                             </NavbarLink>
                         </div>
                     )}

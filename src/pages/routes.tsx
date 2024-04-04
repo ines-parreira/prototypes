@@ -141,41 +141,42 @@ import {
 import ConvertRoute from 'pages/convert/common/components/ConvertRoute/ConvertRoute'
 import {CampaignsView} from 'pages/convert/campaigns/CampaignsView'
 import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignDetailsFactory'
-import {useSplitTicketPage} from '../tickets/pages/SplitTicketPage'
-import {useSplitViewPage} from '../tickets/pages/SplitViewPage'
-import {useTicketPage} from '../tickets/pages/TicketPage'
-import OrderManagementViewContainer from './automate/orderManagement/OrderManagementViewContainer'
-import ReturnOrderFlowViewContainer from './automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
-import TrackOrderFlowViewContainer from './automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
-import CancelOrderFlowViewContainer from './automate/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
-import ReportOrderIssueFlowViewContainer from './automate/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
-import CreateReportOrderIssueFlowScenarioViewContainer from './automate/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
-import EditReportOrderIssueFlowScenarioViewContainer from './automate/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
-import ArticleRecommendationViewContainer from './automate/articleRecommendation/ArticleRecommendationViewContainer'
-import QuickResponsesViewContainer from './automate/quickResponses/QuickResponsesViewContainer'
-import WorkflowsViewContainer from './automate/workflows/WorkflowsViewContainer'
-import WorkflowEditorViewContainer from './automate/workflows/editor/WorkflowEditorViewContainer'
-import SelfServiceHelpCentersProvider from './automate/common/providers/SelfServiceHelpCentersProvider'
-import OrderManagementPreviewProvider from './automate/orderManagement/OrderManagementPreviewProvider'
-import ConnectedChannelsViewContainer from './automate/connectedChannels/ConnectedChannelsViewContainer'
-import WorkflowTemplatesViewContainer from './automate/workflows/WorkflowTemplatesViewContainer'
-import SelfServiceContactFormsProvider from './automate/common/providers/SelfServiceContactFormsProvider'
-import SupportPerformanceTicketInsights from './stats/SupportPerformanceTicketInsights'
-import AutomateStatsPaywall from './stats/AutomateStatsPaywall'
-import TrainMyAiViewContainer from './automate/trainMyAi/TrainMyAiViewContainer'
-import AutomateRoute from './automate/common/components/AutomateRoute'
-import {MigrationApiClientProvider} from './settings/helpCenter/hooks/useMigrationApi'
-import HelpCenterCreationWizard from './settings/helpCenter/components/HelpCenterCreationWizard'
-import ConvertOnboardingView from './convert/onboarding/components/ConvertOnboardingView'
-import AiAgentViewContainer from './automate/aiAgent/AiAgentViewContainer'
-import AiAgentPlaygroundContainer from './automate/aiAgent/AiAgentPlaygroundContainer'
-import ConvertBundleView from './convert/bundles/components/ConvertBundleView'
-import ConvertOnboardingWizardView from './convert/onboarding/components/ConvertOnboardingWizardView'
+import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
+import {useSplitViewPage} from 'tickets/pages/SplitViewPage'
+import {useTicketPage} from 'tickets/pages/TicketPage'
+import OrderManagementViewContainer from 'pages/automate/orderManagement/OrderManagementViewContainer'
+import ReturnOrderFlowViewContainer from 'pages/automate/orderManagement/returnOrder/ReturnOrderFlowViewContainer'
+import TrackOrderFlowViewContainer from 'pages/automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
+import CancelOrderFlowViewContainer from 'pages/automate/orderManagement/cancelOrder/CancelOrderFlowViewContainer'
+import ReportOrderIssueFlowViewContainer from 'pages/automate/orderManagement/reportOrderIssue/ReportOrderIssueFlowViewContainer'
+import CreateReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
+import EditReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
+import ArticleRecommendationViewContainer from 'pages/automate/articleRecommendation/ArticleRecommendationViewContainer'
+import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResponsesViewContainer'
+import WorkflowsViewContainer from 'pages/automate/workflows/WorkflowsViewContainer'
+import WorkflowEditorViewContainer from 'pages/automate/workflows/editor/WorkflowEditorViewContainer'
+import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
+import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
+import ConnectedChannelsViewContainer from 'pages/automate/connectedChannels/ConnectedChannelsViewContainer'
+import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
+import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
+import SupportPerformanceTicketInsights from 'pages/stats/SupportPerformanceTicketInsights'
+import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
+import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
+import AutomateRoute from 'pages/automate/common/components/AutomateRoute'
+import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
+import ConvertOnboardingView from 'pages/convert/onboarding/components/ConvertOnboardingView'
+import AiAgentViewContainer from 'pages/automate/aiAgent/AiAgentViewContainer'
+import AiAgentPlaygroundContainer from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
+import ConvertBundleView from 'pages/convert/bundles/components/ConvertBundleView'
+import ConvertOnboardingWizardView from 'pages/convert/onboarding/components/ConvertOnboardingWizardView'
 import {
     CampaignTemplateCustomizeRecommendationsView,
     CampaignTemplateCustomizeLibraryView,
-} from './convert/campaigns/containers/CampaignTemplateCustomizeView'
-import PanelLayout from './PanelLayout'
+} from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
+import PanelLayout from 'pages/PanelLayout'
+import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -522,6 +523,9 @@ export function StatsRoutes() {
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
+    const isSLAsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsSLAs]
+
     useEffect(logPageChange, [location.pathname])
 
     return (
@@ -632,6 +636,18 @@ export function StatsRoutes() {
                         />
                     )}
                 />
+                {!!isSLAsEnabled && (
+                    <Route
+                        exact
+                        path={`${path}/slas`}
+                        render={() => (
+                            <App
+                                content={ServiceLevelAgreements}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
                 <Route
                     exact
                     path={`${path}/support-performance-agents`}

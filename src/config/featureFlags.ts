@@ -5,6 +5,7 @@ export enum FeatureFlagKey {
     AiAgentSettings = 'ai-agent-settings',
     AnalyticsNewCubes = 'analytics-new-cubes',
     AnalyticsProductivityMetrics = 'analytics-productivity-metrics',
+    AnalyticsSLAs = 'analytics-slas-report',
     AnalyticsTimeBasedMetrics = 'analytics-time-based-metrics',
     AutomateLandingPage = 'automate-landing-page',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',

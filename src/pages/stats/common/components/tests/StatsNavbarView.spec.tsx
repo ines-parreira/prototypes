@@ -15,7 +15,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
 import {IntegrationType} from 'models/integration/constants'
-import StatsNavbarView from '../StatsNavbarView'
+import StatsNavbarView from 'pages/stats/common/components/StatsNavbarView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -47,6 +47,12 @@ describe('StatsNavbarView', () => {
             ],
         }),
     }
+
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsSLAs]: false,
+        }))
+    })
 
     it('should render', () => {
         const {container} = renderWithRouter(
@@ -134,5 +140,20 @@ describe('StatsNavbarView', () => {
 
         expect(screen.getByText('Voice')).toBeInTheDocument()
         expect(screen.getAllByText('Agents')).toHaveLength(3)
+    })
+
+    it('should render the link to the Service Level Agreements', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsSLAs]: true,
+        }))
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        expect(screen.getByText('SLAs')).toBeInTheDocument()
     })
 })
