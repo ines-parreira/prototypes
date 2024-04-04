@@ -169,6 +169,9 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
             [CampaignTriggerOperator.ContainsAny]: {
                 label: 'contains any',
             },
+            [CampaignTriggerOperator.NotContains]: {
+                label: 'not contains',
+            },
         },
     },
     [CampaignTriggerType.CartValue]: {
