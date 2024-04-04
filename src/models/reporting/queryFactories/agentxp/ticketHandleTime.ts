@@ -23,7 +23,7 @@ export const ticketAverageHandleTimeQueryFactory = (
     ],
     measures: [HandleTimeMeasure.AverageHandleTime],
     dimensions: [],
-    segments: [TicketSegment.ClosedTickets],
+    segments: ['TicketEnriched.closedTickets'], // quick fix until cube rename is fixed
     timezone,
     ...(sorting
         ? {
