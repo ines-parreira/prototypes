@@ -74,6 +74,7 @@ export enum FeatureFlagKey {
     NewAutomationAddon = 'new-automation-add-on',
     NewBillingInterface = 'new-billing-interface',
     NewSenderSelect = 'new-sender-select',
+    Notifications = 'notifications',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityAIArticlesLibrary = 'observability-ai-articles-library',

@@ -20,9 +20,10 @@ import {
 } from 'reactstrap'
 import * as Sentry from '@sentry/react'
 import _kebabCase from 'lodash/kebabCase'
-
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+
+import {NotificationsButton} from 'common/notifications'
 import {logEvent, SegmentEvent} from 'common/segment'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import HomePageLink from 'pages/common/components/HomePageLink'
@@ -375,6 +376,7 @@ export class Navbar extends Component<Props, State> {
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
 
+        const hasNotifications = !!flags?.[FeatureFlagKey.Notifications]
         const hasSplitTicketView = !!flags?.[FeatureFlagKey.SplitTicketView]
 
         return (
@@ -469,6 +471,7 @@ export class Navbar extends Component<Props, State> {
                         <div data-candu-id="navbar-home-spacer" />
 
                         <SpotlightButton />
+                        {hasNotifications && <NotificationsButton />}
                         {this.state.title === 'Tickets' &&
                         hasSplitTicketView ? (
                             <CreateTicketNavbarButton
