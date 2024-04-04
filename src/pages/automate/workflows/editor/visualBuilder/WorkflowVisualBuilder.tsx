@@ -1,10 +1,12 @@
+import 'reactflow/dist/style.css'
+
 import React, {PropsWithChildren, useCallback, useEffect} from 'react'
 import {
-    ReactFlow,
-    MiniMap,
     Controls,
-    ReactFlowProvider,
+    MiniMap,
     NodeMouseHandler,
+    ReactFlow,
+    ReactFlowProvider,
     useNodesInitialized,
 } from 'reactflow'
 import _keyBy from 'lodash/keyBy'
@@ -14,23 +16,24 @@ import Loader from 'pages/common/components/Loader/Loader'
 import usePrevious from 'hooks/usePrevious'
 
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
+import {VisualBuilderBackground} from './components/VisualBuilderBackground'
+
 import TriggerButtonNode from './nodes/TriggerButtonNode'
 import AutomatedMessageNode from './nodes/AutomatedMessageNode'
 import MultipleChoicesNode from './nodes/MultipleChoicesNode'
 import EndNode from './nodes/EndNode'
-import CustomEdge from './CustomEdge'
-import NodeEditorDrawer from './NodeEditorDrawer'
-
-import 'reactflow/dist/style.css'
 import TextReplyNode from './nodes/TextReplyNode'
 import FileUploadNode from './nodes/FileUploadNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
 import HttpRequestNode from './nodes/HttpRequestNode'
 import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
+import ConditionsNode from './nodes/ConditionsNode'
+import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
+
+import CustomEdge from './CustomEdge'
+import NodeEditorDrawer from './NodeEditorDrawer'
 
 import css from './WorkflowVisualBuilder.less'
-import {VisualBuilderBackground} from './components/VisualBuilderBackground'
-import ConditionsNode from './nodes/ConditionsNode'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
@@ -42,6 +45,7 @@ const nodeTypes = {
     order_selection: OrderSelectionNode,
     http_request: HttpRequestNode,
     shopper_authentication: ShopperAuthenticationNode,
+    order_line_item_selection: OrderLineItemSelectionNode,
     end: EndNode,
 }
 

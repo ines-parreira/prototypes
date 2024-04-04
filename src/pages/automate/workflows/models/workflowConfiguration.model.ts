@@ -12,6 +12,7 @@ import {
     FileUploadNodeType,
     HttpRequestNodeType,
     MultipleChoicesNodeType,
+    OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     ShopperAuthenticationNodeType,
     TextReplyNodeType,
@@ -272,6 +273,18 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph(
                 type: 'shopper_authentication',
                 data: {
                     integrationId: step.settings.integration_id,
+                },
+            }
+
+            nodeIdByStepId[step.id] = node.id
+            nodes.push(node)
+        } else if (step.kind === 'order-line-item-selection') {
+            const node: OrderLineItemSelectionNodeType = {
+                ...buildNodeCommonProperties(),
+                id: step.id,
+                type: 'order_line_item_selection',
+                data: {
+                    content: step.settings.message.content,
                 },
             }
 

@@ -16,6 +16,7 @@ import {
     FileUploadNodeType,
     HttpRequestNodeType,
     MultipleChoicesNodeType,
+    OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     ShopperAuthenticationNodeType,
     TextReplyNodeType,
@@ -242,6 +243,24 @@ export const buildShopperAuthenticationNode = (
         },
     }
 }
+
+export const buildOrderLineItemSelectionNode =
+    (): OrderLineItemSelectionNodeType => {
+        const id = ulid()
+        return {
+            ...buildNodeCommonProperties(),
+            id,
+            type: 'order_line_item_selection',
+            data: {
+                content: {
+                    html: '',
+                    html_tkey: ulid(),
+                    text: '',
+                    text_tkey: ulid(),
+                },
+            },
+        }
+    }
 
 const nodeWidth = 300
 const nodeHeight = 98

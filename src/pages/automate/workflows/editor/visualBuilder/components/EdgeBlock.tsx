@@ -118,6 +118,21 @@ function useMenuItems(
             },
         },
         {
+            label: labelByVisualBuilderNodeType.shopper_authentication,
+            description: 'Confirm customer identity',
+            type: 'shopper_authentication',
+            icon: iconByVisualBuilderNodeType.shopper_authentication,
+            style: colorByVisualBuilderNodeType.shopper_authentication,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_SHOPPER_AUTHENTICATION_NODE',
+                    beforeNodeId: nodeId,
+                    storeIntegrationId: storeIntegration.id,
+                })
+            },
+        },
+        {
             label: labelByVisualBuilderNodeType.order_selection,
             description: 'Display last 5 orders',
             type: 'order_selection',
@@ -127,6 +142,20 @@ function useMenuItems(
             onClick: () => {
                 dispatch({
                     type: 'INSERT_ORDER_SELECTION_NODE',
+                    beforeNodeId: nodeId,
+                })
+            },
+        },
+        {
+            label: labelByVisualBuilderNodeType.order_line_item_selection,
+            description: 'Select an item from an order',
+            type: 'order_line_item_selection',
+            icon: iconByVisualBuilderNodeType.order_line_item_selection,
+            style: colorByVisualBuilderNodeType.order_line_item_selection,
+            hidden: true,
+            onClick: () => {
+                dispatch({
+                    type: 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE',
                     beforeNodeId: nodeId,
                 })
             },
@@ -142,21 +171,6 @@ function useMenuItems(
                 dispatch({
                     type: 'INSERT_HTTP_REQUEST_NODE',
                     beforeNodeId: nodeId,
-                })
-            },
-        },
-        {
-            label: labelByVisualBuilderNodeType.shopper_authentication,
-            description: 'Confirm customer identity',
-            type: 'shopper_authentication',
-            icon: iconByVisualBuilderNodeType.shopper_authentication,
-            style: colorByVisualBuilderNodeType.shopper_authentication,
-            hidden: true,
-            onClick: () => {
-                dispatch({
-                    type: 'INSERT_SHOPPER_AUTHENTICATION_NODE',
-                    beforeNodeId: nodeId,
-                    storeIntegrationId: storeIntegration.id,
                 })
             },
         },
@@ -248,6 +262,26 @@ function useMenuItems(
         } else {
             updateMenuItems((draft) => {
                 if (draft.type === 'conditions' && draft.disabledText) {
+                    draft.disabledText = ''
+                }
+            })
+        }
+
+        if (
+            !hasParentNodeInPath('order_selection', visualBuilderGraph, nodeId)
+        ) {
+            updateMenuItems((draft) => {
+                if (draft.type === 'order_line_item_selection') {
+                    draft.disabledText =
+                        'Add an Order selection step first in order to use this step.'
+                }
+            })
+        } else {
+            updateMenuItems((draft) => {
+                if (
+                    draft.type === 'order_line_item_selection' &&
+                    draft.disabledText
+                ) {
                     draft.disabledText = ''
                 }
             })

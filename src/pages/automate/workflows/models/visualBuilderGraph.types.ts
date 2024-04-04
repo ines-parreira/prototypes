@@ -132,6 +132,14 @@ export type ConditionsNodeType = Node<
     'conditions'
 >
 
+export type OrderLineItemSelectionNodeType = Node<
+    {
+        content: MessageContent
+        isGreyedOut?: boolean | null
+    },
+    'order_line_item_selection'
+>
+
 export type VisualBuilderNode =
     | TriggerButtonNodeType
     | MultipleChoicesNodeType
@@ -143,6 +151,7 @@ export type VisualBuilderNode =
     | EndNodeType
     | ShopperAuthenticationNodeType
     | ConditionsNodeType
+    | OrderLineItemSelectionNodeType
 
 export type VisualBuilderEdge = Edge<{
     name?: string

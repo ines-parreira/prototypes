@@ -41,6 +41,10 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--accessory-yellow-3)',
         backgroundColor: 'var(--accessory-yellow-1)',
     },
+    order_line_item_selection: {
+        color: 'var(--accessory-teal-3)',
+        backgroundColor: 'var(--accessory-teal-1)',
+    },
 }
 
 export const iconByVisualBuilderNodeType: Record<
@@ -55,6 +59,7 @@ export const iconByVisualBuilderNodeType: Record<
     http_request: <i className="material-icons">webhook</i>,
     shopper_authentication: <i className="material-icons">person</i>,
     conditions: <img src={conditionsMergeIcon} alt="merge" />,
+    order_line_item_selection: <i className="material-icons">label</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<
@@ -71,6 +76,7 @@ export const labelByVisualBuilderNodeType: Record<
     shopper_authentication: 'Customer login',
     conditions: 'Conditions',
     end: 'End flow',
+    order_line_item_selection: 'Item selection',
 }
 
 export const endNodeActionLabelByAction: Record<

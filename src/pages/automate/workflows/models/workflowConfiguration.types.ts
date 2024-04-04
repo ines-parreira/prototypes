@@ -75,6 +75,7 @@ export type WorkflowStepConditions = {
         name: string
     }
 }
+
 export type WorkflowStepOrderSelection = {
     id: string
     kind: 'order-selection'
@@ -116,6 +117,14 @@ export type WorkflowStepEnd = {
     kind: 'end'
 }
 
+export type WorkflowStepOrderLineItemSelection = {
+    id: string
+    kind: 'order-line-item-selection'
+    settings: {
+        message: Message
+    }
+}
+
 export type WorkflowStep =
     | WorkflowStepTextInput
     | WorkflowStepAttachmentsInput
@@ -128,6 +137,7 @@ export type WorkflowStep =
     | WorkflowStepHelpfulPrompt
     | WorkflowStepEnd
     | WorkflowStepConditions
+    | WorkflowStepOrderLineItemSelection
 
 export type WorkflowTransition = {
     id: string

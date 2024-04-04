@@ -17,6 +17,7 @@ import {
     WorkflowStepHelpfulPrompt,
     WorkflowStepHttpRequest,
     WorkflowStepMessage,
+    WorkflowStepOrderLineItemSelection,
     WorkflowStepOrderSelection,
     WorkflowStepShopperAuthentication,
     WorkflowStepTextInput,
@@ -379,6 +380,18 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     kind: 'shopper-authentication',
                     settings: {
                         integration_id: node.data.integrationId,
+                    },
+                }
+                c.steps.push(step)
+                stepIdByNodeId[node.id] = step.id
+            } else if (node.type === 'order_line_item_selection') {
+                const step: WorkflowStepOrderLineItemSelection = {
+                    id: node.id,
+                    kind: 'order-line-item-selection',
+                    settings: {
+                        message: {
+                            content: node.data.content,
+                        },
                     },
                 }
                 c.steps.push(step)

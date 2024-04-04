@@ -10,6 +10,7 @@ import {
     AutomatedMessageNodeType,
     EndNodeType,
     FileUploadNodeType,
+    OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     TextReplyNodeType,
     TriggerButtonNodeType,
@@ -21,6 +22,7 @@ import {
     buildAutomatedMessageNode,
     buildEndNode,
     buildFileUploadNode,
+    buildOrderLineItemSelectionNode,
     buildOrderSelectionNode,
     buildShopperAuthenticationNode,
     buildTextReplyNode,
@@ -64,6 +66,11 @@ export type VisualBuilderBaseAction =
           content: MessageContent
       }
     | {
+          type: 'SET_ORDER_LINE_ITEM_SELECTION_CONTENT'
+          orderLineItemSelectionNodeId: string
+          content: MessageContent
+      }
+    | {
           type: 'SET_END_NODE_SETTINGS'
           endNodeId: string
           settings: Pick<
@@ -93,6 +100,10 @@ export type VisualBuilderBaseAction =
       }
     | {
           type: 'INSERT_ORDER_SELECTION_NODE'
+          beforeNodeId: string
+      }
+    | {
+          type: 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE'
           beforeNodeId: string
       }
     | {
@@ -173,6 +184,17 @@ export function baseReducer(
                     node.data.content = action.content
                 }
             })
+        case 'SET_ORDER_LINE_ITEM_SELECTION_CONTENT':
+            return produce(graph, (draft) => {
+                const node = draft.nodes.find(
+                    (n): n is OrderLineItemSelectionNodeType =>
+                        n.id === action.orderLineItemSelectionNodeId &&
+                        n.type === 'order_line_item_selection'
+                )
+                if (node) {
+                    node.data.content = action.content
+                }
+            })
         case 'SET_END_NODE_SETTINGS':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
@@ -224,6 +246,14 @@ export function baseReducer(
                 insertNodeBefore(
                     graph,
                     buildOrderSelectionNode(),
+                    action.beforeNodeId
+                )
+            )
+        case 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE':
+            return computeNodesPositions(
+                insertNodeBefore(
+                    graph,
+                    buildOrderLineItemSelectionNode(),
                     action.beforeNodeId
                 )
             )

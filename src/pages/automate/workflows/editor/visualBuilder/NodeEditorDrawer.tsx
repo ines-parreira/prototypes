@@ -22,6 +22,7 @@ import NodeEditorDrawerContext, {
 } from './NodeEditorDrawerContext'
 import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/ShopperAuthenticationEditor'
 import ConditionsNodeEditor from './editors/ConditionsNodeEditor/ConditionsNodeEditor'
+import OrderLineItemSelectionEditor from './editors/OrderLineItemSelectionEditor'
 
 type Props = {
     nodeInEdition?: VisualBuilderNode | null
@@ -120,6 +121,12 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                     )}
                     {memoizedNodeInEdition?.type === 'conditions' && (
                         <ConditionsNodeEditor
+                            nodeInEdition={memoizedNodeInEdition}
+                        />
+                    )}
+                    {memoizedNodeInEdition?.type ===
+                        'order_line_item_selection' && (
+                        <OrderLineItemSelectionEditor
                             nodeInEdition={memoizedNodeInEdition}
                         />
                     )}

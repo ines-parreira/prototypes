@@ -28,6 +28,7 @@ export const optionalNodeTypes: NonNullable<VisualBuilderNode['type']>[] = [
     'shopper_authentication',
     'http_request',
     'conditions',
+    'order_line_item_selection',
 ]
 
 type Workflow = {
@@ -84,7 +85,7 @@ function useSupportedChannelsFromFeatureFlag(
         | FeatureFlagKey.FlowsStepsShopperInput
         | FeatureFlagKey.FlowsStepsOrderSelection
         | FeatureFlagKey.FlowsStepsShopperAuthentication
-        | FeatureFlagKey.FlowsStepsOrderSelection
+        | FeatureFlagKey.FlowsStepsOrderLineItemSelection
         | FeatureFlagKey.FlowsStepsHttpRequest
         | FeatureFlagKey.FlowsStepsConditions
 ): Set<SelfServiceChannelType> {
@@ -133,6 +134,12 @@ function useHttpRequestSupportedChannels(): Set<SelfServiceChannelType> {
 function useConditionsSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
         FeatureFlagKey.FlowsStepsConditions
+    )
+}
+
+function useOrderLineItemSelectionSupportedChannels(): Set<SelfServiceChannelType> {
+    return useSupportedChannelsFromFeatureFlag(
+        FeatureFlagKey.FlowsStepsOrderLineItemSelection
     )
 }
 
@@ -256,6 +263,8 @@ export default function useWorkflowChannelSupport(
         useShopperAuthenticationSupportedChannels()
     const httpRequestSupportedChannels = useHttpRequestSupportedChannels()
     const conditionsSupportedChannels = useConditionsSupportedChannels()
+    const orderLineItemSelectionSupportedChannels =
+        useOrderLineItemSelectionSupportedChannels()
 
     const getChannelTypesWhereWorkflowIsEnabled =
         useGetChannelTypesWhereWorkflowIsEnabled(shopType, shopName)
@@ -296,6 +305,13 @@ export default function useWorkflowChannelSupport(
                     (c) => !conditionsSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'order_line_item_selection') {
+                return embeddingChannels.filter(
+                    (c) => !orderLineItemSelectionSupportedChannels.has(c)
+                )
+            }
+
             return []
         },
         [
@@ -305,6 +321,7 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
             shopperAuthenticationSupportedChannels,
+            orderLineItemSelectionSupportedChannels,
         ]
     )
 
@@ -338,6 +355,13 @@ export default function useWorkflowChannelSupport(
                     conditionsSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'order_line_item_selection') {
+                return allChannels.filter((c) =>
+                    orderLineItemSelectionSupportedChannels.has(c)
+                )
+            }
+
             return []
         },
         [
@@ -346,6 +370,7 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             shopperAuthenticationSupportedChannels,
             httpRequestSupportedChannels,
+            orderLineItemSelectionSupportedChannels,
         ]
     )
 
@@ -377,6 +402,13 @@ export default function useWorkflowChannelSupport(
                     (c) => !conditionsSupportedChannels.has(c)
                 )
             }
+
+            if (nodeType === 'order_line_item_selection') {
+                return allChannels.filter(
+                    (c) => !orderLineItemSelectionSupportedChannels.has(c)
+                )
+            }
+
             return []
         },
         [
@@ -385,6 +417,7 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
             shopperAuthenticationSupportedChannels,
+            orderLineItemSelectionSupportedChannels,
         ]
     )
 
@@ -404,13 +437,21 @@ export default function useWorkflowChannelSupport(
                     return ['text_reply', 'file_upload']
                 }
             }
+
             if (
                 workflow.steps.find((s) => s.kind === 'shopper-authentication')
             ) {
+                if (!shopperAuthenticationSupportedChannels.has(channelType)) {
+                    return ['shopper_authentication']
+                }
+            }
+
+            if (workflow.steps.find((s) => s.kind === 'order-selection')) {
                 if (!orderSelectionSupportedChannels.has(channelType)) {
                     return ['order_selection']
                 }
             }
+
             if (workflow.steps.find((s) => s.kind === 'http-request')) {
                 if (!httpRequestSupportedChannels.has(channelType)) {
                     return ['http_request']
@@ -422,6 +463,17 @@ export default function useWorkflowChannelSupport(
                     return ['conditions']
                 }
             }
+
+            if (
+                workflow.steps.find(
+                    (s) => s.kind === 'order-line-item-selection'
+                )
+            ) {
+                if (!orderLineItemSelectionSupportedChannels.has(channelType)) {
+                    return ['order_line_item_selection']
+                }
+            }
+
             return []
         },
         [
@@ -429,6 +481,8 @@ export default function useWorkflowChannelSupport(
             shopperInputSupportedChannels,
             orderSelectionSupportedChannels,
             httpRequestSupportedChannels,
+            shopperAuthenticationSupportedChannels,
+            orderLineItemSelectionSupportedChannels,
         ]
     )
 
@@ -440,7 +494,8 @@ export default function useWorkflowChannelSupport(
                 nodeType === 'order_selection' ||
                 nodeType === 'shopper_authentication' ||
                 nodeType === 'http_request' ||
-                nodeType === 'conditions'
+                nodeType === 'conditions' ||
+                nodeType === 'order_line_item_selection'
             ) {
                 const unsupportedChannels = getUnsupportedChannels(nodeType)
                 return allChannels.every((c) => unsupportedChannels.includes(c))
