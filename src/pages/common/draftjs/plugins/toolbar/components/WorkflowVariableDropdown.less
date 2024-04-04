@@ -1,4 +1,5 @@
 @import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
     .dropdown {
@@ -37,6 +38,11 @@
         overflow-x: hidden;
     }
 
+    .search {
+        padding: @layout-spacing-s @layout-spacing-xs;
+        width: 100%;
+        max-width: unset;
+    }
     .item {
         display: flex;
         align-items: center;

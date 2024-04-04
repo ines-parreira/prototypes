@@ -11,6 +11,7 @@ import {
     WorkflowVariableGroup,
 } from 'pages/automate/workflows/models/variables.types'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
+import Search from 'pages/common/components/Search'
 import {useToolbarContext} from '../ToolbarContext'
 
 import css from './WorkflowVariableDropdown.less'
@@ -43,8 +44,62 @@ const WorkflowVariableDropdown = ({
         ],
     } = useToolbarContext()
 
-    const [selectedCategory, setSelectedCategory] =
-        useState<WorkflowVariableGroup | null>(null)
+    const allVariables = useMemo(
+        () =>
+            workflowVariablesProp.reduce<WorkflowVariable[]>(
+                (acc, category) => {
+                    if ('variables' in category) {
+                        return [...acc, ...category.variables]
+                    }
+                    return acc
+                },
+                []
+            ),
+        [workflowVariablesProp]
+    )
+
+    const [searchQuery, setSearchQuery] = useState<string>('')
+
+    const [selectedCategory, setSelectedCategory] = useState<Omit<
+        WorkflowVariableGroup,
+        'nodeType'
+    > | null>(null)
+
+    const [searchResults, setSearchResults] = useState<
+        WorkflowVariable[] | null
+    >(null)
+    const handleSearch = (query: string) => {
+        setSearchQuery(query)
+
+        if (query === '' && searchResults !== null) {
+            setSearchResults(null)
+            setSelectedCategory(null)
+            return
+        }
+
+        if (selectedCategory == null) {
+            const searchResults = allVariables.filter((variable) =>
+                variable.name.toLowerCase().includes(query.toLowerCase())
+            )
+
+            setSearchResults(searchResults)
+        } else {
+            const category = workflowVariablesProp.find(
+                (category) => category.name === selectedCategory?.name
+            )
+
+            if (category && 'variables' in category) {
+                const searchResults = category.variables.filter((variable) =>
+                    variable.name.toLowerCase().includes(query.toLowerCase())
+                )
+
+                setSelectedCategory({
+                    name: category.name,
+                    variables: searchResults,
+                })
+            }
+        }
+    }
 
     useEffect(() => {
         if (!isOpen) {
@@ -66,6 +121,10 @@ const WorkflowVariableDropdown = ({
         ? selectedCategory.variables
         : workflowVariables
 
+    const options = Array.isArray(searchResults)
+        ? searchResults
+        : filteredOptions
+
     return (
         <Dropdown
             isOpen={isOpen}
@@ -75,10 +134,16 @@ const WorkflowVariableDropdown = ({
             onToggle={onToggle}
             safeDistance={0}
         >
-            {selectedCategory && (
+            {(selectedCategory || Array.isArray(searchResults)) && (
                 <DropdownHeader>
                     <Button
-                        onClick={() => setSelectedCategory(null)}
+                        onClick={() => {
+                            if (Array.isArray(searchResults)) {
+                                setSearchResults(null)
+                            }
+                            setSelectedCategory(null)
+                            setSearchQuery('')
+                        }}
                         fillStyle="ghost"
                         intent="secondary"
                         className={css.backButton}
@@ -89,13 +154,24 @@ const WorkflowVariableDropdown = ({
                             className={css.backButtonIconLabel}
                         >
                             <span className={css.categoryName}>
-                                {selectedCategory.name}
+                                {searchResults
+                                    ? 'Search results'
+                                    : selectedCategory?.name}
                             </span>
                         </ButtonIconLabel>
                     </Button>
                 </DropdownHeader>
             )}
             <DropdownBody>
+                {workflowVariables.length > 0 && (
+                    <Search
+                        placeholder="Search for a variable"
+                        className={css.search}
+                        value={searchQuery}
+                        onChange={handleSearch}
+                    />
+                )}
+
                 {!selectedCategory && (
                     <span className={css.header}>{noSelectedCategoryText}</span>
                 )}
@@ -106,7 +182,15 @@ const WorkflowVariableDropdown = ({
                         </span>
                     </div>
                 )}
-                {filteredOptions.map((option, index) => {
+
+                {options.length === 0 && searchQuery != null && (
+                    <div>
+                        <span className={css.noVariablesMessage}>
+                            No results
+                        </span>
+                    </div>
+                )}
+                {options.map((option, index) => {
                     return (
                         <DropdownItem
                             key={`${option.name}-${index}`}
