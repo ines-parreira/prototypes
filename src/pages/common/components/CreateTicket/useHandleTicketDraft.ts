@@ -1,5 +1,6 @@
 import {useHistory} from 'react-router-dom'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import {LocationDescriptor} from 'history'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {
@@ -56,14 +57,24 @@ export default function useHandleTicketDraft() {
         })
     }, [currentUser, history])
 
-    const onDiscardDraft = useCallback(async () => {
-        await localForage.clear()
-        history.push('/app/ticket/new')
-        logEvent(SegmentEvent.DraftTicket, {
-            type: 'discard',
-            user_id: currentUser.get('id'),
-        })
-    }, [currentUser, history, localForage])
+    const onDiscardDraft = useCallback(
+        async (
+            params: LocationDescriptor<{
+                receiver: {
+                    name: string
+                    address: string
+                }
+            }>
+        ) => {
+            await localForage.clear()
+            history.push(params)
+            logEvent(SegmentEvent.DraftTicket, {
+                type: 'discard',
+                user_id: currentUser.get('id'),
+            })
+        },
+        [currentUser, history, localForage]
+    )
 
     return useMemo(
         () => ({hasDraft, onResumeDraft, onDiscardDraft}),

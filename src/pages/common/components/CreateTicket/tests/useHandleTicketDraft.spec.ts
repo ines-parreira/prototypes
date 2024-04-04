@@ -75,19 +75,35 @@ describe('useHandleTicketDraft', () => {
         )
     })
 
-    it('should handle draft discarding', async () => {
+    it.each([
+        ['string', 'path/to/new'],
+        [
+            'object',
+            {
+                pathname: 'path/to/new',
+                search: '?hello=gorgias',
+                state: {
+                    receiver: {
+                        name: 'Mister Receiver',
+                        address: 'hello@gorgias.com',
+                    },
+                },
+            },
+        ],
+    ])('should handle draft discarding with %s param', async (_type, param) => {
         const mockClear = jest.fn().mockResolvedValue(true)
+
         jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
             ...mockGetTableObject,
             clear: mockClear,
         })
 
         const {result} = renderHook(() => useHandleTicketDraft())
-        await result.current.onDiscardDraft()
+        await result.current.onDiscardDraft(param)
 
         await waitFor(() => {
             expect(mockClear).toHaveBeenCalled()
-            expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
+            expect(mockHistoryPush).toHaveBeenCalledWith(param)
         })
 
         expect(logEventMock).toHaveBeenCalledWith(

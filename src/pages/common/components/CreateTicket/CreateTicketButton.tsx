@@ -7,6 +7,7 @@ import React, {
     useRef,
 } from 'react'
 import {Link, useHistory} from 'react-router-dom'
+import {LocationDescriptor} from 'history'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import Button from 'pages/common/components/button/Button'
@@ -19,16 +20,19 @@ import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandle
 type CreateTicketButtonProps = {
     buttonProps?: ComponentProps<typeof Button>
     isDisabled?: boolean
-    linkProps?: ComponentProps<typeof Link>
+    to?: LocationDescriptor<{
+        receiver: {
+            name: string
+            address: string
+        }
+    }>
     shouldBindKeys?: boolean
     trigger?: ReactElement
 }
 export default function CreateTicketButton({
     buttonProps,
     isDisabled,
-    linkProps = {
-        to: '/app/ticket/new',
-    },
+    to = '/app/ticket/new',
     shouldBindKeys = false,
     trigger,
 }: CreateTicketButtonProps) {
@@ -51,7 +55,7 @@ export default function CreateTicketButton({
     useConditionalShortcuts(shouldBindKeys, 'CreateTicketButton', actions)
 
     return !hasDraft ? (
-        <Link className="d-inline-flex" {...linkProps}>
+        <Link className="d-inline-flex" to={to}>
             {trigger || (
                 <Button {...buttonProps} isDisabled={isDisabled}>
                     Create ticket
@@ -93,7 +97,7 @@ export default function CreateTicketButton({
                             label: 'Discard and create new ticket',
                             value: 'discard',
                         }}
-                        onClick={onDiscardDraft}
+                        onClick={() => onDiscardDraft(to)}
                         shouldCloseOnSelect
                     />
                 </DropdownBody>

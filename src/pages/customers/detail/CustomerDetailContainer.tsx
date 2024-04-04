@@ -84,14 +84,12 @@ export const CustomerDetailContainer = ({
     const shouldDisplayLoader = customersIsLoading('active')
     const createTicketOptions = useMemo(
         () => ({
-            to: {
-                pathname: `/app/ticket/new`,
-                search: `?customer=${activeCustomer.get('id') as number}`,
-                state: {
-                    receiver: {
-                        name: activeCustomer.get('name'),
-                        address: filteredChannels[0]?.address,
-                    },
+            pathname: `/app/ticket/new`,
+            search: `?customer=${activeCustomer.get('id') as number}`,
+            state: {
+                receiver: {
+                    name: activeCustomer.get('name'),
+                    address: filteredChannels[0]?.address,
                 },
             },
         }),
@@ -107,7 +105,7 @@ export const CustomerDetailContainer = ({
                 <div className={css.buttons}>
                     <CreateTicketButton
                         buttonProps={{intent: 'secondary'}}
-                        linkProps={createTicketOptions}
+                        to={createTicketOptions}
                     />
                     <Button onClick={() => setIsCustomerFormOpen(true)}>
                         Edit customer

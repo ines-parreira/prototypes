@@ -107,10 +107,8 @@ describe('<CreateTicketButton />', () => {
             const {getByText} = renderWithRouter(
                 <CreateTicketButton
                     buttonProps={{intent: 'secondary'}}
-                    linkProps={{
-                        to: {
-                            pathname: `/custom/path`,
-                        },
+                    to={{
+                        pathname: `/custom/path`,
                     }}
                 />
             )
@@ -134,10 +132,8 @@ describe('<CreateTicketButton />', () => {
             const {getByText} = renderWithRouter(
                 <CreateTicketButton
                     buttonProps={{intent: 'secondary'}}
-                    linkProps={{
-                        to: {
-                            pathname: `/custom/path`,
-                        },
+                    to={{
+                        pathname: `/custom/path`,
                     }}
                 />
             )
