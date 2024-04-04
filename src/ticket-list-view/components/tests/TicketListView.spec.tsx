@@ -172,15 +172,6 @@ describe('<TicketListView />', () => {
         expect(getByText('true')).toBeInTheDocument()
     })
 
-    it('should display view emoji decoration', () => {
-        useAppSelectorMock.mockReturnValue({
-            name: 'view name',
-            decoration: {emoji: '🎉'},
-        })
-        const {getByText} = render(<TicketListView viewId={123} />)
-        expect(getByText('🎉')).toBeInTheDocument()
-    })
-
     it('should render empty placeholder', () => {
         useTicketsMock.mockReturnValue({
             loadMore,

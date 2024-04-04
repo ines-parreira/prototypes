@@ -29,6 +29,7 @@ import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
 import InvalidFiltersAction from './InvalidFiltersAction'
+import ViewDecoration from './ViewDecoration'
 import css from './TicketListView.less'
 
 type Props = {
@@ -53,7 +54,6 @@ export const listInfoProps = {
 export default function TicketListView({activeTicketId, viewId}: Props) {
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
-    const viewEmoji = view?.decoration?.emoji
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null
     const defaultSortOrder = `${view?.order_by || ''}:${view?.order_dir || ''}`
@@ -164,9 +164,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
         <div className={css.wrapper}>
             <div className={css.titleWrapper}>
                 <div className={css.viewName}>
-                    {!!viewEmoji && (
-                        <span className={css.emoji}>{viewEmoji}</span>
-                    )}
+                    <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
                 </div>
                 <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
