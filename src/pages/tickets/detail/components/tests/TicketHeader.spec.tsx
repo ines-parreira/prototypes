@@ -187,6 +187,8 @@ describe('<TicketHeader />', () => {
 
     it('should mark a ticket as unread when clicking "Mark as unread" button', async () => {
         const readTicket = fromJS({...ticket, is_unread: false})
+        const mockOnToggleUnread = jest.fn()
+
         const {getByText} = render(
             <Provider
                 store={mockStore({
@@ -194,7 +196,11 @@ describe('<TicketHeader />', () => {
                     ticket: readTicket,
                 })}
             >
-                <TicketHeader {...minProps} ticket={readTicket} />
+                <TicketHeader
+                    {...minProps}
+                    ticket={readTicket}
+                    onToggleUnread={mockOnToggleUnread}
+                />
             </Provider>
         )
 
@@ -207,6 +213,7 @@ describe('<TicketHeader />', () => {
                     is_unread: true,
                 }
             )
+            expect(mockOnToggleUnread).toHaveBeenCalledWith(ticket.id, true)
             return expect(notificationsActions.notify).toHaveBeenNthCalledWith(
                 1,
                 {

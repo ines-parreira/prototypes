@@ -32,6 +32,7 @@ import {
     ticketPartialUpdate,
 } from 'state/ticket/actions'
 import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 import {hasRole} from 'utils'
 
 import Snooze from './Snooze'
@@ -51,6 +52,7 @@ type Props = {
     hideTicket: () => Promise<void>
     setStatus: (status: string) => any
     onGoToNextTicket?: () => void
+    onToggleUnread?: OnToggleUnreadFn
 }
 
 const TicketHeader = ({
@@ -59,6 +61,7 @@ const TicketHeader = ({
     onGoToNextTicket,
     setStatus,
     ticket,
+    onToggleUnread,
 }: Props) => {
     const [askTrashConfirmation, setAskTrashConfirmation] = useState(false)
     const [isMergeTicketModalOpen, setIsMergeTicketModalOpen] = useState(false)
@@ -197,6 +200,8 @@ const TicketHeader = ({
                 is_unread: true,
             })
         )
+
+        onToggleUnread?.(ticket.get('id'), true)
         void dispatch(
             notify({
                 status: NotificationStatus.Success,

@@ -18,6 +18,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {setViewActive} from 'state/views/actions'
 import {getViewPlainJS} from 'state/views/selectors'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {TICKET_HEIGHT} from '../constants'
 import useSortOrder from '../hooks/useSortOrder'
@@ -31,11 +32,6 @@ import TicketListInfo from './TicketListInfo'
 import InvalidFiltersAction from './InvalidFiltersAction'
 import ViewDecoration from './ViewDecoration'
 import css from './TicketListView.less'
-
-type Props = {
-    activeTicketId?: number
-    viewId: number
-}
 
 export const listInfoProps = {
     DEFAULT: {text: 'No tickets', subText: 'There are no tickets in this view'},
@@ -51,7 +47,17 @@ export const listInfoProps = {
     },
 }
 
-export default function TicketListView({activeTicketId, viewId}: Props) {
+type Props = {
+    activeTicketId?: number
+    viewId: number
+    registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
+}
+
+export default function TicketListView({
+    activeTicketId,
+    viewId,
+    registerToggleUnread,
+}: Props) {
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
     const areViewFiltersInvalid = !!view?.deactivated_datetime
@@ -65,7 +71,7 @@ export default function TicketListView({activeTicketId, viewId}: Props) {
         newTickets,
         ticketIds,
         initialLoaded,
-    } = useTickets(viewId, sortOrder, activeTicketId)
+    } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
 
     const initialLoadedRef = useRef(initialLoaded)
 

@@ -98,7 +98,7 @@ export default function Ticket({
                                     <div className={css.subject}>
                                         {ticket.subject}
                                     </div>
-                                    {!isActive && ticket.is_unread && (
+                                    {ticket.is_unread && (
                                         <div className={css.counter} />
                                     )}
                                 </div>

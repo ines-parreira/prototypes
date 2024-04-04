@@ -4,12 +4,17 @@ import {useParams} from 'react-router-dom'
 import history from 'pages/history'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 type Props = {
     isOnSplitTicketView?: boolean
+    onToggleUnread?: OnToggleUnreadFn
 }
 
-export default function TicketWrapper({isOnSplitTicketView}: Props) {
+export default function TicketWrapper({
+    isOnSplitTicketView,
+    onToggleUnread,
+}: Props) {
     const {viewId} = useParams<{viewId: string}>()
     const {nextTicketId} = useSplitTicketView()
 
@@ -30,6 +35,7 @@ export default function TicketWrapper({isOnSplitTicketView}: Props) {
             onGoToNextTicket={
                 isOnSplitTicketView ? handleGoToNextTicket : undefined
             }
+            onToggleUnread={onToggleUnread}
         />
     )
 }

@@ -4,6 +4,8 @@ import {useSplitTicketView} from 'split-ticket-view-toggle'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import usePrevious from 'hooks/usePrevious'
 import useElementSize from 'hooks/useElementSize'
+import useEffectOnce from 'hooks/useEffectOnce'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import useTicketIds from '../hooks/useTicketIds'
 import {TICKET_HEIGHT} from '../constants'
@@ -18,7 +20,8 @@ import usePrevNextTicketId from './usePrevNextTicketId'
 export default function useTickets(
     viewId: number,
     sortOrder: SortOrder,
-    ticketId?: number
+    ticketId?: number,
+    registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
 ) {
     const {hasMore, initialLoaded, loadMore, partials, setLatest} =
         useTicketPartials(viewId, sortOrder)
@@ -84,7 +87,16 @@ export default function useTickets(
         [staleTickets, visiblePartials]
     )
 
-    const data = useTicketData(visibleStaleTicketIds, markUpdated, ticketId)
+    const {data, toggleUnread} = useTicketData(
+        visibleStaleTicketIds,
+        markUpdated,
+        ticketId
+    )
+
+    useEffectOnce(() => {
+        registerToggleUnread?.(toggleUnread)
+    })
+
     const tickets = partials.map((partial) => data[partial.id] || partial)
 
     const sortField = useMemo(

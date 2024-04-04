@@ -36,7 +36,7 @@ describe('useTickets', () => {
                 updated_datetime: new Date('28-11-2023T13:36:57').getTime(),
             },
         ]
-        useTicketDataMock.mockReturnValue({})
+        useTicketDataMock.mockReturnValue({data: {}})
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
             initialLoaded: false,
@@ -116,5 +116,18 @@ describe('useTickets', () => {
             next: 789,
             prev: 123,
         })
+    })
+
+    it('should register toggleUnread', () => {
+        const mockRegisterToggleUnread = jest.fn()
+        const mockToggleUnread = jest.fn()
+        useTicketDataMock.mockReturnValue({
+            data: {},
+            toggleUnread: mockToggleUnread,
+        })
+        renderHook(() =>
+            useTickets(1, 'created_datetime:asc', 456, mockRegisterToggleUnread)
+        )
+        expect(mockRegisterToggleUnread).toHaveBeenCalledWith(mockToggleUnread)
     })
 })

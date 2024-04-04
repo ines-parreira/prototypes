@@ -7,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import {TicketElement, TicketMessage} from 'models/ticket/types'
 import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 import {getDisplayHistory} from 'state/ticket/selectors'
 
 import {
@@ -32,6 +33,7 @@ interface Props {
     shopperName: string
     submit: (params: SubmitArgs) => any
     onGoToNextTicket?: () => void
+    onToggleUnread?: OnToggleUnreadFn
 }
 
 export default function TicketBody({
@@ -43,6 +45,7 @@ export default function TicketBody({
     shopperName,
     submit,
     onGoToNextTicket,
+    onToggleUnread,
 }: Props) {
     const virtuosoRef = useRef<VirtuosoHandle | null>(null)
     const [expandedMessages, toggleMessage] = useExpandedMessages()
@@ -83,6 +86,7 @@ export default function TicketBody({
                     hideTicket={hideTicket}
                     setStatus={setStatus}
                     onGoToNextTicket={onGoToNextTicket}
+                    onToggleUnread={onToggleUnread}
                 />
             ) : (
                 <TicketBodyElement
@@ -107,6 +111,7 @@ export default function TicketBody({
             setHighlightedElements,
             setStatus,
             onGoToNextTicket,
+            onToggleUnread,
         ]
     )
 

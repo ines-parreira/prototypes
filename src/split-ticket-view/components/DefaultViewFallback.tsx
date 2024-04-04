@@ -3,11 +3,13 @@ import React, {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {ViewType} from 'models/view/types'
 import {getViewIdToDisplay} from 'state/views/selectors'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 import {TicketListView} from 'ticket-list-view'
 
 type Params = {
     ticketId?: string
     viewId?: string
+    registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
 }
 
 // This component shouldn't need to exist, but there is an issue in react-router
@@ -21,6 +23,7 @@ type Params = {
 export default function DefaultViewFallback({
     ticketId: urlTicketId,
     viewId: urlViewId,
+    registerToggleUnread,
 }: Params) {
     const defaultViewId = useAppSelector((state) =>
         getViewIdToDisplay(state)(ViewType.TicketList)
@@ -36,5 +39,11 @@ export default function DefaultViewFallback({
         [urlTicketId]
     )
 
-    return <TicketListView activeTicketId={ticketId} viewId={viewId} />
+    return (
+        <TicketListView
+            activeTicketId={ticketId}
+            viewId={viewId}
+            registerToggleUnread={registerToggleUnread}
+        />
+    )
 }

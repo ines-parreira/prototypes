@@ -1,5 +1,5 @@
 import {QueryKey, useQueryClient} from '@tanstack/react-query'
-import {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import {fetchTicketsByTicketIds} from 'models/ticket/resources'
 
@@ -21,8 +21,7 @@ export default function useTicketData(
         [visibleStaleTicketIds]
     )
 
-    useEffect(() => {
-        if (!ticketId) return
+    const toggleUnread = useCallback((ticketId: number, isUnread: boolean) => {
         setData((currentData) => {
             const ticket = currentData[ticketId]
             if (!ticket) return currentData
@@ -31,11 +30,16 @@ export default function useTicketData(
                 ...currentData,
                 [ticketId]: {
                     ...ticket,
-                    is_unread: false,
+                    is_unread: isUnread,
                 },
             }
         })
-    }, [ticketId])
+    }, [])
+
+    useEffect(() => {
+        if (!ticketId) return
+        toggleUnread(ticketId, false)
+    }, [ticketId, toggleUnread])
 
     useEffect(() => {
         void (async () => {
@@ -59,5 +63,5 @@ export default function useTicketData(
         })()
     }, [markUpdated, queryClient, queryKey, visibleStaleTicketIds])
 
-    return data
+    return {data, toggleUnread}
 }

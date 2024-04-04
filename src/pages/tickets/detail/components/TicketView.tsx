@@ -8,6 +8,7 @@ import {displayHistoryOnNextPage, toggleHistory} from 'state/ticket/actions'
 import {getCustomersState} from 'state/customers/selectors'
 import {getBody, getDisplayHistory} from 'state/ticket/selectors'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -20,6 +21,7 @@ type Props = {
     submit: (params: SubmitArgs) => any
     setStatus: (status: string) => any
     onGoToNextTicket?: () => void
+    onToggleUnread?: OnToggleUnreadFn
 }
 
 export const TicketView = ({
@@ -28,6 +30,7 @@ export const TicketView = ({
     setStatus,
     submit,
     onGoToNextTicket,
+    onToggleUnread,
 }: Props) => {
     const dispatch = useAppDispatch()
     const pageRef = useRef<HTMLDivElement>(null)
@@ -141,6 +144,7 @@ export const TicketView = ({
                         'Customer'
                     }
                     onGoToNextTicket={onGoToNextTicket}
+                    onToggleUnread={onToggleUnread}
                 />
             </div>
         </div>

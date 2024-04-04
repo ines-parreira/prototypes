@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 import {useRouteMatch} from 'react-router-dom'
 
 import {PanelLayoutConfig} from 'pages/PanelLayout'
@@ -13,6 +13,8 @@ import {
     LayoutKeys,
 } from 'split-ticket-view/constants'
 
+import type {OnToggleUnreadFn} from './types'
+
 export default function useSplitTicketPage() {
     const match = useRouteMatch<{
         ticketId: string
@@ -20,6 +22,15 @@ export default function useSplitTicketPage() {
     }>('/app/views/:viewId/:ticketId')
     const viewId = match?.params.viewId
     const ticketId = match?.params.ticketId
+
+    const [onToggleUnread, setOnToggleUnread] = useState<OnToggleUnreadFn>()
+
+    const registerToggleUnread = useCallback(
+        (toggleUnreadFn: OnToggleUnreadFn) => {
+            setOnToggleUnread(() => toggleUnreadFn)
+        },
+        []
+    )
 
     const config = useMemo(
         (): PanelLayoutConfig => [
@@ -31,7 +42,11 @@ export default function useSplitTicketPage() {
             {
                 key: `ticket-list-panel-${viewId || 'default'}`,
                 content: (
-                    <DefaultViewFallback ticketId={ticketId} viewId={viewId} />
+                    <DefaultViewFallback
+                        ticketId={ticketId}
+                        viewId={viewId}
+                        registerToggleUnread={registerToggleUnread}
+                    />
                 ),
                 panelConfig: [
                     DEFAULT_TICKET_PANEL_WIDTH,
@@ -41,7 +56,12 @@ export default function useSplitTicketPage() {
             },
             {
                 key: 'ticket-panel',
-                content: <TicketWrapper isOnSplitTicketView />,
+                content: (
+                    <TicketWrapper
+                        isOnSplitTicketView
+                        onToggleUnread={onToggleUnread}
+                    />
+                ),
                 panelConfig: [Infinity, 300],
             },
             {
@@ -57,7 +77,7 @@ export default function useSplitTicketPage() {
                 ],
             },
         ],
-        [ticketId, viewId]
+        [ticketId, viewId, onToggleUnread, registerToggleUnread]
     )
 
     return useMemo(() => ({config, layoutKey: LayoutKeys.TICKET}), [config])

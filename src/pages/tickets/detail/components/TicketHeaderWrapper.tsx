@@ -9,6 +9,7 @@ import {
     getOtherAgentsOnTicket,
     getOtherAgentsTypingOnTicket,
 } from 'state/agents/selectors'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import css from './TicketHeaderWrapper.less'
 import TicketFields from './TicketFields/TicketFields'
@@ -95,12 +96,14 @@ type Props = {
     hideTicket: () => Promise<void>
     setStatus: (status: string) => any
     onGoToNextTicket?: () => void
+    onToggleUnread?: OnToggleUnreadFn
 }
 
 const TicketHeaderWrapper = ({
     hideTicket,
     setStatus,
     onGoToNextTicket,
+    onToggleUnread,
 }: Props) => {
     const ticket = useAppSelector((state) => state.ticket)
 
@@ -115,6 +118,7 @@ const TicketHeaderWrapper = ({
                     setStatus={setStatus}
                     className="flex-grow"
                     onGoToNextTicket={onGoToNextTicket}
+                    onToggleUnread={onToggleUnread}
                 />
                 <TicketFields />
                 <CollisionDetection />

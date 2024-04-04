@@ -73,6 +73,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {useListVoiceCalls} from 'models/voiceCall/queries'
 import {getSourceTypeOfResponse} from 'state/ticket/utils'
+import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
 import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
@@ -81,7 +82,6 @@ import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
-
 import css from './TicketDetail.less'
 
 export type SubmitArgs = {
@@ -92,6 +92,7 @@ export type SubmitArgs = {
 
 type Props = {
     onGoToNextTicket?: () => void
+    onToggleUnread?: OnToggleUnreadFn
 } & ConnectedProps<typeof connector>
 
 export const TicketDetailContainer = ({
@@ -121,6 +122,7 @@ export const TicketDetailContainer = ({
     ticket,
     updateCursor,
     onGoToNextTicket,
+    onToggleUnread,
 }: Props) => {
     const dispatch = useAppDispatch()
     const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
@@ -667,6 +669,7 @@ export const TicketDetailContainer = ({
             submit={submit}
             setStatus={handleStatusChange}
             onGoToNextTicket={onGoToNextTicket}
+            onToggleUnread={onToggleUnread}
         />
     )
 }
