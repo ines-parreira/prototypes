@@ -13,7 +13,7 @@ describe('StatsPage', () => {
                 title="Foo"
                 description="Foo statistic page"
                 helpUrl="http://example.com"
-                filters={<p>Filters</p>}
+                titleExtra={<p>Filters</p>}
             >
                 Children
             </StatsPage>
@@ -27,7 +27,7 @@ describe('StatsPage', () => {
                 title="Foo"
                 description="Foo statistic page"
                 helpUrl="http://example.com"
-                filters={<p>Filters</p>}
+                titleExtra={<p>Filters</p>}
                 headerCanduId="foo-id"
             >
                 Children

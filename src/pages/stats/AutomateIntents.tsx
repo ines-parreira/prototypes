@@ -67,7 +67,7 @@ export default function AutomateIntents() {
             description="Intents statistics on ticket messages give you an overview of the most reccurrent issues your customers face.
             Intents can be used in rules and macros to automate your ticket-reply workflow."
             helpUrl="https://docs.gorgias.com/intents-sentiments/customer-intents"
-            filters={<AutomateIntentsFilters />}
+            titleExtra={<AutomateIntentsFilters />}
         >
             {pageStatsFilters && (
                 <>

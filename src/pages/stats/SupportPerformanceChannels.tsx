@@ -60,7 +60,7 @@ export default function SupportPerformanceChannels() {
                 description="Channel statistics to get a clear view of your ticket volume based on the different communication
 channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc..."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#channels"
-                filters={<SupportPerformanceChannelsFilters />}
+                titleExtra={<SupportPerformanceChannelsFilters />}
             >
                 <StatWrapper
                     stat={ticketsCreatedPerChannelPerDay}

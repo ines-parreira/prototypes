@@ -94,7 +94,7 @@ function SupportPerformanceRevenue() {
             description="Revenue statistics allow you to measure how much money your support team is generating by
 helping customers through the purchasing journey."
             helpUrl="https://docs.gorgias.com/statistics/revenue-statistics"
-            filters={<SupportPerformanceRevenueFilters />}
+            titleExtra={<SupportPerformanceRevenueFilters />}
         >
             {pageStatsFilters && (
                 <>

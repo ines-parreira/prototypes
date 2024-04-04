@@ -56,7 +56,7 @@ export default function SupportPerformanceTags() {
                 description="Tags statistics will show you how many tickets were created during this time period and have a
 tag attached to them."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#tags"
-                filters={<SupportPerformanceTagsFilters />}
+                titleExtra={<SupportPerformanceTagsFilters />}
             >
                 <StatWrapper
                     stat={ticketsPerTag}

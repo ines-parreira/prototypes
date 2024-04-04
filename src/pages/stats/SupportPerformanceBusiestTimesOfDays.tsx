@@ -47,7 +47,7 @@ export default function SupportPerformanceBusiestTimesOfDays() {
     return (
         <StatsPage
             title="Busiest times of days"
-            filters={<SupportPerformanceBusiestTimesOfDaysFilters />}
+            titleExtra={<SupportPerformanceBusiestTimesOfDaysFilters />}
         >
             {pageStatsFilters && (
                 <StatWrapper

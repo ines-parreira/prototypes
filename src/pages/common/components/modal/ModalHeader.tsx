@@ -7,7 +7,7 @@ import css from './ModalHeader.less'
 
 type Props = {
     className?: string
-    subtitle?: string
+    subtitle?: ReactNode | string
     title: ReactNode
     forceCloseButton?: boolean
 }

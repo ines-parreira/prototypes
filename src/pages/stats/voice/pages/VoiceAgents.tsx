@@ -34,7 +34,7 @@ function VoiceAgents() {
     return (
         <StatsPage
             title={VOICE_AGENTS_PAGE_TITLE}
-            filters={
+            titleExtra={
                 <>
                     <IntegrationsStatsFilter
                         value={pageStatsFilters.integrations}

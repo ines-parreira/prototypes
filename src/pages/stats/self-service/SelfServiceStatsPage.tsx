@@ -309,7 +309,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             title={PAGE_TITLE_PERFORMANCE_BY_FEATURES}
             description={PAGE_DESCRIPTION}
             helpUrl={HELP_URL}
-            filters={<SelfServiceStatsPageFilters />}
+            titleExtra={<SelfServiceStatsPageFilters />}
         >
             {pageStatsFilters && (
                 <>

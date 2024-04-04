@@ -1,0 +1,75 @@
+@import '~css/new/mixins';
+
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .modalBody {
+        padding: 0;
+    }
+
+    .modalContainer {
+        display: flex;
+    }
+
+    .leftSide,
+    .rightSide {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+    }
+
+    .leftSide {
+        padding: @layout-spacing-s;
+    }
+
+    .rightSide {
+        padding: @layout-spacing-l;
+        background-color: var(--neutral-grey-1);
+    }
+
+    .testConfiguration {
+        margin-top: @layout-spacing-m;
+
+        .label {
+            .body-semibold();
+            margin-bottom: @layout-spacing-xs;
+        }
+        .value {
+            .body-regular();
+        }
+    }
+
+    .info {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        margin-top: @layout-spacing-m;
+    }
+
+    .header {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-xxs;
+    }
+
+    .headerRight {
+        .heading-section-regular();
+        font-weight: 500;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .content {
+        .body-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .noMargin {
+        padding-left: 20px;
+    }
+
+    .footer {
+        display: flex;
+        padding: 12px @layout-spacing-s;
+        width: 100%;
+        justify-content: space-between;
+    }
+}

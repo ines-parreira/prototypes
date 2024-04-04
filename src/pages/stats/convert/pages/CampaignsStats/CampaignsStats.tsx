@@ -14,19 +14,36 @@ import StatsPage from 'pages/stats/StatsPage'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
+import {useIsConvertABTestEnabled} from 'pages/convert/common/hooks/useIsConvertABTestEnabled'
+import RequestABTest from 'pages/stats/convert/components/RequestABTest'
+
 import {CampaignStatsFilters} from '../../providers/CampaignStatsFilters'
 
 import {RevenueFilters} from '../../containers/RevenueFilters'
 import {RevenueStatsContent} from '../../containers/RevenueStatsContent'
 
-const CampaignsStats = () => {
+type CampaignsStatsProps = {
+    isConvertSubscriber: boolean
+}
+
+const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
         useParams<ConvertRouteParams>()
+    const isConvertABTestEnabled = useIsConvertABTestEnabled()
+
+    const showButton =
+        isConvertABTestEnabled && isConvertSubscriber && chatIntegrationId
+
     return (
         <CampaignStatsFilters>
             <StatsPage
                 title={chatIntegrationId ? 'Performance' : 'Campaigns'}
-                filters={<RevenueFilters />}
+                titleExtra={
+                    <>
+                        {showButton ? <RequestABTest /> : null}
+                        <RevenueFilters />
+                    </>
+                }
             >
                 <ConvertLimitBanner classes={'mt-4 ml-4 mr-4'} />
                 <RevenueStatsContent />
@@ -56,7 +73,7 @@ function CampaignStatsOrPaywallPage() {
     }
 
     return storeIntegrations.length && isConvertSubscriber ? (
-        <CampaignsStats />
+        <CampaignsStats isConvertSubscriber={isConvertSubscriber} />
     ) : (
         <Redirect to={redirectUrl} />
     )

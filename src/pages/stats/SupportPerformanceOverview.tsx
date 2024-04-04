@@ -111,7 +111,7 @@ export default function SupportPerformanceOverview() {
 
             <StatsPage
                 title={SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE}
-                filters={
+                titleExtra={
                     <>
                         <SupportPerformanceFilters />
                         <DownloadOverviewData />

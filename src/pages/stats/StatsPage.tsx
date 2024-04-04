@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {Container} from 'reactstrap'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
+
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import {DrillDownModal} from 'pages/stats/DrillDownModal'
@@ -11,13 +12,13 @@ import css from './StatsPage.less'
 
 type Props = {
     children: ReactNode
-    filters?: ReactNode
+    titleExtra?: ReactNode
     headerCanduId?: string
 } & ComponentProps<typeof HeaderTitle>
 
 export default function StatsPage({
     children,
-    filters,
+    titleExtra,
     headerCanduId,
     ...headerTitleProps
 }: Props) {
@@ -35,9 +36,9 @@ export default function StatsPage({
                     title={<HeaderTitle {...headerTitleProps} />}
                     className="mb-0"
                 >
-                    {filters && (
+                    {titleExtra && (
                         <div className="d-flex flex-wrap float-right">
-                            {filters}
+                            {titleExtra}
                         </div>
                     )}
                 </PageHeader>

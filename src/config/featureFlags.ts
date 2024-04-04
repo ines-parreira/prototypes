@@ -40,6 +40,7 @@ export enum FeatureFlagKey {
     ChatTranscript = 'chat-transcript',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ConvertCampaignLibraryUi = 'convert-campaign-library-ui',
+    ConvertABTest = 'convert-ab-tests',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
     DisplayVoiceAnalyticsNiceToHave = 'display-voice-analytics-nice-to-have',

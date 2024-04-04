@@ -257,7 +257,7 @@ export default function DEPRECATED_SupportPerformanceOverview() {
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#overview"
-                filters={<DEPRECATED_SupportPerformanceOverviewFilters />}
+                titleExtra={<DEPRECATED_SupportPerformanceOverviewFilters />}
             >
                 {pageStatsFilters && (
                     <>

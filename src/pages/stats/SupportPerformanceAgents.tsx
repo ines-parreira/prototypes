@@ -19,7 +19,7 @@ export default function SupportPerformanceAgents() {
         <div className="full-width">
             <StatsPage
                 title={AGENTS_PAGE_TITLE}
-                filters={
+                titleExtra={
                     <>
                         <SupportPerformanceFilters />
                         <DownloadAgentsPerformanceDataButton />

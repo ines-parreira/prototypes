@@ -85,7 +85,7 @@ const HelpCenterStatsComponent = ({
         <div className="full-width">
             <StatsPage
                 title={PAGE_TITLE_HELP_CENTER}
-                filters={
+                titleExtra={
                     <>
                         <HelpCenterStatsLanguageFilter
                             supportedLocales={

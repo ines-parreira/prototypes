@@ -49,7 +49,7 @@ export default function AutomateMacros() {
             It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
             to help reduce your support inquiries."
             helpUrl="https://docs.gorgias.com/statistics/statistics#macros"
-            filters={
+            titleExtra={
                 pageStatsFilters && (
                     <>
                         <IntegrationsStatsFilter

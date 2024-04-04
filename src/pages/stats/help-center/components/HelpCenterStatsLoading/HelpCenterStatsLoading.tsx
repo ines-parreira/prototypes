@@ -9,7 +9,7 @@ type HelpCenterStatsLoadingProps = {
 
 const HelpCenterStatsLoading = ({title}: HelpCenterStatsLoadingProps) => (
     <div className="full-width">
-        <StatsPage title={title} filters={<></>}>
+        <StatsPage title={title} titleExtra={<></>}>
             <Loader
                 size="24px"
                 data-testid={HELP_CENTER_STATS_TEST_IDS.LOADER}

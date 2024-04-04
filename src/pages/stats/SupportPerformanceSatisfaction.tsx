@@ -73,7 +73,7 @@ function SupportPerformanceSatisfaction() {
             description="Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
 How many surveys have been sent, response rate, average scores and more."
             helpUrl="https://docs.gorgias.com/statistics/statistics#satisfaction"
-            filters={<SupportPerformanceSatisfactionFilters />}
+            titleExtra={<SupportPerformanceSatisfactionFilters />}
         >
             <KeyMetricStatWrapper>
                 <KeyMetricStat

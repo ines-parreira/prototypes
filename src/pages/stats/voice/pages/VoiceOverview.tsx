@@ -126,7 +126,7 @@ function VoiceOverview() {
     return (
         <StatsPage
             title={VOICE_OVERVIEW_PAGE_TITLE}
-            filters={
+            titleExtra={
                 <>
                     <IntegrationsStatsFilter
                         value={pageStatsFilters.integrations}

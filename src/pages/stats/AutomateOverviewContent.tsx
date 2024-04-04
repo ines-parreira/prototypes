@@ -280,7 +280,7 @@ export default function AutomateOverviewContent({
         <div className="full-width">
             <StatsPage
                 title={PAGE_TITLE_AUTOMATE_PAYWALL}
-                filters={
+                titleExtra={
                     <>
                         {isAutomateOverviewChannelsFilter && (
                             <ChannelsStatsFilter

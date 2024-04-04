@@ -6,6 +6,7 @@ import {createMemoryHistory} from 'history'
 import {RootState} from 'state/types'
 import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as useIsConvertABTestEnabledHook from 'pages/convert/common/hooks/useIsConvertABTestEnabled'
 import {getStateWithPrice} from 'utils/paywallTesting'
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -15,6 +16,16 @@ import {campaign} from 'fixtures/campaign'
 import {Campaign} from 'models/convert/campaign/types'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
+
+jest.mock('react-router-dom', () => ({
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    useParams: jest.fn(),
+}))
+
+jest.mock('pages/stats/convert/components/RequestABTest', () => () => {
+    return <div>RequestABTest</div>
+})
 
 jest.mock('../../../containers/RevenueStatsContent', () => ({
     RevenueStatsContent: () => {
@@ -84,6 +95,7 @@ describe('CampaignsStats', () => {
     })
 
     it('should render the paywall with modal for Convert non-subscriber', () => {
+        ;(useParams as jest.Mock).mockReturnValue({})
         jest.spyOn(
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
@@ -100,6 +112,7 @@ describe('CampaignsStats', () => {
     })
 
     it('should redirect to Convert section performance paywall', () => {
+        ;(useParams as jest.Mock).mockReturnValue({})
         jest.spyOn(
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
@@ -129,6 +142,7 @@ describe('CampaignsStats', () => {
     })
 
     it('should render stats for Convert subscriber', () => {
+        ;(useParams as jest.Mock).mockReturnValue({})
         jest.spyOn(
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
@@ -137,5 +151,26 @@ describe('CampaignsStats', () => {
         const {getByText} = renderWithStore(mockedState)
 
         expect(getByText('ConvertStatsContent')).toBeInTheDocument()
+    })
+
+    it('should render stats request A/B test button', () => {
+        ;(useParams as jest.Mock).mockReturnValue({
+            id: '123',
+        })
+
+        jest.spyOn(
+            isConvertSubscriberHook,
+            'useIsConvertSubscriber'
+        ).mockImplementation(() => true)
+
+        jest.spyOn(
+            useIsConvertABTestEnabledHook,
+            'useIsConvertABTestEnabled'
+        ).mockImplementation(() => true)
+
+        const {getByText} = renderWithStore(mockedState)
+
+        expect(getByText('ConvertStatsContent')).toBeInTheDocument()
+        expect(getByText('RequestABTest')).toBeInTheDocument()
     })
 })

@@ -24,7 +24,7 @@ export default function SupportPerformanceTicketInsights() {
 
     if (!selectedCustomField.isLoading && selectedCustomField.id === null) {
         return (
-            <StatsPage title={TICKET_INSIGHTS_PAGE_TITLE} filters={null}>
+            <StatsPage title={TICKET_INSIGHTS_PAGE_TITLE} titleExtra={null}>
                 <TicketFieldsBlankState />
             </StatsPage>
         )
@@ -33,7 +33,7 @@ export default function SupportPerformanceTicketInsights() {
     return (
         <StatsPage
             title={TICKET_INSIGHTS_PAGE_TITLE}
-            filters={
+            titleExtra={
                 selectedCustomField.id ? (
                     <>
                         <SupportPerformanceFilters />

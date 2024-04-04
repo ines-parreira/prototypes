@@ -92,7 +92,7 @@ function LiveAgents() {
                 title="Live agents"
                 description="Live Agents will show you the work agents have accomplished over the day."
                 helpUrl="https://docs.gorgias.com/statistics/statistics#data_sets"
-                filters={<LiveAgentsFilters />}
+                titleExtra={<LiveAgentsFilters />}
             >
                 {pageStatsFilters && (
                     <>
