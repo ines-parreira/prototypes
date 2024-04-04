@@ -17,6 +17,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {useIsConvertOnboardingUiEnabled} from 'pages/convert/common/hooks/useIsConvertOnboardingUiEnabled'
+import {IntegrationType} from 'models/integration/types'
 import ConvertNavbar from '../ConvertNavbar'
 
 jest.mock('react-router')
@@ -41,22 +42,21 @@ describe('<ConvertNavbar />', () => {
         billing: fromJS(billingState),
         integrations: fromJS({integrations: []}),
     }
+    const integration = {
+        id: 99,
+        name: 'convertgorgiastestchat',
+        deleted_datetime: null,
+        deactivated_datetime: null,
+        type: 'gorgias_chat',
+        meta: {
+            app_id: '101',
+            shop_type: IntegrationType.Shopify,
+            shop_integration_id: shopifyIntegration.id,
+        },
+    }
     const integrations = (fromJS(integrationsState) as Map<any, any>).mergeIn(
         ['integrations'],
-        fromJS([
-            {
-                id: 99,
-                name: 'convertgorgiastestchat',
-                deleted_datetime: null,
-                deactivated_datetime: null,
-                type: 'gorgias_chat',
-                meta: {
-                    app_id: '101',
-                    shop_integration_id: shopifyIntegration.id,
-                },
-            },
-            shopifyIntegration,
-        ])
+        fromJS([integration, shopifyIntegration])
     )
 
     beforeEach(() => {
@@ -176,6 +176,51 @@ describe('<ConvertNavbar />', () => {
 
             expect(queryAllByText('Set up').length).toBe(0)
             expect(queryAllByText('Performance').length).toBe(1)
+
+            expect(getAllByText('forum').length).toBe(2)
+            expect(getAllByText('Campaigns').length).toBe(2)
+            expect(getAllByText('Click tracking').length).toBe(2)
+            expect(getAllByText('Installation').length).toBe(2)
+        })
+
+        it('should render convert navbar without Performance page for non-Shopify Chat', () => {
+            isConvertSubscriberMock.mockReturnValue(true)
+            isConvertOnboardingUiEnabledMock.mockReturnValue(false)
+
+            const nonShopifyIntegrations = (
+                fromJS(integrationsState) as Map<any, any>
+            ).mergeIn(
+                ['integrations'],
+                [
+                    {
+                        ...integration,
+                        meta: {
+                            app_id: '101',
+                            shop_type: IntegrationType.BigCommerce,
+                        },
+                    },
+                ]
+            )
+
+            const {getAllByText, queryAllByText} = render(
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        integrations: nonShopifyIntegrations,
+                    })}
+                >
+                    <QueryClientProvider client={queryClient}>
+                        <DndProvider backend={HTML5Backend}>
+                            <ThemeProvider>
+                                <ConvertNavbar />
+                            </ThemeProvider>
+                        </DndProvider>
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(queryAllByText('Set up').length).toBe(0)
+            expect(queryAllByText('Performance').length).toBe(0)
 
             expect(getAllByText('forum').length).toBe(2)
             expect(getAllByText('Campaigns').length).toBe(2)

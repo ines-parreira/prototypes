@@ -3,6 +3,7 @@ import {Provider} from 'react-redux'
 import routerDom, {Route, useParams} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {createMemoryHistory} from 'history'
+import {fromJS} from 'immutable'
 import {RootState} from 'state/types'
 import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
@@ -14,6 +15,7 @@ import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaigns
 
 import {campaign} from 'fixtures/campaign'
 import {Campaign} from 'models/convert/campaign/types'
+import {IntegrationType} from 'models/integration/constants'
 import ConvertCampaignsStats from '../CampaignsStats'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
@@ -172,5 +174,28 @@ describe('CampaignsStats', () => {
 
         expect(getByText('ConvertStatsContent')).toBeInTheDocument()
         expect(getByText('RequestABTest')).toBeInTheDocument()
+    })
+
+    it('should render error when there is no Shopify store integration', () => {
+        ;(useParams as jest.Mock).mockReturnValue({})
+
+        const stateWithoutIntegration = {
+            ...mockedState,
+            integrations: fromJS({
+                integrations: [
+                    {
+                        type: IntegrationType.BigCommerce,
+                    },
+                ],
+            }),
+        } as unknown as RootState
+
+        const {getByText} = renderWithStore(stateWithoutIntegration)
+
+        expect(
+            getByText(
+                'Campaigns dashboard is only available for Shopify stores.'
+            )
+        ).toBeInTheDocument()
     })
 })
