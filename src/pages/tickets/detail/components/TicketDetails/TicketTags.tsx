@@ -25,13 +25,14 @@ import usePrevious from 'hooks/usePrevious'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
+import Tooltip from 'pages/common/components/Tooltip'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {TagLabel} from 'pages/common/utils/labels'
 import {getCurrentUserState} from 'state/currentUser/selectors'
 import {fieldEnumSearch} from 'state/views/actions'
+import ThemeContext from 'theme/ThemeContext'
 import {hasRole} from 'utils'
 
-import ThemeContext from 'theme/ThemeContext'
 import css from './TicketTags.less'
 
 const LIMIT_TAGS_SEARCH = 15
@@ -100,6 +101,16 @@ const TicketTags = ({
         if (!element || !totalWidth || !tags.size) return null
         return getElementWrapInfo(element.children)
     }, [element, tags, totalWidth])
+
+    const hiddenTags = useMemo(
+        () =>
+            wrapInfo
+                ? tags
+                      .slice(tags.size - (wrapInfo.wrappedElementCount - 1))
+                      .map((tag) => tag?.get('name') as string)
+                : undefined,
+        [tags, wrapInfo]
+    )
 
     const derivedShowAllTags = useMemo(
         () =>
@@ -378,29 +389,47 @@ const TicketTags = ({
                     </Button>
                 </div>
                 {!showAllTags && wrapInfo && wrapInfo.wrappedElementCount > 1 && (
-                    <Badge
-                        className={classnames('badge-tag', css.displayMore)}
-                        style={{
-                            color: themeContext?.colorTokens.Neutral.Grey_6
-                                .value,
-                            backgroundColor:
-                                themeContext?.colorTokens.Neutral.Grey_3.value,
-                            left: `${(wrapInfo?.width ?? 0) - totalWidth}px`,
-                        }}
-                        onClick={() => setShowAllTags(!showAllTags)}
-                    >
-                        <span>
-                            + {wrapInfo.wrappedElementCount - 1}
-                            <i
-                                className={classnames(
-                                    'material-icons material-icons-round',
-                                    css.icon
-                                )}
-                            >
-                                arrow_drop_down
-                            </i>
-                        </span>
-                    </Badge>
+                    <>
+                        <Badge
+                            id="expand-tags-badge"
+                            className={classnames('badge-tag', css.displayMore)}
+                            style={{
+                                color: themeContext?.colorTokens.Neutral.Grey_6
+                                    .value,
+                                backgroundColor:
+                                    themeContext?.colorTokens.Neutral.Grey_3
+                                        .value,
+                                left: `${
+                                    (wrapInfo?.width ?? 0) - totalWidth
+                                }px`,
+                            }}
+                            onClick={() => setShowAllTags(!showAllTags)}
+                        >
+                            <span>
+                                + {wrapInfo.wrappedElementCount - 1}
+                                <i
+                                    className={classnames(
+                                        'material-icons material-icons-round',
+                                        css.icon
+                                    )}
+                                >
+                                    arrow_drop_down
+                                </i>
+                            </span>
+                        </Badge>
+                        <Tooltip
+                            target="expand-tags-badge"
+                            offset="0, 9"
+                            placement="bottom-start"
+                            fade={false}
+                        >
+                            <ul className={css.tooltipContent}>
+                                {hiddenTags?.map((tag) => (
+                                    <li key={tag}>{tag}</li>
+                                ))}
+                            </ul>
+                        </Tooltip>
+                    </>
                 )}
             </div>
         </div>

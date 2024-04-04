@@ -103,8 +103,8 @@ describe('<TicketTags />', () => {
         )
     })
 
-    it('should allow to show and hide overflowing tags', () => {
-        const {container, getByText} = render(
+    it('should allow to show and hide overflowing tags', async () => {
+        const {container, getByText, getAllByText} = render(
             <Provider store={store}>
                 <TicketTags {...minProps} />
             </Provider>
@@ -114,6 +114,8 @@ describe('<TicketTags />', () => {
         )
         expect(container.firstChild).toHaveStyle('height: 24px')
         fireEvent.mouseOver(expandButton)
+        await waitFor(() => expect(getAllByText('refund')).toHaveLength(2))
+        await waitFor(() => expect(getAllByText('return')).toHaveLength(2))
 
         fireEvent.click(expandButton)
         expect(container.firstChild).toHaveStyle('height: 100px')

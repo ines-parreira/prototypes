@@ -135,6 +135,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
     </div>
     <span
       class="badge-tag displayMore badge badge-secondary"
+      id="expand-tags-badge"
       style="left: -60px;"
     >
       <span>
