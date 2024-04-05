@@ -1,5 +1,5 @@
 import {useQueryClient} from '@tanstack/react-query'
-import {useMemo, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 import {
     ChannelConnection,
@@ -21,7 +21,8 @@ export const useGetOrCreateChannelConnection = (
     retries = READ_RETRIES
 ) => {
     const queryClient = useQueryClient()
-    const [createTriggered, setCreateTriggered] = useState(false)
+
+    const [result, setResult] = useState<ChannelConnection | null>(null)
 
     const options: ChannelConnectionListOptions = useMemo(() => {
         const externalId = integration?.meta?.app_id
@@ -60,9 +61,8 @@ export const useGetOrCreateChannelConnection = (
         }, [integration?.meta, installationStatus])
 
     const handleSuccessCallback = (data: ChannelConnection[]) => {
-        if (data.length === 0 && !createTriggered) {
+        if (data.length === 0 && !createError) {
             mutateCreate([undefined, channelConnectionData])
-            setCreateTriggered(true)
         }
     }
 
@@ -91,18 +91,16 @@ export const useGetOrCreateChannelConnection = (
         },
     })
 
-    const result: ChannelConnection | null = useMemo(() => {
-        if (createTriggered) {
-            return createDataResponse as ChannelConnection | null
+    useEffect(() => {
+        if (Array.isArray(listData) && listData.length > 0) {
+            setResult(listData[0])
+        } else if (createDataResponse?.status === 201) {
+            setResult(createDataResponse?.data as ChannelConnection)
         }
+    }, [createDataResponse, listData])
 
-        return !!listData && Array.isArray(listData) && listData.length > 0
-            ? listData[0]
-            : null
-    }, [createTriggered, createDataResponse, listData])
-
-    const isLoading = listLoading || (createLoading && createTriggered)
-    const isError = listError || (createError && createTriggered)
+    const isLoading = listLoading || createLoading
+    const isError = listError || createError
     const error = listError ? listErrorDetail : createErrorDetail
 
     return {

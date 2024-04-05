@@ -1,6 +1,7 @@
 import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {act} from '@testing-library/react'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {channelConnection} from 'fixtures/channelConnection'
@@ -9,6 +10,7 @@ import {
     useCreateChannelConnection,
     useListChannelConnections,
 } from 'models/convert/channelConnection/queries'
+import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {useGetOrCreateChannelConnection} from '../useGetOrCreateChannelConnection'
 
 jest.mock('models/convert/channelConnection/queries')
@@ -68,7 +70,10 @@ describe('useGetOrCreateChannelConnection', () => {
         const mutateSpy = jest.fn()
         useCreateChannelConnectionSpy.mockReturnValue({
             mutate: mutateSpy,
-            data: channelConnection,
+            data: {
+                ...axiosSuccessResponse(channelConnection),
+                status: 201,
+            },
             isLoading: false,
             isError: false,
         } as any)
@@ -86,7 +91,14 @@ describe('useGetOrCreateChannelConnection', () => {
             {wrapper}
         )
 
-        useListChannelConnectionsSpy.mock.calls[0][1]?.onSuccess!([] as any)
+        act(() => {
+            useListChannelConnectionsSpy.mock.calls[0][1]?.onSuccess!([] as any)
+            useCreateChannelConnectionSpy.mock.calls[0][0]?.onSuccess!(
+                {} as any,
+                undefined as any,
+                {}
+            )
+        })
 
         expect(useListChannelConnectionsSpy).toHaveBeenCalled()
         expect(mutateSpy).toHaveBeenCalled()
