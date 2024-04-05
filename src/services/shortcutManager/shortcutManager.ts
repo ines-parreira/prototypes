@@ -1,4 +1,4 @@
-import Mousetrap from 'mousetrap'
+import Mousetrap, {ExtendedKeyboardEvent} from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
 import _get from 'lodash/get'
