@@ -14,6 +14,7 @@ import {
     Filler,
     ArcElement,
 } from 'chart.js'
+import {setDefaultConfig} from '@gorgias/api-queries'
 
 import './polyfills'
 
@@ -42,6 +43,13 @@ import {
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
+
+setDefaultConfig({
+    headers: {
+        'X-CSRF-Token': window.CSRF_TOKEN,
+        'X-Gorgias-User-Client': 'web',
+    },
+})
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default timezone
