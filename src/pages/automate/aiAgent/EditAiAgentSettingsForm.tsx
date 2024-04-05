@@ -30,15 +30,13 @@ import {NotificationStatus} from '../../../state/notifications/types'
 import useAppDispatch from '../../../hooks/useAppDispatch'
 import css from './AiAgentStoreView.less'
 import {
-    TONE_OF_VOICE_LABEL_TO_VALUE,
-    TONE_OF_VOICE_LABELS,
-    TONE_OF_VOICE_VALUE_TO_LABEL,
     MAX_EXCLUDED_TOPICS,
     EXCLUDED_TOPIC_MAX_LENGTH,
     SIGNATURE_MAX_LENGTH,
     DEFAULT_FORM_VALUES,
     DEFAULT_AI_AGENT_DISABLED_RATE,
     DEFAULT_AI_AGENT_ENABLED_RATE,
+    ToneOfVoice,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
@@ -408,27 +406,24 @@ export const EditAiAgentSettingsForm = ({
                     </Label>
                     <SelectField
                         fullWidth
+                        showSelectedOption
                         value={
                             formValues.toneOfVoice !== null
-                                ? TONE_OF_VOICE_VALUE_TO_LABEL[
-                                      formValues.toneOfVoice
-                                  ]
-                                : TONE_OF_VOICE_VALUE_TO_LABEL[
-                                      storeConfiguration.toneOfVoice
-                                  ]
+                                ? formValues.toneOfVoice
+                                : storeConfiguration.toneOfVoice
                         }
                         onChange={(toneOfVoiceLabel) => {
                             updateValue(
                                 'toneOfVoice',
-                                TONE_OF_VOICE_LABEL_TO_VALUE[
-                                    toneOfVoiceLabel
-                                ] ?? TONE_OF_VOICE_LABEL_TO_VALUE['Friendly']
+                                toneOfVoiceLabel.toString()
                             )
                         }}
-                        options={TONE_OF_VOICE_LABELS.map((label) => ({
-                            label,
-                            value: label,
-                        }))}
+                        options={Object.values(ToneOfVoice).map(
+                            (toneOfVoice) => ({
+                                label: toneOfVoice,
+                                value: toneOfVoice,
+                            })
+                        )}
                         dropdownMenuClassName={css.longDropdown}
                     />
                 </div>
