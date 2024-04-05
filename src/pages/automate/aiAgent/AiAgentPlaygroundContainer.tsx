@@ -1,7 +1,7 @@
 import React, {useState, MouseEvent} from 'react'
 import {Alert, Form, FormGroup, Input} from 'reactstrap'
-import {Redirect, useParams} from 'react-router-dom'
-import axios from 'axios'
+import {Link, Redirect, useParams} from 'react-router-dom'
+import axios, {isAxiosError} from 'axios'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,12 +19,13 @@ import {
 import {AiAgentResponse} from 'models/aiAgent/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {sanitizeHtmlDefault} from 'utils/html'
+import TextArea from 'pages/common/forms/TextArea'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import css from './AiAgentPlaygroundContainer.less'
 
 const AiAgentPlaygroundContainer = () => {
-    const {shopName} = useParams<{
+    const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -53,6 +54,10 @@ const AiAgentPlaygroundContainer = () => {
     const [customerEmail, setCustomerEmail] = useState('')
     const [playgroundTicketMessage, setPlaygroundTicketMessage] = useState('')
     const [formError, setFormError] = useState<string>()
+    const [
+        storeConfigurationNotInitialized,
+        setStoreConfigurationNotInitialized,
+    ] = useState(false)
     const [firstSubmissionExecuted, setFirstSubmissionExecuted] =
         useState(false)
     const [aiAgentResponse, setAiAgentResponse] = useState<
@@ -63,16 +68,19 @@ const AiAgentPlaygroundContainer = () => {
         error: storeFetchError,
         data: storeData,
         isLoading: storeDataLoading,
-    } = useGetStoreConfigurationPure({
-        accountDomain,
-        storeName: shopName,
-    })
+    } = useGetStoreConfigurationPure(
+        {
+            accountDomain,
+            storeName: shopName,
+        },
+        {retry: 1}
+    )
 
     const {
         error: accountFetchError,
         data: accountData,
         isLoading: accountDataLoading,
-    } = useGetAccountConfiguration(accountDomain)
+    } = useGetAccountConfiguration(accountDomain, {retry: 1})
 
     // Ai Agent submit
     const {
@@ -127,7 +135,27 @@ const AiAgentPlaygroundContainer = () => {
         return <Loader />
     }
 
-    if (accountData && !accountData.data.accountConfiguration.httpIntegration) {
+    if (
+        (storeFetchError || accountFetchError) &&
+        !storeConfigurationNotInitialized
+    ) {
+        if (
+            (isAxiosError(storeFetchError) &&
+                storeFetchError.response?.status === 404) ||
+            (isAxiosError(accountFetchError) &&
+                accountFetchError.response?.status === 404)
+        ) {
+            setStoreConfigurationNotInitialized(true)
+        } else {
+            return <Redirect to="/app/automation" />
+        }
+    }
+
+    if (
+        accountData &&
+        storeData &&
+        !accountData.data.accountConfiguration.httpIntegration
+    ) {
         void dispatch(
             notify({
                 message:
@@ -135,10 +163,6 @@ const AiAgentPlaygroundContainer = () => {
                 status: NotificationStatus.Error,
             })
         )
-        return <Redirect to="/app/automation" />
-    }
-
-    if (storeFetchError || accountFetchError) {
         return <Redirect to="/app/automation" />
     }
 
@@ -187,11 +211,25 @@ const AiAgentPlaygroundContainer = () => {
     }
 
     const submitDisabled =
-        !playgroundTicketMessage.length || isSubmitting || !customerEmail.length
+        !playgroundTicketMessage.length ||
+        isSubmitting ||
+        !customerEmail.length ||
+        storeConfigurationNotInitialized
 
     return (
         <AutomateView title={AI_AGENT} headerNavbarItems={headerNavbarItems}>
             <div className={css.playgroundContainer}>
+                {storeConfigurationNotInitialized && (
+                    <Alert color="danger">
+                        Please configure the AI Agent with an email integration
+                        and help center in order to use the Playground{' '}
+                        <Link
+                            to={`/app/automation/${shopType}/${shopName}/ai-agent`}
+                        >
+                            Configure Here
+                        </Link>
+                    </Alert>
+                )}
                 <Form onSubmit={(e) => e.preventDefault()}>
                     <FormGroup>
                         <Label>Customer email</Label>
@@ -199,18 +237,20 @@ const AiAgentPlaygroundContainer = () => {
                             value={customerEmail}
                             placeholder={'Customer email'}
                             onChange={(e) => setCustomerEmail(e.target.value)}
+                            disabled={storeConfigurationNotInitialized}
                         />
                     </FormGroup>
                     <FormGroup>
                         <Label>Ticket message input</Label>
-                        <Input
-                            name="text"
-                            type="textarea"
-                            value={playgroundTicketMessage}
-                            disabled={isSubmitting}
-                            onChange={(e) =>
-                                setPlaygroundTicketMessage(e.target.value)
+                        <TextArea
+                            isDisabled={
+                                isSubmitting || storeConfigurationNotInitialized
                             }
+                            onChange={(value) =>
+                                setPlaygroundTicketMessage(value)
+                            }
+                            value={playgroundTicketMessage}
+                            autoRowHeight={true}
                         />
                     </FormGroup>
                     <Button isDisabled={submitDisabled} onClick={handleSubmit}>
