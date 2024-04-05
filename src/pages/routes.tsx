@@ -745,7 +745,9 @@ export function StatsRoutes() {
                     path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
                     render={() => (
                         <App
-                            content={AutomateStatsPaywall}
+                            content={
+                                flagLoading ? Skeleton : AutomateStatsPaywall
+                            }
                             navbar={StatsNavbarContainer}
                         />
                     )}

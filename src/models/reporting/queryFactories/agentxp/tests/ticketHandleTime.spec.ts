@@ -78,7 +78,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     },
                 ],
                 measures: [HandleTimeMeasure.AverageHandleTime],
-                segments: ['TicketEnriched.closedTickets'],
+                segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })
         })
@@ -128,7 +128,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 ],
                 measures: [HandleTimeMeasure.AverageHandleTime],
                 order: [[HandleTimeMeasure.AverageHandleTime, sorting]],
-                segments: ['TicketEnriched.closedTickets'],
+                segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })
         })
@@ -281,7 +281,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [HandleTimeMeasure.AverageHandleTime],
-                segments: ['TicketEnriched.closedTickets'],
+                segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })
         })
@@ -333,7 +333,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 limit: DRILLDOWN_QUERY_LIMIT,
                 measures: [HandleTimeMeasure.AverageHandleTime],
                 order: [[HandleTimeMeasure.AverageHandleTime, sorting]],
-                segments: ['TicketEnriched.closedTickets'],
+                segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })
         })
