@@ -28,7 +28,7 @@ const apiClient = axios.create({
 export const submitAiAgentTicket = async (body: AiAgentInput) => {
     return await apiClient.post<AiAgentResponse>('/', body, {
         params: {
-            dry_run: true,
+            playground: true,
         },
     })
 }
