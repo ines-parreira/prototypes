@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {logPageChange} from 'common/segment'
@@ -598,6 +599,16 @@ export function StatsRoutes() {
                     render={() => (
                         <App
                             content={SupportPerformanceBusiestTimesOfDays}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
+                <Route
+                    exact
+                    path={`${path}/busiest-times-of-days-new`}
+                    render={() => (
+                        <App
+                            content={BusiestTimesOfDays}
                             navbar={StatsNavbarContainer}
                         />
                     )}

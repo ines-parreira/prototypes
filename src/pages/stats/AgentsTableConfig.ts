@@ -190,7 +190,7 @@ export type MetricQueryPerAgentQuery = (
     agentAssigneeId?: string
 ) => MetricWithDecile
 
-export type MetricQuery = (
+export type MetricQueryHook = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -232,7 +232,7 @@ export const getQuery = (column: TableColumn): MetricQueryPerAgentQuery => {
     }
 }
 
-export const getSummaryQuery = (column: TableColumn): MetricQuery => {
+export const getSummaryQuery = (column: TableColumn): MetricQueryHook => {
     switch (column) {
         case TableColumn.AgentName:
             return () => ({

@@ -1,5 +1,4 @@
 import React, {useRef, useState} from 'react'
-import classnames from 'classnames'
 import {HelpCenter} from 'models/helpCenter/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -39,7 +38,7 @@ const HelpCenterFilter = ({
                 <span className={css.buttonText}>
                     {selectedHelpCenter.name}
                 </span>
-                <i className={classnames('material-icons')}>arrow_drop_down</i>
+                <i className={'material-icons'}>arrow_drop_down</i>
             </Button>
             <Dropdown
                 isOpen={isOpen}

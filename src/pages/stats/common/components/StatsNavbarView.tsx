@@ -1,6 +1,7 @@
 import React from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import cssNavbar from 'assets/css/navbar.less'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -11,11 +12,13 @@ import NavbarLink, {
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
-import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
 }
+
+export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times of days'
+export const NEW_NAV_LABEL = 'NEW'
 
 export default function StatsNavbarView() {
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
@@ -24,6 +27,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
     const isSLAsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
+    const isAnalyticsNewBusiestTime: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
 
     return (
         <>
@@ -85,20 +90,44 @@ export default function StatsNavbarView() {
                             Agents
                         </NavbarLink>
                     </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                        data-candu-id="statistics-link-busiest-times-of-days"
-                    >
-                        <NavbarLink
-                            {...COMMON_NAV_LINK_PROPS}
-                            to="/app/stats/busiest-times-of-days"
+                    {!isAnalyticsNewBusiestTime && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                            data-candu-id="statistics-link-busiest-times-of-days"
                         >
-                            Busiest times of days
-                        </NavbarLink>
-                    </div>
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/busiest-times-of-days"
+                            >
+                                {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
+                            </NavbarLink>
+                        </div>
+                    )}
+                    {isAnalyticsNewBusiestTime && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                            data-candu-id="statistics-link-busiest-times-of-days"
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/busiest-times-of-days-new"
+                            >
+                                {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    {NEW_NAV_LABEL}
+                                </Badge>
+                            </NavbarLink>
+                        </div>
+                    )}
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],

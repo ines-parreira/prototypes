@@ -15,7 +15,10 @@ import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 
 import {IntegrationType} from 'models/integration/constants'
-import StatsNavbarView from 'pages/stats/common/components/StatsNavbarView'
+import StatsNavbarView, {
+    BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
+    NEW_NAV_LABEL,
+} from 'pages/stats/common/components/StatsNavbarView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -36,6 +39,7 @@ function getIntegration(id: number, type: IntegrationType) {
         },
     }
 }
+
 describe('StatsNavbarView', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS(account),
@@ -66,6 +70,10 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to busiest times of days', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewBusiestTime]: false,
+        }))
+
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
@@ -74,7 +82,29 @@ describe('StatsNavbarView', () => {
             </Provider>
         )
 
-        expect(screen.getByText('Busiest times of days')).toBeInTheDocument()
+        expect(
+            screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL)
+        ).toBeInTheDocument()
+        expect(screen.queryByText(NEW_NAV_LABEL)).not.toBeInTheDocument()
+    })
+
+    it('should render the link to new busiest times of days', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewBusiestTime]: true,
+        }))
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        expect(
+            screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL)
+        ).toBeInTheDocument()
+        expect(screen.queryByText(NEW_NAV_LABEL)).toBeInTheDocument()
     })
 
     describe('New Agents Performance', () => {

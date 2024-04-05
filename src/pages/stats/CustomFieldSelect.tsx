@@ -69,7 +69,7 @@ export const CustomFieldSelect = () => {
                 <span className={css.buttonText}>
                     {selectedField?.label || SELECT_FIELD_LABEL}
                 </span>
-                <i className={classnames('material-icons')}>arrow_drop_down</i>
+                <i className={'material-icons'}>arrow_drop_down</i>
             </Button>
 
             <Dropdown

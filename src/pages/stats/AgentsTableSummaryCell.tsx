@@ -1,7 +1,7 @@
 import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {MetricFormat, MetricQuery} from 'pages/stats/AgentsTableConfig'
+import {MetricFormat, MetricQueryHook} from 'pages/stats/AgentsTableConfig'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -16,7 +16,7 @@ export const AgentsTableSummaryCell = ({
     useMetric,
     column,
 }: {
-    useMetric: MetricQuery
+    useMetric: MetricQueryHook
     column: TableColumn
 }) => {
     const {format, perAgent} = MetricFormat[column]
