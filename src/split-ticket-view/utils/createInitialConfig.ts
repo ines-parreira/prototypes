@@ -56,7 +56,12 @@ const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
         }
 
         return createConfig(widths, defaultConfig)
-    } else if (navbarWidth && ticketListWidth && infobarWidth) {
+    } else if (
+        navbarWidth &&
+        ticketListWidth &&
+        infobarWidth &&
+        defaultConfig.length > 2
+    ) {
         return createConfig(
             [
                 Number(navbarWidth),

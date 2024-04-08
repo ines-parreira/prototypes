@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {useLocation, useParams} from 'react-router-dom'
@@ -102,7 +103,7 @@ const TicketList = () => {
 
     return (
         <div
-            className="d-flex flex-column"
+            className={cn('d-flex flex-column', css.container)}
             style={{
                 width: '100%',
             }}
