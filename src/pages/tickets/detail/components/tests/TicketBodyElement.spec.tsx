@@ -37,11 +37,6 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/tickets/detail/components/RuleSuggestion/AISuggestion',
-    () => () => <p>AISuggestion</p>
-)
-
-jest.mock(
     'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion',
     () => () => <p>RuleSuggestion</p>
 )
@@ -121,19 +116,6 @@ describe('TicketBodyElement', () => {
         )
 
         expect(getByText('RuleSuggestion')).toBeInTheDocument()
-    })
-
-    it('should display an AI suggestion', () => {
-        const {getByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketBodyElement
-                    {...defaultProps}
-                    element={{isAISuggestion: true} as unknown as TicketElement}
-                />
-            </Provider>
-        )
-
-        expect(getByText('AISuggestion')).toBeInTheDocument()
     })
 
     it('should alert Sentry if given element is not a valid ticket element', () => {

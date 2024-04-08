@@ -1,5 +1,4 @@
 import {fromJS, Map, List} from 'immutable'
-import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
 import _pick from 'lodash/pick'
@@ -30,7 +29,6 @@ import {
 import {generateTicketMessagesId, getActionTemplate} from 'utils'
 
 import {ChannelIdentifier, ChannelLike, toChannel} from 'services/channels'
-import {EventType} from 'models/event/types'
 import {humanize} from 'business/format'
 import {
     isGorgiasContactFormTicketMeta,
@@ -40,7 +38,6 @@ import {appQueryClient} from 'api/queryClient'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {getProperty} from './selectors'
 import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
-import {TicketState} from './types'
 
 export type Receiver = {
     name: string | null
@@ -918,26 +915,6 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
         } else actions = actions.push(oldAction)
     })
     return actions
-}
-
-export const injectAISuggestionEvents = (
-    state: TicketState,
-    results: List<any>
-) => {
-    let newResults = results
-    if (state.getIn(['meta', 'ai_suggestion']))
-        newResults = results.push(
-            fromJS({
-                type: EventType.AISuggestionSuggested,
-                data: {
-                    text: state.getIn(['meta', 'ai_suggestion', 'body_text']),
-                },
-                created_datetime: moment(state.get('created_datetime'))
-                    .add(1, 's')
-                    .toISOString(),
-            })
-        )
-    return newResults
 }
 
 export function isReceiver(receiver: unknown): receiver is Receiver {

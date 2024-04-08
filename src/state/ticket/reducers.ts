@@ -25,11 +25,7 @@ import {
     shouldDeduplicateAuditLogEvents,
 } from './helpers'
 import {TicketState} from './types'
-import {
-    getPendingMessageIndex,
-    injectAISuggestionEvents,
-    mergeActions,
-} from './utils'
+import {getPendingMessageIndex, mergeActions} from './utils'
 
 export const initialState: TicketState = fromJS({
     state: {
@@ -805,8 +801,6 @@ export default function reducer(
                             results = results.set(index, eventToDisplay)
                         }
                     })
-
-                results = injectAISuggestionEvents(state, results)
 
                 return shouldDeduplicateAuditLogEvents(
                     state.get('created_datetime')

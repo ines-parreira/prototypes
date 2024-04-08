@@ -107,10 +107,6 @@ describe('<AuditLogEvent/>', () => {
                     TICKET_EVENT_TYPES.RuleSuggestionSuggested,
                     {slug: 'rule_suggestion'},
                 ],
-                [
-                    TICKET_EVENT_TYPES.AISuggestionSuggested,
-                    {text: 'suggested text'},
-                ],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
                 const {container} = render(

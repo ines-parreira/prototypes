@@ -5,7 +5,6 @@ import React from 'react'
 import {PHONE_EVENTS} from 'constants/event'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    isTicketAISuggestion,
     isTicketEvent,
     isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
@@ -24,7 +23,6 @@ import {
     PRIVATE_REPLY_ACTIONS,
 } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import PrivateReplyEvent from 'pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent'
-import AISuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestion'
 import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import ContactReasonSuggestion from 'pages/tickets/detail/components/RuleSuggestion/AISuggestionContactReason'
 import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurvey'
@@ -132,10 +130,6 @@ const TicketBodyElement = ({
                 <RuleSuggestion isCollapsed={!isLast} ticket={ticket.toJS()} />
             </ErrorBoundary>
         )
-    }
-
-    if (isTicketAISuggestion(element)) {
-        return <AISuggestion isCollapsed={!isLast} ticket={ticket.toJS()} />
     }
 
     if (isVoiceCall(element)) {

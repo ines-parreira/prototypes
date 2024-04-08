@@ -175,11 +175,6 @@ export const getRuleSuggestion = createImmutableSelector(
     (state) => fromJS(state.getIn(['meta', 'rule_suggestion'])) as Map<any, any>
 )
 
-export const getAISuggestion = createImmutableSelector(
-    getTicketState,
-    (state) => fromJS(state.getIn(['meta', 'ai_suggestion'])) as Map<any, any>
-)
-
 export const getTicketFieldState = createSelector(
     getTicket,
     (state) => state.custom_fields || {}
@@ -203,7 +198,6 @@ export const getBody = createImmutableSelector(
     getEvents,
     getSatisfactionSurveys,
     getRuleSuggestion,
-    getAISuggestion,
     getTicketFieldState,
     getVoiceCalls,
     (
@@ -212,7 +206,6 @@ export const getBody = createImmutableSelector(
         events,
         satisfactionSurveys,
         ruleSuggestion,
-        aiSuggestion,
         ticketFieldState,
         voiceCallsData
     ) => {
@@ -287,17 +280,6 @@ export const getBody = createImmutableSelector(
                     ruleSuggestion.set('isRuleSuggestion', true)
                 )
             }
-        }
-
-        if (aiSuggestion && !ruleSuggestion) {
-            const hasAISuggestionApplied = body.some((element: Map<any, any>) =>
-                element.hasIn(['meta', 'ai_suggestion'])
-            )
-            if (!hasAISuggestionApplied)
-                body = body.insert(
-                    getSuggestionPosition(),
-                    aiSuggestion.set('isAISuggestion', true)
-                )
         }
 
         if (ticketFieldState) {

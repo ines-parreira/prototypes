@@ -86,51 +86,6 @@ exports[`<AuditLogEvent/> render() should render when the user ID is missing 1`]
 </div>
 `;
 
-exports[`<AuditLogEvent/> render() should render with event type ai-suggestion-suggested 1`] = `
-<div
-  class="component"
->
-  <div
-    class="event"
-  >
-    <div
-      class="content"
-    >
-      <div
-        class="icon"
-      >
-        <i
-          class="material-icons"
-        >
-          lightbulb
-        </i>
-      </div>
-      <span>
-        <span
-          class="actionName"
-        >
-          Gorgias AI
-        </span>
-         suggested
-         
-        <span
-          id="ai-suggestion-event-log"
-        >
-          <u>
-            an answer
-          </u>
-        </span>
-         
-        for this ticket
-      </span>
-    </div>
-    <div>
-      2019-11-15 19:00:00.000000
-    </div>
-  </div>
-</div>
-`;
-
 exports[`<AuditLogEvent/> render() should render with event type rule-executed 1`] = `
 <div
   class="component"

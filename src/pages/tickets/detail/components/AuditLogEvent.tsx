@@ -29,7 +29,6 @@ import {RootState} from 'state/types'
 import {eventNameToLabel} from 'config/rules'
 
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {textToHTML} from 'utils/html'
 import css from './Event.less'
 
 type Props = {
@@ -124,7 +123,6 @@ export class AuditLogEventContainer extends Component<Props> {
     static _ICONS = {
         [CONTENTFUL_EVENT_TYPES.RuleExecuted]: ['settings'],
         [CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested]: ['lightbulb'],
-        [CONTENTFUL_EVENT_TYPES.AISuggestionSuggested]: ['lightbulb'],
         [CONTENTFUL_EVENT_TYPES.TicketAssigned]: ['person_add'],
         [CONTENTFUL_EVENT_TYPES.TicketClosed]: ['done', css.success],
         [CONTENTFUL_EVENT_TYPES.TicketCreated]: ['add'],
@@ -161,8 +159,6 @@ export class AuditLogEventContainer extends Component<Props> {
             this._renderRuleSuggestionEvent(
                 CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested
             ),
-        [CONTENTFUL_EVENT_TYPES.AISuggestionSuggested]: () =>
-            this._renderAISuggestionEvent(),
         [CONTENTFUL_EVENT_TYPES.TicketAssigned]: () =>
             this._renderTicketAssignedEvent(),
         [CONTENTFUL_EVENT_TYPES.TicketClosed]: () => (
@@ -286,29 +282,6 @@ export class AuditLogEventContainer extends Component<Props> {
         return slug ? (
             <RuleSuggestionEvent eventType={eventType} slug={slug} />
         ) : null
-    }
-
-    _renderAISuggestionEvent() {
-        const text = textToHTML(this.props.event.getIn(['data', 'text']))
-        const tooltip = (
-            <Tooltip
-                placement="top"
-                target={`ai-suggestion-event-log`}
-                dangerouslySetInnerHTML={{__html: text}}
-            >
-                {null}
-            </Tooltip>
-        )
-        return (
-            <span>
-                <ActionName>Gorgias AI</ActionName> suggested{' '}
-                <span id="ai-suggestion-event-log">
-                    <u>an answer</u>
-                </span>{' '}
-                for this ticket
-                {tooltip}
-            </span>
-        )
     }
 
     _renderTicketAssignedEvent() {
@@ -539,8 +512,7 @@ export class AuditLogEventContainer extends Component<Props> {
         const isRuleExecuted = isRuleExecutedType(event)
         const isSuggestion =
             type === EventType.RuleSuggestionSuggested ||
-            event.hasIn(['data', 'slug']) ||
-            type === EventType.AISuggestionSuggested
+            event.hasIn(['data', 'slug'])
         const icon = this._getIcon()
         const content = this._getContent()
 
