@@ -4,16 +4,9 @@ import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
 import {CampaignTriggerDeviceTypeValueEnum} from '../types/enums/CampaignTriggerDeviceTypeValue.enum'
 
-export const CONVERT_SUBSCRIBER_TRIGGERS = [
-    CampaignTriggerType.BusinessHours,
-    CampaignTriggerType.CartValue,
-    CampaignTriggerType.ExitIntent,
-    CampaignTriggerType.ProductTags,
-    CampaignTriggerType.CartProductTags,
-    CampaignTriggerType.SessionTime,
-    CampaignTriggerType.SingleInView,
-    CampaignTriggerType.VisitCount,
-    CampaignTriggerType.DeviceType,
+export const CONVERT_LIGHT_TRIGGERS = [
+    CampaignTriggerType.CurrentUrl,
+    CampaignTriggerType.TimeSpentOnPage,
 ]
 
 export const TRIGGERS_CONFIG: TriggerConfig = {
