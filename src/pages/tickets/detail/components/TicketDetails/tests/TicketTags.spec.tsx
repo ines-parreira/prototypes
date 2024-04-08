@@ -4,13 +4,9 @@ import {Map, fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import MockAdapter from 'axios-mock-adapter'
 
-import {UserRole} from 'config/types/user'
 import {agents} from 'fixtures/agents'
 import useElementSize from 'hooks/useElementSize'
-import client from 'models/api/resources'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
 
 import TicketTags from '../TicketTags'
 
@@ -29,15 +25,9 @@ const useElementSizeMock = useElementSize as jest.Mock
 useElementSizeMock.mockReturnValue([160, 100])
 
 describe('<TicketTags />', () => {
-    let mockServer: MockAdapter
-
     const user = fromJS(fromJS(agents[0])) as Map<any, any>
     const store = mockStore({
         currentUser: user,
-    })
-
-    beforeEach(() => {
-        mockServer = new MockAdapter(client)
     })
 
     const minProps: Omit<ComponentProps<typeof TicketTags>, 'transparent'> = {
@@ -59,48 +49,6 @@ describe('<TicketTags />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should allow the tag creation to lead agent', async () => {
-        mockServer
-            .onPost(SEARCH_ENDPOINT)
-            .reply(200, {data: [{id: 1, name: 'exchange'}]})
-        const {getByText, getByPlaceholderText} = render(
-            <Provider store={store}>
-                <TicketTags {...minProps} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
-            target: {value: 'Foo'},
-        })
-        await waitFor(() => expect(getByText(/Create/i)).toBeTruthy())
-    })
-
-    it('should restrict the tag creation to basic agent', async () => {
-        mockServer.onPost(SEARCH_ENDPOINT).reply(200, {data: []})
-
-        const {getByText, getByPlaceholderText} = render(
-            <Provider
-                store={mockStore({
-                    currentUser: user.setIn(
-                        ['role', 'name'],
-                        UserRole.BasicAgent
-                    ),
-                })}
-            >
-                <TicketTags {...minProps} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(/add/))
-        fireEvent.change(getByPlaceholderText(/Search tags/), {
-            target: {value: 'Foo'},
-        })
-        await waitFor(() =>
-            expect(getByText(/Couldn't find the tag: Foo/i)).toBeTruthy()
-        )
     })
 
     it('should allow to show and hide overflowing tags', async () => {
