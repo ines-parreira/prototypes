@@ -2,7 +2,7 @@
 
 exports[`<TicketList /> should display with default props 1`] = `
 <div
-  class="d-flex flex-column container"
+  class="d-flex flex-column"
   style="width: 100%;"
 >
   <div>
@@ -41,7 +41,7 @@ exports[`<TicketList /> should display with default props 1`] = `
 
 exports[`<TicketList /> should render SearchRankProvider on search url 1`] = `
 <div
-  class="d-flex flex-column container"
+  class="d-flex flex-column"
   style="width: 100%;"
 >
   <div

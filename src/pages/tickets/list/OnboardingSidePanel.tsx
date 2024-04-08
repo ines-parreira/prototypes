@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
+import moment from 'moment'
 import {Map} from 'immutable'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -10,6 +11,7 @@ import Button from 'pages/common/components/button/Button'
 import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
 import Video from 'pages/common/components/Video/Video'
 import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import {tryLocalStorage} from 'services/common/utils'
 import {getHumanAgents} from 'state/agents/selectors'
 import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
@@ -17,6 +19,7 @@ import {
     getEmailIntegrations,
     makeHasIntegrationOfTypes,
 } from 'state/integrations/selectors'
+import {isAdmin} from 'utils'
 
 import css from './OnboardingSidePanel.less'
 
@@ -31,17 +34,7 @@ const CheckIcon = ({condition}: {condition: boolean}) => (
     </i>
 )
 
-type Props = {
-    isHidden: boolean
-    isOnNewLayout?: boolean
-    onHide: () => void
-}
-
-export default function OnboardingSidePanel({
-    isHidden,
-    isOnNewLayout,
-    onHide,
-}: Props) {
+export const OnboardingSidePanel = () => {
     const agents = useAppSelector(getHumanAgents)
     const currentUser = useAppSelector(getCurrentUser)
     const emailIntegrations = useAppSelector(getEmailIntegrations)
@@ -74,12 +67,36 @@ export default function OnboardingSidePanel({
 
     const hasInvitedTeamMembers = agents.size > 1
 
+    const hidingDate = moment(currentUser.get('created_datetime')).add(
+        10,
+        'days'
+    )
+
+    const [isHidden, setHidden] = useState(
+        () =>
+            !isAdmin(currentUser) ||
+            (tryLocalStorage(() =>
+                window.localStorage.getItem('hideBoarding')
+            ) as string) ||
+            moment().isAfter(hidingDate)
+    )
+
+    const hidePanel = () => {
+        setHidden(true)
+        logEvent(SegmentEvent.OnboardingWidgetClicked, {
+            name: 'Hide',
+        })
+        tryLocalStorage(() =>
+            window.localStorage.setItem('hideBoarding', 'true')
+        )
+    }
+
     if (isHidden) {
         return null
     }
 
     return (
-        <InfobarLayout isOnNewLayout={isOnNewLayout}>
+        <InfobarLayout>
             <div className={css.page}>
                 <div className={css.content}>
                     <h1>
@@ -187,7 +204,7 @@ export default function OnboardingSidePanel({
                         className={css.button}
                         fillStyle="ghost"
                         intent="secondary"
-                        onClick={onHide}
+                        onClick={hidePanel}
                         size="medium"
                     >
                         Skip
@@ -197,3 +214,5 @@ export default function OnboardingSidePanel({
         </InfobarLayout>
     )
 }
+
+export default OnboardingSidePanel

@@ -30,7 +30,7 @@ describe('OnboardingSidePanel', () => {
     it(`should greet the user`, () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
+                <OnboardingSidePanel />
             </Provider>
         )
 
@@ -46,12 +46,13 @@ describe('OnboardingSidePanel', () => {
         {linkText: 'Connect social media', eventName: 'Connect social media'},
         {linkText: 'Add chat widget', eventName: 'Connect chat'},
         {linkText: 'Invite team members', eventName: 'Add team members'},
+        {linkText: 'Skip', eventName: 'Hide'},
     ])(
         'should log onboarding-widget-clicked:$eventName event on $linkText link click',
         ({linkText, eventName}) => {
             render(
                 <Provider store={mockStore(defaultState)}>
-                    <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
+                    <OnboardingSidePanel />
                 </Provider>
             )
 
@@ -83,25 +84,12 @@ describe('OnboardingSidePanel', () => {
     ])('$id should send the user to $path', ({id, path}) => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
+                <OnboardingSidePanel />
             </Provider>
         )
 
         const link = screen.getByTestId(id)
 
         expect(link.getAttribute('to')).toBe(path)
-    })
-
-    it('should call onHide when skip is clicked', () => {
-        const onHide = jest.fn()
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <OnboardingSidePanel isHidden={false} onHide={onHide} />
-            </Provider>
-        )
-
-        fireEvent.click(screen.getByText('Skip'))
-
-        expect(onHide).toHaveBeenCalled()
     })
 })
