@@ -33,7 +33,7 @@ export default function ReconnectButton({
                 positionFixed
                 delay={0}
             >
-                Reconnect integration.
+                Reconnect
             </Tooltip>
         </>
     )
