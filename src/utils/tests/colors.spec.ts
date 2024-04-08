@@ -1,7 +1,6 @@
 import {getContrast} from 'color2k'
-import lightColorTokens from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
 
-import {getTextColorBasedOnBackground} from '../colors'
+import {getEnoughContrastedColor} from '../colors'
 
 const mockRaiseError = 'raise error'
 
@@ -24,53 +23,16 @@ jest.mock(
         } as Record<string, unknown>)
 )
 
-describe('getTextColorBasedOnBackground', () => {
-    const darkTextColor = '#000'
-    const lightTextColor = '#fff'
-
-    it('should return default light text color', () => {
-        expect(getTextColorBasedOnBackground('#8c1367')).toBe(
-            lightColorTokens.Light.Neutral.Grey_0.value
-        )
-    })
-
-    it('should return default dark text color', () => {
-        expect(getTextColorBasedOnBackground('#0693e3')).toBe(
-            lightColorTokens.Light.Neutral.Grey_6.value
-        )
-    })
-
-    it('should return light text color', () => {
+describe('getEnoughContrastedColor', () => {
+    it('should return same input color when the contrast is good enough', () => {
         expect(
-            getTextColorBasedOnBackground('#8c1367', {
-                lightTextColor,
-                darkTextColor,
-            })
-        ).toBe(lightTextColor)
+            getEnoughContrastedColor('hsla(318, 76%, 51%, 1)', '#27061d')
+        ).toBe('hsla(318, 76%, 51%, 1)')
     })
 
-    it('should return dark text color', () => {
+    it('should return adjusted input color', () => {
         expect(
-            getTextColorBasedOnBackground('#0693e3', {
-                lightTextColor,
-                darkTextColor,
-            })
-        ).toBe(darkTextColor)
-    })
-
-    it('should return light text color with custom contrast level', () => {
-        expect(
-            getTextColorBasedOnBackground('#0693e3', {
-                lightTextColor,
-                darkTextColor,
-                contrastLevel: 2.5,
-            })
-        ).toBe(lightTextColor)
-    })
-
-    it('should return light text color on error', () => {
-        const result = getTextColorBasedOnBackground(mockRaiseError)
-
-        expect(result).toBe(lightColorTokens.Light.Neutral.Grey_0.value)
+            getEnoughContrastedColor('hsla(318, 76%, 51%, 1)', '#620e49')
+        ).toBe('hsla(318, 76%, 71%, 1)')
     })
 })

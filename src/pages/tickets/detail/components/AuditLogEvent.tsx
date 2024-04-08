@@ -6,7 +6,8 @@ import _truncate from 'lodash/truncate'
 import _omit from 'lodash/omit'
 
 import {Link} from 'react-router-dom'
-import {AgentLabel, TagLabel, TeamLabel} from 'pages/common/utils/labels'
+import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
+import TicketTag from 'pages/common/components/TicketTag'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
@@ -350,13 +351,13 @@ export class AuditLogEventContainer extends Component<Props> {
         {
             eventTags.forEach((tag: Map<any, any>) => {
                 elements.push(
-                    <TagLabel
+                    <TicketTag
                         key={tag.get('id')}
                         decoration={tag.get('decoration')}
                         className={css.equalFiller}
                     >
                         {tag.get('name')}
-                    </TagLabel>
+                    </TicketTag>
                 )
             })
         }

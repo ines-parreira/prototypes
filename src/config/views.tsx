@@ -11,6 +11,7 @@ import {ViewField, ViewType, ViewVisibility} from 'models/view/types'
 import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
+import TicketTag from 'pages/common/components/TicketTag'
 
 import ticketLanguages from './ticketLanguages'
 
@@ -310,21 +311,15 @@ export const views = fromAST([
                                             b.get('name') as string
                                         ).toLowerCase()) as any
                                 )
-                                .map((tag: Map<any, any>) => {
-                                    const {
-                                        TagLabel,
-                                        //eslint-disable-next-line @typescript-eslint/no-var-requires
-                                    } = require('../pages/common/utils/labels') // require cycle
-                                    return (
-                                        <TagLabel
-                                            key={tag.get('id')}
-                                            decoration={tag.get('decoration')}
-                                            title={tag.get('name')}
-                                        >
-                                            {tag.get('name')}
-                                        </TagLabel>
-                                    )
-                                })}
+                                .map((tag: Map<any, any>) => (
+                                    <TicketTag
+                                        key={tag.get('id')}
+                                        decoration={tag.get('decoration')}
+                                        title={tag.get('name')}
+                                    >
+                                        {tag.get('name')}
+                                    </TicketTag>
+                                ))}
                         </div>
                     )
                 }

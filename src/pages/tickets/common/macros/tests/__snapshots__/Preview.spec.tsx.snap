@@ -20,21 +20,24 @@ exports[`<Preview /> should multiple actions preview 1`] = `
     >
       Add tags:
     </strong>
-    <span
-      class="badge-tag badge badge-secondary"
+    <div
+      class="badge"
+      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund
-    </span>
-    <span
-      class="badge-tag badge badge-secondary"
+    </div>
+    <div
+      class="badge"
+      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       billing
-    </span>
-    <span
-      class="badge-tag badge badge-secondary"
+    </div>
+    <div
+      class="badge"
+      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund accepted
-    </span>
+    </div>
   </div>
   <div
     class="macroData"
@@ -141,21 +144,24 @@ exports[`<Preview /> should render simple action preview 1`] = `
     >
       Add tags:
     </strong>
-    <span
-      class="badge-tag badge badge-secondary"
+    <div
+      class="badge"
+      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund
-    </span>
-    <span
-      class="badge-tag badge badge-secondary"
+    </div>
+    <div
+      class="badge"
+      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       billing
-    </span>
-    <span
-      class="badge-tag badge badge-secondary"
+    </div>
+    <div
+      class="badge"
+      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund accepted
-    </span>
+    </div>
   </div>
 </div>
 `;

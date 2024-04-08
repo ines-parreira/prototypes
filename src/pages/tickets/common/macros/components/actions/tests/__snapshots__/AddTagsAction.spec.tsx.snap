@@ -68,8 +68,9 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
           />
         </div>
       </div>
-      <span
-        class="badge-tag tagLabel badge badge-secondary"
+      <div
+        class="badge tagLabel"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         <span>
           tag1
@@ -79,9 +80,10 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
             close
           </i>
         </span>
-      </span>
-      <span
-        class="badge-tag tagLabel badge badge-secondary"
+      </div>
+      <div
+        class="badge tagLabel"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         <span>
           tag2
@@ -91,7 +93,7 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
             close
           </i>
         </span>
-      </span>
+      </div>
       <button
         aria-disabled="false"
         class="wrapper hidden ghost primary small"

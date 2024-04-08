@@ -42,5 +42,5 @@ export default function useThemeContext() {
         theme,
         setTheme: setSavedTheme,
         colorTokens: Themes[theme].colorTokens,
-    } as const
+    }
 }

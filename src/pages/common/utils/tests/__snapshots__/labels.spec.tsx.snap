@@ -228,12 +228,4 @@ exports[`components utils: labels RenderLabel distribution status label 1`] = `
 </div>
 `;
 
-exports[`components utils: labels RenderLabel distribution tags label 1`] = `
-<span
-  class="badge-tag badge badge-secondary"
->
-  help
-</span>
-`;
-
 exports[`components utils: labels RenderLabel distribution thisshouldreturnnull label 1`] = `null`;

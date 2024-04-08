@@ -45,7 +45,7 @@ import {isOpenedPanel} from 'state/layout/selectors'
 import {RootState} from 'state/types'
 import {hasRole, isTouchEvent} from 'utils'
 import {reportError} from 'utils/errors'
-import {Theme, useSavedTheme, useSetTheme, useTheme, withTheme} from 'theme'
+import {Theme, ThemeProps, withTheme} from 'theme'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AGENT_ROLE, ADMIN_ROLE} from 'config/user'
@@ -162,12 +162,7 @@ type OwnProps = {
     flags?: LDFlagSet
 }
 
-type Props = OwnProps &
-    ConnectedProps<typeof connector> & {
-        setTheme: ReturnType<typeof useSetTheme>
-        theme: ReturnType<typeof useTheme>
-        savedTheme: ReturnType<typeof useSavedTheme>
-    }
+type Props = OwnProps & ConnectedProps<typeof connector> & ThemeProps
 
 type ActiveScreen = 'main' | 'gorgias-updates' | 'learn' | 'theme'
 

@@ -871,11 +871,12 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         Tagged
       </span>
-      <span
-        class="badge-tag equalFiller badge badge-secondary"
+      <div
+        class="badge equalFiller"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         tag-1
-      </span>
+      </div>
       <span
         class="filler"
       >
@@ -928,16 +929,18 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         Tagged
       </span>
-      <span
-        class="badge-tag equalFiller badge badge-secondary"
+      <div
+        class="badge equalFiller"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         tag-1
-      </span>
-      <span
-        class="badge-tag equalFiller badge badge-secondary"
+      </div>
+      <div
+        class="badge equalFiller"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         tag-2
-      </span>
+      </div>
       <span
         class="filler"
       >
@@ -990,11 +993,12 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         Untagged
       </span>
-      <span
-        class="badge-tag equalFiller badge badge-secondary"
+      <div
+        class="badge equalFiller"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         tag-1
-      </span>
+      </div>
       <span
         class="filler"
       >
@@ -1047,16 +1051,18 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         Untagged
       </span>
-      <span
-        class="badge-tag equalFiller badge badge-secondary"
+      <div
+        class="badge equalFiller"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         tag-1
-      </span>
-      <span
-        class="badge-tag equalFiller badge badge-secondary"
+      </div>
+      <div
+        class="badge equalFiller"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         tag-2
-      </span>
+      </div>
       <span
         class="filler"
       >

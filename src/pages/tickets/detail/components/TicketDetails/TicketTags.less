@@ -5,9 +5,7 @@
     }
 
     .tagLabel {
-        padding: 4px 4px 4px 8px;
-
-        & + .tagLabel {
+        &:not(:first-of-type) {
             margin-left: unset;
         }
     }

@@ -9,8 +9,8 @@ import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import TicketTag from 'pages/common/components/TicketTag'
 import Tooltip from 'pages/common/components/Tooltip'
-import {TagLabel} from 'pages/common/utils/labels'
 import ThemeContext from 'theme/ThemeContext'
 
 import TagSearchDropdown from './TagSearchDropdown'
@@ -106,7 +106,7 @@ const TicketTags = ({
                         />
                     )}
                     {tags.map((tag?: Map<any, any>, i?) => (
-                        <TagLabel
+                        <TicketTag
                             key={i}
                             decoration={tag!.get('decoration')}
                             className={css.tagLabel}
@@ -129,7 +129,7 @@ const TicketTags = ({
                                     </i>
                                 )}
                             </span>
-                        </TagLabel>
+                        </TicketTag>
                     ))}
                     <Button
                         fillStyle="ghost"

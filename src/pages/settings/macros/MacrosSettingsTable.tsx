@@ -22,7 +22,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import Tooltip from 'pages/common/components/Tooltip'
-import {TagLabel} from 'pages/common/utils/labels'
+import TicketTag from 'pages/common/components/TicketTag'
 import history from 'pages/history'
 import {macroCreated, macroDeleted} from 'state/entities/macros/actions'
 import {notify} from 'state/notifications/actions'
@@ -214,15 +214,15 @@ export function MacrosSettingsTableContainer({
                         const tagId = `tags-${macroId}`
                         const tag = tags.length ? (
                             <div className="flex" id={tagId}>
-                                <TagLabel>{tags[0]}</TagLabel>
+                                <TicketTag>{tags[0]}</TicketTag>
                                 {tags.length > 1 && (
                                     <>
                                         <Tooltip target={tagId}>
                                             {tags.join(', ')}
                                         </Tooltip>
-                                        <TagLabel className="text-info">
+                                        <TicketTag className="text-info">
                                             +{tags.length - 1}
-                                        </TagLabel>
+                                        </TicketTag>
                                     </>
                                 )}
                             </div>

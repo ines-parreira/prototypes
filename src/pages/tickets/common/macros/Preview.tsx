@@ -19,13 +19,13 @@ import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {useCustomFieldDefinition} from 'hooks/customField/useCustomFieldDefinition'
 import {isRichType} from 'tickets/common/utils'
 import {
-    TagLabel,
     AgentLabel,
     StatusLabel,
     TimedeltaLabel,
     TeamLabel,
     RecipientsLabel,
 } from 'pages/common/utils/labels'
+import TicketTag from 'pages/common/components/TicketTag'
 import {
     fileIconFromContentType,
     getSortedIntegrationActions,
@@ -188,7 +188,7 @@ class Preview extends Component<Props> {
                 {(addTagsAction.getIn(['arguments', 'tags'], '') as string)
                     .split(',')
                     .map((tag) => (
-                        <TagLabel key={tag}>{tag}</TagLabel>
+                        <TicketTag key={tag}>{tag}</TicketTag>
                     ))}
             </div>
         )

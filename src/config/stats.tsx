@@ -15,7 +15,7 @@ import {
     formatDuration,
     formatNumber,
 } from 'pages/stats/common/utils'
-import {TagLabel} from 'pages/common/utils/labels'
+import TicketTag from 'pages/common/components/TicketTag'
 import {IntentName} from 'models/intent/types'
 import {humanizeString, lightenDarkenColor} from 'utils'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
@@ -848,11 +848,11 @@ export const stats = toImmutable<
                 }
                 return (
                     <div className="fit-cell">
-                        <TagLabel
+                        <TicketTag
                             decoration={tagColors.get(tagName.get('value'))}
                         >
                             {tagName.get('value')}
-                        </TagLabel>
+                        </TicketTag>
                     </div>
                 )
             },

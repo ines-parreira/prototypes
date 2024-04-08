@@ -501,11 +501,12 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                   <div
                     class="fit-cell"
                   >
-                    <span
-                      class="badge-tag badge badge-secondary"
+                    <div
+                      class="badge"
+                      style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
                     >
                       rejected
-                    </span>
+                    </div>
                   </div>
                 </span>
               </td>

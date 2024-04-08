@@ -24,7 +24,7 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
 import settingsCss from 'pages/settings/settings.less'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {Theme, useSavedTheme, useSetTheme, withTheme} from 'theme'
+import {Theme, ThemeProps, useSavedTheme, withTheme} from 'theme'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
@@ -56,9 +56,7 @@ type Props = {
         notification: boolean
     ) => Promise<unknown>
     preferences: Map<any, any>
-    setTheme: ReturnType<typeof useSetTheme>
-    savedTheme: ReturnType<typeof useSavedTheme>
-}
+} & ThemeProps
 
 type State = {
     bio: string

@@ -15,6 +15,7 @@ import {
 } from 'fixtures/productPrices'
 import * as utils from 'utils'
 import {AcceptedThemes, Theme} from 'theme'
+import {ThemeColors} from 'theme/types'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Navbar} from '../Navbar'
@@ -52,6 +53,7 @@ describe('<Navbar />', () => {
         savedTheme: Theme.Modern,
         theme: Theme.Modern as AcceptedThemes,
         setTheme: jest.fn(),
+        colorTokens: {} as ThemeColors,
     }
 
     window.noticeable = {

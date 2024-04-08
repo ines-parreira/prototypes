@@ -68,8 +68,9 @@ exports[`<TicketTags /> should display current tags 1`] = `
           />
         </div>
       </div>
-      <span
-        class="badge-tag tagLabel badge badge-secondary"
+      <div
+        class="badge tagLabel"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         <span>
           angry
@@ -79,9 +80,10 @@ exports[`<TicketTags /> should display current tags 1`] = `
             close
           </i>
         </span>
-      </span>
-      <span
-        class="badge-tag tagLabel badge badge-secondary"
+      </div>
+      <div
+        class="badge tagLabel"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         <span>
           customer
@@ -91,9 +93,10 @@ exports[`<TicketTags /> should display current tags 1`] = `
             close
           </i>
         </span>
-      </span>
-      <span
-        class="badge-tag tagLabel badge badge-secondary"
+      </div>
+      <div
+        class="badge tagLabel"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         <span>
           refund
@@ -103,9 +106,10 @@ exports[`<TicketTags /> should display current tags 1`] = `
             close
           </i>
         </span>
-      </span>
-      <span
-        class="badge-tag tagLabel badge badge-secondary"
+      </div>
+      <div
+        class="badge tagLabel"
+        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
       >
         <span>
           return
@@ -115,7 +119,7 @@ exports[`<TicketTags /> should display current tags 1`] = `
             close
           </i>
         </span>
-      </span>
+      </div>
       <button
         aria-disabled="false"
         class="wrapper hidden ghost primary small"

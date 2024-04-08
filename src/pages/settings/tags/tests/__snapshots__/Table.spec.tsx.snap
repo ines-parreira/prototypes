@@ -131,11 +131,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div
           class="cell-wrapper"
         >
-          <span
-            class="badge-tag badge badge-secondary"
+          <div
+            class="badge"
+            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
           >
             billing
-          </span>
+          </div>
         </div>
       </td>
       <td>
@@ -208,11 +209,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div
           class="cell-wrapper"
         >
-          <span
-            class="badge-tag badge badge-secondary"
+          <div
+            class="badge"
+            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
           >
             refund
-          </span>
+          </div>
         </div>
       </td>
       <td>
@@ -285,11 +287,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div
           class="cell-wrapper"
         >
-          <span
-            class="badge-tag badge badge-secondary"
+          <div
+            class="badge"
+            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
           >
             refund accepted
-          </span>
+          </div>
         </div>
       </td>
       <td>
@@ -362,11 +365,12 @@ exports[`ManageTags Table component should display the same number of rows as th
         <div
           class="cell-wrapper"
         >
-          <span
-            class="badge-tag badge badge-secondary"
+          <div
+            class="badge"
+            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
           >
             rejected
-          </span>
+          </div>
         </div>
       </td>
       <td>

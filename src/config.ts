@@ -1733,8 +1733,6 @@ export const DELAY_SURVEY_FOR = [
  */
 export const MAX_HEADER_LENGTH = 1000
 
-export const DEFAULT_TAG_COLOR = 'var(--main-secondary)'
-
 export const SENTIMENT_TYPE_UPPER_BOUND = 0.4
 
 export const SENTIMENT_TYPE_LOWER_BOUND = -0.4

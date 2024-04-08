@@ -1,11 +1,9 @@
-import React, {ReactNode} from 'react'
-import {fromJS, Map} from 'immutable'
+import React from 'react'
+import {Map} from 'immutable'
 import classnames from 'classnames'
-import {Badge as ReactstrapBadge} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
 import {isImmutable} from 'common/utils'
-import {DEFAULT_TAG_COLOR} from 'config'
 import {UserRole} from 'config/types/user'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,13 +12,12 @@ import {SourceType} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import SourceIcon from 'pages/common/components/SourceIcon'
+import TicketTag from 'pages/common/components/TicketTag'
 import {getHumanAgents} from 'state/agents/selectors'
 import {getDisplayName} from 'state/customers/helpers'
 import {getIntegrationChannel} from 'state/integrations/selectors'
 import {getTeams} from 'state/teams/selectors'
-import {Theme, useTheme} from 'theme'
 import {parseTimeDelta} from 'tickets/common/utils'
-import {getTextColorBasedOnBackground} from 'utils/colors'
 
 import {sanitizeHtmlDefault} from 'utils/html'
 import DatetimeLabel from './DatetimeLabel'
@@ -158,42 +155,6 @@ export const CustomerLabel = ({
     ) : (
         <span>{getDisplayName(customer)}</span>
     )
-
-export const TagLabel = ({
-    className,
-    decoration,
-    children,
-    title,
-}: {
-    className?: string
-    decoration?: Map<any, any>
-    children?: ReactNode
-    title?: string
-}) => {
-    const color =
-        ((decoration || fromJS({})) as Map<any, any>).get('color') ||
-        DEFAULT_TAG_COLOR
-
-    const theme = useTheme()
-    const textColor = getTextColorBasedOnBackground(color)
-
-    return (
-        <ReactstrapBadge
-            className={classnames('badge-tag', className)}
-            style={
-                theme === Theme.Dark
-                    ? {
-                          backgroundColor: color,
-                          color: textColor,
-                      }
-                    : {color}
-            }
-            title={title}
-        >
-            {children}
-        </ReactstrapBadge>
-    )
-}
 
 export const TimedeltaLabel = ({
     duration,
@@ -402,7 +363,7 @@ export const RenderLabel = ({
 
     switch (field.get('name')) {
         case 'tags':
-            return <TagLabel>{value}</TagLabel>
+            return <TicketTag>{value}</TicketTag>
         case 'created':
         case 'updated':
         case 'last_message':

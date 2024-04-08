@@ -10,7 +10,7 @@ import {user} from 'fixtures/users'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
 import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
-import {Theme} from 'theme/types'
+import {Theme, ThemeColors} from 'theme/types'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -22,7 +22,9 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     submitSetting: jest.fn(),
     preferences: fromJS({data: {}}),
     setTheme: jest.fn(),
-    savedTheme: 'dark' as Theme,
+    savedTheme: Theme.Dark,
+    theme: Theme.Dark,
+    colorTokens: {} as ThemeColors,
 }
 jest.mock('moment-timezone', () => {
     return {

@@ -1,23 +1,15 @@
-import React, {ComponentProps, ComponentType} from 'react'
+import React, {ComponentType, useContext} from 'react'
 
-import useSavedTheme from './useSavedTheme'
-import useSetTheme from './useSetTheme'
-import useTheme from './useTheme'
+import ThemeContext from './ThemeContext'
+import useThemeContext from './useThemeContext'
 
-export const withTheme = (Component: ComponentType<any>) => {
-    return (props: ComponentProps<typeof Component>) => {
-        const theme = useTheme()
-        const savedTheme = useSavedTheme()
-        const setTheme = useSetTheme()
+export type ThemeProps = ReturnType<typeof useThemeContext>
 
-        return (
-            <Component
-                {...props}
-                theme={theme}
-                savedTheme={savedTheme}
-                setTheme={setTheme}
-            />
-        )
+export function withTheme<T>(Component: ComponentType<T & ThemeProps>) {
+    return (props: T) => {
+        const themeContext = useContext(ThemeContext)
+
+        return <Component {...props} {...themeContext!} />
     }
 }
 

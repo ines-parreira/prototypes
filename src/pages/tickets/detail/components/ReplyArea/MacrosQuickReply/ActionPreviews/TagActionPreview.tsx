@@ -3,7 +3,7 @@ import {List, Map} from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {MacroAction} from 'models/macroAction/types'
-import {TagLabel} from 'pages/common/utils/labels'
+import TicketTag from 'pages/common/components/TicketTag'
 import {getTags} from 'state/tags/selectors'
 
 import {BaseActionPreview} from './BaseActionPreview'
@@ -20,20 +20,22 @@ export const TagActionPreview = ({action}: Props) => {
         return null
     }
 
-    const tagLabels = tags.map((tag) => {
+    const TicketTags = tags.map((tag) => {
         const tagObject: Map<any, any> = tagStore.find(
             (tagObject: Map<any, any>) => tagObject.get('name') === tag
         )
 
         return (
-            <TagLabel key={tag} decoration={tagObject?.get('decoration')}>
+            <TicketTag key={tag} decoration={tagObject?.get('decoration')}>
                 {tag}
-            </TagLabel>
+            </TicketTag>
         )
     })
 
     return (
-        <BaseActionPreview actionName="Add tags">{tagLabels}</BaseActionPreview>
+        <BaseActionPreview actionName="Add tags">
+            {TicketTags}
+        </BaseActionPreview>
     )
 }
 

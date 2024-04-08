@@ -1,0 +1,16 @@
+@import (reference) '~css/typography';
+
+:local {
+    .badge {
+        transition: all 0.2s linear;
+        padding: 4px 8px;
+        border-radius: 4px;
+        .caption-semibold();
+        color: var(--main-secondary);
+        white-space: nowrap;
+
+        &:not(:first-of-type) {
+            margin-left: 8px;
+        }
+    }
+}

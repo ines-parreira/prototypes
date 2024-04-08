@@ -158,20 +158,22 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               class="flex"
               id="tags-1"
             >
-              <span
-                class="badge-tag badge badge-secondary"
+              <div
+                class="badge"
+                style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
               >
                 refund
-              </span>
+              </div>
               <div>
                 Tooltip
               </div>
-              <span
-                class="badge-tag text-info badge badge-secondary"
+              <div
+                class="badge text-info"
+                style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
               >
                 +
                 1
-              </span>
+              </div>
             </div>
           </div>
         </a>
@@ -282,11 +284,12 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
               class="flex"
               id="tags-2"
             >
-              <span
-                class="badge-tag badge badge-secondary"
+              <div
+                class="badge"
+                style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
               >
                 rejectedTag
-              </span>
+              </div>
             </div>
           </div>
         </a>

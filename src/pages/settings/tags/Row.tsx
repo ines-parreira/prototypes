@@ -3,19 +3,20 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Form} from 'reactstrap'
 import classNames from 'classnames'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 
-import {DEFAULT_TAG_COLOR} from 'config'
 import {Tag, TagDecoration} from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ColorPicker from 'pages/common/components/ColorPicker/ColorPicker'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {TagLabel} from 'pages/common/utils/labels'
+import TicketTag from 'pages/common/components/TicketTag'
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {cancel, edit, remove, save, select} from 'state/tags/actions'
 import {REMOVE_TAG_ERROR} from 'state/tags/constants'
 import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
+import {WithColorTokens, withThemedColorTokens} from 'theme'
 import {toJS} from 'utils'
 
 import css from './Row.less'
@@ -24,7 +25,8 @@ type Props = {
     row: Tag
     meta: Map<any, any>
     refresh: () => void
-} & ConnectedProps<typeof connector>
+} & ConnectedProps<typeof connector> &
+    WithColorTokens
 
 type State = {
     name?: string
@@ -70,12 +72,14 @@ export class Row extends Component<Props, State> {
         event.preventDefault()
         const {name, description} = this.state
         let {decoration} = this.state
-        const {row, save, refresh} = this.props
+        const {colorTokens, row, save, refresh} = this.props
 
         const obj: TagDecoration = toJS(decoration)
-        // Set default blue color if no color
         if (obj.color === '') {
-            obj.color = DEFAULT_TAG_COLOR
+            obj.color =
+                colorTokens?.Main.Secondary.value ??
+                colors['🖥 Modern'].Main.Secondary.value
+
             decoration = fromJS(obj)
             this.setState({decoration})
         }
@@ -121,7 +125,8 @@ export class Row extends Component<Props, State> {
     }
 
     render() {
-        const {row, meta} = this.props
+        const {colorTokens, row, meta} = this.props
+        const {decoration, description, name} = this.state
 
         const isEditing = meta.get('edit')
 
@@ -147,7 +152,7 @@ export class Row extends Component<Props, State> {
                             <div className="d-flex mr-2 align-items-center">
                                 <div className="mr-2">
                                     <TextInput
-                                        value={this.state.name}
+                                        value={name}
                                         onChange={this._changeName}
                                         isRequired
                                     />
@@ -155,14 +160,17 @@ export class Row extends Component<Props, State> {
                                 <div className="mr-2">
                                     <TextInput
                                         size={100}
-                                        value={this.state.description}
+                                        value={description}
                                         onChange={this._changeDescription}
                                     />
                                 </div>
 
                                 <ColorPicker
-                                    value={this.state.decoration.color}
-                                    defaultValue={DEFAULT_TAG_COLOR}
+                                    value={decoration.color}
+                                    defaultValue={
+                                        colorTokens?.Main.Secondary.value ??
+                                        colors['🖥 Modern'].Main.Secondary.value
+                                    }
                                     onChange={this._changeColor}
                                 />
                             </div>
@@ -198,9 +206,9 @@ export class Row extends Component<Props, State> {
 
                 <td>
                     <div className="cell-wrapper">
-                        <TagLabel decoration={fromJS(row.decoration)}>
+                        <TicketTag decoration={fromJS(row.decoration)}>
                             {row.name}
-                        </TagLabel>
+                        </TicketTag>
                     </div>
                 </td>
 
@@ -279,4 +287,4 @@ const connector = connect(null, {
     select,
 })
 
-export default connector(Row)
+export default withThemedColorTokens(connector(Row))

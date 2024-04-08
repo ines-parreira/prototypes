@@ -42,11 +42,6 @@ describe('components utils: labels', () => {
         describe('distribution', () => {
             ;[
                 {
-                    type: 'tags',
-                    value: 'help',
-                    expected: <labels.TagLabel>help</labels.TagLabel>,
-                },
-                {
                     type: 'created',
                     value: '2016-01-15',
                     expected: <DatetimeLabel dateTime="2016-01-15" />,

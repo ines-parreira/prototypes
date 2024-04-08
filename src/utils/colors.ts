@@ -1,26 +1,26 @@
-import {getContrast} from 'color2k'
-import lightColorTokens from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
+import {lighten, getContrast, toRgba} from 'color2k'
 
-const DEFAULT_CONTRAST_LEVEL = 3.5
+const DEFAULT_CONTRAST_LEVEL = 4
 
-export function getTextColorBasedOnBackground(
+// It is meant to work with a dark backgroundColor
+export function getEnoughContrastedColor(
+    color: string,
     backgroundColor: string,
-    {
-        contrastLevel = DEFAULT_CONTRAST_LEVEL,
-        lightTextColor = lightColorTokens.Light.Neutral.Grey_0.value,
-        darkTextColor = lightColorTokens.Light.Neutral.Grey_6.value,
-    }: {
-        contrastLevel?: number
-        lightTextColor?: string
-        darkTextColor?: string
-    } = {}
+    contrastLevel = DEFAULT_CONTRAST_LEVEL
 ) {
     try {
-        const lightTextContrast = getContrast(backgroundColor, lightTextColor)
-        return lightTextContrast >= contrastLevel
-            ? lightTextColor
-            : darkTextColor
+        let count = 0
+        let textColor = color
+        const backgroundColorRGB = toRgba(backgroundColor)
+        let contrast = getContrast(textColor, backgroundColorRGB)
+
+        while (contrast < contrastLevel && count < 5) {
+            textColor = lighten(textColor, 0.1)
+            contrast = getContrast(textColor, backgroundColorRGB)
+            count += 1
+        }
+        return textColor
     } catch (err) {
-        return lightTextColor
+        return color
     }
 }

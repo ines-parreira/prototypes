@@ -156,13 +156,14 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                         <div
                           class="tags right"
                         >
-                          <span
-                            class="badge-tag tagLabel badge badge-secondary"
+                          <div
+                            class="badge tagLabel"
+                            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
                           >
                             <span>
                               auto-close
                             </span>
-                          </span>
+                          </div>
                           <button
                             aria-disabled="false"
                             class="wrapper hidden ghost primary small"
@@ -370,13 +371,14 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                         <div
                           class="tags right"
                         >
-                          <span
-                            class="badge-tag tagLabel badge badge-secondary"
+                          <div
+                            class="badge tagLabel"
+                            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
                           >
                             <span>
                               auto-close
                             </span>
-                          </span>
+                          </div>
                           <button
                             aria-disabled="false"
                             class="wrapper hidden ghost primary small"

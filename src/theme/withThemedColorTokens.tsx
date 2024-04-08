@@ -21,3 +21,5 @@ export function withThemedColorTokens<T>(
 
     return ComponentWithThemedColorTokens
 }
+
+export default withThemedColorTokens
