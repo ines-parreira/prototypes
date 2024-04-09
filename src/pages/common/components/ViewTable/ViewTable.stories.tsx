@@ -12,7 +12,7 @@ import {fetchViewItems, updateView} from 'state/views/actions'
 import {ViewTableContainer} from './ViewTable'
 
 const storyConfig: Meta = {
-    title: 'Data Display/ViewTable',
+    title: 'Data Display/ViewTable/ViewTable',
     component: ViewTableContainer,
     decorators: [
         (story) => (

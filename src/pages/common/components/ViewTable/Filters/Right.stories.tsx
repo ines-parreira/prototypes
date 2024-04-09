@@ -1,0 +1,88 @@
+import React, {ComponentProps} from 'react'
+import {Meta, StoryFn} from '@storybook/react'
+import configureMockStore from 'redux-mock-store'
+import {Provider} from 'react-redux'
+import {fromJS} from 'immutable'
+import {Identifier} from 'estree'
+import {ThemeProvider} from 'theme'
+import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
+
+const defaultState = {}
+
+const storyConfig: Meta = {
+    title: 'Data Display/ViewTable/RightContainer',
+    component: RightContainer,
+    parameters: {
+        chromatic: {disableSnapshot: false},
+    },
+}
+
+const Template: StoryFn<ComponentProps<typeof RightContainer>> = (
+    props: ComponentProps<typeof RightContainer>
+) => {
+    return (
+        <ThemeProvider>
+            <Provider store={configureMockStore()(defaultState)}>
+                <RightContainer {...props} />
+            </Provider>
+        </ThemeProvider>
+    )
+}
+
+const defaultProps: ComponentProps<typeof RightContainer> = {
+    agents: fromJS([]),
+    config: fromJS({}),
+    empty: false,
+    field: fromJS({
+        name: 'created',
+        title: 'Created',
+        path: 'created_datetime',
+        filter: {
+            sort: {
+                created_datetime: 'desc',
+            },
+        },
+    }),
+    index: 0,
+    objectPath: 'ticket.created_datetime',
+    operator: {
+        loc: {
+            end: {
+                line: 1,
+                column: 3,
+            },
+            start: {
+                line: 1,
+                column: 0,
+            },
+        },
+        name: 'gte',
+        type: 'Identifier',
+    } as Identifier,
+    teams: fromJS([]),
+    updateFieldFilter: () => ({
+        type: 'someType',
+        index: 0,
+        value: 'someValue',
+    }),
+    node: {
+        loc: {
+            end: {
+                line: 1,
+                column: 54,
+            },
+            start: {
+                line: 1,
+                column: 29,
+            },
+        },
+        raw: "'2021-12-1T06:00:00.000Z'",
+        type: 'Literal',
+        value: '2021-12-1T06:00:00.000Z',
+    },
+}
+
+export const Default = Template.bind({})
+Default.args = defaultProps
+
+export default storyConfig
