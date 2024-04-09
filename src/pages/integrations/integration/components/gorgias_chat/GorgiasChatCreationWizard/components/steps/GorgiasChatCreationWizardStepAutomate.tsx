@@ -281,7 +281,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         )
 
         const quickResponsePolicies = hasActiveQuickResponsePoliciesInitially
-            ? selfServiceConfiguration!.quick_response_policies
+            ? selfServiceConfiguration.quick_response_policies
             : [
                   ...quickResponses,
                   ...selfServiceConfiguration!.quick_response_policies.filter(

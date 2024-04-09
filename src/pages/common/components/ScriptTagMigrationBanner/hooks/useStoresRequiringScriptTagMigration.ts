@@ -108,7 +108,7 @@ const useStoresRequiringScriptTagMigration = () => {
                 gorgiasChatRequiresReinstall,
                 storeRequiresPermissionUpdates,
             } = getRequiresScriptTagMigration({
-                storeIntegration: storeIntegration as ShopifyIntegration,
+                storeIntegration: storeIntegration,
                 gorgiasChatIntegration,
             })
 

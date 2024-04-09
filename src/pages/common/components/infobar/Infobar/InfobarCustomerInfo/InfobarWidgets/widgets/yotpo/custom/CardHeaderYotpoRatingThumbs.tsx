@@ -12,7 +12,7 @@ export function CardHeaderYotpoRatingThumbs({value, label}: Props) {
     let thumb = null
     if (!missingData) {
         thumb =
-            parseFloat(value!) > 2.5 ? (
+            parseFloat(value) > 2.5 ? (
                 <span className={`material-icons ${css.greenThumb}`}>
                     thumb_up{' '}
                 </span>

@@ -249,7 +249,9 @@ global.jestSetTimeout = (body, timeout, done) => {
             body()
             done()
         } catch (error) {
-            ;(done as unknown as {fail: (error: Error) => void}).fail(error)
+            ;(done as unknown as {fail: (error: Error) => void}).fail(
+                error as Error
+            )
         }
     }, timeout)
 }

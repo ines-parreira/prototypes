@@ -937,9 +937,7 @@ function flattenErrors(
     )
 }
 
-export const errorToChildren = (
-    incomingError: Record<string, unknown>
-): string | null => {
+export const errorToChildren = (incomingError: unknown): string | null => {
     const error = _get(incomingError, 'response.data.error', {}) as
         | GorgiasApiResponseDataError
         | {data: never}

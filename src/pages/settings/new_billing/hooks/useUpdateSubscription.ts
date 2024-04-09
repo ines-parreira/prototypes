@@ -21,7 +21,7 @@ export const useUpdateSubscription = (): HandleSubscriptionUpdate => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: error,
+                        message: String(error),
                     })
                 )
                 return Promise.reject(error)

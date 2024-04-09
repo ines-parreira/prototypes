@@ -547,7 +547,7 @@ export class Integration extends Component<Props, State> {
                                             isLoading={isSubmitting}
                                             onClick={() =>
                                                 activateIntegration(
-                                                    integration!.id
+                                                    integration.id
                                                 )
                                             }
                                         >

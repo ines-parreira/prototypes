@@ -5,6 +5,6 @@ export async function catchAsync<TFunction extends () => Promise<any>>(
         const result = await func()
         return [undefined, result]
     } catch (error) {
-        return [error]
+        return [error as Error]
     }
 }

@@ -80,7 +80,7 @@ export function submitCustomer(data: CustomerDraft, customerId?: number) {
 
         if (isUpdate) {
             promise = client.put<CustomerDraft>(
-                `/api/customers/${customerId!}/`,
+                `/api/customers/${customerId}/`,
                 data
             )
         } else {

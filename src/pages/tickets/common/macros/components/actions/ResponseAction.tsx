@@ -226,9 +226,9 @@ const ResponseAction: React.FC<Props> = ({
                 !isMacroResponseCcBccEnabled ? (
                     showConvertHeader && (
                         <MacroMessageActionsHeader
-                            actions={actions!}
+                            actions={actions}
                             type={MacroActionName.AddInternalNote}
-                            onSelect={convertAction!}
+                            onSelect={convertAction}
                         >
                             <span className="font-weight-medium">
                                 Response text
@@ -270,9 +270,9 @@ const ResponseAction: React.FC<Props> = ({
                             )}
                         {showConvertHeader && (
                             <MacroMessageActionsHeader
-                                actions={actions!}
+                                actions={actions}
                                 type={type}
-                                onSelect={convertAction!}
+                                onSelect={convertAction}
                             >
                                 <MacroReplyActionControls
                                     fields={fields}

@@ -24,7 +24,7 @@ class YourProfileContainer extends Component<Props> {
             this.props.preferences.getIn(['data', 'time_format']) !==
                 nextProps.preferences.getIn(['data', 'time_format'])
         ) {
-            window.location.reload(false) // reload only from the cache; we just need all the `moment` objects to reinit
+            window.location.reload() // reload only from the cache; we just need all the `moment` objects to reinit
         }
     }
 

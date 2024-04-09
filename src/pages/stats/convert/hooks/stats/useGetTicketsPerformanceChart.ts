@@ -40,7 +40,7 @@ export const useTicketsPerformanceChart = (
                 getDataFromStatResult(ticketsPerformance)
             setData(ticketsPerformanceData as CampaignGraphData)
         } catch (error) {
-            setError(error)
+            setError(error as Error)
         }
     }, [attrs])
 

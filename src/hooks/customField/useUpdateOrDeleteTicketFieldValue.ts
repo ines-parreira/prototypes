@@ -76,11 +76,15 @@ export const useUpdateOrDeleteTicketFieldValue = (
 
     return {
         mutate: (
-            params: Parameters<typeof updateCustomFieldValue> &
-                Parameters<typeof deleteCustomFieldValue>
+            params:
+                | Parameters<typeof updateCustomFieldValue>
+                | Parameters<typeof deleteCustomFieldValue>
         ) => {
             if (isDisabled) return
-            if (isCustomFieldValueEmpty(params[0].value)) {
+            if (
+                !('value' in params[0]) ||
+                isCustomFieldValueEmpty(params[0].value)
+            ) {
                 return deleteMutate(params)
             }
             return updateMutate(params)

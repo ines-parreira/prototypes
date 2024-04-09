@@ -134,7 +134,7 @@ const AutomateSubscriptionModal = ({
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: error,
+                        message: String(error),
                     })
                 )
             }

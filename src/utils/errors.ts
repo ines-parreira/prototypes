@@ -86,7 +86,10 @@ export function initErrorReporter({
     }
 }
 
-export function reportError(error: Error, options?: Partial<ScopeContext>) {
+export function reportError(
+    error: Error | unknown,
+    options?: Partial<ScopeContext>
+) {
     if (isDevelopment() || isStaging()) {
         console.error(error)
         if (options?.extra) {
