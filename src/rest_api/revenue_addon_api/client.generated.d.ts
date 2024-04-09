@@ -9,6 +9,89 @@ import {
 declare namespace Components {
     namespace Schemas {
         /**
+         * ABTestConfigurationResponseSchema
+         */
+        export interface ABTestConfigurationResponseSchema {
+            /**
+             * Active
+             */
+            active?: boolean
+            configuration: ABTestConfigurationSchema | null
+        }
+        /**
+         * ABTestConfigurationSchema
+         */
+        export interface ABTestConfigurationSchema {
+            /**
+             * Ratio
+             */
+            ratio: number
+            /**
+             * Campaigns
+             */
+            campaigns: string[] | null
+        }
+        /**
+         * ABTestCreateRequestSchema
+         */
+        export interface ABTestCreateRequestSchema {
+            /**
+             * Channel Connection Id
+             */
+            channel_connection_id: string
+            /**
+             * Ratio
+             */
+            ratio?: number
+            /**
+             * Start Date
+             */
+            start_date?: string // date
+        }
+        /**
+         * ABTestPatchRequestSchema
+         */
+        export interface ABTestPatchRequestSchema {
+            /**
+             * State
+             */
+            state: 'inactive'
+        }
+        /**
+         * ABTestResponseSchema
+         */
+        export interface ABTestResponseSchema {
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * Ratio
+             */
+            ratio: number
+            state: ABTestState
+            /**
+             * Start Date
+             */
+            start_date: string // date
+            /**
+             * End Date
+             */
+            end_date: string /* date */ | null
+            /**
+             * Report Link
+             */
+            report_link: string | null
+            /**
+             * Campaigns
+             */
+            campaigns?: string[] | null
+        }
+        /**
+         * ABTestState
+         */
+        export type ABTestState = 'active' | 'inactive'
+        /**
          * BundleOnboardingStatus
          */
         export type BundleOnboardingStatus = 'installed' | 'not_installed'
@@ -65,64 +148,6 @@ declare namespace Components {
              * Template Id
              */
             template_id?: string | null
-        }
-        /**
-         * CampaignIdSchema
-         */
-        export interface CampaignIdSchema {
-            /**
-             * Name
-             */
-            name: string
-            /**
-             * Description
-             */
-            description?: string | null
-            /**
-             * Message Text
-             */
-            message_text: string
-            /**
-             * Message Html
-             */
-            message_html?: string | null
-            /**
-             * Language
-             */
-            language?: string | null
-            status: CampaignStatus
-            /**
-             * Trigger Rule
-             */
-            trigger_rule: string
-            /**
-             * Attachments
-             */
-            attachments?: any
-            /**
-             * Meta
-             */
-            meta?: any
-            /**
-             * Triggers
-             */
-            triggers: CampaignTriggerSchema[]
-            /**
-             * Id
-             */
-            id: string
-            /**
-             * External Tag Id
-             */
-            external_tag_id?: number | null
-            /**
-             * Deleted Datetime
-             */
-            deleted_datetime?: string /* date-time */ | null
-            /**
-             * Created Datetime
-             */
-            created_datetime?: string /* date-time */ | null
         }
         /**
          * CampaignPatchRequestSchema
@@ -223,6 +248,10 @@ declare namespace Components {
              */
             id: string
             /**
+             * Is Light
+             */
+            is_light?: boolean
+            /**
              * Created Datetime
              */
             created_datetime: string // date-time
@@ -256,31 +285,6 @@ declare namespace Components {
          * CampaignStatus
          */
         export type CampaignStatus = 'active' | 'inactive'
-        /**
-         * CampaignSyncSchema
-         */
-        export interface CampaignSyncSchema {
-            /**
-             * Account Id
-             */
-            account_id: number
-            /**
-             * External Id
-             */
-            external_id: string
-            /**
-             * External Installation Status
-             */
-            external_installation_status?: string | null
-            /**
-             * Store Integration Id
-             */
-            store_integration_id?: number | null
-            /**
-             * Campaigns
-             */
-            campaigns: CampaignIdSchema[]
-        }
         /**
          * CampaignTriggerOperator
          */
@@ -435,6 +439,7 @@ declare namespace Components {
              * Campaigns
              */
             campaigns: PublicCampaignResponseSchema[]
+            ab_test?: ABTestConfigurationResponseSchema | null
         }
         /**
          * CustomDomainOperationSchema
@@ -636,6 +641,10 @@ declare namespace Components {
              * Id
              */
             id: string
+            /**
+             * Is Light
+             */
+            is_light: boolean
             /**
              * Created Datetime
              */
@@ -933,16 +942,6 @@ declare namespace Components {
     }
 }
 declare namespace Paths {
-    namespace CampaignsSync {
-        export type RequestBody = Components.Schemas.CampaignSyncSchema
-        namespace Responses {
-            /**
-             * Response Campaigns Sync
-             */
-            export type $200 = string[]
-            export type $422 = Components.Schemas.HTTPValidationError
-        }
-    }
     namespace CheckCustomDomain {
         namespace Responses {
             export type $200 = Components.Schemas.CustomDomainSchema
@@ -951,6 +950,13 @@ declare namespace Paths {
     namespace CheckCustomDomainsCheckPost {
         namespace Responses {
             export type $200 = Components.Schemas.CustomDomainSchema
+        }
+    }
+    namespace CreateAbTest {
+        export type RequestBody = Components.Schemas.ABTestCreateRequestSchema
+        namespace Responses {
+            export type $201 = Components.Schemas.ABTestResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
         }
     }
     namespace CreateBulkClickTrackingBulkPost {
@@ -1029,6 +1035,46 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.EvaluationRequestSchema
         namespace Responses {
             export type $200 = Components.Schemas.EvaluationResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetAbTest {
+        namespace Parameters {
+            /**
+             * Ab Test Id
+             */
+            export type AbTestId = string
+        }
+        export interface PathParameters {
+            ab_test_id: Parameters.AbTestId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ABTestResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetAbTests {
+        namespace Parameters {
+            /**
+             * Channel Connection Id
+             * Channel connection ID to which AB tests belong
+             */
+            export type ChannelConnectionId = string | null
+            /**
+             * State
+             * State of A/B test
+             */
+            export type State = Components.Schemas.ABTestState | null
+        }
+        export interface QueryParameters {
+            channel_connection_id?: Parameters.ChannelConnectionId
+            state?: Parameters.State
+        }
+        namespace Responses {
+            /**
+             * Response Get Ab Tests
+             */
+            export type $200 = Components.Schemas.ABTestResponseSchema[]
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -1266,6 +1312,22 @@ declare namespace Paths {
             export type $200 = Components.Schemas.InstallationSchema[]
         }
     }
+    namespace PatchAbTest {
+        namespace Parameters {
+            /**
+             * Ab Test Id
+             */
+            export type AbTestId = string
+        }
+        export interface PathParameters {
+            ab_test_id: Parameters.AbTestId
+        }
+        export type RequestBody = Components.Schemas.ABTestPatchRequestSchema
+        namespace Responses {
+            export type $200 = Components.Schemas.ABTestResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace PatchCampaign {
         namespace Parameters {
             /**
@@ -1397,6 +1459,126 @@ declare namespace Paths {
 
 export interface OperationMethods {
     /**
+     * get_ab_tests - Get Ab Tests
+     */
+    'get_ab_tests'(
+        parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
+    >
+    /**
+     * create_ab_test - Create Ab Test
+     */
+    'create_ab_test'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateAbTest.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.CreateAbTest.Responses.$201 | Paths.CreateAbTest.Responses.$422
+    >
+    /**
+     * get_ab_test - Get Ab Test
+     */
+    'get_ab_test'(
+        parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
+    >
+    /**
+     * patch_ab_test - Patch Ab Test
+     */
+    'patch_ab_test'(
+        parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
+        data?: Paths.PatchAbTest.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
+    >
+    /**
+     * get_config_by_revenue_id - Get Config
+     */
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
+    >
+    /**
+     * get_config_by_revenue_id - Get Config
+     */
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
+    >
+    /**
+     * get_channel_connections - Get Channel Connections
+     */
+    'get_channel_connections'(
+        parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetChannelConnections.Responses.$200
+        | Paths.GetChannelConnections.Responses.$422
+    >
+    /**
+     * create_channel_connection - Create Channel Connection
+     */
+    'create_channel_connection'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateChannelConnection.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateChannelConnection.Responses.$201
+        | Paths.CreateChannelConnection.Responses.$422
+    >
+    /**
+     * get_channel_connection - Get Channel Connection
+     */
+    'get_channel_connection'(
+        parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetChannelConnection.Responses.$200
+        | Paths.GetChannelConnection.Responses.$422
+    >
+    /**
+     * patch_channel_connection - Patch Channel Connection
+     */
+    'patch_channel_connection'(
+        parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+        data?: Paths.PatchChannelConnection.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.PatchChannelConnection.Responses.$200
+        | Paths.PatchChannelConnection.Responses.$422
+    >
+    /**
+     * delete_channel_connection - Delete Channel Connection
+     */
+    'delete_channel_connection'(
+        parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    /**
      * health_check_assistant_health_check_get - Health Check
      */
     'health_check_assistant_health_check_get'(
@@ -1422,34 +1604,6 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.EvaluateCampaignRules.Responses.$200
         | Paths.EvaluateCampaignRules.Responses.$422
-    >
-    /**
-     * get_config_by_revenue_id - Get Config
-     */
-    'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
-    >
-    /**
-     * get_config_by_revenue_id - Get Config
-     */
-    'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
     >
     /**
      * health_check_bundle_health_check_get - Health Check
@@ -1667,16 +1821,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     /**
-     * campaigns_sync - Update
-     */
-    'campaigns_sync'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CampaignsSync.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.CampaignsSync.Responses.$200 | Paths.CampaignsSync.Responses.$422
-    >
-    /**
      * get_campaigns - Get Campaigns
      */
     'get_campaigns'(
@@ -1726,58 +1870,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
     /**
-     * get_channel_connections - Get Channel Connections
-     */
-    'get_channel_connections'(
-        parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetChannelConnections.Responses.$200
-        | Paths.GetChannelConnections.Responses.$422
-    >
-    /**
-     * create_channel_connection - Create Channel Connection
-     */
-    'create_channel_connection'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateChannelConnection.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.CreateChannelConnection.Responses.$201
-        | Paths.CreateChannelConnection.Responses.$422
-    >
-    /**
-     * get_channel_connection - Get Channel Connection
-     */
-    'get_channel_connection'(
-        parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetChannelConnection.Responses.$200
-        | Paths.GetChannelConnection.Responses.$422
-    >
-    /**
-     * patch_channel_connection - Patch Channel Connection
-     */
-    'patch_channel_connection'(
-        parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
-        data?: Paths.PatchChannelConnection.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.PatchChannelConnection.Responses.$200
-        | Paths.PatchChannelConnection.Responses.$422
-    >
-    /**
-     * delete_channel_connection - Delete Channel Connection
-     */
-    'delete_channel_connection'(
-        parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
-    /**
      * health_check_billing_health_check_get - Health Check
      */
     'health_check_billing_health_check_get'(
@@ -1826,37 +1918,49 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
-    ['/assistant/health-check']: {
+    ['/ab-tests']: {
         /**
-         * health_check_assistant_health_check_get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckAssistantHealthCheckGet.Responses.$200>
-    }
-    ['/assistant/']: {
-        /**
-         * health_check_assistant__get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckAssistant_Get.Responses.$200>
-    }
-    ['/assistant/evaluations']: {
-        /**
-         * evaluate_campaign_rules - Evaluate Campaign Rules
+         * create_ab_test - Create Ab Test
          */
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.EvaluateCampaignRules.RequestBody,
+            data?: Paths.CreateAbTest.RequestBody,
             config?: AxiosRequestConfig
         ): OperationResponse<
-            | Paths.EvaluateCampaignRules.Responses.$200
-            | Paths.EvaluateCampaignRules.Responses.$422
+            | Paths.CreateAbTest.Responses.$201
+            | Paths.CreateAbTest.Responses.$422
+        >
+        /**
+         * get_ab_tests - Get Ab Tests
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
+        >
+    }
+    ['/ab-tests/{ab_test_id}']: {
+        /**
+         * get_ab_test - Get Ab Test
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
+        >
+        /**
+         * patch_ab_test - Patch Ab Test
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
+            data?: Paths.PatchAbTest.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
         >
     }
     ['/assistant/configs/revenue/{revenue_id}']: {
@@ -1889,6 +1993,95 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.GetConfigByRevenueId.Responses.$200
             | Paths.GetConfigByRevenueId.Responses.$422
+        >
+    }
+    ['/channel-connections']: {
+        /**
+         * create_channel_connection - Create Channel Connection
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateChannelConnection.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateChannelConnection.Responses.$201
+            | Paths.CreateChannelConnection.Responses.$422
+        >
+        /**
+         * get_channel_connections - Get Channel Connections
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetChannelConnections.Responses.$200
+            | Paths.GetChannelConnections.Responses.$422
+        >
+    }
+    ['/channel-connections/{channel_connection_id}']: {
+        /**
+         * get_channel_connection - Get Channel Connection
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetChannelConnection.Responses.$200
+            | Paths.GetChannelConnection.Responses.$422
+        >
+        /**
+         * patch_channel_connection - Patch Channel Connection
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
+            data?: Paths.PatchChannelConnection.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchChannelConnection.Responses.$200
+            | Paths.PatchChannelConnection.Responses.$422
+        >
+        /**
+         * delete_channel_connection - Delete Channel Connection
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
+    }
+    ['/assistant/health-check']: {
+        /**
+         * health_check_assistant_health_check_get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheckAssistantHealthCheckGet.Responses.$200>
+    }
+    ['/assistant/']: {
+        /**
+         * health_check_assistant__get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheckAssistant_Get.Responses.$200>
+    }
+    ['/assistant/evaluations']: {
+        /**
+         * evaluate_campaign_rules - Evaluate Campaign Rules
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.EvaluateCampaignRules.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.EvaluateCampaignRules.Responses.$200
+            | Paths.EvaluateCampaignRules.Responses.$422
         >
     }
     ['/bundle/health-check']: {
@@ -2138,19 +2331,6 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     }
-    ['/campaigns/sync']: {
-        /**
-         * campaigns_sync - Update
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CampaignsSync.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CampaignsSync.Responses.$200
-            | Paths.CampaignsSync.Responses.$422
-        >
-    }
     ['/campaigns']: {
         /**
          * create_campaign - Create Campaign
@@ -2205,62 +2385,6 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
-    }
-    ['/channel-connections']: {
-        /**
-         * create_channel_connection - Create Channel Connection
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateChannelConnection.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateChannelConnection.Responses.$201
-            | Paths.CreateChannelConnection.Responses.$422
-        >
-        /**
-         * get_channel_connections - Get Channel Connections
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetChannelConnections.Responses.$200
-            | Paths.GetChannelConnections.Responses.$422
-        >
-    }
-    ['/channel-connections/{channel_connection_id}']: {
-        /**
-         * get_channel_connection - Get Channel Connection
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetChannelConnection.Responses.$200
-            | Paths.GetChannelConnection.Responses.$422
-        >
-        /**
-         * patch_channel_connection - Patch Channel Connection
-         */
-        'patch'(
-            parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
-            data?: Paths.PatchChannelConnection.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.PatchChannelConnection.Responses.$200
-            | Paths.PatchChannelConnection.Responses.$422
-        >
-        /**
-         * delete_channel_connection - Delete Channel Connection
-         */
-        'delete'(
-            parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     }
     ['/billing/health-check']: {
         /**

@@ -1,12 +1,153 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+
+import {fromJS} from 'immutable'
+import {fireEvent, act} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
+import routerDom from 'react-router-dom'
+
+import {QueryClientProvider} from '@tanstack/react-query'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+import {
+    useListABTests,
+    useCreateABTest,
+    useUpdateABTest,
+} from 'models/convert/abTest/queries'
+import {RootState, StoreDispatch} from 'state/types'
+import {abTest} from 'fixtures/abTest'
+import {account} from 'fixtures/account'
+import {entitiesInitialState} from 'fixtures/entities'
+import {integrationsState} from 'fixtures/integrations'
+import {channelConnection} from 'fixtures/channelConnection'
+
+import {assumeMock, renderWithRouter} from 'utils/testing'
+
+import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 
 import RequestABTest from '../RequestABTest'
 
+jest.mock('models/convert/abTest/queries')
+const useListABTestMock = assumeMock(useListABTests)
+const useCreateABTestMock = assumeMock(useCreateABTest)
+const useUpdateABTestMock = assumeMock(useUpdateABTest)
+
+jest.mock('react-router-dom', () => ({
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    useParams: jest.fn(),
+}))
+
+const useParamsMock = routerDom.useParams as jest.MockedFunction<
+    typeof routerDom.useParams
+>
+
+const mockStore = configureMockStore<RootState, StoreDispatch>()
+
+const queryClient = mockQueryClient()
+
+jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
+const useGetOrCreateChannelConnectionMock = assumeMock(
+    useGetOrCreateChannelConnection
+)
+
+const createFnMock: jest.Mock = jest.fn()
+const updateFnMock: jest.Mock = jest.fn()
+
 describe('RequestABTest', () => {
-    it('renders', () => {
-        const {getByText} = render(<RequestABTest />)
+    const defaultState = {
+        entities: entitiesInitialState,
+        integrations: fromJS(integrationsState),
+        currentAccount: fromJS(account),
+    } as RootState
+
+    const renderComponent = () => {
+        return renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <RequestABTest />
+                </Provider>
+            </QueryClientProvider>
+        )
+    }
+
+    beforeEach(() => {
+        useParamsMock.mockReturnValue({
+            integrationId: '1',
+        })
+
+        useGetOrCreateChannelConnectionMock.mockReturnValue({
+            channelConnection: channelConnection,
+        } as any)
+
+        useCreateABTestMock.mockImplementation(() => {
+            return {
+                mutateAsync: createFnMock,
+            } as unknown as ReturnType<typeof useCreateABTest>
+        })
+
+        useUpdateABTestMock.mockImplementation(() => {
+            return {
+                mutateAsync: updateFnMock,
+            } as unknown as ReturnType<typeof useUpdateABTest>
+        })
+    })
+
+    afterEach(() => {
+        createFnMock.mockRestore()
+        updateFnMock.mockRestore()
+    })
+
+    it('renders - request A/B Test button', () => {
+        useListABTestMock.mockReturnValue({
+            data: [],
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn,
+        } as any)
+
+        const {getByText, getByTestId} = renderComponent()
 
         expect(getByText('Request A/B Test')).toBeInTheDocument()
+
+        act(() => {
+            fireEvent.click(getByTestId('request-ab-test-modal'))
+        })
+
+        expect(getByText('Start A test')).toBeInTheDocument()
+
+        act(() => {
+            fireEvent.click(getByTestId('request-test-button'))
+        })
+
+        expect(createFnMock).toHaveBeenCalledTimes(1)
+        expect(updateFnMock).toHaveBeenCalledTimes(0)
+    })
+
+    it('renders - ongoing A/B Test button', () => {
+        useListABTestMock.mockReturnValue({
+            data: [abTest],
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn,
+        } as any)
+
+        const {getByText, getByTestId} = renderComponent()
+
+        expect(getByText('View ongoing A/B test')).toBeInTheDocument()
+
+        act(() => {
+            fireEvent.click(getByTestId('request-ab-test-modal'))
+        })
+
+        expect(getByText('Stop Test')).toBeInTheDocument()
+
+        act(() => {
+            fireEvent.click(getByTestId('stop-test-button'))
+        })
+
+        expect(createFnMock).toHaveBeenCalledTimes(0)
+        expect(updateFnMock).toHaveBeenCalledTimes(1)
     })
 })

@@ -6,16 +6,18 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
+import {ABTest} from 'models/convert/abTest/types'
 
 import css from './ViewABTestModal.less'
 
 type Props = {
+    abTests?: ABTest[]
     isOpen: boolean
     onClose: () => void
     onSubmit: () => void
 }
 
-const ViewABTestModal = ({isOpen, onClose, onSubmit}: Props) => {
+const ViewABTestModal = ({isOpen, abTests, onClose, onSubmit}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const submit = () => {
@@ -40,9 +42,25 @@ const ViewABTestModal = ({isOpen, onClose, onSubmit}: Props) => {
             />
             <ModalBody>
                 <div className={css.links}>
-                    <a href="" target="_blank" rel="noreferrer noopener">
-                        Link to your Results Dashboard
-                    </a>
+                    {abTests &&
+                        abTests.length > 0 &&
+                        abTests.map((abTestDetails, idx) => {
+                            return (
+                                <div key={idx}>
+                                    {abTestDetails.report_link ? (
+                                        <a
+                                            href={abTestDetails.report_link}
+                                            target="_blank"
+                                            rel="noreferrer noopener"
+                                        >
+                                            Link to your Results Dashboard
+                                        </a>
+                                    ) : (
+                                        <span>Link will be visible soon</span>
+                                    )}
+                                </div>
+                            )
+                        })}
                 </div>
             </ModalBody>
             <ModalActionsFooter>

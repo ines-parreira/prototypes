@@ -6,62 +6,164 @@
         "version": "0.1.0"
     },
     "paths": {
-        "/assistant/health-check": {
-            "get": {
-                "tags": ["healthcheck"],
-                "summary": "Health Check",
-                "operationId": "health_check_assistant_health_check_get",
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "additionalProperties": {"type": "string"},
-                                    "type": "object",
-                                    "title": "Response Health Check Assistant Health Check Get"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/assistant/": {
-            "get": {
-                "tags": ["healthcheck"],
-                "summary": "Health Check",
-                "operationId": "health_check_assistant__get",
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "additionalProperties": {"type": "string"},
-                                    "type": "object",
-                                    "title": "Response Health Check Assistant  Get"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/assistant/evaluations": {
+        "/ab-tests": {
             "post": {
-                "tags": ["evaluations"],
-                "summary": "Evaluate Campaign Rules",
-                "operationId": "evaluate_campaign_rules",
+                "tags": ["campaigns"],
+                "summary": "Create Ab Test",
+                "operationId": "create_ab_test",
+                "security": [{"HTTPBearer": []}],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/EvaluationRequestSchema"
+                                "$ref": "#/components/schemas/ABTestCreateRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ABTestResponseSchema"
+                                }
                             }
                         }
                     },
-                    "required": true
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get Ab Tests",
+                "operationId": "get_ab_tests",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "description": "Channel connection ID to which AB tests belong",
+                            "title": "Channel Connection Id"
+                        },
+                        "description": "Channel connection ID to which AB tests belong"
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {"$ref": "#/components/schemas/ABTestState"},
+                                {"type": "null"}
+                            ],
+                            "description": "State of A/B test",
+                            "title": "State"
+                        },
+                        "description": "State of A/B test"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ABTestResponseSchema"
+                                    },
+                                    "title": "Response Get Ab Tests"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/ab-tests/{ab_test_id}": {
+            "get": {
+                "tags": ["campaigns"],
+                "summary": "Get Ab Test",
+                "operationId": "get_ab_test",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "ab_test_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Ab Test Id"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ABTestResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["campaigns"],
+                "summary": "Patch Ab Test",
+                "operationId": "patch_ab_test",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "ab_test_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {"type": "string", "title": "Ab Test Id"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ABTestPatchRequestSchema"
+                            }
+                        }
+                    }
                 },
                 "responses": {
                     "200": {
@@ -69,7 +171,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/EvaluationResponseSchema"
+                                    "$ref": "#/components/schemas/ABTestResponseSchema"
                                 }
                             }
                         }
@@ -163,6 +265,317 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/ConfigSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/channel-connections": {
+            "post": {
+                "tags": ["channel-connections"],
+                "summary": "Create Channel Connection",
+                "operationId": "create_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelConnectionCreateRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["channel-connections"],
+                "summary": "Get Channel Connections",
+                "operationId": "get_channel_connections",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "store_integration_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "integer"}, {"type": "null"}],
+                            "description": "Gorgias integration ID for the store",
+                            "title": "Store Integration Id"
+                        },
+                        "description": "Gorgias integration ID for the store"
+                    },
+                    {
+                        "name": "external_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "description": "External ID connected to the Channel connection, usually dependent on the channel type",
+                            "title": "External Id"
+                        },
+                        "description": "External ID connected to the Channel connection, usually dependent on the channel type"
+                    },
+                    {
+                        "name": "channel",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [
+                                {"$ref": "#/components/schemas/ChannelType"},
+                                {"type": "null"}
+                            ],
+                            "description": "Channel type, e.g. widget",
+                            "title": "Channel"
+                        },
+                        "description": "Channel type, e.g. widget"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                    },
+                                    "title": "Response Get Channel Connections"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/channel-connections/{channel_connection_id}": {
+            "get": {
+                "tags": ["channel-connections"],
+                "summary": "Get Channel Connection",
+                "operationId": "get_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": ["channel-connections"],
+                "summary": "Patch Channel Connection",
+                "operationId": "patch_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChannelPatchRequestSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": ["channel-connections"],
+                "summary": "Delete Channel Connection",
+                "operationId": "delete_channel_connection",
+                "security": [{"HTTPBearer": []}],
+                "parameters": [
+                    {
+                        "name": "channel_connection_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Channel Connection Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {"description": "Successful Response"},
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/health-check": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_assistant_health_check_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Assistant Health Check Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/": {
+            "get": {
+                "tags": ["healthcheck"],
+                "summary": "Health Check",
+                "operationId": "health_check_assistant__get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "additionalProperties": {"type": "string"},
+                                    "type": "object",
+                                    "title": "Response Health Check Assistant  Get"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/evaluations": {
+            "post": {
+                "tags": ["evaluations"],
+                "summary": "Evaluate Campaign Rules",
+                "operationId": "evaluate_campaign_rules",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EvaluationRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EvaluationResponseSchema"
                                 }
                             }
                         }
@@ -846,48 +1259,6 @@
                 "security": [{"HTTPBearer": []}]
             }
         },
-        "/campaigns/sync": {
-            "post": {
-                "tags": ["installations"],
-                "summary": "Update",
-                "operationId": "campaigns_sync",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/CampaignSyncSchema"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "items": {"type": "string"},
-                                    "type": "array",
-                                    "title": "Response Campaigns Sync"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [{"HTTPBearer": []}]
-            }
-        },
         "/campaigns": {
             "post": {
                 "tags": ["campaigns"],
@@ -1098,236 +1469,6 @@
                 }
             }
         },
-        "/channel-connections": {
-            "post": {
-                "tags": ["channel-connections"],
-                "summary": "Create Channel Connection",
-                "operationId": "create_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChannelConnectionCreateRequestSchema"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "tags": ["channel-connections"],
-                "summary": "Get Channel Connections",
-                "operationId": "get_channel_connections",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "store_integration_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "integer"}, {"type": "null"}],
-                            "description": "Gorgias integration ID for the store",
-                            "title": "Store Integration Id"
-                        },
-                        "description": "Gorgias integration ID for the store"
-                    },
-                    {
-                        "name": "external_id",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
-                            "description": "External ID connected to the Channel connection, usually dependent on the channel type",
-                            "title": "External Id"
-                        },
-                        "description": "External ID connected to the Channel connection, usually dependent on the channel type"
-                    },
-                    {
-                        "name": "channel",
-                        "in": "query",
-                        "required": false,
-                        "schema": {
-                            "anyOf": [
-                                {"$ref": "#/components/schemas/ChannelType"},
-                                {"type": "null"}
-                            ],
-                            "description": "Channel type, e.g. widget",
-                            "title": "Channel"
-                        },
-                        "description": "Channel type, e.g. widget"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                    },
-                                    "title": "Response Get Channel Connections"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/channel-connections/{channel_connection_id}": {
-            "get": {
-                "tags": ["channel-connections"],
-                "summary": "Get Channel Connection",
-                "operationId": "get_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Channel Connection Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "tags": ["channel-connections"],
-                "summary": "Patch Channel Connection",
-                "operationId": "patch_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Channel Connection Id"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ChannelPatchRequestSchema"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successful Response",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ChannelConnectionResponseSchema"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": ["channel-connections"],
-                "summary": "Delete Channel Connection",
-                "operationId": "delete_channel_connection",
-                "security": [{"HTTPBearer": []}],
-                "parameters": [
-                    {
-                        "name": "channel_connection_id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "title": "Channel Connection Id"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {"description": "Successful Response"},
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/billing/health-check": {
             "get": {
                 "tags": ["healthcheck"],
@@ -1476,6 +1617,116 @@
     },
     "components": {
         "schemas": {
+            "ABTestConfigurationResponseSchema": {
+                "properties": {
+                    "active": {
+                        "type": "boolean",
+                        "title": "Active",
+                        "default": false
+                    },
+                    "configuration": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ABTestConfigurationSchema"
+                            },
+                            {"type": "null"}
+                        ]
+                    }
+                },
+                "type": "object",
+                "required": ["configuration"],
+                "title": "ABTestConfigurationResponseSchema"
+            },
+            "ABTestConfigurationSchema": {
+                "properties": {
+                    "ratio": {"type": "number", "title": "Ratio"},
+                    "campaigns": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Campaigns"
+                    }
+                },
+                "type": "object",
+                "required": ["ratio", "campaigns"],
+                "title": "ABTestConfigurationSchema"
+            },
+            "ABTestCreateRequestSchema": {
+                "properties": {
+                    "channel_connection_id": {
+                        "type": "string",
+                        "title": "Channel Connection Id"
+                    },
+                    "ratio": {
+                        "type": "number",
+                        "title": "Ratio",
+                        "default": 0.5
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Start Date"
+                    }
+                },
+                "type": "object",
+                "required": ["channel_connection_id"],
+                "title": "ABTestCreateRequestSchema"
+            },
+            "ABTestPatchRequestSchema": {
+                "properties": {
+                    "state": {"const": "inactive", "title": "State"}
+                },
+                "type": "object",
+                "required": ["state"],
+                "title": "ABTestPatchRequestSchema"
+            },
+            "ABTestResponseSchema": {
+                "properties": {
+                    "id": {"type": "string", "title": "Id"},
+                    "ratio": {"type": "number", "title": "Ratio"},
+                    "state": {"$ref": "#/components/schemas/ABTestState"},
+                    "start_date": {
+                        "type": "string",
+                        "format": "date",
+                        "title": "Start Date"
+                    },
+                    "end_date": {
+                        "anyOf": [
+                            {"type": "string", "format": "date"},
+                            {"type": "null"}
+                        ],
+                        "title": "End Date"
+                    },
+                    "report_link": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Report Link"
+                    },
+                    "campaigns": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Campaigns",
+                        "default": []
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "ratio",
+                    "state",
+                    "start_date",
+                    "end_date",
+                    "report_link"
+                ],
+                "title": "ABTestResponseSchema"
+            },
+            "ABTestState": {
+                "type": "string",
+                "enum": ["active", "inactive"],
+                "title": "ABTestState"
+            },
             "BundleOnboardingStatus": {
                 "type": "string",
                 "enum": ["installed", "not_installed"],
@@ -1546,7 +1797,7 @@
                     },
                     "template_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
+                            {"type": "string", "maxLength": 256},
                             {"type": "null"}
                         ],
                         "title": "Template Id"
@@ -1562,92 +1813,6 @@
                     "channel_connection_id"
                 ],
                 "title": "CampaignCreateRequestSchema"
-            },
-            "CampaignIdSchema": {
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "maxLength": 255,
-                        "title": "Name"
-                    },
-                    "description": {
-                        "anyOf": [
-                            {"type": "string", "maxLength": 1024},
-                            {"type": "null"}
-                        ],
-                        "title": "Description"
-                    },
-                    "message_text": {
-                        "type": "string",
-                        "maxLength": 2048,
-                        "title": "Message Text"
-                    },
-                    "message_html": {
-                        "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
-                        ],
-                        "title": "Message Html"
-                    },
-                    "language": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "Language"
-                    },
-                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
-                    "trigger_rule": {
-                        "type": "string",
-                        "maxLength": 4096,
-                        "minLength": 1,
-                        "title": "Trigger Rule"
-                    },
-                    "attachments": {
-                        "anyOf": [
-                            {"items": {"type": "object"}, "type": "array"},
-                            {"type": "null"}
-                        ],
-                        "title": "Attachments"
-                    },
-                    "meta": {
-                        "anyOf": [{"type": "object"}, {"type": "null"}],
-                        "title": "Meta"
-                    },
-                    "triggers": {
-                        "items": {
-                            "$ref": "#/components/schemas/CampaignTriggerSchema"
-                        },
-                        "type": "array",
-                        "title": "Triggers"
-                    },
-                    "id": {"type": "string", "title": "Id"},
-                    "external_tag_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
-                        "title": "External Tag Id"
-                    },
-                    "deleted_datetime": {
-                        "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
-                        ],
-                        "title": "Deleted Datetime"
-                    },
-                    "created_datetime": {
-                        "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
-                        ],
-                        "title": "Created Datetime"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "name",
-                    "message_text",
-                    "status",
-                    "trigger_rule",
-                    "triggers",
-                    "id"
-                ],
-                "title": "CampaignIdSchema"
             },
             "CampaignPatchRequestSchema": {
                 "properties": {
@@ -1729,7 +1894,7 @@
                     },
                     "template_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
+                            {"type": "string", "maxLength": 256},
                             {"type": "null"}
                         ],
                         "title": "Template Id"
@@ -1795,6 +1960,7 @@
                         "title": "Triggers"
                     },
                     "id": {"type": "string", "title": "Id"},
+                    "is_light": {"type": "boolean", "title": "Is Light"},
                     "created_datetime": {
                         "type": "string",
                         "format": "date-time",
@@ -1814,7 +1980,7 @@
                     },
                     "template_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
+                            {"type": "string", "maxLength": 256},
                             {"type": "null"}
                         ],
                         "title": "Template Id"
@@ -1828,6 +1994,7 @@
                     "trigger_rule",
                     "triggers",
                     "id",
+                    "is_light",
                     "created_datetime",
                     "updated_datetime"
                 ],
@@ -1850,30 +2017,6 @@
                 "type": "string",
                 "enum": ["active", "inactive"],
                 "title": "CampaignStatus"
-            },
-            "CampaignSyncSchema": {
-                "properties": {
-                    "account_id": {"type": "integer", "title": "Account Id"},
-                    "external_id": {"type": "string", "title": "External Id"},
-                    "external_installation_status": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
-                        "title": "External Installation Status"
-                    },
-                    "store_integration_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
-                        "title": "Store Integration Id"
-                    },
-                    "campaigns": {
-                        "items": {
-                            "$ref": "#/components/schemas/CampaignIdSchema"
-                        },
-                        "type": "array",
-                        "title": "Campaigns"
-                    }
-                },
-                "type": "object",
-                "required": ["account_id", "external_id", "campaigns"],
-                "title": "CampaignSyncSchema"
             },
             "CampaignTriggerOperator": {
                 "type": "string",
@@ -2048,6 +2191,14 @@
                         },
                         "type": "array",
                         "title": "Campaigns"
+                    },
+                    "ab_test": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ABTestConfigurationResponseSchema"
+                            },
+                            {"type": "null"}
+                        ]
                     }
                 },
                 "type": "object",
@@ -2183,7 +2334,7 @@
                     "bundle_url": {
                         "type": "string",
                         "title": "Bundle Url",
-                        "default": "https://bundle-nicolae.ngrok.io/loader.js"
+                        "default": "https://bundle-mariuszjanczyn.eu.ngrok.io/loader.js"
                     }
                 },
                 "type": "object",
@@ -2271,6 +2422,7 @@
                         "title": "Triggers"
                     },
                     "id": {"type": "string", "title": "Id"},
+                    "is_light": {"type": "boolean", "title": "Is Light"},
                     "created_datetime": {
                         "type": "string",
                         "format": "date-time",
@@ -2297,6 +2449,7 @@
                     "trigger_rule",
                     "triggers",
                     "id",
+                    "is_light",
                     "created_datetime",
                     "updated_datetime"
                 ],
