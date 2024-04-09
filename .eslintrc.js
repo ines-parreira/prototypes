@@ -113,6 +113,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': ['off'],
         '@typescript-eslint/explicit-module-boundary-types': ['off'],
         '@typescript-eslint/no-non-null-assertion': ['off'],
+        '@typescript-eslint/no-misused-promises': ['off'],
     },
     extends: [
         require.resolve('@gorgias/javascript-shared-config/eslint-base'),

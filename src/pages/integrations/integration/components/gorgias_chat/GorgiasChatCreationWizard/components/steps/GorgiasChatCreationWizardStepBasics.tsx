@@ -205,7 +205,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         const shopName = storeIntegration
             ? (storeIntegration.getIn(['meta', 'shop_name']) as string)
             : undefined
-        onSave()?.then(() => {
+        void onSave()?.then(() => {
             if (shopName) {
                 window.location.href = redirectUri.replace(
                     '{shop_name}',

@@ -113,7 +113,7 @@ const UnsavedChangesPrompt: React.FC<Props> = ({
                         <Button
                             onClick={async () => {
                                 if (shouldRedirectAfterSave) {
-                                    onSave(location)?.then(
+                                    void onSave(location)?.then(
                                         redirectToOriginalLocation
                                     )
                                 } else {

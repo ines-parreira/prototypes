@@ -9,10 +9,8 @@ describe('useScreenSize', () => {
     })
 
     it('should return the current screen size', () => {
-        // @ts-expect-error
-        window.innerWidth = 800
-        // @ts-expect-error
-        window.innerHeight = 640
+        global.innerWidth = 800
+        global.innerHeight = 640
 
         const {result} = renderHook(() => useScreenSize())
 
@@ -20,17 +18,13 @@ describe('useScreenSize', () => {
     })
 
     it('should return the updated screen size on resize', () => {
-        // @ts-expect-error
-        window.innerWidth = 800
-        // @ts-expect-error
-        window.innerHeight = 640
+        global.innerWidth = 800
+        global.innerHeight = 640
 
         const {result} = renderHook(() => useScreenSize())
 
-        // @ts-expect-error
-        window.innerWidth = 900
-        // @ts-expect-error
-        window.innerHeight = 700
+        global.innerWidth = 900
+        global.innerHeight = 700
 
         act(() => {
             fireEvent.resize(window)

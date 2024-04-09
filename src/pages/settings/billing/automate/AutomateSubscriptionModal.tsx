@@ -150,7 +150,7 @@ const AutomateSubscriptionModal = ({
             location: history?.location.pathname,
         })
         selectedPrice?.price_id &&
-            handleSubscriptionUpdate([
+            void handleSubscriptionUpdate([
                 ...currentPriceIds,
                 selectedPrice.price_id,
             ]).then(() => onSubscribe && onSubscribe())
