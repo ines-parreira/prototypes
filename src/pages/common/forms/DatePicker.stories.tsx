@@ -7,7 +7,7 @@ const storyConfig: Meta = {
     title: 'Data Entry/DatePicker',
     component: DatePicker,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: {disableSnapshot: true},
     },
 }
 

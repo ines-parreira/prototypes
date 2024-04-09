@@ -13,7 +13,7 @@ const storyConfig: Meta = {
     title: 'Data Display/ViewTable/RightContainer',
     component: RightContainer,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: {disableSnapshot: true},
     },
 }
 

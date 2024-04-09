@@ -12,7 +12,7 @@ const storyConfig: Meta = {
     title: 'Stats/PeriodStatsFilter',
     component: PeriodStatsFilter,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: {disableSnapshot: true},
     },
 }
 

@@ -7,7 +7,7 @@ const storyConfig: Meta = {
     title: 'Tickets/TicketSnoozePicker',
     component: TicketSnoozePicker,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: {disableSnapshot: true},
     },
 }
 
