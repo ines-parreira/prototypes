@@ -98,4 +98,5 @@ export enum FeatureFlagKey {
     VoiceConferenceInboundRoundRobin = 'voice-conference-inbound-round-robin',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
+    ConvertUniqueDiscountCodes = 'convert-unique-discount-codes',
 }
