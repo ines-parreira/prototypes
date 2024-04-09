@@ -72,7 +72,7 @@ export const AutomateSavingsCard = ({
                                         <p className={css.subheading}>
                                             In support costs
                                         </p>
-                                        <HintTooltip title="Your estimated savings from automating 30% of support tickets instead of paying agents to handle them. Make sure your agent salary represents the full cost of staffing to get an accurate estimate." />
+                                        <HintTooltip title="Your estimated savings from automating support tickets instead of paying agents to handle them. Make sure your agent salary represents the full cost of staffing to get an accurate estimate." />
                                     </div>
                                 </div>
                                 {isTicketTimeToHandleEnabled && (
