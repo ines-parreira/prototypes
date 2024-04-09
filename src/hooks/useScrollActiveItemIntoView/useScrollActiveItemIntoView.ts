@@ -10,25 +10,26 @@ const useScrollActiveItemIntoView = (
 ) => {
     useEffect(() => {
         let scrollableParentResizeObserver: ResizeObserver | undefined
-        const scroll = () => {
-            scrollIntoView(elementRef.current as Element, {
+        const scroll = (ref: HTMLElement) => {
+            scrollIntoView(ref, {
                 scrollMode: 'if-needed',
             })
         }
 
         const throttledScroll = _throttle(scroll, 300)
+        const elementRefCurrent = elementRef.current
 
-        if (isActive && elementRef.current) {
+        if (isActive && elementRefCurrent) {
             if (shouldScrollOnScrollParentResize) {
-                const scrollParent = getScrollParent(elementRef.current)
+                const scrollParent = getScrollParent(elementRefCurrent)
                 scrollableParentResizeObserver = new ResizeObserver(() => {
-                    throttledScroll()
+                    throttledScroll(elementRefCurrent)
                 })
                 scrollParent &&
                     scrollableParentResizeObserver.observe(scrollParent)
             }
 
-            scroll()
+            scroll(elementRefCurrent)
         }
 
         return () => {
