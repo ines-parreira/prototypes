@@ -97,6 +97,7 @@ import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCe
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
+import {SLAEmptyState, SLAForm} from 'pages/settings/SLAs'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
@@ -755,6 +756,9 @@ export function SettingsRoutes() {
     const isHelpCenterCreationWizardEnabled: boolean =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
+    const isSLAPoliciesEnabled: boolean =
+        useFlags()[FeatureFlagKey.SLAPolicies] || false
+
     return (
         <Switch>
             <Route
@@ -956,6 +960,46 @@ export function SettingsRoutes() {
                     <App content={AutoMergeSettings} navbar={SettingsNavbar} />
                 )}
             />
+            {isSLAPoliciesEnabled && (
+                <Route path={`${path}/sla`} render={SLARoutes} />
+            )}
+        </Switch>
+    )
+}
+
+export function SLARoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route path={path} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
+                        SLAEmptyState,
+                        ADMIN_ROLE,
+                        PageSection.SLAPolicies
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/new`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
+                        SLAForm,
+                        ADMIN_ROLE,
+                        PageSection.SLAPolicies
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
+            <Route path={`${path}/:policyId`} exact>
+                <App
+                    content={memoizedWithUserRoleRequired(
+                        SLAForm,
+                        ADMIN_ROLE,
+                        PageSection.SLAPolicies
+                    )}
+                    navbar={SettingsNavbar}
+                />
+            </Route>
         </Switch>
     )
 }

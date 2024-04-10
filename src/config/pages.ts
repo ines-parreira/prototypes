@@ -23,6 +23,7 @@ export enum PageSection {
     CreditShopifyBillingIntegration = 'credit-shopify-billing-integration',
     CreateShopifyCharge = 'create-shopify-charge',
     SidebarSettings = 'sidebar-settings',
+    SLAPolicies = 'sla-policies',
 }
 
 export enum SectionPageHeader {
@@ -51,4 +52,5 @@ export enum SectionPageHeader {
     CreditShopifyBillingIntegration = 'Credit Shopify billing integration',
     SidebarSettings = 'sidebar-settings',
     CreateShopifyCharge = 'Create Shopify Charge',
+    SLAPolicies = 'SLAs',
 }

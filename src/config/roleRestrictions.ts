@@ -84,4 +84,7 @@ export const roleRestrictionConfigs: Record<
     [PageSection.CreateShopifyCharge]: {
         pageHeader: SectionPageHeader.CreateShopifyCharge,
     },
+    [PageSection.SLAPolicies]: {
+        pageHeader: SectionPageHeader.SLAPolicies,
+    },
 }

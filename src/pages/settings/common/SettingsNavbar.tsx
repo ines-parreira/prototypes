@@ -126,6 +126,12 @@ const CATEGORIES: Category[] = [
                 to: 'auto-merge',
                 text: 'Auto-merge',
             },
+            {
+                requiredRole: ADMIN_ROLE,
+                to: 'sla',
+                text: 'SLAs',
+                requiredFeatureFlags: [FeatureFlagKey.SLAPolicies],
+            },
         ],
     },
     {
