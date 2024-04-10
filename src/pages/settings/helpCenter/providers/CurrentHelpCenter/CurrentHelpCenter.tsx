@@ -50,6 +50,7 @@ import HelpCenterPaywall from '../../components/Paywalls/HelpCenterPaywall'
 import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
 import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
 import AILibraryView from '../../components/AIArticlesLibraryView'
+import {useHasAccessToAILibrary} from '../../components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -64,8 +65,7 @@ const CurrentHelpCenter: React.FC = () => {
     const helpCenterCreationWizard =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
-    const loadAILibrary =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
+    const hasAccessToAILibrary = useHasAccessToAILibrary()
 
     useEffect(() => {
         async function init() {
@@ -137,7 +137,7 @@ const CurrentHelpCenter: React.FC = () => {
                         </SearchContextProvider>
                     )}
                 />
-                {loadAILibrary && (
+                {hasAccessToAILibrary && (
                     <Route
                         path={`${path}/ai-library`}
                         exact

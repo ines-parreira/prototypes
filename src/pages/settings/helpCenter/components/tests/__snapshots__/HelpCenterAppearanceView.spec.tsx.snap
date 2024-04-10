@@ -91,6 +91,18 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
       <a
         class="link"
         data-active-class-name="active"
+        href="/app/settings/help-center/1/ai-library"
+      >
+        <i
+          class="material-icons autoAwesome"
+        >
+          auto_awesome
+        </i>
+        AI Library
+      </a>
+      <a
+        class="link"
+        data-active-class-name="active"
         href="/app/settings/help-center/1/contact"
       >
         Contact

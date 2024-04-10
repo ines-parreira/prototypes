@@ -15,6 +15,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import css from './HelpCenterNavigation.less'
+import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
 type Props = {
     helpCenterId: string | number
@@ -39,8 +40,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const showAILibraryTab =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
+    const showAILibraryTab = useHasAccessToAILibrary()
 
     const logHelpCenterEvent = (version: string) => {
         if (!changeAutomateSettingButtomPosition) return

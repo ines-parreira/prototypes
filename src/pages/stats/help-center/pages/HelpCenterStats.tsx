@@ -1,6 +1,5 @@
 import React, {useMemo} from 'react'
 import moment from 'moment'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser, getTimezone} from 'state/currentUser/selectors'
@@ -22,7 +21,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {DEFAULT_LOCALE} from 'pages/stats/common/utils'
 import {useHelpCenterAIArticlesLibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {useHasAccessToAILibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import ArticleViewsGraph from '../components/ArticleViewsGraph/ArticleViewsGraph'
 import {PerformanceByArticle} from '../components/PerformanceByArticle/PerformanceByArticle'
 import SearchResultDonut from '../components/SearchResultDonut/SearchResultDonut'
@@ -78,8 +77,7 @@ const HelpCenterStatsComponent = ({
         DEFAULT_LOCALE
     )
 
-    const hasAccessToAILibrary =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
+    const hasAccessToAILibrary = useHasAccessToAILibrary()
 
     return (
         <div className="full-width">

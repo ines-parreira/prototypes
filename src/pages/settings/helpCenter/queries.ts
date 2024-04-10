@@ -245,8 +245,6 @@ export const useGetAIArticlesByHelpCenter = <
     >
 ) => {
     const {client} = useHelpCenterApi()
-    const isAIArticlesEnabled =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary] || false
 
     return useQuery({
         queryKey: aiArticleKeys.list(helpCenterId),
@@ -255,7 +253,7 @@ export const useGetAIArticlesByHelpCenter = <
                 help_center_id: helpCenterId,
             })
         },
-        enabled: !!client && isAIArticlesEnabled && locale === 'en-US',
+        enabled: !!client && locale === 'en-US',
         ...overrides,
     })
 }

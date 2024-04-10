@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {Container} from 'reactstrap'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Button from 'pages/common/components/button/Button'
 import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
@@ -19,7 +18,6 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {FeatureFlagKey} from 'config/featureFlags'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
@@ -29,6 +27,7 @@ import ArticleTemplateCardSkeleton from '../ArticleTemplateCard/ArticleTemplateC
 import AddArticleCard from '../AddArticleCard'
 import {MINIMUM_AI_ARTICLES} from '../ArticleTemplateCard/constants'
 import AILibraryBanner from '../AILibraryBanner'
+import {useHasAccessToAILibrary} from '../../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 
 import css from './ArticleLandingPage.less'
 
@@ -64,8 +63,8 @@ const ArticleLandingPageComponent = ({
 
     const isEmptyStateMode = !showBackButton
 
-    const hasAccessToAILibrary =
-        useFlags()[FeatureFlagKey.ObservabilityAIArticlesLibrary]
+    const hasAccessToAILibrary = useHasAccessToAILibrary()
+
     const showAIBanner =
         hasAccessToAILibrary &&
         isEmptyStateMode &&
