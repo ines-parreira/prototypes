@@ -22,6 +22,8 @@ import {ConvertRouteParams} from 'pages/convert/common/types'
 import RequestABTestModal from 'pages/stats/convert/components/RequestABTestModal'
 import ViewABTestModal from 'pages/stats/convert/components/ViewABTestModal'
 
+import css from './RequestABTest.less'
+
 const RequestABTest = () => {
     const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
         useParams<ConvertRouteParams>()
@@ -132,12 +134,13 @@ const RequestABTest = () => {
     }
 
     return (
-        <>
+        <div className={css.container}>
             <Button
                 onClick={openModal}
                 intent="secondary"
                 isLoading={areABTestLoading}
                 data-testid="request-ab-test-modal"
+                className={css.btn}
             >
                 {hasOngoingTest ? 'View ongoing A/B test' : 'Request A/B Test'}
             </Button>
@@ -152,7 +155,7 @@ const RequestABTest = () => {
                 onClose={closeModal}
                 onSubmit={startABTestTestSubmit}
             />
-        </>
+        </div>
     )
 }
 
