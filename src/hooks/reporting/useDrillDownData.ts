@@ -2,7 +2,6 @@ import {useState} from 'react'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
-import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppSelector from 'hooks/useAppSelector'
@@ -101,13 +100,11 @@ export const useDrillDownQuery = (metricData: DrillDownMetric) => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const originalQuery = getDrillDownQuery(metricData)(
+    return getDrillDownQuery(metricData)(
         cleanStatsFilters,
         userTimezone,
         getDrillDownMetricOrder(metricData.metricName)
     )
-
-    return useEnrichedCubes(originalQuery)
 }
 
 function withoutLimit<Cube extends Cubes>(

@@ -1,10 +1,8 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 import {TicketChannel} from 'business/types/ticket'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     selectPerChannel,
     useWorkloadPerChannelDistribution,
@@ -35,9 +33,6 @@ describe('distributions', () => {
     }
     const timezone = 'UTC'
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: false,
-        }))
         usePostReportingMock.mockReturnValue(defaultReportingResponse)
     })
 
@@ -56,6 +51,11 @@ describe('distributions', () => {
                 ],
                 {select: expect.any(Function)}
             )
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+            expect(select).toBeTruthy()
+            if (select) {
+                expect(select({data: {data: []}} as any)).toEqual([])
+            }
         })
     })
 
@@ -80,6 +80,11 @@ describe('distributions', () => {
                 ],
                 {select: expect.any(Function)}
             )
+            const select = usePostReportingMock.mock.calls[0][1]?.select
+            expect(select).toBeTruthy()
+            if (select) {
+                expect(select({data: {data: []}} as any)).toEqual([])
+            }
         })
     })
 

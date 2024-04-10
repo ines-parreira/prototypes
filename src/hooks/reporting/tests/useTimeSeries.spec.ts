@@ -95,7 +95,62 @@ describe('useTimeSeries', () => {
             select?.({
                 data: defaultResult,
             } as unknown as AxiosResponse<ReportingResponse<typeof defaultData>>)
-        ).toMatchSnapshot()
+        ).toEqual([
+            [
+                {
+                    dateTime: '2022-01-02T00:00:00.000',
+                    label: TicketMessagesMeasure.MedianFirstResponseTime,
+                    value: 65,
+                },
+                {
+                    dateTime: '2022-01-02T01:00:00.000',
+                    label: TicketMessagesMeasure.MedianFirstResponseTime,
+                    value: 32,
+                },
+                {
+                    dateTime: '2022-01-02T02:00:00.000',
+                    label: TicketMessagesMeasure.MedianFirstResponseTime,
+                    value: 0,
+                },
+                {
+                    dateTime: '2022-01-02T03:00:00.000',
+                    label: TicketMessagesMeasure.MedianFirstResponseTime,
+                    value: 0,
+                },
+                {
+                    dateTime: '2022-01-02T04:00:00.000',
+                    label: TicketMessagesMeasure.MedianFirstResponseTime,
+                    value: 139,
+                },
+            ],
+            [
+                {
+                    dateTime: '2022-01-02T00:00:00.000',
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    value: 3.4,
+                },
+                {
+                    dateTime: '2022-01-02T01:00:00.000',
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    value: 0,
+                },
+                {
+                    dateTime: '2022-01-02T02:00:00.000',
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    value: 4.1,
+                },
+                {
+                    dateTime: '2022-01-02T03:00:00.000',
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    value: 0,
+                },
+                {
+                    dateTime: '2022-01-02T04:00:00.000',
+                    label: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
+                    value: 1.2,
+                },
+            ],
+        ])
     })
 
     it('should make Monday the beginning of the week', () => {

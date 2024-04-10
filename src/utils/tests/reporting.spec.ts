@@ -1,4 +1,5 @@
 import {TicketChannel} from 'business/types/ticket'
+import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
@@ -8,6 +9,7 @@ import {
     TicketMeasure,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {
     ReportingFilterOperator,
@@ -20,8 +22,6 @@ import {
     HelpCenterStatsFiltersMembers,
     matchAndCalculateAllEntries,
     periodToReportingGranularity,
-    renameCubeStringified,
-    renameMember,
     sortAllData,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -50,7 +50,38 @@ describe('reporting utils', () => {
                     agents: [2],
                     tags: [1, 2],
                 })
-            ).toMatchSnapshot()
+            ).toEqual([
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-05-29T00:00:00.000'],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-06-04T23:59:59.000'],
+                },
+                {
+                    member: TicketMessagesMember.Integration,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['email', 'chat'],
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['2'],
+                },
+                {
+                    member: TicketMember.Tags,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1', '2'],
+                },
+            ])
         })
 
         it('should convert StatsFilters to an array of ReportingFilter with help center id', () => {
@@ -63,38 +94,28 @@ describe('reporting utils', () => {
                     helpCenters: [1],
                     localeCodes: ['en-US'],
                 })
-            ).toMatchInlineSnapshot(`
-                [
-                  {
-                    "member": "HelpCenterTrackingEvent.periodStart",
-                    "operator": "afterDate",
-                    "values": [
-                      "2021-05-29T00:00:00.000",
-                    ],
-                  },
-                  {
-                    "member": "HelpCenterTrackingEvent.periodEnd",
-                    "operator": "beforeDate",
-                    "values": [
-                      "2021-06-04T23:59:59.000",
-                    ],
-                  },
-                  {
-                    "member": "HelpCenterTrackingEvent.helpCenterId",
-                    "operator": "equals",
-                    "values": [
-                      "1",
-                    ],
-                  },
-                  {
-                    "member": "HelpCenterTrackingEvent.localeCode",
-                    "operator": "equals",
-                    "values": [
-                      "en-us",
-                    ],
-                  },
-                ]
-            `)
+            ).toEqual([
+                {
+                    member: HelpCenterTrackingEventMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: ['2021-05-29T00:00:00.000'],
+                },
+                {
+                    member: HelpCenterTrackingEventMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: ['2021-06-04T23:59:59.000'],
+                },
+                {
+                    member: HelpCenterTrackingEventMember.HelpCenterId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['1'],
+                },
+                {
+                    member: HelpCenterTrackingEventMember.LocaleCode,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['en-us'],
+                },
+            ])
         })
     })
 
@@ -331,96 +352,6 @@ describe('reporting utils', () => {
                     [anotherMetricField]: '4520',
                 },
             ])
-        })
-    })
-
-    describe('renameCube', () => {
-        it('should rename the member', () => {
-            expect(
-                renameMember(
-                    'TicketMessages.firstHelpdeskMessageDatetime',
-                    'Ticket',
-                    'TicketEnriched'
-                )
-            ).toEqual('TicketMessages.firstHelpdeskMessageDatetime')
-
-            expect(
-                renameMember(
-                    'Ticket.firstHelpdeskMessageDatetime',
-                    'Ticket',
-                    'TicketEnriched'
-                )
-            ).toEqual('TicketEnriched.firstHelpdeskMessageDatetime')
-        })
-
-        it('should rename Cube name in all fields', () => {
-            const query = messagesSentQueryFactory(
-                {
-                    period: {
-                        start_datetime: '2020-01-01T00:00:00.000Z',
-                        end_datetime: '2020-01-03T00:00:00.000Z',
-                    },
-                },
-                'timezone'
-            )
-
-            expect(
-                renameCubeStringified(query, 'Ticket', 'TicketEnriched')
-            ).toEqual({
-                measures: ['HelpdeskMessage.messageCount'],
-                dimensions: [],
-                timezone: 'timezone',
-                filters: [
-                    {
-                        member: 'TicketEnriched.periodStart',
-                        operator: 'afterDate',
-                        values: ['2020-01-01T00:00:00.000'],
-                    },
-                    {
-                        member: 'TicketEnriched.periodEnd',
-                        operator: 'beforeDate',
-                        values: ['2020-01-03T00:00:00.000'],
-                    },
-                    {
-                        member: 'HelpdeskMessage.sentDatetime',
-                        operator: 'inDateRange',
-                        values: [
-                            '2020-01-01T00:00:00.000',
-                            '2020-01-03T00:00:00.000',
-                        ],
-                    },
-                    {
-                        member: 'TicketEnriched.isTrashed',
-                        operator: 'equals',
-                        values: ['0'],
-                    },
-                    {
-                        member: 'TicketEnriched.isSpam',
-                        operator: 'equals',
-                        values: ['0'],
-                    },
-                    {
-                        member: 'HelpdeskMessage.isMessagePublic',
-                        operator: 'equals',
-                        values: ['1'],
-                    },
-                    {
-                        member: 'HelpdeskMessage.messageVia',
-                        operator: 'in',
-                        values: ['helpdesk', 'api'],
-                    },
-                    {
-                        member: 'HelpdeskMessage.periodStart',
-                        operator: 'afterDate',
-                        values: ['2020-01-01T00:00:00.000'],
-                    },
-                    {
-                        member: 'HelpdeskMessage.periodEnd',
-                        operator: 'beforeDate',
-                        values: ['2020-01-03T00:00:00.000'],
-                    },
-                ],
-            })
         })
     })
 })

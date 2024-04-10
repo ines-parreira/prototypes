@@ -6,39 +6,39 @@ import {TicketTagsCube} from 'models/reporting/cubes/TicketTagsCube'
 import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
 
 export enum TicketMeasure {
-    TicketCount = 'Ticket.ticketCount',
+    TicketCount = 'TicketEnriched.ticketCount',
 }
 
 export enum TicketDimension {
-    TicketId = 'Ticket.ticketId',
-    PeriodStart = 'Ticket.periodStart',
-    PeriodEnd = 'Ticket.periodEnd',
-    AccountId = 'Ticket.accountId',
-    Status = 'Ticket.status',
-    Channel = 'Ticket.channel',
-    CreatedDatetime = 'Ticket.createdDatetime',
-    ClosedDatetime = 'Ticket.closedDatetime',
-    AssigneeUserId = 'Ticket.assigneeUserId',
-    AssigneeTeamId = 'Ticket.assigneeTeamId',
-    IsTrashed = 'Ticket.isTrashed',
-    IsSpam = 'Ticket.isSpam',
+    TicketId = 'TicketEnriched.ticketId',
+    PeriodStart = 'TicketEnriched.periodStart',
+    PeriodEnd = 'TicketEnriched.periodEnd',
+    AccountId = 'TicketEnriched.accountId',
+    Status = 'TicketEnriched.status',
+    Channel = 'TicketEnriched.channel',
+    CreatedDatetime = 'TicketEnriched.createdDatetime',
+    ClosedDatetime = 'TicketEnriched.closedDatetime',
+    AssigneeUserId = 'TicketEnriched.assigneeUserId',
+    AssigneeTeamId = 'TicketEnriched.assigneeTeamId',
+    IsTrashed = 'TicketEnriched.isTrashed',
+    IsSpam = 'TicketEnriched.isSpam',
 }
 
 export enum TicketSegment {
-    ClosedTickets = 'Ticket.closedTickets',
-    WorkloadTickets = 'Ticket.workloadTickets',
+    ClosedTickets = 'TicketEnriched.closedTickets',
+    WorkloadTickets = 'TicketEnriched.workloadTickets',
 }
 
 export enum TicketMember {
-    PeriodStart = 'Ticket.periodStart',
-    PeriodEnd = 'Ticket.periodEnd',
-    CreatedDatetime = 'Ticket.createdDatetime',
-    AssigneeUserId = 'Ticket.assigneeUserId',
-    IsTrashed = 'Ticket.isTrashed',
-    IsSpam = 'Ticket.isSpam',
-    Status = 'Ticket.status',
-    Tags = 'Ticket.tags',
-    Channel = 'Ticket.channel',
+    PeriodStart = 'TicketEnriched.periodStart',
+    PeriodEnd = 'TicketEnriched.periodEnd',
+    CreatedDatetime = 'TicketEnriched.createdDatetime',
+    AssigneeUserId = 'TicketEnriched.assigneeUserId',
+    IsTrashed = 'TicketEnriched.isTrashed',
+    IsSpam = 'TicketEnriched.isSpam',
+    Status = 'TicketEnriched.status',
+    Tags = 'TicketEnriched.tags',
+    Channel = 'TicketEnriched.channel',
 }
 
 export type TicketTimeDimensions =

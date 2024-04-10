@@ -29,6 +29,10 @@ import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedP
 import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
 import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {OrderDirection} from 'models/api/types'
+import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
+import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {StatsFilters} from 'models/stat/types'
 import {isExtraLargeScreen} from 'pages/common/utils/mobile'
 import {MetricValueFormat} from 'pages/stats/common/utils'
@@ -272,3 +276,10 @@ export const getSummaryQuery = (column: TableColumn): MetricQueryHook => {
             return useTicketAverageHandleTimeMetric
     }
 }
+
+export const agentIdFields = [
+    TicketMember.AssigneeUserId,
+    TicketMessagesMember.FirstHelpdeskMessageUserId,
+    HelpdeskMessageMember.SenderId,
+    AgentTimeTrackingMember.UserId,
+]

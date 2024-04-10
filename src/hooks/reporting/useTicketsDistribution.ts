@@ -1,7 +1,4 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
 
@@ -19,20 +16,11 @@ export const useTicketsDistribution = (topAmount = 10) => {
         getCleanStatsFiltersWithTimezone
     )
     const selectedCustomField = useAppSelector(getSelectedCustomField)
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
 
-    const ticketCountField = isAnalyticsNewCubes
-        ? renameMemberEnriched(
-              TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-          )
-        : TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-
-    const customFieldDimension = isAnalyticsNewCubes
-        ? renameMemberEnriched(
-              TicketCustomFieldsDimension.TicketCustomFieldsValueString
-          )
-        : TicketCustomFieldsDimension.TicketCustomFieldsValueString
+    const ticketCountField =
+        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+    const customFieldDimension =
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString
 
     const {data, isFetching} = useCustomFieldsTicketCount(
         cleanStatsFilters,

@@ -1,18 +1,10 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _takeWhile from 'lodash/takeWhile'
 import {useMemo} from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {agentIdFields} from 'pages/stats/AgentsTableConfig'
 import {User} from 'config/types/user'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
-import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {
-    HelpdeskMessageCubeWithJoins,
-    HelpdeskMessageMember,
-} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {formatMetricValue, isMetricForAgent} from 'pages/stats/common/utils'
 import {getFilteredAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {notUndefined} from 'utils/types'
@@ -75,37 +67,16 @@ export const useShoutoutTopResults = (
     measure: HelpdeskMessageCubeWithJoins['measures']
 ) => {
     const filteredAgents = useAppSelector(getFilteredAgents)
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const currentMeasure = isAnalyticsNewCubes
-        ? renameMemberEnriched(measure)
-        : measure
-
-    const agentIdFields = [
-        TicketMember.AssigneeUserId,
-        TicketMessagesMember.FirstHelpdeskMessageUserId,
-        HelpdeskMessageMember.SenderId,
-        AgentTimeTrackingMember.UserId,
-    ]
-    const currentAgentIdFields: typeof agentIdFields = isAnalyticsNewCubes
-        ? agentIdFields.map((field) => renameMemberEnriched(field))
-        : agentIdFields
 
     return useMemo(
         () =>
             getShoutoutTopResults({
                 queryResult,
                 formatValue,
-                measure: currentMeasure,
+                measure,
                 filteredAgents,
-                agentIdFields: currentAgentIdFields,
+                agentIdFields,
             }),
-        [
-            queryResult,
-            formatValue,
-            currentMeasure,
-            filteredAgents,
-            currentAgentIdFields,
-        ]
+        [queryResult, formatValue, measure, filteredAgents]
     )
 }

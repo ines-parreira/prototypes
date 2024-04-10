@@ -1,7 +1,5 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
     QueryReturnType,
@@ -66,12 +64,6 @@ describe('useMetricPerDimension', () => {
             isError: false,
             data: data,
         } as unknown as UseQueryResult<QueryReturnType<TicketMessagesCube>>
-
-    beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: false,
-        }))
-    })
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(mockedResponse)
@@ -183,12 +175,6 @@ describe('useMetricPerDimensionWithBreakdown', () => {
         isError: false,
         data: data,
     }
-
-    beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: false,
-        }))
-    })
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(

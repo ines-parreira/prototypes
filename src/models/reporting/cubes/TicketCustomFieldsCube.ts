@@ -1,17 +1,17 @@
 import {Cube} from 'models/reporting/types'
 
 export enum TicketCustomFieldsMeasure {
-    TicketCustomFieldsTicketCount = 'TicketCustomFields.ticketCount',
+    TicketCustomFieldsTicketCount = 'TicketCustomFieldsEnriched.ticketCount',
 }
 
 export enum TicketCustomFieldsDimension {
-    TicketCustomFieldsValueString = 'TicketCustomFields.valueString',
+    TicketCustomFieldsValueString = 'TicketCustomFieldsEnriched.valueString',
 }
 
 export enum TicketCustomFieldsMember {
-    TicketCustomFieldsCustomFieldId = 'TicketCustomFields.customFieldId',
-    TicketCustomFieldsValueString = 'TicketCustomFields.valueString',
-    TicketCustomFieldsCustomFieldUpdatedDatetime = 'TicketCustomFields.customFieldUpdatedDatetime',
+    TicketCustomFieldsCustomFieldId = 'TicketCustomFieldsEnriched.customFieldId',
+    TicketCustomFieldsValueString = 'TicketCustomFieldsEnriched.valueString',
+    TicketCustomFieldsCustomFieldUpdatedDatetime = 'TicketCustomFieldsEnriched.customFieldUpdatedDatetime',
 }
 
 export type TicketCustomFieldsTimeDimensions =

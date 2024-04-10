@@ -5,6 +5,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {
+    TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
+} from 'models/reporting/cubes/TicketCustomFieldsCube'
 
 import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
@@ -63,16 +67,17 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     } as unknown as RootState
     const exampleData = [
         {
-            'TicketCustomFields.ticketCount': 668,
-            'TicketCustomFields.valueString': 'abc',
+            [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: 668,
+            [TicketCustomFieldsDimension.TicketCustomFieldsValueString]: 'abc',
             initialCustomFieldValue: ['abc::xyz'],
             decile: 9,
             totalsDecile: 7,
             percentage: 100,
             children: [
                 {
-                    'TicketCustomFields.ticketCount': 668,
-                    'TicketCustomFields.valueString': 'xyz',
+                    [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]: 668,
+                    [TicketCustomFieldsDimension.TicketCustomFieldsValueString]:
+                        'xyz',
                     initialCustomFieldValue: null,
                     decile: 9,
                     totalsDecile: 7,

@@ -2,32 +2,32 @@ import {TicketTimeDimensions} from 'models/reporting/cubes/TicketCube'
 import {Cube} from 'models/reporting/types'
 
 export enum TicketMessagesMeasure {
-    MedianFirstResponseTime = 'TicketMessages.medianFirstResponseTime',
-    MedianResolutionTime = 'TicketMessages.medianResolutionTime',
-    MessagesAverage = 'TicketMessages.messagesAverage',
+    MedianFirstResponseTime = 'TicketMessagesEnriched.medianFirstResponseTime',
+    MedianResolutionTime = 'TicketMessagesEnriched.medianResolutionTime',
+    MessagesAverage = 'TicketMessagesEnriched.messagesAverage',
 }
 
 export enum TicketMessagesDimension {
-    FirstMessageChannel = 'TicketMessages.firstMessageChannel',
-    Integration = 'TicketMessages.integration',
-    FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
-    OneTouchTickets = 'TicketMessages.oneTouchTickets',
-    MessagesCount = 'TicketMessages.messagesCount',
-    FirstResponseTime = 'TicketMessages.firstResponseTime',
-    ResolutionTime = 'TicketMessages.resolutionTime',
+    FirstMessageChannel = 'TicketMessagesEnriched.firstMessageChannel',
+    Integration = 'TicketMessagesEnriched.integration',
+    FirstHelpdeskMessageUserId = 'TicketMessagesEnriched.firstHelpdeskMessageUserId',
+    OneTouchTickets = 'TicketMessagesEnriched.oneTouchTickets',
+    MessagesCount = 'TicketMessagesEnriched.messagesCount',
+    FirstResponseTime = 'TicketMessagesEnriched.firstResponseTime',
+    ResolutionTime = 'TicketMessagesEnriched.resolutionTime',
 }
 
 export enum TicketMessagesSegment {
-    ConversationStarted = 'TicketMessages.conversationStarted',
-    TicketCreatedByAgent = 'TicketMessages.ticketCreatedByAgent',
+    ConversationStarted = 'TicketMessagesEnriched.conversationStarted',
+    TicketCreatedByAgent = 'TicketMessagesEnriched.ticketCreatedByAgent',
 }
 
 export enum TicketMessagesMember {
-    PeriodStart = 'TicketMessages.periodStart',
-    FirstMessageChannel = 'TicketMessages.firstMessageChannel',
-    Integration = 'TicketMessages.integration',
-    FirstHelpdeskMessageDatetime = 'TicketMessages.firstHelpdeskMessageDatetime',
-    FirstHelpdeskMessageUserId = 'TicketMessages.firstHelpdeskMessageUserId',
+    PeriodStart = 'TicketMessagesEnriched.periodStart',
+    FirstMessageChannel = 'TicketMessagesEnriched.firstMessageChannel',
+    Integration = 'TicketMessagesEnriched.integration',
+    FirstHelpdeskMessageDatetime = 'TicketMessagesEnriched.firstHelpdeskMessageDatetime',
+    FirstHelpdeskMessageUserId = 'TicketMessagesEnriched.firstHelpdeskMessageUserId',
 }
 
 export type TicketMessagesCube = Cube<

@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
@@ -6,13 +5,11 @@ import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     useClosedTicketsMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {OrderDirection} from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
@@ -27,20 +24,10 @@ export const useTicketsClosedPerHourPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ): MetricWithDecile => {
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const assigneeUserId = isAnalyticsNewCubes
-        ? renameMemberEnriched(TicketDimension.AssigneeUserId)
-        : TicketDimension.AssigneeUserId
-    const userIdField = isAnalyticsNewCubes
-        ? renameMemberEnriched(AgentTimeTrackingDimension.UserId)
-        : AgentTimeTrackingDimension.UserId
-    const ticketCountField = isAnalyticsNewCubes
-        ? renameMemberEnriched(TicketMeasure.TicketCount)
-        : TicketMeasure.TicketCount
-    const onlineTimeField = isAnalyticsNewCubes
-        ? renameMemberEnriched(AgentTimeTrackingMeasure.OnlineTime)
-        : AgentTimeTrackingMeasure.OnlineTime
+    const assigneeUserId = TicketDimension.AssigneeUserId
+    const userIdField = AgentTimeTrackingDimension.UserId
+    const ticketCountField = TicketMeasure.TicketCount
+    const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 
     const closedTickets = useClosedTicketsMetricPerAgent(
         periodAndAgentOnlyFilters(statsFilters),

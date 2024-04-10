@@ -10,7 +10,6 @@ import {
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {logPageChange} from 'common/segment'
 import {assetsUrl} from 'utils'
@@ -517,10 +516,6 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const flagLoading = isAnalyticsNewCubes === undefined
-
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
 
@@ -574,11 +569,7 @@ export function StatsRoutes() {
                     path={`${path}/support-performance-overview`}
                     render={() => (
                         <App
-                            content={
-                                flagLoading
-                                    ? Skeleton
-                                    : SupportPerformanceOverview
-                            }
+                            content={SupportPerformanceOverview}
                             navbar={StatsNavbarContainer}
                         />
                     )}
@@ -618,11 +609,7 @@ export function StatsRoutes() {
                     path={`${path}/ticket-fields`}
                     render={() => (
                         <App
-                            content={
-                                flagLoading
-                                    ? Skeleton
-                                    : SupportPerformanceTicketInsights
-                            }
+                            content={SupportPerformanceTicketInsights}
                             navbar={StatsNavbarContainer}
                         />
                     )}
@@ -664,11 +651,7 @@ export function StatsRoutes() {
                     path={`${path}/support-performance-agents`}
                     render={() => (
                         <App
-                            content={
-                                flagLoading
-                                    ? Skeleton
-                                    : SupportPerformanceAgents
-                            }
+                            content={SupportPerformanceAgents}
                             navbar={StatsNavbarContainer}
                         />
                     )}
@@ -745,9 +728,7 @@ export function StatsRoutes() {
                     path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
                     render={() => (
                         <App
-                            content={
-                                flagLoading ? Skeleton : AutomateStatsPaywall
-                            }
+                            content={AutomateStatsPaywall}
                             navbar={StatsNavbarContainer}
                         />
                     )}

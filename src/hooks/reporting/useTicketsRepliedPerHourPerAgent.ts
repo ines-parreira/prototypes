@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import {
     HelpdeskMessageDimension,
@@ -9,13 +8,11 @@ import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {OrderDirection} from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
@@ -30,20 +27,10 @@ export const useTicketsRepliedPerHourPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ): MetricWithDecile => {
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const senderId = isAnalyticsNewCubes
-        ? renameMemberEnriched(HelpdeskMessageDimension.SenderId)
-        : HelpdeskMessageDimension.SenderId
-    const userIdField = isAnalyticsNewCubes
-        ? renameMemberEnriched(AgentTimeTrackingDimension.UserId)
-        : AgentTimeTrackingDimension.UserId
-    const ticketCountField = isAnalyticsNewCubes
-        ? renameMemberEnriched(HelpdeskMessageMeasure.TicketCount)
-        : HelpdeskMessageMeasure.TicketCount
-    const onlineTimeField = isAnalyticsNewCubes
-        ? renameMemberEnriched(AgentTimeTrackingMeasure.OnlineTime)
-        : AgentTimeTrackingMeasure.OnlineTime
+    const senderId = HelpdeskMessageDimension.SenderId
+    const userIdField = AgentTimeTrackingDimension.UserId
+    const ticketCountField = HelpdeskMessageMeasure.TicketCount
+    const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 
     const repliedTickets = useTicketsRepliedMetricPerAgent(
         periodAndAgentOnlyFilters(statsFilters),

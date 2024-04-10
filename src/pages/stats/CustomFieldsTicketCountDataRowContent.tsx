@@ -1,8 +1,5 @@
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import heatmapCss from 'pages/stats/heatmap.less'
 import {
     BREAKDOWN_FIELD,
@@ -69,14 +66,8 @@ export const CustomFieldsTicketCountDataRowContent = (props: DataRowProps) => {
         onClick,
         children,
     } = props
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const breakdownField = isAnalyticsNewCubes
-        ? renameMemberEnriched(BREAKDOWN_FIELD)
-        : BREAKDOWN_FIELD
-    const valueField = isAnalyticsNewCubes
-        ? renameMemberEnriched(VALUE_FIELD)
-        : VALUE_FIELD
+    const breakdownField = BREAKDOWN_FIELD
+    const valueField = VALUE_FIELD
     const label = props[breakdownField]
     const value = props[valueField] ?? 0
 

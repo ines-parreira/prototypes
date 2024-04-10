@@ -1,8 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
@@ -71,60 +68,6 @@ describe('usePercentageOfClosedTicketsMetricPerAgent', () => {
                 allData: [
                     {
                         [TicketMeasure.TicketCount]: `${
-                            (ticketCount / closedTickets) * 100
-                        }`,
-                    },
-                ],
-                value: (ticketCount / closedTickets) * 100,
-                decile: null,
-            },
-            isFetching: false,
-            isError: false,
-        })
-    })
-
-    it('should pass return percentage of closed tickets using New Cubes', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: true,
-        }))
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            data: {
-                allData: [
-                    {
-                        [renameMemberEnriched(
-                            TicketMeasure.TicketCount
-                        )]: `${ticketCount}`,
-                    },
-                ],
-                value: ticketCount,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
-
-        useClosedTicketsMetricMock.mockReturnValue({
-            data: {value: closedTickets},
-            isError: false,
-            isFetching: false,
-        })
-
-        const {result} = renderHook(
-            () =>
-                usePercentageOfClosedTicketsMetricPerAgent(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                    agentId
-                ),
-            {}
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [renameMemberEnriched(TicketMeasure.TicketCount)]: `${
                             (ticketCount / closedTickets) * 100
                         }`,
                     },

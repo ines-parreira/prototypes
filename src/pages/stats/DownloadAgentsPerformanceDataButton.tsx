@@ -1,7 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
@@ -17,8 +15,6 @@ export const DownloadAgentsPerformanceDataButton = () => {
     const {reportData, isLoading, period} = useAgentsMetrics()
     const {summaryData, isLoading: summaryIsLoading} = useAgentsSummaryMetrics()
     const {columnsOrder} = useAgentsTableConfigSetting()
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
 
     return (
         <Button
@@ -28,13 +24,7 @@ export const DownloadAgentsPerformanceDataButton = () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
-                await saveReport(
-                    reportData,
-                    summaryData,
-                    columnsOrder,
-                    !!isAnalyticsNewCubes,
-                    period
-                )
+                await saveReport(reportData, summaryData, columnsOrder, period)
             }}
             isDisabled={isLoading || summaryIsLoading}
             title={DOWNLOAD_BUTTON_TITLE}

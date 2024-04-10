@@ -245,27 +245,6 @@ export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
     values: agentAssigneeId ? [agentAssigneeId] : [],
 })
 
-export const renameMember = <T extends string>(
-    member: string,
-    source: string,
-    target: string
-): T => {
-    return member.replace(
-        new RegExp(`${source}` + '\\.', 'g'),
-        `${target}.`
-    ) as T
-}
-
-export const renameCubeStringified = <T>(
-    query: ReportingQuery,
-    sourceCube: string,
-    targetCube: string
-): T => {
-    return JSON.parse(
-        renameMember(JSON.stringify(query), sourceCube, targetCube)
-    ) as T
-}
-
 export const calculatePercentage = (x: number, y: number) => (x / y) * 100
 
 export const matchAndCalculateAllEntries = (

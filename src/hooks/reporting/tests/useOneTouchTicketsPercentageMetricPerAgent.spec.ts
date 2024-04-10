@@ -1,9 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
-import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
@@ -215,99 +211,6 @@ describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
                 ],
                 value: null,
                 decile: 0,
-            },
-            isFetching: false,
-            isError: false,
-        })
-    })
-
-    it('should work with Enriched Cubes', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: true,
-        }))
-
-        const ticketCountField = renameMemberEnriched(TicketMeasure.TicketCount)
-        const ticketAssigneeField = renameMemberEnriched(
-            TicketDimension.AssigneeUserId
-        )
-
-        useClosedTicketsMetricPerAgentMock.mockReturnValue({
-            data: {
-                allData: [
-                    {
-                        [ticketCountField]: `${closedTickets}`,
-                        [ticketAssigneeField]: agentId,
-                    },
-                    {
-                        [ticketCountField]: `${anotherAgentsClosedTickets}`,
-                        [ticketAssigneeField]: anotherAgentId,
-                    },
-                    {
-                        [ticketCountField]: `${incompleteDataAgentClosedTickets}`,
-                        [ticketAssigneeField]: incompleteDataAgentId,
-                    },
-                ],
-                value: closedTickets,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
-
-        useOneTouchTicketsMetricPerAgentMock.mockReturnValue({
-            data: {
-                allData: [
-                    {
-                        [ticketCountField]: `${ticketCount}`,
-                        [ticketAssigneeField]: agentId,
-                    },
-                    {
-                        [ticketCountField]: `${anotherAgentsTicketCount}`,
-                        [ticketAssigneeField]: anotherAgentId,
-                    },
-                ],
-                value: ticketCount,
-                decile: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
-
-        const {result} = renderHook(
-            () =>
-                useOneTouchTicketsPercentageMetricPerAgent(
-                    statsFilters,
-                    timezone,
-                    sorting,
-                    agentId
-                ),
-            {}
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [ticketAssigneeField]: agentId,
-                        [ticketCountField]: `${
-                            (ticketCount / closedTickets) * 100
-                        }`,
-                    },
-                    {
-                        [ticketAssigneeField]: anotherAgentId,
-                        [ticketCountField]: `${
-                            (anotherAgentsTicketCount /
-                                anotherAgentsClosedTickets) *
-                            100
-                        }`,
-                    },
-                ],
-                value: (ticketCount / closedTickets) * 100,
-                decile: calculateDecile(
-                    (ticketCount / closedTickets) * 100,
-                    (anotherAgentsTicketCount / anotherAgentsClosedTickets) *
-                        100
-                ),
             },
             isFetching: false,
             isError: false,

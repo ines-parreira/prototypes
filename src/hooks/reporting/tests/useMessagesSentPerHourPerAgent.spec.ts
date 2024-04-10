@@ -1,12 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerDimension'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
@@ -221,85 +218,6 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
                 allData: [],
                 decile: -0,
                 value: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
-    })
-
-    it('should work with EnrichedCubes', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: true,
-        }))
-        const useMessagesSentMetricPerAgentReturnValue = {
-            data: {
-                value: messagesSentValue,
-                decile: 5,
-                allData: [
-                    {
-                        [renameMemberEnriched(
-                            HelpdeskMessageMeasure.MessageCount
-                        )]: String(messagesSentValue),
-                        [renameMemberEnriched(
-                            HelpdeskMessageDimension.SenderId
-                        )]: String(agent.id),
-                    },
-                ],
-            },
-            isFetching: false,
-            isError: false,
-        }
-        const useOnlineTimePerAgentReturnValue = {
-            data: {
-                value: onlineTimeValue,
-                decile: 5,
-                allData: [
-                    {
-                        [renameMemberEnriched(
-                            AgentTimeTrackingMeasure.OnlineTime
-                        )]: String(onlineTimeValue),
-                        [renameMemberEnriched(
-                            AgentTimeTrackingDimension.UserId
-                        )]: String(agent.id),
-                    },
-                ],
-            },
-            isFetching: false,
-            isError: false,
-        }
-
-        useMessagesSentMetricPerAgentMock.mockReturnValue(
-            useMessagesSentMetricPerAgentReturnValue
-        )
-        useOnlineTimePerAgentMock.mockReturnValue(
-            useOnlineTimePerAgentReturnValue
-        )
-
-        const {result} = renderHook(() =>
-            useMessagesSentPerHourPerAgent(
-                statsFilters,
-                timeZone,
-                undefined,
-                String(agent.id)
-            )
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [renameMemberEnriched(
-                            HelpdeskMessageMeasure.MessageCount
-                        )]: String(
-                            messagesSentValue / (onlineTimeValue / 60 / 60)
-                        ),
-                        [renameMemberEnriched(
-                            HelpdeskMessageDimension.SenderId
-                        )]: String(agent.id),
-                    },
-                ],
-                decile: 9,
-                value: 12.5,
             },
             isError: false,
             isFetching: false,

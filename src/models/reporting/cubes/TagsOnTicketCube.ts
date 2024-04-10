@@ -1,9 +1,9 @@
 import {Cube} from 'models/reporting/types'
 
 enum Dimensions {
-    TicketId = 'TagsOnTicket.ticketId',
-    AccountId = 'TagsOnTicket.accountId',
-    TagId = 'TagsOnTicket.tagId',
+    TicketId = 'TagsOnTicketEnriched.ticketId',
+    AccountId = 'TagsOnTicketEnriched.accountId',
+    TagId = 'TagsOnTicketEnriched.tagId',
 }
 
 export type TagsOnTicketCube = Cube<never, Dimensions>

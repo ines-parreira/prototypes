@@ -1,12 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {User} from 'config/types/user'
 import {
     useClosedTicketsMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerDimension'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
@@ -217,81 +214,6 @@ describe('useTicketsClosedPerHourPerAgent.ts', () => {
                 allData: [],
                 decile: -0,
                 value: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
-    })
-
-    it('should work with EnrichedCubes', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: true,
-        }))
-        const useMessagesSentMetricPerAgentReturnValue = {
-            data: {
-                value: ticketsClosedValue,
-                decile: 5,
-                allData: [
-                    {
-                        [renameMemberEnriched(TicketMeasure.TicketCount)]:
-                            String(ticketsClosedValue),
-                        [renameMemberEnriched(TicketDimension.AssigneeUserId)]:
-                            String(agent.id),
-                    },
-                ],
-            },
-            isFetching: false,
-            isError: false,
-        }
-        const useOnlineTimePerAgentReturnValue = {
-            data: {
-                value: onlineTimeValue,
-                decile: 5,
-                allData: [
-                    {
-                        [renameMemberEnriched(
-                            AgentTimeTrackingMeasure.OnlineTime
-                        )]: String(onlineTimeValue),
-                        [renameMemberEnriched(
-                            AgentTimeTrackingDimension.UserId
-                        )]: String(agent.id),
-                    },
-                ],
-            },
-            isFetching: false,
-            isError: false,
-        }
-
-        useClosedTicketsMetricPerAgentMock.mockReturnValue(
-            useMessagesSentMetricPerAgentReturnValue
-        )
-        useOnlineTimePerAgentMock.mockReturnValue(
-            useOnlineTimePerAgentReturnValue
-        )
-
-        const {result} = renderHook(() =>
-            useTicketsClosedPerHourPerAgent(
-                statsFilters,
-                timeZone,
-                undefined,
-                String(agent.id)
-            )
-        )
-
-        expect(result.current).toEqual({
-            data: {
-                allData: [
-                    {
-                        [renameMemberEnriched(TicketMeasure.TicketCount)]:
-                            String(
-                                ticketsClosedValue / (onlineTimeValue / 60 / 60)
-                            ),
-                        [renameMemberEnriched(TicketDimension.AssigneeUserId)]:
-                            String(agent.id),
-                    },
-                ],
-                decile: 9,
-                value: 12.5,
             },
             isError: false,
             isFetching: false,

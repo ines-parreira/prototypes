@@ -1,11 +1,8 @@
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     TicketCustomFieldsDimension,
@@ -67,9 +64,6 @@ describe('useTicketsDistribution', () => {
     ]
 
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: false,
-        }))
         useCustomFieldsTicketCountMock.mockReturnValue({
             data: {allData},
             isFetching: false,
@@ -91,61 +85,6 @@ describe('useTicketsDistribution', () => {
             ticketsCountTotal,
             topData: allData.map((item) =>
                 transformData(item, ticketsCountTotal, maxTicketCount)
-            ),
-        })
-    })
-
-    it('should return tickets distribution using New Cubes', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: true,
-        }))
-        const allDataEnriched = [
-            {
-                [renameMemberEnriched(
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString
-                )]: 'Level 0',
-                [renameMemberEnriched(
-                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-                )]: '4',
-            },
-            {
-                [renameMemberEnriched(
-                    TicketCustomFieldsDimension.TicketCustomFieldsValueString
-                )]: 'Level 0::Level 1',
-                [renameMemberEnriched(
-                    TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-                )]: String(maxTicketCount),
-            },
-        ]
-        useCustomFieldsTicketCountMock.mockReturnValue({
-            data: {allData: allDataEnriched},
-            isFetching: false,
-        } as any)
-
-        const {result} = renderHook(() => useTicketsDistribution(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
-
-        expect(result.current).toEqual({
-            isFetching: false,
-            outsideTopTotal: 0,
-            outsideTopTotalPercentage: 0,
-            outsideTopTotalGaugePercentage: 0,
-            ticketsCountTotal,
-            topData: allDataEnriched.map((item) =>
-                transformData(
-                    item,
-                    ticketsCountTotal,
-                    maxTicketCount,
-                    renameMemberEnriched(
-                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-                    ),
-                    renameMemberEnriched(
-                        TicketCustomFieldsDimension.TicketCustomFieldsValueString
-                    )
-                )
             ),
         })
     })

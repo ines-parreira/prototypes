@@ -1,6 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -10,7 +9,6 @@ import {
     useOnlineTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -152,45 +150,6 @@ describe('useTicketsRepliedPerHour.ts', () => {
         expect(result.current).toEqual({
             data: {
                 value: null,
-            },
-            isError: false,
-            isFetching: false,
-        })
-    })
-
-    it('should work with EnrichedCubes', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewCubes]: true,
-        }))
-        const useMessagesSentMetricReturnValue = {
-            data: {
-                value: ticketsClosed,
-            },
-            isFetching: false,
-            isError: false,
-        }
-        const useOnlineTimeReturnValue = {
-            data: {
-                value: onlineTimeValue,
-            },
-            isFetching: false,
-            isError: false,
-        }
-
-        useTicketsRepliedMetricMock.mockReturnValue(
-            useMessagesSentMetricReturnValue
-        )
-        useOnlineTimeMock.mockReturnValue(useOnlineTimeReturnValue)
-
-        const {result} = renderHook(() => useTicketsRepliedPerHour(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(defaultState)}>{children}</Provider>
-            ),
-        })
-
-        expect(result.current).toEqual({
-            data: {
-                value: 12.5,
             },
             isError: false,
             isFetching: false,

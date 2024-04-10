@@ -1,10 +1,4 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {
-    renameMemberEnriched,
-    useEnrichedCubes,
-} from 'hooks/reporting/useEnrichedCubes'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
@@ -24,29 +18,18 @@ export const useWorkloadPerChannelDistribution = (
     filters: StatsFilters,
     timezone: string
 ) => {
-    const originalQuery = workloadPerChannelDistributionQueryFactory(
-        filters,
-        timezone
-    )
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const query = useEnrichedCubes(originalQuery)
-    const dimension = isAnalyticsNewCubes
-        ? renameMemberEnriched(CHANNEL_DIMENSION)
-        : CHANNEL_DIMENSION
-    const measure = isAnalyticsNewCubes
-        ? renameMemberEnriched(TICKET_COUNT_MEASURE)
-        : TICKET_COUNT_MEASURE
+    const query = workloadPerChannelDistributionQueryFactory(filters, timezone)
 
     return usePostReporting<
         {
-            [TicketMeasure.TicketCount]: string
-            [TicketDimension.Channel]: TicketChannel
+            [TICKET_COUNT_MEASURE]: string
+            [CHANNEL_DIMENSION]: TicketChannel
         }[],
         OneDimensionalDataItem[],
         HelpdeskMessageCubeWithJoins
     >([query], {
-        select: (data) => selectPerChannel(data, dimension, measure),
+        select: (data) =>
+            selectPerChannel(data, CHANNEL_DIMENSION, TICKET_COUNT_MEASURE),
     })
 }
 
@@ -54,43 +37,35 @@ export const useWorkloadPerChannelDistributionForPreviousPeriod = (
     filters: StatsFilters,
     timezone: string
 ) => {
-    const originalQuery = workloadPerChannelDistributionQueryFactory(
+    const query = workloadPerChannelDistributionQueryFactory(
         {
             ...filters,
             period: getPreviousPeriod(filters.period),
         },
         timezone
     )
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const query = useEnrichedCubes(originalQuery)
-    const dimension = isAnalyticsNewCubes
-        ? renameMemberEnriched(CHANNEL_DIMENSION)
-        : CHANNEL_DIMENSION
-    const measure = isAnalyticsNewCubes
-        ? renameMemberEnriched(TICKET_COUNT_MEASURE)
-        : TICKET_COUNT_MEASURE
     return usePostReporting<
         {
-            [TicketMeasure.TicketCount]: string
-            [TicketDimension.Channel]: TicketChannel
+            [TICKET_COUNT_MEASURE]: string
+            [CHANNEL_DIMENSION]: TicketChannel
         }[],
         OneDimensionalDataItem[],
         HelpdeskMessageCubeWithJoins
     >([query], {
-        select: (data) => selectPerChannel(data, dimension, measure),
+        select: (data) =>
+            selectPerChannel(data, CHANNEL_DIMENSION, TICKET_COUNT_MEASURE),
     })
 }
 
 export const selectPerChannel = (
     data: UsePostReportingQueryData<
         {
-            [TicketMeasure.TicketCount]: string
-            [TicketDimension.Channel]: TicketChannel
+            [TICKET_COUNT_MEASURE]: string
+            [CHANNEL_DIMENSION]: TicketChannel
         }[]
     >,
-    dimension: TicketDimension.Channel,
-    measure: TicketMeasure.TicketCount
+    dimension: typeof CHANNEL_DIMENSION,
+    measure: typeof TICKET_COUNT_MEASURE
 ) => {
     return data.data.data.map((item) => ({
         label: humanizeChannel(item[dimension]),

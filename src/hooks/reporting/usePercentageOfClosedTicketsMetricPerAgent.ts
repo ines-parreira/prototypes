@@ -1,8 +1,5 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -14,12 +11,7 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ): MetricWithDecile => {
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-
-    const ticketCountField = isAnalyticsNewCubes
-        ? renameMemberEnriched(TicketMeasure.TicketCount)
-        : TicketMeasure.TicketCount
+    const ticketCountField = TicketMeasure.TicketCount
 
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         statsFilters,

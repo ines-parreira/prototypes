@@ -112,7 +112,6 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
             columnsOrder,
-            false,
             agentsMetricsReturnValue.period
         )
     })

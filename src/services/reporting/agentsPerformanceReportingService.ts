@@ -1,7 +1,6 @@
 import moment from 'moment/moment'
 import {User} from 'config/types/user'
 import {Metric} from 'hooks/reporting/metrics'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     AgentTimeTrackingCube,
@@ -133,43 +132,22 @@ export const saveReport = async (
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
     columnsOrder: TableColumn[],
-    useEnrichedCubes: boolean,
     period?: Period
 ) => {
-    const AssigneeUserId = useEnrichedCubes
-        ? renameMemberEnriched(TicketDimension.AssigneeUserId)
-        : TicketDimension.AssigneeUserId
-    const AvgSurveyScore = useEnrichedCubes
-        ? renameMemberEnriched(TicketSatisfactionSurveyMeasure.AvgSurveyScore)
-        : TicketSatisfactionSurveyMeasure.AvgSurveyScore
-    const FirstHelpdeskMessageUserId = useEnrichedCubes
-        ? renameMemberEnriched(
-              TicketMessagesDimension.FirstHelpdeskMessageUserId
-          )
-        : TicketMessagesDimension.FirstHelpdeskMessageUserId
-    const MedianFirstResponseTime = useEnrichedCubes
-        ? renameMemberEnriched(TicketMessagesMeasure.MedianFirstResponseTime)
-        : TicketMessagesMeasure.MedianFirstResponseTime
-    const MedianResolutionTime = useEnrichedCubes
-        ? renameMemberEnriched(TicketMessagesMeasure.MedianResolutionTime)
-        : TicketMessagesMeasure.MedianResolutionTime
-    const TicketCount = useEnrichedCubes
-        ? renameMemberEnriched(TicketMeasure.TicketCount)
-        : TicketMeasure.TicketCount
-    const SenderId = useEnrichedCubes
-        ? renameMemberEnriched(HelpdeskMessageDimension.SenderId)
-        : HelpdeskMessageDimension.SenderId
-    const HelpdeskTicketCount = useEnrichedCubes
-        ? renameMemberEnriched(HelpdeskMessageMeasure.TicketCount)
-        : HelpdeskMessageMeasure.TicketCount
-    const MessageCount = useEnrichedCubes
-        ? renameMemberEnriched(HelpdeskMessageMeasure.MessageCount)
-        : HelpdeskMessageMeasure.MessageCount
+    const AssigneeUserId = TicketDimension.AssigneeUserId
+    const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
+    const FirstHelpdeskMessageUserId =
+        TicketMessagesDimension.FirstHelpdeskMessageUserId
+    const MedianFirstResponseTime =
+        TicketMessagesMeasure.MedianFirstResponseTime
+    const MedianResolutionTime = TicketMessagesMeasure.MedianResolutionTime
+    const TicketCount = TicketMeasure.TicketCount
+    const SenderId = HelpdeskMessageDimension.SenderId
+    const HelpdeskTicketCount = HelpdeskMessageMeasure.TicketCount
+    const MessageCount = HelpdeskMessageMeasure.MessageCount
     const OnlineTime = AgentTimeTrackingMeasure.OnlineTime
     const AverageHandleTime = HandleTimeMeasure.AverageHandleTime
-    const UserId = useEnrichedCubes
-        ? renameMemberEnriched(AgentTimeTrackingDimension.UserId)
-        : AgentTimeTrackingDimension.UserId
+    const UserId = AgentTimeTrackingDimension.UserId
 
     const columnsToMetricDataMap: ReportDataMap = {
         [TableColumn.AgentName]: {

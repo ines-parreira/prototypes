@@ -1,4 +1,3 @@
-import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {
@@ -37,12 +36,9 @@ export const selectMeasure = <Measure extends Cubes['measures']>(
 }
 
 export default function useMetricTrend<TCube extends Cubes>(
-    query: ReportingQuery<TCube>,
-    previousPeriodQuery: ReportingQuery<TCube>
+    currentPeriodQuery: ReportingQuery<TCube>,
+    prevPeriodQuery: ReportingQuery<TCube>
 ): MetricTrend {
-    const currentPeriodQuery = useEnrichedCubes(query)
-    const prevPeriodQuery = useEnrichedCubes(previousPeriodQuery)
-
     const currentPeriodMetric = usePostReporting<
         QueryReturnType<TCube['measures']>,
         number | null,

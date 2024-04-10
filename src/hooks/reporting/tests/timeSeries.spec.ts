@@ -5,6 +5,7 @@ import {
     AutomationBillingEventMeasure,
     AutomationBillingEventMember,
 } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
@@ -56,23 +57,26 @@ describe('time series', () => {
         '%s',
         (_testName, useTrendFn) => {
             it('should create reporting filters', () => {
-                renderHook(() =>
-                    useTrendFn(
-                        {
-                            period: {
-                                start_datetime: '2021-05-29T00:00:00+02:00',
-                                end_datetime: '2021-06-04T23:59:59+02:00',
-                            },
-                            channels: [TicketChannel.Email, TicketChannel.Chat],
-                            integrations: [1],
-                            agents: [2],
-                            tags: [1, 2],
-                        },
-                        'America/Los_angeles',
-                        ReportingGranularity.Week
+                const filters = {
+                    period: {
+                        start_datetime: '2021-05-29T00:00:00+02:00',
+                        end_datetime: '2021-06-04T23:59:59+02:00',
+                    },
+                    channels: [TicketChannel.Email, TicketChannel.Chat],
+                    integrations: [1],
+                    agents: [2],
+                    tags: [1, 2],
+                }
+
+                renderHook(() => useTrendFn(filters, timezone, granularity))
+
+                expect(useTimeSeriesMock).toHaveBeenCalledWith(
+                    closedTicketsTimeSeriesQueryFactory(
+                        filters,
+                        timezone,
+                        granularity
                     )
                 )
-                expect(useTimeSeriesMock.mock.calls[0]).toMatchSnapshot()
             })
         }
     )
@@ -237,30 +241,6 @@ describe('time series', () => {
                         timezone,
                     },
                 ])
-            })
-        })
-        aaoTimeSeriesIterator('%s', (_testName, _measures, useTimeSeries) => {
-            it('should render expected query snapshot', () => {
-                renderHook(
-                    ({timezone}) =>
-                        useTimeSeries(
-                            {
-                                period: {
-                                    start_datetime: '2021-05-29T00:00:00+02:00',
-                                    end_datetime: '2021-06-04T23:59:59+02:00',
-                                },
-                                channels: [
-                                    TicketChannel.HelpCenter,
-                                    TicketChannel.Chat,
-                                ],
-                            },
-                            timezone,
-                            granularity
-                        ),
-                    {initialProps: {statsFilters, timezone, granularity}}
-                )
-
-                expect(useTimeSeriesMock.mock.calls[0]).toMatchSnapshot()
             })
         })
     })

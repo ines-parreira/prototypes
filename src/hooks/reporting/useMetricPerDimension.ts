@@ -1,4 +1,3 @@
-import {useEnrichedCubes} from 'hooks/reporting/useEnrichedCubes'
 import {
     TicketCustomFieldsTicketCountData,
     withBreakdown,
@@ -91,10 +90,9 @@ const selectMetric =
         )
 
 export function useMetricPerDimension<TCube extends Cubes>(
-    originalQuery: ReportingQuery<TCube>,
+    query: ReportingQuery<TCube>,
     dimensionId?: string
 ): MetricWithDecile<TCube> {
-    const query = useEnrichedCubes(originalQuery)
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
         QueryReturnType<TCube>
@@ -120,10 +118,8 @@ export function useMetricPerDimension<TCube extends Cubes>(
 }
 
 export function useMetricPerDimensionWithBreakdown(
-    originalQuery: ReportingQuery<TicketCustomFieldsCube>
+    query: ReportingQuery<TicketCustomFieldsCube>
 ): MetricWithBreakdown {
-    const query =
-        useEnrichedCubes<ReportingQuery<TicketCustomFieldsCube>>(originalQuery)
     const metricData = usePostReporting<
         WithChildren<TicketCustomFieldsTicketCountData>[],
         WithChildren<TicketCustomFieldsTicketCountData>[]
@@ -157,7 +153,7 @@ export function useMetricPerDimensionWithBreakdown(
 }
 
 export function useMetricPerDimensionWithEnrichment(
-    originalQuery: ReportingQuery<
+    query: ReportingQuery<
         HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins
     >,
     enrichmentFields: EnrichmentFields[]
@@ -165,8 +161,6 @@ export function useMetricPerDimensionWithEnrichment(
     typeof query['measures'][0],
     typeof query['dimensions'][0]
 > {
-    const query = useEnrichedCubes(originalQuery)
-
     const idField = query.dimensions[0]
     const metricData = useEnrichedPostReporting<
         {

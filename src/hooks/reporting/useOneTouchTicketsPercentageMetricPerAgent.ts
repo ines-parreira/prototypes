@@ -1,12 +1,9 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerDimension'
-import {renameMemberEnriched} from 'hooks/reporting/useEnrichedCubes'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -24,14 +21,8 @@ export const useOneTouchTicketsPercentageMetricPerAgent = (
     sorting?: OrderDirection,
     agentAssigneeId?: string
 ): MetricWithDecile => {
-    const isAnalyticsNewCubes: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewCubes]
-    const assigneeIdField = isAnalyticsNewCubes
-        ? renameMemberEnriched(TicketDimension.AssigneeUserId)
-        : TicketDimension.AssigneeUserId
-    const ticketCountField = isAnalyticsNewCubes
-        ? renameMemberEnriched(TicketMeasure.TicketCount)
-        : TicketMeasure.TicketCount
+    const assigneeIdField = TicketDimension.AssigneeUserId
+    const ticketCountField = TicketMeasure.TicketCount
 
     const oneTouchTickets = useOneTouchTicketsMetricPerAgent(
         statsFilters,

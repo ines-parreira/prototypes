@@ -1,9 +1,9 @@
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
-import {combinedAgentIdFields} from 'hooks/reporting/useEnrichedCubes'
 import {User} from 'config/types/user'
 import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
+import {agentIdFields} from 'pages/stats/AgentsTableConfig'
 import {isMetricForAgent} from 'pages/stats/common/utils'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 
@@ -124,7 +124,7 @@ export const getSortedAgents = createSelector(
             const noDataAgents: User[] = []
             agents.forEach((agent) => {
                 const agentIndex = lastSortingMetric.findIndex((metric) =>
-                    isMetricForAgent(metric, agent.id, combinedAgentIdFields)
+                    isMetricForAgent(metric, agent.id, agentIdFields)
                 )
                 if (agentIndex >= 0) {
                     sortedAgents[agentIndex] = agent

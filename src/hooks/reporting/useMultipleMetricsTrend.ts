@@ -1,7 +1,6 @@
 import {Cubes} from 'models/reporting/cubes'
 import {usePostReporting} from 'models/reporting/queries'
 import {ReportingQuery} from 'models/reporting/types'
-import {useEnrichedCubes} from './useEnrichedCubes'
 
 export type MultipleMetricsData<TCube extends Cubes> = Record<
     TCube['measures'],
@@ -18,11 +17,9 @@ export type MultipleMetricsTrend<TCube extends Cubes> = {
 }
 
 export const useMultipleMetricsTrends = <TCube extends Cubes>(
-    query: ReportingQuery<TCube>,
+    currentPeriodQuery: ReportingQuery<TCube>,
     previousPeriodQuery: ReportingQuery<TCube>
 ): MultipleMetricsTrend<TCube> => {
-    const currentPeriodQuery = useEnrichedCubes(query)
-
     const currentMetrics = usePostReporting<
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
