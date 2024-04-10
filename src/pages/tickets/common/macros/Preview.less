@@ -5,6 +5,12 @@
 
     .addTagWrapper {
         display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+
+        .tag:not(:first-of-type) {
+            margin-left: unset;
+        }
     }
 
     .integrationActions {

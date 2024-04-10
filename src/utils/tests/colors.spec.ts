@@ -1,6 +1,6 @@
 import {getContrast} from 'color2k'
 
-import {getEnoughContrastedColor} from '../colors'
+import {getEnoughContrastedColor, isValidColor} from '../colors'
 
 const mockRaiseError = 'raise error'
 
@@ -34,5 +34,31 @@ describe('getEnoughContrastedColor', () => {
         expect(
             getEnoughContrastedColor('hsla(318, 76%, 51%, 1)', '#620e49')
         ).toBe('hsla(318, 76%, 71%, 1)')
+    })
+})
+
+describe('isValidColor', () => {
+    it('should return true when color has hexadecimal format', () => {
+        expect(isValidColor('#27061d')).toBeTruthy()
+    })
+
+    it('should return true when color has hsla format', () => {
+        expect(isValidColor('hsla(318, 76%, 51%, 1)')).toBeTruthy()
+    })
+
+    it('should return true when color has hsl format', () => {
+        expect(isValidColor('rgb(39, 6, 29)')).toBeTruthy()
+    })
+
+    it('should return false when color has invalid format', () => {
+        expect(isValidColor('#')).toBeFalsy()
+    })
+
+    it('should return false when color has invalid rgb format', () => {
+        expect(isValidColor('rgb(jd, 20, 76)')).toBeFalsy()
+    })
+
+    it('should return false when input color is empty', () => {
+        expect(isValidColor('')).toBeFalsy()
     })
 })

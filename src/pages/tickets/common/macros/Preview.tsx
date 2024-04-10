@@ -188,7 +188,9 @@ class Preview extends Component<Props> {
                 {(addTagsAction.getIn(['arguments', 'tags'], '') as string)
                     .split(',')
                     .map((tag) => (
-                        <TicketTag key={tag}>{tag}</TicketTag>
+                        <TicketTag key={tag} className={css.tag}>
+                            {tag}
+                        </TicketTag>
                     ))}
             </div>
         )

@@ -21,19 +21,19 @@ exports[`<Preview /> should multiple actions preview 1`] = `
       Add tags:
     </strong>
     <div
-      class="badge"
+      class="badge tag"
       style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund
     </div>
     <div
-      class="badge"
+      class="badge tag"
       style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       billing
     </div>
     <div
-      class="badge"
+      class="badge tag"
       style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund accepted
@@ -145,19 +145,19 @@ exports[`<Preview /> should render simple action preview 1`] = `
       Add tags:
     </strong>
     <div
-      class="badge"
+      class="badge tag"
       style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund
     </div>
     <div
-      class="badge"
+      class="badge tag"
       style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       billing
     </div>
     <div
-      class="badge"
+      class="badge tag"
       style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
     >
       refund accepted

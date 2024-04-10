@@ -2,10 +2,10 @@ import React, {HTMLAttributes, useContext, useMemo} from 'react'
 import classNames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {parseToHsla} from 'color2k'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import colors from '@gorgias/design-tokens/dist/tokens/color/merchantLight.json'
 import _trim from 'lodash/trim'
 
-import {getEnoughContrastedColor} from 'utils/colors'
+import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
 import {Theme, ThemeContext} from 'theme'
 
 import css from './TicketTag.less'
@@ -18,12 +18,16 @@ type Props = {
 
 const TicketTag = ({children, className, decoration, title}: Props) => {
     const context = useContext(ThemeContext)
+
+    const tagColor = ((decoration || fromJS({})) as Map<any, any>).get(
+        'color'
+    ) as string | null
+
     const color =
-        ((((decoration || fromJS({})) as Map<any, any>).get('color') as
-            | string
-            | null) ||
-            context?.colorTokens.Main.Secondary.value) ??
-        colors['🖥 Modern'].Main.Secondary.value
+        tagColor && isValidColor(tagColor)
+            ? tagColor
+            : context?.colorTokens?.Main.Secondary.value ??
+              colors.Light.Main.Secondary.value
 
     const [hue, saturation] = useMemo(() => parseToHsla(_trim(color)), [color])
     const backgroundColor = `hsla(${hue}, ${saturation * 100}%,`

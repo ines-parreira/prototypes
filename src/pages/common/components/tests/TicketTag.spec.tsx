@@ -7,9 +7,28 @@ import {getEnoughContrastedColor} from 'utils/colors'
 
 import TicketTag from '../TicketTag'
 
-jest.mock('utils/colors')
+jest.mock(
+    'utils/colors',
+    () =>
+        ({
+            ...jest.requireActual('utils/colors'),
+            getEnoughContrastedColor: jest.fn(),
+        } as Record<string, any>)
+)
 
-const getEnoughContrastedColorMock = getEnoughContrastedColor as jest.Mock
+const mockedDefaultColor = '#733326' // hsl(10, 50%, 30%)
+jest.mock(
+    '@gorgias/design-tokens/dist/tokens/color/merchantLight.json',
+    () => ({
+        Light: {
+            Main: {
+                Secondary: {
+                    value: '#733326',
+                },
+            },
+        },
+    })
+)
 
 describe('<TicketTag />', () => {
     it('should render the tag', () => {
@@ -32,7 +51,12 @@ describe('<TicketTag />', () => {
     })
 
     it('should render the tag for dark theme', () => {
-        getEnoughContrastedColorMock.mockReturnValue('#123456')
+        ;(
+            getEnoughContrastedColor as jest.MockedFunction<
+                typeof getEnoughContrastedColor
+            >
+        ).mockReturnValue('#123456')
+
         const label = 'shipping'
         const color = '#123456' // hsl(210, 65%, 20%)
 
@@ -53,6 +77,22 @@ describe('<TicketTag />', () => {
         })
         expect(tag).toHaveStyle({
             backgroundColor: 'hsl(210, 65%, 10%)',
+        })
+    })
+
+    it('should fallback to default color when tag color is invalid', () => {
+        const label = 'shipping'
+        const color = '#'
+
+        const {getByText} = render(
+            <TicketTag decoration={fromJS({color})}>{label}</TicketTag>
+        )
+        const tag = getByText(label)
+        expect(tag).toHaveStyle({
+            color: mockedDefaultColor,
+        })
+        expect(tag).toHaveStyle({
+            backgroundColor: 'hsl(10, 50%, 97%)',
         })
     })
 })
