@@ -67,7 +67,7 @@ export default function useSplitTicketViewSwitcher() {
                 return
             }
 
-            if (viewId) {
+            if (viewId && viewId !== 'new' && viewId !== 'search') {
                 history.replace(`/app/tickets/${viewId}`)
                 return
             }
