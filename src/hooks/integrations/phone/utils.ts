@@ -158,7 +158,7 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
         if (device.isBusy) {
             reportError(
                 new Error('Incoming call for agent already in a call'),
-                {extra: call}
+                {extra: {call: call.toString()}}
             )
 
             call.reject()
