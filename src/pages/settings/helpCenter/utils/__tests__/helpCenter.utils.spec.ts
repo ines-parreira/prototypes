@@ -64,7 +64,7 @@ describe('slugify()', () => {
     describe('it removes unauthorized characters and trailing whitespace', () => {
         expect(
             slugify(
-                "Title *one*; title two, title $ #'three' / four. Title five ?! "
+                "¡¿ titleª *oneº*; title two, title $ #'three' / four. Title five ?! "
             )
         ).toEqual('title-one-title-two-title-dollar-three--four-title-five')
     })

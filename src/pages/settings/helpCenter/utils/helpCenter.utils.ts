@@ -97,7 +97,7 @@ export function slugify(value: string): string {
 
         return encodeURI(
             valueWithoutAccentsAndEmojis
-                .replace(/[/;:.',*?!#]/g, '')
+                .replace(/[/;:.',*?!¿¡ªº#]/g, '')
                 .replace(/\$/g, 'dollar') // for SEO
                 .replace(/&/g, 'and') // for SEO
                 .trim()
