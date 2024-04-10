@@ -70,7 +70,6 @@ export enum FeatureFlagKey {
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MLFlowsRecommendation = 'ml-flows-recommendation',
-    NavbarImprovements = 'navbar-improvements',
     NewAutomationAddon = 'new-automation-add-on',
     NewBillingInterface = 'new-billing-interface',
     NewSenderSelect = 'new-sender-select',

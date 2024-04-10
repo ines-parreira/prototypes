@@ -752,9 +752,6 @@ export function SettingsRoutes() {
         } as PaywallConfig,
     }
 
-    const isNavbarImprovementsEnabled: boolean =
-        useFlags()[FeatureFlagKey.NavbarImprovements] || false
-
     const isHelpCenterCreationWizardEnabled: boolean =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
@@ -930,21 +927,19 @@ export function SettingsRoutes() {
                     />
                 )}
             />
-            {isNavbarImprovementsEnabled && (
-                <Route
-                    path={`${path}/sidebar`}
-                    render={() => (
-                        <App
-                            content={memoizedWithUserRoleRequired(
-                                SidebarSettings,
-                                ADMIN_ROLE,
-                                PageSection.SidebarSettings
-                            )}
-                            navbar={SettingsNavbar}
-                        />
-                    )}
-                />
-            )}
+            <Route
+                path={`${path}/sidebar`}
+                render={() => (
+                    <App
+                        content={memoizedWithUserRoleRequired(
+                            SidebarSettings,
+                            ADMIN_ROLE,
+                            PageSection.SidebarSettings
+                        )}
+                        navbar={SettingsNavbar}
+                    />
+                )}
+            />
             <Route
                 path={`${path}/ticket-fields`}
                 render={() => <TicketFieldsRoutes />}
