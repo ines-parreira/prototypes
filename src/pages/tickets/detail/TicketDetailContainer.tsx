@@ -225,7 +225,7 @@ export const TicketDetailContainer = ({
         if (
             ticketIdParam === 'new' &&
             customerId &&
-            activeCustomer.get('id') !== customerId
+            (activeCustomer.get('id') as number) !== parseInt(customerId)
         ) {
             void fetchCustomer(customerId)
         }
@@ -493,7 +493,7 @@ export const TicketDetailContainer = ({
             if (
                 ticketIdParam === 'new' &&
                 customerId &&
-                activeCustomer.get('id') === parseInt(customerId) &&
+                (activeCustomer.get('id') as number) === parseInt(customerId) &&
                 !prevCustomer.equals(receiver)
             ) {
                 // set customer on ticket (to show in infobar and be used in macros)

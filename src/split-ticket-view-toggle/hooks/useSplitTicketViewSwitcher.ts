@@ -62,7 +62,7 @@ export default function useSplitTicketViewSwitcher() {
         }
 
         if (!isSplitTicketViewEnabled) {
-            if (ticketId) {
+            if (ticketId && ticketId !== 'new') {
                 history.replace(`/app/ticket/${ticketId}`)
                 return
             }
