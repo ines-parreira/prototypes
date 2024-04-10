@@ -78,6 +78,7 @@ const AutomateExploreDataModal = forwardRef<
 
         const [isOpen, setIsOpen] = useState(false)
         const [isLoading, setIsLoading] = useState(false)
+        const [isCostValueDirty, setIsCostValueDirty] = useState(false)
 
         const [costPerTicket, setCostPerTicket] = useState<number | undefined>(
             agentCosts?.data.agent_cost_per_ticket
@@ -181,9 +182,7 @@ const AutomateExploreDataModal = forwardRef<
             onClose()
         }
 
-        const isDirty =
-            initialValues.costType !== costType ||
-            initialValues.costPerTicket !== costPerTicket
+        const isDirty = initialValues.costType !== costType || isCostValueDirty
 
         return (
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -233,8 +232,8 @@ const AutomateExploreDataModal = forwardRef<
                                     }
                                     value={costValue}
                                     onChange={(val) => {
+                                        setIsCostValueDirty(true)
                                         setCostValue(formatValue(val))
-
                                         setCostPerTicket(
                                             parseFloat(
                                                 val.replace(/[^0-9.]/g, '')
