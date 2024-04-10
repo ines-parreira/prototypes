@@ -72,7 +72,10 @@ export const AutomateSavingsCard = ({
                                         <p className={css.subheading}>
                                             In support costs
                                         </p>
-                                        <HintTooltip title="Your estimated savings from automating support tickets instead of paying agents to handle them. Make sure your agent salary represents the full cost of staffing to get an accurate estimate." />
+                                        <HintTooltip
+                                            title="Your estimated savings from automating support tickets instead of paying agents to handle them. Make sure your agent salary represents the full cost of staffing to get an accurate estimate. "
+                                            link="https://link.gorgias.com/cge"
+                                        />
                                     </div>
                                 </div>
                                 {isTicketTimeToHandleEnabled && (
@@ -89,7 +92,10 @@ export const AutomateSavingsCard = ({
                                             <p className={css.subheading}>
                                                 Of agents' time
                                             </p>
-                                            <HintTooltip title="How much time your agents would have spent resolving all the customer questions that got instantly resolved by Automate. Based on your actual automated interactions and average handle time (AHT)." />
+                                            <HintTooltip
+                                                title="How much time your agents would have spent resolving all the customer questions that got instantly resolved by Automate. Based on your actual automated interactions and average handle time (AHT)."
+                                                link="https://link.gorgias.com/jax"
+                                            />
                                         </div>
                                     </div>
                                 )}
@@ -116,7 +122,10 @@ export const AutomateSavingsCard = ({
                                         <p className={css.subheading}>
                                             In average first response
                                         </p>
-                                        <HintTooltip title="How much longer customers would have had to wait for a first response if you were not using Automate, based on your average first response time." />
+                                        <HintTooltip
+                                            title="How much longer customers would have had to wait for a first response if you were not using Automate, based on your average first response time."
+                                            link="https://link.gorgias.com/mal"
+                                        />
                                     </div>
                                 </div>
                                 <div>
@@ -132,7 +141,10 @@ export const AutomateSavingsCard = ({
                                         <p className={css.subheading}>
                                             In average resolution time
                                         </p>
-                                        <HintTooltip title="How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time." />
+                                        <HintTooltip
+                                            title="How much faster Gorgias Automate is helping your team resolve interactions, based on your average resolution time."
+                                            link="https://link.gorgias.com/ec5"
+                                        />
                                     </div>
                                 </div>
                             </div>
