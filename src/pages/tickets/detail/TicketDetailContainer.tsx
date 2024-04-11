@@ -41,7 +41,6 @@ import {
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
 import {canSend, getNewMessageSource} from 'state/newMessage/selectors'
-import {fetchTags} from 'state/tags/actions'
 import {
     clearTicket,
     fetchTicket,
@@ -104,7 +103,6 @@ export const TicketDetailContainer = ({
     customers,
     fetchCustomer,
     fetchCustomerHistory,
-    fetchTags,
     fetchTicket,
     findAndSetCustomer,
     goToNextTicket,
@@ -220,8 +218,6 @@ export const TicketDetailContainer = ({
     const {checkTicketFieldErrors} = useTicketFieldsCheck(ticketId)
 
     useEffect(() => {
-        void fetchTags()
-
         if (
             ticketIdParam === 'new' &&
             customerId &&
@@ -689,7 +685,6 @@ const connector = connect(
         clearTicket,
         fetchCustomer,
         fetchCustomerHistory,
-        fetchTags,
         fetchTicket,
         findAndSetCustomer,
         goToNextTicket,
