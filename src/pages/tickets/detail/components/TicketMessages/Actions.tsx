@@ -167,7 +167,8 @@ export default class Actions extends Component<Props, State> {
         if (typeof arg === 'object')
             arg =
                 'name' in arg
-                    ? ((arg as ActionTemplate['arguments'])!.name as string)
+                    ? ((arg as unknown as ActionTemplate['arguments'])!
+                          .name as string)
                     : 'None'
 
         if (action.name === MacroActionName.AddTags)
