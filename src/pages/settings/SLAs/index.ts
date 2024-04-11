@@ -1,4 +1,3 @@
-export {default as SLAForm} from './SLAForm'
-export {default as SLAList} from './SLAList'
-export {default as SLATemplates} from './SLATemplates'
-export {default as SLAEmptyState} from './SLAEmptyState'
+export {SLAList} from './features/SLAList'
+export {SLAForm} from './features/SLAForm/'
+export {SLATemplateList} from './features/SLATemplateList'

@@ -97,7 +97,7 @@ import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCe
 import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
-import {SLAEmptyState, SLAForm} from 'pages/settings/SLAs'
+import {SLAForm, SLAList, SLATemplateList} from 'pages/settings/SLAs'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
@@ -973,17 +973,17 @@ export function SLARoutes({match: {path}}: RouteComponentProps) {
             <Route path={path} exact>
                 <App
                     content={memoizedWithUserRoleRequired(
-                        SLAEmptyState,
+                        SLAList,
                         ADMIN_ROLE,
                         PageSection.SLAPolicies
                     )}
                     navbar={SettingsNavbar}
                 />
             </Route>
-            <Route path={`${path}/new`} exact>
+            <Route path={`${path}/templates`}>
                 <App
                     content={memoizedWithUserRoleRequired(
-                        SLAForm,
+                        SLATemplateList,
                         ADMIN_ROLE,
                         PageSection.SLAPolicies
                     )}
