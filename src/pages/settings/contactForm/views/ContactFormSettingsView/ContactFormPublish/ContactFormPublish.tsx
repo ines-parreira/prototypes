@@ -27,8 +27,38 @@ import BackLink from 'pages/common/components/BackLink'
 import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import {ContactFormAutoEmbedReadinessStatus} from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
+import ContactFormIntegrationWarningBanner, {
+    ContactFormIntegrationWarningBannerProps,
+} from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
 import ContactFormMailtoReplacementSection from '../../../components/ContactFormMailtoReplacementSection/ContactFormMailtoReplacementSection'
+import ContactFormAutoEmbedPublishSection from '../../../components/ContactFormAutoEmbedPublishSection'
+
+const getBannerDetails = ({
+    integrationId,
+    entityId,
+    shopName,
+    needScopeUpdate,
+}: {
+    integrationId: null | number
+    entityId: number
+    shopName: string | null
+    needScopeUpdate: boolean
+}): ContactFormIntegrationWarningBannerProps['details'] | undefined => {
+    if (!shopName) {
+        return {
+            type: ContactFormAutoEmbedReadinessStatus.NOT_CONNECTED,
+            entityId,
+        }
+    }
+    if (integrationId && needScopeUpdate) {
+        return {
+            type: ContactFormAutoEmbedReadinessStatus.NEED_PERMISSION_UPDATE,
+            entityId: integrationId,
+        }
+    }
+}
 
 const ContactFormPublish = (): JSX.Element => {
     const contactForm = useCurrentContactForm()
@@ -39,9 +69,23 @@ const ContactFormPublish = (): JSX.Element => {
 
     const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
 
+    const {integrationId, needScopeUpdate} = useShopifyIntegrationAndScope(
+        contactForm.shop_name ?? ''
+    )
+
     const onCopyClick = () => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
     }
+    // CF connected to a Shopify store and not needing a scope update
+    const canUseIntegration = Boolean(integrationId && !needScopeUpdate)
+
+    // Compute the banner details
+    const bannerDetails = getBannerDetails({
+        integrationId,
+        entityId: contactForm.id,
+        shopName: contactForm.shop_name,
+        needScopeUpdate,
+    })
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
@@ -109,6 +153,13 @@ const ContactFormPublish = (): JSX.Element => {
                                 </InputGroup>
                             </FormGroup>
                         </section>
+                        {!canUseIntegration && bannerDetails && (
+                            <section>
+                                <ContactFormIntegrationWarningBanner
+                                    details={bannerDetails}
+                                />
+                            </section>
+                        )}
                         <section>
                             <ContactFormAutoEmbedPublishSection
                                 isDisabled={
@@ -131,7 +182,7 @@ const ContactFormPublish = (): JSX.Element => {
                                 shopName={contactForm.shop_name}
                             />
                         </section>
-                        {contactForm.shop_name && (
+                        {contactForm.shop_name && canUseIntegration && (
                             <section>
                                 <ContactFormMailtoReplacementSection
                                     contactFormId={contactForm.id}

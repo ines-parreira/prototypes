@@ -19,6 +19,7 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
 import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
 import {ContactForm} from 'models/contactForm/types'
+import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 jest.mock('../../../../queries', () => {
     const originalModule: Record<string, unknown> = jest.requireActual(
@@ -34,6 +35,12 @@ jest.mock('../../../../queries', () => {
         })),
     }
 })
+jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
+    useShopifyIntegrationAndScope: jest.fn(),
+}))
+const mockedUseShopifyIntegrationAndScope = jest.mocked(
+    useShopifyIntegrationAndScope
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -70,6 +77,13 @@ describe('ContactFormPublish', () => {
             }
         )
     }
+
+    beforeEach(() => {
+        mockedUseShopifyIntegrationAndScope.mockReturnValue({
+            integrationId: null,
+            needScopeUpdate: false,
+        })
+    })
 
     it('wording check', () => {
         renderView({state: defaultState})
@@ -126,5 +140,55 @@ describe('ContactFormPublish', () => {
             ContactFormFixture.id,
             {enabled: true}
         )
+    })
+
+    describe('integration banner', () => {
+        it('should show when need scope update', () => {
+            mockedUseShopifyIntegrationAndScope.mockReturnValue({
+                integrationId: 1,
+                needScopeUpdate: true,
+            })
+
+            renderView({
+                state: defaultState,
+                contactForm: {...ContactFormFixture, shop_name: 'test'},
+            })
+
+            expect(
+                screen.getByText(/update your Shopify app permissions/)
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('mailto replacement section', () => {
+        it('should show the section if the contact form is connected to a Shopify store', () => {
+            mockedUseShopifyIntegrationAndScope.mockReturnValue({
+                integrationId: 1,
+                needScopeUpdate: false,
+            })
+
+            renderView({
+                state: defaultState,
+                contactForm: {...ContactFormFixture, shop_name: 'test'},
+            })
+
+            expect(screen.getByText('Replace email links')).toBeInTheDocument()
+        })
+
+        it('should hide the section when need permision update', () => {
+            mockedUseShopifyIntegrationAndScope.mockReturnValue({
+                integrationId: 1,
+                needScopeUpdate: true,
+            })
+
+            renderView({
+                state: defaultState,
+                contactForm: {...ContactFormFixture, shop_name: 'test'},
+            })
+
+            expect(
+                screen.queryByText('Replace email links')
+            ).not.toBeInTheDocument()
+        })
     })
 })

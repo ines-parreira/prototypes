@@ -8,17 +8,17 @@ import {
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
 import {ContactFormAutoEmbedReadinessStatus} from '../ContactFormAutoEmbedPublishSection/types'
-import css from './ContactFormAutoEmbedWarningBanner.less'
+import css from './ContactFormIntegrationWarningBanner.less'
 
-export type ContactFormAutoEmbedWarningBannerProps = {
+export type ContactFormIntegrationWarningBannerProps = {
     details?: {
         type: ContactFormAutoEmbedReadinessStatus
         entityId: number
     }
 }
 
-const ContactFormAutoEmbedWarningBanner = (
-    props: ContactFormAutoEmbedWarningBannerProps
+const ContactFormIntegrationWarningBanner = (
+    props: ContactFormIntegrationWarningBannerProps
 ) => {
     const {details} = props
 
@@ -51,8 +51,8 @@ const ContactFormAutoEmbedWarningBanner = (
                     }}
                 >
                     <div style={{display: 'inline-block'}}>
-                        Connect Shopify to enable auto-embedding to your
-                        website.
+                        Connect Shopify to enable auto-embedding and replace
+                        mailto links to your website.
                     </div>
                     <div style={{display: 'inline-block'}}>
                         <Link
@@ -81,7 +81,8 @@ const ContactFormAutoEmbedWarningBanner = (
                     setPermissionDismissed(true)
                 }}
             >
-                To use the auto-embed feature for your form,{' '}
+                To use the auto-embed and replace mailto links features for your
+                form,{' '}
                 <Link to={linkToShopifyIntegration(entityId)}>
                     update your Shopify app permissions
                 </Link>
@@ -93,4 +94,4 @@ const ContactFormAutoEmbedWarningBanner = (
     return null
 }
 
-export default ContactFormAutoEmbedWarningBanner
+export default ContactFormIntegrationWarningBanner
