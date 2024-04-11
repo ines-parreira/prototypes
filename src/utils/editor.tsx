@@ -336,7 +336,7 @@ export function convertFromHTML(html: string): ContentState {
                 node.dataset[QUOTE_DEPTH_DATASET_KEY]
             ) {
                 data[QUOTE_DEPTH_DATA_KEY] = parseInt(
-                    node.dataset[QUOTE_DEPTH_DATASET_KEY] as string
+                    node.dataset[QUOTE_DEPTH_DATASET_KEY]
                 )
             }
 

@@ -49,7 +49,7 @@ export default function useGroupedElements() {
                     contentfulEventTypesValues.includes(
                         element.type as typeof contentfulEventTypesValues[number]
                     ) ||
-                    PHONE_EVENTS.includes(element.type) ||
+                    (PHONE_EVENTS as string[]).includes(element.type) ||
                     (!!actionName &&
                         PRIVATE_REPLY_ACTIONS.includes(actionName)) ||
                     !!actionConfig

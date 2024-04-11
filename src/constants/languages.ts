@@ -107,7 +107,7 @@ export const ISO639 = [
 const IntlDisplayNames = new Intl.DisplayNames(['en'], {type: 'language'})
 
 export const ISO639English = ISO639.reduce((pair: string[][], code) => {
-    pair.push([code, IntlDisplayNames.of(code)])
+    pair.push([code, IntlDisplayNames.of(code) as string])
     return pair
 }, [])
     .sort(([, a], [, b]) => a.localeCompare(b))

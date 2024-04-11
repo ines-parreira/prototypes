@@ -391,11 +391,13 @@ export class Navbar extends Component<Props, State> {
                             <DropdownToggle
                                 color="transparent"
                                 className={css['dropdown-toggle']}
-                                {...(this.state.title && {
-                                    ['data-candu-id']: `navbar-section-${_kebabCase(
-                                        this.state.title
-                                    )}`,
-                                })}
+                                {...(this.state.title
+                                    ? {
+                                          ['data-candu-id']: `navbar-section-${_kebabCase(
+                                              this.state.title
+                                          )}`,
+                                      }
+                                    : {})}
                             >
                                 <div>
                                     {this.state.title || ''}
