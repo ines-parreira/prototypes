@@ -143,6 +143,7 @@ export class AuditLogEventContainer extends Component<Props> {
         [CONTENTFUL_EVENT_TYPES.TicketUntrashed]: ['undo'],
         [CONTENTFUL_EVENT_TYPES.TicketMessageSummaryCreated]: ['email'],
         [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: ['mode'],
+        [CONTENTFUL_EVENT_TYPES.TicketExcludedFromAutoMerge]: ['close'],
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['close'],
     }
 
@@ -210,6 +211,9 @@ export class AuditLogEventContainer extends Component<Props> {
             this._renderTicketMessageSummaryCreatedEvent(),
         [CONTENTFUL_EVENT_TYPES.TicketSubjectUpdated]: () =>
             this._renderTicketSubjectUpdated(),
+        [CONTENTFUL_EVENT_TYPES.TicketExcludedFromAutoMerge]: () => (
+            <ActionName>Excluded from Auto-Merge</ActionName>
+        ),
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: () => (
             <ActionName>Excluded from CSAT</ActionName>
         ),

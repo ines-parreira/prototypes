@@ -355,6 +355,10 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
         compact: true,
         name: 'Like Facebook comment',
     },
+    [MacroActionName.ExcludeFromAutoMerge]: {
+        compact: true,
+        name: 'Exclude ticket from Auto-Merge',
+    },
     [MacroActionName.ExcludeFromCSAT]: {
         compact: true,
         name: 'Exclude ticket from CSAT',

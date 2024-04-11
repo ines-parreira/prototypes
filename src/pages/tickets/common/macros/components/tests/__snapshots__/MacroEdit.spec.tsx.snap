@@ -259,6 +259,14 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
             tabindex="0"
             type="button"
           >
+            Exclude ticket from Auto-Merge
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
             Exclude ticket from CSAT
           </button>
           <button

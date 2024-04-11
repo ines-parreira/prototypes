@@ -31,6 +31,7 @@ type AvailableActions =
     | MacroActionName.AddAttachments
     | MacroActionName.AddInternalNote
     | MacroActionName.ForwardByEmail
+    | MacroActionName.ExcludeFromAutoMerge
     | MacroActionName.ExcludeFromCSAT
     | MacroActionName.SetCustomFieldValue
 
@@ -47,6 +48,7 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.AddAttachments]: SimpleActionPreview,
     [MacroActionName.AddInternalNote]: SimpleActionPreview,
     [MacroActionName.ForwardByEmail]: SimpleActionPreview,
+    [MacroActionName.ExcludeFromAutoMerge]: SimpleActionPreview,
     [MacroActionName.ExcludeFromCSAT]: SimpleActionPreview,
     [MacroActionName.SetCustomFieldValue]: SimpleActionPreview,
 }

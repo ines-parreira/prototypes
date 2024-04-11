@@ -8,7 +8,7 @@ import {Badge} from 'reactstrap'
 import {ActionTemplate, ActionTemplateExecution} from 'config'
 import {ContentType} from 'models/api/types'
 import {MacroActionName} from 'models/macroAction/types'
-import {TicketMessage, ActionStatus, Action} from 'models/ticket/types'
+import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
 import {JSONTree} from 'pages/common/components/JSONTree'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -253,6 +253,7 @@ export default class Actions extends Component<Props, State> {
                                         !isExternalTemplateAction &&
                                         ![
                                             MacroActionName.ForwardByEmail,
+                                            MacroActionName.ExcludeFromAutoMerge,
                                             MacroActionName.ExcludeFromCSAT,
                                         ].includes(action.name) &&
                                         ': ' + arg}

@@ -369,6 +369,12 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
+            case MacroActionName.ExcludeFromAutoMerge:
+                config = {
+                    title: 'Exclude ticket from Auto-Merge',
+                    content: null,
+                }
+                break
             case MacroActionName.ExcludeFromCSAT:
                 config = {
                     title: 'Exclude ticket from CSAT',

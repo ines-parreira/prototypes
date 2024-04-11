@@ -80,6 +80,8 @@ export const SimpleActionPreview = ({action}: Props) => {
                         <span>{action.title}</span>
                     </Badge>
                 )
+            case MacroActionName.ExcludeFromAutoMerge:
+                return null
             case MacroActionName.ExcludeFromCSAT:
                 return null
             case MacroActionName.SetCustomFieldValue:

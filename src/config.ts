@@ -1606,6 +1606,13 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
     },
     {
         execution: ActionTemplateExecution.Back,
+        name: MacroActionName.ExcludeFromAutoMerge,
+        title: 'Exclude ticket from Auto-Merge',
+        icon: 'cancel',
+        arguments: {},
+    },
+    {
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.ExcludeFromCSAT,
         title: 'Exclude ticket from CSAT',
         icon: 'cancel',

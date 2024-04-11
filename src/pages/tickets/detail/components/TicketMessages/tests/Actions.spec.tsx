@@ -89,7 +89,26 @@ describe('Actions component', () => {
         expect(await findByText('Add tags: tag1, tag2')).toMatchSnapshot()
     })
 
-    it('should display the action badge without arguments', async () => {
+    it('should display the action badge without arguments - ExcludeFromAutoMerge', async () => {
+        const title = 'Exclude ticket from Auto-Merge'
+        const messageWithExcludedAutoMerge: TicketMessage = {
+            ...defaultMessage,
+            actions: [
+                {
+                    ...defaultAction,
+                    name: MacroActionName.ExcludeFromAutoMerge,
+                    title,
+                },
+            ],
+        }
+
+        const {findByText} = render(
+            <Actions message={messageWithExcludedAutoMerge} />
+        )
+        expect(await findByText(title)).toBeInTheDocument()
+    })
+
+    it('should display the action badge without arguments - ExcludeFromCSAT', async () => {
         const title = 'Exclude ticket from CSAT'
         const messageWithExcludedCSAT: TicketMessage = {
             ...defaultMessage,
@@ -105,7 +124,7 @@ describe('Actions component', () => {
         const {findByText} = render(
             <Actions message={messageWithExcludedCSAT} />
         )
-        expect(await findByText(title)).toMatchSnapshot()
+        expect(await findByText(title)).toBeInTheDocument()
     })
 
     it('should display modal when hovering http or shopify action', async () => {

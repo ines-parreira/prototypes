@@ -198,5 +198,6 @@ export type ActionType =
     | 'trashTicket'
     | 'facebookHideComment'
     | 'facebookLikeComment'
+    | 'excludeFromAutoMerge'
     | 'excludeFromCSAT'
     | 'setCustomFieldValue'

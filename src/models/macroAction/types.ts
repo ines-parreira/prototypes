@@ -8,6 +8,7 @@ export enum MacroActionName {
     AddInternalNote = 'addInternalNote',
     AddTags = 'addTags',
     ApplyExternalTemplate = 'applyExternalTemplate',
+    ExcludeFromAutoMerge = 'excludeFromAutoMerge',
     ExcludeFromCSAT = 'excludeFromCSAT',
     ForwardByEmail = 'forwardByEmail',
     Http = 'http',
