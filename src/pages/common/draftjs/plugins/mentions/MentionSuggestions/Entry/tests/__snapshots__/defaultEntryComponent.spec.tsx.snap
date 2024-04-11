@@ -22,6 +22,7 @@ exports[`DefaultEntryComponent should render 1`] = `
       <img
         alt="avatar"
         class="gravatar"
+        loading="lazy"
         src="https://gorgias.io/profilepicture.png"
       />
     </div>

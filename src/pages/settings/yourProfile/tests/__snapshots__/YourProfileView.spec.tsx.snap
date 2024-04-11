@@ -381,6 +381,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="https://config.gorgias.io/production/picture"
             />
           </div>

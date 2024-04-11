@@ -415,6 +415,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           <img
             alt="avatar"
             class="gravatar"
+            loading="lazy"
             src="https://config.gorgias.io/production/picture"
           />
           <div
@@ -765,6 +766,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           <img
             alt="avatar"
             class="gravatar"
+            loading="lazy"
             src="https://config.gorgias.io/production/picture"
           />
           <div
@@ -959,6 +961,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           <img
             alt="avatar"
             class="gravatar"
+            loading="lazy"
             src="https://config.gorgias.io/production/picture"
           />
           <div
@@ -1378,6 +1381,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           <img
             alt="avatar"
             class="gravatar"
+            loading="lazy"
             src="https://config.gorgias.io/production/picture"
           />
           <div
@@ -1715,6 +1719,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           <img
             alt="avatar"
             class="gravatar"
+            loading="lazy"
             src="https://config.gorgias.io/production/picture"
           />
           <div
@@ -1896,6 +1901,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           <img
             alt="avatar"
             class="gravatar"
+            loading="lazy"
             src="https://config.gorgias.io/production/picture"
           />
           <div

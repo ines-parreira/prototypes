@@ -33,6 +33,7 @@ exports[`<AISuggestionContactReason /> should display feeback message  1`] = `
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
             />
           </div>
@@ -115,6 +116,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  1`]
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
             />
           </div>
@@ -217,6 +219,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  2`]
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
             />
           </div>
@@ -317,6 +320,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  3`]
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
             />
           </div>
@@ -417,6 +421,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  4`]
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
             />
           </div>
@@ -519,6 +524,7 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  5`]
             <img
               alt="avatar"
               class="gravatar"
+              loading="lazy"
               src="/assets/img/icons/gorgias-icon-logo-white.png"
             />
           </div>

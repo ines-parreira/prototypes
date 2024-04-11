@@ -25,6 +25,7 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
         <img
           alt="avatar"
           class="gravatar"
+          loading="lazy"
           src="/assets/img/icons/gorgias-icon-logo-white.png"
         />
       </div>
@@ -240,6 +241,7 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
         <img
           alt="avatar"
           class="gravatar"
+          loading="lazy"
           src="/assets/img/icons/gorgias-icon-logo-white.png"
         />
       </div>

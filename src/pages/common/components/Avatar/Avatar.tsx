@@ -148,6 +148,7 @@ export default class Avatar extends Component<Props, State> {
 
                 {this.state.imageUrl && (
                     <img
+                        loading="lazy"
                         alt="avatar"
                         src={this.state.imageUrl}
                         className={css.gravatar}

@@ -116,6 +116,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when Automa
               <img
                 alt="avatar"
                 class="gravatar"
+                loading="lazy"
                 src="/assets/img/icons/logo.png"
               />
             </div>
@@ -280,6 +281,7 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when Automa
               <img
                 alt="avatar"
                 class="gravatar"
+                loading="lazy"
                 src="/assets/img/icons/logo.png"
               />
             </div>
