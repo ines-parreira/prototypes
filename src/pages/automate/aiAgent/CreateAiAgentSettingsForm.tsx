@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import {List} from 'immutable'
 
 import _isEqual from 'lodash/isEqual'
@@ -229,6 +229,7 @@ export const CreateAiAgentSettingsForm = ({
      */
 
     const {formValues, isFormDirty, resetForm, updateValue} = useFormValues()
+    const latestSampleRateRef = useRef(DEFAULT_AI_AGENT_ENABLED_RATE)
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -320,7 +321,7 @@ export const CreateAiAgentSettingsForm = ({
                                 'ticketSampleRate',
                                 isAIAgentToggled
                                     ? DEFAULT_AI_AGENT_DISABLED_RATE
-                                    : DEFAULT_AI_AGENT_ENABLED_RATE
+                                    : latestSampleRateRef.current
                             )
                         }}
                         name={toggleAiAgentId}
@@ -338,6 +339,7 @@ export const CreateAiAgentSettingsForm = ({
                         className={css.numberInput}
                         onChange={(value?: number) => {
                             if (value === undefined) return
+                            latestSampleRateRef.current = value
                             updateValue('ticketSampleRate', value)
                         }}
                         value={

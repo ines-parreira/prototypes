@@ -1,4 +1,4 @@
-import React, {useMemo, useState} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import {List} from 'immutable'
 
 import _isEqual from 'lodash/isEqual'
@@ -35,8 +35,8 @@ import {
     SIGNATURE_MAX_LENGTH,
     DEFAULT_FORM_VALUES,
     DEFAULT_AI_AGENT_DISABLED_RATE,
-    DEFAULT_AI_AGENT_ENABLED_RATE,
     ToneOfVoice,
+    DEFAULT_AI_AGENT_ENABLED_RATE,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
@@ -197,6 +197,12 @@ export const EditAiAgentSettingsForm = ({
      */
 
     const {formValues, isFormDirty, resetForm, updateValue} = useFormValues()
+    const initialSampleRatePercent = storeConfiguration.ticketSampleRate * 100
+    const latestSampleRateRef = useRef(
+        storeConfiguration.ticketSampleRate === 0
+            ? DEFAULT_AI_AGENT_ENABLED_RATE
+            : initialSampleRatePercent
+    )
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -288,7 +294,7 @@ export const EditAiAgentSettingsForm = ({
                                 'ticketSampleRate',
                                 isAIAgentToggled
                                     ? DEFAULT_AI_AGENT_DISABLED_RATE
-                                    : DEFAULT_AI_AGENT_ENABLED_RATE
+                                    : latestSampleRateRef.current
                             )
                         }}
                         name={toggleAiAgentId}
@@ -306,6 +312,7 @@ export const EditAiAgentSettingsForm = ({
                         className={css.numberInput}
                         onChange={(value?: number) => {
                             if (value === undefined) return
+                            latestSampleRateRef.current = value
                             updateValue('ticketSampleRate', value)
                         }}
                         value={
