@@ -98,6 +98,8 @@ export const usePerformanceByArticleMetrics = ({
                     (article) => article.id === articleId
                 )
 
+                const articleTranslation = helpCenterArticle?.translation
+
                 let ratingRate = null
                 if (helpCenterArticle) {
                     const rate =
@@ -114,7 +116,9 @@ export const usePerformanceByArticleMetrics = ({
                     : null
 
                 const articleLastUpdated =
-                    helpCenterArticle?.updated_datetime ?? null
+                    articleTranslation?.updated_datetime ??
+                    helpCenterArticle?.updated_datetime ??
+                    null
 
                 return [
                     {
