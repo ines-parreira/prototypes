@@ -69,7 +69,7 @@ const withCancellableRequest =
             const initialProps = {...ownProps} as unknown as P
             const [cancellableRequest, cancel] = useCancellableRequest(
                 (cancelToken) =>
-                    async (...args) =>
+                    async (...args: any[]) =>
                         await connectedRequest(...args, cancelToken)
             )
             const injectedProps = {

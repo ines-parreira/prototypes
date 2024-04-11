@@ -144,7 +144,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
                 ? _isString(children)
                     ? getHighlightedLabel(children)
                     : _isFunction(children)
-                    ? children(getHighlightedLabel(option.label))
+                    ? (children(getHighlightedLabel(option.label)) as ReactNode)
                     : children
                 : getHighlightedLabel(option.label),
         [children, option, getHighlightedLabel]

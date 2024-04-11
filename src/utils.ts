@@ -1189,7 +1189,7 @@ export function unreachable(v: never): never {
  *
  * @param value An object from which to extract the keys
  */
-export function objKeys<T>(value: T): (keyof T)[] {
+export function objKeys<T extends object>(value: T): (keyof T)[] {
     return Object.keys(value) as (keyof T)[]
 }
 

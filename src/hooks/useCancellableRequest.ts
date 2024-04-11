@@ -1,7 +1,7 @@
 import axios, {CancelTokenSource, CancelToken} from 'axios'
 import {useRef, useEffect, useCallback} from 'react'
 
-type FnReturningPromise = (...args: any[]) => Promise<any>
+type FnReturningPromise = (...args: any[]) => Promise<unknown>
 
 const useCancellableRequest = <T extends FnReturningPromise>(
     fn: (cancelToken: CancelToken) => T

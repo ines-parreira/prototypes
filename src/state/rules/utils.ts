@@ -312,7 +312,8 @@ export function resolveSecondArg(
         return null
     }
 
-    const hasEnum = <T>(enumType: T) => Object.values(enumType).includes(callee)
+    const hasEnum = <T extends object>(enumType: T) =>
+        Object.values(enumType).includes(callee)
     const isCollectionCallee = hasEnum(CollectionOperator)
     const isTimedeltaCallee = hasEnum(TimedeltaOperator)
     const isDatetimeCallee = hasEnum(DatetimeOperator)

@@ -18,7 +18,7 @@ export const ComposedElements = <
     }
     const composedElement = elements.reduceRight((acc, element) => {
         return React.isValidElement(element)
-            ? React.cloneElement(element, {children: acc})
+            ? React.cloneElement(element, undefined, acc)
             : acc
     }, children) as React.ReactElement
     return React.cloneElement(composedElement, otherProps)
