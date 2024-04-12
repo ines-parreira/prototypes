@@ -22,7 +22,10 @@ const AiAgentViewContainer = () => {
     const accountDomain = currentAccount.get('domain')
 
     const {status: accountConfigRetrievalStatus} =
-        useGetOrCreateAccountConfiguration({accountId, accountDomain, dispatch})
+        useGetOrCreateAccountConfiguration(
+            {accountId, accountDomain, dispatch},
+            {refetchOnWindowFocus: false}
+        )
 
     if (
         !hasAutomate ||

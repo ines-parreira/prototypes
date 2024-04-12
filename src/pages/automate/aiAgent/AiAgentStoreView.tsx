@@ -42,7 +42,7 @@ export const AiAgentStoreView = ({
             accountDomain,
             storeName: shopName,
         },
-        {retry: 1}
+        {retry: 1, refetchOnWindowFocus: false}
     )
 
     if (getStoreConfigurationIsLoading) {

@@ -73,14 +73,17 @@ const AiAgentPlaygroundContainer = () => {
             accountDomain,
             storeName: shopName,
         },
-        {retry: 1}
+        {retry: 1, refetchOnWindowFocus: false}
     )
 
     const {
         error: accountFetchError,
         data: accountData,
         isLoading: accountDataLoading,
-    } = useGetAccountConfiguration(accountDomain, {retry: 1})
+    } = useGetAccountConfiguration(accountDomain, {
+        retry: 1,
+        refetchOnWindowFocus: false,
+    })
 
     // Ai Agent submit
     const {

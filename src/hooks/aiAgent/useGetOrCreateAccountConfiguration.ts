@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query'
+import {useQuery, UseQueryOptions} from '@tanstack/react-query'
 import axios from 'axios'
 
 import {notify} from 'state/notifications/actions'
@@ -14,11 +14,16 @@ import {
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 
-export function useGetOrCreateAccountConfiguration(params: {
-    accountId: number
-    accountDomain: string
-    dispatch: StoreDispatch
-}) {
+export function useGetOrCreateAccountConfiguration(
+    params: {
+        accountId: number
+        accountDomain: string
+        dispatch: StoreDispatch
+    },
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getAccountConfiguration>>
+    >
+) {
     const {accountId, accountDomain, dispatch} = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
@@ -57,5 +62,6 @@ export function useGetOrCreateAccountConfiguration(params: {
         },
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+        ...overrides,
     })
 }
