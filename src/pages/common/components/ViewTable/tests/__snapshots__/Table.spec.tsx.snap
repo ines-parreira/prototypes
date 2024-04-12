@@ -5,7 +5,9 @@ exports[`<Table /> should display a default view 1`] = `
   <table
     class="table view-table"
   >
-    <thead>
+    <thead
+      class="tableHead"
+    >
       <tr>
         <td
           class="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"
@@ -76,7 +78,9 @@ exports[`<Table /> should display a default view with option selectable set to f
   <table
     class="table view-table"
   >
-    <thead>
+    <thead
+      class="tableHead"
+    >
       <tr>
         <td>
           HeaderCell
@@ -125,7 +129,9 @@ exports[`<Table /> should display a view with no fields 1`] = `
   <table
     class="table view-table"
   >
-    <thead>
+    <thead
+      class="tableHead"
+    >
       <tr>
         <td
           class="cell-wrapper cell-short clickable d-none d-md-table-cell smallest"

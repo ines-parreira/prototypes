@@ -513,7 +513,7 @@ export const TicketListActions = ({
                                 Could not find any agent
                             </DropdownItem>
                         ) : (
-                            <div className={css['agents-dropdown-list']}>
+                            <div className={css['dropdown-list']}>
                                 {filteredAgents.map((agent) => (
                                     <DropdownItem
                                         key={agent!.get('id')}
@@ -602,7 +602,7 @@ export const TicketListActions = ({
                                 Could not find any team
                             </DropdownItem>
                         ) : (
-                            <div className={css['teams-dropdown-list']}>
+                            <div className={css['dropdown-list']}>
                                 {filteredTeams.map((team) => (
                                     <DropdownItem
                                         key={team!.get('id')}

@@ -271,7 +271,7 @@ const TableContainer = ({
     return (
         <div>
             <table className={classnames(css.table, 'view-table')}>
-                <thead>
+                <thead className={css.tableHead}>
                     <tr>
                         {selectable ? (
                             <td

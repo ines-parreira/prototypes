@@ -140,7 +140,7 @@ exports[`TicketListActions component should render agents options in assign agen
           tabindex="-1"
         />
         <div
-          class="agents-dropdown-list"
+          class="dropdown-list"
         >
           <button
             class="dropdown-item"
@@ -677,7 +677,7 @@ exports[`TicketListActions component should render teams in assign team dropdown
           tabindex="-1"
         />
         <div
-          class="teams-dropdown-list"
+          class="dropdown-list"
         >
           <button
             class="teams-dropdown-item dropdown-item"
