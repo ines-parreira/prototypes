@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import moment from 'moment'
 
 import Button from 'pages/common/components/button/Button'
@@ -37,9 +36,13 @@ const RequestABTestModal = ({isOpen, onClose, onSubmit}: Props) => {
                         <p>
                             Assess the effectiveness of your campaigns and
                             measure the incremental lift.{' '}
-                            <Link to="#">
+                            <a
+                                href={'https://link.gorgias.com/01f'}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                            >
                                 <strong>Learn more</strong>
-                            </Link>
+                            </a>
                         </p>
                         <div className={css.testConfiguration}>
                             <div className={css.label}>

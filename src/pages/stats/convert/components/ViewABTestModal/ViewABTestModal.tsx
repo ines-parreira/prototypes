@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -34,9 +33,13 @@ const ViewABTestModal = ({isOpen, abTests, onClose, onSubmit}: Props) => {
                 subtitle={
                     <span>
                         Campaigns are hidden for 50% of your visitors.{' '}
-                        <Link to={''}>
+                        <a
+                            href={'https://link.gorgias.com/01f'}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                        >
                             <strong>Learn more</strong>
-                        </Link>
+                        </a>
                     </span>
                 }
             />
