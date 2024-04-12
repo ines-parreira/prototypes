@@ -1,12 +1,9 @@
-import {CancelToken} from 'axios'
-
 import {Order} from 'constants/integrations/types/shopify'
-import {ApiPaginationParams, OrderParams} from 'models/api/types'
 import {CustomerChannel} from 'models/customerChannel/types'
+import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
+import {CustomerExternalData} from 'models/customerExternalData/types'
 import {IntegrationType} from 'models/integration/types'
 import {Subscription} from 'state/billing/types'
-import {CustomerExternalData} from 'models/customerExternalData/types'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 
 type CustomerInformation = {
     city: string
@@ -65,9 +62,3 @@ export enum CustomerSortableProperties {
     CreatedDatetime = 'created_datetime',
     Score = '_score',
 }
-
-export type CustomerSearchOptions = ApiPaginationParams &
-    OrderParams<CustomerSortableProperties> & {
-        search: string
-        cancelToken?: CancelToken
-    }

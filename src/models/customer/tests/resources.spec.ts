@@ -71,6 +71,19 @@ describe('Customer resources', () => {
 
             await expect(res).rejects.toBeInstanceOf(axios.Cancel)
         })
+
+        it('should add with_highlights prop', async () => {
+            const options = {
+                search: 'foo',
+                withHighlights: true,
+            }
+
+            await searchCustomers(options)
+
+            expect(mockedServer.history.post[0].params).toEqual({
+                with_highlights: options.withHighlights,
+            })
+        })
     })
 
     describe('getCustomer', () => {

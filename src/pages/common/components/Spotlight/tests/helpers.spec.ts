@@ -1,55 +1,53 @@
 import _pick from 'lodash/pick'
-import {Ticket} from 'models/ticket/types'
-import {ticketHighlightTransform} from 'pages/common/components/Spotlight/helpers'
-import {TicketHighlights} from '../SpotlightTicketRow'
+import {customer} from 'fixtures/customer'
+import {ticket} from 'fixtures/ticket'
+import {TicketHighlights, CustomerHighlights} from 'models/search/types'
+import {ViewType} from 'models/view/types'
+import {
+    getTypedHighlightResults,
+    ticketHighlightsTransform,
+    customerHighlightsTransform,
+} from 'pages/common/components/Spotlight/helpers'
+import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import {Customer} from 'models/customer/types'
+import {TicketChannel} from 'business/types/ticket'
 
-describe('useTicketHighlightTransform', () => {
+describe('ticketHighlightsTransform', () => {
+    const highlightedSubject = '<em>subject</em>'
+    const highlightedMessageBody = 'text here <em>body</em> and text here'
+    const highlightedMessageSenderName = '<em>from name</em>'
+    const highlightedMessageSenderAddress = '<em>from address</em>'
+    const highlightedMessageRecipientName = '<em>to name</em>'
+    const highlightedMessageRecipientAddress = '<em>to address</em>'
     const highlight: TicketHighlights = {
         id: ['<em>12345</em>'],
-        subject: ['<em>subject</em>'],
-        'messages.body': ['text here <em>body</em> and text here'],
-        'messages.from.name': ['<em>from name</em>'],
-        'messages.from.address': ['<em>from address</em>'],
-        'messages.to.name': ['<em>to name</em>'],
-        'messages.to.address': ['<em>to address</em>'],
+        subject: [highlightedSubject],
+        messages: {
+            body: [highlightedMessageBody],
+            from: {
+                name: [highlightedMessageSenderName],
+                address: [highlightedMessageSenderAddress],
+            },
+            to: {
+                name: [highlightedMessageRecipientName],
+                address: [highlightedMessageRecipientAddress],
+            },
+        },
     }
 
-    const emptyHighlight = {
-        email: [],
-        name: [],
-        'channels.address': [],
-        order_ids: [],
-    } as TicketHighlights
+    const emptyHighlight: TicketHighlights = {}
 
-    const item = {
+    const item: PickedTicket = {
+        ...ticket,
         id: 12345,
         subject: 'subject',
-        messages: [
-            {
-                id: 1,
-                body: 'text here body and text here',
-                from: {
-                    name: 'from name',
-                    address: 'from address',
-                },
-                to: {
-                    name: 'to name',
-                    address: 'to address',
-                },
-            },
-        ],
-        assignee_user: {
-            id: 1,
-            name: 'John Smith',
-            email: 'email@test.com',
-        },
         customer: {
             id: 1,
             name: 'John Smith',
             email: 'email@test.com',
         },
         excerpt: 'default excerpt text',
-    } as unknown as Ticket
+    }
     it.each([
         {
             item: item,
@@ -57,100 +55,112 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
-                    customer: {
-                        ...item.customer,
-                        name: '<em>from name</em>',
-                        email: '<em>from address</em>',
-                    },
-                    assignee_user: {
-                        ...item.assignee_user,
-                        name: '<em>to name</em>',
-                        email: '<em>to address</em>',
-                    },
-                    title: '<em>subject</em>',
-                    message: 'text here <em>body</em> and text here',
+                    customer: highlightedMessageSenderName,
+                    title: highlightedSubject,
+                    message: highlightedMessageBody,
                 },
             },
         },
         {
             item: item,
-            highlight: _pick(highlight, 'subject'),
+            highlight: {
+                subject: highlight.subject,
+            },
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
-                    title: '<em>subject</em>',
+                    title: highlightedSubject,
                     message: item.excerpt,
+                    customer: item.customer.name,
                 },
             },
         },
         {
             item: item,
-            highlight: _pick(highlight, 'messages.body'),
+            highlight: {
+                messages: {
+                    body: [highlightedMessageBody],
+                },
+            },
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
                     title: item.subject,
-                    message: 'text here <em>body</em> and text here',
+                    message: highlightedMessageBody,
+                    customer: item.customer.name,
                 },
             },
         },
         {
             item: item,
-            highlight: _pick(highlight, 'messages.from.name'),
-            expectedResult: {
-                itemWithHighlights: {
-                    ...item,
-                    title: item.subject,
-                    message: item.excerpt,
-                    customer: {
-                        ...item.customer,
-                        name: '<em>from name</em>',
+            highlight: {
+                messages: {
+                    from: {
+                        name: [highlightedMessageSenderName],
                     },
                 },
             },
-        },
-        {
-            item: item,
-            highlight: _pick(highlight, 'messages.from.address'),
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
                     title: item.subject,
                     message: item.excerpt,
-                    customer: {
-                        ...item.customer,
-                        email: '<em>from address</em>',
-                    },
+                    customer: highlightedMessageSenderName,
                 },
             },
         },
         {
             item: item,
-            highlight: _pick(highlight, 'messages.to.name'),
+            highlight: {
+                messages: {
+                    from: {
+                        address: [highlightedMessageSenderAddress],
+                    },
+                },
+            },
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
                     title: item.subject,
                     message: item.excerpt,
-                    assignee_user: {
-                        ...item.assignee_user,
-                        name: '<em>to name</em>',
-                    },
+                    customer: highlightedMessageSenderAddress,
                 },
             },
         },
         {
             item: item,
-            highlight: _pick(highlight, 'messages.to.address'),
+            highlight: {
+                messages: {
+                    to: {
+                        name: [highlightedMessageRecipientName],
+                    },
+                },
+            },
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
                     title: item.subject,
                     message: item.excerpt,
-                    assignee_user: {
-                        ...item.assignee_user,
-                        email: '<em>to address</em>',
+
+                    customer: highlightedMessageRecipientName,
+                },
+            },
+        },
+        {
+            item: item,
+            highlight: {
+                messages: {
+                    to: {
+                        address: [highlightedMessageRecipientAddress],
                     },
+                },
+            },
+            expectedResult: {
+                itemWithHighlights: {
+                    ...item,
+                    title: item.subject,
+                    message: item.excerpt,
+                    customer: highlightedMessageRecipientAddress,
                 },
             },
         },
@@ -162,6 +172,7 @@ describe('useTicketHighlightTransform', () => {
                     ...item,
                     title: item.subject,
                     message: item.excerpt,
+                    customer: item.customer.name,
                 },
             },
         },
@@ -171,17 +182,169 @@ describe('useTicketHighlightTransform', () => {
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
+                    customer: item.customer.name,
                     title: item.subject,
                     message: undefined,
                 },
             },
         },
+        {
+            item: {...item, subject: ''},
+            highlight: {},
+            expectedResult: {
+                itemWithHighlights: {
+                    ...item,
+                    subject: '',
+                    title: '',
+                    customer: item.customer.name,
+                    message: item.excerpt,
+                },
+            },
+        },
     ])(
-        'should check if highlight is passed and return right items with highlights',
+        'should check if highlight is passed and return right items with highlights $#',
         ({item, highlight, expectedResult}) => {
-            expect(ticketHighlightTransform(item, highlight)).toEqual(
+            expect(ticketHighlightsTransform(item, highlight)).toEqual(
                 expectedResult.itemWithHighlights
             )
         }
     )
+})
+
+describe('useCustomerHighlightTransform', () => {
+    const highlight: CustomerHighlights = {
+        email: ['<em>email</em>@test.com'],
+        name: ['<em>John</em> Smith'],
+        channels: {address: ['<em>address</em>']},
+        order_ids: ['<em>123</em>'],
+    }
+
+    const emptyHighlight = {
+        email: [],
+        name: [],
+        phoneNumberOrAddress: [],
+        order_ids: [],
+    }
+
+    const customerPhoneNumber = 'phone number'
+    const item = {
+        id: 1,
+        name: 'John Smith',
+        email: 'email@test.com',
+        channels: [
+            {
+                type: TicketChannel.Phone,
+                address: customerPhoneNumber,
+            },
+        ] as Customer['channels'],
+        note: 'some note',
+    } as Customer
+
+    it.each([
+        {
+            item: item,
+            highlight: highlight,
+            expectedResult: {
+                itemWithHighlights: {
+                    id: item.id,
+                    email: '<em>email</em>@test.com',
+                    name: '<em>John</em> Smith',
+                    phoneNumberOrAddress: '<em>address</em>',
+                },
+            },
+        },
+        {
+            item: item,
+            highlight: _pick(highlight, 'email'),
+            expectedResult: {
+                itemWithHighlights: {
+                    id: item.id,
+                    name: item.name,
+                    email: '<em>email</em>@test.com',
+                    phoneNumberOrAddress: customerPhoneNumber,
+                },
+            },
+        },
+        {
+            item: item,
+            highlight: _pick(highlight, 'name'),
+            expectedResult: {
+                itemWithHighlights: {
+                    id: item.id,
+                    email: item.email,
+                    name: '<em>John</em> Smith',
+                    phoneNumberOrAddress: customerPhoneNumber,
+                },
+            },
+        },
+        {
+            item: item,
+            highlight: _pick(highlight, 'channels.address'),
+            expectedResult: {
+                itemWithHighlights: {
+                    id: item.id,
+                    name: item.name,
+                    email: item.email,
+                    phoneNumberOrAddress: '<em>address</em>',
+                },
+            },
+        },
+        {
+            item: item,
+            highlight: emptyHighlight,
+            expectedResult: {
+                itemWithHighlights: {
+                    id: item.id,
+                    name: item.name,
+                    email: item.email,
+                    phoneNumberOrAddress: customerPhoneNumber,
+                },
+            },
+        },
+    ])(
+        'should check if highlight is passed and return item with highlights and phone number',
+        ({item, highlight, expectedResult}) => {
+            const transformed = customerHighlightsTransform(highlight, item)
+
+            expect(transformed).toEqual(expectedResult.itemWithHighlights)
+        }
+    )
+})
+
+describe('getTypedHighlightResults', () => {
+    it('should add type field to passed customers', () => {
+        const customerWithHighlights = {
+            entity: customer,
+            highlights: {},
+        }
+        const typedCustomers = getTypedHighlightResults(
+            [customerWithHighlights],
+            ViewType.CustomerList
+        )
+
+        expect(typedCustomers).toEqual([
+            {
+                ...customerWithHighlights,
+                type: 'Customer',
+            },
+        ])
+    })
+
+    it('should add type field to passed tickets', () => {
+        const ticketWithHighlights = {
+            entity: ticket as PickedTicket,
+            highlights: {},
+        }
+        const typedTicket = getTypedHighlightResults(
+            [ticketWithHighlights],
+            ViewType.TicketList
+        )
+
+        expect(typedTicket).toEqual([
+            {
+                ...ticketWithHighlights,
+                type: 'Ticket',
+            },
+        ])
+    })
 })

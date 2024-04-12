@@ -10,9 +10,10 @@ import {TicketStatus} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import {agents} from 'fixtures/agents'
 import {user} from 'fixtures/users'
-import {Ticket} from 'models/ticket/types'
 
-import SpotlightTicketRow from '../SpotlightTicketRow'
+import SpotlightTicketRow, {
+    PickedTicket,
+} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const mockStore = configureMockStore([thunk])
 
@@ -30,12 +31,11 @@ const mockOnClick = jest.fn()
 
 describe('<SpotlightTicketRow/>', () => {
     const defaultProps: ComponentProps<typeof SpotlightTicketRow> = {
-        item: ticket,
+        item: ticket as PickedTicket,
         onCloseModal: jest.fn(),
         id: 1,
         index: 1,
         onClick: mockOnClick,
-        highlight: {},
     }
 
     afterEach(() => {
@@ -54,7 +54,7 @@ describe('<SpotlightTicketRow/>', () => {
         const {container} = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={{...ticket, status: TicketStatus.Closed}}
+                item={{...ticket, status: TicketStatus.Closed} as PickedTicket}
             />
         )
 
@@ -77,7 +77,7 @@ describe('<SpotlightTicketRow/>', () => {
         const {getByText, getByRole} = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={{...ticket, status: TicketStatus.Closed}}
+                item={{...ticket, status: TicketStatus.Closed} as PickedTicket}
             />
         )
 
@@ -94,7 +94,7 @@ describe('<SpotlightTicketRow/>', () => {
                     {
                         ...ticket,
                         customer: {...ticket.customer, name: null},
-                    } as unknown as Ticket
+                    } as unknown as PickedTicket
                 }
             />
         )
@@ -110,7 +110,7 @@ describe('<SpotlightTicketRow/>', () => {
                     {
                         ...ticket,
                         customer: {...ticket.customer, name: null, email: null},
-                    } as unknown as Ticket
+                    } as unknown as PickedTicket
                 }
             />
         )
@@ -140,7 +140,9 @@ describe('<SpotlightTicketRow/>', () => {
         const {container} = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={{...ticket, created_datetime: mockPastDate}}
+                item={
+                    {...ticket, created_datetime: mockPastDate} as PickedTicket
+                }
             />
         )
 
@@ -151,7 +153,9 @@ describe('<SpotlightTicketRow/>', () => {
         const {container} = render(
             <WrappedSpotlightTicketRow {...defaultProps} />
         )
-        userEvent.click(container.firstChild! as Element)
+        if (container.firstChild) {
+            userEvent.click(container.firstChild as Element)
+        }
         expect(mockOnClick).toHaveBeenCalled()
     })
 
@@ -190,22 +194,45 @@ describe('<SpotlightTicketRow/>', () => {
         expect(document.querySelector('.title')?.textContent).toBe('')
     })
 
+    it('should render CustomerId when no name nor email', () => {
+        const props = {
+            ...defaultProps,
+            item: {
+                ...defaultProps.item,
+                customer: {
+                    ...defaultProps.item.customer,
+                    email: null,
+                    name: '',
+                },
+            },
+        }
+        const {getByText} = render(<WrappedSpotlightTicketRow {...props} />)
+
+        expect(
+            getByText(`#${props.item.customer.id}`, {exact: false})
+        ).toBeInTheDocument()
+    })
+
     it('should render ticket information with highlight items', () => {
         const {getByText} = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                highlight={{
+                highlights={{
                     subject: ['<em>subject</em>'],
-                    'messages.to.name': ['<em>to name</em>'],
-                    'messages.from.name': ['<em>from name</em>'],
+                    messages: {
+                        to: {
+                            name: ['<em>to name</em>'],
+                        },
+                        from: {
+                            name: ['<em>from name</em>'],
+                        },
+                    },
                 }}
             />
         )
 
         expect(getByText('subject')).toBeInTheDocument()
         expect(getByText('subject').tagName.toLocaleLowerCase()).toEqual('em')
-        expect(getByText('to name')).toBeInTheDocument()
-        expect(getByText('to name').tagName.toLocaleLowerCase()).toEqual('em')
         expect(getByText('from name')).toBeInTheDocument()
         expect(getByText('from name').tagName.toLocaleLowerCase()).toEqual('em')
     })

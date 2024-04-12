@@ -1,13 +1,14 @@
-import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
+import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import {customer} from 'fixtures/customer'
+import {fromJS} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import {user} from 'fixtures/users'
+import {customer} from 'fixtures/customer'
+import {TicketChannel} from 'business/types/ticket'
 
 import SpotlightCustomerRow from '../SpotlightCustomerRow'
 
@@ -30,37 +31,46 @@ describe('<SpotlightCustomerRow/>', () => {
         id: 1,
         index: 1,
         onClick: mockOnClick,
-        highlight: {},
     }
+    const customerEmail = customer.channels?.find(
+        (channel) => channel.type === TicketChannel.Email
+    )?.address
+    const customerPhone = customer.channels?.find(
+        (channel) => channel.type === TicketChannel.Phone
+    )?.address
 
     it('should render render customer information', () => {
-        const {container} = render(
-            <WrappedSpotlightCustomerRow {...defaultProps} />
-        )
+        render(<WrappedSpotlightCustomerRow {...defaultProps} />)
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText(customer.name)).toBeInTheDocument()
+        expect(customerPhone).toBeDefined()
+        expect(customerEmail).toBeDefined()
+        if (customerEmail && customerPhone) {
+            expect(screen.getByText(customerEmail)).toBeInTheDocument()
+            expect(screen.getByText(customerPhone)).toBeInTheDocument()
+        }
     })
 
     it('should render with customer id when no customer name is available', () => {
-        const {container} = render(
+        render(
             <WrappedSpotlightCustomerRow
                 {...defaultProps}
                 item={{...customer, name: ''}}
             />
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText(`Customer #${customer.id}`)).toBeInTheDocument()
     })
 
     it('should not render customer mail and phone sections if not available', () => {
-        const {container} = render(
+        render(
             <WrappedSpotlightCustomerRow
                 {...defaultProps}
                 item={{...customer, email: null, channels: []}}
             />
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(document.querySelector('.customerInfo')).toBeNull()
     })
 
     it('should call onClick when customer row is clicked', () => {
@@ -75,10 +85,12 @@ describe('<SpotlightCustomerRow/>', () => {
         const {getByText} = render(
             <WrappedSpotlightCustomerRow
                 {...defaultProps}
-                highlight={{
+                highlights={{
                     email: ['<em>some email</em>'],
                     name: ['<em>some name</em>'],
-                    'channels.address': ['<em>+32 000 000</em>'],
+                    channels: {
+                        address: ['<em>+32 000 000</em>'],
+                    },
                 }}
             />
         )

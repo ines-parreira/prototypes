@@ -1,44 +1,109 @@
-import {Ticket} from 'models/ticket/types'
+import {TicketChannel} from 'business/types/ticket'
 import {
-    PickedTicket,
+    CustomerHighlights,
+    CustomerWithHighlights,
+    CustomerWithHighlightsResponse,
+    PickedCustomer,
     TicketHighlights,
-} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+    TicketWithHighlights,
+    TicketWithHighlightsResponse,
+} from 'models/search/types'
+import {ViewType} from 'models/view/types'
+import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
-export const ticketHighlightTransform = (
-    item: Ticket | PickedTicket,
-    highlight?: TicketHighlights
+const getCustomer = (
+    item: {id: number; name: string; email: string | null},
+    sender?: {
+        name?: string[]
+        address?: string[]
+    },
+    recipient?: {
+        name?: string[]
+        address?: string[]
+    }
 ) => {
-    if (highlight === undefined) {
+    const highlightedSenderName = sender?.name?.[0]
+    const highlightedSenderAddress = sender?.address?.[0]
+
+    const highlightedRecipientName = recipient?.name?.[0]
+    const highlightedRecipientAddress = recipient?.address?.[0]
+
+    if (highlightedSenderName || highlightedSenderAddress) {
+        return highlightedSenderName || highlightedSenderAddress || ''
+    }
+    if (highlightedRecipientName || highlightedRecipientAddress) {
+        return highlightedRecipientName || highlightedRecipientAddress || ''
+    }
+
+    return item.name || item.email || `Customer #${item.id}`
+}
+
+export const ticketHighlightsTransform = (
+    item: PickedTicket,
+    highlights?: TicketHighlights
+) => {
+    if (highlights === undefined) {
         return {
             ...item,
-            customer: {
-                name: item.customer?.name || null,
-                email: item.customer?.email || null,
-                id: (item as PickedTicket).customer.id,
-            },
+            customer:
+                item.customer.name ||
+                item.customer.email ||
+                `Customer #${item.customer.id}`,
             title: item.subject || item.excerpt || '',
             message: undefined,
         }
     }
+
+    const customer = getCustomer(
+        item.customer,
+        highlights?.messages?.from,
+        highlights?.messages?.to
+    )
+
     return {
         ...item,
-        customer: Object.assign({}, item.customer, {
-            id: (item as PickedTicket).customer.id,
-            name:
-                highlight['messages.from.name']?.[0] ??
-                (item.customer?.name || null),
-            email:
-                highlight['messages.from.address']?.[0] ??
-                (item.customer?.email || null),
-        }),
-        assignee_user: Object.assign({}, item.assignee_user, {
-            name:
-                highlight['messages.to.name']?.[0] ?? item.assignee_user?.name,
-            email:
-                highlight['messages.to.address']?.[0] ??
-                item.assignee_user?.email,
-        }),
-        title: highlight.subject?.[0] || item.subject || '',
-        message: highlight['messages.body']?.[0] || item.excerpt || '',
+        customer: customer,
+        title: highlights.subject?.[0] || item.subject || '',
+        message: highlights.messages?.body?.[0] || item.excerpt || '',
     }
+}
+
+export const customerHighlightsTransform = (
+    highlight: CustomerHighlights | undefined,
+    item: PickedCustomer
+) => {
+    const phoneNumber = item.channels.find(
+        (channel) => channel.type === TicketChannel.Phone
+    )?.address
+
+    const phoneNumberOrAddress =
+        highlight?.channels?.address?.[0] ?? phoneNumber
+
+    return {
+        id: item.id,
+        email: highlight?.email?.[0] ?? item.email,
+        name: highlight?.name?.[0] ?? item.name,
+        phoneNumberOrAddress,
+    }
+}
+
+type ResultWithHighlights<T> = T extends ViewType.TicketList
+    ? TicketWithHighlights
+    : T extends ViewType.CustomerList
+    ? CustomerWithHighlights
+    : never
+
+export function getTypedHighlightResults<T extends ViewType>(
+    data: TicketWithHighlightsResponse[] | CustomerWithHighlightsResponse[],
+    viewType: T
+): ResultWithHighlights<T>[] {
+    const entityType = viewType === ViewType.TicketList ? 'Ticket' : 'Customer'
+    return data
+        .map((result) => ({
+            type: entityType,
+            ...result,
+        }))
+        .filter(
+            (result) => result.type === entityType
+        ) as ResultWithHighlights<T>[]
 }

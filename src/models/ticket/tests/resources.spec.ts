@@ -6,7 +6,7 @@ import {ticket} from 'fixtures/ticket'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Ticket} from 'models/ticket/types'
 
-import {searchTickets} from '../resources'
+import {searchTickets} from 'models/ticket/resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -71,6 +71,19 @@ describe('ticket resources', () => {
             })
 
             await expect(res).rejects.toBeInstanceOf(axios.Cancel)
+        })
+
+        it('should add with_highlights prop', async () => {
+            const options = {
+                search: 'foo',
+                withHighlights: true,
+            }
+
+            await searchTickets(options)
+
+            expect(mockedServer.history.post[0].params).toEqual({
+                with_highlights: options.withHighlights,
+            })
         })
     })
 })

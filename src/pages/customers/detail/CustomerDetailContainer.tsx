@@ -3,6 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import {useParams} from 'react-router-dom'
 import _pick from 'lodash/pick'
+import {PickedCustomer, pickedCustomerFields} from 'models/search/types'
 
 import {TicketChannel} from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
@@ -24,10 +25,6 @@ import {RootState} from 'state/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {
-    PickedCustomer,
-    pickedCustomerFields,
-} from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import css from './CustomerDetailContainer.less'

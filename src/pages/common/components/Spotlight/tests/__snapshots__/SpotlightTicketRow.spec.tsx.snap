@@ -82,7 +82,6 @@ exports[`<SpotlightTicketRow/> should render a date from the current year withou
         </div>
       </span>
     </div>
-    
   </div>
 </a>
 `;
@@ -169,7 +168,6 @@ exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
         </div>
       </span>
     </div>
-    
   </div>
 </a>
 `;
@@ -256,7 +254,6 @@ exports[`<SpotlightTicketRow/> should render current date as "today" 1`] = `
         </div>
       </span>
     </div>
-    
   </div>
 </a>
 `;
@@ -363,7 +360,6 @@ exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
         </div>
       </span>
     </div>
-    
   </div>
 </a>
 `;
@@ -450,7 +446,6 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
         </div>
       </span>
     </div>
-    
   </div>
 </a>
 `;
@@ -537,7 +532,6 @@ exports[`<SpotlightTicketRow/> should render without customer name and without e
         </div>
       </span>
     </div>
-    
   </div>
 </a>
 `;

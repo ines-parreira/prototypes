@@ -1,4 +1,5 @@
 import axios, {CancelToken} from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import {
     KeyboardEvent,
@@ -8,7 +9,7 @@ import {
     useMemo,
     useState,
 } from 'react'
-import history from 'pages/history'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -22,11 +23,19 @@ import useSearchRankScenario, {
 import useSelectedIndex from 'hooks/useSelectedIndex'
 import {CursorMeta} from 'models/api/types'
 import {searchCustomers} from 'models/customer/resources'
-import {Customer} from 'models/customer/types'
-import {SearchEngine} from 'models/search/types'
+import {
+    CustomerWithHighlights,
+    CustomerWithHighlightsResponse,
+    PickedCustomer,
+    SearchEngine,
+    TicketWithHighlights,
+    TicketWithHighlightsResponse,
+} from 'models/search/types'
 import {searchTickets} from 'models/ticket/resources'
-import {Ticket} from 'models/ticket/types'
 import {ViewType} from 'models/view/types'
+import {getTypedHighlightResults} from 'pages/common/components/Spotlight/helpers'
+import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {isMacOs} from 'utils/platform'
@@ -49,6 +58,8 @@ const searchRankScenarioSource = {
 
 export const useSearch = () => {
     const dispatch = useAppDispatch()
+    const isSearchWithHighlights =
+        !!useFlags()[FeatureFlagKey.SearchWithHighlights]
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
         ViewType.TicketList
     )
@@ -66,30 +77,42 @@ export const useSearch = () => {
 
     const previousSearchItemsType = usePrevious(searchItemsType)
     const [hasSearched, setHasSearched] = useState<boolean>(false)
-    const [tickets, setTickets] = useState<Ticket[]>([])
-    const [customers, setCustomers] = useState<Customer[]>([])
-    const {items: recentTickets} = useRecentItems<Ticket>(RecentItems.Tickets)
-    const {items: recentCustomers} = useRecentItems<Customer>(
+    const [tickets, setTickets] = useState<PickedTicket[]>([])
+    const [customers, setCustomers] = useState<PickedCustomer[]>([])
+    const [resultsWithHighlights, setResultsWithHighlights] = useState<
+        (CustomerWithHighlights | TicketWithHighlights)[]
+    >([])
+    const {items: recentTickets} = useRecentItems<PickedTicket>(
+        RecentItems.Tickets
+    )
+    const {items: recentCustomers} = useRecentItems<PickedCustomer>(
         RecentItems.Customers
     )
-    const maxIndex = useMemo(
-        () =>
-            searchItemsType === ViewType.CustomerList
-                ? hasSearched
-                    ? customers.length - 1
-                    : recentCustomers.length - 1
-                : hasSearched
-                ? tickets.length - 1
-                : recentTickets.length - 1,
-        [
-            customers,
-            searchItemsType,
-            tickets,
-            hasSearched,
-            recentTickets,
-            recentCustomers,
-        ]
-    )
+    const maxIndex = useMemo(() => {
+        const customersLength = isSearchWithHighlights
+            ? resultsWithHighlights.length
+            : customers.length
+        const ticketsLength = isSearchWithHighlights
+            ? resultsWithHighlights.length
+            : tickets.length
+
+        return searchItemsType === ViewType.CustomerList
+            ? hasSearched
+                ? customersLength - 1
+                : recentCustomers.length - 1
+            : hasSearched
+            ? ticketsLength - 1
+            : recentTickets.length - 1
+    }, [
+        isSearchWithHighlights,
+        resultsWithHighlights.length,
+        customers.length,
+        tickets.length,
+        searchItemsType,
+        hasSearched,
+        recentCustomers.length,
+        recentTickets.length,
+    ])
 
     const {
         index: selectedIndex,
@@ -147,6 +170,7 @@ export const useSearch = () => {
                         filters: '',
                         cursor,
                         cancelToken,
+                        withHighlights: isSearchWithHighlights,
                     })
                 } else {
                     promise = searchCustomers({
@@ -154,6 +178,7 @@ export const useSearch = () => {
                         orderBy: '_score:desc',
                         cursor,
                         cancelToken,
+                        withHighlights: isSearchWithHighlights,
                     })
                 }
 
@@ -164,27 +189,43 @@ export const useSearch = () => {
                         numberOfResults: data.data.length,
                         searchEngine,
                     })
-                    if (viewType === ViewType.TicketList) {
-                        setLastSearchQueries({
-                            ...lastSearchQueries,
-                            tickets: searchTerm,
-                        })
+                    setLastSearchQueries({
+                        ...lastSearchQueries,
+                        ...(viewType === ViewType.TicketList
+                            ? {tickets: searchTerm}
+                            : {customers: searchTerm}),
+                    })
+                    if (isSearchWithHighlights) {
+                        const typedResults = getTypedHighlightResults(
+                            data.data as
+                                | TicketWithHighlightsResponse[]
+                                | CustomerWithHighlightsResponse[],
+                            viewType
+                        )
+                        setResultsWithHighlights((results) =>
+                            cursor
+                                ? [...results, ...typedResults]
+                                : typedResults
+                        )
+                    } else if (viewType === ViewType.TicketList) {
                         setTickets((tickets) =>
                             cursor
-                                ? ([...tickets, ...data.data] as Ticket[])
-                                : (data.data as Ticket[])
+                                ? ([...tickets, ...data.data] as PickedTicket[])
+                                : (data.data as PickedTicket[])
                         )
-                        setTicketsSearchMeta(data.meta)
                     } else if (viewType === ViewType.CustomerList) {
-                        setLastSearchQueries({
-                            ...lastSearchQueries,
-                            customers: searchTerm,
-                        })
                         setCustomers((tickets) =>
                             cursor
-                                ? ([...tickets, ...data.data] as Customer[])
-                                : (data.data as Customer[])
+                                ? ([
+                                      ...tickets,
+                                      ...data.data,
+                                  ] as PickedCustomer[])
+                                : (data.data as PickedCustomer[])
                         )
+                    }
+                    if (viewType === ViewType.TicketList) {
+                        setTicketsSearchMeta(data.meta)
+                    } else {
                         setCustomersSearchMeta(data.meta)
                     }
                 } catch (e) {
@@ -203,7 +244,7 @@ export const useSearch = () => {
                     }
                 }
             },
-        [searchRank, dispatch, lastSearchQueries]
+        [searchRank, isSearchWithHighlights, lastSearchQueries, dispatch]
     )
 
     const [cancellableFetchSearchItems, cancelSearch] = useCancellableRequest(
@@ -378,6 +419,7 @@ export const useSearch = () => {
         isFooterClean,
         tickets,
         customers,
+        resultsWithHighlights,
         recentTickets,
         recentCustomers,
         hasSearched,
@@ -386,5 +428,6 @@ export const useSearch = () => {
         setSelectedIndex,
         searchCallback,
         handleLoadMore,
+        isSearchWithHighlights,
     }
 }

@@ -1,6 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {PickedCustomer} from 'models/search/types'
 
 import {Customer} from 'models/customer/types'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
@@ -15,12 +16,14 @@ jest.mock('pages/common/components/SkeletonLoader', () => () => (
 
 describe('<SpotlightScrollArea/>', () => {
     const minProps: ComponentProps<typeof SpotlightScrollArea> = {
-        data: [{id: 1}, {id: 2}, {id: 3}] as Customer[],
+        data: [{id: 1}, {id: 2}, {id: 3}] as PickedCustomer[],
         canLoadMore: false,
         loadMore: jest.fn(),
         isLoading: false,
         scrollerRef: {current: null},
-        itemContent: (index, data) => <div>{`${index} - item ${data.id}`}</div>,
+        itemContent: (index, data) => (
+            <div>{`${index} - item ${(data as PickedCustomer).id}`}</div>
+        ),
         header: () => null,
     }
 

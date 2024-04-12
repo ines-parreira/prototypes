@@ -1,30 +1,20 @@
 import React, {ComponentProps} from 'react'
-import {Customer} from 'models/customer/types'
+import {CustomerHighlights, PickedCustomer} from 'models/search/types'
+import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
+import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'
+import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 
 import {sanitizeHtmlDefault} from 'utils/html'
-import SpotlightRow from './SpotlightRow'
-import css from './SpotlightCustomerRow.less'
-import {useCustomerHighlightTransform} from './useCustomerHighlightTransform'
-
-export const pickedCustomerFields = ['email', 'id', 'name', 'channels'] as const
-export type PickedCustomer = Pick<Customer, typeof pickedCustomerFields[number]>
-
-export type CustomerHighlights = {
-    email?: string[]
-    name?: string[]
-    order_ids?: string[]
-    'channels.address'?: string[]
-}
 
 type SpotlightCustomerRowProps = {
-    item: Customer | PickedCustomer
+    item: PickedCustomer
     onCloseModal: () => void
     id: number
     index: number
     onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
-    highlight: CustomerHighlights
+    highlights?: CustomerHighlights
 }
 const SpotlightCustomerRow = ({
     item,
@@ -34,10 +24,9 @@ const SpotlightCustomerRow = ({
     onHover,
     selected,
     onClick,
-    highlight,
+    highlights,
 }: SpotlightCustomerRowProps) => {
-    const {itemWithHighlights, phoneNumberOrAddress} =
-        useCustomerHighlightTransform(highlight, item)
+    const itemWithHighlights = customerHighlightsTransform(highlights, item)
 
     return (
         <SpotlightRow
@@ -49,10 +38,10 @@ const SpotlightCustomerRow = ({
             info={
                 <SpotlightCustomerInfo
                     email={itemWithHighlights.email}
-                    phone={phoneNumberOrAddress}
+                    phone={itemWithHighlights.phoneNumberOrAddress}
                 />
             }
-            link={`/app/customer/${item.id}`}
+            link={`/app/customer/${id}`}
             onCloseModal={onCloseModal}
             onHover={onHover}
             selected={selected}

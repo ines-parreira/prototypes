@@ -1,7 +1,7 @@
 import {Map} from 'immutable'
 
 import {OrderParams} from 'models/api/types'
-import {TicketSearchSortableProperties} from 'models/ticket/types'
+import {TicketSearchSortableProperties} from 'models/search/types'
 
 export enum ViewNavDirection {
     PrevView = 'prev',

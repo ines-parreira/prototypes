@@ -4,21 +4,33 @@ import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
 
-import {Customer, CustomerSearchOptions} from './types'
+import {Customer} from 'models/customer/types'
+import {
+    CustomerSearchOptions,
+    CustomerWithHighlightsResponse,
+} from 'models/search/types'
 
 export const searchCustomers = async ({
     search,
     cancelToken,
+    withHighlights,
     ...rest
 }: CustomerSearchOptions) =>
-    await client.post<ApiListResponseCursorPagination<Customer[]>>(
+    await client.post<
+        ApiListResponseCursorPagination<
+            Customer[] | CustomerWithHighlightsResponse[]
+        >
+    >(
         '/api/customers/search',
         {
             search,
         },
         {
             params: {
-                ...deepMapKeysToSnakeCase({...rest}),
+                ...deepMapKeysToSnakeCase({
+                    ...rest,
+                    ...(withHighlights === true ? {withHighlights: true} : {}),
+                }),
             },
             cancelToken,
         }

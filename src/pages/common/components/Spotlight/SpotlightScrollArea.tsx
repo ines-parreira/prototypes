@@ -1,11 +1,15 @@
 import React, {forwardRef, ForwardedRef, ComponentType} from 'react'
 import {Virtuoso, VirtuosoHandle, VirtuosoProps} from 'react-virtuoso'
+import {
+    CustomerWithHighlights,
+    PickedCustomer,
+    TicketWithHighlights,
+} from 'models/search/types'
 
-import {Ticket} from 'models/ticket/types'
-import {Customer} from 'models/customer/types'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
 import css from './SpotlightScrollArea.less'
+import {PickedTicket} from './SpotlightTicketRow'
 
 const HEADER_HEIGHT = 32
 const ITEM_HEIGHT = 56
@@ -16,12 +20,21 @@ type VirtuosoContext = {
 }
 
 type Props = {
-    data: Ticket[] | Customer[] | undefined
+    data:
+        | PickedTicket[]
+        | PickedCustomer[]
+        | (CustomerWithHighlights | TicketWithHighlights)[]
+        | undefined
     canLoadMore: boolean
     loadMore: () => Promise<void>
     isLoading: boolean
     scrollerRef: React.RefObject<HTMLDivElement>
-    itemContent: VirtuosoProps<Ticket | Customer, unknown>['itemContent']
+    itemContent: VirtuosoProps<
+        | PickedTicket
+        | PickedCustomer
+        | (CustomerWithHighlights | TicketWithHighlights),
+        unknown
+    >['itemContent']
     header?: ComponentType
 }
 
@@ -39,7 +52,11 @@ const SpotlightScrollArea = (
 ) => {
     const Header = header
     return (
-        <Virtuoso<Ticket | Customer>
+        <Virtuoso<
+            | PickedTicket
+            | PickedCustomer
+            | (CustomerWithHighlights | TicketWithHighlights)
+        >
             data={data}
             ref={ref}
             customScrollParent={scrollerRef.current || undefined}

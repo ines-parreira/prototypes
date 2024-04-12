@@ -87,6 +87,7 @@ export enum FeatureFlagKey {
     RevenueCampaignImprovements = 'revenue-campaign-improvements',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
+    SearchWithHighlights = 'search-with-highlights',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     ShopifyMetafields = 'shopify-metafields',

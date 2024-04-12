@@ -1,8 +1,9 @@
 import React, {ComponentProps, useMemo} from 'react'
 import moment from 'moment'
 import {fromJS} from 'immutable'
-
+import {TicketHighlights} from 'models/search/types'
 import {Customer} from 'models/customer/types'
+
 import {Ticket, TicketAssignee} from 'models/ticket/types'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import {UserAssigneeLabel} from 'pages/common/utils/labels'
@@ -11,9 +12,9 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
 import {sanitizeHtmlDefault} from 'utils/html'
-import {ticketHighlightTransform} from 'pages/common/components/Spotlight/helpers'
-import SpotlightRow from './SpotlightRow'
-import css from './SpotlightTicketRow.less'
+import {ticketHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
+import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
+import css from 'pages/common/components/Spotlight/SpotlightTicketRow.less'
 
 export const pickedTicketFields = [
     'id',
@@ -30,24 +31,14 @@ export type PickedTicket = Pick<Ticket, typeof pickedTicketFields[number]> & {
 }
 
 type SpotlightTicketRowProps = {
-    item: Ticket | PickedTicket
+    item: PickedTicket
     onCloseModal: () => void
     id: number
     index: number
     onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
-    highlight?: TicketHighlights
-}
-
-export type TicketHighlights = {
-    id?: string[]
-    subject?: string[]
-    'messages.body'?: string[]
-    'messages.from.name'?: string[]
-    'messages.from.address'?: string[]
-    'messages.to.name'?: string[]
-    'messages.to.address'?: string[]
+    highlights?: TicketHighlights
 }
 
 const SpotlightTicketRow = ({
@@ -58,11 +49,11 @@ const SpotlightTicketRow = ({
     onHover,
     selected,
     onClick,
-    highlight,
+    highlights,
 }: SpotlightTicketRowProps) => {
     const itemWithHighlights = useMemo(
-        () => ticketHighlightTransform(item, highlight),
-        [item, highlight]
+        () => ticketHighlightsTransform(item, highlights),
+        [item, highlights]
     )
 
     return (
@@ -78,9 +69,7 @@ const SpotlightTicketRow = ({
             title={itemWithHighlights.title}
             info={
                 <SpotlightTicketInfo
-                    customerName={itemWithHighlights.customer.name}
-                    customerEmail={itemWithHighlights.customer.email}
-                    customerId={itemWithHighlights.customer.id}
+                    customer={itemWithHighlights.customer}
                     assignee={itemWithHighlights.assignee_user}
                     date={itemWithHighlights.created_datetime}
                 />
@@ -96,15 +85,11 @@ const SpotlightTicketRow = ({
 }
 
 const SpotlightTicketInfo = ({
-    customerName,
-    customerEmail,
-    customerId,
+    customer,
     assignee,
     date,
 }: {
-    customerName: string | null
-    customerEmail: string | null
-    customerId: number
+    customer: string
     assignee?: TicketAssignee | null
     date: string
 }) => {
@@ -132,11 +117,7 @@ const SpotlightTicketInfo = ({
             <div className={css.ticketInfo}>
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: sanitizeHtmlDefault(
-                            customerName ||
-                                customerEmail ||
-                                `Customer #${customerId}`
-                        ),
+                        __html: sanitizeHtmlDefault(customer),
                     }}
                 />
                 {!!assignee && (

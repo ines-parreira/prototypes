@@ -358,7 +358,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should end previous searchRank scenario and register a new one on enter keypress', async () => {
-        mockServer.onPost().reply(200, {data: ['foo']})
+        mockServer.onPost().reply(200, {data: [{foo: 'foo'}]})
         jest.useFakeTimers()
 
         const {getByPlaceholderText} = renderWithRouter(

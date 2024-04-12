@@ -1,5 +1,3 @@
-import {CancelToken} from 'axios'
-
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -7,32 +5,15 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
-import {ApiPaginationParams, OrderParams} from 'models/api/types'
+
+import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {Customer} from 'models/customer/types'
 import {CustomFields} from 'models/customField/types'
+import {Event} from 'models/event/types'
+import {Integration} from 'models/integration/types'
 import {MacroActionName} from 'models/macroAction/types'
 import {Tag} from 'models/tag/types'
 import {Team} from 'models/team/types'
-
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {Event} from 'models/event/types'
-import {Integration} from 'models/integration/types'
-
-export type TicketSearchOptions = ApiPaginationParams &
-    OrderParams<TicketSearchSortableProperties> & {
-        search?: string
-        filters?: string
-        cancelToken?: CancelToken
-    }
-
-export enum TicketSearchSortableProperties {
-    UpdatedDatetime = 'updated_datetime',
-    CreatedDatetime = 'created_datetime',
-    LastMessageDatetime = 'last_message_datetime',
-    LastReceivedMessageDatetime = 'last_received_message_datetime',
-    ClosedDatetime = 'closed_datetime',
-    SnoozeDatetime = 'snooze_datetime',
-}
 
 export type Ticket = {
     id: number

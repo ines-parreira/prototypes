@@ -1,4 +1,8 @@
 import {stringify} from 'qs'
+import {
+    TicketSearchOptions,
+    TicketWithHighlightsResponse,
+} from 'models/search/types'
 
 import client from 'models/api/resources'
 import {
@@ -6,7 +10,7 @@ import {
     ApiListResponseCursorPagination,
 } from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
-import {Ticket, TicketSearchOptions} from 'models/ticket/types'
+import {Ticket} from 'models/ticket/types'
 
 export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {
     const res = await client.get<ApiListResponseCursorPagination<Ticket[]>>(
@@ -35,9 +39,14 @@ export const searchTickets = async ({
     search,
     filters,
     cancelToken,
+    withHighlights,
     ...rest
 }: TicketSearchOptions) => {
-    return await client.post<ApiListResponseCursorPagination<Ticket[]>>(
+    return await client.post<
+        ApiListResponseCursorPagination<
+            Ticket[] | TicketWithHighlightsResponse[]
+        >
+    >(
         '/api/tickets/search',
         {
             search,
@@ -45,7 +54,10 @@ export const searchTickets = async ({
         },
         {
             params: {
-                ...deepMapKeysToSnakeCase({...rest}),
+                ...deepMapKeysToSnakeCase({
+                    ...rest,
+                    ...(withHighlights === true ? {withHighlights: true} : {}),
+                }),
             },
             cancelToken,
         }

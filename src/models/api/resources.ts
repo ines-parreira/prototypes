@@ -5,7 +5,7 @@ import {Store} from 'redux'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch} from 'state/types'
 
-import {notify} from '../../state/notifications/actions'
+import {notify} from 'state/notifications/actions'
 
 const client = createClient()
 
