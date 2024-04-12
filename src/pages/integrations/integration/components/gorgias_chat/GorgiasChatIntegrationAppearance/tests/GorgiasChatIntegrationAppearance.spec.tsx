@@ -113,6 +113,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
         jest.spyOn(Date, 'now').mockImplementation(() => fixedDate.getTime())
 
         global.CSS = {
+            ...global.CSS,
             supports: (): boolean => true,
             escape: realCSS?.escape,
         }

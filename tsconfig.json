@@ -20,12 +20,7 @@
         "paths": {
             "react-chartjs-2": ["./types/react-chartjs-2.d.ts"]
         },
-        "types": [
-            "stripe-v2",
-            "webpack-env",
-            "@types/resize-observer-browser",
-            "facebook-js-sdk"
-        ]
+        "types": ["facebook-js-sdk", "stripe-v2", "webpack-env"]
     },
     "include": [".eslintrc.js", "**/*.ts", "**/*.d.ts", "**/*.tsx"]
 }
