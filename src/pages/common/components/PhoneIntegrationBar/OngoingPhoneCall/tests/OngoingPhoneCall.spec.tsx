@@ -12,6 +12,7 @@ import {TwilioSocketEventType} from 'business/twilio'
 import * as utils from 'hooks/integrations/phone/utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {SET_TWILIO_IS_RECORDING} from 'state/twilio/constants'
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
@@ -133,6 +134,14 @@ describe('<OngoingPhoneCall/>', () => {
 
         fireEvent.click(getByTestId('end-call-button'))
         expect(call.disconnect).toHaveBeenCalled()
+
+        const actions = store.getActions() as {
+            type: string
+            payload: {message: any}
+        }[]
+        const lastAction = actions[actions.length - 1]
+        expect(lastAction.type).toBe(SET_TWILIO_IS_RECORDING)
+        expect(lastAction.payload).toBe(false)
     })
 
     it('should start recording', async () => {

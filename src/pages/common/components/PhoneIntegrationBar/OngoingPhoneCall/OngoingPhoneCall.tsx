@@ -49,7 +49,6 @@ export function OngoingPhoneCall({
 }: Props): JSX.Element {
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
     const {isMuted, onToggleMute} = useMute(call)
-    const {onDisconnect} = useDisconnect(call)
     const {integrationId, customerName, customerPhoneNumber} =
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
@@ -68,6 +67,11 @@ export function OngoingPhoneCall({
 
     const handleToggleHold = () => {
         setIsOnHold((isOnHold) => !isOnHold)
+    }
+
+    const handleDisconnect = () => {
+        setIsRecording(false)
+        call.disconnect()
     }
 
     useEffect(() => {
@@ -151,7 +155,7 @@ export function OngoingPhoneCall({
                 <IconButton
                     data-testid="end-call-button"
                     intent="destructive"
-                    onClick={onDisconnect}
+                    onClick={handleDisconnect}
                 >
                     call_end
                 </IconButton>
@@ -179,14 +183,6 @@ function useMute(call: Call) {
     }, [call, isMuted])
 
     return {isMuted, onToggleMute}
-}
-
-function useDisconnect(call: Call) {
-    const onDisconnect = useCallback(() => {
-        call.disconnect()
-    }, [call])
-
-    return {onDisconnect}
 }
 
 function useRecording(
