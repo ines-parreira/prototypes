@@ -13,7 +13,7 @@ import PeriodPicker from './common/PeriodPicker'
 const MAX_SPAN = 90
 
 type Props = {
-    initialSettings?: InitialSettings
+    initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
     value: StatsFilters['period']
     variant?: 'fill' | 'ghost'
 }
@@ -63,7 +63,7 @@ export default function PeriodStatsFilter({
                 startDatetime: value.start_datetime,
                 endDatetime: moment(value.start_datetime)
                     .add(
-                        typeof initialSettings.maxSpan === 'number'
+                        initialSettings.maxSpan
                             ? initialSettings.maxSpan
                             : MAX_SPAN,
                         'days'
