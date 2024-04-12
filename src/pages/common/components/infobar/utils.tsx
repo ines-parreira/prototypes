@@ -1,7 +1,6 @@
 import React from 'react'
 import {fromJS, Map, List} from 'immutable'
 import _compact from 'lodash/compact'
-import _concat from 'lodash/concat'
 import _get from 'lodash/get'
 import _initial from 'lodash/initial'
 import _isArray from 'lodash/isArray'
@@ -553,39 +552,6 @@ export function canDrop(
             ? targetAbsolutePath
             : targetAbsolutePath.join('.'))
     )
-}
-
-/**
- * Format some data from widget before it is display
- */
-export function updateAbsolutePathAndData(
-    template: Template,
-    source?: Source,
-    parent?: Template
-) {
-    // build absolute path of widget
-    const parentAbsolutePath = parent?.absolutePath
-    const ownPath = template.path
-
-    let absolutePath = template.absolutePath
-
-    if (parentAbsolutePath) {
-        absolutePath = parentAbsolutePath
-
-        if (ownPath) {
-            absolutePath = _concat(absolutePath, ownPath)
-        }
-    }
-
-    const updatedTemplate = {...template, absolutePath}
-
-    // get set of data related to new path
-    const data = ownPath && isSourceRecord(source) ? source[ownPath] : source
-
-    return {
-        updatedTemplate,
-        data,
-    }
 }
 
 /**

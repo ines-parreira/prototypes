@@ -6,40 +6,20 @@ import * as ticketFixtures from 'fixtures/ticket'
 import {assumeMock} from 'utils/testing'
 import UIList from 'Infobar/features/List/display/List'
 import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
-import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 
-import ListInfobarWidget from '../List'
+import List from '../List'
 
-jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference',
-    () => {
-        const Widget = jest.fn(() => <></>)
-
-        return {
-            widgetReference: {
-                Widget,
-            },
-        }
-    }
-)
+const CHILDREN_TEST_ID = 'childrennnn'
 
 jest.mock('Infobar/features/List/display/List')
-
-const InfobarWidget = assumeMock(widgetReference.Widget)
 const mockedList = assumeMock(UIList)
+mockedList.mockImplementation(
+    ({children, listItems = []}: Partial<ComponentProps<typeof UIList>>) => (
+        <>List {children?.(listItems)}</>
+    )
+)
 
-describe('Infobar::Widgets::List', () => {
-    beforeEach(() => {
-        mockedList.mockImplementation(
-            ({
-                children,
-                listItems = [],
-            }: Partial<ComponentProps<typeof UIList>>) => (
-                <>List {children?.(listItems)}</>
-            )
-        )
-    })
-
+describe('List', () => {
     const source = (
         ticketFixtures.ticket.customer!.integrations as Record<
             string,
@@ -58,125 +38,28 @@ describe('Infobar::Widgets::List', () => {
         'orders',
     ]
 
-    const minProps: ComponentProps<typeof ListInfobarWidget> = {
+    const minProps: ComponentProps<typeof List> = {
         isEditing: false,
-        isParentList: false,
+        parentTemplate: undefined,
         source,
         template,
-        hasNoBorderTop: true,
+        children: jest.fn(() => <div>{CHILDREN_TEST_ID}</div>),
     }
 
-    it('should return null when template widgets are an empty array', () => {
-        const {container} = render(
-            <ListInfobarWidget
-                {...minProps}
-                template={{widgets: []} as unknown as ListTemplate}
-            />
-        )
+    it('should call children with the correct props', () => {
+        render(<List {...minProps} />)
 
-        expect(container.firstChild).toBeNull()
-    })
-
-    it('should return null when source is an empty list', () => {
-        const {container} = render(
-            <ListInfobarWidget {...minProps} source={[]} />
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
-    it('should return null when source is not a list', () => {
-        const {container} = render(
-            <ListInfobarWidget {...minProps} source={{}} />
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
-    // Regression: https://linear.app/gorgias/issue/CRM-2864/typeerror-rsetsize-is-not-a-function
-    it('should return null when source is not a list and has only content', () => {
-        const card: CardTemplate = {
-            type: 'card',
-            path: '3.template.widgets.0.card',
-            widgets: [
-                {
-                    type: 'text',
-                    path: '3.template.widgets.0.card.widgets.0',
-                    title: 'bar',
-                },
-            ],
-        }
-        const list: ListTemplate = {
-            type: 'list',
-            path: '3.template',
-            widgets: [card],
-        }
-
-        const {container} = render(
-            <ListInfobarWidget {...minProps} template={list} source={{}} />
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
-    // Regression: https://linear.app/gorgias/issue/CRM-2865/typeerror-rtojs-is-not-a-function
-    it('should return null when source is a string', () => {
-        const {container} = render(
-            <ListInfobarWidget {...minProps} source="foo" />
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
-    it('should call InfobarWidget with the correct props', () => {
-        render(<ListInfobarWidget {...minProps} />)
-
-        expect(InfobarWidget).toHaveBeenNthCalledWith(
-            1,
-            expect.objectContaining({
-                isOpen: true,
-                source: source[0],
-                hasNoBorderTop: true,
-            }),
-            {}
-        )
-        expect(InfobarWidget).toHaveBeenNthCalledWith(
-            2,
-            expect.objectContaining({
-                isOpen: false,
-                source: source[1],
-                hasNoBorderTop: false,
-            }),
-            {}
-        )
-
-        const updatedTemplate = {
-            ...template,
-            absolutePath: template.absolutePath?.concat(['[]']),
-        }
-
-        const passedTemplate = {
-            ...template.widgets[0],
-            templatePath: `${template.templatePath || ''}.widgets.0`,
-        }
-
-        expect(InfobarWidget).toHaveBeenNthCalledWith(
-            1,
-            expect.objectContaining({
-                parent: updatedTemplate,
-                template: passedTemplate,
-            }),
-            {}
-        )
+        expect(minProps.children).toHaveBeenNthCalledWith(1, source[0], 0)
+        expect(minProps.children).toHaveBeenNthCalledWith(2, source[1], 1)
     })
 
     it('should call List with the correct props', () => {
-        const {rerender} = render(<ListInfobarWidget {...minProps} />)
+        const {rerender} = render(<List {...minProps} />)
 
         expect(mockedList).toHaveBeenNthCalledWith(
             1,
             expect.objectContaining({
-                isDraggable: !minProps.isParentList,
+                isDraggable: !(minProps.parentTemplate?.type === 'list'),
                 dataKey: `${template.path || ''}[]`,
                 listItems: source,
                 initialItemDisplayedNumber: Number(template.meta?.limit),
@@ -202,11 +85,7 @@ describe('Infobar::Widgets::List', () => {
         } as ListTemplate
 
         rerender(
-            <ListInfobarWidget
-                {...minProps}
-                isEditing={true}
-                template={templateVariation}
-            />
+            <List {...minProps} isEditing={true} template={templateVariation} />
         )
 
         expect(mockedList).toHaveBeenNthCalledWith(

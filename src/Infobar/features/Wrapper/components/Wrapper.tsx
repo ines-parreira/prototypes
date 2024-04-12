@@ -33,8 +33,6 @@ import WrapperEditActions from 'Infobar/features/Wrapper/display/WrapperEditActi
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 import {EXPAND_CONTAINER_MARKER} from 'Infobar/config/template'
 import {Source, Template, WrapperTemplate} from 'models/widget/types'
-// This is to avoid circular dependencies while doing recursion
-import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
 import css from './Wrapper.less'
@@ -52,14 +50,14 @@ export const CUSTOMIZABLE_WIDGET_TYPES = [
 type Props = {
     source: Source
     template: WrapperTemplate
+    children: React.ReactNode
 }
 
-export default function Wrapper({template, source}: Props) {
+export default function Wrapper({template, source, children}: Props) {
     const dispatch = useAppDispatch()
     const widget = useContext(WidgetContext)
     const {isEditing} = useContext(EditionContext)
 
-    const InfobarWidget = widgetReference.Widget
     const absolutePath = template.absolutePath || []
     const templatePath = template.templatePath || ''
 
@@ -165,25 +163,7 @@ export default function Wrapper({template, source}: Props) {
                             isEditing={isEditing}
                             watchDrop
                         >
-                            {(template.widgets || []).map(
-                                (mappedWidget, index = 0) => {
-                                    const passedTemplate = {
-                                        ...mappedWidget,
-                                        templatePath: `${templatePath}.widgets.${index}`,
-                                    }
-
-                                    return (
-                                        <InfobarWidget
-                                            key={`${
-                                                passedTemplate.path || ''
-                                            }-${index}`}
-                                            source={source}
-                                            parent={template}
-                                            template={passedTemplate}
-                                        />
-                                    )
-                                }
-                            )}
+                            {children}
                         </DragWrapper>
                     </WidgetPanel>
                 </div>

@@ -37,10 +37,9 @@ import {
     isSimpleTemplateWidget,
 } from 'pages/common/components/infobar/utils'
 import UICard from 'Infobar/features/Card/display'
+import {isDefaultOpen} from 'Infobar/features/Card/helpers/isDefaultOpen'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
-// This is to avoid circular dependencies while doing recursion
-import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
@@ -57,14 +56,13 @@ type Props = {
     }
     editionHiddenFields?: HiddenField[]
 
-    parent?: Template
+    parentTemplate?: Template
     source: Source
     template: CardTemplate
+    children?: React.ReactNode
 
     isEditing: boolean
-    isParentList: boolean
-    isOpen: boolean
-    hasNoBorderTop: boolean
+    isFirstOfList?: boolean
 }
 
 export const cardMetaFields: Array<keyof Omit<CardMeta, 'custom'>> = [
@@ -80,22 +78,22 @@ export default function Card(props: Props) {
         extensions,
         editionHiddenFields,
         template,
-        parent,
+        parentTemplate,
         source,
-        isParentList,
+        children,
         isEditing,
-        isOpen,
-        hasNoBorderTop,
+        isFirstOfList,
     } = props
-    const InfobarWidget = widgetReference.Widget
     const integrationContext = useContext(IntegrationContext)
     const widget = useContext(WidgetContext)
     const dispatch = useAppDispatch()
     const widgetsState = useAppSelector(getWidgetsState)
 
-    const parentAbsolutePath = parent?.absolutePath || []
+    const isParentList =
+        (parentTemplate && parentTemplate.type === 'list') || false
+    const parentAbsolutePath = parentTemplate?.absolutePath || []
     const absolutePath = template.absolutePath || []
-    const parentTemplatePath = parent?.templatePath || ''
+    const parentTemplatePath = parentTemplate?.templatePath || ''
     const templatePath = template.templatePath || ''
     const childTemplates = template.widgets || []
 
@@ -124,7 +122,7 @@ export default function Card(props: Props) {
 
         if (isParentList) {
             const list: PartialTemplate = {
-                title: parent?.title,
+                title: parentTemplate?.title,
                 type: 'list',
                 widgets: [card],
             }
@@ -166,12 +164,16 @@ export default function Card(props: Props) {
                     : true,
             // some legacy template could have a string in there
             limit: Number(
-                (isListTemplate(parent) && parent.meta?.limit) ||
+                (isListTemplate(parentTemplate) &&
+                    parentTemplate.meta?.limit) ||
                     DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
             ),
-            orderBy: (isListTemplate(parent) && parent.meta?.orderBy) || '',
+            orderBy:
+                (isListTemplate(parentTemplate) &&
+                    parentTemplate.meta?.orderBy) ||
+                '',
         }),
-        [template, parent]
+        [template, parentTemplate]
     )
 
     const getCardTitle = () => {
@@ -188,7 +190,6 @@ export default function Card(props: Props) {
 
     const title = getCardTitle()
     const link = template.meta?.link || ''
-    const onlyContent = cardData.displayCard === false
 
     const shouldDisplayHeader = () => {
         const hasTitle = Boolean(title)
@@ -197,16 +198,14 @@ export default function Card(props: Props) {
                 cardData.color ||
                 cardData.pictureUrl ||
                 hasCustomAction(template)) &&
-                !onlyContent) ||
+                // beware, display card being undefined means true here
+                !cardData.displayCard === false) ||
             isEditing
         )
     }
 
     // display content (or at least space under card title) if we are in edition mode or if there is data to display
     const shouldDisplayContent = isEditing || !!childTemplates.length
-
-    // detect first non-text nested widget, to auto-expand
-    let firstNonTextWidget = false
 
     const enrichedEditionHiddenField = [...(editionHiddenFields || [])]
     if (!isParentList) {
@@ -257,7 +256,6 @@ export default function Card(props: Props) {
             dynamicLink={renderTemplate(link, source)}
             cardData={cardData}
             orderByOptions={orderByOptions}
-            isOpen={isOpen}
             shouldDisplayHeader={shouldDisplayHeader()}
             shouldDisplayContent={shouldDisplayContent}
             isEditionMode={isEditing}
@@ -269,11 +267,15 @@ export default function Card(props: Props) {
                 )
             }
             isDraggable={!isParentList}
-            hasNoBorderTop={hasNoBorderTop}
             onEditionStart={handleEditionStart}
             onEditionStop={handleEditionStop}
             onSubmit={handleEditSubmit}
             onDelete={handleDelete}
+            isDefaultOpen={isDefaultOpen({
+                isEditing,
+                parentTemplate,
+                isFirstOfList,
+            })}
         >
             {!isSourceRecord(source) ||
             Object.values(source).every((value) => value === undefined) ? (
@@ -291,40 +293,7 @@ export default function Card(props: Props) {
                         isEditing={isEditing}
                         watchDrop
                     >
-                        {childTemplates.map((childTemplate, i) => {
-                            const passedTemplate = {
-                                templatePath: `${templatePath}.widgets.${i}`,
-                                ...childTemplate,
-                            }
-
-                            const type = childTemplate.type
-                            // find first non-text widget,
-                            // to auto-expand.
-                            if (type !== 'text' && !firstNonTextWidget) {
-                                firstNonTextWidget = true
-                            }
-                            // if Card has no header displayed
-                            // and first child is another Card
-                            // we need to remove border-top
-                            let hasNoBorderTop = false
-                            if (
-                                i === 0 &&
-                                (type === 'card' || type === 'list') &&
-                                onlyContent
-                            ) {
-                                hasNoBorderTop = true
-                            }
-                            return (
-                                <InfobarWidget
-                                    key={`${passedTemplate.path || ''}-${i}`}
-                                    source={source}
-                                    parent={template}
-                                    template={passedTemplate}
-                                    isOpen={isOpen && firstNonTextWidget}
-                                    hasNoBorderTop={hasNoBorderTop}
-                                />
-                            )
-                        })}
+                        {children}
                     </DragWrapper>
                 )
             )}

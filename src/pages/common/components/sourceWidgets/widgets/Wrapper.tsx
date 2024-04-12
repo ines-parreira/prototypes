@@ -13,21 +13,17 @@ import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCust
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 
-// This is to avoid circular dependencies while doing recursion
-import {widgetReference} from '../widgetReference'
 import css from './Wrapper.less'
 
 type Props = {
     source: Source
     template: WrapperTemplate
+    children: React.ReactNode
 }
 
-export default function Wrapper({template, source}: Props) {
+export default function Wrapper({template, source, children}: Props) {
     const widget = useContext(WidgetContext)
-    const SourceWidget = widgetReference.Widget
     const absolutePath = template.absolutePath || []
-    const templatePath = template.templatePath || ''
-    const children = template.widgets
     const widgetType = widget.type
 
     let integrationId: number | undefined | string
@@ -52,7 +48,7 @@ export default function Wrapper({template, source}: Props) {
         )
     )
 
-    if (!children?.length && widgetType !== STANDALONE_WIDGET_TYPE) {
+    if (!template.widgets?.length && widgetType !== STANDALONE_WIDGET_TYPE) {
         return null
     }
 
@@ -84,25 +80,7 @@ export default function Wrapper({template, source}: Props) {
                             }}
                             isEditing
                         >
-                            {children?.map((childTemplate, index) => {
-                                if (!childTemplate || typeof index !== 'number')
-                                    return null
-                                const passedTemplate = {
-                                    ...childTemplate,
-                                    templatePath: `${templatePath}.widgets.${index}`,
-                                }
-
-                                return (
-                                    <SourceWidget
-                                        key={`${
-                                            passedTemplate.path || ''
-                                        }-${index}`}
-                                        source={source}
-                                        parent={template}
-                                        template={passedTemplate}
-                                    />
-                                )
-                            })}
+                            {children}
                         </DragWrapper>
                     </div>
                 )}

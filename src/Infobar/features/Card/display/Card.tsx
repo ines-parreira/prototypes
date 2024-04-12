@@ -37,8 +37,7 @@ type Props = {
     isEditionMode: boolean
     canDrop: boolean
     isDraggable: boolean
-    isOpen: boolean
-    hasNoBorderTop: boolean
+    isDefaultOpen?: boolean
 }
 
 export default function Card(props: Props) {
@@ -50,39 +49,21 @@ export default function Card(props: Props) {
             renderTitleWrapper,
             renderWrapper,
         },
-        editionHiddenFields,
-
-        customActions,
-
-        displayedTitle,
-        dynamicLink,
-        cardData,
-        orderByOptions,
         shouldDisplayHeader,
         shouldDisplayContent,
 
-        onEditionStart,
-        onEditionStop,
-        onSubmit,
-        onDelete,
-
-        canDrop,
-        isDraggable,
-        children,
         isEditionMode,
-        hasNoBorderTop,
     } = props
-    const [isOpen, setOpen] = useState(props.isOpen)
-    const isOnlyContent = !cardData.displayCard
+    const [isOpen, setOpen] = useState(props.isDefaultOpen || false)
+    const isOnlyContent = !props.cardData.displayCard
 
     const isExpandable =
         !isEditionMode && shouldDisplayHeader && shouldDisplayContent
 
     const className = classnames(css.card, {
-        draggable: isDraggable,
+        draggable: props.isDraggable,
         [css.closed]: !isOpen && !isEditionMode,
         [css.onlyContent]: !isEditionMode && isOnlyContent,
-        [css.removeBorderTop]: hasNoBorderTop,
     })
 
     let content = (
@@ -95,35 +76,37 @@ export default function Card(props: Props) {
                 {shouldDisplayHeader && (
                     <>
                         <CardHeader
-                            displayedTitle={displayedTitle}
-                            dynamicLink={dynamicLink}
-                            cardData={cardData}
-                            editionHiddenFields={editionHiddenFields}
-                            orderByOptions={orderByOptions}
+                            displayedTitle={props.displayedTitle}
+                            dynamicLink={props.dynamicLink}
+                            cardData={props.cardData}
+                            editionHiddenFields={props.editionHiddenFields}
+                            orderByOptions={props.orderByOptions}
                             isEditionMode={isEditionMode}
                             isExpandable={isExpandable}
                             isOpen={isOpen}
                             onToggleOpen={() => setOpen(!isOpen)}
-                            onEditionStart={onEditionStart}
-                            onEditionStop={onEditionStop}
-                            onDelete={onDelete}
-                            onSubmit={onSubmit}
+                            onEditionStart={props.onEditionStart}
+                            onEditionStop={props.onEditionStop}
+                            onDelete={props.onDelete}
+                            onSubmit={props.onSubmit}
                             renderTitleWrapper={renderTitleWrapper}
                         />
-                        {customActions}
+                        {props.customActions}
                         {afterTitle}
                     </>
                 )}
-                <div
-                    className={classnames(css.cardContent, {
-                        hidden: !shouldDisplayContent,
-                        [css.canDrop]: isEditionMode && canDrop,
-                    })}
-                >
-                    {beforeContent}
-                    {children}
-                    {afterContent}
-                </div>
+                {isOpen && (
+                    <div
+                        className={classnames(css.cardContent, {
+                            hidden: !shouldDisplayContent,
+                            [css.canDrop]: isEditionMode && props.canDrop,
+                        })}
+                    >
+                        {beforeContent}
+                        {props.children}
+                        {afterContent}
+                    </div>
+                )}
             </div>
         </div>
     )

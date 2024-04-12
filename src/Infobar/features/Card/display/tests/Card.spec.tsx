@@ -58,20 +58,11 @@ describe('Card', () => {
         onDelete: jest.fn(),
         canDrop: true,
         isDraggable: true,
-        isOpen: true,
-        hasNoBorderTop: false,
+        isDefaultOpen: true,
         children: <div>children</div>,
     }
 
     describe('containers classes', () => {
-        it('should add the "removeBorderTop" class if "hasNoBorderTop" is true', () => {
-            render(<Card {...defaultProps} hasNoBorderTop={true} />)
-
-            expect(document.querySelector('.card')).toHaveClass(
-                'removeBorderTop'
-            )
-        })
-
         it('should add the onlyContent class if "isEditionMode" is false and "cardData.displayCard" is false', () => {
             render(
                 <Card
@@ -86,12 +77,16 @@ describe('Card', () => {
             expect(container?.firstChild).toHaveClass('onlyContent')
         })
 
-        it('should add the "closed" class if "isOpen" is false and "isEditionMode" is false', () => {
+        it('should remove content if "isDefaultOpen" is false and "isEditionMode" is false', () => {
             render(
-                <Card {...defaultProps} isOpen={false} isEditionMode={false} />
+                <Card
+                    {...defaultProps}
+                    isDefaultOpen={false}
+                    isEditionMode={false}
+                />
             )
 
-            expect(document.querySelector('.card')).toHaveClass('closed')
+            expect(document.querySelector('.cardContent')).toBeNull()
         })
 
         it('should add the "draggable" class if "isDraggable" is true', () => {

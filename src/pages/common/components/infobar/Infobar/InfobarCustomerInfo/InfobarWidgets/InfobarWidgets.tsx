@@ -24,15 +24,9 @@ import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {ImmutableSource, Source, Template} from 'models/widget/types'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
-import InfobarWidget from './InfobarWidget'
 import {Widget as RootWidget} from './Widget'
 
 const Widget = React.memo(RootWidget)
-
-// This is to avoid circular dependencies while doing recursion
-import {widgetReference} from './widgetReference'
-
-widgetReference.Widget = InfobarWidget
 
 type DisplayList = Array<
     | {
@@ -48,7 +42,6 @@ type PreparedDisplayList = {
     widget: Map<string, unknown>
     template: Map<string, unknown>
     absolutePath?: (number | string)[]
-    open: boolean
 }[]
 
 type Props = {
@@ -194,7 +187,6 @@ const InfobarWidgets = ({
                                 source={passedSource}
                                 template={item.template}
                                 widget={item.widget}
-                                open={item.open}
                                 type={item.type}
                             />
                         )
@@ -227,7 +219,7 @@ function getPreparedDisplayList({
     // Create a list `prepareDisplayList` of item containing enough data to generate widget components.
     // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the
     // associated widget, set its template `absolutePath`, `templatePath` when needed
-    displayList.forEach((item, displayListIndex) => {
+    displayList.forEach((item) => {
         let widget: Map<string, unknown> = fromJS({})
         let integration: Integration | undefined
         let sourcePath = genericSourcePath.slice()
@@ -376,7 +368,6 @@ function getPreparedDisplayList({
         preparedDisplayList.push({
             widget,
             template,
-            open: displayListIndex === 0,
             integration,
             absolutePath: sourcePath,
         })
@@ -401,7 +392,6 @@ function getPreparedDisplayList({
                     string,
                     unknown
                 >,
-                open: false,
                 type: 'placeholder',
                 absolutePath: genericSourcePath,
             })

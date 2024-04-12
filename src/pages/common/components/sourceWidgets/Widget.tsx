@@ -1,45 +1,66 @@
 import React from 'react'
 
-import {isListTemplate} from 'models/widget/types'
+import {isListTemplate, Source, Template} from 'models/widget/types'
+import {seekNextValues} from 'Infobar/features/Template/helpers/iterator'
 
-import {updateAbsolutePathAndData} from '../infobar/utils'
 import Field from './widgets/Field'
 import List from './widgets/List'
 import Card from './widgets/Card'
 import Wrapper from './widgets/Wrapper'
-import {WidgetProps} from './widgetReference'
 
-export default function Widget({parent, source, template}: WidgetProps) {
-    const {updatedTemplate, data} = updateAbsolutePathAndData(
-        template,
-        source,
-        parent
-    )
-    const isParentList = isListTemplate(parent)
+export type Props = {
+    parentTemplate?: Template
+    template: Template | null
+    source: Source
+    isRoot?: boolean
+}
 
-    switch (updatedTemplate.type) {
+export default function Widget({parentTemplate, template, source}: Props) {
+    const isParentList = isListTemplate(parentTemplate)
+    if (template === null) return null
+    switch (template.type) {
         case 'wrapper': {
-            return <Wrapper source={data} template={updatedTemplate} />
+            return (
+                <Wrapper source={source} template={template}>
+                    {(template.widgets || []).map((_, index) => (
+                        <Widget
+                            key={`${template.templatePath || ''}-${index}`}
+                            {...seekNextValues(template, source, index)}
+                        />
+                    ))}
+                </Wrapper>
+            )
         }
         case 'list': {
             return (
                 <List
                     isParentList={isParentList}
-                    source={data}
-                    template={updatedTemplate}
-                />
+                    source={source}
+                    template={template}
+                >
+                    {(childSource) => (
+                        <Widget {...seekNextValues(template, childSource, 0)} />
+                    )}
+                </List>
             )
         }
         case 'card': {
             return (
                 <Card
                     isParentList={isParentList}
-                    source={data}
-                    template={updatedTemplate}
-                />
+                    source={source}
+                    template={template}
+                >
+                    {(template.widgets || []).map((_, index) => (
+                        <Widget
+                            key={`${template.templatePath || ''}-${index}`}
+                            {...seekNextValues(template, source, index)}
+                        />
+                    ))}
+                </Card>
             )
         }
         default:
-            return <Field path={updatedTemplate.path || ''} value={data} />
+            return <Field path={template.path || ''} value={source} />
     }
 }

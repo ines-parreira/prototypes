@@ -1,40 +1,37 @@
 import React, {useMemo} from 'react'
 
-import List from 'Infobar/features/List/display/List'
+import UIList from 'Infobar/features/List/display/List'
 import {
     isCardTemplate,
-    isSourceArray,
     ListTemplate,
     Source,
+    Template,
 } from 'models/widget/types'
 
-// This is to avoid circular dependencies while doing recursion
-import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 
 type Props = {
-    source: Source
+    source: Source[]
+    parentTemplate?: Template
     template: ListTemplate
     isEditing?: boolean
-    isParentList?: boolean
-    hasNoBorderTop?: boolean
+    children: (child: Source, index: number) => React.ReactNode
 }
 
-function ListInfobarWidget({
+function List({
     isEditing = false,
     source,
+    parentTemplate,
     template,
-    isParentList,
-    hasNoBorderTop = false,
+    children,
 }: Props) {
-    const InfobarWidget = widgetReference.Widget
-
-    let passedTemplate = template.widgets?.[0]
-
-    const isParentOfCard = isCardTemplate(passedTemplate)
+    const childTemplate = template.widgets?.[0]
+    const isParentList =
+        (parentTemplate && parentTemplate.type === 'list') || false
+    const isParentOfCard = isCardTemplate(childTemplate)
     const hasOnlyContent =
-        isCardTemplate(passedTemplate) &&
-        passedTemplate.meta?.displayCard === false
+        isCardTemplate(childTemplate) &&
+        childTemplate.meta?.displayCard === false
     const limit = template.meta?.limit
     const orderByString = template.meta?.orderBy
 
@@ -49,41 +46,26 @@ function ListInfobarWidget({
         [orderByString]
     )
 
-    if (!isSourceArray(source) || !source.length || !passedTemplate) return null
-
     // If the header of the children template is hidden
     // we only display one child. Same if first child is a list
     const trimmedSource =
         hasOnlyContent || !isParentOfCard ? source.slice(0, 1) : source
 
-    const updatedTemplate = {
-        ...template,
-        absolutePath: (template.absolutePath || []).concat(['[]']),
-    }
-
-    passedTemplate = {
-        ...passedTemplate,
-        templatePath: `${template.templatePath || ''}.widgets.0`,
-    }
-
-    const children = (childrenSources: Source[]) =>
+    const mappedChildren = (childrenSources: Source[]) =>
         childrenSources.map((childSource, index) => (
+            // Maybe we want to set some hardcoded order and not the index
+            // here so that the index is relative to original data order
+            // https://linear.app/gorgias/issue/CRM-2568/erroneous-value-in-listindex-variable-in-custom-action-buttons
             <WidgetListContext.Provider
                 value={{currentListIndex: index}}
                 key={index}
             >
-                <InfobarWidget
-                    source={childSource}
-                    parent={updatedTemplate}
-                    template={passedTemplate}
-                    isOpen={index === 0}
-                    hasNoBorderTop={index === 0 && hasNoBorderTop}
-                />
+                {children(childSource, index)}
             </WidgetListContext.Provider>
         ))
 
     return (
-        <List
+        <UIList
             isDraggable={!isParentList}
             dataKey={`${template.path || ''}[]`}
             isEditing={isEditing}
@@ -91,9 +73,9 @@ function ListInfobarWidget({
             initialItemDisplayedNumber={limit ? Number(limit) : undefined}
             orderBy={orderBy}
         >
-            {children}
-        </List>
+            {mappedChildren}
+        </UIList>
     )
 }
 
-export default ListInfobarWidget
+export default List

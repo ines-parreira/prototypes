@@ -9,6 +9,7 @@ import {agents} from 'fixtures/agents'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
+import {assumeMock} from 'utils/testing'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
@@ -20,19 +21,17 @@ import {
 } from 'state/widgets/constants'
 import {WidgetEnvironment} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
-
 import {EditionContext} from 'providers/infobar/EditionContext'
-import {assumeMock} from 'utils/testing'
+import Template from 'Infobar/features/Template'
+
 import InfobarWidgets from '../InfobarWidgets'
 import {Widget} from '../Widget'
-import {widgetReference} from '../widgetReference'
-import InfobarWidget from '../InfobarWidget'
 import Placeholder from '../widgets/Placeholder'
 import {WidgetContextProvider} from '../WidgetContext'
 
-jest.mock('../InfobarWidget')
-const mockedInfobarWidget = assumeMock(InfobarWidget)
-mockedInfobarWidget.mockImplementation(() => <div>InfobarWidget</div>)
+jest.mock('Infobar/features/Template')
+const mockedTemplate = assumeMock(Template)
+mockedTemplate.mockImplementation(() => <div>Template</div>)
 
 jest.mock('../widgets/Placeholder')
 const mockedPlaceholder = assumeMock(Placeholder)
@@ -56,9 +55,6 @@ jest.mock('../Widget', () => {
 const mockedWidget = assumeMock(Widget)
 
 describe('InfobarWidgets component', () => {
-    beforeEach(() => {
-        mockedInfobarWidget.mockClear()
-    })
     const httpIntegrationId = 1
     const shopifyIntegrationId = 2
     const rechargeIntegrationId = 3
@@ -354,7 +350,7 @@ describe('InfobarWidgets component', () => {
         expect(
             mockedWidgetContextProvider.mock.calls[4][0].value.get('type')
         ).toEqual(baseWidgets.getIn(['6', 'type']))
-        expect(mockedInfobarWidget.mock.calls.length).toEqual(5)
+        expect(mockedTemplate.mock.calls.length).toEqual(5)
     })
 
     it('should display all possible widgets in editing mode', () => {
@@ -370,25 +366,9 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
         expect(
-            mockedInfobarWidget.mock.calls.length +
+            mockedTemplate.mock.calls.length +
                 mockedPlaceholder.mock.calls.length
         ).toEqual(baseWidgets.size)
-        expect(widgetReference.Widget).toEqual(InfobarWidget)
-    })
-
-    it('should replace the empty dummy widget reference with the real InfobarWidget component', () => {
-        render(
-            <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                    />
-                </EditionContext.Provider>
-            </Provider>
-        )
-        expect(widgetReference.Widget).toEqual(InfobarWidget)
     })
 
     it('should add the templatePath key in the passed template that matches the index', () => {
@@ -403,9 +383,9 @@ describe('InfobarWidgets component', () => {
                 </EditionContext.Provider>
             </Provider>
         )
-        expect(
-            mockedInfobarWidget.mock.calls[1][0].template.templatePath
-        ).toEqual('1.template')
+        expect(mockedTemplate.mock.calls[1][0].template?.templatePath).toEqual(
+            '1.template'
+        )
     })
 
     it('should set absolutePath in passed template', () => {
@@ -420,9 +400,7 @@ describe('InfobarWidgets component', () => {
                 </EditionContext.Provider>
             </Provider>
         )
-        expect(
-            mockedInfobarWidget.mock.calls[1][0].template.absolutePath
-        ).toEqual([
+        expect(mockedTemplate.mock.calls[1][0].template?.absolutePath).toEqual([
             'ticket',
             'customer',
             'integrations',

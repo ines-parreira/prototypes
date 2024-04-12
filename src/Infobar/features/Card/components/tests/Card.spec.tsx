@@ -16,18 +16,20 @@ import {
 } from 'state/widgets/actions'
 import {CardEditFormState} from 'Infobar/features/Card/display/CardEditForm'
 import UICard from 'Infobar/features/Card/display'
+import * as isDefaultOpenExports from 'Infobar/features/Card/helpers/isDefaultOpen'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {canDrop} from 'pages/common/components/infobar/utils'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {widgetReference} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference'
 import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
 
 import {CardTemplate, ListTemplate} from 'models/widget/types'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Infobar/config/template'
 import Card, {listMetaFields, NO_DATA_TEXT} from '../Card'
+
+const CHILDREN_TEST_ID = 'childrennnn'
 
 const mockStore = configureMockStore()
 
@@ -38,21 +40,12 @@ jest.mock('pages/common/components/infobar/utils', () => {
     } as Record<string, unknown>
 })
 
-jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgetReference',
-    () => ({
-        widgetReference: {
-            Widget: jest.fn(() => <div>root</div>),
-        },
-    })
-)
 jest.mock('pages/common/utils/template')
 jest.mock('pages/common/utils/infobar')
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 )
 const canDropMock = assumeMock(canDrop)
-const InfobarWidgetMock = assumeMock(widgetReference.Widget)
 const renderTemplateMock = assumeMock(renderTemplate)
 const renderInfobarTemplateMock = assumeMock(renderInfobarTemplate)
 const getWidgetTitleMock = assumeMock(getWidgetTitle)
@@ -61,6 +54,8 @@ jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions',
     () => jest.fn(() => <div>CustomActions</div>)
 )
+jest.spyOn(isDefaultOpenExports, 'isDefaultOpen')
+
 const CustomActionsMock = assumeMock(CustomActions)
 
 const UICARD_TEST_ID = 'ui-card'
@@ -108,13 +103,12 @@ describe('Card', () => {
     const defaultTemplate = {...cardTemplate, absolutePath: defaultAbsolutePath}
     const defaultProps: ComponentProps<typeof Card> = {
         extensions: {},
-        parent: defaultParentTemplate,
+        parentTemplate: defaultParentTemplate,
         template: defaultTemplate,
         isEditing: false,
-        isParentList: false,
-        hasNoBorderTop: false,
-        isOpen: true,
         source: {yes: 'sure thing'},
+        children: <div>{CHILDREN_TEST_ID}</div>,
+        isFirstOfList: true,
     }
 
     const legacyProps = {
@@ -170,7 +164,7 @@ describe('Card', () => {
             expect(screen.getByText(NO_DATA_TEXT))
         })
 
-        it('call InfobarWidget with correct props', () => {
+        it('should render children', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WidgetContext.Provider value={shopifyWidget}>
@@ -179,43 +173,7 @@ describe('Card', () => {
                 </Provider>
             )
 
-            const expectedProps = {
-                source: defaultProps.source,
-                parent: defaultProps.template,
-            }
-
-            expect(InfobarWidgetMock).toHaveBeenCalledTimes(6)
-
-            const templatePath = defaultProps.template.templatePath || ''
-
-            expect(InfobarWidgetMock).toHaveBeenNthCalledWith(
-                1,
-                {
-                    ...expectedProps,
-                    template: {
-                        ...defaultProps.template.widgets?.[0],
-                        templatePath: templatePath + '.widgets.0',
-                    },
-
-                    isOpen: false,
-                    hasNoBorderTop: false,
-                },
-                {}
-            )
-
-            expect(InfobarWidgetMock).toHaveBeenNthCalledWith(
-                6,
-                {
-                    ...expectedProps,
-                    template: {
-                        ...defaultProps.template.widgets?.[5],
-                        templatePath: templatePath + '.widgets.5',
-                    },
-                    isOpen: true,
-                    hasNoBorderTop: false,
-                },
-                {}
-            )
+            expect(screen.queryByText(CHILDREN_TEST_ID))
         })
     })
 
@@ -261,7 +219,7 @@ describe('Card', () => {
             expect(getLastMockCall(UICardMock)[0].dynamicLink).toBe(link)
         })
 
-        it('should provide isOpen', () => {
+        it('should provide isDefaultOpen', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WidgetContext.Provider value={shopifyWidget}>
@@ -270,19 +228,12 @@ describe('Card', () => {
                 </Provider>
             )
 
-            expect(getLastMockCall(UICardMock)[0].isOpen).toBe(true)
-        })
-
-        it('should provide hasNoBorderTop', () => {
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} hasNoBorderTop />
-                    </WidgetContext.Provider>
-                </Provider>
-            )
-
-            expect(getLastMockCall(UICardMock)[0].hasNoBorderTop).toBe(true)
+            expect(isDefaultOpenExports.isDefaultOpen).toHaveBeenCalledWith({
+                isEditing: false,
+                parentTemplate: defaultParentTemplate,
+                isFirstOfList: true,
+            })
+            expect(getLastMockCall(UICardMock)[0].isDefaultOpen).toBe(true)
         })
 
         it('should provide isEditionMode if isEditing', () => {
@@ -301,7 +252,7 @@ describe('Card', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} isParentList />
+                        <Card {...defaultProps} />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -322,12 +273,13 @@ describe('Card', () => {
                 color: defaultProps.template.meta?.color || '',
                 displayCard: defaultProps.template.meta?.displayCard,
                 limit: Number(
-                    (defaultProps.parent as ListTemplate).meta?.limit ||
+                    (defaultProps.parentTemplate as ListTemplate).meta?.limit ||
                         DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
                 ),
                 link: defaultProps.template.meta?.link || '',
                 orderBy:
-                    (defaultProps.parent as ListTemplate).meta?.orderBy || '',
+                    (defaultProps.parentTemplate as ListTemplate).meta
+                        ?.orderBy || '',
                 pictureUrl: defaultProps.template.meta?.pictureUrl || '',
                 title: defaultProps.template.title || '',
             })
@@ -361,7 +313,7 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} isEditing isParentList />
+                        <Card {...defaultProps} isEditing />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -510,7 +462,7 @@ describe('Card', () => {
                 expect(
                     getLastMockCall(UICardMock)[0].shouldDisplayContent
                 ).toBe(true)
-                expect(InfobarWidgetMock).toHaveBeenCalled()
+                expect(screen.getByText(CHILDREN_TEST_ID))
             })
 
             it('should not display content if there is no data', () => {
@@ -531,7 +483,7 @@ describe('Card', () => {
                 expect(
                     getLastMockCall(UICardMock)[0].shouldDisplayContent
                 ).toBe(false)
-                expect(InfobarWidgetMock).not.toHaveBeenCalled()
+                expect(screen.queryByText(CHILDREN_TEST_ID)).toBeNull()
             })
         })
 
@@ -582,11 +534,15 @@ describe('Card', () => {
         })
 
         describe('editionHiddenFields', () => {
-            it('should set hidden fields relative to list in the edit form', () => {
+            it('should hide fields relative to list in the edit form', () => {
                 render(
                     <Provider store={mockStore(defaultState)}>
                         <WidgetContext.Provider value={shopifyWidget}>
-                            <Card {...defaultProps} isEditing />
+                            <Card
+                                {...defaultProps}
+                                parentTemplate={undefined}
+                                isEditing
+                            />
                         </WidgetContext.Provider>
                     </Provider>
                 )
@@ -596,11 +552,11 @@ describe('Card', () => {
                 ).toEqual(listMetaFields)
             })
 
-            it('should set no hidden fields in the edit form', () => {
+            it('should not hide fields relative to list in the edit form', () => {
                 render(
                     <Provider store={mockStore(defaultState)}>
                         <WidgetContext.Provider value={shopifyWidget}>
-                            <Card {...defaultProps} isEditing isParentList />
+                            <Card {...defaultProps} isEditing />
                         </WidgetContext.Provider>
                     </Provider>
                 )
@@ -674,28 +630,23 @@ describe('Card', () => {
                 expect(mappedExtensions).toHaveProperty('afterContent')
                 expect(mappedExtensions).toHaveProperty('renderTitleWrapper')
                 expect(mappedExtensions).toHaveProperty('renderWrapper')
-                expect(extensions.AfterTitle).toHaveBeenNthCalledWith(
-                    1,
+                expect(extensions.AfterTitle).toHaveBeenCalledWith(
                     legacyProps,
                     {}
                 )
-                expect(extensions.BeforeContent).toHaveBeenNthCalledWith(
-                    1,
+                expect(extensions.BeforeContent).toHaveBeenCalledWith(
                     legacyProps,
                     {}
                 )
-                expect(extensions.AfterContent).toHaveBeenNthCalledWith(
-                    1,
+                expect(extensions.AfterContent).toHaveBeenCalledWith(
                     legacyProps,
                     {}
                 )
-                expect(extensions.TitleWrapper).toHaveBeenNthCalledWith(
-                    1,
+                expect(extensions.TitleWrapper).toHaveBeenCalledWith(
                     expect.objectContaining(legacyProps),
                     {}
                 )
-                expect(extensions.Wrapper).toHaveBeenNthCalledWith(
-                    1,
+                expect(extensions.Wrapper).toHaveBeenCalledWith(
                     expect.objectContaining(legacyProps),
                     {}
                 )
@@ -709,7 +660,7 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} />
+                        <Card {...defaultProps} parentTemplate={undefined} />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -726,11 +677,7 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card
-                            {...defaultProps}
-                            parent={listTemplate}
-                            isParentList
-                        />
+                        <Card {...defaultProps} />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -747,7 +694,7 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} />
+                        <Card {...defaultProps} parentTemplate={undefined} />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -767,7 +714,7 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} isParentList />
+                        <Card {...defaultProps} />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -802,7 +749,11 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} isEditing />
+                        <Card
+                            {...defaultProps}
+                            isEditing
+                            parentTemplate={undefined}
+                        />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -838,7 +789,11 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} isEditing />
+                        <Card
+                            {...defaultProps}
+                            isEditing
+                            parentTemplate={undefined}
+                        />
                     </WidgetContext.Provider>
                 </Provider>
             )
@@ -875,7 +830,7 @@ describe('Card', () => {
             render(
                 <Provider store={store}>
                     <WidgetContext.Provider value={shopifyWidget}>
-                        <Card {...defaultProps} isEditing isParentList />
+                        <Card {...defaultProps} isEditing />
                     </WidgetContext.Provider>
                 </Provider>
             )

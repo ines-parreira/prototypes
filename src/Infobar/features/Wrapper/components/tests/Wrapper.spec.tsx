@@ -1,5 +1,5 @@
 import React, {ComponentProps, ReactNode} from 'react'
-import {render} from '@testing-library/react'
+import {screen, render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -138,7 +138,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={shopifySource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -159,7 +161,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={httpSource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -192,7 +196,9 @@ describe('Wrapper', () => {
                                     absolutePath: defaultAbsolutePath,
                                 }}
                                 source={shopifySource}
-                            />
+                            >
+                                {'foo'}
+                            </Wrapper>
                         </EditionContext.Provider>
                     </WidgetContext.Provider>
                 </Provider>
@@ -220,7 +226,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={shopifySource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -243,7 +251,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={customerExternalDataSource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -264,7 +274,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={woocommerceDataSource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -285,7 +297,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={woocommerceDataSource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -310,7 +324,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={woocommerceDataSource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -336,7 +352,9 @@ describe('Wrapper', () => {
                                 absolutePath: defaultAbsolutePath,
                             }}
                             source={woocommerceDataSource}
-                        />
+                        >
+                            {'foo'}
+                        </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
             </Provider>
@@ -367,6 +385,17 @@ describe('Wrapper', () => {
                 ({type}: Action) => type === stopEditAction.type
             )
         )
+    })
+
+    it('should render its children', () => {
+        render(
+            <Provider store={store}>
+                <Wrapper template={wrapperTemplate} source={shopifySource}>
+                    {'foo'}
+                </Wrapper>
+            </Provider>
+        )
+        expect(screen.getByText('foo'))
     })
 })
 

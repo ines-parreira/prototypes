@@ -1,11 +1,11 @@
 import React from 'react'
 import {Map} from 'immutable'
 
-import {Source, Template} from 'models/widget/types'
+import {Source, Template as TemplateType} from 'models/widget/types'
+import Template from 'Infobar/features/Template'
 
 import {WidgetContextProvider} from './WidgetContext'
 import Placeholder from './widgets/Placeholder'
-import InfobarWidget from './InfobarWidget'
 
 // This is where we remove immutable and start using plain JS objects for now
 export const Widget = ({
@@ -15,12 +15,10 @@ export const Widget = ({
     absolutePath,
     template,
     widget,
-    open,
     index,
 }: {
     isEditing: boolean
     index: number
-    open: boolean
     widget: Map<string, unknown>
     template: Map<string, unknown>
     absolutePath: string
@@ -30,7 +28,7 @@ export const Widget = ({
     // Beware we want to assign `templatePath`
     // AFTER having sorted the results by `widget.order` in parent component
     const passedTemplate = {
-        ...(template.toJS() as Template),
+        ...(template.toJS() as TemplateType),
         templatePath: `${index}.template`,
         absolutePath: JSON.parse(absolutePath) as (number | string)[],
     }
@@ -45,10 +43,9 @@ export const Widget = ({
 
     return (
         <WidgetContextProvider value={widget}>
-            <InfobarWidget
+            <Template
                 source={source?.toJS() as Source}
                 template={passedTemplate}
-                isOpen={open}
             />
         </WidgetContextProvider>
     )

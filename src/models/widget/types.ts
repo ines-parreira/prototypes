@@ -84,7 +84,7 @@ export type CardTemplate = baseTemplate & {
     type: 'card'
     title?: string
     order?: number
-    widgets: Array<CardTemplate | ListTemplate | LeafTemplate>
+    widgets?: Array<CardTemplate | ListTemplate | LeafTemplate>
     meta?: CardMeta
 }
 
