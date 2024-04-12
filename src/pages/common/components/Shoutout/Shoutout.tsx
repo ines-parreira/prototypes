@@ -1,4 +1,4 @@
-import React, {useMemo, useRef} from 'react'
+import React, {ReactNode, useMemo, useRef} from 'react'
 
 import isNil from 'lodash/isNil'
 
@@ -48,7 +48,7 @@ export default function Shoutout({
         if (persons.length === 0) return SHOUTOUT_NO_VALUE_PLACEHOLDER
         if (moreThanOnePerson)
             return multiplePersonsLabel instanceof Function
-                ? multiplePersonsLabel(persons.length)
+                ? (multiplePersonsLabel(persons.length) as ReactNode)
                 : multiplePersonsLabel
 
         return firstPerson?.name

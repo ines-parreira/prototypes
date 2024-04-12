@@ -10,7 +10,7 @@ import {RootState} from 'state/types'
 import {TicketNavbarElementType} from './types'
 
 const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
-    const emptyViewsOrdering = {
+    const emptyViewsOrdering: UserViewsOrderingSettingData = {
         views: {},
         view_sections: {},
     }

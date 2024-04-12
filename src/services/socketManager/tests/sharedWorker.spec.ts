@@ -224,7 +224,7 @@ describe('WebsocketSharedWorker', () => {
         it('should clear scheduled "disconnected" notification', () => {
             const sendDisconnectedNotificationTask = setTimeout(jest.fn(), 1000)
             worker.sendDisconnectedNotificationTask =
-                sendDisconnectedNotificationTask
+                sendDisconnectedNotificationTask as unknown as NodeJS.Timeout
 
             worker._onSocketConnect()
 

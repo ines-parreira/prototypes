@@ -70,7 +70,7 @@ describe('FallbackWorker', () => {
         it('should clear scheduled "disconnected" notification', () => {
             const sendDisconnectedNotificationTask = setTimeout(jest.fn(), 1000)
             fallbackWorker.sendDisconnectedNotificationTask =
-                sendDisconnectedNotificationTask
+                sendDisconnectedNotificationTask as unknown as NodeJS.Timeout
 
             fallbackWorker._onSocketConnect()
 
