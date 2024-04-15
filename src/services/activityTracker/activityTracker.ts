@@ -12,7 +12,7 @@ const ingestionEndpoint = isDevelopment()
     ? 'http://localhost:8076/private/track'
     : `https://${
           window.GORGIAS_CLUSTER
-      }.events-ingestion.services.gorgias.${location.hostname
+      }.events-ingestion-helpdesk.services.gorgias.${location.hostname
           .split('.')
           .pop()!}/private/track`
 
