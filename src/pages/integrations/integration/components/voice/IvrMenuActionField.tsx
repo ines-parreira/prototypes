@@ -2,20 +2,28 @@ import React, {useCallback, useState} from 'react'
 import {Row, Col, Input} from 'reactstrap'
 import {map} from 'lodash'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     VoiceMessage,
     IvrMenuAction,
     IvrMenuActionType,
     IvrForwardCallMenuAction,
 } from 'models/integration/types'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import {
+    DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
+    DEFAULT_VOICE_MESSAGE,
+} from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
+import useAppSelector from 'hooks/useAppSelector'
+import {getSmsIntegrations} from 'state/integrations/selectors'
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
+import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
 import css from './IvrMenuActionField.less'
 
 type Props = {
@@ -30,6 +38,7 @@ const ACTION_NAMES: Record<IvrMenuActionType, string> = {
     [IvrMenuActionType.ForwardToGorgiasNumber]:
         'Forward call to Gorgias number',
     [IvrMenuActionType.PlayMessage]: 'Play message',
+    [IvrMenuActionType.SendToSms]: 'Send call to SMS',
 }
 
 const IvrMenuActionField = ({
@@ -40,6 +49,10 @@ const IvrMenuActionField = ({
     const [isDrawerOpen, setDrawerOpen] = useState<boolean>(false)
     const [editingVoiceMessage, setEditingVoiceMessage] =
         useState<VoiceMessage>(DEFAULT_VOICE_MESSAGE)
+    const smsIntegrations = useAppSelector(getSmsIntegrations)
+    const hasSmsIntegrations = !!smsIntegrations.length
+
+    const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
 
     const handleActionTypeChange = useCallback(
         (action) => {
@@ -64,9 +77,30 @@ const IvrMenuActionField = ({
                     })
                     break
                 }
+                case IvrMenuActionType.SendToSms: {
+                    deflectToSMSEnabled &&
+                        onChange({
+                            ...value,
+                            action,
+                            sms_deflection: {
+                                confirmation_message:
+                                    DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
+                            },
+                        })
+                }
             }
         },
-        [value, onChange]
+        [deflectToSMSEnabled, value, onChange]
+    )
+
+    const actionOptions = map(IvrMenuActionType, (action) => ({
+        value: action,
+        label: ACTION_NAMES[action],
+        isDisabled:
+            action === IvrMenuActionType.SendToSms && !hasSmsIntegrations,
+    })).filter(
+        (option) =>
+            deflectToSMSEnabled || option.value !== IvrMenuActionType.SendToSms
     )
 
     return (
@@ -81,10 +115,7 @@ const IvrMenuActionField = ({
                     onChange={(action) => {
                         handleActionTypeChange(action)
                     }}
-                    options={map(IvrMenuActionType, (action) => ({
-                        value: action,
-                        label: ACTION_NAMES[action],
-                    }))}
+                    options={actionOptions}
                     fullWidth
                 />
             </Col>
@@ -139,6 +170,7 @@ const IvrMenuActionField = ({
                                 <VoiceMessageField
                                     value={editingVoiceMessage}
                                     onChange={setEditingVoiceMessage}
+                                    radioButtonId={'play-message'}
                                 />
                             </Drawer.Content>
                             <Drawer.Footer>
@@ -192,6 +224,21 @@ const IvrMenuActionField = ({
                         }}
                     />
                 )}
+                {deflectToSMSEnabled &&
+                    value.action === IvrMenuActionType.SendToSms && (
+                        <IvrMenuActionSendToSMSField
+                            settings={value.sms_deflection}
+                            onChange={(smsDeflection) => {
+                                onChange({
+                                    ...value,
+                                    sms_deflection: smsDeflection,
+                                })
+                            }}
+                            isDrawerOpen={isDrawerOpen}
+                            setDrawerOpen={setDrawerOpen}
+                            smsIntegrations={smsIntegrations}
+                        />
+                    )}
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
                 <IconButton

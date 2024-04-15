@@ -83,6 +83,16 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
                   Play message
                 </span>
               </button>
+              <button
+                class="option option--disabled disabled dropdown-item"
+                disabled=""
+                tabindex="-1"
+                type="button"
+              >
+                <span>
+                  Send call to SMS
+                </span>
+              </button>
             </div>
           </div>
         </div>

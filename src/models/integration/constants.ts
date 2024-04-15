@@ -35,6 +35,7 @@ export enum IvrMenuActionType {
     ForwardToExternalNumber = 'forward_to_external_number',
     ForwardToGorgiasNumber = 'forward_to_gorgias_number',
     PlayMessage = 'play_message',
+    SendToSms = 'deflect_to_sms',
 }
 
 export enum AddressType {
@@ -87,6 +88,14 @@ export const DEFAULT_IVR_SETTINGS = {
     ],
 }
 
+export const DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE = {
+    voice_message_type: VoiceMessageType.TextToSpeech,
+    text_to_speech_content:
+        "Thank you for choosing our service! We've received your request and are on it.",
+}
+
+export const DEFAULT_IVR_DEFLECTION_SMS_CONTENT =
+    "Hello! It seems we're a bit tied up at the moment, but we're here to help. Please reply to this SMS with your query. Thank you for your understanding."
 export const DEFAULT_EMAIL_DKIM_KEY_SIZE = 1024
 
 export enum EmailProvider {

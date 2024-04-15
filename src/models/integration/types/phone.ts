@@ -81,7 +81,10 @@ export type VoiceMessage =
     | VoiceMessageRecording
     | VoiceMessageNone
 
-export type IvrMenuAction = IvrPlayVoiceMessageAction | IvrForwardCallMenuAction
+export type IvrMenuAction =
+    | IvrPlayVoiceMessageAction
+    | IvrForwardCallMenuAction
+    | IvrSendToSmsMenuAction
 
 export type IvrPlayVoiceMessageAction = {
     action: IvrMenuActionType.PlayMessage
@@ -100,6 +103,18 @@ export type IvrForwardCallMenuAction = {
 export type IvrForwardCall = {
     phone_number: string
     integration_id?: number
+}
+
+export type IvrSendToSmsMenuAction = {
+    action: IvrMenuActionType.SendToSms
+    digit: string
+    sms_deflection: IvrSmsDeflection
+}
+
+export type IvrSmsDeflection = {
+    sms_integration_id?: number
+    sms_content?: string
+    confirmation_message: VoiceMessage
 }
 
 export const isPhoneIntegration = (
