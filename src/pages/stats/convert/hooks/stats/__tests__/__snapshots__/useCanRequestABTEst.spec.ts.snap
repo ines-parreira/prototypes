@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useCanRequestABTEst should return data 1`] = `
+[
+  [
+    [
+      {
+        "dimensions": [],
+        "filters": [
+          {
+            "member": "CampaignEvents.eventType",
+            "operator": "equals",
+            "values": [
+              "order-created",
+              "campaign-displayed",
+            ],
+          },
+          {
+            "member": "CampaignEvents.createdDatetime",
+            "operator": "inDateRange",
+            "values": [
+              "2024-03-01T00:00:00.000",
+              "2024-03-31T23:59:59.999",
+            ],
+          },
+          {
+            "member": "CampaignEvents.shopName",
+            "operator": "equals",
+            "values": [
+              "shopify:test",
+            ],
+          },
+        ],
+        "measures": [
+          "CampaignEvents.orderCount",
+          "CampaignEvents.firstCampaignDisplay",
+        ],
+        "timeDimensions": [],
+      },
+    ],
+    {
+      "cacheTime": 0,
+      "refetchOnWindowFocus": false,
+      "select": [Function],
+      "staleTime": 0,
+    },
+  ],
+]
+`;
+
+exports[`useCanRequestABTEst should return data 2`] = `
+{
+  "canRequestABTest": false,
+  "isError": false,
+  "isFetching": true,
+}
+`;

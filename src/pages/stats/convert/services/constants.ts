@@ -1,3 +1,9 @@
+// Representation of AB tests
+export enum AbTestMetricNames {
+    orderCount = 'orderCount',
+    firstImpression = 'firstImpression',
+}
+
 // Representation of campaigns overview total stats metric names
 export enum CampaignsTotalsMetricNames {
     impressions = 'impressions',

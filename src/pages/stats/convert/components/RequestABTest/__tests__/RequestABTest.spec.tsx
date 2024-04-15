@@ -15,6 +15,7 @@ import {
     useCreateABTest,
     useUpdateABTest,
 } from 'models/convert/abTest/queries'
+import {useCanRequestABTest} from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
 import {RootState, StoreDispatch} from 'state/types'
 import {abTest} from 'fixtures/abTest'
 import {account} from 'fixtures/account'
@@ -32,6 +33,9 @@ jest.mock('models/convert/abTest/queries')
 const useListABTestMock = assumeMock(useListABTests)
 const useCreateABTestMock = assumeMock(useCreateABTest)
 const useUpdateABTestMock = assumeMock(useUpdateABTest)
+
+jest.mock('pages/stats/convert/hooks/stats/useCanRequestABTest')
+const useCanRequestABTestMock = assumeMock(useCanRequestABTest)
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -107,6 +111,11 @@ describe('RequestABTest', () => {
             refetch: jest.fn,
         } as any)
 
+        useCanRequestABTestMock.mockReturnValue({
+            isFetching: false,
+            canRequestABTest: true,
+        } as any)
+
         const {getByText, getByTestId} = renderComponent()
 
         expect(getByText('Request A/B Test')).toBeInTheDocument()
@@ -131,6 +140,12 @@ describe('RequestABTest', () => {
             isLoading: false,
             isError: false,
             refetch: jest.fn,
+        } as any)
+
+        // In case we have ongoing A/B test orders can drop
+        useCanRequestABTestMock.mockReturnValue({
+            isFetching: false,
+            canRequestABTest: false,
         } as any)
 
         const {getByText, getByTestId} = renderComponent()

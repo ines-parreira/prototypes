@@ -33,6 +33,7 @@ import {
     OrderConversionMeasure,
 } from 'pages/stats/convert/clients/constants'
 import {
+    AbTestMetricNames,
     CampaignsTotalsMetricNames,
     COMPARISON_DATA_FORMAT,
     GRAPH_LABEL_DATE_FORMAT,
@@ -356,6 +357,23 @@ export const transformToCampaignsPerformanceTable = (
         {...campaignsOrdersDataset},
         _processCampaignsPerformanceData
     )
+}
+
+export const transformToCampaignAbTestEvent = (
+    data: CubeMetric | undefined
+) => {
+    const metric: CubeMetric = _getMetricOrDefault(data)
+
+    return {
+        [AbTestMetricNames.orderCount]: getMetricValue(
+            metric,
+            EventsMeasure.orderCount
+        ),
+        [AbTestMetricNames.firstImpression]: _get(
+            metric,
+            EventsMeasure.firstCampaignDisplay
+        ),
+    }
 }
 
 const _eventsPerformanceReducer = (

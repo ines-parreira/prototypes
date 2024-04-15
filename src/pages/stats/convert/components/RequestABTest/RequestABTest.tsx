@@ -17,10 +17,14 @@ import {
 } from 'models/convert/abTest/types'
 import {useCreateABTest} from 'pages/convert/abTests/hooks/useCreateABTest'
 import {useUpdateABTest} from 'pages/convert/abTests/hooks/useUpdateABTest'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import RequestABTestModal from 'pages/stats/convert/components/RequestABTestModal'
 import ViewABTestModal from 'pages/stats/convert/components/ViewABTestModal'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+
+import {useCanRequestABTest} from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
 
 import css from './RequestABTest.less'
 
@@ -33,11 +37,19 @@ const RequestABTest = () => {
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
     const currentAccount = useAppSelector(getCurrentAccountState)
 
+    const {selectedIntegrations} = useCampaignStatsFilters()
+
+    const namespacedShopName =
+        useGetNamespacedShopNameForStore(selectedIntegrations)
+
     const {channelConnection, isLoading: isChannelConnectionLoading} =
         useGetOrCreateChannelConnection(toJS(integration))
 
     const {mutateAsync: createABTest} = useCreateABTest()
     const {mutateAsync: updateABTest} = useUpdateABTest()
+
+    const {isFetching, canRequestABTest} =
+        useCanRequestABTest(namespacedShopName)
 
     const abTestListOptions = useMemo(() => {
         const channelConnectionId = channelConnection?.id
@@ -129,7 +141,11 @@ const RequestABTest = () => {
         closeModal()
     }
 
-    if (isChannelConnectionLoading) {
+    if (isFetching || isChannelConnectionLoading) {
+        return null
+    }
+
+    if (!hasOngoingTest && !canRequestABTest) {
         return null
     }
 
