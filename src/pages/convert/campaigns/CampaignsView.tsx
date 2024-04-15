@@ -9,7 +9,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useIsConvertCampaignLibraryEnabled} from 'pages/convert/common/hooks/useIsConvertCampaignLibraryEnabled'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useListCampaigns} from 'models/convert/campaign/queries'
@@ -42,7 +41,6 @@ export const CampaignsView = () => {
 
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
-    const isCampaignLibraryEnabled = useIsConvertCampaignLibraryEnabled()
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     const immutableIntegration = useMemo(
@@ -155,16 +153,9 @@ export const CampaignsView = () => {
             !isLoading &&
             hasStoreConnected &&
             isConvertSubscriber &&
-            isCampaignLibraryEnabled &&
             allCampaigns.length < 8
         )
-    }, [
-        isLoading,
-        hasStoreConnected,
-        isCampaignLibraryEnabled,
-        isConvertSubscriber,
-        allCampaigns,
-    ])
+    }, [isLoading, hasStoreConnected, isConvertSubscriber, allCampaigns])
 
     return (
         <CampaignListOptions>
@@ -181,9 +172,7 @@ export const CampaignsView = () => {
 
             <div className={classnames('full-width', css.pageWrapper)}>
                 <PageHeader title={'Campaigns'}>
-                    {isConvertSubscriber &&
-                    isCampaignLibraryEnabled &&
-                    hasStoreConnected ? (
+                    {isConvertSubscriber && hasStoreConnected ? (
                         <>
                             <Link
                                 to={`/app/convert/${integrationId}/campaigns/new`}

@@ -7,7 +7,6 @@ import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import routerDom from 'react-router-dom'
 import _omit from 'lodash/omit'
-import LD from 'launchdarkly-react-client-sdk'
 import {createBrowserHistory} from 'history'
 import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
@@ -25,7 +24,6 @@ import {
 } from 'models/convert/campaign/queries'
 import {campaign} from 'fixtures/campaign'
 import {channelConnection} from 'fixtures/channelConnection'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {Campaign} from '../types/Campaign'
@@ -216,9 +214,6 @@ describe('<CampaignsView/>', () => {
 
     describe('Campaigns library', () => {
         beforeAll(() => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.ConvertCampaignLibraryUi]: true,
-            }))
             useParamsMock.mockReturnValue({
                 [CONVERT_ROUTE_PARAM_NAME]: '118',
             })
