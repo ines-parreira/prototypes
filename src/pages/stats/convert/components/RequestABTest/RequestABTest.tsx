@@ -2,19 +2,15 @@ import React, {useState, useMemo, useCallback} from 'react'
 import {useParams} from 'react-router-dom'
 
 import {toJS} from 'utils'
-import {logEvent, SegmentEvent} from 'common/segment'
+
 import Button from 'pages/common/components/button/Button'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useListABTests} from 'models/convert/abTest/queries'
-import {
-    ABTestListOptions as ABTestListOptionsParams,
-    ABTest,
-} from 'models/convert/abTest/types'
+import {ABTestListOptions as ABTestListOptionsParams} from 'models/convert/abTest/types'
 import {useCreateABTest} from 'pages/convert/abTests/hooks/useCreateABTest'
 import {useUpdateABTest} from 'pages/convert/abTests/hooks/useUpdateABTest'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
@@ -35,7 +31,6 @@ const RequestABTest = () => {
 
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
-    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const {selectedIntegrations} = useCampaignStatsFilters()
 
@@ -66,41 +61,23 @@ const RequestABTest = () => {
         }
     )
 
-    const sendSegmentEvent = useCallback(
-        (eventName: SegmentEvent, abTestId: string) => {
-            logEvent(eventName, {
-                ab_test_id: abTestId,
-                integration_id: integration.get('id'),
-                integration_name: integration.get('name'),
-                account_domain: currentAccount.get('domain'),
-            })
-        },
-        [integration, currentAccount]
-    )
-
     const handleCreateABTest = useCallback(async () => {
         if (!!channelConnection) {
-            const response = await createABTest([
+            await createABTest([
                 undefined,
                 {
                     channel_connection_id: channelConnection.id,
                 },
             ])
-
-            // Trigger Segment Event
-            if (response && response?.status === 201) {
-                const data = response.data as ABTest
-                sendSegmentEvent(SegmentEvent.ConvertStartABTest, data.id)
-            }
         }
-    }, [channelConnection, createABTest, sendSegmentEvent])
+    }, [channelConnection, createABTest])
 
     const handleStopABTest = useCallback(async () => {
         if (!abTests) {
             return
         }
 
-        const response = await updateABTest([
+        await updateABTest([
             undefined,
             {
                 ab_test_id: abTests[0].id,
@@ -109,12 +86,7 @@ const RequestABTest = () => {
                 state: 'inactive',
             },
         ])
-
-        if (response && response?.status === 200) {
-            const data = response.data as ABTest
-            sendSegmentEvent(SegmentEvent.ConvertStopABTest, data.id)
-        }
-    }, [abTests, updateABTest, sendSegmentEvent])
+    }, [abTests, updateABTest])
 
     const hasOngoingTest = useMemo(() => {
         if (!abTests) {
