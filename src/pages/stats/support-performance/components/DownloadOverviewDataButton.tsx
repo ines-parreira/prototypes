@@ -1,8 +1,8 @@
 import React from 'react'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 const DOWNLOAD_BUTTON_TITLE = 'Download Performance Overview Data'
 
 type Props = {

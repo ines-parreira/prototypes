@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import {Period} from 'models/stat/types'
 import {User} from 'config/types/user'
 import {Metric} from 'hooks/reporting/metrics'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
@@ -33,11 +34,6 @@ import {createCsv, saveZippedFiles} from 'utils/file'
 import {DATE_TIME_FORMAT} from './constants'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
-
-export interface Period {
-    end_datetime: string
-    start_datetime: string
-}
 
 type AgentIdentifierDimension =
     | TicketDimension.AssigneeUserId

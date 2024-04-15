@@ -5,15 +5,13 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {UseQueryResult} from '@tanstack/react-query'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/ticketFieldsReportingService'
 import {OrderDirection} from 'models/api/types'
-import {
-    DownloadTicketFieldsDataButton,
-    DOWNLOAD_DATA_BUTTON_LABEL,
-} from 'pages/stats/DownloadTicketFieldsDataButton'
+import {DownloadTicketFieldsDataButton} from 'pages/stats/DownloadTicketFieldsDataButton'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {formatDates} from 'pages/stats/utils'
 import {ReportingGranularity} from 'models/reporting/types'

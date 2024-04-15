@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {Period} from 'models/stat/types'
 import {TableColumn} from 'state/ui/stats/types'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
@@ -9,7 +10,6 @@ import {
 import {UserRole, UserSettingType, User} from 'config/types/user'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {Period} from '../automateOverviewReportingService'
 
 jest.mock('utils/file')
 

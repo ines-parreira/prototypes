@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react'
 import React from 'react'
+import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
@@ -22,6 +23,12 @@ jest.mock(
     'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 )
 const BusiestTimesOfDaysTableMock = assumeMock(BusiestTimesOfDaysTable)
+jest.mock(
+    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+)
+const BusiestTimesOfDaysDownloadDataButtonMock = assumeMock(
+    BusiestTimesOfDaysDownloadDataButton
+)
 const componentMock = () => <div />
 
 describe('BusiestTimesOfDays page', () => {
@@ -29,6 +36,9 @@ describe('BusiestTimesOfDays page', () => {
         FiltersMock.mockImplementation(componentMock)
         AnalyticsFooterMock.mockImplementation(componentMock)
         BusiestTimesOfDaysTableMock.mockImplementation(componentMock)
+        BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(
+            componentMock
+        )
     })
 
     it('should render the page title', () => {

@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import {Period} from 'models/stat/types'
 
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {
@@ -26,11 +27,6 @@ export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
 export const AUTOMATE_PERFORMANCE_FEATURE_FILENAME =
     'automate-performance-feature'
 export const OVERVIEW_METRICS_FILENAME = 'overview-metrics'
-
-export interface Period {
-    end_datetime: string
-    start_datetime: string
-}
 
 export interface AutomateReportData {
     automationRateTimeSeries: TimeSeriesDataItem[][]

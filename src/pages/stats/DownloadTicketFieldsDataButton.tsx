@@ -1,4 +1,5 @@
 import React from 'react'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
@@ -13,7 +14,6 @@ import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {saveReport} from 'services/reporting/ticketFieldsReportingService'
 import {getFilterDateRange} from 'utils/reporting'
 
-export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 const DOWNLOAD_BUTTON_TITLE = 'Download Ticket Fields Data'
 
 export const DownloadTicketFieldsDataButton = ({

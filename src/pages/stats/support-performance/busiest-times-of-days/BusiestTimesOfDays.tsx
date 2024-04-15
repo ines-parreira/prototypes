@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {BusiestTimesOfDaysHeatmapSwitch} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysHeatmapSwitch'
 import {useGridSize} from 'hooks/useGridSize'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -29,7 +30,14 @@ export const BusiestTimesOfDays = () => {
         <div className="full-width">
             <StatsPage
                 title={BUSIEST_TIME_OF_DAY_PAGE_TITLE}
-                titleExtra={<SupportPerformanceFilters />}
+                titleExtra={
+                    <>
+                        <SupportPerformanceFilters />
+                        <BusiestTimesOfDaysDownloadDataButton
+                            useMetricQuery={getMetricQuery(selectedMetric)}
+                        />
+                    </>
+                }
             >
                 <DashboardSection>
                     <BusiestTimesOfDaysMetricSelect

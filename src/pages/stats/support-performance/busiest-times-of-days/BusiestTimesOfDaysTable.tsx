@@ -1,10 +1,9 @@
 import classNames from 'classnames'
-import React, {UIEventHandler, useMemo, useState} from 'react'
+import React, {UIEventHandler, useState} from 'react'
+import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import {ReportingGranularity} from 'models/reporting/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -18,11 +17,7 @@ import {
     columnsOrder,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {
-    get24Hours,
-    getAggregatedBusiestTimesOfDayData,
-} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {get24Hours} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 
 export const hours = get24Hours()
 
@@ -35,18 +30,8 @@ export const BusiestTimesOfDaysTable = ({
     useMetricQuery: TimeSeriesHook
     isHeatmapMode: boolean
 }) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-    const data = useMetricQuery(
-        cleanStatsFilters,
-        userTimezone,
-        ReportingGranularity.Hour
-    )
-    const {btodData, max} = useMemo(
-        () => getAggregatedBusiestTimesOfDayData(data?.data),
-        [data]
-    )
+    const {btodData, max, isLoading} =
+        useAggregatedBusiestTimesOfDayData(useMetricQuery)
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {
@@ -57,7 +42,6 @@ export const BusiestTimesOfDaysTable = ({
     }
     const [ref, {width}] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
-    const isLoading = data.isLoading
     const getCellWidth = (field: BTODColumns) => {
         return field === 'HOUR' ? 90 : 170
     }

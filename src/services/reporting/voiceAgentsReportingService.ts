@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import {Period} from 'models/stat/types'
 
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {User} from 'config/types/user'
@@ -19,11 +20,6 @@ import {
     VoiceEventsByAgentMeasure,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
 import {Metric} from 'hooks/reporting/metrics'
-
-export interface Period {
-    end_datetime: string
-    start_datetime: string
-}
 
 export interface VoiceAgentsPerformanceReportData<T = MetricWithDecile> {
     agents: User[]

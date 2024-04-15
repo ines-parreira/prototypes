@@ -4,6 +4,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
@@ -247,7 +248,7 @@ describe('DownloadOverviewData', () => {
                 <DownloadOverviewData />
             </Provider>
         )
-        fireEvent.click(getByText(/Download data/))
+        fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDownloadClicked,

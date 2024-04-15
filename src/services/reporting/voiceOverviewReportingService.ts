@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import {Period} from 'models/stat/types'
 
 import {
     CURRENT_PERIOD_LABEL,
@@ -18,11 +19,6 @@ import {
     TOTAL_CALLS_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
 import {formatMetricValue} from 'pages/stats/common/utils'
-
-export interface Period {
-    end_datetime: string
-    start_datetime: string
-}
 
 export interface VoiceReportData {
     averageWaitTimeTrend: MetricTrend

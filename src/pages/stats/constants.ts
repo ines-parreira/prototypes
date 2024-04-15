@@ -22,3 +22,4 @@ export const AUTOMATION_INTENTS_CHANNELS = [
     TicketChannel.WhatsApp,
     TicketChannel.YotpoReview,
 ]
+export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'

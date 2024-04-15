@@ -1,8 +1,8 @@
 import moment from 'moment'
+import {Period} from 'models/stat/types'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
-    Period,
     SupportPerformanceReportData,
     saveReport,
 } from 'services/reporting/supportPerformanceReportingService'

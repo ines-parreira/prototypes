@@ -36,7 +36,7 @@ export const weekDayLabel = (weekDay: number) => {
 export const hourFromHourIndex = (index: number) =>
     `${index}:00`.padStart(5, '0')
 
-type BTODData = Record<number, Record<DayOfWeek, number>>
+export type BTODData = Record<number, Record<DayOfWeek, number>>
 
 export function getAggregatedBusiestTimesOfDayData(
     data: UseQueryResult<TimeSeriesDataItem[][]>['data']

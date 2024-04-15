@@ -2,11 +2,13 @@ import {ChannelIdentifier} from 'services/channels'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from '../api/types'
 
+export interface Period {
+    end_datetime: string
+    start_datetime: string
+}
+
 export type StatsFilters = {
-    period: {
-        end_datetime: string
-        start_datetime: string
-    }
+    period: Period
     integrations?: number[]
     tags?: number[]
     agents?: number[]

@@ -1,4 +1,5 @@
 import moment from 'moment/moment'
+import {Period} from 'models/stat/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OneDimensionalDataItem} from 'pages/stats/types'
@@ -20,11 +21,6 @@ import {
     WORKLOAD_BY_CHANNEL_LABEL,
 } from 'services/reporting/constants'
 import {createCsv, saveZippedFiles} from 'utils/file'
-
-export interface Period {
-    end_datetime: string
-    start_datetime: string
-}
 
 interface Fetching<T> {
     isFetching: boolean
