@@ -469,6 +469,8 @@ export default function Meta(props: Props) {
                 label="answer suggested from Gorgias AI"
             ></From>
         )
+    } else if (meta && meta.sms_deflection) {
+        widgets.push(<From key="via-widget" label={meta.sms_deflection}></From>)
     }
 
     return <>{widgets}</>

@@ -244,6 +244,7 @@ export type Meta = {
     discount_codes?: string[]
     body_text_truncated?: boolean
     body_html_truncated?: boolean
+    sms_deflection?: string
 }
 
 export type FacebookPrivateReply = {

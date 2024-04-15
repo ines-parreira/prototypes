@@ -725,5 +725,28 @@ describe('ticket message meta', () => {
             )
             expect(container.firstChild).toMatchSnapshot()
         })
+
+        it('should add sms deflection details', () => {
+            const {getByText} = render(
+                <Provider store={store}>
+                    <Meta
+                        messageId="some-id"
+                        via="something"
+                        integrationId={118}
+                        source={{
+                            type: TicketMessageSourceType.Sms,
+                            to: [{address: 'someAddress', name: 'someName'}],
+                        }}
+                        meta={{
+                            sms_deflection:
+                                'sent via: Fake phone integration Menu Option 123',
+                        }}
+                    />
+                </Provider>
+            )
+            expect(
+                getByText('sent via: Fake phone integration Menu Option 123')
+            ).toBeInTheDocument()
+        })
     })
 })
