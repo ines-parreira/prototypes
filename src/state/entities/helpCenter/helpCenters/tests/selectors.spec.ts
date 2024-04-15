@@ -12,6 +12,7 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 import {
     getActiveHelpCenterList,
     getCurrentHelpCenter,
+    getHelpCenterFAQList,
     getHelpCenterList,
 } from '../selectors'
 
@@ -52,6 +53,29 @@ describe('Entities/Help Center', () => {
             expect(getCurrentHelpCenter(dataStore as StoreState)).toEqual(
                 getHelpCentersResponseFixture.data[0]
             )
+        })
+
+        describe('getHelpCenterFAQList', () => {
+            it('returns the list', () => {
+                const dataStore: Partial<StoreState> = {
+                    entities: {
+                        helpCenter: {
+                            helpCenters: {
+                                helpCentersById: {
+                                    ..._keyBy(
+                                        getHelpCentersResponseFixture.data,
+                                        'id'
+                                    ),
+                                },
+                            },
+                        },
+                    } as any,
+                }
+
+                expect(getHelpCenterFAQList(dataStore as StoreState)).toEqual(
+                    getHelpCentersResponseFixture.data
+                )
+            })
         })
     })
 

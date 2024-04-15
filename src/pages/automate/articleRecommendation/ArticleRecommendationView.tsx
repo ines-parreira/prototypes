@@ -6,7 +6,7 @@ import Label from 'pages/common/forms/Label/Label'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters'
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -44,7 +44,7 @@ const ArticleRecommendationView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(shopType, shopName)
     const channels = useSelfServiceChatChannels(shopType, shopName)
-    const helpCenters = useAppSelector(getHelpCenterList)
+    const helpCenters = useAppSelector(getHelpCenterFAQList)
 
     const helpCenterId =
         selfServiceConfiguration?.article_recommendation_help_center_id
