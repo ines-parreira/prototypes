@@ -1,18 +1,15 @@
 import React from 'react'
 import {render, waitFor} from '@testing-library/react'
+import * as helpers from 'pages/integrations/integration/components/email/helpers'
 
 import RecordsTable from '../RecordsTable'
 
-import * as helpers from '../../../helpers'
-
-const populateCurrentValuesForDNSRecords = jest.spyOn(
-    helpers,
-    'populateCurrentValuesForDNSRecords'
-)
-const removeDomainFromDNSRecords = jest.spyOn(
-    helpers,
-    'removeDomainFromDNSRecords'
-)
+const populateCurrentValuesForDNSRecords = jest
+    .spyOn(helpers, 'populateCurrentValuesForDNSRecords')
+    .mockImplementation((records) => Promise.resolve(records))
+const removeDomainFromDNSRecords = jest
+    .spyOn(helpers, 'removeDomainFromDNSRecords')
+    .mockImplementation((records) => records)
 
 describe('RecordsTable component', () => {
     it('should render a list of DNS records', () => {
