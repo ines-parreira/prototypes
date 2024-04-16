@@ -171,6 +171,7 @@ import AiAgentViewContainer from 'pages/automate/aiAgent/AiAgentViewContainer'
 import AiAgentPlaygroundContainer from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
 import ConvertBundleView from 'pages/convert/bundles/components/ConvertBundleView'
 import ConvertOnboardingWizardView from 'pages/convert/onboarding/components/ConvertOnboardingWizardView'
+import UpdateABTestView from 'pages/convert/abTests/components/UpdateABTestView'
 import {
     CampaignTemplateCustomizeRecommendationsView,
     CampaignTemplateCustomizeLibraryView,
@@ -1805,6 +1806,16 @@ export function ConvertContent() {
                     />
                 </DefaultStatsFilters>
             </Route>
+            {window.USER_IMPERSONATED && (
+                <Route
+                    exact
+                    path={`${convertPathPrefix}/ab-test-configuration`}
+                    component={memoizedWithUserRoleRequired(
+                        UpdateABTestView as any,
+                        ADMIN_ROLE
+                    )}
+                />
+            )}
             <Route
                 path={`${convertPathPrefix}/performance/subscribe`}
                 exact

@@ -1,7 +1,7 @@
 import {getLDClient} from 'utils/launchDarkly'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-const isSessionImpersonated = () => {
+export const isSessionImpersonated = () => {
     return !!window.USER_IMPERSONATED
 }
 

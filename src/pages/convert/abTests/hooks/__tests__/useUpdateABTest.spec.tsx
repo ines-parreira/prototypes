@@ -52,7 +52,7 @@ describe('useUpdateABTest', () => {
         })
 
         expect(notify).toHaveBeenCalledWith({
-            message: 'A/B Test successfully stopped',
+            message: 'A/B Test successfully updated',
             status: NotificationStatus.Success,
         })
     })
@@ -73,7 +73,7 @@ describe('useUpdateABTest', () => {
         )
 
         expect(notify).toHaveBeenCalledWith({
-            message: 'Failed to stop the A/B Test',
+            message: 'Failed to update the A/B Test',
             status: NotificationStatus.Error,
         })
     })

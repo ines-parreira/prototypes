@@ -21,7 +21,7 @@ export const useUpdateABTest = () => {
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
-                    message: 'A/B Test successfully stopped',
+                    message: 'A/B Test successfully updated',
                 })
             )
         },
@@ -29,7 +29,7 @@ export const useUpdateABTest = () => {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: 'Failed to stop the A/B Test',
+                    message: 'Failed to update the A/B Test',
                 })
             ),
     })
