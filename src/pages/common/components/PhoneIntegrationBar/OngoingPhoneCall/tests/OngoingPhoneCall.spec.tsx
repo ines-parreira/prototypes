@@ -7,6 +7,7 @@ import {Call} from '@twilio/voice-sdk'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {TwilioSocketEventType} from 'business/twilio'
 
 import * as utils from 'hooks/integrations/phone/utils'
@@ -20,6 +21,8 @@ import OngoingPhoneCall from '../OngoingPhoneCall'
 import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
 
 jest.mock('@twilio/voice-sdk')
+
+jest.mock('@gorgias/api-queries')
 
 jest.mock('../CallTransferDropdown', () => ({
     __esModule: true,
@@ -46,6 +49,8 @@ jest.mock('../CallTransferDropdown', () => ({
         </div>
     ),
 }))
+
+const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 
 describe('<OngoingPhoneCall/>', () => {
     let store: MockStoreEnhanced
@@ -94,6 +99,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should mute call', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call: Call = mockIncomingCall(integrationId) as Call
 
         const {getByTestId} = render(
@@ -124,6 +132,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should end call', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
 
         const {getByTestId} = render(
@@ -145,6 +156,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should start recording', async () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
 
         const url = `/api/integrations/${integrationId}/calls/fake-call-sid/recordings/${TWILIO_CURRENT_ITEM}`
@@ -176,6 +190,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should display hold button', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
         mockFlags({[FeatureFlagKey.CallOnHold]: true})
 
@@ -189,6 +206,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should not display hold button when FF is disabled', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
 
         const {queryByTestId} = render(
@@ -200,7 +220,139 @@ describe('<OngoingPhoneCall/>', () => {
         expect(queryByTestId('hold-call-button')).toBeNull()
     })
 
+    it('should call endpoint to put call on hold', () => {
+        const mockMutate = jest.fn()
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: mockMutate,
+        })
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallOnHold]: true})
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall
+                    call={
+                        {
+                            ...call,
+                            parameters: {
+                                ...call.parameters,
+                                CallSid: 'fake-call-sid',
+                            },
+                        } as any
+                    }
+                />
+            </Provider>
+        )
+
+        fireEvent.click(getByTestId('hold-call-button'))
+        expect(mockMutate).toHaveBeenCalledWith({
+            data: {
+                hold_state: true,
+                participant_call_sid: 'fake-call-sid',
+            },
+        })
+    })
+
+    it('should change hold state on success', async () => {
+        const mockMutate = jest.fn()
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: mockMutate,
+        })
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallOnHold]: true})
+
+        const {getByText, getByTestId} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall
+                    call={
+                        {
+                            ...call,
+                            parameters: {
+                                ...call.parameters,
+                                CallSid: 'fake-call-sid',
+                            },
+                        } as any
+                    }
+                />
+            </Provider>
+        )
+
+        ;(
+            mockUsePutCallParticipantOnHold as jest.MockedFunction<
+                typeof usePutCallParticipantOnHold
+            >
+        ).mock.calls[0][0]?.mutation?.onSuccess!(
+            '' as any,
+            {data: {hold_state: true}} as any,
+            '' as any
+        )
+        await waitFor(() => {
+            expect(getByText('pause_circle_outline')).toBeInTheDocument()
+        })
+
+        fireEvent.click(getByTestId('hold-call-button'))
+        expect(mockMutate).toHaveBeenCalledWith({
+            data: {
+                hold_state: false,
+                participant_call_sid: 'fake-call-sid',
+            },
+        })
+        ;(
+            mockUsePutCallParticipantOnHold as jest.MockedFunction<
+                typeof usePutCallParticipantOnHold
+            >
+        ).mock.calls[0][0]?.mutation?.onSuccess!(
+            '' as any,
+            {data: {hold_state: false}} as any,
+            '' as any
+        )
+        await waitFor(() => {
+            expect(getByText('pause')).toBeInTheDocument()
+        })
+    })
+
+    it('should display error notification when hold fails', () => {
+        const mockMutate = jest.fn()
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: mockMutate,
+        })
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({[FeatureFlagKey.CallOnHold]: true})
+
+        render(
+            <Provider store={store}>
+                <OngoingPhoneCall
+                    call={
+                        {
+                            ...call,
+                            parameters: {
+                                ...call.parameters,
+                                CallSid: 'fake-call-sid',
+                            },
+                        } as any
+                    }
+                />
+            </Provider>
+        )
+        ;(
+            mockUsePutCallParticipantOnHold as jest.MockedFunction<
+                typeof usePutCallParticipantOnHold
+            >
+        ).mock.calls[0][0]?.mutation?.onError!('' as any, '' as any, '' as any)
+
+        const actions = store.getActions() as {
+            type: string
+            payload: {message: any}
+        }[]
+        expect(actions[actions.length - 1].payload.message).toBe(
+            'Call hold could not be completed. Please try again. '
+        )
+    })
+
     it('should display transfer button', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
         mockFlags({[FeatureFlagKey.CallTransfer]: true})
 
@@ -214,6 +366,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should not display transfer button when FF is disabled', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
 
         const {queryByTestId} = render(
@@ -226,6 +381,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it('should toggle transfer dropdown', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
         mockFlags({[FeatureFlagKey.CallTransfer]: true})
 
@@ -241,6 +399,9 @@ describe('<OngoingPhoneCall/>', () => {
     })
 
     it(`should display "Transferring" state after a transfer is initiated`, () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
         const call = mockIncomingCall(integrationId) as Call
         mockFlags({[FeatureFlagKey.CallTransfer]: true})
 

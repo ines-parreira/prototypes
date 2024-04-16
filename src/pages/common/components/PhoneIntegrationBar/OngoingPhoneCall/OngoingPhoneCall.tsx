@@ -5,10 +5,12 @@ import {AxiosError} from 'axios'
 import classNames from 'classnames'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {TwilioSocketEventType} from 'business/twilio'
 import {
     sendTwilioSocketEvent,
     gatherCallContext,
+    getCallSid,
 } from 'hooks/integrations/phone/utils'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -56,6 +58,21 @@ export function OngoingPhoneCall({
     const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
     const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
 
+    const {mutate: changeHoldState} = usePutCallParticipantOnHold({
+        mutation: {
+            onSuccess: (_, {data: {hold_state}}) => {
+                setIsOnHold(hold_state)
+            },
+            onError: () => {
+                void notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Call hold could not be completed. Please try again. ',
+                })
+            },
+        },
+    })
+
     const {startRecording, isRequestPending} = useRecording(
         call,
         isRecording,
@@ -64,10 +81,6 @@ export function OngoingPhoneCall({
     )
 
     const transferButtonRef = useRef<HTMLButtonElement>(null)
-
-    const handleToggleHold = () => {
-        setIsOnHold((isOnHold) => !isOnHold)
-    }
 
     const handleDisconnect = () => {
         setIsRecording(false)
@@ -118,6 +131,7 @@ export function OngoingPhoneCall({
                             isOpen={isTransferDropdownOpen}
                             setIsOpen={setIsTransferDropdownOpen}
                             onTransferInitiated={() => setIsTransferring(true)}
+                            call={call}
                         />
                     </>
                 )}
@@ -133,7 +147,14 @@ export function OngoingPhoneCall({
                     <IconButtonTooltip
                         intent="secondary"
                         data-testid="hold-call-button"
-                        onClick={handleToggleHold}
+                        onClick={() =>
+                            changeHoldState({
+                                data: {
+                                    participant_call_sid: getCallSid(call),
+                                    hold_state: !isOnHold,
+                                },
+                            })
+                        }
                         icon={isOnHold ? 'pause_circle_outline' : 'pause'}
                     >
                         {isOnHold ? 'Take off hold' : 'Hold'}

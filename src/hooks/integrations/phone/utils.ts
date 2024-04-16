@@ -406,13 +406,13 @@ export function generateCallId(call: Call): string {
     return shasum.digest('hex')
 }
 
-export function getCallSid(call: Call): Maybe<string> {
+export function getCallSid(call: Call): string {
     switch (call.direction) {
         case Call.CallDirection.Outgoing: {
             return call.parameters.CallSid
         }
         case Call.CallDirection.Incoming: {
-            return call.customParameters.get('call_sid')
+            return call.customParameters.get('call_sid') as string
         }
     }
 }

@@ -8,8 +8,20 @@ import {
 import {Provider} from 'react-redux'
 import React, {ComponentProps, createRef} from 'react'
 import {fromJS} from 'immutable'
+import {
+    TransferCallBodyReceiverType,
+    TransferCallBodyType,
+    useTransferCall,
+} from '@gorgias/api-queries'
+import {Call} from '@twilio/voice-sdk'
 import {mockStore} from 'utils/testing'
+import * as notificationActions from 'state/notifications/actions'
+import {mockIncomingCall} from 'tests/twilioMocks'
 import CallTransferDropdown from '../CallTransferDropdown'
+
+jest.mock('@gorgias/api-queries')
+
+const mockUseTransferCall = useTransferCall as jest.Mock
 
 describe('CallTransferDropdown', () => {
     const setIsOpen = jest.fn()
@@ -20,6 +32,7 @@ describe('CallTransferDropdown', () => {
         setIsOpen,
         onTransferInitiated,
         target: createRef<HTMLElement>(),
+        call: mockIncomingCall() as Call,
     }
 
     const renderComponent = (
@@ -48,7 +61,11 @@ describe('CallTransferDropdown', () => {
     afterEach(cleanup)
 
     it(`renders the dropdown body when isOpen is true and doesn't display current agent`, () => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
         renderComponent()
+
         expect(screen.getByText('Agents')).toBeInTheDocument()
         expect(screen.getByText('Agent 1')).toBeInTheDocument()
         expect(screen.queryByText('Agent 2')).not.toBeInTheDocument()
@@ -56,18 +73,30 @@ describe('CallTransferDropdown', () => {
     })
 
     it('does not render the dropdown body when isOpen is false', () => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
         renderComponent({...baseProps, isOpen: false})
+
         expect(screen.queryByText('Agents')).not.toBeInTheDocument()
     })
 
     it('calls the setIsOpen function when the target element is clicked', () => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
         renderComponent()
+
         fireEvent.click(screen.getByTestId('floating-overlay'))
         expect(setIsOpen).toHaveBeenCalled()
     })
 
     it(`doesn't select more than one agent`, () => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
         renderComponent()
+
         const agent1 = screen.getByRole('option', {
             name: /agent 1/i,
         })
@@ -83,6 +112,9 @@ describe('CallTransferDropdown', () => {
     })
 
     it('only enables the transfer button when an agent is selected', () => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
         renderComponent()
 
         expect(
@@ -99,13 +131,59 @@ describe('CallTransferDropdown', () => {
     })
 
     it('calls the onTransferInitiated function when the transfer button is clicked', () => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
         renderComponent()
+        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
+            .mock.calls[0][0]?.mutation?.onSuccess!(
+            '' as any,
+            '' as any,
+            '' as any
+        )
+
+        expect(onTransferInitiated).toHaveBeenCalled()
+        expect(setIsOpen).toHaveBeenLastCalledWith(false)
+    })
+
+    it('displays notification on transfer error', () => {
+        const notify = jest.spyOn(notificationActions, 'notify')
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
+        renderComponent()
+        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
+            .mock.calls[0][0]?.mutation?.onError!(
+            '' as any,
+            '' as any,
+            '' as any
+        )
+
+        expect(notify).toHaveBeenCalledWith({
+            message: 'Call transfer failed',
+            status: 'error',
+        })
+    })
+
+    it("calls the 'transfer-call' endpoint with the correct data", () => {
+        const mockMutate = jest.fn()
+        mockUseTransferCall.mockReturnValue({
+            mutate: mockMutate,
+        })
+        renderComponent()
+
         const agent1 = screen.getByRole('option', {
             name: /agent 1/i,
         })
         fireEvent.click(agent1)
         fireEvent.click(screen.getByRole('button', {name: /transfer call/i}))
-        expect(onTransferInitiated).toHaveBeenCalled()
-        expect(setIsOpen).toHaveBeenLastCalledWith(false)
+        expect(mockMutate).toHaveBeenCalledWith({
+            data: {
+                type: TransferCallBodyType.Cold,
+                receiver_type: TransferCallBodyReceiverType.Agent,
+                receiver_id: 1,
+                call_sid: 'fake-call-sid',
+            },
+        })
     })
 })

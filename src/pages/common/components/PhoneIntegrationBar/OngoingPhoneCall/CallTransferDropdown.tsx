@@ -1,4 +1,10 @@
 import React, {ComponentProps, useState} from 'react'
+import {
+    TransferCallBodyReceiverType,
+    TransferCallBodyType,
+    useTransferCall,
+} from '@gorgias/api-queries'
+import {Call} from '@twilio/voice-sdk'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
@@ -9,6 +15,10 @@ import {getHumanAgentsJS} from 'state/agents/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUserId} from 'state/currentUser/selectors'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {getCallSid} from 'hooks/integrations/phone/utils'
 import DropdownSection from '../../dropdown/DropdownSection'
 import css from './CallTransferDropdown.less'
 
@@ -18,6 +28,7 @@ type Props = Pick<
 > & {
     onTransferInitiated: () => void
     setIsOpen: (isOpen: boolean) => void
+    call: Call
 }
 
 export default function CallTransferDropdown({
@@ -26,17 +37,45 @@ export default function CallTransferDropdown({
     target,
     placement = 'top',
     onTransferInitiated,
+    call,
 }: Props) {
     const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
+    const dispatch = useAppDispatch()
+
+    const {mutate: transferCall, isLoading: isRequestingTransfer} =
+        useTransferCall({
+            mutation: {
+                onSuccess: () => {
+                    setIsOpen(false)
+                    onTransferInitiated()
+                },
+                onError: () => {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: 'Call transfer failed',
+                        })
+                    )
+                },
+            },
+        })
 
     const agents = useAppSelector(getHumanAgentsJS)
     const currentAgentId = useAppSelector(getCurrentUserId)
 
     const filteredAgents = agents.filter((agent) => agent.id !== currentAgentId)
 
-    const handleTransferCallInitiated = () => {
-        onTransferInitiated()
-        setIsOpen(false)
+    const handleTransferCallClick = () => {
+        if (!selectedAgent) return
+
+        transferCall({
+            data: {
+                type: TransferCallBodyType.Cold,
+                receiver_type: TransferCallBodyReceiverType.Agent,
+                receiver_id: selectedAgent,
+                call_sid: getCallSid(call),
+            },
+        })
     }
 
     return (
@@ -75,7 +114,8 @@ export default function CallTransferDropdown({
                 <Button
                     className={css.cta}
                     isDisabled={!selectedAgent}
-                    onClick={handleTransferCallInitiated}
+                    onClick={handleTransferCallClick}
+                    isLoading={isRequestingTransfer}
                 >
                     Transfer call
                 </Button>
