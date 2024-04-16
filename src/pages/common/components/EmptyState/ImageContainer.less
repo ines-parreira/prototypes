@@ -1,0 +1,32 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+    }
+
+    .svg {
+        fill: transparent;
+        position: absolute;
+        z-index: 1;
+        width: 823px;
+        height: 955px;
+        left: 64px;
+        top: 56px;
+    }
+
+    .content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+        border-radius: @layout-spacing-xs;
+        box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
+        min-width: 600px;
+        min-height: 435px;
+
+        & > * {
+            border-radius: @layout-spacing-xs;
+        }
+    }
+}
