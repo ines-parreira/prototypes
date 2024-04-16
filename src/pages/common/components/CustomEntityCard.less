@@ -1,0 +1,45 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        color: unset;
+        border: 1px dashed var(--neutral-grey-3);
+        background: var(--neutral-grey-1);
+        border-radius: 4px;
+        padding: @layout-spacing-s;
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+
+        &:hover {
+            color: unset;
+            box-shadow: 0 2px 4px 0 rgba(22, 22, 22, 0.08);
+        }
+    }
+
+    .header {
+        display: flex;
+        margin-bottom: 14px;
+        font-size: 32px;
+        color: var(--neutral-grey-3);
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: 4px;
+        overflow: hidden;
+    }
+
+    .description {
+        .body-regular();
+        overflow: hidden;
+        height: 40px;
+        margin-bottom: 8px;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+}

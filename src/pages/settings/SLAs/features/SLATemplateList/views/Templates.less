@@ -1,0 +1,26 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~css/new/mixins';
+
+:local {
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: @layout-spacing-s;
+
+        @media @mobiles {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .link {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .icon {
+            font-size: 20px;
+            margin-left: @layout-spacing-xxs;
+        }
+    }
+}

@@ -1,11 +1,7 @@
 import React from 'react'
 
-import SLATemplateListView from 'pages/settings/SLAs/features/SLATemplateList/views/SLATemplateListView'
+import TemplateListView from 'pages/settings/SLAs/features/SLATemplateList/views/TemplateListView'
 
 export default function SLATemplateListController() {
-    return (
-        <>
-            <SLATemplateListView />
-        </>
-    )
+    return <TemplateListView />
 }

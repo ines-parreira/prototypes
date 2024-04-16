@@ -1,0 +1,32 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import '~css/new/mixins';
+
+:local {
+    .wrapper {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .page {
+        overflow: auto;
+    }
+
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background-color: var(--neutral-grey-0);
+    }
+
+    .headerButtons {
+        display: flex;
+        flex-direction: row;
+        display: flex;
+        gap: @layout-spacing-xs;
+        justify-content: flex-end;
+    }
+
+    .content {
+        padding: @layout-spacing-m;
+    }
+}
