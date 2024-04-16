@@ -37,9 +37,8 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                 },
                 component: (props: DecoratorComponentProps) => {
                     const {contentState, entityKey, children} = props
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     const value = contentState.getEntity(entityKey).getData()
-                        .value as string
+                        .value as string // eslint-disable-line @typescript-eslint/no-unsafe-member-access
                     return (
                         <WorkflowVariableTag value={value} size={options.size}>
                             {children}

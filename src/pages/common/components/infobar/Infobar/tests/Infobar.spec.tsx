@@ -38,6 +38,7 @@ const store = mockStore({
     currentUser: fromJS(agents[1]),
 })
 // @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents,@typescript-eslint/no-redundant-type-constituents
 store.dispatch = jest.fn((param: () => unknown | unknown) =>
     typeof param === 'function' ? param() : param
 )
@@ -400,6 +401,7 @@ describe('<Infobar/>', () => {
             currentUser: fromJS(agents[0]),
         })
         // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents,@typescript-eslint/no-redundant-type-constituents
         store.dispatch = jest.fn((param: () => unknown | unknown) =>
             typeof param === 'function' ? param() : param
         )

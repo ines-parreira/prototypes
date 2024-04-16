@@ -157,7 +157,7 @@ describe('<Navbar />', () => {
         )
 
         userEvent.click(getByText(user.name))
-        userEvent.click(getByText(/book office hours/i)!)
+        userEvent.click(getByText(/book office hours/i))
 
         expect(logEventMock).toHaveBeenLastCalledWith(
             SegmentEvent.MenuUserLinkClicked,

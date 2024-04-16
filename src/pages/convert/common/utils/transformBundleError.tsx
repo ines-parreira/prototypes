@@ -8,7 +8,7 @@ import {
 import history from 'pages/history'
 
 export const transformBundleError = (
-    error: AxiosError | unknown,
+    error: unknown,
     errorMessage: string,
     integration_id?: number
 ): Notification => {

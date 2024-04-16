@@ -91,7 +91,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
     const [ruleName, setRuleName] = useState(defaultTeamName)
     const keyFloatingRef = useRef<HTMLDivElement>(null)
     const keyTargetRef = useRef<HTMLDivElement>(null)
-    const [keyRule, setKeyRule] = useState(keyOptions[0]!.value)
+    const [keyRule, setKeyRule] = useState(keyOptions[0].value)
     const previousKeyRule = usePrevious(keyRule)
     const [isKeySelectOpen, setIsKeySelectOpen] = useState(false)
     const keyLabel = useMemo(

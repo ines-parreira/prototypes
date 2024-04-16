@@ -110,7 +110,7 @@ describe('<TicketReplyAction />', () => {
             </Provider>
         )
 
-        fireEvent.click(queryAllByRole('checkbox')![0])
+        fireEvent.click(queryAllByRole('checkbox')[0])
 
         expect(minProps.updateActionArgsOnApplied).toHaveBeenNthCalledWith(
             1,

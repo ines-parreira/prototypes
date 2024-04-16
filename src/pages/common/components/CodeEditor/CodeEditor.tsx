@@ -21,7 +21,7 @@ type Props = ACEProps & {
 
 function CodeEditor({title, tooltip, disabled, ...props}: Props) {
     const id = useId()
-    const [editor, setEditor] = useState<any | null>(null)
+    const [editor, setEditor] = useState<any>(null)
     const [isHover, setIsHover] = useState(false)
     const [isCopied, setIsCopied] = useState(false)
     const editorId = 'code-editor-' + id

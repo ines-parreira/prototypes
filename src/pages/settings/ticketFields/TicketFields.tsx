@@ -21,13 +21,11 @@ import {ListParams} from 'models/customField/types'
 import useCallbackRef from 'hooks/useCallbackRef'
 import css from './TicketFields.less'
 
-type TicketFieldsTab = 'active' | 'archived'
-
 const MAX_TICKET_FIELDS = 25
 
 export default function TicketFields() {
     useTitle('Ticket fields')
-    const {activeTab} = useParams<{activeTab: TicketFieldsTab | string}>()
+    const {activeTab} = useParams<{activeTab: string}>()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
     const [listingNode, setListingNode] = useCallbackRef()

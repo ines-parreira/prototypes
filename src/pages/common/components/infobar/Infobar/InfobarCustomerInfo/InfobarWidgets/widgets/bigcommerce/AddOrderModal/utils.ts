@@ -596,12 +596,7 @@ export function computeLineItemName(
 }
 
 export function computeLineItemErrorMessage(
-    error: Maybe<
-        | BigCommerceGeneralErrorMessage
-        | ProductModifiersChangedError
-        | BigCommerceLineItemError
-        | any
-    >,
+    error: Maybe<any>,
     productName: string,
     defaultError: string,
     addStyling = false

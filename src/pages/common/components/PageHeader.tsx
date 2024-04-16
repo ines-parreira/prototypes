@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import css from './PageHeader.less'
 
 type Props = {
-    title: string | unknown
+    title: unknown
     className?: string
     children?: ReactNode
 }

@@ -18,7 +18,9 @@ export const fetchTags = async (
     // when sorting by usage, the second sorting attribute needs to be defined explicitly
     if (options.orderBy?.startsWith(TagSortableProperties.Usage)) {
         const orderDir = options.orderBy.split(':')[1]
-        params.order_by += `,${TagSortableProperties.Name}:${orderDir}`
+        params.order_by =
+            (params.order_by as string) +
+            `,${TagSortableProperties.Name}:${orderDir}`
     }
 
     return await client.get<ApiListResponseCursorPagination<Tag[]>>(

@@ -7,7 +7,7 @@ import {recentViewsStorage} from 'state/views/utils'
 import {GorgiasInitialState, InitialRootState} from 'types'
 
 export default function toInitialStoreState(initialState: GorgiasInitialState) {
-    const nextState: Record<keyof GorgiasInitialState | string, any> = {
+    const nextState: Record<string, any> = {
         ...initialState,
     }
     const sections = initialState.viewSections

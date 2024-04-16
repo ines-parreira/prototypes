@@ -24,7 +24,6 @@ export type PhoneNumbersAction =
     | PhoneNumberCreatedAction
     | PhoneNumberFetchedAction
     | PhoneNumbersFetchedAction
-    | PhoneNumbersFetchedAction
 
 export type PhoneNumberCreatedAction = PayloadActionCreator<
     PhoneNumber,

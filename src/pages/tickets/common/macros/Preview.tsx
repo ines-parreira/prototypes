@@ -84,6 +84,7 @@ class Preview extends Component<Props> {
         // This is used for macro preview.
         if (
             this.props.displayHTML ||
+            // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
             (hasSourceType && isRichType(this.props.ticketMessageSourceType!))
         ) {
             value.html = responseTextAction.getIn(['arguments', 'body_html'])

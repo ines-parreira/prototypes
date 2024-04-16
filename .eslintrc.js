@@ -114,6 +114,8 @@ module.exports = {
         '@typescript-eslint/explicit-module-boundary-types': ['off'],
         '@typescript-eslint/no-non-null-assertion': ['off'],
         '@typescript-eslint/no-misused-promises': ['off'],
+        '@typescript-eslint/no-unsafe-enum-comparison': ['off'],
+        '@typescript-eslint/no-base-to-string': ['off'],
     },
     extends: [
         require.resolve('@gorgias/javascript-shared-config/eslint-base'),
@@ -134,6 +136,8 @@ module.exports = {
     ignorePatterns: [
         'src/types/**',
         'src/rest_api/help_center_api/**',
+        'src/rest_api/migration_api/client.generated.d.ts',
+        'src/rest_api/revenue_addon_api/client.generated.d.ts',
         'src/rest_api/ssp_api/client.generated.d.ts',
         'src/coverage/**',
     ],

@@ -51,7 +51,7 @@ function SupportPerformanceRevenue() {
             period,
             integrations: storeStatsFilter.length
                 ? storeStatsFilter
-                : [storeIntegrations[0]!.id],
+                : [storeIntegrations[0].id],
         }
     }, [storeStatsFilter, statsFilters, storeIntegrations])
 

@@ -619,7 +619,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                     (storeIntegration) =>
                                         storeIntegration?.get('id') ===
                                         storeIntegrationId
-                                )!
+                                )
 
                                 setCurrentStoreIntegration(storeIntegration)
 

@@ -194,7 +194,7 @@ export default function DiscountCodeResults({
                             <Link
                                 to={`/app/settings/integrations/shopify/${integration.get(
                                     'id'
-                                )!}`}
+                                )}`}
                             >
                                 settings page of your Shopify integration&nbsp;
                             </Link>

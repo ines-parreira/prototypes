@@ -35,7 +35,7 @@ export type Props = {
     children: ReactNode
     className?: string
     customActions?: ReactNode
-    icon?: boolean | ReactNode
+    icon?: ReactNode
     onClose?: (e: MouseEvent) => void
     type?: AlertType
 }

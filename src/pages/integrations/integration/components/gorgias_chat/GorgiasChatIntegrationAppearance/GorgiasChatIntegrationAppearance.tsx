@@ -440,6 +440,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             ['decoration', 'launcher'],
                             fromJS({type: GorgiasChatLauncherType.ICON})
                         )
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                         .toJS(),
                     avatar: {
                         imageType: integration.getIn(
@@ -987,7 +988,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     storeIntegration?.get(
                                                         'id'
                                                     ) === storeIntegrationId
-                                            )!
+                                            )
 
                                         setStoreIntegrationId(
                                             storeIntegrationId

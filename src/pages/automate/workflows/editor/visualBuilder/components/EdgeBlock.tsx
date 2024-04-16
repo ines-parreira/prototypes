@@ -325,7 +325,7 @@ function useMenuItemsForConnectedChannels(
     }, [isStepUnsupportedInAllChannels, updateMenuItems])
 
     useEffect(() => {
-        optionalNodeTypes.map(async (nodeType) => {
+        void optionalNodeTypes.map(async (nodeType) => {
             const unsupportedConnectedChannels =
                 await getUnsupportedConnectedChannels(configurationId, nodeType)
             const supportedChannels = getSupportedChannels(nodeType)

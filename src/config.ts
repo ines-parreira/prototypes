@@ -642,7 +642,7 @@ export type ActionTemplate = {
     integrationType?: string
     arguments?: {
         [key: string]: {
-            default?: boolean | string | null | Array<any> | any
+            default?: any
             display_order?: number
             editable?: boolean
             input?: {
@@ -661,7 +661,7 @@ export type ActionTemplate = {
         }
     }
     validators?: Array<{
-        validate: (value: Customer) => unknown | boolean
+        validate: (value: Customer) => unknown
         error: string
     }>
     partialUpdateKeys?: string | string[]

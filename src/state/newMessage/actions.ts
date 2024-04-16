@@ -115,6 +115,7 @@ export const addAttachments =
     (
         dispatch: StoreDispatch,
         getState: () => RootState
+        // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     ): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
         dispatch({
             type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START,
@@ -214,6 +215,7 @@ export const addProductCardAttachment =
     (
         dispatch: StoreDispatch,
         getState: () => RootState
+        // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     ): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
         const state = getState()
         const {ticket: _ticket} = state

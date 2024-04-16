@@ -36,7 +36,7 @@ const select =
         const dateTimeToValuesMap = res.reduce<
             Partial<Record<string, number[]>>
         >((acc, item) => {
-            const key = formatReportingQueryDate(item[String(dimension)]!)
+            const key = formatReportingQueryDate(item[String(dimension)])
             const values = measures.map((measure) =>
                 parseFloat(item[measure] || '0')
             )

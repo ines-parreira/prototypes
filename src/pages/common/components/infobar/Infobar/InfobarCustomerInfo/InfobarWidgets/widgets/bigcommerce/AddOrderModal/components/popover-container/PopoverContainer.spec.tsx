@@ -45,7 +45,7 @@ describe('<PopoverContainer />', () => {
         const onToggleMock = jest.fn()
         render(<WrapperComponent onToggle={onToggleMock} />)
 
-        fireEvent.keyDown(screen.getByTestId('popover-container-body')!, {
+        fireEvent.keyDown(screen.getByTestId('popover-container-body'), {
             key: 'Escape',
         })
         expect(onToggleMock).toHaveBeenCalled()

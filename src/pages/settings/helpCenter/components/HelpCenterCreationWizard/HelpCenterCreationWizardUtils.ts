@@ -257,7 +257,7 @@ export const handleOnSuccess = (message: string, dispatch: StoreDispatch) => {
 }
 
 export const handleOnError = (
-    error: Record<string, unknown> | Error | unknown,
+    error: unknown,
     message: string,
     dispatch: StoreDispatch
 ) => {

@@ -227,7 +227,7 @@ describe('errors util', () => {
 
         it('should add the last INP measurement to the route transaction', () => {
             const browserTracing = withInpMeasurements(new TestBrowserTracing())
-            const reportInp = onInpMock.mock.calls[0][0]!
+            const reportInp = onInpMock.mock.calls[0][0]
 
             reportInp({
                 value: 123,
@@ -254,7 +254,7 @@ describe('errors util', () => {
 
         it('should add the INP measurement only once', () => {
             const browserTracing = withInpMeasurements(new TestBrowserTracing())
-            const reportInp = onInpMock.mock.calls[0][0]!
+            const reportInp = onInpMock.mock.calls[0][0]
 
             reportInp({
                 value: 123,

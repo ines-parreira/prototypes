@@ -322,7 +322,7 @@ export default function useWorkflowTranslations(
 // replacing the values with the value returned by the objectMapper provided
 function walkDeep<T>(
     value: T,
-    elementMapper: (v: any) => any | null,
+    elementMapper: (v: any) => any,
     options?: {ignoreKeys?: string[]}
 ): T {
     if (_isArray(value)) {

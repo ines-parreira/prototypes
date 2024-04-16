@@ -48,7 +48,7 @@ export const isExistingArticle = (
 ): article is Article => (article ? 'id' in article : false)
 
 export const isExistingTranslation = (
-    translation: any | null
+    translation: any
 ): translation is ArticleTranslationWithRating =>
     translation ? 'created_datetime' in translation : false
 

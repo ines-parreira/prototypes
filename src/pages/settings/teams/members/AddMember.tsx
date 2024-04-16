@@ -37,7 +37,7 @@ export class AddMemberContainer extends Component<Props, State> {
 
     _addTeamMember = (userId: number) => {
         this.setState({isLoading: true})
-        this.props.addTeamMember(userId).finally(() => {
+        void this.props.addTeamMember(userId).finally(() => {
             this.setState({isLoading: false})
         })
     }

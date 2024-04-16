@@ -123,7 +123,7 @@ describe('datadog', () => {
             const inpValue = 123
 
             initDatadogRum(defaultOptions)
-            const reportInp = assumeMock(onINP).mock.calls[0][0]!
+            const reportInp = assumeMock(onINP).mock.calls[0][0]
             reportInp({
                 value: inpValue,
             } as Metric)
