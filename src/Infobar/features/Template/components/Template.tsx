@@ -139,6 +139,7 @@ export function Template({
         }
     }
 
+    if (!shopifyContextData) return component
     return (
         <ShopifyContext.Provider value={shopifyContextData}>
             {component}
@@ -166,25 +167,28 @@ function useShopifyContextData(source: Source) {
                 (an Order or a Customer). target_id maybe is equal to customer_id in Shopify customer card
             */
 
-        if (!isSourceRecord(source)) return contextData
-        if (!isSourceRecord(source.customer)) return contextData
+        if (!isSourceRecord(source)) return null
 
         const data_source_endpoint =
             isSourceRecord(source) &&
             typeof source.admin_graphql_api_id === 'string'
                 ? source.admin_graphql_api_id
                 : ''
-        if (data_source_endpoint) {
-            const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
-            const match = reg.exec(data_source_endpoint)
 
-            //extract the type Customer or Order from data_source_endpoint
-            if (match?.length === 2) contextData.data_source = match[1]
+        if (!data_source_endpoint) return null
 
-            contextData.widget_resource_ids = {
-                target_id: source.id as number,
-                customer_id: source.customer.id as number,
-            }
+        const reg = new RegExp(/gid:\/\/shopify\/(?<type>\w+)\/[0-9]+/g)
+        const match = reg.exec(data_source_endpoint)
+
+        //extract the type Customer or Order from data_source_endpoint
+        if (match?.length === 2) contextData.data_source = match[1]
+
+        contextData.widget_resource_ids = {
+            target_id: typeof source.id === 'number' ? source.id : null,
+            customer_id:
+                (isSourceRecord(source.customer) &&
+                    (source.customer.id as number)) ||
+                null,
         }
 
         return contextData

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {render} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
@@ -15,6 +15,7 @@ import {
 } from 'Infobar/features/Template/helpers/extensions'
 
 import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import Card from 'Infobar/features/Card'
 import Field from 'Infobar/features/Field'
 import Wrapper from 'Infobar/features/Wrapper'
@@ -30,6 +31,9 @@ jest.mock('Infobar/features/Field')
 jest.mock('Infobar/features/Wrapper')
 jest.mock('Infobar/features/List')
 jest.mock('Infobar/features/Template/helpers/extensions')
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
+)
 const cardMock = assumeMock(Card)
 const fieldMock = assumeMock(Field)
 const wrapperMock = assumeMock(Wrapper)
@@ -78,6 +82,53 @@ describe('Template', () => {
         wrapperMock.mockClear()
         listMock.mockClear()
     })
+
+    describe('ShopifyContext', () => {
+        const spiedDataFunction = jest.fn()
+        it('should not provide the context ', () => {
+            cardMock.mockImplementation(() => {
+                const data = useContext(ShopifyContext)
+                spiedDataFunction(data)
+                return <></>
+            })
+            render(<Template {...minProps} template={cardTemplate} />)
+
+            expect(spiedDataFunction).toHaveBeenCalledWith({
+                data_source: null,
+                widget_resource_ids: {
+                    target_id: null,
+                    customer_id: null,
+                },
+            })
+        })
+
+        it('should provide a context', () => {
+            cardMock.mockImplementation(() => {
+                const data = useContext(ShopifyContext)
+                spiedDataFunction(data)
+                return <></>
+            })
+            render(
+                <Template
+                    {...minProps}
+                    template={cardTemplate}
+                    source={{
+                        id: 4,
+                        admin_graphql_api_id: 'gid://shopify/Order/432',
+                    }}
+                />
+            )
+
+            expect(spiedDataFunction).toHaveBeenCalledWith({
+                data_source: 'Order',
+                widget_resource_ids: {
+                    target_id: 4,
+                    customer_id: null,
+                },
+            })
+        })
+    })
+
     describe('extensions', () => {
         it('should provide the correct extensions', () => {
             render(
