@@ -95,6 +95,7 @@ describe('EmailVerification', () => {
                     name: /verify domain/i,
                 })
             ).toBeTruthy()
+            expect(screen.queryByText('Required')).toBeInTheDocument()
         })
 
         it('should display Domain Verification as verified', () => {
@@ -118,6 +119,7 @@ describe('EmailVerification', () => {
                     name: /verify domain/i,
                 })
             ).toBeFalsy()
+            expect(screen.queryByText('Required')).not.toBeInTheDocument()
         })
 
         it.each([

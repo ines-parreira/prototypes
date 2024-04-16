@@ -78,9 +78,11 @@ export default function EmailVerification({
                 header={
                     <div className="d-flex align-items-center">
                         <h3>Domain Verification</h3>
-                        <Badge className="ml-2" type={ColorType.LightError}>
-                            Required
-                        </Badge>
+                        {!isDomainVerified && (
+                            <Badge className="ml-2" type={ColorType.LightError}>
+                                Required
+                            </Badge>
+                        )}
                     </div>
                 }
                 body={
