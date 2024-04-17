@@ -22,6 +22,7 @@ import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {Option, Value} from 'pages/common/forms/SelectField/types'
 
 import RichField from 'pages/common/forms/RichField/RichField'
+import {useIsConvertUniqueDiscountCodesEnabled} from 'pages/convert/common/hooks/useIsConvertUniqueDiscountCodesEnabled'
 import {useIsAllowedToAddDiscountCode} from '../../hooks/useIsAllowedToAddDiscountCode'
 
 import css from './CampaignMessage.less'
@@ -64,6 +65,9 @@ export const CampaignMessage = memo(
         const tourConfiguration = useMemo(() => {
             return getTourConfiguration()
         }, [getTourConfiguration])
+
+        const isConvertUniqueDiscountCodesEnabled =
+            useIsConvertUniqueDiscountCodesEnabled()
 
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
             number | null
@@ -237,6 +241,9 @@ export const CampaignMessage = memo(
                         isRequired
                         countCharacters={isConvertSubscriber}
                         uploadType={UploadType.PublicAttachment}
+                        supportsDiscountOffer={
+                            isConvertUniqueDiscountCodesEnabled
+                        }
                     />
                     <TicketAttachments
                         removable

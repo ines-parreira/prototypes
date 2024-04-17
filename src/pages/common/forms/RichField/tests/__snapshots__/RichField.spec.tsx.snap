@@ -3374,6 +3374,7 @@ exports[`RichField should render mutable variable 1`] = `
                             canAddDiscountCodeLink={false}
                             canAddProductCard={false}
                             canAddProductLink={false}
+                            canAddUniqueDiscountOffer={false}
                             canAddVideoLink={false}
                             canAddVideoPlayer={false}
                             disableOutOfStockProducts={false}

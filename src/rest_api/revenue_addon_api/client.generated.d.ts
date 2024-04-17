@@ -127,11 +127,11 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any
+            attachments?: any[] | null
             /**
              * Meta
              */
-            meta?: any
+            meta?: any | null
             /**
              * Triggers
              */
@@ -184,11 +184,11 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any
+            attachments?: any[] | null
             /**
              * Meta
              */
-            meta?: any
+            meta?: any | null
             /**
              * Triggers
              */
@@ -234,11 +234,11 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any
+            attachments?: any[] | null
             /**
              * Meta
              */
-            meta?: any
+            meta?: any | null
             /**
              * Triggers
              */
@@ -713,11 +713,11 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any
+            attachments?: any[] | null
             /**
              * Meta
              */
-            meta?: any
+            meta?: any | null
             /**
              * Triggers
              */

@@ -5,13 +5,18 @@ import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
 
 import {DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
-import {DiscountCode} from 'models/discountCodes/types'
+import {
+    DiscountCode,
+    discountCodeIsGeneric,
+    discountCodeIsUnique,
+} from 'models/discountCodes/types'
 import {insertText} from 'utils'
-import DiscountCodeResults from 'pages/common/components/DiscountCodeResults/DiscountCodeResults'
 import shortcutManager from 'services/shortcutManager'
 import {getIconFromType} from 'state/integrations/helpers'
 import {useModalManager} from 'hooks/useModalManager'
 
+import {DiscountCodeResultsWrapper} from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
+import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {ActionInjectedProps, ActionName} from '../types'
 import {useToolbarContext} from '../ToolbarContext'
 import {getTooltipTourConfiguration} from '../utils'
@@ -73,10 +78,8 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         setPickedIntegration(mapIntegrationToPickedIntegration(integration))
     }, [])
 
-    const handleAddDiscountCode = useCallback(
-        (event: React.MouseEvent<HTMLElement>, discount: DiscountCode) => {
-            event.preventDefault()
-
+    const handleAddGenericDiscountCode = useCallback(
+        (discount: DiscountCode) => {
             const editorState = getEditorState()
 
             let newEditorState
@@ -96,14 +99,37 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
             setEditorState(newEditorState)
 
             onInsertDiscountCodeAdded(discount)
-            setOpen(false)
         },
         [
-            getEditorState,
-            setEditorState,
             canAddDiscountCodeLink,
+            getEditorState,
             onInsertDiscountCodeAdded,
+            setEditorState,
         ]
+    )
+
+    // TODO: Implement once unique offer creation is implemented
+    const handleAddUniqueDiscountOffer = (offer: UniqueDiscountOffer) => {
+        // eslint-disable-next-line no-console
+        console.info(offer)
+    }
+
+    const handleAddDiscountCode = useCallback(
+        (
+            event: React.MouseEvent<HTMLElement>,
+            discount: DiscountCode | UniqueDiscountOffer
+        ) => {
+            event.preventDefault()
+
+            if (discountCodeIsGeneric(discount)) {
+                handleAddGenericDiscountCode(discount)
+            } else if (discountCodeIsUnique(discount)) {
+                handleAddUniqueDiscountOffer(discount)
+            }
+            // TODO: Add logic for unique discount code
+            setOpen(false)
+        },
+        [handleAddGenericDiscountCode]
     )
 
     const tour = useMemo(() => {
@@ -179,7 +205,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
                     </ListGroup>
                 </div>
             ) : (
-                <DiscountCodeResults
+                <DiscountCodeResultsWrapper
                     onDiscountClicked={handleAddDiscountCode}
                     onResetStoreChoice={
                         shopifyIntegrations.size > 1

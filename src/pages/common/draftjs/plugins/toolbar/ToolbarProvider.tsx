@@ -29,6 +29,7 @@ const ToolbarProvider = ({
     shopifyIntegrations = List(),
     workflowVariables,
     workflowVariablesNodeTypes,
+    canAddUniqueDiscountOffer = false,
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -51,6 +52,7 @@ const ToolbarProvider = ({
             shopifyIntegrations,
             workflowVariables,
             workflowVariablesNodeTypes,
+            canAddUniqueDiscountOffer,
         }),
         [
             canAddVideoPlayer,
@@ -72,6 +74,7 @@ const ToolbarProvider = ({
             shopifyIntegrations,
             workflowVariables,
             workflowVariablesNodeTypes,
+            canAddUniqueDiscountOffer,
         ]
     )
 

@@ -36,6 +36,7 @@ type Props = {
     disableProductCards?: boolean
     disableVariantSelection?: boolean
     toolbarTour?: Record<string, TooltipTourConfigurationType>
+    supportsDiscountOffer?: boolean
 } & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
@@ -45,6 +46,7 @@ const TicketRichField = (
         disableProductCards,
         disableVariantSelection,
         disableOutOfStockProducts,
+        supportsDiscountOffer = false,
         toolbarTour,
         ...props
     }: Props,
@@ -92,6 +94,7 @@ const TicketRichField = (
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
                     newMessageChannel
                 ),
+            canAddUniqueDiscountOffer: supportsDiscountOffer,
             onInsertDiscountCodeOpen: () => {
                 const customerData = getAllCustomerIdsFromTicket(
                     ticket,
@@ -158,6 +161,7 @@ const TicketRichField = (
             newMessageChannel,
             isNewMessagePublic,
             shopifyIntegrations,
+            supportsDiscountOffer,
         ]
     )
 
