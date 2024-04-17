@@ -66,7 +66,6 @@ export enum FeatureFlagKey {
     HelpCenterOnePager = 'help-center-one-pager',
     HelpCenterRulesAndViews = 'help-center-rules-and-views',
     HelpCenterSubjectLines = 'help-center-subject-lines',
-    HelpdeskProductAutomatedCancellation = 'helpdesk-product-automated-cancellation',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',

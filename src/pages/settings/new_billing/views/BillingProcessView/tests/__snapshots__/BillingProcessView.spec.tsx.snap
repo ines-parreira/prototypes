@@ -76,6 +76,13 @@ exports[`UsageAndPlansView should render 1`] = `
                     Active
                   </span>
                 </div>
+                <button
+                  aria-disabled="false"
+                  class="wrapper ghost destructive small"
+                  type="button"
+                >
+                  Cancel auto-renewal
+                </button>
               </div>
               <div
                 class="details"

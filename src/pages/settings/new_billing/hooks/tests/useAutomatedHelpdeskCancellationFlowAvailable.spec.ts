@@ -7,7 +7,6 @@ import {
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
 import {assumeMock} from '../../../../../utils/testing'
-import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
 
 jest.mock('launchdarkly-react-client-sdk')
@@ -25,25 +24,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
         expect(result.current).toBe(false)
     })
 
-    it('returns false if automated helpdesk cancellation flag is not set', () => {
-        useFlagsMock.mockReturnValueOnce({
-            [FeatureFlagKey.HelpdeskProductAutomatedCancellation]: false,
-        })
-
-        const {result} = renderHook(() =>
-            useAutomatedHelpdeskCancellationFlowAvailable(
-                proMonthlyHelpdeskPrice
-            )
-        )
-
-        expect(result.current).toBe(false)
-    })
-
-    it('returns true for pro tier plan with automated helpdesk cancellation flag set', () => {
-        useFlagsMock.mockReturnValueOnce({
-            [FeatureFlagKey.HelpdeskProductAutomatedCancellation]: true,
-        })
-
+    it('returns true for pro tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(
                 proMonthlyHelpdeskPrice
@@ -53,11 +34,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
         expect(result.current).toBe(true)
     })
 
-    it('returns true for basic tier plan with automated helpdesk cancellation flag set', () => {
-        useFlagsMock.mockReturnValueOnce({
-            [FeatureFlagKey.HelpdeskProductAutomatedCancellation]: true,
-        })
-
+    it('returns true for basic tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(
                 basicMonthlyHelpdeskPrice
@@ -67,11 +44,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
         expect(result.current).toBe(true)
     })
 
-    it('returns true for starter tier plan with automated helpdesk cancellation flag set', () => {
-        useFlagsMock.mockReturnValueOnce({
-            [FeatureFlagKey.HelpdeskProductAutomatedCancellation]: true,
-        })
-
+    it('returns true for starter tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(starterHelpdeskPrice)
         )
@@ -79,11 +52,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
         expect(result.current).toBe(true)
     })
 
-    it('returns false for unsupported tier plan with automated helpdesk cancellation flag set', () => {
-        useFlagsMock.mockReturnValueOnce({
-            [FeatureFlagKey.HelpdeskProductAutomatedCancellation]: true,
-        })
-
+    it('returns false for unsupported tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(
                 advancedMonthlyHelpdeskPrice
