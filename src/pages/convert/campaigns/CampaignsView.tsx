@@ -23,6 +23,8 @@ import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
+import Tooltip from 'pages/common/components/Tooltip'
+import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {CONVERT_ROUTE_PARAM_NAME} from '../common/constants'
 import {ConvertRouteParams} from '../common/types'
 import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
@@ -42,6 +44,7 @@ export const CampaignsView = () => {
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
+    const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
@@ -61,9 +64,11 @@ export const CampaignsView = () => {
     const {channelConnection, isLoading: isChannelConnectionLoading} =
         useGetOrCreateChannelConnection(toJS(integration))
 
-    const {mutate: updateCampaign} = useUpdateCampaign()
+    const {mutate: updateCampaign, isLoading: isUpdatingCampaign} =
+        useUpdateCampaign()
     const {mutateAsync: createCampaign} = useCreateCampaign()
-    const {mutate: deleteCampaign} = useDeleteCampaign()
+    const {mutate: deleteCampaign, isLoading: isDeletingCampaign} =
+        useDeleteCampaign()
 
     const toggleCampaign = useCallback(
         (campaign: Campaign) => {
@@ -157,6 +162,18 @@ export const CampaignsView = () => {
         )
     }, [isLoading, hasStoreConnected, isConvertSubscriber, allCampaigns])
 
+    const isCreateCampaignButtonDisabled = useMemo(() => {
+        return (
+            areConvertLightCampaignsEnabled &&
+            !isConvertSubscriber &&
+            hasStoreConnected
+        )
+    }, [
+        areConvertLightCampaignsEnabled,
+        isConvertSubscriber,
+        hasStoreConnected,
+    ])
+
     return (
         <CampaignListOptions>
             <NavigatedSuccessModal
@@ -194,7 +211,32 @@ export const CampaignsView = () => {
                             to={`/app/convert/${integrationId}/campaigns/new`}
                             className={css.createCampaignFromLibraryLink}
                         >
-                            <Button>Create Campaign</Button>
+                            <Button
+                                id="create-campaign-button"
+                                isDisabled={isCreateCampaignButtonDisabled}
+                            >
+                                Create Campaign
+                            </Button>
+                            {isCreateCampaignButtonDisabled && (
+                                <Tooltip
+                                    placement="bottom-start"
+                                    target="create-campaign-button"
+                                    autohide={false}
+                                >
+                                    To create more campaigns,{' '}
+                                    <a
+                                        href={
+                                            'https://www.gorgias.com/products/convert#section-conversion'
+                                        }
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        discover Convert
+                                    </a>
+                                    .
+                                </Tooltip>
+                            )}
                         </Link>
                     )}
                 </PageHeader>
@@ -203,6 +245,8 @@ export const CampaignsView = () => {
                     campaigns={allCampaigns}
                     integration={immutableIntegration}
                     isLoading={isLoading}
+                    isUpdatingCampaign={isUpdatingCampaign}
+                    isDeletingCampaign={isDeletingCampaign}
                     onDeleteCampaign={handleDeleteCampaign}
                     onDuplicateCampaign={handleDuplicateCampaign}
                     onUpdateCampaign={toggleCampaign}

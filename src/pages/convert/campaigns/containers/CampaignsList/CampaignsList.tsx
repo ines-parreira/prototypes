@@ -33,6 +33,8 @@ type Props = {
     campaigns: Campaign[]
     integration: Map<any, any>
     isLoading: boolean
+    isUpdatingCampaign: boolean
+    isDeletingCampaign: boolean
     onDeleteCampaign: (campaign: Campaign) => void
     onDuplicateCampaign: (event: MouseEvent, campaign: Campaign) => void
     onUpdateCampaign: (campaign: Campaign) => void
@@ -44,6 +46,8 @@ const CampaignsList = ({
     campaigns,
     integration,
     isLoading,
+    isUpdatingCampaign,
+    isDeletingCampaign,
     onDeleteCampaign,
     onDuplicateCampaign,
     onUpdateCampaign,
@@ -237,6 +241,8 @@ const CampaignsList = ({
                     integration={integration}
                     perPage={PER_PAGE}
                     page={page}
+                    isUpdatingCampaign={isUpdatingCampaign}
+                    isDeletingCampaign={isDeletingCampaign}
                     onClickDelete={onDeleteCampaign}
                     onClickDuplicate={onDuplicateCampaign}
                     onChangePage={handleChangePage}

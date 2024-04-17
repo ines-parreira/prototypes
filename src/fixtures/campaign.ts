@@ -17,6 +17,7 @@ export const campaign = {
     message_html: 'Hello, please enjoy your stay on the <b>internet</b>.',
     language: 'en-US',
     status: 'active',
+    is_light: false,
     trigger_rule: `{${triggerId}}`,
     attachments: [],
     meta: {

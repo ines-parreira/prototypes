@@ -10,6 +10,7 @@ import Button from 'pages/common/components/button/Button'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import {CONVERT_PRODUCT_LINK} from 'pages/convert/common/constants'
 import css from './ConvertPaywallView.less'
 import {ConvertFeatures, PaywallConfig} from './constants'
 
@@ -78,7 +79,7 @@ const ConvertPaywallView = ({
                             target="blank"
                             data-candu-id="convert-paywall-learn-more"
                             intent="secondary"
-                            href="https://www.gorgias.com/products/convert"
+                            href={CONVERT_PRODUCT_LINK}
                         >
                             {greyButtonText}
                         </LinkButton>

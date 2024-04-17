@@ -12,6 +12,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import {billingState} from 'fixtures/billing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as areConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import useSearch from 'hooks/useSearch'
 
 import {assumeMock, renderWithRouter} from 'utils/testing'
@@ -73,6 +74,14 @@ const queryClient = mockQueryClient()
 const mockHistory = createBrowserHistory()
 
 describe('<CampaignsView/>', () => {
+    const isConvertSubscriberSpy = jest.spyOn(
+        isConvertSubscriberHook,
+        'useIsConvertSubscriber'
+    )
+    const areConvertLightCampaignsEnabledSpy = jest.spyOn(
+        areConvertLightCampaignsEnabled,
+        'useAreConvertLightCampaignsEnabled'
+    )
     const mutateCreateMock = jest.fn()
     const mutateDeleteMock = jest.fn()
 
@@ -113,10 +122,8 @@ describe('<CampaignsView/>', () => {
 
     beforeEach(() => {
         localStorage.clear()
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
+        isConvertSubscriberSpy.mockImplementation(() => true)
+        areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
         ;(useSearch as jest.Mock).mockImplementation(() => {
             return {
                 search: '',
@@ -267,6 +274,50 @@ describe('<CampaignsView/>', () => {
             expect(
                 queryByText('Create Campaign From Library')
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Light campaigns', () => {
+        beforeEach(() => {
+            isConvertSubscriberSpy.mockImplementation(() => false)
+            useParamsMock.mockReturnValue({
+                [CONVERT_ROUTE_PARAM_NAME]: '118',
+            })
+        })
+
+        it('should disable create campaign button and display tooltip with link', async () => {
+            const state = {
+                ...defaultState,
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 118,
+                            type: 'gorgias_chat',
+                            name: 'My new chat',
+                            meta: {
+                                app_id: '1',
+                                shop_integration_id: 1,
+                                shop_type: 'shopify',
+                            },
+                        },
+                    ],
+                }),
+            }
+
+            const {getByText, getByRole} = renderComponent(state)
+
+            const button = getByText('Create Campaign')
+            expect(button).toBeInTheDocument()
+            expect(button).toHaveAttribute('aria-disabled')
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            expect(button.getAttribute('aria-disabled')).toBe('true')
+
+            fireEvent.mouseOver(button)
+
+            await waitFor(() => {
+                const link = getByRole('link', {name: 'discover Convert'})
+                expect(link).toBeInTheDocument()
+            })
         })
     })
 

@@ -23,6 +23,7 @@ const campaignA = {
         noReply: false,
     },
     status: CampaignStatus.Active,
+    is_light: false,
     created_datetime: '2023-08-07T07:25:02.983Z',
     updated_datetime: '2023-08-07T07:25:02.983Z',
 } as Campaign
@@ -41,6 +42,7 @@ const campaignB = {
         noReply: false,
     },
     status: CampaignStatus.Active,
+    is_light: false,
     created_datetime: '2023-08-01T07:25:02.983Z',
     updated_datetime: '2023-08-01T07:25:02.983Z',
 } as Campaign
@@ -59,6 +61,7 @@ const campaignC = {
         noReply: false,
     },
     status: CampaignStatus.Inactive,
+    is_light: false,
     created_datetime: '2023-08-02T07:25:02.983Z',
     updated_datetime: '2023-08-02T07:25:02.983Z',
 } as Campaign
@@ -77,6 +80,7 @@ const campaignD = {
         noReply: false,
     },
     status: CampaignStatus.Active,
+    is_light: false,
     created_datetime: '2023-08-03T07:25:02.983Z',
     updated_datetime: '2023-08-03T07:25:02.983Z',
 } as Campaign
@@ -95,6 +99,7 @@ const campaignE = {
         noReply: false,
     },
     status: CampaignStatus.Inactive,
+    is_light: false,
     created_datetime: '2023-08-04T07:25:02.983Z',
     updated_datetime: '2023-08-04T07:25:02.983Z',
 } as Campaign

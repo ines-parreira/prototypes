@@ -139,6 +139,7 @@ export const CampaignDetailsForm = ({
         triggers: campaign?.triggers ?? [],
         trigger_rule: campaign?.trigger_rule ?? '',
         status: campaign?.status ?? CampaignStatus.Inactive,
+        is_light: !!campaign?.is_light,
         created_datetime: campaign?.created_datetime ?? null,
         updated_datetime: campaign?.updated_datetime ?? null,
     })

@@ -1,4 +1,4 @@
-import React, {MouseEvent, useCallback, useMemo} from 'react'
+import React, {MouseEvent, useCallback, useMemo, useRef, useState} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
@@ -22,6 +22,15 @@ import {
 } from 'config/integrations/gorgias_chat'
 import {BadgeItem} from 'pages/settings/helpCenter/components/HelpCenterPreferencesView/components/BadgeList'
 import {Language} from 'constants/languages'
+import LightCampaignBadge from 'pages/convert/campaigns/components/LightCampaignBadge/LightCampaignBadge'
+import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
+import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
+import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import Tooltip from 'pages/common/components/Tooltip'
+import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import useLocalStorage from 'hooks/useLocalStorage'
+import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {isActiveStatus} from '../../types/enums/CampaignStatus.enum'
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
@@ -33,11 +42,16 @@ import {CampaignToolsCell} from './components/CampaignToolsCell'
 
 import css from './CampaignsTable.less'
 
+const TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS =
+    'You already have 3 or more campaigns active. Disable them to activate this one.'
+
 type Props = {
     data: Campaign[]
     integration: Map<any, any>
     perPage?: number
     page?: number
+    isUpdatingCampaign: boolean
+    isDeletingCampaign: boolean
     onClickDelete: (campaign: Campaign) => void
     onClickDuplicate: (event: MouseEvent, campaign: Campaign) => void
     onChangePage: (page: number) => void
@@ -49,18 +63,82 @@ export const CampaignsTable = ({
     integration,
     perPage = 25,
     page = 1,
+    isUpdatingCampaign,
+    isDeletingCampaign,
     onClickDelete,
     onClickDuplicate,
     onChangePage,
     onToggleCampaign,
 }: Props) => {
     const history = useHistory()
+    const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
+    const isConvertSubscriber = useIsConvertSubscriber()
+    const chatHasShopifyStore = chatIsShopifyStore(integration)
     const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
         useSortedCampaigns(data)
+
+    const [isLightModalOpen, setIsLightModalOpen] = useState(false)
+    const onLightModalSubmitFn = useRef<() => void>()
+
+    const storageKey = useMemo(() => {
+        return `convert:lightModal:${integration.get('id') as string}:${
+            LightCampaignModalType.DeactivateCampaign
+        }`
+    }, [integration])
+    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage<
+        boolean | undefined
+    >(storageKey)
 
     const handleChangeSort = useCallback(
         (key: SortingKeys) => () => changeSorting(key),
         [changeSorting]
+    )
+
+    const campaignCreationDisabled = useMemo(() => {
+        return (
+            areConvertLightCampaignsEnabled &&
+            !isConvertSubscriber &&
+            chatHasShopifyStore
+        )
+    }, [
+        areConvertLightCampaignsEnabled,
+        isConvertSubscriber,
+        chatHasShopifyStore,
+    ])
+
+    const activeCampaignsCount = useMemo(() => {
+        return sortedCampaigns.filter((campaign) =>
+            isActiveStatus(campaign.status)
+        ).length
+    }, [sortedCampaigns])
+
+    const isOverCampaignsLimit = useMemo(() => {
+        return (
+            campaignCreationDisabled &&
+            activeCampaignsCount > ACTIVE_CAMPAIGNS_LIMIT
+        )
+    }, [campaignCreationDisabled, activeCampaignsCount])
+
+    const isAtCampaignsLimit = useMemo(() => {
+        return (
+            campaignCreationDisabled &&
+            activeCampaignsCount === ACTIVE_CAMPAIGNS_LIMIT
+        )
+    }, [campaignCreationDisabled, activeCampaignsCount])
+
+    const onClickToggle = useCallback(
+        (campaign: Campaign) => {
+            if (isOverCampaignsLimit && !lightModalDismissed) {
+                onLightModalSubmitFn.current = () => {
+                    onToggleCampaign(campaign)
+                    setIsLightModalOpen(false)
+                }
+                setIsLightModalOpen(true)
+            } else {
+                onToggleCampaign(campaign)
+            }
+        },
+        [isOverCampaignsLimit, lightModalDismissed, onToggleCampaign]
     )
 
     const chatMultiLanguagesEnabled =
@@ -78,6 +156,13 @@ export const CampaignsTable = ({
                 integration.get('id') as number
             }/campaigns/${campaign.id}`
 
+            const onClickEdit = (event: React.UIEvent) => {
+                event.preventDefault()
+                history.push(editLink, {
+                    previousSearch: window.location.search,
+                })
+            }
+
             const creationDate = campaign?.created_datetime
                 ? new Date(campaign.created_datetime).toLocaleDateString(
                       'en-US'
@@ -88,14 +173,28 @@ export const CampaignsTable = ({
                 (campaign.language ?? defaultLanguage) as Language
             ) as LanguageUI
 
+            const isCampaignActive = isActiveStatus(campaign.status)
+            const toggleDisabled =
+                !isCampaignActive &&
+                (isAtCampaignsLimit || isOverCampaignsLimit)
+            const toggleId = `toggle-${campaign.id}`
+
             return (
                 <TableBodyRow key={index} className={css.tableRow}>
                     <BodyCell style={{width: 88}}>
-                        <ToggleInput
-                            isToggled={isActiveStatus(campaign.status)}
-                            onClick={() => onToggleCampaign(campaign)}
-                            aria-label={`Enable campaign ${campaign.name}`}
-                        />
+                        <span id={toggleId}>
+                            <ToggleInput
+                                isToggled={isCampaignActive}
+                                isDisabled={toggleDisabled}
+                                onClick={() => onClickToggle(campaign)}
+                                aria-label={`Enable campaign ${campaign.name}`}
+                            />
+                        </span>
+                        {toggleDisabled && (
+                            <Tooltip target={toggleId} placement="bottom-start">
+                                {TOOGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS}
+                            </Tooltip>
+                        )}
                     </BodyCell>
                     <CampaignPreviewPopover
                         message={campaign.message_text}
@@ -105,16 +204,16 @@ export const CampaignsTable = ({
                             <Link
                                 className={css.anchor}
                                 to={editLink}
-                                onClick={(event) => {
-                                    event.preventDefault()
-                                    history.push(editLink, {
-                                        previousSearch: window.location.search,
-                                    })
-                                }}
+                                onClick={onClickEdit}
                             >
                                 <div>
                                     <b>{campaign.name}</b>
                                 </div>
+                                <LightCampaignBadge
+                                    campaign={campaign}
+                                    integration={integration}
+                                    className={css.lightBadge}
+                                />
                             </Link>
                         </BodyCell>
                     </CampaignPreviewPopover>
@@ -138,21 +237,30 @@ export const CampaignsTable = ({
                     <BodyCell style={{width: 110}}>
                         <CampaignToolsCell
                             campaign={campaign}
+                            integration={integration}
+                            createDisabled={campaignCreationDisabled}
+                            isDeletingCampaign={isDeletingCampaign}
+                            isOverCampaignsLimit={isOverCampaignsLimit}
                             onClickDelete={onClickDelete}
                             onClickDuplicate={onClickDuplicate}
+                            onClickEdit={onClickEdit}
                         />
                     </BodyCell>
                 </TableBodyRow>
             )
         },
         [
-            history,
             integration,
+            defaultLanguage,
+            isAtCampaignsLimit,
+            isOverCampaignsLimit,
+            chatMultiLanguagesEnabled,
+            campaignCreationDisabled,
+            isDeletingCampaign,
             onClickDelete,
             onClickDuplicate,
-            onToggleCampaign,
-            chatMultiLanguagesEnabled,
-            defaultLanguage,
+            history,
+            onClickToggle,
         ]
     )
 
@@ -207,6 +315,17 @@ export const CampaignsTable = ({
                     count={Math.ceil(data.length / perPage)}
                     page={page}
                     onChange={onChangePage}
+                />
+            )}
+            {isOverCampaignsLimit && (
+                <LightCampaignModal
+                    modalType={LightCampaignModalType.DeactivateCampaign}
+                    isOpen={isLightModalOpen}
+                    isDismissed={!!lightModalDismissed}
+                    setIsDismissed={setLightModalDismissed}
+                    isSubmitting={isUpdatingCampaign}
+                    onSubmit={onLightModalSubmitFn.current}
+                    onClose={() => setIsLightModalOpen(false)}
                 />
             )}
         </>

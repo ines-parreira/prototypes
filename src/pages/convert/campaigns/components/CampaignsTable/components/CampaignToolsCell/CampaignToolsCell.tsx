@@ -1,21 +1,60 @@
-import React, {MouseEvent, useCallback} from 'react'
+import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
 
+import {Map} from 'immutable'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
+import {isLightCampaign} from 'pages/convert/campaigns/utils/isLightCampaign'
+import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
+import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
+import useLocalStorage from 'hooks/useLocalStorage'
 import {Campaign} from '../../../../types/Campaign'
 
 type Props = {
     campaign: Campaign
+    integration: Map<any, any>
+    createDisabled: boolean
+    isDeletingCampaign: boolean
+    isOverCampaignsLimit: boolean
     onClickDelete: (campaign: Campaign) => void
     onClickDuplicate: (event: MouseEvent, campaign: Campaign) => void
+    onClickEdit: (event: MouseEvent) => void
 }
 
 export const CampaignToolsCell = ({
     campaign,
+    integration,
+    createDisabled,
+    isDeletingCampaign,
+    isOverCampaignsLimit,
     onClickDelete,
     onClickDuplicate,
+    onClickEdit,
 }: Props) => {
+    const [isLightModalOpen, setIsLightModalOpen] = useState(false)
+
+    const storageKey = useMemo(() => {
+        return `convert:lightModal:${integration.get('id') as string}:${
+            LightCampaignModalType.DeleteCampaign
+        }`
+    }, [integration])
+    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage<
+        boolean | undefined
+    >(storageKey)
+
+    const areLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
+    const isLight =
+        areLightCampaignsEnabled && isLightCampaign(campaign, integration)
+
+    const onDelete = useCallback(
+        (campaign) => {
+            onClickDelete(campaign)
+            setIsLightModalOpen(false)
+        },
+        [onClickDelete]
+    )
+
     const renderConfirmation = useCallback(({uid, onDisplayConfirmation}) => {
         return (
             <IconButton
@@ -32,8 +71,8 @@ export const CampaignToolsCell = ({
         )
     }, [])
 
-    return (
-        <>
+    const duplicateButton = useMemo(() => {
+        return (
             <IconButton
                 className="mr-1"
                 data-testid="duplicate-icon-button"
@@ -44,6 +83,11 @@ export const CampaignToolsCell = ({
             >
                 file_copy
             </IconButton>
+        )
+    }, [campaign, onClickDuplicate])
+
+    const deleteButton = useMemo(() => {
+        return (
             <ConfirmationPopover
                 buttonProps={{
                     intent: 'destructive',
@@ -58,6 +102,68 @@ export const CampaignToolsCell = ({
             >
                 {renderConfirmation}
             </ConfirmationPopover>
+        )
+    }, [campaign, onClickDelete, renderConfirmation])
+
+    const deleteButtonWithLightModal = useMemo(() => {
+        return (
+            <>
+                <IconButton
+                    className="mr-1"
+                    onClick={() => setIsLightModalOpen(true)}
+                    fillStyle="ghost"
+                    intent="destructive"
+                    title="Delete campaign"
+                    data-testid="delete-icon-button"
+                >
+                    delete
+                </IconButton>
+                <LightCampaignModal
+                    modalType={LightCampaignModalType.DeleteCampaign}
+                    isOpen={isLightModalOpen}
+                    isDismissed={!!lightModalDismissed}
+                    setIsDismissed={setLightModalDismissed}
+                    isSubmitting={isDeletingCampaign}
+                    onSubmit={() => onDelete(campaign)}
+                    onClose={() => setIsLightModalOpen(false)}
+                />
+            </>
+        )
+    }, [
+        campaign,
+        isDeletingCampaign,
+        isLightModalOpen,
+        lightModalDismissed,
+        onDelete,
+        setLightModalDismissed,
+    ])
+
+    const editButton = useMemo(() => {
+        return (
+            <IconButton
+                className="mr-0 ml-auto"
+                data-testid="edit-icon-button"
+                fillStyle="ghost"
+                intent="secondary"
+                title="Edit campaign"
+                onClick={(ev) => onClickEdit(ev)}
+            >
+                edit
+            </IconButton>
+        )
+    }, [onClickEdit])
+
+    return (
+        <>
+            {!isLight && (
+                <>
+                    {createDisabled ? editButton : duplicateButton}
+                    {isOverCampaignsLimit && !lightModalDismissed
+                        ? deleteButtonWithLightModal
+                        : deleteButton}
+                </>
+            )}
+            {isLight && <>{editButton}</>}
         </>
     )
 }

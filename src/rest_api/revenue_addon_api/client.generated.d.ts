@@ -29,7 +29,7 @@ declare namespace Components {
             /**
              * Campaigns
              */
-            campaigns: string[] | null
+            campaigns?: string[]
         }
         /**
          * ABTestCreateRequestSchema
@@ -44,9 +44,9 @@ declare namespace Components {
              */
             ratio?: number
             /**
-             * Start Date
+             * Start Datetime
              */
-            start_date?: string // date
+            start_datetime?: string // date-time
         }
         /**
          * ABTestPatchRequestSchema
@@ -71,13 +71,13 @@ declare namespace Components {
             ratio: number
             state: ABTestState
             /**
-             * Start Date
+             * Start Datetime
              */
-            start_date: string // date
+            start_datetime: string // date-time
             /**
-             * End Date
+             * End Datetime
              */
-            end_date: string /* date */ | null
+            end_datetime: string /* date-time */ | null
             /**
              * Report Link
              */
@@ -250,7 +250,7 @@ declare namespace Components {
             /**
              * Is Light
              */
-            is_light?: boolean
+            is_light: boolean
             /**
              * Created Datetime
              */
@@ -307,16 +307,16 @@ declare namespace Components {
          * CampaignTriggerSchema
          */
         export interface CampaignTriggerSchema {
-            /**
-             * Id
-             */
-            id: string
             type: CampaignTriggerType
             operator: CampaignTriggerOperator
             /**
              * Value
              */
             value: number | boolean | string | any[] | any
+            /**
+             * Id
+             */
+            id: string
         }
         /**
          * CampaignTriggerType
@@ -463,6 +463,91 @@ declare namespace Components {
              */
             status: string
         }
+        /**
+         * DiscountOfferCreateRequestSchema
+         */
+        export interface DiscountOfferCreateRequestSchema {
+            type: DiscountOfferTypeEnum
+            /**
+             * Prefix
+             */
+            prefix: string
+            /**
+             * Value
+             */
+            value?: number | string | null
+            /**
+             * Minimum Purchase Amount
+             */
+            minimum_purchase_amount?: number | string | null
+            /**
+             * External Customer Segment Ids
+             */
+            external_customer_segment_ids?: string[] | null
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: string
+        }
+        /**
+         * DiscountOfferPatchRequestSchema
+         */
+        export interface DiscountOfferPatchRequestSchema {
+            type?: DiscountOfferTypeEnum | null
+            /**
+             * Prefix
+             */
+            prefix?: string | null
+            /**
+             * Value
+             */
+            value?: number | string | null
+            /**
+             * Minimum Purchase Amount
+             */
+            minimum_purchase_amount?: number | string | null
+            /**
+             * External Customer Segment Ids
+             */
+            external_customer_segment_ids?: string[] | null
+        }
+        /**
+         * DiscountOfferResponseSchema
+         */
+        export interface DiscountOfferResponseSchema {
+            type: DiscountOfferTypeEnum
+            /**
+             * Prefix
+             */
+            prefix: string
+            /**
+             * Value
+             */
+            value?: string | null
+            /**
+             * Minimum Purchase Amount
+             */
+            minimum_purchase_amount?: string | null
+            /**
+             * External Customer Segment Ids
+             */
+            external_customer_segment_ids?: string[] | null
+            /**
+             * Id
+             */
+            id: string
+            /**
+             * Store Integration Id
+             */
+            store_integration_id: string
+        }
+        /**
+         * DiscountOfferTypeEnum
+         */
+        export type DiscountOfferTypeEnum =
+            | 'fixed'
+            | 'percentage'
+            | 'free_shipping'
         /**
          * EvaluatedCampaignSchema
          */
@@ -1003,6 +1088,14 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace CreateDiscountOffer {
+        export type RequestBody =
+            Components.Schemas.DiscountOfferCreateRequestSchema
+        namespace Responses {
+            export type $201 = Components.Schemas.DiscountOfferResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace DeleteCampaign {
         namespace Parameters {
             /**
@@ -1026,6 +1119,20 @@ declare namespace Paths {
         }
         export interface PathParameters {
             channel_connection_id: Parameters.ChannelConnectionId
+        }
+        namespace Responses {
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace DeleteDiscountOffer {
+        namespace Parameters {
+            /**
+             * Discount Offer Id
+             */
+            export type DiscountOfferId = string
+        }
+        export interface PathParameters {
+            discount_offer_id: Parameters.DiscountOfferId
         }
         namespace Responses {
             export type $422 = Components.Schemas.HTTPValidationError
@@ -1208,6 +1315,46 @@ declare namespace Paths {
             export type $200 = Components.Schemas.CustomDomainSchema
         }
     }
+    namespace GetDiscountOffer {
+        namespace Parameters {
+            /**
+             * Discount Offer Id
+             */
+            export type DiscountOfferId = string
+        }
+        export interface PathParameters {
+            discount_offer_id: Parameters.DiscountOfferId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.DiscountOfferResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace GetDiscountOffers {
+        namespace Parameters {
+            /**
+             * Search
+             * Search by prefix
+             */
+            export type Search = string | null
+            /**
+             * Store Integration Id
+             * Helpdesk store integration id
+             */
+            export type StoreIntegrationId = string
+        }
+        export interface QueryParameters {
+            search?: Parameters.Search
+            store_integration_id: Parameters.StoreIntegrationId
+        }
+        namespace Responses {
+            /**
+             * Response Get Discount Offers
+             */
+            export type $200 = Components.Schemas.DiscountOfferResponseSchema[]
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace GetStatusAndUsage {
         namespace Parameters {
             /**
@@ -1361,6 +1508,23 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace PatchDiscountOffer {
+        namespace Parameters {
+            /**
+             * Discount Offer Id
+             */
+            export type DiscountOfferId = string
+        }
+        export interface PathParameters {
+            discount_offer_id: Parameters.DiscountOfferId
+        }
+        export type RequestBody =
+            Components.Schemas.DiscountOfferPatchRequestSchema
+        namespace Responses {
+            export type $200 = Components.Schemas.DiscountOfferResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace RedirectR_Alias_Get {
         export interface HeaderParameters {
             referrer?: Parameters.Referrer
@@ -1459,73 +1623,82 @@ declare namespace Paths {
 
 export interface OperationMethods {
     /**
-     * get_ab_tests - Get Ab Tests
+     * get_config_by_revenue_id - Get Config
      */
-    'get_ab_tests'(
-        parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
     >
     /**
-     * create_ab_test - Create Ab Test
+     * get_config_by_revenue_id - Get Config
      */
-    'create_ab_test'(
+    'get_config_by_revenue_id'(
+        parameters?: Parameters<
+            Paths.GetConfigByRevenueId.PathParameters &
+                Paths.GetConfigByRevenueId.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByRevenueId.Responses.$200
+        | Paths.GetConfigByRevenueId.Responses.$422
+    >
+    /**
+     * get_campaigns - Get Campaigns
+     */
+    'get_campaigns'(
+        parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
+    >
+    /**
+     * create_campaign - Create Campaign
+     */
+    'create_campaign'(
         parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateAbTest.RequestBody,
+        data?: Paths.CreateCampaign.RequestBody,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.CreateAbTest.Responses.$201 | Paths.CreateAbTest.Responses.$422
+        | Paths.CreateCampaign.Responses.$201
+        | Paths.CreateCampaign.Responses.$422
     >
     /**
-     * get_ab_test - Get Ab Test
+     * get_campaign - Get Campaign
      */
-    'get_ab_test'(
-        parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+    'get_campaign'(
+        parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
+        Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
     >
     /**
-     * patch_ab_test - Patch Ab Test
+     * patch_campaign - Patch Campaign
      */
-    'patch_ab_test'(
-        parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
-        data?: Paths.PatchAbTest.RequestBody,
+    'patch_campaign'(
+        parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+        data?: Paths.PatchCampaign.RequestBody,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
+        Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
     >
     /**
-     * get_config_by_revenue_id - Get Config
+     * delete_campaign - Delete Campaign
      */
-    'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
+    'delete_campaign'(
+        parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
         data?: any,
         config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
-    >
-    /**
-     * get_config_by_revenue_id - Get Config
-     */
-    'get_config_by_revenue_id'(
-        parameters?: Parameters<
-            Paths.GetConfigByRevenueId.PathParameters &
-                Paths.GetConfigByRevenueId.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.GetConfigByRevenueId.Responses.$200
-        | Paths.GetConfigByRevenueId.Responses.$422
-    >
+    ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
     /**
      * get_channel_connections - Get Channel Connections
      */
@@ -1579,6 +1752,46 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     /**
+     * get_ab_tests - Get Ab Tests
+     */
+    'get_ab_tests'(
+        parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
+    >
+    /**
+     * create_ab_test - Create Ab Test
+     */
+    'create_ab_test'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateAbTest.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.CreateAbTest.Responses.$201 | Paths.CreateAbTest.Responses.$422
+    >
+    /**
+     * get_ab_test - Get Ab Test
+     */
+    'get_ab_test'(
+        parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
+    >
+    /**
+     * patch_ab_test - Patch Ab Test
+     */
+    'patch_ab_test'(
+        parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
+        data?: Paths.PatchAbTest.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
+    >
+    /**
      * health_check_assistant_health_check_get - Health Check
      */
     'health_check_assistant_health_check_get'(
@@ -1605,6 +1818,58 @@ export interface OperationMethods {
         | Paths.EvaluateCampaignRules.Responses.$200
         | Paths.EvaluateCampaignRules.Responses.$422
     >
+    /**
+     * get_discount_offers - Get Discount Offers
+     */
+    'get_discount_offers'(
+        parameters?: Parameters<Paths.GetDiscountOffers.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetDiscountOffers.Responses.$200
+        | Paths.GetDiscountOffers.Responses.$422
+    >
+    /**
+     * create_discount_offer - Create Discount Offer
+     */
+    'create_discount_offer'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.CreateDiscountOffer.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.CreateDiscountOffer.Responses.$201
+        | Paths.CreateDiscountOffer.Responses.$422
+    >
+    /**
+     * get_discount_offer - Get Discount Offer
+     */
+    'get_discount_offer'(
+        parameters?: Parameters<Paths.GetDiscountOffer.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetDiscountOffer.Responses.$200
+        | Paths.GetDiscountOffer.Responses.$422
+    >
+    /**
+     * patch_discount_offer - Patch Discount Offer
+     */
+    'patch_discount_offer'(
+        parameters?: Parameters<Paths.PatchDiscountOffer.PathParameters> | null,
+        data?: Paths.PatchDiscountOffer.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.PatchDiscountOffer.Responses.$200
+        | Paths.PatchDiscountOffer.Responses.$422
+    >
+    /**
+     * delete_discount_offer - Delete Discount Offer
+     */
+    'delete_discount_offer'(
+        parameters?: Parameters<Paths.DeleteDiscountOffer.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
     /**
      * health_check_bundle_health_check_get - Health Check
      */
@@ -1821,55 +2086,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     /**
-     * get_campaigns - Get Campaigns
-     */
-    'get_campaigns'(
-        parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
-    >
-    /**
-     * create_campaign - Create Campaign
-     */
-    'create_campaign'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: Paths.CreateCampaign.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        | Paths.CreateCampaign.Responses.$201
-        | Paths.CreateCampaign.Responses.$422
-    >
-    /**
-     * get_campaign - Get Campaign
-     */
-    'get_campaign'(
-        parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
-    >
-    /**
-     * patch_campaign - Patch Campaign
-     */
-    'patch_campaign'(
-        parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
-        data?: Paths.PatchCampaign.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<
-        Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
-    >
-    /**
-     * delete_campaign - Delete Campaign
-     */
-    'delete_campaign'(
-        parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
-    /**
      * health_check_billing_health_check_get - Health Check
      */
     'health_check_billing_health_check_get'(
@@ -1918,51 +2134,6 @@ export interface OperationMethods {
 }
 
 export interface PathsDictionary {
-    ['/ab-tests']: {
-        /**
-         * create_ab_test - Create Ab Test
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateAbTest.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateAbTest.Responses.$201
-            | Paths.CreateAbTest.Responses.$422
-        >
-        /**
-         * get_ab_tests - Get Ab Tests
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
-        >
-    }
-    ['/ab-tests/{ab_test_id}']: {
-        /**
-         * get_ab_test - Get Ab Test
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
-        >
-        /**
-         * patch_ab_test - Patch Ab Test
-         */
-        'patch'(
-            parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
-            data?: Paths.PatchAbTest.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
-        >
-    }
     ['/assistant/configs/revenue/{revenue_id}']: {
         /**
          * get_config_by_revenue_id - Get Config
@@ -1994,6 +2165,61 @@ export interface PathsDictionary {
             | Paths.GetConfigByRevenueId.Responses.$200
             | Paths.GetConfigByRevenueId.Responses.$422
         >
+    }
+    ['/campaigns']: {
+        /**
+         * create_campaign - Create Campaign
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateCampaign.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateCampaign.Responses.$201
+            | Paths.CreateCampaign.Responses.$422
+        >
+        /**
+         * get_campaigns - Get Campaigns
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetCampaigns.Responses.$200
+            | Paths.GetCampaigns.Responses.$422
+        >
+    }
+    ['/campaigns/{campaign_id}']: {
+        /**
+         * get_campaign - Get Campaign
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
+        >
+        /**
+         * patch_campaign - Patch Campaign
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
+            data?: Paths.PatchCampaign.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchCampaign.Responses.$200
+            | Paths.PatchCampaign.Responses.$422
+        >
+        /**
+         * delete_campaign - Delete Campaign
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
     }
     ['/channel-connections']: {
         /**
@@ -2051,6 +2277,51 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     }
+    ['/ab-tests']: {
+        /**
+         * create_ab_test - Create Ab Test
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateAbTest.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateAbTest.Responses.$201
+            | Paths.CreateAbTest.Responses.$422
+        >
+        /**
+         * get_ab_tests - Get Ab Tests
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
+        >
+    }
+    ['/ab-tests/{ab_test_id}']: {
+        /**
+         * get_ab_test - Get Ab Test
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
+        >
+        /**
+         * patch_ab_test - Patch Ab Test
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
+            data?: Paths.PatchAbTest.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
+        >
+    }
     ['/assistant/health-check']: {
         /**
          * health_check_assistant_health_check_get - Health Check
@@ -2083,6 +2354,62 @@ export interface PathsDictionary {
             | Paths.EvaluateCampaignRules.Responses.$200
             | Paths.EvaluateCampaignRules.Responses.$422
         >
+    }
+    ['/discount-offers']: {
+        /**
+         * create_discount_offer - Create Discount Offer
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.CreateDiscountOffer.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.CreateDiscountOffer.Responses.$201
+            | Paths.CreateDiscountOffer.Responses.$422
+        >
+        /**
+         * get_discount_offers - Get Discount Offers
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetDiscountOffers.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetDiscountOffers.Responses.$200
+            | Paths.GetDiscountOffers.Responses.$422
+        >
+    }
+    ['/discount-offers/{discount_offer_id}']: {
+        /**
+         * get_discount_offer - Get Discount Offer
+         */
+        'get'(
+            parameters?: Parameters<Paths.GetDiscountOffer.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetDiscountOffer.Responses.$200
+            | Paths.GetDiscountOffer.Responses.$422
+        >
+        /**
+         * patch_discount_offer - Patch Discount Offer
+         */
+        'patch'(
+            parameters?: Parameters<Paths.PatchDiscountOffer.PathParameters> | null,
+            data?: Paths.PatchDiscountOffer.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.PatchDiscountOffer.Responses.$200
+            | Paths.PatchDiscountOffer.Responses.$422
+        >
+        /**
+         * delete_discount_offer - Delete Discount Offer
+         */
+        'delete'(
+            parameters?: Parameters<Paths.DeleteDiscountOffer.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
     }
     ['/bundle/health-check']: {
         /**
@@ -2330,61 +2657,6 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
-    }
-    ['/campaigns']: {
-        /**
-         * create_campaign - Create Campaign
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: Paths.CreateCampaign.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.CreateCampaign.Responses.$201
-            | Paths.CreateCampaign.Responses.$422
-        >
-        /**
-         * get_campaigns - Get Campaigns
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.GetCampaigns.Responses.$200
-            | Paths.GetCampaigns.Responses.$422
-        >
-    }
-    ['/campaigns/{campaign_id}']: {
-        /**
-         * get_campaign - Get Campaign
-         */
-        'get'(
-            parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
-        >
-        /**
-         * patch_campaign - Patch Campaign
-         */
-        'patch'(
-            parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
-            data?: Paths.PatchCampaign.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<
-            | Paths.PatchCampaign.Responses.$200
-            | Paths.PatchCampaign.Responses.$422
-        >
-        /**
-         * delete_campaign - Delete Campaign
-         */
-        'delete'(
-            parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
     }
     ['/billing/health-check']: {
         /**

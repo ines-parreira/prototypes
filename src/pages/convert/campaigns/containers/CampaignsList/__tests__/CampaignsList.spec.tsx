@@ -65,6 +65,16 @@ const integration = fromJS({
 
 describe('<CampaignsList />', () => {
     let store: MockStoreEnhanced<Partial<RootState>, StoreDispatch>
+    const props = {
+        campaigns: campaignsList,
+        integration: integration,
+        isLoading: false,
+        isUpdatingCampaign: false,
+        isDeletingCampaign: false,
+        onDeleteCampaign: jest.fn(),
+        onDuplicateCampaign: jest.fn(),
+        onUpdateCampaign: jest.fn(),
+    }
 
     beforeAll(() => {
         jest.spyOn(
@@ -119,7 +129,7 @@ describe('<CampaignsList />', () => {
                 <Provider store={store}>
                     <CampaignListOptions>
                         <CampaignsList
-                            integration={integration}
+                            {...props}
                             campaigns={[
                                 ...campaignsList,
                                 {
@@ -130,16 +140,13 @@ describe('<CampaignsList />', () => {
                                     message_text: `awesome campaign message`,
                                     message_html: `awesome campaign message`,
                                     status: CampaignStatus.Active,
+                                    is_light: false,
                                     created_datetime:
                                         '2021-10-06T17:17:56.565Z',
                                     updated_datetime:
                                         '2021-10-06T17:17:56.565Z',
                                 },
                             ]}
-                            isLoading={false}
-                            onDeleteCampaign={jest.fn()}
-                            onDuplicateCampaign={jest.fn()}
-                            onUpdateCampaign={jest.fn()}
                         />
                     </CampaignListOptions>
                 </Provider>
@@ -161,14 +168,7 @@ describe('<CampaignsList />', () => {
 
             const {getByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsList}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} />
                 </Provider>
             )
 
@@ -199,14 +199,7 @@ describe('<CampaignsList />', () => {
         it('should display the status filter', () => {
             const {getByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsList}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} />
                 </Provider>
             )
 
@@ -218,14 +211,7 @@ describe('<CampaignsList />', () => {
         it('should not display the status filter if there are no campaigns', () => {
             const {getByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={[]}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} campaigns={[]} />
                 </Provider>
             )
 
@@ -237,14 +223,7 @@ describe('<CampaignsList />', () => {
         it('should display all campaigns by default', () => {
             const {getByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsForFilters}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} campaigns={campaignsForFilters} />
                 </Provider>
             )
 
@@ -264,14 +243,7 @@ describe('<CampaignsList />', () => {
 
             const {getByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsForFilters}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} campaigns={campaignsForFilters} />
                 </Provider>
             )
 
@@ -291,14 +263,7 @@ describe('<CampaignsList />', () => {
 
             const {getByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsForFilters}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} campaigns={campaignsForFilters} />
                 </Provider>
             )
 
@@ -315,14 +280,7 @@ describe('<CampaignsList />', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
             const {queryByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsList}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} campaigns={campaignsList} />
                 </Provider>
             )
 
@@ -339,14 +297,7 @@ describe('<CampaignsList />', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
             const {queryByText} = render(
                 <Provider store={store}>
-                    <CampaignsList
-                        integration={integration}
-                        campaigns={campaignsList}
-                        isLoading={false}
-                        onDeleteCampaign={jest.fn()}
-                        onDuplicateCampaign={jest.fn()}
-                        onUpdateCampaign={jest.fn()}
-                    />
+                    <CampaignsList {...props} campaigns={campaignsList} />
                 </Provider>
             )
 

@@ -1,0 +1,1 @@
+export const ACTIVE_CAMPAIGNS_LIMIT = 3
