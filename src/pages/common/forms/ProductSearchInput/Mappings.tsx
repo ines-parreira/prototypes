@@ -7,6 +7,7 @@ import {
 import {
     Product as ShopifyProduct,
     Variant as ShopifyVariant,
+    InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
 
 import {supportedBigCommerceModifierTypes} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/consts'
@@ -29,6 +30,12 @@ export const shopifyDataMappers = {
             0
         )
 
+        const isAvailable =
+            variant.inventory_policy === ShipifyInventoryPolicy.Deny &&
+            isTracked
+                ? quantity > 0
+                : true
+
         return {
             image: {
                 alt: product.image?.alt || product.title,
@@ -41,7 +48,7 @@ export const shopifyDataMappers = {
                     ? `${product.variants.length} variants`
                     : sku,
             stock: {
-                isAvailable: isTracked ? quantity > 0 : true,
+                isAvailable: isAvailable,
                 tracked: isTracked,
                 quantity: quantity,
                 totalVariants: product.variants.length,

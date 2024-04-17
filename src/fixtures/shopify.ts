@@ -78,6 +78,7 @@ import {
     TransactionKind,
     ShippingLine,
     InventoryManagement,
+    InventoryPolicy,
 } from '../constants/integrations/types/shopify'
 import {
     IntegrationDataItem,
@@ -98,6 +99,7 @@ export const shopifyVariantFixture = ({
     price = '9.99',
     inventoryQuantity = 0,
     inventoryManagement = null,
+    inventoryPolicy = InventoryPolicy.Deny,
 }: {
     id?: number
     sku?: string
@@ -105,6 +107,7 @@ export const shopifyVariantFixture = ({
     price?: string
     inventoryQuantity?: number
     inventoryManagement?: Maybe<InventoryManagement>
+    inventoryPolicy?: Maybe<InventoryPolicy>
 } = {}): Variant => ({
     id,
     admin_graphql_api_id: `gid://shopify/ProductVariant/${id}`,
@@ -119,6 +122,7 @@ export const shopifyVariantFixture = ({
     requires_shipping: true,
     inventory_quantity: inventoryQuantity,
     inventory_management: inventoryManagement,
+    inventory_policy: inventoryPolicy,
 })
 
 export const shopifyProductFixture = ({

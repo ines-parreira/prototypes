@@ -138,6 +138,11 @@ export enum InventoryManagement {
     Shopify = 'shopify',
 }
 
+export enum InventoryPolicy {
+    Deny = 'deny',
+    Continue = 'continue',
+}
+
 export enum EditOrderAction {
     AddVariant = 'addVariant',
     AddCustomVariant = 'addCustomVariant',
@@ -358,6 +363,7 @@ export type Variant = {
     requires_shipping: boolean
     inventory_quantity: number
     inventory_management: Maybe<InventoryManagement>
+    inventory_policy: Maybe<InventoryPolicy>
 }
 
 export type Product = {
