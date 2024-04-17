@@ -692,6 +692,10 @@ describe('selectors', () => {
                             id: 3,
                             private: true,
                         },
+                        '48': {
+                            id: 48,
+                            private: false,
+                        },
                     },
                 },
                 currentAccount: fromJS({
@@ -702,11 +706,12 @@ describe('selectors', () => {
                             type: AccountSettingType.ViewsOrdering,
                             data: {
                                 views: {
-                                    2: {display_order: 3},
-                                    10: {display_order: 2},
+                                    2: {display_order: 4},
+                                    10: {display_order: 3},
                                 },
                                 view_sections: {
-                                    1: {display_order: 1},
+                                    1: {display_order: 2},
+                                    48: {display_order: 1},
                                 },
                             },
                         },
@@ -747,7 +752,7 @@ describe('selectors', () => {
             ).toBeNull()
         })
 
-        it('should return the first view', () => {
+        it('should return the first available view', () => {
             expect(selectors.getDefaultTicketView(state)).toMatchObject(
                 state.entities.views['10']
             )

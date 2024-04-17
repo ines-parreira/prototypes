@@ -130,12 +130,12 @@ export class ViewTableContainer extends Component<Props> {
 
             if (viewMissing) {
                 history.push('/app')
-            } else if (!urlViewId) {
-                history.push(`/app/tickets/${suggestedViewId!.toString()}`)
+            } else if (suggestedViewId && !urlViewId) {
+                history.push(`/app/tickets/${suggestedViewId.toString()}`)
             }
 
-            if (activeView.get('id') !== suggestedViewId) {
-                setViewActive(getView(suggestedViewId!.toString()))
+            if (suggestedViewId && activeView.get('id') !== suggestedViewId) {
+                setViewActive(getView(suggestedViewId.toString()))
             }
 
             activeViewIdSet(suggestedViewId)
@@ -144,7 +144,8 @@ export class ViewTableContainer extends Component<Props> {
                 config.get('type'),
                 undefined
             )
-            setViewActive(getView(suggestedViewId!.toString()))
+            suggestedViewId &&
+                setViewActive(getView(suggestedViewId.toString()))
             activeViewIdSet(suggestedViewId)
         }
 

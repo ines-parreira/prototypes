@@ -25,7 +25,10 @@ import {RootState} from 'state/types'
 import {createImmutableSelector, isCurrentlyOnView} from 'utils'
 import {BASE_VIEW_ID} from 'constants/view'
 
-import {TicketNavbarElement} from 'pages/tickets/navbar/TicketNavbarContent'
+import {
+    TicketNavbarElement,
+    TicketNavbarSectionElement,
+} from 'pages/tickets/navbar/TicketNavbarContent'
 import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 import {
     getPrivateTicketNavbarElements,
@@ -350,8 +353,8 @@ export const getViewIdToDisplay =
                 if (views.isEmpty()) {
                     return null
                 }
-                if (type === ViewType.TicketList) {
-                    return defaultTicketView?.id
+                if (type === ViewType.TicketList && defaultTicketView) {
+                    return defaultTicketView.id
                 }
 
                 return parseInt(
@@ -511,17 +514,20 @@ export const getDefaultTicketView = createSelector(
             ? (JSON.parse(viewCategories) as ViewCategoryNavbar[])
             : [ViewVisibility.Public]
 
-        const firstElement =
-            firstCategory === ViewVisibility.Private && privateElements[0]
-                ? privateElements[0]
-                : publicElements[0]
+        const views =
+            firstCategory === ViewVisibility.Private && privateElements.length
+                ? privateElements
+                : publicElements
 
-        if (!firstElement) return null
-
-        if (firstElement.type === TicketNavbarElementType.View) {
-            return firstElement.data
+        for (let i = 0; i < views.length; i++) {
+            if (views[i].type === TicketNavbarElementType.View) {
+                return views[i].data as View
+            }
+            if ((views[i] as TicketNavbarSectionElement).children.length) {
+                return (views[i] as TicketNavbarSectionElement).children[0]
+            }
         }
 
-        return firstElement.children[0] || bottomSystemElements[0]?.data || null
+        return bottomSystemElements[0]?.data || null
     }
 )
