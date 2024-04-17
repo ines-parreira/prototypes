@@ -91,11 +91,11 @@ export const DEFAULT_IVR_SETTINGS = {
 export const DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE = {
     voice_message_type: VoiceMessageType.TextToSpeech,
     text_to_speech_content:
-        "Thank you for choosing our service! We've received your request and are on it.",
+        'Thank you for choosing our service! We’ve received your request and are on it.',
 }
 
 export const DEFAULT_IVR_DEFLECTION_SMS_CONTENT =
-    "Hello! It seems we're a bit tied up at the moment, but we're here to help. Please reply to this SMS with your query. Thank you for your understanding."
+    'Hello! Thanks for choosing our messaging service. How can I help you?'
 export const DEFAULT_EMAIL_DKIM_KEY_SIZE = 1024
 
 export enum EmailProvider {

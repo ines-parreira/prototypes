@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react'
-import {Row, Col, Input} from 'reactstrap'
+import {Row, Col} from 'reactstrap'
 import {map} from 'lodash'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -19,11 +19,13 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
+import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import useAppSelector from 'hooks/useAppSelector'
 import {getSmsIntegrations} from 'state/integrations/selectors'
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
 import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
+
 import css from './IvrMenuActionField.less'
 
 type Props = {
@@ -154,8 +156,8 @@ const IvrMenuActionField = ({
                             portalRootId="app-root"
                             onBackdropClick={() => setDrawerOpen(false)}
                         >
-                            <Drawer.Header>
-                                <h3>Add message</h3>
+                            <Drawer.Header className={css.drawerHeader}>
+                                <h3 className={css.title}>Message</h3>
                                 <Drawer.HeaderActions>
                                     <IconButton
                                         fillStyle="ghost"
@@ -187,7 +189,7 @@ const IvrMenuActionField = ({
                                     }}
                                     intent="primary"
                                 >
-                                    Save
+                                    Save Changes
                                 </Button>
                                 <Button
                                     onClick={() => setDrawerOpen(false)}
@@ -201,16 +203,17 @@ const IvrMenuActionField = ({
                     </>
                 )}
                 {value.action === IvrMenuActionType.ForwardToExternalNumber && (
-                    <Input
+                    <PhoneNumberInput
                         value={value.forward_call.phone_number}
-                        onChange={(event) => {
+                        onChange={(phone) => {
                             onChange({
                                 ...value,
                                 forward_call: {
-                                    phone_number: event.target.value,
+                                    phone_number: phone,
                                 },
                             })
                         }}
+                        data-1p-ignore
                     />
                 )}
                 {value.action === IvrMenuActionType.ForwardToGorgiasNumber && (

@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -20,6 +21,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import VoiceMessageField from './VoiceMessageField'
 import css from './IvrMenuActionField.less'
 
+const HELPER_TEXT = `This message will be sent to callers in a form of SMS once this IVR option is selected`
+
 type Props = {
     settings: IvrSmsDeflection
     onChange: (value: IvrSmsDeflection) => void
@@ -35,6 +38,7 @@ const IvrMenuActionSendToSMSField = ({
     isDrawerOpen,
     smsIntegrations,
 }: Props) => {
+    const idForRadioButtons = useId()
     const [smsConfirmationMessage, setSmsConfirmationMessage] =
         useState<VoiceMessage>(
             settings.confirmation_message ??
@@ -133,15 +137,15 @@ const IvrMenuActionSendToSMSField = ({
                 portalRootId="app-root"
                 onBackdropClick={() => setDrawerOpen(false)}
             >
-                <Drawer.Header>
-                    <h3 className={css.drawerHeader}>Manage settings</h3>
+                <Drawer.Header className={css.drawerHeader}>
+                    <h3 className={css.title}>Message</h3>
                     <Drawer.HeaderActions>
                         <IconButton
                             fillStyle="ghost"
                             intent="secondary"
                             onClick={() => setDrawerOpen(false)}
                         >
-                            close
+                            keyboard_tab
                         </IconButton>
                     </Drawer.HeaderActions>
                 </Drawer.Header>
@@ -165,26 +169,20 @@ const IvrMenuActionSendToSMSField = ({
                         SMS confirmation message
                     </h5>
                     <p>
-                        This message will be played to callers once the SMS
+                        This message will be played to callers once the SMS menu
                         option is selected
                     </p>
                     <VoiceMessageField
                         value={smsConfirmationMessage}
                         onChange={setSmsConfirmationMessage}
-                        radioButtonId={'sms-confirmation-message'}
+                        radioButtonId={`sms-confirmation-message-${idForRadioButtons}`}
                     />
-                    <h5 className={css.innerHeader}>
-                        SMS Message sent to callers
-                    </h5>
+                    <h5 className={css.innerHeader}>Outbound SMS Message</h5>
                     <TextArea
                         value={smsSentToCallers}
                         onChange={setSmsSentToCallers}
-                        caption="This message will be sent to callers in a form of SMS once this IVR option is selected"
-                        error={
-                            smsSentToCallers.length === 0
-                                ? 'This message will be sent to callers in a form of SMS once this IVR option is selected'
-                                : ''
-                        }
+                        caption={HELPER_TEXT}
+                        error={smsSentToCallers.length === 0 ? HELPER_TEXT : ''}
                     />
                 </Drawer.Content>
                 <Drawer.Footer>
@@ -193,7 +191,7 @@ const IvrMenuActionSendToSMSField = ({
                         intent="primary"
                         isDisabled={isSubmitDisabled()}
                     >
-                        Save changes
+                        Save Changes
                     </Button>
                     <Button
                         onClick={() => setDrawerOpen(false)}

@@ -99,7 +99,6 @@ const VoiceMessageField = ({
                     <TextToSpeechRadioButton
                         selectedVoiceMessageType={value.voice_message_type}
                         onChange={handleVoiceMessageTypeChange}
-                        label={'Text-to-speech'}
                         id={radioButtonId}
                     />
                     {allowNone && (
@@ -142,6 +141,8 @@ const VoiceMessageField = ({
                 <VoiceRecordingInput
                     voiceRecordingPath={voiceRecordingPath}
                     onVoiceRecordingUpload={handleVoiceRecordingUpload}
+                    replaceLabel={'Replace File'}
+                    uploadLabel={'Upload File'}
                 />
             )}
             <TextToSpeechRadioButton
@@ -268,7 +269,7 @@ const TextToSpeechRecordingInput = ({
                 placeholder={'Write a message to convert to speech'}
                 error={
                     noMessageProvided
-                        ? 'Text-to-speech message is required'
+                        ? 'Text To Speech message is required'
                         : ''
                 }
             />

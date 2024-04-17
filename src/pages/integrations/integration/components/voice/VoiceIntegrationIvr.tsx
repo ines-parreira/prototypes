@@ -1,6 +1,8 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
@@ -14,6 +16,7 @@ import VoiceMessageField from 'pages/integrations/integration/components/voice/V
 import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray'
 
 import settingsCss from 'pages/settings/settings.less'
+import css from './VoiceIntegrationIvr.less'
 
 type Props = {
     integration: Maybe<PhoneIntegration>
@@ -33,6 +36,8 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
     }, [integration, payload, setPayload])
 
     const [isLoading, setIsLoading] = useState(false)
+
+    const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -58,9 +63,20 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
-            <h4 className="mb-3">Greeting message</h4>
+            {deflectToSMSEnabled ? (
+                <>
+                    <h4 className={css.header}>Set greeting message</h4>
+                    <p>
+                        Callers will be informed of all IVR options through this
+                        message, which must be updated if options change.
+                    </p>
+                </>
+            ) : (
+                <h4 className="mb-3">Greeting message</h4>
+            )}
+
             <Row>
-                <Col lg={6} xl={7}>
+                <Col lg={8} xl={8}>
                     <Form onSubmit={onSubmit}>
                         <div className="mb-4">
                             <VoiceMessageField
@@ -76,6 +92,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                                     }))
                                 }
                                 allowNone
+                                horizontal={deflectToSMSEnabled}
                             />
                         </div>
 

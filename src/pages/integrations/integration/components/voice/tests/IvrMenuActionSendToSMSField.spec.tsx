@@ -46,16 +46,16 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         )
 
         expect(getByText('Add message')).toBeInTheDocument()
-        expect(getByText('Manage settings')).toBeInTheDocument()
+        expect(getByText('Message')).toBeInTheDocument()
         expect(getByText('Select SMS integration')).toBeInTheDocument()
         expect(getByText('SMS confirmation message')).toBeInTheDocument()
-        expect(getByText('SMS Message sent to callers')).toBeInTheDocument()
+        expect(getByText('Outbound SMS Message')).toBeInTheDocument()
         expect(getByLabelText('Insert Voice Recording')).not.toBeChecked()
         expect(getByLabelText('Text To Speech')).toBeChecked()
         expect(
             getByText(DEFAULT_IVR_DEFLECTION_SMS_CONTENT)
         ).toBeInTheDocument()
-        expect(getByText('Save changes')).toBeInTheDocument()
+        expect(getByText('Save Changes')).toBeInTheDocument()
         expect(
             getByText(
                 'This message will be sent to callers in a form of SMS once this IVR option is selected'
@@ -114,7 +114,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         await userEvent.type(getByText('confirmation message'), ' test')
         await userEvent.type(getByText('sms content'), ' test')
         userEvent.click(getByText('Another integration'))
-        userEvent.click(getByText('Save changes'))
+        userEvent.click(getByText('Save Changes'))
 
         expect(mockOnChange).toHaveBeenCalledWith({
             confirmation_message: {
@@ -149,7 +149,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
 
             userEvent.clear(getByText(inputText))
 
-            expect(getByText('Save changes')).toHaveAttribute(
+            expect(getByText('Save Changes')).toHaveAttribute(
                 'aria-disabled',
                 'true'
             )
@@ -169,7 +169,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
             true
         )
 
-        userEvent.click(getByText('Save changes'))
+        userEvent.click(getByText('Save Changes'))
 
         expect(mockOnChange).not.toHaveBeenCalled()
     })
@@ -191,7 +191,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
             true
         )
 
-        userEvent.click(getByText('Save changes'))
+        userEvent.click(getByText('Save Changes'))
 
         expect(mockOnChange).not.toHaveBeenCalled()
     })
@@ -267,7 +267,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         userEvent.click(getByText('Edit message'))
         expect(mockSetDrawerOpen).toHaveBeenCalledWith(true)
 
-        userEvent.click(getByText('close'))
+        userEvent.click(getByText('keyboard_tab'))
         expect(mockSetDrawerOpen).toHaveBeenCalledWith(false)
     })
 })

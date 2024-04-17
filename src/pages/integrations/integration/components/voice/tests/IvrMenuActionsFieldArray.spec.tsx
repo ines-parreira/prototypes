@@ -5,7 +5,7 @@ import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -35,9 +35,10 @@ describe('<IvrMenuActionsFieldArray />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        resetLDMocks()
+        mockFlags({
             [FeatureFlagKey.DeflectToSMS]: true,
-        }))
+        })
     })
 
     const renderComponent = (
@@ -55,9 +56,23 @@ describe('<IvrMenuActionsFieldArray />', () => {
         )
 
     it('should render', () => {
+        mockFlags({[FeatureFlagKey.DeflectToSMS]: false})
+
         const {container} = renderComponent(options)
 
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render with FF on', () => {
+        const {getByText} = renderComponent(options)
+
+        expect(getByText('Menu options')).toBeInTheDocument()
+        expect(getByText('Forward call to external number')).toBeInTheDocument()
+        expect(getByText('Add option')).toBeInTheDocument()
+
+        expect(getByText('Send call to SMS')).toBeInTheDocument()
+        expect(getByText('Play message')).toBeInTheDocument()
+        expect(getByText('Forward call to Gorgias number')).toBeInTheDocument()
     })
 
     it('should allow adding menu options', () => {
@@ -122,9 +137,9 @@ describe('<IvrMenuActionsFieldArray />', () => {
     })
 
     it('should not display the deflect to sms action when FF is off', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        mockFlags({
             [FeatureFlagKey.DeflectToSMS]: false,
-        }))
+        })
 
         const options: IvrMenuAction[] = [
             {

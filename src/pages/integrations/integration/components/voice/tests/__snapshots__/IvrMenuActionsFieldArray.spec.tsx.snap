@@ -83,16 +83,6 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
                   Play message
                 </span>
               </button>
-              <button
-                class="option option--disabled disabled dropdown-item"
-                disabled=""
-                tabindex="-1"
-                type="button"
-              >
-                <span>
-                  Send call to SMS
-                </span>
-              </button>
             </div>
           </div>
         </div>
@@ -100,11 +90,44 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
       <div
         class="pl-2 col"
       >
-        <input
-          class="form-control"
-          type="text"
-          value="+123456789"
-        />
+        <div
+          class="wrapper"
+        >
+          <span
+            class="wrapper group horizontal"
+          >
+            <button
+              aria-disabled="false"
+              class="wrapper button fill secondary medium left isAuxiliaryButton"
+              type="button"
+            >
+              <span
+                role="img"
+                style="display: inline-block; font-size: 20px; line-height: 1em; vertical-align: middle;"
+              >
+                🇺🇸
+              </span>
+              <span
+                class="ml-2 dropdown-toggle"
+              >
+                +
+                1
+              </span>
+            </button>
+            <div
+              class="wrapper right isNested"
+            >
+              <input
+                class="input"
+                data-1p-ignore="true"
+                id="input-text-1"
+                name="input-text-1"
+                type="text"
+                value="234 567 89"
+              />
+            </div>
+          </span>
+        </div>
       </div>
       <div
         class="smallColumn pl-0 col"
