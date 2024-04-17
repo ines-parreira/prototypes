@@ -3,6 +3,7 @@ export enum FeatureFlagKey {
     AgentActivityTracking = 'agent-activity-tracking',
     AiAgentPlayground = 'ai-agent-playground',
     AiAgentSettings = 'ai-agent-settings',
+    AiAgentGuidance = 'ai-agent-guidance',
     AnalyticsProductivityMetrics = 'analytics-productivity-metrics',
     AnalyticsSLAs = 'analytics-slas-report',
     AnalyticsTimeBasedMetrics = 'analytics-time-based-metrics',

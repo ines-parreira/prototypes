@@ -178,6 +178,7 @@ import {
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import PanelLayout from 'pages/PanelLayout'
 import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
+import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1400,6 +1401,9 @@ function AutomationContent() {
     const showAiAgentPlayground: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentPlayground]
 
+    const showAiAgentGuidance: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentGuidance]
+
     return (
         <Switch>
             {showAiAgentSettings !== false && (
@@ -1420,6 +1424,16 @@ function AutomationContent() {
                             exact
                             component={memoizedWithUserRoleRequired(
                                 AiAgentPlaygroundContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    )}
+                    {showAiAgentGuidance !== false && (
+                        <Route
+                            path={`${path}/:shopType/:shopName/ai-agent/guidance`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                AiAgentGuidanceContainer,
                                 AGENT_ROLE
                             )}
                         />

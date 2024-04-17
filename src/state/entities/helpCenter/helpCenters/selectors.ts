@@ -34,3 +34,9 @@ export const getHelpCenterFAQList = createSelector(
     (helpCenters) =>
         helpCenters.filter((helpCenter) => helpCenter.type === 'faq')
 )
+
+export const getHelpCenterGuidanceList = createSelector(
+    getHelpCenterList,
+    (helpCenters) =>
+        helpCenters.filter((helpCenter) => helpCenter.type === 'guidance')
+)
