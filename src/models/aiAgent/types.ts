@@ -87,5 +87,6 @@ export type AiAgentResponse = {
     }
     postProcessing: {
         internalNote: string
+        htmlReply: string | null
     }
 }

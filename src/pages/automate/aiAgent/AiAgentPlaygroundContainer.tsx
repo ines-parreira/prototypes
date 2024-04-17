@@ -170,6 +170,11 @@ const AiAgentPlaygroundContainer = () => {
     }
 
     const renderAiAgentResponse = () => {
+        const generatedResponseAvailable =
+            aiAgentResponse &&
+            (aiAgentResponse.postProcessing.htmlReply ||
+                aiAgentResponse.generate.output.generated_message)
+
         if (isSubmitting || aiAgentResponse) {
             return (
                 <div className={css.aiAgentFeedback}>
@@ -181,19 +186,30 @@ const AiAgentPlaygroundContainer = () => {
                     )}
                     {aiAgentResponse && (
                         <div>
-                            <div>
-                                <h3>Generated response</h3>
-                                <p>
-                                    {
-                                        aiAgentResponse.generate.output
-                                            .generated_message
-                                    }
-                                </p>
-                                <p>
-                                    <strong>Outcome: </strong>
-                                    {aiAgentResponse.generate.output.outcome}
-                                </p>
-                            </div>
+                            {generatedResponseAvailable && (
+                                <div>
+                                    <h3>Generated response</h3>
+                                    {aiAgentResponse.postProcessing
+                                        .htmlReply ? (
+                                        <p
+                                            dangerouslySetInnerHTML={{
+                                                __html: sanitizeHtmlDefault(
+                                                    aiAgentResponse
+                                                        .postProcessing
+                                                        .htmlReply
+                                                ),
+                                            }}
+                                        />
+                                    ) : (
+                                        <div>
+                                            {
+                                                aiAgentResponse.generate.output
+                                                    .generated_message
+                                            }
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                             <div>
                                 <h3>Internal Note</h3>
                                 <p
