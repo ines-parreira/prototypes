@@ -79,10 +79,6 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
 
         const isInvalid = !this.state.isJsonValid
 
-        if (isInvalid) {
-            rest.invalid = true
-        }
-
         return (
             <FormGroup>
                 <div className="controls">
@@ -93,6 +89,7 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
                         onChange={this._onChange}
                         value={this.state.value || ''}
                         {...rest}
+                        invalid={isInvalid || this.props.invalid}
                     >
                         {children}
                     </Input>
