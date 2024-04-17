@@ -38,7 +38,6 @@ export type PhoneIntegrationPreferences = {
     record_outbound_calls: boolean
     voicemail_outside_business_hours: boolean
     ringing_behaviour: PhoneRingingBehaviour
-    custom_hold_music?: Maybe<Omit<VoiceMessageRecording, 'voice_message_type'>>
 }
 
 type VoicemailOutsideBusinessHoursBasicSettings = {

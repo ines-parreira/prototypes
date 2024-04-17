@@ -4,8 +4,6 @@ import {fromJS} from 'immutable'
 import {Form, Label} from 'reactstrap'
 
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {cloneDeep} from 'lodash'
 import {
     PhoneIntegration,
     PhoneIntegrationPreferences,
@@ -31,9 +29,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import settingsCss from 'pages/settings/settings.less'
 
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import {FeatureFlagKey} from 'config/featureFlags'
 import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferencesInboundCalls'
-import VoiceIntegrationPreferencesHoldMusic from './VoiceIntegrationPreferencesHoldMusic'
 import css from './VoiceIntegrationPreferences.less'
 
 type Props = {
@@ -55,11 +51,8 @@ export default function VoiceIntegrationPreferences({
             voicemail_outside_business_hours: false,
             record_outbound_calls: false,
             ringing_behaviour: PhoneRingingBehaviour.RoundRobin,
-            custom_hold_music: null,
         }
     )
-
-    const callHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
 
     const phoneNumberId = integration?.meta?.phone_number_id
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
@@ -68,11 +61,6 @@ export default function VoiceIntegrationPreferences({
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
             event.preventDefault()
-            const newPreferences = cloneDeep(preferences)
-
-            if (!callHoldEnabled) {
-                delete newPreferences.custom_hold_music
-            }
 
             await dispatch(
                 updateOrCreateIntegration(
@@ -81,7 +69,7 @@ export default function VoiceIntegrationPreferences({
                         name: title,
                         meta: {
                             emoji,
-                            preferences: newPreferences,
+                            preferences,
                             phone_team_id: phoneTeamId,
                         },
                     })
@@ -104,11 +92,7 @@ export default function VoiceIntegrationPreferences({
 
         setTitle(integration.name)
         setEmoji(meta.emoji)
-        setPreferences({
-            ...preferences,
-            // To be removed when FeatureFlagKey.CallOnHold is removed
-            custom_hold_music: preferences.custom_hold_music,
-        })
+        setPreferences(preferences)
         setIsInitialized(true)
     }, [integration, isInitialized])
 
@@ -195,19 +179,6 @@ export default function VoiceIntegrationPreferences({
                         >
                             Start recording automatically
                         </CheckBox>
-                    </div>
-                )}
-                {callHoldEnabled && (
-                    <div className={css.formSection}>
-                        <VoiceIntegrationPreferencesHoldMusic
-                            preferences={preferences}
-                            onPreferencesChange={(newPreferences) =>
-                                setPreferences((preferences) => ({
-                                    ...preferences,
-                                    ...newPreferences,
-                                }))
-                            }
-                        />
                     </div>
                 )}
                 <div>
