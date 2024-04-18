@@ -143,3 +143,12 @@ export const getIconNameBySign = (sign: number) => {
     }
     return null
 }
+
+export const highlightString = (text: string, highlight: string) => {
+    if (!highlight) {
+        return text
+    }
+
+    const regex = new RegExp(`(${highlight})`, 'gi')
+    return text.replace(regex, '<b>$1</b>')
+}

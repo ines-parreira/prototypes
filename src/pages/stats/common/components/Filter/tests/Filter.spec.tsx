@@ -1,0 +1,238 @@
+import React from 'react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import Filter from 'pages/stats/common/components/Filter/Filter'
+import {
+    LogicalOperatorEnum,
+    LogicalOperatorLabel,
+} from 'pages/stats/common/components/Filter/constants'
+
+describe('Filter', () => {
+    const filterName = 'Test Filter'
+    const filterOptionGroups = [
+        {
+            options: [
+                {label: 'Option 1', value: 'option1'},
+                {label: 'Option 2', value: 'option2'},
+                {label: 'Option 3', value: 'option3'},
+            ],
+        },
+    ]
+    const selectedOptions = [
+        filterOptionGroups[0].options[0],
+        filterOptionGroups[0].options[1],
+    ]
+    const logicalOperators = [
+        LogicalOperatorEnum.ONE_OF,
+        LogicalOperatorEnum.NOT_ONE_OF,
+    ]
+    const onChangeOption = jest.fn()
+    const onSelectAll = jest.fn()
+    const onRemoveAll = jest.fn()
+    const onChangeLogicalOperator = jest.fn()
+
+    it('renders the filter component', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={selectedOptions}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        expect(screen.getByText(filterName)).toBeInTheDocument()
+        expect(screen.getByText('Option 1, Option 2')).toBeInTheDocument()
+    })
+
+    it('calls onChangeOption when an option is selected', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        userEvent.click(screen.getByText('Select value'))
+
+        userEvent.click(screen.getByText('Option 2'))
+
+        expect(onChangeOption).toHaveBeenCalledWith({
+            label: 'Option 2',
+            value: 'option2',
+        })
+    })
+
+    it('calls onSelectAll when the select all button is clicked', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        userEvent.click(screen.getByText('Select value'))
+
+        userEvent.click(screen.getByText('Select all'))
+
+        expect(onSelectAll).toHaveBeenCalled()
+    })
+
+    it('calls onRemoveAll when the remove all button is clicked', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={selectedOptions}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        userEvent.click(screen.getByText('Option 1, Option 2'))
+
+        userEvent.click(screen.getByText('Deselect all'))
+
+        expect(onRemoveAll).toHaveBeenCalled()
+    })
+
+    it('calls onChangeLogicalOperator when a logical operator is selected', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        userEvent.click(screen.getByText('Select value'))
+
+        userEvent.click(
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+        )
+
+        expect(onChangeLogicalOperator).toHaveBeenCalledWith(
+            LogicalOperatorEnum.ONE_OF
+        )
+    })
+
+    it("does not render logical operator when we don't have logical operators", () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={selectedOptions}
+                logicalOperators={[]}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        expect(
+            screen.queryByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not render search when showSearch is false', () => {
+        const {queryByPlaceholderText} = render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                showSearch={false}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        userEvent.click(screen.getByText('Select value'))
+
+        expect(queryByPlaceholderText('Search')).not.toBeInTheDocument()
+    })
+
+    it('does not render quick select when showQuickSelect is false', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                showQuickSelect={false}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+
+        userEvent.click(screen.getByText('Select value'))
+
+        expect(screen.queryByText('Select all')).not.toBeInTheDocument()
+    })
+
+    it('triggers onToggle when the dropdown is opened', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+        expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
+        userEvent.click(screen.getByText('Select value'))
+        expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
+    })
+
+    it('should close dropdown on toggle', () => {
+        render(
+            <Filter
+                filterName={filterName}
+                filterOptionGroups={filterOptionGroups}
+                selectedOptions={[]}
+                logicalOperators={logicalOperators}
+                onChangeOption={onChangeOption}
+                onSelectAll={onSelectAll}
+                onRemoveAll={onRemoveAll}
+                onChangeLogicalOperator={onChangeLogicalOperator}
+            />
+        )
+        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByTestId('floating-overlay'))
+
+        expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
+    })
+})

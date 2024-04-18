@@ -1,0 +1,22 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        gap: 12px;
+        padding: @layout-spacing-s 12px;
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .radioFieldSet {
+        display: flex;
+        gap: 12px !important;
+    }
+
+    .logicalOperator {
+        .component-button-small();
+        flex-shrink: 0;
+        color: var(--neutral-grey-5);
+    }
+}

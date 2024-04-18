@@ -29,3 +29,13 @@ export type TooltipData = {
     link?: string
     className?: string
 }
+
+export type DropdownOption = {
+    label: string
+    value: string
+}
+
+export type FilterOptionGroup = {
+    title?: string
+    options: DropdownOption[]
+}

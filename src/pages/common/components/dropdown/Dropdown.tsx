@@ -183,7 +183,6 @@ const Dropdown = forwardRef(
 
         const handleToggle = useCallback(
             (event: MouseEvent) => {
-                event.preventDefault()
                 event.stopPropagation()
                 if (
                     isOpen &&

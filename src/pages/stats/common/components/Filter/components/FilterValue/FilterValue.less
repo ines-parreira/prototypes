@@ -1,0 +1,56 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        max-width: 240px;
+        padding: 0 @layout-spacing-xs;
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 0 @layout-spacing-xxs @layout-spacing-xxs 0;
+        cursor: pointer;
+
+        &:hover .dropdownIcon {
+            color: var(--main-primary);
+        }
+
+        &:hover:not(:has(.trailIcon:hover)) {
+            background-color: var(--main-primary-0);
+        }
+
+        &:active:not(:has(.trailIcon:hover)) {
+            border-color: var(--main-primary);
+        }
+    }
+
+    .text {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 20px;
+    }
+
+    .trailIcon {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--neutral-grey-5);
+        pointer-events: all;
+
+        &:hover {
+            color: var(--main-primary);
+        }
+    }
+
+    .dropdownIcon {
+        font-size: 16px;
+        font-weight: 500;
+        color: var(--neutral-grey-5);
+    }
+
+    .tooltip {
+        max-width: 156px;
+    }
+}

@@ -18,7 +18,8 @@ import {
     formatDates,
     getUtcPeriodFromDateAndGranularity,
     getIconNameBySign,
-} from '../utils'
+    highlightString,
+} from 'pages/stats/utils'
 
 describe('getGradient', () => {
     it('should return color if canvasArea or canvasContext is not defined', () => {
@@ -257,5 +258,29 @@ describe('getIconNameBySign', () => {
 
     it('returns "arrow_downward" when the sign is a negative non-integer', () => {
         expect(getIconNameBySign(-0.5)).toBe('arrow_downward')
+    })
+})
+
+describe('highlightString', () => {
+    it('should highlight string', () => {
+        expect(highlightString('test', 'es')).toEqual('t<b>es</b>t')
+    })
+
+    it('should highlight string with multiple matches', () => {
+        expect(highlightString('test test', 'es')).toEqual(
+            't<b>es</b>t t<b>es</b>t'
+        )
+    })
+
+    it('should highlight string with case insensitive', () => {
+        expect(highlightString('Test', 'ES')).toEqual('T<b>es</b>t')
+    })
+
+    it('should return the same string if highlight is not found', () => {
+        expect(highlightString('test', 'no')).toEqual('test')
+    })
+
+    it('should return the same string if highlight is empty', () => {
+        expect(highlightString('test', '')).toEqual('test')
     })
 })
