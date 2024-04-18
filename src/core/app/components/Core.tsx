@@ -1,5 +1,6 @@
 import React, {ReactElement} from 'react'
 
+import {NotificationsProvider} from 'common/notifications'
 import {SpotlightProvider} from 'providers/ui/SpotlightProvider'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
@@ -15,11 +16,13 @@ export default function Core({children}: Props) {
     return (
         <ErrorBoundary>
             <ThemeProvider>
-                <SpotlightProvider>
-                    <SplitTicketViewProvider>
-                        <App>{children}</App>
-                    </SplitTicketViewProvider>
-                </SpotlightProvider>
+                <NotificationsProvider>
+                    <SpotlightProvider>
+                        <SplitTicketViewProvider>
+                            <App>{children}</App>
+                        </SplitTicketViewProvider>
+                    </SpotlightProvider>
+                </NotificationsProvider>
             </ThemeProvider>
         </ErrorBoundary>
     )

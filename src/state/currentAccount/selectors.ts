@@ -28,6 +28,11 @@ export const getAccountOwnerId = createSelector(
     (state) => state.get('user_id') as number
 )
 
+export const getCurrentAccountId = createSelector(
+    getCurrentAccountState,
+    (state) => state.get('id') as number
+)
+
 export const getCurrentAccountMeta = createSelector(
     getCurrentAccountState,
     (state) => (state.get('meta') as Map<any, any>) || fromJS({})
