@@ -296,13 +296,14 @@ function RuleRecipeCard({
         }
     }
 
-    const managedRuleId = rules.find(
+    const managedRule = rules.find(
         (rule) =>
             rule.type === RuleType.Managed &&
             recipe.rule.type === RuleType.Managed &&
             (rule as ManagedRule).settings.slug ===
                 (recipe.rule as ManagedRule).settings.slug
-    )?.id
+    )
+    const managedRuleId = managedRule?.id
 
     const shouldInstall =
         !managedRuleId &&
@@ -337,9 +338,11 @@ function RuleRecipeCard({
                         {recipe_tag}
                     </Badge>
                 )}
-                {isInstalled && rule?.type === RuleType.Managed && (
-                    <img src={successIcon} alt="installed" />
-                )}
+                {isInstalled &&
+                    managedRule?.deactivated_datetime == null &&
+                    rule?.type === RuleType.Managed && (
+                        <img src={successIcon} alt="installed" />
+                    )}
             </div>
             <div className={css.content}>
                 <div className={css.title}>{rule.name}</div>
