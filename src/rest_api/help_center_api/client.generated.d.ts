@@ -752,6 +752,7 @@ declare namespace Components {
        */
       automation_settings_id: number | null;
       integration_id: number | null;
+      form_display_mode: "show_after_button_click" | "show_immediately";
     }
     export interface ContactFormPageDto {
       external_id: string;
@@ -2256,6 +2257,7 @@ declare namespace Components {
       } | null;
       shop_name?: string | null;
       deactivated_datetime?: string | null; // date-time
+      form_display_mode?: "show_after_button_click" | "show_immediately";
     }
     export interface UpdateEmailIntegrationDto {
       /**

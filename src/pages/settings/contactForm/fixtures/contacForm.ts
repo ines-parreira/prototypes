@@ -1,6 +1,7 @@
 import {ContactForm} from 'models/contactForm/types'
 import {CONTACT_FORM_DEFAULT_LOCALE} from 'pages/settings/contactForm/constants'
 import {Components} from '../../../../rest_api/help_center_api/client.generated'
+import {ContactFormDisplayMode} from '../types/formDisplayMode.enum'
 
 export const ContactFormFixture: ContactForm = {
     id: 1,
@@ -32,6 +33,7 @@ export const ContactFormFixture: ContactForm = {
     deactivated_datetime: null,
     shop_name: null,
     automation_settings_id: null,
+    form_display_mode: ContactFormDisplayMode.SHOW_IMMEDIATELY,
 }
 
 export const getContactFormForHelpCenterFixture = (

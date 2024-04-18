@@ -7314,7 +7314,12 @@
                         "description": "Automation settings id in contact form",
                         "example": 2
                     },
-                    "integration_id": {"type": "number", "nullable": true}
+                    "integration_id": {"type": "number", "nullable": true},
+                    "form_display_mode": {
+                        "enum": ["show_after_button_click", "show_immediately"],
+                        "type": "string",
+                        "nullable": false
+                    }
                 },
                 "required": [
                     "created_datetime",
@@ -7333,7 +7338,8 @@
                     "shop_name",
                     "deactivated_datetime",
                     "automation_settings_id",
-                    "integration_id"
+                    "integration_id",
+                    "form_display_mode"
                 ]
             },
             "ContactFormsListPageDto": {
@@ -7415,6 +7421,10 @@
                         "format": "date-time",
                         "type": "string",
                         "nullable": true
+                    },
+                    "form_display_mode": {
+                        "enum": ["show_after_button_click", "show_immediately"],
+                        "type": "string"
                     }
                 }
             },
