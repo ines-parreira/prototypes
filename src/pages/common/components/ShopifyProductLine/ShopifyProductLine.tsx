@@ -140,6 +140,10 @@ export default function ShopifyProductLine({
                     productTitle: result?.data?.title,
                     productId: result?.data?.id,
                     variantId: result?.data?.variants?.[0]?.id,
+                    variantTitle:
+                        disableVariantStep && variants.length > 1
+                            ? result?.data?.title
+                            : undefined,
                 } as ProductCardDetails
                 productClicked(productCardDetails)
             } else {
