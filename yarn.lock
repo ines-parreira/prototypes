@@ -140,6 +140,15 @@
     mkdirp "^1.0.3"
     tslib "^1.11.1"
 
+"@apideck/better-ajv-errors@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@apideck/better-ajv-errors/-/better-ajv-errors-0.3.6.tgz#957d4c28e886a64a8141f7522783be65733ff097"
+  integrity sha512-P+ZygBLZtkp0qqOAJJVX4oX/sFo5JR3eBWwwuqHHhK0GIgQOKWrAfiAaWX0aArHkRWHMuggFEgAZNxVPwPZYaA==
+  dependencies:
+    json-schema "^0.4.0"
+    jsonpointer "^5.0.0"
+    leven "^3.1.0"
+
 "@apidevtools/json-schema-ref-parser@^9.0.6", "@apidevtools/json-schema-ref-parser@^9.0.7":
   version "9.0.9"
   resolved "https://registry.yarnpkg.com/@apidevtools/json-schema-ref-parser/-/json-schema-ref-parser-9.0.9.tgz#d720f9256e3609621280584f2b47ae165359268b"
@@ -2953,26 +2962,43 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.1.38":
-  version "0.1.38"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.38/502732166da3f35dca08d395396c90a9531a923e#502732166da3f35dca08d395396c90a9531a923e"
-  integrity sha512-58rjc7xMw7BpLq1r2lEmHoqZgWL4cPNYSGvxWAG1iu4vQo8vveLNx9IK85QCQZ9Gyd+GPOE+BQno/HYaTMLzEA==
+"@gorgias/api-client@^0.1.41":
+  version "0.1.41"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.41/bf77304e951baed070b9c978ec8566b9a53d68ac#bf77304e951baed070b9c978ec8566b9a53d68ac"
+  integrity sha512-jZox3zTuTo6k7DZO94h3pRpOKYxM1e8UJp8upD1FCKGI/eXzI98t92Z+HRVO4fh3FIUulT1bawZaOd1+aOXASw==
   dependencies:
-    "@gorgias/api-types" "^0.1.38"
+    "@gorgias/api-types" "^0.1.41"
     axios "1.6.5"
 
-"@gorgias/api-queries@0.1.38":
-  version "0.1.38"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.38/2ad9487fcf8582434bf4ab1c692250a932a5f150#2ad9487fcf8582434bf4ab1c692250a932a5f150"
-  integrity sha512-EYPPMapf280A+708wuhr5a2s5avwop5VKGgxrpvEmTmeBj3RmhFEvt39lpj/xNNqRSM1f2UpKqJF6W6dv6zSfg==
+"@gorgias/api-queries@^0.1.41":
+  version "0.1.41"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.41/226233d3a1a117b21228b121c03a68dcbf93e3b6#226233d3a1a117b21228b121c03a68dcbf93e3b6"
+  integrity sha512-fEYkUpb6Z8nxKJ48FNjWjJvm15PiQD45g782OTljEmWqQv88UuLOhKogRSps2yp5cY7aZiVfe2r7xY6rGEVxxw==
   dependencies:
-    "@gorgias/api-client" "^0.1.38"
-    "@gorgias/api-types" "^0.1.38"
+    "@gorgias/api-client" "^0.1.41"
+    "@gorgias/api-types" "^0.1.41"
 
-"@gorgias/api-types@^0.1.38":
-  version "0.1.38"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.38/8f16b8288c87576f69950728adc60a771f186fde#8f16b8288c87576f69950728adc60a771f186fde"
-  integrity sha512-AhLQZULmMd4eGQL5BdQr22AubFMg1xp8Up6lUM1HLh/ZVd+VTtEiWSlq1xc/LcLPBzpqGZNu24O8WHJN/a7clw==
+"@gorgias/api-spec@^0.1.41":
+  version "0.1.41"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.1.41/6b9edc930a8bace76258555fe4d3fea97bd34ed6#6b9edc930a8bace76258555fe4d3fea97bd34ed6"
+  integrity sha512-5Qkk0tNOAlSb2y7y6ks1P5APkpaG0/CsZZGP4BzGvzmQ1cAnMzcWhcVc8n8/kFi3B2Bb5/9auXxZOcEaFwbmLA==
+
+"@gorgias/api-types@^0.1.41":
+  version "0.1.41"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.41/c722df7d0686528d7289f53c2d75354c3b0ab7fc#c722df7d0686528d7289f53c2d75354c3b0ab7fc"
+  integrity sha512-Vw44vXF541yMW4+nkVtxT35na7FnC4JK1bAh2OehWNtdgDFHrH1UnHUAG49PY22anoYTaciA1kdzv16p+YuTMQ==
+
+"@gorgias/api-validators@^0.1.41":
+  version "0.1.41"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.1.41/5d2e395836252deadfafa1e4cacdb57b3f6c979e#5d2e395836252deadfafa1e4cacdb57b3f6c979e"
+  integrity sha512-jVPa78VNAl8PkfimFjRvbJGW+etjKOYSrhTLbhKqfiWaICGWv34tQbS7PGE6l3FZ2idNoWrtdxFks49o+240XA==
+  dependencies:
+    "@apideck/better-ajv-errors" "^0.3.6"
+    "@gorgias/api-spec" "^0.1.41"
+    "@gorgias/api-types" "^0.1.41"
+    ajv "^8.12.0"
+    ajv-formats "^3.0.1"
+    immer "^10.0.4"
 
 "@gorgias/design-tokens@^0.2.8":
   version "0.2.8"
@@ -6587,6 +6613,13 @@ ajv-formats@^2.1.1:
   dependencies:
     ajv "^8.0.0"
 
+ajv-formats@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-3.0.1.tgz#3d5dc762bca17679c3c2ea7e90ad6b7532309578"
+  integrity sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==
+  dependencies:
+    ajv "^8.0.0"
+
 ajv-keywords@^3.1.0, ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
@@ -6609,7 +6642,7 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.12.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.0, ajv@^8.0.1, ajv@^8.11.0, ajv@^8.8.0:
+ajv@^8.0.0, ajv@^8.0.1, ajv@^8.11.0, ajv@^8.12.0, ajv@^8.8.0:
   version "8.12.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.12.0.tgz#d1a0527323e22f53562c567c00991577dfbe19d1"
   integrity sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==
@@ -13010,7 +13043,7 @@ json-schema-traverse@^1.0.0:
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz#ae7bcb3656ab77a73ba5c49bf654f38e6b6860e2"
   integrity sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==
 
-json-schema@0.2.3, json-schema@0.4.0:
+json-schema@0.2.3, json-schema@0.4.0, json-schema@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/json-schema/-/json-schema-0.4.0.tgz#f7de4cf6efab838ebaeb3236474cbba5a1930ab5"
   integrity sha512-es94M3nTIfsEPisRafak+HDLfHXnKBhV3vU5eqPcS3flIWqcxJWgXHXiey3YrpaNsanY5ei1VoYEbOzijuq9BA==
@@ -13076,6 +13109,11 @@ jsonpath-plus@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-7.2.0.tgz#7ad94e147b3ed42f7939c315d2b9ce490c5a3899"
   integrity sha512-zBfiUPM5nD0YZSBT/o/fbCUlCcepMIdP0CJZxM1+KgA4f2T206f6VAg9e7mX35+KlMaIc5qXW34f3BnwJ3w+RA==
+
+jsonpointer@^5.0.0:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/jsonpointer/-/jsonpointer-5.0.1.tgz#2110e0af0900fd37467b5907ecd13a7884a1b559"
+  integrity sha512-p/nXbhSEcu3pZRdkW1OfJhpsVtW1gd4Wa1fnQc9YLiTfAjn0312eMKimbdIQzuZl9aa9xUGaRlP9T/CJE/ditQ==
 
 jsprim@^1.2.2:
   version "1.4.1"
@@ -17580,7 +17618,7 @@ string-length@^4.0.1:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.2, string-width@^4.2.3:
+"string-width-cjs@npm:string-width@^4.2.0":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -17597,6 +17635,15 @@ string-width@^3.0.0, string-width@^3.1.0:
     emoji-regex "^7.0.1"
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^5.1.0"
+
+string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.2, string-width@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
 
 string-width@^5.0.1, string-width@^5.1.2:
   version "5.1.2"
@@ -17687,7 +17734,7 @@ string_decoder@~1.1.1:
   dependencies:
     safe-buffer "~5.1.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -17707,6 +17754,13 @@ strip-ansi@^5.0.0, strip-ansi@^5.1.0, strip-ansi@^5.2.0:
   integrity sha512-DuRs1gKbBqsMKIZlrffwlug8MHkcnpjs5VPmL1PAh+mA30U0DTotfDZ0d2UUsXpPmPmMMJ6W773MaA3J+lbiWA==
   dependencies:
     ansi-regex "^4.1.0"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
 
 strip-ansi@^7.0.1:
   version "7.1.0"
@@ -19277,7 +19331,7 @@ wordwrap@^1.0.0:
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-1.0.0.tgz#27584810891456a4171c8d0226441ade90cbcaeb"
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
-"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+"wrap-ansi-cjs@npm:wrap-ansi@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
@@ -19299,6 +19353,15 @@ wrap-ansi@^6.0.1, wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
   integrity sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==
+  dependencies:
+    ansi-styles "^4.0.0"
+    string-width "^4.1.0"
+    strip-ansi "^6.0.0"
+
+wrap-ansi@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
+  integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
   dependencies:
     ansi-styles "^4.0.0"
     string-width "^4.1.0"
