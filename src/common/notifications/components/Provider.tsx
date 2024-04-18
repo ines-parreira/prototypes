@@ -5,6 +5,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountId} from 'state/currentAccount/selectors'
 import {getCurrentUserId} from 'state/currentUser/selectors'
 
+import '@knocklabs/react/dist/index.css'
+
 type Props = {
     children: ReactNode
 }
