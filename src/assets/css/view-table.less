@@ -1,4 +1,5 @@
 @import '~css/typography';
+@import '~css/util';
 @import '~@gorgias/design-tokens/dist/css/typographyTokens';
 
 .view-table {
@@ -36,11 +37,19 @@
         .subject {
             .heading-subsection-regular();
             margin-bottom: 4px;
+
+            em {
+                .search-highlight();
+            }
         }
 
         .description {
             color: var(--neutral-grey-4);
             .body-regular();
+
+            em {
+                .search-highlight();
+            }
         }
     }
 

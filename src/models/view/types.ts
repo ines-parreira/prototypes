@@ -15,6 +15,12 @@ export enum ViewType {
     CustomerList = 'customer-list',
 }
 
+export enum EntityType {
+    Ticket = 'ticket',
+    TicketWithHighlight = 'ticket-with-highlight',
+    Customer = 'customer',
+}
+
 export enum ViewField {
     TicketId = 'id',
     Name = 'name',
@@ -22,6 +28,7 @@ export enum ViewField {
     Created = 'created',
     Updated = 'updated',
     Details = 'details',
+    DetailsWithHighlight = 'details_with_highlight',
     Tags = 'tags',
     Customer = 'customer',
     LastMessage = 'last_message',

@@ -8,7 +8,7 @@ import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
 import {getConfigByName} from 'config/views'
-import {ViewVisibility} from 'models/view/types'
+import {EntityType, ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import {isCreationUrl} from 'pages/common/utils/url'
@@ -31,19 +31,19 @@ import {
 } from 'state/views/selectors'
 import withRouter from 'pages/common/utils/withRouter'
 
-import DeactivatedViewMessage from './DeactivatedViewMessage'
-import FilterTopbar from './FilterTopbar'
-import Header from './Header'
-import Table from './Table'
-import MissingBillingInformationRow from './Table/MissingBillingInformationRow'
-import css from './ViewTable.less'
+import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
+import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
+import Header from 'pages/common/components/ViewTable/Header'
+import Table from 'pages/common/components/ViewTable/Table'
+import MissingBillingInformationRow from 'pages/common/components/ViewTable/Table/MissingBillingInformationRow'
+import css from 'pages/common/components/ViewTable/ViewTable.less'
 import withViewSearchUrlSync, {
     ViewSearchUrlSyncInjectedProps,
-} from './withViewSearchUrlSync'
+} from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 
 type OwnProps = {
     className?: string
-    type: 'ticket' | 'customer'
+    type: EntityType
     items: List<any>
     isUpdate: boolean
     isSearch: boolean
@@ -70,7 +70,7 @@ type Props = OwnProps &
 export class ViewTableContainer extends Component<Props> {
     static defaultProps: Pick<Props, 'items' | 'type'> = {
         items: fromJS([]),
-        type: 'ticket',
+        type: EntityType.Ticket,
     }
 
     static contextType = SearchRankScenarioContext
@@ -298,18 +298,18 @@ export class ViewTableContainer extends Component<Props> {
             navigation,
         } = this.props
 
-        const displayedFields = (
-            config.get('fields', fromJS([])) as List<any>
-        ).filter((field: Map<any, any>) => {
-            // display field if mandatory from config
-            if (config.get('mainField') === field.get('name')) {
-                return true
-            }
+        const displayedFields = (config.get('fields', fromJS([])) as List<any>)
+            .filter((field: Map<any, any>) => {
+                // display field if mandatory from config
+                if (config.get('mainField') === field.get('name')) {
+                    return true
+                }
 
-            return (activeView.get('fields', fromJS([])) as List<any>).contains(
-                field.get('name')
-            )
-        })
+                return (
+                    activeView.get('fields', fromJS([])) as List<any>
+                ).contains(field.get('name'))
+            })
+            .toList()
 
         if (activeView.get('deactivated_datetime')) {
             return <DeactivatedViewMessage />
@@ -325,7 +325,7 @@ export class ViewTableContainer extends Component<Props> {
                 selectedItemsIds={selectedItemsIds}
                 type={type}
                 items={items}
-                fields={displayedFields as List<any>}
+                fields={displayedFields}
                 isSearch={isSearch}
                 ActionsComponent={ActionsComponent}
                 getItemUrl={this._getItemUrl}
@@ -336,7 +336,9 @@ export class ViewTableContainer extends Component<Props> {
 
     render() {
         const {activeView, isSearch, isUpdate, type, className} = this.props
-        const hasFilters = type === 'ticket'
+        const hasFilters =
+            type === EntityType.Ticket ||
+            type === EntityType.TicketWithHighlight
 
         if (activeView.isEmpty()) {
             return <Loader />

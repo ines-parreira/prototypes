@@ -1,23 +1,22 @@
-import React, {ComponentProps} from 'react'
+import {act, fireEvent, render, waitFor} from '@testing-library/react'
+
 import {fromJS, Map} from 'immutable'
-import {render, fireEvent, waitFor, act} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-
 import {logEvent, SegmentEvent} from 'common/segment'
-import {view as viewFixture} from 'fixtures/views'
 import {mockSearchRank} from 'fixtures/searchRank'
+import {view as viewFixture} from 'fixtures/views'
 import {JobType} from 'models/job/types'
+
+import {EntityType, View, ViewCategory} from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import history from 'pages/history'
 import {viewCreated, viewUpdated} from 'state/entities/views/actions'
 import {RootState, StoreDispatch} from 'state/types'
+import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
 import * as viewsActions from 'state/ui/views/actions'
-import {
-    SUBMIT_NEW_VIEW_ERROR,
-    SUBMIT_UPDATE_VIEW_ERROR,
-} from 'state/views/constants'
 import {
     addFieldFilter,
     createJob,
@@ -26,12 +25,13 @@ import {
     resetView,
     submitView,
 } from 'state/views/actions'
+import {
+    SUBMIT_NEW_VIEW_ERROR,
+    SUBMIT_UPDATE_VIEW_ERROR,
+} from 'state/views/constants'
 import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
-import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
-
-import {View, ViewCategory} from 'models/view/types'
-import {FilterTopbar} from '../FilterTopbar'
+import {FilterTopbar} from 'pages/common/components/ViewTable/FilterTopbar'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
@@ -210,7 +210,7 @@ describe('<FilterTopbar />', () => {
         it('should not render export tickets button on a customer view', () => {
             const {queryByTitle} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <FilterTopbar {...minProps} type="customer" />
+                    <FilterTopbar {...minProps} type={EntityType.Customer} />
                 </Provider>
             )
             expect(queryByTitle('Export all view tickets')).toBeNull()

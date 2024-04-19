@@ -1,5 +1,5 @@
 import React, {ComponentProps} from 'react'
-import {Meta, Story} from '@storybook/react'
+import {Meta, StoryFn} from '@storybook/react'
 import {MemoryRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import * as ticketFixtures from 'fixtures/ticket'
 import {view as fixtureView} from 'fixtures/views'
 import {fetchViewItems, updateView} from 'state/views/actions'
-import {ViewTableContainer} from './ViewTable'
+import {ViewTableContainer} from 'pages/common/components/ViewTable/ViewTable'
 
 const storyConfig: Meta = {
     title: 'Data Display/ViewTable/ViewTable',
@@ -80,9 +80,11 @@ const defaultProps = {
     flags: {},
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
-const Template: Story<ComponentProps<typeof ViewTableContainer>> = (props) => (
-    <ViewTableContainer {...props} />
-)
+const Template: StoryFn<ComponentProps<typeof ViewTableContainer>> = (
+    props
+) => {
+    return <ViewTableContainer {...props} />
+}
 
 export const Default = Template.bind({})
 Default.args = defaultProps

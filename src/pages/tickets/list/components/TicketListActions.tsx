@@ -58,7 +58,7 @@ import {getTeams} from 'state/teams/selectors'
 
 import {hasRole} from 'utils'
 
-import css from './TicketListActions.less'
+import css from 'pages/tickets/list/components/TicketListActions.less'
 
 export const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
 
@@ -798,5 +798,3 @@ export const TicketListActions = ({
         </div>
     )
 }
-
-export default TicketListActions

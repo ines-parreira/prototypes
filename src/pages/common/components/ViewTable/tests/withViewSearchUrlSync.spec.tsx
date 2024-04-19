@@ -6,13 +6,14 @@ import {render} from '@testing-library/react'
 import {compressToEncodedURIComponent} from 'lz-string'
 import {stringify} from 'qs'
 import reactRouterDom from 'react-router-dom'
+import {EntityType} from 'models/view/types'
 
 import {
     ViewSearchUrlSyncInjectedProps,
     withViewSearchUrlSyncContainer,
-} from '../withViewSearchUrlSync'
-import * as viewsConfig from '../../../../../config/views'
-import history from '../../../../history'
+} from 'pages/common/components/ViewTable/withViewSearchUrlSync'
+import * as viewsConfig from 'config/views'
+import history from 'pages/history'
 
 jest.spyOn(reactRouterDom, 'useLocation')
 const mockedUseLocation = reactRouterDom.useLocation as jest.MockedFunction<
@@ -26,13 +27,12 @@ const InnerComponent = ({urlSearchView}: ViewSearchUrlSyncInjectedProps) => {
 const Component = withViewSearchUrlSyncContainer(InnerComponent)
 
 const WrappedComponent = (props: typeof defaultProps) => {
-    return <Component {...props} type="ticket" />
+    return <Component {...props} type={EntityType.Ticket} />
 }
 
-const searchView = viewsConfig.getConfigByName('ticket').get('searchView') as (
-    query: string,
-    filters?: string
-) => Map<any, any>
+const searchView = viewsConfig
+    .getConfigByName(EntityType.Ticket)
+    .get('searchView') as (query: string, filters?: string) => Map<any, any>
 
 const createLocation = ({
     search,

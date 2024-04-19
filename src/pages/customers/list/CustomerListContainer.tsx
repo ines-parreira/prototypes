@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {fromJS} from 'immutable'
 import {useRouteMatch} from 'react-router-dom'
+import {EntityType} from 'models/view/types'
 
 import {compactInteger} from 'utils'
 import useTitle from 'hooks/useTitle'
@@ -18,8 +19,8 @@ import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import CustomerForm from '../common/components/CustomerForm'
-import CustomerListActions from './components/CustomerListActions'
+import CustomerForm from 'pages/customers/common/components/CustomerForm'
+import CustomerListActions from 'pages/customers/list/components/CustomerListActions'
 
 export default function CustomerListContainer() {
     const dispatch = useAppDispatch()
@@ -64,7 +65,7 @@ export default function CustomerListContainer() {
             }}
         >
             <ViewTable
-                type="customer"
+                type={EntityType.Customer}
                 items={customers}
                 isUpdate={isUpdate}
                 isSearch={isSearch}

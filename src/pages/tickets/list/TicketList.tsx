@@ -1,30 +1,30 @@
-import cn from 'classnames'
+import classnames from 'classnames'
+import decorateComponentWithProps from 'decorate-component-with-props'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {useLocation, useParams} from 'react-router-dom'
-import decorateComponentWithProps from 'decorate-component-with-props'
-
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+import {SearchRankSource} from 'hooks/useSearchRankScenario'
+import useTitle from 'hooks/useTitle'
+import {EntityType} from 'models/view/types'
+import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
+import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
+import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
+import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import {fetchTags} from 'state/tags/actions'
 import {getTickets} from 'state/tickets/selectors'
 import {
     getActiveView,
-    hasActiveView as getHasActiveView,
     getSelectedItemsIds,
+    hasActiveView as getHasActiveView,
 } from 'state/views/selectors'
 import {compactInteger} from 'utils'
-import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
-import ViewTable from 'pages/common/components/ViewTable/ViewTable'
-import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
-import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
-import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import {SearchRankSource} from 'hooks/useSearchRankScenario'
-import useTitle from 'hooks/useTitle'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 
-import TicketListActions from './components/TicketListActions'
-import css from './TicketList.less'
+import {TicketListActions} from 'pages/tickets/list/components/TicketListActions'
+import css from 'pages/tickets/list/TicketList.less'
 
 const TicketList = () => {
     const hasSplitTicketView = useFlags()[FeatureFlagKey.SplitTicketView]
@@ -79,10 +79,16 @@ const TicketList = () => {
 
     useTitle(title)
 
+    const isSearchWithHighlightedResults: boolean | undefined =
+        useFlags()[FeatureFlagKey.SearchWithHighlights]
+    const type = isSearchWithHighlightedResults
+        ? EntityType.TicketWithHighlight
+        : EntityType.Ticket
+
     const viewTable = (
         <ViewTable
             className={css.table}
-            type="ticket"
+            type={type}
             items={tickets}
             isUpdate={isUpdate}
             isSearch={isSearch}
@@ -103,7 +109,7 @@ const TicketList = () => {
 
     return (
         <div
-            className={cn('d-flex flex-column', css.container)}
+            className={classnames('d-flex flex-column', css.container)}
             style={{
                 width: '100%',
             }}

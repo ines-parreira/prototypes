@@ -9,7 +9,7 @@ import {stringify} from 'qs'
 import {mockSearchRank} from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
 import {view as fixtureView} from 'fixtures/views'
-import {ViewVisibility} from 'models/view/types'
+import {ViewField, ViewVisibility} from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import history from 'pages/history'
 import {activeViewIdSet} from 'state/ui/views/actions'
@@ -31,9 +31,15 @@ jest.mock('state/ui/views/actions')
     activeViewIdSet as jest.MockedFunction<typeof activeViewIdSet>
 ).mockImplementation((() => _identity) as any)
 
-jest.mock('../Header', () => () => <div>Header mock</div>)
-jest.mock('../Table', () => () => <div>Table mock</div>)
-jest.mock('../FilterTopbar', () => () => <div>FilterTopbar mock</div>)
+jest.mock('pages/common/components/ViewTable/Header', () => () => (
+    <div>Header mock</div>
+))
+jest.mock('pages/common/components/ViewTable/Table', () => () => (
+    <div>Table mock</div>
+))
+jest.mock('pages/common/components/ViewTable/FilterTopbar', () => () => (
+    <div>FilterTopbar mock</div>
+))
 
 const minProps = {
     type: 'ticket',
@@ -44,7 +50,18 @@ const minProps = {
     isLoading: jest.fn(),
     urlViewId: fixtureView.id.toString(),
     activeView: fromJS(fixtureView) as Map<any, any>,
-    config: fromJS({}),
+    config: fromJS({
+        fields: fromJS([
+            {
+                name: ViewField.Name,
+                title: 'Name',
+            },
+            {
+                name: ViewField.Email,
+                title: 'Email',
+            },
+        ]),
+    }),
     updateView: jest.fn(),
     fetchViewItems: jest.fn(),
     getViewIdToDisplay: jest.fn(),

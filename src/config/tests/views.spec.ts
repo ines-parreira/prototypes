@@ -1,18 +1,21 @@
+import {render, screen} from '@testing-library/react'
 import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
 
+import {ReactComponentElement} from 'react'
 import {isImmutable} from 'common/utils'
-import * as viewsConfig from '../views'
+import * as viewsConfig from 'config/views'
 
-import * as ticketFixtures from '../../fixtures/ticket'
-import {customer} from '../../fixtures/customer'
-import {getAST} from '../../utils'
+import * as ticketFixtures from 'fixtures/ticket'
+import {customer} from 'fixtures/customer'
+import {getAST} from 'utils'
 import {
     ViewType,
     View,
     ViewField,
     ViewVisibility,
-} from '../../models/view/types'
+    EntityType,
+} from 'models/view/types'
 
 global.console.error = jest.fn()
 
@@ -30,6 +33,87 @@ describe('Config: views', () => {
             expect(viewsConfig.defaultCell('unknown', ticket)).toBe('')
             expect(console.error).toBeCalled()
             expect(viewsConfig.defaultCell('status', fromJS({}))).toBe('')
+        })
+    })
+
+    describe('ViewField.DetailsWithHighlight cell', () => {
+        it('should render the ticket details without highlights', () => {
+            const subject = 'qwe'
+            const excerpt = 'asd'
+            const messages_count = 4
+            const ticketWithHighlight = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count,
+                subject,
+                excerpt,
+                highlight: {},
+            })
+            const withHighlightView:
+                | Record<'name' | 'cell', unknown>
+                | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.TicketWithHighlight)
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.DetailsWithHighlight, ticketWithHighlight)
+                )
+            }
+
+            expect(
+                screen.getByText(`(${messages_count}) ${subject}`)
+            ).toBeInTheDocument()
+            expect(screen.getByText(excerpt)).toBeInTheDocument()
+        })
+
+        it('should render the ticket details with highlights', () => {
+            const subject = 'qwe'
+            const excerpt = 'asd'
+            const messages_count = 4
+            const highlightedSubject = 'highlighted subject'
+            const highlightedMessage = 'highlighted message'
+            const ticketWithHighlight = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count,
+                subject,
+                excerpt,
+                highlights: fromJS({
+                    'subject.highlight': [
+                        `asd <em>${highlightedSubject}</em> tyu`,
+                    ],
+                    'messages.body.text': [
+                        `asd <em>${highlightedMessage}</em> tyu`,
+                    ],
+                }),
+            })
+            const withHighlightView:
+                | Record<'name' | 'cell', unknown>
+                | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.TicketWithHighlight)
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.DetailsWithHighlight, ticketWithHighlight)
+                )
+            }
+
+            expect(screen.getByText(highlightedSubject)).toBeInTheDocument()
+            expect(
+                screen.getByText(highlightedSubject).tagName.toLocaleLowerCase()
+            ).toBe('em')
+            expect(screen.getByText(highlightedMessage)).toBeInTheDocument()
+            expect(
+                screen.getByText(highlightedMessage).tagName.toLocaleLowerCase()
+            ).toBe('em')
         })
     })
 
@@ -75,8 +159,12 @@ describe('Config: views', () => {
             const viewConfig = fromJS(config) as Map<any, any>
             const defaultFilters = 'isEmpty(ticket.created_datetime)'
             const fixtures = {
-                ticket: ticketFixtures.ticket,
-                customer,
+                [EntityType.Ticket]: ticketFixtures.ticket,
+                [EntityType.TicketWithHighlight]: {
+                    ...ticketFixtures.ticket,
+                    highlights: {},
+                },
+                [EntityType.Customer]: customer,
             }
 
             it('view structure', () => {
@@ -110,25 +198,22 @@ describe('Config: views', () => {
             })
 
             it('cell function result', () => {
-                const viewConfigName = viewConfig.get(
-                    'name'
-                ) as keyof typeof fixtures
-                const fixture = fromJS(fixtures[viewConfigName]) as Map<
-                    any,
-                    any
-                >
+                const viewConfigName: keyof typeof fixtures =
+                    viewConfig.get('name')
+                const fixture: Map<any, any> = fromJS(fixtures[viewConfigName])
+                const nonStringTicketFields = {
+                    id: 'number',
+                    details: 'object',
+                    tags: 'object',
+                    customer: 'object', // customer (then passed to RenderLabel)
+                    assignee: 'object', // user (then passed to RenderLabel)
+                    assignee_team: 'object', // team (then passed to RenderLabel)
+                }
 
-                // list of properties that return something else than a string
                 const fieldNameToType = {
-                    ticket: {
-                        id: 'number',
-                        details: 'object',
-                        tags: 'object',
-                        customer: 'object', // customer (then passed to RenderLabel)
-                        assignee: 'object', // user (then passed to RenderLabel)
-                        assignee_team: 'object', // team (then passed to RenderLabel)
-                    },
-                    customer: {
+                    [EntityType.Ticket]: nonStringTicketFields,
+                    [EntityType.TicketWithHighlight]: nonStringTicketFields,
+                    [EntityType.Customer]: {
                         name: 'string',
                     },
                 }
@@ -286,9 +371,16 @@ describe('Config: views', () => {
 
     describe('getTicketViewField', () => {
         it('should return the field corresponding to the passed field name', () => {
-            expect(
-                viewsConfig.getTicketViewField(ViewField.Assignee)
-            ).toMatchSnapshot()
+            expect(viewsConfig.getTicketViewField(ViewField.Assignee)).toEqual(
+                fromJS({
+                    name: ViewField.Assignee,
+                    title: 'Assignee user',
+                    path: 'assignee_user.id',
+                    filter: {
+                        type: 'agent',
+                    },
+                })
+            )
         })
     })
 
@@ -298,7 +390,7 @@ describe('Config: views', () => {
                 viewsConfig.getTicketViewFieldPath(
                     viewsConfig.getTicketViewField(ViewField.Channel)
                 )
-            ).toMatchSnapshot()
+            ).toEqual('ticket.channel')
         })
     })
 })

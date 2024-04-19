@@ -7,13 +7,19 @@ import {getChannels} from 'services/channels'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
-import {ViewField, ViewType, ViewVisibility} from 'models/view/types'
+import {
+    EntityType,
+    ViewField,
+    ViewType,
+    ViewVisibility,
+} from 'models/view/types'
 import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
 import TicketTag from 'pages/common/components/TicketTag'
+import {sanitizeHtmlDefault} from 'utils/html'
 
-import ticketLanguages from './ticketLanguages'
+import ticketLanguages from 'config/ticketLanguages'
 
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
@@ -73,326 +79,390 @@ export const defaultMergeTicketsView = (
     }) as Map<any, any>
 }
 
-export const views = fromAST([
-    {
-        name: 'ticket',
-        type: ViewType.TicketList,
-        routeItem: 'ticket', // UI route for this object
-        routeList: 'tickets', // UI route for the list of those objects
-        api: 'tickets', // api endpoint for this object
-        singular: 'ticket', // singular version for sentences
-        plural: 'tickets', // plural version for sentences
-        mainField: ViewField.Details, // mandatory field (+ where are displayed bulk actions)
-        fields: [
-            {
-                name: ViewField.Details,
-                title: 'Details',
-            },
-            {
-                name: ViewField.Subject,
-                title: 'Subject',
-            },
-            {
-                name: ViewField.Integrations,
-                title: 'Integration',
-                path: 'messages.integration_id',
-                filter: {
-                    type: 'integration',
-                },
-                dropdown: {
-                    width: '350px',
-                },
-            },
-            {
-                name: ViewField.Tags,
-                title: 'Tags',
-                path: 'tags.name', // specify if different from name and if used in filters
-                filter: {
-                    type: 'tag',
-                },
-            },
-            {
-                name: ViewField.Customer,
-                title: 'Customer',
-                path: 'customer.id',
-                filter: {
-                    type: 'customer',
-                },
-            },
-            {
-                name: ViewField.AssigneeTeam,
-                title: 'Assignee team',
-                path: 'assignee_team.id',
-                filter: {
-                    type: 'team',
-                },
-            },
-            {
-                name: ViewField.Assignee,
-                title: 'Assignee user',
-                path: 'assignee_user.id',
-                filter: {
-                    // TODO(customers-migration): replace with `user` when we updated our search REST API.
-                    type: 'agent',
-                },
-            },
-            {
-                name: ViewField.TicketId,
-                title: 'ID',
-            },
-            {
-                name: ViewField.Status,
-                title: 'Status',
-                filter: {
-                    enum: STATUSES,
-                },
-            },
-            {
-                name: ViewField.Language,
-                title: 'Language',
-                filter: {
-                    enum: ticketLanguages,
-                },
-            },
-            {
-                name: ViewField.Channel,
-                title: 'Channel',
-                filter: {
-                    enum: getChannels()
-                        .sort((a, b) => a.name.localeCompare(b.name))
-                        .map((channel) => channel.slug),
-                },
-            },
-            {
-                name: ViewField.Created,
-                title: 'Created',
-                path: 'created_datetime',
-                filter: {
-                    sort: {
-                        created_datetime: 'desc',
-                    },
-                },
-            },
-            {
-                name: ViewField.Updated,
-                title: 'Updated',
-                path: 'updated_datetime',
-                filter: {
-                    sort: {
-                        updated_datetime: 'desc',
-                    },
-                },
-            },
-            {
-                name: ViewField.LastMessage,
-                title: 'Last message',
-                path: 'last_message_datetime',
-                filter: {
-                    sort: {
-                        last_message_datetime: 'desc',
-                    },
-                },
-            },
-            {
-                name: ViewField.LastReceivedMessage,
-                title: 'Last received message',
-                path: 'last_received_message_datetime',
-                filter: {
-                    sort: {
-                        last_received_message_datetime: 'desc',
-                    },
-                },
-            },
-            {
-                name: ViewField.Closed,
-                title: 'Closed',
-                path: 'closed_datetime',
-                filter: {
-                    sort: {
-                        closed_datetime: 'desc',
-                    },
-                },
-            },
-            {
-                name: ViewField.Snooze,
-                title: 'Snooze',
-                path: 'snooze_datetime',
-                filter: {
-                    sort: {
-                        snooze_datetime: 'desc',
-                    },
-                },
-            },
-        ],
-        cell: (fieldName: ViewField, item: Map<any, any>) => {
-            switch (fieldName) {
-                case ViewField.Created:
-                    return (item.get('created_datetime') as string) || ''
-                case ViewField.Updated:
-                    return (item.get('updated_datetime') as string) || ''
-                case ViewField.Closed:
-                    return (item.get('closed_datetime') as string) || ''
-                case ViewField.Snooze:
-                    return (item.get('snooze_datetime') as string) || ''
-                case ViewField.LastMessage:
-                    return (item.get('last_message_datetime') as string) || ''
-                case ViewField.LastReceivedMessage:
-                    return (
-                        (item.get(
-                            'last_received_message_datetime'
-                        ) as string) || ''
-                    )
-                case ViewField.Customer:
-                    return (item.get('customer') as Map<any, any>) || fromJS({})
-                case ViewField.AssigneeTeam:
-                    return (
-                        (item.get('assignee_team') as Map<any, any>) ||
-                        fromJS({})
-                    )
-                case ViewField.Assignee:
-                    return (
-                        (item.get('assignee_user') as Map<any, any>) ||
-                        fromJS({})
-                    )
-                case ViewField.Language: {
-                    return getLanguageDisplayName(
-                        item.get('language')
-                    ) as string
-                }
-                case ViewField.Details: {
-                    let subject = stripHTML(item.get('subject'))
-
-                    // Optionally show how many messages a ticket has in the subject
-                    const messageCount = item.get('messages_count') as number
-                    if (messageCount > 1) {
-                        subject = `(${messageCount}) ${subject || ''}`
-                    }
-
-                    const body = stripHTML(item.get('excerpt'))
-
-                    return (
-                        <div>
-                            <div className="subject">{subject}</div>
-                            {!!body && (
-                                <div className="description">{body}</div>
-                            )}
-                        </div>
-                    )
-                }
-                case ViewField.Integrations: {
-                    return (item.get('integrations', fromJS([])) as List<any>)
-                        .map((inte: Maybe<Map<any, any>>) => {
-                            if (!inte) {
-                                return ''
-                            }
-                            if (
-                                EMAIL_INTEGRATION_TYPES.includes(
-                                    inte.get('type')
-                                )
-                            ) {
-                                return `${inte.get('name', '') as string} <${
-                                    inte.get('address', '') as string
-                                }>`
-                            }
-                            return inte.get('name', '') as string
-                        })
-                        .join(', ')
-                }
-                case ViewField.Tags: {
-                    return (
-                        <div className="d-flex">
-                            {(item.get('tags', fromJS([])) as List<any>)
-                                .sort(
-                                    ((a: Map<any, any>, b: Map<any, any>) =>
-                                        (
-                                            a.get('name') as string
-                                        ).toLowerCase() >
-                                        (
-                                            b.get('name') as string
-                                        ).toLowerCase()) as any
-                                )
-                                .map((tag: Map<any, any>) => (
-                                    <TicketTag
-                                        key={tag.get('id')}
-                                        decoration={tag.get('decoration')}
-                                        title={tag.get('name')}
-                                    >
-                                        {tag.get('name')}
-                                    </TicketTag>
-                                ))}
-                        </div>
-                    )
-                }
-                case ViewField.TicketId: {
-                    return (item.get('id') as string) || ''
-                }
-                default: {
-                    return defaultCell(fieldName, item)
-                }
-            }
+const defaultTicketView = {
+    name: EntityType.Ticket,
+    type: ViewType.TicketList,
+    routeItem: 'ticket', // UI route for this object
+    routeList: 'tickets', // UI route for the list of those objects
+    api: 'tickets', // api endpoint for this object
+    singular: 'ticket', // singular version for sentences
+    plural: 'tickets', // plural version for sentences
+    mainField: ViewField.Details, // mandatory field (+ where are displayed bulk actions)
+    fields: [
+        {
+            name: ViewField.Details,
+            title: 'Details',
         },
-        newView: (
-            visibility?: ViewVisibility,
-            viewName?: string,
-            filters?: string
-        ) => {
-            let view = baseView().merge({
-                fields: [
-                    ViewField.Details,
-                    ViewField.Channel,
-                    ViewField.Assignee,
-                    ViewField.Status,
-                    ViewField.Customer,
-                    ViewField.Created,
-                    ViewField.LastMessage,
-                ],
-                type: ViewType.TicketList,
-                order_by: 'last_message_datetime',
-                visibility:
-                    visibility === ViewVisibility.Private
-                        ? ViewVisibility.Private
-                        : ViewVisibility.Public,
-            })
-            if (filters) {
-                view = view.merge({
-                    filters,
-                    filters_ast: fromAST(getAST(filters)),
-                })
-            }
-            if (viewName) {
-                view = view.set('name', viewName)
-            }
-            return view
+        {
+            name: ViewField.Subject,
+            title: 'Subject',
         },
-        searchView: (query: string, filters?: string) => {
-            const searchView = baseView().merge({
-                name: `Search "${query}"`,
-                search: query,
-                fields: [
-                    ViewField.Details,
-                    ViewField.Customer,
-                    ViewField.Assignee,
-                    ViewField.TicketId,
-                    ViewField.Status,
-                    ViewField.Channel,
-                    ViewField.Created,
-                ],
-                type: ViewType.TicketList,
-                order_by: 'created_datetime',
-            })
-
-            if (filters) {
-                return searchView.merge({
-                    filters,
-                    filters_ast: fromAST(getAST(filters)),
-                })
-            }
-
-            return searchView
+        {
+            name: ViewField.Integrations,
+            title: 'Integration',
+            path: 'messages.integration_id',
+            filter: {
+                type: 'integration',
+            },
+            dropdown: {
+                width: '350px',
+            },
         },
+        {
+            name: ViewField.Tags,
+            title: 'Tags',
+            path: 'tags.name', // specify if different from name and if used in filters
+            filter: {
+                type: 'tag',
+            },
+        },
+        {
+            name: ViewField.Customer,
+            title: 'Customer',
+            path: 'customer.id',
+            filter: {
+                type: 'customer',
+            },
+        },
+        {
+            name: ViewField.AssigneeTeam,
+            title: 'Assignee team',
+            path: 'assignee_team.id',
+            filter: {
+                type: 'team',
+            },
+        },
+        {
+            name: ViewField.Assignee,
+            title: 'Assignee user',
+            path: 'assignee_user.id',
+            filter: {
+                // TODO(customers-migration): replace with `user` when we updated our search REST API.
+                type: 'agent',
+            },
+        },
+        {
+            name: ViewField.TicketId,
+            title: 'ID',
+        },
+        {
+            name: ViewField.Status,
+            title: 'Status',
+            filter: {
+                enum: STATUSES,
+            },
+        },
+        {
+            name: ViewField.Language,
+            title: 'Language',
+            filter: {
+                enum: ticketLanguages,
+            },
+        },
+        {
+            name: ViewField.Channel,
+            title: 'Channel',
+            filter: {
+                enum: getChannels()
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((channel) => channel.slug),
+            },
+        },
+        {
+            name: ViewField.Created,
+            title: 'Created',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc',
+                },
+            },
+        },
+        {
+            name: ViewField.Updated,
+            title: 'Updated',
+            path: 'updated_datetime',
+            filter: {
+                sort: {
+                    updated_datetime: 'desc',
+                },
+            },
+        },
+        {
+            name: ViewField.LastMessage,
+            title: 'Last message',
+            path: 'last_message_datetime',
+            filter: {
+                sort: {
+                    last_message_datetime: 'desc',
+                },
+            },
+        },
+        {
+            name: ViewField.LastReceivedMessage,
+            title: 'Last received message',
+            path: 'last_received_message_datetime',
+            filter: {
+                sort: {
+                    last_received_message_datetime: 'desc',
+                },
+            },
+        },
+        {
+            name: ViewField.Closed,
+            title: 'Closed',
+            path: 'closed_datetime',
+            filter: {
+                sort: {
+                    closed_datetime: 'desc',
+                },
+            },
+        },
+        {
+            name: ViewField.Snooze,
+            title: 'Snooze',
+            path: 'snooze_datetime',
+            filter: {
+                sort: {
+                    snooze_datetime: 'desc',
+                },
+            },
+        },
+    ],
+    cell: (fieldName: ViewField, item: Map<any, any>) => {
+        switch (fieldName) {
+            case ViewField.Created:
+                return (item.get('created_datetime') as string) || ''
+            case ViewField.Updated:
+                return (item.get('updated_datetime') as string) || ''
+            case ViewField.Closed:
+                return (item.get('closed_datetime') as string) || ''
+            case ViewField.Snooze:
+                return (item.get('snooze_datetime') as string) || ''
+            case ViewField.LastMessage:
+                return (item.get('last_message_datetime') as string) || ''
+            case ViewField.LastReceivedMessage:
+                return (
+                    (item.get('last_received_message_datetime') as string) || ''
+                )
+            case ViewField.Customer:
+                return (item.get('customer') as Map<any, any>) || fromJS({})
+            case ViewField.AssigneeTeam:
+                return (
+                    (item.get('assignee_team') as Map<any, any>) || fromJS({})
+                )
+            case ViewField.Assignee:
+                return (
+                    (item.get('assignee_user') as Map<any, any>) || fromJS({})
+                )
+            case ViewField.Language: {
+                return getLanguageDisplayName(item.get('language')) as string
+            }
+            case ViewField.Details: {
+                let subject = stripHTML(item.get('subject'))
+
+                const messageCount = item.get('messages_count') as number
+                if (messageCount > 1) {
+                    subject = `(${messageCount}) ${subject || ''}`
+                }
+
+                const body = stripHTML(item.get('excerpt'))
+
+                return (
+                    <div>
+                        <div className="subject">{subject}</div>
+                        {!!body && <div className="description">{body}</div>}
+                    </div>
+                )
+            }
+            case ViewField.DetailsWithHighlight: {
+                const subjectHighlights: string | null = item.getIn(
+                    ['highlights', 'subject.highlight', 0],
+                    null
+                )
+
+                const excerptHighlights: string | null = item.getIn(
+                    ['highlights', 'messages.body.text', 0],
+                    null
+                )
+
+                let subject = ''
+
+                const messageCount: number = item.get('messages_count')
+                if (messageCount > 1) {
+                    subject = `(${messageCount}) ${
+                        subjectHighlights ||
+                        stripHTML(item.get('subject')) ||
+                        ''
+                    }`
+                }
+
+                const body = excerptHighlights || stripHTML(item.get('excerpt'))
+
+                return (
+                    <div>
+                        <div
+                            className="subject"
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(subject),
+                            }}
+                        />
+                        {!!body && (
+                            <div
+                                className="description"
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtmlDefault(body),
+                                }}
+                            />
+                        )}
+                    </div>
+                )
+            }
+            case ViewField.Integrations: {
+                return (item.get('integrations', fromJS([])) as List<any>)
+                    .map((inte: Maybe<Map<any, any>>) => {
+                        if (!inte) {
+                            return ''
+                        }
+                        if (
+                            EMAIL_INTEGRATION_TYPES.includes(inte.get('type'))
+                        ) {
+                            return `${inte.get('name', '') as string} <${
+                                inte.get('address', '') as string
+                            }>`
+                        }
+                        return inte.get('name', '') as string
+                    })
+                    .join(', ')
+            }
+            case ViewField.Tags: {
+                return (
+                    <div className="d-flex">
+                        {(item.get('tags', fromJS([])) as List<any>)
+                            .sort(
+                                ((a: Map<any, any>, b: Map<any, any>) =>
+                                    (a.get('name') as string).toLowerCase() >
+                                    (
+                                        b.get('name') as string
+                                    ).toLowerCase()) as any
+                            )
+                            .map((tag: Map<any, any>) => (
+                                <TicketTag
+                                    key={tag.get('id')}
+                                    decoration={tag.get('decoration')}
+                                    title={tag.get('name')}
+                                >
+                                    {tag.get('name')}
+                                </TicketTag>
+                            ))}
+                    </div>
+                )
+            }
+            case ViewField.TicketId: {
+                return (item.get('id') as string) || ''
+            }
+            default: {
+                return defaultCell(fieldName, item)
+            }
+        }
     },
+    newView: (
+        visibility?: ViewVisibility,
+        viewName?: string,
+        filters?: string
+    ) => {
+        let view = baseView().merge({
+            fields: [
+                ViewField.Details,
+                ViewField.Channel,
+                ViewField.Assignee,
+                ViewField.Status,
+                ViewField.Customer,
+                ViewField.Created,
+                ViewField.LastMessage,
+            ],
+            type: ViewType.TicketList,
+            order_by: 'last_message_datetime',
+            visibility:
+                visibility === ViewVisibility.Private
+                    ? ViewVisibility.Private
+                    : ViewVisibility.Public,
+        })
+        if (filters) {
+            view = view.merge({
+                filters,
+                filters_ast: fromAST(getAST(filters)),
+            })
+        }
+        if (viewName) {
+            view = view.set('name', viewName)
+        }
+        return view
+    },
+    searchView: (query: string, filters?: string) => {
+        const searchView = baseView().merge({
+            name: `Search "${query}"`,
+            search: query,
+            fields: [
+                ViewField.Details,
+                ViewField.Customer,
+                ViewField.Assignee,
+                ViewField.TicketId,
+                ViewField.Status,
+                ViewField.Channel,
+                ViewField.Created,
+            ],
+            type: ViewType.TicketList,
+            order_by: 'created_datetime',
+        })
+
+        if (filters) {
+            return searchView.merge({
+                filters,
+                filters_ast: fromAST(getAST(filters)),
+            })
+        }
+
+        return searchView
+    },
+}
+
+const ticketWithHighlightView = {
+    ...defaultTicketView,
+    name: EntityType.TicketWithHighlight,
+    searchView: (query: string, filters?: string) => {
+        const searchView = baseView().merge({
+            name: `Search "${query}"`,
+            search: query,
+            fields: [
+                ViewField.DetailsWithHighlight,
+                ViewField.Customer,
+                ViewField.Assignee,
+                ViewField.TicketId,
+                ViewField.Status,
+                ViewField.Channel,
+                ViewField.Created,
+            ],
+            type: ViewType.TicketList,
+            order_by: 'created_datetime',
+        })
+
+        if (filters) {
+            return searchView.merge({
+                filters,
+                filters_ast: fromAST(getAST(filters)),
+            })
+        }
+
+        return searchView
+    },
+}
+
+export const views = fromAST([
+    defaultTicketView,
+    ticketWithHighlightView,
     {
-        name: 'customer',
+        name: EntityType.Customer,
         type: ViewType.CustomerList,
         routeItem: 'customer',
         routeList: 'customers',

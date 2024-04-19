@@ -27,7 +27,13 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {JobType} from 'models/job/types'
-import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
+import {
+    EntityType,
+    View,
+    ViewCategory,
+    ViewType,
+    ViewVisibility,
+} from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -84,7 +90,7 @@ import css from './FilterTopbar.less'
 type Props = {
     isSearch: boolean
     isUpdate: boolean
-    type: 'ticket' | 'customer'
+    type: EntityType
 } & CancellableRequestInjectedProps<
     'fetchViewItemsCancellable',
     'cancelFetchViewItemsCancellable',
