@@ -2,7 +2,8 @@ import React from 'react'
 import classNames from 'classnames'
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import LinkButton from 'pages/common/components/button/LinkButton'
+import Button from 'pages/common/components/button/Button'
+import history from 'pages/history'
 import css from './GuidanceEmptyState.less'
 
 type Props = {
@@ -10,6 +11,11 @@ type Props = {
 }
 
 export const GuidanceEmptyState = ({shopName}: Props) => {
+    const onNewClick = () => {
+        const guidanceNewLink = `/app/automation/shopify/${shopName}/ai-agent/guidance/new`
+        history.push(guidanceNewLink)
+    }
+
     return (
         <div className={css.container}>
             <div className={css.innerContainer}>
@@ -33,12 +39,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                         answers in the right way.
                     </p>
                     <div>
-                        <LinkButton
-                            href={`/app/automation/shopify/${shopName}/ai-agent/guidance/new`}
-                            target="_self"
-                        >
-                            Create Guidance
-                        </LinkButton>
+                        <Button onClick={onNewClick}>Create Guidance</Button>
                     </div>
                 </div>
                 <div className={css.imageWrapper}>

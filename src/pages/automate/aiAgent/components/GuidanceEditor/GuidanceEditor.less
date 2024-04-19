@@ -1,0 +1,43 @@
+:local {
+    .label {
+        margin-bottom: 8px;
+    }
+
+    .editor {
+        border-radius: 4px !important;
+        border: 1px solid var(--neutral-grey-3) !important;
+
+        :global {
+            .fr-wrapper {
+                position: static;
+                border: none !important;
+            }
+            // Move counter to the toolbar
+            .fr-counter {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                margin-right: 2px;
+                margin-bottom: 0 !important;
+            }
+            .fr-newline {
+                display: none;
+            }
+            .fr-wrapper .fr-placeholder {
+                white-space: normal;
+            }
+            .fr-wrapper > .fr-view {
+                p {
+                    font-size: 14px;
+                    font-family: Inter;
+                }
+            }
+            .fr-toolbar {
+                border: none !important;
+            }
+            .fr-wraper {
+                border: none !important;
+            }
+        }
+    }
+}

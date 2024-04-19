@@ -1,12 +1,12 @@
 import React from 'react'
-import {screen} from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {screen} from '@testing-library/react'
 import {renderWithRouter} from 'utils/testing'
-import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
-import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {AiAgentNewGuidanceContainer} from '../AiAgentNewGuidanceContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
+import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
 
 jest.mock('../hooks/useGuidanceHelpCenter', () => ({
     useGuidanceHelpCenter: jest.fn(),
@@ -14,22 +14,30 @@ jest.mock('../hooks/useGuidanceHelpCenter', () => ({
 jest.mock('../hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(),
 }))
-
-const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
-const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
+jest.mock(
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
+    () => {
+        const ComponentToMock = () => <div />
+        return ComponentToMock
+    }
+)
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
 }))
+
+const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
+const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
+
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
 const renderComponent = () => {
-    renderWithRouter(<AiAgentGuidanceContainer />, {
+    renderWithRouter(<AiAgentNewGuidanceContainer />, {
         path: `/:shopType/:shopName/ai-agent/guidance`,
         route: '/shopify/test-shop/ai-agent/guidance',
     })
 }
-describe('<AiAgentGuidanceContainer />', () => {
+describe('<AiAgentNewGuidance />', () => {
     beforeEach(() => {
         mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticles.mockReturnValue({
@@ -40,7 +48,7 @@ describe('<AiAgentGuidanceContainer />', () => {
         })
     })
 
-    it('should render loader', () => {
+    it('should render loader when no help center', () => {
         mockedUseGuidanceHelpCenter.mockReturnValue(undefined)
 
         renderComponent()
@@ -48,9 +56,12 @@ describe('<AiAgentGuidanceContainer />', () => {
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
-    it('should render empty state component', () => {
+    it('should render component', () => {
         renderComponent()
 
-        expect(screen.getByText('Create Guidance')).toBeInTheDocument()
+        expect(screen.getByText('Guidance name')).toBeInTheDocument()
     })
+
+    it.todo('should validate the form')
+    it.todo('should submit the form')
 })

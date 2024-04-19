@@ -13,6 +13,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                   {
                       route: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
                       title: 'Guidance',
+                      exact: false,
                   },
               ]
             : []),

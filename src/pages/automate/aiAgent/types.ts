@@ -1,3 +1,4 @@
+import {CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
 import {Tag} from '../../../models/aiAgent/types'
 
 export type NonNullProperties<T> = {
@@ -22,3 +23,10 @@ export type ValidFormValues = NonNullFields<
     FormValues,
     'monitoredEmailIntegrations' | 'helpCenter'
 >
+
+export type GuidanceArticle = {
+    title: string
+    content: string
+    locale: LocaleCode
+    visibility: CreateArticleDto['translation']['visibility_status']
+}

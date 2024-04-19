@@ -33,6 +33,7 @@ describe('useAiAgentNavigation', () => {
         )
         expect(result.current.headerNavbarItems).toEqual([
             {
+                exact: false,
                 route: '/app/automation/shopify/test/ai-agent/guidance',
                 title: 'Guidance',
             },

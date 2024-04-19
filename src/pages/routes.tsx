@@ -179,6 +179,7 @@ import {
 import PanelLayout from 'pages/PanelLayout'
 import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
 import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
+import {AiAgentNewGuidanceContainer} from './automate/aiAgent/AiAgentNewGuidanceContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1375,6 +1376,52 @@ export function HelpCenterSettingsRoutes({
     )
 }
 
+function AiAgentRoutes({match: {path}}: RouteComponentProps) {
+    const showAiAgentSettings: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSettings]
+
+    const showAiAgentPlayground: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentPlayground]
+
+    const showAiAgentGuidance: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentGuidance]
+
+    return (
+        <Switch>
+            <SelfServiceHelpCentersProvider>
+                {showAiAgentSettings !== false && (
+                    <Route
+                        path={`${path}`}
+                        exact
+                        component={AiAgentViewContainer}
+                    />
+                )}
+                {showAiAgentPlayground !== false && (
+                    <Route
+                        path={`${path}/playground`}
+                        exact
+                        component={AiAgentPlaygroundContainer}
+                    />
+                )}
+                {showAiAgentGuidance !== false && (
+                    <>
+                        <Route
+                            path={`${path}/guidance`}
+                            exact
+                            component={AiAgentGuidanceContainer}
+                        />
+                        <Route
+                            path={`${path}/guidance/new`}
+                            exact
+                            component={AiAgentNewGuidanceContainer}
+                        />
+                    </>
+                )}
+            </SelfServiceHelpCentersProvider>
+        </Switch>
+    )
+}
+
 export function AutomationRoutes() {
     return (
         <HelpCenterApiClientProvider>
@@ -1395,51 +1442,15 @@ export function AutomationRoutes() {
 function AutomationContent() {
     const {path} = useRouteMatch()
 
-    const showAiAgentSettings: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentSettings]
-
-    const showAiAgentPlayground: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlayground]
-
-    const showAiAgentGuidance: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentGuidance]
-
     return (
         <Switch>
-            {showAiAgentSettings !== false && (
-                <Route path={`${path}/:shopType/:shopName/ai-agent`}>
-                    <SelfServiceHelpCentersProvider>
-                        <Route
-                            path={`${path}/:shopType/:shopName/ai-agent`}
-                            exact
-                            component={memoizedWithUserRoleRequired(
-                                AiAgentViewContainer,
-                                AGENT_ROLE
-                            )}
-                        />
-                    </SelfServiceHelpCentersProvider>
-                    {showAiAgentPlayground !== false && (
-                        <Route
-                            path={`${path}/:shopType/:shopName/ai-agent/playground`}
-                            exact
-                            component={memoizedWithUserRoleRequired(
-                                AiAgentPlaygroundContainer,
-                                AGENT_ROLE
-                            )}
-                        />
-                    )}
-                    {showAiAgentGuidance !== false && (
-                        <Route
-                            path={`${path}/:shopType/:shopName/ai-agent/guidance`}
-                            exact
-                            component={memoizedWithUserRoleRequired(
-                                AiAgentGuidanceContainer,
-                                AGENT_ROLE
-                            )}
-                        />
-                    )}
-                </Route>
-            )}
+            <Route
+                path={`${path}/:shopType/:shopName/ai-agent`}
+                component={memoizedWithUserRoleRequired(
+                    AiAgentRoutes,
+                    AGENT_ROLE
+                )}
+            />
             <Route
                 path={`${path}/:shopType/:shopName/quick-responses`}
                 exact

@@ -9,9 +9,10 @@ type Props = {
 }
 
 export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
-    const {guidanceArticles, isLoading} = useGuidanceArticles(helpCenterId)
+    const {guidanceArticles, isArticleListLoading} =
+        useGuidanceArticles(helpCenterId)
 
-    if (isLoading) {
+    if (isArticleListLoading) {
         return <Loader />
     }
 

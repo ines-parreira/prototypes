@@ -12,6 +12,7 @@ import css from './AutomateView.less'
 type NavbarItem = {
     route: string
     title: string
+    exact?: boolean
 }
 
 type Props = {
@@ -36,8 +37,8 @@ const AutomateView = ({
             <PageHeader title={title}>{action}</PageHeader>
             {headerNavbarItems && (
                 <SecondaryNavbar>
-                    {headerNavbarItems.map(({route, title}) => (
-                        <NavLink key={route} to={route} exact>
+                    {headerNavbarItems.map(({route, title, exact}) => (
+                        <NavLink key={route} to={route} exact={exact ?? true}>
                             {title}
                         </NavLink>
                     ))}

@@ -1,0 +1,30 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        padding: @layout-spacing-m;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+    }
+
+    .btnGroup {
+        display: flex;
+        gap: @layout-spacing-xs;
+        padding: @layout-spacing-xl 0 @layout-spacing-s 0;
+    }
+
+    .alertContainer {
+        padding: @layout-spacing-m;
+        padding-left: 0;
+    }
+
+    .alert {
+        align-items: flex-start;
+        max-width: 400px;
+    }
+}
