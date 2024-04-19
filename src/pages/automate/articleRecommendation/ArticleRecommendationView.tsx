@@ -93,7 +93,7 @@ const ArticleRecommendationView = () => {
         <AutomateView title={ARTICLE_RECOMMENDATION} isLoading={isLoading}>
             <AutomateViewContent
                 description="Automatically send a Help Center article in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
-                helpUrl="https://docs.gorgias.com/en-US/help-center---article-recommendations-in-chat-89341"
+                helpUrl="https://docs.gorgias.com/en-US/article-recommendations-in-chat-368447"
                 helpTitle={`Learn About ${ARTICLE_RECOMMENDATION} In Chat`}
                 onSubmit={handleSubmit}
                 onCancel={handleCancel}
