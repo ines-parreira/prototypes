@@ -1,9 +1,9 @@
 import React from 'react'
-import {render, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection'
 
 describe('EmailIntegrationListSelection', () => {
-    it('renders the label text', () => {
+    it('renders correctly', () => {
         const mockProps = {
             onSelectionChange: jest.fn(),
             selectedIds: [],
@@ -11,9 +11,5 @@ describe('EmailIntegrationListSelection', () => {
         }
 
         render(<EmailIntegrationListSelection {...mockProps} />)
-
-        screen.getByText('Which email addresses should trigger the AI Agent?')
-
-        screen.getByText('Select one or more email addresses')
     })
 })

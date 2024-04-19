@@ -28,7 +28,7 @@ const HelpCenterSelect = ({
             floating={floatingRef}
             label={helpCenter?.name}
             onToggle={setSelectorOpen}
-            placeholder="Select Help Center"
+            placeholder="Select a Help Center"
             ref={targetRef}
         >
             <SelectInputBoxContext.Consumer>

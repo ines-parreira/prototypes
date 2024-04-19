@@ -21,6 +21,7 @@ export type StoreConfigurationResponse = {
 }
 
 export type StoreConfiguration = {
+    deactivatedDatetime: string | null
     storeName: string
 
     helpCenterId: number
@@ -48,6 +49,7 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'helpCenterSubdomain'
     | 'helpCenterLocale'
     | 'monitoredEmailIntegrations'
+    | 'deactivatedDatetime'
 >
 
 export type UpsertStoreConfigurationPayload = StoreConfiguration

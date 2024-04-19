@@ -9,6 +9,7 @@ export type NonNullFields<T, K extends keyof T> = T &
     NonNullProperties<Pick<T, K>>
 
 export type FormValues = {
+    deactivatedDatetime: string | null | undefined
     ticketSampleRate: number | null
     silentHandover: boolean | null
     monitoredEmailIntegrations: {id: number; email: string}[] | null

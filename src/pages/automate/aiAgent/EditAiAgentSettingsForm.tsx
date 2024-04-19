@@ -1,12 +1,13 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {List} from 'immutable'
+import cn from 'classnames'
 
 import _isEqual from 'lodash/isEqual'
 
 import {useQueryClient} from '@tanstack/react-query'
+import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
-import HeaderTitle from '../../common/components/HeaderTitle'
 import useAppSelector from '../../../hooks/useAppSelector'
 import {StoreConfiguration, Tag} from '../../../models/aiAgent/types'
 import Button from '../../common/components/button/Button'
@@ -20,7 +21,6 @@ import ListField from '../../common/forms/ListField'
 import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
-import NumberInput from '../../common/forms/input/NumberInput'
 import {
     storeConfigurationKeys,
     useUpsertStoreConfigurationPure,
@@ -34,9 +34,7 @@ import {
     EXCLUDED_TOPIC_MAX_LENGTH,
     SIGNATURE_MAX_LENGTH,
     DEFAULT_FORM_VALUES,
-    DEFAULT_AI_AGENT_DISABLED_RATE,
     ToneOfVoice,
-    DEFAULT_AI_AGENT_ENABLED_RATE,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
@@ -75,11 +73,14 @@ const createStoreConfigurationFromFormValues = (
 
     const dirtyFormValues = filterNonNull(restOfFormValues)
 
+    const deactivatedDatetime = formValues.deactivatedDatetime as string | null
+
     return {
         ...storeConfig,
         ...dirtyFormValues,
         ticketSampleRate: ticketSampleRateValue,
         ...helpCenterDetails,
+        deactivatedDatetime,
     }
 }
 
@@ -198,11 +199,7 @@ export const EditAiAgentSettingsForm = ({
 
     const {formValues, isFormDirty, resetForm, updateValue} = useFormValues()
     const initialSampleRatePercent = storeConfiguration.ticketSampleRate * 100
-    const latestSampleRateRef = useRef(
-        storeConfiguration.ticketSampleRate === 0
-            ? DEFAULT_AI_AGENT_ENABLED_RATE
-            : initialSampleRatePercent
-    )
+    const latestSampleRateRef = useRef(initialSampleRatePercent)
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
 
@@ -264,10 +261,41 @@ export const EditAiAgentSettingsForm = ({
         return helpCenter.id === selectedHelpCenterId
     })
 
+    const setHelpCenterId = (id: number) => {
+        const newSelectedHelpCenter = helpCenters.find(
+            (helpCenter) => helpCenter.id === id
+        )
+
+        if (!newSelectedHelpCenter) return
+        updateValue('helpCenter', {
+            id: newSelectedHelpCenter.id,
+            locale: newSelectedHelpCenter.default_locale,
+            subdomain: newSelectedHelpCenter.subdomain,
+        })
+    }
+
+    const handleSelectEmailIntegration = (nextSelectedIds: number[]) => {
+        // preserving the order of the selection
+        const monitoredEmailIntegrations: StoreConfiguration['monitoredEmailIntegrations'] =
+            []
+        for (const id of nextSelectedIds) {
+            const emailIntegration = emailIntegrations.find(
+                (integration) => integration.id === id
+            )
+            if (emailIntegration) {
+                monitoredEmailIntegrations.push({
+                    id: emailIntegration.id,
+                    email: emailIntegration.meta.address,
+                })
+            }
+        }
+        updateValue('monitoredEmailIntegrations', monitoredEmailIntegrations)
+    }
+
     const isAIAgentToggled = isAiAgentEnabled(
-        formValues.ticketSampleRate !== null
-            ? formValues.ticketSampleRate
-            : storeConfiguration.ticketSampleRate
+        formValues.deactivatedDatetime !== undefined
+            ? formValues.deactivatedDatetime
+            : storeConfiguration.deactivatedDatetime
     )
 
     const isHandoffToggled = isHandoffEnabled(
@@ -286,202 +314,260 @@ export const EditAiAgentSettingsForm = ({
             />
 
             <div className={css.automateView}>
-                <div className={css.aiAgentToggle}>
-                    <ToggleInput
-                        isToggled={isAIAgentToggled}
-                        onClick={() => {
-                            updateValue(
-                                'ticketSampleRate',
-                                isAIAgentToggled
-                                    ? DEFAULT_AI_AGENT_DISABLED_RATE
-                                    : latestSampleRateRef.current
-                            )
-                        }}
-                        name={toggleAiAgentId}
-                    >
-                        Enable AI Agent
-                    </ToggleInput>
-                </div>
-
-                <div>
-                    <Label className={css.label}>
-                        Select the desired percentage of emails managed by the
-                        AI Agent
-                    </Label>
-                    <NumberInput
-                        className={css.numberInput}
-                        onChange={(value?: number) => {
-                            if (value === undefined) return
-                            latestSampleRateRef.current = value
-                            updateValue('ticketSampleRate', value)
-                        }}
-                        value={
-                            formValues.ticketSampleRate !== null
-                                ? formValues.ticketSampleRate
-                                : convertRateToPercentage(
-                                      storeConfiguration.ticketSampleRate
-                                  )
-                        }
-                        min={0}
-                        max={100}
-                        placeholder="30"
-                        suffix={
-                            <div style={{color: '#99A5B6', lineHeight: '20px'}}>
-                                /100%
-                            </div>
-                        }
-                    />
-                </div>
-
-                <div className={css.knowledgeSection}>
-                    <HeaderTitle className={css.header} title="Knowledge" />
-                    <Label className={css.label} isRequired>
-                        Select which Help Center should be used by the AI Agent
-                    </Label>
-                    <HelpCenterSelect
-                        helpCenter={selectedHelpCenter}
-                        setHelpCenterId={(id: number) => {
-                            const newSelectedHelpCenter = helpCenters.find(
-                                (helpCenter) => helpCenter.id === id
-                            )
-
-                            if (!newSelectedHelpCenter) return
-                            updateValue('helpCenter', {
-                                id: newSelectedHelpCenter.id,
-                                locale: newSelectedHelpCenter.default_locale,
-                                subdomain: newSelectedHelpCenter.subdomain,
-                            })
-                        }}
-                        helpCenters={faqHelpCenters}
-                    />
-                </div>
-                <div className={css.customizeSection}>
-                    <HeaderTitle className={css.header} title="Customize" />
-
-                    <EmailIntegrationListSelection
-                        selectedIds={
-                            formValues.monitoredEmailIntegrations !== null
-                                ? formValues.monitoredEmailIntegrations.map(
-                                      (integration) => integration.id
-                                  )
-                                : storeConfiguration.monitoredEmailIntegrations.map(
-                                      (integration) => integration.id
-                                  )
-                        }
-                        onSelectionChange={(nextSelectedIds: number[]) => {
-                            // preserving the order of the selection
-                            const monitoredEmailIntegrations: StoreConfiguration['monitoredEmailIntegrations'] =
-                                []
-                            for (const id of nextSelectedIds) {
-                                const emailIntegration = emailIntegrations.find(
-                                    (integration) => integration.id === id
+                <section>
+                    <h2 className={css.sectionHeader}>General</h2>
+                    <div className={css.sectionDescription}>
+                        AI Agent uses Help Center articles, Macros, Guidance and
+                        Shopify data to automate responses, enabling your team
+                        to reduce wait time and increase customer satisfaction.
+                    </div>
+                    <div className={css.formGroup}>
+                        <ToggleInput
+                            isToggled={isAIAgentToggled}
+                            onClick={() => {
+                                updateValue(
+                                    'deactivatedDatetime',
+                                    isAIAgentToggled
+                                        ? new Date().toISOString()
+                                        : null
                                 )
-                                if (emailIntegration) {
-                                    monitoredEmailIntegrations.push({
-                                        id: emailIntegration.id,
-                                        email: emailIntegration.meta.address,
-                                    })
+                            }}
+                            name={toggleAiAgentId}
+                            caption="When enabled AI will reply to tickets on your team’s behalf."
+                        >
+                            Enable AI Agent
+                        </ToggleInput>
+                    </div>
+
+                    <div className={css.formGroup}>
+                        <Label isRequired={true}>Help Center</Label>
+                        <HelpCenterSelect
+                            helpCenter={selectedHelpCenter}
+                            setHelpCenterId={setHelpCenterId}
+                            helpCenters={faqHelpCenters}
+                        />
+                        <div className={css.formInputFooterInfo}>
+                            Select a Help Center to connect to AI Agent.
+                        </div>
+                    </div>
+
+                    <div className={css.formGroup}>
+                        <Label>
+                            Tone of voice
+                            <IconTooltip>
+                                Examples of tone of voice:
+                                <br />
+                                <ul>
+                                    <li>
+                                        <b>Friendly</b>: "Hi, could you please
+                                        send a picture of the damaged items?
+                                        Thank you!"
+                                    </li>
+                                    <li>
+                                        <b>Professional</b>: "Hello, could you
+                                        provide a photo of the damaged items?
+                                        Regards."
+                                    </li>
+                                    <li>
+                                        <b>Sophisticated</b>: "Hello, kindly
+                                        provide an image of the damaged articles
+                                        at your earliest convenience. Many
+                                        thanks."
+                                    </li>
+                                </ul>
+                            </IconTooltip>
+                        </Label>
+                        <SelectField
+                            fullWidth
+                            showSelectedOption
+                            value={
+                                formValues.toneOfVoice !== null
+                                    ? formValues.toneOfVoice
+                                    : storeConfiguration.toneOfVoice
+                            }
+                            onChange={(toneOfVoiceLabel) => {
+                                updateValue(
+                                    'toneOfVoice',
+                                    toneOfVoiceLabel.toString()
+                                )
+                            }}
+                            options={Object.values(ToneOfVoice).map(
+                                (toneOfVoice) => ({
+                                    label: toneOfVoice,
+                                    value: toneOfVoice,
+                                })
+                            )}
+                            dropdownMenuClassName={css.longDropdown}
+                        />
+                        <div className={css.formInputFooterInfo}>
+                            Select a tone of voice for AI Agent to use with
+                            customers.
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2
+                        className={cn(
+                            css.sectionHeader,
+                            css.emailSectionHeader
+                        )}
+                    >
+                        Email
+                    </h2>
+                    <div className={css.formGroup}>
+                        <Label isRequired={true}>
+                            Email ticket coverage
+                            <IconTooltip>
+                                AI Agent will attempt to respond to the
+                                specified percentage of email tickets.
+                            </IconTooltip>
+                        </Label>
+                        <SelectField
+                            fullWidth
+                            showSelectedOption
+                            value={
+                                formValues.ticketSampleRate !== null
+                                    ? formValues.ticketSampleRate
+                                    : convertRateToPercentage(
+                                          storeConfiguration.ticketSampleRate
+                                      )
+                            }
+                            onChange={(value) => {
+                                if (typeof value === 'number') {
+                                    latestSampleRateRef.current = value
+                                    updateValue('ticketSampleRate', value)
                                 }
-                            }
-                            updateValue(
-                                'monitoredEmailIntegrations',
-                                monitoredEmailIntegrations
-                            )
-                        }}
-                        emailItems={emailItems}
-                    />
+                            }}
+                            options={[
+                                {label: '10%', value: 10},
+                                {label: '50%', value: 50},
+                                {label: '100%', value: 100},
+                            ]}
+                            dropdownMenuClassName={css.longDropdown}
+                        />
+                        <div className={css.formInputFooterInfo}>
+                            Select the ticket percentage you woud like AI Agent
+                            to process.
+                        </div>
+                    </div>
 
-                    <Label className={css.label}>
-                        Enter the signature that should be used by the AI Agent
-                    </Label>
-                    <TextArea
-                        id="signature-text-area"
-                        value={
-                            formValues.signature !== null
-                                ? formValues.signature
-                                : storeConfiguration.signature
-                        }
-                        onChange={(value: unknown) => {
-                            if (typeof value !== 'string') return
-                            updateValue('signature', value)
-                        }}
-                        maxLength={SIGNATURE_MAX_LENGTH}
-                    />
-                    <Label className={css.label}>
-                        Select the tone of voice that should be used by the AI
-                        Agent
-                    </Label>
-                    <SelectField
-                        fullWidth
-                        showSelectedOption
-                        value={
-                            formValues.toneOfVoice !== null
-                                ? formValues.toneOfVoice
-                                : storeConfiguration.toneOfVoice
-                        }
-                        onChange={(toneOfVoiceLabel) => {
-                            updateValue(
-                                'toneOfVoice',
-                                toneOfVoiceLabel.toString()
-                            )
-                        }}
-                        options={Object.values(ToneOfVoice).map(
-                            (toneOfVoice) => ({
-                                label: toneOfVoice,
-                                value: toneOfVoice,
-                            })
-                        )}
-                        dropdownMenuClassName={css.longDropdown}
-                    />
-                </div>
-                <div className={css.handoffSection}>
-                    <HeaderTitle className={css.header} title="Handoff" />
-                    <Label className={css.label}>
-                        Select whether the AI Agent should send a message to the
-                        customer before handing over the ticket to your team
-                    </Label>
-                    <ToggleInput
-                        className={css.featureToggle}
-                        isToggled={isHandoffToggled}
-                        onClick={() => {
-                            if (formValues.silentHandover !== null) {
-                                updateValue(
-                                    'silentHandover',
-                                    !formValues.silentHandover
-                                )
-                            } else {
-                                updateValue(
-                                    'silentHandover',
-                                    !storeConfiguration.silentHandover
-                                )
+                    <div className={css.formGroup}>
+                        <Label isRequired={true}>
+                            AI Agent responds to tickets sent to the following
+                            email addresses
+                        </Label>
+                        <EmailIntegrationListSelection
+                            selectedIds={
+                                formValues.monitoredEmailIntegrations !== null
+                                    ? formValues.monitoredEmailIntegrations.map(
+                                          (integration) => integration.id
+                                      )
+                                    : storeConfiguration.monitoredEmailIntegrations.map(
+                                          (integration) => integration.id
+                                      )
                             }
-                        }}
-                        name={toggleHandoffId}
-                    >
-                        Send message before handover
-                    </ToggleInput>
-                    <Label className={css.label}>
-                        List the topics which should not be handled by the AI
-                        Agent
-                    </Label>
-                    <ListField
-                        className={css.container}
-                        items={List(
-                            formValues.excludedTopics !== null
-                                ? formValues.excludedTopics
-                                : storeConfiguration.excludedTopics
-                        )}
-                        onChange={(excludedTopics: List<string>) => {
-                            updateValue('excludedTopics', excludedTopics.toJS())
-                        }}
-                        maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
-                        maxItems={MAX_EXCLUDED_TOPICS}
-                        addLabel="Add a topic"
-                        placeholder=" "
-                    />
-                </div>
-                <div className={css.autoTagSection}>
-                    <HeaderTitle className={css.header} title="Auto Tag" />
+                            onSelectionChange={handleSelectEmailIntegration}
+                            emailItems={emailItems}
+                        />
+                        <div className={css.formInputFooterInfo}>
+                            Select the email address you would like AI Agent to
+                            use.
+                        </div>
+                    </div>
+
+                    <div className={css.formGroup}>
+                        <Label isRequired={true}>
+                            Enter the signature that should be used by the AI
+                            Agent
+                            <IconTooltip>
+                                This will override the current email signature
+                                in your email settings.
+                            </IconTooltip>
+                        </Label>
+                        <TextArea
+                            id="signature-text-area"
+                            placeholder="AI Agent email signature"
+                            value={
+                                formValues.signature !== null
+                                    ? formValues.signature
+                                    : storeConfiguration.signature
+                            }
+                            onChange={(value: unknown) => {
+                                if (typeof value !== 'string') return
+                                updateValue('signature', value)
+                            }}
+                            maxLength={SIGNATURE_MAX_LENGTH}
+                        />
+                        <div className={css.formInputFooterInfo}>
+                            Provide a name for AI agent to use. Do not include
+                            greetings (e.g. "Best regards"). Greetings will be
+                            generated by AI Agent as part of the response.
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h2 className={css.sectionHeader}> Handover </h2>
+                    <div className={css.sectionDescription}>
+                        Define when and how AI Agent should hand over tickets to
+                        your team.
+                    </div>
+                    <div className={css.formGroup}>
+                        <ToggleInput
+                            className={css.featureToggle}
+                            isToggled={isHandoffToggled}
+                            onClick={() => {
+                                if (formValues.silentHandover !== null) {
+                                    updateValue(
+                                        'silentHandover',
+                                        !formValues.silentHandover
+                                    )
+                                } else {
+                                    updateValue(
+                                        'silentHandover',
+                                        !storeConfiguration.silentHandover
+                                    )
+                                }
+                            }}
+                            name={toggleHandoffId}
+                            caption="Let customers know that their inquiry will be transferred to an agent."
+                        >
+                            Send message before handover
+                        </ToggleInput>
+                    </div>
+                    <div className={css.formGroup}>
+                        <Label>Excluded topics</Label>
+                        <div className={css.formGroupDescription}>
+                            When customer inquiries contain the following
+                            topics, AI Agent will not respond and hand over to
+                            an agent.
+                        </div>
+                        <ListField
+                            className={css.container}
+                            items={List(
+                                formValues.excludedTopics !== null
+                                    ? formValues.excludedTopics
+                                    : storeConfiguration.excludedTopics
+                            )}
+                            onChange={(excludedTopics: List<string>) => {
+                                updateValue(
+                                    'excludedTopics',
+                                    excludedTopics.toJS()
+                                )
+                            }}
+                            maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
+                            maxItems={MAX_EXCLUDED_TOPICS}
+                            addLabel="Add topic"
+                        />
+                    </div>
+                </section>
+                <section>
+                    <h2 className={css.sectionHeader}>Auto-tag</h2>
+                    <div className={css.sectionDescription}>
+                        Define when AI Agent should auto-tag tickets.
+                    </div>
+
                     <AutoTagList
                         tags={
                             formValues.tags !== null
@@ -492,14 +578,17 @@ export const EditAiAgentSettingsForm = ({
                             updateValue('tags', tags)
                         }}
                     />
-                </div>
-                <Button
-                    onClick={handleOnSave}
-                    isDisabled={isUpsertLoading || !isFormDirty}
-                    className="mb-3"
-                >
-                    Save Changes
-                </Button>
+                </section>
+
+                <section>
+                    <Button
+                        onClick={handleOnSave}
+                        isDisabled={isUpsertLoading || !isFormDirty}
+                        className="mb-3"
+                    >
+                        Save Changes
+                    </Button>
+                </section>
             </div>
         </>
     )

@@ -16,8 +16,8 @@ export function AutoTagList(props: IProps) {
         <div>
             {!!tags.length && (
                 <div className={css.autoTagListHeaders}>
-                    <span>Tag name</span>
-                    <span>Tag description</span>
+                    <span>Tag(s)</span>
+                    <span>When to apply tag(s)</span>
                 </div>
             )}
 
@@ -69,7 +69,7 @@ export function AutoTagList(props: IProps) {
                 }}
             >
                 <i className="material-icons md-2">add</i>
-                <span>Add a tag</span>
+                <span>Add Auto-Tag</span>
             </Button>
         </div>
     )

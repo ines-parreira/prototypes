@@ -30,8 +30,8 @@ export const convertPercentageToRate = (
     return ticketSampleRateInPercentage / 100
 }
 
-export const isAiAgentEnabled = (ticketSampleRate: number) => {
-    return ticketSampleRate > 0
-}
-
 export const isHandoffEnabled = (silentHandover: boolean) => !silentHandover
+
+export const isAiAgentEnabled = (deactivatedDatetime: string | null) => {
+    return deactivatedDatetime === null
+}

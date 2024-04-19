@@ -1,5 +1,4 @@
 import React, {useRef, useState} from 'react'
-import Label from 'pages/common/forms/Label/Label'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
@@ -7,7 +6,6 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import css from './EmailIntegrationListSelection.less'
 
 type EmailItem = {email: string; id: number}
 
@@ -61,48 +59,41 @@ export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelecti
         }
 
         return (
-            <>
-                <Label className={css.label} isRequired>
-                    Which email addresses should trigger the AI Agent?
-                </Label>
-
-                <SelectInputBox
-                    className={css.itemSelector}
-                    floating={floatingRef}
-                    label={selectedEmailLabels}
-                    onToggle={setIsDropdownOpened}
-                    placeholder="Select one or more email addresses"
-                    ref={targetRef}
-                >
-                    <SelectInputBoxContext.Consumer>
-                        {(context) => (
-                            <Dropdown
-                                isMultiple
-                                isOpen={isDropdownOpened}
-                                onToggle={() => context!.onBlur()}
-                                ref={floatingRef}
-                                target={targetRef}
-                                value={selectedIds}
-                            >
-                                <DropdownSearch autoFocus />
-                                <DropdownBody>
-                                    {emailItems.map(({email, id}) => (
-                                        <DropdownItem
-                                            key={id}
-                                            option={{
-                                                label: email,
-                                                value: id,
-                                            }}
-                                            onClick={handleIdToggled}
-                                        >
-                                            {email}
-                                        </DropdownItem>
-                                    ))}
-                                </DropdownBody>
-                            </Dropdown>
-                        )}
-                    </SelectInputBoxContext.Consumer>
-                </SelectInputBox>
-            </>
+            <SelectInputBox
+                floating={floatingRef}
+                label={selectedEmailLabels}
+                onToggle={setIsDropdownOpened}
+                placeholder="Select one or more email addresses"
+                ref={targetRef}
+            >
+                <SelectInputBoxContext.Consumer>
+                    {(context) => (
+                        <Dropdown
+                            isMultiple
+                            isOpen={isDropdownOpened}
+                            onToggle={() => context!.onBlur()}
+                            ref={floatingRef}
+                            target={targetRef}
+                            value={selectedIds}
+                        >
+                            <DropdownSearch autoFocus />
+                            <DropdownBody>
+                                {emailItems.map(({email, id}) => (
+                                    <DropdownItem
+                                        key={id}
+                                        option={{
+                                            label: email,
+                                            value: id,
+                                        }}
+                                        onClick={handleIdToggled}
+                                    >
+                                        {email}
+                                    </DropdownItem>
+                                ))}
+                            </DropdownBody>
+                        </Dropdown>
+                    )}
+                </SelectInputBoxContext.Consumer>
+            </SelectInputBox>
         )
     }
