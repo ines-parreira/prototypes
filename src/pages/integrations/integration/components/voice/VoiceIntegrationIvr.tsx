@@ -1,5 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
+import _isEqual from 'lodash/isEqual'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -11,12 +12,14 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {updatePhoneIvrConfiguration} from 'pages/integrations/integration/components/phone/actions'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
 import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray'
 
 import settingsCss from 'pages/settings/settings.less'
 import css from './VoiceIntegrationIvr.less'
+import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 
 type Props = {
     integration: Maybe<PhoneIntegration>
@@ -28,6 +31,11 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
     const [payload, setPayload] = useState<
         PhoneIntegrationIvrSettings | undefined
     >(integration?.meta?.ivr)
+    const [initialSettings, setInitialSettings] = useState<
+        PhoneIntegrationIvrSettings | undefined
+    >(integration?.meta?.ivr)
+    const [isLoading, setIsLoading] = useState(false)
+    const {cleanUpIvrPayload} = useVoiceMessageValidation()
 
     useEffect(() => {
         if (!payload) {
@@ -35,13 +43,18 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
         }
     }, [integration, payload, setPayload])
 
-    const [isLoading, setIsLoading] = useState(false)
-
     const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
+    const isSubmittable =
+        !deflectToSMSEnabled ||
+        !_isEqual(
+            cleanUpIvrPayload(payload),
+            cleanUpIvrPayload(initialSettings)
+        )
 
     const onSubmit = useCallback(
-        async (event: React.FormEvent) => {
-            event.preventDefault()
+        async (event?: React.FormEvent) => {
+            event?.preventDefault()
+
             setIsLoading(true)
             const payloadOrDefault = payload ?? {
                 menu_options: [],
@@ -50,11 +63,12 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
             try {
                 await dispatch(updatePhoneIvrConfiguration(payloadOrDefault))
                 setIsLoading(false)
+                setInitialSettings(payloadOrDefault)
             } catch (error) {
                 setIsLoading(false)
             }
         },
-        [payload, setIsLoading, dispatch]
+        [payload, setIsLoading, dispatch, setInitialSettings]
     )
 
     if (!isPhoneIntegration(integration)) {
@@ -112,13 +126,28 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                         <Button
                             className="mt-5"
                             type="submit"
-                            isDisabled={isLoading}
+                            isDisabled={isLoading || !isSubmittable}
                         >
                             Save changes
                         </Button>
+                        {deflectToSMSEnabled && (
+                            <Button
+                                onClick={() => setPayload(initialSettings)}
+                                className="ml-2"
+                                intent="secondary"
+                            >
+                                Cancel
+                            </Button>
+                        )}
                     </Form>
                 </Col>
             </Row>
+            {deflectToSMSEnabled && isSubmittable && (
+                <UnsavedChangesPrompt
+                    onSave={() => onSubmit()}
+                    when={isSubmittable}
+                />
+            )}
         </Container>
     )
 }

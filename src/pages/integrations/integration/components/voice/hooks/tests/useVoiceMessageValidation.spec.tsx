@@ -5,8 +5,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {RootState} from 'state/types'
-import {VoiceMessageType} from 'models/integration/constants'
-import {PhoneIntegrationVoicemailSettings} from 'models/integration/types'
+import {IvrMenuActionType, VoiceMessageType} from 'models/integration/constants'
+import {
+    PhoneIntegrationIvrSettings,
+    PhoneIntegrationVoicemailSettings,
+} from 'models/integration/types'
 import useVoiceMessageValidation from '../useVoiceMessageValidation'
 import * as utils from '../../utils'
 
@@ -449,5 +452,138 @@ describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
         }
         const {result} = renderIsValidTextToSpeechHook(payload)
         expect(result.current).toEqual(true)
+    })
+})
+
+describe('useVoiceMessageValidation().cleanUpIvrPayload', () => {
+    afterEach(() => {
+        jest.resetAllMocks()
+    })
+
+    const renderCleanUpPayloadHook = (
+        payload: Maybe<PhoneIntegrationIvrSettings>
+    ) =>
+        renderHook(
+            () => {
+                const {cleanUpIvrPayload} = useVoiceMessageValidation()
+                return cleanUpIvrPayload(payload)
+            },
+            {
+                wrapper,
+            }
+        )
+
+    it('handles null values', () => {
+        const {result} = renderCleanUpPayloadHook(null)
+        expect(result.current).toEqual(null)
+    })
+
+    it('handles empty values', () => {
+        const payload = {
+            greeting_message: {},
+            menu_options: [],
+        } as unknown as PhoneIntegrationIvrSettings
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(payload)
+    })
+
+    it('cleans up greeting message', () => {
+        const payload = {
+            greeting_message: {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+                voice_recording_file_path: 'testing',
+            },
+            menu_options: [],
+        }
+        const expected = {
+            greeting_message: {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            },
+            menu_options: [],
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(expected)
+    })
+
+    it('cleans up menuOptions', () => {
+        const payload = {
+            greeting_message: {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            },
+            menu_options: [
+                {
+                    action: IvrMenuActionType.PlayMessage,
+                    digit: '1',
+                    voice_message: {
+                        voice_message_type: VoiceMessageType.VoiceRecording,
+                        text_to_speech_content: 'Test',
+                        voice_recording_file_path: 'testing',
+                    },
+                },
+                {
+                    action: IvrMenuActionType.ForwardToExternalNumber,
+                    digit: '2',
+                    forward_call: {
+                        phone_number: '123',
+                    },
+                },
+                {
+                    action: IvrMenuActionType.SendToSms,
+                    digit: '3',
+                    sms_deflection: {
+                        confirmation_message: {
+                            voice_message_type: VoiceMessageType.TextToSpeech,
+                            text_to_speech_content: 'Test',
+                            voice_recording_file_path: 'testing',
+                        },
+                        sms_integration_id: 1,
+                        sms_content: 'another test',
+                    },
+                },
+            ],
+        } as PhoneIntegrationIvrSettings
+        const expected = {
+            greeting_message: {
+                voice_message_type: VoiceMessageType.TextToSpeech,
+                text_to_speech_content: 'Hello!',
+            },
+            menu_options: [
+                {
+                    action: IvrMenuActionType.PlayMessage,
+                    digit: '1',
+                    voice_message: {
+                        voice_message_type: VoiceMessageType.VoiceRecording,
+                        voice_recording_file_path: 'testing',
+                    },
+                },
+                {
+                    action: IvrMenuActionType.ForwardToExternalNumber,
+                    digit: '2',
+                    forward_call: {
+                        phone_number: '123',
+                    },
+                },
+                {
+                    action: IvrMenuActionType.SendToSms,
+                    digit: '3',
+                    sms_deflection: {
+                        confirmation_message: {
+                            voice_message_type: VoiceMessageType.TextToSpeech,
+                            text_to_speech_content: 'Test',
+                        },
+                        sms_integration_id: 1,
+                        sms_content: 'another test',
+                    },
+                },
+            ],
+        }
+
+        const {result} = renderCleanUpPayloadHook(payload)
+        expect(result.current).toEqual(expected)
     })
 })

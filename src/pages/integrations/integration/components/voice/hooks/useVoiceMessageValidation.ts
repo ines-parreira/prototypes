@@ -5,6 +5,9 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getBase64} from 'utils/file'
 import {
+    IvrMenuAction,
+    IvrMenuActionType,
+    PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailOutsideBusinessHoursSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
@@ -132,10 +135,11 @@ export default function useVoiceMessageValidation() {
      * Clean voicemail settings by retrieving only the chosen voice message fields
      * @param payload
      */
-    const _cleanUpVoicemailSettings = (
+    const _cleanUpVoiceMessageSettings = (
         payload:
             | Maybe<PhoneIntegrationVoicemailSettings>
             | Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>
+            | Maybe<VoiceMessage>
     ): Maybe<VoiceMessage> => {
         if (!payload || !('voice_message_type' in payload)) {
             return null
@@ -180,7 +184,7 @@ export default function useVoiceMessageValidation() {
             return defaultSettings
         }
 
-        const cleanSettings = _cleanUpVoicemailSettings(payload)
+        const cleanSettings = _cleanUpVoiceMessageSettings(payload)
         if (cleanSettings) {
             return {
                 ...defaultSettings,
@@ -220,7 +224,7 @@ export default function useVoiceMessageValidation() {
             return null
         }
 
-        const cleanMessage = _cleanUpVoicemailSettings(payload)
+        const cleanMessage = _cleanUpVoiceMessageSettings(payload)
         if (!cleanMessage) {
             return null
         }
@@ -239,10 +243,56 @@ export default function useVoiceMessageValidation() {
         return cleanPayload
     }
 
+    const cleanUpIvrPayload = (
+        payload: Maybe<PhoneIntegrationIvrSettings>
+    ): Maybe<PhoneIntegrationIvrSettings> => {
+        if (!payload) {
+            return null
+        }
+
+        const cleanGreetingMessage =
+            _cleanUpVoiceMessageSettings(payload.greeting_message) ??
+            payload.greeting_message
+
+        const cleanMenuOptions = payload.menu_options.map(
+            (option: IvrMenuAction): IvrMenuAction => {
+                if (option.action === IvrMenuActionType.PlayMessage) {
+                    const cleanVoiceMessage =
+                        _cleanUpVoiceMessageSettings(option.voice_message) ??
+                        option.voice_message
+                    return {
+                        ...option,
+                        action: IvrMenuActionType.PlayMessage,
+                        voice_message: cleanVoiceMessage,
+                    }
+                }
+                if (option.action === IvrMenuActionType.SendToSms) {
+                    const cleanVoiceMessage =
+                        _cleanUpVoiceMessageSettings(
+                            option.sms_deflection.confirmation_message
+                        ) ?? option.sms_deflection.confirmation_message
+                    return {
+                        ...option,
+                        sms_deflection: {
+                            ...option.sms_deflection,
+                            confirmation_message: cleanVoiceMessage,
+                        },
+                    }
+                }
+                return option
+            }
+        )
+        return {
+            greeting_message: cleanGreetingMessage,
+            menu_options: cleanMenuOptions,
+        }
+    }
+
     return {
         validateVoiceRecordingUpload,
         canPayloadBeSubmitted,
         cleanUpPayload,
         isValidTextToSpeech,
+        cleanUpIvrPayload,
     }
 }

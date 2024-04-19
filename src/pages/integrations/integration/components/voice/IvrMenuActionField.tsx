@@ -1,6 +1,5 @@
 import React, {useCallback, useState} from 'react'
 import {Row, Col} from 'reactstrap'
-import {map} from 'lodash'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
@@ -95,15 +94,24 @@ const IvrMenuActionField = ({
         [deflectToSMSEnabled, value, onChange]
     )
 
-    const actionOptions = map(IvrMenuActionType, (action) => ({
-        value: action,
-        label: ACTION_NAMES[action],
-        isDisabled:
-            action === IvrMenuActionType.SendToSms && !hasSmsIntegrations,
-    })).filter(
-        (option) =>
-            deflectToSMSEnabled || option.value !== IvrMenuActionType.SendToSms
-    )
+    const actionOptions = Object.entries(ACTION_NAMES)
+        .map(([action, name]) => {
+            const isSMSDisabled =
+                action === IvrMenuActionType.SendToSms && !hasSmsIntegrations
+            return {
+                value: action,
+                label: name,
+                isDisabled: isSMSDisabled,
+                tooltipText: isSMSDisabled
+                    ? 'Create integration to send calls to SMS.'
+                    : undefined,
+            }
+        })
+        .filter(
+            (option) =>
+                deflectToSMSEnabled ||
+                option.value !== IvrMenuActionType.SendToSms
+        )
 
     return (
         <Row className={css.row}>

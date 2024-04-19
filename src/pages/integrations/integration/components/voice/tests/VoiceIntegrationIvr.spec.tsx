@@ -4,6 +4,8 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import userEvent from '@testing-library/user-event'
+import {Router} from 'react-router-dom'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
@@ -12,6 +14,7 @@ import {
     PhoneIntegration,
     VoiceMessageType,
 } from 'models/integration/types'
+import history from 'pages/history'
 
 import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
 
@@ -62,9 +65,11 @@ const ivrIntegration = {
 describe('<VoiceIntegrationIvr />', () => {
     const renderComponent = () => {
         return render(
-            <Provider store={mockStore()}>
-                <VoiceIntegrationIvr integration={ivrIntegration} />
-            </Provider>
+            <Router history={history}>
+                <Provider store={mockStore()}>
+                    <VoiceIntegrationIvr integration={ivrIntegration} />
+                </Provider>
+            </Router>
         )
     }
 
@@ -95,6 +100,32 @@ describe('<VoiceIntegrationIvr />', () => {
 
         expect(getByText('test actions')).toBeInTheDocument()
         expect(getByText('Save changes')).toBeInTheDocument()
+        expect(getByText('Save changes')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
+        expect(getByText('Cancel')).toBeInTheDocument()
+    })
+
+    it('enables save button when there are changes', () => {
+        mockFlags({
+            [FeatureFlagKey.DeflectToSMS]: true,
+        })
+
+        const {getByText, getByLabelText} = renderComponent()
+
+        userEvent.click(getByLabelText('None'))
+        expect(getByText('Save changes')).toHaveAttribute(
+            'aria-disabled',
+            'false'
+        )
+
+        userEvent.click(getByText('Cancel'))
+        expect(getByText('None')).not.toBeChecked()
+        expect(getByText('Save changes')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 
     it('renders component with FF off', () => {
@@ -114,5 +145,9 @@ describe('<VoiceIntegrationIvr />', () => {
 
         expect(getByText('test actions')).toBeInTheDocument()
         expect(getByText('Save changes')).toBeInTheDocument()
+        expect(getByText('Save changes')).toHaveAttribute(
+            'aria-disabled',
+            'false'
+        )
     })
 })
