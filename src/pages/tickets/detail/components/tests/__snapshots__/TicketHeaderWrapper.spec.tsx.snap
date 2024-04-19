@@ -34,7 +34,7 @@ exports[`<TicketHeaderWrapper/> should render history button, ticket header and 
     />
   </div>
   <div
-    style="height: 16px;"
+    style="height: 8px;"
   />
 </div>
 `;

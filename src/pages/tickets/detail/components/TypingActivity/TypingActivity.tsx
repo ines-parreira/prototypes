@@ -1,4 +1,5 @@
 import React from 'react'
+
 import css from './TypingActivity.less'
 
 export type TypingActivityProps = {
@@ -9,14 +10,16 @@ export type TypingActivityProps = {
 const TypingActivity = ({name, isTyping}: TypingActivityProps) => {
     return (
         <div
-            className={css.body}
-            style={!isTyping ? {visibility: 'hidden'} : {}}
+            className={css.component}
+            style={isTyping ? {} : {display: 'none'}}
         >
             <span className={css.name}>{name}</span>
-            <span>{` is typing`}</span>
-            <span className={css.dot1}>.</span>
-            <span className={css.dot2}>.</span>
-            <span className={css.dot3}>.</span>
+            <div className={css.wrapper}>
+                <span>{` is typing`}</span>
+                <span className={css.dot1}>.</span>
+                <span className={css.dot2}>.</span>
+                <span className={css.dot3}>.</span>
+            </div>
         </div>
     )
 }

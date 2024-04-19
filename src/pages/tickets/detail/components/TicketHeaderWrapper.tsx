@@ -123,7 +123,7 @@ const TicketHeaderWrapper = ({
                 <TicketFields />
                 <CollisionDetection />
             </div>
-            {isExistingTicket && <div style={{height: 16}} />}
+            {isExistingTicket && <div style={{height: 8}} />}
         </>
     )
 }

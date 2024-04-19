@@ -1,38 +1,68 @@
+@import (reference) '~css/typography.less';
+
 :local {
-    .body {
+    .component {
         color: var(--neutral-grey-4);
-        font-size: 14px;
-        padding-bottom: 24px;
-        margin-left: 56px;
+        .body-regular();
+        padding: 12px 24px;
+        display: flex;
     }
 
     .name {
         font-weight: 600;
     }
 
+    .wrapper {
+        display: flex;
+        white-space: pre;
+    }
+
     .dot1 {
         :global {
-            animation: 1s visibility infinite 0.3333s;
+            animation: bounce 1s ease infinite;
+            -webkit-animation: bounce 1s ease infinite;
         }
     }
 
     .dot2 {
         :global {
-            animation: 1s visibility infinite 0.6666s;
+            animation: bounce 1s ease infinite 0.1s;
+            -webkit-animation: bounce 1s ease infinite 0.1s;
         }
     }
 
     .dot3 {
         :global {
-            animation: 1s visibility infinite 0.9999s;
+            animation: bounce 1s ease infinite 0.2s;
+            -webkit-animation: bounce 1s ease infinite 0.2s;
         }
     }
+}
 
-    :global {
-        @keyframes visibility {
-            50% {
-                opacity: 0.4;
-            }
+:global {
+    @keyframes bounce {
+        0% {
+            transform: scale(1, 1) translateY(0);
+        }
+
+        10% {
+            transform: scale(1.1, 0.9) translateY(0);
+        }
+
+        30% {
+            transform: scale(0.9, 1.1) translateY(-3px);
+        }
+
+        50% {
+            transform: scale(1.05, 0.95) translateY(0);
+        }
+
+        65% {
+            transform: scale(1, 1) translateY(0);
+        }
+
+        100% {
+            transform: scale(1, 1) translateY(0);
         }
     }
 }

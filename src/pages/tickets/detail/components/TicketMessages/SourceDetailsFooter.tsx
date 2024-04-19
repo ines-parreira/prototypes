@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
 
-import {TicketMessage} from '../../../../../models/ticket/types'
+import {TicketMessage} from 'models/ticket/types'
 
 import SourceActionsFooter from './SourceActionsFooter'
 import css from './SourceDetails.less'

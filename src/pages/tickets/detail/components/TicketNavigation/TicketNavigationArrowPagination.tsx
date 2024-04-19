@@ -1,5 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -44,10 +43,7 @@ export default function TicketNavigationArrowPagination({ticketId}: Props) {
                 <>
                     <ArrowPagination
                         className={css.arrowPaginationWrapper}
-                        classNameItem={classNames(
-                            css.paginationItemWrapper,
-                            'btn btn-sm'
-                        )}
+                        classNameItem={css.paginationItemWrapper}
                         previousItemId={paginationItemPreviousId}
                         nextItemId={paginationItemNextId}
                         onClickPrevious={goToPrevTicket}

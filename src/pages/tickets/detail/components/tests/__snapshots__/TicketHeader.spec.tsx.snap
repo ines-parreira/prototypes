@@ -32,7 +32,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
         >
           <li
             aria-label="previous"
-            class="item paginationItemWrapper btn btn-sm arrow"
+            class="item paginationItemWrapper arrow"
             id="pagination-item-arrow-previous"
           >
             <i
@@ -43,7 +43,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
           </li>
           <li
             aria-label="next"
-            class="item paginationItemWrapper btn btn-sm arrow"
+            class="item paginationItemWrapper arrow"
             id="pagination-item-arrow-next"
           >
             <i

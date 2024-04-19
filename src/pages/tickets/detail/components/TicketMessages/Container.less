@@ -1,9 +1,10 @@
 @import '~css/new/mixins';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local .component {
     display: flex;
     position: relative;
-    padding: 4px 2em 16px 2em;
+    padding: @layout-spacing-xs @layout-spacing-m;
     margin: 0;
     word-break: break-word;
     overflow-y: visible;
