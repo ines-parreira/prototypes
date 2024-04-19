@@ -6,6 +6,7 @@ import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
 import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
 import classNames from 'classnames'
+import {TicketChannel} from 'business/types/ticket'
 
 import analyticsColors from 'assets/css/new/stats/modern.json'
 import {toImmutable} from 'common/utils'
@@ -113,6 +114,96 @@ export const colors = [
     '#8398cb',
     '#24ae23',
 ]
+
+const ChannelLabelsAndColorCodes: Record<
+    TicketChannel,
+    {label: string; color: string}
+> = {
+    [TicketChannel.InstagramComment]: {
+        label: 'Instagram Comment',
+        color: '#5c9dbb',
+    },
+    [TicketChannel.InstagramAdComment]: {
+        label: 'Instagram Ad Comment',
+        color: '#4ca4d9',
+    },
+    [TicketChannel.InstagramMention]: {
+        label: 'Instagram Mention',
+        color: '#64A7D0',
+    },
+    [TicketChannel.InstagramDirectMessage]: {
+        label: 'Instagram Direct Message',
+        color: '#249ae0',
+    },
+    [TicketChannel.Facebook]: {
+        label: 'Facebook',
+        color: '#4872db',
+    },
+    [TicketChannel.FacebookMessenger]: {
+        label: 'Facebook Messenger',
+        color: '#1787fb',
+    },
+    [TicketChannel.FacebookRecommendations]: {
+        label: 'Facebook Recommendations',
+        color: '#4887cd',
+    },
+    [TicketChannel.FacebookMention]: {
+        label: 'Facebook Mention',
+        color: analyticsColors.analytics.data.blue.value,
+    },
+    [TicketChannel.HelpCenter]: {
+        label: 'Help Center',
+        color: '#9ce0e0',
+    },
+    [TicketChannel.Twitter]: {
+        label: 'Twitter',
+        color: '#00aced',
+    },
+    [TicketChannel.TwitterDirectMessage]: {
+        label: 'Twitter Direct Message',
+        color: '#0089b3',
+    },
+    [TicketChannel.Chat]: {
+        label: 'Chat',
+        color: '#ffb584',
+    },
+    [TicketChannel.Email]: {
+        label: 'Email',
+        color: '#ff5eab',
+    },
+    [TicketChannel.ContactForm]: {
+        label: 'Contact Form',
+        color: analyticsColors.analytics.data.magenta.value,
+    },
+    [TicketChannel.InternalNote]: {
+        label: 'Internal Note',
+        color: analyticsColors.analytics.data.yellow.value,
+    },
+    [TicketChannel.Api]: {
+        label: 'Gorgias API',
+        color: '#e88850',
+    },
+    [TicketChannel.Aircall]: {
+        label: 'Aircall',
+        color: '#34ba28',
+    },
+    [TicketChannel.Phone]: {
+        label: 'Phone',
+        color: '#ffe03f',
+    },
+    [TicketChannel.YotpoReview]: {
+        label: 'Yotpo',
+        color: '#064296',
+    },
+    [TicketChannel.Sms]: {
+        label: 'SMS',
+        color: '#69c473',
+    },
+    [TicketChannel.WhatsApp]: {
+        label: 'WhatsApp',
+        color: '#25D366',
+    },
+}
 
 export const chartMaxHeight = 360
 export const chartPointRadius = 4
@@ -647,92 +738,7 @@ export const stats = toImmutable<
         helpText: 'Number of tickets created per channel per day',
         style: 'bar',
         downloadable: true,
-        lines: {
-            'instagram-comment': {
-                label: 'Instagram Comment',
-                color: '#5c9dbb',
-            },
-            'instagram-ad-comment': {
-                label: 'Instagram Ad Comment',
-                color: '#4ca4d9',
-            },
-            'instagram-mention-comment': {
-                label: 'Instagram Mention Comment',
-                color: '#64A7D0',
-            },
-            'instagram-direct-message': {
-                label: 'Instagram Direct Message',
-                color: '#249ae0',
-            },
-            facebook: {
-                label: 'Facebook',
-                color: '#4872db',
-            },
-            'facebook-messenger': {
-                label: 'Facebook Messenger',
-                color: '#1787fb',
-            },
-            'facebook-recommendations': {
-                label: 'Facebook Recommendations',
-                color: '#4887cd',
-            },
-            'facebook-mention': {
-                label: 'Facebook Mention',
-                color: analyticsColors.analytics.data.blue.value,
-            },
-            'help-center': {
-                label: 'Help Center',
-                color: '#9ce0e0',
-            },
-            twitter: {
-                label: 'Twitter',
-                color: '#00aced',
-            },
-            'twitter-direct-message': {
-                label: 'Twitter Direct Message',
-                color: '#0089b3',
-            },
-            chat: {
-                label: 'Chat',
-                color: '#ffb584',
-            },
-            email: {
-                label: 'Email',
-                color: '#ff5eab',
-            },
-            contact_form: {
-                label: 'Contact Form',
-                color: analyticsColors.analytics.data.magenta.value,
-            },
-            'internal-note': {
-                label: 'Internal Note',
-                color: analyticsColors.analytics.data.yellow.value,
-            },
-            api: {
-                label: 'Gorgias API',
-                color: '#e88850',
-            },
-            aircall: {
-                label: 'Aircall',
-                color: '#34ba28',
-            },
-            phone: {
-                label: 'Phone',
-                color: '#ffe03f',
-            },
-            yotpo: {
-                label: 'Yotpo',
-                color: '#064296',
-            },
-            sms: {
-                label: 'SMS',
-                color: '#69c473',
-            },
-            whatsapp: {
-                label: 'WhatsApp',
-                color: '#25D366',
-            },
-        },
+        lines: ChannelLabelsAndColorCodes,
         options: (legend: Map<any, any>) => ({
             scales: {
                 x: {
