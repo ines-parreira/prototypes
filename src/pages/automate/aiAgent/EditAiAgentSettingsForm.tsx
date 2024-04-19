@@ -73,7 +73,10 @@ const createStoreConfigurationFromFormValues = (
 
     const dirtyFormValues = filterNonNull(restOfFormValues)
 
-    const deactivatedDatetime = formValues.deactivatedDatetime as string | null
+    const deactivatedDatetime =
+        formValues.deactivatedDatetime === undefined
+            ? storeConfig.deactivatedDatetime
+            : formValues.deactivatedDatetime
 
     return {
         ...storeConfig,
