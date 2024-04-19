@@ -367,11 +367,11 @@ export const transformToCampaignAbTestEvent = (
     return {
         [AbTestMetricNames.orderCount]: getMetricValue(
             metric,
-            EventsMeasure.orderCount
+            CampaignOrderEventsMeasure.orderCount
         ),
         [AbTestMetricNames.firstImpression]: _get(
             metric,
-            EventsMeasure.firstCampaignDisplay
+            CampaignOrderEventsMeasure.firstCampaignDisplay
         ),
     }
 }

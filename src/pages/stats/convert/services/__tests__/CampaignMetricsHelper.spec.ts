@@ -13,6 +13,7 @@ import {
     transformToRevenueByDate,
     transformToRevenueShareOverTime,
     transformToStoreTotal,
+    transformToCampaignAbTestEvent,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {Stat} from 'models/stat/types'
 import {
@@ -23,7 +24,10 @@ import {
     OrderConversionDimension,
     OrderConversionMeasure,
 } from 'pages/stats/convert/clients/constants'
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
+import {
+    AbTestMetricNames,
+    CampaignsTotalsMetricNames,
+} from 'pages/stats/convert/services/constants'
 import {RevenueByDate} from 'pages/stats/convert/services/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {CubeData} from 'pages/stats/convert/clients/types'
@@ -640,6 +644,22 @@ describe('Campaign metrics helper tests', () => {
                     trafficData
                 )
                 expect(result).toMatchSnapshot()
+            })
+        })
+    })
+
+    describe('transformToCampaignAbTestEvent', () => {
+        const cubeData = {
+            [CampaignOrderEventsMeasure.orderCount]: '1',
+            [CampaignOrderEventsMeasure.firstCampaignDisplay]:
+                '2024-03-10T07:31:49.000',
+        }
+
+        it('should return correct data', () => {
+            const result = transformToCampaignAbTestEvent(cubeData)
+            expect(result).toStrictEqual({
+                [AbTestMetricNames.orderCount]: 1,
+                [AbTestMetricNames.firstImpression]: '2024-03-10T07:31:49.000',
             })
         })
     })

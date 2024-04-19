@@ -1,6 +1,6 @@
 import {UseQueryResult} from '@tanstack/react-query'
 import {renderHook} from '@testing-library/react-hooks'
-import {EventsMeasure} from 'pages/stats/convert/clients/constants'
+import {CampaignOrderEventsMeasure} from 'pages/stats/convert/clients/constants'
 import {assumeMock} from 'utils/testing'
 import {usePostReporting} from 'models/reporting/queries'
 import {useCanRequestABTest} from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
@@ -19,8 +19,9 @@ describe('useCanRequestABTEst', () => {
     const hookArgs: [string] = ['shopify:test']
 
     const abTestCampaignEventData = {
-        [EventsMeasure.orderCount]: '2001',
-        [EventsMeasure.firstImpression]: '2024-03-6T00:00:00.000',
+        [CampaignOrderEventsMeasure.orderCount]: '2001',
+        [CampaignOrderEventsMeasure.firstCampaignDisplay]:
+            '2024-03-6T00:00:00.000',
     }
 
     beforeEach(() => {

@@ -8,15 +8,7 @@ exports[`useCanRequestABTEst should return data 1`] = `
         "dimensions": [],
         "filters": [
           {
-            "member": "CampaignEvents.eventType",
-            "operator": "equals",
-            "values": [
-              "order-created",
-              "campaign-displayed",
-            ],
-          },
-          {
-            "member": "CampaignEvents.createdDatetime",
+            "member": "CampaignOrderEvents.createdDatetime",
             "operator": "inDateRange",
             "values": [
               "2024-03-01T00:00:00.000",
@@ -24,7 +16,7 @@ exports[`useCanRequestABTEst should return data 1`] = `
             ],
           },
           {
-            "member": "CampaignEvents.shopName",
+            "member": "CampaignOrderEvents.shopName",
             "operator": "equals",
             "values": [
               "shopify:test",
@@ -32,8 +24,8 @@ exports[`useCanRequestABTEst should return data 1`] = `
           },
         ],
         "measures": [
-          "CampaignEvents.orderCount",
-          "CampaignEvents.firstCampaignDisplay",
+          "CampaignOrderEvents.orderCount",
+          "CampaignOrderEvents.firstCampaignDisplay",
         ],
         "timeDimensions": [],
       },

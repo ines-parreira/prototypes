@@ -5,7 +5,6 @@ import {
     DefaultFilterParams,
 } from 'pages/stats/convert/clients/types'
 import {
-    CampaignEventType,
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
     Cube,
@@ -376,20 +375,19 @@ export const getCampaignABTestEvents = ({
             dimensions: [],
             timeDimensions: [],
             measures: [
-                EventsMeasure.orderCount,
-                EventsMeasure.firstCampaignDisplay,
+                CampaignOrderEventsMeasure.orderCount,
+                CampaignOrderEventsMeasure.firstCampaignDisplay,
             ],
             filters: [
-                {
-                    member: EventsDimension.eventType,
-                    operator: FilterOperator.equals,
-                    values: [
-                        CampaignEventType.orderCreated,
-                        CampaignEventType.campaignDisplayed,
-                    ],
-                },
-                _inDateRangeFilter(startDate, endDate, Cube.events),
-                _shopNameEqualsFilter(shopName as string, Cube.events),
+                _inDateRangeFilter(
+                    startDate,
+                    endDate,
+                    Cube.campaignOrderEvents
+                ),
+                _shopNameEqualsFilter(
+                    shopName as string,
+                    Cube.campaignOrderEvents
+                ),
             ] as CubeFilter[],
         },
     ]

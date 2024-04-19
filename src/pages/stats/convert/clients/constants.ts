@@ -19,7 +19,6 @@ export enum SharedDimension {
 export enum EventsDimension {
     campaignId = `CampaignEvents.campaignId`,
     createdDatetime = `CampaignEvents.createdDatetime`,
-    eventType = `CampaignEvents.eventType`,
 }
 
 export enum EventsMeasure {
@@ -30,8 +29,6 @@ export enum EventsMeasure {
     clicks = `CampaignEvents.clicks`,
     clicksRate = `CampaignEvents.clicksRate`,
     ticketsCreated = `CampaignEvents.ticketsCreated`,
-    orderCount = `CampaignEvents.orderCount`,
-    firstImpression = `CampaignEvents.firstImpression`,
 }
 
 export enum EventsSegment {
@@ -60,6 +57,7 @@ export enum OrderConversionMeasure {
 export enum CampaignOrderEventsDimension {
     campaignId = `CampaignOrderEvents.campaignId`,
     createdDatatime = `CampaignOrderEvents.createdDatetime`,
+    eventType = `CampaignOrderEvents.eventType`,
 }
 
 export enum CampaignOrderEventsMeasure {
@@ -67,11 +65,8 @@ export enum CampaignOrderEventsMeasure {
     engagement = `CampaignOrderEvents.engagement`,
     campaignCTR = `CampaignOrderEvents.campaignCTR`,
     totalConversionRate = `CampaignOrderEvents.totalConversionRate`,
+    orderCount = `CampaignOrderEvents.orderCount`,
+    firstCampaignDisplay = `CampaignOrderEvents.firstCampaignDisplay`,
 }
 
 export const CUBE_DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSS'
-
-export enum CampaignEventType {
-    campaignDisplayed = `campaign-displayed`,
-    orderCreated = `order-created`,
-}
