@@ -80,6 +80,7 @@ const SpotlightTicketRow = ({
             selected={selected}
             onClick={onClick}
             message={itemWithHighlights.message}
+            entityId={itemWithHighlights.ticketId}
         />
     )
 }

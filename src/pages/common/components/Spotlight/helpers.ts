@@ -51,6 +51,7 @@ export const ticketHighlightsTransform = (
                 `Customer #${item.customer.id}`,
             title: item.subject || item.excerpt || '',
             message: undefined,
+            ticketId: undefined,
         }
     }
 
@@ -65,11 +66,14 @@ export const ticketHighlightsTransform = (
         customer: customer,
         title: highlights.subject?.[0] || item.subject || '',
         message: highlights.messages?.body?.[0] || item.excerpt || '',
+        ticketId: highlights.id?.[0]
+            ? `Ticket ID: ${highlights.id[0]}`
+            : undefined,
     }
 }
 
 export const customerHighlightsTransform = (
-    highlight: CustomerHighlights | undefined,
+    highlights: CustomerHighlights | undefined,
     item: PickedCustomer
 ) => {
     const phoneNumber = item.channels.find(
@@ -77,13 +81,16 @@ export const customerHighlightsTransform = (
     )?.address
 
     const phoneNumberOrAddress =
-        highlight?.channels?.address?.[0] ?? phoneNumber
+        highlights?.channels?.address?.[0] ?? phoneNumber
 
     return {
         id: item.id,
-        email: highlight?.email?.[0] ?? item.email,
-        name: highlight?.name?.[0] ?? item.name,
+        email: highlights?.email?.[0] ?? item.email,
+        name: highlights?.name?.[0] ?? item.name,
         phoneNumberOrAddress,
+        orderId: highlights?.order_ids?.[0]
+            ? `Order ID: ${highlights?.order_ids[0]}`
+            : undefined,
     }
 }
 

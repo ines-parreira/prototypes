@@ -110,4 +110,14 @@ describe('<SpotlightRow/>', () => {
             getByText(messageWithouthEmTag).tagName.toLocaleLowerCase()
         ).toEqual('em')
     })
+
+    it('should render the row with entityId and it should have an em tag', () => {
+        const id = 'someId'
+        const entityId = `Some ID: <em>${id}</em>`
+
+        const {getByText} = render(
+            <SpotlightRow {...minProps} entityId={entityId} />
+        )
+        expect(getByText(id).tagName.toLocaleLowerCase()).toEqual('em')
+    })
 })

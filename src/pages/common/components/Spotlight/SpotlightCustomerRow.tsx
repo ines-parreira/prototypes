@@ -47,6 +47,7 @@ const SpotlightCustomerRow = ({
             selected={selected}
             shrinkInfo
             onClick={onClick}
+            entityId={itemWithHighlights.orderId}
         />
     )
 }

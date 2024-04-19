@@ -13,6 +13,7 @@ import {Customer} from 'models/customer/types'
 import {TicketChannel} from 'business/types/ticket'
 
 describe('ticketHighlightsTransform', () => {
+    const highlightedTicketId = '<em>12345</em>'
     const highlightedSubject = '<em>subject</em>'
     const highlightedMessageBody = 'text here <em>body</em> and text here'
     const highlightedMessageSenderName = '<em>from name</em>'
@@ -20,7 +21,7 @@ describe('ticketHighlightsTransform', () => {
     const highlightedMessageRecipientName = '<em>to name</em>'
     const highlightedMessageRecipientAddress = '<em>to address</em>'
     const highlight: TicketHighlights = {
-        id: ['<em>12345</em>'],
+        id: [highlightedTicketId],
         subject: [highlightedSubject],
         messages: {
             body: [highlightedMessageBody],
@@ -58,6 +59,7 @@ describe('ticketHighlightsTransform', () => {
                     customer: highlightedMessageSenderName,
                     title: highlightedSubject,
                     message: highlightedMessageBody,
+                    ticketId: `Ticket ID: ${highlightedTicketId}`,
                 },
             },
         },
@@ -211,12 +213,13 @@ describe('ticketHighlightsTransform', () => {
     )
 })
 
-describe('useCustomerHighlightTransform', () => {
+describe('customerHighlightsTransform', () => {
+    const highlightedOrderId = '<em>123</em>'
     const highlight: CustomerHighlights = {
         email: ['<em>email</em>@test.com'],
         name: ['<em>John</em> Smith'],
         channels: {address: ['<em>address</em>']},
-        order_ids: ['<em>123</em>'],
+        order_ids: [highlightedOrderId],
     }
 
     const emptyHighlight = {
@@ -250,6 +253,7 @@ describe('useCustomerHighlightTransform', () => {
                     email: '<em>email</em>@test.com',
                     name: '<em>John</em> Smith',
                     phoneNumberOrAddress: '<em>address</em>',
+                    orderId: `Order ID: ${highlightedOrderId}`,
                 },
             },
         },
@@ -298,11 +302,12 @@ describe('useCustomerHighlightTransform', () => {
                     name: item.name,
                     email: item.email,
                     phoneNumberOrAddress: customerPhoneNumber,
+                    orderId: undefined,
                 },
             },
         },
     ])(
-        'should check if highlight is passed and return item with highlights and phone number',
+        'should check if highlight is passed and return item with highlights and phone number $#',
         ({item, highlight, expectedResult}) => {
             const transformed = customerHighlightsTransform(highlight, item)
 

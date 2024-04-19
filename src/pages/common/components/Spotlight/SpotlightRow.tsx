@@ -22,6 +22,7 @@ type SpotlightRowProps = {
     index: number
     onClick?: (e: MouseEvent) => void
     message?: string
+    entityId?: string
 }
 
 const SpotlightRow = ({
@@ -37,6 +38,7 @@ const SpotlightRow = ({
     index,
     onClick,
     message,
+    entityId,
 }: SpotlightRowProps) => {
     const searchRank = useContext(SearchRankScenarioContext)
 
@@ -83,6 +85,15 @@ const SpotlightRow = ({
                         <span
                             dangerouslySetInnerHTML={{
                                 __html: sanitizeHtmlDefault(message),
+                            }}
+                        />
+                    </div>
+                )}
+                {entityId && (
+                    <div className={css.infoFooter}>
+                        <span
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(entityId),
                             }}
                         />
                     </div>
