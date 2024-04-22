@@ -1,0 +1,69 @@
+import React, {
+    CSSProperties,
+    MouseEventHandler,
+    ReactNode,
+    useContext,
+} from 'react'
+import classNames from 'classnames'
+
+import Button from 'pages/common/components/button/Button'
+import {Theme, ThemeContext} from 'theme'
+
+import css from './Card.less'
+
+type Props = {
+    buttonLabel?: string
+    className?: string
+    description: string
+    icon?: ReactNode
+    onClick?: MouseEventHandler<HTMLDivElement>
+    style?: CSSProperties
+    tag?: ReactNode
+    title: string
+}
+
+function BaseCard({
+    buttonLabel,
+    className,
+    description,
+    icon,
+    onClick,
+    style,
+    tag,
+    title,
+}: Props) {
+    const context = useContext(ThemeContext)
+
+    return (
+        <div
+            className={classNames(
+                css.container,
+                {
+                    [css.default]: context?.theme !== Theme.Dark,
+                    [css.dark]: context?.theme === Theme.Dark,
+                },
+                className
+            )}
+            onClick={onClick}
+            style={style}
+        >
+            <div className={css.header}>
+                <div className={css.wrapper}>
+                    {icon}
+                    {tag}
+                </div>
+                {buttonLabel && (
+                    <Button size="small" intent="secondary" tabIndex={-1}>
+                        {buttonLabel}
+                    </Button>
+                )}
+            </div>
+            <div className={css.text}>
+                <div className={css.title}>{title}</div>
+                <div className={css.description}>{description}</div>
+            </div>
+        </div>
+    )
+}
+
+export default BaseCard

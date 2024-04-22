@@ -4,9 +4,11 @@ import {Link} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import CustomEntityCard from 'pages/common/components/CustomEntityCard'
+import {
+    CustomCardLink,
+    TemplateCardLink,
+} from 'pages/common/components/TemplateCard'
 
-import TemplateCard from './TemplateCard'
 import {SLATemplate} from './config'
 
 import css from './Templates.less'
@@ -24,9 +26,16 @@ export default function Templates({
     return (
         <div className={classNames(css.wrapper, className)}>
             {templates.map((template) => (
-                <TemplateCard
+                <TemplateCardLink
                     key={template.name}
-                    template={template}
+                    icon={
+                        <i className={classNames('material-icons', css.icon)}>
+                            {template.icon}
+                        </i>
+                    }
+                    buttonLabel="Use template"
+                    title={template.name}
+                    description={template.description}
                     to={{
                         pathname: '/app/settings/sla/new',
                         state: {
@@ -49,7 +58,7 @@ export default function Templates({
                     </Link>
                 </div>
             )}
-            <CustomEntityCard
+            <CustomCardLink
                 title="Create SLA"
                 to={{
                     pathname: '/app/settings/sla/new',

@@ -1,4 +1,6 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+
+import {ThemeContext, useThemeContext} from '../src/theme'
 
 require('@storybook/addon-console')
 
@@ -110,12 +112,19 @@ const ThemeBlock = ({background, children}) => (
 const withTheme = (StoryFn, context) => {
     const theme = context.parameters.theme ?? context.globals.theme
     const background = theme === 'dark' ? '#333' : '#fff'
+    const themeContext = useThemeContext()
+
+    useEffect(() => {
+        themeContext.setTheme(theme)
+    }, [theme])
 
     return (
         <div className={theme} style={{height: '100%'}}>
-            <ThemeBlock background={background}>
-                <StoryFn />
-            </ThemeBlock>
+            <ThemeContext.Provider value={themeContext}>
+                <ThemeBlock background={background}>
+                    <StoryFn />
+                </ThemeBlock>
+            </ThemeContext.Provider>
         </div>
     )
 }
