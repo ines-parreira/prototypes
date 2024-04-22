@@ -520,6 +520,7 @@ export const integrationsState = {
                 status: 'success',
             },
         },
+        currency: 'USD',
         facebook: null,
         deactivated_datetime: null,
         name: 'Acme Billing',

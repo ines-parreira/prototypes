@@ -61,4 +61,27 @@
             color: var(--neutral-grey-6);
         }
     }
+
+    .discountContainer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &:hover {
+            .actions {
+                display: flex;
+            }
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .actions {
+            display: none;
+            flex-direction: row;
+            gap: 1em;
+        }
+    }
 }

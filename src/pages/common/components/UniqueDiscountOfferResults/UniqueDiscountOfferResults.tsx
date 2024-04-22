@@ -1,4 +1,10 @@
-import React, {ChangeEvent, useState, useCallback, useMemo} from 'react'
+import React, {
+    ChangeEvent,
+    useState,
+    useCallback,
+    useMemo,
+    MouseEvent,
+} from 'react'
 import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
@@ -7,14 +13,12 @@ import {Link} from 'react-router-dom'
 import pluralize from 'pluralize'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
+    DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
-    DISCOUNT_MODAL_NAME,
+    UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
 import {useModalManager} from 'hooks/useModalManager'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -25,9 +29,12 @@ import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {useListDiscountOffers} from 'models/convert/discountOffer/queries'
-import {UniqueDiscountOfferCreateModal} from '../UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
+import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
+import {DeleteUniqueDiscountOfferModal} from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
+import IconButton from 'pages/common/components/button/IconButton'
+import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
 import css from './UniqueDiscountOfferResults.less'
+import {testIds} from './utils'
 
 type OwnProps = {
     integration: Map<string, string>
@@ -43,7 +50,6 @@ export default function UniqueDiscountCodeResults({
     onResetStoreChoice,
     onDiscountClicked,
 }: OwnProps) {
-    const dispatch = useAppDispatch()
     const [filter, setFilter] = useState('')
     const currentAccount = useAppSelector(getCurrentAccountState)
     const ticket = useAppSelector(getTicketState)
@@ -57,24 +63,10 @@ export default function UniqueDiscountCodeResults({
         (scope) => shopifyScope.includes(scope)
     )
 
-    const {
-        isLoading,
-        data: discountCodes,
-        refetch: refetchDiscountOffers,
-        isError: isErrorDiscountOffers,
-    } = useListDiscountOffers({
+    const {isLoading, data: discountCodes} = useListDiscountOffers({
         store_integration_id: integration.get('id'),
         search: filter,
     })
-
-    if (isErrorDiscountOffers) {
-        void dispatch(
-            notify({
-                message: "Couldn't fetch discount codes",
-                status: NotificationStatus.Error,
-            })
-        )
-    }
 
     const handleChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -84,22 +76,25 @@ export default function UniqueDiscountCodeResults({
         [setFilter]
     )
 
-    const discountModal = useModalManager(DISCOUNT_MODAL_NAME, {
+    const createDiscountModal = useModalManager(UNIQUE_DISCOUNT_MODAL_NAME, {
+        autoDestroy: false,
+    })
+
+    const deleteDiscountModal = useModalManager(DELETE_DISCOUNT_MODAL_NAME, {
         autoDestroy: false,
     })
 
     const handleCloseModal = useCallback(() => {
-        discountModal.closeModal(DISCOUNT_MODAL_NAME)
-    }, [discountModal])
+        createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
+    }, [createDiscountModal])
 
     const handleOpenModal = useCallback(() => {
-        discountModal.openModal(DISCOUNT_MODAL_NAME, false)
-    }, [discountModal])
+        createDiscountModal.openModal(UNIQUE_DISCOUNT_MODAL_NAME, false)
+    }, [createDiscountModal])
 
     const handleSubmitModal = useCallback(
-        async (data: UniqueDiscountOffer) => {
-            discountModal.closeModal(DISCOUNT_MODAL_NAME)
-            await refetchDiscountOffers()
+        (data: UniqueDiscountOffer) => {
+            createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
 
             const customerData = getAllCustomerIdsFromTicket(
                 ticket,
@@ -116,7 +111,35 @@ export default function UniqueDiscountCodeResults({
                 customer: customerData,
             })
         },
-        [discountModal, refetchDiscountOffers, ticket, currentAccount]
+        [createDiscountModal, ticket, currentAccount]
+    )
+
+    const onEditDiscountOffer = useCallback(
+        (event: MouseEvent<HTMLButtonElement>, offer: UniqueDiscountOffer) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            createDiscountModal.openModal(
+                UNIQUE_DISCOUNT_MODAL_NAME,
+                undefined,
+                offer
+            )
+        },
+        [createDiscountModal]
+    )
+
+    const onDeleteDiscountOfferIntent = useCallback(
+        (event: MouseEvent<HTMLButtonElement>, offer: UniqueDiscountOffer) => {
+            event.preventDefault()
+            event.stopPropagation()
+
+            deleteDiscountModal.openModal(
+                DELETE_DISCOUNT_MODAL_NAME,
+                undefined,
+                offer
+            )
+        },
+        [deleteDiscountModal]
     )
 
     // TODO: Revisit the summary text
@@ -216,6 +239,10 @@ export default function UniqueDiscountCodeResults({
                                 {discountCodes.map(
                                     (result: UniqueDiscountOffer, index) => (
                                         <ListGroupItem
+                                            data-testid={
+                                                testIds.discountOffer + index
+                                            }
+                                            className={css.discountContainer}
                                             key={index}
                                             tag="button"
                                             id={'resultRow'.concat(
@@ -226,19 +253,43 @@ export default function UniqueDiscountCodeResults({
                                                 onDiscountClicked(event, result)
                                             }}
                                         >
-                                            <div className={css.container}>
-                                                <div className={css.legend}>
-                                                    <div className={css.title}>
-                                                        {result.prefix}
-                                                    </div>
-                                                    <div
-                                                        className={css.subtitle}
-                                                    >
-                                                        {getResultSummary(
-                                                            result
-                                                        )}
-                                                    </div>
+                                            <div className={css.legend}>
+                                                <div className={css.title}>
+                                                    {result.prefix}
                                                 </div>
+                                                <div className={css.subtitle}>
+                                                    {getResultSummary(result)}
+                                                </div>
+                                            </div>
+                                            <div className={css.actions}>
+                                                <IconButton
+                                                    intent="secondary"
+                                                    data-testid={
+                                                        testIds.editBtn
+                                                    }
+                                                    onClick={(e) =>
+                                                        onEditDiscountOffer(
+                                                            e,
+                                                            result
+                                                        )
+                                                    }
+                                                >
+                                                    edit
+                                                </IconButton>
+                                                <IconButton
+                                                    intent="destructive"
+                                                    data-testid={
+                                                        testIds.deleteIntentBtn
+                                                    }
+                                                    onClick={(e) =>
+                                                        onDeleteDiscountOfferIntent(
+                                                            e,
+                                                            result
+                                                        )
+                                                    }
+                                                >
+                                                    delete
+                                                </IconButton>
                                             </div>
                                         </ListGroupItem>
                                     )
@@ -260,10 +311,16 @@ export default function UniqueDiscountCodeResults({
             </div>
 
             <UniqueDiscountOfferCreateModal
-                isOpen={discountModal.isOpen()}
+                isOpen={createDiscountModal.isOpen()}
                 integration={integration}
                 onClose={handleCloseModal}
                 onSubmit={handleSubmitModal}
+            />
+            <DeleteUniqueDiscountOfferModal
+                isOpen={deleteDiscountModal.isOpen()}
+                onClose={() => {
+                    deleteDiscountModal.closeModal(DELETE_DISCOUNT_MODAL_NAME)
+                }}
             />
         </div>
     )

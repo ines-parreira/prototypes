@@ -6,14 +6,27 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {QueryClientProvider} from '@tanstack/react-query'
+import userEvent from '@testing-library/user-event'
 import {integrationsState} from 'fixtures/integrations'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
-import {useListDiscountOffers} from 'models/convert/discountOffer/queries'
+import {
+    useCreateDiscountOffer,
+    useListDiscountOffers,
+    useUpdateDiscountOffer,
+    useDeleteDiscountOffer,
+} from 'models/convert/discountOffer/queries'
 import {uniqueDiscountOffers} from 'fixtures/uniqueDiscountOffers'
+import {useModalManager} from 'hooks/useModalManager'
+import {
+    DELETE_DISCOUNT_MODAL_NAME,
+    UNIQUE_DISCOUNT_MODAL_NAME,
+} from 'models/discountCodes/constants'
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
+import {testIds} from '../utils'
 
 jest.mock('models/convert/discountOffer/queries')
+jest.mock('hooks/useModalManager')
 
 const minProps = {
     integration: fromJS({
@@ -29,14 +42,39 @@ const minProps = {
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 const queryClient = mockQueryClient()
+const store = mockStore({})
 
 const useListDiscountOffersMock = assumeMock(useListDiscountOffers)
+const useDeleteDiscountOfferMock = assumeMock(useDeleteDiscountOffer)
+const useCreateDiscountOfferMock = assumeMock(useCreateDiscountOffer)
+const useUpdateDiscountOffersMock = assumeMock(useUpdateDiscountOffer)
+const useModalManagerMock = assumeMock(useModalManager)
 
 describe('<DiscountCodeResults />', () => {
-    const store = mockStore({})
+    beforeEach(() => {
+        useDeleteDiscountOfferMock.mockReturnValue({
+            mutateAsync: jest.fn(),
+        } as any)
+
+        useCreateDiscountOfferMock.mockReturnValue({
+            mutateAsync: jest.fn(),
+        } as any)
+
+        useUpdateDiscountOffersMock.mockReturnValue({
+            mutateAsync: jest.fn(),
+        } as any)
+        useModalManagerMock.mockReturnValue({
+            isOpen: () => false,
+            getParams: jest.fn(),
+            openModal: jest.fn(),
+        } as any)
+    })
 
     afterEach(() => {
         useListDiscountOffersMock.mockRestore()
+        useDeleteDiscountOfferMock.mockRestore()
+        useCreateDiscountOfferMock.mockRestore()
+        useUpdateDiscountOffersMock.mockRestore()
     })
 
     it('should render the discount codes', async () => {
@@ -78,6 +116,90 @@ describe('<DiscountCodeResults />', () => {
 
         await waitFor(() => {
             expect(getByText(/No results found/i)).toBeDefined()
+        })
+    })
+
+    it('should open delete modal on intent', async () => {
+        useListDiscountOffersMock.mockReturnValue({
+            data: uniqueDiscountOffers,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        } as any)
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountCodeResults {...minProps} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        const deleteIntentBtn = getByTestId(testIds.deleteIntentBtn)
+
+        userEvent.click(deleteIntentBtn)
+
+        await waitFor(() => {
+            expect(useModalManagerMock().openModal).toHaveBeenCalledWith(
+                DELETE_DISCOUNT_MODAL_NAME,
+                undefined,
+                expect.objectContaining({...uniqueDiscountOffers[0]})
+            )
+        })
+    })
+    it('should open edit modal on intent', async () => {
+        useListDiscountOffersMock.mockReturnValue({
+            data: uniqueDiscountOffers,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        } as any)
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountCodeResults {...minProps} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        const editBtn = getByTestId(testIds.editBtn)
+
+        userEvent.click(editBtn)
+
+        await waitFor(() => {
+            expect(useModalManagerMock().openModal).toHaveBeenCalledWith(
+                UNIQUE_DISCOUNT_MODAL_NAME,
+                undefined,
+                expect.objectContaining({...uniqueDiscountOffers[0]})
+            )
+        })
+    })
+    it('should open edit modal on intent', async () => {
+        useListDiscountOffersMock.mockReturnValue({
+            data: uniqueDiscountOffers,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        } as any)
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountCodeResults {...minProps} />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        const discount = getByTestId(testIds.discountOffer + 0)
+
+        userEvent.click(discount)
+
+        await waitFor(() => {
+            expect(minProps.onDiscountClicked).toHaveBeenCalledWith(
+                expect.any(Object),
+                uniqueDiscountOffers[0]
+            )
         })
     })
 })

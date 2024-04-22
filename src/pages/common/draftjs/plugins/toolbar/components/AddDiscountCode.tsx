@@ -4,7 +4,11 @@ import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
 import {fromJS, Map} from 'immutable'
 
-import {DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
+import {
+    DELETE_DISCOUNT_MODAL_NAME,
+    DISCOUNT_MODAL_NAME,
+    UNIQUE_DISCOUNT_MODAL_NAME,
+} from 'models/discountCodes/constants'
 import {
     DiscountCode,
     discountCodeIsGeneric,
@@ -70,8 +74,16 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         onInsertDiscountCodeOpen()
     }, [onInsertDiscountCodeOpen])
 
+    // The popover will open some modals for create, edit, delete discount code.
+    // There is an issue when submitting changes or clicking outside those modals and popover closes
+    // TODO: Fix this behavior of closing the popover without intention
     const handlePopoverClose = useCallback(() => {
-        setOpen(discountModal.isOpen(DISCOUNT_MODAL_NAME))
+        const anyDiscountModalOpen =
+            discountModal.isOpen(DISCOUNT_MODAL_NAME) ||
+            discountModal.isOpen(UNIQUE_DISCOUNT_MODAL_NAME) ||
+            discountModal.isOpen(DELETE_DISCOUNT_MODAL_NAME)
+
+        setOpen(anyDiscountModalOpen)
     }, [discountModal])
 
     const handlePickIntegration = useCallback((integration: Map<any, any>) => {
