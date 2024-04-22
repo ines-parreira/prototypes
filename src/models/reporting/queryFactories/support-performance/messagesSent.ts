@@ -6,7 +6,6 @@ import {
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -97,13 +96,8 @@ export const messagesSentMetricPerTicketDrillDownQueryFactory = (
 
     return {
         ...baseQuery,
-        measures: [],
-        dimensions: [
-            TicketDimension.TicketId,
-            TicketMessagesDimension.MessagesCount,
-            TicketDimension.CreatedDatetime,
-            ...baseQuery.dimensions,
-        ],
+        measures: [HelpdeskMessageMeasure.MessageCount],
+        dimensions: [TicketDimension.TicketId, ...baseQuery.dimensions],
         filters: [...baseQuery.filters, TicketDrillDownFilter],
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting

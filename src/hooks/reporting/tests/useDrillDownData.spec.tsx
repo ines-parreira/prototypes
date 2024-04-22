@@ -4,10 +4,10 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {OrderDirection} from 'models/api/types'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {
     EnrichmentFields,
@@ -55,7 +55,7 @@ describe('useDrillDownData', () => {
         },
     }
     const userTimezone = 'someTimeZone'
-    const metricDimension = TicketMessagesDimension.MessagesCount
+    const metricDimension = HelpdeskMessageMeasure.MessageCount
     const ticketIdField = TicketDimension.TicketId
     const exampleRow = {
         [TicketDimension.TicketId]: '777',

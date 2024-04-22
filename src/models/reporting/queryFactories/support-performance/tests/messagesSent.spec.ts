@@ -1,5 +1,4 @@
 import moment from 'moment'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -202,11 +201,9 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             )
         ).toEqual({
             ...messagesSentQueryFactory(statsFilters, timezone),
-            measures: [],
+            measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [
                 TicketDimension.TicketId,
-                TicketMessagesDimension.MessagesCount,
-                TicketDimension.CreatedDatetime,
                 ...messagesSentQueryFactory(statsFilters, timezone).dimensions,
             ],
             filters: [
@@ -229,11 +226,9 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
             )
         ).toEqual({
             ...messagesSentMetricPerAgentQueryFactory(filters, timezone),
-            measures: [],
+            measures: [HelpdeskMessageMeasure.MessageCount],
             dimensions: [
                 TicketDimension.TicketId,
-                TicketMessagesDimension.MessagesCount,
-                TicketDimension.CreatedDatetime,
                 ...messagesSentMetricPerAgentQueryFactory(filters, timezone)
                     .dimensions,
             ],
