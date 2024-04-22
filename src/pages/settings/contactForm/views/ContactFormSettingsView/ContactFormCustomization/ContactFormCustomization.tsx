@@ -1,7 +1,8 @@
 import classNames from 'classnames'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Container} from 'reactstrap'
 import {useDispatch} from 'react-redux'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
@@ -18,16 +19,21 @@ import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 
+import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
+import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 
 const initUpdateDto = (
-    subject_lines: ContactForm['subject_lines']
-): Pick<UpdateContactFormDto, 'subject_lines'> => {
+    subject_lines: ContactForm['subject_lines'],
+    form_display_mode: ContactForm['form_display_mode']
+): Pick<UpdateContactFormDto, 'subject_lines' | 'form_display_mode'> => {
     return {
         subject_lines: {
             allow_other: !!subject_lines?.allow_other,
             options: subject_lines?.options || [],
         },
+        form_display_mode: form_display_mode,
     }
 }
 
@@ -38,17 +44,47 @@ const ContactFormCustomization = (): JSX.Element => {
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
     const [isDirty, setIsDirty] = useState(false)
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
-        Pick<UpdateContactFormDto, 'subject_lines'>
-    >(() => initUpdateDto(contactForm.subject_lines))
+        Pick<UpdateContactFormDto, 'subject_lines' | 'form_display_mode'>
+    >(() =>
+        initUpdateDto(contactForm.subject_lines, contactForm.form_display_mode)
+    )
+    const [isFormHidden, setIsFormHidden] = useState(
+        contactForm.form_display_mode ===
+            ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
+    )
+    const isContactFormNewEntrypointViewEnabled =
+        useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
+
+    useEffect(() => {
+        setUpdateContactFormDto({
+            form_display_mode: isFormHidden
+                ? ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
+                : ContactFormDisplayMode.SHOW_IMMEDIATELY,
+        })
+    }, [isFormHidden])
 
     const discardChanges = () => {
-        setUpdateContactFormDto(initUpdateDto(contactForm.subject_lines))
+        setUpdateContactFormDto(
+            initUpdateDto(
+                contactForm.subject_lines,
+                contactForm.form_display_mode
+            )
+        )
         setIsChangesModalShown(false)
         setIsDirty(false)
     }
 
+    const onToggleClick = () => {
+        setIsDirty(true)
+        setIsFormHidden(!isFormHidden)
+    }
+
     const onSave = async () => {
-        if (!updateContactFormDto.subject_lines) return
+        if (
+            !updateContactFormDto.subject_lines &&
+            !updateContactFormDto.form_display_mode
+        )
+            return
 
         const [error, result] = await catchAsync(() =>
             updateContactForm(contactForm.id, updateContactFormDto)
@@ -88,15 +124,12 @@ const ContactFormCustomization = (): JSX.Element => {
                 onContinueEditing={() => setIsChangesModalShown(false)}
             />
             <div className={settingsCss.contentWrapper}>
-                <section>
-                    <h2
-                        className={classNames(
-                            contactFormCss.sectionTitle,
-                            contactFormCss.mbM
-                        )}
-                    >
+                <section className={contactFormCss.mbM}>
+                    <h2 className={classNames(contactFormCss.sectionTitle)}>
                         Customization
                     </h2>
+                </section>
+                <section className={contactFormCss.mbL}>
                     <SubjectLines
                         title="Contact form subject"
                         description="Here is a default list of subject lines. If there is no subject added, the user can freely type any subject."
@@ -113,6 +146,22 @@ const ContactFormCustomization = (): JSX.Element => {
                         setIsDirty={setIsDirty}
                     />
                 </section>
+                {isContactFormNewEntrypointViewEnabled && (
+                    <section className={contactFormCss.mbL}>
+                        <ContactFormDisplayModeToggle
+                            title="Expandable Contact Form"
+                            description="This feature hides the form behind a button,
+                            requiring shoppers to click to view it. This
+                            minimizes form submissions and ensures that
+                            customers explore other options, such as order
+                            management or custom flows, before reaching out
+                            directly."
+                            toggleLabel="Enable expandable contact form"
+                            isToggled={isFormHidden}
+                            handleToggleClick={onToggleClick}
+                        />
+                    </section>
+                )}
                 <div className={contactFormCss.mtXl}>
                     <Button isDisabled={!isSaveChangesEnabled} onClick={onSave}>
                         Save Changes

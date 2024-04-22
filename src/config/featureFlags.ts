@@ -41,6 +41,7 @@ export enum FeatureFlagKey {
     ChatSnippetV3DefaultManual = 'chat-snippet-v3-default-manual',
     ChatTranscript = 'chat-transcript',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
+    ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
     ConvertABTest = 'convert-ab-tests',
     ConvertLightCampaign = 'convert-light-campaign',
     CustomerTimelineButton = 'customer-timeline-button',
