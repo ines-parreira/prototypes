@@ -24,6 +24,10 @@ import StatsFiltersContext from '../StatsFiltersContext'
 export const DEFAULT_LOCALE = 'en-US'
 export const NOT_AVAILABLE_TEXT = 'N/A'
 export const NOT_AVAILABLE_PLACEHOLDER = '-'
+export enum StartDayOfWeek {
+    Sunday = 'sunday',
+    Monday = 'monday',
+}
 
 export const comparedPeriodString = (
     previousStartDatetime: Moment,
@@ -375,4 +379,22 @@ export const periodPickerMaxSpanDays = (
     }
 
     return NOT_AVAILABLE_PLACEHOLDER
+}
+
+export const startOfToday = () => moment().startOf('day')
+export const dateInPastFromStartOfToday = (daysToSubtract: number) =>
+    startOfToday().subtract(daysToSubtract - 1, 'days')
+export const endOfToday = () => moment().endOf('day')
+export const startOfYear = () => moment().startOf('year')
+export const lastYearStart = () => startOfYear().subtract(1, 'years')
+export const lastYearEnd = () => startOfYear().subtract(1, 'seconds')
+export const startOfMonth = () => moment().startOf('month')
+export const startOfLastMonth = () => startOfMonth().subtract(1, 'months')
+export const endOfLastMonth = () => startOfMonth().subtract(1, 'seconds')
+export const lastWeekDateRange = (startWeekDay: StartDayOfWeek) => {
+    const weekStartMomentActual =
+        startWeekDay === StartDayOfWeek.Sunday ? 'week' : 'isoWeek'
+    const start = moment().startOf(weekStartMomentActual).subtract(1, 'weeks')
+    const end = moment().startOf(weekStartMomentActual).subtract(1, 'seconds')
+    return {start, end}
 }

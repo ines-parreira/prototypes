@@ -26,6 +26,17 @@ import {
     useStatsViewFilters,
     periodPickerMaxSpanDays,
     NOT_AVAILABLE_PLACEHOLDER,
+    startOfToday,
+    endOfToday,
+    dateInPastFromStartOfToday,
+    startOfMonth,
+    startOfLastMonth,
+    endOfLastMonth,
+    startOfYear,
+    lastYearStart,
+    lastYearEnd,
+    lastWeekDateRange,
+    StartDayOfWeek,
 } from '../utils'
 
 const mockStore = configureMockStore([thunk])
@@ -447,5 +458,74 @@ describe('stats components utils', () => {
             const minDate = moment().subtract(200, 'days')
             expect(periodPickerMaxSpanDays(maxSpan, minDate)).toEqual(maxSpan)
         })
+    })
+
+    describe('test date ranges', () => {
+        beforeEach(() => {
+            Date.now = jest
+                .fn()
+                .mockReturnValue(new Date('2023-05-16T15:21:16.000Z'))
+        })
+
+        const formatOfDate = 'DD/MM/YYYY HH:mm:ss'
+
+        it.each([
+            {method: startOfToday, expectedResult: '16/05/2023 00:00:00'},
+            {method: endOfToday, expectedResult: '16/05/2023 23:59:59'},
+            {method: startOfMonth, expectedResult: '01/05/2023 00:00:00'},
+            {method: startOfLastMonth, expectedResult: '01/04/2023 00:00:00'},
+            {method: endOfLastMonth, expectedResult: '30/04/2023 23:59:59'},
+            {method: startOfYear, expectedResult: '01/01/2023 00:00:00'},
+            {method: lastYearStart, expectedResult: '01/01/2022 00:00:00'},
+            {method: lastYearEnd, expectedResult: '31/12/2022 23:59:59'},
+        ])(
+            'should check if $method.name returns $expectedResult',
+            ({method, expectedResult}) => {
+                expect(method().format(formatOfDate)).toBe(expectedResult)
+            }
+        )
+
+        it.each([
+            {
+                weekStartDay: StartDayOfWeek.Sunday,
+                expectedResults: {
+                    start: '07/05/2023 00:00:00',
+                    end: '13/05/2023 23:59:59',
+                },
+            },
+            {
+                weekStartDay: StartDayOfWeek.Monday,
+                expectedResults: {
+                    start: '08/05/2023 00:00:00',
+                    end: '14/05/2023 23:59:59',
+                },
+            },
+        ])(
+            'should check if lastWeekDateRange returns correct dates for $weekStartDay',
+            ({weekStartDay, expectedResults}) => {
+                expect(
+                    lastWeekDateRange(weekStartDay).start.format(formatOfDate)
+                ).toBe(expectedResults.start)
+                expect(
+                    lastWeekDateRange(weekStartDay).end.format(formatOfDate)
+                ).toBe(expectedResults.end)
+            }
+        )
+
+        it.each([
+            {daysFromToday: 7, expectedResult: '10/05/2023 00:00:00'},
+            {daysFromToday: 30, expectedResult: '17/04/2023 00:00:00'},
+            {daysFromToday: 60, expectedResult: '18/03/2023 00:00:00'},
+            {daysFromToday: 90, expectedResult: '16/02/2023 00:00:00'},
+        ])(
+            'should check if dateInPastFromStartOfToday returns $expectedResult for $daysFromToday days',
+            ({daysFromToday, expectedResult}) => {
+                expect(
+                    dateInPastFromStartOfToday(daysFromToday).format(
+                        formatOfDate
+                    )
+                ).toBe(expectedResult)
+            }
+        )
     })
 })

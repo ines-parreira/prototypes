@@ -26,8 +26,30 @@ import {RootState} from 'state/types'
 import {useTheme} from 'theme'
 import {formatDatetime} from 'utils'
 
-import css from './PeriodPicker.less'
-import {periodPickerMaxSpanDays} from './utils'
+import {
+    endOfToday,
+    periodPickerMaxSpanDays,
+    startOfToday,
+    dateInPastFromStartOfToday,
+} from 'pages/stats/common/utils'
+import css from 'pages/stats/common/PeriodPicker.less'
+import {
+    LAST_30_DAYS,
+    LAST_60_DAYS,
+    LAST_7_DAYS,
+    LAST_90_DAYS,
+    TODAY,
+} from 'pages/stats/constants'
+
+export const defaultSetOfRanges: {
+    [key: string]: [Moment, Moment]
+} = {
+    [TODAY]: [startOfToday(), endOfToday()],
+    [LAST_7_DAYS]: [dateInPastFromStartOfToday(7), endOfToday()],
+    [LAST_30_DAYS]: [dateInPastFromStartOfToday(30), endOfToday()],
+    [LAST_60_DAYS]: [dateInPastFromStartOfToday(60), endOfToday()],
+    [LAST_90_DAYS]: [dateInPastFromStartOfToday(90), endOfToday()],
+}
 
 type Props = {
     endDatetime: Moment
@@ -47,6 +69,7 @@ type Props = {
     userTimezone?: string | null
     onOpen?: () => void
     toggleProps?: Partial<ComponentProps<typeof Button>>
+    dateRanges?: {[label: string]: [Moment, Moment]}
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -64,6 +87,7 @@ export const PeriodPickerContainer = ({
     startDatetime,
     toggleProps,
     userTimezone,
+    dateRanges,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -88,11 +112,6 @@ export const PeriodPickerContainer = ({
         [initialSettings?.maxSpan, initialSettings?.minDate]
     )
 
-    const someDaysAgoStartOfDay = (days: number) =>
-        startOfToday().subtract(days - 1, 'days')
-    const startOfToday = () => moment().startOf('day')
-    const endOfToday = () => moment().endOf('day')
-
     const showDatePicker = () => {
         if (!datePickerRef.current) {
             return
@@ -105,15 +124,11 @@ export const PeriodPickerContainer = ({
     }
 
     const ranges: {[label: string]: [Moment, Moment]} = useMemo(() => {
-        return {
-            Today: [startOfToday(), endOfToday()],
-            'Last 7 days': [someDaysAgoStartOfDay(7), endOfToday()],
-            'Last 30 days': [someDaysAgoStartOfDay(30), endOfToday()],
-            'Last 60 days': [someDaysAgoStartOfDay(60), endOfToday()],
-            'Last 90 days': [someDaysAgoStartOfDay(90), endOfToday()],
+        if (dateRanges !== undefined) {
+            return dateRanges
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        return defaultSetOfRanges
+    }, [dateRanges])
 
     const label = useMemo(() => {
         const start = formatDatetime(startDate, labelDateFormat).toString()

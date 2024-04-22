@@ -1,14 +1,34 @@
-import moment from 'moment-timezone'
+import moment, {Moment} from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
 import {Options as InitialSettings} from 'daterangepicker'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {StatsFilters} from 'models/stat/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 
-import PeriodPicker from './common/PeriodPicker'
+import {
+    endOfLastMonth,
+    endOfToday,
+    lastWeekDateRange,
+    lastYearEnd,
+    lastYearStart,
+    StartDayOfWeek,
+    startOfLastMonth,
+    startOfMonth,
+    dateInPastFromStartOfToday,
+} from 'pages/stats/common/utils'
+import PeriodPicker, {defaultSetOfRanges} from 'pages/stats/common/PeriodPicker'
+import {
+    LAST_7_DAYS,
+    LAST_30_DAYS,
+    LAST_60_DAYS,
+    LAST_90_DAYS,
+    TODAY,
+} from 'pages/stats/constants'
 
 const MAX_SPAN = 90
 
@@ -18,12 +38,35 @@ type Props = {
     variant?: 'fill' | 'ghost'
 }
 
+export const newSetOfRanges: {[key: string]: [Moment, Moment]} = {
+    [TODAY]: defaultSetOfRanges[TODAY],
+    Yesterday: [dateInPastFromStartOfToday(2), endOfToday()],
+    'Month to date': [startOfMonth(), endOfToday()],
+    'Last week (start on Sun)': [
+        lastWeekDateRange(StartDayOfWeek.Sunday).start,
+        lastWeekDateRange(StartDayOfWeek.Sunday).end,
+    ],
+    'Last week (start on Mon)': [
+        lastWeekDateRange(StartDayOfWeek.Monday).start,
+        lastWeekDateRange(StartDayOfWeek.Monday).end,
+    ],
+    'Last month': [startOfLastMonth(), endOfLastMonth()],
+    [LAST_7_DAYS]: defaultSetOfRanges[LAST_7_DAYS],
+    [LAST_30_DAYS]: defaultSetOfRanges[LAST_30_DAYS],
+    [LAST_60_DAYS]: defaultSetOfRanges[LAST_60_DAYS],
+    [LAST_90_DAYS]: defaultSetOfRanges[LAST_90_DAYS],
+    'Past year': [lastYearStart(), lastYearEnd()],
+}
+
 export default function PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,
     variant = 'fill',
 }: Props) {
     const dispatch = useAppDispatch()
+
+    const isNewDatePickerVariant =
+        useFlags()[FeatureFlagKey.NewDatePickerVariant]
 
     const initialSettings = {
         maxDate: moment(),
@@ -100,6 +143,7 @@ export default function PeriodStatsFilter({
                     endDate: value.end_datetime,
                 })
             }}
+            dateRanges={!!isNewDatePickerVariant ? newSetOfRanges : undefined}
         />
     )
 }

@@ -5,12 +5,17 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment-timezone'
+import LD from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {formatDatetime} from 'utils'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
-import {RootState} from '../../../state/types'
-import PeriodStatsFilter from '../PeriodStatsFilter'
+import {FeatureFlagKey} from 'config/featureFlags'
+import PeriodStatsFilter, {newSetOfRanges} from 'pages/stats/PeriodStatsFilter'
+import {defaultSetOfRanges} from 'pages/stats/common/PeriodPicker'
+import {RootState} from 'state/types'
+
+const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
 const mockStore = configureMockStore([thunk])
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
@@ -27,6 +32,10 @@ describe('PeriodStatsFilter', () => {
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
+
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
     })
 
     afterEach(() => {
@@ -114,5 +123,50 @@ describe('PeriodStatsFilter', () => {
         )
 
         expect(store.getActions()).toMatchSnapshot()
+    })
+
+    it('should render with default set of ranges', () => {
+        const store = mockStore(defaultState)
+        const value = {
+            start_datetime: '2020-05-02T19:22:43.000Z',
+            end_datetime: '2021-05-03T19:22:43.000Z',
+        }
+
+        render(
+            <Provider store={store}>
+                <PeriodStatsFilter value={value} />
+            </Provider>
+        )
+
+        const defaultRangesKeys = Object.keys(defaultSetOfRanges)
+        const allRangesRenderedAttributes = Array.from(
+            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
+        ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
+
+        expect(allRangesRenderedAttributes).toEqual(defaultRangesKeys)
+    })
+
+    it('should render with custom set of ranges', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: true,
+        }))
+        const store = mockStore(defaultState)
+        const value = {
+            start_datetime: '2020-05-02T19:22:43.000Z',
+            end_datetime: '2021-05-03T19:22:43.000Z',
+        }
+
+        render(
+            <Provider store={store}>
+                <PeriodStatsFilter value={value} />
+            </Provider>
+        )
+
+        const newRangesKeys = Object.keys(newSetOfRanges)
+        const allRangesRenderedAttributes = Array.from(
+            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
+        ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
+
+        expect(allRangesRenderedAttributes).toEqual(newRangesKeys)
     })
 })

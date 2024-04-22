@@ -3,7 +3,7 @@ import React from 'react'
 import {Props as MockDateRangePickerProps} from 'react-bootstrap-daterangepicker'
 import moment from 'moment-timezone'
 
-import {PeriodPickerContainer} from '../PeriodPicker'
+import {PeriodPickerContainer} from 'pages/stats/common/PeriodPicker'
 
 jest.mock(
     'react-bootstrap-daterangepicker',
@@ -55,6 +55,12 @@ describe('PeriodPicker', () => {
                 startDatetime={startDate}
                 onChange={onChange}
                 endDatetime={endDate}
+                dateRanges={{
+                    'Last 7 days': [
+                        moment.tz('2020-05-02', 'Europe/Paris'),
+                        moment.tz('2020-05-07', 'Europe/Paris'),
+                    ],
+                }}
             />
         )
 
