@@ -109,9 +109,12 @@ Jest:
     NODE_OPTIONS: '--max-old-space-size=3072'
     COVERAGE_DIR: ${CI_PROJECT_DIR}/coverage/
     CACHE_FALLBACK_KEY: ${CI_JOB_NAME}-${CI_DEFAULT_BRANCH}-non_protected
+    JUNIT_PATH: ${CI_PROJECT_DIR}/junit.xml
   artifacts:
     paths:
       - coverage/
+    reports:
+      junit: $JUNIT_PATH
   parallel: 8
   script:
     - yarn test:ci:cover --shard "$CI_NODE_INDEX/$CI_NODE_TOTAL"

@@ -351,7 +351,7 @@ describe('<IntegrationDetail />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    describe(`${IntegrationType.Email}`, () => {
+    describe(`${IntegrationType.Email}`, () => {
         it('should render the custom creation page', () => {
             const {container} = renderWithRouter(
                 <Provider store={store}>
@@ -392,7 +392,7 @@ describe('<IntegrationDetail />', () => {
         })
     })
 
-    describe(`${IntegrationType.Facebook}`, () => {
+    describe(`${IntegrationType.Facebook}`, () => {
         it('should render the customer chat tab for a specific integration', () => {
             const {container} = renderWithRouter(
                 <Provider store={store}>
@@ -407,7 +407,7 @@ describe('<IntegrationDetail />', () => {
         })
     })
 
-    describe(`${IntegrationType.Phone}`, () => {
+    describe(`${IntegrationType.Phone}`, () => {
         it('should render the voicemail tab of a specific integration', () => {
             const {container} = renderWithRouter(
                 <Provider store={store}>

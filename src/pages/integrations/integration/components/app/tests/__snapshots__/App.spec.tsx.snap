@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App should have a failed disconnection flow 1`] = `
+exports[`App should have a failed disconnection flow 1`] = `
 [
   [
     {
@@ -11,7 +11,7 @@ exports[`App should have a failed disconnection flow 1`] = `
 ]
 `;
 
-exports[`App should have a functionnal disconnect flow 1`] = `
+exports[`App should have a functionnal disconnect flow 1`] = `
 [
   [
     {
@@ -22,7 +22,7 @@ exports[`App should have a functionnal disconnect flow 1`] = `
 ]
 `;
 
-exports[`App should render 1`] = `
+exports[`App should render 1`] = `
 <div
   class="container"
 >
@@ -38,7 +38,7 @@ exports[`App should render 1`] = `
 </div>
 `;
 
-exports[`App should render 2`] = `
+exports[`App should render 2`] = `
 <div
   class="full-width"
 >
@@ -360,7 +360,7 @@ exports[`App should render 2`] = `
 </div>
 `;
 
-exports[`App should render the advanced tab 1`] = `
+exports[`App should render the advanced tab 1`] = `
 <div
   class="container"
 >
@@ -376,7 +376,7 @@ exports[`App should render the advanced tab 1`] = `
 </div>
 `;
 
-exports[`App should render the advanced tab 2`] = `
+exports[`App should render the advanced tab 2`] = `
 <div
   class="full-width"
 >

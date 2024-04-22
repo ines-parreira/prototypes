@@ -304,6 +304,7 @@
         "jest-environment-jsdom": "29.3.1",
         "jest-enzyme": "7.1.2",
         "jest-immutable-matchers": "3.0.0",
+        "jest-junit": "^16",
         "jest-launchdarkly-mock": "2.0.3",
         "jsdom": "21.0.0",
         "less": "4.1.3",

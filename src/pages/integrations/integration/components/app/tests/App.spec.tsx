@@ -52,7 +52,7 @@ jest.mock('models/integration/resources', () => {
     }
 })
 
-describe(`App`, () => {
+describe(`App`, () => {
     beforeEach(() => {
         mockServer.reset()
     })

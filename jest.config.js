@@ -107,7 +107,17 @@ module.exports = {
     // projects: undefined,
 
     // Use this configuration option to add custom reporters to Jest
-    // reporters: undefined,
+    reporters: [
+        "default", !!process.env['CI'] && [
+            "jest-junit", {
+                suiteName: "jest tests",
+                classNameTemplate: "{classname}",
+                titleTemplate: "{title}",
+                addFileAttribute: "true",
+                ancestorSeparator: " › ",
+            }
+        ]
+    ].filter(Boolean),
 
     // Automatically reset mock state before every test
     // resetMocks: false,
@@ -179,7 +189,7 @@ module.exports = {
 
     // A map from regular expressions to paths to transformers
     transform: {
-        '\\.[jt]sx?$': ['babel-jest', {configFile: './babel.config.json'}],
+        '\\.[jt]sx?$': ['babel-jest', { configFile: './babel.config.json' }],
     },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

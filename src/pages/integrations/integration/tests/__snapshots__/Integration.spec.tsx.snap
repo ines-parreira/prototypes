@@ -1,30 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<IntegrationDetail /> email should render the custom creation page 1`] = `
+exports[`<IntegrationDetail /> email should render the custom creation page 1`] = `
 <div>
   EmailIntegrationCreateCustom
 </div>
 `;
 
-exports[`<IntegrationDetail /> email should render the forwarding page for a specific integration 1`] = `
+exports[`<IntegrationDetail /> email should render the forwarding page for a specific integration 1`] = `
 <div>
   EmailIntegrationCreateForwarding
 </div>
 `;
 
-exports[`<IntegrationDetail /> email should render the verification page for a specific integration 1`] = `
+exports[`<IntegrationDetail /> email should render the verification page for a specific integration 1`] = `
 <div>
   EmailIntegrationCreateVerification
 </div>
 `;
 
-exports[`<IntegrationDetail /> facebook should render the customer chat tab for a specific integration 1`] = `
+exports[`<IntegrationDetail /> facebook should render the customer chat tab for a specific integration 1`] = `
 <div>
   FacebookIntegrationCustomerChat
 </div>
 `;
 
-exports[`<IntegrationDetail /> phone should render the voicemail tab of a specific integration 1`] = `
+exports[`<IntegrationDetail /> phone should render the voicemail tab of a specific integration 1`] = `
 <div>
   VoiceIntegration
 </div>
