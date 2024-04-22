@@ -39,16 +39,20 @@ const IvrMenuActionSendToSMSField = ({
     smsIntegrations,
 }: Props) => {
     const idForRadioButtons = useId()
-    const [smsConfirmationMessage, setSmsConfirmationMessage] =
-        useState<VoiceMessage>(
-            settings.confirmation_message ??
-                DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE
-        )
-    const [smsSentToCallers, setSmsSentToCallers] = useState<string>(
+    const initialSmsConfirmationMessage =
+        settings.confirmation_message ??
+        DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE
+    const initialSmsContent =
         settings.sms_content ?? DEFAULT_IVR_DEFLECTION_SMS_CONTENT
-    )
-    const [smsIntegrationId, setSmsIntegrationId] = useState<number | null>(
+    const initialSmsIntegrationId =
         settings.sms_integration_id ?? smsIntegrations[0]?.id
+
+    const [smsConfirmationMessage, setSmsConfirmationMessage] =
+        useState<VoiceMessage>(initialSmsConfirmationMessage)
+    const [smsSentToCallers, setSmsSentToCallers] =
+        useState<string>(initialSmsContent)
+    const [smsIntegrationId, setSmsIntegrationId] = useState<number | null>(
+        initialSmsIntegrationId
     )
 
     const dispatch = useAppDispatch()
@@ -106,6 +110,13 @@ const IvrMenuActionSendToSMSField = ({
         setDrawerOpen(false)
     }
 
+    const handleExitWithoutSaving = () => {
+        setSmsConfirmationMessage(initialSmsConfirmationMessage)
+        setSmsSentToCallers(initialSmsContent)
+        setSmsIntegrationId(initialSmsIntegrationId)
+        setDrawerOpen(false)
+    }
+
     return (
         <>
             <Button
@@ -135,7 +146,7 @@ const IvrMenuActionSendToSMSField = ({
                 fullscreen={false}
                 isLoading={false}
                 portalRootId="app-root"
-                onBackdropClick={() => setDrawerOpen(false)}
+                onBackdropClick={handleExitWithoutSaving}
             >
                 <Drawer.Header className={css.drawerHeader}>
                     <h3 className={css.title}>Message</h3>
@@ -143,7 +154,7 @@ const IvrMenuActionSendToSMSField = ({
                         <IconButton
                             fillStyle="ghost"
                             intent="secondary"
-                            onClick={() => setDrawerOpen(false)}
+                            onClick={handleExitWithoutSaving}
                         >
                             keyboard_tab
                         </IconButton>
@@ -194,7 +205,7 @@ const IvrMenuActionSendToSMSField = ({
                         Save Changes
                     </Button>
                     <Button
-                        onClick={() => setDrawerOpen(false)}
+                        onClick={handleExitWithoutSaving}
                         className="ml-2"
                         intent="secondary"
                     >

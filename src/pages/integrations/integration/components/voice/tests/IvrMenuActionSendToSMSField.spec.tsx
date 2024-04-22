@@ -246,8 +246,8 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         }
     })
 
-    it('should open drawer on existing settings', () => {
-        const {getByText} = renderComponent(
+    it('should open drawer on existing settings', async () => {
+        const {getByText, queryByText} = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -267,7 +267,53 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         userEvent.click(getByText('Edit message'))
         expect(mockSetDrawerOpen).toHaveBeenCalledWith(true)
 
+        // type something
+        await userEvent.type(getByText('sms content'), ' test')
+
         userEvent.click(getByText('keyboard_tab'))
         expect(mockSetDrawerOpen).toHaveBeenCalledWith(false)
+
+        // closing the drawer should reset the message to the initial state
+        userEvent.click(getByText('Edit message'))
+        expect(queryByText('sms content test')).toBeNull()
+    })
+
+    it('should open drawer on new settings', async () => {
+        const {getByText, queryByText} = renderComponent(
+            {
+                confirmation_message: {
+                    voice_message_type: VoiceMessageType.VoiceRecording,
+                },
+            },
+            [
+                {
+                    id: 1,
+                    name: 'TEST SMS INTEGRATION',
+                },
+            ],
+            false
+        )
+
+        userEvent.click(getByText('Add message'))
+        expect(mockSetDrawerOpen).toHaveBeenCalledWith(true)
+
+        // type something
+        await userEvent.type(
+            getByText(
+                'Hello! Thanks for choosing our messaging service. How can I help you?'
+            ),
+            ' test'
+        )
+
+        userEvent.click(getByText('keyboard_tab'))
+        expect(mockSetDrawerOpen).toHaveBeenCalledWith(false)
+
+        // closing the drawer should reset the message to the initial state
+        userEvent.click(getByText('Add message'))
+        expect(
+            queryByText(
+                'Hello! Thanks for choosing our messaging service. How can I help you? test'
+            )
+        ).toBeNull()
     })
 })
