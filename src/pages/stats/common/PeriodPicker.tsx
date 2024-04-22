@@ -41,15 +41,15 @@ import {
     TODAY,
 } from 'pages/stats/constants'
 
-export const defaultSetOfRanges: {
+export const getDefaultSetOfRanges = (): {
     [key: string]: [Moment, Moment]
-} = {
+} => ({
     [TODAY]: [startOfToday(), endOfToday()],
     [LAST_7_DAYS]: [dateInPastFromStartOfToday(7), endOfToday()],
     [LAST_30_DAYS]: [dateInPastFromStartOfToday(30), endOfToday()],
     [LAST_60_DAYS]: [dateInPastFromStartOfToday(60), endOfToday()],
     [LAST_90_DAYS]: [dateInPastFromStartOfToday(90), endOfToday()],
-}
+})
 
 type Props = {
     endDatetime: Moment
@@ -127,7 +127,7 @@ export const PeriodPickerContainer = ({
         if (dateRanges !== undefined) {
             return dateRanges
         }
-        return defaultSetOfRanges
+        return getDefaultSetOfRanges()
     }, [dateRanges])
 
     const label = useMemo(() => {

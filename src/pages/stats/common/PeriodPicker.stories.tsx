@@ -5,11 +5,11 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import {newSetOfRanges} from '../PeriodStatsFilter'
+import {getNewSetOfRanges} from 'pages/stats/PeriodStatsFilter'
 
 const defaultState = {}
 
-const rangeOptions = {default: undefined, custom: newSetOfRanges}
+const rangeOptions = {default: undefined, custom: getNewSetOfRanges()}
 
 const storyConfig: Meta = {
     title: 'Stats/PeriodPicker',

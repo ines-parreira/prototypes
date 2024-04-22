@@ -21,7 +21,9 @@ import {
     startOfMonth,
     dateInPastFromStartOfToday,
 } from 'pages/stats/common/utils'
-import PeriodPicker, {defaultSetOfRanges} from 'pages/stats/common/PeriodPicker'
+import PeriodPicker, {
+    getDefaultSetOfRanges,
+} from 'pages/stats/common/PeriodPicker'
 import {
     LAST_7_DAYS,
     LAST_30_DAYS,
@@ -38,24 +40,27 @@ type Props = {
     variant?: 'fill' | 'ghost'
 }
 
-export const newSetOfRanges: {[key: string]: [Moment, Moment]} = {
-    [TODAY]: defaultSetOfRanges[TODAY],
-    Yesterday: [dateInPastFromStartOfToday(2), endOfToday()],
-    'Month to date': [startOfMonth(), endOfToday()],
-    'Last week (start on Sun)': [
-        lastWeekDateRange(StartDayOfWeek.Sunday).start,
-        lastWeekDateRange(StartDayOfWeek.Sunday).end,
-    ],
-    'Last week (start on Mon)': [
-        lastWeekDateRange(StartDayOfWeek.Monday).start,
-        lastWeekDateRange(StartDayOfWeek.Monday).end,
-    ],
-    'Last month': [startOfLastMonth(), endOfLastMonth()],
-    [LAST_7_DAYS]: defaultSetOfRanges[LAST_7_DAYS],
-    [LAST_30_DAYS]: defaultSetOfRanges[LAST_30_DAYS],
-    [LAST_60_DAYS]: defaultSetOfRanges[LAST_60_DAYS],
-    [LAST_90_DAYS]: defaultSetOfRanges[LAST_90_DAYS],
-    'Past year': [lastYearStart(), lastYearEnd()],
+export const getNewSetOfRanges = (): {[key: string]: [Moment, Moment]} => {
+    const defaultSetOfRanges = getDefaultSetOfRanges()
+    return {
+        [TODAY]: defaultSetOfRanges[TODAY],
+        Yesterday: [dateInPastFromStartOfToday(2), endOfToday()],
+        'Month to date': [startOfMonth(), endOfToday()],
+        'Last week (start on Sun)': [
+            lastWeekDateRange(StartDayOfWeek.Sunday).start,
+            lastWeekDateRange(StartDayOfWeek.Sunday).end,
+        ],
+        'Last week (start on Mon)': [
+            lastWeekDateRange(StartDayOfWeek.Monday).start,
+            lastWeekDateRange(StartDayOfWeek.Monday).end,
+        ],
+        'Last month': [startOfLastMonth(), endOfLastMonth()],
+        [LAST_7_DAYS]: defaultSetOfRanges[LAST_7_DAYS],
+        [LAST_30_DAYS]: defaultSetOfRanges[LAST_30_DAYS],
+        [LAST_60_DAYS]: defaultSetOfRanges[LAST_60_DAYS],
+        [LAST_90_DAYS]: defaultSetOfRanges[LAST_90_DAYS],
+        'Past year': [lastYearStart(), lastYearEnd()],
+    }
 }
 
 export default function PeriodStatsFilter({
@@ -143,7 +148,9 @@ export default function PeriodStatsFilter({
                     endDate: value.end_datetime,
                 })
             }}
-            dateRanges={!!isNewDatePickerVariant ? newSetOfRanges : undefined}
+            dateRanges={
+                !!isNewDatePickerVariant ? getNewSetOfRanges() : undefined
+            }
         />
     )
 }

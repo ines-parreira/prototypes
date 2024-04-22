@@ -1,6 +1,6 @@
 import {findKey} from 'lodash'
 import _isNumber from 'lodash/isNumber'
-import moment, {Moment} from 'moment'
+import moment, {Moment} from 'moment-timezone'
 import {useContext, useMemo} from 'react'
 import {TicketChannel} from 'business/types/ticket'
 import {getTicketViewField, getTicketViewFieldPath} from 'config/views'

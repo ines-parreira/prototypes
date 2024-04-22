@@ -11,8 +11,10 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {formatDatetime} from 'utils'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {FeatureFlagKey} from 'config/featureFlags'
-import PeriodStatsFilter, {newSetOfRanges} from 'pages/stats/PeriodStatsFilter'
-import {defaultSetOfRanges} from 'pages/stats/common/PeriodPicker'
+import PeriodStatsFilter, {
+    getNewSetOfRanges,
+} from 'pages/stats/PeriodStatsFilter'
+import {getDefaultSetOfRanges} from 'pages/stats/common/PeriodPicker'
 import {RootState} from 'state/types'
 
 const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
@@ -138,7 +140,7 @@ describe('PeriodStatsFilter', () => {
             </Provider>
         )
 
-        const defaultRangesKeys = Object.keys(defaultSetOfRanges)
+        const defaultRangesKeys = Object.keys(getDefaultSetOfRanges())
         const allRangesRenderedAttributes = Array.from(
             document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
         ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
@@ -162,7 +164,7 @@ describe('PeriodStatsFilter', () => {
             </Provider>
         )
 
-        const newRangesKeys = Object.keys(newSetOfRanges)
+        const newRangesKeys = Object.keys(getNewSetOfRanges())
         const allRangesRenderedAttributes = Array.from(
             document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
         ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
