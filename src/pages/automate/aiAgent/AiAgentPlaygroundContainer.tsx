@@ -2,7 +2,6 @@ import React, {useState, MouseEvent} from 'react'
 import {Alert, Form, FormGroup, Input} from 'reactstrap'
 import {Link, Redirect, useParams} from 'react-router-dom'
 import axios, {isAxiosError} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -17,35 +16,19 @@ import {
     useSubmitPlaygroundTicket,
 } from 'models/aiAgent/queries'
 import {AiAgentResponse} from 'models/aiAgent/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {sanitizeHtmlDefault} from 'utils/html'
 import TextArea from 'pages/common/forms/TextArea'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import css from './AiAgentPlaygroundContainer.less'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 const AiAgentPlaygroundContainer = () => {
-    const {shopType, shopName} = useParams<{
-        shopType: string
+    const {shopName} = useParams<{
         shopName: string
     }>()
 
-    const showAiAgentPlayground: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlayground]
-
-    const headerNavbarItems = [
-        {
-            route: `/app/automation/shopify/${shopName}/ai-agent`,
-            title: 'Settings',
-        },
-    ]
-
-    if (showAiAgentPlayground) {
-        headerNavbarItems.push({
-            route: `/app/automation/shopify/${shopName}/ai-agent/playground`,
-            title: 'Playground',
-        })
-    }
+    const {headerNavbarItems, routes} = useAiAgentNavigation({shopName})
 
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -242,11 +225,7 @@ const AiAgentPlaygroundContainer = () => {
                     <Alert color="danger">
                         Please configure the AI Agent with an email integration
                         and help center in order to use the Playground{' '}
-                        <Link
-                            to={`/app/automation/${shopType}/${shopName}/ai-agent`}
-                        >
-                            Configure Here
-                        </Link>
+                        <Link to={routes.configuration}>Configure Here</Link>
                     </Alert>
                 )}
                 <Form onSubmit={(e) => e.preventDefault()}>

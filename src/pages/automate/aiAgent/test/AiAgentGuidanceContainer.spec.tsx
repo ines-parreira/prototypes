@@ -20,6 +20,7 @@ const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
+    [FeatureFlagKey.AiAgentSettings]: true,
 }))
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
@@ -34,9 +35,9 @@ describe('<AiAgentGuidanceContainer />', () => {
         mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
-            isArticleListLoading: false,
-            isArticleLoading: false,
-            createOrUpdateArticle: jest.fn(),
+            isGuidanceArticleListLoading: false,
+            isGuidanceArticleUpdating: false,
+            createOrUpdateGuidanceArticle: jest.fn(),
         })
     })
 

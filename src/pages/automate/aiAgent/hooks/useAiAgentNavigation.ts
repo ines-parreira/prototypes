@@ -1,4 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useMemo} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
@@ -7,29 +8,42 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showAiAgentPlayground: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentPlayground]
 
-    const headerNavbarItems = [
-        ...(showGuidance
-            ? [
-                  {
-                      route: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
-                      title: 'Guidance',
-                      exact: false,
-                  },
-              ]
-            : []),
-        {
-            route: `/app/automation/shopify/${shopName}/ai-agent`,
-            title: 'Configuration',
-        },
-        ...(showAiAgentPlayground
-            ? [
-                  {
-                      route: `/app/automation/shopify/${shopName}/ai-agent/playground`,
-                      title: 'Playground',
-                  },
-              ]
-            : []),
-    ]
+    const routes = useMemo(
+        () => ({
+            playground: `/app/automation/shopify/${shopName}/ai-agent/playground`,
+            guidance: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
+            newGuidanceArticle: `/app/automation/shopify/${shopName}/ai-agent/guidance/new`,
+            configuration: `/app/automation/shopify/${shopName}/ai-agent`,
+        }),
+        [shopName]
+    )
 
-    return {headerNavbarItems}
+    const headerNavbarItems = useMemo(
+        () => [
+            ...(showGuidance
+                ? [
+                      {
+                          route: routes.guidance,
+                          title: 'Guidance',
+                          exact: false,
+                      },
+                  ]
+                : []),
+            {
+                route: routes.configuration,
+                title: 'Configuration',
+            },
+            ...(showAiAgentPlayground
+                ? [
+                      {
+                          route: routes.playground,
+                          title: 'Playground',
+                      },
+                  ]
+                : []),
+        ],
+        [routes, showAiAgentPlayground, showGuidance]
+    )
+
+    return {headerNavbarItems, routes}
 }

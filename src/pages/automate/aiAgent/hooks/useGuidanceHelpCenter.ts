@@ -1,10 +1,22 @@
-import useAppSelector from 'hooks/useAppSelector'
+import {useGetHelpCenterList} from 'models/helpCenter/queries'
 import {HelpCenter} from 'models/helpCenter/types'
-import {getHelpCenterGuidanceList} from 'state/entities/helpCenter/helpCenters'
 
-export const useGuidanceHelpCenter = (): HelpCenter | undefined => {
-    const helpCenterGuidanceList = useAppSelector(getHelpCenterGuidanceList)
-    const guidanceHelpCenter = helpCenterGuidanceList[0] // Assuming there is only one guidance help center
+const FIVE_MINUTES = 1000 * 60 * 5
+
+export const useGuidanceHelpCenter = ({
+    shopName,
+}: {
+    shopName: string
+}): HelpCenter | undefined => {
+    // We expect to handle only 1 guidance help center
+    const {data} = useGetHelpCenterList(
+        {type: 'guidance', per_page: 1, shop_name: shopName},
+        {
+            // Guidance Help Center is not expected to change frequently
+            staleTime: FIVE_MINUTES,
+        }
+    )
+    const guidanceHelpCenter = data?.data.data[0]
 
     return guidanceHelpCenter
 }

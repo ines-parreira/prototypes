@@ -5,6 +5,7 @@ import {
     RouteComponentProps,
     Switch,
     useLocation,
+    useParams,
     useRouteMatch,
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
@@ -180,6 +181,7 @@ import PanelLayout from 'pages/PanelLayout'
 import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
 import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
 import {AiAgentNewGuidanceContainer} from './automate/aiAgent/AiAgentNewGuidanceContainer'
+import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1385,38 +1387,47 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
 
     const showAiAgentGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
+    const {shopType} = useParams<{
+        shopType: string
+    }>()
+
+    if (shopType !== 'shopify') {
+        return <Redirect to="/app/automation" />
+    }
 
     return (
         <Switch>
             <SelfServiceHelpCentersProvider>
-                {showAiAgentSettings !== false && (
-                    <Route
-                        path={`${path}`}
-                        exact
-                        component={AiAgentViewContainer}
-                    />
-                )}
-                {showAiAgentPlayground !== false && (
-                    <Route
-                        path={`${path}/playground`}
-                        exact
-                        component={AiAgentPlaygroundContainer}
-                    />
-                )}
-                {showAiAgentGuidance !== false && (
-                    <>
+                <AiAgentAccountConfigurationProvider>
+                    {showAiAgentSettings !== false && (
                         <Route
-                            path={`${path}/guidance`}
+                            path={`${path}`}
                             exact
-                            component={AiAgentGuidanceContainer}
+                            component={AiAgentViewContainer}
                         />
+                    )}
+                    {showAiAgentPlayground !== false && (
                         <Route
-                            path={`${path}/guidance/new`}
+                            path={`${path}/playground`}
                             exact
-                            component={AiAgentNewGuidanceContainer}
+                            component={AiAgentPlaygroundContainer}
                         />
-                    </>
-                )}
+                    )}
+                    {showAiAgentGuidance !== false && (
+                        <>
+                            <Route
+                                path={`${path}/guidance`}
+                                exact
+                                component={AiAgentGuidanceContainer}
+                            />
+                            <Route
+                                path={`${path}/guidance/new`}
+                                exact
+                                component={AiAgentNewGuidanceContainer}
+                            />
+                        </>
+                    )}
+                </AiAgentAccountConfigurationProvider>
             </SelfServiceHelpCentersProvider>
         </Switch>
     )

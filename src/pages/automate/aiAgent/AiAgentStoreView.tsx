@@ -1,12 +1,11 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import {useGetStoreConfigurationPure} from '../../../models/aiAgent/queries'
 import {EditAiAgentSettingsForm} from './EditAiAgentSettingsForm'
 import {CreateAiAgentSettingsForm} from './CreateAiAgentSettingsForm'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 type AiAgentStoreViewProps = {
     shopName: string
@@ -17,22 +16,7 @@ export const AiAgentStoreView = ({
     shopName,
     accountDomain,
 }: AiAgentStoreViewProps) => {
-    const showAiAgentPlayground: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlayground]
-
-    const headerNavbarItems = [
-        {
-            route: `/app/automation/shopify/${shopName}/ai-agent`,
-            title: 'Settings',
-        },
-    ]
-
-    if (showAiAgentPlayground) {
-        headerNavbarItems.push({
-            route: `/app/automation/shopify/${shopName}/ai-agent/playground`,
-            title: 'Playground',
-        })
-    }
+    const {headerNavbarItems} = useAiAgentNavigation({shopName})
 
     const {
         isLoading: getStoreConfigurationIsLoading,

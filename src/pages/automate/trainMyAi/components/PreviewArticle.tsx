@@ -90,7 +90,9 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
                 ),
             })
             void queryClient.invalidateQueries({
-                queryKey: helpCenterStatsKeys.all(articleData.help_center_id),
+                queryKey: helpCenterStatsKeys.detail(
+                    articleData.help_center_id
+                ),
             })
         },
         [

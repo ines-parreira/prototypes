@@ -1,13 +1,17 @@
 import React, {useState} from 'react'
+import {notify} from 'reapop'
 import BackLink from 'pages/common/components/BackLink/BackLink'
 import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
 import Button from 'pages/common/components/button/Button'
 import {HelpCenter} from 'models/helpCenter/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 import css from './AiAgentNewGuidanceView.less'
 import {GuidanceEditor} from './components/GuidanceEditor/GuidanceEditor'
 import {useGuidanceArticles} from './hooks/useGuidanceArticles'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 type Props = {
     shopName: string
@@ -15,9 +19,10 @@ type Props = {
 }
 
 export const AiAgentNewGuidanceView = ({shopName, helpCenter}: Props) => {
-    const {createOrUpdateArticle, isArticleLoading} = useGuidanceArticles(
-        helpCenter.id
-    )
+    const dispatch = useAppDispatch()
+    const {createOrUpdateGuidanceArticle, isGuidanceArticleUpdating} =
+        useGuidanceArticles(helpCenter.id)
+    const {routes} = useAiAgentNavigation({shopName})
     const [name, setName] = useState('')
     const [content, setContent] = useState('')
     const onNameChange = (value: string) => {
@@ -27,43 +32,47 @@ export const AiAgentNewGuidanceView = ({shopName, helpCenter}: Props) => {
         setContent(value)
     }
 
-    const guidanceListLink = `/app/automation/shopify/${shopName}/ai-agent/guidance`
-    const playgroundLink = `/app/automation/shopify/${shopName}/ai-agent/playground`
     const isSubmitDisabled = !name || !content
     const onSubmit = async () => {
-        await createOrUpdateArticle({
-            title: name,
-            content,
-            locale: helpCenter.default_locale,
-            visibility: 'PUBLIC',
-        })
+        try {
+            await createOrUpdateGuidanceArticle({
+                title: name,
+                content,
+                locale: helpCenter.default_locale,
+                visibility: 'PUBLIC',
+            })
+        } catch (e) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Error during guidance article creation.',
+                })
+            )
+        }
 
-        history.push(guidanceListLink)
+        history.push(routes.guidance)
     }
 
     const onSaveAndTest = async () => {
-        await createOrUpdateArticle({
+        await createOrUpdateGuidanceArticle({
             title: name,
             content,
             locale: helpCenter.default_locale,
             visibility: 'PUBLIC',
         })
 
-        history.push(playgroundLink)
+        history.push(routes.playground)
     }
 
     const onCancel = () => {
-        history.push(guidanceListLink)
+        history.push(routes.guidance)
     }
 
     return (
         <>
             <div className={css.container}>
                 <div className={css.content}>
-                    <BackLink
-                        path={guidanceListLink}
-                        label="Back to Guidance"
-                    />
+                    <BackLink path={routes.guidance} label="Back to Guidance" />
 
                     <InputField
                         label="Guidance name"
@@ -87,14 +96,14 @@ export const AiAgentNewGuidanceView = ({shopName, helpCenter}: Props) => {
                 <div className={css.btnGroup}>
                     <Button
                         isDisabled={isSubmitDisabled}
-                        isLoading={isArticleLoading}
+                        isLoading={isGuidanceArticleUpdating}
                         onClick={onSubmit}
                     >
                         Create Guidance
                     </Button>
                     <Button
                         isDisabled={isSubmitDisabled}
-                        isLoading={isArticleLoading}
+                        isLoading={isGuidanceArticleUpdating}
                         onClick={onSaveAndTest}
                     >
                         Save and test

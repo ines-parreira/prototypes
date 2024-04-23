@@ -4,13 +4,17 @@ import {renderHook} from '@testing-library/react-hooks'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import {
+    getHelpCentersResponseFixture,
+    getSingleHelpCenterResponseFixture,
+} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {
     useGetHelpCenterArticleList,
     useGetHelpCenter,
     useGetHelpCenterArticle,
     useGetHelpCenterCategoryTree,
+    useGetHelpCenterList,
 } from '../queries'
 import * as resources from '../resources'
 import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../../pages/settings/helpCenter/constants'
@@ -23,6 +27,7 @@ const getHelpCenterArticles = jest.spyOn(resources, 'getHelpCenterArticles')
 const getHelpCenterArticle = jest.spyOn(resources, 'getHelpCenterArticle')
 const getHelpCenter = jest.spyOn(resources, 'getHelpCenter')
 const getCategoryTree = jest.spyOn(resources, 'getCategoryTree')
+const getHelpCenterList = jest.spyOn(resources, 'getHelpCenterList')
 
 const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
@@ -261,6 +266,41 @@ describe('queries', () => {
             })
 
             expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetHelpCenterList', () => {
+        it('should return correct data on success', async () => {
+            getHelpCenterList.mockReturnValue(
+                Promise.resolve(getHelpCentersResponseFixture) as any
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const {result, waitFor} = renderHook(
+                () => useGetHelpCenterList({}),
+                {wrapper}
+            )
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(
+                getHelpCentersResponseFixture
+            )
+        })
+        it('should not call the api function when client is not set', () => {
+            getHelpCenterList.mockReturnValue(
+                Promise.resolve(getHelpCentersResponseFixture) as any
+            )
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+            renderHook(() => useGetHelpCenterList({}), {
+                wrapper,
+            })
+
+            expect(getHelpCenterList).toHaveBeenCalledTimes(0)
         })
     })
 })

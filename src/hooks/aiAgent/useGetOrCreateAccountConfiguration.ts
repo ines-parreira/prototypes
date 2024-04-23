@@ -12,19 +12,19 @@ import {
     createAccountConfiguration,
 } from 'models/aiAgent/resources/account-configuration'
 import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
+import useAppDispatch from 'hooks/useAppDispatch'
 
 export function useGetOrCreateAccountConfiguration(
     params: {
         accountId: number
         accountDomain: string
-        dispatch: StoreDispatch
     },
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAccountConfiguration>>
     >
 ) {
-    const {accountId, accountDomain, dispatch} = params
+    const dispatch = useAppDispatch()
+    const {accountId, accountDomain} = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
         queryFn: async () => {

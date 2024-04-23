@@ -14,6 +14,7 @@ jest.mock('../hooks/useGuidanceHelpCenter', () => ({
 jest.mock('../hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(),
 }))
+jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
     () => {
@@ -24,6 +25,7 @@ jest.mock(
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
+    [FeatureFlagKey.AiAgentSettings]: true,
 }))
 
 const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
@@ -42,9 +44,9 @@ describe('<AiAgentNewGuidance />', () => {
         mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
-            isArticleListLoading: false,
-            isArticleLoading: false,
-            createOrUpdateArticle: jest.fn(),
+            isGuidanceArticleListLoading: false,
+            isGuidanceArticleUpdating: false,
+            createOrUpdateGuidanceArticle: jest.fn(),
         })
     })
 

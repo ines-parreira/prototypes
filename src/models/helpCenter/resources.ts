@@ -162,3 +162,12 @@ export const deleteArticleTranslation = async (
     const response = await client.deleteArticleTranslation(pathParams)
     return response
 }
+
+export const getHelpCenterList = async (
+    client: HelpCenterClient | undefined,
+    queryParams: Paths.ListHelpCenters.QueryParameters
+) => {
+    if (!client) return null
+    const response = await client.listHelpCenters(queryParams)
+    return response
+}

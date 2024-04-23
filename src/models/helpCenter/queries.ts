@@ -17,20 +17,25 @@ import {
     updateArticleTranslation,
     deleteArticle,
     deleteArticleTranslation,
+    getHelpCenterList,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
 
 export const helpCenterStatsKeys = {
-    all: (helpCenterId: number) =>
-        ['help-center', helpCenterId, 'stats'] as const,
-    articleList: (
+    all: () => ['help-centers'] as const,
+    details: () => ['help-center'] as const,
+    detail: (helpCenterId: number) =>
+        [...helpCenterStatsKeys.details(), helpCenterId] as const,
+    list: (queryParams: Paths.ListHelpCenters.QueryParameters) =>
+        [...helpCenterStatsKeys.all(), queryParams] as const,
+    articles: (
         helpCenterId: number,
         queryParams: Paths.ListArticles.QueryParameters
     ) =>
         [
-            ...helpCenterStatsKeys.all(helpCenterId),
-            'article-list',
+            ...helpCenterStatsKeys.detail(helpCenterId),
+            'articles',
             queryParams,
         ] as const,
     getCategoryTree: (
@@ -39,7 +44,7 @@ export const helpCenterStatsKeys = {
         queryParams: Paths.GetCategoryTree.QueryParameters
     ) =>
         [
-            ...helpCenterStatsKeys.all(helpCenterId),
+            ...helpCenterStatsKeys.detail(helpCenterId),
             'get-category-tree',
             parentCategoryId,
             queryParams,
@@ -62,7 +67,7 @@ export const useGetHelpCenterArticleList = (
     const {client} = useHelpCenterApi()
 
     return useQuery({
-        queryKey: helpCenterStatsKeys.articleList(helpCenterId, queryParams),
+        queryKey: helpCenterStatsKeys.articles(helpCenterId, queryParams),
         queryFn: async () =>
             getHelpCenterArticles(
                 client,
@@ -276,5 +281,20 @@ export const useDeleteArticleTranslation = (
         mutationFn: ([client = helpCenterClient, pathParams]) =>
             deleteArticleTranslation(client, pathParams),
         ...overrides,
+    })
+}
+
+export const useGetHelpCenterList = (
+    queryParams: Paths.ListHelpCenters.QueryParameters,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getHelpCenterList>>>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () => getHelpCenterList(helpCenterClient, queryParams),
+        queryKey: helpCenterStatsKeys.list(queryParams),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
     })
 }
