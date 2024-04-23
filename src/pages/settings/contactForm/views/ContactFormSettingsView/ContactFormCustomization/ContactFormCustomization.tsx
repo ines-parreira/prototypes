@@ -56,14 +56,19 @@ const ContactFormCustomization = (): JSX.Element => {
         useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
 
     useEffect(() => {
-        setUpdateContactFormDto({
+        setUpdateContactFormDto((prevState) => ({
+            ...prevState,
             form_display_mode: isFormHidden
                 ? ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
                 : ContactFormDisplayMode.SHOW_IMMEDIATELY,
-        })
+        }))
     }, [isFormHidden])
 
     const discardChanges = () => {
+        setIsFormHidden(
+            contactForm.form_display_mode ===
+                ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
+        )
         setUpdateContactFormDto(
             initUpdateDto(
                 contactForm.subject_lines,
@@ -139,9 +144,10 @@ const ContactFormCustomization = (): JSX.Element => {
                         updateSubjectLines={(
                             payload: UpdateSubjectLinesProps
                         ) => {
-                            setUpdateContactFormDto({
+                            setUpdateContactFormDto((prevState) => ({
+                                ...prevState,
                                 subject_lines: payload,
-                            })
+                            }))
                         }}
                         setIsDirty={setIsDirty}
                     />
