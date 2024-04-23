@@ -2,6 +2,8 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {Container} from 'reactstrap'
 import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
 import moment from 'moment'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import {BillingBanner, TicketPurpose} from 'state/billing/types'
@@ -56,6 +58,7 @@ import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
     ZAPIER_BILLING_HOOK,
+    BILLING_INTERNAL_PATH,
 } from '../../constants'
 import UsageAndPlansView from '../UsageAndPlansView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
@@ -65,6 +68,7 @@ import BillingInformationView from '../BillingInformationView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
 import PaymentMethodView from '../PaymentMethodView/PaymentMethodView'
+import BillingInternalView from '../BillingInternalView'
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -362,11 +366,19 @@ const BillingStartView = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [convertProduct, convertStatus])
 
+    const isInternalUIEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.InternalBillingInterface]
+
     return (
         <div className="full-width">
             <PageHeader title="Billing" />
             {isCurrentSubscriptionCanceled ? null : (
                 <SecondaryNavbar>
+                    {window.USER_IMPERSONATED && isInternalUIEnabled ? (
+                        <NavLink to={BILLING_INTERNAL_PATH}>
+                            Gorgias Internal
+                        </NavLink>
+                    ) : null}
                     <NavLink
                         to={BILLING_BASE_PATH}
                         isActive={(match, location) => {
@@ -395,6 +407,9 @@ const BillingStartView = () => {
             <Container fluid className={css.mainContainer}>
                 {isUsageFetched ? (
                     <Switch>
+                        <Route exact path={BILLING_INTERNAL_PATH}>
+                            <BillingInternalView />
+                        </Route>
                         <Route exact path={BILLING_BASE_PATH}>
                             <UsageAndPlansView
                                 contactBilling={contactBilling}

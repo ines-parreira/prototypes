@@ -11,6 +11,7 @@ import {
 import {Reason} from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
+export const BILLING_INTERNAL_PATH = `${BILLING_BASE_PATH}/internal`
 export const BILLING_PROCESS_PATH = `${BILLING_BASE_PATH}/process`
 export const BILLING_PAYMENT_PATH = `${BILLING_BASE_PATH}/payment`
 export const BILLING_PAYMENT_CARD_PATH = `${BILLING_PAYMENT_PATH}/card`

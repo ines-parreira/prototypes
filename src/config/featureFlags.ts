@@ -74,6 +74,7 @@ export enum FeatureFlagKey {
     MLFlowsRecommendation = 'ml-flows-recommendation',
     NewAutomationAddon = 'new-automation-add-on',
     NewBillingInterface = 'new-billing-interface',
+    InternalBillingInterface = 'internal-billing-interface',
     NewDatePickerVariant = 'new-date-picker-variant',
     NewSenderSelect = 'new-sender-select',
     Notifications = 'notifications',
