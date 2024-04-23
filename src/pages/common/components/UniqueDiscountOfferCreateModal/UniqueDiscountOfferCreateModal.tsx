@@ -1,4 +1,10 @@
-import React, {FormEvent, useCallback, useEffect, useState} from 'react'
+import React, {
+    FormEvent,
+    useCallback,
+    useEffect,
+    useState,
+    useMemo,
+} from 'react'
 import {Map} from 'immutable'
 import {
     FormGroup,
@@ -24,7 +30,7 @@ import {useModalManager} from 'hooks/useModalManager'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
 import Label from 'pages/common/forms/Label/Label'
-
+import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector/CustomerSegmentSelector'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -70,6 +76,13 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
 
         const appNode = useAppNode()
 
+        const selectedSegment = useMemo(() => {
+            return discount.external_customer_segment_ids &&
+                discount.external_customer_segment_ids?.length > 0
+                ? discount.external_customer_segment_ids[0]
+                : null
+        }, [discount])
+
         const {
             mutateAsync: createDiscountOffer,
             error: createDiscountOfferError,
@@ -114,7 +127,8 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                     prefix: discount.prefix!,
                     value: discount.value,
                     minimum_purchase_amount: discount.minimum_purchase_amount,
-                    external_customer_segment_ids: null,
+                    external_customer_segment_ids:
+                        discount.external_customer_segment_ids,
                     store_integration_id:
                         discount.store_integration_id!.toString(),
                 }
@@ -142,6 +156,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
             },
             [
                 createDiscountOffer,
+                discount.external_customer_segment_ids,
                 discount.minimum_purchase_amount,
                 discount.prefix,
                 discount.store_integration_id,
@@ -162,6 +177,14 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
 
             return !isEqual(discount, restOfParamsDiscount)
         }, [discount, editDiscountOfferParams, inEditMode])
+
+        const onCustomerSegmentChange = (segmentId: string | null) => {
+            setDiscount((prevState) => ({
+                ...prevState,
+                external_customer_segment_ids:
+                    segmentId === null ? null : [segmentId],
+            }))
+        }
 
         return (
             <Modal
@@ -341,6 +364,27 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                             )}
                                         />
                                     )}
+                                </div>
+                            </InputGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label
+                                className={css.label}
+                                htmlFor="customerEligibility"
+                            >
+                                Customer eligibility
+                            </Label>
+                            <InputGroup className={css.inputGroup}>
+                                <div className={css.customerSegmentWrapper}>
+                                    <CustomerSegmentSelector
+                                        value={selectedSegment}
+                                        integrationId={
+                                            integration.get(
+                                                'id'
+                                            ) as unknown as number
+                                        }
+                                        onChange={onCustomerSegmentChange}
+                                    />
                                 </div>
                             </InputGroup>
                         </FormGroup>

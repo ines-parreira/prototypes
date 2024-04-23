@@ -18,7 +18,7 @@ import {
     IntegrationDataItem,
     ShopifyTags,
 } from './types'
-import {fetchShopTags} from './resources/shopify'
+import {fetchShopTags, fetchCustomerSegments} from './resources/shopify'
 
 export const getInstallationSnippetQueryKey = (
     params: GetInstallationSnippetParams
@@ -90,6 +90,29 @@ export const useShopifyTags = (
             reportError(
                 new Error(
                     `Failed to fetch ${tagsType} tags for Shopify integration ${integrationId}`
+                )
+            )
+        },
+    })
+}
+
+export const useListShopifyCustomerSegments = (integrationId: number) => {
+    return useQuery({
+        queryKey: [
+            'integration',
+            'shopify',
+            integrationId,
+            'customer',
+            'segments',
+        ],
+        queryFn: async () => {
+            const response = await fetchCustomerSegments(integrationId)
+            return response
+        },
+        onError: () => {
+            reportError(
+                new Error(
+                    `Failed to fetch customer segments for Shopify integration ${integrationId}`
                 )
             )
         },

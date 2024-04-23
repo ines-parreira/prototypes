@@ -62,3 +62,12 @@ export type ShopifyCustomerTags = {
         }
     }
 }
+
+export type ShopifySegmentResponse = {
+    data: Record<string, string | number>[]
+}
+
+export type ShopifyCustomerSegment = {
+    id: number
+    name: string
+}

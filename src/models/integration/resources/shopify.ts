@@ -2,6 +2,8 @@ import {
     ShopifyOrderTags,
     ShopifyCustomerTags,
     ShopifyTags,
+    ShopifySegmentResponse,
+    ShopifyCustomerSegment,
 } from 'models/integration/types'
 import client from '../../api/resources'
 
@@ -30,4 +32,14 @@ export const fetchShopTags = async (
         }
         return acc
     }, [])
+}
+
+export const fetchCustomerSegments = async (
+    integrationId: number
+): Promise<ShopifyCustomerSegment[]> => {
+    const url = `/integrations/shopify/${integrationId}/segments/`
+
+    const response = await client.get(url)
+    const segments = response?.data as ShopifySegmentResponse
+    return (segments.data || []) as ShopifyCustomerSegment[]
 }
