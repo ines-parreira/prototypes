@@ -205,6 +205,7 @@ export type GorgiasAction = {
     shopper?: Shopper
     shopperAddress?: ShopperAddress
     shopperOrder?: ShopperOrder
+    withHighlight?: boolean
 }
 
 export type CurrentUser = Map<any, any>

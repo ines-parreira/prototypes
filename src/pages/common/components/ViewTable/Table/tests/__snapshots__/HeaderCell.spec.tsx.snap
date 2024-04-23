@@ -59,7 +59,7 @@ exports[`ViewTable::Table::HeaderCell does not display ActionsComponent for non-
         class=""
       >
         <span>
-          Subject
+          Details
         </span>
       </div>
     </div>

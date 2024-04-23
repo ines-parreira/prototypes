@@ -82,6 +82,7 @@ Immutable.Map {
       "visibility": "public",
       "section_id": null,
       "group_by": null,
+      "with_highlights": false,
       "fields": Immutable.List [
         "details",
         "tags",
@@ -260,6 +261,7 @@ Immutable.Map {
       "visibility": "public",
       "section_id": null,
       "group_by": null,
+      "with_highlights": false,
       "fields": Immutable.List [
         "details",
         "tags",
@@ -419,6 +421,7 @@ Immutable.Map {
       "visibility": "public",
       "section_id": null,
       "group_by": null,
+      "with_highlights": false,
       "fields": Immutable.List [
         "details",
         "tags",
@@ -561,6 +564,7 @@ Immutable.Map {
     "dirty": false,
     "section_id": null,
     "group_by": null,
+    "with_highlights": false,
     "fields": Immutable.List [
       "details",
       "tags",
@@ -727,6 +731,7 @@ Immutable.Map {
       "visibility": "public",
       "section_id": null,
       "group_by": null,
+      "with_highlights": false,
       "fields": Immutable.List [
         "details",
         "tags",
@@ -869,6 +874,7 @@ Immutable.Map {
     "dirty": false,
     "section_id": null,
     "group_by": null,
+    "with_highlights": false,
     "fields": Immutable.List [
       "details",
       "tags",
@@ -1025,6 +1031,7 @@ Immutable.Map {
       "visibility": "public",
       "section_id": null,
       "group_by": null,
+      "with_highlights": false,
       "fields": Immutable.List [
         "details",
         "tags",

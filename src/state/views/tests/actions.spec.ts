@@ -421,6 +421,7 @@ describe('actions', () => {
                         filters: "eq(ticket.channel, 'chat')",
                         search: '',
                         orderBy: 'closed_datetime:asc',
+                        withHighlights: false,
                     })
                 })
         })
@@ -489,6 +490,7 @@ describe('actions', () => {
                             orderBy: 'last_message_datetime:desc',
                             cancelToken,
                             cursor: args.expected,
+                            withHighlights: false,
                         })
                     })
             }
@@ -769,6 +771,7 @@ describe('actions', () => {
                     filters: ticketSearchView.filters,
                     cursor,
                     cancelToken,
+                    withHighlights: false,
                 })
             })
 
@@ -791,9 +794,11 @@ describe('actions', () => {
                 )
 
                 expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                    cancelToken: undefined,
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
+                    withHighlights: false,
                 })
             })
 
@@ -816,9 +821,11 @@ describe('actions', () => {
                 )
 
                 expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                    cancelToken: undefined,
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
+                    withHighlights: false,
                 })
             })
         })

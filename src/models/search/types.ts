@@ -98,6 +98,7 @@ export type TicketWithHighlightsResponse = {
     entity: PickedTicket
     highlights: TicketHighlights
 }
+
 export type TicketWithHighlights = {
     type: 'Ticket'
     entity: PickedTicket

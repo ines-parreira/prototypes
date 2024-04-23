@@ -28,7 +28,7 @@ export enum ViewField {
     Created = 'created',
     Updated = 'updated',
     Details = 'details',
-    DetailsWithHighlight = 'details_with_highlight',
+    DetailsWithHighlights = 'details_with_highlights',
     Tags = 'tags',
     Customer = 'customer',
     LastMessage = 'last_message',
@@ -79,6 +79,7 @@ export type ViewDraft = {
     type: ViewType
     uri: string
     visibility: ViewVisibility
+    with_highlights: boolean
 }
 
 type SharedWith = {

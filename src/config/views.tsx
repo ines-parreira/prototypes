@@ -5,7 +5,7 @@ import _isUndefined from 'lodash/isUndefined'
 import {fromAST} from 'common/utils'
 import {getChannels} from 'services/channels'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {BASE_VIEW_ID} from 'constants/view'
+import {BASE_VIEW_ID, WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
 import {
     EntityType,
@@ -91,6 +91,10 @@ const defaultTicketView = {
     fields: [
         {
             name: ViewField.Details,
+            title: 'Details',
+        },
+        {
+            name: ViewField.DetailsWithHighlights,
             title: 'Details',
         },
         {
@@ -275,14 +279,14 @@ const defaultTicketView = {
                     </div>
                 )
             }
-            case ViewField.DetailsWithHighlight: {
+            case ViewField.DetailsWithHighlights: {
                 const subjectHighlights: string | null = item.getIn(
-                    ['highlights', 'subject.highlight', 0],
+                    ['highlights', 'subject', 0],
                     null
                 )
 
                 const excerptHighlights: string | null = item.getIn(
-                    ['highlights', 'messages.body.text', 0],
+                    ['highlights', 'messages', 'body', 0],
                     null
                 )
 
@@ -414,6 +418,7 @@ const defaultTicketView = {
             ],
             type: ViewType.TicketList,
             order_by: 'created_datetime',
+            [WITH_HIGHLIGHTS_OPTION_KEY]: false,
         })
 
         if (filters) {
@@ -430,12 +435,46 @@ const defaultTicketView = {
 const ticketWithHighlightView = {
     ...defaultTicketView,
     name: EntityType.TicketWithHighlight,
+    mainField: ViewField.DetailsWithHighlights,
+    newView: (
+        visibility?: ViewVisibility,
+        viewName?: string,
+        filters?: string
+    ) => {
+        let view = baseView().merge({
+            fields: [
+                ViewField.DetailsWithHighlights,
+                ViewField.Channel,
+                ViewField.Assignee,
+                ViewField.Status,
+                ViewField.Customer,
+                ViewField.Created,
+                ViewField.LastMessage,
+            ],
+            type: ViewType.TicketList,
+            order_by: 'last_message_datetime',
+            visibility:
+                visibility === ViewVisibility.Private
+                    ? ViewVisibility.Private
+                    : ViewVisibility.Public,
+        })
+        if (filters) {
+            view = view.merge({
+                filters,
+                filters_ast: fromAST(getAST(filters)),
+            })
+        }
+        if (viewName) {
+            view = view.set('name', viewName)
+        }
+        return view
+    },
     searchView: (query: string, filters?: string) => {
         const searchView = baseView().merge({
             name: `Search "${query}"`,
             search: query,
             fields: [
-                ViewField.DetailsWithHighlight,
+                ViewField.DetailsWithHighlights,
                 ViewField.Customer,
                 ViewField.Assignee,
                 ViewField.TicketId,
@@ -445,6 +484,7 @@ const ticketWithHighlightView = {
             ],
             type: ViewType.TicketList,
             order_by: 'created_datetime',
+            [WITH_HIGHLIGHTS_OPTION_KEY]: true,
         })
 
         if (filters) {

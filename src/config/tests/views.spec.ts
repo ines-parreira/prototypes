@@ -1,8 +1,9 @@
 import {render, screen} from '@testing-library/react'
 import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
-
 import {ReactComponentElement} from 'react'
+import {TicketHighlights} from 'models/search/types'
+
 import {isImmutable} from 'common/utils'
 import * as viewsConfig from 'config/views'
 
@@ -60,7 +61,7 @@ describe('Config: views', () => {
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
                 render(
-                    cell(ViewField.DetailsWithHighlight, ticketWithHighlight)
+                    cell(ViewField.DetailsWithHighlights, ticketWithHighlight)
                 )
             }
 
@@ -76,19 +77,18 @@ describe('Config: views', () => {
             const messages_count = 4
             const highlightedSubject = 'highlighted subject'
             const highlightedMessage = 'highlighted message'
+            const highlights: TicketHighlights = {
+                subject: [`asd <em>${highlightedSubject}</em> tyu`],
+                messages: {
+                    body: [`asd <em>${highlightedMessage}</em> tyu`],
+                },
+            }
             const ticketWithHighlight = fromJS({
                 ...ticketFixtures.ticket,
                 messages_count,
                 subject,
                 excerpt,
-                highlights: fromJS({
-                    'subject.highlight': [
-                        `asd <em>${highlightedSubject}</em> tyu`,
-                    ],
-                    'messages.body.text': [
-                        `asd <em>${highlightedMessage}</em> tyu`,
-                    ],
-                }),
+                highlights: fromJS(highlights),
             })
             const withHighlightView:
                 | Record<'name' | 'cell', unknown>
@@ -102,7 +102,7 @@ describe('Config: views', () => {
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
                 render(
-                    cell(ViewField.DetailsWithHighlight, ticketWithHighlight)
+                    cell(ViewField.DetailsWithHighlights, ticketWithHighlight)
                 )
             }
 
@@ -204,6 +204,7 @@ describe('Config: views', () => {
                 const nonStringTicketFields = {
                     id: 'number',
                     details: 'object',
+                    details_with_highlights: 'object',
                     tags: 'object',
                     customer: 'object', // customer (then passed to RenderLabel)
                     assignee: 'object', // user (then passed to RenderLabel)

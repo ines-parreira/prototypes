@@ -173,6 +173,7 @@ exports[`<RuleRecipeCard/> install should install rule and rules in sections on 
       "type": "ticket-list",
       "uri": "/api/views/7/",
       "visibility": "public",
+      "with_highlights": false,
     },
   ],
 ]
@@ -393,6 +394,7 @@ exports[`<RuleRecipeCard/> install should install rule on click 2`] = `
       "type": "ticket-list",
       "uri": "/api/views/7/",
       "visibility": "public",
+      "with_highlights": false,
     },
   ],
 ]

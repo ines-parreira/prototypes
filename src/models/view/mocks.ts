@@ -26,6 +26,7 @@ export const newViews: View[] = [
         type: ViewType.TicketList,
         uri: '/api/views/4000/',
         visibility: ViewVisibility.Public,
+        with_highlights: false,
     },
     {
         category: ViewCategory.System,
@@ -45,6 +46,7 @@ export const newViews: View[] = [
         type: ViewType.TicketList,
         uri: '/api/views/8000/',
         visibility: ViewVisibility.Public,
+        with_highlights: false,
     },
     {
         category: ViewCategory.System,
@@ -64,6 +66,7 @@ export const newViews: View[] = [
         uri: '/api/views/3000/',
         type: ViewType.TicketList,
         visibility: ViewVisibility.Public,
+        with_highlights: false,
     },
     {
         category: ViewCategory.System,
@@ -83,5 +86,6 @@ export const newViews: View[] = [
         type: ViewType.TicketList,
         uri: '/api/views/7000/',
         visibility: ViewVisibility.Public,
+        with_highlights: false,
     },
 ]

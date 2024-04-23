@@ -6,6 +6,8 @@ import classnames from 'classnames'
 import {parse, stringify} from 'qs'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getConfigByName} from 'config/views'
 import {EntityType, ViewVisibility} from 'models/view/types'
@@ -95,7 +97,13 @@ export class ViewTableContainer extends Component<Props> {
         } = this.props
 
         if (isSearch) {
-            updateView(urlSearchView, false)
+            updateView(
+                urlSearchView.merge({
+                    [WITH_HIGHLIGHTS_OPTION_KEY]:
+                        this._isSearchWithHighlightedResults(),
+                }),
+                false
+            )
         } else if (isCreationUrl(location.pathname, 'tickets')) {
             updateView(
                 (
@@ -283,6 +291,9 @@ export class ViewTableContainer extends Component<Props> {
             item.get('id') as unknown as number
         }`
     }
+
+    _isSearchWithHighlightedResults = () =>
+        !!this.props.flags?.[FeatureFlagKey.SearchWithHighlights]
 
     _renderTable = () => {
         const {

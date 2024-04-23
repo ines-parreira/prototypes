@@ -5,6 +5,7 @@ import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
 import {isEmpty} from 'lodash'
+import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import {JOBS_PATH} from 'models/job/resources'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
@@ -357,7 +358,6 @@ export const deleteViewSuccess =
         }
     }
 
-// Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
 export function fetchViewItems(
     direction: Maybe<ViewNavDirection> = null,
     cursor?: Maybe<string>,
@@ -379,7 +379,7 @@ export function fetchViewItems(
         const shouldRegisterSearchRankRequest = !direction && !cursor
         const launchDarklyClient = getLDClient()
 
-        const viewId = activeView.get('id') as number
+        const viewId: string = activeView.get('id')
 
         let url = `/api/views/${viewId}/items/`
 
@@ -423,15 +423,28 @@ export function fetchViewItems(
             discreet: isPolling,
         })
 
-        if (
+        const isSearchWithHighlight: boolean = activeView.get(
+            WITH_HIGHLIGHTS_OPTION_KEY,
+            false
+        )
+
+        const isTicketSearch =
             activeView.get('search') != null &&
             activeView.get('type') === ViewType.TicketList
-        ) {
-            const nextCursor = navigation.get('next_cursor') as Maybe<string>
-            const prevCursor = navigation.get('prev_cursor') as Maybe<string>
+        const isCustomerSearch =
+            activeView.get('search') != null &&
+            activeViewType === ViewType.CustomerList
+        const expectSearchWithHighlightsResults =
+            isSearchWithHighlight &&
+            (isTicketSearch || isCustomerSearch || isDirty)
+
+        if (isTicketSearch) {
+            const nextCursor: Maybe<string> = navigation.get('next_cursor')
+            const prevCursor: Maybe<string> = navigation.get('prev_cursor')
             promise = searchTickets({
-                search: activeView.get('search') as string,
-                filters: activeView.get('filters') as string,
+                search: activeView.get('search'),
+                withHighlights: isSearchWithHighlight,
+                filters: activeView.get('filters'),
                 cursor:
                     cursor ||
                     (direction === ViewNavDirection.NextView && nextCursor) ||
@@ -439,14 +452,12 @@ export function fetchViewItems(
                     undefined,
                 cancelToken,
             })
-        } else if (
-            activeView.get('search') != null &&
-            activeViewType === ViewType.CustomerList
-        ) {
-            const nextCursor = navigation.get('next_cursor') as Maybe<string>
-            const prevCursor = navigation.get('prev_cursor') as Maybe<string>
+        } else if (isCustomerSearch) {
+            const nextCursor: Maybe<string> = navigation.get('next_cursor')
+            const prevCursor: Maybe<string> = navigation.get('prev_cursor')
             promise = searchCustomers({
-                search: activeView.get('search') as string,
+                search: activeView.get('search'),
+                withHighlights: isSearchWithHighlight,
                 orderBy: '_score:desc',
                 cursor:
                     cursor ||
@@ -468,10 +479,11 @@ export function fetchViewItems(
 
             promise = searchTickets({
                 cursor: cursorParam,
-                search: (activeView.get('search') as string) || '',
-                filters: activeView.get('filters') as string,
+                search: activeView.get('search') || '',
+                filters: activeView.get('filters'),
                 cancelToken,
                 orderBy: 'last_message_datetime:desc',
+                withHighlights: isSearchWithHighlight,
                 ...params,
             })
         } else {
@@ -528,6 +540,7 @@ export function fetchViewItems(
                     type: types.FETCH_LIST_VIEW_SUCCESS,
                     viewType: activeViewType,
                     data: resp.data,
+                    withHighlight: expectSearchWithHighlightsResults,
                 })
             },
             (error: AxiosError) => {

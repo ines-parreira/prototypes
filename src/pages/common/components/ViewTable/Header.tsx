@@ -1,8 +1,12 @@
+import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {createRef, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import classnames from 'classnames'
+import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import {getConfigByName} from 'config/views'
@@ -35,7 +39,7 @@ type OwnProps = {
     viewButtons?: React.ReactNode
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+type Props = OwnProps & ConnectedProps<typeof connector> & {flags?: LDFlagSet}
 
 type State = {
     askDeleteConfirmation: boolean
@@ -72,6 +76,9 @@ export class HeaderContainer extends React.Component<Props, State> {
         return url
     }
 
+    _isSearchWithHighlightedResults = () =>
+        !!this.props.flags?.[FeatureFlagKey.SearchWithHighlights]
+
     handleKeyDown = (event: KeyboardEvent) => {
         const {updateView, activeView, isSearch} = this.props
         const {searchTerm} = this.state
@@ -84,6 +91,8 @@ export class HeaderContainer extends React.Component<Props, State> {
             updateView(
                 activeView.merge({
                     search: searchTerm,
+                    [WITH_HIGHLIGHTS_OPTION_KEY]:
+                        this._isSearchWithHighlightedResults(),
                 }),
                 false
             )
@@ -335,4 +344,4 @@ const connector = connect(
     }
 )
 
-export default connector(HeaderContainer)
+export default connector(withLDConsumer()(HeaderContainer))

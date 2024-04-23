@@ -1,11 +1,13 @@
 import {fromJS, Map, List} from 'immutable'
+import {TicketWithHighlights} from 'models/search/types'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
 
-import * as ticketTypes from '../ticket/constants'
-import * as viewsTypes from '../views/constants'
-import {GorgiasAction} from '../types'
+import * as ticketTypes from 'state/ticket/constants'
+import * as viewsTypes from 'state/views/constants'
+import {GorgiasAction} from 'state/types'
 
-import * as types from './constants'
-import {TicketsState} from './types'
+import * as types from 'state/tickets/constants'
+import {TicketsState} from 'state/tickets/types'
 
 export const initialState: TicketsState = fromJS({
     // The cursor contains the value of an attribute of a ticket used to sort tickets in a view.
@@ -29,10 +31,18 @@ export default function reducer(
                 return state
             }
 
-            return state.set(
-                'items',
-                fromJS((action.data as {data: unknown[]}).data)
-            )
+            let items = []
+            if (action.withHighlight === true) {
+                items = (
+                    action.data as {
+                        data: TicketWithHighlights[]
+                    }
+                ).data.map(mergeEntitiesWithHighlights)
+            } else {
+                items = (action.data as {data: unknown[]}).data
+            }
+
+            return state.set('items', fromJS(items))
         }
 
         case viewsTypes.BULK_DELETE_SUCCESS: {

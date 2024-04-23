@@ -20,7 +20,7 @@ import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
 
-import RuleRecipeCard from '../RuleRecipeCard'
+import RuleRecipeCard from 'pages/settings/rules/ruleLibrary/components/RuleRecipeCard'
 
 jest.mock('models/view/resources')
 jest.mock('models/tag/resources', () => {

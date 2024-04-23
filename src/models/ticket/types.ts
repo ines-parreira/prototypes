@@ -5,7 +5,6 @@ import {
     TicketVia,
 } from 'business/types/ticket'
 import {FacebookReactionType} from 'constants/integrations/facebook'
-
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {Customer} from 'models/customer/types'
 import {CustomFields} from 'models/customField/types'

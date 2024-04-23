@@ -7,7 +7,7 @@ import {
 import {OrderDirection} from 'models/api/types'
 import {IntegrationType} from 'models/integration/constants'
 import {TicketChannel} from 'business/types/ticket'
-import {GorgiasInitialState} from '../types'
+import {GorgiasInitialState} from 'types'
 
 import {user} from './users'
 import {account} from './account'
@@ -163,6 +163,7 @@ export const initialState: GorgiasInitialState = {
                 uri: '/api/views/9/',
                 visibility: ViewVisibility.Public,
                 section_id: null,
+                with_highlights: false,
             },
         ],
         recent: {

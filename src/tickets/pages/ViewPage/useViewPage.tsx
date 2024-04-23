@@ -1,4 +1,7 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {useIsOnboardingHidden} from 'common/onboarding'
 import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
@@ -15,6 +18,8 @@ import {
 
 export default function useViewPage() {
     const [isHidden, onHide] = useIsOnboardingHidden()
+    const isSearchWithHighlights: boolean | undefined =
+        useFlags()[FeatureFlagKey.SearchWithHighlights]
 
     const defaultConfig = useMemo(
         (): PanelLayoutConfig => [
@@ -25,7 +30,12 @@ export default function useViewPage() {
             },
             {
                 key: 'ticket-list-panel',
-                content: <TicketList />,
+                content:
+                    isSearchWithHighlights === undefined ? (
+                        <Skeleton />
+                    ) : (
+                        <TicketList />
+                    ),
                 panelConfig: [Infinity, 300],
             },
             {
@@ -47,7 +57,7 @@ export default function useViewPage() {
                 ],
             },
         ],
-        [isHidden, onHide]
+        [isHidden, isSearchWithHighlights, onHide]
     )
 
     const config = useMemo(

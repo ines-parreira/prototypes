@@ -35,6 +35,10 @@ exports[`SelectTargetTicket component should render 1`] = `
               "title": "Details",
             },
             Immutable.Map {
+              "name": "details_with_highlights",
+              "title": "Details",
+            },
+            Immutable.Map {
               "name": "subject",
               "title": "Subject",
             },

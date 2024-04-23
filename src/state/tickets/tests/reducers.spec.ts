@@ -1,11 +1,14 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
+import {ticket} from 'fixtures/ticket'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
+import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
-import {GorgiasAction} from '../../types'
-import * as viewTypes from '../../views/constants'
-import * as ticketTypes from '../../ticket/constants'
-import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import {GorgiasAction} from 'state/types'
+import * as viewTypes from 'state/views/constants'
+import * as ticketTypes from 'state/ticket/constants'
+import * as types from 'state/tickets/constants'
+import reducer, {initialState} from 'state/tickets/reducers'
 
 describe('tickets reducers', () => {
     beforeEach(() => {
@@ -50,6 +53,44 @@ describe('tickets reducers', () => {
                 data: resp,
             })
         ).toMatchSnapshot()
+    })
+
+    it('fetch list with highlights', () => {
+        const resp = {
+            data: [
+                {
+                    type: 'Ticket' as const,
+                    entity: {
+                        name: 'A ticket',
+                        ...ticket,
+                    } as unknown as PickedTicket,
+                    highlights: {},
+                },
+                {
+                    type: 'Ticket' as const,
+                    entity: {name: 'Another ticket'} as unknown as PickedTicket,
+                    highlights: {},
+                },
+            ],
+            meta: {
+                nb_pages: 2,
+                page: 1,
+            },
+        }
+
+        expect(
+            reducer(initialState, {
+                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                viewType: 'ticket-list',
+                data: resp,
+                withHighlight: true,
+            })
+        ).toEqualImmutable(
+            initialState.set(
+                'items',
+                fromJS(resp.data.map(mergeEntitiesWithHighlights))
+            )
+        )
     })
 
     it('bulk delete', () => {

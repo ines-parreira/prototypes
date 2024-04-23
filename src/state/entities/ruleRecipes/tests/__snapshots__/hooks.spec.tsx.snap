@@ -204,6 +204,7 @@ exports[`useRuleRecipes should return the recipes 1`] = `
           "type": "ticket-list",
           "uri": "/api/views/7/",
           "visibility": "public",
+          "with_highlights": false,
         },
       ],
     },

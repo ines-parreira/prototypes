@@ -221,6 +221,7 @@ exports[`actions fetchViewItems should fetch current page with cursor 1`] = `
     },
     "type": "FETCH_LIST_VIEW_SUCCESS",
     "viewType": "ticket-list",
+    "withHighlight": false,
   },
 ]
 `;
@@ -298,6 +299,7 @@ exports[`actions fetchViewItems should fetch current page without cursor 1`] = `
     },
     "type": "FETCH_LIST_VIEW_SUCCESS",
     "viewType": "ticket-list",
+    "withHighlight": false,
   },
 ]
 `;
@@ -375,6 +377,7 @@ exports[`actions fetchViewItems should fetch next page 1`] = `
     },
     "type": "FETCH_LIST_VIEW_SUCCESS",
     "viewType": "ticket-list",
+    "withHighlight": false,
   },
 ]
 `;
@@ -452,6 +455,7 @@ exports[`actions fetchViewItems should fetch prev page 1`] = `
     },
     "type": "FETCH_LIST_VIEW_SUCCESS",
     "viewType": "ticket-list",
+    "withHighlight": false,
   },
 ]
 `;
@@ -1218,6 +1222,7 @@ exports[`actions fetchViewItems should not dispatch results when cancelling the 
     },
     "type": "FETCH_LIST_VIEW_SUCCESS",
     "viewType": "ticket-list",
+    "withHighlight": false,
   },
 ]
 `;
@@ -1762,6 +1767,7 @@ exports[`actions fetchViewItems should pass the view because it is dirty 1`] = `
     },
     "type": "FETCH_LIST_VIEW_SUCCESS",
     "viewType": "ticket-list",
+    "withHighlight": false,
   },
 ]
 `;
