@@ -87,6 +87,14 @@
     }
 }
 
+.line-clamp(@lines) {
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @lines;
+}
+
 // used for @media rules
 @mobiles: ~'only screen and (max-width: 768px)';
 @tablets: ~'only screen and (min-width: 768px) and (max-width: 992px)';

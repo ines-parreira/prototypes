@@ -1,4 +1,4 @@
-import {NotificationFeedPopover} from '@knocklabs/react'
+import {NotificationFeedPopover, RenderItemProps} from '@knocklabs/react'
 import cn from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
 
@@ -7,8 +7,20 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 import useCount from '../hooks/useCount'
+import transformKnockNotification from '../utils/transformKnockNotification'
 
+import FeedItem from './FeedItem'
+import NotificationContent from './NotificationContent'
 import css from './Button.less'
+
+const renderItem = ({item}: RenderItemProps) => {
+    const notification = transformKnockNotification(item)
+    return !notification ? null : (
+        <FeedItem key={notification.id}>
+            <NotificationContent notification={notification} />
+        </FeedItem>
+    )
+}
 
 export default function NotificationsButton() {
     const count = useCount()
@@ -45,6 +57,7 @@ export default function NotificationsButton() {
                 buttonRef={buttonRef}
                 isVisible={isVisible}
                 placement="right-start"
+                renderItem={renderItem}
                 onClose={handleClose}
             />
         </>

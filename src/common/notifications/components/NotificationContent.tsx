@@ -1,0 +1,45 @@
+import React from 'react'
+import {Link} from 'react-router-dom'
+
+import TicketIcon from 'pages/common/components/TicketIcon'
+
+import {Notification, NotificationType} from '../types'
+
+import css from './NotificationContent.less'
+
+type Props = {
+    notification: Notification
+}
+
+const notificationTypeMap: Record<NotificationType, string> = {
+    'message-received': 'New message',
+    'snooze-expired': 'Snooze expired',
+}
+
+export default React.memo(function NotificationContent({notification}: Props) {
+    const {ticket} = notification.payload || {}
+    if (!ticket) return null
+
+    return (
+        <Link to={`/app/ticket/${ticket.id}`} className={css.container}>
+            <div className={css.icon}>
+                <TicketIcon channel={ticket.channel} status={ticket.status} />
+            </div>
+            <div className={css.content}>
+                <header>
+                    <h4 className={css.type}>
+                        {notificationTypeMap[notification.type]}
+                    </h4>
+                </header>
+                <p className={css.subtitle}>
+                    <strong>{ticket.subject}</strong> from{' '}
+                    <strong>{ticket.sender.name}</strong>
+                </p>
+
+                {!!ticket.excerpt && (
+                    <div className={css.excerpt}>{ticket.excerpt}</div>
+                )}
+            </div>
+        </Link>
+    )
+})
