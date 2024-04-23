@@ -8,7 +8,8 @@ import {saveReport} from '../busiestTimesOfDaysReportingService'
 jest.mock('utils/file')
 
 describe('saveReport', () => {
-    const {btodData} = getAggregatedBusiestTimesOfDayData([[]])
+    const timeZone = 'America/Los_Angeles'
+    const {btodData} = getAggregatedBusiestTimesOfDayData([[]], timeZone)
 
     it('should render the report', async () => {
         const createCsvMock = jest.spyOn(files, 'createCsv')

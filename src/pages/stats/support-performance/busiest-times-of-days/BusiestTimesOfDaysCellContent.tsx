@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
-import css from 'pages/stats/heatmap.less'
+import heatmapCss from 'pages/stats/heatmap.less'
 import {hourFromHourIndex} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -14,6 +14,7 @@ import {
     BusiestTimeOfDaysMetrics,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import css from 'pages/stats/common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat.less'
 
 export const BusiestTimesOfDaysCellContent = ({
     isLoading,
@@ -24,6 +25,7 @@ export const BusiestTimesOfDaysCellContent = ({
     className,
     isHeatmapMode,
     decile,
+    isWorkingHour,
 }: {
     isLoading: boolean
     metricValue: number
@@ -34,14 +36,20 @@ export const BusiestTimesOfDaysCellContent = ({
     width?: number
     className?: string
     isHeatmapMode: boolean
+    isWorkingHour: boolean
 }) => {
     return (
         <BodyCell
             width={width}
             className={classnames(
                 className,
-                [css.heatmap],
-                isHeatmapMode && !isLoading && css[`p${String(decile)}`]
+                [heatmapCss.heatmap],
+                isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`],
+                isWorkingHour && css.redTransparentStripesPseudoElement
+            )}
+            innerClassName={classnames(
+                [heatmapCss.heatmap],
+                isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`]
             )}
             justifyContent={'center'}
         >

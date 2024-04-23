@@ -1,4 +1,3 @@
-import {UseQueryResult} from '@tanstack/react-query'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -10,23 +9,24 @@ import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {stringToDatetime} from 'utils/date'
+import {AccountSettingBusinessHours} from 'state/currentAccount/types'
+import {stringToDatetimeWithTimeZone} from 'utils/date'
 
 export const weekDayLabel = (weekDay: number) => {
     switch (weekDay) {
-        case 0:
-            return DayOfWeek.MONDAY
         case 1:
-            return DayOfWeek.TUESDAY
+            return DayOfWeek.MONDAY
         case 2:
-            return DayOfWeek.WEDNESDAY
+            return DayOfWeek.TUESDAY
         case 3:
-            return DayOfWeek.THURSDAY
+            return DayOfWeek.WEDNESDAY
         case 4:
-            return DayOfWeek.FRIDAY
+            return DayOfWeek.THURSDAY
         case 5:
-            return DayOfWeek.SATURDAY
+            return DayOfWeek.FRIDAY
         case 6:
+            return DayOfWeek.SATURDAY
+        case 0:
             return DayOfWeek.SUNDAY
         default:
             return null
@@ -38,16 +38,9 @@ export const hourFromHourIndex = (index: number) =>
 
 export type BTODData = Record<number, Record<DayOfWeek, number>>
 
-export function getAggregatedBusiestTimesOfDayData(
-    data: UseQueryResult<TimeSeriesDataItem[][]>['data']
-): {
-    btodData: BTODData
-    max: number
-} {
+const createBTODDataStruct = (): BTODData => {
     const result: BTODData = {}
     const hours = [...get24Hours()]
-    let max = 0
-
     hours.forEach(
         (hour) =>
             (result[hour] = {
@@ -60,19 +53,30 @@ export function getAggregatedBusiestTimesOfDayData(
                 [DayOfWeek.SUNDAY]: 0,
             })
     )
+    return result
+}
+
+export function getAggregatedBusiestTimesOfDayData(
+    data: TimeSeriesDataItem[][] | undefined,
+    timeZone: string
+): {
+    btodData: BTODData
+    max: number
+} {
+    const result: BTODData = createBTODDataStruct()
+    let max = 0
 
     data?.[0].forEach((record) => {
         const {value, dateTime} = record
         if (value > max) {
             max = value
         }
-        const momentDate = stringToDatetime(dateTime)
-        momentDate?.weekday()
-        const day = momentDate
-            ? weekDayLabel(momentDate?.weekday())
-            : momentDate
+        const momentDate = stringToDatetimeWithTimeZone(dateTime, timeZone)
+
+        const day = momentDate ? weekDayLabel(momentDate?.weekday()) : null
         const hourFromDate = momentDate?.hour()
-        if (day && hourFromDate) {
+
+        if (day && hourFromDate !== undefined) {
             result[hourFromDate] = {
                 ...result[hourFromDate],
                 [day]: value + result[hourFromDate][day] ?? 0,
@@ -81,6 +85,34 @@ export function getAggregatedBusiestTimesOfDayData(
     })
 
     return {btodData: result, max}
+}
+
+export const getWorkingHours = (
+    businessHours: AccountSettingBusinessHours | undefined
+) => {
+    const result: BTODData = createBTODDataStruct()
+    if (businessHours === undefined) {
+        return result
+    }
+
+    businessHours.data.business_hours.forEach(({days, from_time, to_time}) => {
+        let startTime = Number(from_time.slice(0, 2))
+        const endTime =
+            Number(to_time.slice(0, 2)) +
+            (Number(to_time.slice(3, 5)) === 59 ? 1 : 0)
+
+        while (startTime < endTime) {
+            days.split(',').forEach((day) => {
+                const weekday = weekDayLabel(Number(day) - 1)
+                if (weekday) {
+                    result[startTime][weekday] = 1
+                }
+            })
+
+            startTime++
+        }
+    })
+    return result
 }
 
 export function get24Hours() {

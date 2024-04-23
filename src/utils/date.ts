@@ -18,6 +18,26 @@ export const stringToDatetime = (data: string): Moment | null => {
 }
 
 /**
+ * Convert a string to a moment object using specific timeZone if the string represents a valid datetime, else returns null.
+ */
+export const stringToDatetimeWithTimeZone = (
+    data: string,
+    timeZone: string
+): Moment | null => {
+    let datetime = null
+
+    if (data) {
+        const momentDt = moment.tz(data, timeZone)
+
+        if (momentDt.isValid()) {
+            datetime = momentDt
+        }
+    }
+
+    return datetime
+}
+
+/**
  * Return moment()
  *
  * We encapsulate it here so that it's easy to mock during tests.

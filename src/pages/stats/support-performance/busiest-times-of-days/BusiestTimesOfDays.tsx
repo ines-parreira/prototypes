@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+import {bHoursLegend} from 'pages/stats/common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat'
 import {BusiestTimesOfDaysHeatmapSwitch} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysHeatmapSwitch'
 import {useGridSize} from 'hooks/useGridSize'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -12,11 +13,34 @@ import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-t
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
+import Legend from 'pages/stats/common/components/Legend/Legend'
+import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 
 export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times of days'
 const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest time of the week'
 const SECTION_TOOLTIP = 'Tickets created per hour per day of the week'
 
+const busiestHoursHeatmapLegend = {
+    aheadLabel: 'Least busy',
+    name: 'Busiest',
+    background:
+        'linear-gradient(90deg,' +
+        'var(--analytics-heatmap-0)' +
+        ' 25%, ' +
+        'var(--analytics-heatmap-2)' +
+        ' 25%, ' +
+        'var(--analytics-heatmap-2)' +
+        ' 50%, ' +
+        'var(--analytics-heatmap-4)' +
+        ' 50%, ' +
+        'var(--analytics-heatmap-4)' +
+        ' 75%, ' +
+        'var(--analytics-heatmap-6)' +
+        ' 75%, ' +
+        'var(--analytics-heatmap-6)' +
+        ' 100%)',
+    shape: 'rectangle' as const,
+}
 export const BusiestTimesOfDays = () => {
     const getGridCellSize = useGridSize()
 
@@ -58,6 +82,15 @@ export const BusiestTimesOfDays = () => {
                                 />
                             }
                         >
+                            <div className={css.legendWrapper}>
+                                <Legend
+                                    labels={[
+                                        busiestHoursHeatmapLegend,
+                                        bHoursLegend,
+                                    ]}
+                                />
+                            </div>
+
                             <BusiestTimesOfDaysTable
                                 metricName={selectedMetric}
                                 useMetricQuery={getMetricQuery(selectedMetric)}

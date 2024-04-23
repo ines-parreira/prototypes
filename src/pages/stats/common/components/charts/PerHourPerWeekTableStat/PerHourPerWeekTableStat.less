@@ -1,3 +1,16 @@
+.redTransparentStripesMixin {
+    position: absolute;
+    width: 5px;
+    background: repeating-linear-gradient(
+            135deg,
+            fade(black, 0),
+            fade(black, 0) 2px,
+            var(--feedback-error-2) 2px,
+            var(--feedback-error-2) 4px
+        )
+        fixed;
+}
+
 :local {
     .hourlyTable {
         table-layout: fixed;
@@ -41,19 +54,20 @@
             }
 
             .redTransparentStripes {
-                position: absolute;
                 bottom: -1px;
                 top: -1px;
-                width: 5px;
-                background: repeating-linear-gradient(
-                        135deg,
-                        fade(black, 0),
-                        fade(black, 0) 2px,
-                        var(--feedback-error-2) 2px,
-                        var(--feedback-error-2) 4px
-                    )
-                    fixed;
+                left: 0;
+                .redTransparentStripesMixin();
             }
+        }
+    }
+
+    .redTransparentStripesPseudoElement {
+        &::before {
+            content: '';
+            height: 100%;
+            .redTransparentStripesMixin();
+            z-index: 1;
         }
     }
 }

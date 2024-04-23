@@ -77,16 +77,16 @@ const getValueColor = (limits: Limits, value: number) => {
     return colors.white
 }
 
+export const bHoursLegend = {
+    name: 'Business Hours',
+    background:
+        'repeating-linear-gradient' +
+        `(135deg, ${colors.white}, ${colors.white} 2px, ${colors.red} 2px, ${colors.red} 4px)`,
+    shape: 'square' as const,
+}
+
 const getLegendLabels = (lines: List<any>): Label[] => {
     const limits = getDataIntervals(lines)
-    const bHoursLegend = {
-        name: 'Business Hours',
-        background:
-            'repeating-linear-gradient' +
-            `(135deg, ${colors.white}, ${colors.white} 2px, ${colors.red} 2px, ${colors.red} 4px)`,
-        shape: 'square' as const,
-    }
-
     if (limits.n4 < 4) {
         return [bHoursLegend]
     }

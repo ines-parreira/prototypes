@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useState} from 'react'
+import useAppSelector from 'hooks/useAppSelector'
 import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
@@ -17,7 +18,11 @@ import {
     columnsOrder,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {get24Hours} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {
+    get24Hours,
+    getWorkingHours,
+} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
 export const hours = get24Hours()
 
@@ -45,6 +50,10 @@ export const BusiestTimesOfDaysTable = ({
     const getCellWidth = (field: BTODColumns) => {
         return field === 'HOUR' ? 90 : 170
     }
+
+    const wh = useAppSelector(getBusinessHoursSettings)
+
+    const workingHours = getWorkingHours(wh)
 
     return (
         <div ref={ref} className={css.container} onScroll={handleScroll}>
@@ -87,6 +96,11 @@ export const BusiestTimesOfDaysTable = ({
                                                   max
                                               )
                                     }
+                                    isWorkingHour={Boolean(
+                                        isHourCell(column.field)
+                                            ? 0
+                                            : workingHours[hour][column.field]
+                                    )}
                                     width={getCellWidth(column.field)}
                                     isHeatmapMode={isHeatmapMode}
                                     className={classNames(css.BodyCell, {

@@ -17,8 +17,8 @@ export const useAggregatedBusiestTimesOfDayData = (
         ReportingGranularity.Hour
     )
     const {btodData, max} = useMemo(
-        () => getAggregatedBusiestTimesOfDayData(data?.data),
-        [data]
+        () => getAggregatedBusiestTimesOfDayData(data?.data, userTimezone),
+        [data?.data, userTimezone]
     )
 
     return {

@@ -21,6 +21,7 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
         day: DayOfWeek.TUESDAY,
         isHeatmapMode: false,
         decile: 0,
+        isWorkingHour: false,
     }
     it('should render loading skeleton', () => {
         render(
@@ -65,6 +66,20 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
 
         expect(
             document.querySelector(`.p${defaultProps.decile}`)
+        ).toBeInTheDocument()
+        expect(document.querySelector('.heatmap')).toBeInTheDocument()
+    })
+
+    it('should render business Hour indicator', () => {
+        render(
+            <BusiestTimesOfDaysCellContent
+                {...defaultProps}
+                isWorkingHour={true}
+            />
+        )
+
+        expect(
+            document.querySelector('.redTransparentStripesPseudoElement')
         ).toBeInTheDocument()
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
     })
