@@ -8,10 +8,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHumanAgentsJS} from 'state/agents/selectors'
 import {getIntegrationById} from 'state/integrations/selectors'
 
-import {useGetCampaign} from 'models/convert/campaign/queries'
+import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {toJS} from 'utils'
 import history from 'pages/history'
+import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
+import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
 import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
 
 import {CampaignDetailsForm} from '../../providers/CampaignDetailsForm'
@@ -46,6 +50,33 @@ const CampaignDetailsFactory = (): JSX.Element => {
         {campaign_id: campaignId || ''},
         {enabled: !!campaignId}
     )
+
+    const campaignListOptions = useMemo(() => {
+        const channelConnectionId = channelConnection?.id
+        return (
+            channelConnectionId
+                ? {
+                      channelConnectionId: channelConnectionId,
+                  }
+                : {}
+        ) as CampaignListOptionsParams
+    }, [channelConnection])
+
+    const {data: campaigns} = useListCampaigns(campaignListOptions, {
+        enabled: !!channelConnection && !!campaignListOptions,
+    })
+
+    const campaignCreationAllowed = useIsCampaignCreationAllowed(integration)
+    const activeCampaignsCount = useGetActiveCampaignsCount(
+        campaigns as Campaign[]
+    )
+
+    const isOverCampaignsLimit = useMemo(() => {
+        return (
+            !campaignCreationAllowed &&
+            activeCampaignsCount > ACTIVE_CAMPAIGNS_LIMIT
+        )
+    }, [campaignCreationAllowed, activeCampaignsCount])
 
     const campaign = useMemo(() => {
         if (data) {
@@ -157,6 +188,8 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 isLoading={isLoading}
                 isEditMode={campaignId !== undefined}
                 isShopifyStore={chatIsShopifyStore(integration)}
+                isOverCampaignsLimit={isOverCampaignsLimit}
+                isCreateDisabled={!campaignCreationAllowed}
                 integration={integration}
                 shopifyIntegration={shopify}
                 createCampaign={handleCreateCampaign}

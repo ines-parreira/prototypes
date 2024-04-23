@@ -24,7 +24,7 @@ import NavigatedSuccessModal, {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
 import Tooltip from 'pages/common/components/Tooltip'
-import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
+import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import {CONVERT_ROUTE_PARAM_NAME} from '../common/constants'
 import {ConvertRouteParams} from '../common/types'
 import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
@@ -44,7 +44,6 @@ export const CampaignsView = () => {
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
-    const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
@@ -162,17 +161,8 @@ export const CampaignsView = () => {
         )
     }, [isLoading, hasStoreConnected, isConvertSubscriber, allCampaigns])
 
-    const isCreateCampaignButtonDisabled = useMemo(() => {
-        return (
-            areConvertLightCampaignsEnabled &&
-            !isConvertSubscriber &&
-            hasStoreConnected
-        )
-    }, [
-        areConvertLightCampaignsEnabled,
-        isConvertSubscriber,
-        hasStoreConnected,
-    ])
+    const isCreateCampaignButtonDisabled =
+        !useIsCampaignCreationAllowed(integration)
 
     return (
         <CampaignListOptions>

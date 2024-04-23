@@ -1,26 +1,38 @@
 import {useMemo} from 'react'
 
 import _pickBy from 'lodash/pickBy'
-import {TRIGGERS_CONFIG} from '../constants/triggers'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import {CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG} from '../constants/triggers'
 import {TriggerConfigValue} from '../types/TriggerConfig'
 
 type FnArguments = {
     isConvertSubscriber?: boolean
     isShopifyStore?: boolean
     isShopifyHeadless?: boolean
+    isLightCampaign?: boolean
 }
 
 export function useAvailableTriggerList({
     isConvertSubscriber = false,
     isShopifyStore = false,
     isShopifyHeadless = false,
+    isLightCampaign = false,
 }: FnArguments) {
     return useMemo(() => {
-        const filterFn = (trigger: TriggerConfigValue) => {
+        const filterFn = (trigger: TriggerConfigValue, triggerType: string) => {
             const requirements = Object.entries(trigger.requirements)
 
             if (requirements.length === 0) {
                 return true
+            }
+
+            if (
+                isLightCampaign &&
+                !CONVERT_LIGHT_TRIGGERS.includes(
+                    triggerType as CampaignTriggerType
+                )
+            ) {
+                return false
             }
 
             return requirements.every(([req, value]) => {
@@ -45,5 +57,10 @@ export function useAvailableTriggerList({
         }
 
         return _pickBy(TRIGGERS_CONFIG, filterFn)
-    }, [isShopifyStore, isConvertSubscriber, isShopifyHeadless])
+    }, [
+        isShopifyStore,
+        isConvertSubscriber,
+        isShopifyHeadless,
+        isLightCampaign,
+    ])
 }

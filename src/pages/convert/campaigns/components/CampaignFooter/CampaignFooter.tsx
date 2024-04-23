@@ -1,4 +1,4 @@
-import React, {useRef} from 'react'
+import React, {useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
@@ -11,11 +11,19 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 
+import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
+import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import useLocalStorage from 'hooks/useLocalStorage'
+
 import css from './style.less'
 
 type Props = {
+    integrationId: number
     actionInProgress?: string
     isCampaignValid?: boolean
+    isLightCampaign?: boolean
+    isOverCampaignsLimit?: boolean
+    isCreateDisabled?: boolean
     isUpdate?: boolean
     onSave: (activate?: boolean) => void
     onDiscard?: () => void
@@ -24,15 +32,28 @@ type Props = {
 }
 
 export const CampaignFooter = ({
+    integrationId,
     actionInProgress = '',
     isCampaignValid = false,
+    isLightCampaign = false,
+    isOverCampaignsLimit = false,
+    isCreateDisabled = false,
     isUpdate = false,
     onSave,
     onDiscard,
     onDelete,
     onDuplicate,
 }: Props): JSX.Element => {
+    const [isLightModalOpen, setIsLightModalOpen] = useState(false)
+
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
+
+    const storageKey = useMemo(() => {
+        return `convert:lightModal:${integrationId}:${LightCampaignModalType.DeleteCampaign}`
+    }, [integrationId])
+    const [lightModalDismissed, setLightModalDismissed] = useLocalStorage<
+        boolean | undefined
+    >(storageKey)
 
     if (isUpdate) {
         return (
@@ -51,7 +72,7 @@ export const CampaignFooter = ({
                         Update Campaign
                     </Button>
 
-                    {onDuplicate && (
+                    {!isLightCampaign && !isCreateDisabled && onDuplicate && (
                         <Button
                             intent="secondary"
                             aria-label="Duplicate Campaign"
@@ -67,23 +88,57 @@ export const CampaignFooter = ({
                     )}
                 </div>
 
-                {onDelete && (
-                    <ConfirmButton
-                        placement="bottom-end"
-                        onConfirm={onDelete}
-                        confirmationContent="Are you sure you want to delete this campaign?"
-                        intent="destructive"
-                        isDisabled={actionInProgress !== ''}
-                        fillStyle="ghost"
-                        className={classnames('float-right', {
-                            'btn-loading': actionInProgress === 'delete',
-                        })}
-                        isLoading={actionInProgress === 'delete'}
-                    >
-                        <ButtonIconLabel icon="delete">
-                            Delete campaign
-                        </ButtonIconLabel>
-                    </ConfirmButton>
+                {!isLightCampaign && onDelete && (
+                    <>
+                        {!isOverCampaignsLimit || lightModalDismissed ? (
+                            <ConfirmButton
+                                placement="bottom-end"
+                                onConfirm={onDelete}
+                                confirmationContent="Are you sure you want to delete this campaign?"
+                                intent="destructive"
+                                isDisabled={actionInProgress !== ''}
+                                fillStyle="ghost"
+                                className={classnames('float-right', {
+                                    'btn-loading':
+                                        actionInProgress === 'delete',
+                                })}
+                                isLoading={actionInProgress === 'delete'}
+                            >
+                                <ButtonIconLabel icon="delete">
+                                    Delete Campaign
+                                </ButtonIconLabel>
+                            </ConfirmButton>
+                        ) : (
+                            <>
+                                <Button
+                                    onClick={() => setIsLightModalOpen(true)}
+                                    fillStyle="ghost"
+                                    intent="destructive"
+                                    title="Delete campaign"
+                                    data-testid="delete-icon-button"
+                                    className={classnames('float-right', {
+                                        'btn-loading':
+                                            actionInProgress === 'delete',
+                                    })}
+                                >
+                                    <ButtonIconLabel icon="delete">
+                                        Delete Campaign
+                                    </ButtonIconLabel>
+                                </Button>
+                                <LightCampaignModal
+                                    modalType={
+                                        LightCampaignModalType.DeleteCampaign
+                                    }
+                                    isOpen={isLightModalOpen}
+                                    isDismissed={!!lightModalDismissed}
+                                    setIsDismissed={setLightModalDismissed}
+                                    isSubmitting={actionInProgress === 'delete'}
+                                    onSubmit={onDelete}
+                                    onClose={() => setIsLightModalOpen(false)}
+                                />
+                            </>
+                        )}
+                    </>
                 )}
             </div>
         )

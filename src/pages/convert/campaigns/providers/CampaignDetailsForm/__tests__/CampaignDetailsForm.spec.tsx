@@ -1,6 +1,6 @@
 import React from 'react'
 import {RenderResult, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {mockFlags} from 'jest-launchdarkly-mock'
 
 import configureMockStore from 'redux-mock-store'
@@ -15,6 +15,8 @@ import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
+import * as useAreConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
+
 import {campaign as campaignFixture} from 'fixtures/campaign'
 import {toJS} from 'utils'
 import {CampaignDetailsForm} from '../CampaignDetailsForm'
@@ -61,7 +63,7 @@ const agents = [
     },
 ]
 
-const shopifyChatIntegration = fromJS({
+const shopifyChatIntegration: Map<any, any> = fromJS({
     type: 'gorgias_chat',
     id: '174',
     meta: {
@@ -76,6 +78,16 @@ const shopifyIntegration = fromJS({
 
 const campaign = fromJS(campaignFixture)
 
+const areConvertLightCampaignsEnabledSpy = jest.spyOn(
+    useAreConvertLightCampaignsEnabled,
+    'useAreConvertLightCampaignsEnabled'
+)
+
+const isConvertSubscriberSpy = jest.spyOn(
+    isConvertSubscriberHook,
+    'useIsConvertSubscriber'
+)
+
 describe('<CampaignDetailsForm />', () => {
     beforeEach(() => {
         mockFlags({})
@@ -83,31 +95,34 @@ describe('<CampaignDetailsForm />', () => {
         const allFlagsMock = getLDClient().allFlags as jest.Mock
         allFlagsMock.mockReturnValue({})
 
-        jest.spyOn(
-            isConvertSubscriberHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => false)
+        isConvertSubscriberSpy.mockImplementation(() => false)
     })
+
+    const defaultProps = {
+        agents: agents as User[],
+        campaign: {} as Campaign,
+        integration: shopifyChatIntegration,
+        shopifyIntegration: shopifyIntegration,
+        isLoading: false,
+        createCampaign: jest.fn(),
+        duplicateCampaign: jest.fn(),
+        updateCampaign: jest.fn(),
+        deleteCampaign: jest.fn(),
+        backUrl: '/back',
+    }
+
+    const renderComponent = (props: any) => {
+        return render(
+            <Provider store={mockStore(defaultState)}>
+                <CampaignDetailsForm {...props} />
+            </Provider>
+        )
+    }
 
     describe('Create campaign', () => {
         let result: RenderResult
         beforeEach(() => {
-            result = render(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm
-                        agents={agents as User[]}
-                        campaign={{} as Campaign}
-                        integration={shopifyChatIntegration}
-                        shopifyIntegration={shopifyIntegration}
-                        isLoading={false}
-                        createCampaign={jest.fn()}
-                        duplicateCampaign={jest.fn()}
-                        updateCampaign={jest.fn()}
-                        deleteCampaign={jest.fn()}
-                        backUrl={'/back'}
-                    />
-                </Provider>
-            )
+            result = renderComponent(defaultProps)
         })
 
         it('renders all 3 steps', () => {
@@ -129,16 +144,8 @@ describe('<CampaignDetailsForm />', () => {
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <CampaignDetailsForm
-                        agents={agents as User[]}
+                        {...defaultProps}
                         campaign={toJS(campaign)}
-                        integration={shopifyChatIntegration}
-                        shopifyIntegration={shopifyIntegration}
-                        isLoading={false}
-                        createCampaign={jest.fn()}
-                        duplicateCampaign={jest.fn()}
-                        updateCampaign={jest.fn()}
-                        deleteCampaign={jest.fn()}
-                        backUrl={'/back'}
                     />
                 </Provider>
             )
@@ -152,23 +159,7 @@ describe('<CampaignDetailsForm />', () => {
 
     describe('Edit campaign', () => {
         beforeEach(() => {
-            render(
-                <Provider store={mockStore(defaultState)}>
-                    <CampaignDetailsForm
-                        agents={agents as User[]}
-                        campaign={{} as Campaign}
-                        isEditMode
-                        isLoading={false}
-                        integration={shopifyChatIntegration}
-                        shopifyIntegration={shopifyIntegration}
-                        createCampaign={jest.fn()}
-                        duplicateCampaign={jest.fn()}
-                        updateCampaign={jest.fn()}
-                        deleteCampaign={jest.fn()}
-                        backUrl={'/back'}
-                    />
-                </Provider>
-            )
+            renderComponent(defaultProps)
         })
 
         it('renders all 3 steps', () => {
@@ -179,6 +170,98 @@ describe('<CampaignDetailsForm />', () => {
 
         it('opens the Basics step by default', () => {
             expect(screen.getByText('Add condition')).toBeInTheDocument()
+        })
+    })
+
+    describe('Light campaign banner', () => {
+        const bannerText = "Light campaigns don't allow advanced triggers"
+        const lightCampaign = {
+            is_light: true,
+        } as Campaign
+
+        it('renders the banner when campaign is light, is subscriber, is shopify', () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
+
+            const {queryByText} = renderComponent({
+                ...defaultProps,
+                campaign: lightCampaign,
+            })
+
+            expect(
+                queryByText(bannerText, {
+                    exact: false,
+                })
+            ).toBeInTheDocument()
+        })
+
+        it('does not render the banner when is not a Convert subscriber', () => {
+            isConvertSubscriberSpy.mockImplementation(() => false)
+            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
+
+            const {queryByText} = renderComponent({
+                ...defaultProps,
+                campaign: lightCampaign,
+            })
+
+            expect(
+                queryByText(bannerText, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the banner when feature is not enabled', () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            areConvertLightCampaignsEnabledSpy.mockImplementation(() => false)
+
+            const {queryByText} = renderComponent({
+                ...defaultProps,
+                campaign: lightCampaign,
+            })
+
+            expect(
+                queryByText(bannerText, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the banner when campaign is not light', () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
+
+            const {queryByText} = renderComponent(defaultProps)
+
+            expect(
+                queryByText(bannerText, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render the banner when integration is not shopify', () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
+
+            const integration = fromJS({
+                ...shopifyChatIntegration.toJS(),
+                meta: {
+                    shop_type: 'magento',
+                },
+            })
+
+            const {queryByText} = renderComponent({
+                ...defaultProps,
+                integration: integration,
+                campaign: lightCampaign,
+            })
+
+            expect(
+                queryByText(bannerText, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
         })
     })
 })

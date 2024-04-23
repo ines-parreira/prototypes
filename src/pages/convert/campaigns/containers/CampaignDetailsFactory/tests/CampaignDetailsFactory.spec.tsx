@@ -19,6 +19,7 @@ import {
     useCreateCampaign,
     useDeleteCampaign,
     useGetCampaign,
+    useListCampaigns,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
 import {campaign} from 'fixtures/campaign'
@@ -49,6 +50,7 @@ const useGetOrCreateChannelConnectionMock = assumeMock(
 )
 
 jest.mock('models/convert/campaign/queries')
+const useListCampaignsMock = assumeMock(useListCampaigns)
 const useGetCampaignMock = assumeMock(useGetCampaign)
 const useCreateCampaignMock = assumeMock(useCreateCampaign)
 const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
@@ -70,6 +72,7 @@ describe('<CampaignDetailsFactory />', () => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection: channelConnection,
         } as any)
+        useListCampaignsMock.mockReturnValue({data: [campaign]} as any)
         useGetCampaignMock.mockReturnValue({data: campaign} as any)
         useCreateCampaignMock.mockImplementation(() => {
             return {

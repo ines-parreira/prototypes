@@ -1,6 +1,9 @@
 import {renderHook} from '@testing-library/react-hooks'
 
-import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
+import {
+    CONVERT_LIGHT_TRIGGERS,
+    TRIGGERS_CONFIG,
+} from 'pages/convert/campaigns/constants/triggers'
 
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 
@@ -92,6 +95,27 @@ describe('useAvailableTriggerList()', () => {
                 [CampaignTriggerType.DeviceType]: __,
                 ...expected
             } = TRIGGERS_CONFIG
+
+            expect(result.current).toStrictEqual(expected)
+        })
+    })
+
+    describe('Merchant IS a Convert subscriber and HAS a Shopify chat and IS light campaign', () => {
+        it('returns only light campaign triggers', () => {
+            const {result} = renderHook(() =>
+                useAvailableTriggerList({
+                    isConvertSubscriber: true,
+                    isShopifyStore: true,
+                    isLightCampaign: true,
+                })
+            )
+
+            const expected = {
+                [CONVERT_LIGHT_TRIGGERS[0]]:
+                    TRIGGERS_CONFIG[CONVERT_LIGHT_TRIGGERS[0]],
+                [CONVERT_LIGHT_TRIGGERS[1]]:
+                    TRIGGERS_CONFIG[CONVERT_LIGHT_TRIGGERS[1]],
+            }
 
             expect(result.current).toStrictEqual(expected)
         })

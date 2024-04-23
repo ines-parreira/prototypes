@@ -168,7 +168,7 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
         [ProductType.Convert]: {
             features: [
                 'Reach customers at the right time with personalized campaigns.',
-                'Boost cross-sells with targeted product recommendation.',
+                'Increase your average order value with targeted product recommendations.',
                 'Send exclusive offers to visitors about to leave your website.',
             ],
         },

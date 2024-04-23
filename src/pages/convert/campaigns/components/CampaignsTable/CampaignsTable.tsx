@@ -25,12 +25,11 @@ import {Language} from 'constants/languages'
 import LightCampaignBadge from 'pages/convert/campaigns/components/LightCampaignBadge/LightCampaignBadge'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import Tooltip from 'pages/common/components/Tooltip'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
+import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
 import {isActiveStatus} from '../../types/enums/CampaignStatus.enum'
 import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
 
@@ -71,9 +70,6 @@ export const CampaignsTable = ({
     onToggleCampaign,
 }: Props) => {
     const history = useHistory()
-    const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
-    const isConvertSubscriber = useIsConvertSubscriber()
-    const chatHasShopifyStore = chatIsShopifyStore(integration)
     const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
         useSortedCampaigns(data)
 
@@ -94,37 +90,22 @@ export const CampaignsTable = ({
         [changeSorting]
     )
 
-    const campaignCreationDisabled = useMemo(() => {
-        return (
-            areConvertLightCampaignsEnabled &&
-            !isConvertSubscriber &&
-            chatHasShopifyStore
-        )
-    }, [
-        areConvertLightCampaignsEnabled,
-        isConvertSubscriber,
-        chatHasShopifyStore,
-    ])
-
-    const activeCampaignsCount = useMemo(() => {
-        return sortedCampaigns.filter((campaign) =>
-            isActiveStatus(campaign.status)
-        ).length
-    }, [sortedCampaigns])
+    const campaignCreationAllowed = useIsCampaignCreationAllowed(integration)
+    const activeCampaignsCount = useGetActiveCampaignsCount(sortedCampaigns)
 
     const isOverCampaignsLimit = useMemo(() => {
         return (
-            campaignCreationDisabled &&
+            !campaignCreationAllowed &&
             activeCampaignsCount > ACTIVE_CAMPAIGNS_LIMIT
         )
-    }, [campaignCreationDisabled, activeCampaignsCount])
+    }, [campaignCreationAllowed, activeCampaignsCount])
 
     const isAtCampaignsLimit = useMemo(() => {
         return (
-            campaignCreationDisabled &&
+            !campaignCreationAllowed &&
             activeCampaignsCount === ACTIVE_CAMPAIGNS_LIMIT
         )
-    }, [campaignCreationDisabled, activeCampaignsCount])
+    }, [campaignCreationAllowed, activeCampaignsCount])
 
     const onClickToggle = useCallback(
         (campaign: Campaign) => {
@@ -238,7 +219,7 @@ export const CampaignsTable = ({
                         <CampaignToolsCell
                             campaign={campaign}
                             integration={integration}
-                            createDisabled={campaignCreationDisabled}
+                            createDisabled={!campaignCreationAllowed}
                             isDeletingCampaign={isDeletingCampaign}
                             isOverCampaignsLimit={isOverCampaignsLimit}
                             onClickDelete={onClickDelete}
@@ -255,7 +236,7 @@ export const CampaignsTable = ({
             isAtCampaignsLimit,
             isOverCampaignsLimit,
             chatMultiLanguagesEnabled,
-            campaignCreationDisabled,
+            campaignCreationAllowed,
             isDeletingCampaign,
             onClickDelete,
             onClickDuplicate,

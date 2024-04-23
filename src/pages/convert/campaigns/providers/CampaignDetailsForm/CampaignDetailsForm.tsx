@@ -40,6 +40,9 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {Language} from 'constants/languages'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
+import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
 import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
@@ -79,6 +82,8 @@ type Props = {
     isLoading: boolean
     isEditMode?: boolean
     isShopifyStore?: boolean
+    isOverCampaignsLimit?: boolean
+    isCreateDisabled?: boolean
     integration: Map<any, any>
     shopifyIntegration: Map<any, any>
     createCampaign: (form: any) => Promise<unknown>
@@ -96,6 +101,8 @@ export const CampaignDetailsForm = ({
     isLoading,
     isEditMode = false,
     isShopifyStore = false,
+    isOverCampaignsLimit = false,
+    isCreateDisabled = false,
     integration,
     shopifyIntegration,
     createCampaign,
@@ -116,6 +123,8 @@ export const CampaignDetailsForm = ({
     }, [isEditMode, wizardConfiguration])
 
     const isConvertSubscriber = useIsConvertSubscriber()
+    const chatHasShopifyStore = chatIsShopifyStore(integration)
+    const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
 
@@ -480,6 +489,18 @@ export const CampaignDetailsForm = ({
         [isEditMode, wizardConfiguration]
     )
 
+    const isLightCampaign = useMemo(() => {
+        return (
+            areConvertLightCampaignsEnabled &&
+            chatHasShopifyStore &&
+            campaign?.is_light
+        )
+    }, [areConvertLightCampaignsEnabled, campaign, chatHasShopifyStore])
+
+    const isLightCampaignBannerVisible = useMemo(() => {
+        return isLightCampaign && isConvertSubscriber
+    }, [isLightCampaign, isConvertSubscriber])
+
     return (
         <IntegrationProvider
             chatIntegration={integration}
@@ -489,6 +510,22 @@ export const CampaignDetailsForm = ({
                 <CampaignDetailsFormContext.Provider
                     value={campaignDetailContext}
                 >
+                    {isLightCampaignBannerVisible && (
+                        <BannerNotification
+                            message={
+                                "You are editing a light campaign. Light campaigns don't allow advanced triggers, and are not charged in your Convert plan."
+                            }
+                            actionHTML={
+                                <a
+                                    href="https://docs.gorgias.com/en-US/search/campaign?page=1"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    Learn More
+                                </a>
+                            }
+                        />
+                    )}
                     <div
                         className={css.pageContainer}
                         data-testid="improved-campaign-details-page"
@@ -525,6 +562,7 @@ export const CampaignDetailsForm = ({
                                                 isConvertSubscriber
                                             }
                                             isShopifyStore={isShopifyStore}
+                                            isLightCampaign={isLightCampaign}
                                             integration={integration}
                                         />
                                         <CampaignMessageStep
@@ -548,7 +586,15 @@ export const CampaignDetailsForm = ({
                                     </Accordion>
                                     <div className="mt-4">
                                         <CampaignFooter
+                                            integrationId={integration.get(
+                                                'id'
+                                            )}
                                             isCampaignValid={isCampaignValid}
+                                            isLightCampaign={isLightCampaign}
+                                            isOverCampaignsLimit={
+                                                isOverCampaignsLimit
+                                            }
+                                            isCreateDisabled={isCreateDisabled}
                                             isUpdate={isEditMode}
                                             onSave={handleSaveCampaign}
                                             onDiscard={handleDiscardChanges}

@@ -33,6 +33,7 @@ type Props = {
     isValid?: boolean
     isConvertSubscriber?: boolean
     isShopifyStore?: boolean
+    isLightCampaign?: boolean
     integration: Map<any, any>
 }
 
@@ -42,6 +43,7 @@ export const CampaignAudienceStep = ({
     isValid = false,
     isConvertSubscriber,
     isShopifyStore,
+    isLightCampaign,
     integration,
 }: Props) => {
     const {
@@ -157,23 +159,28 @@ export const CampaignAudienceStep = ({
                 <AdvancedTriggersSelect
                     isShopifyStore={isShopifyStore}
                     isConvertSubscriber={isConvertSubscriber}
+                    isLightCampaign={isLightCampaign}
                     onClick={addTrigger}
                 />
-                <AdvancedTriggersTooltip
-                    isConvertSubscriber={isConvertSubscriber}
-                />
+                {!isLightCampaign && (
+                    <AdvancedTriggersTooltip
+                        isConvertSubscriber={isConvertSubscriber}
+                    />
+                )}
             </div>
 
-            <CampaignDisplaySettings
-                isConvertSubscriber={isConvertSubscriber}
-                triggers={triggers}
-                isNoReply={campaignWithNoReply}
-                delay={campaignDelay}
-                onChangeCollision={handleToggleSingleCampaignInView}
-                onChangeDelay={handleUpdateDelay}
-                onChangeDeviceType={handleChangeDeviceType}
-                onChangeNoReply={handleUpdateNoReply}
-            />
+            {!isLightCampaign && (
+                <CampaignDisplaySettings
+                    isConvertSubscriber={isConvertSubscriber}
+                    triggers={triggers}
+                    isNoReply={campaignWithNoReply}
+                    delay={campaignDelay}
+                    onChangeCollision={handleToggleSingleCampaignInView}
+                    onChangeDelay={handleUpdateDelay}
+                    onChangeDeviceType={handleChangeDeviceType}
+                    onChangeNoReply={handleUpdateNoReply}
+                />
+            )}
         </StatefulAccordion>
     )
 }
