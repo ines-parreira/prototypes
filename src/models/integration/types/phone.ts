@@ -14,7 +14,7 @@ export type PhoneIntegration = IntegrationBase & {
 }
 
 export type PhoneIntegrationMeta = {
-    emoji: string
+    emoji: string | null
     function: PhoneFunction
     country: string
     type: string

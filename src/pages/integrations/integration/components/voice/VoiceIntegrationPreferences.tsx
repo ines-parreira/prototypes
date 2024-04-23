@@ -4,8 +4,10 @@ import {fromJS} from 'immutable'
 import {Form, Label} from 'reactstrap'
 
 import classNames from 'classnames'
+import {isEqual} from 'lodash'
 import {
     PhoneIntegration,
+    PhoneIntegrationMeta,
     PhoneIntegrationPreferences,
     PhoneRingingBehaviour,
     isPhoneIntegration,
@@ -29,6 +31,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import settingsCss from 'pages/settings/settings.less'
 
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import VoiceIntegrationPreferencesInboundCalls from './VoiceIntegrationPreferencesInboundCalls'
 import css from './VoiceIntegrationPreferences.less'
 
@@ -59,19 +62,21 @@ export default function VoiceIntegrationPreferences({
     const dispatch = useAppDispatch()
 
     const [{loading: isLoading}, handleSubmit] = useAsyncFn(
-        async (event: React.FormEvent) => {
-            event.preventDefault()
+        async (event?: React.FormEvent) => {
+            event?.preventDefault()
+
+            const newMeta: Partial<PhoneIntegrationMeta> = {
+                emoji,
+                preferences,
+                phone_team_id: phoneTeamId,
+            }
 
             await dispatch(
                 updateOrCreateIntegration(
                     fromJS({
                         id: integration.id,
                         name: title,
-                        meta: {
-                            emoji,
-                            preferences,
-                            phone_team_id: phoneTeamId,
-                        },
+                        meta: newMeta,
                     })
                 )
             )
@@ -95,6 +100,20 @@ export default function VoiceIntegrationPreferences({
         setPreferences(preferences)
         setIsInitialized(true)
     }, [integration, isInitialized])
+
+    const unsubmittedSettings = {
+        name: title,
+        meta: {
+            ...integration.meta,
+            ...(phoneTeamId !== undefined ? {phone_team_id: phoneTeamId} : {}),
+            emoji,
+            preferences,
+        },
+    }
+    const isSubmittable = !isEqual(integration, {
+        ...integration,
+        ...unsubmittedSettings,
+    })
 
     if (!isPhoneIntegration(integration)) {
         return <div />
@@ -184,7 +203,7 @@ export default function VoiceIntegrationPreferences({
                 <div>
                     <Button
                         type="submit"
-                        isDisabled={!isInitialized}
+                        isDisabled={!isInitialized || !isSubmittable}
                         isLoading={isLoading}
                     >
                         Save changes
@@ -204,6 +223,10 @@ export default function VoiceIntegrationPreferences({
                     </ConfirmButton>
                 </div>
             </Form>
+            <UnsavedChangesPrompt
+                onSave={() => handleSubmit()}
+                when={isSubmittable}
+            />
         </SettingsPageContainer>
     )
 }
