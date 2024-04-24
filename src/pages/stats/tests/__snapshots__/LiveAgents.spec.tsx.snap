@@ -460,7 +460,7 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                       >
                         <div
                           class="channel"
-                          title="Facebook Comment"
+                          title="Facebook"
                         >
                           <i
                             class="material-icons channelIcon"

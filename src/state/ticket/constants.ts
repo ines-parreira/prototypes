@@ -95,7 +95,7 @@ export const TICKET_CHANNEL_NAMES: Record<string, string> = Object.freeze({
     [TicketChannel.FacebookMention]: 'Facebook Mention',
     [TicketChannel.FacebookMessenger]: 'Facebook Messenger',
     [TicketChannel.FacebookRecommendations]: 'Facebook Recommendations',
-    [TicketChannel.Facebook]: 'Facebook Comment',
+    [TicketChannel.Facebook]: 'Facebook',
     [TicketChannel.HelpCenter]: 'Help Center',
     [TicketChannel.InstagramAdComment]: 'Instagram Ad Comment',
     [TicketChannel.InstagramComment]: 'Instagram Comment',

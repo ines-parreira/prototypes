@@ -179,7 +179,7 @@ exports[`ast Widget should render humanized labels for ticket channel selection 
         "value": "email",
       },
       {
-        "label": "Facebook Comment",
+        "label": "Facebook",
         "value": "facebook",
       },
       {
