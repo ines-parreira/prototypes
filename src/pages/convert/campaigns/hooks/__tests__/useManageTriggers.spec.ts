@@ -10,106 +10,132 @@ import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {useManageTriggers} from '../useManageTriggers'
 import {CampaignTrigger} from '../../types/CampaignTrigger'
 
+const removeIds = (triggers: CampaignTrigger[]) =>
+    triggers.map((trigger: CampaignTrigger) => _omit(trigger, 'id'))
+
 describe('useManageTriggers()', () => {
-    beforeAll(() => {
-        jest.spyOn(
-            revenueBetaHook,
-            'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-    })
-
-    it('initialize with current url trigger if no default is provided', () => {
-        const {result} = renderHook(() => useManageTriggers())
-
-        const defaultTrigger = _omit(
-            Object.values(result.current.triggers)[0],
-            'id'
-        )
-        const expectedTrigger = _omit(
-            createTrigger(CampaignTriggerType.CurrentUrl),
-            'id'
-        )
-
-        expect(defaultTrigger).toEqual(expectedTrigger)
-    })
-
-    it('sets the default triggers', () => {
-        const defaultTriggers = [
-            createTrigger(CampaignTriggerType.CurrentUrl),
-            createTrigger(CampaignTriggerType.BusinessHours),
-        ]
-
-        const {result} = renderHook(() => useManageTriggers(defaultTriggers))
-
-        expect(Object.values(result.current.triggers)).toEqual(defaultTriggers)
-    })
-
-    it('adds a trigger', () => {
-        const {result} = renderHook(() => useManageTriggers())
-
-        act(() => {
-            result.current.addTrigger(CampaignTriggerType.BusinessHours)
+    describe('is not convert subscriber', () => {
+        beforeAll(() => {
+            jest.spyOn(
+                revenueBetaHook,
+                'useIsConvertSubscriber'
+            ).mockImplementation(() => false)
         })
 
-        const removeIds = (triggers: CampaignTrigger[]) =>
-            triggers.map((trigger: CampaignTrigger) => _omit(trigger, 'id'))
+        it('initialize with current url trigger if no default is provided', () => {
+            const {result} = renderHook(() => useManageTriggers())
 
-        expect(removeIds(Object.values(result.current.triggers))).toEqual(
-            removeIds([
-                createTrigger(CampaignTriggerType.CurrentUrl),
-                createTrigger(CampaignTriggerType.BusinessHours),
-            ])
-        )
+            expect(removeIds(Object.values(result.current.triggers))).toEqual(
+                removeIds([createTrigger(CampaignTriggerType.CurrentUrl)])
+            )
+        })
+    })
 
-        const triggerWithPayload = {
-            ...createTrigger(CampaignTriggerType.SessionTime),
-            value: 10,
-        }
+    describe('is convert subscriber', () => {
+        beforeAll(() => {
+            jest.spyOn(
+                revenueBetaHook,
+                'useIsConvertSubscriber'
+            ).mockImplementation(() => true)
+        })
 
-        act(() => {
-            result.current.addTrigger(
-                CampaignTriggerType.SessionTime,
-                triggerWithPayload
+        it('initialize with current url trigger and business hours trigger if no default is provided', () => {
+            const {result} = renderHook(() => useManageTriggers())
+
+            expect(removeIds(Object.values(result.current.triggers))).toEqual(
+                removeIds([
+                    createTrigger(CampaignTriggerType.CurrentUrl),
+                    createTrigger(CampaignTriggerType.BusinessHours),
+                ])
             )
         })
 
-        expect(removeIds(Object.values(result.current.triggers))).toEqual(
-            removeIds([
+        it('sets the default triggers', () => {
+            const defaultTriggers = [
                 createTrigger(CampaignTriggerType.CurrentUrl),
                 createTrigger(CampaignTriggerType.BusinessHours),
-                triggerWithPayload,
-            ])
-        )
-    })
+            ]
 
-    it('updates a trigger', () => {
-        const {result} = renderHook(() => useManageTriggers())
-        const defaultTrigger = Object.values(result.current.triggers)[0]
+            const {result} = renderHook(() =>
+                useManageTriggers(defaultTriggers)
+            )
 
-        act(() => {
-            result.current.updateTrigger(defaultTrigger.id, {
-                ...defaultTrigger,
-                value: 'test',
+            expect(Object.values(result.current.triggers)).toEqual(
+                defaultTriggers
+            )
+        })
+
+        it('adds a trigger', () => {
+            const {result} = renderHook(() => useManageTriggers())
+
+            act(() => {
+                result.current.addTrigger(CampaignTriggerType.TimeSpentOnPage)
             })
-        })
 
-        expect(Object.values(result.current.triggers)).toEqual([
-            {
-                ...defaultTrigger,
-                value: 'test',
-            },
-        ])
-    })
+            expect(removeIds(Object.values(result.current.triggers))).toEqual(
+                removeIds([
+                    createTrigger(CampaignTriggerType.CurrentUrl),
+                    createTrigger(CampaignTriggerType.BusinessHours),
+                    createTrigger(CampaignTriggerType.TimeSpentOnPage),
+                ])
+            )
 
-    it('deletes a trigger', () => {
-        const {result} = renderHook(() => useManageTriggers())
+            const triggerWithPayload = {
+                ...createTrigger(CampaignTriggerType.SessionTime),
+                value: 10,
+            }
 
-        act(() => {
-            result.current.deleteTrigger(
-                Object.keys(result.current.triggers)[0]
+            act(() => {
+                result.current.addTrigger(
+                    CampaignTriggerType.SessionTime,
+                    triggerWithPayload
+                )
+            })
+
+            expect(removeIds(Object.values(result.current.triggers))).toEqual(
+                removeIds([
+                    createTrigger(CampaignTriggerType.CurrentUrl),
+                    createTrigger(CampaignTriggerType.BusinessHours),
+                    createTrigger(CampaignTriggerType.TimeSpentOnPage),
+                    triggerWithPayload,
+                ])
             )
         })
 
-        expect(Object.values(result.current.triggers)).toEqual([])
+        it('updates a trigger', () => {
+            const {result} = renderHook(() => useManageTriggers())
+            const [defaultCurrentTrigger, defaultBusinessHourTrigger] =
+                Object.values(result.current.triggers)
+
+            act(() => {
+                result.current.updateTrigger(defaultCurrentTrigger.id, {
+                    ...defaultCurrentTrigger,
+                    value: 'test',
+                })
+            })
+
+            expect(Object.values(result.current.triggers)).toEqual([
+                {
+                    ...defaultCurrentTrigger,
+                    value: 'test',
+                },
+                {
+                    ...defaultBusinessHourTrigger,
+                },
+            ])
+        })
+
+        it('deletes a trigger', () => {
+            const {result} = renderHook(() => useManageTriggers())
+            const triggersKeys = Object.keys(result.current.triggers)
+            act(() => {
+                result.current.deleteTrigger(triggersKeys[0])
+            })
+
+            expect(Object.values(result.current.triggers).length).toEqual(1)
+            expect(removeIds(Object.values(result.current.triggers))).toEqual(
+                removeIds([createTrigger(CampaignTriggerType.BusinessHours)])
+            )
+        })
     })
 })

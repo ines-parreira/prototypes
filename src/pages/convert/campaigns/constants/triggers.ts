@@ -324,7 +324,7 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
         label: 'Business hours',
         group: 'Other',
         defaults: {
-            value: CampaignTriggerBusinessHoursValuesEnum.During,
+            value: CampaignTriggerBusinessHoursValuesEnum.Anytime,
             operator: CampaignTriggerOperator.Eq,
         },
         requirements: {

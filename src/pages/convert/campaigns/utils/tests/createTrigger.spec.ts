@@ -20,7 +20,7 @@ describe('createTrigger(key)', () => {
         ).toStrictEqual({
             type: CampaignTriggerType.BusinessHours,
             operator: CampaignTriggerOperator.Eq,
-            value: CampaignTriggerBusinessHoursValuesEnum.During,
+            value: CampaignTriggerBusinessHoursValuesEnum.Anytime,
         })
     })
 

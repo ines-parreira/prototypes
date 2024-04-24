@@ -63,6 +63,24 @@ const campaignTwo: Campaign = {
     status: CampaignStatus.Active,
 }
 
+const campaignThree: Campaign = {
+    ...campaign,
+    id: '2',
+    name: 'Campaign 2',
+    message_text: 'something',
+    message_html: 'something',
+    triggers: [
+        {
+            id: '1',
+            type: CampaignTriggerType.BusinessHours,
+            operator: CampaignTriggerOperator.Eq,
+            value: CampaignTriggerBusinessHoursValuesEnum.During,
+        },
+    ],
+    attachments: [],
+    status: CampaignStatus.Active,
+}
+
 describe('filterWithAttachments()', () => {
     it('should return campaigns with attachments', () => {
         expect(filterWithAttachments([campaignOne, campaignTwo])).toEqual([
@@ -102,12 +120,16 @@ describe('filterWithExitIntent()', () => {
 describe('filterWithOutsideBusinessHours()', () => {
     it('should return campaigns with outside business hours', () => {
         expect(
-            filterWithOutsideBusinessHours([campaignOne, campaignTwo])
-        ).toEqual([campaignTwo])
+            filterWithOutsideBusinessHours([
+                campaignOne,
+                campaignTwo,
+                campaignThree,
+            ])
+        ).toEqual([campaignOne, campaignTwo])
     })
 
     it('should return empty array if no campaigns with outside business hours', () => {
-        expect(filterWithOutsideBusinessHours([campaignOne])).toEqual([])
+        expect(filterWithOutsideBusinessHours([campaignThree])).toEqual([])
     })
 })
 

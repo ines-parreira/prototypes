@@ -3,12 +3,11 @@ import {produce} from 'immer'
 
 import {ulid} from 'ulidx'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-
+import {getDefaultTriggers} from 'pages/convert/campaigns/utils/getDefaultTriggers'
 import {createTrigger} from '../utils/createTrigger'
 import {isAllowedToUpdateTrigger} from '../utils/isAllowedToUpdateTrigger'
 
 import {CampaignTriggerMap} from '../types/CampaignTriggerMap'
-import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
 import {
     CreateTriggerFn,
     DeleteTriggerFn,
@@ -19,13 +18,12 @@ import {CampaignTrigger} from '../types/CampaignTrigger'
 export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
     const isConvertSubscriber = useIsConvertSubscriber()
 
-    const defaultTrigger = useMemo(() => {
-        return createTrigger(CampaignTriggerType.CurrentUrl)
-    }, [])
+    const initialTriggers = useMemo<CampaignTriggerMap>(() => {
+        return getDefaultTriggers(isConvertSubscriber)
+    }, [isConvertSubscriber])
 
-    const [triggers, updateTriggers] = useState<CampaignTriggerMap>({
-        [defaultTrigger.id]: defaultTrigger,
-    })
+    const [triggers, updateTriggers] =
+        useState<CampaignTriggerMap>(initialTriggers)
 
     useEffect(() => {
         if (defaultTriggers.length > 0) {
@@ -33,7 +31,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                 const id = ulid()
                 return {
                     ...acc,
-                    [id.toString()]: trigger,
+                    [trigger?.id ?? id.toString()]: trigger,
                 }
             }, {})
             updateTriggers(nextTriggers)
