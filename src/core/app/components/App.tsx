@@ -1,6 +1,7 @@
 import React, {ReactNode} from 'react'
 
 import {AppNode} from 'appNode'
+import {NotificationsToasts} from 'common/notifications'
 import {AlertNotifications, BannerNotifications} from 'notifications'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
@@ -41,6 +42,7 @@ export default function App({children}: Props) {
     return (
         <AppNode className={theme}>
             <LogoutDetection />
+            <NotificationsToasts />
             <BannerNotifications />
             <EmailMigrationBanner />
             <EmailDisconnectedBanner />

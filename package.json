@@ -67,7 +67,7 @@
         "@gorgias/design-tokens": "^0.2.8",
         "@gorgias/event-tracker-browser": "2.0.0",
         "@hot-loader/react-dom": "16.13.0",
-        "@knocklabs/react": "^0.2.12",
+        "@knocklabs/react": "^0.2.13",
         "@reduxjs/toolkit": "^1.9.7",
         "@sentry/react": "7.0.0",
         "@sentry/tracing": "7.0.0",
