@@ -19,6 +19,7 @@ Default.args = {
             campaign: {
                 id: '1234',
                 name: 'Test campaign',
+                is_light: false,
             },
             currency: 'USD',
             metrics: {

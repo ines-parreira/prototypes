@@ -7,6 +7,8 @@ import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableC
 import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import * as useAreConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
+import {GorgiasChatIntegration} from 'models/integration/types'
 import {CampaignTableCell} from '../CampaignTableCell'
 
 describe('<CampaignTableCell />', () => {
@@ -15,6 +17,7 @@ describe('<CampaignTableCell />', () => {
         message_html: 'test',
         message_text: 'test',
         name: 'Test campaign',
+        is_light: false,
         triggers: [],
     } as unknown as Campaign
     const cell = {
@@ -23,7 +26,18 @@ describe('<CampaignTableCell />', () => {
         metrics: {
             conversionRate: 0.5,
         },
+        chatIntegration: {
+            id: '1234',
+            name: 'Test integration',
+        } as unknown as GorgiasChatIntegration,
     } as CampaignTableContentCell
+
+    beforeEach(() => {
+        jest.spyOn(
+            useAreConvertLightCampaignsEnabled,
+            'useAreConvertLightCampaignsEnabled'
+        ).mockImplementation(() => true)
+    })
 
     it.each([
         [
@@ -57,6 +71,13 @@ describe('<CampaignTableCell />', () => {
             'string',
             'string',
         ],
+        [
+            {
+                key: CampaignTableKeys.CampaignName,
+            },
+            'My cool campaign',
+            'My cool campaign',
+        ],
     ])(
         'should render the cell with value',
         async (column, value, expectedResult) => {
@@ -71,4 +92,26 @@ describe('<CampaignTableCell />', () => {
             await findByText(expectedResult)
         }
     )
+
+    it('should render campaign name with light campaign label', async () => {
+        const {findByText} = render(
+            <CampaignTableCell
+                column={
+                    {
+                        key: CampaignTableKeys.CampaignName,
+                    } as CampaignTableColumn
+                }
+                cell={{
+                    ...cell,
+                    campaign: {
+                        ...campaign,
+                        is_light: true,
+                    },
+                }}
+                data="Super converting campaign"
+            />
+        )
+
+        await findByText('Super converting campaign (light)')
+    })
 })

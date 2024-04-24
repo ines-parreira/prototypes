@@ -25,4 +25,5 @@ export type CampaignListOptions = {
 export type CampaignPreview = {
     id: string
     name: string
+    is_light: boolean
 }
