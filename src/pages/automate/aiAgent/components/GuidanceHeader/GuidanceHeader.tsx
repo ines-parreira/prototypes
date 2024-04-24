@@ -1,0 +1,65 @@
+import React from 'react'
+import Button from 'pages/common/components/button/Button'
+import Tooltip from 'pages/common/components/Tooltip'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {
+    GUIDANCE_ARTICLE_LIMIT,
+    GUIDANCE_ARTICLE_LIMIT_WARNING,
+} from '../../constants'
+import css from './GuidanceHeader.less'
+
+const CREATE_GUIDANCE_BUTON_ID = 'create-guidance-button'
+
+type Props = {
+    onCreateGuidance: () => void
+    guidanceArticlesLength: number
+}
+
+export const GuidanceHeader = ({
+    onCreateGuidance,
+    guidanceArticlesLength,
+}: Props) => {
+    const isGuidanceArticleLimitRiched =
+        guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT
+    const isGuidanceArticleLimitWarning =
+        guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING
+    return (
+        <>
+            <div className={css.container}>
+                <p>
+                    Provide guidance to your AI Agent so it knows how to act in
+                    specific situations.
+                </p>
+
+                <div>
+                    <Button
+                        isDisabled={isGuidanceArticleLimitRiched}
+                        disabled={isGuidanceArticleLimitRiched}
+                        onClick={onCreateGuidance}
+                        id={CREATE_GUIDANCE_BUTON_ID}
+                    >
+                        Create Guidance
+                    </Button>
+                    {isGuidanceArticleLimitRiched && (
+                        <Tooltip
+                            target={CREATE_GUIDANCE_BUTON_ID}
+                            placement="bottom"
+                        >
+                            You can only add up to {GUIDANCE_ARTICLE_LIMIT}{' '}
+                            pieces of guidance. Edit or delete Guidance to
+                            further improve the AI Agent performance.
+                        </Tooltip>
+                    )}
+                </div>
+            </div>
+            {isGuidanceArticleLimitWarning && (
+                <div className={css.warningContainer}>
+                    <Alert type={AlertType.Warning} icon className={css.alert}>
+                        You’ve added {guidanceArticlesLength} out of{' '}
+                        {GUIDANCE_ARTICLE_LIMIT} pieces of guidance.
+                    </Alert>
+                </div>
+            )}
+        </>
+    )
+}

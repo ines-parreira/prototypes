@@ -44,6 +44,8 @@ describe('<AiAgentNewGuidance />', () => {
         mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
+            deleteGuidanceArticle: jest.fn(),
+            isGuidanceArticleDeleting: false,
             isGuidanceArticleListLoading: false,
             isGuidanceArticleUpdating: false,
             createOrUpdateGuidanceArticle: jest.fn(),

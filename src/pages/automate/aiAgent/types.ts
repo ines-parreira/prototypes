@@ -26,8 +26,12 @@ export type ValidFormValues = NonNullFields<
 >
 
 export type GuidanceArticle = {
+    id: number
     title: string
     content: string
     locale: LocaleCode
     visibility: CreateArticleDto['translation']['visibility_status']
+    lastUpdated: string
 }
+
+export type CreateGuidanceArticle = Omit<GuidanceArticle, 'id' | 'lastUpdated'>

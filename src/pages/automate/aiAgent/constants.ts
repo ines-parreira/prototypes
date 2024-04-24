@@ -24,3 +24,6 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     toneOfVoice: null,
     helpCenter: null,
 }
+
+export const GUIDANCE_ARTICLE_LIMIT = 40
+export const GUIDANCE_ARTICLE_LIMIT_WARNING = 35

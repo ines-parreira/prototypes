@@ -6,16 +6,24 @@ import css from './TableBodyRow.less'
 type Props = HTMLProps<HTMLTableRowElement> & {
     children: ReactNode
     className?: string
+    ['data-testid']?: string
     onClick?: () => void
 }
 
 function TableBodyRow(
-    {children, className, onClick, ...otherProps}: Props,
+    {
+        children,
+        className,
+        onClick,
+        ['data-testid']: dataTestId,
+        ...otherProps
+    }: Props,
     ref: ForwardedRef<HTMLTableRowElement>
 ) {
     return (
         <tr
             {...otherProps}
+            data-testid={dataTestId}
             ref={ref}
             className={classnames(css.row, className, {
                 [css.isClickable]: !!onClick,

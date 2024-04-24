@@ -7,6 +7,7 @@ import css from './IconButton.less'
 type Props = {
     children?: string
     iconClassName?: string
+    ['data-testid']?: string
 } & Omit<ComponentProps<typeof Button>, 'children'>
 
 const IconButton = (
@@ -16,6 +17,7 @@ const IconButton = (
         fillStyle,
         iconClassName = 'material-icons',
         size,
+        ['data-testid']: dataTestId,
         ...others
     }: Props,
     ref: ForwardedRef<HTMLButtonElement>
@@ -30,6 +32,7 @@ const IconButton = (
             )}
             fillStyle={fillStyle}
             size={size}
+            data-testid={dataTestId}
             {...others}
             ref={ref}
         >
