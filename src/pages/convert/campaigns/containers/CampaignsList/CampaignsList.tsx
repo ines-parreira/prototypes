@@ -25,7 +25,6 @@ import {useCampaignListOptions} from '../../hooks/useCampaignListOptions'
 
 import {Campaign} from '../../types/Campaign'
 
-import CampaignInfobarPaywall from '../../components/CampaignInfobarPaywall/CampaignInfobarPaywall'
 import {ConvertLimitBanner} from '../../components/ConvertLimitBanner/ConvertLimitBanner'
 import css from './CampaignsList.less'
 
@@ -217,8 +216,6 @@ const CampaignsList = ({
                     ])}
                     chatIntegrationId={integration.get('id')}
                 />
-
-                {!isConvertSubscriber && <CampaignInfobarPaywall />}
 
                 <CampaignChatHiddenWarning integration={integration} />
 

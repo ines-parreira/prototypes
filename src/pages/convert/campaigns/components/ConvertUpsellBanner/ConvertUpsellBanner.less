@@ -1,0 +1,88 @@
+@import '~css/new/mixins';
+
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        background-color: var(--main-latte);
+        padding: 0 64px;
+        position: sticky;
+        bottom: 0;
+    }
+
+    .bannerContent {
+        display: flex;
+        justify-content: space-between;
+
+        @media @mobiles, @tablets {
+            flex-direction: column;
+        }
+    }
+
+    .leftContent {
+        width: 50%;
+        max-width: 480px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        @media @mobiles, @tablets {
+            width: 100%;
+            margin: @layout-spacing-s auto;
+        }
+
+        .buttonGroup {
+            .buttonWrapper {
+                float: left;
+
+                @media @mobiles, @tablets {
+                    float: none;
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: @layout-spacing-xs;
+                }
+            }
+
+            @media @mobiles, @tablets {
+                display: block;
+                justify-content: center;
+            }
+        }
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .content {
+        .body-regular();
+        color: var(--neutral-grey-5);
+        margin-bottom: @layout-spacing-l;
+    }
+
+    .linkMargin {
+        margin-left: @layout-spacing-xs;
+    }
+
+    .preview {
+        height: 100%;
+        width: 50%;
+        text-align: center;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @media @mobiles, @tablets {
+            width: 100%;
+        }
+
+        img {
+            max-width: 388px;
+            max-height: 260px;
+            width: 100%;
+        }
+    }
+}

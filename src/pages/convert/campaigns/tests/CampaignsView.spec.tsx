@@ -85,18 +85,29 @@ describe('<CampaignsView/>', () => {
     const mutateCreateMock = jest.fn()
     const mutateDeleteMock = jest.fn()
 
+    const integration = {
+        id: 118,
+        type: 'gorgias_chat',
+        name: 'My new chat',
+        meta: {},
+    }
+
+    const shopifyIntegration = {
+        id: 118,
+        type: 'gorgias_chat',
+        name: 'My new chat',
+        meta: {
+            app_id: '1',
+            shop_integration_id: 1,
+            shop_type: 'shopify',
+        },
+    }
+
     const defaultState = {
         entities: entitiesInitialState,
         billing: fromJS(billingState),
         integrations: fromJS({
-            integrations: [
-                {
-                    id: 118,
-                    type: 'gorgias_chat',
-                    name: 'My new chat',
-                    meta: {},
-                },
-            ],
+            integrations: [integration],
         }),
     }
 
@@ -230,18 +241,7 @@ describe('<CampaignsView/>', () => {
             const state = {
                 ...defaultState,
                 integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 118,
-                            type: 'gorgias_chat',
-                            name: 'My new chat',
-                            meta: {
-                                app_id: '1',
-                                shop_integration_id: 1,
-                                shop_type: 'shopify',
-                            },
-                        },
-                    ],
+                    integrations: [shopifyIntegration],
                 }),
             }
 
@@ -395,6 +395,49 @@ describe('<CampaignsView/>', () => {
                     },
                 ])
             })
+        })
+    })
+
+    describe('Upsell banner', () => {
+        const stateWithShopifyIntegration = {
+            ...defaultState,
+            integrations: fromJS({
+                integrations: [shopifyIntegration],
+            }),
+        }
+
+        beforeAll(() => {
+            useParamsMock.mockReturnValue({
+                [CONVERT_ROUTE_PARAM_NAME]: '118',
+            })
+        })
+
+        it('should display the upsell banner for Shopify non-subscribers', () => {
+            isConvertSubscriberSpy.mockImplementation(() => false)
+
+            const {getByText} = renderComponent(stateWithShopifyIntegration)
+
+            expect(getByText('Select Plan To Get Started')).toBeInTheDocument()
+        })
+
+        it('should not display the upsell banner for non-Shopify non-subscribers', () => {
+            isConvertSubscriberSpy.mockImplementation(() => false)
+
+            const {queryByText} = renderComponent(defaultState)
+
+            expect(
+                queryByText('Select Plan To Get Started')
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not display the upsell banner for Shopify subscribers', () => {
+            isConvertSubscriberSpy.mockImplementation(() => true)
+
+            const {queryByText} = renderComponent(stateWithShopifyIntegration)
+
+            expect(
+                queryByText('Select Plan To Get Started')
+            ).not.toBeInTheDocument()
         })
     })
 })
