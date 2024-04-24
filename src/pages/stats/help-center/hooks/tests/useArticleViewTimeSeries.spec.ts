@@ -1,19 +1,16 @@
 import moment from 'moment/moment'
 import {StatsFilters} from 'models/stat/types'
-import useTimeSeries from 'hooks/reporting/useTimeSeries'
+import * as useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {ReportingGranularity} from 'models/reporting/types'
-import {useArticleViewTimeSeries} from '../useArticleViewTimeSeries'
+import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
 
-jest.mock('hooks/reporting/useTimeSeries', () => jest.fn())
-
-const mockUseTimeSeries = jest.mocked(useTimeSeries)
+jest.mock('hooks/reporting/useTimeSeries')
+const mockUseTimeSeries = jest.spyOn(useTimeSeries, 'useTimeSeries')
 
 describe('useArticleViewTimeSeries', () => {
     beforeEach(() => {
-        mockUseTimeSeries.mockClear()
-
         const mockedDate = new Date(2023, 10, 13)
 
         jest.useFakeTimers()

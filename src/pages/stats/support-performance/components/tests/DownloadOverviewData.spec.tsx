@@ -28,7 +28,7 @@ import {
 } from 'hooks/reporting/timeSeries'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import useTimeSeries from 'hooks/reporting/useTimeSeries'
+import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'

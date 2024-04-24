@@ -245,7 +245,8 @@ export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
     values: agentAssigneeId ? [agentAssigneeId] : [],
 })
 
-export const calculatePercentage = (x: number, y: number) => (x / y) * 100
+export const calculatePercentage = (x: number, y: number) =>
+    y === 0 ? 0 : (x / y) * 100
 
 export const matchAndCalculateAllEntries = (
     dataA: Pick<MetricWithDecile, 'data'>,

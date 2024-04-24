@@ -76,7 +76,7 @@ const selectPerDimension =
         return objectMap(_groupBy(res, dimensions[0]), select(query))
     }
 
-export default function useTimeSeries<TCube extends Cubes>(
+export function useTimeSeries<TCube extends Cubes>(
     query: TimeSeriesQuery<TCube>
 ) {
     return usePostReporting<

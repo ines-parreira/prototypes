@@ -4,6 +4,7 @@ import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {StatsFilters} from 'models/stat/types'
+import {calculatePercentage} from 'utils/reporting'
 
 export const usePercentageOfClosedTicketsMetricPerAgent = (
     statsFilters: StatsFilters,
@@ -20,8 +21,6 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
         agentAssigneeId
     )
     const allClosedTickets = useClosedTicketsMetric(statsFilters, timezone)
-
-    const calculatePercentage = (x: number, y: number) => (x / y) * 100
 
     let metricValue = null
 

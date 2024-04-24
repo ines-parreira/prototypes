@@ -34,10 +34,13 @@ import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
-} from '../timeSeries'
-import useTimeSeries, {useTimeSeriesPerDimension} from '../useTimeSeries'
+} from 'hooks/reporting/timeSeries'
+import {
+    useTimeSeries,
+    useTimeSeriesPerDimension,
+} from 'hooks/reporting/useTimeSeries'
 
-jest.mock('../useTimeSeries')
+jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)
 
@@ -93,13 +96,13 @@ describe('time series', () => {
                 {initialProps: {statsFilters, timezone, granularity}}
             )
 
-            expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+            expect(useTimeSeriesMock).toHaveBeenCalledWith(
                 ticketsCreatedTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
                     granularity
-                ),
-            ])
+                )
+            )
         })
     })
 
@@ -115,13 +118,13 @@ describe('time series', () => {
                 {initialProps: {statsFilters, timezone, granularity}}
             )
 
-            expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+            expect(useTimeSeriesMock).toHaveBeenCalledWith(
                 ticketsRepliedTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
                     granularity
-                ),
-            ])
+                )
+            )
         })
     })
 
@@ -137,13 +140,13 @@ describe('time series', () => {
                 {initialProps: {statsFilters, timezone, granularity}}
             )
 
-            expect(useTimeSeriesMock.mock.calls[0]).toEqual([
+            expect(useTimeSeriesMock).toHaveBeenCalledWith(
                 messagesSentTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
                     granularity
-                ),
-            ])
+                )
+            )
         })
     })
 
@@ -168,14 +171,14 @@ describe('time series', () => {
                 }
             )
 
-            expect(useTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
+            expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 customFieldsTicketCountTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
                     granularity,
                     customFieldId
-                ),
-            ])
+                )
+            )
         })
     })
 

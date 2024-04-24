@@ -4537,99 +4537,587 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
 
 exports[`<AutomateOverview /> should display paywall 1`] = `
 <div
-  class="full-width pageWrapper"
+  class="full-width"
 >
   <div
-    class="page-header pageHeader"
-  >
-    <h1
-      class="align-items-center"
-    >
-      <span>
-        Automate overview
-      </span>
-    </h1>
-  </div>
-  <div
-    class="page container-fluid"
+    class="full-width wrapper"
   >
     <div
-      class="paywallContainer"
+      class="header"
+      data-candu-id="stat-header-container"
     >
       <div
-        class="align-items-center mx-0 row"
+        class="page-header pageHeader mb-0"
       >
-        <svg
-          class="svg default"
-          height="auto"
-          viewBox="0 0 824 900"
-          width="824"
-          xmlns="http://www.w3.org/2000/svg"
+        <h1
+          class="align-items-center"
         >
-          <path
-            d="M0 0H374C622.528 0 824 201.472 824 450V450C824 698.528 622.528 900 374 900H0V0Z"
-          />
-        </svg>
+          <span>
+            Automate overview
+          </span>
+        </h1>
+        <div>
+          <div
+            class="d-flex flex-wrap float-right"
+          >
+            <div>
+              ChannelsStatsFilter
+            </div>
+            <div>
+              <button
+                aria-disabled="false"
+                class="wrapper ghost secondary medium"
+                type="button"
+              >
+                <span
+                  class="wrapper"
+                >
+                  <i
+                    class="material-icons icon isLeft medium"
+                  >
+                    calendar_today
+                  </i>
+                  <span
+                    class="wrapper"
+                  >
+                    Feb 3, 2021
+                    <i
+                      class="material-icons icon isRight medium"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </span>
+                </span>
+              </button>
+            </div>
+            <button
+              aria-disabled="false"
+              class="wrapper ghost secondary medium"
+              title="Download Performance Overview Data"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  file_download
+                </i>
+                Download data
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="statsWrapper"
+    >
+      <div
+        class="statsContainer container-fluid"
+      >
         <div
-          class="mt-5 mt-lg-0 mb-5 mb-lg-0 pl-lg-4 pt-5 pt-lg-0 preview col-12 col-lg-6 col-xl-6"
+          class="wrapper"
         >
           <div
-            class=""
+            class="alert info closable"
           >
-            <img
-              alt="Feature preview"
-              class="img-fluid"
-              src="/assets/img/paywalls/screens/automate-overview.png"
-            />
+            <div
+              class="iconContainer"
+            >
+              <img
+                alt="icon"
+                src="test-file-stub"
+              />
+            </div>
+            <div
+              class="content"
+            >
+              <span
+                class="label"
+              >
+                Data for the past 72 hours is not included on this dashboard, as interactions are considered automated after 72 hours have passed without a customer reply.
+              </span>
+            </div>
+            <div
+              aria-label="Close Icon"
+              class="close"
+            >
+              <img
+                alt="close-icon"
+                class="closeIcon"
+                src="test-file-stub"
+              />
+            </div>
           </div>
         </div>
         <div
-          class="pl-lg-5 col-12 col-lg-5 col-xl-5"
+          class="wrapper"
         >
           <div
-            class="content"
+            class="title"
           >
             <div
-              class="flex align-items-center"
+              class="titleText heading-page-semibold"
+            >
+              Performance
+            </div>
+            <button
+              aria-disabled="false"
+              class="wrapper ghost primary medium"
+              type="button"
+            >
+              <span
+                class="wrapper"
+              >
+                <i
+                  class="material-icons icon isLeft medium"
+                >
+                  visibility_off
+                </i>
+                Hide tips
+              </span>
+            </button>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
             >
               <div
-                class="badge upperCase"
+                class="Card--wrapper--3AkmE card"
               >
-                GORGIAS AUTOMATE 
+                <div
+                  class="title"
+                >
+                  Automation rate
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  9,300%
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
+                >
+                  <div
+                    class="wrapper success"
+                  >
+                    <div
+                      class="sentiment"
+                    >
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Avg. merchant:
+                        </span>
+                        <span
+                          class="value"
+                          id="tip-tooltip-success"
+                        >
+                          12%
+                        </span>
+                      </div>
+                      <div>
+                        <span
+                          class="label"
+                        >
+                          Top 10%:
+                        </span>
+                        <span
+                          class="value"
+                        >
+                          31%
+                        </span>
+                      </div>
+                    </div>
+                    <div
+                      class="separator"
+                    />
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon success"
+                      >
+                        sentiment_very_satisfied
+                      </i>
+                      <span>
+                        You’re doing great
+                      </span>
+                    </div>
+                    Set up all
+                     
+                    <a
+                      href="https://link.gorgias.com/aut"
+                      target="blank"
+                    >
+                      Automate features
+                    </a>
+                     
+                    to improve your automation rate across all of your channels.
+                  </div>
+                </div>
               </div>
             </div>
-            <h1
-              class="contentTitle"
-            >
-              Automate overview
-            </h1>
             <div
-              class="description"
+              class="cell"
+              style="grid-column: span 6 / span 6;"
             >
-              <p>
-                <div>
-                  With Gorgias Automate, you can track your automation performance and leverage insights to improve.
-                </div>
-              </p>
-            </div>
-            <div
-              class="upgradeButton"
-            >
-              <div>
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
                 <div
-                  class="d-flex align-items-center upgradeLink"
+                  class="title"
                 >
-                  <button
-                    aria-disabled="false"
-                    class="wrapper fill primary medium"
-                    type="button"
+                  Automated interactions
+                  <div
+                    class="wrapper tooltip"
                   >
-                    Learn More
-                  </button>
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  93
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+                <div
+                  class="tip"
+                >
+                  <div
+                    class="wrapper neutral"
+                  >
+                    <div
+                      class="iconWrapper"
+                    >
+                      <i
+                        class="material-icons-outlined icon neutral"
+                      >
+                        lightbulb
+                      </i>
+                      <span>
+                        Tip
+                      </span>
+                    </div>
+                    Check out our
+                     
+                    <a
+                      href="https://link.gorgias.com/aut-playbook"
+                      target="blank"
+                    >
+                       
+                      Automation Playbook
+                    </a>
+                     
+                    for tactical tips on how to use Automate to its full potential. Visit
+                    <a
+                      href="/app/settings/billing"
+                      target="blank"
+                    >
+                       
+                      billing
+                    </a>
+                     
+                    to make sure your Automate plan is the right size for you.
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            <div
+              class="titleText heading-page-semibold"
+            >
+              Impact
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
+                <div
+                  class="title"
+                >
+                  Cost saved
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  $228
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
+                <div
+                  class="title"
+                >
+                  Decrease in resolution time
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 6 / span 6;"
+            >
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
+                <div
+                  class="title"
+                >
+                  Decrease in first response time
+                  <div
+                    class="wrapper tooltip"
+                  >
+                    <i
+                      class="material-icons-outlined icon"
+                      id="tooltip-abc"
+                    >
+                      info
+                    </i>
+                  </div>
+                </div>
+                <div
+                  class="wrapper heading-page-semibold"
+                >
+                  1m 31s
+                  <div>
+                    TrendBadgeMock
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="wrapper"
+        >
+          <div
+            class="title"
+          >
+            <div
+              class="titleText heading-page-semibold"
+            >
+              Performance over time
+            </div>
+          </div>
+          <div
+            class="wrapper"
+          >
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <div
+                    class="title"
+                  >
+                    <span>
+                      Automation rate
+                    </span>
+                    <div
+                      class="wrapper tooltip tooltipIcon"
+                    >
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <div
+                    class="title"
+                  >
+                    <span>
+                      Automated interactions
+                    </span>
+                    <div
+                      class="wrapper tooltip tooltipIcon"
+                    >
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="cell"
+              style="grid-column: span 12 / span 12;"
+            >
+              <div
+                class="Card--wrapper--3AkmE card"
+              >
+                <div
+                  class="titleWrapper"
+                >
+                  <div
+                    class="title"
+                  >
+                    <span>
+                      Automated interactions by feature
+                    </span>
+                    <div
+                      class="wrapper tooltip tooltipIcon"
+                    >
+                      <i
+                        class="material-icons-outlined icon"
+                        id="tooltip-abc"
+                      >
+                        info
+                      </i>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="wrapper chartWrapper"
+                >
+                  <div
+                    class="container"
+                  />
+                  <div
+                    class="legend legend legendOnLeft"
+                  >
+                    <div
+                      class="legendCheckbox"
+                    >
+                      <label
+                        class="label label"
+                        for="checkbox-abc"
+                      >
+                        <input
+                          class="input"
+                          id="checkbox-abc"
+                          name="checkbox-abc"
+                          type="checkbox"
+                        />
+                        Others
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="pageFooter caption-regular"
+        >
+          Analytics are using 
+          UTC
+           timezone
         </div>
       </div>
     </div>

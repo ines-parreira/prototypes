@@ -14,7 +14,7 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import useTimeSeries from 'hooks/reporting/useTimeSeries'
+import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {OverviewChartConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {RootState, StoreDispatch} from 'state/types'

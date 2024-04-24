@@ -1,0 +1,74 @@
+import {renderHook} from '@testing-library/react-hooks'
+import React from 'react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {useTicketsInPolicyPerStatus} from 'hooks/reporting/sla/useTicketsInPolicy'
+import {useTicketSlaAchievementRate} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import {ReportingGranularity} from 'models/reporting/types'
+import {StatsFilters} from 'models/stat/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import {calculatePercentage} from 'utils/reporting'
+import {assumeMock} from 'utils/testing'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+jest.mock('hooks/reporting/sla/useTicketsInPolicy')
+const useTicketsInPolicyPerStatusMock = assumeMock(useTicketsInPolicyPerStatus)
+jest.mock('state/ui/stats/selectors')
+const getCleanStatsFiltersWithTimezoneMock = assumeMock(
+    getCleanStatsFiltersWithTimezone
+)
+
+describe('useTicketSlaAchievementRate', () => {
+    const startDate = '2021-05-01T00:00:00+02:00'
+    const endDate = '2021-05-04T23:59:59+02:00'
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: startDate,
+            end_datetime: endDate,
+        },
+    }
+    const userTimezone = 'UTC'
+
+    beforeEach(() => {
+        getCleanStatsFiltersWithTimezoneMock.mockReturnValue({
+            cleanStatsFilters: filters,
+            userTimezone,
+            granularity: ReportingGranularity.Day,
+        })
+    })
+
+    it('should calculate achievement rate', () => {
+        const satisfiedTickets = 10
+        const breachedTickets = 30
+        useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
+            data: {value: satisfiedTickets, decile: 0, allData: []},
+            isFetching: false,
+            isError: false,
+        })
+        useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
+            data: {value: breachedTickets, decile: 0, allData: []},
+            isFetching: false,
+            isError: false,
+        })
+
+        const {result} = renderHook(() => useTicketSlaAchievementRate(), {
+            wrapper: ({children}) => (
+                <Provider store={mockStore({})}> {children} </Provider>
+            ),
+        })
+
+        expect(result.current).toEqual({
+            data: {
+                value: calculatePercentage(
+                    satisfiedTickets,
+                    satisfiedTickets + breachedTickets
+                ),
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
+})

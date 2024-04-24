@@ -16,7 +16,10 @@ import {
     interactionsTimeSeriesQueryFactory,
     billableTicketDatasetTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
-import useTimeSeries, {useTimeSeriesPerDimension} from './useTimeSeries'
+import {
+    useTimeSeries,
+    useTimeSeriesPerDimension,
+} from 'hooks/reporting/useTimeSeries'
 
 export function useTicketsCreatedTimeSeries(
     filters: StatsFilters,

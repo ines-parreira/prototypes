@@ -29,7 +29,7 @@ import {StatsFilters} from 'models/stat/types'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {usePostReporting} from 'models/reporting/queries'
-import useTimeSeries from 'hooks/reporting/useTimeSeries'
+import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
@@ -37,8 +37,11 @@ import {assumeMock} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
-import AutomateOverview, {AAO_TIPS_VISIBILITY_KEY} from '../AutomateOverview'
-import TagsStatsFilter from '../TagsStatsFilter'
+import {
+    AutomateOverview,
+    AAO_TIPS_VISIBILITY_KEY,
+} from 'pages/stats/AutomateOverview'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -122,6 +125,7 @@ describe('<AutomateOverview />', () => {
             },
         }
     }
+
     const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',

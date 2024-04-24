@@ -2,11 +2,12 @@ import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTra
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {AutomationBillingEventCubeWithJoins} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {HelpCenterTrackingEventCube} from './HelpCenterTrackingEventCube'
-import {VoiceCallCube} from './VoiceCallCube'
-import {VoiceEventsByAgentCube} from './VoiceEventsByAgent'
-import {AutomationDatasetCube} from './automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetCube} from './automate_v2/BillableTicketDatasetCube'
+import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
+import {HelpCenterTrackingEventCube} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {VoiceEventsByAgentCube} from 'models/reporting/cubes/VoiceEventsByAgent'
+import {AutomationDatasetCube} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {BillableTicketDatasetCube} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 
 export type Cubes =
     | AgentTimeTrackingCube
@@ -18,3 +19,4 @@ export type Cubes =
     | VoiceEventsByAgentCube
     | AutomationDatasetCube
     | BillableTicketDatasetCube
+    | TicketSLACubeWithJoins

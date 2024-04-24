@@ -25,7 +25,10 @@ import {
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
-import useTimeSeries, {useTimeSeriesPerDimension} from '../useTimeSeries'
+import {
+    useTimeSeries,
+    useTimeSeriesPerDimension,
+} from 'hooks/reporting/useTimeSeries'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
