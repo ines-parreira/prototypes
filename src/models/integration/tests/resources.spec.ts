@@ -60,6 +60,7 @@ describe('integration resource', () => {
                     isConnected: true,
                     title: 'My test app',
                     type: 'app',
+                    count: 0,
                 },
             ])
         })

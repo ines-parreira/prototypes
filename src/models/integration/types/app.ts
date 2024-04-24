@@ -86,7 +86,7 @@ export type AppData = AppListData & {
     alloy_integration_id?: string
 }
 
-export type AppListItem = Omit<IntegrationListItem, 'count'> & {
+export type AppListItem = IntegrationListItem & {
     type: IntegrationType.App
     appId: AppListData['id']
     isConnected: AppListData['is_installed']

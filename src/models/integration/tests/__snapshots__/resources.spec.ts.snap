@@ -89,6 +89,7 @@ exports[`integration resource fetchApps should return formatted apps 1`] = `
     "categories": [
       "Quality Assurance",
     ],
+    "count": 0,
     "description": "Some tagline here",
     "image": "https://ok.com/1.png",
     "isConnected": false,

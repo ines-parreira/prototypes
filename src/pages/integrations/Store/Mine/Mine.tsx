@@ -28,7 +28,7 @@ import Card from '../Card'
 import Loader from '../Loader'
 import css from './Mine.less'
 
-type Item = IntegrationListItem
+type Item = IntegrationListItem | AppListItem
 
 export const LOCAL_STORAGE_KEY = `integrations_connected_warning_discarded`
 

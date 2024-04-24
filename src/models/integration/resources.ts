@@ -27,6 +27,7 @@ export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
         description: data.headline,
         categories,
         image: data.app_icon,
+        count: 0,
     }
 }
 

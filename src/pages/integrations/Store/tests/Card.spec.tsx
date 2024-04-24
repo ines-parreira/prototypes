@@ -9,9 +9,15 @@ const store = mockStore({})
 
 import {IntegrationType} from 'models/integration/constants'
 import {Category} from 'models/integration/types/app'
-import {dummyAppListIntegrationItem} from 'fixtures/apps'
+import {dummyAppListIntegrationItem, dummyAppListItem} from 'fixtures/apps'
 
+import {applications as mockApplications} from 'fixtures/applications'
+import {Application, getApplicationById} from 'services/applications'
 import Card, {Pills, CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
+
+jest.mock('services/applications', () => ({
+    getApplicationById: jest.fn(),
+}))
 
 describe('<Pills />', () => {
     it('should render an empty div', () => {
@@ -64,6 +70,54 @@ describe('<Card />', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should render a link to connections tab directly', () => {
+        const mockedGetApplicationById =
+            getApplicationById as jest.Mock<Application>
+        const application = mockApplications[0]
+        application.supports_multiple_connections = true
+        mockedGetApplicationById.mockReturnValue(application)
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <Card
+                    item={{
+                        ...dummyAppListItem,
+                        count: 1,
+                        type: IntegrationType.App,
+                        appId: application.id,
+                    }}
+                />
+            </Provider>
+        )
+        expect(getByTestId('card-link')).toHaveAttribute(
+            'to',
+            `/app/settings/integrations/app/${application.id}/connections`
+        )
+    })
+
+    it('should render a link to app if no integrations yet', () => {
+        const mockedGetApplicationById =
+            getApplicationById as jest.Mock<Application>
+        const application = mockApplications[0]
+        application.supports_multiple_connections = true
+        mockedGetApplicationById.mockReturnValue(application)
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <Card
+                    item={{
+                        ...dummyAppListItem,
+                        count: 0,
+                        type: IntegrationType.App,
+                        appId: application.id,
+                    }}
+                />
+            </Provider>
+        )
+        expect(getByTestId('card-link')).toHaveAttribute(
+            'to',
+            `/app/settings/integrations/app/${application.id}`
+        )
     })
 
     it('should render div card', () => {

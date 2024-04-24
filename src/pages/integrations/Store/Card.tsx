@@ -7,18 +7,19 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {assetsUrl} from 'utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {isAppListItem} from 'models/integration/types/app'
+import {AppListItem, isAppListItem} from 'models/integration/types/app'
 import {IntegrationType} from 'models/integration/types'
 import {IntegrationListItem} from 'state/integrations/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
+import {getApplicationById} from 'services/applications'
 import css from './Card.less'
 
 export const LOADING_TEST_ID = 'card-loading'
 export const CARD_LINK_TEST_ID = 'card-link'
 
-type Item = IntegrationListItem
+type Item = IntegrationListItem | AppListItem
 
 function getLinkTargetTabName(item: Item) {
     if (!isAppListItem(item) && item.count > 0) {
@@ -38,11 +39,16 @@ function getLinkTargetTabName(item: Item) {
 }
 
 function getUrl(item: Item) {
-    return isAppListItem(item)
-        ? `/app/settings/integrations/app/${item.appId}`
-        : ['/app/settings/integrations', item.type, getLinkTargetTabName(item)]
-              .filter((chunk) => chunk !== null)
-              .join('/')
+    if (isAppListItem(item)) {
+        const application = getApplicationById(item.appId)
+        if (application?.supports_multiple_connections && item.count > 0) {
+            return `/app/settings/integrations/app/${item.appId}/connections`
+        }
+        return `/app/settings/integrations/app/${item.appId}`
+    }
+    return ['/app/settings/integrations', item.type, getLinkTargetTabName(item)]
+        .filter((chunk) => chunk !== null)
+        .join('/')
 }
 
 function LinkOrDiv({
