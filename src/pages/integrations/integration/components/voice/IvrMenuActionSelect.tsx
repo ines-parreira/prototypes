@@ -10,7 +10,7 @@ import SelectInputBox, {
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import IconTooltip from '../../../../common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import css from './IvrMenuActionField.less'
 
 const ACTION_NAMES: Record<IvrMenuActionType, string> = {
@@ -47,13 +47,9 @@ const IvrMenuActionSelect = ({
                 value: action,
                 label: name,
                 isDisabled: isOptionDisabled,
-                tooltipText: isOptionDisabled ? (
-                    <>
-                        Create integration to send calls to SMS.
-                        <br />
-                        <a href="/app/settings/channels/sms">Set it up</a>
-                    </>
-                ) : undefined,
+                tooltipText: isOptionDisabled
+                    ? 'Create integration to send calls to SMS.'
+                    : undefined,
             }
         })
         .filter(
