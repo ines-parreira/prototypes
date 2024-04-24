@@ -1,5 +1,7 @@
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ReactNode} from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import {FeatureFlagKey} from 'config/featureFlags'
 import '@testing-library/jest-dom'
 import {
     SpotlightContext,
@@ -41,6 +43,12 @@ const renderWithSpotlightContext = (
 }
 
 describe('Spotlight', () => {
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.SearchWithHighlights]: true,
+        }))
+    })
+
     it('should open the spotlight modal when the toggle shortcut is activated', () => {
         const setIsOpen = jest.fn()
         const providerProps = {
@@ -74,5 +82,23 @@ describe('Spotlight', () => {
         fireEvent.click(screen.getByRole('button', {name: /close/i}))
 
         expect(setIsOpen).toHaveBeenCalledWith(false)
+    })
+
+    it('should not render until the Feature Flag is loaded', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.SearchWithHighlights]: undefined,
+        }))
+
+        const setIsOpen = jest.fn()
+        const providerProps = {
+            isOpen: false,
+            setIsOpen,
+        }
+
+        const {container} = renderWithSpotlightContext(<Spotlight />, {
+            providerProps,
+        })
+
+        expect(container).toBeEmptyDOMElement()
     })
 })

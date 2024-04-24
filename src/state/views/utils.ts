@@ -358,17 +358,18 @@ function getViewTypeUrl(
     viewType: ViewType
 ): Maybe<{detail: string; list: string}> {
     const typeMap = {
-        'ticket-list': {
+        [ViewType.TicketList]: {
             detail: 'ticket',
             list: 'tickets',
         },
-        'customer-list': {
+        [ViewType.CustomerList]: {
             detail: 'customer',
             list: 'customers',
         },
+        [ViewType.All]: null,
     }
 
-    return typeMap[viewType] || null
+    return typeMap[viewType]
 }
 
 /**

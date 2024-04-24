@@ -9,6 +9,7 @@ exports[`<TabNavigator /> should render 1`] = `
   >
     <div
       class="tab activeTab"
+      role="tab"
       tabindex="0"
     >
       <span
@@ -19,6 +20,7 @@ exports[`<TabNavigator /> should render 1`] = `
     </div>
     <div
       class="tab"
+      role="tab"
       tabindex="0"
     >
       <span

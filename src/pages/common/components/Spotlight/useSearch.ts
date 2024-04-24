@@ -1,5 +1,4 @@
 import axios, {CancelToken} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import {
     KeyboardEvent,
@@ -7,9 +6,14 @@ import {
     useEffect,
     useLayoutEffect,
     useMemo,
+    useReducer,
     useState,
 } from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    customersWithHighlightsLoadedAction,
+    resultsWithHighlightsReducer,
+    ticketsWithHighlightsLoadedAction,
+} from 'pages/common/components/Spotlight/resultsWithHighlightsReducer'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
@@ -21,19 +25,24 @@ import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import useSelectedIndex from 'hooks/useSelectedIndex'
-import {CursorMeta} from 'models/api/types'
+import {ApiListResponseCursorPagination, CursorMeta} from 'models/api/types'
 import {searchCustomers} from 'models/customer/resources'
+import {Customer} from 'models/customer/types'
 import {
     CustomerWithHighlights,
     CustomerWithHighlightsResponse,
+    isCustomer,
+    isCustomerWithHighlights,
+    isTicket,
+    isTicketWithHighlights,
     PickedCustomer,
     SearchEngine,
     TicketWithHighlights,
     TicketWithHighlightsResponse,
 } from 'models/search/types'
 import {searchTickets} from 'models/ticket/resources'
+import {Ticket} from 'models/ticket/types'
 import {ViewType} from 'models/view/types'
-import {getTypedHighlightResults} from 'pages/common/components/Spotlight/helpers'
 import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import history from 'pages/history'
 import {notify} from 'state/notifications/actions'
@@ -47,21 +56,64 @@ type OldSearchPaginationMeta = {
 type MetaType = CursorMeta | OldSearchPaginationMeta
 
 export enum Tabs {
+    All = 'all',
     Tickets = 'tickets',
     Customers = 'customers',
 }
 
-const searchRankScenarioSource = {
+const searchRankScenarioSource: Record<ViewType, SearchRankSource> = {
     [ViewType.CustomerList]: SearchRankSource.SpotlightCustomer,
     [ViewType.TicketList]: SearchRankSource.SpotlightTicket,
+    [ViewType.All]: SearchRankSource.SpotlightAll,
 }
 
-export const useSearch = () => {
+type ResultWithHighlights<T> = T extends ViewType.TicketList
+    ? TicketWithHighlights
+    : T extends ViewType.CustomerList
+    ? CustomerWithHighlights
+    : never
+
+function getTypedHighlightResults<T extends ViewType>(
+    data: TicketWithHighlightsResponse[] | CustomerWithHighlightsResponse[],
+    viewType: T
+): ResultWithHighlights<T>[] {
+    const entityType = viewType === ViewType.TicketList ? 'Ticket' : 'Customer'
+    return data
+        .map((result) => ({
+            type: entityType,
+            ...result,
+        }))
+        .filter(
+            (result) => result.type === entityType
+        ) as ResultWithHighlights<T>[]
+}
+
+const getSelectedItemUrl = (
+    selectedItem:
+        | PickedTicket
+        | PickedCustomer
+        | TicketWithHighlights
+        | CustomerWithHighlights
+) => {
+    if (isTicket(selectedItem)) {
+        return `/app/ticket/${selectedItem.id}`
+    } else if (isTicketWithHighlights(selectedItem)) {
+        return `/app/ticket/${selectedItem.entity.id}`
+    } else if (isCustomer(selectedItem)) {
+        return `/app/customer/${selectedItem.id}`
+    } else if (isCustomerWithHighlights(selectedItem)) {
+        return `/app/customer/${selectedItem.entity.id}`
+    }
+    return ''
+}
+
+export const useSearch = (isSearchWithHighlights: boolean) => {
     const dispatch = useAppDispatch()
-    const isSearchWithHighlights =
-        !!useFlags()[FeatureFlagKey.SearchWithHighlights]
+    const defaultSearchItemsType = isSearchWithHighlights
+        ? ViewType.All
+        : ViewType.TicketList
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
-        ViewType.TicketList
+        defaultSearchItemsType
     )
     const [searchQuery, setSearchQuery] = useState<string>()
 
@@ -70,24 +122,27 @@ export const useSearch = () => {
     )
     const [ticketsSearchMeta, setTicketsSearchMeta] = useState<MetaType>()
     const [customersSearchMeta, setCustomersSearchMeta] = useState<MetaType>()
-    const [lastSearchQueries, setLastSearchQueries] = useState<{
-        [Tabs.Tickets]: string
-        [Tabs.Customers]: string
-    }>({customers: '', tickets: ''})
+    const [lastSearchQueries, setLastSearchQueries] = useState<
+        Record<Tabs, string>
+    >({
+        [Tabs.Customers]: '',
+        [Tabs.Tickets]: '',
+        [Tabs.All]: '',
+    })
 
     const previousSearchItemsType = usePrevious(searchItemsType)
     const [hasSearched, setHasSearched] = useState<boolean>(false)
     const [tickets, setTickets] = useState<PickedTicket[]>([])
     const [customers, setCustomers] = useState<PickedCustomer[]>([])
-    const [resultsWithHighlights, setResultsWithHighlights] = useState<
-        (CustomerWithHighlights | TicketWithHighlights)[]
-    >([])
+    const [resultsWithHighlights, dispatchResultsWithHighlightsAction] =
+        useReducer(resultsWithHighlightsReducer, [])
     const {items: recentTickets} = useRecentItems<PickedTicket>(
         RecentItems.Tickets
     )
     const {items: recentCustomers} = useRecentItems<PickedCustomer>(
         RecentItems.Customers
     )
+
     const maxIndex = useMemo(() => {
         const customersLength = isSearchWithHighlights
             ? resultsWithHighlights.length
@@ -123,34 +178,152 @@ export const useSearch = () => {
     } = useSelectedIndex(maxIndex, {loop: true})
     useEffect(resetSelectedIndex, [resetSelectedIndex, searchItemsType])
 
-    const selectedItem = useMemo(
-        () =>
-            searchItemsType === ViewType.CustomerList
-                ? hasSearched
-                    ? customers[selectedIndex]
+    const selectedItem = useMemo(() => {
+        switch (searchItemsType) {
+            case ViewType.TicketList:
+                return hasSearched
+                    ? isSearchWithHighlights
+                        ? resultsWithHighlights[selectedIndex]
+                        : tickets[selectedIndex]
+                    : recentTickets[selectedIndex]
+            case ViewType.CustomerList:
+                return hasSearched
+                    ? isSearchWithHighlights
+                        ? resultsWithHighlights[selectedIndex]
+                        : customers[selectedIndex]
                     : recentCustomers[selectedIndex]
-                : hasSearched
-                ? tickets[selectedIndex]
-                : recentTickets[selectedIndex],
-        [
-            customers,
-            searchItemsType,
-            selectedIndex,
-            tickets,
-            hasSearched,
-            recentTickets,
-            recentCustomers,
-        ]
+            case ViewType.All:
+                return hasSearched
+                    ? [
+                          ...resultsWithHighlights
+                              .filter(isTicketWithHighlights)
+                              .slice(0, 5),
+                          ...resultsWithHighlights
+                              .filter(isCustomerWithHighlights)
+                              .slice(0, 5),
+                      ][selectedIndex]
+                    : [
+                          ...recentTickets.slice(0, 5),
+                          ...recentCustomers.slice(0, 5),
+                      ][selectedIndex]
+        }
+    }, [
+        searchItemsType,
+        hasSearched,
+        isSearchWithHighlights,
+        resultsWithHighlights,
+        selectedIndex,
+        tickets,
+        recentTickets,
+        customers,
+        recentCustomers,
+    ])
+    const handleCustomerSearchResult = useCallback(
+        (
+            data: ApiListResponseCursorPagination<
+                Customer[] | CustomerWithHighlightsResponse[]
+            >,
+            viewType: ViewType.All | ViewType.CustomerList,
+            searchTerm: string,
+            cursor?: string
+        ) => {
+            searchRank.registerResultsResponse({
+                responseTime: Date.now(),
+                numberOfResults: data.data.length,
+                searchEngine: SearchEngine.ES,
+            })
+            if (isSearchWithHighlights) {
+                setLastSearchQueries({
+                    [Tabs.Tickets]: '',
+                    [Tabs.Customers]:
+                        viewType === ViewType.CustomerList ? searchTerm : '',
+                    [Tabs.All]: viewType === ViewType.All ? searchTerm : '',
+                })
+            } else {
+                setLastSearchQueries({
+                    ...lastSearchQueries,
+                    [Tabs.Customers]: searchTerm,
+                })
+            }
+            if (isSearchWithHighlights) {
+                const typedResults = getTypedHighlightResults(
+                    data.data as
+                        | TicketWithHighlightsResponse[]
+                        | CustomerWithHighlightsResponse[],
+                    ViewType.CustomerList
+                )
+                dispatchResultsWithHighlightsAction(
+                    customersWithHighlightsLoadedAction(
+                        typedResults,
+                        viewType,
+                        cursor
+                    )
+                )
+            } else {
+                setCustomers((tickets) =>
+                    cursor
+                        ? ([...tickets, ...data.data] as PickedCustomer[])
+                        : (data.data as PickedCustomer[])
+                )
+            }
+
+            setCustomersSearchMeta(data.meta)
+        },
+        [isSearchWithHighlights, lastSearchQueries, searchRank]
     )
 
-    const selectedItemUrl = useMemo(
-        () =>
-            !selectedItem
-                ? undefined
-                : searchItemsType === ViewType.CustomerList
-                ? `/app/customer/${selectedItem.id}`
-                : `/app/ticket/${selectedItem.id}`,
-        [searchItemsType, selectedItem]
+    const handleTicketSearchResult = useCallback(
+        (
+            data: ApiListResponseCursorPagination<
+                Ticket[] | TicketWithHighlightsResponse[]
+            >,
+            viewType: ViewType.All | ViewType.TicketList,
+            searchTerm: string,
+            cursor?: string
+        ) => {
+            searchRank.registerResultsResponse({
+                responseTime: Date.now(),
+                numberOfResults: data.data.length,
+                searchEngine: SearchEngine.ES,
+            })
+            if (isSearchWithHighlights) {
+                setLastSearchQueries({
+                    [Tabs.Customers]: '',
+                    [Tabs.Tickets]:
+                        viewType === ViewType.TicketList ? searchTerm : '',
+                    [Tabs.All]: viewType === ViewType.All ? searchTerm : '',
+                })
+            } else {
+                setLastSearchQueries({
+                    ...lastSearchQueries,
+                    [Tabs.Tickets]: searchTerm,
+                })
+            }
+
+            if (isSearchWithHighlights) {
+                const typedResults = getTypedHighlightResults(
+                    data.data as
+                        | TicketWithHighlightsResponse[]
+                        | CustomerWithHighlightsResponse[],
+                    ViewType.TicketList
+                )
+                dispatchResultsWithHighlightsAction(
+                    ticketsWithHighlightsLoadedAction(
+                        typedResults,
+                        viewType,
+                        cursor
+                    )
+                )
+            } else {
+                setTickets((tickets) =>
+                    cursor
+                        ? ([...tickets, ...data.data] as PickedTicket[])
+                        : (data.data as PickedTicket[])
+                )
+            }
+            setTicketsSearchMeta(data.meta)
+        },
+        [isSearchWithHighlights, lastSearchQueries, searchRank]
     )
 
     const createFetchSearchItems = useCallback(
@@ -161,72 +334,51 @@ export const useSearch = () => {
                     query: searchTerm,
                     requestTime: Date.now(),
                 })
-                let promise
-                const searchEngine = SearchEngine.ES
-
-                if (viewType === ViewType.TicketList) {
-                    promise = searchTickets({
-                        search: searchTerm,
-                        filters: '',
-                        cursor,
-                        cancelToken,
-                        withHighlights: isSearchWithHighlights,
-                    })
-                } else {
-                    promise = searchCustomers({
-                        search: searchTerm,
-                        orderBy: '_score:desc',
-                        cursor,
-                        cancelToken,
-                        withHighlights: isSearchWithHighlights,
-                    })
-                }
-
                 try {
-                    const {data} = await promise
-                    searchRank.registerResultsResponse({
-                        responseTime: Date.now(),
-                        numberOfResults: data.data.length,
-                        searchEngine,
-                    })
-                    setLastSearchQueries({
-                        ...lastSearchQueries,
-                        ...(viewType === ViewType.TicketList
-                            ? {tickets: searchTerm}
-                            : {customers: searchTerm}),
-                    })
-                    if (isSearchWithHighlights) {
-                        const typedResults = getTypedHighlightResults(
-                            data.data as
-                                | TicketWithHighlightsResponse[]
-                                | CustomerWithHighlightsResponse[],
-                            viewType
-                        )
-                        setResultsWithHighlights((results) =>
-                            cursor
-                                ? [...results, ...typedResults]
-                                : typedResults
-                        )
-                    } else if (viewType === ViewType.TicketList) {
-                        setTickets((tickets) =>
-                            cursor
-                                ? ([...tickets, ...data.data] as PickedTicket[])
-                                : (data.data as PickedTicket[])
-                        )
-                    } else if (viewType === ViewType.CustomerList) {
-                        setCustomers((tickets) =>
-                            cursor
-                                ? ([
-                                      ...tickets,
-                                      ...data.data,
-                                  ] as PickedCustomer[])
-                                : (data.data as PickedCustomer[])
-                        )
+                    let ticketPromise
+                    let customerPromise
+                    if (
+                        viewType === ViewType.TicketList ||
+                        viewType === ViewType.All
+                    ) {
+                        ticketPromise = searchTickets({
+                            search: searchTerm,
+                            filters: '',
+                            cursor,
+                            cancelToken,
+                            withHighlights: isSearchWithHighlights,
+                        })
+                        const ticketData = await ticketPromise
+                        if (ticketData) {
+                            handleTicketSearchResult(
+                                ticketData?.data,
+                                viewType,
+                                searchTerm,
+                                cursor
+                            )
+                        }
                     }
-                    if (viewType === ViewType.TicketList) {
-                        setTicketsSearchMeta(data.meta)
-                    } else {
-                        setCustomersSearchMeta(data.meta)
+                    if (
+                        viewType === ViewType.CustomerList ||
+                        viewType === ViewType.All
+                    ) {
+                        customerPromise = searchCustomers({
+                            search: searchTerm,
+                            orderBy: '_score:desc',
+                            cursor,
+                            cancelToken,
+                            withHighlights: isSearchWithHighlights,
+                        })
+                        const customerData = await customerPromise
+
+                        if (customerData) {
+                            handleCustomerSearchResult(
+                                customerData?.data,
+                                viewType,
+                                searchTerm,
+                                cursor
+                            )
+                        }
                     }
                 } catch (e) {
                     if (!axios.isCancel(e)) {
@@ -244,7 +396,13 @@ export const useSearch = () => {
                     }
                 }
             },
-        [searchRank, isSearchWithHighlights, lastSearchQueries, dispatch]
+        [
+            searchRank,
+            isSearchWithHighlights,
+            handleCustomerSearchResult,
+            handleTicketSearchResult,
+            dispatch,
+        ]
     )
 
     const [cancellableFetchSearchItems, cancelSearch] = useCancellableRequest(
@@ -277,8 +435,8 @@ export const useSearch = () => {
         hasSearched && setHasSearched(false)
         !_isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
         !_isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
-        setSearchItemsType(ViewType.TicketList)
-        setLastSearchQueries({customers: '', tickets: ''})
+        setSearchItemsType(defaultSearchItemsType)
+        setLastSearchQueries({customers: '', tickets: '', all: ''})
         cancelSearch()
         searchRank.endScenario()
         resetSelectedIndex()
@@ -352,6 +510,8 @@ export const useSearch = () => {
                         ? lastSearchQueries[Tabs.Customers]
                         : searchQuery
                 void fetchSearchItems(query, ViewType.TicketList)
+            } else if (searchItemsType === ViewType.All) {
+                void fetchSearchItems(searchQuery, ViewType.All)
             }
         }
     }, [
@@ -366,68 +526,82 @@ export const useSearch = () => {
         nextCursor,
     ])
 
-    const searchCallback = async (
-        event: KeyboardEvent,
-        logRecentlyAccessedSegmentEvent: (
-            type: 'spotlight-ticket' | 'spotlight-customer'
-        ) => void
-    ) => {
-        if (selectedItemUrl) {
-            logRecentlyAccessedSegmentEvent(
-                searchItemsType === ViewType.CustomerList
-                    ? 'spotlight-customer'
-                    : 'spotlight-ticket'
-            )
-            if ((isMacOs && event.metaKey) || (!isMacOs && event.ctrlKey)) {
-                window.open(selectedItemUrl, '_blank', 'noopener')
+    const searchCallback = useCallback(
+        async (
+            event: KeyboardEvent,
+            logRecentlyAccessedSegmentEvent: (
+                type: 'spotlight-ticket' | 'spotlight-customer'
+            ) => void
+        ) => {
+            if (selectedItem) {
+                const selectedItemUrl = getSelectedItemUrl(selectedItem)
+                logRecentlyAccessedSegmentEvent(
+                    isCustomer(selectedItem)
+                        ? 'spotlight-customer'
+                        : 'spotlight-ticket'
+                )
+                if ((isMacOs && event.metaKey) || (!isMacOs && event.ctrlKey)) {
+                    window.open(selectedItemUrl, '_blank', 'noopener')
+                    return
+                }
+
+                history.push(selectedItemUrl)
                 return
             }
 
-            history.push(selectedItemUrl)
-            return
-        }
-
-        if (
-            searchQuery &&
-            ((searchItemsType === ViewType.CustomerList &&
-                lastSearchQueries.customers !== searchQuery) ||
-                (searchItemsType === ViewType.TicketList &&
-                    lastSearchQueries.tickets !== searchQuery) ||
-                !hasSearched)
-        ) {
-            await delayedFetchSearchItems(searchQuery, searchItemsType)
-            setHasSearched(true)
-        }
-    }
+            if (
+                searchQuery &&
+                ((searchItemsType === ViewType.CustomerList &&
+                    lastSearchQueries[Tabs.Customers] !== searchQuery) ||
+                    (searchItemsType === ViewType.TicketList &&
+                        lastSearchQueries[Tabs.Tickets] !== searchQuery) ||
+                    (searchItemsType === ViewType.All &&
+                        lastSearchQueries[Tabs.All] !== searchQuery) ||
+                    !hasSearched)
+            ) {
+                await delayedFetchSearchItems(searchQuery, searchItemsType)
+                setHasSearched(true)
+            }
+        },
+        [
+            delayedFetchSearchItems,
+            hasSearched,
+            lastSearchQueries,
+            searchItemsType,
+            searchQuery,
+            selectedItem,
+        ]
+    )
 
     const handleLoadMore = useCallback(async () => {
-        await fetchMoreSearchItems(searchQuery!, searchItemsType, nextCursor)
+        if (searchQuery) {
+            await fetchMoreSearchItems(searchQuery, searchItemsType, nextCursor)
+        }
     }, [fetchMoreSearchItems, searchQuery, searchItemsType, nextCursor])
 
     return {
-        isLoading,
-        isFetchingMore,
-        fetchSearchItems,
-        searchItemsType,
-        handleSearchInput,
-        resetSearch,
-        searchRank,
-        searchQuery,
-        previousIndex,
-        nextIndex,
-        selectedIndex,
-        isFooterClean,
-        tickets,
         customers,
-        resultsWithHighlights,
-        recentTickets,
-        recentCustomers,
+        fetchSearchItems,
+        handleLoadMore,
+        handleSearchInput,
         hasSearched,
+        isFetchingMore,
+        isFooterClean,
+        isLoading,
         nextCursor,
+        nextIndex,
+        previousIndex,
+        recentCustomers,
+        recentTickets,
+        resetSearch,
+        resultsWithHighlights,
+        searchCallback,
+        searchItemsType,
+        searchQuery,
+        searchRank,
+        selectedIndex,
         setSearchItemsType,
         setSelectedIndex,
-        searchCallback,
-        handleLoadMore,
-        isSearchWithHighlights,
+        tickets,
     }
 }

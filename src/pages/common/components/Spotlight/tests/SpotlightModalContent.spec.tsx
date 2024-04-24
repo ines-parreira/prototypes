@@ -1,5 +1,10 @@
-import {render} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {
+    CUSTOMERS_LABEL,
+    TICKETS_LABEL,
+} from 'pages/common/components/Spotlight/constants'
 import {CustomerWithHighlights, TicketWithHighlights} from 'models/search/types'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import {customer} from 'fixtures/customer'
@@ -8,7 +13,11 @@ import SpotlightTicketRow, {
 } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {ViewType} from 'models/view/types'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
-import {SpotlightModalContent} from 'pages/common/components/Spotlight/SpotlightModalContent'
+import {
+    MORE_RESULTS_LABEL,
+    RECENTLY_ACCESSED_LABEL,
+    SpotlightModalContent,
+} from 'pages/common/components/Spotlight/SpotlightModalContent'
 import {ticket} from 'fixtures/ticket'
 import {assumeMock} from 'utils/testing'
 
@@ -46,6 +55,39 @@ describe('<SpotlightModalContent />', () => {
         selectedIndex: 0,
         hasSearched: true,
         logRecentlyAccessedSegmentEvent: jest.fn(),
+        onTabChange: jest.fn(),
+    }
+    const highlightedContent = '<em>some Highlighted text</em>'
+    const ticketWithHighlights: TicketWithHighlights = {
+        type: 'Ticket',
+        entity: ticket as PickedTicket,
+        highlights: {
+            id: [],
+            subject: [],
+            messages: {
+                body: [highlightedContent],
+                from: {
+                    name: [highlightedContent],
+                    address: [highlightedContent],
+                },
+                to: {
+                    name: [highlightedContent],
+                    address: [highlightedContent],
+                },
+            },
+        },
+    }
+    const customerWithHighlights: CustomerWithHighlights = {
+        type: 'Customer',
+        entity: customer,
+        highlights: {
+            channels: {
+                address: [highlightedContent],
+            },
+            name: [highlightedContent],
+            email: [highlightedContent],
+            order_ids: [highlightedContent],
+        },
     }
 
     beforeEach(() => {
@@ -72,26 +114,6 @@ describe('<SpotlightModalContent />', () => {
     })
 
     it('should render tickets with highlights', () => {
-        const highlightedContent = '<em>some Highlighted text</em>'
-        const ticketWithHighlights: TicketWithHighlights = {
-            type: 'Ticket',
-            entity: ticket as PickedTicket,
-            highlights: {
-                id: [],
-                subject: [],
-                messages: {
-                    body: [highlightedContent],
-                    from: {
-                        name: [highlightedContent],
-                        address: [highlightedContent],
-                    },
-                    to: {
-                        name: [highlightedContent],
-                        address: [highlightedContent],
-                    },
-                },
-            },
-        }
         const props = {
             ...defaultProps,
             searchItemsType: ViewType.TicketList,
@@ -99,7 +121,9 @@ describe('<SpotlightModalContent />', () => {
             isSearchWithHighlights: true,
         }
 
-        render(<SpotlightModalContent {...props} />)
+        render(
+            <SpotlightModalContent {...props} isSearchWithHighlights={true} />
+        )
 
         expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -129,19 +153,6 @@ describe('<SpotlightModalContent />', () => {
     })
 
     it('should render customers with highlights', () => {
-        const highlightedContent = '<em>some Highlighted text</em>'
-        const customerWithHighlights: CustomerWithHighlights = {
-            type: 'Customer',
-            entity: customer,
-            highlights: {
-                channels: {
-                    address: [highlightedContent],
-                },
-                name: [highlightedContent],
-                email: [highlightedContent],
-                order_ids: [highlightedContent],
-            },
-        }
         const props = {
             ...defaultProps,
             searchItemsType: ViewType.CustomerList,
@@ -158,5 +169,89 @@ describe('<SpotlightModalContent />', () => {
             }),
             {}
         )
+    })
+
+    it('should render tickets and customers in Federated Search', async () => {
+        const props = {
+            ...defaultProps,
+            data: undefined,
+            searchItemsType: ViewType.All,
+            resultsWithHighlights: [
+                ticketWithHighlights,
+                customerWithHighlights,
+            ],
+            isSearchWithHighlights: true,
+        }
+        const {getByText} = render(<SpotlightModalContent {...props} />)
+
+        await waitFor(() => {
+            expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: ticketWithHighlights.entity,
+                    highlights: ticketWithHighlights.highlights,
+                }),
+                {}
+            )
+            expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: customerWithHighlights.entity,
+                    highlights: customerWithHighlights.highlights,
+                }),
+                {}
+            )
+            expect(getByText(TICKETS_LABEL)).toBeInTheDocument()
+            expect(getByText(CUSTOMERS_LABEL)).toBeInTheDocument()
+        })
+    })
+
+    it('should render recent tickets and customers in Federated Search', async () => {
+        const props = {
+            ...defaultProps,
+            data: undefined,
+            searchItemsType: ViewType.All,
+            recentTickets: [ticketWithHighlights.entity],
+            recentCustomers: [customerWithHighlights.entity],
+            isSearchWithHighlights: true,
+            hasSearched: false,
+        }
+        const {getByText} = render(<SpotlightModalContent {...props} />)
+
+        await waitFor(() => {
+            expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: ticketWithHighlights.entity,
+                }),
+                {}
+            )
+            expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    item: customerWithHighlights.entity,
+                }),
+                {}
+            )
+            expect(getByText(RECENTLY_ACCESSED_LABEL)).toBeInTheDocument()
+        })
+    })
+
+    it('should allow switching to specific tabs from Federated Search', async () => {
+        const onTabChange = jest.fn()
+        const props = {
+            ...defaultProps,
+            searchItemsType: ViewType.All,
+            resultsWithHighlights: [
+                ticketWithHighlights,
+                customerWithHighlights,
+            ],
+            isSearchWithHighlights: true,
+            onTabChange,
+        }
+        render(<SpotlightModalContent {...props} />)
+
+        const moreTickets = await screen.findAllByText(MORE_RESULTS_LABEL)
+        if (moreTickets) {
+            userEvent.click(moreTickets[0])
+        }
+
+        expect(onTabChange).toHaveBeenCalled()
     })
 })

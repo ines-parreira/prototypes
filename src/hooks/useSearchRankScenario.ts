@@ -13,6 +13,7 @@ export enum SearchRankSource {
     TicketsView = 'tickets_view',
     SpotlightCustomer = 'spotlight_customer',
     SpotlightTicket = 'spotlight_ticket',
+    SpotlightAll = 'spotlight_all',
 }
 
 export type SearchRankRequest = {

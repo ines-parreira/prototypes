@@ -5,7 +5,6 @@ import React, {
     MouseEvent,
     useCallback,
     useEffect,
-    useMemo,
     useRef,
 } from 'react'
 import {useLocation} from 'react-router-dom'
@@ -20,6 +19,10 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import Search from 'pages/common/components/Search'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
+import {
+    CUSTOMERS_LABEL,
+    TICKETS_LABEL,
+} from 'pages/common/components/Spotlight/constants'
 
 import {SpotlightModalContent} from 'pages/common/components/Spotlight/SpotlightModalContent'
 import {Tabs, useSearch} from 'pages/common/components/Spotlight/useSearch'
@@ -33,52 +36,81 @@ import css from './SpotlightModal.less'
 type Props = {
     isOpen: boolean
     onCloseModal: () => void
+    isSearchWithHighlights: boolean
 }
 
+export const FEDERATED_SEARCH_TAB_LABEL = 'All'
+export const TICKETS_ADVANCED_SEARCH_PATH = '/app/tickets/search'
+export const CUSTOMERS_ADVANCED_SEARCH_PATH = '/app/customers/search'
+
 const navigatorTabs = [
-    {label: 'Tickets', value: Tabs.Tickets},
-    {label: 'Customers', value: Tabs.Customers},
+    {label: TICKETS_LABEL, value: Tabs.Tickets},
+    {label: CUSTOMERS_LABEL, value: Tabs.Customers},
 ]
 
-const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
+const navigatorTabsWithFederatedSearch = [
+    {label: FEDERATED_SEARCH_TAB_LABEL, value: Tabs.All},
+    {label: TICKETS_LABEL, value: Tabs.Tickets},
+    {label: CUSTOMERS_LABEL, value: Tabs.Customers},
+]
+
+const viewToTabMap: Record<ViewType, Tabs> = {
+    [ViewType.All]: Tabs.All,
+    [ViewType.TicketList]: Tabs.Tickets,
+    [ViewType.CustomerList]: Tabs.Customers,
+}
+
+const viewToAdvancedSearchPath: Record<
+    ViewType.TicketList | ViewType.CustomerList,
+    string
+> = {
+    [ViewType.TicketList]: TICKETS_ADVANCED_SEARCH_PATH,
+    [ViewType.CustomerList]: CUSTOMERS_ADVANCED_SEARCH_PATH,
+}
+
+const SpotlightModal = ({
+    isOpen,
+    onCloseModal,
+    isSearchWithHighlights,
+}: Props) => {
     const {pathname} = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
 
-    const search = useSearch()
+    const search = useSearch(isSearchWithHighlights)
     const {
         searchItemsType,
         handleSearchInput,
-        resetSearch,
-        searchRank,
-        searchQuery,
-        previousIndex,
-        nextIndex,
-        isFooterClean,
         hasSearched,
+        isFooterClean,
+        nextIndex,
+        previousIndex,
+        resetSearch,
+        searchCallback,
+        searchQuery,
+        searchRank,
         setSearchItemsType,
         setSelectedIndex,
-        searchCallback,
     } = search
 
     const goToAdvancedSearch = useCallback(() => {
         onCloseModal()
 
-        const advancedSearchPathname =
-            searchItemsType === ViewType.CustomerList
-                ? '/app/customers/search'
-                : '/app/tickets/search'
+        if (searchItemsType !== ViewType.All) {
+            const advancedSearchPathname =
+                viewToAdvancedSearchPath[searchItemsType]
 
-        history.push({
-            pathname: advancedSearchPathname,
-            ...(searchQuery && {
-                search: stringify({
-                    q: searchQuery,
+            history.push({
+                pathname: advancedSearchPathname,
+                ...(searchQuery && {
+                    search: stringify({
+                        q: searchQuery,
+                    }),
                 }),
-            }),
-        })
+            })
+        }
     }, [searchItemsType, onCloseModal, searchQuery])
 
     useEffect(() => {
@@ -129,7 +161,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         }
     }
 
-    const handleTabChange = (tab: Tabs) => {
+    const handleTabChange = (tab: string) => {
         searchRank.endScenario()
         if (tab === Tabs.Customers) {
             setSearchItemsType(ViewType.CustomerList)
@@ -137,16 +169,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         } else if (tab === Tabs.Tickets) {
             setSearchItemsType(ViewType.TicketList)
             logEvent(SegmentEvent.GlobalSearchTicketTabClick)
+        } else if (tab === Tabs.All) {
+            setSearchItemsType(ViewType.All)
+            logEvent(SegmentEvent.GlobalSearchAllTabClick)
         }
     }
-
-    const activeTab: string = useMemo(
-        () =>
-            searchItemsType === ViewType.TicketList
-                ? Tabs.Tickets
-                : Tabs.Customers,
-        [searchItemsType]
-    )
 
     const handleHover = useCallback(
         (e: MouseEvent) => {
@@ -172,6 +199,8 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
         [hasSearched, currentUser]
     )
 
+    const hasAdvancedSearch = searchItemsType !== ViewType.All
+
     return (
         <Modal
             isOpen={isOpen}
@@ -195,15 +224,21 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 autoFocus
             />
             <TabNavigator
-                tabs={navigatorTabs}
-                activeTab={activeTab}
-                onTabChange={handleTabChange as (tab: string) => void}
+                tabs={
+                    isSearchWithHighlights
+                        ? navigatorTabsWithFederatedSearch
+                        : navigatorTabs
+                }
+                activeTab={viewToTabMap[searchItemsType]}
+                onTabChange={handleTabChange}
                 className={css.tabNavigator}
             />
             <ModalBody className={css.modalBody} ref={modalBodyRef}>
                 <SpotlightModalContent
                     {...search}
+                    isSearchWithHighlights={isSearchWithHighlights}
                     handleHover={handleHover}
+                    onTabChange={handleTabChange}
                     onCloseModal={onCloseModal}
                     modalBodyRef={modalBodyRef}
                     goToAdvancedSearch={goToAdvancedSearch}
@@ -237,23 +272,27 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         {`${isMacOs ? '⌘' : 'ctrl'} + ↩ Open in a new tab`}
                     </ShortcutIcon>
                 </div>
-                <Button
-                    intent="secondary"
-                    fillStyle="ghost"
-                    size="small"
-                    onClick={() => {
-                        goToAdvancedSearch()
-                        logEvent(SegmentEvent.GlobalSearchAdvancedButtonClick)
-                    }}
-                >
-                    <span>Advanced Search</span>
-                    <ShortcutIcon className={css.advancedShortcut}>
-                        ⇧
-                    </ShortcutIcon>
-                    <ShortcutIcon className={css.advancedShortcut}>
-                        ↩
-                    </ShortcutIcon>
-                </Button>
+                {hasAdvancedSearch && (
+                    <Button
+                        intent="secondary"
+                        fillStyle="ghost"
+                        size="small"
+                        onClick={() => {
+                            goToAdvancedSearch()
+                            logEvent(
+                                SegmentEvent.GlobalSearchAdvancedButtonClick
+                            )
+                        }}
+                    >
+                        <span>Advanced Search</span>
+                        <ShortcutIcon className={css.advancedShortcut}>
+                            ⇧
+                        </ShortcutIcon>
+                        <ShortcutIcon className={css.advancedShortcut}>
+                            ↩
+                        </ShortcutIcon>
+                    </Button>
+                )}
             </ModalFooter>
         </Modal>
     )

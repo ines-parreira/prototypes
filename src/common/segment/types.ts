@@ -92,6 +92,7 @@ export enum SegmentEvent {
     GlobalSearchOpenButtonClick = 'search-open-button-click',
     GlobalSearchOpenShortcut = 'search-open-shortcut',
     GlobalSearchTicketTabClick = 'ticket-tab-click',
+    GlobalSearchAllTabClick = 'all-tab-click',
     GrammarlyEnabled = 'grammarly-enabled',
     HelpCenterArticleRowClicked = 'help-center/articles-view/article-row-clicked',
     HelpCenterArticleRowSettingsClicked = 'help-center/articles-view/article-row-settings-clicked',

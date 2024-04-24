@@ -1,8 +1,7 @@
+import {KeyboardEvent} from 'react'
 import {act} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
-import LD from 'launchdarkly-react-client-sdk'
 import {ticket} from 'fixtures/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {customer} from 'fixtures/customer'
 import {searchCustomers} from 'models/customer/resources'
 import {searchTickets} from 'models/ticket/resources'
@@ -36,12 +35,7 @@ describe('useSearch', () => {
         entity: ticket,
         highlights: {},
     }
-
-    beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.SearchWithHighlights]: true,
-        }))
-    })
+    const isSearchWithHighlights = true
 
     it('should return fetched customers with highlights callback', async () => {
         searchCustomersMock.mockResolvedValue({
@@ -52,7 +46,7 @@ describe('useSearch', () => {
                 uri: '',
             },
         } as any)
-        const {result} = renderHook(() => useSearch())
+        const {result} = renderHook(() => useSearch(isSearchWithHighlights))
         await act(async () => {
             await result.current.fetchSearchItems('john', ViewType.CustomerList)
         })
@@ -71,13 +65,43 @@ describe('useSearch', () => {
                 uri: '',
             },
         } as any)
-        const {result} = renderHook(() => useSearch())
+        const {result} = renderHook(() => useSearch(isSearchWithHighlights))
         await act(async () => {
             await result.current.fetchSearchItems('john', ViewType.TicketList)
         })
 
         expect(result.current.resultsWithHighlights).toEqual([
             {...ticketWithHighlights, type: 'Ticket'},
+        ])
+    })
+
+    it('should update state after fetching tickets with highlights in federated search', async () => {
+        searchTicketsMock.mockResolvedValue({
+            data: {
+                data: [ticketWithHighlights],
+                meta: {next_cursor: '', prev_cursor: null},
+                object: '',
+                uri: '',
+            },
+        } as any)
+        searchCustomersMock.mockResolvedValue({
+            data: {
+                data: [customerWithHighlights],
+                meta: {next_cursor: '', prev_cursor: null},
+                object: '',
+                uri: '',
+            },
+        } as any)
+
+        const {result} = renderHook(() => useSearch(isSearchWithHighlights))
+        await act(async () => {
+            result.current.handleSearchInput('some query')
+            await result.current.searchCallback({} as KeyboardEvent, jest.fn())
+        })
+
+        expect(result.current.resultsWithHighlights).toEqual([
+            {...ticketWithHighlights, type: 'Ticket'},
+            {...customerWithHighlights, type: 'Customer'},
         ])
     })
 })

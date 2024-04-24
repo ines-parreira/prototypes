@@ -79,6 +79,7 @@ const TabNavigator = ({
                         onFocus={() => {
                             onTabChange(tab.value)
                         }}
+                        role="tab"
                     >
                         <span className={css.tabLabel}>{tab.label}</span>
                     </div>

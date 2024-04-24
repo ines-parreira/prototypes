@@ -84,7 +84,7 @@ describe('<SpotlightScrollArea/>', () => {
     it('should call loadMore when end area is reached with no data', () => {
         const {getByText} = render(
             <SpotlightScrollArea
-                {...{...minProps, data: undefined}}
+                {...{...minProps, data: []}}
                 canLoadMore={true}
             />
         )

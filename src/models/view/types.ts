@@ -11,6 +11,7 @@ export enum ViewCategory {
 }
 
 export enum ViewType {
+    All = 'all',
     TicketList = 'ticket-list',
     CustomerList = 'customer-list',
 }
