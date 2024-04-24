@@ -117,7 +117,7 @@ export const buildWorkflowVariableFromNode = (
             },
         } = node
         return {
-            name: formatVariableName(text.length > 0 ? text : 'Message'),
+            name: formatVariableName(text.length > 0 ? text : 'Text reply'),
             value: `steps_state.${node.id}.content.text`,
             nodeType: 'text_reply',
             type: 'string',
@@ -142,7 +142,9 @@ export const buildWorkflowVariableFromNode = (
         } = node
         return {
             nodeType: 'order_selection',
-            name: formatVariableName(text.length > 0 ? text : 'Message'),
+            name: formatVariableName(
+                text.length > 0 ? text : 'Order selection'
+            ),
             variables: [
                 {
                     name: 'Order id',
@@ -443,7 +445,7 @@ export const buildWorkflowVariableFromNode = (
             },
         } = node
         return {
-            name: formatVariableName(text.length > 0 ? text : 'Message'),
+            name: formatVariableName(text.length > 0 ? text : 'File upload'),
             value: `steps_state.${node.id}.attachments`,
             type: 'array',
             nodeType: 'file_upload',
