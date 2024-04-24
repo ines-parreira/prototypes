@@ -6,5 +6,6 @@ export const uniqueDiscountOffers: UniqueDiscountOffer[] = [
         type: 'fixed',
         prefix: 'Code1',
         store_integration_id: '5',
+        summary: '',
     },
 ]

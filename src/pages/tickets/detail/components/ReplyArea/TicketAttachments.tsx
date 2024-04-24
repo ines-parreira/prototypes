@@ -1,7 +1,7 @@
 import React, {Component, MouseEvent} from 'react'
 import classnames from 'classnames'
 import Lightbox from 'react-images'
-import type {List} from 'immutable'
+import type {List, Map} from 'immutable'
 
 import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
 import {fileIconFromContentType} from 'pages/tickets/common/utils'
@@ -82,6 +82,10 @@ export default class TicketAttachments extends Component<Props, State> {
             (attachment.get('content_type') as string) ===
                 ShopifyProductCardContentType
         )
+    }
+
+    isUniqueDiscountOffer = (attachment: Attachment) => {
+        return attachment.get('content_type') === 'application/discountOffer'
     }
 
     setImagePreview = (attachment: Attachment) => {
@@ -219,6 +223,38 @@ export default class TicketAttachments extends Component<Props, State> {
         )
     }
 
+    _renderUniqueDiscountOfferAttachment(attachment: Attachment, idx: number) {
+        return (
+            <div className={classnames(css.item)}>
+                <div className={css.itemMeta}>
+                    <div
+                        className={`${css.metaName} ${css.discountOfferMetaName}`}
+                    >
+                        {attachment.get('name')}
+                    </div>
+                    <br />
+                    <div>{attachment.getIn(['extra', 'summary'])}</div>
+
+                    {this.renderRemoveIcon(idx)}
+                </div>
+            </div>
+        )
+    }
+
+    renderAttachment = (
+        attachment: Attachment,
+        index: number,
+        images: List<any>
+    ) => {
+        if (this.isProductCard(attachment)) {
+            return this._renderProductAttachment(attachment, index)
+        } else if (this.isUniqueDiscountOffer(attachment)) {
+            return this._renderUniqueDiscountOfferAttachment(attachment, index)
+        }
+
+        return this._renderDefaultAttachment(attachment, index, images)
+    }
+
     render() {
         const {attachments, className} = this.props
         const {currentImage, isLightboxOpen} = this.state
@@ -250,16 +286,11 @@ export default class TicketAttachments extends Component<Props, State> {
                     (attachment: Attachment, idx) => {
                         return (
                             <div key={idx} className={css.attachmentContainer}>
-                                {this.isProductCard(attachment)
-                                    ? this._renderProductAttachment(
-                                          attachment,
-                                          idx!
-                                      )
-                                    : this._renderDefaultAttachment(
-                                          attachment,
-                                          idx!,
-                                          images
-                                      )}
+                                {this.renderAttachment(
+                                    attachment,
+                                    idx!,
+                                    images
+                                )}
                             </div>
                         )
                     }

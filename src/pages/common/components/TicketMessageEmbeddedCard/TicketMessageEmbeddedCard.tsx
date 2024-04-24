@@ -3,7 +3,7 @@ import {Col, Row} from 'reactstrap'
 import classnames from 'classnames'
 import {fromJS, List} from 'immutable'
 
-import {Attachment} from 'common/types'
+import {GenericAttachment} from 'common/types'
 import {Actor, Meta, Source} from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
@@ -25,7 +25,7 @@ type Props = {
     meta?: Meta
     messageCreatedDatetime?: string
     textBelowAvatar?: boolean
-    attachments?: List<Attachment>
+    attachments?: List<GenericAttachment>
 }
 
 export default function TicketMessageEmbeddedCard({

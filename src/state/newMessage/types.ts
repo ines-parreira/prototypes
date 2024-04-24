@@ -2,7 +2,7 @@ import {List, Map} from 'immutable'
 import {ContentState, SelectionState} from 'draft-js'
 
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {Attachment} from 'common/types'
+import {GenericAttachment} from 'common/types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {Macro} from 'models/macro/types'
 import {MacroAction} from 'models/macroAction/types'
@@ -37,7 +37,7 @@ export type NewMessage = {
     body_html: string
     stripped_text?: string
     stripped_html?: string
-    attachments: Attachment[]
+    attachments: GenericAttachment[]
     actions?: List<Map<any, any>>
     public?: boolean
     macros: {id: number}[]
@@ -80,7 +80,7 @@ type MessageSource = {
 
 export type Message = {
     actions: Maybe<MacroAction[]>
-    attachments: Attachment[]
+    attachments: GenericAttachment[]
     body_html: string
     body_text: string
     channel: TicketMessageSourceType

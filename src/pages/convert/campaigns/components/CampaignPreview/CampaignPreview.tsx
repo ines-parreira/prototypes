@@ -8,6 +8,7 @@ import {
 } from 'models/integration/types'
 
 import CustomizedChatLauncher from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/CustomizedChatLauncher'
+import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {CampaignProduct} from '../../types/CampaignProduct'
 import {ChatCampaign} from './components/ChatCampaign'
 import css from './CampaignPreview.less'
@@ -24,6 +25,7 @@ type Props = {
     translatedTexts: Record<string, string>
     position: GorgiasChatPosition
     products?: CampaignProduct[]
+    discountOffers?: CampaignDiscountOffer[]
     launcher?: {
         type: GorgiasChatLauncherType
         label?: string
@@ -44,6 +46,7 @@ const CampaignPreview = ({
     translatedTexts,
     position,
     products = [],
+    discountOffers = [],
     shouldHideReplyInput,
     onCampaignContentChange,
 }: Props) => (
@@ -61,6 +64,7 @@ const CampaignPreview = ({
             html={html}
             mainColor={mainColor}
             products={products}
+            discountOffers={discountOffers}
             shouldHideReplyInput={shouldHideReplyInput}
             translatedTexts={translatedTexts}
             onCampaignContentChange={onCampaignContentChange}

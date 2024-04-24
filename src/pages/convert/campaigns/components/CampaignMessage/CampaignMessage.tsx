@@ -4,7 +4,13 @@ import {List} from 'immutable'
 
 import {EditorState} from 'draft-js'
 
-import {UploadType} from 'common/types'
+import {
+    AttachmentType,
+    ProductAttachment,
+    UploadType,
+    attachmentIsDiscountOffer,
+    attachmentIsProduct,
+} from 'common/types'
 import {User} from 'config/types/user'
 import {AgentLabel} from 'pages/common/utils/labels'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -23,6 +29,8 @@ import {Option, Value} from 'pages/common/forms/SelectField/types'
 
 import RichField from 'pages/common/forms/RichField/RichField'
 import {useIsConvertUniqueDiscountCodesEnabled} from 'pages/convert/common/hooks/useIsConvertUniqueDiscountCodesEnabled'
+import useAppSelector from 'hooks/useAppSelector'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {useIsAllowedToAddDiscountCode} from '../../hooks/useIsAllowedToAddDiscountCode'
 
 import css from './CampaignMessage.less'
@@ -68,6 +76,8 @@ export const CampaignMessage = memo(
 
         const isConvertUniqueDiscountCodesEnabled =
             useIsConvertUniqueDiscountCodesEnabled()
+
+        const messageAttachments = useAppSelector(getNewMessageAttachments)
 
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
             number | null
@@ -118,6 +128,16 @@ export const CampaignMessage = memo(
             [html, text]
         )
 
+        // Discount offer can be attached if it is convert subscriber and there is no other offer attached
+        const anyDiscountOfferAttached = (
+            messageAttachments.toJS() as AttachmentType[]
+        ).find((att) => attachmentIsDiscountOffer(att))
+
+        const supportsDiscountOffer =
+            isConvertUniqueDiscountCodesEnabled &&
+            isConvertSubscriber &&
+            !anyDiscountOfferAttached
+
         useEffect(() => {
             if (attachments.isEmpty() && showWarningOutOfStock) {
                 // if no products and warning is visible, hide it
@@ -127,11 +147,25 @@ export const CampaignMessage = memo(
             }
             if (attachments.isEmpty()) return
 
-            const product = attachments.first() as Map<any, any>
-            const productId = (product.get('extra') as Map<any, any>).get(
-                'product_id'
+            const attachmentsJS: AttachmentType[] = attachments.toJS()
+            const anyAttachmentIsProduct = attachmentsJS.some((att) =>
+                attachmentIsProduct(att)
             )
+            if (!anyAttachmentIsProduct) {
+                if (showWarningOutOfStock) {
+                    setshowWarningOutOfStock(false)
+                    setPreviousFirstProductId(null)
+                }
+                return
+            }
 
+            const product = attachmentsJS.find((att) =>
+                attachmentIsProduct(att)
+            ) as ProductAttachment | undefined
+
+            const productId = product?.extra?.product_id
+
+            if (!productId) return
             // trigger request to API only if first product change
             if (previousFirstProductId === productId) {
                 return
@@ -241,9 +275,7 @@ export const CampaignMessage = memo(
                         isRequired
                         countCharacters={isConvertSubscriber}
                         uploadType={UploadType.PublicAttachment}
-                        supportsDiscountOffer={
-                            isConvertUniqueDiscountCodesEnabled
-                        }
+                        supportsDiscountOffer={supportsDiscountOffer}
                     />
                     <TicketAttachments
                         removable

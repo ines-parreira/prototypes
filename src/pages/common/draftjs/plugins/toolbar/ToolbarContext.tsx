@@ -5,6 +5,7 @@ import {List} from 'immutable'
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
 import {ProductCardDetails} from 'models/integration/types'
+import {DiscountOfferAttachment} from 'common/types'
 import {TooltipTourConfigurationType} from './types'
 
 import {ProductCardAttachment} from './components/AddProductLink'
@@ -23,6 +24,9 @@ export type ToolbarContextType = {
     onInsertDiscountCodeOpen: () => void
     onInsertDiscountCodeAdded: (discount: DiscountCode) => void
     canAddUniqueDiscountOffer: boolean
+    onAddUniqueDiscountOfferAttachment: (
+        discount: DiscountOfferAttachment
+    ) => void
     // AddProductLink
     canAddProductCard: boolean
     canAddProductLink: boolean
@@ -50,6 +54,7 @@ export const ToolbarContext = createContext<ToolbarContextType>({
     onInsertDiscountCodeOpen: _noop,
     onInsertDiscountCodeAdded: _noop,
     canAddProductCard: false,
+    onAddUniqueDiscountOfferAttachment: _noop,
     canAddProductLink: false,
     toolbarTour: undefined,
     disableOutOfStockProducts: false,

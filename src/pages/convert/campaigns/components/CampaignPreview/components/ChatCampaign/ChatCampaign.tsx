@@ -13,11 +13,13 @@ import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/G
 import {FeatureFlagKey} from 'config/featureFlags'
 import useMeasure from 'hooks/useMeasure'
 
+import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import {CAMPAIGN_MAX_HEIGHT} from '../../../../constants/visuals'
 import {CampaignProduct} from '../../../../types/CampaignProduct'
 
 import {ProductCarousel} from '../ProductCarousel'
 
+import {DiscountOfferPreview} from '../DiscountOfferPreview/DiscountOfferPreview'
 import css from './ChatCampaign.less'
 
 type AuthorNameProps = {
@@ -70,6 +72,7 @@ type Props = {
     html: string
     mainColor?: string
     products?: CampaignProduct[]
+    discountOffers?: CampaignDiscountOffer[]
     shouldHideReplyInput?: boolean
     translatedTexts: Record<string, string>
     onCampaignContentChange?: (value: boolean) => void
@@ -83,6 +86,7 @@ export const ChatCampaign = ({
     html,
     mainColor,
     products = [],
+    discountOffers = [],
     shouldHideReplyInput = false,
     translatedTexts,
     onCampaignContentChange,
@@ -179,6 +183,9 @@ export const ChatCampaign = ({
                         mainColor={mainColor}
                     />
                 </div>
+            )}
+            {discountOffers.length > 0 && (
+                <DiscountOfferPreview offer={discountOffers[0]} />
             )}
 
             {!shouldHideReplyInput && (

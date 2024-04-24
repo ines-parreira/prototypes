@@ -3384,6 +3384,7 @@ exports[`RichField should render mutable variable 1`] = `
                             linkEditionEnded={[Function]}
                             linkEditionStarted={[Function]}
                             onAddProductCardAttachment={[Function]}
+                            onAddUniqueDiscountOfferAttachment={[Function]}
                             onClose={[Function]}
                             onInsertDiscountCodeAdded={[Function]}
                             onInsertDiscountCodeOpen={[Function]}

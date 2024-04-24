@@ -22,8 +22,8 @@ import {
     DELETE_DISCOUNT_MODAL_NAME,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
+import {testIds} from 'pages/common/components/UniqueDiscountOfferResults/utils'
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
-import {testIds} from '../utils'
 
 jest.mock('models/convert/discountOffer/queries')
 jest.mock('hooks/useModalManager')

@@ -43,6 +43,7 @@ import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormCon
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
+
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
 import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
@@ -67,6 +68,10 @@ import {CampaignProduct} from '../../types/CampaignProduct'
 
 import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
 import {createTriggerRule} from '../../utils/createTriggerRule'
+import {transformDiscountOfferToAttachment} from '../../utils/transformDiscountOfferToAttachment'
+import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
+import {CampaignDiscountOffer} from '../../types/CampaignDiscountOffer'
+import {transformAttachmentsToDiscountOffers} from '../../utils/transformAttachmentsToDiscountOffers'
 import {CampaignDetailsFormApi, CampaignDetailsFormContext} from './context'
 import {
     CampaigFormConfigurationProvider,
@@ -185,22 +190,9 @@ export const CampaignDetailsForm = ({
                 Array.isArray(campaign.attachments) &&
                 campaign.attachments.length > 0
             ) {
-                const attachments = campaign.attachments.map((attachment) => {
-                    return {
-                        content_type: attachment.contentType,
-                        name: attachment.name,
-                        size: attachment.size,
-                        url: attachment.url,
-                        extra: {
-                            product_id: attachment.extra.product_id,
-                            product_link: attachment.extra.product_link,
-                            price: attachment.extra.price,
-                            featured_image: attachment.url,
-                            variant_name: attachment.extra?.variant_name,
-                            position: attachment.extra?.position,
-                        },
-                    }
-                })
+                const attachments = transformCampaignAttachmentsToDetails(
+                    campaign.attachments
+                )
 
                 void dispatch(
                     setNewMessageForChatCampaign({
@@ -233,6 +225,10 @@ export const CampaignDetailsForm = ({
             currency: shopifyIntegration.getIn(['meta', 'currency']),
         })
     }, [attachments, shopifyIntegration])
+
+    const discountOffers = useMemo<CampaignDiscountOffer[]>(() => {
+        return transformAttachmentsToDiscountOffers(attachments)
+    }, [attachments])
 
     const handleUpdateCampaign = useCallback(
         (key: string, payload: any) => {
@@ -356,22 +352,37 @@ export const CampaignDetailsForm = ({
                     delete draft.language
                 }
 
+                draft.attachments = []
+
                 if (shopifyProducts.length > 0) {
-                    draft.attachments = shopifyProducts.map((product) => {
-                        return transformProductToAttachment(
-                            product,
-                            {
-                                campaignName: trimmedCampaignName,
-                                currency: shopifyIntegration.getIn([
-                                    'meta',
-                                    'currency',
-                                ]),
-                            },
-                            isConvertSubscriber
-                        )
-                    })
-                } else {
-                    draft.attachments = []
+                    const productAttachments = shopifyProducts.map(
+                        (product) => {
+                            return transformProductToAttachment(
+                                product,
+                                {
+                                    campaignName: trimmedCampaignName,
+                                    currency: shopifyIntegration.getIn([
+                                        'meta',
+                                        'currency',
+                                    ]),
+                                },
+                                isConvertSubscriber
+                            )
+                        }
+                    )
+                    draft.attachments = [
+                        ...draft.attachments,
+                        ...productAttachments,
+                    ]
+                }
+                if (discountOffers.length > 0) {
+                    const discountOfferAttachment =
+                        transformDiscountOfferToAttachment(discountOffers[0])
+
+                    draft.attachments = [
+                        ...draft.attachments,
+                        discountOfferAttachment,
+                    ]
                 }
 
                 if (!isEditMode) {
@@ -640,6 +651,7 @@ export const CampaignDetailsForm = ({
                                     }
                                     className={css.campaignPreview}
                                     products={shopifyProducts}
+                                    discountOffers={discountOffers}
                                     html={sanitizeHtmlDefault(
                                         campaignData.message_html || ''
                                     )}

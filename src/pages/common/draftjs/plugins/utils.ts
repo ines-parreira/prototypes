@@ -232,6 +232,7 @@ export const addDiscountCodeLink = (
         undefined,
         entityKey
     )
+
     return EditorState.push(editorState, contentState, 'apply-entity')
 }
 

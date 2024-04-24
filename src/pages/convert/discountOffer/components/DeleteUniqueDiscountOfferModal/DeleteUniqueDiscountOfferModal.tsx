@@ -1,5 +1,6 @@
 import React, {MouseEvent} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
+import {testIds} from 'pages/convert/discountOffer/components/utils'
 import {useAppNode} from 'appNode'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
@@ -7,7 +8,6 @@ import {useModalManager} from 'hooks/useModalManager'
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {DELETE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useDeleteDiscountOffer} from 'pages/convert/discountOffer/hooks/useDeleteDiscountOffer'
-import {testIds} from './utils'
 
 type DeleteUniqueDiscountOfferModalProps = {
     isOpen: boolean

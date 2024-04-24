@@ -1,6 +1,6 @@
 import {useState} from 'react'
 
-import {Attachment} from 'common/types'
+import {GenericAttachment} from 'common/types'
 import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
 import {getBase64} from 'utils/file'
 import useCurrentHelpCenter from './useCurrentHelpCenter'
@@ -9,7 +9,7 @@ export type FileUpload = {
     isTouched: boolean
     payload: File | undefined
     serializedFile: string
-    uploadFile: () => Promise<Attachment | null>
+    uploadFile: () => Promise<GenericAttachment | null>
     changeFile: (payload: File | undefined) => void
     discardFile: () => void
     getFileUploadURL: () => Promise<string | null | undefined>

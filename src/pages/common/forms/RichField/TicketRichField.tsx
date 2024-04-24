@@ -22,6 +22,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {
     addNewMessageDiscountCode,
     addProductCardAttachment,
+    addUniqueDiscountOfferAttachment,
 } from 'state/newMessage/actions'
 import {canAddVideoPlayer} from 'utils'
 import {getIntegrationsByType} from 'state/integrations/selectors'
@@ -131,6 +132,9 @@ const TicketRichField = (
             disableVariantSelection: disableVariantSelection ?? false,
             onAddProductCardAttachment: (attachment) => {
                 dispatch(addProductCardAttachment(ticket, attachment))
+            },
+            onAddUniqueDiscountOfferAttachment: (discount) => {
+                dispatch(addUniqueDiscountOfferAttachment(ticket, discount))
             },
             onInsertProductLinkOpen: () => {
                 logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {

@@ -1,5 +1,5 @@
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {Attachment} from 'common/types'
+import {GenericAttachment} from 'common/types'
 import {getHelpCenterClient} from './index'
 import {GorgiasUIEnv, getEnvironment} from '../../utils/environment'
 import {v4 as uuidv4} from 'uuid'
@@ -41,7 +41,7 @@ const getFileTypeForFirefox = (fileName: string): string => {
 // We don't have access to the file extension when getting file from Clipboard
 // So we have to infer it from the file MIME type
 const getFileExtensionByFileMimeType = (mimeType: string): string => {
-   const mimeMap: Record<string, string> = {
+    const mimeMap: Record<string, string> = {
         'image/gif': '.gif',
         'image/jpeg': '.jpeg',
         'image/jpg': '.jpg',
@@ -62,31 +62,34 @@ const getFileExtensionByFileMimeType = (mimeType: string): string => {
         'text/plain': '.txt',
         'application/rtf': '.rtf',
         'application/msword': '.doc',
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': '.docx',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+            '.docx',
         'application/vnd.ms-excel': '.xls',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': '.xlsx',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            '.xlsx',
         'application/vnd.ms-powerpoint': '.ppt',
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation': '.pptx',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+            '.pptx',
         'application/vnd.oasis.opendocument.spreadsheet': '.ods',
         'text/tab-separated-values': '.tsv',
         'application/vnd.oasis.opendocument.text': '.odt',
         'application/vnd.oasis.opendocument.text-master': '.odm',
         'application/vnd.oasis.opendocument.presentation': '.odp',
         'application/x-rar-compressed': '.rar',
-        'application/zip': '.zip'
-    };
+        'application/zip': '.zip',
+    }
 
-    return mimeMap[mimeType] || '';
+    return mimeMap[mimeType] || ''
 }
 
 export const uploadAttachments = async (
     files: File[],
     channelInfo: ChannelInfo
-): Promise<Attachment[]> => {
+): Promise<GenericAttachment[]> => {
     // 1. generate signed url
     const client = await getHelpCenterClient()
 
-    const uploadAttachment = async (file: File): Promise<Attachment> => {
+    const uploadAttachment = async (file: File): Promise<GenericAttachment> => {
         const fileType = file.type ?? getFileTypeForFirefox(file.name)
         const res = await client.getAttachmentUploadPolicy(
             {},
@@ -94,7 +97,11 @@ export const uploadAttachments = async (
                 channel: channelInfo,
                 file: {
                     size: file.size,
-                    name: file.name || `${uuidv4()}${getFileExtensionByFileMimeType(fileType)}`,
+                    name:
+                        file.name ||
+                        `${uuidv4()}${getFileExtensionByFileMimeType(
+                            fileType
+                        )}`,
                     mimetype: fileType,
                 },
             }
@@ -114,11 +121,11 @@ export const uploadAttachments = async (
         // Post the file to the Google Cloud Storage
         const response = await fetch(url, {
             method: 'POST',
-            body: formdata
-        });
+            body: formdata,
+        })
 
         if (!response.ok) {
-            throw new Error('Failed to upload file');
+            throw new Error('Failed to upload file')
         }
 
         return {

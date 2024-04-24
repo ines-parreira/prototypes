@@ -33,8 +33,9 @@ import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDi
 import {DeleteUniqueDiscountOfferModal} from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
 import IconButton from 'pages/common/components/button/IconButton'
 import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
+
 import css from './UniqueDiscountOfferResults.less'
-import {testIds} from './utils'
+import {computeDiscountOfferSummary, testIds} from './utils'
 
 type OwnProps = {
     integration: Map<string, string>
@@ -142,20 +143,6 @@ export default function UniqueDiscountCodeResults({
         [deleteDiscountModal]
     )
 
-    // TODO: Revisit the summary text
-    const getResultSummary = (offer: UniqueDiscountOffer): React.ReactNode => {
-        switch (offer.type) {
-            case 'fixed':
-                return offer.value
-                    ? `Get ${integration.get('currency')}${offer.value} off`
-                    : ''
-            case 'percentage':
-                return offer.value ? `Get ${offer.value}% off` : ''
-            case 'free_shipping':
-                return 'Get free shipping for this'
-        }
-    }
-
     return (
         <div className={css.discountLineContainer}>
             <div
@@ -250,7 +237,14 @@ export default function UniqueDiscountCodeResults({
                                             )}
                                             action
                                             onClick={(event) => {
-                                                onDiscountClicked(event, result)
+                                                onDiscountClicked(event, {
+                                                    ...result,
+                                                    summary:
+                                                        computeDiscountOfferSummary(
+                                                            result,
+                                                            integration
+                                                        ),
+                                                })
                                             }}
                                         >
                                             <div className={css.legend}>
@@ -258,7 +252,10 @@ export default function UniqueDiscountCodeResults({
                                                     {result.prefix}
                                                 </div>
                                                 <div className={css.subtitle}>
-                                                    {getResultSummary(result)}
+                                                    {computeDiscountOfferSummary(
+                                                        result,
+                                                        integration
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className={css.actions}>

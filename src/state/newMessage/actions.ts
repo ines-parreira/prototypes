@@ -16,7 +16,7 @@ import {
     fetchTicketReplyMacro,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
-import {Attachment} from 'common/types'
+import {DiscountOfferAttachment, GenericAttachment} from 'common/types'
 import {isImmutable, uploadFiles} from 'common/utils'
 import * as ticketConstants from 'state/ticket/constants'
 import {notify} from 'state/notifications/actions'
@@ -54,7 +54,11 @@ import {
 } from 'business/types/ticket'
 import {IntegrationType} from 'models/integration/types'
 import client from 'models/api/resources'
-import {Ticket as TicketResponse, TicketAssignee} from 'models/ticket/types'
+import {
+    Ticket as TicketResponse,
+    TicketAssignee,
+    Attachment,
+} from 'models/ticket/types'
 import {Customer} from 'models/customer/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {SocketEventType} from 'services/socketManager/types'
@@ -111,7 +115,7 @@ import {
 } from './utils'
 
 export const addAttachments =
-    (ticket: Map<any, any>, atts: FileList | Attachment[] | File[]) =>
+    (ticket: Map<any, any>, atts: FileList | GenericAttachment[] | File[]) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -138,12 +142,12 @@ export const addAttachments =
         if (isFacebookComment || isFacebookReviewComment) {
             // We have specific constraints on attachments.
 
-            const attachmentsFiltered: FileList | Attachment[] = Object.values(
-                atts
-            ).filter((att: File | Attachment) => {
-                const type = att.type || (att as Attachment).content_type
-                return type.startsWith('image') || type.startsWith('video')
-            })
+            const attachmentsFiltered: FileList | GenericAttachment[] =
+                Object.values(atts).filter((att: File | GenericAttachment) => {
+                    const type =
+                        att.type || (att as GenericAttachment).content_type
+                    return type.startsWith('image') || type.startsWith('video')
+                })
 
             const previousAtts: List<any> =
                 newMessage.getIn(['newMessage', 'attachments']) || fromJS([])
@@ -179,7 +183,7 @@ export const addAttachments =
         }
 
         return uploadFiles(attachments).then(
-            (resp: Attachment[]) => {
+            (resp: GenericAttachment[]) => {
                 const state = getState()
                 const {ticket: _ticket} = state
 
@@ -212,6 +216,25 @@ export const addAttachments =
 
 export const addProductCardAttachment =
     (ticket: Map<any, any>, attachment: ProductCardAttachment) =>
+    (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+        // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
+    ): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
+        const state = getState()
+        const {ticket: _ticket} = state
+
+        if (ticket.get('id') !== _ticket.get('id')) {
+            return Promise.resolve()
+        }
+
+        dispatch({
+            type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+            resp: [attachment],
+        })
+    }
+export const addUniqueDiscountOfferAttachment =
+    (ticket: Map<any, any>, attachment: DiscountOfferAttachment) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState

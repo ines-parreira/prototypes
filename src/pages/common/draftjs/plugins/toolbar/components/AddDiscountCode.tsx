@@ -21,6 +21,7 @@ import {useModalManager} from 'hooks/useModalManager'
 
 import {DiscountCodeResultsWrapper} from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
+import {AttachmentEnum, DiscountOfferAttachment} from 'common/types'
 import {ActionInjectedProps, ActionName} from '../types'
 import {useToolbarContext} from '../ToolbarContext'
 import {getTooltipTourConfiguration} from '../utils'
@@ -48,6 +49,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         onInsertDiscountCodeAdded,
         shopifyIntegrations,
         toolbarTour,
+        onAddUniqueDiscountOfferAttachment,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedIntegration, setPickedIntegration] = useState(() => {
@@ -120,11 +122,20 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         ]
     )
 
-    // TODO: Implement once unique offer creation is implemented
-    const handleAddUniqueDiscountOffer = (offer: UniqueDiscountOffer) => {
-        // eslint-disable-next-line no-console
-        console.info(offer)
-    }
+    const handleAddUniqueDiscountOffer = useCallback(
+        (offer: UniqueDiscountOffer) => {
+            const offerAttachment: DiscountOfferAttachment = {
+                content_type: AttachmentEnum.DiscountOffer,
+                name: offer.prefix,
+                extra: {
+                    discount_offer_id: offer.id,
+                    summary: offer.summary,
+                },
+            }
+            onAddUniqueDiscountOfferAttachment(offerAttachment)
+        },
+        [onAddUniqueDiscountOfferAttachment]
+    )
 
     const handleAddDiscountCode = useCallback(
         (
@@ -138,10 +149,9 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
             } else if (discountCodeIsUnique(discount)) {
                 handleAddUniqueDiscountOffer(discount)
             }
-            // TODO: Add logic for unique discount code
             setOpen(false)
         },
-        [handleAddGenericDiscountCode]
+        [handleAddGenericDiscountCode, handleAddUniqueDiscountOffer]
     )
 
     const tour = useMemo(() => {

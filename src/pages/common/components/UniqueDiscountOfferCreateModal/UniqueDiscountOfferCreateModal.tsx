@@ -134,23 +134,23 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 }
 
                 if (!inEditMode) {
-                    const offer = await createDiscountOffer([
+                    const offer = (await createDiscountOffer([
                         undefined,
                         discountPayload,
-                    ])
+                    ])) as unknown as UniqueDiscountOffer
 
-                    onSubmit(offer as unknown as UniqueDiscountOffer)
+                    onSubmit(offer)
                 } else {
                     if (!editDiscountOfferParams?.id) return
 
-                    const updated = await updateDiscountOffer([
+                    const updated = (await updateDiscountOffer([
                         undefined,
                         {discount_offer_id: editDiscountOfferParams.id},
                         discountPayload,
-                    ])
+                    ])) as unknown as UniqueDiscountOffer
 
                     if (updated) {
-                        onSubmit(updated as unknown as UniqueDiscountOffer)
+                        onSubmit(updated)
                     }
                 }
             },

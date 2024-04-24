@@ -30,6 +30,7 @@ const ToolbarProvider = ({
     workflowVariables,
     workflowVariablesNodeTypes,
     canAddUniqueDiscountOffer = false,
+    onAddUniqueDiscountOfferAttachment = _noop,
 }: Props) => {
     const toolbarContext: ToolbarContextType = useMemo(
         () => ({
@@ -53,6 +54,7 @@ const ToolbarProvider = ({
             workflowVariables,
             workflowVariablesNodeTypes,
             canAddUniqueDiscountOffer,
+            onAddUniqueDiscountOfferAttachment,
         }),
         [
             canAddVideoPlayer,
@@ -75,6 +77,7 @@ const ToolbarProvider = ({
             workflowVariables,
             workflowVariablesNodeTypes,
             canAddUniqueDiscountOffer,
+            onAddUniqueDiscountOfferAttachment,
         ]
     )
 

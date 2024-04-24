@@ -14,11 +14,11 @@ import {
 } from 'models/convert/discountOffer/queries'
 import {integrationsState} from 'fixtures/integrations'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
+import {testIds} from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
 import {
     UniqueDiscountOfferCreateModal,
     UniqueDiscountOfferCreateModalProps,
 } from '../UniqueDiscountOfferCreateModal'
-import {testIds} from '../utils'
 
 jest.mock('models/convert/discountOffer/queries')
 jest.mock('hooks/useModalManager')

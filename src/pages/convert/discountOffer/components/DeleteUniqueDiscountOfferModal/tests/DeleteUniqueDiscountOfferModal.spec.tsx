@@ -8,8 +8,8 @@ import {useDeleteDiscountOffer} from 'models/convert/discountOffer/queries'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
+import {testIds} from 'pages/convert/discountOffer/components/utils'
 import {DeleteUniqueDiscountOfferModal} from '../DeleteUniqueDiscountOfferModal'
-import {testIds} from '../utils'
 
 jest.mock('models/convert/discountOffer/queries')
 jest.mock('hooks/useModalManager')

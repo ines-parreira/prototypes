@@ -1,13 +1,13 @@
-import {Attachment} from 'common/types'
+import {GenericAttachment} from 'common/types'
 import client from 'models/api/resources'
 
 /**
  * Upload file action meant to be used by another action
  */
 export default function uploadFiles(
-    files: FileList | Array<Attachment> | File[],
+    files: FileList | Array<GenericAttachment> | File[],
     params: Maybe<Record<string, unknown>> = null
-): Promise<Attachment[]> {
+): Promise<GenericAttachment[]> {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {
@@ -16,6 +16,8 @@ export default function uploadFiles(
     }
 
     return client
-        .post<Attachment[]>('/api/upload/', formData, {params: params || {}})
+        .post<GenericAttachment[]>('/api/upload/', formData, {
+            params: params || {},
+        })
         .then((json) => json?.data)
 }
