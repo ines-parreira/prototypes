@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useRef, useState} from 'react'
 import {useParams} from 'react-router-dom'
 
 import {
@@ -8,8 +8,13 @@ import {
 } from 'models/integration/types'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useAppSelector from 'hooks/useAppSelector'
+import SelectInputBox, {
+    SelectInputBoxContext,
+} from 'pages/common/forms/input/SelectInputBox'
+import Dropdown from 'pages/common/components/dropdown/Dropdown'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
+import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
 type Props = {
     value: IvrForwardCall
@@ -17,6 +22,10 @@ type Props = {
 }
 
 const IvrPhoneNumberSelectField = ({value, onChange}: Props): JSX.Element => {
+    const selectRef = useRef(null)
+    const floatingSelectRef = useRef(null)
+    const [isOpen, setIsOpen] = useState(false)
+
     const phoneIntegrations = useAppSelector(
         getIntegrationsByType<PhoneIntegration>(IntegrationType.Phone)
     )
@@ -37,7 +46,7 @@ const IvrPhoneNumberSelectField = ({value, onChange}: Props): JSX.Element => {
 
     const currentlySelectedOption = availableIntegrations.find(
         (integration) => integration.id === value.integration_id
-    )?.id
+    )
 
     const handleChange = useCallback(
         (integrationId) => {
@@ -57,14 +66,37 @@ const IvrPhoneNumberSelectField = ({value, onChange}: Props): JSX.Element => {
         },
         [availableIntegrations, phoneNumbers, onChange]
     )
+
     return (
-        <SelectField
-            placeholder="Select number"
-            onChange={handleChange}
-            options={options}
-            value={currentlySelectedOption}
-            fullWidth
-        />
+        <SelectInputBox
+            onToggle={setIsOpen}
+            label={currentlySelectedOption?.name ?? 'Select phone number'}
+            ref={selectRef}
+            floating={floatingSelectRef}
+        >
+            <SelectInputBoxContext.Consumer>
+                {(context) => (
+                    <Dropdown
+                        isOpen={isOpen}
+                        onToggle={() => context!.onBlur()}
+                        ref={floatingSelectRef}
+                        target={selectRef}
+                        value={currentlySelectedOption?.id}
+                    >
+                        <DropdownBody>
+                            {options.map((option) => (
+                                <DropdownItem
+                                    key={option.value}
+                                    option={option}
+                                    onClick={() => handleChange(option.value)}
+                                    shouldCloseOnSelect
+                                />
+                            ))}
+                        </DropdownBody>
+                    </Dropdown>
+                )}
+            </SelectInputBoxContext.Consumer>
+        </SelectInputBox>
     )
 }
 

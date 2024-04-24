@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react'
+import React, {useState} from 'react'
 import {Row, Col} from 'reactstrap'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -8,13 +8,8 @@ import {
     VoiceMessage,
     IvrMenuAction,
     IvrMenuActionType,
-    IvrForwardCallMenuAction,
 } from 'models/integration/types'
-import {
-    DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
-    DEFAULT_VOICE_MESSAGE,
-} from 'models/integration/constants'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
@@ -24,6 +19,7 @@ import {getSmsIntegrations} from 'state/integrations/selectors'
 import VoiceMessageField from './VoiceMessageField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
 import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
+import IvrMenuActionSelect from './IvrMenuActionSelect'
 
 import css from './IvrMenuActionField.less'
 
@@ -31,15 +27,6 @@ type Props = {
     value: IvrMenuAction
     onChange: (value: IvrMenuAction) => void
     onRemove: () => void
-}
-
-const ACTION_NAMES: Record<IvrMenuActionType, string> = {
-    [IvrMenuActionType.ForwardToExternalNumber]:
-        'Forward call to external number',
-    [IvrMenuActionType.ForwardToGorgiasNumber]:
-        'Forward call to Gorgias number',
-    [IvrMenuActionType.PlayMessage]: 'Play message',
-    [IvrMenuActionType.SendToSms]: 'Send call to SMS',
 }
 
 const IvrMenuActionField = ({
@@ -55,78 +42,17 @@ const IvrMenuActionField = ({
 
     const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
 
-    const handleActionTypeChange = useCallback(
-        (action) => {
-            switch (action) {
-                case IvrMenuActionType.PlayMessage: {
-                    onChange({
-                        ...value,
-                        action,
-                    })
-                    break
-                }
-
-                case IvrMenuActionType.ForwardToExternalNumber:
-                case IvrMenuActionType.ForwardToGorgiasNumber: {
-                    onChange({
-                        ...value,
-                        action,
-                        forward_call: (value as IvrForwardCallMenuAction)
-                            .forward_call ?? {
-                            phone_number: '',
-                        },
-                    })
-                    break
-                }
-                case IvrMenuActionType.SendToSms: {
-                    deflectToSMSEnabled &&
-                        onChange({
-                            ...value,
-                            action,
-                            sms_deflection: {
-                                confirmation_message:
-                                    DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
-                            },
-                        })
-                }
-            }
-        },
-        [deflectToSMSEnabled, value, onChange]
-    )
-
-    const actionOptions = Object.entries(ACTION_NAMES)
-        .map(([action, name]) => {
-            const isSMSDisabled =
-                action === IvrMenuActionType.SendToSms && !hasSmsIntegrations
-            return {
-                value: action,
-                label: name,
-                isDisabled: isSMSDisabled,
-                tooltipText: isSMSDisabled
-                    ? 'Create integration to send calls to SMS.'
-                    : undefined,
-            }
-        })
-        .filter(
-            (option) =>
-                deflectToSMSEnabled ||
-                option.value !== IvrMenuActionType.SendToSms
-        )
-
     return (
         <Row className={css.row}>
             <Col className={classNames(css.smallColumn, 'pr-0')}>
                 <span className={css.digit}>{value.digit}</span>
             </Col>
             <Col className={classNames('pr-0', 'pl-2')}>
-                <SelectField
-                    placeholder="Select an action"
-                    value={value.action}
-                    onChange={(action) => {
-                        handleActionTypeChange(action)
-                    }}
-                    options={actionOptions}
-                    fullWidth
+                <IvrMenuActionSelect
+                    onChange={onChange}
+                    value={value}
+                    deflectToSMSEnabled={deflectToSMSEnabled}
+                    hasSmsIntegrations={hasSmsIntegrations}
                 />
             </Col>
             <Col className="pl-2">

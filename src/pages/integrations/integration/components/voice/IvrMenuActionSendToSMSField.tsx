@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import {Drawer} from 'pages/common/components/Drawer'
@@ -14,12 +15,11 @@ import {
     VoiceMessage,
 } from 'models/integration/types'
 import TextArea from 'pages/common/forms/TextArea'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import VoiceMessageField from './VoiceMessageField'
 import css from './IvrMenuActionField.less'
+import VoiceMessageField from './VoiceMessageField'
 
 const HELPER_TEXT = `This message will be sent to callers in a form of SMS once this IVR option is selected`
 
@@ -30,7 +30,6 @@ type Props = {
     setDrawerOpen: (value: boolean) => void
     smsIntegrations: SmsIntegration[]
 }
-
 const IvrMenuActionSendToSMSField = ({
     settings,
     onChange,
@@ -163,18 +162,10 @@ const IvrMenuActionSendToSMSField = ({
 
                 <Drawer.Content className={css.drawerContent}>
                     <h5>Select SMS integration</h5>
-                    <SelectField
+                    <SmsIntegrationSelect
                         value={smsIntegrationId}
-                        onChange={(integration_id) => {
-                            if (typeof integration_id === 'number') {
-                                setSmsIntegrationId(integration_id)
-                            }
-                        }}
-                        options={smsIntegrations.map((integration) => ({
-                            value: integration.id,
-                            label: integration.name,
-                        }))}
-                        fullWidth
+                        options={smsIntegrations}
+                        onChange={setSmsIntegrationId}
                     />
                     <h5 className={css.headerWithDetails}>
                         SMS confirmation message

@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
+import userEvent from '@testing-library/user-event'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     IvrMenuAction,
@@ -69,6 +70,8 @@ describe('<IvrMenuActionsFieldArray />', () => {
         expect(getByText('Menu options')).toBeInTheDocument()
         expect(getByText('Forward call to external number')).toBeInTheDocument()
         expect(getByText('Add option')).toBeInTheDocument()
+
+        userEvent.click(getByText('arrow_drop_down'))
 
         expect(getByText('Send call to SMS')).toBeInTheDocument()
         expect(getByText('Play message')).toBeInTheDocument()

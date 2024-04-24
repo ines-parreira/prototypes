@@ -23,67 +23,24 @@ exports[`<IvrMenuActionsFieldArray /> should render 1`] = `
       <div
         class="pr-0 pl-2 col"
       >
-        <div>
+        <div
+          class="wrapper"
+          role="listbox"
+          tabindex="0"
+        >
           <div
-            class="dropdown"
+            class="inputWrapper"
           >
             <div
-              aria-expanded="false"
-              aria-haspopup="true"
-              class=""
-              data-toggle="dropdown"
+              class="input"
             >
-              <div
-                class="select dropdown-toggle selectFullWidth"
-              >
-                <span
-                  class="label"
-                  style="min-width: 10px; opacity: 1;"
-                >
-                  Forward call to external number
-                </span>
-                <input
-                  autocomplete="chrome-off"
-                  class="input"
-                  style="min-width: 10px;"
-                  type="text"
-                  value=""
-                />
-                <i
-                  class="material-icons dropdownIcon"
-                >
-                  arrow_drop_down
-                </i>
-              </div>
+              Forward call to external number
             </div>
-            <div
-              aria-hidden="true"
-              class="options optionsFullWidth dropdown-menu"
-              role="menu"
-              tabindex="-1"
+            <i
+              class="affix suffix toggle material-icons"
             >
-              
-              <button
-                class="option option--focused dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                <span>
-                  Forward call to Gorgias number
-                </span>
-              </button>
-              <button
-                class="option dropdown-item"
-                role="menuitem"
-                tabindex="0"
-                type="button"
-              >
-                <span>
-                  Play message
-                </span>
-              </button>
-            </div>
+              arrow_drop_down
+            </i>
           </div>
         </div>
       </div>
