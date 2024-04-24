@@ -1,22 +1,20 @@
 import React, {KeyboardEvent, useEffect, useMemo, useState} from 'react'
 import classnames from 'classnames'
 import {useLocation} from 'react-router-dom'
-import {fromJS, List, Map} from 'immutable'
-import {AxiosError, CancelToken} from 'axios'
+import {fromJS, Map} from 'immutable'
+import {useSelectedCustomer} from 'pages/common/components/infobar/Infobar/useSelectedCustomer'
+import {useCustomerSearch} from 'pages/common/components/infobar/Infobar/useCustomerSearch'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {isAdmin} from 'utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useCancellableRequest from 'hooks/useCancellableRequest'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import * as infobarActions from 'state/infobar/actions'
-import * as infobarConstants from 'state/infobar/constants'
 import * as customersActions from 'state/customers/actions'
 import {setCustomer} from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
 import history from 'pages/history'
 import {WidgetEnvironment} from 'state/widgets/types'
-import {ApiListResponsePagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -28,20 +26,16 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import {areSourcesReady} from 'pages/common/components/infobar/utils'
 import css from 'pages/common/components/infobar/Infobar.less'
-import useSearchRankScenario, {
-    SearchRankSource,
-} from 'hooks/useSearchRankScenario'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {SearchResponse} from 'models/search/types'
 import {setActiveCustomerAsReceiver} from 'state/newMessage/actions'
 
 import useAppSelector from 'hooks/useAppSelector'
-import InfobarSearchResultsList from './InfobarSearchResultsList'
-import InfobarCustomerInfo from './InfobarCustomerInfo/InfobarCustomerInfo'
-import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
-import InfobarCustomerActions from './InfobarCustomerActions'
-import {ActionButtonContext} from './InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
+import {InfobarSearchResultsList} from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
+import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import InfobarWidgetsEditionTools from 'pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools'
+import InfobarCustomerActions from 'pages/common/components/infobar/Infobar/InfobarCustomerActions'
+import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 
 type Props = {
     context: WidgetEnvironment
@@ -68,24 +62,12 @@ export const Infobar = ({
     const location = useLocation()
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
-    const [searchErrorMessage, setSearchErrorMessage] = useState<string | null>(
-        null
-    )
-    const [isSearching, setIsSearching] = useState(false)
-    const [searchTerm, setSearchTerm] = useState('')
 
-    const [isFetchingCustomer, setIsFetchingCustomer] = useState(false)
-    const [displaySearchResults, setDisplaySearchResults] = useState(false)
-    const [displaySelectedCustomer, setDisplaySelectedCustomer] =
-        useState(false)
     const [showMergeCustomerModal, setShowMergeCustomerModal] = useState(false)
-    const [searchResults, setSearchResults] = useState<List<any>>(fromJS([]))
-    const [selectedCustomer, setSelectedCustomer] = useState(fromJS({}))
     const [suggestedCustomer, setSuggestedCustomer] = useState<Map<any, any>>(
         fromJS({})
     )
     const prevCustomer = usePrevious(customer)
-    const searchRank = useSearchRankScenario(SearchRankSource.CustomerProfile)
 
     const isWidgetEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
@@ -96,6 +78,39 @@ export const Infobar = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [isWidgetEditing]
     )
+    const {
+        isSearching,
+        displaySearchResults,
+        searchRank,
+        searchTerm,
+        searchErrorMessage,
+        searchResults,
+        resetSearch,
+        setSearchTerm,
+        onSearchSubmit,
+    } = useCustomerSearch()
+    const {
+        displaySelectedCustomer,
+        isFetchingCustomer,
+        selectedCustomer,
+        setSelectedCustomer,
+        onSearchResultClick,
+        setDisplaySelectedCustomer,
+    } = useSelectedCustomer(searchRank)
+
+    const handleKeyDown = async (event: KeyboardEvent, query: string) => {
+        if (event.key !== 'Enter') {
+            return
+        }
+
+        if (query) {
+            await onSearchSubmit(query)
+            setDisplaySelectedCustomer(false)
+        } else {
+            resetSearch()
+        }
+    }
+
     const mode = useMemo(() => {
         // the following succession of conditions is in a particular order
         // which is important for the good display of each of those
@@ -148,11 +163,6 @@ export const Infobar = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [customer, prevCustomer])
 
-    const [cancellableSearch] = useCancellableRequest(
-        (cancelToken: CancelToken) => async (query) =>
-            await dispatch(infobarActions.search(query, cancelToken))
-    )
-
     const updateSimilarCustomer = async () => {
         if (customer.isEmpty() || !customer.get('id')) {
             setSuggestedCustomer(fromJS({}))
@@ -188,68 +198,6 @@ export const Infobar = ({
         }
     }
 
-    const onSearchResultClick = async (
-        customer: Map<any, any>,
-        index: number
-    ) => {
-        searchRank.registerResultSelection({index, id: customer.get('id')})
-        setIsFetchingCustomer(true)
-        const result = (await dispatch(
-            infobarActions.fetchPreviewCustomer(customer.get('id'))
-        )) as {
-            type: string
-            resp: ApiListResponsePagination<Customer[]>
-        }
-        if (result?.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
-            setDisplaySelectedCustomer(true)
-            setSelectedCustomer(fromJS(result.resp))
-        }
-        setIsFetchingCustomer(false)
-    }
-
-    const handleKeyDown = async (event: KeyboardEvent, query: string) => {
-        if (event.key !== 'Enter') {
-            return
-        }
-
-        searchRank.endScenario()
-        if (query) {
-            searchRank.registerResultsRequest({
-                query,
-                requestTime: Date.now(),
-            })
-            setIsSearching(true)
-            const res = (await cancellableSearch(query)) as {
-                error?: AxiosError<{error?: {message: string}}>
-                resp: SearchResponse<Customer>
-            }
-            if (!res) {
-                return
-            }
-            const {error, resp} = res
-            let errorMessage = null
-
-            if (error) {
-                errorMessage =
-                    error?.response?.data?.error?.message ||
-                    'Failed to do the search. Please try again.'
-            }
-
-            searchRank.registerResultsResponse({
-                responseTime: Date.now(),
-                numberOfResults: !error ? resp.data.length : 0,
-                searchEngine: !error ? resp.searchEngine : undefined,
-            })
-            setSearchErrorMessage(errorMessage)
-            setDisplaySelectedCustomer(false)
-            setDisplaySearchResults(true)
-            setIsSearching(false)
-            setSearchResults(error ? fromJS([]) : fromJS(resp.data.slice(0, 8)))
-        } else {
-            resetSearch()
-        }
-    }
-
     const handleCustomerHistoryFetch = () => {
         if (customer.isEmpty()) {
             return
@@ -270,12 +218,6 @@ export const Infobar = ({
                 })
             )
         }, 1500)
-    }
-
-    const resetSearch = () => {
-        setDisplaySearchResults(false)
-        setSearchResults(fromJS([]))
-        searchRank.endScenario()
     }
 
     const resetSelected = () => {

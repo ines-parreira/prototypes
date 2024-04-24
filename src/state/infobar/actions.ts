@@ -1,5 +1,6 @@
 import axios, {CancelToken, AxiosError, AxiosResponse} from 'axios'
 import _noop from 'lodash/noop'
+import {searchCustomers} from 'models/customer/resources'
 
 import {notify} from 'state/notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from 'utils'
@@ -25,6 +26,37 @@ export const search =
         return apiSearch<Customer>({
             type: SearchType.CustomerProfile,
             query,
+            cancelToken,
+        }).then(
+            (resp) => {
+                return dispatch({
+                    type: constants.SEARCH_CUSTOMERS_SUCCESS,
+                    resp,
+                })
+            },
+            (error: AxiosError) => {
+                if (axios.isCancel(error)) {
+                    return Promise.resolve()
+                }
+                return dispatch({
+                    type: constants.SEARCH_CUSTOMERS_ERROR,
+                    error,
+                    reason: 'Failed to do the search. Please try again...',
+                }) as unknown as Promise<void>
+            }
+        )
+    }
+
+export const searchWithHighlights =
+    (query: string, cancelToken?: CancelToken) =>
+    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        dispatch({
+            type: constants.SEARCH_CUSTOMERS_START,
+        })
+
+        return searchCustomers({
+            search: query,
+            withHighlights: true,
             cancelToken,
         }).then(
             (resp) => {

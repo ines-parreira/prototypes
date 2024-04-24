@@ -1,5 +1,5 @@
 import React from 'react'
-import sanitizeHtml from 'sanitize-html'
+import {sanitizeHtmlDefault} from 'utils/html'
 import useAppSelector from 'hooks/useAppSelector'
 import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
@@ -31,7 +31,7 @@ export const SupportPerformanceTip = ({
             <div
                 className="body-regular"
                 dangerouslySetInnerHTML={{
-                    __html: sanitizeHtml(tip?.content ?? ''),
+                    __html: sanitizeHtmlDefault(tip?.content ?? ''),
                 }}
             />
         </PerformanceTip>

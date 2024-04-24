@@ -117,6 +117,10 @@ export enum TicketSearchSortableProperties {
 export const pickedCustomerFields = ['email', 'id', 'name', 'channels'] as const
 export type PickedCustomer = Pick<Customer, typeof pickedCustomerFields[number]>
 
+export type PickedCustomerWithHighlights = PickedCustomer & {
+    highlights?: CustomerHighlights
+}
+
 export const isCustomerWithHighlights = (
     item:
         | PickedTicket

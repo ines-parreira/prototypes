@@ -1,6 +1,6 @@
 import classnames from 'classnames'
-import sanitizeHtml from 'sanitize-html'
 import React, {PropsWithChildren} from 'react'
+import {sanitizeHtmlDefault} from 'utils/html'
 import Tooltip from 'pages/common/components/Tooltip'
 import css from 'pages/stats/PerformanceTip.less'
 
@@ -69,7 +69,9 @@ export default function PerformanceTip({
                                 >
                                     <span
                                         dangerouslySetInnerHTML={{
-                                            __html: sanitizeHtml(avgTooltip),
+                                            __html: sanitizeHtmlDefault(
+                                                avgTooltip
+                                            ),
                                         }}
                                     />
                                 </Tooltip>

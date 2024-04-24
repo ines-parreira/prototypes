@@ -107,6 +107,53 @@ exports[`<Infobar/> onSearchResultClick() should reset spinner and keep customer
 </div>
 `;
 
+exports[`<Infobar/> should ignore other keys 1`] = `
+<div
+  data-testid="InfobarLayout"
+>
+  <div
+    class="infobarContent"
+  >
+    <div
+      class="infobarSearchWrapper"
+    >
+      <input
+        data-testid="Search"
+        placeholder="Search for customers by email, order number, etc."
+        style="max-width: none;"
+        tabindex="10"
+        value="query"
+      />
+      <button
+        aria-disabled="false"
+        class="wrapper d-none d-md-inline-block ml-2 btn-transparent wrapper fill secondary medium"
+        id="toggle-widgets-edition-button"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          settings
+        </i>
+      </button>
+    </div>
+    <div
+      class="content"
+    >
+      <div
+        data-testid="InfobarCustomerInfo"
+      >
+        InfobarCustomerInfo
+        <div>
+          customer: 
+          {"id":2}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`<Infobar/> should render current customer with suggested customer 1`] = `
 <div
   data-testid="InfobarLayout"
@@ -492,7 +539,7 @@ exports[`<Infobar/> should render selected customer 1`] = `
           InfobarCustomerInfo
           <div>
             customer: 
-            {"id":7}
+            {"id":"7"}
           </div>
         </div>
         <div>

@@ -1,5 +1,5 @@
 import React, {ComponentProps, useState as mockUseState} from 'react'
-import {fireEvent, waitFor, screen} from '@testing-library/react'
+import {fireEvent, waitFor, screen, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
@@ -18,11 +18,11 @@ import {SearchEngine} from 'models/search/types'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import {mockSearchRank} from 'fixtures/searchRank'
 
-import Search from '../../../Search'
-import InfobarLayout from '../../InfobarLayout'
-import InfobarCustomerInfo from '../InfobarCustomerInfo/InfobarCustomerInfo'
-import InfobarSearchResultsList from '../InfobarSearchResultsList'
-import {Infobar} from '../Infobar'
+import Search from 'pages/common/components/Search'
+import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
+import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
+import {InfobarSearchResultsList} from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
+import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
 
 const mockStore = configureMockStore()
 
@@ -85,31 +85,10 @@ jest.mock(
 jest.mock('../../../MergeCustomers/MergeCustomersContainer', () => () => (
     <div>MergeCustomersContainer</div>
 ))
+const customerId = 7
 
-const mockCustomer = fromJS({id: 7})
-
-jest.mock(
-    '../InfobarSearchResultsList',
-    () =>
-        ({
-            errorMessage,
-            defaultCustomerId,
-            onCustomerClick,
-            searchResults,
-        }: ComponentProps<typeof InfobarSearchResultsList>) =>
-            (
-                <div
-                    data-testid="InfobarSearchResultsList"
-                    onClick={() => {
-                        void onCustomerClick(mockCustomer, 0)
-                    }}
-                >
-                    <div>errorMessage: {errorMessage}</div>
-                    <div>defaultCustomerId: {defaultCustomerId}</div>
-                    <div>searchResults: {JSON.stringify(searchResults)}</div>
-                </div>
-            )
-)
+jest.mock('../InfobarSearchResultsList')
+const InfobarSearchResultsListMock = assumeMock(InfobarSearchResultsList)
 
 jest.mock('hooks/useSearchRankScenario')
 ;(
@@ -154,6 +133,25 @@ describe('<Infobar/>', () => {
         mockedSearch.mockReset()
         mockedSimilarCustomer.mockReset()
         mockedFetchPreviewCustomer.mockReset()
+        InfobarSearchResultsListMock.mockImplementation(
+            ({
+                errorMessage,
+                defaultCustomerId,
+                onCustomerClick,
+                searchResults,
+            }: ComponentProps<typeof InfobarSearchResultsList>) => (
+                <div
+                    data-testid="InfobarSearchResultsList"
+                    onClick={() => {
+                        void onCustomerClick(customerId, 0)
+                    }}
+                >
+                    <div>errorMessage: {errorMessage}</div>
+                    <div>defaultCustomerId: {defaultCustomerId}</div>
+                    <div>searchResults: {JSON.stringify(searchResults)}</div>
+                </div>
+            )
+        )
     })
 
     afterEach(() => {
@@ -192,6 +190,21 @@ describe('<Infobar/>', () => {
 
         fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
         fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should ignore other keys', () => {
+        const {container, getByTestId} = renderWithRouter(
+            <Provider store={store}>
+                <Infobar {...commonProps} />
+            </Provider>
+        )
+
+        act(() => {
+            fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+            fireEvent.keyDown(getByTestId('Search'), {key: '{Backspace}'})
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -453,9 +466,9 @@ describe('<Infobar/>', () => {
             dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
             return Promise.resolve({resp: {data: [{id: 1}]}})
         })
-        const {getByText, getByTestId} = renderWithRouter(
+        const {getByPlaceholderText, getByText, getByTestId} = renderWithRouter(
             <Provider store={store}>
-                <Infobar {...commonProps} />
+                <Infobar {...commonProps} customer={fromJS({})} />
             </Provider>
         )
 
@@ -465,6 +478,13 @@ describe('<Infobar/>', () => {
         await waitFor(() => fireEvent.click(getByText('Back')))
 
         expect(mockSearchRank.endScenario).toHaveBeenCalledWith()
+        await waitFor(() =>
+            expect(
+                getByPlaceholderText(
+                    'Search for customers by email, order number, etc.'
+                )
+            )
+        )
     })
 
     it('should end the search rank scenario when user performs the second search', async () => {

@@ -68,6 +68,7 @@ export enum FeatureFlagKey {
     HelpCenterRulesAndViews = 'help-center-rules-and-views',
     HelpCenterSubjectLines = 'help-center-subject-lines',
     HideBillableTicketsProgressBar = 'hide-billable-tickets-progress-bar',
+    InfobarSearchWithHighlights = 'infobar-search-with-highlights',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MLFeaturesKillswitch = 'ml-features-killswitch',
