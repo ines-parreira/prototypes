@@ -81,7 +81,11 @@ const SpotlightRow = ({
                     )}
                 </div>
                 {message && (
-                    <div className={css.infoFooter}>
+                    <div
+                        className={classnames(css.infoFooter, {
+                            [css.indented]: !!icon,
+                        })}
+                    >
                         <span
                             dangerouslySetInnerHTML={{
                                 __html: sanitizeHtmlDefault(message),
@@ -90,7 +94,11 @@ const SpotlightRow = ({
                     </div>
                 )}
                 {entityId && (
-                    <div className={css.infoFooter}>
+                    <div
+                        className={classnames(css.infoFooter, {
+                            [css.indented]: !!icon,
+                        })}
+                    >
                         <span
                             dangerouslySetInnerHTML={{
                                 __html: sanitizeHtmlDefault(entityId),

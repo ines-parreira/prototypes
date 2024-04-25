@@ -19,9 +19,9 @@ import css from 'pages/common/components/Spotlight/SpotlightScrollArea.less'
 import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const HEADER_HEIGHT = 32
-const ITEM_HEIGHT = 56
-const MAX_ITEMS_TO_SHOW = 5
-export const MAX_HEIGHT = 56 * MAX_ITEMS_TO_SHOW
+const ITEM_HEIGHT = 80
+const MAX_ITEMS_TO_SHOW = 6
+export const MAX_HEIGHT = 56 * MAX_ITEMS_TO_SHOW + HEADER_HEIGHT
 
 type VirtuosoContext = {
     isLoading: boolean

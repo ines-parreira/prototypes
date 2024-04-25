@@ -9,7 +9,7 @@
         padding: 16px;
         color: unset;
         border-radius: 4px;
-        max-height: 96px;
+        max-height: 92px;
 
         &.selected {
             color: unset;
@@ -54,7 +54,9 @@
             text-overflow: ellipsis;
             .caption-regular();
             color: var(--neutral-grey-5);
-            margin-left: @layout-spacing-l;
+            &.indented {
+                margin-left: @layout-spacing-l;
+            }
 
             em {
                 .search-highlight();

@@ -3,7 +3,7 @@
 exports[`<SpotlightScrollArea/> should render 1`] = `
 <div>
   <div
-    style="height: 200px;"
+    style="height: 272px;"
   >
     <div
       data-index="0"
@@ -39,7 +39,7 @@ exports[`<SpotlightScrollArea/> should render 1`] = `
 exports[`<SpotlightScrollArea/> should render footer if loading 1`] = `
 <div>
   <div
-    style="height: 200px;"
+    style="height: 272px;"
   >
     <div
       data-index="0"
