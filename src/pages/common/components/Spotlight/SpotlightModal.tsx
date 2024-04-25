@@ -178,7 +178,7 @@ const SpotlightModal = ({
     const handleHover = useCallback(
         (e: MouseEvent) => {
             const index =
-                e.currentTarget.parentElement?.getAttribute('data-index')
+                e.currentTarget.parentElement?.getAttribute('data-item-index')
             if (!index) return
 
             setSelectedIndex(parseInt(index))

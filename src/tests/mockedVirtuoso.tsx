@@ -9,7 +9,7 @@ function Virtuoso(props: VirtuosoProps<unknown, unknown>, _ref: any) {
         <div style={props.style} ref={_ref}>
             {!!Header && <Header context={props.context} />}
             {props.data?.map((value, index) => (
-                <div data-index={index} key={index}>
+                <div data-index={index} data-item-index={index} key={index}>
                     {props.itemContent?.(index, value, undefined)}
                 </div>
             ))}
@@ -39,7 +39,10 @@ function GroupedVirtuoso(
                 getRowsFromGroupCounts(props.groupCounts).map(
                     ([groupIndex, itemIndex]) =>
                         props.itemContent && (
-                            <div key={`${groupIndex}-${itemIndex}`}>
+                            <div
+                                key={`${groupIndex}-${itemIndex}`}
+                                data-item-index={itemIndex}
+                            >
                                 {props.itemContent(
                                     itemIndex,
                                     groupIndex,

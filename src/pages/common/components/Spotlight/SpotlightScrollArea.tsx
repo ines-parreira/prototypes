@@ -15,8 +15,8 @@ import {
 
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
-import css from './SpotlightScrollArea.less'
-import {PickedTicket} from './SpotlightTicketRow'
+import css from 'pages/common/components/Spotlight/SpotlightScrollArea.less'
+import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const HEADER_HEIGHT = 32
 const ITEM_HEIGHT = 56

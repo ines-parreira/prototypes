@@ -9,9 +9,11 @@ import {
     useReducer,
     useState,
 } from 'react'
+import {FEDERATED_SEARCH_GROUP_SIZE} from 'pages/common/components/Spotlight/constants'
 import {
     customersWithHighlightsLoadedAction,
     resultsWithHighlightsReducer,
+    searchResultsResetAction,
     ticketsWithHighlightsLoadedAction,
 } from 'pages/common/components/Spotlight/resultsWithHighlightsReducer'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -144,29 +146,49 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
     )
 
     const maxIndex = useMemo(() => {
-        const customersLength = isSearchWithHighlights
-            ? resultsWithHighlights.length
-            : customers.length
-        const ticketsLength = isSearchWithHighlights
-            ? resultsWithHighlights.length
-            : tickets.length
-
-        return searchItemsType === ViewType.CustomerList
-            ? hasSearched
-                ? customersLength - 1
-                : recentCustomers.length - 1
-            : hasSearched
-            ? ticketsLength - 1
-            : recentTickets.length - 1
+        switch (searchItemsType) {
+            case ViewType.TicketList:
+                return hasSearched
+                    ? isSearchWithHighlights
+                        ? resultsWithHighlights.length - 1
+                        : tickets.length - 1
+                    : recentTickets.length - 1
+            case ViewType.CustomerList:
+                return hasSearched
+                    ? isSearchWithHighlights
+                        ? resultsWithHighlights.length - 1
+                        : customers.length - 1
+                    : recentCustomers.length - 1
+            case ViewType.All:
+                return hasSearched
+                    ? [
+                          ...resultsWithHighlights
+                              .filter(isTicketWithHighlights)
+                              .slice(0, FEDERATED_SEARCH_GROUP_SIZE),
+                          ...resultsWithHighlights
+                              .filter(isCustomerWithHighlights)
+                              .slice(0, FEDERATED_SEARCH_GROUP_SIZE),
+                      ].length - 1
+                    : [
+                          ...recentTickets.slice(
+                              0,
+                              FEDERATED_SEARCH_GROUP_SIZE
+                          ),
+                          ...recentCustomers.slice(
+                              0,
+                              FEDERATED_SEARCH_GROUP_SIZE
+                          ),
+                      ].length - 1
+        }
     }, [
-        isSearchWithHighlights,
-        resultsWithHighlights.length,
-        customers.length,
-        tickets.length,
         searchItemsType,
         hasSearched,
-        recentCustomers.length,
-        recentTickets.length,
+        isSearchWithHighlights,
+        resultsWithHighlights,
+        tickets.length,
+        recentTickets,
+        customers.length,
+        recentCustomers,
     ])
 
     const {
@@ -197,14 +219,20 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
                     ? [
                           ...resultsWithHighlights
                               .filter(isTicketWithHighlights)
-                              .slice(0, 5),
+                              .slice(0, FEDERATED_SEARCH_GROUP_SIZE),
                           ...resultsWithHighlights
                               .filter(isCustomerWithHighlights)
-                              .slice(0, 5),
+                              .slice(0, FEDERATED_SEARCH_GROUP_SIZE),
                       ][selectedIndex]
                     : [
-                          ...recentTickets.slice(0, 5),
-                          ...recentCustomers.slice(0, 5),
+                          ...recentTickets.slice(
+                              0,
+                              FEDERATED_SEARCH_GROUP_SIZE
+                          ),
+                          ...recentCustomers.slice(
+                              0,
+                              FEDERATED_SEARCH_GROUP_SIZE
+                          ),
                       ][selectedIndex]
         }
     }, [
@@ -223,7 +251,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
             data: ApiListResponseCursorPagination<
                 Customer[] | CustomerWithHighlightsResponse[]
             >,
-            viewType: ViewType.All | ViewType.CustomerList,
+            viewType: ViewType,
             searchTerm: string,
             cursor?: string
         ) => {
@@ -277,7 +305,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
             data: ApiListResponseCursorPagination<
                 Ticket[] | TicketWithHighlightsResponse[]
             >,
-            viewType: ViewType.All | ViewType.TicketList,
+            viewType: ViewType,
             searchTerm: string,
             cursor?: string
         ) => {
@@ -348,15 +376,6 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
                             cancelToken,
                             withHighlights: isSearchWithHighlights,
                         })
-                        const ticketData = await ticketPromise
-                        if (ticketData) {
-                            handleTicketSearchResult(
-                                ticketData?.data,
-                                viewType,
-                                searchTerm,
-                                cursor
-                            )
-                        }
                     }
                     if (
                         viewType === ViewType.CustomerList ||
@@ -369,16 +388,31 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
                             cancelToken,
                             withHighlights: isSearchWithHighlights,
                         })
-                        const customerData = await customerPromise
-
-                        if (customerData) {
-                            handleCustomerSearchResult(
-                                customerData?.data,
-                                viewType,
-                                searchTerm,
-                                cursor
-                            )
-                        }
+                    }
+                    const [ticketData, customerData] = await Promise.all([
+                        ticketPromise,
+                        customerPromise,
+                    ])
+                    if (!cursor) {
+                        dispatchResultsWithHighlightsAction(
+                            searchResultsResetAction()
+                        )
+                    }
+                    if (ticketData) {
+                        handleTicketSearchResult(
+                            ticketData?.data,
+                            viewType,
+                            searchTerm,
+                            cursor
+                        )
+                    }
+                    if (customerData) {
+                        handleCustomerSearchResult(
+                            customerData?.data,
+                            viewType,
+                            searchTerm,
+                            cursor
+                        )
                     }
                 } catch (e) {
                     if (!axios.isCancel(e)) {
@@ -432,6 +466,8 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
         searchQuery && setSearchQuery('')
         !_isEmpty(tickets) && setTickets([])
         !_isEmpty(customers) && setCustomers([])
+        !_isEmpty(resultsWithHighlights) &&
+            dispatchResultsWithHighlightsAction(searchResultsResetAction())
         hasSearched && setHasSearched(false)
         !_isEmpty(ticketsSearchMeta) && setTicketsSearchMeta(undefined)
         !_isEmpty(customersSearchMeta) && setCustomersSearchMeta(undefined)
@@ -450,6 +486,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
             setCustomersSearchMeta(undefined)
             setTickets([])
             setCustomers([])
+            dispatchResultsWithHighlightsAction(searchResultsResetAction())
         }
         setSearchQuery(query)
         resetSelectedIndex()

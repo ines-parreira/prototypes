@@ -16,6 +16,7 @@ import SearchRankScenarioContext from 'pages/common/components/SearchRankScenari
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import {
     CUSTOMERS_LABEL,
+    FEDERATED_SEARCH_GROUP_SIZE,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
@@ -31,7 +32,6 @@ import {Tabs} from 'pages/common/components/Spotlight/useSearch'
 
 export const RECENTLY_ACCESSED_LABEL = 'Recently accessed'
 export const MORE_RESULTS_LABEL = 'More results'
-const GROUP_SIZE = 5
 
 const hasNoResults = (
     tickets: unknown[],
@@ -91,8 +91,14 @@ const getData = (
             return displayedTicket
         }
         case ViewType.All: {
-            const tickets = displayedTicket.slice(0, GROUP_SIZE)
-            const customers = displayedCustomers.slice(0, GROUP_SIZE)
+            const tickets = displayedTicket.slice(
+                0,
+                FEDERATED_SEARCH_GROUP_SIZE
+            )
+            const customers = displayedCustomers.slice(
+                0,
+                FEDERATED_SEARCH_GROUP_SIZE
+            )
             return [...tickets, ...customers]
         }
     }
@@ -150,6 +156,12 @@ export const SpotlightModalContent = ({
 
     useEffect(() => {
         const virtuosoScrollArea = virtuosoRef.current
+        if (!virtuosoScrollArea) return
+        virtuosoScrollArea.scrollIntoView({index: selectedIndex})
+    }, [selectedIndex])
+
+    useEffect(() => {
+        const virtuosoScrollArea = groupedVirtuosoRef.current
         if (!virtuosoScrollArea) return
         virtuosoScrollArea.scrollIntoView({index: selectedIndex})
     }, [selectedIndex])
@@ -289,8 +301,14 @@ export const SpotlightModalContent = ({
                     canLoadMore={false}
                     isLoading={isFetchingMore}
                     groupCounts={[
-                        Math.min(displayedTickets.length, GROUP_SIZE),
-                        Math.min(displayedCustomers.length, GROUP_SIZE),
+                        Math.min(
+                            displayedTickets.length,
+                            FEDERATED_SEARCH_GROUP_SIZE
+                        ),
+                        Math.min(
+                            displayedCustomers.length,
+                            FEDERATED_SEARCH_GROUP_SIZE
+                        ),
                     ]}
                     itemContent={(index) =>
                         itemContentCallback(index, data[index])
