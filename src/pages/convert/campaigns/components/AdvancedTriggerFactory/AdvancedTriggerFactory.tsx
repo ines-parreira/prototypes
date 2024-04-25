@@ -39,7 +39,8 @@ export const AdvancedTriggerFactory = ({
     id,
     trigger,
 }: Props): JSX.Element => {
-    const {onUpdateTrigger, onDeleteTrigger} = useTriggers()
+    const {onUpdateTrigger, onDeleteTrigger, onTriggerValidationUpdate} =
+        useTriggers()
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     const isAllowedToEdit = isAllowedToUpdateTrigger(
@@ -54,6 +55,7 @@ export const AdvancedTriggerFactory = ({
             isAllowedToEdit,
             onUpdateTrigger,
             onDeleteTrigger,
+            onTriggerValidationUpdate,
         }
 
         switch (trigger.type) {
@@ -89,7 +91,14 @@ export const AdvancedTriggerFactory = ({
             default:
                 return <div />
         }
-    }, [isAllowedToEdit, id, trigger, onUpdateTrigger, onDeleteTrigger])
+    }, [
+        isAllowedToEdit,
+        id,
+        trigger,
+        onUpdateTrigger,
+        onDeleteTrigger,
+        onTriggerValidationUpdate,
+    ])
 
     return (
         <BaseTriggerRow

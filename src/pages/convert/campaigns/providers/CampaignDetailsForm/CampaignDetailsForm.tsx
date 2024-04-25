@@ -68,11 +68,13 @@ import {CampaignProduct} from '../../types/CampaignProduct'
 
 import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
 import {createTriggerRule} from '../../utils/createTriggerRule'
+
 import {transformDiscountOfferToAttachment} from '../../utils/transformDiscountOfferToAttachment'
 import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
 import {CampaignDiscountOffer} from '../../types/CampaignDiscountOffer'
 import {transformAttachmentsToDiscountOffers} from '../../utils/transformAttachmentsToDiscountOffers'
-import {CampaignDetailsFormApi, CampaignDetailsFormContext} from './context'
+import {CampaignDetailsFormApi, CampaignDetailsFormProvider} from './context'
+
 import {
     CampaigFormConfigurationProvider,
     CampaignFormConfigurationType,
@@ -118,6 +120,12 @@ export const CampaignDetailsForm = ({
     backUrl,
 }: Props) => {
     const dispatch = useAppDispatch()
+
+    const [formValidationState, setFormValidationState] = useState<
+        Record<string, boolean>
+    >({
+        [CampaignStepsKeys.Audience]: false,
+    })
 
     const defaultOpenedStep = useMemo(() => {
         return isEditMode
@@ -441,13 +449,26 @@ export const CampaignDetailsForm = ({
         }
 
         if (step === CampaignStepsKeys.Audience) {
-            return Object.keys(triggers).length > 0
+            return (
+                Object.keys(triggers).length > 0 &&
+                formValidationState[CampaignStepsKeys.Audience]
+            )
         }
 
         if (step === CampaignStepsKeys.Message) {
             return campaignData.message_text !== ''
         }
     }
+
+    const updateSetValidation = useCallback(
+        (step: CampaignStepsKeys) => (value: boolean) => {
+            setFormValidationState((prevState) => ({
+                ...prevState,
+                [step]: value,
+            }))
+        },
+        [setFormValidationState]
+    )
 
     const isCampaignValid =
         isStepValid(CampaignStepsKeys.Basics) &&
@@ -483,12 +504,12 @@ export const CampaignDetailsForm = ({
             deleteTrigger,
         }
     }, [
-        addTrigger,
-        campaignData,
-        deleteTrigger,
-        handleUpdateCampaign,
         triggers,
+        campaignData,
+        addTrigger,
+        deleteTrigger,
         updateTrigger,
+        handleUpdateCampaign,
     ])
 
     const formConfiguration = useMemo(
@@ -518,9 +539,7 @@ export const CampaignDetailsForm = ({
             shopifyIntegration={shopifyIntegration}
         >
             <CampaigFormConfigurationProvider value={formConfiguration}>
-                <CampaignDetailsFormContext.Provider
-                    value={campaignDetailContext}
-                >
+                <CampaignDetailsFormProvider value={campaignDetailContext}>
                     {isLightCampaignBannerVisible && (
                         <BannerNotification
                             message={
@@ -558,6 +577,7 @@ export const CampaignDetailsForm = ({
                                     >
                                         <CampaignBasicStep
                                             count={1}
+                                            key={CampaignStepsKeys.Basics}
                                             isPristine={pristine.basics}
                                             isValid={isStepValid(
                                                 CampaignStepsKeys.Basics
@@ -565,6 +585,7 @@ export const CampaignDetailsForm = ({
                                         />
                                         <CampaignAudienceStep
                                             count={2}
+                                            key={CampaignStepsKeys.Audience}
                                             isPristine={pristine.audience}
                                             isValid={isStepValid(
                                                 CampaignStepsKeys.Audience
@@ -575,11 +596,15 @@ export const CampaignDetailsForm = ({
                                             isShopifyStore={isShopifyStore}
                                             isLightCampaign={isLightCampaign}
                                             integration={integration}
+                                            onValidationChange={updateSetValidation(
+                                                CampaignStepsKeys.Audience
+                                            )}
                                         />
                                         <CampaignMessageStep
                                             agents={agents}
                                             attachments={attachments}
                                             count={3}
+                                            key={CampaignStepsKeys.Message}
                                             isPristine={pristine.message}
                                             isValid={isStepValid(
                                                 CampaignStepsKeys.Message
@@ -677,7 +702,7 @@ export const CampaignDetailsForm = ({
                             )}
                         </div>
                     </div>
-                </CampaignDetailsFormContext.Provider>
+                </CampaignDetailsFormProvider>
             </CampaigFormConfigurationProvider>
         </IntegrationProvider>
     )

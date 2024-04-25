@@ -1,4 +1,4 @@
-import {createContext} from 'react'
+import React, {createContext, ReactNode} from 'react'
 
 import {Campaign} from '../../types/Campaign'
 import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
@@ -27,3 +27,19 @@ export const CampaignDetailsFormContext = createContext<CampaignDetailsFormApi>(
         deleteTrigger: () => null,
     }
 )
+
+export type CampaignDetailsFormProviderType = {
+    value: CampaignDetailsFormApi
+    children: ReactNode
+}
+
+export const CampaignDetailsFormProvider = ({
+    value,
+    children,
+}: CampaignDetailsFormProviderType) => {
+    return (
+        <CampaignDetailsFormContext.Provider value={value}>
+            {children}
+        </CampaignDetailsFormContext.Provider>
+    )
+}

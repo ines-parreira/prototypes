@@ -28,6 +28,7 @@ import {isDeviceTypeValue} from '../../types/enums/CampaignTriggerDeviceTypeValu
 import {createTrigger} from '../../utils/createTrigger'
 
 type Props = {
+    key: CampaignStepsKeys
     count?: number
     isPristine?: boolean
     isValid?: boolean
@@ -35,6 +36,7 @@ type Props = {
     isShopifyStore?: boolean
     isLightCampaign?: boolean
     integration: Map<any, any>
+    onValidationChange: (isValid: boolean) => void
 }
 
 export const CampaignAudienceStep = ({
@@ -45,6 +47,7 @@ export const CampaignAudienceStep = ({
     isShopifyStore,
     isLightCampaign,
     integration,
+    onValidationChange,
 }: Props) => {
     const {
         campaign,
@@ -154,14 +157,18 @@ export const CampaignAudienceStep = ({
                     onUpdateTrigger={updateTrigger}
                     onDeleteTrigger={deleteTrigger}
                 >
-                    <AdvancedTriggersForm triggers={triggers} />
+                    <AdvancedTriggersForm
+                        triggers={triggers}
+                        onValidationChange={onValidationChange}
+                    />
+                    <AdvancedTriggersSelect
+                        isShopifyStore={isShopifyStore}
+                        isConvertSubscriber={isConvertSubscriber}
+                        isLightCampaign={isLightCampaign}
+                        onClick={addTrigger}
+                    />
                 </TriggersProvider>
-                <AdvancedTriggersSelect
-                    isShopifyStore={isShopifyStore}
-                    isConvertSubscriber={isConvertSubscriber}
-                    isLightCampaign={isLightCampaign}
-                    onClick={addTrigger}
-                />
+
                 {!isLightCampaign && (
                     <AdvancedTriggersTooltip
                         isConvertSubscriber={isConvertSubscriber}

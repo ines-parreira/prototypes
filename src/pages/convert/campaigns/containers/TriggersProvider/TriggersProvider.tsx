@@ -1,10 +1,10 @@
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useMemo, useState} from 'react'
 import {
     DeleteTriggerFn,
     UpdateTriggerFn,
-} from '../../types/AdvancedTriggerBaseProps'
+} from 'pages/convert/campaigns/types/AdvancedTriggerBaseProps'
 
-import {CampaignTrigger} from '../../types/CampaignTrigger'
+import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
 
 import TriggersContext from './context'
 
@@ -21,9 +21,43 @@ export const TriggersProvider = ({
     onUpdateTrigger,
     onDeleteTrigger,
 }: Props): JSX.Element => {
+    const [triggersValidation, setTriggersValidation] = useState<
+        Record<string, boolean | undefined>
+    >({})
+
+    const onTriggerValidationUpdate = (triggerId: string, isValid: boolean) => {
+        setTriggersValidation((prevState) => ({
+            ...prevState,
+            [triggerId]: isValid,
+        }))
+    }
+
+    const onDeleteWrapper = (triggerId: string) => {
+        const trigger = triggers[triggerId]
+        if (trigger && trigger.id in triggersValidation) {
+            setTriggersValidation((prevState) => {
+                const {[trigger.id]: __, ...rest} = prevState
+                return rest
+            })
+        }
+        onDeleteTrigger(triggerId)
+    }
+
+    const areTriggersValid = useMemo<boolean>(() => {
+        return Object.values(triggersValidation).every((value) =>
+            value === undefined ? true : Boolean(value)
+        )
+    }, [triggersValidation])
+
     return (
         <TriggersContext.Provider
-            value={{triggers, onUpdateTrigger, onDeleteTrigger}}
+            value={{
+                triggers,
+                onUpdateTrigger,
+                onDeleteTrigger: onDeleteWrapper,
+                onTriggerValidationUpdate,
+                areTriggersValid,
+            }}
         >
             {children}
         </TriggersContext.Provider>

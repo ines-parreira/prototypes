@@ -8,13 +8,13 @@ import RichField from 'pages/common/forms/RichField/RichField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
-import {useStepState} from '../../hooks/useStepState'
-import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
+import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
+import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 
-import {CampaignMessage} from '../../components/CampaignMessage'
-import {StatefulAccordion} from '../../components/StatefulAccordion'
+import {CampaignMessage} from 'pages/convert/campaigns/components/CampaignMessage'
+import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
 
-import {CampaignStepsKeys} from '../../types/CampaignSteps'
+import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 
 type Props = {
     agents: User[]
