@@ -1,6 +1,7 @@
 import React, {ComponentProps, useMemo} from 'react'
 import moment from 'moment'
 import {fromJS} from 'immutable'
+import {EntityType} from 'hooks/useSearchRankScenario'
 import {TicketHighlights} from 'models/search/types'
 import {Customer} from 'models/customer/types'
 
@@ -80,6 +81,7 @@ const SpotlightTicketRow = ({
             selected={selected}
             onClick={onClick}
             message={itemWithHighlights.message}
+            entityType={EntityType.Ticket}
             entityId={itemWithHighlights.ticketId}
         />
     )

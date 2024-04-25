@@ -7,6 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useSearchRankScenario, {
     DATABASE_TYPE,
+    EntityType,
     SearchRankRequest,
     SearchRankResponse,
     SearchRankSource,
@@ -21,6 +22,7 @@ const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 describe('useSearchRankScenario', () => {
     const defaultScenarioTimeout = 1000
+    const searchEngine = SearchEngine.ES
     const defaultResultsRequest: SearchRankRequest = {
         query: 'foo',
         requestTime: 1000,
@@ -28,7 +30,7 @@ describe('useSearchRankScenario', () => {
     const defaultResultsResponse: SearchRankResponse = {
         numberOfResults: 3,
         responseTime: 1234,
-        searchEngine: SearchEngine.ES,
+        searchEngine: searchEngine,
     }
     const defaultState = {
         currentAccount: fromJS(account),
@@ -43,6 +45,7 @@ describe('useSearchRankScenario', () => {
     })
 
     it('should log search success when user clicks the result', () => {
+        const selectedResultObjectId = 'bar'
         const {result} = renderHook(
             () =>
                 useSearchRankScenario(
@@ -66,12 +69,37 @@ describe('useSearchRankScenario', () => {
             } = result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
-            registerResultSelection({index: 1, id: 'foo'})
-            registerResultSelection({index: 2, id: 'bar'})
+            registerResultSelection({
+                index: 1,
+                id: 'foo',
+                type: EntityType.Customer,
+            })
+            registerResultSelection({
+                index: 2,
+                id: selectedResultObjectId,
+                type: EntityType.Customer,
+            })
         })
         act(() => jest.runAllTimers())
 
-        expect(logEventMock.mock.calls).toMatchSnapshot()
+        expect(logEventMock.mock.calls).toEqual([
+            [
+                SegmentEvent.SearchQueryRanked,
+                {
+                    account_domain: 'acme',
+                    database_type: DATABASE_TYPE[searchEngine],
+                    datetime: '1970-01-01T00:00:01.000Z',
+                    number_of_results: 3,
+                    query_source: 'customer_profile',
+                    rank: 3,
+                    response_time:
+                        defaultResultsResponse.responseTime -
+                        defaultResultsRequest.requestTime,
+                    result_object_id: selectedResultObjectId,
+                    search_query: defaultResultsRequest.query,
+                },
+            ],
+        ])
     })
 
     it('should set isRunning flag to true when scenario is running', () => {
@@ -194,7 +222,11 @@ describe('useSearchRankScenario', () => {
             } = result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
-            registerResultSelection({index: 1, id: 'bar'})
+            registerResultSelection({
+                index: 1,
+                id: 'bar',
+                type: EntityType.Customer,
+            })
             registerResultsRequest({
                 query: 'foobar',
                 requestTime: 2000,
@@ -234,7 +266,11 @@ describe('useSearchRankScenario', () => {
             } = result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
-            registerResultSelection({index: 1, id: 'foo'})
+            registerResultSelection({
+                index: 1,
+                id: 'foo',
+                type: EntityType.Customer,
+            })
         })
         unmount()
 
@@ -271,7 +307,11 @@ describe('useSearchRankScenario', () => {
             } = result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
-            registerResultSelection({index: 1, id: 'foo'})
+            registerResultSelection({
+                index: 1,
+                id: 'foo',
+                type: EntityType.Customer,
+            })
             endScenario()
         })
 
@@ -313,7 +353,11 @@ describe('useSearchRankScenario', () => {
                 ...defaultResultsResponse,
                 searchEngine: undefined,
             })
-            registerResultSelection({index: 1, id: 'foo'})
+            registerResultSelection({
+                index: 1,
+                id: 'foo',
+                type: EntityType.Customer,
+            })
             endScenario()
         })
 
@@ -352,10 +396,31 @@ describe('useSearchRankScenario', () => {
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
             registerResultsResponse(defaultResultsResponse)
-            registerResultSelection({index: 1, id: 'foo'})
+            registerResultSelection({
+                index: 1,
+                id: 'foo',
+                type: EntityType.Customer,
+            })
             endScenario()
         })
 
-        expect(logEventMock.mock.calls).toMatchSnapshot()
+        expect(logEventMock.mock.calls).toEqual([
+            [
+                SegmentEvent.SearchQueryRanked,
+                {
+                    account_domain: 'acme',
+                    database_type: DATABASE_TYPE[searchEngine],
+                    datetime: '1970-01-01T00:00:01.000Z',
+                    number_of_results: defaultResultsResponse.numberOfResults,
+                    query_source: 'customer_profile',
+                    rank: 2,
+                    response_time:
+                        defaultResultsResponse.responseTime -
+                        defaultResultsRequest.requestTime,
+                    result_object_id: defaultResultsRequest.query,
+                    search_query: defaultResultsRequest.query,
+                },
+            ],
+        ])
     })
 })

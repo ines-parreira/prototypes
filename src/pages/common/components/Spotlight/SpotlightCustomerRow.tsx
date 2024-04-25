@@ -1,4 +1,5 @@
 import React, {ComponentProps} from 'react'
+import {EntityType} from 'hooks/useSearchRankScenario'
 import {CustomerHighlights, PickedCustomer} from 'models/search/types'
 import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
 import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'
@@ -47,6 +48,7 @@ const SpotlightCustomerRow = ({
             selected={selected}
             shrinkInfo
             onClick={onClick}
+            entityType={EntityType.Customer}
             entityId={itemWithHighlights.orderId}
         />
     )

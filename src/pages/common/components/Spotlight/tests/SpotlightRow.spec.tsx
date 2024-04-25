@@ -1,9 +1,10 @@
-import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
+import {mockSearchRank} from 'fixtures/searchRank'
+import {EntityType} from 'hooks/useSearchRankScenario'
 
 import * as platform from 'utils/platform'
-import {mockSearchRank} from 'fixtures/searchRank'
 
 import SearchRankScenarioContext from '../../SearchRankScenarioProvider/SearchRankScenarioContext'
 import SpotlightRow from '../SpotlightRow'
@@ -17,6 +18,7 @@ describe('<SpotlightRow/>', () => {
         onCloseModal: mockOnClose,
         id: 1,
         index: 1,
+        entityType: EntityType.Ticket,
     }
 
     it('should render with minimal props', () => {
@@ -46,6 +48,7 @@ describe('<SpotlightRow/>', () => {
         expect(mockSearchRank.registerResultSelection).toHaveBeenCalledWith({
             id: 1,
             index: 1,
+            type: minProps.entityType,
         })
     })
 

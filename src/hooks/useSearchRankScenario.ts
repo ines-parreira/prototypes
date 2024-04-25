@@ -13,6 +13,8 @@ export enum SearchRankSource {
     TicketsView = 'tickets_view',
     SpotlightCustomer = 'spotlight_customer',
     SpotlightTicket = 'spotlight_ticket',
+    FederatedSearchTicket = 'federated_search_ticket',
+    FederatedSearchCustomer = 'federated_search_customer',
     SpotlightAll = 'spotlight_all',
 }
 
@@ -27,9 +29,15 @@ export type SearchRankResponse = {
     searchEngine?: SearchEngine
 }
 
+export enum EntityType {
+    Ticket = 'ticket',
+    Customer = 'customer',
+}
+
 export type SearchRankSelectedItem = {
     id: string | number
     index: number
+    type?: EntityType
 }
 
 export type SearchRank = {
@@ -44,6 +52,18 @@ export const DATABASE_TYPE: Record<SearchEngine, string> = {
     [SearchEngine.ES]: 'elasticsearch',
     [SearchEngine.GCP_ES]: 'elasticsearch-gcp', // fixme(@Illia): deprecate this search engine after migration is done
     [SearchEngine.PG]: 'postgres',
+}
+
+const detailedSource = (
+    source: SearchRankSource,
+    type?: 'ticket' | 'customer'
+) => {
+    if (source === SearchRankSource.SpotlightAll) {
+        return type === 'ticket'
+            ? SearchRankSource.FederatedSearchTicket
+            : SearchRankSource.FederatedSearchCustomer
+    }
+    return source
 }
 
 export default function useSearchRankScenario(
@@ -65,7 +85,10 @@ export default function useSearchRankScenario(
             logEvent(SegmentEvent.SearchQueryRanked, {
                 search_query: query,
                 datetime: new Date(requestTime).toISOString(),
-                query_source: source,
+                query_source: detailedSource(
+                    source,
+                    selectedItem?.current?.type
+                ),
                 response_time: responseTime - requestTime,
                 account_domain: currentAccount.get('domain'),
                 number_of_results: numberOfResults,
@@ -99,8 +122,8 @@ export default function useSearchRankScenario(
     }, [])
 
     const registerResultSelection = useCallback(
-        ({index, id}: SearchRankSelectedItem) => {
-            selectedItem.current = {index, id}
+        ({index, id, type}: SearchRankSelectedItem) => {
+            selectedItem.current = {index, id, type}
         },
         []
     )
