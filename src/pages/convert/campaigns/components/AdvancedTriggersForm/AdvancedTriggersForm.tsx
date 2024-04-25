@@ -18,6 +18,8 @@ export const AdvancedTriggersForm = ({
 
     const formTriggers = useMemo<CampaignTriggerMap>(() => {
         return Object.entries(triggers).reduce((acc, [id, trigger]) => {
+            // We will still have `single_in_view` triggers in database , so it is important to
+            // filter them out and not display them
             if (
                 trigger.type === CampaignTriggerType.SingleInView ||
                 trigger.type === CampaignTriggerType.DeviceType

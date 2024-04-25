@@ -11,7 +11,6 @@ describe('CampaignPreferences', () => {
             <CampaignPreferences
                 isNoReply={false}
                 triggers={{}}
-                onChangeCollision={jest.fn()}
                 onChangeNoReply={jest.fn()}
             />
         )
@@ -21,6 +20,5 @@ describe('CampaignPreferences', () => {
         expect(
             getByText('Customers can reply to this campaign')
         ).toBeInTheDocument()
-        expect(getByText('Show this campaign individually')).toBeInTheDocument()
     })
 })

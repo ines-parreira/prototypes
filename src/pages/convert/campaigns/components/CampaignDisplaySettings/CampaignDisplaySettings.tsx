@@ -16,7 +16,6 @@ type Props = {
     delay?: number
     isNoReply: boolean
     triggers: CampaignTriggerMap
-    onChangeCollision: (triggerId: string, value: boolean) => void
     onChangeDelay: (value: number) => void
     onChangeDeviceType: (triggerId: string, value: string) => void
     onChangeNoReply: (value: boolean) => void
@@ -39,7 +38,6 @@ export const CampaignDisplaySettings = ({
     delay,
     isNoReply,
     triggers,
-    onChangeCollision,
     onChangeNoReply,
     onChangeDelay,
     onChangeDeviceType,
@@ -48,12 +46,8 @@ export const CampaignDisplaySettings = ({
         triggers,
         CampaignTriggerType.DeviceType
     )
-    const singleInViewId = getTriggerIdByKey(
-        triggers,
-        CampaignTriggerType.SingleInView
-    )
-    const shouldRenderSettings =
-        isConvertSubscriber || singleInViewId || deviceTypeId || delay
+
+    const shouldRenderSettings = isConvertSubscriber || deviceTypeId || delay
 
     const deviceTypeTrigger = useMemo(() => {
         return triggers[deviceTypeId] ?? null
@@ -87,7 +81,6 @@ export const CampaignDisplaySettings = ({
                         triggers={triggers}
                         isNoReply={isNoReply}
                         onChangeNoReply={onChangeNoReply}
-                        onChangeCollision={onChangeCollision}
                     />
                 </div>
             </div>

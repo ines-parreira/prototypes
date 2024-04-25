@@ -25,7 +25,6 @@ import {CampaignStepsKeys} from '../../types/CampaignSteps'
 import {TriggersProvider} from '../TriggersProvider'
 import {AdvancedTriggersTooltip} from '../../components/AdvancedTriggersTooltip'
 import {isDeviceTypeValue} from '../../types/enums/CampaignTriggerDeviceTypeValue.enum'
-import {createTrigger} from '../../utils/createTrigger'
 
 type Props = {
     key: CampaignStepsKeys
@@ -73,23 +72,6 @@ export const CampaignAudienceStep = ({
 
     const handleUpdateNoReply = (value: boolean) =>
         updateCampaign('noReply', value)
-
-    const handleToggleSingleCampaignInView = useCallback(
-        (triggerId: string, value: boolean) => {
-            if (value) {
-                const singleInViewTrigger = createTrigger(
-                    CampaignTriggerType.SingleInView
-                )
-                addTrigger(
-                    CampaignTriggerType.SingleInView,
-                    singleInViewTrigger
-                )
-            } else {
-                deleteTrigger(triggerId)
-            }
-        },
-        [addTrigger, deleteTrigger]
-    )
 
     const handleChangeDeviceType = useCallback(
         (triggerId: string, value: string) => {
@@ -182,7 +164,6 @@ export const CampaignAudienceStep = ({
                     triggers={triggers}
                     isNoReply={campaignWithNoReply}
                     delay={campaignDelay}
-                    onChangeCollision={handleToggleSingleCampaignInView}
                     onChangeDelay={handleUpdateDelay}
                     onChangeDeviceType={handleChangeDeviceType}
                     onChangeNoReply={handleUpdateNoReply}

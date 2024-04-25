@@ -39,6 +39,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Language} from 'constants/languages'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
@@ -353,7 +354,9 @@ export const CampaignDetailsForm = ({
                     trimmedCampaignName,
                     isConvertSubscriber
                 )
-                draft.triggers = Object.values(triggers)
+                draft.triggers = Object.values(triggers).filter((trigger) => {
+                    return trigger.type !== CampaignTriggerType.SingleInView
+                })
                 draft.trigger_rule = createTriggerRule(draft.triggers)
 
                 if (!chatMultiLanguagesEnabled) {
