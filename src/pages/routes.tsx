@@ -182,6 +182,7 @@ import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
 import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
 import {AiAgentNewGuidanceContainer} from './automate/aiAgent/AiAgentNewGuidanceContainer'
 import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
+import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidanceDetailContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1420,11 +1421,16 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                 exact
                                 component={AiAgentGuidanceContainer}
                             />
-                            <Route
-                                path={`${path}/guidance/new`}
-                                exact
-                                component={AiAgentNewGuidanceContainer}
-                            />
+                            <Switch>
+                                <Route
+                                    path={`${path}/guidance/new`}
+                                    component={AiAgentNewGuidanceContainer}
+                                />
+                                <Route
+                                    path={`${path}/guidance/:articleId`}
+                                    component={AiAgentGuidanceDetailContainer}
+                                />
+                            </Switch>
                         </>
                     )}
                 </AiAgentAccountConfigurationProvider>

@@ -8,15 +8,15 @@ import {
 } from '../../constants'
 import css from './GuidanceHeader.less'
 
-const CREATE_GUIDANCE_BUTON_ID = 'create-guidance-button'
+const CREATE_GUIDANCE_BUTTON_ID = 'create-guidance-button'
 
 type Props = {
-    onCreateGuidance: () => void
+    onCreateGuidanceClick: () => void
     guidanceArticlesLength: number
 }
 
 export const GuidanceHeader = ({
-    onCreateGuidance,
+    onCreateGuidanceClick,
     guidanceArticlesLength,
 }: Props) => {
     const isGuidanceArticleLimitRiched =
@@ -35,14 +35,14 @@ export const GuidanceHeader = ({
                     <Button
                         isDisabled={isGuidanceArticleLimitRiched}
                         disabled={isGuidanceArticleLimitRiched}
-                        onClick={onCreateGuidance}
-                        id={CREATE_GUIDANCE_BUTON_ID}
+                        onClick={onCreateGuidanceClick}
+                        id={CREATE_GUIDANCE_BUTTON_ID}
                     >
                         Create Guidance
                     </Button>
                     {isGuidanceArticleLimitRiched && (
                         <Tooltip
-                            target={CREATE_GUIDANCE_BUTON_ID}
+                            target={CREATE_GUIDANCE_BUTTON_ID}
                             placement="bottom"
                         >
                             You can only add up to {GUIDANCE_ARTICLE_LIMIT}{' '}

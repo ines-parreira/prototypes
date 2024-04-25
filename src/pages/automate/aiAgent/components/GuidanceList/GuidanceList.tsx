@@ -34,9 +34,14 @@ const compareDates = (a: string, b: string, direction: OrderDirection) => {
 type Props = {
     guidanceArticles: GuidanceArticle[]
     onDelete: (articleId: number) => void
+    onRowClick: (articleId: number) => void
 }
 
-export const GuidanceList = ({guidanceArticles, onDelete}: Props) => {
+export const GuidanceList = ({
+    guidanceArticles,
+    onDelete,
+    onRowClick,
+}: Props) => {
     const [sortState, setSortState] = useState<SortState>(initialSortState)
 
     const datetimeFormat = useGetDateAndTimeFormat(
@@ -98,7 +103,11 @@ export const GuidanceList = ({guidanceArticles, onDelete}: Props) => {
             </TableHead>
             <TableBody>
                 {sortedGuidanceArticles.map((article) => (
-                    <TableBodyRow key={article.id} data-testid="guidance-row">
+                    <TableBodyRow
+                        key={article.id}
+                        data-testid="guidance-row"
+                        onClick={() => onRowClick(article.id)}
+                    >
                         <BodyCell
                             innerClassName={css.itemTitle}
                             data-testid="guidance-title"

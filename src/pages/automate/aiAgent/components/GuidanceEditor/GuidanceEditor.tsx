@@ -66,7 +66,7 @@ export const GuidanceEditor = ({
             </Label>
 
             <FroalaEditorComponent
-                value={value}
+                model={value}
                 tag="textarea"
                 config={{
                     ...config,

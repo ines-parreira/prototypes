@@ -31,13 +31,15 @@ export const helpCenterStatsKeys = {
         [...helpCenterStatsKeys.all(), queryParams] as const,
     articles: (
         helpCenterId: number,
-        queryParams: Paths.ListArticles.QueryParameters
+        queryParams?: Paths.ListArticles.QueryParameters
     ) =>
         [
             ...helpCenterStatsKeys.detail(helpCenterId),
             'articles',
             queryParams,
-        ] as const,
+        ].filter(Boolean), // remove undefined queryParams
+    article: (helpCenterId: number, articleId: number) =>
+        [...helpCenterStatsKeys.articles(helpCenterId), articleId] as const,
     getCategoryTree: (
         helpCenterId: number,
         parentCategoryId: number,
@@ -52,10 +54,10 @@ export const helpCenterStatsKeys = {
 }
 
 export const helpCenterArticleKeys = (
-    helpCenterId?: number,
-    articleId?: number,
-    locale?: string
-) => ['help-center-article', helpCenterId, articleId, locale]
+    helpCenterId: number,
+    articleId: number,
+    locale: string
+) => [...helpCenterStatsKeys.article(helpCenterId, articleId), locale]
 
 export const useGetHelpCenterArticleList = (
     helpCenterId: Paths.ListArticles.Parameters.HelpCenterId,
@@ -109,9 +111,9 @@ export const useGetHelpCenterCategoryTree = (
 }
 
 export const useGetHelpCenterArticle = (
-    articleId?: Paths.GetArticle.Parameters.Id,
-    helpCenterId?: Paths.GetArticle.Parameters.HelpCenterId,
-    locale?: Paths.GetArticle.Parameters.Locale,
+    articleId: Paths.GetArticle.Parameters.Id,
+    helpCenterId: Paths.GetArticle.Parameters.HelpCenterId,
+    locale: Paths.GetArticle.Parameters.Locale,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getHelpCenterArticle>>
     >
@@ -124,11 +126,11 @@ export const useGetHelpCenterArticle = (
             getHelpCenterArticle(
                 client,
                 {
-                    help_center_id: helpCenterId!,
-                    id: articleId!,
+                    help_center_id: helpCenterId,
+                    id: articleId,
                 },
                 {
-                    locale: locale!,
+                    locale: locale,
                 }
             ),
         staleTime: STALE_TIME,

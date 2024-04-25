@@ -7,12 +7,16 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {AiAgentNewGuidanceContainer} from '../AiAgentNewGuidanceContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 
 jest.mock('../hooks/useGuidanceHelpCenter', () => ({
     useGuidanceHelpCenter: jest.fn(),
 }))
 jest.mock('../hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(),
+}))
+jest.mock('../hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock(
@@ -30,8 +34,18 @@ jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
 
 const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
+const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
+const defaultGuidanceArticleMutationProps: ReturnType<
+    typeof useGuidanceArticleMutation
+> = {
+    createGuidanceArticle: jest.fn(),
+    deleteGuidanceArticle: jest.fn(),
+    updateGuidanceArticle: jest.fn(),
+    isGuidanceArticleUpdating: false,
+    isGuidanceArticleDeleting: false,
+}
 
 const renderComponent = () => {
     renderWithRouter(<AiAgentNewGuidanceContainer />, {
@@ -42,13 +56,12 @@ const renderComponent = () => {
 describe('<AiAgentNewGuidance />', () => {
     beforeEach(() => {
         mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
+        mockedUseGuidanceArticleMutation.mockReturnValue(
+            defaultGuidanceArticleMutationProps
+        )
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
-            deleteGuidanceArticle: jest.fn(),
-            isGuidanceArticleDeleting: false,
             isGuidanceArticleListLoading: false,
-            isGuidanceArticleUpdating: false,
-            createOrUpdateGuidanceArticle: jest.fn(),
         })
     })
 

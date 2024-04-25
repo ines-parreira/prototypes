@@ -13,6 +13,7 @@ import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
+import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 
 jest.mock('../hooks/useGuidanceHelpCenter', () => ({
     useGuidanceHelpCenter: jest.fn(),
@@ -21,10 +22,16 @@ jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(),
 }))
+jest.mock('../hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: jest.fn(),
+}))
+
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
 const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
+const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
+
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
@@ -34,10 +41,15 @@ const helpCenter = getHelpCentersResponseFixture.data[0]
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
     guidanceArticles: [],
     isGuidanceArticleListLoading: false,
+}
+const defaultGuidanceArticleMutationProps: ReturnType<
+    typeof useGuidanceArticleMutation
+> = {
+    createGuidanceArticle: jest.fn(),
+    deleteGuidanceArticle: jest.fn(),
+    updateGuidanceArticle: jest.fn(),
     isGuidanceArticleUpdating: false,
     isGuidanceArticleDeleting: false,
-    createOrUpdateGuidanceArticle: jest.fn(),
-    deleteGuidanceArticle: jest.fn(),
 }
 
 const renderComponent = () => {
@@ -50,6 +62,9 @@ describe('<AiAgentGuidanceContainer />', () => {
     beforeEach(() => {
         mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticles.mockReturnValue(defaultGuidanceArticleProps)
+        mockedUseGuidanceArticleMutation.mockReturnValue(
+            defaultGuidanceArticleMutationProps
+        )
     })
 
     it('should render loader', () => {
@@ -89,6 +104,9 @@ describe('<AiAgentGuidanceContainer />', () => {
                 ...defaultGuidanceArticleProps,
                 guidanceArticles,
                 isGuidanceArticleListLoading: false,
+            })
+            mockedUseGuidanceArticleMutation.mockReturnValue({
+                ...defaultGuidanceArticleMutationProps,
                 deleteGuidanceArticle,
             })
 

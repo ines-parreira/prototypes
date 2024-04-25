@@ -35,3 +35,7 @@ export type GuidanceArticle = {
 }
 
 export type CreateGuidanceArticle = Omit<GuidanceArticle, 'id' | 'lastUpdated'>
+export type UpdateGuidanceArticle = Omit<
+    Partial<GuidanceArticle>,
+    'lastUpdated' | 'id'
+>

@@ -9,6 +9,7 @@ import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyS
 import {GuidanceList} from './components/GuidanceList/GuidanceList'
 import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 
 type Props = {
     helpCenterId: number
@@ -16,11 +17,11 @@ type Props = {
 }
 
 export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
-    const {
-        guidanceArticles,
-        isGuidanceArticleListLoading,
-        deleteGuidanceArticle,
-    } = useGuidanceArticles(helpCenterId)
+    const {guidanceArticles, isGuidanceArticleListLoading} =
+        useGuidanceArticles(helpCenterId)
+    const {deleteGuidanceArticle} = useGuidanceArticleMutation({
+        guidanceHelpCenterId: helpCenterId,
+    })
 
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -39,8 +40,12 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
         }
     }
 
-    const onCreateGuidance = () => {
+    const onCreateGuidanceClick = () => {
         history.push(routes.newGuidanceArticle)
+    }
+
+    const onGuidanceArticleClick = (articleId: number) => {
+        history.push(routes.guidanceArticleEdit(articleId))
     }
 
     if (isGuidanceArticleListLoading) {
@@ -56,12 +61,13 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
     return (
         <div>
             <GuidanceHeader
-                onCreateGuidance={onCreateGuidance}
+                onCreateGuidanceClick={onCreateGuidanceClick}
                 guidanceArticlesLength={guidanceArticles.length}
             />
             <GuidanceList
                 guidanceArticles={guidanceArticles}
                 onDelete={onDelete}
+                onRowClick={onGuidanceArticleClick}
             />
         </div>
     )
