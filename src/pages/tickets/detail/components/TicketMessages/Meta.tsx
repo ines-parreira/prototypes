@@ -1,11 +1,9 @@
-import classnames from 'classnames'
-import React, {ReactNode, useEffect, useMemo} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 import ReactStars from 'react-rating-stars-component'
 
 import {fetchRule} from 'models/rule/resources'
-import Spinner from 'pages/common/components/Spinner'
 import {ruleFetched} from 'state/entities/rules/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {rulesSelector} from 'state/entities/rules/selectors'
@@ -14,16 +12,12 @@ import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {ManagedRule, RuleType} from 'state/rules/types'
 import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {
-    Meta as MetaType,
-    ReplyTicketMessage,
-    Source,
-} from '../../../../../models/ticket/types'
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {starRatingProps} from '../../../../common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
-
-import {AgentLabel} from '../../../../common/utils/labels'
-import css from './Meta.less'
+import {Meta as MetaType, Source} from 'models/ticket/types'
+import {TicketMessageSourceType} from 'business/types/ticket'
+import {starRatingProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
+import MetaLabel from './MetaLabel'
+import MetaRepliedByLabel from './MetaRepliedByLabel'
+import MetaRepliedToLabel from './MetaRepliedToLabel'
 
 type Props = {
     messageId?: string
@@ -35,16 +29,7 @@ type Props = {
     source?: Source
     messageCreatedDatetime?: string
     subject?: string
-    repliedBy?: ReplyTicketMessage
-    repliedTo?: ReplyTicketMessage
 }
-
-const From = ({label, children}: {label: string; children?: ReactNode}) => (
-    <span className={classnames(css.from)}>
-        <span className={css.fromLabel}>{label}</span>{' '}
-        <span className={css.fromValue}>{children}</span>
-    </span>
-)
 
 export default function Meta(props: Props) {
     const {
@@ -54,8 +39,6 @@ export default function Meta(props: Props) {
         externalId,
         integrationId,
         messageCreatedDatetime,
-        repliedBy,
-        repliedTo,
     } = props
     const widgets = []
 
@@ -87,7 +70,7 @@ export default function Meta(props: Props) {
             source.type === TicketMessageSourceType.ChatOfflineCapture)
     ) {
         widgets.push(
-            <From label="via" key="from-widget">
+            <MetaLabel label="via" key="from-widget">
                 <span>
                     {source.type ===
                         TicketMessageSourceType.ChatContactForm && (
@@ -112,11 +95,11 @@ export default function Meta(props: Props) {
                         </>
                     )}
                 </span>
-            </From>
+            </MetaLabel>
         )
     } else if (meta && meta.current_page) {
         widgets.push(
-            <From label="from" key="from-widget">
+            <MetaLabel label="from" key="from-widget">
                 <a
                     target="_blank"
                     href={meta.current_page}
@@ -125,7 +108,7 @@ export default function Meta(props: Props) {
                 >
                     {meta.current_page}
                 </a>
-            </From>
+            </MetaLabel>
         )
     }
 
@@ -293,7 +276,7 @@ export default function Meta(props: Props) {
 
     if (type && link) {
         let fromComponent = (
-            <From label={label} key="ref-widget">
+            <MetaLabel label={label} key="ref-widget">
                 <a
                     target="_blank"
                     href={link}
@@ -302,13 +285,13 @@ export default function Meta(props: Props) {
                 >
                     {type}
                 </a>
-            </From>
+            </MetaLabel>
         )
 
         if (replyingToUsername) {
             const profileLink = `https://twitter.com/${replyingToUsername}`
             fromComponent = (
-                <From label={label} key="ref-widget">
+                <MetaLabel label={label} key="ref-widget">
                     <a
                         target="_blank"
                         href={profileLink}
@@ -326,66 +309,23 @@ export default function Meta(props: Props) {
                     >
                         {type}
                     </a>
-                </From>
+                </MetaLabel>
             )
         }
 
         widgets.push(fromComponent)
     }
 
-    if (!!repliedBy) {
-        const agent = repliedBy.user?.name && (
-            <AgentLabel name={repliedBy.user?.name} />
+    if (!!meta?.replied_by) {
+        widgets.push(
+            <MetaRepliedByLabel reply={meta.replied_by} key="replied-by" />
         )
-        const view_ticket_link = meta?.replied_by?.ticket_id && (
-            <>
-                <span className={css.separator}>-</span>
-                <span className={css.ticketLink}>
-                    <a
-                        href={`${meta.replied_by.ticket_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        View ticket
-                    </a>
-                </span>
-            </>
-        )
-        const fromComponent = (
-            <From label={''} key="ref-widget">
-                <span className={css.repliedBy}>
-                    responded to via Messenger{' '}
-                    <span className={css.filler}>by</span> {agent}{' '}
-                    {view_ticket_link}
-                </span>
-            </From>
-        )
-        widgets.push(fromComponent)
     }
 
-    if (!!repliedTo) {
-        const view_ticket_link = meta?.replied_to?.ticket_id && (
-            <>
-                <span className={css.separator}> </span>
-                <span className={css.ticketLink}>
-                    <a
-                        href={`${meta.replied_to.ticket_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Comment
-                    </a>
-                </span>
-            </>
+    if (!!meta?.replied_to) {
+        widgets.push(
+            <MetaRepliedToLabel reply={meta.replied_to} key="replied-to" />
         )
-        const fromComponent = (
-            <From label={''} key="ref-widget">
-                <span className={css.repliedIn}>
-                    responded via Messenger to {view_ticket_link}
-                </span>
-            </From>
-        )
-        widgets.push(fromComponent)
     }
 
     if (yotpoReviewScore) {
@@ -411,66 +351,68 @@ export default function Meta(props: Props) {
 
     if (props.via === 'rule' && props.ruleId) {
         widgets.push(
-            <From key="via-widget" label="sent via:">
+            <MetaLabel
+                key="via-widget"
+                label="sent via:"
+                isLoading={isFetchingRule}
+            >
                 <b>
-                    {isFetchingRule ? (
-                        <Spinner className={css.spinner} color="dark" />
-                    ) : (
-                        <Link
-                            to={`/app/settings/rules/${props.ruleId}`}
-                            title="Rule"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {ruleName}
-                        </Link>
-                    )}
+                    <Link
+                        to={`/app/settings/rules/${props.ruleId}`}
+                        title="Rule"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {ruleName}
+                    </Link>
                 </b>
-            </From>
+            </MetaLabel>
         )
     } else if (meta && meta.campaign_id && props.integrationId) {
         const sentViaLink = `/app/convert/${props.integrationId}/campaigns/${meta.campaign_id}`
 
         widgets.push(
-            <From key="via-widget" label="sent via a">
+            <MetaLabel key="via-widget" label="sent via a">
                 <b>
                     <Link to={sentViaLink} title="Campaign">
                         <i className="material-icons mr-1">settings</i>
                         "Campaign"
                     </Link>
                 </b>
-            </From>
+            </MetaLabel>
         )
     } else if (meta && meta.rule_suggestion_slug) {
         const slug = meta.rule_suggestion_slug
         const ruleName = recipes?.[slug]?.rule?.name ?? slug
         widgets.push(
-            <From key="via-widget" label="sent via suggested rule:">
+            <MetaLabel
+                key="via-widget"
+                label="sent via suggested rule:"
+                isLoading={!recipes}
+            >
                 <b>
-                    {!recipes ? (
-                        <Spinner className={css.spinner} color="dark" />
-                    ) : (
-                        <Link
-                            to={`/app/settings/rules/library?${meta.rule_suggestion_slug}`}
-                            title="Rule"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {ruleName}
-                        </Link>
-                    )}
+                    <Link
+                        to={`/app/settings/rules/library?${meta.rule_suggestion_slug}`}
+                        title="Rule"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {ruleName}
+                    </Link>
                 </b>
-            </From>
+            </MetaLabel>
         )
     } else if (meta && meta.ai_suggestion) {
         widgets.push(
-            <From
+            <MetaLabel
                 key="via-widget"
                 label="answer suggested from Gorgias AI"
-            ></From>
+            ></MetaLabel>
         )
     } else if (meta && meta.sms_deflection) {
-        widgets.push(<From key="via-widget" label={meta.sms_deflection}></From>)
+        widgets.push(
+            <MetaLabel key="via-widget" label={meta.sms_deflection}></MetaLabel>
+        )
     }
 
     return <>{widgets}</>

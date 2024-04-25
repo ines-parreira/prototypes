@@ -7,33 +7,21 @@
         calc(var(--neutral-grey-4-l) - 8%)
     );
     font-size: 1rem;
-    display: flex;
+    display: inline-flex;
+    white-space: pre;
     min-width: 0;
+    align-items: center;
 
-    .fromLabel {
+    .label {
         flex-shrink: 0;
-        margin-right: 4px;
     }
 
-    .fromValue {
-        white-space: nowrap;
+    .value {
         text-overflow: ellipsis;
         overflow: hidden;
-
-        .repliedBy {
-            display: flex;
-            align-items: center;
-
-            .separator {
-                margin-left: @layout-spacing-xxs;
-                margin-right: @layout-spacing-xxs;
-            }
-
-            .filler {
-                margin-left: 3px;
-                margin-right: 6px;
-            }
-        }
+        display: inline-flex;
+        white-space: pre;
+        align-items: center;
     }
 
     a {
@@ -44,11 +32,6 @@
             calc(var(--neutral-grey-4-l) - 8%)
         );
         text-decoration: underline !important;
-    }
-
-    .ticketLink a {
-        font-weight: 600;
-        color: var(--main-primary);
     }
 
     .spinner {

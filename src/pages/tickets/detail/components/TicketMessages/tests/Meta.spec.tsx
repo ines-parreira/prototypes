@@ -1,22 +1,22 @@
 import React from 'react'
 
-import {render, screen} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {render, screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
 import {fetchRule} from 'models/rule/resources'
 import {ManagedRule, ManagedRulesSlugs, RuleType} from 'state/rules/types'
 import {ManagedRuleDisplayName} from 'state/rules/constants'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {TicketVias} from '../../../../../../business/ticket'
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../../../../business/types/ticket'
+import {TicketVias} from 'business/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import Meta from '../Meta'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const queryClient = mockQueryClient()
 
 const store = mockStore({
     entities: {
@@ -222,7 +222,7 @@ describe('ticket message meta', () => {
             )
         })
 
-        it('should display "responded to via Messenger by" with ticket link', () => {
+        it('should display "responded to via Messenger by" with ticket link', async () => {
             const pageId = '871900732905218'
             const postId = '2750858871676052'
             const userId = '2941872749234184'
@@ -238,46 +238,30 @@ describe('ticket message meta', () => {
                 to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
-            const replied_by = {
-                body_text: 'test',
-                integration_id: 1,
-                source: source,
-                user: {
-                    id: 1,
-                    email: 'test@test.com',
-                    name: 'Acme Support',
-                    firstname: 'Acme',
-                    lastname: 'Support',
-                },
-                customer: {
-                    id: 2,
-                    email: 'customer@test.com',
-                    name: 'Acme Customer',
-                    firstname: 'Acme',
-                    lastname: 'Customer',
-                },
-            }
             const meta = {
                 replied_by: {
                     ticket_id: 3312,
                     ticket_message_id: 123,
                 },
             }
+
             const {container} = render(
                 <Provider store={store}>
-                    <Meta
-                        via="facebook"
-                        messageId={`${postId}_${commentId}`}
-                        integrationId={118}
-                        source={source}
-                        meta={meta}
-                        repliedBy={replied_by}
-                    />
+                    <QueryClientProvider client={queryClient}>
+                        <Meta
+                            via="facebook"
+                            messageId={`${postId}_${commentId}`}
+                            integrationId={118}
+                            source={source}
+                            meta={meta}
+                        />
+                    </QueryClientProvider>
                 </Provider>
             )
-
-            expect(container.textContent).toContain(
-                'responded to via Messenger by'
+            await waitFor(() =>
+                expect(container.textContent).toContain(
+                    'responded to via Messenger'
+                )
             )
 
             const links = Array.from(container.querySelectorAll('a'))
@@ -285,6 +269,29 @@ describe('ticket message meta', () => {
                 `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
             )
             expect(links[1].href).toEqual(`${window.location.href}3312`)
+        })
+
+        it('should display "responded via Messenger to" with ticket link', async () => {
+            const meta = {
+                replied_to: {
+                    ticket_id: 3312,
+                    ticket_message_id: 123,
+                },
+            }
+
+            const {container, getByText} = render(
+                <Provider store={store}>
+                    <Meta via="facebook" meta={meta} />
+                </Provider>
+            )
+
+            await waitFor(() =>
+                expect(container.textContent).toContain(
+                    'responded via Messenger to'
+                )
+            )
+
+            expect(getByText('Comment')).toHaveAttribute('href', '3312')
         })
 
         it('should display "go to reply" link', () => {
@@ -488,7 +495,7 @@ describe('ticket message meta', () => {
             expect(container.querySelector('a')?.href).toBe(permalink)
         })
 
-        it('should display "responded to via Messenger by" with ticket link', () => {
+        it('should display "responded to via Messenger by" with ticket link', async () => {
             const permalink = 'https://www.instagram.com/p/B_V7_Znngrv/'
             const source = {
                 from: {name: 'trudoglife', address: 'trudoglife'},
@@ -497,45 +504,29 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.InstagramComment,
             }
 
-            const replied_by = {
-                body_text: 'test',
-                integration_id: 1,
-                source: source,
-                user: {
-                    id: 1,
-                    email: 'test@test.com',
-                    name: 'Acme Support',
-                    firstname: 'Acme',
-                    lastname: 'Support',
-                },
-                customer: {
-                    id: 2,
-                    email: 'customer@test.com',
-                    name: 'Acme Customer',
-                    firstname: 'Acme',
-                    lastname: 'Customer',
-                },
-            }
             const meta = {
                 replied_by: {
                     ticket_id: 3312,
                     ticket_message_id: 123,
                 },
             }
+
             const {container} = render(
                 <Provider store={store}>
-                    <Meta
-                        via="instagram"
-                        integrationId={118}
-                        source={source}
-                        meta={meta}
-                        repliedBy={replied_by}
-                    />
+                    <QueryClientProvider client={queryClient}>
+                        <Meta
+                            via="instagram"
+                            integrationId={118}
+                            source={source}
+                            meta={meta}
+                        />
+                    </QueryClientProvider>
                 </Provider>
             )
-
-            expect(container.textContent).toContain(
-                'responded to via Messenger by'
+            await waitFor(() =>
+                expect(container.textContent).toContain(
+                    'responded to via Messenger'
+                )
             )
             expect(container.querySelector('a')?.href).toBe(
                 `${window.location.href}3312`

@@ -277,13 +277,13 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
                       class="from"
                     >
                       <span
-                        class="fromLabel"
+                        class="label"
                       >
                         go to
+                         
                       </span>
-                       
                       <span
-                        class="fromValue"
+                        class="value"
                       >
                         <a
                           href="https://facebook.com/657788504429455/posts/1537287279812902?comment_id=1664359293772366"
@@ -561,13 +561,13 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
                       class="from"
                     >
                       <span
-                        class="fromLabel"
+                        class="label"
                       >
                         go to
+                         
                       </span>
-                       
                       <span
-                        class="fromValue"
+                        class="value"
                       >
                         <a
                           href="https://facebook.com/657788504429455/posts/1537287279812902?comment_id=1664359293772366"

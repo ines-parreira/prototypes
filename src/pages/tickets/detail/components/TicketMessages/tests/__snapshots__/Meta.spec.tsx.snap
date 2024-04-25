@@ -5,13 +5,13 @@ exports[`ticket message meta chat-contact-form should add a \`via contact form f
   class="from"
 >
   <span
-    class="fromLabel"
+    class="label"
   >
     via
+     
   </span>
-   
   <span
-    class="fromValue"
+    class="value"
   >
     <span>
       <b>
@@ -38,13 +38,13 @@ exports[`ticket message meta chat-contact-form should add a \`via contact form\`
   class="from"
 >
   <span
-    class="fromLabel"
+    class="label"
   >
     via
+     
   </span>
-   
   <span
-    class="fromValue"
+    class="value"
   >
     <span>
       <b>
@@ -62,13 +62,13 @@ exports[`ticket message meta live-chat-message should add a \`from https://...\`
   class="from"
 >
   <span
-    class="fromLabel"
+    class="label"
   >
     from
+     
   </span>
-   
   <span
-    class="fromValue"
+    class="value"
   >
     <a
       href="https://gorgias.com/best-helpdesk-ever/"
@@ -87,13 +87,13 @@ exports[`ticket message meta should add a -sent via campaign- label because the 
   class="from"
 >
   <span
-    class="fromLabel"
+    class="label"
   >
     sent via a
+     
   </span>
-   
   <span
-    class="fromValue"
+    class="value"
   >
     <b>
       <a

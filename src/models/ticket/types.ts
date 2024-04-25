@@ -122,8 +122,6 @@ export type TicketMessage = {
     }
     isMessage: boolean
     intents?: TicketMessageIntent[]
-    replied_to?: ReplyTicketMessage
-    replied_by?: ReplyTicketMessage
 }
 
 export type TicketMessageIntent = {
