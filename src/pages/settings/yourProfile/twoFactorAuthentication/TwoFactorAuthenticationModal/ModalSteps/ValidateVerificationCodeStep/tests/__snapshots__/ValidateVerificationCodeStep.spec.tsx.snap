@@ -11,25 +11,6 @@ exports[`<ValidateVerificationCodeStep /> render() should render the component w
   <div
     class="textSection mb16"
   >
-    Enter a verification code from your authenticator app or a recovery code
-  </div>
-  <div>
-    <div
-      class="wrapper"
-    >
-      <input
-        class="input"
-        id="input-text-1"
-        name="verificationCode"
-        placeholder="Enter 6-digit verification code from app or recovery code"
-        type="text"
-        value=""
-      />
-    </div>
-  </div>
-  <div
-    class="textSection mb16"
-  >
     Enter your password.
   </div>
   <div>
@@ -38,10 +19,29 @@ exports[`<ValidateVerificationCodeStep /> render() should render the component w
     >
       <input
         class="input"
-        id="input-text-3"
+        id="input-text-1"
         name="userPassword"
         placeholder="Enter your password"
         type="password"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="textSection mb16"
+  >
+    Enter a verification code from your authenticator app or a recovery code
+  </div>
+  <div>
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-3"
+        name="verificationCode"
+        placeholder="Enter 6-digit verification code from app or recovery code"
+        type="text"
         value=""
       />
     </div>

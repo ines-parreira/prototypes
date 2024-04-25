@@ -26,22 +26,6 @@ export default function ValidateVerificationCodeStep({
                 {!isUpdate && 'Step 3: '}
                 Verify your code
             </div>
-            <div className={classnames(css.textSection, settingsCss.mb16)}>
-                Enter a verification code from your authenticator app or a
-                recovery code
-            </div>
-            <InputField
-                // keeping this as text because if the type is "number"
-                // the 0 from 0 leading numbers is removed ( 012345 -> 12345 )
-                // and the code becomes invalid
-                type="text"
-                name="verificationCode"
-                placeholder="Enter 6-digit verification code from app or recovery code"
-                onChange={(value) => {
-                    setVerificationCode(value)
-                    setErrorText('')
-                }}
-            />
 
             {hasPassword && (
                 <>
@@ -64,6 +48,23 @@ export default function ValidateVerificationCodeStep({
                     />
                 </>
             )}
+
+            <div className={classnames(css.textSection, settingsCss.mb16)}>
+                Enter a verification code from your authenticator app or a
+                recovery code
+            </div>
+            <InputField
+                // keeping this as text because if the type is "number"
+                // the 0 from 0 leading numbers is removed ( 012345 -> 12345 )
+                // and the code becomes invalid
+                type="text"
+                name="verificationCode"
+                placeholder="Enter 6-digit verification code from app or recovery code"
+                onChange={(value) => {
+                    setVerificationCode(value)
+                    setErrorText('')
+                }}
+            />
         </>
     )
 }

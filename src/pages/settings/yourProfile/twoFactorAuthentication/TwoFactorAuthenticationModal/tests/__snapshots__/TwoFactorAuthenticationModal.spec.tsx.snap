@@ -348,25 +348,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-9"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter your password.
               </div>
               <div>
@@ -375,10 +356,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-11"
+                    id="input-text-9"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter a verification code from your authenticator app or a recovery code
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-11"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
                     value=""
                   />
                 </div>
@@ -472,25 +472,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-9"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter your password.
               </div>
               <div>
@@ -499,10 +480,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-11"
+                    id="input-text-9"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter a verification code from your authenticator app or a recovery code
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-11"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
                     value=""
                   />
                 </div>
@@ -611,25 +611,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-5"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter your password.
               </div>
               <div>
@@ -638,10 +619,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-7"
+                    id="input-text-5"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter a verification code from your authenticator app or a recovery code
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-7"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
                     value=""
                   />
                 </div>
@@ -735,25 +735,6 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-5"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter your password.
               </div>
               <div>
@@ -762,10 +743,29 @@ exports[`<TwoFactorAuthenticationModal /> render() Validate verification code sh
                 >
                   <input
                     class="input"
-                    id="input-text-7"
+                    id="input-text-5"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter a verification code from your authenticator app or a recovery code
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-7"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
                     value=""
                   />
                 </div>
@@ -1437,25 +1437,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-1"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter your password.
               </div>
               <div>
@@ -1464,10 +1445,29 @@ exports[`<TwoFactorAuthenticationModal /> render() should render modal with Vali
                 >
                   <input
                     class="input"
-                    id="input-text-3"
+                    id="input-text-1"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter a verification code from your authenticator app or a recovery code
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-3"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
                     value=""
                   />
                 </div>
@@ -1704,25 +1704,6 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
               <div
                 class="textSection mb16"
               >
-                Enter a verification code from your authenticator app or a recovery code
-              </div>
-              <div>
-                <div
-                  class="wrapper"
-                >
-                  <input
-                    class="input"
-                    id="input-text-30"
-                    name="verificationCode"
-                    placeholder="Enter 6-digit verification code from app or recovery code"
-                    type="text"
-                    value=""
-                  />
-                </div>
-              </div>
-              <div
-                class="textSection mb16"
-              >
                 Enter your password.
               </div>
               <div>
@@ -1731,10 +1712,29 @@ exports[`<TwoFactorAuthenticationModal /> render() should render the modal with 
                 >
                   <input
                     class="input"
-                    id="input-text-32"
+                    id="input-text-30"
                     name="userPassword"
                     placeholder="Enter your password"
                     type="password"
+                    value=""
+                  />
+                </div>
+              </div>
+              <div
+                class="textSection mb16"
+              >
+                Enter a verification code from your authenticator app or a recovery code
+              </div>
+              <div>
+                <div
+                  class="wrapper"
+                >
+                  <input
+                    class="input"
+                    id="input-text-32"
+                    name="verificationCode"
+                    placeholder="Enter 6-digit verification code from app or recovery code"
+                    type="text"
                     value=""
                   />
                 </div>
