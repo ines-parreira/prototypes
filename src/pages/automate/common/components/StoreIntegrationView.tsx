@@ -26,7 +26,7 @@ const StoreIntegrationView = ({title}: {title: string}) => {
 
                 <LinkButton
                     target=""
-                    href="/app/settings/integrations?category=store"
+                    href="/app/settings/integrations?category=Ecommerce"
                 >
                     Go to app store
                 </LinkButton>
