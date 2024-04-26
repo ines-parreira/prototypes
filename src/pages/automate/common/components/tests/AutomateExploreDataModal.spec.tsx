@@ -66,6 +66,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -85,12 +87,14 @@ describe('<AutomateExploreDataModal />', () => {
         )
         const agentCost = screen.getByTestId('agent-cost')
         const yearly = screen.getByTestId('yearly')
+        const ticketHandleTime = screen.getByTestId('ticket-handle-time')
 
         expect(resolutionTime).toHaveValue('1h')
         expect(firstResponseTime).toHaveValue('40m')
         expect(monthlySupportTickets).toHaveValue('2400')
         expect(agentCost).toHaveValue('175,593.6')
         expect(yearly).toHaveAttribute('data-selected', 'true')
+        expect(ticketHandleTime).toHaveValue('2m')
     })
 
     it('should show **** when we have agent costs', () => {
@@ -118,6 +122,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={true}
                     ref={modal}
                 />
@@ -143,6 +149,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -170,6 +178,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -197,6 +207,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -227,6 +239,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -264,6 +278,8 @@ describe('<AutomateExploreDataModal />', () => {
                     resolutionTime={3600}
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />

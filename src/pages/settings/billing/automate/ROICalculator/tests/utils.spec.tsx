@@ -1,6 +1,7 @@
 import {AutomationPrice} from 'models/billing/types'
 import {
     convertSecondsToHours,
+    convertSecondsToMinutes,
     formatOnBlur,
     formatOnFocus,
     formatValue,
@@ -18,12 +19,21 @@ describe('convertSecondsToHours', () => {
     })
 })
 
+describe('convertSecondsToMinutes', () => {
+    it('should convert seconds to minutes', () => {
+        const seconds = 60 // 1 minute
+        const expectedMinutes = '1'
+        const result = convertSecondsToMinutes(seconds)
+        expect(result).toBe(expectedMinutes)
+    })
+})
+
 describe('formatOnBlur', () => {
     it('should format value on blur', () => {
         const setValue = jest.fn()
         const val = '123456'
         const expectedValue = '123456hrs'
-        formatOnBlur(setValue, val)
+        formatOnBlur(setValue, val, 'hrs')
         expect(setValue).toHaveBeenCalledWith(expectedValue)
     })
 })

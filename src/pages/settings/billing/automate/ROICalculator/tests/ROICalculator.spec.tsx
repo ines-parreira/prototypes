@@ -2,6 +2,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {QueryClientProvider} from '@tanstack/react-query'
 
 import {fromJS} from 'immutable'
 
@@ -14,10 +15,16 @@ import {RootState, StoreDispatch} from 'state/types'
 import * as metricTrends from 'hooks/reporting/metricTrends'
 import * as useGetCostPerBillableTicket from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 
+import * as useTicketsClosedPerHour from 'hooks/reporting/useTicketsClosedPerHour'
+
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
 import ROICalculator from '../ROICalculator'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<RootState, StoreDispatch>(middlewares)
+
+const queryClient = mockQueryClient()
 
 describe('<ROICalculator />', () => {
     beforeEach(() => {
@@ -64,11 +71,33 @@ describe('<ROICalculator />', () => {
             },
         })
 
+        jest.spyOn(
+            useTicketsClosedPerHour,
+            'useTicketsClosedPerHour'
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 5,
+            },
+        })
+
+        jest.spyOn(metricTrends, 'useTicketHandleTimeTrend').mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 120,
+                prevValue: 120,
+            },
+        })
+
         const {getByTestId} = render(
             <Provider
                 store={mockStore({billing: fromJS(billingState)} as RootState)}
             >
-                <ROICalculator />
+                <QueryClientProvider client={queryClient}>
+                    <ROICalculator />
+                </QueryClientProvider>
             </Provider>
         )
 
@@ -77,6 +106,10 @@ describe('<ROICalculator />', () => {
         const salaryValueInput = getByTestId('salary-value-input')
         const resolutionTimeInput = getByTestId('resolution-time-input')
         const firstResponseTimeInput = getByTestId('first-response-time-input')
+        const ticketsClosedPerHourInput = getByTestId(
+            'tickets-closed-per-hour-input'
+        )
+        const ticketHandleTimeInput = getByTestId('ticket-handle-time-input')
 
         fireEvent.change(salaryValueInput, {target: {value: '20'}})
 
@@ -91,6 +124,12 @@ describe('<ROICalculator />', () => {
 
         expect(firstResponseTimeInput).toBeDisabled()
         expect(firstResponseTimeInput).toHaveValue('1hrs')
+
+        expect(ticketsClosedPerHourInput).toBeDisabled()
+        expect(ticketsClosedPerHourInput).toHaveValue('5')
+
+        expect(ticketHandleTimeInput).toBeDisabled()
+        expect(ticketHandleTimeInput).toHaveValue('2m')
     })
 
     it('should enable fields when trend data is not available', () => {
@@ -120,7 +159,9 @@ describe('<ROICalculator />', () => {
             <Provider
                 store={mockStore({billing: fromJS(billingState)} as RootState)}
             >
-                <ROICalculator />
+                <QueryClientProvider client={queryClient}>
+                    <ROICalculator />
+                </QueryClientProvider>
             </Provider>
         )
 

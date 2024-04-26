@@ -13,6 +13,19 @@ export const convertSecondsToHours = (
     return (Math.round(hours * 10) / 10).toString()
 }
 
+export const convertSecondsToMinutes = (
+    seconds?: string | number | null
+): string => {
+    if (!seconds) {
+        return '0'
+    }
+
+    const secondsNumber = Number(seconds) || 0
+
+    const minutes = secondsNumber / 60
+    return (Math.round(minutes * 10) / 10).toString()
+}
+
 export const formatValue = (val: string) => {
     const inputNumber = Number(val.replace(/[^0-9.]/g, ''))
 
@@ -35,9 +48,12 @@ export const formatOnFocus = (
 }
 export const formatOnBlur = (
     setValue: (val: string | number) => void,
-    val: string | number
+    val: string | number,
+    timeUnit: string
 ) => {
-    setValue(`${Number(val.toString().replace(/[^0-9.]/g, '')) || 0}hrs`)
+    setValue(
+        `${Number(val.toString().replace(/[^0-9.]/g, '')) || 0}${timeUnit}`
+    )
 }
 
 export const getResolutionTimeWithAutomate = (val: string | number) => {

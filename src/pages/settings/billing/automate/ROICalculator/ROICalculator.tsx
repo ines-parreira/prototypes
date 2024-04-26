@@ -13,17 +13,22 @@ import {
     useClosedTicketsTrend,
     useMedianFirstResponseTimeTrend,
     useMedianResolutionTimeTrend,
+    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 
 import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
-import {formatCurrency} from 'pages/stats/common/utils'
+import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {PlanInterval} from 'models/billing/types'
 import {getAutomationPrices} from 'state/billing/selectors'
+import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import {TICKETS_CLOSED_PER_HOUR} from 'pages/automate/automate-metrics/constants'
 import {SUPPORT_METRICS_TYPES, SALARY_TYPES} from './constants'
 import css from './ROICalculator.less'
 import {
     convertSecondsToHours,
+    convertSecondsToMinutes,
     formatOnBlur,
     formatOnFocus,
     formatValue,
@@ -37,7 +42,7 @@ const ROICalculator = () => {
     const currentResolutionTimeRef = useRef(null)
     const currentFirstResponseRef = useRef(null)
 
-    const {startDatetime, endDatetime} = useMemo(() => {
+    const filters = useMemo(() => {
         const startDatetime = moment()
             .subtract(28, 'days')
             .startOf('day')
@@ -46,17 +51,12 @@ const ROICalculator = () => {
         const endDatetime = moment().endOf('day').format()
 
         return {
-            startDatetime,
-            endDatetime,
+            period: {
+                end_datetime: endDatetime,
+                start_datetime: startDatetime,
+            },
         }
     }, [])
-
-    const filters = {
-        period: {
-            end_datetime: endDatetime,
-            start_datetime: startDatetime,
-        },
-    }
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -70,6 +70,13 @@ const ROICalculator = () => {
         filters,
         userTimezone
     )
+
+    const ticketHandleTimeTrend = useTicketHandleTimeTrend(
+        filters,
+        userTimezone
+    )
+
+    const ticketsClosedPerHourMetric = useTicketsClosedPerHour()
 
     const ticketsClosedTrend = useClosedTicketsTrend(filters, userTimezone)
 
@@ -109,8 +116,23 @@ const ROICalculator = () => {
         [ticketsClosedTrend.data?.value]
     )
 
+    const [numberOfTickets, setNumberOfTickets] = useState(0)
+
+    const [ticketsClosedPerHour, setTicketsClosedPerHour] = useState('0')
+
+    const [ticketHandleTime, setTicketHandleTime] = useState<string | number>(
+        '2m'
+    )
+
     const [savedInPercentage, setSavedInPercentage] = useState('0%')
 
+    const timeSavedTotal = useMemo(() => {
+        const ticketHandleTimeInSeconds =
+            Number(ticketHandleTime.toString().replace(/[^0-9.]/g, '')) * 60
+        const timeSavedTotal = numberOfTickets * ticketHandleTimeInSeconds * 0.3
+
+        return formatMetricValue(timeSavedTotal, 'duration')
+    }, [ticketHandleTime, numberOfTickets])
     // Set the resolution time and determine if it's disabled
     useEffect(() => {
         setResolutionTime(
@@ -137,6 +159,26 @@ const ROICalculator = () => {
             setIsFirstResponseTimeDisabled(true)
         }
     }, [firstResponseTimeTrend.data?.value])
+
+    // Set the ticket handle time
+    useEffect(() => {
+        setTicketHandleTime(
+            `${
+                convertSecondsToMinutes(ticketHandleTimeTrend.data?.value) ||
+                '2'
+            }m`
+        )
+    }, [ticketHandleTimeTrend.data?.value])
+
+    // Set the tickets closed per hour
+    useEffect(() => {
+        setTicketsClosedPerHour(
+            (
+                ticketsClosedPerHourMetric.data?.value ||
+                TICKETS_CLOSED_PER_HOUR
+            ).toLocaleString()
+        )
+    }, [ticketsClosedPerHourMetric.data?.value])
 
     // Set the metrics value based on the metrics type
     useEffect(() => {
@@ -166,8 +208,8 @@ const ROICalculator = () => {
         const salary = salaryValue.replace(/[^0-9.]/g, '')
         const agentCostPerTicket =
             salaryType === 'annual_salary'
-                ? Number(salary) / (12 * 840)
-                : Number(salary) / 5
+                ? Number(salary) / (12 * 21 * 8 * Number(ticketsClosedPerHour))
+                : Number(salary) / Number(ticketsClosedPerHour)
 
         const metricsNumber = Number(metricsValue.replace(/[^0-9.]/g, ''))
 
@@ -176,6 +218,8 @@ const ROICalculator = () => {
             (metricsType === 'monthly_support_tickets'
                 ? metricsNumber
                 : metricsNumber * 40 * 21)
+
+        setNumberOfTickets(numberOfTickets)
 
         const automateSubscriptionPrices = automationPrices.filter(
             (price) => price.interval === PlanInterval.Month
@@ -222,6 +266,7 @@ const ROICalculator = () => {
         salaryType,
         salaryValue,
         automationPrices,
+        ticketsClosedPerHour,
     ])
 
     return (
@@ -248,6 +293,25 @@ const ROICalculator = () => {
                             value={metricsValue}
                             isDisabled={isMetricsDisabled}
                             data-testid="metrics-value-input"
+                        />
+                    </div>
+                </div>
+                <div className={css.formRow}>
+                    <Label>
+                        Tickets handled per hour{' '}
+                        <HintTooltip title="Average number of tickets handled by one agent in an hour over the last 28 days" />
+                    </Label>
+                    <div className={css.inputsContainer}>
+                        <InputField
+                            className={css.inputField}
+                            value={ticketsClosedPerHour}
+                            onChange={(val) =>
+                                setTicketsClosedPerHour(formatValue(val))
+                            }
+                            isDisabled={
+                                !!ticketsClosedPerHourMetric.data?.value
+                            }
+                            data-testid="tickets-closed-per-hour-input"
                         />
                     </div>
                 </div>
@@ -310,12 +374,18 @@ const ROICalculator = () => {
                             value={resolutionTime}
                             isDisabled={isResolutionTimeDisabled}
                             placeholder="hrs"
-                            onChange={(val) => setResolutionTime(val)}
+                            onChange={(val) =>
+                                setResolutionTime(formatValue(val))
+                            }
                             onFocus={() =>
                                 formatOnFocus(setResolutionTime, resolutionTime)
                             }
                             onBlur={() =>
-                                formatOnBlur(setResolutionTime, resolutionTime)
+                                formatOnBlur(
+                                    setResolutionTime,
+                                    resolutionTime,
+                                    'hrs'
+                                )
                             }
                             data-testid="resolution-time-input"
                         />
@@ -344,7 +414,9 @@ const ROICalculator = () => {
                             value={firstResponseTime}
                             isDisabled={isFirstResponseTimeDisabled}
                             placeholder="hrs"
-                            onChange={(val) => setFirstResponseTime(val)}
+                            onChange={(val) =>
+                                setFirstResponseTime(formatValue(val))
+                            }
                             onFocus={() => {
                                 formatOnFocus(
                                     setFirstResponseTime,
@@ -354,10 +426,42 @@ const ROICalculator = () => {
                             onBlur={() => {
                                 formatOnBlur(
                                     setFirstResponseTime,
-                                    firstResponseTime
+                                    firstResponseTime,
+                                    'hrs'
                                 )
                             }}
                             data-testid="first-response-time-input"
+                        />
+                    </div>
+                </div>
+                <div className={css.formRow}>
+                    <Label>
+                        Current ticket handle time{' '}
+                        <HintTooltip title="Average amount of time spent by any agent on tickets closed in the last 28 days" />
+                    </Label>
+                    <div className={css.inputsContainer}>
+                        <InputField
+                            className={css.inputField}
+                            value={ticketHandleTime}
+                            onChange={(val) => {
+                                return setTicketHandleTime(formatValue(val))
+                            }}
+                            onFocus={() =>
+                                formatOnFocus(
+                                    setTicketHandleTime,
+                                    ticketHandleTime
+                                )
+                            }
+                            onBlur={() =>
+                                formatOnBlur(
+                                    setTicketHandleTime,
+                                    ticketHandleTime,
+                                    'm'
+                                )
+                            }
+                            isDisabled={!!ticketHandleTimeTrend.data?.value}
+                            placeholder="m"
+                            data-testid="ticket-handle-time-input"
                         />
                     </div>
                 </div>
@@ -428,6 +532,14 @@ const ROICalculator = () => {
                                 )}
                                 hrs
                             </div>
+                        </div>
+                    </div>
+                    <div className={css.timeSaved}>
+                        <div className={css.timeSavedPercentage}>
+                            Increase time saved by your agents by 30%
+                        </div>
+                        <div className={css.timeSavedTime}>
+                            to {timeSavedTotal}
                         </div>
                     </div>
                 </div>

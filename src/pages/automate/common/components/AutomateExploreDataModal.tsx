@@ -24,22 +24,14 @@ import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
-import css from './AutomateExploreDataModal.less'
+import css from 'pages/automate/common/components/AutomateExploreDataModal.less'
+import {TICKETS_CLOSED_PER_HOUR} from 'pages/automate/automate-metrics/constants'
 
 const defaultAgentCostPerTicket = 3.1
-const hourlyRateMultiplier = 5
-const annualSalaryMultiplier = 12 * 840
-
-const defaultAgentHourlyRate = (
-    defaultAgentCostPerTicket * hourlyRateMultiplier
-).toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-})
-const defaultAgentAnnualSalary = (
-    defaultAgentCostPerTicket * annualSalaryMultiplier
-).toLocaleString(undefined, {maximumFractionDigits: 2})
+const defaultHourlyRateMultiplier = 5
+const defaultAnnualSalaryMultiplier = 12 * 840
 
 const agentCostTypeOptions: {
     label: string
@@ -53,6 +45,8 @@ type Props = {
     resolutionTime: Maybe<number>
     firstResponseTime: Maybe<number>
     monthlySupportTickets: Maybe<number>
+    ticketHandleTime: Maybe<number>
+    ticketsClosedPerHour: Maybe<number>
     hasAgentCosts: boolean
 }
 
@@ -69,10 +63,26 @@ const AutomateExploreDataModal = forwardRef<
             firstResponseTime,
             resolutionTime,
             monthlySupportTickets,
+            ticketHandleTime,
+            ticketsClosedPerHour,
             hasAgentCosts,
         },
         ref
     ) => {
+        const hourlyRateMultiplier =
+            ticketsClosedPerHour || TICKETS_CLOSED_PER_HOUR
+        const annualSalaryMultiplier = 12 * 21 * 8 * hourlyRateMultiplier
+
+        const defaultAgentHourlyRate = (
+            defaultAgentCostPerTicket * defaultHourlyRateMultiplier
+        ).toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        })
+        const defaultAgentAnnualSalary = (
+            defaultAgentCostPerTicket * defaultAnnualSalaryMultiplier
+        ).toLocaleString(undefined, {maximumFractionDigits: 2})
+
         const dispatch = useAppDispatch()
         const agentCosts = useAppSelector(getAgentCostsSettings)
 
@@ -250,30 +260,47 @@ const AutomateExploreDataModal = forwardRef<
                                 />
                             </div>
                         </div>
-                        <div>
-                            <Label className={css.label}>
-                                Monthly support tickets{' '}
-                                <span
-                                    id="monthly-support-tickets-tooltip"
-                                    className={css.infoIcon}
-                                >
-                                    <i className="material-icons">
-                                        info_outline
-                                    </i>
-                                </span>
-                                <Tooltip
-                                    target="monthly-support-tickets-tooltip"
-                                    className={css.tooltip}
-                                >
-                                    Total number of support tickets in the last
-                                    28 days on your helpdesk.
-                                </Tooltip>
-                            </Label>
-                            <InputField
-                                value={monthlySupportTickets || 'N/A'}
-                                isDisabled
-                                data-testid="monthly-support-tickets"
-                            />
+                        <div className={css.fieldsRow}>
+                            <div>
+                                <Label className={css.label}>
+                                    Tickets handled per hour{' '}
+                                    <HintTooltip title="Average number of tickets handled by one agent in an hour over the last 28 days" />
+                                </Label>
+                                <InputField
+                                    value={
+                                        formatMetricValue(
+                                            ticketsClosedPerHour
+                                        ) || TICKETS_CLOSED_PER_HOUR
+                                    }
+                                    isDisabled
+                                    data-testid="tickets-closed-per-hour"
+                                />
+                            </div>
+                            <div>
+                                <Label className={css.label}>
+                                    Monthly support tickets{' '}
+                                    <span
+                                        id="monthly-support-tickets-tooltip"
+                                        className={css.infoIcon}
+                                    >
+                                        <i className="material-icons">
+                                            info_outline
+                                        </i>
+                                    </span>
+                                    <Tooltip
+                                        target="monthly-support-tickets-tooltip"
+                                        className={css.tooltip}
+                                    >
+                                        Total number of support tickets in the
+                                        last 28 days on your helpdesk.
+                                    </Tooltip>
+                                </Label>
+                                <InputField
+                                    value={monthlySupportTickets || 'N/A'}
+                                    isDisabled
+                                    data-testid="monthly-support-tickets"
+                                />
+                            </div>
                         </div>
                         <div className={css.fieldsRow}>
                             <div>
@@ -342,6 +369,41 @@ const AutomateExploreDataModal = forwardRef<
                                     data-testid="current-first-response-time"
                                 />
                             </div>
+                        </div>
+                        <div>
+                            <Label className={css.label}>
+                                Average ticket handle time{' '}
+                                <HintTooltip
+                                    title={
+                                        <>
+                                            <div>
+                                                Average amount of time spent by
+                                                any agent on tickets closed in
+                                                the last 28 days
+                                            </div>
+                                            <a
+                                                href="https://link.gorgias.com/eq6"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                How is it calculated?
+                                            </a>
+                                        </>
+                                    }
+                                />
+                            </Label>
+                            <InputField
+                                value={
+                                    resolutionTime
+                                        ? formatMetricValue(
+                                              ticketHandleTime,
+                                              'duration'
+                                          )
+                                        : '0h 0m'
+                                }
+                                isDisabled
+                                data-testid="ticket-handle-time"
+                            />
                         </div>
                     </div>
                 </ModalBody>

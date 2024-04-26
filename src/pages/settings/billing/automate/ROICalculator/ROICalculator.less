@@ -14,6 +14,7 @@
     }
 
     .resultsContainer {
+        display: flex;
         flex: 1;
         margin: @layout-spacing-s;
     }
@@ -72,13 +73,13 @@
         font-size: 14px;
         font-weight: 600;
         color: var(--neutral-grey-6);
-        padding-bottom: @layout-spacing-s;
+        padding-bottom: @layout-spacing-xs;
     }
 
     .resultRowBackground {
         background-color: var(--accessory-magenta-1);
         border-radius: 4px;
-        height: 40px;
+        height: 48px;
         display: flex;
         margin-bottom: @layout-spacing-xs;
         align-items: center;
@@ -99,6 +100,7 @@
         border-radius: 4px;
         color: #000000;
         align-items: center;
+        height: 100%;
     }
 
     .withoutAutomateCost {
@@ -118,6 +120,7 @@
         border-radius: 4px;
         color: var(--neutral-grey-0);
         align-items: center;
+        height: 100%;
     }
 
     .withAutomateCost {
@@ -148,9 +151,10 @@
         flex: 1;
         background-color: var(--accessory-magenta-2);
         border-radius: @layout-spacing-xxs;
-        padding: 22px 18px;
+        padding: @layout-spacing-m 18px;
+        gap: @layout-spacing-xs;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
     }
 
@@ -160,9 +164,10 @@
         flex: 1;
         background-color: var(--accessory-magenta-1);
         border-radius: @layout-spacing-xxs;
-        padding: 22px 18px;
+        padding: @layout-spacing-m 18px;
+        gap: @layout-spacing-xs;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
     }
 
@@ -173,6 +178,32 @@
     }
 
     .reduceTime {
+        font-size: 24px;
+        font-weight: 600;
+        color: var(--neutral-grey-6);
+        text-align: center;
+    }
+
+    .timeSaved {
+        display: flex;
+        background-color: #efbaff;
+        padding: @layout-spacing-s;
+        flex-direction: column;
+        justify-content: center;
+        gap: @layout-spacing-xs;
+        flex: 0;
+        border-radius: 4px;
+        align-items: center;
+        margin-top: @layout-spacing-xs;
+    }
+
+    .timeSavedPercentage {
+        font-size: 12px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .timeSavedTime {
         font-size: 24px;
         font-weight: 600;
         color: var(--neutral-grey-6);
