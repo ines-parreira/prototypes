@@ -44,7 +44,8 @@
         "convert:fetch-openapi": "curl http://localhost:8095/openapi.json > src/rest_api/revenue_addon_api/revenue-addon.openapi.json && prettier --write src/rest_api/revenue_addon_api/revenue-addon.openapi.json",
         "convert:generate-types": "typegen src/rest_api/revenue_addon_api/revenue-addon.openapi.json > src/rest_api/revenue_addon_api/client.generated.d.ts",
         "convert:update-client": "yarn run convert:fetch-openapi && yarn run convert:generate-types",
-        "ssp-api:generate-types": "typegen ./src/rest_api/ssp_api/ssp-api.openapi.json > ./src/rest_api/ssp_api/client.generated.d.ts"
+        "ssp-api:generate-types": "typegen ./src/rest_api/ssp_api/ssp-api.openapi.json > ./src/rest_api/ssp_api/client.generated.d.ts",
+        "wf-api:generate-types": "typegen ./src/rest_api/workflows_api/wf-api.openapi.json > ./src/rest_api/workflows_api/client.generated.d.ts"
     },
     "author": "Alex Plugaru <alex@gorgias.com>",
     "license": "UNLICENSED",

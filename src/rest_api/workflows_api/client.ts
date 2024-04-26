@@ -1,0 +1,38 @@
+import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import memoize from 'memoize-one'
+import {isProduction, isStaging} from 'utils/environment'
+
+import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
+import {Client} from './client.generated'
+import OpenAPIDoc from './wf-api.openapi.json'
+
+function getWfApiBaseURL(): string {
+    if (isProduction()) {
+        return 'https://api.gorgias.work'
+    }
+
+    if (isStaging()) {
+        return 'https://api-staging.gorgias.work'
+    }
+
+    return 'http://localhost:3100'
+}
+
+let apiClient: Client
+
+async function buildGorgiasWfApiClient() {
+    if (apiClient) {
+        return apiClient
+    }
+
+    const api = new OpenAPIClientAxios({
+        definition: OpenAPIDoc as Document,
+        withServer: {url: getWfApiBaseURL()},
+    })
+    apiClient = await api.init<Client>()
+    apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
+
+    return apiClient
+}
+
+export const getGorgiasWfApiClient = memoize(buildGorgiasWfApiClient)
