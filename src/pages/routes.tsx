@@ -477,9 +477,10 @@ export function StatsRoutes() {
 
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
-
     const isSLAsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
+    const isAnalyticsNewBusiestTime: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -548,17 +549,11 @@ export function StatsRoutes() {
                     path={`${path}/busiest-times-of-days`}
                     render={() => (
                         <App
-                            content={SupportPerformanceBusiestTimesOfDays}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
-                />
-                <Route
-                    exact
-                    path={`${path}/busiest-times-of-days-new`}
-                    render={() => (
-                        <App
-                            content={BusiestTimesOfDays}
+                            content={
+                                isAnalyticsNewBusiestTime
+                                    ? BusiestTimesOfDays
+                                    : SupportPerformanceBusiestTimesOfDays
+                            }
                             navbar={StatsNavbarContainer}
                         />
                     )}

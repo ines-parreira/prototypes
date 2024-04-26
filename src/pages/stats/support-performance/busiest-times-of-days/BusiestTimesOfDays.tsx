@@ -16,9 +16,19 @@ import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import Legend from 'pages/stats/common/components/Legend/Legend'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 
-export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times of days'
-const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest time of the week'
-const SECTION_TOOLTIP = 'Tickets created per hour per day of the week'
+export const BUSIEST_TIME_OF_DAY_PAGE_TITLE = 'Busiest times'
+const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest times of the week'
+const TICKETS_CREATED_TOOLTIP = 'Tickets created per hour per day of the week'
+const TICKETS_CLOSED_TOOLTIP = 'Tickets closed per hour per day of the week'
+const TICKETS_REPLIED_TOOLTIP = 'Tickets replied per hour per day of the week'
+const MESSAGES_SENT_TOOLTIP = 'Messages sent per hour per day of the week'
+
+const SectionTooltips: Record<BusiestTimeOfDaysMetrics, string> = {
+    [BusiestTimeOfDaysMetrics.MessagesSent]: MESSAGES_SENT_TOOLTIP,
+    [BusiestTimeOfDaysMetrics.TicketsCreated]: TICKETS_CREATED_TOOLTIP,
+    [BusiestTimeOfDaysMetrics.TicketsClosed]: TICKETS_CLOSED_TOOLTIP,
+    [BusiestTimeOfDaysMetrics.TicketsReplied]: TICKETS_REPLIED_TOOLTIP,
+}
 
 const busiestHoursHeatmapLegend = {
     aheadLabel: 'Least busy',
@@ -68,13 +78,11 @@ export const BusiestTimesOfDays = () => {
                         selectedMetric={selectedMetric}
                         setSelectedMetric={setSelectedMetric}
                     />
-                </DashboardSection>
-                <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(12)}>
                         <ChartCard
                             noPadding
                             title={BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL}
-                            hint={{title: SECTION_TOOLTIP}}
+                            hint={{title: SectionTooltips[selectedMetric]}}
                             titleExtra={
                                 <BusiestTimesOfDaysHeatmapSwitch
                                     isHeatmapMode={isHeatmapMode}

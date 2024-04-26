@@ -57,7 +57,10 @@ export const BusiestTimesOfDaysTable = ({
 
     return (
         <div ref={ref} className={css.container} onScroll={handleScroll}>
-            <TableWrapper className={css.table} style={{width}}>
+            <TableWrapper
+                className={classNames(css.table, css.compact)}
+                style={{width}}
+            >
                 <TableHead>
                     {columnsOrder.map((column, index) => (
                         <HeaderCellProperty

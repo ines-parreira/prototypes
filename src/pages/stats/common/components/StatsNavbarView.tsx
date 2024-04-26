@@ -17,7 +17,7 @@ const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
 }
 
-export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times of days'
+export const BUSIEST_TIMES_OF_DAYS_NAV_LABEL = 'Busiest times'
 export const NEW_NAV_LABEL = 'NEW'
 
 export default function StatsNavbarView() {
@@ -116,7 +116,7 @@ export default function StatsNavbarView() {
                         >
                             <NavbarLink
                                 {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/busiest-times-of-days-new"
+                                to="/app/stats/busiest-times-of-days"
                             >
                                 {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
                                 <Badge

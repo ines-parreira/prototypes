@@ -12,6 +12,7 @@ import {
 import {
     BTODColumns,
     BusiestTimeOfDaysMetrics,
+    HOUR_COLUMN,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import css from 'pages/stats/common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat.less'
@@ -38,6 +39,8 @@ export const BusiestTimesOfDaysCellContent = ({
     isHeatmapMode: boolean
     isWorkingHour: boolean
 }) => {
+    const justify = day === HOUR_COLUMN ? 'left' : 'center'
+
     return (
         <BodyCell
             width={width}
@@ -51,7 +54,8 @@ export const BusiestTimesOfDaysCellContent = ({
                 [heatmapCss.heatmap],
                 isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`]
             )}
-            justifyContent={'center'}
+            justifyContent={justify}
+            size={'small'}
         >
             <Content
                 day={day}
@@ -79,7 +83,7 @@ const Content = ({
     return (
         <span>
             {formatMetricValue(
-                metricValue,
+                metricValue === 0 ? null : metricValue,
                 'integer',
                 NOT_AVAILABLE_PLACEHOLDER
             )}
