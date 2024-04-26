@@ -4,11 +4,11 @@ import {Map} from 'immutable'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
-import {isLightCampaign} from 'pages/convert/campaigns/utils/isLightCampaign'
 import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import useLocalStorage from 'hooks/useLocalStorage'
+import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {Campaign} from '../../../../types/Campaign'
 
 type Props = {
@@ -44,8 +44,8 @@ export const CampaignToolsCell = ({
     >(storageKey)
 
     const areLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
-    const isLight =
-        areLightCampaignsEnabled && isLightCampaign(campaign, integration)
+    const isLight = areLightCampaignsEnabled && campaign.is_light
+    const isShopifyStore = chatIsShopifyStore(integration)
 
     const onDelete = useCallback(
         (campaign) => {
@@ -163,7 +163,12 @@ export const CampaignToolsCell = ({
                         : deleteButton}
                 </>
             )}
-            {isLight && <>{editButton}</>}
+            {isLight && (
+                <>
+                    {!isShopifyStore && duplicateButton}
+                    {editButton}
+                </>
+            )}
         </>
     )
 }

@@ -33,11 +33,23 @@ describe('<CampaignFooter />', () => {
         it('renders only update button when is update and light campaign', () => {
             const {getByText, queryByText} = renderComponent({
                 ...defaultProps,
+                isShopifyStore: true,
                 isLightCampaign: true,
             })
 
             expect(getByText('Update Campaign')).toBeInTheDocument()
             expect(queryByText('Duplicate Campaign')).not.toBeInTheDocument()
+            expect(queryByText('Delete Campaign')).not.toBeInTheDocument()
+        })
+
+        it('renders update and duplicate button for non-Shopify', () => {
+            const {getByText, queryByText} = renderComponent({
+                ...defaultProps,
+                isLightCampaign: true,
+            })
+
+            expect(getByText('Update Campaign')).toBeInTheDocument()
+            expect(getByText('Duplicate Campaign')).toBeInTheDocument()
             expect(queryByText('Delete Campaign')).not.toBeInTheDocument()
         })
 
@@ -84,6 +96,42 @@ describe('<CampaignFooter />', () => {
 
             expect(queryByText('Learn About Convert')).not.toBeInTheDocument()
             expect(getByText('Confirm')).toBeInTheDocument()
+        })
+    })
+
+    describe('Campaign create', () => {
+        const onSave = jest.fn()
+
+        it('blocks the create button when creation is disabled', () => {
+            const {getByText} = renderComponent({
+                ...defaultProps,
+                onSave,
+                isCreateDisabled: true,
+                isUpdate: false,
+            })
+
+            expect(getByText('Create')).toHaveAttribute('aria-disabled')
+            expect(onSave).not.toHaveBeenCalled()
+        })
+
+        it('blocks creation when user manually enables button', () => {
+            const {getByText} = renderComponent({
+                ...defaultProps,
+                onSave,
+                isCreateDisabled: true,
+                isUpdate: false,
+            })
+
+            const button = getByText('Create')
+            button.removeAttribute('aria-disabled')
+            button.removeAttribute('class')
+
+            button.click()
+
+            const activateButton = getByText('Create & Activate')
+            activateButton.click()
+
+            expect(onSave).not.toHaveBeenCalled()
         })
     })
 })

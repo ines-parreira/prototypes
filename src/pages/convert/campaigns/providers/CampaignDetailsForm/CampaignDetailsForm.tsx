@@ -42,7 +42,6 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
@@ -137,7 +136,6 @@ export const CampaignDetailsForm = ({
     }, [isEditMode, wizardConfiguration])
 
     const isConvertSubscriber = useIsConvertSubscriber()
-    const chatHasShopifyStore = chatIsShopifyStore(integration)
     const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
@@ -525,16 +523,12 @@ export const CampaignDetailsForm = ({
     )
 
     const isLightCampaign = useMemo(() => {
-        return (
-            areConvertLightCampaignsEnabled &&
-            chatHasShopifyStore &&
-            campaign?.is_light
-        )
-    }, [areConvertLightCampaignsEnabled, campaign, chatHasShopifyStore])
+        return areConvertLightCampaignsEnabled && campaign?.is_light
+    }, [areConvertLightCampaignsEnabled, campaign])
 
     const isLightCampaignBannerVisible = useMemo(() => {
-        return isLightCampaign && isConvertSubscriber
-    }, [isLightCampaign, isConvertSubscriber])
+        return isLightCampaign && isConvertSubscriber && isShopifyStore
+    }, [isLightCampaign, isConvertSubscriber, isShopifyStore])
 
     return (
         <IntegrationProvider
@@ -630,6 +624,7 @@ export const CampaignDetailsForm = ({
                                             )}
                                             isCampaignValid={isCampaignValid}
                                             isLightCampaign={isLightCampaign}
+                                            isShopifyStore={isShopifyStore}
                                             isOverCampaignsLimit={
                                                 isOverCampaignsLimit
                                             }

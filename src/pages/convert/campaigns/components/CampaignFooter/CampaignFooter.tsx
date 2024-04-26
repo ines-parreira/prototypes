@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
@@ -22,6 +22,7 @@ type Props = {
     actionInProgress?: string
     isCampaignValid?: boolean
     isLightCampaign?: boolean
+    isShopifyStore?: boolean
     isOverCampaignsLimit?: boolean
     isCreateDisabled?: boolean
     isUpdate?: boolean
@@ -36,6 +37,7 @@ export const CampaignFooter = ({
     actionInProgress = '',
     isCampaignValid = false,
     isLightCampaign = false,
+    isShopifyStore = false,
     isOverCampaignsLimit = false,
     isCreateDisabled = false,
     isUpdate = false,
@@ -55,6 +57,15 @@ export const CampaignFooter = ({
         boolean | undefined
     >(storageKey)
 
+    const onCreate = useCallback(
+        (activate?: boolean) => {
+            if (!isCreateDisabled) {
+                onSave(activate)
+            }
+        },
+        [onSave, isCreateDisabled]
+    )
+
     if (isUpdate) {
         return (
             <div>
@@ -72,20 +83,23 @@ export const CampaignFooter = ({
                         Update Campaign
                     </Button>
 
-                    {!isLightCampaign && !isCreateDisabled && onDuplicate && (
-                        <Button
-                            intent="secondary"
-                            aria-label="Duplicate Campaign"
-                            className={classnames({
-                                'btn-loading': actionInProgress === 'duplicate',
-                            })}
-                            isLoading={actionInProgress === 'duplicate'}
-                            isDisabled={actionInProgress !== ''}
-                            onClick={() => onDuplicate()}
-                        >
-                            Duplicate Campaign
-                        </Button>
-                    )}
+                    {(!isShopifyStore || !isLightCampaign) &&
+                        !isCreateDisabled &&
+                        onDuplicate && (
+                            <Button
+                                intent="secondary"
+                                aria-label="Duplicate Campaign"
+                                className={classnames({
+                                    'btn-loading':
+                                        actionInProgress === 'duplicate',
+                                })}
+                                isLoading={actionInProgress === 'duplicate'}
+                                isDisabled={actionInProgress !== ''}
+                                onClick={() => onDuplicate()}
+                            >
+                                Duplicate Campaign
+                            </Button>
+                        )}
                 </div>
 
                 {!isLightCampaign && onDelete && (
@@ -152,7 +166,7 @@ export const CampaignFooter = ({
                     fillStyle="fill"
                     ref={dropdownTargetRef}
                     isLoading={actionInProgress === 'create'}
-                    isDisabled={!isCampaignValid}
+                    isDisabled={!isCampaignValid || isCreateDisabled}
                     className={classnames({
                         'btn-loading': actionInProgress === 'create',
                     })}
@@ -170,7 +184,7 @@ export const CampaignFooter = ({
                                 label: 'Create',
                                 value: 'create',
                             }}
-                            onClick={() => onSave(false)}
+                            onClick={() => onCreate(false)}
                             shouldCloseOnSelect
                         />
 
@@ -179,7 +193,7 @@ export const CampaignFooter = ({
                                 label: 'Create & Activate',
                                 value: 'create_activate',
                             }}
-                            onClick={() => onSave(true)}
+                            onClick={() => onCreate(true)}
                             shouldCloseOnSelect
                         />
                     </DropdownBody>

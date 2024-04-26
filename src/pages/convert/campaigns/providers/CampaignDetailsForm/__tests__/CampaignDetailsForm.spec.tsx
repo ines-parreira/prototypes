@@ -185,6 +185,7 @@ describe('<CampaignDetailsForm />', () => {
 
             const {queryByText} = renderComponent({
                 ...defaultProps,
+                isShopifyStore: true,
                 campaign: lightCampaign,
             })
 

@@ -96,6 +96,8 @@ export const CampaignAudienceStep = ({
         [addTrigger, updateTrigger]
     )
 
+    const isConsideredLightCampaign = isLightCampaign && isShopifyStore
+
     return (
         <StatefulAccordion
             {...stateProps}
@@ -146,19 +148,19 @@ export const CampaignAudienceStep = ({
                     <AdvancedTriggersSelect
                         isShopifyStore={isShopifyStore}
                         isConvertSubscriber={isConvertSubscriber}
-                        isLightCampaign={isLightCampaign}
+                        isLightCampaign={isConsideredLightCampaign}
                         onClick={addTrigger}
                     />
                 </TriggersProvider>
 
-                {!isLightCampaign && (
+                {!isConsideredLightCampaign && (
                     <AdvancedTriggersTooltip
                         isConvertSubscriber={isConvertSubscriber}
                     />
                 )}
             </div>
 
-            {!isLightCampaign && (
+            {!isConsideredLightCampaign && (
                 <CampaignDisplaySettings
                     isConvertSubscriber={isConvertSubscriber}
                     triggers={triggers}

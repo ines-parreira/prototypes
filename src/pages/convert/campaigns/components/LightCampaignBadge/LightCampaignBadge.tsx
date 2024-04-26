@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 import Badge from 'gorgias-design-system/Badge/Badge'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
-import {isLightCampaign} from 'pages/convert/campaigns/utils/isLightCampaign'
+import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
 export interface LightCampaignBadgeProps
     extends React.HTMLAttributes<HTMLElement> {
@@ -17,8 +17,9 @@ const LightCampaignBadge = ({
     className,
 }: LightCampaignBadgeProps) => {
     const areLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
+    const isShopifyStore = chatIsShopifyStore(integration)
 
-    if (!areLightCampaignsEnabled || !isLightCampaign(campaign, integration)) {
+    if (!areLightCampaignsEnabled || !campaign.is_light || !isShopifyStore) {
         return null
     }
 
