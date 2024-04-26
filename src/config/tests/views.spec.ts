@@ -165,6 +165,10 @@ describe('Config: views', () => {
                     highlights: {},
                 },
                 [EntityType.Customer]: customer,
+                [EntityType.CustomerWithHighlight]: {
+                    ...customer,
+                    highlights: {},
+                },
             }
 
             it('view structure', () => {
@@ -216,6 +220,13 @@ describe('Config: views', () => {
                     [EntityType.TicketWithHighlight]: nonStringTicketFields,
                     [EntityType.Customer]: {
                         name: 'string',
+                        email: 'string',
+                        created: 'string',
+                    },
+                    [EntityType.CustomerWithHighlight]: {
+                        name_with_highlight: 'object',
+                        email_with_highlight: 'object',
+                        created: 'string',
                     },
                 }
 
@@ -347,7 +358,7 @@ describe('Config: views', () => {
 
     describe('getConfigByType', () => {
         it('returns correct config', () => {
-            const viewConfig = viewsConfig.views.last() as Map<any, any>
+            const viewConfig = viewsConfig.views.first() as Map<any, any>
             const type = viewConfig.get('type')
 
             expect(viewsConfig.getConfigByType(type)).toEqual(viewConfig)
@@ -392,6 +403,161 @@ describe('Config: views', () => {
                     viewsConfig.getTicketViewField(ViewField.Channel)
                 )
             ).toEqual('ticket.channel')
+        })
+    })
+
+    describe('ViewField.CustomerWithHighlight cell', () => {
+        it('should render customer name and email without highlights (highlights template)', () => {
+            const name = 'John Doe'
+            const email = 'example@example.com'
+            const customerWithHighlights = fromJS({
+                ...customer,
+                name,
+                email,
+                highlight: {},
+            })
+            const withHighlightView:
+                | Record<'name' | 'cell', unknown>
+                | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.CustomerWithHighlight)
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.NameWithHighlight, customerWithHighlights)
+                )
+                render(
+                    cell(ViewField.EmailWithHighlight, customerWithHighlights)
+                )
+            }
+
+            expect(screen.getByText(name)).toBeInTheDocument()
+            expect(screen.getByText(email)).toBeInTheDocument()
+        })
+
+        it('should render customer id instead of name without highlights (highlights template)', () => {
+            const id = 888
+            const name = undefined
+            const email = 'example@example.com'
+            const customerWithHighlights = fromJS({
+                ...customer,
+                id,
+                name,
+                email,
+                highlight: {},
+            })
+            const withHighlightView:
+                | Record<'name' | 'cell', unknown>
+                | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.CustomerWithHighlight)
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.NameWithHighlight, customerWithHighlights)
+                )
+            }
+
+            expect(screen.getByText(`Customer #${id}`)).toBeInTheDocument()
+        })
+
+        it('should render customer name and email with highlights', () => {
+            const name = 'John Doe'
+            const email = 'example@example.com'
+            const highlightedName = '<em>John Doe</em>'
+            const highlightedEmail = '<em>example@example.com</em>'
+            const customerWithHighlights = fromJS({
+                ...customer,
+                name,
+                email,
+                highlights: {
+                    name: [highlightedName],
+                    email: [highlightedEmail],
+                },
+            })
+            const withHighlightView:
+                | Record<'name' | 'cell', unknown>
+                | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.CustomerWithHighlight)
+
+            if (withHighlightView) {
+                customerWithHighlights
+
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.NameWithHighlight, customerWithHighlights)
+                )
+                render(
+                    cell(ViewField.EmailWithHighlight, customerWithHighlights)
+                )
+            }
+
+            expect(screen.getByText(name)).toBeInTheDocument()
+            expect(screen.getByText(name).tagName.toLocaleLowerCase()).toEqual(
+                'em'
+            )
+            expect(screen.getByText(email)).toBeInTheDocument()
+            expect(screen.getByText(email).tagName.toLocaleLowerCase()).toEqual(
+                'em'
+            )
+        })
+
+        it('should render customer with id (`Customer #id`) if name is not provided (default template)', () => {
+            const id = 333
+            const name = undefined
+            const email = 'example@example.com'
+            const customerData = fromJS({
+                ...customer,
+                id,
+                name,
+                email,
+            })
+            const defaultView: Record<'name' | 'cell', unknown> | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.Customer)
+
+            if (defaultView) {
+                const cell = defaultView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(cell(ViewField.Name, customerData))
+            }
+
+            expect(screen.getByText(`Customer #${id}`)).toBeInTheDocument()
+        })
+
+        it('should render viewField with updated_datetime (default template)', () => {
+            const updatedDateTime = '2020-09-31T19:15:01.313273+00:00'
+            const customerData = fromJS({
+                ...customer,
+                updated_datetime: updatedDateTime,
+            })
+            const defaultView: Record<'name' | 'cell', unknown> | undefined = (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.Customer)
+
+            if (defaultView) {
+                const cell = defaultView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(cell(ViewField.Updated, customerData))
+            }
+
+            expect(screen.getByText(updatedDateTime)).toBeInTheDocument()
         })
     })
 })

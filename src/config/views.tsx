@@ -17,8 +17,8 @@ import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
 import TicketTag from 'pages/common/components/TicketTag'
-import {sanitizeHtmlDefault} from 'utils/html'
 
+import {sanitizeHtmlDefault} from 'utils/html'
 import ticketLanguages from 'config/ticketLanguages'
 
 // Number of maximum recent views we store in the reducer and local storage.
@@ -77,6 +77,169 @@ export const defaultMergeTicketsView = (
         type: ViewType.TicketList,
         slug: 'merge-tickets',
     }) as Map<any, any>
+}
+
+const defaultCustomerView = {
+    name: EntityType.Customer,
+    type: ViewType.CustomerList,
+    routeItem: 'customer',
+    routeList: 'customers',
+    // TODO(customers-migration): update when we created REST API to search for customers in a view
+    api: 'customers',
+    singular: 'customer',
+    plural: 'customers',
+    mainField: ViewField.Name,
+    fields: [
+        {
+            name: ViewField.Name,
+            title: 'Name',
+        },
+        {
+            name: ViewField.Email,
+            title: 'Email',
+        },
+        {
+            name: ViewField.Created,
+            title: 'Creation date',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc',
+                },
+            },
+        },
+    ],
+    cell: (fieldName: ViewField, item: Map<any, any>) => {
+        switch (fieldName) {
+            case ViewField.Name:
+                return (
+                    (item.get('name') as string) ||
+                    `Customer #${item.get('id') as number}`
+                )
+            case ViewField.NameWithHighlight: {
+                const nameOrNameWithHighlight =
+                    (item.getIn(['highlights', 'name', 0]) as string) ??
+                    (item.get('name') as string)
+
+                return (
+                    <span
+                        className="customer-name-with-highlight"
+                        dangerouslySetInnerHTML={{
+                            __html: sanitizeHtmlDefault(
+                                nameOrNameWithHighlight ||
+                                    `Customer #${item.get('id') as number}`
+                            ),
+                        }}
+                    />
+                )
+            }
+            case ViewField.EmailWithHighlight: {
+                const emailOrEmailWithHighlight =
+                    (item.getIn(['highlights', 'email', 0]) as string) ??
+                    (item.get('email') as string)
+
+                return (
+                    <span
+                        className="customer-email-with-highlight"
+                        dangerouslySetInnerHTML={{
+                            __html: sanitizeHtmlDefault(
+                                emailOrEmailWithHighlight
+                            ),
+                        }}
+                    />
+                )
+            }
+            case ViewField.Created:
+                return item.get('created_datetime') as string
+            case ViewField.Updated:
+                return item.get('updated_datetime') as string
+            default: {
+                return defaultCell(fieldName, item)
+            }
+        }
+    },
+    newView: () => {
+        return baseView().merge({
+            fields: [ViewField.Name, ViewField.Email, ViewField.Created],
+            type: ViewType.CustomerList,
+        })
+    },
+    searchView: (query: string, filters?: string) => {
+        const searchView = baseView().merge({
+            name: `Search "${query}"`,
+            search: query,
+            fields: [ViewField.Name, ViewField.Email, ViewField.Created],
+            type: ViewType.CustomerList,
+            with_highlights: false,
+        })
+
+        if (filters) {
+            return searchView.merge({
+                filters,
+                filters_ast: fromAST(getAST(filters)),
+            })
+        }
+
+        return searchView
+    },
+}
+
+const customerViewWithHighlight = {
+    ...defaultCustomerView,
+    name: EntityType.CustomerWithHighlight,
+    mainField: ViewField.EmailWithHighlight,
+    fields: [
+        {
+            name: ViewField.NameWithHighlight,
+            title: 'Name',
+        },
+        {
+            name: ViewField.EmailWithHighlight,
+            title: 'Email',
+        },
+        {
+            name: ViewField.Created,
+            title: 'Creation date',
+            path: 'created_datetime',
+            filter: {
+                sort: {
+                    created_datetime: 'desc',
+                },
+            },
+        },
+    ],
+    newView: () => {
+        return baseView().merge({
+            fields: [
+                ViewField.NameWithHighlight,
+                ViewField.EmailWithHighlight,
+                ViewField.Created,
+            ],
+            type: ViewType.CustomerList,
+        })
+    },
+    searchView: (query: string, filters?: string) => {
+        const searchView = baseView().merge({
+            name: `Search "${query}"`,
+            search: query,
+            fields: [
+                ViewField.NameWithHighlight,
+                ViewField.EmailWithHighlight,
+                ViewField.Created,
+            ],
+            type: ViewType.CustomerList,
+            [WITH_HIGHLIGHTS_OPTION_KEY]: true,
+        })
+
+        if (filters) {
+            return searchView.merge({
+                filters,
+                filters_ast: fromAST(getAST(filters)),
+            })
+        }
+
+        return searchView
+    },
 }
 
 const defaultTicketView = {
@@ -506,76 +669,8 @@ const ticketWithHighlightView = {
 export const views = fromAST([
     defaultTicketView,
     ticketWithHighlightView,
-    {
-        name: EntityType.Customer,
-        type: ViewType.CustomerList,
-        routeItem: 'customer',
-        routeList: 'customers',
-        // TODO(customers-migration): update when we created REST API to search for customers in a view
-        api: 'customers',
-        singular: 'customer',
-        plural: 'customers',
-        mainField: ViewField.Name,
-        fields: [
-            {
-                name: ViewField.Name,
-                title: 'Name',
-            },
-            {
-                name: ViewField.Email,
-                title: 'Email',
-            },
-            {
-                name: ViewField.Created,
-                title: 'Creation date',
-                path: 'created_datetime',
-                filter: {
-                    sort: {
-                        created_datetime: 'desc',
-                    },
-                },
-            },
-        ],
-        cell: (fieldName: ViewField, item: Map<any, any>) => {
-            switch (fieldName) {
-                case ViewField.Name:
-                    return (
-                        (item.get('name') as string) ||
-                        `Customer #${item.get('id') as number}`
-                    )
-                case ViewField.Created:
-                    return item.get('created_datetime') as string
-                case ViewField.Updated:
-                    return item.get('updated_datetime') as string
-                default: {
-                    return defaultCell(fieldName, item)
-                }
-            }
-        },
-        newView: () => {
-            return baseView().merge({
-                fields: [ViewField.Name, ViewField.Email, ViewField.Created],
-                type: ViewType.CustomerList,
-            })
-        },
-        searchView: (query: string, filters?: string) => {
-            const searchView = baseView().merge({
-                name: `Search "${query}"`,
-                search: query,
-                fields: [ViewField.Name, ViewField.Email, ViewField.Created],
-                type: ViewType.CustomerList,
-            })
-
-            if (filters) {
-                return searchView.merge({
-                    filters,
-                    filters_ast: fromAST(getAST(filters)),
-                })
-            }
-
-            return searchView
-        },
-    },
+    defaultCustomerView,
+    customerViewWithHighlight,
 ]) as List<any>
 
 export const getConfigByName = (name: string) => {

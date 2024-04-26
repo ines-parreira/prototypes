@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {fromJS} from 'immutable'
 import {useRouteMatch} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {EntityType} from 'models/view/types'
 
 import {compactInteger} from 'utils'
@@ -18,9 +19,11 @@ import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import CustomerListActions from 'pages/customers/list/components/CustomerListActions'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 export default function CustomerListContainer() {
     const dispatch = useAppDispatch()
@@ -37,6 +40,11 @@ export default function CustomerListContainer() {
     const isUpdate =
         !isCreationUrl(location.pathname, 'users') &&
         !isCreationUrl(location.pathname, 'customers')
+    const isAdvancedSearchWithHighlights: boolean | undefined =
+        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights]
+    const type = isAdvancedSearchWithHighlights
+        ? EntityType.CustomerWithHighlight
+        : EntityType.Customer
 
     let title = 'Loading...'
 
@@ -57,7 +65,9 @@ export default function CustomerListContainer() {
 
     useTitle(title)
 
-    return (
+    return isAdvancedSearchWithHighlights === undefined ? (
+        <Skeleton />
+    ) : (
         <div
             className="d-flex flex-column"
             style={{
@@ -65,7 +75,7 @@ export default function CustomerListContainer() {
             }}
         >
             <ViewTable
-                type={EntityType.Customer}
+                type={type}
                 items={customers}
                 isUpdate={isUpdate}
                 isSearch={isSearch}

@@ -1,10 +1,9 @@
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {createRef, KeyboardEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import classnames from 'classnames'
+import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import {FeatureFlagKey} from 'config/featureFlags'
 

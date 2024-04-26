@@ -452,12 +452,14 @@ export function fetchViewItems(
                     undefined,
                 cancelToken,
             })
-        } else if (isCustomerSearch) {
-            const nextCursor: Maybe<string> = navigation.get('next_cursor')
-            const prevCursor: Maybe<string> = navigation.get('prev_cursor')
+        } else if (
+            activeView.get('search') != null &&
+            activeViewType === ViewType.CustomerList
+        ) {
+            const nextCursor = navigation.get('next_cursor') as Maybe<string>
+            const prevCursor = navigation.get('prev_cursor') as Maybe<string>
             promise = searchCustomers({
-                search: activeView.get('search'),
-                withHighlights: isSearchWithHighlight,
+                search: activeView.get('search') as string,
                 orderBy: '_score:desc',
                 cursor:
                     cursor ||

@@ -135,7 +135,7 @@ describe('ViewTable::Header', () => {
             expect(screen.getByDisplayValue(searchTerm)).toBeInTheDocument()
             fireEvent.keyDown(searchInput, {key: 'Enter'})
             expect(minProps.updateView).toHaveBeenLastCalledWith(
-                (fromJS(viewsFixture) as Map<any, any>).set(
+                (fromJS({...viewsFixture}) as Map<any, any>).set(
                     'search',
                     searchTerm
                 ),
