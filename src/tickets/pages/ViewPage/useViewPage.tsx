@@ -18,8 +18,8 @@ import {
 
 export default function useViewPage() {
     const [isHidden, onHide] = useIsOnboardingHidden()
-    const isSearchWithHighlights: boolean | undefined =
-        useFlags()[FeatureFlagKey.SearchWithHighlights]
+    const isAdvancedSearchWithHighlights: boolean | undefined =
+        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights]
 
     const defaultConfig = useMemo(
         (): PanelLayoutConfig => [
@@ -31,7 +31,7 @@ export default function useViewPage() {
             {
                 key: 'ticket-list-panel',
                 content:
-                    isSearchWithHighlights === undefined ? (
+                    isAdvancedSearchWithHighlights === undefined ? (
                         <Skeleton />
                     ) : (
                         <TicketList />
@@ -57,7 +57,7 @@ export default function useViewPage() {
                 ],
             },
         ],
-        [isHidden, isSearchWithHighlights, onHide]
+        [isHidden, isAdvancedSearchWithHighlights, onHide]
     )
 
     const config = useMemo(

@@ -1,5 +1,6 @@
 // Keep feature flags in alphabetical order and name it with Team/ApplicationSection name
 export enum FeatureFlagKey {
+    AdvancedSearchWithHighlights = 'advanced-search-with-highlights',
     AgentActivityTracking = 'agent-activity-tracking',
     AiAgentPlayground = 'ai-agent-playground',
     AiAgentSettings = 'ai-agent-settings',

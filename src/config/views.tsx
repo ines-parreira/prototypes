@@ -94,10 +94,6 @@ const defaultTicketView = {
             title: 'Details',
         },
         {
-            name: ViewField.DetailsWithHighlights,
-            title: 'Details',
-        },
-        {
             name: ViewField.Subject,
             title: 'Subject',
         },
@@ -436,6 +432,15 @@ const ticketWithHighlightView = {
     ...defaultTicketView,
     name: EntityType.TicketWithHighlight,
     mainField: ViewField.DetailsWithHighlights,
+    fields: [
+        {
+            name: ViewField.DetailsWithHighlights,
+            title: 'Details',
+        },
+        ...defaultTicketView.fields.filter(
+            (field) => field.name !== ViewField.Details
+        ),
+    ],
     newView: (
         visibility?: ViewVisibility,
         viewName?: string,

@@ -76,8 +76,8 @@ export class HeaderContainer extends React.Component<Props, State> {
         return url
     }
 
-    _isSearchWithHighlightedResults = () =>
-        !!this.props.flags?.[FeatureFlagKey.SearchWithHighlights]
+    _isAdvancedSearchWithHighlights = () =>
+        !!this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights]
 
     handleKeyDown = (event: KeyboardEvent) => {
         const {updateView, activeView, isSearch} = this.props
@@ -92,7 +92,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                 activeView.merge({
                     search: searchTerm,
                     [WITH_HIGHLIGHTS_OPTION_KEY]:
-                        this._isSearchWithHighlightedResults(),
+                        this._isAdvancedSearchWithHighlights(),
                 }),
                 false
             )

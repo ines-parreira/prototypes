@@ -100,7 +100,7 @@ export class ViewTableContainer extends Component<Props> {
             updateView(
                 urlSearchView.merge({
                     [WITH_HIGHLIGHTS_OPTION_KEY]:
-                        this._isSearchWithHighlightedResults(),
+                        this._isAdvancedSearchWithHighlights(),
                 }),
                 false
             )
@@ -292,8 +292,8 @@ export class ViewTableContainer extends Component<Props> {
         }`
     }
 
-    _isSearchWithHighlightedResults = () =>
-        !!this.props.flags?.[FeatureFlagKey.SearchWithHighlights]
+    _isAdvancedSearchWithHighlights = () =>
+        !!this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights]
 
     _renderTable = () => {
         const {
