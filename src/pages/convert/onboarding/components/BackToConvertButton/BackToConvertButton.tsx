@@ -4,7 +4,6 @@ import {
     BACK_TO_CONVERT_HOME,
     useBackToConvert,
 } from 'pages/convert/onboarding/hooks/useBackToConvert'
-import {useIsConvertOnboardingUiEnabled} from 'pages/convert/common/hooks/useIsConvertOnboardingUiEnabled'
 import css from './BackToConvertButton.less'
 
 type Props = {
@@ -13,8 +12,6 @@ type Props = {
 
 const BackToConvertButton = ({integrationId}: Props) => {
     const {backIntegrationId, removeBackIntegrationId} = useBackToConvert()
-
-    const isConvertOnboardingUiEnabled = useIsConvertOnboardingUiEnabled()
 
     const backUrl = useMemo(() => {
         if (backIntegrationId === BACK_TO_CONVERT_HOME) {
@@ -27,7 +24,7 @@ const BackToConvertButton = ({integrationId}: Props) => {
         return `/app/convert/${backIntegrationId}/setup`
     }, [backIntegrationId, integrationId])
 
-    if (!backIntegrationId || !isConvertOnboardingUiEnabled) return null
+    if (!backIntegrationId) return null
 
     return (
         <Link

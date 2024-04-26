@@ -16,20 +16,16 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {assumeMock} from 'utils/testing'
 import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
-import {useIsConvertOnboardingUiEnabled} from 'pages/convert/common/hooks/useIsConvertOnboardingUiEnabled'
 import {IntegrationType} from 'models/integration/types'
 import ConvertNavbar from '../ConvertNavbar'
 
 jest.mock('react-router')
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
-jest.mock('pages/convert/common/hooks/useIsConvertOnboardingUiEnabled')
 
 jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')
 const useGetOnboardingStatusMapSpy = assumeMock(useGetOnboardingStatusMap)
 
 const isConvertSubscriberMock = useIsConvertSubscriber as jest.Mock
-const isConvertOnboardingUiEnabledMock =
-    useIsConvertOnboardingUiEnabled as jest.Mock
 
 const mockStore = configureMockStore()
 
@@ -60,7 +56,6 @@ describe('<ConvertNavbar />', () => {
     )
 
     beforeEach(() => {
-        isConvertOnboardingUiEnabledMock.mockReturnValue(true)
         useGetOnboardingStatusMapSpy.mockReturnValue({
             onboardingMap: {'101': true},
             isLoading: false,
@@ -153,39 +148,8 @@ describe('<ConvertNavbar />', () => {
             expect(queryByText('arrow_circle_up')).not.toBeInTheDocument()
         })
 
-        it('should render convert navbar with integrations without setup', () => {
-            isConvertSubscriberMock.mockReturnValue(true)
-            isConvertOnboardingUiEnabledMock.mockReturnValue(false)
-
-            const {getAllByText, queryAllByText} = render(
-                <Provider
-                    store={mockStore({
-                        ...defaultState,
-                        integrations: integrations,
-                    })}
-                >
-                    <QueryClientProvider client={queryClient}>
-                        <DndProvider backend={HTML5Backend}>
-                            <ThemeProvider>
-                                <ConvertNavbar />
-                            </ThemeProvider>
-                        </DndProvider>
-                    </QueryClientProvider>
-                </Provider>
-            )
-
-            expect(queryAllByText('Set up').length).toBe(0)
-            expect(queryAllByText('Performance').length).toBe(1)
-
-            expect(getAllByText('forum').length).toBe(2)
-            expect(getAllByText('Campaigns').length).toBe(2)
-            expect(getAllByText('Click tracking').length).toBe(2)
-            expect(getAllByText('Installation').length).toBe(2)
-        })
-
         it('should render convert navbar without Performance page for non-Shopify Chat', () => {
             isConvertSubscriberMock.mockReturnValue(true)
-            isConvertOnboardingUiEnabledMock.mockReturnValue(false)
 
             const nonShopifyIntegrations = (
                 fromJS(integrationsState) as Map<any, any>
@@ -219,13 +183,13 @@ describe('<ConvertNavbar />', () => {
                 </Provider>
             )
 
-            expect(queryAllByText('Set up').length).toBe(0)
+            expect(queryAllByText('Set up').length).toBe(1)
             expect(queryAllByText('Performance').length).toBe(0)
 
             expect(getAllByText('forum').length).toBe(2)
-            expect(getAllByText('Campaigns').length).toBe(2)
-            expect(getAllByText('Click tracking').length).toBe(2)
-            expect(getAllByText('Installation').length).toBe(2)
+            expect(getAllByText('Campaigns').length).toBe(1)
+            expect(getAllByText('Click tracking').length).toBe(1)
+            expect(getAllByText('Installation').length).toBe(1)
         })
     })
 })

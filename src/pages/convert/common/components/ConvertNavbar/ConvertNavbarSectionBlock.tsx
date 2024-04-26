@@ -5,7 +5,6 @@ import cssNavbar from 'assets/css/navbar.less'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {useIsConvertOnboardingUiEnabled} from '../../hooks/useIsConvertOnboardingUiEnabled'
 import css from './ConvertNavbarSectionBlock.less'
 import ConvertNavbarPaywallNavbarLink from './ConvertNavbarPaywallNavbarLink'
 
@@ -25,7 +24,6 @@ const ConvertNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
-    const isOnboardingEnabled = useIsConvertOnboardingUiEnabled()
 
     return (
         <NavbarSectionBlock
@@ -33,7 +31,7 @@ const ConvertNavbarSectionBlock = ({
             className={css.section}
             {...props}
         >
-            {isOnboarded || !isOnboardingEnabled ? (
+            {isOnboarded ? (
                 <>
                     {hasStore &&
                         (isConvertSubscriber ? (
