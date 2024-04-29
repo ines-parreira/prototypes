@@ -10,7 +10,6 @@ export const DEFAULT_VALUES = {
         url: 'https://en.wikipedia.org/wiki/Company',
     },
     longDescription: 'Describes app’s capabilities.',
-    benefits: ['Benefit #1', 'Benefit #2', 'Benefit #3'],
     screenshots: ['/img/placeholders/1600x900.svg'],
 }
 
@@ -34,9 +33,6 @@ export function mapDefaults(config: AppDetail): AppDetail {
     }
     if (!config.longDescription) {
         configWithDefaults.longDescription = DEFAULT_VALUES.longDescription
-    }
-    if (!config.benefits?.length) {
-        configWithDefaults.benefits = DEFAULT_VALUES.benefits
     }
     if (!config.screenshots?.length) {
         configWithDefaults.screenshots = DEFAULT_VALUES.screenshots
