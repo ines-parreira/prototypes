@@ -1,21 +1,38 @@
 import React from 'react'
+import {Alert} from 'reactstrap'
+import {Redirect} from 'react-router-dom'
+import {notify} from 'state/notifications/actions'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import {useGetStoreConfigurationPure} from '../../../models/aiAgent/queries'
 import {EditAiAgentSettingsForm} from './EditAiAgentSettingsForm'
 import {CreateAiAgentSettingsForm} from './CreateAiAgentSettingsForm'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import css from './AiAgentStoreView.less'
 
 type AiAgentStoreViewProps = {
     shopName: string
     accountDomain: string
 }
 
+const READ_FULFILLMENTS_PERMISSION = 'read_fulfillments'
+
 export const AiAgentStoreView = ({
     shopName,
     accountDomain,
 }: AiAgentStoreViewProps) => {
+    const dispatch = useAppDispatch()
+
+    const currentIntegration = useAppSelector(
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
+    ).find((integration) => integration.meta.shop_name === shopName)
+
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
 
     const {
@@ -28,6 +45,21 @@ export const AiAgentStoreView = ({
         },
         {retry: 1, refetchOnWindowFocus: false}
     )
+
+    if (!currentIntegration) {
+        void dispatch(
+            notify({
+                message: 'Could not find the integration for this store.',
+                status: NotificationStatus.Error,
+            })
+        )
+        return <Redirect to="/app/automation" />
+    }
+
+    const storeIntegrationHasShopifyPermissions =
+        currentIntegration.meta.oauth.scope.includes(
+            READ_FULFILLMENTS_PERMISSION
+        )
 
     if (getStoreConfigurationIsLoading) {
         return <Loader />
@@ -42,21 +74,61 @@ export const AiAgentStoreView = ({
                 title={AI_AGENT}
                 headerNavbarItems={headerNavbarItems}
             >
-                <EditAiAgentSettingsForm
-                    shopName={shopName}
-                    accountDomain={accountDomain}
-                    storeConfiguration={serverStoreConfig}
-                />
+                <div>
+                    {!storeIntegrationHasShopifyPermissions && (
+                        <div className={css.configurationWarningContainer}>
+                            <Alert color="warning">
+                                Some shopify permissions are missing on this
+                                store in order to make AI Agent get access to
+                                order fulfillment knowledge. Update them by
+                                following this{' '}
+                                <a
+                                    href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    link
+                                </a>
+                            </Alert>
+                        </div>
+                    )}
+                    <EditAiAgentSettingsForm
+                        shopName={shopName}
+                        accountDomain={accountDomain}
+                        storeConfiguration={serverStoreConfig}
+                    />
+                </div>
             </AutomateView>
         )
     }
 
     return (
         <AutomateView title={AI_AGENT} headerNavbarItems={headerNavbarItems}>
-            <CreateAiAgentSettingsForm
-                shopName={shopName}
-                accountDomain={accountDomain}
-            />
+            <div>
+                <div className={css.configurationWarningContainer}>
+                    {!storeIntegrationHasShopifyPermissions && (
+                        <div className={css.configurationWarningContainer}>
+                            <Alert color="warning">
+                                Some shopify permissions are missing on this
+                                store in order to make AI Agent get access to
+                                order fulfillment knowledge. Update them by
+                                following this{' '}
+                                <a
+                                    href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    link
+                                </a>
+                            </Alert>
+                        </div>
+                    )}
+                </div>
+                <CreateAiAgentSettingsForm
+                    shopName={shopName}
+                    accountDomain={accountDomain}
+                />
+            </div>
         </AutomateView>
     )
 }
