@@ -35,12 +35,41 @@ describe('customers reducers', () => {
                 page: 1,
             },
         }
+        const respWithHighlight = {
+            data: [
+                {
+                    name: 'Alex',
+                    highlights: {
+                        id: ['1'],
+                    },
+                },
+                {
+                    name: 'Romain',
+                    highlights: {
+                        id: ['2'],
+                    },
+                },
+            ],
+            meta: {
+                nb_pages: 2,
+                page: 1,
+            },
+        }
 
         expect(
             reducer(initialState, {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
                 viewType: 'customer-list',
                 data: resp,
+            })
+        ).toMatchSnapshot()
+
+        expect(
+            reducer(initialState, {
+                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                viewType: 'customer-list',
+                data: respWithHighlight,
+                withHighlight: true,
             })
         ).toMatchSnapshot()
 
@@ -55,6 +84,16 @@ describe('customers reducers', () => {
     })
 
     it('fetch customer', () => {
+        const restDataWithHighlights = {
+            data: {
+                data: [
+                    {
+                        entity: {id: 1, name: 'Pam'},
+                        highlights: {name: ['Pam']},
+                    },
+                ],
+            },
+        }
         // start
         expect(
             reducer(initialState, {
@@ -69,6 +108,14 @@ describe('customers reducers', () => {
                 resp: {id: 1},
             }).toJS()
         ).toMatchSnapshot()
+
+        expect(
+            reducer(initialState, {
+                type: types.FETCH_CUSTOMER_SUCCESS,
+                resp: restDataWithHighlights,
+                withHighlight: true,
+            }).toJS()
+        ).toEqual(expect.objectContaining({active: restDataWithHighlights}))
 
         // error
         expect(

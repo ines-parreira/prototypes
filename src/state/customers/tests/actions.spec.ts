@@ -46,6 +46,22 @@ describe('customers actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
+        it('fetches customer with highlights', () => {
+            mockServer
+                .onGet('/api/customers/2/')
+                .reply(200, {data: [{id: 2, highlights: {id: ['1']}}]})
+
+            return store.dispatch(actions.fetchCustomer('2')).then(() =>
+                expect(store.getActions()).toMatchObject([
+                    {type: 'FETCH_CUSTOMER_START'},
+                    {
+                        resp: {data: [{highlights: {id: ['1']}, id: 2}]},
+                        type: 'FETCH_CUSTOMER_SUCCESS',
+                    },
+                ])
+            )
+        })
+
         describe('should correctly handle redirects for merged customers', () => {
             beforeEach(() => {
                 mockServer.onGet(new RegExp('/api/customers/\\d+')).reply(200, {

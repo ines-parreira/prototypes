@@ -5,7 +5,6 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import {getConfigByName} from 'config/views'
@@ -29,6 +28,7 @@ import {RootState} from 'state/types'
 import {slugify} from 'utils'
 import {systemViewIcons} from 'utils/views'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './Header.less'
 
 type OwnProps = {

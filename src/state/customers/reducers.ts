@@ -7,8 +7,10 @@ import * as ticketConstants from 'state/ticket/constants'
 import {GorgiasAction} from 'state/types'
 import * as viewsConstants from 'state/views/constants'
 
-import * as constants from './constants'
-import {CustomersState} from './types'
+import {Customer} from 'models/customer/types'
+import * as constants from 'state/customers/constants'
+import {CustomersState} from 'state/customers/types'
+import {CustomerHighlights} from 'models/search/types'
 
 export const initialState: CustomersState = fromJS({
     active: {},
@@ -40,9 +42,26 @@ export default function reducer(
                 return state
             }
 
-            const payload = action.data as {data: unknown}
+            let customerData = action.data as {data: unknown}
+            if (action.withHighlight === true) {
+                customerData = {
+                    data: (
+                        action as {
+                            data: {
+                                data: {
+                                    entity: Customer[]
+                                    highlights: CustomerHighlights
+                                }[]
+                            }
+                        }
+                    ).data.data.map(({entity, highlights}) => ({
+                        ...entity,
+                        highlights,
+                    })),
+                }
+            }
 
-            return state.set('items', fromJS(payload.data))
+            return state.set('items', fromJS(customerData.data))
         }
 
         case constants.FETCH_CUSTOMER_START: {
