@@ -9,7 +9,7 @@ import {waitFor} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {
-    getHelpCenters,
+    getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
 
@@ -36,7 +36,7 @@ jest.mock('../useHelpCenterApi', () => {
 })
 
 jest.mock('state/entities/helpCenter/helpCenters', () => ({
-    getHelpCenters: jest.fn(() => ({})),
+    getHelpCenterFAQList: jest.fn(() => ({})),
     helpCentersFetched: jest.fn().mockReturnValue({
         type: 'HELPCENTER/HELPCENTERS_FETCHED',
         payload: {},
@@ -92,7 +92,7 @@ describe('useHelpCenterList', () => {
         })
     })
 
-    it('uses the getHelpCenters selector', () => {
+    it('uses the getHelpCenterFAQList selector', () => {
         renderHook(
             () =>
                 useHelpCenterList({
@@ -102,6 +102,6 @@ describe('useHelpCenterList', () => {
                 wrapper: dependencyWrapper,
             }
         )
-        expect(getHelpCenters).toHaveBeenCalled()
+        expect(getHelpCenterFAQList).toHaveBeenCalled()
     })
 })
