@@ -107,11 +107,7 @@ export const RuleRecipeModal = ({
         [installationErrors, shouldHandleError]
     )
     const ErrorTooltip = () => (
-        <Tooltip
-            trigger={['hover']}
-            target={`#${installButtonId}`}
-            className={css.tooltip}
-        >
+        <Tooltip target={`#${installButtonId}`}>
             {installationErrors
                 .map((error) => InstallationErrorMessage[error])
                 .join(' ')}
