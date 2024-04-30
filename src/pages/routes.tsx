@@ -975,7 +975,7 @@ export function SLARoutes({match: {path}}: RouteComponentProps) {
                 <App
                     content={memoizedWithUserRoleRequired(
                         SLAList,
-                        ADMIN_ROLE,
+                        AGENT_ROLE,
                         PageSection.SLAPolicies
                     )}
                     navbar={SettingsNavbar}
@@ -985,7 +985,7 @@ export function SLARoutes({match: {path}}: RouteComponentProps) {
                 <App
                     content={memoizedWithUserRoleRequired(
                         SLATemplateList,
-                        ADMIN_ROLE,
+                        AGENT_ROLE,
                         PageSection.SLAPolicies
                     )}
                     navbar={SettingsNavbar}
@@ -995,7 +995,7 @@ export function SLARoutes({match: {path}}: RouteComponentProps) {
                 <App
                     content={memoizedWithUserRoleRequired(
                         SLAForm,
-                        ADMIN_ROLE,
+                        AGENT_ROLE,
                         PageSection.SLAPolicies
                     )}
                     navbar={SettingsNavbar}

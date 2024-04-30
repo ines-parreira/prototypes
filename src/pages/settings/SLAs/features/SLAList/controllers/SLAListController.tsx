@@ -1,12 +1,27 @@
-import React, {useState} from 'react'
+import React from 'react'
 
+import LandingPage from '../../LandingPage/LandingPage'
 import SLAListView from '../views/SLAListView'
-import LandingPage from '../../SLATemplateList/views/LandingPage'
+import Loader from '../views/Loader'
+
+import useGetSLAPolicies from './useGetSLAPolicies'
 
 export default function SLAListController() {
-    const [SLAList] = useState([])
+    const {data, isLoading} = useGetSLAPolicies()
 
-    const hasSLAs = SLAList.length > 0
+    const SLAPolicies = data || []
 
-    return <>{hasSLAs ? <SLAListView /> : <LandingPage />}</>
+    const hasSLAs = SLAPolicies && SLAPolicies?.length > 0
+
+    return (
+        <>
+            {isLoading ? (
+                <Loader />
+            ) : hasSLAs ? (
+                <SLAListView data={SLAPolicies} />
+            ) : (
+                <LandingPage />
+            )}
+        </>
+    )
 }

@@ -8,8 +8,7 @@ import {
     CustomCardLink,
     TemplateCardLink,
 } from 'pages/common/components/TemplateCard'
-
-import {SLATemplate} from './config'
+import {SLATemplate} from 'pages/settings/SLAs/config/templates'
 
 import css from './Templates.less'
 

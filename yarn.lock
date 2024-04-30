@@ -2969,40 +2969,40 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.1.41":
-  version "0.1.41"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.41/bf77304e951baed070b9c978ec8566b9a53d68ac#bf77304e951baed070b9c978ec8566b9a53d68ac"
-  integrity sha512-jZox3zTuTo6k7DZO94h3pRpOKYxM1e8UJp8upD1FCKGI/eXzI98t92Z+HRVO4fh3FIUulT1bawZaOd1+aOXASw==
+"@gorgias/api-client@^0.1.42":
+  version "0.1.42"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.42/4fcc6eb1888a5b76fb67064a466ee7c574fd8430#4fcc6eb1888a5b76fb67064a466ee7c574fd8430"
+  integrity sha512-saZTYt9cxv+3abklzCsuD9YFoJ0Fo8j5G/KuBe/X2q87ZIQDLjF/mjNhEmbRUNSPcl0Bs607/B8QPCkcCH9rAA==
   dependencies:
-    "@gorgias/api-types" "^0.1.41"
+    "@gorgias/api-types" "^0.1.42"
     axios "1.6.5"
 
-"@gorgias/api-queries@^0.1.41":
-  version "0.1.41"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.41/226233d3a1a117b21228b121c03a68dcbf93e3b6#226233d3a1a117b21228b121c03a68dcbf93e3b6"
-  integrity sha512-fEYkUpb6Z8nxKJ48FNjWjJvm15PiQD45g782OTljEmWqQv88UuLOhKogRSps2yp5cY7aZiVfe2r7xY6rGEVxxw==
+"@gorgias/api-queries@^0.1.42":
+  version "0.1.42"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.42/38ea22dada58f7b3054550c5895c78cff6cc2dd9#38ea22dada58f7b3054550c5895c78cff6cc2dd9"
+  integrity sha512-j14fTAWE+9etKJfENui3UNhE+fkSxyAgMrNyP90vEOX5smya3xfO9GNvUIEfUFOadT5j+yWpP2bR76Loe9qLUw==
   dependencies:
-    "@gorgias/api-client" "^0.1.41"
-    "@gorgias/api-types" "^0.1.41"
+    "@gorgias/api-client" "^0.1.42"
+    "@gorgias/api-types" "^0.1.42"
 
-"@gorgias/api-spec@^0.1.41":
-  version "0.1.41"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.1.41/6b9edc930a8bace76258555fe4d3fea97bd34ed6#6b9edc930a8bace76258555fe4d3fea97bd34ed6"
-  integrity sha512-5Qkk0tNOAlSb2y7y6ks1P5APkpaG0/CsZZGP4BzGvzmQ1cAnMzcWhcVc8n8/kFi3B2Bb5/9auXxZOcEaFwbmLA==
+"@gorgias/api-spec@^0.1.42":
+  version "0.1.42"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.1.42/1ac770d133a7507c5e3215c3e23473d977928c14#1ac770d133a7507c5e3215c3e23473d977928c14"
+  integrity sha512-/yr98juUbcI95R438JlI4T5PVnCGZbs+Ix9SSqE/3tVc2KbXHA0frlphO20+zBkNFowLgaFhb0ai5g8T+icurA==
 
-"@gorgias/api-types@^0.1.41":
-  version "0.1.41"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.41/c722df7d0686528d7289f53c2d75354c3b0ab7fc#c722df7d0686528d7289f53c2d75354c3b0ab7fc"
-  integrity sha512-Vw44vXF541yMW4+nkVtxT35na7FnC4JK1bAh2OehWNtdgDFHrH1UnHUAG49PY22anoYTaciA1kdzv16p+YuTMQ==
+"@gorgias/api-types@^0.1.42":
+  version "0.1.42"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.42/9b908b588cad3d53f26e6ac75460a3d8e7c30e3f#9b908b588cad3d53f26e6ac75460a3d8e7c30e3f"
+  integrity sha512-52zbqbF+T1KdQxN/jfN44Lc9CL253BCFNUBRSrjz80C7bne0Z26ZTlbqFJr7Es3sPVnKJ0NktpT47CopFBLSdA==
 
-"@gorgias/api-validators@^0.1.41":
-  version "0.1.41"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.1.41/5d2e395836252deadfafa1e4cacdb57b3f6c979e#5d2e395836252deadfafa1e4cacdb57b3f6c979e"
-  integrity sha512-jVPa78VNAl8PkfimFjRvbJGW+etjKOYSrhTLbhKqfiWaICGWv34tQbS7PGE6l3FZ2idNoWrtdxFks49o+240XA==
+"@gorgias/api-validators@^0.1.42":
+  version "0.1.42"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.1.42/bbbcf9efeb545e46cbd46a4afe2faad7473a494d#bbbcf9efeb545e46cbd46a4afe2faad7473a494d"
+  integrity sha512-RMn6y0PNNhdwVQhW/c6VU9IipRzt6iQzCYcjqOJkEytQYB5gyu+QxVEQzF3BV/whBBS19bu3DcHzwGbNYi9eog==
   dependencies:
     "@apideck/better-ajv-errors" "^0.3.6"
-    "@gorgias/api-spec" "^0.1.41"
-    "@gorgias/api-types" "^0.1.41"
+    "@gorgias/api-spec" "^0.1.42"
+    "@gorgias/api-types" "^0.1.42"
     ajv "^8.12.0"
     ajv-formats "^3.0.1"
     immer "^10.0.4"
@@ -19537,6 +19537,7 @@ wordwrap@^1.0.0:
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==

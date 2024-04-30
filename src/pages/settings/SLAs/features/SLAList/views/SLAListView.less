@@ -1,0 +1,24 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .pageContainer {
+        width: 100%;
+    }
+
+    .headerCell {
+        > div {
+            justify-content: unset;
+        }
+    }
+
+    .headerCellTitle {
+        color: var(--neutral-grey-4);
+        .caption-allcaps();
+    }
+
+    .orderIcon {
+        font-size: 20px;
+        margin-right: @layout-spacing-xs;
+    }
+}

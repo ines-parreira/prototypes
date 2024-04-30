@@ -4,10 +4,11 @@ import {Link} from 'react-router-dom'
 
 import {SectionPageHeader} from 'config/pages'
 import Button from 'pages/common/components/button/Button'
+import {TEMPLATES_LIST} from 'pages/settings/SLAs/config/templates'
 import PageHeader from 'pages/common/components/PageHeader'
-import Templates from 'pages/settings/SLAs/features/SLATemplateList/views/Templates'
 
-import {TEMPLATES_LIST} from './config'
+import Templates from './Templates'
+
 import css from './TemplateListView.less'
 
 export default function TemplateListView() {

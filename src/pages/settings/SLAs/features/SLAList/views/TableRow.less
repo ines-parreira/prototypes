@@ -1,0 +1,26 @@
+@import (reference) '~css/new/mixins';
+
+:local {
+    .tableRow {
+        &:hover {
+            background-color: var(--neutral-grey-1);
+        }
+    }
+
+    .cellContent {
+        @media @mobiles {
+            width: 100px;
+        }
+
+        width: 200px;
+
+        @media @xlarge-desktops {
+            width: 400px;
+        }
+    }
+
+    .goToIcon {
+        font-size: 20px;
+        color: var(--neutral-grey-4);
+    }
+}

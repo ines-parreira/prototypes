@@ -1,7 +1,8 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {TEMPLATES_LIST} from '../config'
+import {TEMPLATES_LIST} from 'pages/settings/SLAs/config/templates'
+
 import Templates from '../Templates'
 
 describe('<Templates />', () => {

@@ -127,7 +127,7 @@ const CATEGORIES: Category[] = [
                 text: 'Auto-merge',
             },
             {
-                requiredRole: ADMIN_ROLE,
+                requiredRole: AGENT_ROLE,
                 to: 'sla',
                 text: 'SLAs',
                 requiredFeatureFlags: [FeatureFlagKey.SLAPolicies],
