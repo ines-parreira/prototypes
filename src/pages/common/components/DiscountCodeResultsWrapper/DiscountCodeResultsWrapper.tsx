@@ -3,6 +3,9 @@ import {Map} from 'immutable'
 import {DiscountCode} from 'models/discountCodes/types'
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {logEvent, SegmentEvent} from 'common/segment'
 import DiscountCodeResults from '../DiscountCodeResults/DiscountCodeResults'
 import TabNavigator from '../TabNavigator/TabNavigator'
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults/UniqueDiscountOfferResults'
@@ -33,8 +36,19 @@ export type DiscountCodeResultsWrapperProps = DiscountResultsBaseProps<
 export const DiscountCodeResultsWrapper: React.FC<DiscountCodeResultsWrapperProps> =
     (props: DiscountCodeResultsWrapperProps) => {
         const {canAddUniqueDiscountOffer} = useToolbarContext()
+        const currentAccount = useAppSelector(getCurrentAccountState)
 
         const [activeTab, setActiveTab] = useState(DiscountCodesTabs.Generic)
+
+        const onTabChange = (tab: string) => {
+            setActiveTab(tab as DiscountCodesTabs)
+
+            if (tab === DiscountCodesTabs.Unique) {
+                logEvent(SegmentEvent.InsertUniqueDiscountCodeOpen, {
+                    account_domain: currentAccount?.get('domain'),
+                })
+            }
+        }
 
         if (!canAddUniqueDiscountOffer) {
             return <DiscountCodeResults {...props} />
@@ -45,7 +59,7 @@ export const DiscountCodeResultsWrapper: React.FC<DiscountCodeResultsWrapperProp
                 <TabNavigator
                     tabs={navigatorTabs}
                     activeTab={activeTab}
-                    onTabChange={setActiveTab as (t: string) => void}
+                    onTabChange={onTabChange}
                 />
                 {activeTab === DiscountCodesTabs.Generic ? (
                     <DiscountCodeResults {...props} />

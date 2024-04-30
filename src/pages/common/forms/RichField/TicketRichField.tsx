@@ -135,6 +135,10 @@ const TicketRichField = (
             },
             onAddUniqueDiscountOfferAttachment: (discount) => {
                 dispatch(addUniqueDiscountOfferAttachment(ticket, discount))
+
+                logEvent(SegmentEvent.InsertUniqueDiscountCodeAdded, {
+                    account_domain: currentAccount?.get('domain'),
+                })
             },
             onInsertProductLinkOpen: () => {
                 logEvent(SegmentEvent.ShopifyInsertProductLinkOpen, {

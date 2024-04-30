@@ -24,9 +24,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getTicketState} from 'state/ticket/selectors'
-import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
@@ -53,7 +50,6 @@ export default function UniqueDiscountCodeResults({
 }: OwnProps) {
     const [filter, setFilter] = useState('')
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const ticket = useAppSelector(getTicketState)
 
     const shopifyScope = useMemo<string[]>(() => {
         const scope = integration.getIn(['oauth', 'scope']) as List<string>
@@ -97,22 +93,15 @@ export default function UniqueDiscountCodeResults({
         (data: UniqueDiscountOffer) => {
             createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
 
-            const customerData = getAllCustomerIdsFromTicket(
-                ticket,
-                (integration) =>
-                    integration.get('__integration_type__') ===
-                    SHOPIFY_INTEGRATION_TYPE
-            )
             logEvent(SegmentEvent.InsertUniqueDiscountCodeCreated, {
                 account_domain: currentAccount?.get('domain'),
                 discount: {
                     id: data.id,
                     prefix: data.prefix,
                 },
-                customer: customerData,
             })
         },
-        [createDiscountModal, ticket, currentAccount]
+        [createDiscountModal, currentAccount]
     )
 
     const onEditDiscountOffer = useCallback(
