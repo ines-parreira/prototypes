@@ -2,6 +2,9 @@ import {FeedEventPayload} from '@knocklabs/client'
 import {useKnockFeed} from '@knocklabs/react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import {notificationSounds} from 'services'
+import {defaultSound} from 'services/NotificationSounds'
+
 import {Notification, RawNotification} from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
 
@@ -32,6 +35,10 @@ export default function useToasts() {
             const mappedItems = items
                 .map(transformKnockNotification)
                 .filter((notification) => !!notification) as Notification[]
+
+            if (!mappedItems.length) return
+
+            notificationSounds.play(defaultSound.sound, defaultSound.volume)
 
             mappedItems.forEach((notification) => {
                 queueHide(notification.id)
