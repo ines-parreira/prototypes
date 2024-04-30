@@ -104,7 +104,9 @@ export default function PerformanceTip({
                     'No data'
                 )}
             </div>
-            {children || 'No data available for the selected filters.'}
+            <div data-candu-id="performance-tip-data">
+                {children || 'No data available for the selected filters.'}
+            </div>
         </div>
     )
 }

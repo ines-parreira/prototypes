@@ -232,16 +232,20 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                               Room for improvement
                             </span>
                           </div>
-                          Set up all
-                           
-                          <a
-                            href="https://link.gorgias.com/aut"
-                            target="blank"
+                          <div
+                            data-candu-id="performance-tip-data"
                           >
-                            Automate features
-                          </a>
-                           
-                          to improve your automation rate across all of your channels.
+                            Set up all
+                             
+                            <a
+                              href="https://link.gorgias.com/aut"
+                              target="blank"
+                            >
+                              Automate features
+                            </a>
+                             
+                            to improve your automation rate across all of your channels.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -294,26 +298,30 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                               Tip
                             </span>
                           </div>
-                          Check out our
-                           
-                          <a
-                            href="https://link.gorgias.com/aut-playbook"
-                            target="blank"
+                          <div
+                            data-candu-id="performance-tip-data"
                           >
+                            Check out our
                              
-                            Automation Playbook
-                          </a>
-                           
-                          for tactical tips on how to use Automate to its full potential. Visit
-                          <a
-                            href="/app/settings/billing"
-                            target="blank"
-                          >
+                            <a
+                              href="https://link.gorgias.com/aut-playbook"
+                              target="blank"
+                            >
+                               
+                              Automation Playbook
+                            </a>
                              
-                            billing
-                          </a>
-                           
-                          to make sure your Automate plan is the right size for you.
+                            for tactical tips on how to use Automate to its full potential. Visit
+                            <a
+                              href="/app/settings/billing"
+                              target="blank"
+                            >
+                               
+                              billing
+                            </a>
+                             
+                            to make sure your Automate plan is the right size for you.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -900,16 +908,20 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             Room for improvement
                           </span>
                         </div>
-                        Set up all
-                         
-                        <a
-                          href="https://link.gorgias.com/aut"
-                          target="blank"
+                        <div
+                          data-candu-id="performance-tip-data"
                         >
-                          Automate features
-                        </a>
-                         
-                        to improve your automation rate across all of your channels.
+                          Set up all
+                           
+                          <a
+                            href="https://link.gorgias.com/aut"
+                            target="blank"
+                          >
+                            Automate features
+                          </a>
+                           
+                          to improve your automation rate across all of your channels.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -962,26 +974,30 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             Tip
                           </span>
                         </div>
-                        Check out our
-                         
-                        <a
-                          href="https://link.gorgias.com/aut-playbook"
-                          target="blank"
+                        <div
+                          data-candu-id="performance-tip-data"
                         >
+                          Check out our
                            
-                          Automation Playbook
-                        </a>
-                         
-                        for tactical tips on how to use Automate to its full potential. Visit
-                        <a
-                          href="/app/settings/billing"
-                          target="blank"
-                        >
+                          <a
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
+                          >
+                             
+                            Automation Playbook
+                          </a>
                            
-                          billing
-                        </a>
-                         
-                        to make sure your Automate plan is the right size for you.
+                          for tactical tips on how to use Automate to its full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                            target="blank"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your Automate plan is the right size for you.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1547,16 +1563,20 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                               You’re doing good
                             </span>
                           </div>
-                          Set up all
-                           
-                          <a
-                            href="https://link.gorgias.com/aut"
-                            target="blank"
+                          <div
+                            data-candu-id="performance-tip-data"
                           >
-                            Automate features
-                          </a>
-                           
-                          to improve your automation rate across all of your channels.
+                            Set up all
+                             
+                            <a
+                              href="https://link.gorgias.com/aut"
+                              target="blank"
+                            >
+                              Automate features
+                            </a>
+                             
+                            to improve your automation rate across all of your channels.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1609,26 +1629,30 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                               Tip
                             </span>
                           </div>
-                          Check out our
-                           
-                          <a
-                            href="https://link.gorgias.com/aut-playbook"
-                            target="blank"
+                          <div
+                            data-candu-id="performance-tip-data"
                           >
+                            Check out our
                              
-                            Automation Playbook
-                          </a>
-                           
-                          for tactical tips on how to use Automate to its full potential. Visit
-                          <a
-                            href="/app/settings/billing"
-                            target="blank"
-                          >
+                            <a
+                              href="https://link.gorgias.com/aut-playbook"
+                              target="blank"
+                            >
+                               
+                              Automation Playbook
+                            </a>
                              
-                            billing
-                          </a>
-                           
-                          to make sure your Automate plan is the right size for you.
+                            for tactical tips on how to use Automate to its full potential. Visit
+                            <a
+                              href="/app/settings/billing"
+                              target="blank"
+                            >
+                               
+                              billing
+                            </a>
+                             
+                            to make sure your Automate plan is the right size for you.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2215,16 +2239,20 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             You’re doing good
                           </span>
                         </div>
-                        Set up all
-                         
-                        <a
-                          href="https://link.gorgias.com/aut"
-                          target="blank"
+                        <div
+                          data-candu-id="performance-tip-data"
                         >
-                          Automate features
-                        </a>
-                         
-                        to improve your automation rate across all of your channels.
+                          Set up all
+                           
+                          <a
+                            href="https://link.gorgias.com/aut"
+                            target="blank"
+                          >
+                            Automate features
+                          </a>
+                           
+                          to improve your automation rate across all of your channels.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2277,26 +2305,30 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             Tip
                           </span>
                         </div>
-                        Check out our
-                         
-                        <a
-                          href="https://link.gorgias.com/aut-playbook"
-                          target="blank"
+                        <div
+                          data-candu-id="performance-tip-data"
                         >
+                          Check out our
                            
-                          Automation Playbook
-                        </a>
-                         
-                        for tactical tips on how to use Automate to its full potential. Visit
-                        <a
-                          href="/app/settings/billing"
-                          target="blank"
-                        >
+                          <a
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
+                          >
+                             
+                            Automation Playbook
+                          </a>
                            
-                          billing
-                        </a>
-                         
-                        to make sure your Automate plan is the right size for you.
+                          for tactical tips on how to use Automate to its full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                            target="blank"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your Automate plan is the right size for you.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -2862,16 +2894,20 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                               You’re doing great
                             </span>
                           </div>
-                          Set up all
-                           
-                          <a
-                            href="https://link.gorgias.com/aut"
-                            target="blank"
+                          <div
+                            data-candu-id="performance-tip-data"
                           >
-                            Automate features
-                          </a>
-                           
-                          to improve your automation rate across all of your channels.
+                            Set up all
+                             
+                            <a
+                              href="https://link.gorgias.com/aut"
+                              target="blank"
+                            >
+                              Automate features
+                            </a>
+                             
+                            to improve your automation rate across all of your channels.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -2924,26 +2960,30 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                               Tip
                             </span>
                           </div>
-                          Check out our
-                           
-                          <a
-                            href="https://link.gorgias.com/aut-playbook"
-                            target="blank"
+                          <div
+                            data-candu-id="performance-tip-data"
                           >
+                            Check out our
                              
-                            Automation Playbook
-                          </a>
-                           
-                          for tactical tips on how to use Automate to its full potential. Visit
-                          <a
-                            href="/app/settings/billing"
-                            target="blank"
-                          >
+                            <a
+                              href="https://link.gorgias.com/aut-playbook"
+                              target="blank"
+                            >
+                               
+                              Automation Playbook
+                            </a>
                              
-                            billing
-                          </a>
-                           
-                          to make sure your Automate plan is the right size for you.
+                            for tactical tips on how to use Automate to its full potential. Visit
+                            <a
+                              href="/app/settings/billing"
+                              target="blank"
+                            >
+                               
+                              billing
+                            </a>
+                             
+                            to make sure your Automate plan is the right size for you.
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -3530,16 +3570,20 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             You’re doing great
                           </span>
                         </div>
-                        Set up all
-                         
-                        <a
-                          href="https://link.gorgias.com/aut"
-                          target="blank"
+                        <div
+                          data-candu-id="performance-tip-data"
                         >
-                          Automate features
-                        </a>
-                         
-                        to improve your automation rate across all of your channels.
+                          Set up all
+                           
+                          <a
+                            href="https://link.gorgias.com/aut"
+                            target="blank"
+                          >
+                            Automate features
+                          </a>
+                           
+                          to improve your automation rate across all of your channels.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -3592,26 +3636,30 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             Tip
                           </span>
                         </div>
-                        Check out our
-                         
-                        <a
-                          href="https://link.gorgias.com/aut-playbook"
-                          target="blank"
+                        <div
+                          data-candu-id="performance-tip-data"
                         >
+                          Check out our
                            
-                          Automation Playbook
-                        </a>
-                         
-                        for tactical tips on how to use Automate to its full potential. Visit
-                        <a
-                          href="/app/settings/billing"
-                          target="blank"
-                        >
+                          <a
+                            href="https://link.gorgias.com/aut-playbook"
+                            target="blank"
+                          >
+                             
+                            Automation Playbook
+                          </a>
                            
-                          billing
-                        </a>
-                         
-                        to make sure your Automate plan is the right size for you.
+                          for tactical tips on how to use Automate to its full potential. Visit
+                          <a
+                            href="/app/settings/billing"
+                            target="blank"
+                          >
+                             
+                            billing
+                          </a>
+                           
+                          to make sure your Automate plan is the right size for you.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -4173,16 +4221,20 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                         You’re doing great
                       </span>
                     </div>
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
+                    <div
+                      data-candu-id="performance-tip-data"
                     >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
+                      >
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4235,26 +4287,30 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                         Tip
                       </span>
                     </div>
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                    <div
+                      data-candu-id="performance-tip-data"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4763,16 +4819,20 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                         You’re doing great
                       </span>
                     </div>
-                    Set up all
-                     
-                    <a
-                      href="https://link.gorgias.com/aut"
-                      target="blank"
+                    <div
+                      data-candu-id="performance-tip-data"
                     >
-                      Automate features
-                    </a>
-                     
-                    to improve your automation rate across all of your channels.
+                      Set up all
+                       
+                      <a
+                        href="https://link.gorgias.com/aut"
+                        target="blank"
+                      >
+                        Automate features
+                      </a>
+                       
+                      to improve your automation rate across all of your channels.
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4825,26 +4885,30 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                         Tip
                       </span>
                     </div>
-                    Check out our
-                     
-                    <a
-                      href="https://link.gorgias.com/aut-playbook"
-                      target="blank"
+                    <div
+                      data-candu-id="performance-tip-data"
                     >
+                      Check out our
                        
-                      Automation Playbook
-                    </a>
-                     
-                    for tactical tips on how to use Automate to its full potential. Visit
-                    <a
-                      href="/app/settings/billing"
-                      target="blank"
-                    >
+                      <a
+                        href="https://link.gorgias.com/aut-playbook"
+                        target="blank"
+                      >
+                         
+                        Automation Playbook
+                      </a>
                        
-                      billing
-                    </a>
-                     
-                    to make sure your Automate plan is the right size for you.
+                      for tactical tips on how to use Automate to its full potential. Visit
+                      <a
+                        href="/app/settings/billing"
+                        target="blank"
+                      >
+                         
+                        billing
+                      </a>
+                       
+                      to make sure your Automate plan is the right size for you.
+                    </div>
                   </div>
                 </div>
               </div>
