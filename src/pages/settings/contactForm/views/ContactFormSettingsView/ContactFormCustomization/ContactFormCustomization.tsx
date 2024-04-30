@@ -1,13 +1,11 @@
 import classNames from 'classnames'
 import React, {useEffect, useState} from 'react'
-import {Container} from 'reactstrap'
 import {useDispatch} from 'react-redux'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
 import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
-import settingsCss from 'pages/settings/settings.less'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import {
     ContactForm,
@@ -22,7 +20,9 @@ import {NotificationStatus} from 'state/notifications/types'
 import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
 import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
 import {FeatureFlagKey} from 'config/featureFlags'
+import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
 import ContactFormFlowsBanner from './ContactFormFlowsBanner'
+import css from './ContactFormCustomization.less'
 
 const initUpdateDto = (
     subject_lines: ContactForm['subject_lines'],
@@ -120,7 +120,7 @@ const ContactFormCustomization = (): JSX.Element => {
     const isSaveChangesEnabled = isValid && isDirty && !isLoading
 
     return (
-        <Container fluid className={settingsCss.pageContainer}>
+        <div className={css.pageContainer}>
             <PendingChangesModal
                 when={isDirty}
                 show={isChangesModalShown}
@@ -128,7 +128,7 @@ const ContactFormCustomization = (): JSX.Element => {
                 onDiscard={() => setIsChangesModalShown(false)}
                 onContinueEditing={() => setIsChangesModalShown(false)}
             />
-            <div className={settingsCss.contentWrapper}>
+            <div className={css.contentWrapper}>
                 <section className={contactFormCss.mbM}>
                     <h2 className={classNames(contactFormCss.sectionTitle)}>
                         Customization
@@ -189,7 +189,17 @@ const ContactFormCustomization = (): JSX.Element => {
                     )}
                 </section>
             </div>
-        </Container>
+            {isContactFormNewEntrypointViewEnabled && (
+                <div className={css.preview}>
+                    <div className={css.previewCenter}>
+                        <ContactFormEntrypointPreview
+                            contactForm={contactForm}
+                            isFormHidden={isFormHidden}
+                        />
+                    </div>
+                </div>
+            )}
+        </div>
     )
 }
 

@@ -1,0 +1,121 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .headerTitle {
+        .heading-page-semibold();
+        padding: @layout-spacing-m;
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .contentWrapper {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-m;
+        padding: @layout-spacing-m;
+        padding-bottom: 0;
+    }
+
+    .fieldWrapper {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xxs;
+    }
+
+    .inputLabel {
+        .body-medium();
+        font-size: 16px;
+    }
+
+    .asterisk {
+        color: var(--feedback-error);
+        margin-left: @layout-spacing-xxs;
+    }
+
+    .inputField {
+        height: @layout-spacing-xl;
+        .body-regular();
+        color: var(--neutral-grey-4);
+        display: flex;
+        padding: 12px; // custom spacing
+        align-items: center;
+        justify-content: space-between;
+        gap: @layout-spacing-xs;
+        border-radius: @layout-spacing-xxs;
+        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0);
+
+        i {
+            font-size: 24px;
+            color: var(--neutral-grey-4);
+        }
+    }
+
+    .textArea {
+        height: 126px;
+        .body-regular();
+        color: var(--neutral-grey-4);
+        padding: 12px; // custom spacing
+        align-items: start;
+        border-radius: @layout-spacing-xxs;
+        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-0);
+    }
+
+    .attachmentsWrapper {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xs;
+    }
+
+    .attachments {
+        display: flex;
+        flex-direction: row;
+        column-gap: @layout-spacing-xs;
+        background-color: var(--neutral-grey-1);
+        border-radius: @layout-spacing-xxs;
+        border: 1px dashed var(--neutral-grey-3);
+        align-items: center;
+        justify-content: center;
+        padding: @layout-spacing-s;
+        .heading-subsection-semibold();
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .caption {
+        .caption-regular();
+        line-height: 20px;
+        color: var(--neutral-grey-5);
+    }
+
+    .footerSection {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-s;
+        padding: 40px @layout-spacing-m;
+    }
+
+    .sendButton {
+        background-color: var(--neutral-grey-6);
+        color: var(--neutral-grey-0);
+        .heading-subsection-regular();
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: @layout-spacing-xxs;
+        padding: 14px 20px;
+    }
+
+    .linkText {
+        color: #0075ff;
+    }
+}
