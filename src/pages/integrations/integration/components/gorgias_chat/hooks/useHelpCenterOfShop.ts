@@ -22,6 +22,7 @@ const useHelpCenterOfShop = (shopName?: string, shopType?: string) => {
                     } = await client.listHelpCenters({
                         shop_name: shopName,
                         per_page: HELP_CENTER_MAX_CREATION,
+                        type: 'faq',
                     })
 
                     setHelpCenters(fetchedHelpCenters)

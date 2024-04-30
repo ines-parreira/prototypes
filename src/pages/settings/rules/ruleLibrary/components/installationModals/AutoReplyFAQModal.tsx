@@ -4,7 +4,7 @@ import React, {useEffect} from 'react'
 import {assetsUrl} from 'utils'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {FakeFAQArticlePreview} from 'pages/settings/rules/components/FakeFAQArticlePreview'
-import {getActiveHelpCenterList} from 'state/entities/helpCenter/helpCenters'
+import {getActiveHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import useAppSelector from 'hooks/useAppSelector'
 
 import type {ManagedRuleModalProps} from '../InstallRuleModalBody'
@@ -23,7 +23,7 @@ export const AutoReplyFAQModal = ({
     handleDefaultSettings,
 }: ManagedRuleModalProps) => {
     const icon = assetsUrl('/img/icons/logo.png')
-    const helpCenters = useAppSelector(getActiveHelpCenterList)
+    const helpCenters = useAppSelector(getActiveHelpCenterFAQList)
 
     useEffect(() => {
         if (!helpCenters.length) {

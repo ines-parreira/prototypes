@@ -11,7 +11,7 @@ import useId from '../../../hooks/useId'
 import useAppSelector from '../../../hooks/useAppSelector'
 import {StoreConfiguration, Tag} from '../../../models/aiAgent/types'
 import Button from '../../common/components/button/Button'
-import {getHelpCenterList} from '../../../state/entities/helpCenter/helpCenters'
+import {getHelpCenterFAQList} from '../../../state/entities/helpCenter/helpCenters'
 import Label from '../../common/forms/Label/Label'
 import {getIntegrationsByTypes} from '../../../state/integrations/selectors'
 import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
@@ -181,10 +181,7 @@ export const EditAiAgentSettingsForm = ({
     /**
      * Global state retrieval
      */
-    const helpCenters = useAppSelector(getHelpCenterList)
-    const faqHelpCenters = useMemo(() => {
-        return helpCenters.filter((helpCenter) => helpCenter.type === 'faq')
-    }, [helpCenters])
+    const faqHelpCenters = useAppSelector(getHelpCenterFAQList)
 
     const emailIntegrations = useAppSelector(
         getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
@@ -256,7 +253,7 @@ export const EditAiAgentSettingsForm = ({
         })
     }
 
-    const selectedHelpCenter = helpCenters.find((helpCenter) => {
+    const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
         const selectedHelpCenterId =
             formValues.helpCenter !== null
                 ? formValues.helpCenter.id
@@ -265,7 +262,7 @@ export const EditAiAgentSettingsForm = ({
     })
 
     const setHelpCenterId = (id: number) => {
-        const newSelectedHelpCenter = helpCenters.find(
+        const newSelectedHelpCenter = faqHelpCenters.find(
             (helpCenter) => helpCenter.id === id
         )
 

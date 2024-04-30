@@ -35,6 +35,15 @@ export const getHelpCenterFAQList = createSelector(
         helpCenters.filter((helpCenter) => helpCenter.type === 'faq')
 )
 
+export const getActiveHelpCenterFAQList = createSelector(
+    getHelpCenterList,
+    (helpCenters) =>
+        helpCenters.filter(
+            (helpCenter) =>
+                !helpCenter.deactivated_datetime && helpCenter.type === 'faq'
+        )
+)
+
 export const getHelpCenterGuidanceList = createSelector(
     getHelpCenterList,
     (helpCenters) =>

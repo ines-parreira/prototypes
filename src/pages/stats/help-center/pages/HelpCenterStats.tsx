@@ -197,6 +197,7 @@ const HelpCenterStats = () => {
 
     const {helpCenters, isLoading} = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
+        type: 'faq',
     })
     const sortedHelpCenters = useMemo(
         () => helpCenters.sort(getSortByName),

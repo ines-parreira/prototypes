@@ -39,6 +39,7 @@ const HelpCenterStartView: React.FC = () => {
         helpCenters: helpCenterList,
     } = useHelpCenterList({
         per_page: HELP_CENTERS_PER_PAGE,
+        type: 'faq',
     })
 
     const standaloneHelpCenters = useStandaloneHelpCenterAfterDismiss(
