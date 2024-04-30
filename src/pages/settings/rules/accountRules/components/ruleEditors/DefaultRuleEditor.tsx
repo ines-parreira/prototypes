@@ -228,14 +228,15 @@ const DefaultRuleEditor = (
 
     return (
         <div id="rule-form" className={css.form}>
-            {ruleActions.includes('replyToTicket') && (
+            {(ruleActions.includes('replyToTicket') ||
+                ruleActions.includes('applyMacro')) && (
                 <div className="mb-4">
                     <Alert type={AlertType.Warning} icon>
                         <span>
-                            The rule has a "reply to customer" action which will
-                            create billable tickets. To avoid unwanted charges,
-                            make sure this rule is set up correctly and will
-                            reply only to intended tickets.
+                            The rule has a "reply to customer" or "apply macro"
+                            action which will create billable tickets. To avoid
+                            unwanted charges, make sure this rule is set up
+                            correctly and will reply only to intended tickets.
                             <br />
                             <a
                                 href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
