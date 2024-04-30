@@ -35,6 +35,7 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
+    [FeatureFlagKey.AiAgentGuidanceTemplates]: true,
     [FeatureFlagKey.AiAgentSettings]: true,
 }))
 const helpCenter = getHelpCentersResponseFixture.data[0]
@@ -79,6 +80,7 @@ describe('<AiAgentGuidanceContainer />', () => {
         renderComponent()
 
         expect(screen.getByText('Create Guidance')).toBeInTheDocument()
+        expect(screen.getByText('Start with a template')).toBeInTheDocument()
     })
 
     describe("when there's guidance articles", () => {

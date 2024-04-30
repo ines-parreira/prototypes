@@ -39,3 +39,20 @@ export type UpdateGuidanceArticle = Omit<
     Partial<GuidanceArticle>,
     'lastUpdated' | 'id'
 >
+
+export enum GuidanceTemplateKey {
+    DamagedItems = 'DamagedItems',
+    OrderQuestions = 'OrderQuestions',
+    UndeliveredItems = 'UndeliveredItems',
+    OrderChanges = 'OrderChanges',
+    Gifts = 'Gifts',
+}
+
+export type GuidanceTemplate = {
+    id: GuidanceTemplateKey
+    name: string
+    content: string
+    excerpt: string
+    tag: string
+    style: {color: string; background: string}
+}

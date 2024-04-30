@@ -46,8 +46,9 @@ const AutomateView = ({
             )}{' '}
             <Container
                 fluid
-                className={classnames(css.container, className, {
+                className={classnames(className, {
                     [css.isLoading]: isLoading,
+                    [css.container]: !isLoading,
                 })}
             >
                 {isLoading ? <Loader /> : children}

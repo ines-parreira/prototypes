@@ -183,6 +183,7 @@ import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContai
 import {AiAgentGuidanceNewContainer} from './automate/aiAgent/AiAgentGuidanceNewContainer'
 import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidanceDetailContainer'
+import {AiAgentGuidanceTemplatesContainer} from './automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1421,6 +1422,13 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                     path={`${path}/guidance/new`}
                                     component={AiAgentGuidanceNewContainer}
                                 />
+                                <Route
+                                    path={`${path}/guidance/templates`}
+                                    component={
+                                        AiAgentGuidanceTemplatesContainer
+                                    }
+                                />
+
                                 <Route
                                     path={`${path}/guidance/:articleId`}
                                     component={AiAgentGuidanceDetailContainer}

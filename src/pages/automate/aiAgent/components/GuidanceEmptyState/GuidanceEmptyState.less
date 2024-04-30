@@ -50,4 +50,31 @@
         font-size: 16px;
         padding-right: 4px;
     }
+
+    .templatesContainer {
+        padding: @layout-spacing-m;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+
+    .templatesTitle {
+        .heading-section-semibold();
+        margin-bottom: 0;
+    }
+
+    .templatesList {
+        list-style: none;
+        padding-left: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: @layout-spacing-s;
+    }
+
+    .showMoreLink {
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 }

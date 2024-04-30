@@ -16,6 +16,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             configuration: `/app/automation/shopify/${shopName}/ai-agent`,
             guidanceArticleEdit: (articleId: number) =>
                 `/app/automation/shopify/${shopName}/ai-agent/guidance/${articleId}`,
+            guidanceTemplates: `/app/automation/shopify/${shopName}/ai-agent/guidance/templates`,
         }),
         [shopName]
     )

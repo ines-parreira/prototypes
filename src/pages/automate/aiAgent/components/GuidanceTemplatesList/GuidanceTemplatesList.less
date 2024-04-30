@@ -1,0 +1,19 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        list-style: none;
+        padding-left: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: @layout-spacing-s;
+    }
+
+    .link {
+        color: var(--neutral-grey-6);
+
+        &:hover {
+            color: var(--neutral-grey-6);
+        }
+    }
+}
