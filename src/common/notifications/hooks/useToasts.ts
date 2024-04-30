@@ -1,6 +1,6 @@
 import {FeedEventPayload} from '@knocklabs/client'
 import {useKnockFeed} from '@knocklabs/react'
-import {useCallback, useEffect, useRef, useState} from 'react'
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {Notification, RawNotification} from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
@@ -10,15 +10,22 @@ export default function useToasts() {
     const [notifications, setNotifications] = useState<Notification[]>([])
     const timeoutsRef = useRef<NodeJS.Timeout[]>([])
 
-    const queueHide = useCallback((notificationId: string) => {
-        const timeout = setTimeout(() => {
-            setNotifications((n) =>
-                n.filter((notification) => notification.id !== notificationId)
-            )
-        }, 5000)
-
-        timeoutsRef.current = [...timeoutsRef.current, timeout]
+    const dismiss = useCallback((notificationId: string) => {
+        setNotifications((n) =>
+            n.filter((notification) => notification.id !== notificationId)
+        )
     }, [])
+
+    const queueHide = useCallback(
+        (notificationId: string) => {
+            const timeout = setTimeout(() => {
+                dismiss(notificationId)
+            }, 5000)
+
+            timeoutsRef.current = [...timeoutsRef.current, timeout]
+        },
+        [dismiss]
+    )
 
     const handleNotificationsReceived = useCallback(
         ({items}: FeedEventPayload<RawNotification>) => {
@@ -54,5 +61,5 @@ export default function useToasts() {
         []
     )
 
-    return notifications
+    return useMemo(() => ({dismiss, notifications}), [dismiss, notifications])
 }
