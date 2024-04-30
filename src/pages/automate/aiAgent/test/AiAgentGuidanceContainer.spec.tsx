@@ -156,7 +156,7 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Create Guidance')).toBeDisabled()
+            expect(screen.getByText('Create From Template')).toBeDisabled()
         })
 
         it('should sort guidance articles by last updated', () => {

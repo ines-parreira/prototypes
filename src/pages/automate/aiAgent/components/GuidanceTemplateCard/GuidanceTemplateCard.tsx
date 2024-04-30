@@ -5,11 +5,13 @@ import css from './GuidanceTemplateCard.less'
 
 type Props = {
     guidanceTemplate: GuidanceTemplate
+    onClick: () => void
 }
 
-export const GuidanceTemplateCard = ({guidanceTemplate}: Props) => {
+export const GuidanceTemplateCard = ({guidanceTemplate, onClick}: Props) => {
     return (
         <TemplateCard
+            onClick={onClick}
             tag={
                 <div
                     className={css.tag}

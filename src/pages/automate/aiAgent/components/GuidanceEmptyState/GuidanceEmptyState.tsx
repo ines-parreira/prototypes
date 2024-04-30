@@ -9,6 +9,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
+import {GuidanceTemplateKey} from '../../types'
 import css from './GuidanceEmptyState.less'
 
 const SHOW_TEMPLATES_COUNT = 2
@@ -21,8 +22,10 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
     const {guidanceTemplates} = useGuidanceTemplates()
     const onNewClick = () => {
-        const guidanceNewLink = `/app/automation/shopify/${shopName}/ai-agent/guidance/new`
-        history.push(guidanceNewLink)
+        history.push(routes.newGuidanceArticle)
+    }
+    const onGuidanceTemplateClick = (templateId: GuidanceTemplateKey) => {
+        history.push(routes.newGuidanceTemplateArticle(templateId))
     }
 
     return (
@@ -78,6 +81,9 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                     className={css.templatesItem}
                                 >
                                     <GuidanceTemplateCard
+                                        onClick={() =>
+                                            onGuidanceTemplateClick(template.id)
+                                        }
                                         guidanceTemplate={template}
                                     />
                                 </li>

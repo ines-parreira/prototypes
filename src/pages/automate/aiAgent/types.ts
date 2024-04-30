@@ -48,6 +48,10 @@ export enum GuidanceTemplateKey {
     Gifts = 'Gifts',
 }
 
+export const isGuidanceTemplateKey = (
+    key: string
+): key is GuidanceTemplateKey => key in GuidanceTemplateKey
+
 export type GuidanceTemplate = {
     id: GuidanceTemplateKey
     name: string

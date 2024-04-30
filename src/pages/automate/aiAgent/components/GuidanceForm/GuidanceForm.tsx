@@ -25,6 +25,7 @@ export type GuidanceFormFields = {
 type Props = {
     shopName: string
     isLoading: boolean
+    actionType: 'update' | 'create'
     onSubmit: (fields: GuidanceFormFields) => Promise<void>
     onDelete?: () => Promise<void>
     initialFields?: GuidanceFormFields
@@ -36,6 +37,7 @@ export const GuidanceForm = ({
     onSubmit,
     initialFields,
     onDelete,
+    actionType,
 }: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
@@ -52,7 +54,8 @@ export const GuidanceForm = ({
     const isSubmitDisabled =
         !formState.name ||
         !formState.content ||
-        (initialFields && _isEqual(initialFields, formState))
+        (actionType === 'update' && _isEqual(initialFormState, formState))
+
     const isFormDirty = !_isEqual(initialFormState, formState)
 
     const handleDelete = async () => {
@@ -128,7 +131,9 @@ export const GuidanceForm = ({
                         isLoading={isLoading}
                         onClick={onSave}
                     >
-                        {initialFields ? 'Save Changes' : 'Create Guidance'}
+                        {actionType === 'update'
+                            ? 'Save Changes'
+                            : 'Create Guidance'}
                     </Button>
                     <Button
                         isDisabled={isSubmitDisabled}
@@ -136,7 +141,9 @@ export const GuidanceForm = ({
                         isLoading={isLoading}
                         onClick={onSaveAndTest}
                     >
-                        {initialFields ? 'Save And Test' : 'Create And Test'}
+                        {actionType === 'update'
+                            ? 'Save And Test'
+                            : 'Create And Test'}
                     </Button>
 
                     <Button intent="secondary" onClick={onCancel}>

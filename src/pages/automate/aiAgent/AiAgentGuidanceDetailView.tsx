@@ -95,6 +95,7 @@ export const AiAgentGuidanceDetailView = ({
             headerNavbarItems={headerNavbarItems}
         >
             <GuidanceForm
+                actionType="update"
                 shopName={shopName}
                 initialFields={initialFields}
                 onSubmit={onSubmit}

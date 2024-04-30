@@ -1,33 +1,45 @@
 import React from 'react'
 import {notify} from 'reapop'
-import {HelpCenter} from 'models/helpCenter/types'
+import {LocaleCode} from 'models/helpCenter/types'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     GuidanceForm,
     GuidanceFormFields,
 } from './components/GuidanceForm/GuidanceForm'
+import {GuidanceTemplateKey} from './types'
+import {useGuidanceTemplate} from './hooks/useGuidanceTemplate'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 
 type Props = {
     shopName: string
-    helpCenter: HelpCenter
+    templateId: GuidanceTemplateKey
+    guidanceHelpCenterId: number
+    locale: LocaleCode
 }
 
-export const AiAgentGuidanceNewView = ({shopName, helpCenter}: Props) => {
+export const AiAgentGuidanceTemplateNewView = ({
+    shopName,
+    templateId,
+    guidanceHelpCenterId,
+    locale,
+}: Props) => {
     const dispatch = useAppDispatch()
+    const {guidanceTemplate} = useGuidanceTemplate(templateId)
     const {createGuidanceArticle, isGuidanceArticleUpdating} =
-        useGuidanceArticleMutation({guidanceHelpCenterId: helpCenter.id})
+        useGuidanceArticleMutation({
+            guidanceHelpCenterId,
+        })
 
     const onSubmit = async ({name, content}: GuidanceFormFields) => {
         try {
             await createGuidanceArticle({
                 title: name,
                 content,
-                locale: helpCenter.default_locale,
+                locale,
                 visibility: 'PUBLIC',
             })
-        } catch (e) {
+        } catch (err) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -37,12 +49,18 @@ export const AiAgentGuidanceNewView = ({shopName, helpCenter}: Props) => {
         }
     }
 
+    const initialFields = {
+        name: guidanceTemplate.name,
+        content: guidanceTemplate.content,
+    }
+
     return (
         <GuidanceForm
             actionType="create"
             shopName={shopName}
-            isLoading={isGuidanceArticleUpdating}
+            initialFields={initialFields}
             onSubmit={onSubmit}
+            isLoading={isGuidanceArticleUpdating}
         />
     )
 }

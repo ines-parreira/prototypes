@@ -6,23 +6,28 @@ import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../../constants'
+import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
 import css from './GuidanceHeader.less'
 
 const CREATE_GUIDANCE_BUTTON_ID = 'create-guidance-button'
 
 type Props = {
     onCreateGuidanceClick: () => void
+    onCreateFromTemplate: () => void
     guidanceArticlesLength: number
 }
 
 export const GuidanceHeader = ({
     onCreateGuidanceClick,
+    onCreateFromTemplate,
     guidanceArticlesLength,
 }: Props) => {
     const isGuidanceArticleLimitRiched =
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT
     const isGuidanceArticleLimitWarning =
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING
+    const {guidanceTemplates} = useGuidanceTemplates()
+    const isGuidanceTemplatesEmpty = guidanceTemplates.length === 0
     return (
         <>
             <div className={css.container}>
@@ -31,15 +36,37 @@ export const GuidanceHeader = ({
                     specific situations.
                 </p>
 
-                <div>
-                    <Button
-                        isDisabled={isGuidanceArticleLimitRiched}
-                        disabled={isGuidanceArticleLimitRiched}
-                        onClick={onCreateGuidanceClick}
-                        id={CREATE_GUIDANCE_BUTTON_ID}
-                    >
-                        Create Guidance
-                    </Button>
+                <div className={css.btnGroup}>
+                    {isGuidanceTemplatesEmpty ? (
+                        <Button
+                            isDisabled={isGuidanceArticleLimitRiched}
+                            disabled={isGuidanceArticleLimitRiched}
+                            onClick={onCreateGuidanceClick}
+                            id={CREATE_GUIDANCE_BUTTON_ID}
+                        >
+                            Create Guidance
+                        </Button>
+                    ) : (
+                        <>
+                            <Button
+                                isDisabled={isGuidanceArticleLimitRiched}
+                                disabled={isGuidanceArticleLimitRiched}
+                                onClick={onCreateGuidanceClick}
+                                intent="secondary"
+                                id={CREATE_GUIDANCE_BUTTON_ID}
+                            >
+                                Create Custom Guidance
+                            </Button>
+
+                            <Button
+                                isDisabled={isGuidanceArticleLimitRiched}
+                                disabled={isGuidanceArticleLimitRiched}
+                                onClick={onCreateFromTemplate}
+                            >
+                                Create From Template
+                            </Button>
+                        </>
+                    )}
                     {isGuidanceArticleLimitRiched && (
                         <Tooltip
                             target={CREATE_GUIDANCE_BUTTON_ID}

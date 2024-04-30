@@ -44,6 +44,10 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
         history.push(routes.newGuidanceArticle)
     }
 
+    const onCreateFromTemplate = () => {
+        history.push(routes.guidanceTemplates)
+    }
+
     const onGuidanceArticleClick = (articleId: number) => {
         history.push(routes.guidanceArticleEdit(articleId))
     }
@@ -62,6 +66,7 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
         <div>
             <GuidanceHeader
                 onCreateGuidanceClick={onCreateGuidanceClick}
+                onCreateFromTemplate={onCreateFromTemplate}
                 guidanceArticlesLength={guidanceArticles.length}
             />
             <GuidanceList

@@ -1,7 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {CustomCard} from 'pages/common/components/TemplateCard'
-import {GuidanceTemplate} from '../../types'
+import history from 'pages/history'
+import {GuidanceTemplate, GuidanceTemplateKey} from '../../types'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import css from './GuidanceTemplatesList.less'
@@ -13,11 +14,19 @@ type Props = {
 
 export const GuidanceTemplatesList = ({guidanceTemplates, shopName}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
+
+    const onTemplateClick = (templateId: GuidanceTemplateKey) => {
+        history.push(routes.newGuidanceTemplateArticle(templateId))
+    }
+
     return (
         <ul className={css.container}>
             {guidanceTemplates.map((template) => (
                 <li key={template.id}>
-                    <GuidanceTemplateCard guidanceTemplate={template} />
+                    <GuidanceTemplateCard
+                        onClick={() => onTemplateClick(template.id)}
+                        guidanceTemplate={template}
+                    />
                 </li>
             ))}
             <li>
