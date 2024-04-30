@@ -338,6 +338,7 @@ declare namespace Components {
             | 'ordered_products'
             | 'customer_tags'
             | 'country_code'
+            | 'incognito_visitor'
         /**
          * ChannelConnectionCreateRequestSchema
          */

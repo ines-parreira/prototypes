@@ -93,6 +93,7 @@ describe('useAvailableTriggerList()', () => {
             const {
                 [CampaignTriggerType.SingleInView]: ___,
                 [CampaignTriggerType.DeviceType]: __,
+                [CampaignTriggerType.IncognitoVisitor]: ____,
                 ...expected
             } = TRIGGERS_CONFIG
 

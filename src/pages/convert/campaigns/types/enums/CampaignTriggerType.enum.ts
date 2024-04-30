@@ -15,4 +15,5 @@ export enum CampaignTriggerType {
     OrderedProducts = 'ordered_products',
     CustomerTags = 'customer_tags',
     CountryCode = 'country_code',
+    IncognitoVisitor = 'incognito_visitor',
 }

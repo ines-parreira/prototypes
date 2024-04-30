@@ -19,6 +19,7 @@ type Props = {
     onChangeDelay: (value: number) => void
     onChangeDeviceType: (triggerId: string, value: string) => void
     onChangeNoReply: (value: boolean) => void
+    onChangeIncognitoVisitor: (triggerId: string, value: boolean) => void
 }
 
 function getTriggerIdByKey(
@@ -41,6 +42,7 @@ export const CampaignDisplaySettings = ({
     onChangeNoReply,
     onChangeDelay,
     onChangeDeviceType,
+    onChangeIncognitoVisitor,
 }: Props): JSX.Element => {
     const deviceTypeId = getTriggerIdByKey(
         triggers,
@@ -81,6 +83,7 @@ export const CampaignDisplaySettings = ({
                         triggers={triggers}
                         isNoReply={isNoReply}
                         onChangeNoReply={onChangeNoReply}
+                        onChangeIncognitoVisitor={onChangeIncognitoVisitor}
                     />
                 </div>
             </div>

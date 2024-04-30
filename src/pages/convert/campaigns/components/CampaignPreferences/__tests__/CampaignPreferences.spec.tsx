@@ -12,6 +12,7 @@ describe('CampaignPreferences', () => {
                 isNoReply={false}
                 triggers={{}}
                 onChangeNoReply={jest.fn()}
+                onChangeIncognitoVisitor={jest.fn()}
             />
         )
 

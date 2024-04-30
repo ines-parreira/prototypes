@@ -9,6 +9,14 @@ export const CONVERT_LIGHT_TRIGGERS = [
     CampaignTriggerType.TimeSpentOnPage,
 ]
 
+export const CONVERT_SHOPIFY_TRIGGERS = [
+    CampaignTriggerType.AmountSpent,
+    CampaignTriggerType.OrdersCount,
+    CampaignTriggerType.CountryCode,
+    CampaignTriggerType.CustomerTags,
+    CampaignTriggerType.ProductTags,
+]
+
 export const TRIGGERS_CONFIG: TriggerConfig = {
     // --------------------
     // Behavior
@@ -339,6 +347,23 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
     // --------------------
     // Hidden
     // --------------------
+    [CampaignTriggerType.IncognitoVisitor]: {
+        label: 'IncognitoVisitor',
+        group: 'Other',
+        defaults: {
+            value: 'true',
+            operator: CampaignTriggerOperator.Eq,
+        },
+        requirements: {
+            revenue: true,
+            hidden: true,
+        },
+        operators: {
+            [CampaignTriggerOperator.Eq]: {
+                label: 'equals',
+            },
+        },
+    },
     [CampaignTriggerType.SingleInView]: {
         label: 'Single campaign in view',
         group: 'Other',

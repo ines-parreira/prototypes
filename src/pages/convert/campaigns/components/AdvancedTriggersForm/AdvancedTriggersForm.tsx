@@ -10,6 +10,14 @@ type Props = {
     onValidationChange: (isValid: boolean) => void
 }
 
+// We will still have `single_in_view` triggers in database , so it is important to
+// filter them out and not display them
+const excludeTriggers = [
+    CampaignTriggerType.SingleInView,
+    CampaignTriggerType.DeviceType,
+    CampaignTriggerType.IncognitoVisitor,
+]
+
 export const AdvancedTriggersForm = ({
     triggers,
     onValidationChange,
@@ -18,12 +26,7 @@ export const AdvancedTriggersForm = ({
 
     const formTriggers = useMemo<CampaignTriggerMap>(() => {
         return Object.entries(triggers).reduce((acc, [id, trigger]) => {
-            // We will still have `single_in_view` triggers in database , so it is important to
-            // filter them out and not display them
-            if (
-                trigger.type === CampaignTriggerType.SingleInView ||
-                trigger.type === CampaignTriggerType.DeviceType
-            ) {
+            if (excludeTriggers.includes(trigger.type)) {
                 return acc
             }
             return {

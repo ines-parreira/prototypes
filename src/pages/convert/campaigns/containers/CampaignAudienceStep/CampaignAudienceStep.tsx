@@ -18,7 +18,7 @@ import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
 
 import {useStepState} from '../../hooks/useStepState'
 import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
-
+import {createTrigger} from '../../utils/createTrigger'
 import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {CampaignStepsKeys} from '../../types/CampaignSteps'
 
@@ -98,6 +98,23 @@ export const CampaignAudienceStep = ({
 
     const isConsideredLightCampaign = isLightCampaign && isShopifyStore
 
+    const handleChangeIncognitoVisitor = useCallback(
+        (triggerId: string, value: boolean) => {
+            if (!triggerId && value) {
+                const incognitoVisitorTrigger = createTrigger(
+                    CampaignTriggerType.IncognitoVisitor
+                )
+                addTrigger(
+                    CampaignTriggerType.IncognitoVisitor,
+                    incognitoVisitorTrigger
+                )
+            } else if (value === false) {
+                deleteTrigger(triggerId)
+            }
+        },
+        [addTrigger, deleteTrigger]
+    )
+
     return (
         <StatefulAccordion
             {...stateProps}
@@ -168,6 +185,7 @@ export const CampaignAudienceStep = ({
                     delay={campaignDelay}
                     onChangeDelay={handleUpdateDelay}
                     onChangeDeviceType={handleChangeDeviceType}
+                    onChangeIncognitoVisitor={handleChangeIncognitoVisitor}
                     onChangeNoReply={handleUpdateNoReply}
                 />
             )}

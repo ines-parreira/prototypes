@@ -165,11 +165,11 @@ export const CampaignDetailsForm = ({
         updated_datetime: campaign?.updated_datetime ?? null,
     })
 
-    const [isFormLoading, setIsFormLoading] = useState<boolean>(false)
+    const [isFormLoading, setIsFormLoading] = useState<boolean>(true)
     useEffect(() => {
         // Make sure the form is loaded only when the campaign object is ready in context
         setIsFormLoading(
-            isEditMode ? Boolean(isLoading && campaignData.id) : isLoading
+            isEditMode ? Boolean(isLoading && !campaignData.id) : isLoading
         )
     }, [campaignData, isEditMode, isLoading])
 
