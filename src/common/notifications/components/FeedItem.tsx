@@ -9,9 +9,10 @@ import css from './FeedItem.less'
 
 export type Props = {
     notification: Notification
+    onClick?: () => void
 }
 
-export default React.memo(function FeedItem({notification}: Props) {
+export default React.memo(function FeedItem({notification, onClick}: Props) {
     return (
         <div className={css.container}>
             <NotificationContent
@@ -28,6 +29,7 @@ export default React.memo(function FeedItem({notification}: Props) {
                     </div>
                 }
                 notification={notification}
+                onClick={onClick}
             />
         </div>
     )

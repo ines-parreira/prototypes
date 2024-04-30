@@ -12,13 +12,6 @@ import transformKnockNotification from '../utils/transformKnockNotification'
 import FeedItem from './FeedItem'
 import css from './Button.less'
 
-const renderItem = ({item}: RenderItemProps) => {
-    const notification = transformKnockNotification(item)
-    return !notification ? null : (
-        <FeedItem key={notification.id} notification={notification} />
-    )
-}
-
 export default function NotificationsButton() {
     const count = useCount()
 
@@ -32,6 +25,20 @@ export default function NotificationsButton() {
     const handleClose = useCallback(() => {
         setIsVisible(false)
     }, [])
+
+    const renderItem = useCallback(
+        ({item}: RenderItemProps) => {
+            const notification = transformKnockNotification(item)
+            return !notification ? null : (
+                <FeedItem
+                    key={notification.id}
+                    notification={notification}
+                    onClick={handleClose}
+                />
+            )
+        },
+        [handleClose]
+    )
 
     return (
         <>
