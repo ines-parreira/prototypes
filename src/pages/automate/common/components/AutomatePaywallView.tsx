@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import PageHeader from 'pages/common/components/PageHeader'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import automateIcon from 'assets/img/self-service/automate-logo.svg'
 import Button from 'pages/common/components/button/Button'
 import useEffectOnce from 'hooks/useEffectOnce'
 
@@ -23,10 +22,12 @@ const AutomatePaywallView = ({
 }) => {
     const {
         headerTitle,
+        paywallLogo,
+        paywallLogoAlt,
         paywallTitle,
         descriptions,
-        greyButtonText,
-        primaryButtonText,
+        showRoiCalculator,
+        slidesWidth,
         slidesData,
     } = PaywallConfig[automateFeature]
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -38,7 +39,8 @@ const AutomatePaywallView = ({
     })
 
     const hasAccessToROICalculator =
-        useFlags()[FeatureFlagKey.ObservabilityROICalculator]
+        useFlags()[FeatureFlagKey.ObservabilityROICalculator] &&
+        showRoiCalculator
 
     const [showROICalculatorStep, setShowROICalculatorStep] = useState(false)
 
@@ -60,8 +62,8 @@ const AutomatePaywallView = ({
                 <div className={css.leftContainer}>
                     <img
                         className={css.headerIcon}
-                        src={automateIcon}
-                        alt="Gorgias Automate"
+                        src={paywallLogo}
+                        alt={paywallLogoAlt}
                     />
                     <div className={css.title}>{paywallTitle}</div>
 
@@ -79,25 +81,32 @@ const AutomatePaywallView = ({
                         </div>
                     ))}
 
-                    <div className={css.actionButton}>
-                        <Button
-                            data-candu-id="automate-paywall-select-plan"
-                            onClick={() => setIsAutomationModalOpened(true)}
-                        >
-                            {primaryButtonText}
-                        </Button>
-                        <LinkButton
-                            target="blank"
-                            data-candu-id="automate-paywall-learn-more"
-                            intent="secondary"
-                            onClick={() =>
-                                logEvent(SegmentEvent.AutomatePaywallLearnMore)
-                            }
-                            href="https://link.gorgias.com/bij"
-                        >
-                            {greyButtonText}
-                        </LinkButton>
-                    </div>
+                    {automateFeature === AutomateFeatures.AiAgent ? (
+                        <div data-candu-id="automate-ai-agent-waitwall" />
+                    ) : (
+                        <div className={css.actionButton}>
+                            <Button
+                                data-candu-id="automate-paywall-select-plan"
+                                onClick={() => setIsAutomationModalOpened(true)}
+                            >
+                                Select plan to get started
+                            </Button>
+                            <LinkButton
+                                target="blank"
+                                data-candu-id="automate-paywall-learn-more"
+                                intent="secondary"
+                                onClick={() =>
+                                    logEvent(
+                                        SegmentEvent.AutomatePaywallLearnMore
+                                    )
+                                }
+                                href="https://link.gorgias.com/bij"
+                            >
+                                Learn more
+                            </LinkButton>
+                        </div>
+                    )}
+
                     {hasAccessToROICalculator && (
                         <Button
                             fillStyle="ghost"
@@ -114,7 +123,10 @@ const AutomatePaywallView = ({
                     )}
                 </div>
                 <div className={css.rightContainer}>
-                    <HeroImageCarousel slides={slidesData} />
+                    <HeroImageCarousel
+                        width={slidesWidth}
+                        slides={slidesData}
+                    />
                 </div>
             </div>
             <AutomateSubscriptionModal

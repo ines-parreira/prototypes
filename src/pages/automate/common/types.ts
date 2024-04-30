@@ -32,4 +32,5 @@ export type ChannelLanguage =
 export enum AutomateFeatures {
     Automate = 'Automate',
     AutomateStats = 'AutomateStats',
+    AiAgent = 'AiAgent',
 }

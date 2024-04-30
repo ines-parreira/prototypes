@@ -13,19 +13,21 @@ export type CarouselData = {
 }
 type Props = {
     slides: CarouselData[]
+    width?: number
     singleSlideButtonTitle?: string
     onSingleSlideButtonTitleClick?: () => void
 }
 
 const HeroImageCarousel = ({
     slides,
+    width = 420,
     singleSlideButtonTitle,
     onSingleSlideButtonTitleClick,
 }: Props) => {
     const [currentSlide, setCurrentSlide] = useState(0)
     const sliderRef = useRef<Slider | null>(null)
     return (
-        <div className={css.container}>
+        <div style={{maxWidth: `${width}px`}}>
             <div className={css.sliderWrapper}>
                 <Slider
                     beforeChange={(oldIndex, newIndex) => {
@@ -43,8 +45,7 @@ const HeroImageCarousel = ({
                                     <div className={css.header}>{header}</div>
                                 )}
                                 <img
-                                    width={420}
-                                    height={420}
+                                    width={width}
                                     className={css.slideImage}
                                     src={imageUrl}
                                     alt={
@@ -54,7 +55,10 @@ const HeroImageCarousel = ({
                                     }
                                 />
                                 {description && (
-                                    <div className={css.slideDescription}>
+                                    <div
+                                        className={css.slideDescription}
+                                        style={{maxWidth: `${width}px`}}
+                                    >
                                         {description}
                                     </div>
                                 )}

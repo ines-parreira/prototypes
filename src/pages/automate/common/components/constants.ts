@@ -17,18 +17,20 @@ export const AI_AGENT_PLAYGROUND = 'AI Agent Playground'
 
 export type PaywallFeature = {
     headerTitle: string
-    greyButtonText: string
-    primaryButtonText: string
+    paywallLogo: string
+    paywallLogoAlt: string
     paywallTitle: string
     descriptions: string[]
+    showRoiCalculator: boolean
+    slidesWidth?: number
     slidesData: CarouselData[]
 }
 
 export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
     [AutomateFeatures.Automate]: {
         headerTitle: 'Automate',
-        greyButtonText: 'Learn more',
-        primaryButtonText: 'Select plan to get started',
+        paywallLogo: assetsUrl('/img/self-service/automate-logo.svg'),
+        paywallLogoAlt: 'Gorgias Automate',
         paywallTitle:
             'Instant resolutions for happier customers and a happier team',
         descriptions: [
@@ -37,6 +39,7 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
             'Save on costs while offering 24/7 support that scales.',
             'Automate email, Chat, Help Center, and Contact Form.',
         ],
+        showRoiCalculator: true,
         slidesData: [
             {
                 imageUrl: assetsUrl(
@@ -76,8 +79,8 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
     },
     [AutomateFeatures.AutomateStats]: {
         headerTitle: 'Automate overview',
-        greyButtonText: 'Learn more',
-        primaryButtonText: 'Select plan to get started',
+        paywallLogoAlt: 'Gorgias Automate',
+        paywallLogo: assetsUrl('/img/self-service/automate-logo.svg'),
         paywallTitle:
             'Instant resolutions for happier customers and a happier team',
         descriptions: [
@@ -86,6 +89,7 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
             'Save on costs while offering 24/7 support that scales.',
             'Automate email, Chat, Help Center, and Contact Form.',
         ],
+        showRoiCalculator: true,
         slidesData: [
             {
                 imageUrl: assetsUrl(
@@ -120,6 +124,28 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
                 ),
                 description:
                     'Leverage AI Autoresponders to reduce and resolve emails tickets.',
+            },
+        ],
+    },
+    [AutomateFeatures.AiAgent]: {
+        headerTitle: 'Automate',
+        paywallLogo: assetsUrl('/img/ai-agent/ai-agent-logo.png'),
+        paywallLogoAlt: 'AI Agent',
+        paywallTitle:
+            'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
+        descriptions: [
+            "Consume all your brand's knowledge, identity and tone",
+            'Follow guidance built by you',
+            'Enhance team productivity, reducing workload & response times',
+            'Guide customers towards swift resolutions in seconds, not hours',
+            'Continuously improve based on your reviews & feedback',
+        ],
+        showRoiCalculator: false,
+        slidesWidth: 600,
+        slidesData: [
+            {
+                imageUrl: assetsUrl('/img/paywalls/screens/ai-agent-demo.gif'),
+                description: '',
             },
         ],
     },
