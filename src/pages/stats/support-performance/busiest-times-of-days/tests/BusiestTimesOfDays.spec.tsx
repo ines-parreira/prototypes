@@ -53,7 +53,7 @@ describe('BusiestTimesOfDays page', () => {
             {
                 metricName: defaultMetric,
                 useMetricQuery: getMetricQuery(defaultMetric),
-                isHeatmapMode: false,
+                isHeatmapMode: true,
             },
             {}
         )

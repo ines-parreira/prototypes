@@ -58,7 +58,7 @@ export const BusiestTimesOfDays = () => {
         useState<BusiestTimeOfDaysMetrics>(
             BusiestTimeOfDaysMetrics.TicketsCreated
         )
-    const [isHeatmapMode, setIsHeatmapMode] = useState(false)
+    const [isHeatmapMode, setIsHeatmapMode] = useState(true)
 
     return (
         <div className="full-width">
