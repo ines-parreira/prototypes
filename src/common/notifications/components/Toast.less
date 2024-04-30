@@ -1,10 +1,12 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .container {
         width: 315px;
-        margin: 24px 0 0;
+        margin: @layout-spacing-m 0 0;
         border: 1px solid var(--neutral-grey-3);
         border-radius: 10px;
-        background: #fff;
+        background: var(--neutral-grey-0);
         box-shadow: 4px 4px 16px 0 rgba(22, 22, 22, 0.1);
     }
 }
