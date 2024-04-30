@@ -3,7 +3,7 @@ import React, {useMemo} from 'react'
 
 import {shortenRelativeDurationLabel} from 'utils/date'
 
-import useNow from '../hooks/useNow'
+import {useNow} from 'common/hooks'
 
 type Props = {
     datetime: string

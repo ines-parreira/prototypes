@@ -12,21 +12,26 @@ export type Ticket = {
     subject: string
 }
 
+type NotificationBase = {
+    id: string
+    inserted_datetime: string
+    read_datetime: string | null
+    seen_datetime: string | null
+}
+
 export type DefaultPayload = {
     ticket: Ticket
 }
 
 export type Notification =
-    | {
-          id: string
+    | (NotificationBase & {
           type: 'message-received'
           payload: DefaultPayload
-      }
-    | {
-          id: string
+      })
+    | (NotificationBase & {
           type: 'snooze-expired'
           payload: DefaultPayload
-      }
+      })
 
 export type NotificationType = Notification['type']
 

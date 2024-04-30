@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
 
 import TicketIcon from 'pages/common/components/TicketIcon'
@@ -8,6 +8,7 @@ import {Notification, NotificationType} from '../types'
 import css from './NotificationContent.less'
 
 type Props = {
+    headerExtra?: ReactNode
     notification: Notification
 }
 
@@ -16,7 +17,10 @@ const notificationTypeMap: Record<NotificationType, string> = {
     'snooze-expired': 'Snooze expired',
 }
 
-export default React.memo(function NotificationContent({notification}: Props) {
+export default function NotificationContent({
+    headerExtra,
+    notification,
+}: Props) {
     const {ticket} = notification.payload || {}
     if (!ticket) return null
 
@@ -26,10 +30,11 @@ export default React.memo(function NotificationContent({notification}: Props) {
                 <TicketIcon channel={ticket.channel} status={ticket.status} />
             </div>
             <div className={css.content}>
-                <header>
+                <header className={css.header}>
                     <h4 className={css.type}>
                         {notificationTypeMap[notification.type]}
                     </h4>
+                    {headerExtra}
                 </header>
                 <p className={css.subtitle}>
                     <strong>{ticket.subject}</strong> from{' '}
@@ -42,4 +47,4 @@ export default React.memo(function NotificationContent({notification}: Props) {
             </div>
         </Link>
     )
-})
+}

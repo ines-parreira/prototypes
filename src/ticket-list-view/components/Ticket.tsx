@@ -4,12 +4,12 @@ import {CSSTransition} from 'react-transition-group'
 import {Link} from 'react-router-dom'
 import {Components} from 'react-virtuoso'
 
+import RelativeTime from 'pages/common/components/RelativeTime'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 
 import {TicketPartial, TicketSummary} from '../types'
-import RelativeTime from './RelativeTime'
 import TicketSkeleton from './TicketSkeleton'
 import css from './Ticket.less'
 

@@ -1,3 +1,6 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
 :local {
     .container {
         margin: 0 6px 0 12px;
@@ -6,5 +9,23 @@
         &:hover {
             background: var(--neutral-grey-1);
         }
+    }
+
+    .headerExtra {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
+    }
+
+    .unread {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--feedback-error);
+    }
+
+    .time {
+        .caption-regular();
+        color: var(--neutral-grey-5);
     }
 }

@@ -10,15 +10,12 @@ import useCount from '../hooks/useCount'
 import transformKnockNotification from '../utils/transformKnockNotification'
 
 import FeedItem from './FeedItem'
-import NotificationContent from './NotificationContent'
 import css from './Button.less'
 
 const renderItem = ({item}: RenderItemProps) => {
     const notification = transformKnockNotification(item)
     return !notification ? null : (
-        <FeedItem key={notification.id}>
-            <NotificationContent notification={notification} />
-        </FeedItem>
+        <FeedItem key={notification.id} notification={notification} />
     )
 }
 
