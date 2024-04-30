@@ -2,11 +2,11 @@ import React from 'react'
 import {useParams} from 'react-router-dom'
 import Loader from 'pages/common/components/Loader/Loader'
 import AutomateView from '../common/components/AutomateView'
-import {AI_AGENT} from '../common/components/constants'
 import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
 import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import css from './AiAgentGuidanceContainer.less'
+import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 
 export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{
@@ -23,7 +23,7 @@ export const AiAgentGuidanceContainer = () => {
 
     return (
         <AutomateView
-            title={AI_AGENT}
+            title={<GuidanceBreadcrumbs shopName={shopName} title="Guidance" />}
             headerNavbarItems={headerNavbarItems}
             className={css.container}
         >

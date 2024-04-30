@@ -14,7 +14,7 @@ type Props = {
     helpCenter: HelpCenter
 }
 
-export const AiAgentNewGuidanceView = ({shopName, helpCenter}: Props) => {
+export const AiAgentGuidanceNewView = ({shopName, helpCenter}: Props) => {
     const dispatch = useAppDispatch()
     const {createGuidanceArticle, isGuidanceArticleUpdating} =
         useGuidanceArticleMutation({guidanceHelpCenterId: helpCenter.id})

@@ -180,7 +180,7 @@ import {
 import PanelLayout from 'pages/PanelLayout'
 import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
 import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
-import {AiAgentNewGuidanceContainer} from './automate/aiAgent/AiAgentNewGuidanceContainer'
+import {AiAgentGuidanceNewContainer} from './automate/aiAgent/AiAgentGuidanceNewContainer'
 import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidanceDetailContainer'
 
@@ -1419,7 +1419,7 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             <Switch>
                                 <Route
                                     path={`${path}/guidance/new`}
-                                    component={AiAgentNewGuidanceContainer}
+                                    component={AiAgentGuidanceNewContainer}
                                 />
                                 <Route
                                     path={`${path}/guidance/:articleId`}

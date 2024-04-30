@@ -4,12 +4,15 @@ import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
+import AutomateView from '../common/components/AutomateView'
 import {useGuidanceArticle} from './hooks/useGuidanceArticle'
 import {
     GuidanceForm,
     GuidanceFormFields,
 } from './components/GuidanceForm/GuidanceForm'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
+import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 type Props = {
     guidanceHelpCenterId: number
@@ -25,6 +28,7 @@ export const AiAgentGuidanceDetailView = ({
     locale,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const {headerNavbarItems} = useAiAgentNavigation({shopName})
     const {guidanceArticle} = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
@@ -81,12 +85,22 @@ export const AiAgentGuidanceDetailView = ({
     }
 
     return (
-        <GuidanceForm
-            shopName={shopName}
-            initialFields={initialFields}
-            onSubmit={onSubmit}
-            onDelete={onDelete}
-            isLoading={isGuidanceArticleUpdating}
-        />
+        <AutomateView
+            title={
+                <GuidanceBreadcrumbs
+                    shopName={shopName}
+                    title={guidanceArticle.title}
+                />
+            }
+            headerNavbarItems={headerNavbarItems}
+        >
+            <GuidanceForm
+                shopName={shopName}
+                initialFields={initialFields}
+                onSubmit={onSubmit}
+                onDelete={onDelete}
+                isLoading={isGuidanceArticleUpdating}
+            />
+        </AutomateView>
     )
 }

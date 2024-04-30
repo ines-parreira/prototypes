@@ -4,7 +4,7 @@ import {screen} from '@testing-library/react'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {AiAgentNewGuidanceContainer} from '../AiAgentNewGuidanceContainer'
+import {AiAgentGuidanceNewContainer} from '../AiAgentGuidanceNewContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
@@ -48,7 +48,7 @@ const defaultGuidanceArticleMutationProps: ReturnType<
 }
 
 const renderComponent = () => {
-    renderWithRouter(<AiAgentNewGuidanceContainer />, {
+    renderWithRouter(<AiAgentGuidanceNewContainer />, {
         path: `/:shopType/:shopName/ai-agent/guidance`,
         route: '/shopify/test-shop/ai-agent/guidance',
     })

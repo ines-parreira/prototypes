@@ -130,7 +130,7 @@ export const GuidanceList = ({
                                 title="Delete Guidance?"
                                 content={
                                     <p>
-                                        Are you sure you want to delete
+                                        Are you sure you want to delete{' '}
                                         <b>{article.title}</b> Guidance?
                                     </p>
                                 }

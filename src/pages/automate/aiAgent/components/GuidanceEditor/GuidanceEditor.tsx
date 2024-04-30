@@ -34,6 +34,7 @@ const config = {
         'bold',
         'italic',
         'underline',
+        'insertLink',
         'formatUL',
         'formatOLSimple',
         'charCounter',
@@ -73,7 +74,7 @@ export const GuidanceEditor = ({
                     editorClass: css.editor,
                     placeholderText: placeholder,
                     charCounterMax: maxChars,
-                    height:
+                    heightMin:
                         height !== undefined
                             ? height - TOOLBAR_HEIGHT
                             : undefined,

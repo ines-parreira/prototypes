@@ -6,10 +6,16 @@ import history from 'pages/history'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import InputField from 'pages/common/forms/input/InputField'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {GuidanceEditor} from '../GuidanceEditor/GuidanceEditor'
 
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import css from './GuidanceForm.less'
+
+const FORM_INITIAL_STATE = {
+    name: '',
+    content: '',
+}
 
 export type GuidanceFormFields = {
     name: string
@@ -32,9 +38,9 @@ export const GuidanceForm = ({
     onDelete,
 }: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
-    const [formState, setFormState] = useState<GuidanceFormFields>(
-        initialFields ?? {name: '', content: ''}
-    )
+    const initialFormState = initialFields ?? FORM_INITIAL_STATE
+    const [formState, setFormState] =
+        useState<GuidanceFormFields>(initialFormState)
     const onNameChange = (value: string) => {
         setFormState((prevState) => ({...prevState, name: value}))
     }
@@ -47,6 +53,7 @@ export const GuidanceForm = ({
         !formState.name ||
         !formState.content ||
         (initialFields && _isEqual(initialFields, formState))
+    const isFormDirty = !_isEqual(initialFormState, formState)
 
     const handleDelete = async () => {
         if (!onDelete) return
@@ -60,20 +67,36 @@ export const GuidanceForm = ({
         history.push(routes.guidance)
     }
 
+    const resetForm = () => {
+        setFormState(initialFormState)
+    }
+
     const handleSubmit = async () => {
         await onSubmit(formState)
+        resetForm()
+    }
+
+    const onSave = async () => {
+        await handleSubmit()
 
         history.push(routes.guidance)
     }
 
     const onSaveAndTest = async () => {
-        await onSubmit(formState)
+        await handleSubmit()
 
         history.push(routes.playground)
     }
 
     return (
         <>
+            <UnsavedChangesPrompt
+                onSave={onSave}
+                when={isFormDirty}
+                onDiscard={resetForm}
+                shouldRedirectAfterSave={true}
+            />
+
             <div className={css.container}>
                 <div className={css.content}>
                     <BackLink path={routes.guidance} label="Back to Guidance" />
@@ -86,13 +109,14 @@ export const GuidanceForm = ({
                         onChange={onNameChange}
                         name="name"
                         value={formState.name}
+                        maxLength={135}
                     />
                     <GuidanceEditor
                         onChange={onContentChange}
                         label="Instructions"
                         value={formState.content}
                         placeholder="e.g. If no order data is found for a customer asking a question about their order, you will ask the customer to confirm their order number and the email address."
-                        maxChars={1000}
+                        maxChars={5000}
                         height={320}
                     />
                 </div>
@@ -102,7 +126,7 @@ export const GuidanceForm = ({
                         isDisabled={isSubmitDisabled}
                         disabled={isSubmitDisabled}
                         isLoading={isLoading}
-                        onClick={handleSubmit}
+                        onClick={onSave}
                     >
                         {initialFields ? 'Save Changes' : 'Create Guidance'}
                     </Button>
@@ -151,15 +175,8 @@ export const GuidanceForm = ({
                     <p>
                         Instructions can be context specific, for example:{' '}
                         <b>
-                            “For pricing questions, point them to our pricing
-                            page: https://example.com/pricing”
-                        </b>
-                    </p>
-                    <p>
-                        Instructions can also be general:{' '}
-                        <b>
-                            “Always end by asking if they need more help, no
-                            matter what they asked.”
+                            “For pricing questions, you will point customers to
+                            our pricing page: https://example.com/pricing”
                         </b>
                     </p>
                 </Alert>
