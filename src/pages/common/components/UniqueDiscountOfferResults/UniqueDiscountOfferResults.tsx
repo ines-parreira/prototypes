@@ -81,9 +81,18 @@ export default function UniqueDiscountCodeResults({
         autoDestroy: false,
     })
 
-    const handleCloseModal = useCallback(() => {
-        createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
+    // Solves issue with closing the popover without intention
+    const handleCloseCreateModal = useCallback(() => {
+        setTimeout(() => {
+            createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
+        }, 100)
     }, [createDiscountModal])
+
+    const handleCloseDeleteModal = useCallback(() => {
+        setTimeout(() => {
+            deleteDiscountModal.closeModal(DELETE_DISCOUNT_MODAL_NAME)
+        }, 100)
+    }, [deleteDiscountModal])
 
     const handleOpenModal = useCallback(() => {
         createDiscountModal.openModal(UNIQUE_DISCOUNT_MODAL_NAME, false)
@@ -299,14 +308,12 @@ export default function UniqueDiscountCodeResults({
             <UniqueDiscountOfferCreateModal
                 isOpen={createDiscountModal.isOpen()}
                 integration={integration}
-                onClose={handleCloseModal}
+                onClose={handleCloseCreateModal}
                 onSubmit={handleSubmitModal}
             />
             <DeleteUniqueDiscountOfferModal
                 isOpen={deleteDiscountModal.isOpen()}
-                onClose={() => {
-                    deleteDiscountModal.closeModal(DELETE_DISCOUNT_MODAL_NAME)
-                }}
+                onClose={handleCloseDeleteModal}
             />
         </div>
     )
