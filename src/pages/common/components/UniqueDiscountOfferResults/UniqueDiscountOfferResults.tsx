@@ -4,6 +4,7 @@ import React, {
     useCallback,
     useMemo,
     MouseEvent,
+    useRef,
 } from 'react'
 import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {List, Map} from 'immutable'
@@ -19,6 +20,8 @@ import {
 } from 'models/discountCodes/constants'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Tooltip from 'pages/common/components/Tooltip'
+
 import {useModalManager} from 'hooks/useModalManager'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -34,6 +37,8 @@ import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDisc
 import css from './UniqueDiscountOfferResults.less'
 import {computeDiscountOfferSummary, testIds} from './utils'
 
+const MAX_LIMIT: number = 15
+
 type OwnProps = {
     integration: Map<string, string>
     onDiscountClicked: (
@@ -48,6 +53,7 @@ export default function UniqueDiscountCodeResults({
     onResetStoreChoice,
     onDiscountClicked,
 }: OwnProps) {
+    const discountCodeCountRef = useRef<number>(0)
     const [filter, setFilter] = useState('')
     const currentAccount = useAppSelector(getCurrentAccountState)
 
@@ -64,6 +70,16 @@ export default function UniqueDiscountCodeResults({
         store_integration_id: integration.get('id'),
         search: filter,
     })
+
+    const discountCodeCount = useMemo<number>(() => {
+        // During the first load we shouldn't have filters
+        if (filter) {
+            return discountCodeCountRef.current
+        }
+
+        discountCodeCountRef.current = discountCodes?.length ?? 0
+        return discountCodeCountRef.current
+    }, [discountCodes, filter])
 
     const handleChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
@@ -175,14 +191,32 @@ export default function UniqueDiscountCodeResults({
                         </Button>
                     )}
                     {hasShopifyDiscountScope && (
-                        <Button
-                            className="mr-2"
-                            onClick={handleOpenModal}
-                            size="small"
-                            tabIndex={-1}
-                        >
-                            <ButtonIconLabel icon="add">Add</ButtonIconLabel>
-                        </Button>
+                        <>
+                            {discountCodeCount >= MAX_LIMIT && (
+                                <Tooltip
+                                    aria-label="Tooltip for response not configured"
+                                    placement="top-start"
+                                    target={'add-button'}
+                                    trigger={['hover']}
+                                >
+                                    You can only have a maximum of 15 offers at
+                                    a time.
+                                </Tooltip>
+                            )}
+
+                            <Button
+                                id="add-button"
+                                className="mr-2"
+                                onClick={handleOpenModal}
+                                size="small"
+                                tabIndex={-1}
+                                isDisabled={discountCodeCount >= MAX_LIMIT}
+                            >
+                                <ButtonIconLabel icon="add">
+                                    Add
+                                </ButtonIconLabel>
+                            </Button>
+                        </>
                     )}
                 </div>
                 <div>
