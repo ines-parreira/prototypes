@@ -1,3 +1,4 @@
+import {UniqueDiscountOfferTypeEnum} from 'models/convert/discountOffer/types'
 import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 export enum UploadType {
@@ -27,6 +28,11 @@ export type DiscountOfferAttachment = {
     extra: {
         discount_offer_id: string
         summary?: string
+        // these properties are used in ticket view to expose a meaningful state about shopper reply
+        // weather the offer has been revealed BEFORE the reply or not, and the snapshot values
+        discount_offer_code?: string
+        discount_offer_type?: UniqueDiscountOfferTypeEnum
+        discount_offer_value?: number
     }
 }
 

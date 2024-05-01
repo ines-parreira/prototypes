@@ -53,7 +53,11 @@ export default function DiscountCodeResults({
     const appNode = useAppNode()
 
     const shopifyScope = useMemo<string[]>(() => {
-        const scope = integration.getIn(['oauth', 'scope']) as List<string>
+        const scope = integration.getIn([
+            'meta',
+            'oauth',
+            'scope',
+        ]) as List<string>
         return scope.toArray()
     }, [integration])
 

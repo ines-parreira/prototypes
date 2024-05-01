@@ -1,5 +1,7 @@
 import React, {MouseEvent} from 'react'
 import {Modal, ModalBody, ModalHeader} from 'reactstrap'
+import {useDispatch} from 'react-redux'
+import {List, Map} from 'immutable'
 import {testIds} from 'pages/convert/discountOffer/components/utils'
 import {useAppNode} from 'appNode'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -8,6 +10,9 @@ import {useModalManager} from 'hooks/useModalManager'
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {DELETE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useDeleteDiscountOffer} from 'pages/convert/discountOffer/hooks/useDeleteDiscountOffer'
+import useAppSelector from 'hooks/useAppSelector'
+import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import {deleteAttachment} from 'state/newMessage/actions'
 
 type DeleteUniqueDiscountOfferModalProps = {
     isOpen: boolean
@@ -17,6 +22,10 @@ type DeleteUniqueDiscountOfferModalProps = {
 export const DeleteUniqueDiscountOfferModal: React.FC<DeleteUniqueDiscountOfferModalProps> =
     (props) => {
         const {isOpen, onClose} = props
+        const newMessageAttachments: List<any> = useAppSelector(
+            getNewMessageAttachments
+        )
+        const dispatch = useDispatch()
 
         const deleteModalManager = useModalManager(DELETE_DISCOUNT_MODAL_NAME)
 
@@ -41,6 +50,24 @@ export const DeleteUniqueDiscountOfferModal: React.FC<DeleteUniqueDiscountOfferM
                 undefined,
                 {discount_offer_id: modalParams.id},
             ])
+
+            // After deletion, check if the deleted discountOffer is among new message attachments and remove it
+            if (!newMessageAttachments.isEmpty()) {
+                const currentlyDeletedOfferAttachmentIndex =
+                    newMessageAttachments.findIndex(
+                        (att: Map<string, any>) =>
+                            att?.get('content_type') ===
+                                'application/discountOffer' &&
+                            att?.getIn(['extra', 'discount_offer_id']) ===
+                                modalParams?.id
+                    )
+
+                if (currentlyDeletedOfferAttachmentIndex > -1) {
+                    dispatch(
+                        deleteAttachment(currentlyDeletedOfferAttachmentIndex)
+                    )
+                }
+            }
             onClose()
         }
 

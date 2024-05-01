@@ -9,6 +9,7 @@ import shortcutManager from 'services/shortcutManager/index'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {proxifyURL, replaceAttachmentURL} from 'utils'
 
+import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
 import css from './TicketAttachments.less'
 
 type Attachment = Map<any, any>
@@ -18,6 +19,13 @@ type Props = {
     removable: boolean
     deleteAttachment?: (number: number) => void
     className?: string
+    context:
+        | 'campaign-message'
+        | 'ticket-reply'
+        | 'ticket-message'
+        | 'embedded-card'
+        | 'content-form'
+        | 'quick-reply'
 }
 
 type State = {
@@ -224,20 +232,16 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     _renderUniqueDiscountOfferAttachment(attachment: Attachment, idx: number) {
-        return (
-            <div className={classnames(css.item)}>
-                <div className={css.itemMeta}>
-                    <div
-                        className={`${css.metaName} ${css.discountOfferMetaName}`}
-                    >
-                        {attachment.get('name')}
-                    </div>
-                    <br />
-                    <div>{attachment.getIn(['extra', 'summary'])}</div>
+        const onRemoveAttachment = this.props.removable
+            ? (e: MouseEvent<HTMLElement>) => this.removeAttachment(idx, e)
+            : undefined
 
-                    {this.renderRemoveIcon(idx)}
-                </div>
-            </div>
+        return (
+            <DiscountOfferTicketAttachment
+                supportsEdit={this.props.context === 'campaign-message'}
+                discountOffer={attachment.toJS()}
+                onRemove={onRemoveAttachment}
+            />
         )
     }
 

@@ -133,10 +133,9 @@ export const CampaignMessage = memo(
             messageAttachments.toJS() as AttachmentType[]
         ).find((att) => attachmentIsDiscountOffer(att))
 
-        const supportsDiscountOffer =
-            isConvertUniqueDiscountCodesEnabled &&
-            isConvertSubscriber &&
-            !anyDiscountOfferAttached
+        const supportsUniqueDiscountOffer =
+            isConvertUniqueDiscountCodesEnabled && isConvertSubscriber
+        const canAddUniqueDiscountOffer = !anyDiscountOfferAttached
 
         useEffect(() => {
             if (attachments.isEmpty() && showWarningOutOfStock) {
@@ -275,9 +274,13 @@ export const CampaignMessage = memo(
                         isRequired
                         countCharacters={isConvertSubscriber}
                         uploadType={UploadType.PublicAttachment}
-                        supportsDiscountOffer={supportsDiscountOffer}
+                        supportsUniqueDiscountOffer={
+                            supportsUniqueDiscountOffer
+                        }
+                        canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
                     />
                     <TicketAttachments
+                        context="campaign-message"
                         removable
                         attachments={attachments}
                         className="p-2 d-flex flex-wrap"

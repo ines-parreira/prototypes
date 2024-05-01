@@ -19,6 +19,7 @@ jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
 jest.mock('../resources', () => ({
     createDiscountOffer: jest.fn(),
     getDiscountOffers: jest.fn(),
+    getDiscountOffer: jest.fn(),
     updateDiscountOffer: jest.fn(),
     deleteDiscountOffer: jest.fn(),
 }))
@@ -34,6 +35,7 @@ const mockResources = {
     mockGetDiscountOffers: assumeMock(resources.getDiscountOffers),
     mockUpdateDiscountOffer: assumeMock(resources.updateDiscountOffer),
     mockDeleteDiscountOffer: assumeMock(resources.deleteDiscountOffer),
+    mockGetDiscountOffer: assumeMock(resources.getDiscountOffer),
 }
 
 const testOverrides = {
@@ -81,6 +83,47 @@ describe('Discount Offer queries', () => {
             )
             const {result, waitFor} = renderHook(
                 () => queries.useListDiscountOffers(mockParams, testOverrides),
+                {
+                    wrapper,
+                }
+            )
+
+            await waitFor(() => expect(result.current.isError).toBe(true))
+            expect(result.current.error).toStrictEqual(Error('test error'))
+        })
+    })
+    describe('getDiscountOffer', () => {
+        it('should return correct data on success', async () => {
+            const mockParams = {
+                discount_offer_id: '3',
+            }
+
+            mockResources.mockGetDiscountOffer.mockResolvedValueOnce(
+                axiosSuccessResponse([uniqueDiscountOffers[0]]) as any
+            )
+            const {result, waitFor} = renderHook(
+                () => queries.useGetDiscountOffer(mockParams, testOverrides),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+                expect(result.current.data).toStrictEqual([
+                    uniqueDiscountOffers[0],
+                ])
+            })
+        })
+        it('should throw error on failure', async () => {
+            const mockParams = {
+                discount_offer_id: '3',
+            }
+
+            mockResources.mockGetDiscountOffer.mockRejectedValue(
+                Error('test error')
+            )
+            const {result, waitFor} = renderHook(
+                () => queries.useGetDiscountOffer(mockParams, testOverrides),
                 {
                     wrapper,
                 }

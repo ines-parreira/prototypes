@@ -69,7 +69,8 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
         >({})
 
         const editDiscountOfferModal = useModalManager(
-            UNIQUE_DISCOUNT_MODAL_NAME
+            UNIQUE_DISCOUNT_MODAL_NAME,
+            {autoDestroy: false}
         )
         const editDiscountOfferParams =
             editDiscountOfferModal.getParams() as UniqueDiscountOffer
@@ -319,9 +320,10 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                             suffix={
                                                 discount.type === 'fixed'
                                                     ? getShopifyMoneySymbol(
-                                                          integration.get(
-                                                              'currency'
-                                                          )
+                                                          integration.getIn([
+                                                              'meta',
+                                                              'currency',
+                                                          ])
                                                       )
                                                     : '%'
                                             }
@@ -390,7 +392,10 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                             }
                                             min={0}
                                             prefix={getShopifyMoneySymbol(
-                                                integration.get('currency')
+                                                integration.getIn([
+                                                    'meta',
+                                                    'currency',
+                                                ])
                                             )}
                                         />
                                     )}

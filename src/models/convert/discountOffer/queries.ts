@@ -7,14 +7,22 @@ import {
     createDiscountOffer,
     updateDiscountOffer,
     deleteDiscountOffer,
+    getDiscountOffer,
 } from './resources'
-import {UniqueDiscountListParams, UniqueDiscountOffer} from './types'
+import {
+    UniqueDiscountListParams,
+    UniqueDiscountOffer,
+    UniqueDiscountOfferGetParams,
+} from './types'
 
 export const uniqueDiscountOfferKeys = {
     all: () => ['uniqueDiscountOffer'] as const,
     lists: () => [...uniqueDiscountOfferKeys.all(), 'list'] as const,
     list: (params: UniqueDiscountListParams) =>
         [...uniqueDiscountOfferKeys.lists(), params] as const,
+    details: () => [...uniqueDiscountOfferKeys.all(), 'detail'] as const,
+    detail: (params: UniqueDiscountOfferGetParams) =>
+        [...uniqueDiscountOfferKeys.details(), params] as const,
 }
 
 export const useListDiscountOffers = (
@@ -73,5 +81,25 @@ export const useDeleteDiscountOffer = (
             deleteDiscountOffer(client, params),
         ...CONVERT_DEFAULT_OPTIONS,
         ...overrides,
+    })
+}
+
+export const useGetDiscountOffer = (
+    params: UniqueDiscountOfferGetParams,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getDiscountOffer>>,
+        unknown,
+        UniqueDiscountOffer
+    >
+) => {
+    const {client: convertClient} = useConvertApi()
+
+    return useQuery({
+        queryKey: uniqueDiscountOfferKeys.detail(params),
+        queryFn: () => getDiscountOffer(convertClient, params),
+        select: (data) => (data?.data as UniqueDiscountOffer) || undefined,
+        ...CONVERT_DEFAULT_OPTIONS,
+        ...overrides,
+        enabled: !!convertClient && (overrides?.enabled ?? true),
     })
 }

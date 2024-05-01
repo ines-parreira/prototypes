@@ -128,6 +128,7 @@ export default function MessageContentFormField({
                 />
 
                 <TicketAttachments
+                    context="content-form"
                     className={css.attachments}
                     removable
                     attachments={Immutable.fromJS(content.attachments ?? [])}

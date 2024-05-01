@@ -1,0 +1,85 @@
+@import '~css/new/mixins';
+
+:local {
+    .item {
+        position: relative;
+        display: block;
+        overflow: hidden;
+        width: 120px;
+        height: 80px;
+        margin-right: 0.8em;
+        background-color: var(--neutral-grey-1);
+        background-size: cover;
+        border-radius: 3px;
+        border: 1px solid var(--neutral-grey-3);
+
+        vertical-align: top;
+
+        &:last-item {
+            margin-right: 0;
+        }
+
+        &:hover .itemMeta {
+            opacity: 1;
+        }
+
+        &:hover .actions {
+            display: flex;
+        }
+    }
+
+    .itemMeta {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        padding: 0.8em;
+        transition: all 0.3s;
+
+        color: var(--neutral-grey-6);
+        font-size: 10px;
+
+        @media @mobiles {
+            opacity: 1 !important;
+        }
+    }
+
+    .actions {
+        display: none;
+        flex-direction: row;
+        gap: 0.25em;
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        .actionItem {
+            font-size: 12px;
+            padding: 0.5em;
+            cursor: pointer;
+
+            &:hover,
+            &:active {
+                background: var(--neutral-grey-6);
+                color: var(--neutral-grey-0);
+            }
+        }
+    }
+
+    .metaName {
+        overflow: hidden;
+        /* two lines of text max
+    */
+        max-height: 2.4em;
+
+        line-height: 1.2;
+    }
+
+    .discountOfferMetaName {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+    }
+
+    .revealedDetails {
+        font-size: 8px;
+    }
+}

@@ -22,8 +22,11 @@ describe('<DiscountCodeResultsWrapper />', () => {
     const props: DiscountCodeResultsWrapperProps = {
         integration: fromJS({
             ...integrationsState.integration,
-            oauth: {
-                scope: ['read_discounts', 'write_discounts'],
+            meta: {
+                ...integrationsState.integration.meta,
+                oauth: {
+                    scope: ['read_discounts', 'write_discounts'],
+                },
             },
         }),
         onDiscountClicked: jest.fn(),
@@ -38,7 +41,7 @@ describe('<DiscountCodeResultsWrapper />', () => {
                     canAddDiscountCodeLink={false}
                     canAddVideoPlayer={false}
                     shopifyIntegrations={fromJS([])}
-                    canAddUniqueDiscountOffer={false}
+                    supportsUniqueDiscountOffer={false}
                 >
                     <DiscountCodeResultsWrapper {...props} />
                 </ToolbarProvider>
@@ -56,7 +59,7 @@ describe('<DiscountCodeResultsWrapper />', () => {
                     canAddDiscountCodeLink={false}
                     canAddVideoPlayer={false}
                     shopifyIntegrations={fromJS([])}
-                    canAddUniqueDiscountOffer
+                    supportsUniqueDiscountOffer
                 >
                     <DiscountCodeResultsWrapper {...props} />
                 </ToolbarProvider>

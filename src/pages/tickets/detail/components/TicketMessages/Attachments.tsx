@@ -27,6 +27,7 @@ const Attachments = (props: Props) => {
                 New media files
             </span>
             <TicketAttachments
+                context="ticket-message"
                 className={css.attachments}
                 attachments={fromJS(message.attachments || [])}
             />

@@ -3,6 +3,7 @@ import {
     UniqueDiscountListParams,
     UniqueDiscountOfferCreatePayload,
     UniqueDiscountOfferDeleteParams,
+    UniqueDiscountOfferGetParams,
     UniqueDiscountOfferPatchParams,
     UniqueDiscountOfferPatchPayload,
 } from './types'
@@ -42,4 +43,13 @@ export const deleteDiscountOffer = async (
     if (!client) return null
 
     return await client.delete_discount_offer(params)
+}
+
+export const getDiscountOffer = async (
+    client: RevenueAddonClient | undefined,
+    params: UniqueDiscountOfferGetParams
+) => {
+    if (!client) return null
+
+    return await client.get_discount_offer(params)
 }

@@ -24,6 +24,7 @@ export type ToolbarContextType = {
     onInsertDiscountCodeOpen: () => void
     onInsertDiscountCodeAdded: (discount: DiscountCode) => void
     canAddUniqueDiscountOffer: boolean
+    supportsUniqueDiscountOffer: boolean
     onAddUniqueDiscountOfferAttachment: (
         discount: DiscountOfferAttachment
     ) => void
@@ -64,6 +65,7 @@ export const ToolbarContext = createContext<ToolbarContextType>({
     onInsertProductLinkAdded: _noop,
     shopifyIntegrations: List([]),
     canAddUniqueDiscountOffer: false,
+    supportsUniqueDiscountOffer: false,
 })
 
 export const useToolbarContext = () => useContext(ToolbarContext)

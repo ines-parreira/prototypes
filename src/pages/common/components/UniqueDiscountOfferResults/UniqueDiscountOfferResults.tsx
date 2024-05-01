@@ -41,6 +41,7 @@ const MAX_LIMIT: number = 15
 
 type OwnProps = {
     integration: Map<string, string>
+    canAddUniqueDiscountOffer: boolean
     onDiscountClicked: (
         event: React.MouseEvent<HTMLElement>,
         discount: UniqueDiscountOffer
@@ -50,6 +51,7 @@ type OwnProps = {
 
 export default function UniqueDiscountCodeResults({
     integration,
+    canAddUniqueDiscountOffer,
     onResetStoreChoice,
     onDiscountClicked,
 }: OwnProps) {
@@ -58,7 +60,11 @@ export default function UniqueDiscountCodeResults({
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const shopifyScope = useMemo<string[]>(() => {
-        const scope = integration.getIn(['oauth', 'scope']) as List<string>
+        const scope = integration.getIn([
+            'meta',
+            'oauth',
+            'scope',
+        ]) as List<string>
         return scope.toArray()
     }, [integration])
 
@@ -257,39 +263,49 @@ export default function UniqueDiscountCodeResults({
                             <ListGroup flush>
                                 {discountCodes.map(
                                     (result: UniqueDiscountOffer, index) => (
-                                        <ListGroupItem
-                                            data-testid={
-                                                testIds.discountOffer + index
-                                            }
-                                            className={css.discountContainer}
+                                        <div
                                             key={index}
-                                            tag="button"
-                                            id={'resultRow'.concat(
-                                                index.toString()
-                                            )}
-                                            action
-                                            onClick={(event) => {
-                                                onDiscountClicked(event, {
-                                                    ...result,
-                                                    summary:
-                                                        computeDiscountOfferSummary(
+                                            className={css.discountContainer}
+                                        >
+                                            <ListGroupItem
+                                                data-testid={
+                                                    testIds.discountOffer +
+                                                    index
+                                                }
+                                                key={index}
+                                                tag="button"
+                                                id={'resultRow'.concat(
+                                                    index.toString()
+                                                )}
+                                                action
+                                                disabled={
+                                                    !canAddUniqueDiscountOffer
+                                                }
+                                                onClick={(event) => {
+                                                    onDiscountClicked(event, {
+                                                        ...result,
+                                                        summary:
+                                                            computeDiscountOfferSummary(
+                                                                result,
+                                                                integration
+                                                            ),
+                                                    })
+                                                }}
+                                            >
+                                                <div className={css.legend}>
+                                                    <div className={css.title}>
+                                                        {result.prefix}
+                                                    </div>
+                                                    <div
+                                                        className={css.subtitle}
+                                                    >
+                                                        {computeDiscountOfferSummary(
                                                             result,
                                                             integration
-                                                        ),
-                                                })
-                                            }}
-                                        >
-                                            <div className={css.legend}>
-                                                <div className={css.title}>
-                                                    {result.prefix}
+                                                        )}
+                                                    </div>
                                                 </div>
-                                                <div className={css.subtitle}>
-                                                    {computeDiscountOfferSummary(
-                                                        result,
-                                                        integration
-                                                    )}
-                                                </div>
-                                            </div>
+                                            </ListGroupItem>
                                             <div className={css.actions}>
                                                 <IconButton
                                                     intent="secondary"
@@ -320,7 +336,7 @@ export default function UniqueDiscountCodeResults({
                                                     delete
                                                 </IconButton>
                                             </div>
-                                        </ListGroupItem>
+                                        </div>
                                     )
                                 )}
                             </ListGroup>

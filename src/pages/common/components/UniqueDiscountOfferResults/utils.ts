@@ -15,13 +15,13 @@ export const computeDiscountOfferSummary = (
     offer?: UniqueDiscountOffer,
     integration?: Map<string, string>
 ): string => {
-    if (!offer || !integration) return ''
+    if (!offer || !integration || integration.isEmpty()) return ''
     if (offer?.summary) return offer.summary
 
     switch (offer.type) {
         case 'fixed': {
             const currencySymbol = getShopifyMoneySymbol(
-                integration.get('currency')
+                integration.getIn(['meta', 'currency'])
             )
             return offer.value ? `Get ${currencySymbol}${offer.value} off` : ''
         }

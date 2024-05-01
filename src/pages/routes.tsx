@@ -225,7 +225,9 @@ export function AppRoutes() {
                 <PanelLayout {...fullWidthViewLayoutProps} />
             </Route>
             <Route path={`${path}/ticket/:ticketId`} exact>
-                <PanelLayout {...fullWidthTicketLayoutProps} />
+                <RevenueAddonApiClientProvider>
+                    <PanelLayout {...fullWidthTicketLayoutProps} />
+                </RevenueAddonApiClientProvider>
             </Route>
             <Route path={`${path}/customers`} render={CustomersRoutes} />
             <Route path={`${path}/customer`} render={CustomerRoutes} />

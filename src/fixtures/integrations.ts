@@ -519,8 +519,8 @@ export const integrationsState = {
             oauth: {
                 status: 'success',
             },
+            currency: 'USD',
         },
-        currency: 'USD',
         facebook: null,
         deactivated_datetime: null,
         name: 'Acme Billing',

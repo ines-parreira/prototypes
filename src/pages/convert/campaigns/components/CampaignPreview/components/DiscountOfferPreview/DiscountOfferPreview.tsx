@@ -15,14 +15,20 @@ export const DiscountOfferPreview: React.FC<DiscountOfferPreviewProps> = ({
 }) => {
     const [revealed, setRevealed] = useState(false)
 
+    // Generate a random fake suffix to show how a potential revealed code can look like
+    const fakeDiscountCode =
+        offer.prefix +
+        '-' +
+        Math.random().toString(36).slice(2, 8).toUpperCase()
+
     return revealed ? (
         <div
             className={css.revealedWrapper}
             data-testid={testIds.revealedWrapper}
         >
-            <Button intent="secondary">
-                {offer.prefix}
-                <CopyButton value={offer.prefix} />
+            <Button intent="secondary" className={css.revealedButton}>
+                {fakeDiscountCode}
+                <CopyButton value={fakeDiscountCode} />
             </Button>
             <span className={css.validityMessage}>Valid for 48 hours</span>
         </div>

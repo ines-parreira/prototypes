@@ -162,6 +162,7 @@ export default function TicketMessageEmbeddedCard({
                 <Row className="mt-2">
                     <Col md="12">
                         <TicketAttachments
+                            context="embedded-card"
                             attachments={fromJS(attachments || [])}
                         />
                     </Col>

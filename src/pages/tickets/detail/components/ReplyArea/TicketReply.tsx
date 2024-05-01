@@ -79,6 +79,7 @@ export function TicketReply({
                 />
             )}
             <TicketAttachments
+                context="ticket-reply"
                 removable
                 attachments={newMessageAttachments}
                 deleteAttachment={handleDeletion}

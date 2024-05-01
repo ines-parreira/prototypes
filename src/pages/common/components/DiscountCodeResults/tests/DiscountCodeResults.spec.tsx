@@ -14,8 +14,11 @@ import DiscountCodeResults from '../DiscountCodeResults'
 const minProps = {
     integration: fromJS({
         ...integrationsState.integration,
-        oauth: {
-            scope: ['read_discounts', 'write_discounts'],
+        meta: {
+            ...integrationsState.integration.meta,
+            oauth: {
+                scope: ['read_discounts', 'write_discounts'],
+            },
         },
     }),
     onDiscountClicked: jest.fn(),

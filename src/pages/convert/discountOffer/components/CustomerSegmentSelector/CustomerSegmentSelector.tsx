@@ -35,8 +35,10 @@ const CustomerSegmentSelector: React.FC<Props> = ({
     const [search, setSearch] = useState<string>('')
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const {data: customerSegmentData} =
-        useListShopifyCustomerSegments(integrationId)
+    const {data: customerSegmentData} = useListShopifyCustomerSegments(
+        integrationId,
+        {enabled: !!integrationId}
+    )
 
     const customerSegments = useMemo<Option[]>(() => {
         const segments: Option[] = [

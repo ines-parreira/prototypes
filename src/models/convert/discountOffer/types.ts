@@ -17,5 +17,8 @@ export type UniqueDiscountOfferPatchParams =
 export type UniqueDiscountOfferDeleteParams =
     Paths.DeleteDiscountOffer.PathParameters
 
+export type UniqueDiscountOfferGetParams =
+    Paths.DeleteDiscountOffer.PathParameters
+
 export type UniqueDiscountOfferTypeEnum =
     Components.Schemas.DiscountOfferTypeEnum

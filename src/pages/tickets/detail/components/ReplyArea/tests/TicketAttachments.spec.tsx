@@ -44,6 +44,7 @@ describe('TicketAttachments component', () => {
     window.IMAGE_PROXY_SIGN_KEY = 'test-key'
 
     const minProps: ComponentProps<typeof TicketAttachments> = {
+        context: 'campaign-message',
         attachments: attachments,
         removable: false,
         deleteAttachment: jest.fn(),

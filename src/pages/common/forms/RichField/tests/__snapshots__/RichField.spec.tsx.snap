@@ -3398,6 +3398,7 @@ exports[`RichField should render mutable variable 1`] = `
                             onUrlChange={[Function]}
                             setEditorState={[Function]}
                             shopifyIntegrations={Immutable.List []}
+                            supportsUniqueDiscountOffer={false}
                             text=""
                             url=""
                           >

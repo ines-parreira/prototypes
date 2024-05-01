@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .discountLineContainer {
         width: 400px;
@@ -63,9 +65,7 @@
     }
 
     .discountContainer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        position: relative;
 
         &:hover {
             .actions {
@@ -79,9 +79,14 @@
         }
 
         .actions {
+            position: absolute;
+            z-index: 1;
+            top: 50%;
+            right: @layout-spacing-s;
+            transform: translateY(-50%);
             display: none;
             flex-direction: row;
-            gap: 1em;
+            gap: 0.5em;
         }
     }
 }

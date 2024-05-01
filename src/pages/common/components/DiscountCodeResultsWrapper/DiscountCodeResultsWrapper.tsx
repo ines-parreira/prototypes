@@ -35,7 +35,8 @@ export type DiscountCodeResultsWrapperProps = DiscountResultsBaseProps<
 
 export const DiscountCodeResultsWrapper: React.FC<DiscountCodeResultsWrapperProps> =
     (props: DiscountCodeResultsWrapperProps) => {
-        const {canAddUniqueDiscountOffer} = useToolbarContext()
+        const {canAddUniqueDiscountOffer, supportsUniqueDiscountOffer} =
+            useToolbarContext()
         const currentAccount = useAppSelector(getCurrentAccountState)
 
         const [activeTab, setActiveTab] = useState(DiscountCodesTabs.Generic)
@@ -50,7 +51,7 @@ export const DiscountCodeResultsWrapper: React.FC<DiscountCodeResultsWrapperProp
             }
         }
 
-        if (!canAddUniqueDiscountOffer) {
+        if (!supportsUniqueDiscountOffer) {
             return <DiscountCodeResults {...props} />
         }
 
@@ -64,7 +65,10 @@ export const DiscountCodeResultsWrapper: React.FC<DiscountCodeResultsWrapperProp
                 {activeTab === DiscountCodesTabs.Generic ? (
                     <DiscountCodeResults {...props} />
                 ) : (
-                    <UniqueDiscountCodeResults {...props} />
+                    <UniqueDiscountCodeResults
+                        {...props}
+                        canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
+                    />
                 )}
             </div>
         )

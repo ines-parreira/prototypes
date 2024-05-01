@@ -98,6 +98,7 @@ const QuickResponseResponseMessageContent = ({
                     uploadType={UploadType.PublicAttachment}
                 />
                 <TicketAttachments
+                    context="quick-reply"
                     className={css.attachments}
                     removable
                     attachments={attachments}

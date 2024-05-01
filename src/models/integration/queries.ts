@@ -96,7 +96,10 @@ export const useShopifyTags = (
     })
 }
 
-export const useListShopifyCustomerSegments = (integrationId: number) => {
+export const useListShopifyCustomerSegments = (
+    integrationId: number,
+    overrides?: {enabled: boolean}
+) => {
     return useQuery({
         queryKey: [
             'integration',
@@ -116,5 +119,6 @@ export const useListShopifyCustomerSegments = (integrationId: number) => {
                 )
             )
         },
+        ...overrides,
     })
 }

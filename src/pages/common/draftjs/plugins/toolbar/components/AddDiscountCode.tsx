@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 
 import {
     DELETE_DISCOUNT_MODAL_NAME,
@@ -32,16 +32,6 @@ import css from './AddDiscountCode.less'
 
 type Props = ActionInjectedProps
 
-const mapIntegrationToPickedIntegration = (integration: Map<any, any>) => {
-    return fromJS({
-        id: integration.get('id'),
-        name: integration.get('name'),
-        shop_domain: integration.getIn(['meta', 'shop_domain']),
-        currency: integration.getIn(['meta', 'currency']),
-        oauth: integration.getIn(['meta', 'oauth']),
-    }) as Map<any, any>
-}
-
 const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
     const {
         canAddDiscountCodeLink,
@@ -54,9 +44,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
     const [isOpen, setOpen] = useState(false)
     const [pickedIntegration, setPickedIntegration] = useState(() => {
         if (shopifyIntegrations.size === 1) {
-            return mapIntegrationToPickedIntegration(
-                shopifyIntegrations.get(0) as Map<any, any>
-            )
+            return shopifyIntegrations.get(0) as Map<any, any>
         }
 
         return null
@@ -89,7 +77,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
     }, [discountModal])
 
     const handlePickIntegration = useCallback((integration: Map<any, any>) => {
-        setPickedIntegration(mapIntegrationToPickedIntegration(integration))
+        setPickedIntegration(integration)
     }, [])
 
     const handleAddGenericDiscountCode = useCallback(

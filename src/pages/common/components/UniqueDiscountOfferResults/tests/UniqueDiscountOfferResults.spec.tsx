@@ -31,10 +31,14 @@ jest.mock('hooks/useModalManager')
 const minProps = {
     integration: fromJS({
         ...integrationsState.integration,
-        oauth: {
-            scope: ['read_discounts', 'write_discounts'],
+        meta: {
+            ...integrationsState.integration.meta,
+            oauth: {
+                scope: ['read_discounts', 'write_discounts'],
+            },
         },
     }),
+    canAddUniqueDiscountOffer: true,
     onDiscountClicked: jest.fn(),
     onResetStoreChoice: jest.fn(),
 }
@@ -175,7 +179,7 @@ describe('<DiscountCodeResults />', () => {
             )
         })
     })
-    it('should open edit modal on intent', async () => {
+    it('should add offer on discount click', async () => {
         useListDiscountOffersMock.mockReturnValue({
             data: uniqueDiscountOffers,
             isLoading: false,
@@ -200,6 +204,33 @@ describe('<DiscountCodeResults />', () => {
                 expect.any(Object),
                 uniqueDiscountOffers[0]
             )
+        })
+    })
+    it('should not add offer on discount click if canAddUniqueDiscountOffer is false', async () => {
+        useListDiscountOffersMock.mockReturnValue({
+            data: uniqueDiscountOffers,
+            isLoading: false,
+            isError: false,
+            refetch: jest.fn(),
+        } as any)
+
+        const {getByTestId} = render(
+            <Provider store={store}>
+                <QueryClientProvider client={queryClient}>
+                    <UniqueDiscountCodeResults
+                        {...minProps}
+                        canAddUniqueDiscountOffer={false}
+                    />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        const discount = getByTestId(testIds.discountOffer + 0)
+
+        userEvent.click(discount)
+
+        await waitFor(() => {
+            expect(minProps.onDiscountClicked).not.toHaveBeenCalled()
         })
     })
 })
