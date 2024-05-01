@@ -176,6 +176,9 @@ export const ChatCampaign = ({
                     ))}
                 </div>
             )}
+            {discountOffers.length > 0 && (
+                <DiscountOfferPreview offer={discountOffers[0]} />
+            )}
             {products.length > 0 && (
                 <div className={css.carouselContainer}>
                     <ProductCarousel
@@ -183,9 +186,6 @@ export const ChatCampaign = ({
                         mainColor={mainColor}
                     />
                 </div>
-            )}
-            {discountOffers.length > 0 && (
-                <DiscountOfferPreview offer={discountOffers[0]} />
             )}
 
             {!shouldHideReplyInput && (

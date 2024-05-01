@@ -213,7 +213,7 @@ export const CampaignMessage = memo(
         }, [attachments, isAllowedToAddDiscountCode])
 
         return (
-            <div className="mb-4">
+            <div>
                 <div
                     data-testid="campaign-agent-section"
                     className={classnames('mb-2', css.authorWrapper)}

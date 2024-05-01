@@ -115,7 +115,7 @@ describe('<DiscountCodeResults />', () => {
         )
 
         await waitFor(() => {
-            expect(getByText(/No results found/i)).toBeDefined()
+            expect(getByText(/Start by creating a code offer/i)).toBeDefined()
         })
     })
 

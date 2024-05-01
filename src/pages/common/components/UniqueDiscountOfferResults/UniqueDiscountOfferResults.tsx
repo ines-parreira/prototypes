@@ -331,7 +331,12 @@ export default function UniqueDiscountCodeResults({
                         {!discountCodes?.length && !isLoading && (
                             <div className={css.noResultContainer}>
                                 <p className={css.noResultText}>
-                                    No results found
+                                    Share unique discount codes with your
+                                    customers!
+                                    <br />
+                                    <a href="#" onClick={handleOpenModal}>
+                                        Start by creating a code offer
+                                    </a>
                                 </p>
                             </div>
                         )}

@@ -48,16 +48,21 @@ export type UniqueDiscountOfferCreateModalProps = {
 export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateModalProps> =
     (props) => {
         const {isOpen, integration, onClose, onSubmit} = props
-        const [discount, setDiscount] = useState<
-            Partial<UniqueDiscountOfferCreatePayload>
-        >({
-            type: 'fixed',
-            prefix: '',
-            value: 0,
-            minimum_purchase_amount: null,
-            external_customer_segment_ids: null,
-            store_integration_id: integration.get('id'),
-        })
+        const initialDiscountState: UniqueDiscountOfferCreatePayload = useMemo(
+            () => ({
+                type: 'fixed',
+                prefix: '',
+                value: 0,
+                minimum_purchase_amount: null,
+                external_customer_segment_ids: null,
+                store_integration_id: integration.get('id'),
+            }),
+            [integration]
+        )
+        const [discount, setDiscount] =
+            useState<Partial<UniqueDiscountOfferCreatePayload>>(
+                initialDiscountState
+            )
 
         const [errors, setErrors] = useState<
             Partial<UniqueDiscountOfferCreatePayload>
@@ -73,6 +78,14 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
 
         const [minRequirementsPurchase, setMinRequirementsPurchase] =
             useState(false)
+
+        useEffect(() => {
+            // Reset the form when the modal is opened in create mode
+            if (!inEditMode && isOpen) {
+                setDiscount(initialDiscountState)
+                setMinRequirementsPurchase(false)
+            }
+        }, [inEditMode, initialDiscountState, isOpen])
 
         const appNode = useAppNode()
 
@@ -206,7 +219,14 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                         <div className={css.headerSubtitle}>
                             Define the characteristics of the offer that will be
                             applied to the unique, one-time use discount codes
-                            displayed in campaigns. <a href="#">Learn more</a>
+                            displayed in campaigns.{' '}
+                            <a
+                                href="https://link.gorgias.com/juh"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Learn more
+                            </a>
                         </div>
                     </div>
                 </ModalHeader>
