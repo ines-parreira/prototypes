@@ -267,56 +267,66 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                 Discount
                             </Label>
                             <InputGroup className={css.inputGroup}>
-                                <SelectField
-                                    showSelectedOption
-                                    value={discount.type}
-                                    id={testIds.discountTypeSelect}
-                                    options={[
-                                        {
-                                            label: 'Percentage',
-                                            value: 'percentage',
-                                        },
-                                        {label: 'Fixed amount', value: 'fixed'},
-                                        {
-                                            label: 'Free shipping',
-                                            value: 'free_shipping',
-                                        },
-                                    ]}
-                                    onChange={(value) =>
-                                        setDiscount((discount) => ({
-                                            ...discount,
-                                            type: value as UniqueDiscountOfferTypeEnum,
-                                        }))
-                                    }
-                                />
-                                {discount.type !== 'free_shipping' && (
-                                    <NumberInput
-                                        data-testid={testIds.discountValueInput}
-                                        name="discountType"
-                                        value={Number(discount.value)}
+                                <div className={css.inputChild}>
+                                    <SelectField
+                                        showSelectedOption
+                                        value={discount.type}
+                                        id={testIds.discountTypeSelect}
+                                        options={[
+                                            {
+                                                label: 'Percentage',
+                                                value: 'percentage',
+                                            },
+                                            {
+                                                label: 'Fixed amount',
+                                                value: 'fixed',
+                                            },
+                                            {
+                                                label: 'Free shipping',
+                                                value: 'free_shipping',
+                                            },
+                                        ]}
                                         onChange={(value) =>
                                             setDiscount((discount) => ({
                                                 ...discount,
-                                                value,
+                                                type: value as UniqueDiscountOfferTypeEnum,
                                             }))
                                         }
-                                        hasError={!!errors?.value}
-                                        min={1}
-                                        max={
-                                            discount.type === 'fixed'
-                                                ? undefined
-                                                : 100
-                                        }
-                                        prefix={
-                                            discount.type === 'fixed'
-                                                ? getShopifyMoneySymbol(
-                                                      integration.get(
-                                                          'currency'
-                                                      )
-                                                  )
-                                                : '%'
-                                        }
                                     />
+                                </div>
+                                {discount.type !== 'free_shipping' && (
+                                    <div className={css.inputChild}>
+                                        <NumberInput
+                                            data-testid={
+                                                testIds.discountValueInput
+                                            }
+                                            name="discountType"
+                                            value={Number(discount.value)}
+                                            onChange={(value) =>
+                                                setDiscount((discount) => ({
+                                                    ...discount,
+                                                    value,
+                                                }))
+                                            }
+                                            hasError={!!errors?.value}
+                                            hasControls={false}
+                                            min={1}
+                                            max={
+                                                discount.type === 'fixed'
+                                                    ? undefined
+                                                    : 100
+                                            }
+                                            suffix={
+                                                discount.type === 'fixed'
+                                                    ? getShopifyMoneySymbol(
+                                                          integration.get(
+                                                              'currency'
+                                                          )
+                                                      )
+                                                    : '%'
+                                            }
+                                        />
+                                    </div>
                                 )}
                             </InputGroup>
                         </FormGroup>
