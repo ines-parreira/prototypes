@@ -35,6 +35,10 @@ import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/Infob
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
+import {logEvent, SegmentEvent} from 'common/segment'
+import useAppSelector from 'hooks/useAppSelector'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import css from './UniqueDiscountOfferCreateModal.less'
 import {testIds, transformAxiosError} from './utils'
 
@@ -42,12 +46,13 @@ export type UniqueDiscountOfferCreateModalProps = {
     isOpen: boolean
     integration: Map<string, string>
     onClose: () => void
-    onSubmit: (code: UniqueDiscountOffer) => void
+    onSubmit: (inEditMode: boolean, code: UniqueDiscountOffer) => void
 }
 
 export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateModalProps> =
     (props) => {
         const {isOpen, integration, onClose, onSubmit} = props
+        const {canAddUniqueDiscountOffer} = useToolbarContext()
         const initialDiscountState: UniqueDiscountOfferCreatePayload = useMemo(
             () => ({
                 type: 'fixed',
@@ -63,6 +68,8 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
             useState<Partial<UniqueDiscountOfferCreatePayload>>(
                 initialDiscountState
             )
+
+        const currentAccount = useAppSelector(getCurrentAccountState)
 
         const [errors, setErrors] = useState<
             Partial<UniqueDiscountOfferCreatePayload>
@@ -148,28 +155,40 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                 }
 
                 if (!inEditMode) {
-                    const offer = (await createDiscountOffer([
-                        undefined,
-                        discountPayload,
-                    ])) as unknown as UniqueDiscountOffer
+                    const offer = (
+                        await createDiscountOffer([undefined, discountPayload])
+                    )?.data as UniqueDiscountOffer
 
-                    onSubmit(offer)
+                    if (!offer) return
+
+                    logEvent(SegmentEvent.InsertUniqueDiscountCodeCreated, {
+                        account_domain: currentAccount?.get('domain'),
+                        discount: {
+                            id: offer.id,
+                            prefix: offer.prefix,
+                        },
+                    })
+
+                    onSubmit(inEditMode, offer)
                 } else {
                     if (!editDiscountOfferParams?.id) return
 
-                    const updated = (await updateDiscountOffer([
-                        undefined,
-                        {discount_offer_id: editDiscountOfferParams.id},
-                        discountPayload,
-                    ])) as unknown as UniqueDiscountOffer
+                    const offer = (
+                        await updateDiscountOffer([
+                            undefined,
+                            {discount_offer_id: editDiscountOfferParams.id},
+                            discountPayload,
+                        ])
+                    )?.data as UniqueDiscountOffer
 
-                    if (updated) {
-                        onSubmit(updated)
+                    if (offer) {
+                        onSubmit(inEditMode, offer)
                     }
                 }
             },
             [
                 createDiscountOffer,
+                currentAccount,
                 discount.external_customer_segment_ids,
                 discount.minimum_purchase_amount,
                 discount.prefix,
@@ -444,7 +463,11 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                             type="submit"
                             isDisabled={!isSaveButtonEnabled()}
                         >
-                            {inEditMode ? 'Save Changes' : 'Save'}
+                            {inEditMode
+                                ? 'Save Changes'
+                                : canAddUniqueDiscountOffer
+                                ? 'Save & Add'
+                                : 'Save'}
                         </Button>
                     </ModalActionsFooter>
                 </ReactStrapForm>

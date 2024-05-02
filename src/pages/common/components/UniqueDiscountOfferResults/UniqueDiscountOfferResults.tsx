@@ -12,7 +12,6 @@ import classnames from 'classnames'
 import {Link} from 'react-router-dom'
 
 import pluralize from 'pluralize'
-import {logEvent, SegmentEvent} from 'common/segment'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
@@ -25,8 +24,6 @@ import Tooltip from 'pages/common/components/Tooltip'
 import {useModalManager} from 'hooks/useModalManager'
 import Loader from 'pages/common/components/Loader/Loader'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 
 import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
 import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
@@ -42,10 +39,7 @@ const MAX_LIMIT: number = 15
 type OwnProps = {
     integration: Map<string, string>
     canAddUniqueDiscountOffer: boolean
-    onDiscountClicked: (
-        event: React.MouseEvent<HTMLElement>,
-        discount: UniqueDiscountOffer
-    ) => void
+    onDiscountSelected: (discount: UniqueDiscountOffer) => void
     onResetStoreChoice?: () => void
 }
 
@@ -53,11 +47,10 @@ export default function UniqueDiscountCodeResults({
     integration,
     canAddUniqueDiscountOffer,
     onResetStoreChoice,
-    onDiscountClicked,
+    onDiscountSelected,
 }: OwnProps) {
     const discountCodeCountRef = useRef<number>(0)
     const [filter, setFilter] = useState('')
-    const currentAccount = useAppSelector(getCurrentAccountState)
 
     const shopifyScope = useMemo<string[]>(() => {
         const scope = integration.getIn([
@@ -121,18 +114,22 @@ export default function UniqueDiscountCodeResults({
     }, [createDiscountModal])
 
     const handleSubmitModal = useCallback(
-        (data: UniqueDiscountOffer) => {
-            createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
+        (inEditMode: boolean, offer: UniqueDiscountOffer) => {
+            if (!inEditMode && canAddUniqueDiscountOffer) {
+                onDiscountSelected({
+                    ...offer,
+                    summary: computeDiscountOfferSummary(offer, integration),
+                })
+            }
 
-            logEvent(SegmentEvent.InsertUniqueDiscountCodeCreated, {
-                account_domain: currentAccount?.get('domain'),
-                discount: {
-                    id: data.id,
-                    prefix: data.prefix,
-                },
-            })
+            createDiscountModal.closeModal(UNIQUE_DISCOUNT_MODAL_NAME)
         },
-        [createDiscountModal, currentAccount]
+        [
+            canAddUniqueDiscountOffer,
+            createDiscountModal,
+            integration,
+            onDiscountSelected,
+        ]
     )
 
     const onEditDiscountOffer = useCallback(
@@ -282,7 +279,8 @@ export default function UniqueDiscountCodeResults({
                                                     !canAddUniqueDiscountOffer
                                                 }
                                                 onClick={(event) => {
-                                                    onDiscountClicked(event, {
+                                                    event.preventDefault()
+                                                    onDiscountSelected({
                                                         ...result,
                                                         summary:
                                                             computeDiscountOfferSummary(

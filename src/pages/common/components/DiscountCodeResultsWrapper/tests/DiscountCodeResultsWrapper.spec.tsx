@@ -29,7 +29,7 @@ describe('<DiscountCodeResultsWrapper />', () => {
                 },
             },
         }),
-        onDiscountClicked: jest.fn(),
+        onDiscountSelected: jest.fn(),
     }
 
     it('only renders Generic DiscountCodes component if feature flag is disabled', () => {

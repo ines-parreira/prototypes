@@ -22,10 +22,7 @@ const navigatorTabs = [
 
 export type DiscountResultsBaseProps<T> = {
     integration: Map<string, string>
-    onDiscountClicked: (
-        event: React.MouseEvent<HTMLElement>,
-        discount: T
-    ) => void
+    onDiscountSelected: (discount: T) => void
     onResetStoreChoice?: () => void
 }
 

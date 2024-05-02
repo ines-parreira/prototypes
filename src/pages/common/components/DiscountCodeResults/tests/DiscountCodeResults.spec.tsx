@@ -21,7 +21,7 @@ const minProps = {
             },
         },
     }),
-    onDiscountClicked: jest.fn(),
+    onDiscountSelected: jest.fn(),
     onResetStoreChoice: jest.fn(),
 }
 

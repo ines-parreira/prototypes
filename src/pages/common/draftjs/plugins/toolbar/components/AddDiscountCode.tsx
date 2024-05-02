@@ -126,12 +126,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
     )
 
     const handleAddDiscountCode = useCallback(
-        (
-            event: React.MouseEvent<HTMLElement>,
-            discount: DiscountCode | UniqueDiscountOffer
-        ) => {
-            event.preventDefault()
-
+        (discount: DiscountCode | UniqueDiscountOffer) => {
             if (discountCodeIsGeneric(discount)) {
                 handleAddGenericDiscountCode(discount)
             } else if (discountCodeIsUnique(discount)) {
@@ -216,7 +211,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
                 </div>
             ) : (
                 <DiscountCodeResultsWrapper
-                    onDiscountClicked={handleAddDiscountCode}
+                    onDiscountSelected={handleAddDiscountCode}
                     onResetStoreChoice={
                         shopifyIntegrations.size > 1
                             ? handleResetStoreChoice

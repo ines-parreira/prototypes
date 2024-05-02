@@ -39,7 +39,7 @@ const minProps = {
         },
     }),
     canAddUniqueDiscountOffer: true,
-    onDiscountClicked: jest.fn(),
+    onDiscountSelected: jest.fn(),
     onResetStoreChoice: jest.fn(),
 }
 
@@ -200,8 +200,7 @@ describe('<DiscountCodeResults />', () => {
         userEvent.click(discount)
 
         await waitFor(() => {
-            expect(minProps.onDiscountClicked).toHaveBeenCalledWith(
-                expect.any(Object),
+            expect(minProps.onDiscountSelected).toHaveBeenCalledWith(
                 uniqueDiscountOffers[0]
             )
         })
@@ -230,7 +229,7 @@ describe('<DiscountCodeResults />', () => {
         userEvent.click(discount)
 
         await waitFor(() => {
-            expect(minProps.onDiscountClicked).not.toHaveBeenCalled()
+            expect(minProps.onDiscountSelected).not.toHaveBeenCalled()
         })
     })
 })

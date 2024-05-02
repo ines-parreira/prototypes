@@ -10,6 +10,7 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 import {proxifyURL, replaceAttachmentURL} from 'utils'
 
 import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
+import {AttachmentEnum} from 'common/types'
 import css from './TicketAttachments.less'
 
 type Attachment = Map<any, any>
@@ -93,7 +94,7 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     isUniqueDiscountOffer = (attachment: Attachment) => {
-        return attachment.get('content_type') === 'application/discountOffer'
+        return attachment.get('content_type') === AttachmentEnum.DiscountOffer
     }
 
     setImagePreview = (attachment: Attachment) => {

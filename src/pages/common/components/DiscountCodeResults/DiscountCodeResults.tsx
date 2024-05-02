@@ -33,17 +33,14 @@ import css from './DiscountCodeResults.less'
 
 type OwnProps = {
     integration: Map<string, string>
-    onDiscountClicked: (
-        event: React.MouseEvent<HTMLElement>,
-        discount: DiscountCode
-    ) => void
+    onDiscountSelected: (discount: DiscountCode) => void
     onResetStoreChoice?: () => void
 }
 
 export default function DiscountCodeResults({
     integration,
     onResetStoreChoice,
-    onDiscountClicked,
+    onDiscountSelected,
 }: OwnProps) {
     const dispatch = useAppDispatch()
     const [filter, setFilter] = useState('')
@@ -218,7 +215,8 @@ export default function DiscountCodeResults({
                                         )}
                                         action
                                         onClick={(event) => {
-                                            onDiscountClicked(event, result)
+                                            event.preventDefault()
+                                            onDiscountSelected(result)
                                         }}
                                     >
                                         <div className={css.container}>

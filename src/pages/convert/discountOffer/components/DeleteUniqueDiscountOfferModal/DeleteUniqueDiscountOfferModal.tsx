@@ -13,6 +13,7 @@ import {useDeleteDiscountOffer} from 'pages/convert/discountOffer/hooks/useDelet
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {deleteAttachment} from 'state/newMessage/actions'
+import {AttachmentEnum} from 'common/types'
 
 type DeleteUniqueDiscountOfferModalProps = {
     isOpen: boolean
@@ -57,7 +58,7 @@ export const DeleteUniqueDiscountOfferModal: React.FC<DeleteUniqueDiscountOfferM
                     newMessageAttachments.findIndex(
                         (att: Map<string, any>) =>
                             att?.get('content_type') ===
-                                'application/discountOffer' &&
+                                AttachmentEnum.DiscountOffer &&
                             att?.getIn(['extra', 'discount_offer_id']) ===
                                 modalParams?.id
                     )
