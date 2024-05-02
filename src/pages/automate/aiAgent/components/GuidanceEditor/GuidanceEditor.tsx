@@ -27,6 +27,7 @@ const config = {
     key: FROALA_KEY,
     attribution: false, // Remove copyrights
     htmlAllowedTags: ALLOWED_HTML_TAGS,
+    toolbarSticky: false,
     typingTimer: 150, // allows updating the model much faster
     toolbarBottom: true,
     quickInsertEnabled: false,

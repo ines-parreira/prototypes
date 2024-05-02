@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import _isEqual from 'lodash/isEqual'
+import {notify} from 'state/notifications/actions'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
 import history from 'pages/history'
@@ -7,6 +8,8 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import InputField from 'pages/common/forms/input/InputField'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {NotificationStatus} from 'state/notifications/types'
 import {GuidanceEditor} from '../GuidanceEditor/GuidanceEditor'
 
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
@@ -39,6 +42,7 @@ export const GuidanceForm = ({
     onDelete,
     actionType,
 }: Props) => {
+    const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
     const [formState, setFormState] =
@@ -61,7 +65,22 @@ export const GuidanceForm = ({
     const handleDelete = async () => {
         if (!onDelete) return
 
-        await onDelete()
+        try {
+            await onDelete()
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Guidance successfully deleted',
+                })
+            )
+        } catch (err) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Error during guidance article deletion.',
+                })
+            )
+        }
 
         history.push(routes.guidance)
     }
@@ -75,8 +94,24 @@ export const GuidanceForm = ({
     }
 
     const handleSubmit = async () => {
-        await onSubmit(formState)
-        resetForm()
+        try {
+            await onSubmit(formState)
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Guidance successfully saved',
+                })
+            )
+
+            resetForm()
+        } catch (err) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `Error during guidance article ${actionType}.`,
+                })
+            )
+        }
     }
 
     const onSave = async () => {

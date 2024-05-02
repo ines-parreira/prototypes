@@ -1,9 +1,6 @@
 import React from 'react'
-import {notify} from 'reapop'
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import AutomateView from '../common/components/AutomateView'
 import {useGuidanceArticle} from './hooks/useGuidanceArticle'
 import {
@@ -27,7 +24,6 @@ export const AiAgentGuidanceDetailView = ({
     shopName,
     locale,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
     const {guidanceArticle} = useGuidanceArticle({
         guidanceHelpCenterId,
@@ -43,36 +39,18 @@ export const AiAgentGuidanceDetailView = ({
     })
 
     const onDelete = async () => {
-        try {
-            await deleteGuidanceArticle(guidanceArticleId)
-        } catch (err) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Error during guidance article deletion.',
-                })
-            )
-        }
+        await deleteGuidanceArticle(guidanceArticleId)
     }
 
     const onSubmit = async ({name, content}: GuidanceFormFields) => {
-        try {
-            await updateGuidanceArticle(
-                {
-                    title: name,
-                    content,
-                    locale,
-                },
-                {articleId: guidanceArticleId, locale}
-            )
-        } catch (e) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Error during guidance article creation.',
-                })
-            )
-        }
+        await updateGuidanceArticle(
+            {
+                title: name,
+                content,
+                locale,
+            },
+            {articleId: guidanceArticleId, locale}
+        )
     }
 
     if (!guidanceArticle) {

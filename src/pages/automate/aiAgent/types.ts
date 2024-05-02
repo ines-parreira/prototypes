@@ -41,11 +41,11 @@ export type UpdateGuidanceArticle = Omit<
 >
 
 export enum GuidanceTemplateKey {
-    DamagedItems = 'DamagedItems',
-    OrderQuestions = 'OrderQuestions',
-    UndeliveredItems = 'UndeliveredItems',
-    OrderChanges = 'OrderChanges',
-    Gifts = 'Gifts',
+    OrderStatus = 'OrderStatus',
+    DeliveryTime = 'DeliveryTime',
+    ReturnsAndExchanges = 'ReturnsAndExchanges',
+    Cancellation = 'Cancellation',
+    DiscountsAndPromos = 'DiscountsAndPromos',
 }
 
 export const isGuidanceTemplateKey = (

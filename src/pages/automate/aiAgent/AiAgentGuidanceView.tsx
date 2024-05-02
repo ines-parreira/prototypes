@@ -1,9 +1,9 @@
 import React from 'react'
-import {notify} from 'reapop'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
 import {useGuidanceArticles} from './hooks/useGuidanceArticles'
 import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
 import {GuidanceList} from './components/GuidanceList/GuidanceList'
@@ -30,6 +30,12 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
     const onDelete = async (articleId: number) => {
         try {
             await deleteGuidanceArticle(articleId)
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Guidance successfully deleted',
+                })
+            )
         } catch (err) {
             void dispatch(
                 notify({

@@ -39,7 +39,7 @@ const mockedUseGuidanceTemplate = jest.mocked(useGuidanceTemplate)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 const guidanceTemplate = getGuidanceTemplateFixture(
-    GuidanceTemplateKey.DamagedItems
+    GuidanceTemplateKey.OrderStatus
 )
 const defaultGuidanceArticleMutationProps: ReturnType<
     typeof useGuidanceArticleMutation

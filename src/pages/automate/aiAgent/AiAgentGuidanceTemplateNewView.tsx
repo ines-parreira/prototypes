@@ -1,8 +1,5 @@
 import React from 'react'
-import {notify} from 'reapop'
 import {LocaleCode} from 'models/helpCenter/types'
-import {NotificationStatus} from 'state/notifications/types'
-import useAppDispatch from 'hooks/useAppDispatch'
 import {
     GuidanceForm,
     GuidanceFormFields,
@@ -24,7 +21,6 @@ export const AiAgentGuidanceTemplateNewView = ({
     guidanceHelpCenterId,
     locale,
 }: Props) => {
-    const dispatch = useAppDispatch()
     const {guidanceTemplate} = useGuidanceTemplate(templateId)
     const {createGuidanceArticle, isGuidanceArticleUpdating} =
         useGuidanceArticleMutation({
@@ -32,21 +28,12 @@ export const AiAgentGuidanceTemplateNewView = ({
         })
 
     const onSubmit = async ({name, content}: GuidanceFormFields) => {
-        try {
-            await createGuidanceArticle({
-                title: name,
-                content,
-                locale,
-                visibility: 'PUBLIC',
-            })
-        } catch (err) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Error during guidance article creation.',
-                })
-            )
-        }
+        await createGuidanceArticle({
+            title: name,
+            content,
+            locale,
+            visibility: 'PUBLIC',
+        })
     }
 
     const initialFields = {

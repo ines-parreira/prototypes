@@ -125,6 +125,8 @@ export const useGuidanceArticleMutation = ({
                         tags: [AI_AGENT_SENTRY_TEAM],
                     },
                 })
+
+                throw error
             }
         },
         [deleteArticleMutateAsync, guidanceHelpCenterId]
