@@ -43,7 +43,7 @@ export const GuidanceTemplatesData: Record<
 <li>Check if a neighbor, roommate, or doorman accepted the package on behalf of the customer.</li>
 <li>Double-check the shipping address.</li>
 <li>Ask whether the shopper has contacted the carrier for additional delivery details.</li>
-<li>Check for the postal carrier leaving the package in a discret location.</li>
+<li>Check for the postal carrier leaving the package in a discreet location.</li>
 </ul>
 </li>
 <li>Ask the shopper to wait for 2 days after the posted delivery date before taking further action. Share the tracking information that you have available.</li>
@@ -72,7 +72,7 @@ export const GuidanceTemplatesData: Record<
 </ul>
 <p>Do not explain the above computation and logic to the customer. Don't mention ticket creation dates to the customer.</p>`,
         excerpt:
-            'Compute the difference in days between order date and ticket creation date to determine which scenario you should follow.',
+            'When a shopper asks for an order status or tracking: Compute the difference in days between order date and ticket creation date to determine which scenario you should follow.',
         tag: 'Shipping',
         style: {color: '#242F8C', background: '#EAF1FF'},
     },
@@ -90,7 +90,7 @@ export const GuidanceTemplatesData: Record<
 </ul>
 `,
         excerpt:
-            'If a shopper asks to cancel an order, inform the shopper that we usually process orders as soon as they are placed.',
+            'If a shopper asks to cancel an order, inform the shopper that we usually process orders as soon as they are placed. Compute the difference in number of hours between order date and ticket creation date to determine if the order can be cancelled. Do not share this logic with the shopper.',
         tag: 'Shipping',
         style: {color: '#242F8C', background: '#EAF1FF'},
     },
@@ -106,7 +106,8 @@ export const GuidanceTemplatesData: Record<
 </ul>
 <p>Note that for international shipments the delivery time might be longer.</p>
 `,
-        excerpt: 'When a shopper ask for delivery times',
+        excerpt:
+            'When a shopper ask for delivery times: Standard Delivery: Typically arrives within 3-7 business days. Express Delivery: Typically arrives within 5 business days.',
         tag: 'Shipping',
         style: {color: '#242F8C', background: '#EAF1FF'},
     },
@@ -143,7 +144,8 @@ export const GuidanceTemplatesData: Record<
 </ol>
 <p>If the customer has already initiated the return, tell them that their refund will be processes once the items have been received.</p>
 `,
-        excerpt: 'When a shopper asks for a return or for an exchange',
+        excerpt:
+            'When a shopper asks for a return or for an exchange: Determine Return Eligibility: Compute the difference in days between order date and ticket creation date to determine.',
         tag: 'Returns',
         style: {color: '#3A0F7E', background: '#EDEAFF'},
     },
@@ -159,7 +161,7 @@ export const GuidanceTemplatesData: Record<
 <p>For inquiries about the [XXXX] promo code not working you will respond that we apologize for the inconvenience caused by the promo code error and you will tell them to try entering the offer code at checkout again.</p>
 `,
         excerpt:
-            'If the shopper is unable to see a promo or discounted pricing',
+            'If the shopper is unable to see a promo or discounted pricing. You will recommend clearing the cache or trying on a desktop browser.',
         tag: 'Payments & Rewards',
         style: {color: '#605708', background: '#FFFDEA'},
     },

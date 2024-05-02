@@ -12,6 +12,7 @@ export const GuidanceTemplateCard = ({guidanceTemplate, onClick}: Props) => {
     return (
         <TemplateCard
             onClick={onClick}
+            className={css.card}
             tag={
                 <div
                     className={css.tag}

@@ -1,10 +1,9 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {CustomCard} from 'pages/common/components/TemplateCard'
 import history from 'pages/history'
 import {GuidanceTemplate, GuidanceTemplateKey} from '../../types'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
+import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
 import css from './GuidanceTemplatesList.less'
 
 type Props = {
@@ -30,12 +29,7 @@ export const GuidanceTemplatesList = ({guidanceTemplates, shopName}: Props) => {
                 </li>
             ))}
             <li>
-                <Link to={routes.newGuidanceArticle} className={css.link}>
-                    <CustomCard
-                        title="Custom Guidance"
-                        description="Create a guidance for your specific requirements"
-                    />
-                </Link>
+                <CreateNewGuidanceCard shopName={shopName} />
             </li>
         </ul>
     )

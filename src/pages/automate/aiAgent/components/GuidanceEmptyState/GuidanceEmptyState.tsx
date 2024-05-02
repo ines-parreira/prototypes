@@ -10,9 +10,10 @@ import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {GuidanceTemplateKey} from '../../types'
+import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
 import css from './GuidanceEmptyState.less'
 
-const SHOW_TEMPLATES_COUNT = 2
+const SHOW_TEMPLATES_COUNT = 5
 
 type Props = {
     shopName: string
@@ -27,6 +28,8 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
     const onGuidanceTemplateClick = (templateId: GuidanceTemplateKey) => {
         history.push(routes.newGuidanceTemplateArticle(templateId))
     }
+
+    const isShowMoreTemplates = guidanceTemplates.length > SHOW_TEMPLATES_COUNT
 
     return (
         <>
@@ -76,10 +79,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                         {guidanceTemplates
                             .slice(0, SHOW_TEMPLATES_COUNT)
                             .map((template) => (
-                                <li
-                                    key={template.id}
-                                    className={css.templatesItem}
-                                >
+                                <li key={template.id}>
                                     <GuidanceTemplateCard
                                         onClick={() =>
                                             onGuidanceTemplateClick(template.id)
@@ -89,18 +89,27 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                 </li>
                             ))}
 
-                        <li className={css.showMoreLink}>
-                            <Link to={routes.guidanceTemplates}>
-                                <Button intent="secondary" fillStyle="ghost">
-                                    <ButtonIconLabel
-                                        position="right"
-                                        icon="arrow_forward"
+                        {isShowMoreTemplates ? (
+                            <li>
+                                <Link to={routes.guidanceTemplates}>
+                                    <Button
+                                        intent="secondary"
+                                        fillStyle="ghost"
                                     >
-                                        See All Templates
-                                    </ButtonIconLabel>
-                                </Button>
-                            </Link>
-                        </li>
+                                        <ButtonIconLabel
+                                            position="right"
+                                            icon="arrow_forward"
+                                        >
+                                            See All Templates
+                                        </ButtonIconLabel>
+                                    </Button>
+                                </Link>
+                            </li>
+                        ) : (
+                            <li className={css.templatesItem}>
+                                <CreateNewGuidanceCard shopName={shopName} />
+                            </li>
+                        )}
                     </ul>
                 </div>
             )}
