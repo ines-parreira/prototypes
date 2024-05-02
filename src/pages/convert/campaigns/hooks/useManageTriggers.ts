@@ -75,9 +75,9 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                         if (payload.operator) {
                             draft[triggerId].operator = payload.operator
                         }
-                        if (payload.value) {
-                            draft[triggerId].value = payload.value
-                        }
+
+                        // We need to allow '' value
+                        draft[triggerId].value = payload.value
                     }
                 })
             )

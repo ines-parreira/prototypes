@@ -30,15 +30,19 @@ const shouldIncognitoTriggerBeDisabled = (
         })
         .map((trigger) => {
             switch (trigger.type) {
-                case CampaignTriggerType.AmountSpent ||
-                    CampaignTriggerType.OrdersCount:
+                case CampaignTriggerType.AmountSpent:
+                case CampaignTriggerType.OrdersCount:
                     return (
                         trigger.value &&
                         parseInt(trigger.value as unknown as string) !== 0
                     )
-                case CampaignTriggerType.CountryCode ||
-                    CampaignTriggerType.CustomerTags ||
-                    CampaignTriggerType.ProductTags:
+                case CampaignTriggerType.CountryCode:
+                case CampaignTriggerType.CustomerTags:
+                case CampaignTriggerType.OrderedProducts:
+                    if (Array.isArray(trigger.value)) {
+                        return trigger.value.length > 0
+                    }
+
                     return Boolean(trigger.value)
             }
         })

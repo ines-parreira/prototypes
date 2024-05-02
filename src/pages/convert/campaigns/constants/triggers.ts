@@ -14,7 +14,7 @@ export const CONVERT_SHOPIFY_TRIGGERS = [
     CampaignTriggerType.OrdersCount,
     CampaignTriggerType.CountryCode,
     CampaignTriggerType.CustomerTags,
-    CampaignTriggerType.ProductTags,
+    CampaignTriggerType.OrderedProducts,
 ]
 
 export const TRIGGERS_CONFIG: TriggerConfig = {
