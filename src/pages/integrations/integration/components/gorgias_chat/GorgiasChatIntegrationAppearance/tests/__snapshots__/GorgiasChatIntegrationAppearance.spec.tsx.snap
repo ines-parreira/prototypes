@@ -399,6 +399,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -436,6 +437,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1629,6 +1631,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -1666,6 +1669,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3096,6 +3100,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -3133,6 +3138,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4534,6 +4540,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -4571,6 +4578,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -5972,6 +5980,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -6009,6 +6018,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -7410,6 +7420,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -7447,6 +7458,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -8944,6 +8956,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -8981,6 +8994,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -10137,6 +10151,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -10174,6 +10189,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -11477,6 +11493,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -11514,6 +11531,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -13116,6 +13134,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -13153,6 +13172,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -14346,6 +14366,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_main_color"
                           id="color-picker-42"
                           type="button"
                         >
@@ -14383,6 +14404,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         <button
                           aria-disabled="false"
                           class="wrapper button fill secondary medium"
+                          data-testid="color-picker-button_conversation_color"
                           id="color-picker-42"
                           type="button"
                         >

@@ -15,7 +15,6 @@ export default class ColorField extends DEPRECATED_InputField<Props> {
             'error',
             'help',
             'inline',
-            'label',
             'name',
         ])
 

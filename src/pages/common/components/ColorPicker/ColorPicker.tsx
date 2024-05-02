@@ -30,6 +30,7 @@ export type Props = {
     onChange: (value: string) => void
     colors?: string[]
     popupContainer?: HTMLElement | RefObject<HTMLElement> | string
+    label?: string
 }
 
 export default function ColorPicker({
@@ -38,6 +39,7 @@ export default function ColorPicker({
     defaultValue,
     onChange,
     popupContainer,
+    label,
 }: Props) {
     const [isPopupVisible, setPopupVisible] = useState(false)
     const popupContentEl = useRef<HTMLDivElement>(null)
@@ -70,6 +72,13 @@ export default function ColorPicker({
                 onClick={() => setPopupVisible(!isPopupVisible)}
                 ref={buttonEl}
                 className={css.button}
+                data-testid={
+                    label
+                        ? `color-picker-button_${label
+                              .replace(/\s/g, '_')
+                              .toLowerCase()}`
+                        : undefined
+                }
             >
                 {colorValue ? (
                     <div

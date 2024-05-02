@@ -93,6 +93,7 @@ exports[`<ThemeSwitch> matches snapshot 1`] = `
         <button
           aria-disabled="false"
           class="wrapper button fill secondary medium"
+          data-testid="color-picker-button_accent_color"
           id="color-picker-2"
           type="button"
         >
