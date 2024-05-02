@@ -53,6 +53,7 @@ type Props = {
     label: string
 }
 
+// When you  with this component keep in mind that hot reload not working with it because of froala
 export const GuidanceEditor = ({
     placeholder,
     onChange,

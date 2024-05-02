@@ -47,6 +47,7 @@ export const GuidanceForm = ({
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
     const [formState, setFormState] =
         useState<GuidanceFormFields>(initialFormState)
+    const [hasSubmitted, setHasSubmitted] = useState(false)
     const onNameChange = (value: string) => {
         setFormState((prevState) => ({...prevState, name: value}))
     }
@@ -96,14 +97,13 @@ export const GuidanceForm = ({
     const handleSubmit = async () => {
         try {
             await onSubmit(formState)
+            setHasSubmitted(true)
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Guidance successfully saved',
                 })
             )
-
-            resetForm()
         } catch (err) {
             void dispatch(
                 notify({
@@ -130,7 +130,7 @@ export const GuidanceForm = ({
         <>
             <UnsavedChangesPrompt
                 onSave={onSave}
-                when={isFormDirty}
+                when={isFormDirty && !hasSubmitted}
                 onDiscard={resetForm}
                 shouldRedirectAfterSave={true}
             />
