@@ -155,15 +155,14 @@ const ContactFormCustomization = (): JSX.Element => {
                 {isContactFormNewEntrypointViewEnabled && (
                     <section className={contactFormCss.mbL}>
                         <ContactFormDisplayModeToggle
-                            title="Expandable Contact Form"
-                            description="This feature hides the form behind a button,
-                            requiring shoppers to click to view it. This
-                            minimizes form submissions and ensures that
-                            customers explore other options, such as order
-                            management or custom flows, before reaching out
-                            directly."
-                            toggleLabel="Enable expandable contact form"
-                            isToggled={isFormHidden}
+                            title="Expand Contact Form"
+                            description="Make your Contact Form visible when customers land
+                            on the page or require them to click a button to see the form.
+                            Toggling OFF encourages customers to explore self-service
+                            options like Flows and Order Management before submitting a ticket
+                            to your team."
+                            toggleLabel="Expand Contact Form"
+                            isToggled={!isFormHidden}
                             handleToggleClick={onToggleClick}
                         />
                     </section>
