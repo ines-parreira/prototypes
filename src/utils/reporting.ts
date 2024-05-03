@@ -24,8 +24,8 @@ import {
     ReportingQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {AutomationDatasetMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
@@ -75,14 +75,14 @@ export const AutomateStatsFiltersMembers: StatsFiltersMembers = {
 }
 
 export const AutomateDatasetStatsFiltersMembers: StatsFiltersMembers = {
-    periodStart: AutomationDatasetMember.AutomationEventCreatedDatetime,
-    periodEnd: AutomationDatasetMember.AutomationEventCreatedDatetime,
-    channels: AutomationDatasetMember.Channel,
+    periodStart: AutomationDatasetFilterMember.PeriodStart,
+    periodEnd: AutomationDatasetFilterMember.PeriodEnd,
+    channels: AutomationDatasetFilterMember.Channel,
 }
 
 export const BillableTicketDatasetStatsFiltersMembers: StatsFiltersMembers = {
-    periodStart: BillableTicketDatasetMember.TicketCreatedDatetime,
-    periodEnd: BillableTicketDatasetMember.TicketCreatedDatetime,
+    periodStart: BillableTicketDatasetFilterMember.PeriodStart,
+    periodEnd: BillableTicketDatasetFilterMember.PeriodEnd,
 }
 
 export const AgentTimeTrackingStatsFiltersMembers: StatsFiltersMembers = {

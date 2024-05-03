@@ -12,12 +12,13 @@ export enum AutomationDatasetDimension {
     AutomationEventCreatedDatetime = 'AutomationDataset.automationEventCreatedDatetime',
 }
 
-export enum AutomationDatasetMember {
-    AutomationEventCreatedDatetime = 'AutomationDataset.automationEventCreatedDatetime',
+export enum AutomationDatasetFilterMember {
     AccountId = 'AutomationDataset.accountId',
     AutomatedInteractions = 'AutomationDataset.automatedInteractions',
     EventType = 'AutomationDataset.eventType',
     Channel = 'AutomationDataset.channel',
+    PeriodStart = 'AutomationDataset.periodStart',
+    PeriodEnd = 'AutomationDataset.periodEnd',
 }
 export enum AutomationDatasetSegment {}
 
@@ -25,5 +26,5 @@ export type AutomationDatasetCube = Cube<
     AutomationDatasetMeasure,
     AutomationDatasetDimension,
     AutomationDatasetSegment,
-    AutomationDatasetMember
+    AutomationDatasetFilterMember
 >

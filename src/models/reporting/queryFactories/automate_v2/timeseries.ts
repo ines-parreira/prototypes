@@ -1,6 +1,9 @@
+import {
+    automationDatasetDefaultFilters,
+    billableTicketDatasetDefaultFilters,
+} from 'models/reporting/queryFactories/automate_v2/filters'
 import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {getFilterDateRange} from 'utils/reporting'
 import {
     AutomationDatasetMeasure,
     AutomationDatasetCube,
@@ -11,6 +14,7 @@ import {
     BillableTicketDatasetDimension,
     BillableTicketDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {getFilterDateRange} from 'utils/reporting'
 
 export const interactionsTimeSeriesQueryFactory = (
     filters: StatsFilters,
@@ -31,7 +35,7 @@ export const interactionsTimeSeriesQueryFactory = (
         },
     ],
     timezone,
-    filters: [],
+    filters: automationDatasetDefaultFilters(filters),
 })
 
 export const interactionsByEventTypeTimeSeriesQueryFactory = (
@@ -50,7 +54,7 @@ export const interactionsByEventTypeTimeSeriesQueryFactory = (
         },
     ],
     timezone,
-    filters: [],
+    filters: automationDatasetDefaultFilters(filters),
 })
 
 export const billableTicketDatasetTimeSeriesQueryFactory = (
@@ -68,5 +72,5 @@ export const billableTicketDatasetTimeSeriesQueryFactory = (
         },
     ],
     timezone,
-    filters: [],
+    filters: billableTicketDatasetDefaultFilters(filters),
 })

@@ -9,11 +9,14 @@ export enum BillableTicketDatasetMeasure {
 export enum BillableTicketDatasetDimension {
     TicketCreatedDatetime = 'BillableTicketDataset.ticketCreatedDatetime',
     AccountId = 'BillableTicketDataset.accountId',
+    PeriodStart = 'BillableTicketDataset.periodStart',
+    PeriodEnd = 'BillableTicketDataset.periodEnd',
 }
 
-export enum BillableTicketDatasetMember {
-    TicketCreatedDatetime = 'BillableTicketDataset.ticketCreatedDatetime',
+export enum BillableTicketDatasetFilterMember {
     AccountId = 'BillableTicketDataset.accountId',
+    PeriodStart = 'BillableTicketDataset.periodStart',
+    PeriodEnd = 'BillableTicketDataset.periodEnd',
 }
 
 export enum BillableTicketDatasetSegment {}
@@ -22,5 +25,5 @@ export type BillableTicketDatasetCube = Cube<
     BillableTicketDatasetMeasure,
     BillableTicketDatasetDimension,
     BillableTicketDatasetSegment,
-    BillableTicketDatasetMember
+    BillableTicketDatasetFilterMember
 >

@@ -1,7 +1,7 @@
 import {StatsFilters} from 'models/stat/types'
 import {
     automationDatasetDefaultFilters,
-    billableTicketDataseteDefaultFilters,
+    billableTicketDatasetDefaultFilters,
 } from 'models/reporting/queryFactories/automate_v2/filters'
 import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
@@ -30,5 +30,5 @@ export const billableTicketDatasetQueryFactory = (
     ],
     dimensions: [],
     timezone,
-    filters: billableTicketDataseteDefaultFilters(filters),
+    filters: billableTicketDatasetDefaultFilters(filters),
 })

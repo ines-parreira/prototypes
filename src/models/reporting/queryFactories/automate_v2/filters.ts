@@ -1,21 +1,31 @@
-import {AutomationDatasetMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {getFilterDateRange} from 'utils/reporting'
+import {formatReportingQueryDate} from 'utils/reporting'
 
 export const automationDatasetDefaultFilters = (filters: StatsFilters) => [
     {
-        member: AutomationDatasetMember.AutomationEventCreatedDatetime,
-        operator: ReportingFilterOperator.InDateRange,
-        values: getFilterDateRange(filters),
+        member: AutomationDatasetFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [formatReportingQueryDate(filters.period.start_datetime)],
+    },
+    {
+        member: AutomationDatasetFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [formatReportingQueryDate(filters.period.end_datetime)],
     },
 ]
 
-export const billableTicketDataseteDefaultFilters = (filters: StatsFilters) => [
+export const billableTicketDatasetDefaultFilters = (filters: StatsFilters) => [
     {
-        member: BillableTicketDatasetMember.TicketCreatedDatetime,
-        operator: ReportingFilterOperator.InDateRange,
-        values: getFilterDateRange(filters),
+        member: BillableTicketDatasetFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [formatReportingQueryDate(filters.period.start_datetime)],
+    },
+    {
+        member: BillableTicketDatasetFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [formatReportingQueryDate(filters.period.end_datetime)],
     },
 ]
