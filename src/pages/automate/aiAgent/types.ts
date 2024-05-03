@@ -17,6 +17,7 @@ export type FormValues = {
     excludedTopics: string[] | null
     signature: string | null
     toneOfVoice: string | null
+    customToneOfVoiceGuidance: string | null
     helpCenter: {id: number; locale: string; subdomain: string} | null
 }
 

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import {FormFeedback, FormGroup, Input} from 'reactstrap'
+import classnames from 'classnames'
 import css from './AutoTagItem.less'
 
 interface IProps {
@@ -7,6 +8,7 @@ interface IProps {
     placeholder: string
     inputKey: 'name' | 'description'
     onInputUpdate: (value: string) => void
+    className?: string
 }
 
 export function AutoTagItem({
@@ -14,10 +16,11 @@ export function AutoTagItem({
     onInputUpdate,
     placeholder,
     inputKey: inputType,
+    className = '',
 }: IProps) {
     const [isDirty, setIsDirty] = useState(false)
     return (
-        <FormGroup className={css.formGroup}>
+        <FormGroup className={classnames(css.formGroup, className)}>
             <Input
                 value={value}
                 invalid={isDirty && !value.length}

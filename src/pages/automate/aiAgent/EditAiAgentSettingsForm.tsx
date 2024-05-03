@@ -1,10 +1,12 @@
 import React, {useMemo, useRef, useState} from 'react'
+import classnames from 'classnames'
 import {List} from 'immutable'
-import cn from 'classnames'
 
 import _isEqual from 'lodash/isEqual'
 
 import {useQueryClient} from '@tanstack/react-query'
+import {Link} from 'react-router-dom'
+import {Value} from 'pages/common/forms/SelectField/types'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
@@ -35,6 +37,7 @@ import {
     SIGNATURE_MAX_LENGTH,
     DEFAULT_FORM_VALUES,
     ToneOfVoice,
+    CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
@@ -117,13 +120,16 @@ const useFormValues = () => {
 }
 
 const validateFormValues = (formValues: FormValues): FormValues => {
-    if (
-        formValues.signature !== null &&
-        formValues.signature.length > SIGNATURE_MAX_LENGTH
-    ) {
-        throw new Error(
-            `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
-        )
+    if (formValues.signature !== null) {
+        if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
+            throw new Error(
+                `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
+            )
+        }
+
+        if (formValues.signature.length === 0) {
+            throw new Error('Signature can not be empty')
+        }
     }
 
     if (
@@ -157,6 +163,14 @@ const validateFormValues = (formValues: FormValues): FormValues => {
         if (hasEmptyFields) {
             throw new Error('Tags must have a name and description')
         }
+    }
+
+    if (
+        (!formValues.toneOfVoice ||
+            formValues.toneOfVoice === ToneOfVoice.Custom) &&
+        formValues.customToneOfVoiceGuidance?.length === 0
+    ) {
+        throw new Error('Custom tone of voice guidance cannot be empty')
     }
 
     return formValues
@@ -292,6 +306,26 @@ export const EditAiAgentSettingsForm = ({
         updateValue('monitoredEmailIntegrations', monitoredEmailIntegrations)
     }
 
+    const handleToneOfVoiceChange = (toneOfVoiceLabel: Value) => {
+        if (
+            toneOfVoiceLabel === ToneOfVoice.Custom &&
+            (!formValues.customToneOfVoiceGuidance ||
+                formValues.customToneOfVoiceGuidance?.length === 0)
+        ) {
+            updateValue(
+                'customToneOfVoiceGuidance',
+                storeConfiguration.customToneOfVoiceGuidance ??
+                    CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE
+            )
+        } else {
+            updateValue(
+                'customToneOfVoiceGuidance',
+                storeConfiguration.customToneOfVoiceGuidance
+            )
+        }
+        updateValue('toneOfVoice', toneOfVoiceLabel.toString())
+    }
+
     const isAIAgentToggled = isAiAgentEnabled(
         formValues.deactivatedDatetime !== undefined
             ? formValues.deactivatedDatetime
@@ -303,6 +337,11 @@ export const EditAiAgentSettingsForm = ({
             ? formValues.silentHandover
             : storeConfiguration.silentHandover
     )
+
+    const isCustomToneOfVoiceSelected =
+        formValues.toneOfVoice === ToneOfVoice.Custom ||
+        (formValues.toneOfVoice === null &&
+            storeConfiguration.toneOfVoice === ToneOfVoice.Custom)
 
     return (
         <>
@@ -374,6 +413,10 @@ export const EditAiAgentSettingsForm = ({
                                         at your earliest convenience. Many
                                         thanks."
                                     </li>
+                                    <li>
+                                        <b>Custom</b>: "Add you own
+                                        instructions."
+                                    </li>
                                 </ul>
                             </IconTooltip>
                         </Label>
@@ -385,12 +428,7 @@ export const EditAiAgentSettingsForm = ({
                                     ? formValues.toneOfVoice
                                     : storeConfiguration.toneOfVoice
                             }
-                            onChange={(toneOfVoiceLabel) => {
-                                updateValue(
-                                    'toneOfVoice',
-                                    toneOfVoiceLabel.toString()
-                                )
-                            }}
+                            onChange={handleToneOfVoiceChange}
                             options={Object.values(ToneOfVoice).map(
                                 (toneOfVoice) => ({
                                     label: toneOfVoice,
@@ -403,12 +441,39 @@ export const EditAiAgentSettingsForm = ({
                             Select a tone of voice for AI Agent to use with
                             customers.
                         </div>
+                        {isCustomToneOfVoiceSelected && (
+                            <div className={css.customToneOfVoiceGuidance}>
+                                <TextArea
+                                    autoRowHeight={true}
+                                    placeholder="Custom tone of voice guidance"
+                                    value={
+                                        formValues.customToneOfVoiceGuidance !==
+                                        null
+                                            ? formValues.customToneOfVoiceGuidance
+                                            : storeConfiguration.customToneOfVoiceGuidance ??
+                                              CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE
+                                    }
+                                    onChange={(value: unknown) => {
+                                        if (typeof value !== 'string') return
+                                        updateValue(
+                                            'customToneOfVoiceGuidance',
+                                            value.trim()
+                                        )
+                                    }}
+                                />
+                                <div className={css.formInputFooterInfo}>
+                                    Give your AI Agent specific instructions to
+                                    always follow. For example things to always
+                                    say, things to never mention.
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </section>
 
                 <section>
                     <h2
-                        className={cn(
+                        className={classnames(
                             css.sectionHeader,
                             css.emailSectionHeader
                         )}
@@ -416,13 +481,7 @@ export const EditAiAgentSettingsForm = ({
                         Email
                     </h2>
                     <div className={css.formGroup}>
-                        <Label isRequired={true}>
-                            Email ticket coverage
-                            <IconTooltip>
-                                AI Agent will attempt to respond to the
-                                specified percentage of email tickets.
-                            </IconTooltip>
-                        </Label>
+                        <Label>Email ticket coverage</Label>
                         <SelectField
                             fullWidth
                             showSelectedOption
@@ -447,8 +506,8 @@ export const EditAiAgentSettingsForm = ({
                             dropdownMenuClassName={css.longDropdown}
                         />
                         <div className={css.formInputFooterInfo}>
-                            Select the ticket percentage you woud like AI Agent
-                            to process.
+                            Select the percentage of email tickets AI Agent
+                            should attempt to resolve.
                         </div>
                     </div>
 
@@ -471,15 +530,14 @@ export const EditAiAgentSettingsForm = ({
                             emailItems={emailItems}
                         />
                         <div className={css.formInputFooterInfo}>
-                            Select the email address you would like AI Agent to
+                            Select one or more email addresses for AI Agent to
                             use.
                         </div>
                     </div>
 
                     <div className={css.formGroup}>
                         <Label isRequired={true}>
-                            Enter the signature that should be used by the AI
-                            Agent
+                            Email signature
                             <IconTooltip>
                                 This will override the current email signature
                                 in your email settings.
@@ -487,7 +545,7 @@ export const EditAiAgentSettingsForm = ({
                         </Label>
                         <TextArea
                             id="signature-text-area"
-                            placeholder="AI Agent email signature"
+                            placeholder="This response was created by AI"
                             value={
                                 formValues.signature !== null
                                     ? formValues.signature
@@ -500,18 +558,23 @@ export const EditAiAgentSettingsForm = ({
                             maxLength={SIGNATURE_MAX_LENGTH}
                         />
                         <div className={css.formInputFooterInfo}>
-                            Provide a name for AI agent to use. Do not include
-                            greetings (e.g. "Best regards"). Greetings will be
-                            generated by AI Agent as part of the response.
+                            At the end of emails you can disclose that the
+                            message was created by AI, or provide a custom name
+                            for AI Agent. Do not include greetings (e.g. "Best
+                            regards"). Greetings will already be included in the
+                            message above the signature.
                         </div>
                     </div>
                 </section>
 
                 <section>
-                    <h2 className={css.sectionHeader}> Handover </h2>
+                    <h2 className={css.sectionHeader}>
+                        Exclusion and handover
+                    </h2>
                     <div className={css.sectionDescription}>
-                        Define when and how AI Agent should hand over tickets to
-                        your team.
+                        Exclude specific tickets from AI Agent handling and
+                        configure automatic handovers for uncertain responses or
+                        specific topics.
                     </div>
                     <div className={css.formGroup}>
                         <ToggleInput
@@ -531,17 +594,16 @@ export const EditAiAgentSettingsForm = ({
                                 }
                             }}
                             name={toggleHandoffId}
-                            caption="Let customers know that their inquiry will be transferred to an agent."
+                            caption="AI Agent will promptly tell customers their request is being handed over for further assistance."
                         >
-                            Send message before handover
+                            Tell customers when handing over
                         </ToggleInput>
                     </div>
                     <div className={css.formGroup}>
-                        <Label>Excluded topics</Label>
+                        <Label>Handover topics</Label>
                         <div className={css.formGroupDescription}>
-                            When customer inquiries contain the following
-                            topics, AI Agent will not respond and hand over to
-                            an agent.
+                            AI Agent will always hand over tickets when it
+                            detects a handover topic.
                         </div>
                         <ListField
                             className={css.container}
@@ -561,11 +623,35 @@ export const EditAiAgentSettingsForm = ({
                             addLabel="Add topic"
                         />
                     </div>
+                    <div className={css.formGroup}>
+                        <Label>
+                            Prevent AI Agent from triggering on specific tickets
+                            <i
+                                id="unassign-info"
+                                className={classnames(
+                                    'material-icons',
+                                    css.warningIcon
+                                )}
+                            >
+                                warning_outline
+                            </i>
+                        </Label>
+                        <div className={css.preventAIAgentTriggerDescription}>
+                            Install the "
+                            <Link to="/app/settings/rules/library">
+                                Prevent AI Agent from answering{' '}
+                            </Link>
+                            " Rule Template. This Rule lets you add conditions
+                            to prevent the AI Agent from responding (e.g.
+                            tickets from certain email addresses, tickets with
+                            certain tags, etc.).
+                        </div>
+                    </div>
                 </section>
                 <section>
-                    <h2 className={css.sectionHeader}>Auto-tag</h2>
+                    <h2 className={css.sectionHeader}>AI ticket tagging</h2>
                     <div className={css.sectionDescription}>
-                        Define when AI Agent should auto-tag tickets.
+                        Define when AI Agent should tag incoming tickets.
                     </div>
 
                     <AutoTagList

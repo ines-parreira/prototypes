@@ -29,6 +29,7 @@ export type StoreConfiguration = {
     helpCenterSubdomain: string
 
     toneOfVoice: string
+    customToneOfVoiceGuidance: string | null
     signature: string
     excludedTopics: string[]
     tags: Tag[]
@@ -50,6 +51,8 @@ export type CreateStoreConfigurationPayload = Pick<
     | 'helpCenterLocale'
     | 'monitoredEmailIntegrations'
     | 'deactivatedDatetime'
+    | 'customToneOfVoiceGuidance'
+    | 'signature'
 >
 
 export type UpsertStoreConfigurationPayload = StoreConfiguration

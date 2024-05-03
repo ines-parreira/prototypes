@@ -2,6 +2,8 @@ import React from 'react'
 import {Button} from 'reactstrap'
 import {cloneDeep} from 'lodash'
 import {Tag} from 'models/aiAgent/types'
+import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import Label from '../../../common/forms/Label/Label'
 import {AutoTagItem} from './AutoTagInput'
 import css from './AutoTagList.less'
 
@@ -16,8 +18,15 @@ export function AutoTagList(props: IProps) {
         <div>
             {!!tags.length && (
                 <div className={css.autoTagListHeaders}>
-                    <span>Tag(s)</span>
-                    <span>When to apply tag(s)</span>
+                    <Label>
+                        Tag
+                        <IconTooltip>
+                            Choose from current tags or create new ones.
+                        </IconTooltip>
+                    </Label>
+                    <Label>
+                        Apply to tickets containing the following topics
+                    </Label>
                 </div>
             )}
 
@@ -46,6 +55,7 @@ export function AutoTagList(props: IProps) {
                             onTagUpdate(newItems)
                         }}
                         placeholder={'eg. discount or promo code inquiries'}
+                        className={css.autoTagDescription}
                     />
                     <i
                         className="material-icons"
@@ -69,7 +79,7 @@ export function AutoTagList(props: IProps) {
                 }}
             >
                 <i className="material-icons md-2">add</i>
-                <span>Add Auto-Tag</span>
+                <span>Add Tag</span>
             </Button>
         </div>
     )
