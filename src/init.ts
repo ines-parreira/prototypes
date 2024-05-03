@@ -43,6 +43,7 @@ import {
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
+import {getCurrentAccountState} from './state/currentAccount/selectors'
 
 setDefaultConfig({
     headers: {
@@ -79,7 +80,9 @@ export const notifyAccountNotVerified = (reduxStore: Store) => {
 
 export const notifyUserImpersonated = (reduxStore: Store) => {
     if (window.USER_IMPERSONATED) {
-        const currentUser = getCurrentUser(reduxStore.getState())
+        const state = reduxStore.getState()
+        const currentUser = getCurrentUser(state)
+        const currentAccount = getCurrentAccountState(state)
 
         reduxStore.dispatch(
             notify({
@@ -88,9 +91,12 @@ export const notifyUserImpersonated = (reduxStore: Store) => {
                 style: NotificationStyle.Banner,
                 status: NotificationStatus.Warning,
                 dismissible: false,
-                message: `You are impersonating <b>${
-                    currentUser.get('name') as string
-                }</b> in <b>${getEnvironment()}</b> environment.`,
+                message: `Impersonating <b>${
+                    currentUser.get('email') as string
+                }</b> in <b>${getEnvironment()}</b> environment.
+                cluster='${window.GORGIAS_CLUSTER}' and account_id=${
+                    currentAccount.get('id') as string
+                } and user_id=${currentUser.get('id') as string}`,
             }) as any
         )
     }

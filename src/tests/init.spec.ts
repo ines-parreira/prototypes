@@ -107,7 +107,11 @@ describe('init', () => {
     describe('notifyUserImpersonated()', () => {
         beforeEach(() => {
             window.USER_IMPERSONATED = null
-            reduxStore = mockStore({currentUser: fromJS(user)} as RootState)
+            window.GORGIAS_CLUSTER = 'us-east1-abcd'
+            reduxStore = mockStore({
+                currentUser: fromJS(user),
+                currentAccount: fromJS(account),
+            } as RootState)
         })
 
         it('should not do anything because user is not impersonated', () => {

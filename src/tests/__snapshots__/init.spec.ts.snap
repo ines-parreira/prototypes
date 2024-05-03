@@ -33,7 +33,8 @@ exports[`init notifyUserImpersonated() should dispatch a notification because us
       "dismissAfter": 0,
       "dismissible": false,
       "id": "user-impersonated-notification",
-      "message": "You are impersonating <b>Alex Plugaru</b> in <b>development</b> environment.",
+      "message": "Impersonating <b>alex@gorgias.io</b> in <b>development</b> environment.
+                cluster='us-east1-abcd' and account_id=1 and user_id=2",
       "position": "top-center",
       "status": "warning",
       "style": "banner",
