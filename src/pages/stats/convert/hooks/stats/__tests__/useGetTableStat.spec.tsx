@@ -76,18 +76,9 @@ describe('useGetTableStat', () => {
         },
     ]
 
-    const trafficData = [
+    const totalStoreData = [
         {
-            [EventsDimension.createdDatetime]: '2023-03-09T00:00:00.000',
-            [EventsMeasure.traffic]: '1',
-        },
-        {
-            [EventsDimension.createdDatetime]: '2023-03-10T00:00:00.000',
-            [EventsMeasure.traffic]: '2',
-        },
-        {
-            [EventsDimension.createdDatetime]: '2023-03-11T00:00:00.000',
-            [EventsMeasure.traffic]: '3',
+            [OrderConversionMeasure.gmv]: '12345.67',
         },
     ]
 
@@ -156,7 +147,7 @@ describe('useGetTableStat', () => {
 
         usePostReportingMock.mockReturnValueOnce({
             ...defaultReporting,
-            data: trafficData,
+            data: totalStoreData,
         } as UseQueryResult)
 
         // act

@@ -19,7 +19,7 @@ describe('<TotalRevenueCell />', () => {
         currency: 'USD',
         metrics: {
             totalRevenue: 100,
-            ticketsRevenue: 25,
+            totalRevenueShare: 25,
         },
     } as CampaignTableContentCell
 

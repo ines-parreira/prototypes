@@ -22,7 +22,6 @@ export enum EventsDimension {
 }
 
 export enum EventsMeasure {
-    traffic = `CampaignEvents.traffic`,
     impressions = `CampaignEvents.impressions`,
     firstCampaignDisplay = `CampaignEvents.firstCampaignDisplay`,
     lastCampaignDisplay = `CampaignEvents.lastCampaignDisplay`,

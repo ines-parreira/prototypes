@@ -113,7 +113,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 0,
     "totalConversionRate": 0,
     "totalRevenue": 0,
-    "traffic": 0,
+    "totalRevenueShare": 0,
   },
 }
 `;
@@ -139,7 +139,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 0,
     "totalConversionRate": 0,
     "totalRevenue": 0,
-    "traffic": 0,
+    "totalRevenueShare": 0,
   },
   "campaign2": {
     "campaignSalesCount": 0,
@@ -160,7 +160,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 0,
     "totalConversionRate": 0,
     "totalRevenue": 0,
-    "traffic": 0,
+    "totalRevenueShare": 0,
   },
 }
 `;
@@ -186,7 +186,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 1234.47,
     "totalConversionRate": 7.49,
     "totalRevenue": 12345.67,
-    "traffic": 5,
+    "totalRevenueShare": 1000.0785762310951,
   },
   "campaign2": {
     "campaignSalesCount": 358,
@@ -207,33 +207,7 @@ exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable shou
     "ticketsRevenue": 1234.47,
     "totalConversionRate": 9.87,
     "totalRevenue": 12345.67,
-    "traffic": 3,
-  },
-}
-`;
-
-exports[`Campaign metrics helper tests transformToCampaignsPerformanceTable traffic calculation should calculate only for matching dates 1`] = `
-{
-  "campaign1": {
-    "campaignSalesCount": 0,
-    "clickThroughRate": 0,
-    "clicks": 0,
-    "clicksConversionRate": 0,
-    "clicksConverted": 0,
-    "clicksRate": 0,
-    "clicksRevenue": 0,
-    "discountCodesRevenue": 0,
-    "discountCodesUsed": 0,
-    "engagement": 0,
-    "impressions": 0,
-    "ticketsConversionRate": 0,
-    "ticketsConverted": 0,
-    "ticketsCreated": 0,
-    "ticketsCreationRate": 0,
-    "ticketsRevenue": 0,
-    "totalConversionRate": 0,
-    "totalRevenue": 0,
-    "traffic": 6,
+    "totalRevenueShare": 1000.0785762310951,
   },
 }
 `;

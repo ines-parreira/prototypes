@@ -18,20 +18,10 @@ type Props = ComponentProps<typeof BodyCell> & {
 
 export const TotalRevenueCell = ({cell, data, ...props}: Props) => {
     const contentRef = useRef(null)
-
-    const campaignRevenue = parseFloat(
-        getDataFromTableCell(
-            cell,
-            CampaignTableKeys.RevenueGeneratedTickets
-        ) as string
-    )
-    const totalStoreRevenue = parseFloat(
-        getDataFromTableCell(cell, CampaignTableKeys.TotalRevenue) as string
-    )
-    const percentage =
-        campaignRevenue > 0 && totalStoreRevenue > 0
-            ? (campaignRevenue / totalStoreRevenue) * 100
-            : 0
+    const totalShare = getDataFromTableCell(
+        cell,
+        CampaignTableKeys.TotalRevenueShare
+    ) as number
 
     return (
         <BodyCell {...props}>
@@ -44,11 +34,9 @@ export const TotalRevenueCell = ({cell, data, ...props}: Props) => {
                         currencyDisplay="narrowSymbol"
                     />
                 </div>
-                <Tooltip
-                    target={contentRef}
-                >{`Store revenue share: ${formatPercentage(
-                    percentage
-                )}`}</Tooltip>
+                <Tooltip target={contentRef}>
+                    Store revenue share: {formatPercentage(totalShare)}
+                </Tooltip>
             </>
         </BodyCell>
     )

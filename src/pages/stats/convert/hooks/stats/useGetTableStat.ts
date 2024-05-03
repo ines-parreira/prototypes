@@ -1,13 +1,18 @@
 import {useMemo} from 'react'
-import {CubeData, CubeFilterParams} from 'pages/stats/convert/clients/types'
+import {
+    CubeData,
+    CubeFilterParams,
+    CubeMetric,
+} from 'pages/stats/convert/clients/types'
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
     getCampaignOrderPerformanceData,
-    getTrafficData,
+    getStoreRevenueTotalData,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
     getDataFromResult,
+    getMetricFromCubeData,
     transformToCampaignsPerformanceTable,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {CampaignsPerformanceDataset} from 'pages/stats/convert/services/types'
@@ -53,7 +58,10 @@ export const useGetTableStat = (
         () => getCampaignEventsOrdersPerformanceData(attrs),
         [attrs]
     )
-    const trafficDataQuery = useMemo(() => getTrafficData(attrs), [attrs])
+    const storeTotalQuery = useMemo(
+        () => getStoreRevenueTotalData(attrs),
+        [attrs]
+    )
 
     const eventsPerformance = usePostReporting<[CubeData], CubeData>(
         eventsQuery,
@@ -67,9 +75,9 @@ export const useGetTableStat = (
         eventsOrdersQuery,
         OVERRIDES
     )
-    const trafficData = usePostReporting<[CubeData], CubeData>(
-        trafficDataQuery,
-        OVERRIDES
+    const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
+        storeTotalQuery,
+        {select: getMetricFromCubeData}
     )
 
     const data = useMemo(() => {
@@ -77,13 +85,13 @@ export const useGetTableStat = (
             eventsPerformance.data,
             ordersPerformance.data,
             eventsOrdersPerformance.data,
-            trafficData.data
+            storeTotal.data
         )
     }, [
         eventsPerformance.data,
         ordersPerformance.data,
         eventsOrdersPerformance.data,
-        trafficData.data,
+        storeTotal.data,
     ])
 
     return {
@@ -91,12 +99,12 @@ export const useGetTableStat = (
             eventsPerformance.isFetching ||
             ordersPerformance.isFetching ||
             eventsOrdersPerformance.isFetching ||
-            trafficData.isFetching,
+            storeTotal.isFetching,
         isError:
             eventsPerformance.isError ||
             ordersPerformance.isError ||
             eventsOrdersPerformance.isError ||
-            trafficData.isError,
+            storeTotal.isError,
         data: data,
     }
 }

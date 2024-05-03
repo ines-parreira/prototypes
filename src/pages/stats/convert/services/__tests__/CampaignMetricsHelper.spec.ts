@@ -30,7 +30,6 @@ import {
 } from 'pages/stats/convert/services/constants'
 import {RevenueByDate} from 'pages/stats/convert/services/types'
 import {ReportingGranularity} from 'models/reporting/types'
-import {CubeData} from 'pages/stats/convert/clients/types'
 
 describe('Campaign metrics helper tests', () => {
     const cubeDataMissing = {
@@ -527,20 +526,9 @@ describe('Campaign metrics helper tests', () => {
             },
         ]
 
-        const trafficData = [
-            {
-                [EventsDimension.createdDatetime]: '2023-03-09T00:00:00.000',
-                [EventsMeasure.traffic]: '1',
-            },
-            {
-                [EventsDimension.createdDatetime]: '2023-03-10T00:00:00.000',
-                [EventsMeasure.traffic]: '2',
-            },
-            {
-                [EventsDimension.createdDatetime]: '2023-03-11T00:00:00.000',
-                [EventsMeasure.traffic]: '3',
-            },
-        ]
+        const totalStoreData = {
+            [OrderConversionMeasure.gmv]: '1234.47',
+        }
 
         const campaignEventsOrdersPerformanceData = [
             {
@@ -562,7 +550,7 @@ describe('Campaign metrics helper tests', () => {
                 campaignEventsPerformanceData,
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
-                trafficData
+                totalStoreData
             )
             expect(result).toMatchSnapshot()
         })
@@ -575,7 +563,7 @@ describe('Campaign metrics helper tests', () => {
                 ],
                 [],
                 [],
-                []
+                {}
             )
             expect(result).toMatchSnapshot()
         })
@@ -601,50 +589,9 @@ describe('Campaign metrics helper tests', () => {
                         [CampaignOrderEventsDimension.campaignId]: 'campaign1',
                     },
                 ],
-                []
+                {}
             )
             expect(result).toMatchSnapshot()
-        })
-
-        describe('traffic calculation', () => {
-            const singleCampaignEventsPerformanceData = [
-                {
-                    [EventsDimension.campaignId]: 'campaign1',
-                    [EventsMeasure.firstCampaignDisplay]:
-                        '2023-04-27T00:00:00.000',
-                    // it is very important that end day is smaller than start day (2 < 27)
-                    [EventsMeasure.lastCampaignDisplay]:
-                        '2023-05-02T00:00:00.000',
-                },
-            ]
-
-            const trafficData = [
-                {
-                    [EventsDimension.createdDatetime]:
-                        '2023-04-27T00:00:00.000',
-                    [EventsMeasure.traffic]: '1',
-                },
-                {
-                    [EventsDimension.createdDatetime]:
-                        '2023-04-29T00:00:00.000',
-                    [EventsMeasure.traffic]: '2',
-                },
-                {
-                    [EventsDimension.createdDatetime]:
-                        '2023-05-02T00:00:00.000',
-                    [EventsMeasure.traffic]: '3',
-                },
-            ]
-
-            it('should calculate only for matching dates', () => {
-                const result = transformToCampaignsPerformanceTable(
-                    singleCampaignEventsPerformanceData,
-                    {} as CubeData,
-                    {} as CubeData,
-                    trafficData
-                )
-                expect(result).toMatchSnapshot()
-            })
         })
     })
 

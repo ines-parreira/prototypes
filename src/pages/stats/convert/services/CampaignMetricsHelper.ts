@@ -6,7 +6,7 @@ import _values from 'lodash/values'
 import _zip from 'lodash/zip'
 import _pickBy from 'lodash/pickBy'
 import _bind from 'lodash/bind'
-import _sum from 'lodash/sum'
+import _divide from 'lodash/divide'
 import moment from 'moment'
 
 import {ensureNumberValue, formatPercentage} from 'pages/common/utils/numbers'
@@ -80,33 +80,6 @@ const _getInfluencedGmvShareFromMetrics = (
     const totalSales = getMetricValue(totalMetric, OrderConversionMeasure.gmv)
 
     return _toFixed(_influencedGmvShare(totalSales, campaignSales))
-}
-
-const _calculateTraffic = (
-    trafficData: CubeData,
-    startDate: string,
-    endDate: string
-): number => {
-    const start = moment(startDate).startOf('day').valueOf()
-    const end = moment(endDate).endOf('day').valueOf()
-
-    return _sum(
-        trafficData.map((metric) => {
-            const dateTime = moment(
-                _get(metric, EventsDimension.createdDatetime)
-            ).valueOf()
-
-            if (dateTime >= start && dateTime <= end) {
-                return getMetricValue(
-                    metric,
-                    EventsMeasure.traffic,
-                    '0',
-                    parseInt
-                )
-            }
-            return 0
-        })
-    )
 }
 
 export const transformToCampaignEventsTotals = (
@@ -329,22 +302,19 @@ export const transformToCampaignsPerformanceTable = (
     eventsData: CubeData | undefined,
     ordersData: CubeData | undefined,
     campaignsOrdersData: CubeData | undefined,
-    trafficData: CubeData | undefined
+    storeTotal: CubeMetric | undefined
 ): CampaignsPerformanceDataset => {
-    const eventsDataset = _reduce(
-        _getCubeDataOrDefault(eventsData),
-        _bind(
-            _eventsPerformanceReducer,
-            _bind.placeholder,
-            _bind.placeholder,
-            _bind.placeholder,
-            _getCubeDataOrDefault(trafficData)
-        ),
-        {}
-    )
+    const eventsDataset = _reduce(eventsData, _eventsPerformanceReducer, {})
+
     const ordersDataset = _reduce(
         _getCubeDataOrDefault(ordersData),
-        _ordersPerformanceReducer,
+        _bind(
+            _ordersPerformanceReducer,
+            _bind.placeholder,
+            _bind.placeholder,
+            _bind.placeholder,
+            _getMetricOrDefault(storeTotal)
+        ),
         eventsDataset
     )
     const campaignsOrdersDataset = _reduce(
@@ -378,17 +348,11 @@ export const transformToCampaignAbTestEvent = (
 
 const _eventsPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
-    metric: CubeMetric,
-    trafficData: CubeData
+    metric: CubeMetric
 ): CampaignsPerformanceDataset => {
     const campaignId = _get(metric, EventsDimension.campaignId)
     const eventMetricValue = _mapValues(
         {
-            traffic: _calculateTraffic(
-                trafficData,
-                _get(metric, EventsMeasure.firstCampaignDisplay),
-                _get(metric, EventsMeasure.lastCampaignDisplay)
-            ),
             impressions: _get(metric, EventsMeasure.impressions),
             clicks: _get(metric, EventsMeasure.clicks),
             clicksRate: _get(metric, EventsMeasure.clicksRate),
@@ -407,13 +371,23 @@ const _eventsPerformanceReducer = (
 
 const _ordersPerformanceReducer = (
     dataset: CampaignsPerformanceDataset,
-    metric: CubeMetric
+    metric: CubeMetric,
+    storeTotalMetric: CubeMetric
 ): CampaignsPerformanceDataset => {
     const campaignId = _get(metric, OrderConversionDimension.campaignId)
 
+    const totalRevenue = _get(metric, OrderConversionMeasure.campaignSales)
+    const totalStoreRevenue = _get(storeTotalMetric, OrderConversionMeasure.gmv)
+
+    const totalRevenueShare = _divide(
+        parseFloat(totalRevenue),
+        parseFloat(totalStoreRevenue)
+    )
+
     const orderMetricValue = _mapValues(
         {
-            totalRevenue: _get(metric, OrderConversionMeasure.campaignSales),
+            totalRevenue: totalRevenue,
+            totalRevenueShare: totalRevenueShare * 100,
             ticketsConverted: _get(
                 metric,
                 OrderConversionMeasure.ticketSalesCount
@@ -487,7 +461,7 @@ const _addDefaultValues = (
 ): CampaignPerformanceData => {
     const defaultValues = {
         totalRevenue: 0,
-        traffic: 0,
+        totalRevenueShare: 0,
         impressions: 0,
         engagement: 0,
         clickThroughRate: 0,

@@ -33,7 +33,7 @@ export type CampaignChatPerformanceData = {
 
 export type CampaignPerformanceData = {
     totalRevenue: number
-    traffic: number
+    totalRevenueShare: number
     impressions: number
     engagement: number
     clickThroughRate: number

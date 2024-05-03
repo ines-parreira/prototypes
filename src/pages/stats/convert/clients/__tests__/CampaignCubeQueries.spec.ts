@@ -8,7 +8,6 @@ import {
     getRevenueGraphData,
     getRevenueShareGraphData,
     getStoreRevenueTotalData,
-    getTrafficData,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
 
 describe('Getting Cube queries', () => {
@@ -31,7 +30,6 @@ describe('Getting Cube queries', () => {
         [getCampaignEventsPerformanceData],
         [getCampaignOrderPerformanceData],
         [getCampaignEventsOrdersPerformanceData],
-        [getTrafficData],
         [getRevenueShareGraphData],
         [getCampaignsPerformanceGraphData],
         [getRevenueGraphData],

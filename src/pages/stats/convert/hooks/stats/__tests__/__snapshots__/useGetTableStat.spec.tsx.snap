@@ -127,7 +127,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
         "dimensions": [],
         "filters": [
           {
-            "member": "CampaignEvents.createdDatetime",
+            "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
               "2023-02-01T00:00:00.000",
@@ -135,7 +135,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
             ],
           },
           {
-            "member": "CampaignEvents.shopName",
+            "member": "OrderConversion.shopName",
             "operator": "equals",
             "values": [
               "shopify:slow-formulas-for-sale",
@@ -143,17 +143,7 @@ exports[`useGetTableStat should fill default values if data is missing 1`] = `
           },
         ],
         "measures": [
-          "CampaignEvents.traffic",
-        ],
-        "timeDimensions": [
-          {
-            "dateRange": [
-              "2023-02-01T00:00:00.000",
-              "2023-04-01T00:00:00.000",
-            ],
-            "dimension": "CampaignEvents.createdDatetime",
-            "granularity": "day",
-          },
+          "OrderConversion.gmv",
         ],
         "timezone": "America/Los_Angeles",
       },
@@ -187,7 +177,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
       "ticketsRevenue": 0,
       "totalConversionRate": 0,
       "totalRevenue": 0,
-      "traffic": 0,
+      "totalRevenueShare": 0,
     },
     "campaign2": {
       "campaignSalesCount": 0,
@@ -208,7 +198,7 @@ exports[`useGetTableStat should fill default values if data is missing 2`] = `
       "ticketsRevenue": 0,
       "totalConversionRate": 0,
       "totalRevenue": 0,
-      "traffic": 0,
+      "totalRevenueShare": 0,
     },
   },
   "isError": false,
@@ -343,7 +333,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
         "dimensions": [],
         "filters": [
           {
-            "member": "CampaignEvents.createdDatetime",
+            "member": "OrderConversion.createdDatetime",
             "operator": "inDateRange",
             "values": [
               "2023-02-01T00:00:00.000",
@@ -351,7 +341,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
             ],
           },
           {
-            "member": "CampaignEvents.shopName",
+            "member": "OrderConversion.shopName",
             "operator": "equals",
             "values": [
               "shopify:slow-formulas-for-sale",
@@ -359,17 +349,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
           },
         ],
         "measures": [
-          "CampaignEvents.traffic",
-        ],
-        "timeDimensions": [
-          {
-            "dateRange": [
-              "2023-02-01T00:00:00.000",
-              "2023-04-01T00:00:00.000",
-            ],
-            "dimension": "CampaignEvents.createdDatetime",
-            "granularity": "day",
-          },
+          "OrderConversion.gmv",
         ],
         "timezone": "America/Los_Angeles",
       },
@@ -403,7 +383,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       "ticketsRevenue": 1234.47,
       "totalConversionRate": 7.49,
       "totalRevenue": 12345.67,
-      "traffic": 5,
+      "totalRevenueShare": 0,
     },
     "campaign2": {
       "campaignSalesCount": 358,
@@ -424,7 +404,7 @@ exports[`useGetTableStat should return prepared data for campaign performance ta
       "ticketsRevenue": 1234.47,
       "totalConversionRate": 9.87,
       "totalRevenue": 12345.67,
-      "traffic": 3,
+      "totalRevenueShare": 0,
     },
   },
   "isError": false,

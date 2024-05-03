@@ -289,8 +289,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
         currency: 'USD',
         metrics: {
             totalRevenue: 1122,
-            revenueShare: 0,
-            traffic: 0,
+            totalRevenueShare: 0,
             impressions: 0,
             engagement: 2,
             clickThroughRate: 0,
@@ -639,8 +638,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
         currency: 'USD',
         metrics: {
             totalRevenue: 0,
-            revenueShare: 0,
-            traffic: 0,
+            totalRevenueShare: 0,
             impressions: 0,
             engagement: 0,
             clickThroughRate: 0,
@@ -1251,8 +1249,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
         currency: 'USD',
         metrics: {
             totalRevenue: 0,
-            revenueShare: 0,
-            traffic: 4,
+            totalRevenueShare: 0,
             impressions: 3,
             engagement: 0,
             clickThroughRate: 0,
@@ -1563,8 +1560,7 @@ const CAMPAIGN_PERFORMANCE_ROWS = [
         currency: 'USD',
         metrics: {
             totalRevenue: 201,
-            revenueShare: 0,
-            traffic: 0,
+            totalRevenueShare: 0,
             impressions: 0,
             engagement: 1,
             clickThroughRate: 0,

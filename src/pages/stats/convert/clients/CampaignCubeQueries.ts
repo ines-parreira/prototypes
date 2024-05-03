@@ -102,35 +102,6 @@ export const getCampaignEventsPerformanceData = ({
     ]
 }
 
-export const getTrafficData = ({
-    shopName,
-    startDate,
-    endDate,
-    granularity = ReportingGranularity.Day,
-    timezone,
-}: CubeFilterParams): ReportingParams => {
-    return [
-        {
-            dimensions: [],
-            timeDimensions: [
-                {
-                    dimension: EventsDimension.createdDatetime,
-                    dateRange: getDateRange(startDate, endDate),
-                    granularity: granularity,
-                },
-            ],
-            timezone: timezone,
-            measures: [EventsMeasure.traffic],
-            filters: _getDefaultFilters({
-                startDate,
-                endDate,
-                cubeName: Cube.events,
-                shopName,
-            }),
-        },
-    ]
-}
-
 export const getCampaignOrderPerformanceData = ({
     startDate,
     endDate,
