@@ -21,9 +21,7 @@ import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/use
 import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {PlanInterval} from 'models/billing/types'
 import {getAutomationPrices} from 'state/billing/selectors'
-import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import {TICKETS_CLOSED_PER_HOUR} from 'pages/automate/automate-metrics/constants'
 import {SUPPORT_METRICS_TYPES, SALARY_TYPES} from './constants'
 import css from './ROICalculator.less'
 import {
@@ -76,8 +74,6 @@ const ROICalculator = () => {
         userTimezone
     )
 
-    const ticketsClosedPerHourMetric = useTicketsClosedPerHour()
-
     const ticketsClosedTrend = useClosedTicketsTrend(filters, userTimezone)
 
     const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
@@ -118,7 +114,7 @@ const ROICalculator = () => {
 
     const [numberOfTickets, setNumberOfTickets] = useState(0)
 
-    const [ticketsClosedPerHour, setTicketsClosedPerHour] = useState('0')
+    const [ticketsClosedPerHour, setTicketsClosedPerHour] = useState('5')
 
     const [ticketHandleTime, setTicketHandleTime] = useState<string | number>(
         '2m'
@@ -169,16 +165,6 @@ const ROICalculator = () => {
             }m`
         )
     }, [ticketHandleTimeTrend.data?.value])
-
-    // Set the tickets closed per hour
-    useEffect(() => {
-        setTicketsClosedPerHour(
-            (
-                ticketsClosedPerHourMetric.data?.value ||
-                TICKETS_CLOSED_PER_HOUR
-            ).toLocaleString()
-        )
-    }, [ticketsClosedPerHourMetric.data?.value])
 
     // Set the metrics value based on the metrics type
     useEffect(() => {
@@ -307,9 +293,6 @@ const ROICalculator = () => {
                             value={ticketsClosedPerHour}
                             onChange={(val) =>
                                 setTicketsClosedPerHour(formatValue(val))
-                            }
-                            isDisabled={
-                                !!ticketsClosedPerHourMetric.data?.value
                             }
                             data-testid="tickets-closed-per-hour-input"
                         />

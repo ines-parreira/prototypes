@@ -15,8 +15,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import * as metricTrends from 'hooks/reporting/metricTrends'
 import * as useGetCostPerBillableTicket from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 
-import * as useTicketsClosedPerHour from 'hooks/reporting/useTicketsClosedPerHour'
-
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import ROICalculator from '../ROICalculator'
@@ -71,17 +69,6 @@ describe('<ROICalculator />', () => {
             },
         })
 
-        jest.spyOn(
-            useTicketsClosedPerHour,
-            'useTicketsClosedPerHour'
-        ).mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 5,
-            },
-        })
-
         jest.spyOn(metricTrends, 'useTicketHandleTimeTrend').mockReturnValue({
             isFetching: false,
             isError: false,
@@ -125,7 +112,6 @@ describe('<ROICalculator />', () => {
         expect(firstResponseTimeInput).toBeDisabled()
         expect(firstResponseTimeInput).toHaveValue('1hrs')
 
-        expect(ticketsClosedPerHourInput).toBeDisabled()
         expect(ticketsClosedPerHourInput).toHaveValue('5')
 
         expect(ticketHandleTimeInput).toBeDisabled()
