@@ -3,5 +3,4 @@ export const testIds = {
     removeBtn: 'removeBtn',
     editIntentBtn: 'editBtn',
     summary: 'summary',
-    revealedDetails: 'revealedDetails',
 }

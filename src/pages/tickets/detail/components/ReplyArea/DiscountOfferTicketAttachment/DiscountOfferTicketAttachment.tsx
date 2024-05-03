@@ -29,15 +29,35 @@ const getMeaningfulDiscountOfferInfo = (
     asyncOffer: UniqueDiscountOffer | undefined,
     integration: Map<string, string> | undefined
 ): {summary: string; name: string; id: string} => {
-    if (!asyncOffer || !integration || integration.isEmpty()) {
+    if (!asyncOffer) {
+        const {
+            discount_offer_id,
+            discount_offer_code,
+            discount_offer_type,
+            discount_offer_value,
+            summary,
+        } = attachment.extra
+
+        const revealSummary =
+            discount_offer_type &&
+            computeDiscountOfferSummary(
+                discount_offer_type,
+                discount_offer_value,
+                integration
+            )
+
         return {
-            id: attachment.extra.discount_offer_id,
-            summary: attachment.extra.summary || '',
-            name: attachment.name,
+            id: discount_offer_id,
+            summary: revealSummary || summary || discount_offer_code || '',
+            name: (revealSummary ? discount_offer_code : '') || attachment.name,
         }
     }
 
-    const summary = computeDiscountOfferSummary(asyncOffer, integration)
+    const summary = computeDiscountOfferSummary(
+        asyncOffer.type,
+        asyncOffer.value,
+        integration
+    )
     return {id: asyncOffer.id, name: asyncOffer.prefix, summary}
 }
 
@@ -107,45 +127,17 @@ export const DiscountOfferTicketAttachment: React.FC<DiscountOfferTicketAttachme
             )
         }
 
-        // In ticket view, we try to render some meaningful info about the discount offer state
-        // if it has been revealed or maybe other snapshot values
-        const renderMeaningfulSnapshot = () => {
-            const {discount_offer_code} = discountOffer.extra
-            return (
-                <div
-                    className={css.revealedDetails}
-                    data-testid={testIds.revealedDetails}
-                >
-                    {discount_offer_code && (
-                        <div>Code: {discount_offer_code}</div>
-                    )}
-                </div>
-            )
-        }
-
         return (
             <>
                 <div className={css.item} data-testid={testIds.wrapper}>
                     <div className={css.itemMeta}>
-                        <div
-                            className={`${css.metaName} ${css.discountOfferMetaName}`}
-                        >
-                            {name}
-                        </div>
-                        {supportsEdit ? (
-                            <>
-                                <br />
-                                <div data-testid={testIds.summary}>
-                                    {summary}
-                                </div>
-
-                                <div className={css.actions}>
-                                    {asyncDiscountOffer && renderEditIcon()}
-                                    {renderRemoveIcon()}
-                                </div>
-                            </>
-                        ) : (
-                            renderMeaningfulSnapshot()
+                        <div className={css.metaName}>{name}</div>
+                        <div data-testid={testIds.summary}>{summary}</div>
+                        {supportsEdit && (
+                            <div className={css.actions}>
+                                {asyncDiscountOffer && renderEditIcon()}
+                                {renderRemoveIcon()}
+                            </div>
                         )}
                     </div>
                 </div>

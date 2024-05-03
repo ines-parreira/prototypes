@@ -67,7 +67,7 @@ export const ProductCard = ({
 
     return (
         <ProductCardView
-            bgColor={getBackgroundColorVariant(color || DEFAULT_COLOR)}
+            bgColor={color || DEFAULT_COLOR}
             currency={currency}
             image={image}
             isHeadlessStore={isHeadlessStore}

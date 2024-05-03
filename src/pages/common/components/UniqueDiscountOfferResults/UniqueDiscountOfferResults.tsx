@@ -118,7 +118,11 @@ export default function UniqueDiscountCodeResults({
             if (!inEditMode && canAddUniqueDiscountOffer) {
                 onDiscountSelected({
                     ...offer,
-                    summary: computeDiscountOfferSummary(offer, integration),
+                    summary: computeDiscountOfferSummary(
+                        offer.type,
+                        offer.value,
+                        integration
+                    ),
                 })
             }
 
@@ -284,7 +288,8 @@ export default function UniqueDiscountCodeResults({
                                                         ...result,
                                                         summary:
                                                             computeDiscountOfferSummary(
-                                                                result,
+                                                                result.type,
+                                                                result.value,
                                                                 integration
                                                             ),
                                                     })
@@ -298,7 +303,8 @@ export default function UniqueDiscountCodeResults({
                                                         className={css.subtitle}
                                                     >
                                                         {computeDiscountOfferSummary(
-                                                            result,
+                                                            result.type,
+                                                            result.value,
                                                             integration
                                                         )}
                                                     </div>

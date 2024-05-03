@@ -283,7 +283,7 @@ export const CampaignMessage = memo(
                         context="campaign-message"
                         removable
                         attachments={attachments}
-                        className="p-2 d-flex flex-wrap"
+                        className="d-flex flex-wrap"
                         deleteAttachment={onDeleteAttachment}
                     />
                 </div>

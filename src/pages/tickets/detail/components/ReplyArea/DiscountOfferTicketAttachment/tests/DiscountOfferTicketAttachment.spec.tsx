@@ -144,7 +144,7 @@ describe('<DiscountOfferTicketAttachment />', () => {
 
         await waitFor(() => {
             expect(getByTestId(testIds.summary).textContent).toContain(
-                'Get $20 off'
+                '$20 off'
             )
         })
     })
@@ -208,15 +208,8 @@ describe('<DiscountOfferTicketAttachment />', () => {
         })
     })
     it('displays meaningful snapshot if it does not support edit', async () => {
-        const mockDiscountResponse: UniqueDiscountOffer = {
-            type: 'fixed',
-            id: '3',
-            prefix: 'test',
-            store_integration_id: '3',
-            value: '20',
-        }
         useGetDiscountOfferMock.mockReturnValue({
-            data: mockDiscountResponse,
+            data: undefined,
         } as any)
 
         const {getByTestId} = render(
@@ -238,7 +231,7 @@ describe('<DiscountOfferTicketAttachment />', () => {
         )
 
         await waitFor(() => {
-            expect(getByTestId(testIds.revealedDetails).textContent).toContain(
+            expect(getByTestId(testIds.summary).textContent).toContain(
                 'Test-ABCD'
             )
         })

@@ -177,7 +177,10 @@ export const ChatCampaign = ({
                 </div>
             )}
             {discountOffers.length > 0 && (
-                <DiscountOfferPreview offer={discountOffers[0]} />
+                <DiscountOfferPreview
+                    offer={discountOffers[0]}
+                    mainColor={mainColor}
+                />
             )}
             {products.length > 0 && (
                 <div className={css.carouselContainer}>
