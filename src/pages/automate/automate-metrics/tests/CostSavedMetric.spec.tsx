@@ -1,17 +1,9 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
-import {CostSavedMetric} from '../CostSavedMetric'
-import {COST_SAVED} from '../constants'
-
-export type MetricTrend = {
-    isFetching: boolean
-    isError: boolean
-    data?: {
-        value: number | null
-        prevValue: number | null
-    }
-}
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {CostSavedMetric} from 'pages/automate/automate-metrics/CostSavedMetric'
+import {COST_SAVED} from 'pages/automate/automate-metrics/constants'
 
 const trend: MetricTrend = {
     isFetching: false,

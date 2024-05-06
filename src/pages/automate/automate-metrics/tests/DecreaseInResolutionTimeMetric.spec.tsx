@@ -1,17 +1,9 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
-import {DecreaseInResolutionTimeMetric} from '../DecreaseInResolutionTimeMetric'
-import {DECREASE_IN_RESOLUTION_TIME} from '../constants'
-
-export type MetricTrend = {
-    isFetching: boolean
-    isError: boolean
-    data?: {
-        value: number | null
-        prevValue: number | null
-    }
-}
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {DecreaseInResolutionTimeMetric} from 'pages/automate/automate-metrics/DecreaseInResolutionTimeMetric'
+import {DECREASE_IN_RESOLUTION_TIME} from 'pages/automate/automate-metrics/constants'
 
 const trend: MetricTrend = {
     isFetching: false,

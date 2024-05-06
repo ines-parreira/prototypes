@@ -1,18 +1,10 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 
-import {DecreaseInFirstResponseTimeMetric} from '../DecreaseInFirstResponseTimeMetric'
-import {DECREASE_IN_FIRST_RESPONSE} from '../constants'
-
-export type MetricTrend = {
-    isFetching: boolean
-    isError: boolean
-    data?: {
-        value: number | null
-        prevValue: number | null
-    }
-}
+import {DecreaseInFirstResponseTimeMetric} from 'pages/automate/automate-metrics/DecreaseInFirstResponseTimeMetric'
+import {DECREASE_IN_FIRST_RESPONSE} from 'pages/automate/automate-metrics/constants'
 
 const trend: MetricTrend = {
     isFetching: false,

@@ -1,17 +1,9 @@
 import {screen} from '@testing-library/dom'
 import {render} from '@testing-library/react'
 import React from 'react'
-import {AutomationRateMetric} from '../AutomationRateMetric'
-import {AUTOMATION_RATE_LABEL} from '../constants'
-
-export type MetricTrend = {
-    isFetching: boolean
-    isError: boolean
-    data?: {
-        value: number | null
-        prevValue: number | null
-    }
-}
+import {MetricTrend} from 'hooks/reporting/useMetricTrend'
+import {AutomationRateMetric} from 'pages/automate/automate-metrics/AutomationRateMetric'
+import {AUTOMATION_RATE_LABEL} from 'pages/automate/automate-metrics/constants'
 
 const trend: MetricTrend = {
     isFetching: false,

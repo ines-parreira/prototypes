@@ -19,7 +19,7 @@ export const TrendCard = ({
     hint,
     title,
     useTrend,
-    overviewMetric,
+    drillDownMetric,
     tip,
     interpretAs,
     metricFormat,
@@ -27,7 +27,7 @@ export const TrendCard = ({
     useTrend: MetricTrendHook
     hint: TooltipData
     title: string
-    overviewMetric: OverviewMetric
+    drillDownMetric?: OverviewMetric
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat
@@ -36,6 +36,11 @@ export const TrendCard = ({
         getCleanStatsFiltersWithTimezone
     )
     const trend = useTrend(cleanStatsFilters, userTimezone)
+    const formattedMetric = formatMetricValue(
+        trend.data?.value,
+        metricFormat,
+        NOT_AVAILABLE_PLACEHOLDER
+    )
 
     return (
         <MetricCard
@@ -61,19 +66,19 @@ export const TrendCard = ({
                     />
                 }
             >
-                <DrillDownModalTrigger
-                    enabled={!!trend.data?.value}
-                    metricData={{
-                        title,
-                        metricName: overviewMetric,
-                    }}
-                >
-                    {formatMetricValue(
-                        trend.data?.value,
-                        metricFormat,
-                        NOT_AVAILABLE_PLACEHOLDER
-                    )}
-                </DrillDownModalTrigger>
+                {drillDownMetric ? (
+                    <DrillDownModalTrigger
+                        enabled={!!trend.data?.value}
+                        metricData={{
+                            title,
+                            metricName: drillDownMetric,
+                        }}
+                    >
+                        {formattedMetric}
+                    </DrillDownModalTrigger>
+                ) : (
+                    formattedMetric
+                )}
             </BigNumberMetric>
         </MetricCard>
     )

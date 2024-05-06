@@ -11,7 +11,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
+import {TrendCard} from 'pages/stats/common/components/TrendCard'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {OverviewMetric} from 'state/ui/stats/types'
@@ -46,7 +46,7 @@ jest.mock(
     })
 )
 
-jest.mock('pages/stats/support-performance/components/TrendCard')
+jest.mock('pages/stats/common/components/TrendCard')
 const trendCardMock = assumeMock(TrendCard)
 
 jest.mock('pages/stats/SupportPerformanceTip')
@@ -125,7 +125,7 @@ describe('<SupportPerformanceOverview />', () => {
             expect(trendCardMock.mock.calls).toContainEqual(
                 expect.arrayContaining([
                     expect.objectContaining({
-                        overviewMetric: customerMetricTrend,
+                        drillDownMetric: customerMetricTrend,
                     }),
                 ])
             )
@@ -145,7 +145,7 @@ describe('<SupportPerformanceOverview />', () => {
         expect(trendCardMock.mock.calls).toContainEqual(
             expect.arrayContaining([
                 expect.objectContaining({
-                    overviewMetric: OverviewMetric.OneTouchTickets,
+                    drillDownMetric: OverviewMetric.OneTouchTickets,
                 }),
             ])
         )

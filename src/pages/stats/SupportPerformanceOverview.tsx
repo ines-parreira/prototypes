@@ -6,7 +6,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
-import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
+import {TrendCard} from 'pages/stats/common/components/TrendCard'
 
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
@@ -132,7 +132,9 @@ export default function SupportPerformanceOverview() {
                             {...OverviewMetricConfig[
                                 OverviewMetric.CustomerSatisfaction
                             ]}
-                            overviewMetric={OverviewMetric.CustomerSatisfaction}
+                            drillDownMetric={
+                                OverviewMetric.CustomerSatisfaction
+                            }
                             tip={
                                 areTipsVisible &&
                                 (hasSatisfactionSurveyEnabledAndConfigured ? (
@@ -153,7 +155,7 @@ export default function SupportPerformanceOverview() {
                             {...OverviewMetricConfig[
                                 OverviewMetric.MedianFirstResponseTime
                             ]}
-                            overviewMetric={
+                            drillDownMetric={
                                 OverviewMetric.MedianFirstResponseTime
                             }
                             tip={
@@ -176,7 +178,9 @@ export default function SupportPerformanceOverview() {
                             {...OverviewMetricConfig[
                                 OverviewMetric.MedianResolutionTime
                             ]}
-                            overviewMetric={OverviewMetric.MedianResolutionTime}
+                            drillDownMetric={
+                                OverviewMetric.MedianResolutionTime
+                            }
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
@@ -194,7 +198,7 @@ export default function SupportPerformanceOverview() {
                             {...OverviewMetricConfig[
                                 OverviewMetric.MessagesPerTicket
                             ]}
-                            overviewMetric={OverviewMetric.MessagesPerTicket}
+                            drillDownMetric={OverviewMetric.MessagesPerTicket}
                             tip={
                                 areTipsVisible && (
                                     <SupportPerformanceTip
@@ -217,7 +221,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsCreated
                                     ]}
-                                    overviewMetric={
+                                    drillDownMetric={
                                         OverviewMetric.TicketsCreated
                                     }
                                 />
@@ -227,7 +231,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsClosed
                                     ]}
-                                    overviewMetric={
+                                    drillDownMetric={
                                         OverviewMetric.TicketsClosed
                                     }
                                 />
@@ -237,7 +241,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.OpenTickets
                                     ]}
-                                    overviewMetric={OverviewMetric.OpenTickets}
+                                    drillDownMetric={OverviewMetric.OpenTickets}
                                 />
                             </DashboardGridCell>
                             <DashboardGridCell size={12}>
@@ -251,7 +255,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.OpenTickets
                                     ]}
-                                    overviewMetric={OverviewMetric.OpenTickets}
+                                    drillDownMetric={OverviewMetric.OpenTickets}
                                 />
                             </DashboardGridCell>
                             <DashboardGridCell size={getGridCellSize(6)}>
@@ -259,7 +263,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsClosed
                                     ]}
-                                    overviewMetric={
+                                    drillDownMetric={
                                         OverviewMetric.TicketsClosed
                                     }
                                 />
@@ -269,7 +273,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsCreated
                                     ]}
-                                    overviewMetric={
+                                    drillDownMetric={
                                         OverviewMetric.TicketsCreated
                                     }
                                 />
@@ -279,7 +283,7 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.TicketsReplied
                                     ]}
-                                    overviewMetric={
+                                    drillDownMetric={
                                         OverviewMetric.TicketsReplied
                                     }
                                 />
@@ -289,7 +293,9 @@ export default function SupportPerformanceOverview() {
                                     {...OverviewMetricConfig[
                                         OverviewMetric.MessagesSent
                                     ]}
-                                    overviewMetric={OverviewMetric.MessagesSent}
+                                    drillDownMetric={
+                                        OverviewMetric.MessagesSent
+                                    }
                                 />
                             </DashboardGridCell>
                             <DashboardGridCell size={getGridCellSize(6)}>
@@ -342,7 +348,7 @@ export default function SupportPerformanceOverview() {
                                 {...OverviewMetricConfig[
                                     OverviewMetric.TicketsReplied
                                 ]}
-                                overviewMetric={OverviewMetric.TicketsReplied}
+                                drillDownMetric={OverviewMetric.TicketsReplied}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(3)}>
@@ -350,7 +356,7 @@ export default function SupportPerformanceOverview() {
                                 {...OverviewMetricConfig[
                                     OverviewMetric.MessagesSent
                                 ]}
-                                overviewMetric={OverviewMetric.MessagesSent}
+                                drillDownMetric={OverviewMetric.MessagesSent}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(3)}>
@@ -358,7 +364,9 @@ export default function SupportPerformanceOverview() {
                                 {...OverviewMetricConfig[
                                     OverviewMetric.TicketHandleTime
                                 ]}
-                                overviewMetric={OverviewMetric.TicketHandleTime}
+                                drillDownMetric={
+                                    OverviewMetric.TicketHandleTime
+                                }
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(3)}>
@@ -366,7 +374,7 @@ export default function SupportPerformanceOverview() {
                                 {...OverviewMetricConfig[
                                     OverviewMetric.OneTouchTickets
                                 ]}
-                                overviewMetric={OverviewMetric.OneTouchTickets}
+                                drillDownMetric={OverviewMetric.OneTouchTickets}
                             />
                         </DashboardGridCell>
                         <DashboardGridCell size={getGridCellSize(6)}>

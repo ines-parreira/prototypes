@@ -17,7 +17,7 @@ import {
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
-import {TrendCard} from 'pages/stats/support-performance/components/TrendCard'
+import {TrendCard} from 'pages/stats/common/components/TrendCard'
 import TrendBadge, {DEFAULT_BADGE_TEXT} from 'pages/stats/TrendBadge'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
@@ -193,7 +193,7 @@ describe('<TrendCard />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <TrendCard
                         {...OverviewMetricConfig[overviewMetric]}
-                        overviewMetric={overviewMetric}
+                        drillDownMetric={overviewMetric}
                     />
                 </Provider>
             )
@@ -231,7 +231,7 @@ describe('<TrendCard />', () => {
             <Provider store={mockStore(defaultState)}>
                 <TrendCard
                     {...OverviewMetricConfig[metric]}
-                    overviewMetric={metric}
+                    drillDownMetric={metric}
                 />
             </Provider>
         )
