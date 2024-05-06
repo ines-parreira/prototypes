@@ -13,6 +13,7 @@ export function isPurchasedProductValue(
 
 export type CampaignValue =
     | string
+    | string[]
     | number
     | boolean
     | PurchasedProductValue[]

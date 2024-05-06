@@ -11,6 +11,10 @@ export const validateCurrentUrl = (
         throw new ValidationError('Value is required')
     }
 
+    if (value.includes(' ')) {
+        throw new ValidationError('URL should not contain any spaces.')
+    }
+
     try {
         decodeURI(value)
     } catch (e) {

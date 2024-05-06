@@ -8,6 +8,11 @@ describe('validationErrors', () => {
         it.each([
             ['', CampaignTriggerOperator.Eq, 'Value is required'],
             [
+                'test path',
+                CampaignTriggerOperator.Contains,
+                'URL should not contain any spaces.',
+            ],
+            [
                 'utm_source=Klaviyo&utm_medium=email&utm_campaign=Thanks%20for%20subscribing%',
                 CampaignTriggerOperator.Eq,
                 'The URL appears to be malformed. Please review and re-enter.',

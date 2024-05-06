@@ -106,7 +106,11 @@ export const AdvancedTriggerFactory = ({
             isAllowedToEdit={isAllowedToEdit}
             isFirst={isFirst}
             trigger={trigger}
-            onDeleteTrigger={onDeleteTrigger}
+            onDeleteTrigger={
+                trigger.type !== CampaignTriggerType.CurrentUrl
+                    ? onDeleteTrigger
+                    : null
+            }
         >
             {content}
             {!isAllowedToEdit && (

@@ -83,7 +83,9 @@ export const OrderedProductsTriggers = ({
 
         const isValidValue =
             Array.isArray(trigger.value) &&
-            trigger.value.every((item) => isPurchasedProductValue(item))
+            trigger.value.every((item) =>
+                isPurchasedProductValue(item as PurchasedProductValue)
+            )
 
         if (isValidValue) {
             const transformedValue = (

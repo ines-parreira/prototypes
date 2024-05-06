@@ -1,3 +1,5 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
 :local {
     .fullWidth {
         width: 100%;
@@ -55,11 +57,55 @@
             align-items: center;
             cursor: pointer;
             margin: 0;
-            padding: 8px;
+            padding: @layout-spacing-xs;
 
             i {
                 font-size: 20px;
             }
         }
+    }
+
+    .marginRight {
+        margin-right: @layout-spacing-xs;
+    }
+
+    .currentUrlContainer {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        margin-right: 0 !important; // overwrites triggerWrapper class
+    }
+
+    .currentSetting {
+        display: flex;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .currentUrlRowContainer {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        .closeWrapper {
+            align-items: flex-start;
+        }
+    }
+
+    .urlInput {
+        width: 100%;
+        margin-right: @layout-spacing-xs;
+    }
+
+    .currentValue {
+        display: flex;
+    }
+
+    .multipleValues {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .buttonContainer {
+        display: flex;
+        align-items: flex-start;
     }
 }

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import classNames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import {Value} from 'pages/common/forms/SelectField/types'
@@ -21,15 +22,18 @@ export const CurrentUrlTrigger = ({
     id,
     trigger,
     onUpdateTrigger,
+    onDeleteTrigger,
     onTriggerValidationUpdate,
 }: Props): JSX.Element => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
         trigger.operator
     )
-    const [innerValue, setInnerValue] = useState<string>(
-        trigger.value as string
+    const [innerValue, setInnerValue] = useState<string[]>(
+        (!Array.isArray(trigger.value)
+            ? [trigger.value]
+            : trigger.value) as string[]
     )
-    const [innerError, setInnerError] = useState<string | null>(null)
+    const [innerError, setInnerError] = useState<string[]>([])
 
     const handleChangeOperator = (operator: Value) =>
         handleTriggerOperatorChange(
@@ -40,26 +44,81 @@ export const CurrentUrlTrigger = ({
             onUpdateTrigger
         )
 
-    const handleChangeValue = (value: string) => {
-        setInnerValue(value)
+    const handleChangeValue = (index: number) => (value: string) => {
+        setInnerValue((prevState) => {
+            const arr = [...prevState]
+            arr[index] = value
+            return arr
+        })
+    }
+
+    const updateInputError = (index: number, value: string) =>
+        setInnerError((prevState) => {
+            const arr = [...prevState]
+            arr[index] = value
+            return arr
+        })
+
+    const deleteValue = (index: number) => {
+        setInnerValue((prevState) => {
+            const arr = [...prevState]
+            arr.splice(index, 1)
+
+            if (arr.length === 0) {
+                // we removed all values, remove trigger
+                onDeleteTrigger(id)
+            } else {
+                onUpdateTrigger(id, {
+                    ...trigger,
+                    value: arr,
+                })
+            }
+
+            return arr
+        })
+    }
+
+    const addValue = () => {
+        if (innerValue.some((value) => !Boolean(value))) {
+            // if have one empty value, do not add more
+            return
+        }
+
+        setInnerValue((prevState) => {
+            const arr = [...prevState, '']
+            return arr
+        })
+    }
+
+    const validateValues = (values: string[]) => {
+        values.map((value, index) => {
+            validateTrigger({
+                index: index,
+                trigger: trigger,
+                value: value,
+            })
+        })
     }
 
     const validateTrigger = ({
+        index,
         trigger,
         value,
     }: {
+        index: number
         trigger: CampaignTrigger
         value: any
     }): boolean => {
         let isValid = true
 
-        setInnerError(null) // clear error value
+        // Clear error for the input
+        updateInputError(index, '')
 
         try {
             validateCurrentUrl(value, trigger.operator)
         } catch (e) {
             if (e instanceof ValidationError) {
-                setInnerError(e.message)
+                updateInputError(index, e.message)
                 isValid = false
             }
         }
@@ -70,11 +129,12 @@ export const CurrentUrlTrigger = ({
         return isValid
     }
 
-    const handleBlurValue = () => {
+    const handleBlurValue = (index: number) => () => {
         if (
             !validateTrigger({
+                index,
                 trigger: trigger,
-                value: innerValue,
+                value: innerValue[index],
             })
         ) {
             return
@@ -86,44 +146,96 @@ export const CurrentUrlTrigger = ({
         })
     }
 
-    const handleOnFocus = () => {
-        setInnerError(null) // clear error value
+    const handleOnFocus = (index: number) => () => {
+        updateInputError(index, '')
     }
 
     useEffect(() => {
-        validateTrigger({
-            trigger: trigger,
-            value: innerValue,
-        })
+        if (trigger.value) {
+            const values = Array.isArray(trigger.value)
+                ? trigger.value
+                : [trigger.value]
+
+            validateValues(values as string[])
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [trigger.operator, trigger.value])
 
+    useEffect(() => {
+        validateValues(innerValue)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [innerValue.length])
+
     return (
-        <>
-            <div>
-                <Button intent="secondary" className="btn-frozen">
-                    Current URL
-                </Button>
-            </div>
-            <SelectField
-                value={innerOperator}
-                onChange={handleChangeOperator}
-                options={convertTriggerOperatorsToSelectOptions(trigger.type)}
-            />
-            <div
-                data-testid="current-url-value"
-                style={{display: 'flex', flexGrow: 1}}
-            >
-                <InputField
-                    className={css.fullWidth}
-                    value={innerValue}
-                    onChange={handleChangeValue}
-                    onBlur={handleBlurValue}
-                    onFocus={handleOnFocus}
-                    hasError={!!innerError}
-                    error={innerError}
+        <div className={css.currentUrlContainer}>
+            <div className={classNames(css.currentSetting)}>
+                <div className={css.marginRight}>
+                    <Button intent="secondary" className="btn-frozen">
+                        Current URL
+                    </Button>
+                </div>
+                <SelectField
+                    value={innerOperator}
+                    onChange={handleChangeOperator}
+                    options={convertTriggerOperatorsToSelectOptions(
+                        trigger.type,
+                        innerValue.length > 1
+                    )}
                 />
             </div>
-        </>
+            <div className={css.currentUrlRowContainer}>
+                {innerValue.map((__, idx) => (
+                    <div
+                        key={`current-url-input-${idx}`}
+                        className={classNames(css.currentValue, {
+                            [css.multipleValues]: innerValue.length > 1,
+                        })}
+                    >
+                        <InputField
+                            data-testid="current-url-input"
+                            className={css.urlInput}
+                            value={innerValue[idx]}
+                            onChange={handleChangeValue(idx)}
+                            onBlur={handleBlurValue(idx)}
+                            onFocus={handleOnFocus(idx)}
+                            hasError={!!innerError[idx]}
+                            error={innerError[idx]}
+                        />
+                        {innerValue.length === 1 && (
+                            <Button
+                                data-testid="button-add-value"
+                                intent="secondary"
+                                fillStyle="ghost"
+                                onClick={addValue}
+                            >
+                                + Add URL
+                            </Button>
+                        )}
+                        <div
+                            data-testid="button-delete-value"
+                            className={css.closeWrapper}
+                            onClick={() => deleteValue(idx)}
+                        >
+                            <i className="material-icons md-2 text-danger">
+                                clear
+                            </i>
+                        </div>
+                    </div>
+                ))}
+                {innerValue.length > 1 && (
+                    <div className={css.buttonContainer}>
+                        <Button
+                            data-testid="button-add-value"
+                            intent="secondary"
+                            fillStyle="ghost"
+                            onClick={addValue}
+                        >
+                            + Add URL
+                        </Button>
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }

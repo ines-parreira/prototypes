@@ -14,7 +14,7 @@ type Props = {
     isAllowedToEdit?: boolean
     isFirst?: boolean
     trigger: CampaignTrigger
-    onDeleteTrigger?: DeleteTriggerFn
+    onDeleteTrigger?: DeleteTriggerFn | null
 }
 
 export const BaseTriggerRow = ({
