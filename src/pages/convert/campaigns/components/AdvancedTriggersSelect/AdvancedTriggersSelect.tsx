@@ -60,7 +60,7 @@ export const AdvancedTriggersSelect = ({
         isShopifyHeadless,
     })
 
-    const upsellAvailable = !isConvertSubscriber && isLightCampaign
+    const upsellAvailable = !isConvertSubscriber && isShopifyStore
 
     const optionsForUpsell = useMemo(() => {
         if (!upsellAvailable) {

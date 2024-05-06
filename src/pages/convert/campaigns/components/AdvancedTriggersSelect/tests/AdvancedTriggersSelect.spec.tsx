@@ -66,11 +66,15 @@ describe('<AdvancedTriggersSelect />', () => {
         getByText('Time spent on page')
     })
 
-    it('renders options for upsell when is light campaign', () => {
+    it('renders options for upsell when is Shopify non-subscriber', () => {
         const onClickFn = jest.fn()
 
         const {getByText} = render(
-            <AdvancedTriggersSelect isLightCampaign onClick={onClickFn} />
+            <AdvancedTriggersSelect
+                isLightCampaign
+                isShopifyStore
+                onClick={onClickFn}
+            />
         )
 
         const buttonEl = getByText('Add condition')
@@ -100,6 +104,27 @@ describe('<AdvancedTriggersSelect />', () => {
     })
 
     it('does not render upsell option for subscribers', () => {
+        const onClickFn = jest.fn()
+
+        const {getByText, queryByText} = render(
+            <AdvancedTriggersSelect
+                isConvertSubscriber
+                isShopifyStore
+                isLightCampaign
+                onClick={onClickFn}
+            />
+        )
+
+        const buttonEl = getByText('Add condition')
+
+        act(() => {
+            fireEvent.click(buttonEl)
+        })
+
+        expect(queryByText('Subscribe To Convert')).not.toBeInTheDocument()
+    })
+
+    it('does not render upsell option when is not Shopify', () => {
         const onClickFn = jest.fn()
 
         const {getByText, queryByText} = render(

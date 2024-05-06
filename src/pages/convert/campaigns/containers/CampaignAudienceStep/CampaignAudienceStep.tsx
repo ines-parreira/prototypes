@@ -23,7 +23,6 @@ import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import {CampaignStepsKeys} from '../../types/CampaignSteps'
 
 import {TriggersProvider} from '../TriggersProvider'
-import {AdvancedTriggersTooltip} from '../../components/AdvancedTriggersTooltip'
 import {isDeviceTypeValue} from '../../types/enums/CampaignTriggerDeviceTypeValue.enum'
 
 type Props = {
@@ -169,12 +168,6 @@ export const CampaignAudienceStep = ({
                         onClick={addTrigger}
                     />
                 </TriggersProvider>
-
-                {!isConsideredLightCampaign && (
-                    <AdvancedTriggersTooltip
-                        isConvertSubscriber={isConvertSubscriber}
-                    />
-                )}
             </div>
 
             {!isConsideredLightCampaign && (
