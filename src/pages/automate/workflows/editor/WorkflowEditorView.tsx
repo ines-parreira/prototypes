@@ -20,6 +20,7 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {
@@ -68,6 +69,7 @@ function WorkflowEditorViewWrapped({
     const {template: templateSlug, from: fromView} =
         useSearch<{template: string | undefined; from: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
+    const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -155,6 +157,17 @@ function WorkflowEditorViewWrapped({
 
     const handleDiscard = () => {
         workflowEditorContext.handleDiscard()
+    }
+
+    const handleTest = (isTestable: boolean) => {
+        if (isTestable) {
+            workflowEditorContext.setIsTesting(true)
+        } else {
+            notifyMerchant({
+                message: 'Save as draft or publish in order to test this Flow',
+                status: NotificationStatus.Error,
+            })
+        }
     }
 
     const handleSave = () => upsertWorkflow(true)
@@ -347,12 +360,14 @@ function WorkflowEditorViewWrapped({
                             />
 
                             <WorkflowEditorActionButtons
+                                isTestDisabled={chatChannels.length === 0}
                                 isNewWorkflow={isNewWorkflow}
                                 isFetchPending={isFetchPending}
                                 isSavePending={isSavePending}
                                 isPublishPending={isPublishPending}
                                 isDraft={isDraft}
                                 isDirty={isDirty}
+                                onTest={handleTest}
                                 onCancel={() => onDiscard(fromView)}
                                 onSave={handleSave}
                                 onPublish={handlePublish}

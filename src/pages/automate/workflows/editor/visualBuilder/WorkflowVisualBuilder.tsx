@@ -1,6 +1,6 @@
 import 'reactflow/dist/style.css'
 
-import React, {PropsWithChildren, useCallback, useEffect} from 'react'
+import React, {PropsWithChildren, useCallback, useEffect, useMemo} from 'react'
 import {
     Controls,
     MiniMap,
@@ -34,6 +34,7 @@ import CustomEdge from './CustomEdge'
 import NodeEditorDrawer from './NodeEditorDrawer'
 
 import css from './WorkflowVisualBuilder.less'
+import {TestFlowEditor} from './editors/TestFlowEditor'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
@@ -58,9 +59,11 @@ export function WorkflowVisualBuilderWrapped() {
         isFetchPending,
         visualBuilderGraph,
         visualBuilderNodeIdEditing,
+        isTesting,
         setVisualBuilderNodeIdEditing,
         setVisualBuilderChoiceEventIdEditing,
         setVisualBuilderBranchIdsEditing,
+        setIsTesting,
     } = useWorkflowEditorContext()
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? visualBuilderGraph.nodes.find(
@@ -69,6 +72,11 @@ export function WorkflowVisualBuilderWrapped() {
         : null
 
     const visualBuilderGraphPrevious = usePrevious(visualBuilderGraph)
+
+    const startFlowNode = useMemo(
+        () => visualBuilderGraph.nodes.find((n) => n.type === 'trigger_button'),
+        [visualBuilderGraph.nodes]
+    )
 
     useEffect(() => {
         if (!visualBuilderNodeIdEditing || !visualBuilderGraphPrevious?.nodes) {
@@ -98,6 +106,10 @@ export function WorkflowVisualBuilderWrapped() {
         setVisualBuilderBranchIdsEditing,
     ])
 
+    const onDrawerTestEditorClose = useCallback(() => {
+        setIsTesting(false)
+    }, [setIsTesting])
+
     const handleNodeClick = useCallback<NodeMouseHandler>(
         (_e, node) => {
             setVisualBuilderNodeIdEditing(node.id)
@@ -109,6 +121,12 @@ export function WorkflowVisualBuilderWrapped() {
 
     // for big flows we disable some features to improve performance
     const isDegradedMode = visualBuilderGraph.nodes.length > 800
+
+    const hasNodeWithShopperAuthentication = useMemo(() => {
+        return visualBuilderGraph.nodes.some(
+            (n) => n.type === 'shopper_authentication'
+        )
+    }, [visualBuilderGraph.nodes])
 
     return (
         <div className={css.container}>
@@ -167,6 +185,16 @@ export function WorkflowVisualBuilderWrapped() {
                         nodeInEdition={visualBuilderNodeEditing}
                         onClose={onDrawerEditorClose}
                     />
+                    {startFlowNode && (
+                        <TestFlowEditor
+                            startFlowNode={startFlowNode}
+                            isAuthenticationBannerVisible={
+                                hasNodeWithShopperAuthentication
+                            }
+                            isTesting={isTesting}
+                            onClose={onDrawerTestEditorClose}
+                        />
+                    )}
                 </>
             )}
         </div>

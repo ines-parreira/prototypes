@@ -1,5 +1,9 @@
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import Tooltip from 'pages/common/components/Tooltip'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ConfirmationButton} from './ConfirmationButton'
 
 interface Props {
@@ -9,9 +13,11 @@ interface Props {
     isSavePending: boolean
     isDraft: boolean
     isDirty: boolean
+    isTestDisabled: boolean
     onCancel: () => void
     onSave: () => void
     onPublish: () => void
+    onTest: (isTestable: boolean) => void
     onDiscard: () => void
 }
 
@@ -20,16 +26,37 @@ export const WorkflowEditorActionButtons = ({
     isFetchPending,
     isSavePending,
     isPublishPending,
+    isTestDisabled,
     isDraft,
     isDirty,
     onCancel,
     onSave,
+    onTest,
     onPublish,
     onDiscard,
 }: Props) => {
+    const isPreviewTestButtonVisible =
+        useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
+
     if (isNewWorkflow) {
         return (
             <>
+                {isPreviewTestButtonVisible && (
+                    <Button
+                        onClick={() => onTest(false)}
+                        intent="secondary"
+                        isDisabled={isTestDisabled}
+                        id="test-disabled"
+                    >
+                        <ButtonIconLabel icon="play_circle" position="left">
+                            Test
+                        </ButtonIconLabel>
+                    </Button>
+                )}
+                <Tooltip target="test-disabled">
+                    Connect a Chat to this store to Test. Testing is currently
+                    available for Chat only.
+                </Tooltip>
                 <Button
                     onClick={onCancel}
                     isDisabled={isFetchPending}
@@ -37,7 +64,6 @@ export const WorkflowEditorActionButtons = ({
                 >
                     Cancel
                 </Button>
-
                 <Button
                     onClick={onSave}
                     isLoading={isFetchPending || isSavePending}
@@ -46,7 +72,6 @@ export const WorkflowEditorActionButtons = ({
                 >
                     Save
                 </Button>
-
                 <Button
                     onClick={onPublish}
                     isLoading={isFetchPending || isPublishPending}
@@ -60,6 +85,24 @@ export const WorkflowEditorActionButtons = ({
 
     return (
         <>
+            {isPreviewTestButtonVisible && (
+                <Button
+                    onClick={() => onTest(true)}
+                    intent="secondary"
+                    isDisabled={isTestDisabled}
+                    id="test-disabled"
+                >
+                    <ButtonIconLabel icon="play_circle" position="left">
+                        Test
+                    </ButtonIconLabel>
+                </Button>
+            )}
+            {isTestDisabled && (
+                <Tooltip target="test-disabled">
+                    Connect a Chat to this store to Test. Testing is currently
+                    available for Chat only.
+                </Tooltip>
+            )}
             <ConfirmationButton
                 confirmationButtonLabel="Discard Changes"
                 confirmationTitle="Discard changes?"

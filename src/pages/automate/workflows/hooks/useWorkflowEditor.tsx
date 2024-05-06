@@ -66,6 +66,7 @@ export type WorkflowEditorContext = {
     isDirty: boolean
     isFetchPending: boolean
     isSavePending: boolean
+    isTesting: boolean
     isPublishPending: boolean
     handleValidate: (isPublishing: boolean) => Maybe<string>
     handleSave: () => Promise<string | undefined>
@@ -93,6 +94,7 @@ export type WorkflowEditorContext = {
     ) => VisualBuilderGraph
     shouldShowErrors: boolean
     setShouldShowErrors: (b: boolean) => void
+    setIsTesting: (isTesting: boolean) => void
     getVariableListInChildren: (nodeId: string) => WorkflowVariable[]
     visualBuilderChoiceEventIdEditing:
         | MultipleChoicesNodeType['data']['choices'][number]['event_id']
@@ -171,6 +173,7 @@ export function useWorkflowEditor(
     const [isPublishPending, setIsPublishPending] = useState(false)
     const [isDownloadPending, setIsDownloadPending] = useState(false)
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
+    const [isTesting, setIsTesting] = useState(false)
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
         useState<VisualBuilderNode['id'] | null>(null)
     const [
@@ -705,6 +708,8 @@ export function useWorkflowEditor(
         deleteTranslation: deleteTranslationCallback,
         shouldShowErrors,
         setShouldShowErrors,
+        isTesting,
+        setIsTesting,
         visualBuilderChoiceEventIdEditing,
         setVisualBuilderChoiceEventIdEditing,
         translateGraph,
@@ -889,6 +894,8 @@ export function createWorkflowEditorContextForPreview(
         isSavePending: false,
         isPublishPending: false,
         isDirty: false,
+        isTesting: false,
+        setIsTesting: () => null,
         getVariableListInChildren: () => [],
         checkInvalidVariablesForNode: () => false,
         checkNodeHasVariablesUsedInChildren: () => false,

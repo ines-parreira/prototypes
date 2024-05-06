@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 
+import classNames from 'classnames'
 import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -16,12 +17,14 @@ type Props<T extends SelfServiceChannel> = {
     channel?: T
     onChange: (channel?: T) => void
     channels: T[]
+    className?: string
 }
 
 const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
     channel,
     onChange,
     channels,
+    className,
 }: Props<T>) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -52,7 +55,7 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
 
     return (
         <SelectInputBox
-            className={css.input}
+            className={classNames(css.input, className)}
             placeholder="Channel"
             floating={floatingRef}
             label={channel?.value?.name}

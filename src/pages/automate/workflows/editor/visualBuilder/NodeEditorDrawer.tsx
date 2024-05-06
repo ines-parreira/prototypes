@@ -83,6 +83,7 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                             nodeInEdition={memoizedNodeInEdition}
                         />
                     )}
+
                     {memoizedNodeInEdition?.type === 'automated_message' && (
                         <AutomatedMessageEditor
                             nodeInEdition={memoizedNodeInEdition}

@@ -39,6 +39,13 @@ declare global {
         PHRASE_FEEDBACK_URL: string
         GorgiasChat?: {
             open: () => void
+            setPage: (page: string) => void
+            isOpen: () => boolean
+            previewFlow: (params: {
+                flowLabel: string
+                flowLanguage: string
+                flowId: string
+            }) => void
         }
         GORGIAS_SUPPORT_EMAIL: string
         STRIPE_PUBLIC_KEY?: string
