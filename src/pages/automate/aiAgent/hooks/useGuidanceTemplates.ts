@@ -147,7 +147,7 @@ export const GuidanceTemplatesData: Record<
         excerpt:
             'When a shopper asks for a return or for an exchange: Determine Return Eligibility: Compute the difference in days between order date and ticket creation date to determine.',
         tag: 'Returns',
-        style: {color: '#3A0F7E', background: '#EDEAFF'},
+        style: {color: '#883100', background: '#FFE8DB'},
     },
     [GuidanceTemplateKey.DiscountsAndPromos]: {
         id: GuidanceTemplateKey.DiscountsAndPromos,

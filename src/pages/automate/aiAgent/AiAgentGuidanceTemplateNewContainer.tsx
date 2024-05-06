@@ -2,11 +2,11 @@ import React from 'react'
 import {Redirect, useParams} from 'react-router-dom'
 import Loader from 'pages/common/components/Loader/Loader'
 import AutomateView from '../common/components/AutomateView'
-import {AI_AGENT} from '../common/components/constants'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
 import {AiAgentGuidanceTemplateNewView} from './AiAgentGuidanceTemplateNewView'
 import {isGuidanceTemplateKey} from './types'
+import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 
 export const AiAgentGuidanceTemplateNewContainer = () => {
     const {shopName, templateId} = useParams<{
@@ -25,7 +25,12 @@ export const AiAgentGuidanceTemplateNewContainer = () => {
     }
 
     return (
-        <AutomateView title={AI_AGENT} headerNavbarItems={headerNavbarItems}>
+        <AutomateView
+            title={
+                <GuidanceBreadcrumbs shopName={shopName} title="New guidance" />
+            }
+            headerNavbarItems={headerNavbarItems}
+        >
             <AiAgentGuidanceTemplateNewView
                 guidanceHelpCenterId={guidanceHelpCenter.id}
                 locale={guidanceHelpCenter.default_locale}

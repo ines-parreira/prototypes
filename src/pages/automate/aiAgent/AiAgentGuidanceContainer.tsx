@@ -23,7 +23,7 @@ export const AiAgentGuidanceContainer = () => {
 
     return (
         <AutomateView
-            title={<GuidanceBreadcrumbs shopName={shopName} title="Guidance" />}
+            title={<GuidanceBreadcrumbs shopName={shopName} />}
             headerNavbarItems={headerNavbarItems}
             className={css.container}
         >

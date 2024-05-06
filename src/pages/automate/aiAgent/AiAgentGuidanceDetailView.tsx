@@ -25,7 +25,7 @@ export const AiAgentGuidanceDetailView = ({
     locale,
 }: Props) => {
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
-    const {guidanceArticle} = useGuidanceArticle({
+    const {guidanceArticle, isGuidanceArticleLoading} = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
         locale,
@@ -78,7 +78,9 @@ export const AiAgentGuidanceDetailView = ({
                 initialFields={initialFields}
                 onSubmit={onSubmit}
                 onDelete={onDelete}
-                isLoading={isGuidanceArticleUpdating}
+                isLoading={
+                    isGuidanceArticleUpdating || isGuidanceArticleLoading
+                }
             />
         </AutomateView>
     )

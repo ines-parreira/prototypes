@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import _isEqual from 'lodash/isEqual'
 import {notify} from 'state/notifications/actions'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
@@ -47,7 +47,6 @@ export const GuidanceForm = ({
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
     const [formState, setFormState] =
         useState<GuidanceFormFields>(initialFormState)
-    const [hasSubmitted, setHasSubmitted] = useState(false)
     const onNameChange = (value: string) => {
         setFormState((prevState) => ({...prevState, name: value}))
     }
@@ -56,12 +55,18 @@ export const GuidanceForm = ({
         setFormState((prevState) => ({...prevState, content: value}))
     }
 
+    const isFormDirty = !_isEqual(initialFormState, formState)
+
     const isSubmitDisabled =
         !formState.name ||
         !formState.content ||
-        (actionType === 'update' && _isEqual(initialFormState, formState))
+        (actionType === 'update' && !isFormDirty)
 
-    const isFormDirty = !_isEqual(initialFormState, formState)
+    useEffect(() => {
+        if (initialFields) {
+            setFormState(initialFields)
+        }
+    }, [initialFields])
 
     const handleDelete = async () => {
         if (!onDelete) return
@@ -74,6 +79,7 @@ export const GuidanceForm = ({
                     message: 'Guidance successfully deleted',
                 })
             )
+            history.push(routes.guidance)
         } catch (err) {
             void dispatch(
                 notify({
@@ -82,8 +88,6 @@ export const GuidanceForm = ({
                 })
             )
         }
-
-        history.push(routes.guidance)
     }
 
     const onCancel = () => {
@@ -94,16 +98,17 @@ export const GuidanceForm = ({
         setFormState(initialFormState)
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async ({redirectTo}: {redirectTo: string}) => {
         try {
             await onSubmit(formState)
-            setHasSubmitted(true)
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Guidance successfully saved',
                 })
             )
+
+            history.push(redirectTo)
         } catch (err) {
             void dispatch(
                 notify({
@@ -115,22 +120,18 @@ export const GuidanceForm = ({
     }
 
     const onSave = async () => {
-        await handleSubmit()
-
-        history.push(routes.guidance)
+        await handleSubmit({redirectTo: routes.guidance})
     }
 
     const onSaveAndTest = async () => {
-        await handleSubmit()
-
-        history.push(routes.playground)
+        await handleSubmit({redirectTo: routes.playground})
     }
 
     return (
         <>
             <UnsavedChangesPrompt
                 onSave={onSave}
-                when={isFormDirty && !hasSubmitted}
+                when={isFormDirty && !isLoading}
                 onDiscard={resetForm}
                 shouldRedirectAfterSave={true}
             />
@@ -171,6 +172,7 @@ export const GuidanceForm = ({
                             : 'Create Guidance'}
                     </Button>
                     <Button
+                        intent="secondary"
                         isDisabled={isSubmitDisabled}
                         disabled={isSubmitDisabled}
                         isLoading={isLoading}

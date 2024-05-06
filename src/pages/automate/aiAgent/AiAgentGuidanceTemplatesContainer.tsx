@@ -6,7 +6,7 @@ import {AI_AGENT} from '../common/components/constants'
 import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
 import {AiAgentGuidanceTemplatesView} from './AiAgentGuidanceTemplatesView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import css from './AiAgentGuidanceTemplatesView.less'
+import css from './AiAgentGuidanceTemplatesContainer.less'
 
 export const AiAgentGuidanceTemplatesContainer = () => {
     const {shopName} = useParams<{

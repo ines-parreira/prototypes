@@ -1,6 +1,8 @@
 import React from 'react'
+import BackLink from 'pages/common/components/BackLink'
 import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
 import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
+import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 type Props = {
     shopName: string
@@ -8,10 +10,13 @@ type Props = {
 
 export const AiAgentGuidanceTemplatesView = ({shopName}: Props) => {
     const {guidanceTemplates} = useGuidanceTemplates()
+    const {routes} = useAiAgentNavigation({shopName})
 
     return (
-        <div>
-            <h3 className="heading-section-semibold">
+        <>
+            <BackLink path={routes.guidance} label="Back to Guidance" />
+
+            <h3 className="heading-section-semibold mb-0">
                 Start with a template that you can customize to fit your needs:
             </h3>
 
@@ -19,6 +24,6 @@ export const AiAgentGuidanceTemplatesView = ({shopName}: Props) => {
                 guidanceTemplates={guidanceTemplates}
                 shopName={shopName}
             />
-        </div>
+        </>
     )
 }

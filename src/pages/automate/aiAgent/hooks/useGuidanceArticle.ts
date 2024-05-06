@@ -21,7 +21,7 @@ export const useGuidanceArticle = ({
     locale: LocaleCode
 }) => {
     const queryClient = useQueryClient()
-    const {data} = useGetHelpCenterArticle(
+    const {data, isLoading: isGuidanceArticleLoading} = useGetHelpCenterArticle(
         guidanceArticleId,
         guidanceHelpCenterId,
         locale,
@@ -48,5 +48,5 @@ export const useGuidanceArticle = ({
         [data]
     )
 
-    return {guidanceArticle}
+    return {guidanceArticle, isGuidanceArticleLoading}
 }

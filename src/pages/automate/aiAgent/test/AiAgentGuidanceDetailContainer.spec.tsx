@@ -64,6 +64,7 @@ describe('<AiAgentGuidanceDetail />', () => {
         )
         mockedUseGuidanceArticle.mockReturnValue({
             guidanceArticle: guidanceArticle,
+            isGuidanceArticleLoading: false,
         })
     })
 
@@ -76,7 +77,10 @@ describe('<AiAgentGuidanceDetail />', () => {
     })
 
     it('should render loader when guidance article query has not fulfilled', () => {
-        mockedUseGuidanceArticle.mockReturnValue({guidanceArticle: undefined})
+        mockedUseGuidanceArticle.mockReturnValue({
+            guidanceArticle: undefined,
+            isGuidanceArticleLoading: true,
+        })
 
         renderComponent()
 
