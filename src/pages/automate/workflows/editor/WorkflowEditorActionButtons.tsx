@@ -53,10 +53,12 @@ export const WorkflowEditorActionButtons = ({
                         </ButtonIconLabel>
                     </Button>
                 )}
-                <Tooltip target="test-disabled">
-                    Connect a Chat to this store to Test. Testing is currently
-                    available for Chat only.
-                </Tooltip>
+                {isPreviewTestButtonVisible && isTestDisabled && (
+                    <Tooltip target="test-disabled">
+                        Connect a Chat to this store to Test. Testing is
+                        currently available for Chat only.
+                    </Tooltip>
+                )}
                 <Button
                     onClick={onCancel}
                     isDisabled={isFetchPending}
@@ -97,7 +99,7 @@ export const WorkflowEditorActionButtons = ({
                     </ButtonIconLabel>
                 </Button>
             )}
-            {isTestDisabled && (
+            {isPreviewTestButtonVisible && isTestDisabled && (
                 <Tooltip target="test-disabled">
                     Connect a Chat to this store to Test. Testing is currently
                     available for Chat only.
