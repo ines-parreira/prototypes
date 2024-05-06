@@ -124,6 +124,7 @@ import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_OVERVIEW,
     ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
+    ROUTE_AUTOMATE_OVERVIEW_V2_TMP,
 } from 'pages/stats/self-service/constants'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
@@ -683,7 +684,10 @@ export function StatsRoutes() {
                 />
                 <Route
                     exact
-                    path={`${path}/${ROUTE_AUTOMATE_OVERVIEW}`}
+                    path={[
+                        `${path}/${ROUTE_AUTOMATE_OVERVIEW}`,
+                        `${path}/${ROUTE_AUTOMATE_OVERVIEW_V2_TMP}`,
+                    ]}
                     render={() => (
                         <App
                             content={AutomateStatsPaywall}

@@ -61,7 +61,11 @@ jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
     useParams: jest.fn(),
-    useLocation: () => '/',
+    useLocation: () =>
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        ({
+            pathname: '/app/stats/automate-overview',
+        } as any),
 }))
 
 // Trend

@@ -1,5 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useMemo} from 'react'
+import {useLocation} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 
@@ -24,6 +25,7 @@ import SelfServiceStatsPagePaywallCustomCta from './self-service/SelfServiceStat
 import {
     PAGE_TITLE_AUTOMATE_PAYWALL,
     PAGE_TITLE_OVERVIEW,
+    ROUTE_AUTOMATE_OVERVIEW_V2_TMP,
 } from './self-service/constants'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
@@ -35,6 +37,7 @@ export function AutomateOverview() {
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
+    const location = useLocation()
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters
         return {
@@ -49,7 +52,10 @@ export function AutomateOverview() {
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
     const granularity = periodToReportingGranularity(requestStatsFilters.period)
 
-    if (isAutomateAnalyticsv2) {
+    if (
+        isAutomateAnalyticsv2 ||
+        location.pathname.endsWith(ROUTE_AUTOMATE_OVERVIEW_V2_TMP)
+    ) {
         return (
             <AutomateOverviewV2
                 filters={pageStatsFilters}
