@@ -212,8 +212,12 @@ const PaymentsHistoryView = () => {
                                                 </Button>
                                             )}
                                             {!paidWithShopify &&
-                                                paymentIntent?.status ===
-                                                    PaymentIntentStatus.RequiresSource && (
+                                                [
+                                                    PaymentIntentStatus.RequiresSource,
+                                                    PaymentIntentStatus.RequiresPaymentMethod,
+                                                ].includes(
+                                                    paymentIntent?.status
+                                                ) && (
                                                     <Button
                                                         intent="primary"
                                                         isLoading={

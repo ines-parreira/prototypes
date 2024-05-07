@@ -47,6 +47,7 @@ export enum PaymentType {
 export enum PaymentIntentStatus {
     RequiresSource = 'requires_source',
     RequiresConfirmation = 'requires_source_action',
+    RequiresPaymentMethod = 'requires_payment_method',
     Succeeded = 'succeeded',
 }
 
