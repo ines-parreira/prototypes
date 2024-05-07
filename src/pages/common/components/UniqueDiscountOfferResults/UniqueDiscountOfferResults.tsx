@@ -314,6 +314,7 @@ export default function UniqueDiscountCodeResults({
                                             <div className={css.actions}>
                                                 <IconButton
                                                     intent="secondary"
+                                                    fillStyle="ghost"
                                                     data-testid={
                                                         testIds.editBtn
                                                     }
@@ -328,6 +329,7 @@ export default function UniqueDiscountCodeResults({
                                                 </IconButton>
                                                 <IconButton
                                                     intent="destructive"
+                                                    fillStyle="ghost"
                                                     data-testid={
                                                         testIds.deleteIntentBtn
                                                     }
