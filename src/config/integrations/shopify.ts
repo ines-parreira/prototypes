@@ -233,3 +233,6 @@ export const MACRO_PREVIOUS_VARIABLES = {
         },
     ],
 }
+
+export const shopifyAdminBaseUrl = (storeName: string): string =>
+    `https://admin.shopify.com/store/${storeName}`

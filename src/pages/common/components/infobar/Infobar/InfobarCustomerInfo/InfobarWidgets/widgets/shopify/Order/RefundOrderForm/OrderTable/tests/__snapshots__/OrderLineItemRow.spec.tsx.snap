@@ -11,7 +11,7 @@ exports[`<LineItemRow/> should render 1`] = `
       <div>
         <a
           class="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          href="https://admin.shopify.com/store/storegorgias3/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -133,7 +133,7 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
       <div>
         <a
           class="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          href="https://admin.shopify.com/store/storegorgias3/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -246,7 +246,7 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
       <div>
         <a
           class="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          href="https://admin.shopify.com/store/storegorgias3/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -368,7 +368,7 @@ exports[`<LineItemRow/> should render with the zero quantity 1`] = `
       <div>
         <a
           class="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          href="https://admin.shopify.com/store/storegorgias3/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
         >
@@ -490,7 +490,7 @@ exports[`<LineItemRow/> should render without quantity and without price 1`] = `
       <div>
         <a
           class="title"
-          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          href="https://admin.shopify.com/store/storegorgias3/products/8345093387/variants/31128766316567"
           rel="noopener noreferrer"
           target="_blank"
         >

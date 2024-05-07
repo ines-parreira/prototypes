@@ -69,7 +69,7 @@ export const initialState: GorgiasInitialState = {
             },
             shopify: {
                 redirect_uri:
-                    'https://{shop_name}.myshopify.com/admin/oauth/authorize?client_id=0d5570af054ce903798f1ae621c02291&scope=read_all_orders%2Cread_orders%2Cwrite_orders%2Cwrite_order_edits%2Cread_order_edits%2Cread_customers%2Cwrite_customers%2Cread_themes%2Cwrite_themes%2Cread_products%2Cread_draft_orders%2Cwrite_draft_orders&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D',
+                    'https://admin.shopify.com/store/{shop_name}/oauth/authorize?client_id=0d5570af054ce903798f1ae621c02291&scope=read_all_orders%2Cread_orders%2Cwrite_orders%2Cwrite_order_edits%2Cread_order_edits%2Cread_customers%2Cwrite_customers%2Cread_themes%2Cwrite_themes%2Cread_products%2Cread_draft_orders%2Cwrite_draft_orders&redirect_uri=https%3A%2F%2Faccounts.gorgias.xyz%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F&state=eyJhY2NvdW50X2RvbWFpbiI6ICJhY21lIn0%3D',
             },
             smile: {
                 redirect_uri:

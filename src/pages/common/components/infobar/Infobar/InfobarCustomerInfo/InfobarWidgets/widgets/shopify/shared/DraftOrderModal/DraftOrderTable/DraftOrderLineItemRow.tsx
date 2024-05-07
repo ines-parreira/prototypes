@@ -14,6 +14,7 @@ import {
 import {formatPrice} from 'business/shopify/number'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyActionType} from '../../../types'
 import {ProductStockQuantity} from '../../StockQuantity'
@@ -174,7 +175,7 @@ function DraftOrderLineItemRow({
             )
         }
 
-        const href = `https://${shopName}.myshopify.com/admin/products/${productId}`
+        const href = `${shopifyAdminBaseUrl(shopName)}/products/${productId}`
         const variantId = lineItem.get('variant_id') as number | null
 
         return (

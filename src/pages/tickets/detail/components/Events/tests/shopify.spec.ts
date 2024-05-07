@@ -30,7 +30,7 @@ describe('shopifyEvent', () => {
         expect(event).toStrictEqual({
             objectLabel: undefined,
             objectLink:
-                'https://undefined.myshopify.com/admin/draft_orders/undefined',
+                'https://admin.shopify.com/store/undefined/draft_orders/undefined',
         })
     })
 
@@ -51,7 +51,8 @@ describe('shopifyEvent', () => {
 
         expect(event).toStrictEqual({
             objectLabel: 'draft_order_name',
-            objectLink: 'https://shop_name.myshopify.com/admin/draft_orders/1',
+            objectLink:
+                'https://admin.shopify.com/store/shop_name/draft_orders/1',
         })
     })
 
@@ -81,7 +82,7 @@ describe('shopifyEvent', () => {
         expect(event).toStrictEqual({
             objectLabel: undefined,
             objectLink:
-                'https://undefined.myshopify.com/admin/orders/undefined',
+                'https://admin.shopify.com/store/undefined/orders/undefined',
         })
     })
 
@@ -108,7 +109,7 @@ describe('shopifyEvent', () => {
 
         expect(event).toStrictEqual({
             objectLabel: 'order_name',
-            objectLink: 'https://shop_name.myshopify.com/admin/orders/1',
+            objectLink: 'https://admin.shopify.com/store/shop_name/orders/1',
         })
     })
 
@@ -125,7 +126,7 @@ describe('shopifyEvent', () => {
         expect(event).toStrictEqual({
             objectLabel: 'undefined × undefined',
             objectLink:
-                'https://undefined.myshopify.com/admin/orders/undefined',
+                'https://admin.shopify.com/store/undefined/orders/undefined',
         })
     })
 
@@ -160,7 +161,7 @@ describe('shopifyEvent', () => {
 
         expect(event).toStrictEqual({
             objectLabel: '1 × item_name',
-            objectLink: 'https://shop_name.myshopify.com/admin/orders/1',
+            objectLink: 'https://admin.shopify.com/store/shop_name/orders/1',
         })
     })
 })

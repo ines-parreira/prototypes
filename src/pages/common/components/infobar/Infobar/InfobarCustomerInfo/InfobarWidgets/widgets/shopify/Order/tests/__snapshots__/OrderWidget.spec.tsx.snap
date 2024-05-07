@@ -7,7 +7,7 @@ exports[`<TitleWrapper/> render() should not render copy button if editing 1`] =
   >
     <a
       class="orderTitle"
-      href="https://undefined.myshopify.com/admin/orders/"
+      href="https://admin.shopify.com/store/undefined/orders/"
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -27,7 +27,7 @@ exports[`<TitleWrapper/> render() should render copy button if not editing 1`] =
   >
     <a
       class="orderTitle"
-      href="https://undefined.myshopify.com/admin/orders/"
+      href="https://admin.shopify.com/store/undefined/orders/"
       rel="noopener noreferrer"
       target="_blank"
     >

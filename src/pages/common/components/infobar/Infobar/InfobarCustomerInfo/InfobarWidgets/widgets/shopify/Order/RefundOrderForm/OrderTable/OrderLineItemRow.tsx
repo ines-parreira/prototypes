@@ -5,6 +5,7 @@ import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
@@ -84,7 +85,7 @@ function OrderLineItemRow({
             )
         }
 
-        const href = `https://${shopName}.myshopify.com/admin/products/${productId}`
+        const href = `${shopifyAdminBaseUrl(shopName)}/products/${productId}`
         const variantId = lineItem.get('variant_id') as number | undefined
 
         return (

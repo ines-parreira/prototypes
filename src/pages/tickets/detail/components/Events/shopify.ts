@@ -1,4 +1,5 @@
 import {fromJS, List} from 'immutable'
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import {eventMaker} from './types'
 
 const shopifyEvent = ({
@@ -27,7 +28,7 @@ const shopifyEvent = ({
     if (actionConfig.objectType === 'draftOrder') {
         return {
             objectLabel: payload.get('draft_order_name'),
-            objectLink: `https://${shopName}.myshopify.com/admin/draft_orders/${
+            objectLink: `${shopifyAdminBaseUrl(shopName)}/draft_orders/${
                 payload.get('draft_order_id') as number
             }`,
         }
@@ -37,7 +38,7 @@ const shopifyEvent = ({
         if (actionConfig.objectType === 'order') {
             return {
                 objectLabel: order.get('name'),
-                objectLink: `https://${shopName}.myshopify.com/admin/orders/${
+                objectLink: `${shopifyAdminBaseUrl(shopName)}/orders/${
                     order.get('id') as number
                 }`,
             }
@@ -50,7 +51,7 @@ const shopifyEvent = ({
                 objectLabel: `${payload.get('quantity') as number} × ${
                     item.get('name') as string
                 }`,
-                objectLink: `https://${shopName}.myshopify.com/admin/orders/${
+                objectLink: `${shopifyAdminBaseUrl(shopName)}/orders/${
                     order.get('id') as number
                 }`,
             }

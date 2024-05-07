@@ -42,7 +42,7 @@ exports[`<DraftOrderTable/> should render 1`] = `
           <div>
             <a
               class="title"
-              href="https://storegorgias3.myshopify.com/admin/products/1/variants/31128766316567"
+              href="https://admin.shopify.com/store/storegorgias3/products/1/variants/31128766316567"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -190,7 +190,7 @@ exports[`<DraftOrderTable/> should render 1`] = `
           <div>
             <a
               class="title"
-              href="https://storegorgias3.myshopify.com/admin/products/2/variants/31128766349335"
+              href="https://admin.shopify.com/store/storegorgias3/products/2/variants/31128766349335"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -405,7 +405,7 @@ exports[`<DraftOrderTable/> should render without products 1`] = `
           <div>
             <a
               class="title"
-              href="https://storegorgias3.myshopify.com/admin/products/1/variants/31128766316567"
+              href="https://admin.shopify.com/store/storegorgias3/products/1/variants/31128766316567"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -554,7 +554,7 @@ exports[`<DraftOrderTable/> should render without products 1`] = `
           <div>
             <a
               class="title"
-              href="https://storegorgias3.myshopify.com/admin/products/2/variants/31128766349335"
+              href="https://admin.shopify.com/store/storegorgias3/products/2/variants/31128766349335"
               rel="noopener noreferrer"
               target="_blank"
             >

@@ -106,7 +106,7 @@ export const integrationsState = {
         },
         shopify: {
             redirect_uri:
-                'https://{{shop_name}}.myshopify.com/admin/oauth/authorize?scope=read_orders%2Cread_customers%2Cwrite_orders%2Cwrite_customers&state=29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f&client_id=d783d0d0ded4ab7a13c20f47533819a3&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F',
+                'https://admin.shopify.com/store/{{shop_name}}/oauth/authorize?scope=read_orders%2Cread_customers%2Cwrite_orders%2Cwrite_customers&state=29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f&client_id=d783d0d0ded4ab7a13c20f47533819a3&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F',
         },
     },
     integrations: [
@@ -542,7 +542,7 @@ export const integrationsStateWithShopify = fromJS({
     authentication: {
         shopify: {
             redirect_uri:
-                'https://{shop_name}.myshopify.com/admin/oauth/authorize?client_id=foo&scope=read_all_orders%2Cread_orders%2Cwrite_orders%2Cread_customers%2Cwrite_customers%2Cread_themes%2Cwrite_themes%2Cread_products%2Cread_draft_orders%2Cwrite_draft_orders&redirect_uri=https%3A%2F%2Faccount-manager-foo.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F&state=bar',
+                'https://admin.shopify.com/store/{shop_name}/oauth/authorize?client_id=foo&scope=read_all_orders%2Cread_orders%2Cwrite_orders%2Cread_customers%2Cwrite_customers%2Cread_themes%2Cwrite_themes%2Cread_products%2Cread_draft_orders%2Cwrite_draft_orders&redirect_uri=https%3A%2F%2Faccount-manager-foo.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F&state=bar',
         },
     },
     integrations: [

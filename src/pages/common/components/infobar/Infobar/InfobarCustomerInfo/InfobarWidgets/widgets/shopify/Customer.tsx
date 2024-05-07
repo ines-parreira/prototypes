@@ -17,6 +17,7 @@ import {CardHeaderTitle} from 'Infobar/features/Card/display/CardHeaderTitle'
 import {CardHeaderIcon} from 'Infobar/features/Card/display/CardHeaderIcon'
 import ExpandAllButton from 'Infobar/features/Card/display/ExpandAllButton'
 
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {InfobarAction} from '../types'
 import MoneyAmount from '../MoneyAmount'
@@ -129,7 +130,7 @@ function TitleWrapper({children, source, isEditing}: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {integration} = useContext(IntegrationContext)
     const shopName: string = integration.getIn(['meta', 'shop_name'])
-    const href = `https://${shopName}.myshopify.com/admin/customers/${(
+    const href = `${shopifyAdminBaseUrl(shopName)}/customers/${(
         (source.get('id') as string) || ''
     ).toString()}`
 

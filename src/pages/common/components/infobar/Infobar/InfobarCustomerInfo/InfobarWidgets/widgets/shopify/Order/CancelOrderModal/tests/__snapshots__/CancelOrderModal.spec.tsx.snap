@@ -110,7 +110,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               <div>
                 <a
                   class="title"
-                  href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766316567"
+                  href="https://admin.shopify.com/store/gorgiastest/products/8345093387/variants/31128766316567"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -229,7 +229,7 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
               <div>
                 <a
                   class="title"
-                  href="https://gorgiastest.myshopify.com/admin/products/8345093387/variants/31128766349335"
+                  href="https://admin.shopify.com/store/gorgiastest/products/8345093387/variants/31128766349335"
                   rel="noopener noreferrer"
                   target="_blank"
                 >

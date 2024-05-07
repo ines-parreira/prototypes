@@ -12,6 +12,7 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import css from './DraftOrderWidget.less'
 
 export default function DraftOrderWidget() {
@@ -79,7 +80,7 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
         <>
             <div className={css.orderTitleContainer}>
                 <a
-                    href={`https://${shopName}.myshopify.com/admin/draft_orders/${(
+                    href={`${shopifyAdminBaseUrl(shopName)}/draft_orders/${(
                         (source.get('id') as number) || ''
                     ).toString()}`}
                     target="_blank"

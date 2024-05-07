@@ -1,4 +1,5 @@
 import {ShopifyMetafieldType} from '@gorgias/api-types'
+import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 
 const DEFAULT_SYMBOL = '$'
 
@@ -49,13 +50,13 @@ export function prepareGidUrl(
     switch (type) {
         case 'list.product_reference':
         case 'product_reference':
-            return `https://admin.shopify.com/store/${storeName}/products/${gid}`
+            return `${shopifyAdminBaseUrl(storeName)}/products/${gid}`
         case 'list.collection_reference':
         case 'collection_reference':
-            return `https://admin.shopify.com/store/${storeName}/collections/${gid}`
+            return `${shopifyAdminBaseUrl(storeName)}/collections/${gid}`
         case 'list.page_reference':
         case 'page_reference':
-            return `https://admin.shopify.com/store/${storeName}/pages/${gid}`
+            return `${shopifyAdminBaseUrl(storeName)}/pages/${gid}`
         default: {
             return undefined
         }
