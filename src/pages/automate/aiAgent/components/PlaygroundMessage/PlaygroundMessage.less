@@ -1,0 +1,68 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .messageContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-s;
+        padding: @layout-spacing-s @layout-spacing-m;
+
+        .messageAvatar {
+            background-color: var(--neutral-grey-3);
+        }
+
+        .messageSenderCommon {
+            color: var(--neutral-grey-6);
+            .caption-semibold();
+        }
+
+        .shopperTypeSender {
+            color: var(--neutral-grey-6);
+        }
+
+        .aiAgentTypeSender {
+            color: var(--ai-magenta-3);
+        }
+
+        .aiAgentInternalNoteTypeSender {
+            color: var(--main-primary);
+        }
+
+        .messageContentContainer {
+            width: 100%;
+        }
+
+        .aiAgentLoadingSkeletonContainer {
+            padding-top: @layout-spacing-xs;
+        }
+
+        .aiAgentLoadingSkeleton {
+            line-height: 3.5;
+        }
+
+        .messageTypeIcon {
+            margin-left: @layout-spacing-xs;
+            color: var(--neutral-grey-4);
+        }
+
+        .avatarIcon {
+            margin-right: @layout-spacing-xxs;
+            color: var(--main-primary);
+        }
+
+        .aiAgentProcessingIcon i {
+            color: var(--ai-magenta-3);
+        }
+
+        .aiAgentProcessingStatus {
+            margin-left: @layout-spacing-xxs;
+        }
+    }
+
+    .internalNoteContainer {
+        background-color: var(--accessory-orange-1);
+        border-left: 5px solid var(--feedback-warning-2);
+    }
+}
