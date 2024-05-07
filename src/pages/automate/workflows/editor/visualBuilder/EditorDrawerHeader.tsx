@@ -12,10 +12,13 @@ type Props = {
     label?: string
     onClose: () => void
     children?: ReactNode
+    isPreview?: boolean
 }
 
-const EditorDrawerHeader = ({onClose, children, label}: Props) => {
-    const closeButtonId = `close-button-${useId()}`
+const EditorDrawerHeader = ({onClose, children, label, isPreview}: Props) => {
+    const closeButtonId = `${
+        isPreview ? 'preview-' : ''
+    }close-button-${useId()}`
 
     return (
         <Drawer.Header className={css.header}>

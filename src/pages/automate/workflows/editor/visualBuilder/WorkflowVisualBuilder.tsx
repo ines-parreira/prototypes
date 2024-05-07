@@ -12,9 +12,11 @@ import {
 import _keyBy from 'lodash/keyBy'
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Loader from 'pages/common/components/Loader/Loader'
 import usePrevious from 'hooks/usePrevious'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
 
@@ -65,6 +67,10 @@ export function WorkflowVisualBuilderWrapped() {
         setVisualBuilderBranchIdsEditing,
         setIsTesting,
     } = useWorkflowEditorContext()
+
+    const isPreviewDrawerVisible =
+        useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
+
     const visualBuilderNodeEditing = visualBuilderNodeIdEditing
         ? visualBuilderGraph.nodes.find(
               (n) => n.id === visualBuilderNodeIdEditing
@@ -185,7 +191,7 @@ export function WorkflowVisualBuilderWrapped() {
                         nodeInEdition={visualBuilderNodeEditing}
                         onClose={onDrawerEditorClose}
                     />
-                    {startFlowNode && (
+                    {startFlowNode && isPreviewDrawerVisible && (
                         <TestFlowEditor
                             startFlowNode={startFlowNode}
                             isAuthenticationBannerVisible={

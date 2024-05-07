@@ -177,7 +177,7 @@ export const TestFlowEditor = ({
             portalRootId="app-root"
             transitionDurationMs={300}
         >
-            <EditorDrawerHeader label="Test" onClose={onClose}>
+            <EditorDrawerHeader label="Test" onClose={onClose} isPreview>
                 <div className={css.editorHeader}>
                     <SelfServicePreviewChannelSelect
                         className={css.channelSelector}
