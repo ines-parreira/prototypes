@@ -30,6 +30,7 @@ import {IntegrationType} from 'models/integration/constants'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {TooltipTourConfigurationType} from 'pages/common/draftjs/plugins/toolbar/types'
+import {ShopifyIntegration} from 'models/integration/types'
 import RichField, {Props as RichFieldProps} from './RichField'
 
 type Props = {
@@ -39,6 +40,7 @@ type Props = {
     toolbarTour?: Record<string, TooltipTourConfigurationType>
     supportsUniqueDiscountOffer?: boolean
     canAddUniqueDiscountOffer?: boolean
+    currentShopifyIntegration?: ShopifyIntegration
 } & RichFieldProps
 
 const getShopifyIntegrations = getIntegrationsByType(IntegrationType.Shopify)
@@ -51,6 +53,7 @@ const TicketRichField = (
         supportsUniqueDiscountOffer = false,
         canAddUniqueDiscountOffer = false,
         toolbarTour,
+        currentShopifyIntegration,
         ...props
     }: Props,
     ref: ForwardedRef<RichField>
@@ -160,6 +163,7 @@ const TicketRichField = (
                 })
             },
             shopifyIntegrations: fromJS(shopifyIntegrations),
+            currentShopifyIntegration: currentShopifyIntegration,
         }),
         [
             disableOutOfStockProducts,
@@ -172,6 +176,7 @@ const TicketRichField = (
             newMessageChannel,
             isNewMessagePublic,
             shopifyIntegrations,
+            currentShopifyIntegration,
             supportsUniqueDiscountOffer,
             canAddUniqueDiscountOffer,
         ]

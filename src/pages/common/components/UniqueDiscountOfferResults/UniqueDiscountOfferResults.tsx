@@ -31,6 +31,7 @@ import {DeleteUniqueDiscountOfferModal} from 'pages/convert/discountOffer/compon
 import IconButton from 'pages/common/components/button/IconButton'
 import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
 
+import {toJS} from 'utils'
 import css from './UniqueDiscountOfferResults.less'
 import {computeDiscountOfferSummary, testIds} from './utils'
 
@@ -58,7 +59,7 @@ export default function UniqueDiscountCodeResults({
             'oauth',
             'scope',
         ]) as List<string>
-        return scope.toArray()
+        return toJS(scope)
     }, [integration])
 
     const hasShopifyDiscountScope = ['read_discounts', 'write_discounts'].every(

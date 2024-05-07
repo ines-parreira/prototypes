@@ -4,7 +4,7 @@ import {List} from 'immutable'
 
 import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 import {DiscountCode} from 'models/discountCodes/types'
-import {ProductCardDetails} from 'models/integration/types'
+import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
 import {DiscountOfferAttachment} from 'common/types'
 import {TooltipTourConfigurationType} from './types'
 
@@ -38,6 +38,7 @@ export type ToolbarContextType = {
     onInsertProductLinkOpen: () => void
     onInsertProductLinkAdded: (productCardDetails: ProductCardDetails) => void
     shopifyIntegrations: List<any>
+    currentShopifyIntegration?: ShopifyIntegration
     // WorkflowVariablePicker
     workflowVariables?: WorkflowVariableList
     workflowVariablesNodeTypes?: NonNullable<

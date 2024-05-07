@@ -278,6 +278,7 @@ export const CampaignMessage = memo(
                             supportsUniqueDiscountOffer
                         }
                         canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
+                        currentShopifyIntegration={shopifyIntegration}
                     />
                     <TicketAttachments
                         context="campaign-message"

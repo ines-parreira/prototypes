@@ -29,6 +29,7 @@ import {getTicketState} from 'state/ticket/selectors'
 import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
 import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
 
+import {toJS} from 'utils'
 import css from './DiscountCodeResults.less'
 
 type OwnProps = {
@@ -55,7 +56,7 @@ export default function DiscountCodeResults({
             'oauth',
             'scope',
         ]) as List<string>
-        return scope.toArray()
+        return toJS(scope)
     }, [integration])
 
     const hasShopifyDiscountScope = ['read_discounts', 'write_discounts'].every(

@@ -1,12 +1,13 @@
 import React from 'react'
-import {fireEvent, render} from '@testing-library/react'
-import {List} from 'immutable'
+import {fireEvent, render, act} from '@testing-library/react'
+import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {integrationsStateWithShopify} from 'fixtures/integrations'
+import {shopifyIntegration} from 'fixtures/integrations'
 
+import {ShopifyIntegration} from 'models/integration/types'
 import ToolbarProvider from '../../ToolbarProvider'
 import AddDiscountCode from '../AddDiscountCode'
 
@@ -35,10 +36,31 @@ describe('<AddDiscountCode/>', () => {
         const {getByText, container} = render(
             <Provider store={store}>
                 <ToolbarProvider
-                    shopifyIntegrations={
-                        integrationsStateWithShopify.get(
-                            'integrations'
-                        ) as List<any>
+                    shopifyIntegrations={fromJS([shopifyIntegration])}
+                >
+                    <AddDiscountCode {...minProps} />
+                </ToolbarProvider>
+            </Provider>,
+            {
+                container: document.body,
+            }
+        )
+        act(() => {
+            fireEvent.click(getByText(/discount/i))
+        })
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should render the discount picker when there is a current shopify integration', () => {
+        const {getByText, container} = render(
+            <Provider store={store}>
+                <ToolbarProvider
+                    shopifyIntegrations={fromJS([
+                        shopifyIntegration,
+                        shopifyIntegration,
+                    ])}
+                    currentShopifyIntegration={
+                        shopifyIntegration as ShopifyIntegration
                     }
                 >
                     <AddDiscountCode {...minProps} />
@@ -48,18 +70,21 @@ describe('<AddDiscountCode/>', () => {
                 container: document.body,
             }
         )
-        fireEvent.click(getByText(/discount/i))
+        act(() => {
+            fireEvent.click(getByText(/discount/i))
+        })
         expect(container).toMatchSnapshot()
     })
 
     it('should render the store picker because of multiple integrations', () => {
-        let integrations = integrationsStateWithShopify.get(
-            'integrations'
-        ) as List<any>
-        integrations = integrations.push(integrations.toArray()[0])
         const {getByText, container} = render(
             <Provider store={store}>
-                <ToolbarProvider shopifyIntegrations={integrations}>
+                <ToolbarProvider
+                    shopifyIntegrations={fromJS([
+                        shopifyIntegration,
+                        shopifyIntegration,
+                    ])}
+                >
                     <AddDiscountCode {...minProps} />
                 </ToolbarProvider>
             </Provider>,
@@ -67,7 +92,9 @@ describe('<AddDiscountCode/>', () => {
                 container: document.body,
             }
         )
-        fireEvent.click(getByText(/discount/i))
+        act(() => {
+            fireEvent.click(getByText(/discount/i))
+        })
         expect(container).toMatchSnapshot()
     })
 })

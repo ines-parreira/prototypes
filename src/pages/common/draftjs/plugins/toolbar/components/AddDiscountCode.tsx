@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useState, useMemo} from 'react'
 import classnames from 'classnames'
 import {ListGroup, ListGroupItem} from 'reactstrap'
 import {EditorState} from 'draft-js'
-import {Map} from 'immutable'
+import {fromJS, Map} from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
 
 import {
     DELETE_DISCOUNT_MODAL_NAME,
@@ -40,11 +41,16 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
         shopifyIntegrations,
         toolbarTour,
         onAddUniqueDiscountOfferAttachment,
+        currentShopifyIntegration,
     } = useToolbarContext()
     const [isOpen, setOpen] = useState(false)
     const [pickedIntegration, setPickedIntegration] = useState(() => {
         if (shopifyIntegrations.size === 1) {
             return shopifyIntegrations.get(0) as Map<any, any>
+        }
+
+        if (!_isEmpty(currentShopifyIntegration)) {
+            return fromJS(currentShopifyIntegration) as Map<any, any>
         }
 
         return null

@@ -6,7 +6,10 @@ import {useParams} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {getHumanAgentsJS} from 'state/agents/selectors'
-import {getIntegrationById} from 'state/integrations/selectors'
+import {
+    getIntegrationById,
+    getIntegrationByIdAndType,
+} from 'state/integrations/selectors'
 
 import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
@@ -16,6 +19,7 @@ import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/c
 import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
+import {IntegrationType} from 'models/integration/constants'
 import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
 
 import {CampaignDetailsForm} from '../../providers/CampaignDetailsForm'
@@ -85,9 +89,14 @@ const CampaignDetailsFactory = (): JSX.Element => {
         return fromJS({}) as Map<any, any>
     }, [data])
 
-    const shopify = useAppSelector(
-        getIntegrationById(integration.getIn(['meta', 'shop_integration_id']))
+    const shopifyIntegration = useAppSelector(
+        getIntegrationByIdAndType(
+            integration.getIn(['meta', 'shop_integration_id']),
+            IntegrationType.Shopify
+        )
     )
+
+    const shopify = fromJS(shopifyIntegration || {})
 
     const agents = useAppSelector(getHumanAgentsJS)
 
