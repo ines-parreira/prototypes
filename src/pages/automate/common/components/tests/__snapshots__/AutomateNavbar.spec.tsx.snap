@@ -186,6 +186,21 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                AI Agent
+              </span>
+            </a>
+          </div>
+          <div
+            class="link-wrapper isNested"
             data-candu-id="automate-link-flows"
           >
             <a
@@ -1149,6 +1164,21 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
                 gorgiastest
               </span>
             </div>
+          </div>
+          <div
+            class="link-wrapper isNested"
+          >
+            <a
+              class="link"
+              data-active-class-name="active"
+              href="[object Object]"
+            >
+              <span
+                class="item-name"
+              >
+                AI Agent
+              </span>
+            </a>
           </div>
           <div
             class="link-wrapper isNested"

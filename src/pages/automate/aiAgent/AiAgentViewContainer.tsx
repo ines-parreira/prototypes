@@ -7,6 +7,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {FeatureFlagKey} from '../../../config/featureFlags'
 import AutomatePaywallView from '../common/components/AutomatePaywallView'
 import {AutomateFeatures} from '../common/types'
+import Loader from '../../common/components/Loader/Loader'
 import {AiAgentStoreView} from './AiAgentStoreView'
 
 const AiAgentViewContainer = () => {
@@ -16,10 +17,12 @@ const AiAgentViewContainer = () => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
-    const showAiAgentBetaWaitwall: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentBetaWaitwall]
+    const showAiAgentSettings: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSettings]
 
-    if (showAiAgentBetaWaitwall !== false) {
+    if (showAiAgentSettings === undefined) {
+        return <Loader />
+    } else if (!showAiAgentSettings) {
         return (
             <AutomatePaywallView automateFeature={AutomateFeatures.AiAgent} />
         )

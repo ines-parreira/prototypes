@@ -2,7 +2,6 @@
 export enum FeatureFlagKey {
     AdvancedSearchWithHighlights = 'advanced-search-with-highlights',
     AgentActivityTracking = 'agent-activity-tracking',
-    AiAgentBetaWaitwall = 'ai-agent-beta-waitwall',
     AiAgentPlayground = 'ai-agent-playground',
     AiAgentSettings = 'ai-agent-settings',
     AiAgentGuidance = 'ai-agent-guidance',

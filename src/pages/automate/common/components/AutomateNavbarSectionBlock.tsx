@@ -1,7 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import cssNavbar from 'assets/css/navbar.less'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
@@ -11,7 +10,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
@@ -40,8 +38,6 @@ const AutomateNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const showAiAgentSettings: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentSettings]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -66,7 +62,7 @@ const AutomateNavbarSectionBlock = ({
         >
             {hasAutomate ? (
                 <>
-                    {!!showAiAgentSettings && shopType === 'shopify' && (
+                    {shopType === 'shopify' && (
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],

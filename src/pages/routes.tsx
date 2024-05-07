@@ -1397,17 +1397,19 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
         return <Redirect to="/app/automation" />
     }
 
+    if (!showAiAgentSettings) {
+        return <Route path={`${path}`} exact component={AiAgentViewContainer} />
+    }
+
     return (
         <Switch>
             <SelfServiceHelpCentersProvider>
                 <AiAgentAccountConfigurationProvider>
-                    {showAiAgentSettings !== false && (
-                        <Route
-                            path={`${path}`}
-                            exact
-                            component={AiAgentViewContainer}
-                        />
-                    )}
+                    <Route
+                        path={`${path}`}
+                        exact
+                        component={AiAgentViewContainer}
+                    />
                     {showAiAgentPlayground !== false && (
                         <Route
                             path={`${path}/playground`}
