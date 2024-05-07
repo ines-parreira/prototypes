@@ -290,6 +290,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                 <div className={css.inputChild}>
                                     <SelectField
                                         showSelectedOption
+                                        fullWidth
                                         value={discount.type}
                                         id={testIds.discountTypeSelect}
                                         options={[
