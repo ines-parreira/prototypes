@@ -239,7 +239,7 @@ const DefaultRuleEditor = (
                             correctly and will reply only to intended tickets.
                             <br />
                             <a
-                                href="https://docs.gorgias.com/en-US/rules---best-practices-81748#:~:text=messenger%20as%20well).-,Auto%2Dreply%20rules,-To%20further%20automate"
+                                href="https://docs.gorgias.com/en-US/auto-reply-rule-best-practices-435621"
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
