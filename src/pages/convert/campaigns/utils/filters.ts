@@ -8,16 +8,32 @@ import {
 import {Campaign} from '../types/Campaign'
 import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
 import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import {
+    campaignAttachmentIsDiscountOffer,
+    campaignAttachmentIsProduct,
+} from '../types/CampaignAttachment'
 
-export function filterWithAttachments(campaigns: Campaign[]): Campaign[] {
+export function filterWithProductCards(campaigns: Campaign[]): Campaign[] {
     return campaigns.filter(
-        (campaign) => campaign.attachments && campaign.attachments.length > 0
+        (campaign) =>
+            campaign.attachments &&
+            campaign.attachments.some(
+                (attachment) => !!campaignAttachmentIsProduct(attachment)
+            )
     )
 }
 
+// Discount codes means either the discount code as text, or the discount offer as attachment
 export function filterWithDiscountCodes(campaigns: Campaign[]): Campaign[] {
     return campaigns.filter((campaign) => {
-        return campaign.message_html?.includes('data-discount-code')
+        return (
+            campaign.message_html?.includes('data-discount-code') ||
+            (campaign.attachments &&
+                campaign.attachments.some(
+                    (attachment) =>
+                        !!campaignAttachmentIsDiscountOffer(attachment)
+                ))
+        )
     })
 }
 
@@ -48,7 +64,7 @@ export function filterWithOutsideBusinessHours(
 }
 
 const QUICK_FILTERS_FN = {
-    [CONTAINS_PRODUCT_CARDS.id]: filterWithAttachments,
+    [CONTAINS_PRODUCT_CARDS.id]: filterWithProductCards,
     [CONTAINS_DISCOUNT_CODES.id]: filterWithDiscountCodes,
     [TRIGGERED_ON_EXIT_INTENT.id]: filterWithExitIntent,
     [TRIGGERED_OUTSIDE_BUSINESS_HOURS.id]: filterWithOutsideBusinessHours,

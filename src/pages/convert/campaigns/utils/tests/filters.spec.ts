@@ -1,8 +1,9 @@
 import {campaign} from 'fixtures/campaign'
+import {AttachmentEnum} from 'common/types'
 import {Campaign} from '../../types/Campaign'
 
 import {
-    filterWithAttachments,
+    filterWithProductCards,
     filterWithDiscountCodes,
     filterWithExitIntent,
     filterWithOutsideBusinessHours,
@@ -32,8 +33,8 @@ const campaignOne: Campaign = {
     ],
     attachments: [
         {
-            name: 'Attachment 1',
-            contentType: 'image',
+            name: 'product 1',
+            contentType: AttachmentEnum.Product,
             size: 0,
             extra: {
                 price: 0,
@@ -81,23 +82,73 @@ const campaignThree: Campaign = {
     status: CampaignStatus.Active,
 }
 
-describe('filterWithAttachments()', () => {
-    it('should return campaigns with attachments', () => {
-        expect(filterWithAttachments([campaignOne, campaignTwo])).toEqual([
-            campaignOne,
-        ])
+const campaignFour: Campaign = {
+    ...campaign,
+    status: CampaignStatus.Active,
+    id: '4',
+    name: 'Campaign with discount offer',
+    triggers: [createTrigger(CampaignTriggerType.CurrentUrl)],
+    attachments: [
+        {
+            contentType: AttachmentEnum.DiscountOffer,
+            name: 'offer',
+            extra: {
+                discount_offer_id: '3',
+                summary: 'test',
+            },
+        },
+    ],
+}
+const campaignFive: Campaign = {
+    ...campaign,
+    status: CampaignStatus.Active,
+    id: '5',
+    name: 'Campaign with discount offer and product card',
+    triggers: [createTrigger(CampaignTriggerType.CurrentUrl)],
+    attachments: [
+        {
+            contentType: AttachmentEnum.DiscountOffer,
+            name: 'offer',
+            extra: {
+                discount_offer_id: '3',
+                summary: 'test',
+            },
+        },
+        {
+            name: 'product 1',
+            contentType: AttachmentEnum.Product,
+            size: 0,
+            extra: {
+                price: 0,
+                product_link: '',
+                product_id: 0,
+            },
+        },
+    ],
+}
+
+describe('filterWithProductCards()', () => {
+    it('should return campaigns with product cards', () => {
+        expect(
+            filterWithProductCards([campaignOne, campaignTwo, campaignFive])
+        ).toEqual([campaignOne, campaignFive])
     })
 
-    it('should return empty array if no campaigns with attachments', () => {
-        expect(filterWithAttachments([campaignTwo])).toEqual([])
+    it('should return empty array if no campaigns with product cards', () => {
+        expect(filterWithProductCards([campaignTwo])).toEqual([])
     })
 })
 
 describe('filterWithDiscountCodes()', () => {
     it('should return campaigns with discount codes', () => {
-        expect(filterWithDiscountCodes([campaignOne, campaignTwo])).toEqual([
-            campaignOne,
-        ])
+        expect(
+            filterWithDiscountCodes([
+                campaignOne,
+                campaignTwo,
+                campaignFour,
+                campaignFive,
+            ])
+        ).toEqual([campaignOne, campaignFour, campaignFive])
     })
 
     it('should return empty array if no campaigns with discount codes', () => {
