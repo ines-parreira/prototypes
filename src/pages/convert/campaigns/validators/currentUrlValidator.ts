@@ -1,12 +1,11 @@
 import isURL from 'validator/lib/isURL'
 
 import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+
+import {ValidatorType} from './types'
 import {ValidationError} from './validationError'
 
-export const validateCurrentUrl = (
-    value: string,
-    operator: CampaignTriggerOperator
-) => {
+export const validateCurrentUrl: ValidatorType = (value, operator) => {
     if (!value) {
         throw new ValidationError('Value is required')
     }

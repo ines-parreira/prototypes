@@ -21,6 +21,7 @@ type Props = {
     className?: string
     caseInsensitive?: boolean
     isDisabled?: boolean
+    hasError?: boolean
     onChange: (options: Option[]) => void
     onInputChange?: (value: string) => void
     onSelectTag?: (tag: string) => void
@@ -248,6 +249,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
             isDisabled,
             showSymbolOnSpaces,
             isCompact,
+            hasError,
         } = this.props
         const {isFocused, filteredOptions, input} = this.state
 
@@ -272,6 +274,7 @@ export default class MultiSelectOptionsField extends Component<Props, State> {
                     className={classNames(css.container, {
                         [css.compact]: isCompact,
                         [css.focused]: isFocused,
+                        [css.hasError]: hasError,
                     })}
                     onClick={this._focus}
                 >
