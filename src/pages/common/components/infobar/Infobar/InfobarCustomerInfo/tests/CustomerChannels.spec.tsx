@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
-import {render, screen} from '@testing-library/react'
+import {screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -12,8 +12,27 @@ import {
 } from 'constants/user'
 import {initialState} from 'state/twilio/reducers'
 import {UserSettingType} from 'config/types/user'
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
-import CustomerChannels from '../CustomerChannels'
+import {
+    DateFormatType,
+    DateTimeFormatMapper,
+    DateTimeFormatType,
+    TimeFormatType,
+} from 'constants/datetime'
+import {CustomerChannel} from 'models/customerChannel/types'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import {CustomerChannels} from '../CustomerChannels'
+
+jest.mock(
+    'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber',
+    () =>
+        ({address}: {address: string}) =>
+            <div>{address}</div>
+)
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber',
+    () => () => <div>Add phone number</div>
+)
 
 const mockStore = configureMockStore([thunk])
 
@@ -23,6 +42,12 @@ const minProps: ComponentProps<typeof CustomerChannels> = {
     channels: fromJS([]),
     customerLocationInfo: fromJS({}),
     customerLastSeenOnChat: null,
+    flags: {
+        [FeatureFlagKey.NewPhoneNumberCustomerSidebar]: true,
+    },
+    datetimeFormat:
+        DateTimeFormatMapper[DateTimeFormatType.TIME_DOUBLE_DIGIT_HOUR_24HOUR],
+    dispatch: jest.fn(),
 }
 
 const defaultState = {
@@ -41,6 +66,7 @@ const defaultState = {
         ],
     }),
 }
+
 describe('CustomerChannels component', () => {
     beforeEach(() => {
         const mockDate = new Date('2019-01-26T12:34:56.000Z')
@@ -58,7 +84,7 @@ describe('CustomerChannels component', () => {
                 }),
             })
 
-            const {container} = render(
+            renderWithQueryClientProvider(
                 <Provider store={store}>
                     <CustomerChannels
                         {...minProps}
@@ -104,15 +130,14 @@ describe('CustomerChannels component', () => {
             )
 
             userEvent.click(screen.getByText(/Show more/))
-            expect(container).toMatchSnapshot()
         }
     )
 
     it(
         'should display all passed channels and not display the button "show more" because there is only 1 passed ' +
-            'channel',
+            'channel + add phone number button',
         () => {
-            const {container} = render(
+            const {queryByText} = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
@@ -127,48 +152,55 @@ describe('CustomerChannels component', () => {
                 </Provider>
             )
 
-            expect(container).toMatchSnapshot()
+            expect(queryByText(/Show more/)).toBeNull()
         }
     )
 
     it(
-        'should display all passed channels and not display the button "show more" because there is only 2 passed ' +
-            'location channel and local time channel',
+        `should display all passed channels and not display the button "show more" because there is only 2 passed ` +
+            `location channel and and add phone number button`,
         () => {
-            const {container} = render(
+            const {getByText, queryByText} = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
                         customerLocationInfo={fromJS({
                             city: 'Paris',
                             country_name: 'France',
-                            time_zone: {offset: '+0100'},
                         })}
                     />
                 </Provider>
             )
-
-            expect(container).toMatchSnapshot()
+            ;(minProps.channels.toJS() as CustomerChannel[]).forEach(
+                (channel) => {
+                    expect(getByText(channel.address)).toBeInTheDocument()
+                }
+            )
+            expect(queryByText(/Show more/)).toBeNull()
         }
     )
 
     it(
         'should display all passed channels and not display the button "show more" because there is only 2 passed ' +
-            'location channel and local time channel',
+            'location channel and add phone number button',
         () => {
-            const {container} = render(
+            const {getByText, queryByText} = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
                         customerLocationInfo={fromJS({
                             city: 'Paris',
-                            time_zone: {offset: '+0100'},
                         })}
                     />
                 </Provider>
             )
 
-            expect(container).toMatchSnapshot()
+            ;(minProps.channels.toJS() as CustomerChannel[]).forEach(
+                (channel) => {
+                    expect(getByText(channel.address)).toBeInTheDocument()
+                }
+            )
+            expect(queryByText(/Show more/)).toBeNull()
         }
     )
 
@@ -176,7 +208,15 @@ describe('CustomerChannels component', () => {
         'should display the email channel and the local time channel and then display the button "show more" because there are more channels than ' +
             'those displayed',
         () => {
-            const {container} = render(
+            const channels = [
+                {
+                    type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                    address: 'foo@gorgias.io',
+                    preferred: true,
+                },
+            ]
+
+            const {getByText} = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
@@ -185,19 +225,17 @@ describe('CustomerChannels component', () => {
                             country_name: 'France',
                             time_zone: {offset: '+0100'},
                         })}
-                        channels={fromJS([
-                            {
-                                type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                                address: 'foo@gorgias.io',
-                                preferred: true,
-                            },
-                        ])}
+                        channels={fromJS(channels)}
                     />
                 </Provider>
             )
 
-            userEvent.click(screen.getByText(/Show more/))
-            expect(container).toMatchSnapshot()
+            userEvent.click(getByText(/Show more/))
+            channels.forEach((channel) => {
+                expect(getByText(channel.address)).toBeInTheDocument()
+            })
+            expect(getByText(/Location: Paris, France/)).toBeInTheDocument()
+            expect(getByText(/Local time:/)).toBeInTheDocument()
         }
     )
 
@@ -205,7 +243,15 @@ describe('CustomerChannels component', () => {
         'should display the email channel and the local time channel and then display the button "show more" because there are more channels than ' +
             'those displayed',
         () => {
-            const {container} = render(
+            const channels = [
+                {
+                    type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                    address: 'foo@gorgias.io',
+                    preferred: true,
+                },
+            ]
+
+            const {getByText} = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
@@ -213,19 +259,17 @@ describe('CustomerChannels component', () => {
                             country_name: 'France',
                             time_zone: {offset: '+0100'},
                         })}
-                        channels={fromJS([
-                            {
-                                type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                                address: 'foo@gorgias.io',
-                                preferred: true,
-                            },
-                        ])}
+                        channels={fromJS(channels)}
                     />
                 </Provider>
             )
 
-            userEvent.click(screen.getByText(/Show more/))
-            expect(container).toMatchSnapshot()
+            userEvent.click(getByText(/Show more/))
+            channels.forEach((channel) => {
+                expect(getByText(channel.address)).toBeInTheDocument()
+            })
+            expect(getByText(/Location: France/)).toBeInTheDocument()
+            expect(getByText(/Local time:/)).toBeInTheDocument()
         }
     )
 
@@ -241,7 +285,46 @@ describe('CustomerChannels component', () => {
             }),
         })
 
-        const {container} = render(
+        const channels = [
+            {
+                type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                address: 'foo@gorgias.io',
+                preferred: true,
+                id: 1,
+            },
+            {
+                type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                address: 'bar@gorgias.io',
+                preferred: false,
+                id: 2,
+            },
+            {
+                type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                address: 'baz@gorgias.io',
+                preferred: false,
+                id: 3,
+            },
+            {
+                type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                address: '+15551238523',
+                preferred: true,
+                id: 4,
+            },
+            {
+                type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                address: '+15554567852',
+                preferred: false,
+                id: 5,
+            },
+            {
+                type: PHONE_CUSTOMER_CHANNEL_TYPE,
+                address: '+15557899632',
+                preferred: false,
+                id: 6,
+            },
+        ]
+
+        const {getByText} = renderWithQueryClientProvider(
             <Provider store={store}>
                 <CustomerChannels
                     {...minProps}
@@ -251,49 +334,89 @@ describe('CustomerChannels component', () => {
                         country_name: 'France',
                         time_zone: {offset: '+0100'},
                     })}
+                    channels={fromJS(channels)}
+                />
+            </Provider>
+        )
+
+        userEvent.click(getByText(/Show more/))
+        channels.forEach((channel) => {
+            expect(getByText(channel.address)).toBeInTheDocument()
+        })
+        expect(getByText(/Location: Paris, France/)).toBeInTheDocument()
+        expect(getByText(/Local time:/)).toBeInTheDocument()
+    })
+
+    it('should display "Add phone number button when there are no phone channels', async () => {
+        const {getByText} = renderWithQueryClientProvider(
+            <Provider store={mockStore(defaultState)}>
+                <CustomerChannels
+                    {...minProps}
                     channels={fromJS([
-                        {
-                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                            address: 'foo@gorgias.io',
-                            preferred: true,
-                            id: 1,
-                        },
-                        {
-                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
-                            address: 'bar@gorgias.io',
-                            preferred: false,
-                            id: 2,
-                        },
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
                             address: 'baz@gorgias.io',
                             preferred: false,
                             id: 3,
                         },
+                    ])}
+                />
+            </Provider>
+        )
+        await waitFor(() => expect(getByText(/Add phone number/)).toBeVisible())
+    })
+
+    it('should not display "Add phone number button when there is a phone channel', () => {
+        const store = mockStore({
+            ...defaultState,
+            twilio: initialState,
+            integrations: fromJS({
+                integrations: [],
+            }),
+        })
+
+        const {queryByText} = renderWithQueryClientProvider(
+            <Provider store={mockStore(store)}>
+                <CustomerChannels
+                    {...minProps}
+                    channels={fromJS([
                         {
                             type: PHONE_CUSTOMER_CHANNEL_TYPE,
                             address: '+15551238523',
                             preferred: true,
                             id: 4,
                         },
-                        {
-                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                            address: '+15554567852',
-                            preferred: false,
-                            id: 5,
-                        },
-                        {
-                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                            address: '+15557899632',
-                            preferred: false,
-                            id: 6,
-                        },
                     ])}
                 />
             </Provider>
         )
 
-        userEvent.click(screen.getByText(/Show more/))
-        expect(container).toMatchSnapshot()
+        expect(queryByText(/Add phone number/)).toBeNull()
+    })
+
+    it('should not display "Add phone number button when the FF is off', () => {
+        const store = mockStore({
+            ...defaultState,
+            twilio: initialState,
+            integrations: fromJS({
+                integrations: [],
+            }),
+        })
+
+        const {queryByText} = renderWithQueryClientProvider(
+            <Provider store={mockStore(store)}>
+                <CustomerChannels
+                    {...minProps}
+                    flags={
+                        {
+                            [FeatureFlagKey.NewPhoneNumberCustomerSidebar]:
+                                false,
+                        } as any
+                    }
+                />
+            </Provider>
+        )
+
+        expect(queryByText(/Add phone number/)).toBeNull()
     })
 })
