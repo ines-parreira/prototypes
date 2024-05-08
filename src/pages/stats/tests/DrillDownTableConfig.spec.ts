@@ -26,6 +26,7 @@ describe('getDrillDownQuery', () => {
         {metricName: TableColumn.ClosedTickets, perAgentId: 123},
         {metricName: TableColumn.RepliedTickets, perAgentId: 123},
         {metricName: TableColumn.OneTouchTickets, perAgentId: 123},
+        {metricName: TableColumn.TicketHandleTime, perAgentId: 123},
     ]
     const supportedMetrics: DrillDownMetric[] = [
         {
@@ -43,6 +44,7 @@ describe('getDrillDownQuery', () => {
         {metricName: OverviewMetric.MedianFirstResponseTime},
         {metricName: OverviewMetric.CustomerSatisfaction},
         {metricName: OverviewMetric.OneTouchTickets},
+        {metricName: OverviewMetric.TicketHandleTime},
     ]
 
     it.each([...supportedMetrics, ...agentsMetrics])(

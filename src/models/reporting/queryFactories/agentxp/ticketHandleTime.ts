@@ -1,6 +1,7 @@
 import {OrderDirection} from 'models/api/types'
 import {
     HandleTimeCubeWithJoins,
+    HandleTimeDimension,
     HandleTimeMeasure,
 } from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {TicketDimension, TicketSegment} from 'models/reporting/cubes/TicketCube'
@@ -72,13 +73,17 @@ export const ticketHandleTimeQueryFactory = (
         : {}),
 })
 
-export const ticketHandleTimePerTicketQueryFactory = (
+export const ticketHandleTimePerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     ...ticketHandleTimeQueryFactory(filters, timezone, sorting),
-    dimensions: [TicketDimension.TicketId],
+    measures: [],
+    dimensions: [
+        TicketDimension.TicketId,
+        HandleTimeDimension.TicketHandleTime,
+    ],
     filters: [
         ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting)
             .filters,
@@ -87,7 +92,7 @@ export const ticketHandleTimePerTicketQueryFactory = (
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? {
-              order: [[HandleTimeMeasure.HandleTime, sorting]],
+              order: [[HandleTimeDimension.TicketHandleTime, sorting]],
           }
         : {}),
 })

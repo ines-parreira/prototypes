@@ -1,7 +1,10 @@
 import moment from 'moment/moment'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
-import {HandleTimeMeasure} from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import {
+    HandleTimeDimension,
+    HandleTimeMeasure,
+} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {
     TicketDimension,
     TicketMember,
@@ -10,7 +13,7 @@ import {
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ticketAverageHandleTimePerAgentQueryFactory,
-    ticketHandleTimePerTicketQueryFactory,
+    ticketHandleTimePerTicketDrillDownQueryFactory,
     ticketAverageHandleTimeQueryFactory,
 } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -134,12 +137,18 @@ describe('onlineTimePerAgentQueryFactory', () => {
         })
     })
 
-    describe('ticketHandleTimePerTicketQueryFactory', () => {
+    describe('ticketHandleTimePerTicketDrillDownQueryFactory', () => {
         it('should build the query', () => {
             expect(
-                ticketHandleTimePerTicketQueryFactory(statsFilters, timezone)
+                ticketHandleTimePerTicketDrillDownQueryFactory(
+                    statsFilters,
+                    timezone
+                )
             ).toEqual({
-                dimensions: [TicketDimension.TicketId],
+                dimensions: [
+                    TicketDimension.TicketId,
+                    HandleTimeDimension.TicketHandleTime,
+                ],
                 filters: [
                     {
                         member: TicketMember.PeriodStart,
@@ -176,7 +185,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
-                measures: [HandleTimeMeasure.HandleTime],
+                measures: [],
                 segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })
@@ -184,13 +193,16 @@ describe('onlineTimePerAgentQueryFactory', () => {
 
         it('should build the query with sorting', () => {
             expect(
-                ticketHandleTimePerTicketQueryFactory(
+                ticketHandleTimePerTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     sorting
                 )
             ).toEqual({
-                dimensions: [TicketDimension.TicketId],
+                dimensions: [
+                    TicketDimension.TicketId,
+                    HandleTimeDimension.TicketHandleTime,
+                ],
                 filters: [
                     {
                         member: TicketMember.PeriodStart,
@@ -227,8 +239,8 @@ describe('onlineTimePerAgentQueryFactory', () => {
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
-                measures: [HandleTimeMeasure.HandleTime],
-                order: [[HandleTimeMeasure.HandleTime, sorting]],
+                measures: [],
+                order: [[HandleTimeDimension.TicketHandleTime, sorting]],
                 segments: [TicketSegment.ClosedTickets],
                 timezone: timezone,
             })
