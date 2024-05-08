@@ -10,6 +10,7 @@ type Props = {
     avgMerchant?: string | number | null
     topTen?: string | number | null
     className?: string
+    canduId?: string
     type?: SuccessLevel
     showBenchmark?: boolean
     avgTooltip?: string
@@ -42,6 +43,7 @@ const SentimentIconLabel: {
 export default function PerformanceTip({
     children,
     className,
+    canduId,
     type = 'neutral',
     avgMerchant,
     topTen,
@@ -104,7 +106,11 @@ export default function PerformanceTip({
                     'No data'
                 )}
             </div>
-            <div data-candu-id="performance-tip-data">
+            <div
+                data-candu-id={`performance-tip-data${
+                    canduId ? `-${canduId}` : ''
+                }`}
+            >
                 {children || 'No data available for the selected filters.'}
             </div>
         </div>

@@ -233,7 +233,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             </span>
                           </div>
                           <div
-                            data-candu-id="performance-tip-data"
+                            data-candu-id="performance-tip-data-rate"
                           >
                             Set up all
                              
@@ -299,7 +299,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             </span>
                           </div>
                           <div
-                            data-candu-id="performance-tip-data"
+                            data-candu-id="performance-tip-data-interactions"
                           >
                             Check out our
                              
@@ -909,7 +909,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           </span>
                         </div>
                         <div
-                          data-candu-id="performance-tip-data"
+                          data-candu-id="performance-tip-data-rate"
                         >
                           Set up all
                            
@@ -975,7 +975,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           </span>
                         </div>
                         <div
-                          data-candu-id="performance-tip-data"
+                          data-candu-id="performance-tip-data-interactions"
                         >
                           Check out our
                            
@@ -1564,7 +1564,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             </span>
                           </div>
                           <div
-                            data-candu-id="performance-tip-data"
+                            data-candu-id="performance-tip-data-rate"
                           >
                             Set up all
                              
@@ -1630,7 +1630,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             </span>
                           </div>
                           <div
-                            data-candu-id="performance-tip-data"
+                            data-candu-id="performance-tip-data-interactions"
                           >
                             Check out our
                              
@@ -2240,7 +2240,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           </span>
                         </div>
                         <div
-                          data-candu-id="performance-tip-data"
+                          data-candu-id="performance-tip-data-rate"
                         >
                           Set up all
                            
@@ -2306,7 +2306,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           </span>
                         </div>
                         <div
-                          data-candu-id="performance-tip-data"
+                          data-candu-id="performance-tip-data-interactions"
                         >
                           Check out our
                            
@@ -2895,7 +2895,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             </span>
                           </div>
                           <div
-                            data-candu-id="performance-tip-data"
+                            data-candu-id="performance-tip-data-rate"
                           >
                             Set up all
                              
@@ -2961,7 +2961,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             </span>
                           </div>
                           <div
-                            data-candu-id="performance-tip-data"
+                            data-candu-id="performance-tip-data-interactions"
                           >
                             Check out our
                              
@@ -3571,7 +3571,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           </span>
                         </div>
                         <div
-                          data-candu-id="performance-tip-data"
+                          data-candu-id="performance-tip-data-rate"
                         >
                           Set up all
                            
@@ -3637,7 +3637,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           </span>
                         </div>
                         <div
-                          data-candu-id="performance-tip-data"
+                          data-candu-id="performance-tip-data-interactions"
                         >
                           Check out our
                            
@@ -4222,7 +4222,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       </span>
                     </div>
                     <div
-                      data-candu-id="performance-tip-data"
+                      data-candu-id="performance-tip-data-rate"
                     >
                       Set up all
                        
@@ -4288,7 +4288,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       </span>
                     </div>
                     <div
-                      data-candu-id="performance-tip-data"
+                      data-candu-id="performance-tip-data-interactions"
                     >
                       Check out our
                        
@@ -4820,7 +4820,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                       </span>
                     </div>
                     <div
-                      data-candu-id="performance-tip-data"
+                      data-candu-id="performance-tip-data-rate"
                     >
                       Set up all
                        
@@ -4886,7 +4886,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                       </span>
                     </div>
                     <div
-                      data-candu-id="performance-tip-data"
+                      data-candu-id="performance-tip-data-interactions"
                     >
                       Check out our
                        

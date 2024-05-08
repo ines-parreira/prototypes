@@ -30,7 +30,10 @@ export const AutomatedInteractionsMetric = ({
             }}
             tip={
                 showTips && (
-                    <PerformanceTip showBenchmark={false}>
+                    <PerformanceTip
+                        showBenchmark={false}
+                        canduId="interactions"
+                    >
                         Check out our{' '}
                         <a
                             target="blank"

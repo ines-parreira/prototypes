@@ -47,6 +47,7 @@ export const AutomationRateMetric = ({
                             AUTOMATION_RATE_FIXED_STATS.avg
                         )}
                         type={automationRateSentiment}
+                        canduId="rate"
                     >
                         Set up all{' '}
                         <a target="blank" href="https://link.gorgias.com/aut">
