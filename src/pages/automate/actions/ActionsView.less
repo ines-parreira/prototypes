@@ -1,0 +1,26 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        // Remove grid from the AutomateView component
+        display: block !important;
+    }
+
+    .actionsListContainer {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .actionsListHeader {
+        margin: @layout-spacing-m;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+
+        span:first-child {
+            .body-regular();
+        }
+    }
+}

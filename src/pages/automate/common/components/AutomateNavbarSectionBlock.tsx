@@ -1,6 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import cssNavbar from 'assets/css/navbar.less'
 import {getIconFromType} from 'state/integrations/helpers'
 import {ShopType} from 'models/selfServiceConfiguration/types'
@@ -10,6 +11,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {assetsUrl} from 'utils'
+import {FeatureFlagKey} from 'config/featureFlags'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
 import css from './AutomateNavbarSectionBlock.less'
 import {
@@ -20,6 +23,7 @@ import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
     TRAIN_MY_AI,
+    ACTIONS,
 } from './constants'
 
 type Props = {
@@ -38,6 +42,9 @@ const AutomateNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
+
+    const showAutomateActions: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateActions]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -78,6 +85,32 @@ const AutomateNavbarSectionBlock = ({
                                 <span className={cssNavbar['item-name']}>
                                     {AI_AGENT}
                                 </span>
+                            </NavbarLink>
+                        </div>
+                    )}
+                    {!!showAutomateActions && shopType === 'shopify' && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                to={{
+                                    pathname: `/app/automation/shopify/${shopName}/actions`,
+                                    state: {from: FROM_LOCATION},
+                                }}
+                            >
+                                <span className={cssNavbar['item-name']}>
+                                    {ACTIONS}
+                                </span>
+
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    BETA
+                                </Badge>
                             </NavbarLink>
                         </div>
                     )}

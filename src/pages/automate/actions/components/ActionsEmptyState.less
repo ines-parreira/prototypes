@@ -1,0 +1,49 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        padding: 0 64px;
+        background: var(--main-latte);
+        overflow: hidden;
+    }
+
+    .header {
+        gap: @layout-spacing-m;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1074px;
+    }
+
+    .intro {
+        padding-block: @layout-spacing-m;
+    }
+
+    .infoContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .createActionButton {
+        display: flex;
+        padding-bottom: @layout-spacing-s;
+    }
+
+    .title {
+        .heading-section-semibold;
+        margin: 0;
+    }
+
+    .description {
+        .body-regular;
+        color: var(--neutral-grey-5);
+    }
+
+    .chatImage {
+        height: 220px;
+        position: relative;
+        bottom: -@layout-spacing-s;
+    }
+}
