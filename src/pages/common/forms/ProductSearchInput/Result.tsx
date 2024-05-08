@@ -20,6 +20,7 @@ export type Props = {
     }
     disabled?: boolean
     disabledReason?: string
+    ignoreStockAvailability?: boolean
 }
 
 const getImageSrc = (
@@ -40,6 +41,7 @@ export default function Result({
     subtitle,
     stock,
     disabled,
+    ignoreStockAvailability,
 }: Props) {
     const imageSrc = getImageSrc(image)
     const imageAlt = !!image ? image.alt : 'Product'
@@ -47,7 +49,8 @@ export default function Result({
     return (
         <div
             className={classnames(css.container, {
-                [css.isOutOfStock]: stock.isAvailable === false,
+                [css.isOutOfStock]:
+                    !ignoreStockAvailability && stock.isAvailable === false,
             })}
         >
             <div className={css.imgContainer}>

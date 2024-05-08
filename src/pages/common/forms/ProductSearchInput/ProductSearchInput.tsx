@@ -62,14 +62,14 @@ export default function ProductSearchInput<
             placeholder="Search products..."
             renderResult={(props) => {
                 const resultProps = dataMappers.product(props.result)
-                return <Result {...resultProps} />
+                return <Result ignoreStockAvailability {...resultProps} />
             }}
             renderSubResult={(props) => {
                 const resultProps = dataMappers.variants(
                     props.result,
                     props.subResult
                 )
-                return <Result {...resultProps} />
+                return <Result ignoreStockAvailability {...resultProps} />
             }}
             className={className}
             autoFocus={autoFocus}
