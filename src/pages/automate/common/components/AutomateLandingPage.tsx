@@ -25,7 +25,6 @@ import TipsToggle from 'pages/stats/TipsToggle'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import StatsPage from 'pages/stats/StatsPage'
-import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {setStatsFilters} from 'state/stats/actions'
 import {useGetCostPerAutomatedInteraction} from '../hooks/useGetCostPerAutomatedInteraction'
@@ -113,7 +112,6 @@ const AutomateLandingPage = () => {
         filters,
         userTimezone
     )
-    const ticketsClosedPerHourTrend = useTicketsClosedPerHour()
 
     const handleViewFullReport = () => {
         history.push(`/app/stats/automate-overview?source=automate`)
@@ -205,9 +203,6 @@ const AutomateLandingPage = () => {
                                     }
                                     ticketHandleTime={
                                         ticketHandleTimeTrend.data?.value
-                                    }
-                                    ticketsClosedPerHour={
-                                        ticketsClosedPerHourTrend.data?.value
                                     }
                                     hasAgentCosts={!!agentCosts}
                                 />

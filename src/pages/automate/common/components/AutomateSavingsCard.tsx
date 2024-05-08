@@ -23,7 +23,6 @@ interface Props {
     resolutionTime: Maybe<number>
     firstResponseTime: Maybe<number>
     ticketHandleTime: Maybe<number>
-    ticketsClosedPerHour: Maybe<number>
     hasAgentCosts?: boolean
 }
 
@@ -33,7 +32,6 @@ export const AutomateSavingsCard = ({
     resolutionTime,
     firstResponseTime,
     ticketHandleTime,
-    ticketsClosedPerHour,
     hasAgentCosts = false,
 }: Props) => {
     const isTicketTimeToHandleEnabled =
@@ -172,7 +170,6 @@ export const AutomateSavingsCard = ({
                             resolutionTime={resolutionTime}
                             ticketHandleTime={ticketHandleTime}
                             hasAgentCosts={hasAgentCosts}
-                            ticketsClosedPerHour={ticketsClosedPerHour}
                             ref={exploreDataModal}
                         />
                     </>

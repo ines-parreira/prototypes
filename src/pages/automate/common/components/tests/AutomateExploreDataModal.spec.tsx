@@ -4,6 +4,8 @@ import {fireEvent, render, screen} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 
+import * as modelsAccount from 'models/account'
+
 import {AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
@@ -67,7 +69,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -85,6 +86,9 @@ describe('<AutomateExploreDataModal />', () => {
         const monthlySupportTickets = screen.getByTestId(
             'monthly-support-tickets'
         )
+        const ticketsClosedPerHour = screen.getByTestId(
+            'tickets-closed-per-hour'
+        )
         const agentCost = screen.getByTestId('agent-cost')
         const yearly = screen.getByTestId('yearly')
         const ticketHandleTime = screen.getByTestId('ticket-handle-time')
@@ -92,9 +96,112 @@ describe('<AutomateExploreDataModal />', () => {
         expect(resolutionTime).toHaveValue('1h')
         expect(firstResponseTime).toHaveValue('40m')
         expect(monthlySupportTickets).toHaveValue('2400')
+        expect(ticketsClosedPerHour).toHaveValue('5')
         expect(agentCost).toHaveValue('175,593.6')
         expect(yearly).toHaveAttribute('data-selected', 'true')
         expect(ticketHandleTime).toHaveValue('2m')
+    })
+
+    it('should submit fields', () => {
+        const modal = React.createRef<AutomateExploreDataModalHandle>()
+
+        // Arrange
+        render(
+            <Provider
+                store={mockStore({
+                    currentAccount: fromJS({
+                        settings: [
+                            {
+                                id: 1,
+                                type: AccountSettingType.AgentCosts,
+                                data: {
+                                    agent_cost_per_ticket: 17.42,
+                                    agent_cost_type: 'yearly',
+                                    agent_ticket_per_hour: 5,
+                                },
+                            },
+                        ],
+                    }),
+                } as RootState)}
+            >
+                <AutomateExploreDataModal
+                    resolutionTime={3600}
+                    firstResponseTime={2400}
+                    monthlySupportTickets={2400}
+                    ticketHandleTime={120}
+                    hasAgentCosts={true}
+                    ref={modal}
+                />
+            </Provider>
+        )
+
+        // Act
+        modal.current?.open()
+
+        // Assert
+        const resolutionTime = screen.getByTestId('current-resolution-time')
+        const firstResponseTime = screen.getByTestId(
+            'current-first-response-time'
+        )
+        const monthlySupportTickets = screen.getByTestId(
+            'monthly-support-tickets'
+        )
+        const ticketsClosedPerHour = screen.getByTestId(
+            'tickets-closed-per-hour'
+        )
+        const agentCost = screen.getByTestId('agent-cost')
+        const yearly = screen.getByTestId('yearly')
+        const ticketHandleTime = screen.getByTestId('ticket-handle-time')
+        const updateButton = screen.getByText('Update')
+
+        expect(resolutionTime).toHaveValue('1h')
+        expect(firstResponseTime).toHaveValue('40m')
+        expect(monthlySupportTickets).toHaveValue('2400')
+        expect(ticketsClosedPerHour).toHaveValue('5')
+        expect(agentCost).toHaveValue('****')
+        expect(yearly).toHaveAttribute('data-selected', 'true')
+        expect(ticketHandleTime).toHaveValue('2m')
+        expect(updateButton).toHaveAttribute('aria-disabled', 'true')
+
+        // Act
+        fireEvent.change(agentCost, {
+            target: {value: '31248'},
+        })
+        fireEvent.change(ticketsClosedPerHour, {
+            target: {value: '10'},
+        })
+
+        const updateAccountSettingSpy = jest.spyOn(
+            modelsAccount,
+            'updateAccountSetting'
+        )
+
+        updateAccountSettingSpy.mockResolvedValue({
+            data: {
+                data: {
+                    agent_cost_type: 'yearly',
+                    agent_cost_per_ticket: 1.55,
+                    agent_ticket_per_hour: 10,
+                },
+            },
+        } as any)
+
+        // Assert
+        expect(updateButton).toHaveAttribute('aria-disabled', 'false')
+
+        // Act
+        fireEvent.click(updateButton)
+
+        // Assert
+        expect(updateAccountSettingSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: expect.objectContaining({
+                    agent_cost_per_ticket: 1.55,
+                    agent_cost_type: 'yearly',
+                    agent_ticket_per_hour: 10,
+                }),
+            })
+        )
     })
 
     it('should show **** when we have agent costs', () => {
@@ -123,7 +230,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={true}
                     ref={modal}
                 />
@@ -150,7 +256,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -179,7 +284,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -208,7 +312,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -240,7 +343,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />
@@ -279,7 +381,6 @@ describe('<AutomateExploreDataModal />', () => {
                     firstResponseTime={2400}
                     monthlySupportTickets={2400}
                     ticketHandleTime={120}
-                    ticketsClosedPerHour={5}
                     hasAgentCosts={false}
                     ref={modal}
                 />

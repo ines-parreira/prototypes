@@ -77,6 +77,7 @@ export type AccountSettingAgentCosts = {
     data: {
         agent_cost_type: AccountSettingAgentCostType
         agent_cost_per_ticket: number
+        agent_ticket_per_hour: number
     }
 }
 

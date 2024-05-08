@@ -27,11 +27,21 @@ import InputField from 'pages/common/forms/input/InputField'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 import css from 'pages/automate/common/components/AutomateExploreDataModal.less'
-import {TICKETS_CLOSED_PER_HOUR} from 'pages/automate/automate-metrics/constants'
 
 const defaultAgentCostPerTicket = 3.1
 const defaultHourlyRateMultiplier = 5
 const defaultAnnualSalaryMultiplier = 12 * 840
+
+const getMultipliers = (ticketPerHour: string | undefined) => {
+    const hourlyRateMultiplier = ticketPerHour
+        ? Number(ticketPerHour)
+        : defaultHourlyRateMultiplier
+
+    return {
+        hourlyRateMultiplier,
+        annualSalaryMultiplier: 12 * 21 * 8 * hourlyRateMultiplier,
+    }
+}
 
 const agentCostTypeOptions: {
     label: string
@@ -46,7 +56,6 @@ type Props = {
     firstResponseTime: Maybe<number>
     monthlySupportTickets: Maybe<number>
     ticketHandleTime: Maybe<number>
-    ticketsClosedPerHour: Maybe<number>
     hasAgentCosts: boolean
 }
 
@@ -64,15 +73,10 @@ const AutomateExploreDataModal = forwardRef<
             resolutionTime,
             monthlySupportTickets,
             ticketHandleTime,
-            ticketsClosedPerHour,
             hasAgentCosts,
         },
         ref
     ) => {
-        const hourlyRateMultiplier =
-            ticketsClosedPerHour || TICKETS_CLOSED_PER_HOUR
-        const annualSalaryMultiplier = 12 * 21 * 8 * hourlyRateMultiplier
-
         const defaultAgentHourlyRate = (
             defaultAgentCostPerTicket * defaultHourlyRateMultiplier
         ).toLocaleString(undefined, {
@@ -90,6 +94,12 @@ const AutomateExploreDataModal = forwardRef<
         const [isLoading, setIsLoading] = useState(false)
         const [isCostValueDirty, setIsCostValueDirty] = useState(false)
 
+        const [ticketPerHour, setTicketPerHour] = useState<string>(
+            agentCosts?.data.agent_ticket_per_hour
+                ? String(agentCosts?.data.agent_ticket_per_hour)
+                : '5'
+        )
+
         const [costPerTicket, setCostPerTicket] = useState<number | undefined>(
             agentCosts?.data.agent_cost_per_ticket
         )
@@ -97,6 +107,9 @@ const AutomateExploreDataModal = forwardRef<
         const [costType, setCostType] = useState<AccountSettingAgentCostType>(
             agentCosts?.data.agent_cost_type || 'hourly'
         )
+
+        const {hourlyRateMultiplier, annualSalaryMultiplier} =
+            getMultipliers(ticketPerHour)
 
         const hourlyCostValue = costPerTicket
             ? (costPerTicket * hourlyRateMultiplier).toLocaleString(undefined, {
@@ -124,6 +137,7 @@ const AutomateExploreDataModal = forwardRef<
         const [initialValues, setInitialValues] = useState({
             costType,
             costPerTicket,
+            ticketPerHour,
         })
 
         const onCostTypeChange = (val: AccountSettingAgentCostType) => {
@@ -145,10 +159,11 @@ const AutomateExploreDataModal = forwardRef<
                     setInitialValues({
                         costType,
                         costPerTicket,
+                        ticketPerHour,
                     })
                 },
             }),
-            [costType, costPerTicket]
+            [costType, costPerTicket, ticketPerHour]
         )
 
         const onClose = () => {
@@ -166,6 +181,7 @@ const AutomateExploreDataModal = forwardRef<
             const data = {
                 agent_cost_type: costType,
                 agent_cost_per_ticket: costPerTicket,
+                agent_ticket_per_hour: Number(ticketPerHour),
             }
 
             const resp = await (agentCosts
@@ -186,13 +202,17 @@ const AutomateExploreDataModal = forwardRef<
             setInitialValues({
                 costType,
                 costPerTicket,
+                ticketPerHour,
             })
 
             setIsLoading(false)
             onClose()
         }
 
-        const isDirty = initialValues.costType !== costType || isCostValueDirty
+        const isDirty =
+            initialValues.costType !== costType ||
+            initialValues.ticketPerHour !== ticketPerHour ||
+            isCostValueDirty
 
         return (
             <Modal isOpen={isOpen} onClose={onClose}>
@@ -267,12 +287,30 @@ const AutomateExploreDataModal = forwardRef<
                                     <HintTooltip title="Average number of tickets handled by one agent in an hour over the last 28 days" />
                                 </Label>
                                 <InputField
-                                    value={
-                                        formatMetricValue(
-                                            ticketsClosedPerHour
-                                        ) || TICKETS_CLOSED_PER_HOUR
-                                    }
-                                    isDisabled
+                                    value={ticketPerHour}
+                                    placeholder="5"
+                                    onChange={(val) => {
+                                        const ticketPerHour = val.replace(
+                                            /[^0-9.]/g,
+                                            ''
+                                        )
+                                        const costValueFloat = parseFloat(
+                                            costValue.replace(/[^0-9.]/g, '')
+                                        )
+
+                                        const {
+                                            hourlyRateMultiplier,
+                                            annualSalaryMultiplier,
+                                        } = getMultipliers(ticketPerHour)
+
+                                        setTicketPerHour(ticketPerHour)
+                                        setCostPerTicket(
+                                            costValueFloat /
+                                                (costType === 'hourly'
+                                                    ? hourlyRateMultiplier
+                                                    : annualSalaryMultiplier)
+                                        )
+                                    }}
                                     data-testid="tickets-closed-per-hour"
                                 />
                             </div>
@@ -413,7 +451,10 @@ const AutomateExploreDataModal = forwardRef<
                     </Button>
                     <Button
                         isDisabled={
-                            !isDirty || !costPerTicket || isNaN(costPerTicket)
+                            !isDirty ||
+                            !costPerTicket ||
+                            !ticketPerHour ||
+                            isNaN(costPerTicket)
                         }
                         isLoading={isLoading}
                         onClick={onSubmit}
