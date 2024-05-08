@@ -12,9 +12,11 @@ import {
     ticketAverageHandleTimePerAgentQueryFactory,
     ticketHandleTimePerTicketQueryFactory,
     ticketAverageHandleTimeQueryFactory,
+    AVERAGE_HANDLE_TIME_TICKET_CREATION_MAX_DAYS_INTO_THE_PAST,
 } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {subtractDaysFromDate} from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -36,6 +38,12 @@ describe('onlineTimePerAgentQueryFactory', () => {
     }
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Asc
+    const hardPeriodStart = formatReportingQueryDate(
+        subtractDaysFromDate(
+            statsFilters.period.start_datetime,
+            AVERAGE_HANDLE_TIME_TICKET_CREATION_MAX_DAYS_INTO_THE_PAST
+        )
+    )
 
     describe('ticketHandleTimeQueryFactory', () => {
         it('should build the query', () => {
@@ -75,6 +83,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [hardPeriodStart],
                     },
                 ],
                 measures: [HandleTimeMeasure.AverageHandleTime],
@@ -125,6 +138,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.map((i) => String(i)),
                     },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [hardPeriodStart],
+                    },
                 ],
                 measures: [HandleTimeMeasure.AverageHandleTime],
                 order: [[HandleTimeMeasure.AverageHandleTime, sorting]],
@@ -172,6 +190,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [hardPeriodStart],
                     },
                     TicketDrillDownFilter,
                 ],
@@ -223,6 +246,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [hardPeriodStart],
                     },
                     TicketDrillDownFilter,
                 ],
@@ -277,6 +305,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.map((i) => String(i)),
                     },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [hardPeriodStart],
+                    },
                     TicketDrillDownFilter,
                 ],
                 limit: DRILLDOWN_QUERY_LIMIT,
@@ -327,6 +360,11 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMember.Tags,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.tags?.map((i) => String(i)),
+                    },
+                    {
+                        member: TicketMember.CreatedDatetime,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [hardPeriodStart],
                     },
                     TicketDrillDownFilter,
                 ],
