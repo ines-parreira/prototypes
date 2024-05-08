@@ -15,7 +15,7 @@ export const DATADOG_SITE = 'datadoghq.com'
 export const DATADOG_LOGS_SERVICE = 'web-client'
 export const DATADOG_LOGS_SAMPLE_RATE = 100
 export const DATADOG_RUM_SERVICE = 'helpdesk-web-app'
-export const DATADOG_RUM_SAMPLE_RATE = 5
+export const DATADOG_RUM_SESSION_SAMPLE_RATE = 5
 export const DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE = 0
 export const DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION = 'customWebVital'
 
@@ -77,7 +77,7 @@ export const initDatadogRum = ({
         service: DATADOG_RUM_SERVICE,
         version: clientVersion,
         env: environment,
-        sampleRate: DATADOG_RUM_SAMPLE_RATE,
+        sessionSampleRate: DATADOG_RUM_SESSION_SAMPLE_RATE,
         sessionReplaySampleRate: DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
         trackResources: true,
         trackLongTasks: true,
