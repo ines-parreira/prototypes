@@ -93,7 +93,6 @@ export enum FeatureFlagKey {
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
-    RevenueCampaignImprovements = 'revenue-campaign-improvements',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
     RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     SearchWithHighlights = 'search-with-highlights',
