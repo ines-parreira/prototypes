@@ -2969,40 +2969,40 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/analytics-ui-kit/0.1.0/9a906d573ac77701f1dced97a32f6e43aaf70c8a#9a906d573ac77701f1dced97a32f6e43aaf70c8a"
   integrity sha512-KuYrCkyo/3dZVM4GGopjGs6fQkU8WgFtb70+OgUZmadIVlszl2BQxSaGBweuTQ+nTXaKulP3cPYmhiP9gGFj/A==
 
-"@gorgias/api-client@^0.1.42":
-  version "0.1.42"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.42/4fcc6eb1888a5b76fb67064a466ee7c574fd8430#4fcc6eb1888a5b76fb67064a466ee7c574fd8430"
-  integrity sha512-saZTYt9cxv+3abklzCsuD9YFoJ0Fo8j5G/KuBe/X2q87ZIQDLjF/mjNhEmbRUNSPcl0Bs607/B8QPCkcCH9rAA==
+"@gorgias/api-client@^0.1.44":
+  version "0.1.44"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-client/0.1.44/b897083b688099e972420c37928d5c5ba23d3d21#b897083b688099e972420c37928d5c5ba23d3d21"
+  integrity sha512-6o9wAP5b0q4ec5LX7q4V9gqHdJ+u8ZeGGAZeDvg4Ark7bkbA3eFsIy7kpqLTQ+ZuEDOmr/U1t95EUAUoGr3DlQ==
   dependencies:
-    "@gorgias/api-types" "^0.1.42"
+    "@gorgias/api-types" "^0.1.44"
     axios "1.6.5"
 
-"@gorgias/api-queries@^0.1.42":
-  version "0.1.42"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.42/38ea22dada58f7b3054550c5895c78cff6cc2dd9#38ea22dada58f7b3054550c5895c78cff6cc2dd9"
-  integrity sha512-j14fTAWE+9etKJfENui3UNhE+fkSxyAgMrNyP90vEOX5smya3xfO9GNvUIEfUFOadT5j+yWpP2bR76Loe9qLUw==
+"@gorgias/api-queries@0.1.44":
+  version "0.1.44"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-queries/0.1.44/8cef7f19dfd56dba6a1e2714a1ce37b92bac5c76#8cef7f19dfd56dba6a1e2714a1ce37b92bac5c76"
+  integrity sha512-KyB8vrsvd5f4/5vnfYtjgJ1O/jV63xqICRLVUawcAd3o/X9Cl+kVAGfkf53CmeUbH3Ug7qf9JHWHjkk4TeoYAA==
   dependencies:
-    "@gorgias/api-client" "^0.1.42"
-    "@gorgias/api-types" "^0.1.42"
+    "@gorgias/api-client" "^0.1.44"
+    "@gorgias/api-types" "^0.1.44"
 
-"@gorgias/api-spec@^0.1.42":
-  version "0.1.42"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.1.42/1ac770d133a7507c5e3215c3e23473d977928c14#1ac770d133a7507c5e3215c3e23473d977928c14"
-  integrity sha512-/yr98juUbcI95R438JlI4T5PVnCGZbs+Ix9SSqE/3tVc2KbXHA0frlphO20+zBkNFowLgaFhb0ai5g8T+icurA==
+"@gorgias/api-spec@^0.1.44":
+  version "0.1.44"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-spec/0.1.44/3910c97474ca1035d3201cdbc31cfd96f1d24a65#3910c97474ca1035d3201cdbc31cfd96f1d24a65"
+  integrity sha512-wfjcDCzSKJv4YZYHuk7ufmjQ0Iv2qVX1ZxdUIgTgnv5iU+c5JiUcyes5HyCn4zFlG9xoGKbD3CmDRXGc22JmPA==
 
-"@gorgias/api-types@^0.1.42":
-  version "0.1.42"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.42/9b908b588cad3d53f26e6ac75460a3d8e7c30e3f#9b908b588cad3d53f26e6ac75460a3d8e7c30e3f"
-  integrity sha512-52zbqbF+T1KdQxN/jfN44Lc9CL253BCFNUBRSrjz80C7bne0Z26ZTlbqFJr7Es3sPVnKJ0NktpT47CopFBLSdA==
+"@gorgias/api-types@^0.1.44":
+  version "0.1.44"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-types/0.1.44/538d9f09e2c18dd7c76b41e418f459b888b44a76#538d9f09e2c18dd7c76b41e418f459b888b44a76"
+  integrity sha512-4bEEJjNkx2ukbiv7pPOMCaaW10DyVqAb5ZmszbuTIX5GuHo10NKyRglPWzHGmLms1MTp+SX83Iv48hDVVUUqNA==
 
-"@gorgias/api-validators@^0.1.42":
-  version "0.1.42"
-  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.1.42/bbbcf9efeb545e46cbd46a4afe2faad7473a494d#bbbcf9efeb545e46cbd46a4afe2faad7473a494d"
-  integrity sha512-RMn6y0PNNhdwVQhW/c6VU9IipRzt6iQzCYcjqOJkEytQYB5gyu+QxVEQzF3BV/whBBS19bu3DcHzwGbNYi9eog==
+"@gorgias/api-validators@0.1.44":
+  version "0.1.44"
+  resolved "https://npm.pkg.github.com/download/@gorgias/api-validators/0.1.44/4e5065073d9501d0f123e2b2e2f5ee5b7a1112cb#4e5065073d9501d0f123e2b2e2f5ee5b7a1112cb"
+  integrity sha512-MuwHcBWBAYYNOHXxPoeY27lggYwiNtDlP0GUWzs/nXnP0whVlBTbDd87XmwtRO9QgZj0TT9wA4LIu0DK1aInVw==
   dependencies:
     "@apideck/better-ajv-errors" "^0.3.6"
-    "@gorgias/api-spec" "^0.1.42"
-    "@gorgias/api-types" "^0.1.42"
+    "@gorgias/api-spec" "^0.1.44"
+    "@gorgias/api-types" "^0.1.44"
     ajv "^8.12.0"
     ajv-formats "^3.0.1"
     immer "^10.0.4"
@@ -16208,6 +16208,11 @@ react-froala-wysiwyg@4.0.14:
   dependencies:
     create-react-class "^15.5.2"
     froala-editor "4.0.14"
+
+react-hook-form@^7.51.3:
+  version "7.51.3"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.51.3.tgz#7486dd2d52280b6b28048c099a98d2545931cab3"
+  integrity sha512-cvJ/wbHdhYx8aviSWh28w9ImjmVsb5Y05n1+FW786vEZQJV5STNM0pW6ujS+oiBecb0ARBxJFyAnXj9+GHXACQ==
 
 react-images@0.5.5:
   version "0.5.5"

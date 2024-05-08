@@ -44,6 +44,7 @@ exports[`RefundOrderFooter snapshot renders the initial disabled state 1`] = `
     </label>
     <div
       class="wrapper"
+      id="newOrderStatus"
       role="listbox"
       tabindex="-1"
     >
@@ -114,6 +115,7 @@ exports[`RefundOrderFooter snapshot renders the initial state 1`] = `
     </label>
     <div
       class="wrapper"
+      id="newOrderStatus"
       role="listbox"
       tabindex="0"
     >

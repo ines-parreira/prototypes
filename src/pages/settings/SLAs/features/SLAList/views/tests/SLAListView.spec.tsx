@@ -17,7 +17,7 @@ describe('<SLAListView/>', () => {
         )
 
         const {getByText, getAllByText} = render(
-            <SLAListView data={SLAPolicies} />
+            <SLAListView data={SLAPolicies} onTogglePolicy={jest.fn()} />
         )
 
         columnConfig.forEach((config) => {

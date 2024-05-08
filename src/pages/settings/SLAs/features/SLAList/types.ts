@@ -13,3 +13,5 @@ export enum TableColumn {
     UpdatedDatetime = 'updated_datetime',
     Channels = 'channels',
 }
+
+export type OnTogglePolicyFn = (id: string, active: boolean) => void

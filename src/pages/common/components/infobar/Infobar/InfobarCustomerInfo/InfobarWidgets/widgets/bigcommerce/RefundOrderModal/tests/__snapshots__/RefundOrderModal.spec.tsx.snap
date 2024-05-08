@@ -154,6 +154,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             </label>
             <div
               class="wrapper"
+              id="newOrderStatus"
               role="listbox"
               tabindex="0"
             >
@@ -894,6 +895,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             </label>
             <div
               class="wrapper"
+              id="newOrderStatus"
               role="listbox"
               tabindex="0"
             >
@@ -1164,6 +1166,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             </label>
             <div
               class="wrapper"
+              id="newOrderStatus"
               role="listbox"
               tabindex="0"
             >

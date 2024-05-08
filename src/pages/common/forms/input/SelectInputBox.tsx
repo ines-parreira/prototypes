@@ -57,6 +57,7 @@ const SelectInputBox = (
         placeholder,
         prefix,
         suffix,
+        id,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -145,6 +146,7 @@ const SelectInputBox = (
                 ref={inputElement}
                 role="listbox"
                 tabIndex={isDisabledMemoized ? -1 : 0}
+                id={id}
             >
                 <div
                     className={classnames(

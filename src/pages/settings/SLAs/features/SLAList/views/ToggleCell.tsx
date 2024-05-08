@@ -1,11 +1,11 @@
-import React, {PropsWithRef, useCallback, useState} from 'react'
+import React, {PropsWithRef, useCallback} from 'react'
 
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import {UISLAPolicy} from '../types'
+import {OnTogglePolicyFn, UISLAPolicy} from '../types'
 
 import CellLinkWrapper from './CellLinkWrapper'
 import css from './ToggleCell.less'
@@ -13,22 +13,26 @@ import css from './ToggleCell.less'
 export default function ToggleCell({
     policy,
     bodyCellProps,
+    onToggle,
 }: {
     policy: UISLAPolicy
+    onToggle: OnTogglePolicyFn
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) {
     const {uuid, isActive, name} = policy
-    const [isToggled, setIsToggled] = useState(isActive)
 
-    const handleClick = useCallback((_value: boolean, e: React.MouseEvent) => {
-        e.preventDefault()
-        setIsToggled((prev) => !prev)
-    }, [])
+    const handleClick = useCallback(
+        (_value: boolean, e: React.MouseEvent) => {
+            e.preventDefault()
+            onToggle(uuid, !isActive)
+        },
+        [uuid, isActive, onToggle]
+    )
 
     return (
         <BodyCell {...bodyCellProps}>
             <CellLinkWrapper to={`/app/settings/sla/${uuid}`}>
-                <ToggleInput isToggled={isToggled} onClick={handleClick} />
+                <ToggleInput isToggled={isActive} onClick={handleClick} />
                 <div className={css.name}>{name}</div>
             </CellLinkWrapper>
         </BodyCell>

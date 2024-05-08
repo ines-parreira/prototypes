@@ -12,7 +12,9 @@ const policy = {
 
 describe('<ToggleCell />', () => {
     it('should render a toggle input and policy name', () => {
-        const {getByText, getByRole} = render(<ToggleCell policy={policy} />)
+        const {getByText, getByRole} = render(
+            <ToggleCell policy={policy} onToggle={jest.fn()} />
+        )
         expect(getByText(policy.name)).toBeInTheDocument()
         expect(getByRole('checkbox')).toBeInTheDocument()
     })

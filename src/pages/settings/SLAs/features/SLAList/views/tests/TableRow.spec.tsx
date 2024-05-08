@@ -14,7 +14,9 @@ describe('<TableRow />', () => {
             (column: TableColumn) => () => <div>{column}</div>
         )
 
-        const {getByText} = render(<TableRow policy={UISLAPolicy1} />)
+        const {getByText} = render(
+            <TableRow policy={UISLAPolicy1} onToggle={jest.fn()} />
+        )
 
         columnOrder.forEach((column) => {
             expect(getByText(column)).toBeInTheDocument()

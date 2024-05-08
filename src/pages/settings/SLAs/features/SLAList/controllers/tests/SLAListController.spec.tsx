@@ -1,5 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import {useUpdateSlaPolicy} from '@gorgias/api-queries'
 
 import SLAListController from '../SLAListController'
 import useGetSLAPolicies from '../useGetSLAPolicies'
@@ -7,13 +8,26 @@ import useGetSLAPolicies from '../useGetSLAPolicies'
 jest.mock('../useGetSLAPolicies')
 const mockUseGetSLAPolicies = useGetSLAPolicies as jest.Mock
 
-jest.mock('../../views/Loader', () => () => <div>Loader</div>)
+jest.mock('pages/settings/SLAs/features/Loader/Loader', () => () => (
+    <div>Loader</div>
+))
 jest.mock('pages/settings/SLAs/features/LandingPage/LandingPage', () => () => (
     <div>LandingPage</div>
 ))
 jest.mock('../../views/SLAListView', () => () => <div>SLAListView</div>)
 
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+
+jest.mock('@gorgias/api-queries')
+const mockUseUpdateSlaPolicy = useUpdateSlaPolicy as jest.Mock
+
 describe('<SLAListController />', () => {
+    beforeEach(() => {
+        mockUseUpdateSlaPolicy.mockImplementation(() => ({
+            mutateAsync: jest.fn(),
+        }))
+    })
+
     it('should render Loader component when isLoading is true', () => {
         mockUseGetSLAPolicies.mockImplementation(() => ({
             data: [],

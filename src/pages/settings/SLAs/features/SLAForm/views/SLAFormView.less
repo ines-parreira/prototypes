@@ -1,0 +1,49 @@
+@import (reference) '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .page {
+        width: 100%;
+    }
+
+    .infoText {
+        .body-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .policiesRow {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-m;
+    }
+
+    .policyRow {
+        flex: 1;
+        width: 50%;
+    }
+
+    .inputGroup {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-xs;
+    }
+
+    .labelIcon {
+        color: var(--neutral-grey-4);
+        font-size: 13px;
+
+        i {
+            margin-left: 5px;
+        }
+    }
+
+    .buttonGroup {
+        display: flex;
+        justify-content: space-between;
+
+        > div {
+            display: flex;
+            gap: @layout-spacing-xs;
+        }
+    }
+}

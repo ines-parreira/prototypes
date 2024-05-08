@@ -1,4 +1,9 @@
-import React, {ComponentProps, createContext, ReactNode} from 'react'
+import React, {
+    ComponentProps,
+    createContext,
+    forwardRef,
+    ReactNode,
+} from 'react'
 
 import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -21,16 +26,19 @@ type InputFieldContextState = {
 
 export const InputFieldContext = createContext<InputFieldContextState>({})
 
-const InputField = ({
-    caption,
-    id,
-    label,
-    className,
-    error,
-    isDisabled = false,
-    isRequired = false,
-    ...props
-}: Props) => {
+export default forwardRef<HTMLInputElement, Props>(function InputField(
+    {
+        caption,
+        id,
+        label,
+        className,
+        error,
+        isDisabled = false,
+        isRequired = false,
+        ...props
+    }: Props,
+    ref
+) {
     const randomId = useId()
     const inputId = id || 'input-text-' + randomId
     const captionId = `${inputId}-caption`
@@ -49,6 +57,7 @@ const InputField = ({
                     </Label>
                 )}
                 <TextInput
+                    ref={ref}
                     isDisabled={isDisabled}
                     isRequired={isRequired}
                     hasError={!!error}
@@ -64,6 +73,4 @@ const InputField = ({
             </div>
         </InputFieldContext.Provider>
     )
-}
-
-export default InputField
+})

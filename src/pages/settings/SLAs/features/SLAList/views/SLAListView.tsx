@@ -4,7 +4,10 @@ import TableWrapper from 'pages/common/components/table/TableWrapper'
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
-import {UISLAPolicy} from 'pages/settings/SLAs/features/SLAList/types'
+import {
+    OnTogglePolicyFn,
+    UISLAPolicy,
+} from 'pages/settings/SLAs/features/SLAList/types'
 
 import PageHeader from '../../PageHeader/PageHeader'
 
@@ -13,7 +16,11 @@ import Header from './Header'
 import TableRow from './TableRow'
 import css from './SLAListView.less'
 
-export default function SLAListView({data}: {data: UISLAPolicy[]}) {
+type SLAListViewProps = {
+    data: UISLAPolicy[]
+    onTogglePolicy: OnTogglePolicyFn
+}
+export default function SLAListView({data, onTogglePolicy}: SLAListViewProps) {
     return (
         <div className={css.pageContainer}>
             <PageHeader />
@@ -32,7 +39,11 @@ export default function SLAListView({data}: {data: UISLAPolicy[]}) {
                 </TableHead>
                 <TableBody>
                     {data.map((policy) => (
-                        <TableRow policy={policy} key={policy.uuid} />
+                        <TableRow
+                            policy={policy}
+                            key={policy.uuid}
+                            onToggle={onTogglePolicy}
+                        />
                     ))}
                 </TableBody>
             </TableWrapper>
