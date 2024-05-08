@@ -26,7 +26,7 @@ export const weekDayLabel = (weekDay: number) => {
             return DayOfWeek.FRIDAY
         case 6:
             return DayOfWeek.SATURDAY
-        case 0:
+        case 7:
             return DayOfWeek.SUNDAY
         default:
             return null
@@ -73,7 +73,7 @@ export function getAggregatedBusiestTimesOfDayData(
         }
         const momentDate = stringToDatetimeWithTimeZone(dateTime, timeZone)
 
-        const day = momentDate ? weekDayLabel(momentDate?.weekday()) : null
+        const day = momentDate ? weekDayLabel(momentDate?.isoWeekday()) : null
         const hourFromDate = momentDate?.hour()
 
         if (day && hourFromDate !== undefined) {
@@ -103,7 +103,7 @@ export const getWorkingHours = (
 
         while (startTime < endTime) {
             days.split(',').forEach((day) => {
-                const weekday = weekDayLabel(Number(day) - 1)
+                const weekday = weekDayLabel(Number(day))
                 if (weekday) {
                     result[startTime][weekday] = 1
                 }
