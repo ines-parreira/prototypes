@@ -44,6 +44,9 @@ const defaultProps: ComponentProps<typeof PeriodPicker> = {
     endDatetime: moment(),
     startDatetime: moment().subtract(7, 'days'),
     onChange: () => {},
+    pickerV2Styles: false,
+    rangesOnLeft: false,
+    showRangesLabel: true,
 }
 
 export const Default = Template.bind({})

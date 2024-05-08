@@ -51,7 +51,7 @@ export const getDefaultSetOfRanges = (): {
     [LAST_90_DAYS]: [dateInPastFromStartOfToday(90), endOfToday()],
 })
 
-type Props = {
+export type Props = {
     endDatetime: Moment
     formatMaxSpan?: (
         maxSpan?: moment.MomentInput | moment.Duration
@@ -70,6 +70,9 @@ type Props = {
     onOpen?: () => void
     toggleProps?: Partial<ComponentProps<typeof Button>>
     dateRanges?: {[label: string]: [Moment, Moment]}
+    pickerV2Styles?: boolean
+    rangesOnLeft?: boolean
+    showRangesLabel?: boolean
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -88,6 +91,9 @@ export const PeriodPickerContainer = ({
     toggleProps,
     userTimezone,
     dateRanges,
+    pickerV2Styles = false,
+    rangesOnLeft: rangesLeft = false,
+    showRangesLabel = true,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -251,10 +257,25 @@ export const PeriodPickerContainer = ({
                             onOpen?.()
                             dateRangerPickerElement.current =
                                 target.container?.get(0)
+
                             dateRangerPickerElement.current.classList.add(
                                 ...themes,
                                 'displayed'
                             )
+
+                            if (pickerV2Styles) {
+                                dateRangerPickerElement.current.classList.add(
+                                    'picker-v2',
+                                    'apply-v2-styles'
+                                )
+                            }
+
+                            if (rangesLeft) {
+                                dateRangerPickerElement.current.classList.add(
+                                    'picker-v2',
+                                    'ranges-on-left'
+                                )
+                            }
 
                             const cancelBtn = target.container
                                 .get(0)
@@ -280,8 +301,10 @@ export const PeriodPickerContainer = ({
                                     '.ranges ul'
                                 )
                             if (ranges) {
-                                ranges.setAttribute('label', 'Shortcuts')
-                                ranges.classList.add('with-label')
+                                if (showRangesLabel) {
+                                    ranges.classList.add('with-label')
+                                    ranges.setAttribute('label', 'Shortcuts')
+                                }
                             }
                         }}
                         onHide={() => {
