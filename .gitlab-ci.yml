@@ -181,11 +181,8 @@ Build production:
 
 Deploy staging:
   extends: .deploy staging
-  parallel:
-    matrix:
-      - CONTEXT:
-          - gorgias-helpdesk-staging-us-east1-86cc
-          - gorgias-helpdesk-staging-us-east4-a5a0
+  variables:
+    CONTEXT: gorgias-helpdesk-staging-us-east1-86cc
   <<: *gitlab_environment
 
 .deploy production:
