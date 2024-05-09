@@ -35,10 +35,11 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
         paywallTitle:
             'Instant resolutions for happier customers and a happier team',
         descriptions: [
-            'Resolve up to 50% of requests with AI and automation.',
-            'Save agent time for more personalized customer care.',
-            'Save on costs while offering 24/7 support that scales.',
-            'Automate email, Chat, Help Center, and Contact Form.',
+            'Resolve up to 60% of requests with AI Agent and automation.',
+            'Get access to AI Agent, and resolve e-mail tickets in minutes.',
+            'Boost customer satisfaction with instant answers 24/7 and quicker resolution time.',
+            'Save on costs when scaling support, especially vs. hiring more agents and during BFCM.',
+            'Focus on high-impact work like important tickets and CX strategy by handling repetitive tickets.',
         ],
         showRoiCalculator: true,
         slidesData: [
