@@ -87,7 +87,7 @@ export const initDatadogRum = ({
         email: user.email,
         domain: account.domain,
     })
-    datadogRum.setRumGlobalContext({
+    datadogRum.setGlobalContext({
         serverVersion,
     })
     onINP(

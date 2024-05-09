@@ -53,7 +53,7 @@
         "@casl/ability": "^6.7.1",
         "@casl/react": "3.0.1",
         "@datadog/browser-logs": "2.0.3",
-        "@datadog/browser-rum": "^4.50.1",
+        "@datadog/browser-rum": "^5.17.1",
         "@emotion/core": "^10.1.1",
         "@emotion/css": "^10.0.27",
         "@emotion/react": "^11.11.1",

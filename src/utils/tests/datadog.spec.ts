@@ -114,7 +114,7 @@ describe('datadog', () => {
         it('should set rum global context', () => {
             initDatadogRum(defaultOptions)
 
-            expect(datadogRum.setRumGlobalContext).toHaveBeenCalledWith({
+            expect(datadogRum.setGlobalContext).toHaveBeenCalledWith({
                 serverVersion: defaultServerVersion,
             })
         })
