@@ -909,7 +909,7 @@ describe('global utils', () => {
             }
 
             expect(utils.errorToChildren(error)).toMatch(
-                '<li>Item: malicious <img src /></li>'
+                '<li>Item: malicious <img /></li>'
             )
         })
     })
