@@ -407,12 +407,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             displayedActions.push(ActionName.Video)
         }
 
-        if (
-            !this._isLDFlagActivated(
-                FeatureFlagKey.RevenueHideDiscountCodeButton
-            ) &&
-            !isNewChannel(newMessageType)
-        ) {
+        if (!isNewChannel(newMessageType)) {
             displayedActions.push(ActionName.DiscountCodePicker)
         }
 

@@ -14,7 +14,6 @@ import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
 import * as channelsService from 'services/channels'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketReplyEditorContainer} from '../TicketReplyEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () =>
@@ -52,9 +51,6 @@ describe('TicketReplyEditor component', () => {
         addAttachments: jest.fn(),
         notify: jest.fn(),
         setResponseText: jest.fn(),
-        flags: {
-            [FeatureFlagKey.RevenueHideDiscountCodeButton]: false,
-        },
     }
 
     it('should render empty ticket', () => {

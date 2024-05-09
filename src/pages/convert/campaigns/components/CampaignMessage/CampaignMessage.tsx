@@ -31,7 +31,6 @@ import RichField from 'pages/common/forms/RichField/RichField'
 import {useIsConvertUniqueDiscountCodesEnabled} from 'pages/convert/common/hooks/useIsConvertUniqueDiscountCodesEnabled'
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {useIsAllowedToAddDiscountCode} from '../../hooks/useIsAllowedToAddDiscountCode'
 
 import css from './CampaignMessage.less'
 
@@ -64,7 +63,6 @@ export const CampaignMessage = memo(
         onDeleteAttachment,
     }: Props): JSX.Element => {
         const {shopifyIntegration} = useIntegrationContext()
-        const isAllowedToAddDiscountCode = useIsAllowedToAddDiscountCode()
         const {getStepConfiguration, getTourConfiguration} =
             useCampaignFormContext()
         const stepConfiguration = useMemo(() => {
@@ -198,7 +196,7 @@ export const CampaignMessage = memo(
                 ActionName.Emoji,
             ]
 
-            if (isAllowedToAddDiscountCode) {
+            if (isConvertSubscriber) {
                 actions.push(ActionName.DiscountCodePicker)
             }
 
@@ -209,7 +207,7 @@ export const CampaignMessage = memo(
             actions.push(ActionName.Video)
 
             return actions
-        }, [attachments, isAllowedToAddDiscountCode])
+        }, [attachments, isConvertSubscriber])
 
         return (
             <div>

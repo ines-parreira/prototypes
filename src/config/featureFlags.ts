@@ -94,7 +94,6 @@ export enum FeatureFlagKey {
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',
-    RevenueHideDiscountCodeButton = 'revenue-hide-discount-code-button',
     SearchWithHighlights = 'search-with-highlights',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
