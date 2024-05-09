@@ -1,6 +1,7 @@
 import {FormValues} from './types'
 
 export const SIGNATURE_MAX_LENGTH = 50
+export const CUSTOM_TONE_OF_VOICE_MAX_LENGTH = 500
 export const EXCLUDED_TOPIC_MAX_LENGTH = 100
 export const MAX_EXCLUDED_TOPICS = 10
 

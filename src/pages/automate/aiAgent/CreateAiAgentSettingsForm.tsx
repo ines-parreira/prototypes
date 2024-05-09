@@ -42,6 +42,7 @@ import {
     DEFAULT_FORM_VALUES,
     DEFAULT_AI_AGENT_ENABLED_RATE,
     ToneOfVoice,
+    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
@@ -210,7 +211,18 @@ const validateFormValues = (formValues: FormValues): ValidFormValues => {
         formValues.toneOfVoice === ToneOfVoice.Custom &&
         !formValues.customToneOfVoiceGuidance?.length
     ) {
-        throw new Error('Custom tone of voice guidance cannot be empty')
+        throw new Error('Custom tone of voice cannot be empty')
+    }
+
+    if (
+        (!formValues.toneOfVoice ||
+            formValues.toneOfVoice === ToneOfVoice.Custom) &&
+        formValues.customToneOfVoiceGuidance &&
+        formValues.customToneOfVoiceGuidance.length > 500
+    ) {
+        throw new Error(
+            'Custom tone of voice should be less than 500 characters'
+        )
     }
 
     return {
@@ -479,7 +491,8 @@ export const CreateAiAgentSettingsForm = ({
                             <div className={css.customToneOfVoiceGuidance}>
                                 <TextArea
                                     autoRowHeight={true}
-                                    placeholder="Custom tone of voice guidance"
+                                    placeholder="Custom tone of voice"
+                                    maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
                                     value={
                                         formValues.customToneOfVoiceGuidance!
                                     }
@@ -487,7 +500,7 @@ export const CreateAiAgentSettingsForm = ({
                                         if (typeof value !== 'string') return
                                         updateValue(
                                             'customToneOfVoiceGuidance',
-                                            value.trim()
+                                            value
                                         )
                                     }}
                                 />

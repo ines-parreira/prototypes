@@ -1,5 +1,4 @@
 import React from 'react'
-import {Alert} from 'reactstrap'
 import {Redirect} from 'react-router-dom'
 import {notify} from 'state/notifications/actions'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
@@ -8,6 +7,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import {useGetStoreConfigurationPure} from '../../../models/aiAgent/queries'
@@ -76,21 +76,17 @@ export const AiAgentStoreView = ({
             >
                 <div>
                     {!storeIntegrationHasShopifyPermissions && (
-                        <div className={css.configurationWarningContainer}>
-                            <Alert color="warning">
-                                Some shopify permissions are missing on this
-                                store in order to make AI Agent get access to
-                                order fulfillment knowledge. Update them by
-                                following this{' '}
-                                <a
-                                    href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    link
-                                </a>
-                            </Alert>
-                        </div>
+                        <Alert icon type={AlertType.Warning}>
+                            <a
+                                href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Update your Shopify permissions
+                            </a>{' '}
+                            to allow AI Agent access to order fulfillment
+                            knowledge.
+                        </Alert>
                     )}
                     <EditAiAgentSettingsForm
                         shopName={shopName}
@@ -107,21 +103,17 @@ export const AiAgentStoreView = ({
             <div>
                 <div className={css.configurationWarningContainer}>
                     {!storeIntegrationHasShopifyPermissions && (
-                        <div className={css.configurationWarningContainer}>
-                            <Alert color="warning">
-                                Some shopify permissions are missing on this
-                                store in order to make AI Agent get access to
-                                order fulfillment knowledge. Update them by
-                                following this{' '}
-                                <a
-                                    href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    link
-                                </a>
-                            </Alert>
-                        </div>
+                        <Alert icon type={AlertType.Warning}>
+                            <a
+                                href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Update your Shopify permissions
+                            </a>{' '}
+                            to allow AI Agent access to order fulfillment
+                            knowledge.
+                        </Alert>
                     )}
                 </div>
                 <CreateAiAgentSettingsForm

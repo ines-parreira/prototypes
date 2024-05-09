@@ -38,6 +38,7 @@ import {
     DEFAULT_FORM_VALUES,
     ToneOfVoice,
     CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
+    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
@@ -170,7 +171,17 @@ const validateFormValues = (formValues: FormValues): FormValues => {
             formValues.toneOfVoice === ToneOfVoice.Custom) &&
         formValues.customToneOfVoiceGuidance?.length === 0
     ) {
-        throw new Error('Custom tone of voice guidance cannot be empty')
+        throw new Error('Custom tone of voice cannot be empty')
+    }
+    if (
+        (!formValues.toneOfVoice ||
+            formValues.toneOfVoice === ToneOfVoice.Custom) &&
+        formValues.customToneOfVoiceGuidance &&
+        formValues.customToneOfVoiceGuidance.length > 500
+    ) {
+        throw new Error(
+            'Custom tone of voice should be less than 500 characters'
+        )
     }
 
     return formValues
@@ -445,7 +456,8 @@ export const EditAiAgentSettingsForm = ({
                             <div className={css.customToneOfVoiceGuidance}>
                                 <TextArea
                                     autoRowHeight={true}
-                                    placeholder="Custom tone of voice guidance"
+                                    placeholder="Custom tone of voice"
+                                    maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
                                     value={
                                         formValues.customToneOfVoiceGuidance !==
                                         null
@@ -457,7 +469,7 @@ export const EditAiAgentSettingsForm = ({
                                         if (typeof value !== 'string') return
                                         updateValue(
                                             'customToneOfVoiceGuidance',
-                                            value.trim()
+                                            value
                                         )
                                     }}
                                 />
