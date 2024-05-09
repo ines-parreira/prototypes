@@ -27,12 +27,18 @@ export const convertSecondsToMinutes = (
 }
 
 export const formatValue = (val: string) => {
-    const inputNumber = Number(val.replace(/[^0-9.]/g, ''))
+    const inputString = val.replace(/[^0-9.]/g, '')
+    const inputNumber = Number(inputString)
+
+    const decimalCount = inputString.split('.')[1]?.length || 0
 
     const hasDecimalTail = val.slice(-1) === '.'
 
     const costValue = val
         ? inputNumber.toLocaleString(undefined, {
+              minimumFractionDigits: decimalCount
+                  ? Math.min(decimalCount, 2)
+                  : 0,
               maximumFractionDigits: 2,
           }) + (hasDecimalTail ? '.' : '')
         : ''
