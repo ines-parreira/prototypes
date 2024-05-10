@@ -55,7 +55,9 @@ export default function NotificationsButton() {
                     />
                     Notifications
                 </span>
-                <span className={navbarCss['item-count']}>{count}</span>
+                {count > 0 && (
+                    <span className={navbarCss['item-count']}>{count}</span>
+                )}
             </Button>
             <NotificationFeedPopover
                 buttonRef={buttonRef}
