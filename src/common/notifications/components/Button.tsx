@@ -1,4 +1,9 @@
-import {NotificationFeedPopover, RenderItemProps} from '@knocklabs/react'
+import {FeedItem as KnockFeedItem} from '@knocklabs/client'
+import {
+    NotificationFeedPopover,
+    RenderItemProps,
+    useKnockFeed,
+} from '@knocklabs/react'
 import cn from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
 
@@ -15,6 +20,7 @@ import './Feed.less'
 
 export default function NotificationsButton() {
     const count = useCount()
+    const {feedClient} = useKnockFeed()
 
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isVisible, setIsVisible] = useState(false)
@@ -22,6 +28,14 @@ export default function NotificationsButton() {
     const handleClick = useCallback(() => {
         setIsVisible((v) => !v)
     }, [])
+
+    const handleClickNotification = useCallback(
+        (item: KnockFeedItem) => {
+            void feedClient.markAsRead(item)
+            setIsVisible(false)
+        },
+        [feedClient]
+    )
 
     const handleClose = useCallback(() => {
         setIsVisible(false)
@@ -34,11 +48,11 @@ export default function NotificationsButton() {
                 <FeedItem
                     key={notification.id}
                     notification={notification}
-                    onClick={handleClose}
+                    onClick={() => handleClickNotification(item)}
                 />
             )
         },
-        [handleClose]
+        [handleClickNotification]
     )
 
     return (
