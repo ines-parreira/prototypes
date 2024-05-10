@@ -5,6 +5,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Loader from 'pages/common/components/Loader/Loader'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 
 type Props = {
     children?: React.ReactNode
@@ -13,12 +15,19 @@ type Props = {
 export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentAccount = useAppSelector(getCurrentAccountState)
+    const shopifyIntegrations = useAppSelector(
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
+    )
+
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
+    const storeNames = shopifyIntegrations.map(
+        (integration) => integration.meta.shop_name
+    )
 
     const {status: accountConfigRetrievalStatus} =
         useGetOrCreateAccountConfiguration(
-            {accountId, accountDomain},
+            {accountId, accountDomain, storeNames},
             {refetchOnWindowFocus: false}
         )
 

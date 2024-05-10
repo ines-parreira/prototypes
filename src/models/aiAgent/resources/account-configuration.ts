@@ -39,7 +39,10 @@ export const getAccountConfiguration = async (accountDomain: string) => {
 }
 
 export const createAccountConfiguration = async (
-    accountConfiguration: AccountConfiguration & {helpdeskOAuth: null}
+    accountConfiguration: AccountConfiguration & {
+        storeNames: string[]
+        helpdeskOAuth: null
+    }
 ) => {
     return await apiClient.post<AccountConfigurationResponse>(
         `/accounts`,

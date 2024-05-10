@@ -18,13 +18,14 @@ export function useGetOrCreateAccountConfiguration(
     params: {
         accountId: number
         accountDomain: string
+        storeNames: string[]
     },
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAccountConfiguration>>
     >
 ) {
     const dispatch = useAppDispatch()
-    const {accountId, accountDomain} = params
+    const {accountId, accountDomain, storeNames} = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
         queryFn: async () => {
@@ -48,6 +49,7 @@ export function useGetOrCreateAccountConfiguration(
                 return await createAccountConfiguration({
                     accountId,
                     gorgiasDomain: accountDomain,
+                    storeNames,
                     helpdeskOAuth: null,
                 })
             }
