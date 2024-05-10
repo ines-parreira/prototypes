@@ -33,16 +33,22 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
         paywallLogo: assetsUrl('/img/self-service/automate-logo.svg'),
         paywallLogoAlt: 'Gorgias Automate',
         paywallTitle:
-            'Instant resolutions for happier customers and a happier team',
+            'Automate 60%+ of your support with AI and grow your brand',
         descriptions: [
-            'Resolve up to 60% of requests with AI Agent and automation.',
-            'Get access to AI Agent, and resolve e-mail tickets in minutes.',
-            'Boost customer satisfaction with instant answers 24/7 and quicker resolution time.',
-            'Save on costs when scaling support, especially vs. hiring more agents and during BFCM.',
-            'Focus on high-impact work like important tickets and CX strategy by handling repetitive tickets.',
+            'Resolve email tickets in minutes with AI Agent.',
+            'Boost CSAT with 24/7 support across channels.',
+            'Save costs on support, especially during peak seasons.',
+            'Save time to focus on high-impact tickets and CX strategy.',
         ],
         showRoiCalculator: true,
         slidesData: [
+            {
+                imageUrl: assetsUrl(
+                    '/img/paywalls/screens/automate_paywall_ai_agent.gif'
+                ),
+                description:
+                    "Upgrade your team with AI Agent to instantly answer tickets, perform actions and match your brand's voice.",
+            },
             {
                 imageUrl: assetsUrl(
                     '/img/paywalls/screens/automate_paywall_flows.png'
@@ -62,13 +68,6 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
                 ),
                 description:
                     'Let customers manage and track orders on your Chat, Help Center, and Contact Form.',
-            },
-            {
-                imageUrl: assetsUrl(
-                    '/img/paywalls/screens/automate_paywall_autoresponders.png'
-                ),
-                description:
-                    'Leverage AI Autoresponders to reduce and resolve emails tickets.',
             },
             {
                 imageUrl: assetsUrl(
@@ -134,19 +133,19 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
         paywallLogo: assetsUrl('/img/ai-agent/ai-agent-logo.png'),
         paywallLogoAlt: 'AI Agent',
         paywallTitle:
-            'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
+            'Introducing AI Agent for email, your team’s newest member for seamless customer support',
         descriptions: [
-            "Consume all your brand's knowledge, identity and tone",
-            'Follow guidance built by you',
-            'Enhance team productivity, reducing workload & response times',
-            'Guide customers towards swift resolutions in seconds, not hours',
-            'Continuously improve based on your reviews & feedback',
+            'Deliver fast, relevant, accurate, and on-brand answers.',
+            'Leverage your own knowledge base, data and integrations.',
+            'Boost team productivity while reducing response times.',
+            'Continuously improve based on your reviews & feedback.',
         ],
         showRoiCalculator: false,
-        slidesWidth: 600,
         slidesData: [
             {
-                imageUrl: assetsUrl('/img/paywalls/screens/ai-agent-demo.gif'),
+                imageUrl: assetsUrl(
+                    '/img/paywalls/screens/ai_agent_waitwall.gif'
+                ),
                 description: '',
             },
         ],
