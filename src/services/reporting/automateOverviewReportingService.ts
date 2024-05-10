@@ -20,7 +20,7 @@ import {
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
 } from 'pages/automate/automate-metrics/constants'
-import {AUTOMATE_STATS_MEASUR_LABEL_MAP} from 'hooks/reporting/automate/utils'
+import {AUTOMATE_STATS_MEASURE_LABEL_MAP} from 'hooks/reporting/automate/utils'
 
 export const AUTOMATE_IMPACT_FILENAME = 'automate-impact'
 export const AUTOMATE_PERFORMANCE_FILENAME = 'automate-performance'
@@ -96,7 +96,7 @@ export const saveReport = async (data: AutomateReportData, period: Period) => {
     const labels =
         automatedInteractionByEventTypesTimeSeries?.map(
             (item) =>
-                AUTOMATE_STATS_MEASUR_LABEL_MAP[
+                AUTOMATE_STATS_MEASURE_LABEL_MAP[
                     item[0].label as AutomatedInteractionByFeatures
                 ]
         ) || []

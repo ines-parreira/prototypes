@@ -34,12 +34,14 @@ export const AutomateEventType = {
     FLOW_ENDED_WITHOUT_ACTION: 'flow_ended_without_action',
     TICKET_MESSAGE_CREATED_FROM_AUTORESPONDER:
         'ticket_message_created_from_autoresponder',
+    AI_AGENT_TICKET_RESOLVED: 'ai_agent_ticket_resolved',
 }
 
-export const AUTOMATE_STATS_MEASUR_LABEL_MAP: Record<
+export const AUTOMATE_STATS_MEASURE_LABEL_MAP: Record<
     AutomatedInteractionByFeatures,
     string
 > = {
+    [AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent]: 'AI Agent',
     [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows]:
         FLOWS,
     [AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse]:
@@ -76,6 +78,8 @@ function getAutomateStatsEventTypeMap(
             return AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows
         case AutomateEventType.TICKET_MESSAGE_CREATED_FROM_AUTORESPONDER:
             return AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders
+        case AutomateEventType.AI_AGENT_TICKET_RESOLVED:
+            return AutomationBillingEventMeasure.AutomatedInteractionsByAIAgent
     }
     return 'Others'
 }
@@ -166,7 +170,7 @@ export function sortByAutomateFeatureLabels(
     a: {label: string},
     b: {label: string}
 ) {
-    const eventTypeChartLabels = Object.values(AUTOMATE_STATS_MEASUR_LABEL_MAP)
+    const eventTypeChartLabels = Object.values(AUTOMATE_STATS_MEASURE_LABEL_MAP)
     return (
         eventTypeChartLabels.indexOf(a.label) -
         eventTypeChartLabels.indexOf(b.label)

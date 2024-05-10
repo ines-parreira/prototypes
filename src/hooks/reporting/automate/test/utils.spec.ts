@@ -13,7 +13,7 @@ import {
     addNonExistingEventTypesForGraph,
     renderAutomateXTickLabel,
     renderAutomateTooltipLabel,
-    AUTOMATE_STATS_MEASUR_LABEL_MAP,
+    AUTOMATE_STATS_MEASURE_LABEL_MAP,
     sortByAutomateFeatureLabels,
     automateInteractionsByEventTypeToTimeSeries,
 } from '../utils'
@@ -375,7 +375,7 @@ describe('renderAutomateTooltipLabel', () => {
     })
 })
 describe('sortByAutomateFeatureLabels', () => {
-    const labels = Object.values(AUTOMATE_STATS_MEASUR_LABEL_MAP)
+    const labels = Object.values(AUTOMATE_STATS_MEASURE_LABEL_MAP)
 
     test('sorts labels in ascending order', () => {
         const unsortedLabels = [
@@ -439,7 +439,7 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
 
         // Check if data is converted properly
         expect(result.length).toBe(
-            Object.keys(AUTOMATE_STATS_MEASUR_LABEL_MAP).length
+            Object.keys(AUTOMATE_STATS_MEASURE_LABEL_MAP).length
         )
 
         // Hour granularrity to 24 items

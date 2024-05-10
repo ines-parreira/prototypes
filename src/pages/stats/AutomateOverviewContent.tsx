@@ -35,7 +35,7 @@ import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/Aut
 import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {DownloadOverviewDataButton} from 'pages/stats/support-performance/components/DownloadOverviewDataButton'
 import {
-    AUTOMATE_STATS_MEASUR_LABEL_MAP,
+    AUTOMATE_STATS_MEASURE_LABEL_MAP,
     addZeroValueTimeSeriesForGreyArea,
     automatePercentLabel,
     renderAutomateTooltipLabel,
@@ -137,7 +137,7 @@ function useTimeSeriesFormattedData(
                 automatedInteractionByEventTypesTimeSeries,
                 automatedInteractionByEventTypesTimeSeries.map((item) =>
                     item[0].label
-                        ? AUTOMATE_STATS_MEASUR_LABEL_MAP[
+                        ? AUTOMATE_STATS_MEASURE_LABEL_MAP[
                               item[0].label as AutomatedInteractionByFeatures
                           ]
                         : 'Others'
@@ -497,6 +497,8 @@ export default function AutomateOverviewContent({
                                 legendOnLeft
                                 _renderLegacyTooltipLabel={renderAutomateTooltipLabel()}
                                 customColors={[
+                                    colors['📺 Classic'].Accessory.Navy_text
+                                        .value,
                                     colors['📺 Classic'].Main.Variations
                                         .Primary_3.value,
                                     colors['📺 Classic'].Feedback.Variations

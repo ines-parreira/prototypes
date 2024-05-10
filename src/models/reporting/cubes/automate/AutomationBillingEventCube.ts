@@ -14,6 +14,7 @@ export enum AutomationBillingEventMeasure {
     AutomatedInteractionsByAutomatedResponse = 'AutomationBillingEvent.automatedInteractionsByAutomatedResponse',
     AutomatedInteractionsByAutoResponders = 'AutomationBillingEvent.automatedInteractionsByAutoResponders',
     AutomatedInteractionsByQuickResponseFlows = 'AutomationBillingEvent.automatedInteractionsByQuickResponseFlows',
+    AutomatedInteractionsByAIAgent = 'AutomationBillingEvent.automatedInteractionsByAIAgent',
 }
 
 export enum AutomationBillingEventDimension {
