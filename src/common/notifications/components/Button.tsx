@@ -11,6 +11,7 @@ import transformKnockNotification from '../utils/transformKnockNotification'
 
 import FeedItem from './FeedItem'
 import css from './Button.less'
+import './Feed.less'
 
 export default function NotificationsButton() {
     const count = useCount()
