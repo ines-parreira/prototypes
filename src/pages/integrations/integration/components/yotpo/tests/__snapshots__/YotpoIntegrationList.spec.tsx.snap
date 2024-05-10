@@ -1,182 +1,428 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<YotpoIntegrationList/> render() should not render an integration cause the one passed is not a Yotpo integration 1`] = `
-<ComponentWithRouterProp
-  createIntegration={[Function]}
-  createIntegrationButtonLabel="Add Yotpo account"
-  integrationToItemDisplay={[Function]}
-  integrationType="yotpo"
-  integrations={Immutable.List []}
-  loading={Immutable.Map {}}
-  longTypeDescription={
+<div
+  class="w-100"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Yotpo
+        </li>
+      </ol>
+    </nav>
     <div>
-      <p>
-        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
-      </p>
-      <p>
-        Integration benefits:
-      </p>
-      <ul>
-        <li>
-          Display relevant customer information in custom Gorgias widget
-        </li>
-        <li>
-          Display latest reviews from customers in the widget
-        </li>
-      </ul>
-      <h4>
-        Your Yotpo integrations
-      </h4>
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Add Yotpo account
+      </button>
     </div>
-  }
-/>
+  </div>
+  <div
+    class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-list-top"
+  >
+    <div
+      class="mb-3"
+    >
+      <div>
+        <p>
+          Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+        </p>
+        <p>
+          Integration benefits:
+        </p>
+        <ul>
+          <li>
+            Display relevant customer information in custom Gorgias widget
+          </li>
+          <li>
+            Display latest reviews from customers in the widget
+          </li>
+        </ul>
+        <h4>
+          Your Yotpo integrations
+        </h4>
+      </div>
+    </div>
+    <div
+      class="mt-3"
+    >
+      You have no integration of this type at the moment.
+    </div>
+  </div>
+  <div
+    class="container-fluid"
+    data-candu-id="integration-list-bottom"
+  />
+</div>
 `;
 
 exports[`<YotpoIntegrationList/> render() should render a deactivated integration that can be reenabled 1`] = `
-<ComponentWithRouterProp
-  createIntegration={[Function]}
-  createIntegrationButtonLabel="Add Yotpo account"
-  integrationToItemDisplay={[Function]}
-  integrationType="yotpo"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "type": "yotpo",
-        "id": 1,
-        "name": "Yotpo",
-        "meta": Immutable.Map {
-          "oauth": Immutable.Map {
-            "status": "success",
-          },
-          "import_state": Immutable.Map {
-            "is_over": true,
-          },
-        },
-        "deactivated_datetime": "2018-01-01 10:12",
-      },
-    ]
-  }
-  loading={Immutable.Map {}}
-  longTypeDescription={
+<div
+  class="w-100"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Yotpo
+        </li>
+      </ol>
+    </nav>
     <div>
-      <p>
-        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
-      </p>
-      <p>
-        Integration benefits:
-      </p>
-      <ul>
-        <li>
-          Display relevant customer information in custom Gorgias widget
-        </li>
-        <li>
-          Display latest reviews from customers in the widget
-        </li>
-      </ul>
-      <h4>
-        Your Yotpo integrations
-      </h4>
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Add Yotpo account
+      </button>
     </div>
-  }
-/>
+  </div>
+  <div
+    class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-list-top"
+  >
+    <div
+      class="mb-3"
+    >
+      <div>
+        <p>
+          Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+        </p>
+        <p>
+          Integration benefits:
+        </p>
+        <ul>
+          <li>
+            Display relevant customer information in custom Gorgias widget
+          </li>
+          <li>
+            Display latest reviews from customers in the widget
+          </li>
+        </ul>
+        <h4>
+          Your Yotpo integrations
+        </h4>
+      </div>
+    </div>
+  </div>
+  <table
+    class="table-integrations mt-3 table table-hover"
+  >
+    <tbody>
+      <tr>
+        <td
+          class="link-full-td"
+        >
+          <a
+            to="/app/settings/integrations/yotpo/1"
+          >
+            <div>
+              <b>
+                Yotpo
+              </b>
+            </div>
+          </a>
+        </td>
+        <td
+          class="smallest align-middle"
+        >
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+        </td>
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/yotpo/1"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="container-fluid"
+    data-candu-id="integration-list-bottom"
+  />
+</div>
 `;
 
 exports[`<YotpoIntegrationList/> render() should render a loader because the integration is loading 1`] = `
-<ComponentWithRouterProp
-  createIntegration={[Function]}
-  createIntegrationButtonLabel="Add Yotpo account"
-  integrationToItemDisplay={[Function]}
-  integrationType="yotpo"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "type": "yotpo",
-        "id": 1,
-        "name": "Yotpo",
-        "meta": Immutable.Map {
-          "oauth": Immutable.Map {
-            "status": "success",
-          },
-          "import_state": Immutable.Map {
-            "is_over": false,
-          },
-        },
-      },
-    ]
-  }
-  loading={
-    Immutable.Map {
-      "updateIntegration": true,
-    }
-  }
-  longTypeDescription={
+<div
+  class="w-100"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Yotpo
+        </li>
+      </ol>
+    </nav>
     <div>
-      <p>
-        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
-      </p>
-      <p>
-        Integration benefits:
-      </p>
-      <ul>
-        <li>
-          Display relevant customer information in custom Gorgias widget
-        </li>
-        <li>
-          Display latest reviews from customers in the widget
-        </li>
-      </ul>
-      <h4>
-        Your Yotpo integrations
-      </h4>
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Add Yotpo account
+      </button>
     </div>
-  }
-/>
+  </div>
+  <div
+    class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-list-top"
+  >
+    <div
+      class="mb-3"
+    >
+      <div>
+        <p>
+          Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+        </p>
+        <p>
+          Integration benefits:
+        </p>
+        <ul>
+          <li>
+            Display relevant customer information in custom Gorgias widget
+          </li>
+          <li>
+            Display latest reviews from customers in the widget
+          </li>
+        </ul>
+        <h4>
+          Your Yotpo integrations
+        </h4>
+      </div>
+    </div>
+  </div>
+  <table
+    class="table-integrations mt-3 table table-hover"
+  >
+    <tbody>
+      <tr>
+        <td
+          class="link-full-td"
+        >
+          <a
+            to="/app/settings/integrations/yotpo/1"
+          >
+            <div>
+              <b>
+                Yotpo
+              </b>
+            </div>
+          </a>
+        </td>
+        <td
+          class="smallest align-middle"
+        />
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/yotpo/1"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="container-fluid"
+    data-candu-id="integration-list-bottom"
+  />
+</div>
 `;
 
 exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`] = `
-<ComponentWithRouterProp
-  createIntegration={[Function]}
-  createIntegrationButtonLabel="Add Yotpo account"
-  integrationToItemDisplay={[Function]}
-  integrationType="yotpo"
-  integrations={
-    Immutable.List [
-      Immutable.Map {
-        "type": "yotpo",
-        "id": 1,
-        "name": "Yotpo",
-        "meta": Immutable.Map {
-          "oauth": Immutable.Map {
-            "status": "success",
-          },
-          "import_state": Immutable.Map {
-            "is_over": true,
-          },
-        },
-      },
-    ]
-  }
-  loading={Immutable.Map {}}
-  longTypeDescription={
+<div
+  class="w-100"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          Yotpo
+        </li>
+      </ol>
+    </nav>
     <div>
-      <p>
-        Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
-      </p>
-      <p>
-        Integration benefits:
-      </p>
-      <ul>
-        <li>
-          Display relevant customer information in custom Gorgias widget
-        </li>
-        <li>
-          Display latest reviews from customers in the widget
-        </li>
-      </ul>
-      <h4>
-        Your Yotpo integrations
-      </h4>
+      <button
+        aria-disabled="false"
+        class="wrapper fill primary medium"
+        type="submit"
+      >
+        Add Yotpo account
+      </button>
     </div>
-  }
-/>
+  </div>
+  <div
+    class="pageContainer pb0 container-fluid"
+    data-candu-id="integration-list-top"
+  >
+    <div
+      class="mb-3"
+    >
+      <div>
+        <p>
+          Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.
+        </p>
+        <p>
+          Integration benefits:
+        </p>
+        <ul>
+          <li>
+            Display relevant customer information in custom Gorgias widget
+          </li>
+          <li>
+            Display latest reviews from customers in the widget
+          </li>
+        </ul>
+        <h4>
+          Your Yotpo integrations
+        </h4>
+      </div>
+    </div>
+  </div>
+  <table
+    class="table-integrations mt-3 table table-hover"
+  >
+    <tbody>
+      <tr>
+        <td
+          class="link-full-td"
+        >
+          <a
+            to="/app/settings/integrations/yotpo/1"
+          >
+            <div>
+              <b>
+                Yotpo
+              </b>
+            </div>
+          </a>
+        </td>
+        <td
+          class="smallest align-middle"
+        />
+        <td
+          class="smallest align-middle"
+        >
+          <a
+            to="/app/settings/integrations/yotpo/1"
+          >
+            <i
+              class="material-icons md-2 align-middle icon-go-forward"
+            >
+              keyboard_arrow_right
+            </i>
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    class="container-fluid"
+    data-candu-id="integration-list-bottom"
+  />
+</div>
 `;

@@ -1,681 +1,1437 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the integration's name in the state 1`] = `
-{
-  "enable_yotpo_tickets": true,
-  "integrationName": "test",
-}
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/yotpo"
+          >
+            Yotpo
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          test
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value="test"
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div>
+          <button
+            class="mr-2 btn btn-success"
+            type="submit"
+          >
+            Update integration
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-2"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete App
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should not do anything because the previous integration was not empty 1`] = `
-{
-  "enable_yotpo_tickets": true,
-  "integrationName": "foo",
-}
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/yotpo"
+          >
+            Yotpo
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          bar
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value="foo"
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div>
+          <button
+            class="mr-2 btn btn-success"
+            type="submit"
+          >
+            Update integration
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-8"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete App
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should not do anything because there is no integration 1`] = `
-{
-  "enable_yotpo_tickets": false,
-  "integrationName": "",
-}
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/yotpo"
+          >
+            Yotpo
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        />
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div>
+          <button
+            class="mr-2 btn btn-success"
+            type="submit"
+          >
+            Update integration
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-4"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete App
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should set the name of the integration in the state because there was no integration before and there is one now 1`] = `
-{
-  "enable_yotpo_tickets": true,
-  "integrationName": "test",
-}
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/yotpo"
+          >
+            Yotpo
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          test
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value="test"
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div>
+          <button
+            class="mr-2 btn btn-success"
+            type="submit"
+          >
+            Update integration
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-6"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete App
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should set the name of the integration the state and set a timeout to fetch the integration because the action in the URL is set to \`authentication\` and the integration is not yet authenticated 1`] = `
-{
-  "enable_yotpo_tickets": true,
-  "integrationName": "foo",
-}
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/yotpo"
+          >
+            Yotpo
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          foo
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value="foo"
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div>
+          <button
+            class="mr-2 btn btn-success"
+            type="submit"
+          >
+            Update integration
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-10"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete App
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should set the name of the integration the state and trigger a success notification because the action in the URL is set to \`authentication\` and the integration is already authenticated 1`] = `
-{
-  "enable_yotpo_tickets": true,
-  "integrationName": "foo",
-}
+<div
+  class="full-width"
+>
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            All apps
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/yotpo"
+          >
+            Yotpo
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
+        >
+          foo
+        </li>
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col-md-8"
+      >
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value="foo"
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
+            <div>
+              By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
+            </div>
+          </div>
+        </div>
+        <br />
+        <div>
+          <button
+            class="mr-2 btn btn-success"
+            type="submit"
+          >
+            Update integration
+          </button>
+          <button
+            class="btn btn-success"
+            type="button"
+          >
+            Reconnect integration
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-12"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
+              Delete App
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> render() should not render anything about the import and render the re-activate button instead of the deactivate button because the integration is deactivated 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         />
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
-    <Row
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="row"
     >
-      <Col
-        md="8"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="col-md-8"
       >
-        <InputField
-          label="Integration name"
-          name="name"
-          onChange={[Function]}
-          type="text"
-        />
-        <ForwardRef(CheckBox)
-          caption={
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
-          }
-          isChecked={true}
-          name="enable_yotpo_tickets"
-          onChange={[Function]}
-        >
-          Enable Yotpo ticket
-        </ForwardRef(CheckBox)>
+          </div>
+        </div>
         <br />
         <div>
-          <Button
-            className="mr-2"
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          <button
+            class="mr-2 btn btn-success"
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          </button>
+          <button
+            class="btn btn-success"
             type="button"
           >
             Reconnect integration
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            intent="destructive"
-            isDisabled={false}
-            onConfirm={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-24"
+            type="button"
           >
-            <ButtonIconLabel
-              icon="delete"
+            <span
+              class="wrapper"
             >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
               Delete App
-            </ButtonIconLabel>
-          </ConfirmButton>
+            </span>
+          </button>
         </div>
-      </Col>
-    </Row>
-  </Container>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> render() should render a loader because the integration is loading 1`] = `
-<Loader
-  inline={false}
-  minHeight="500px"
-  size="40px"
-/>
+<div
+  class="container"
+>
+  <div
+    class="inner"
+    style="min-height: 500px;"
+  >
+    <i
+      class="icon-custom icon-circle-o-notch md-spin"
+      style="font-size: 40px;"
+    />
+  </div>
+</div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> render() should render a small paragraph because the import is over 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         />
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
-    <Row
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="row"
     >
-      <Col
-        md="8"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="col-md-8"
       >
-        <InputField
-          label="Integration name"
-          name="name"
-          onChange={[Function]}
-          type="text"
-        />
-        <ForwardRef(CheckBox)
-          caption={
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
-          }
-          isChecked={true}
-          name="enable_yotpo_tickets"
-          onChange={[Function]}
-        >
-          Enable Yotpo ticket
-        </ForwardRef(CheckBox)>
+          </div>
+        </div>
         <br />
         <div>
-          <Button
-            className="mr-2"
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          <button
+            class="mr-2 btn btn-success"
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          </button>
+          <button
+            class="btn btn-success"
             type="button"
           >
             Reconnect integration
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            intent="destructive"
-            isDisabled={false}
-            onConfirm={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-18"
+            type="button"
           >
-            <ButtonIconLabel
-              icon="delete"
+            <span
+              class="wrapper"
             >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
               Delete App
-            </ButtonIconLabel>
-          </ConfirmButton>
+            </span>
+          </button>
         </div>
-      </Col>
-    </Row>
-  </Container>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> render() should render an alert because the import is in progress 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         />
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
-    <Row
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="row"
     >
-      <Col
-        md="8"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="col-md-8"
       >
-        <InputField
-          label="Integration name"
-          name="name"
-          onChange={[Function]}
-          type="text"
-        />
-        <ForwardRef(CheckBox)
-          caption={
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
-          }
-          isChecked={true}
-          name="enable_yotpo_tickets"
-          onChange={[Function]}
-        >
-          Enable Yotpo ticket
-        </ForwardRef(CheckBox)>
+          </div>
+        </div>
         <br />
         <div>
-          <Button
-            className="mr-2"
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          <button
+            class="mr-2 btn btn-success"
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          </button>
+          <button
+            class="btn btn-success"
             type="button"
           >
             Reconnect integration
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            intent="destructive"
-            isDisabled={false}
-            onConfirm={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-16"
+            type="button"
           >
-            <ButtonIconLabel
-              icon="delete"
+            <span
+              class="wrapper"
             >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
               Delete App
-            </ButtonIconLabel>
-          </ConfirmButton>
+            </span>
+          </button>
         </div>
-      </Col>
-    </Row>
-  </Container>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loading and disabled because a submit is in progress 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         />
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
-    <Row
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="row"
     >
-      <Col
-        md="8"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="col-md-8"
       >
-        <InputField
-          label="Integration name"
-          name="name"
-          onChange={[Function]}
-          type="text"
-        />
-        <ForwardRef(CheckBox)
-          caption={
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
-          }
-          isChecked={true}
-          name="enable_yotpo_tickets"
-          onChange={[Function]}
-        >
-          Enable Yotpo ticket
-        </ForwardRef(CheckBox)>
+          </div>
+        </div>
         <br />
         <div>
-          <Button
-            className="mr-2 btn-loading"
-            color="success"
-            disabled={true}
-            onClick={[Function]}
-            tag="button"
+          <button
+            class="mr-2 btn-loading btn btn-success disabled"
+            disabled=""
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className="btn-loading"
-            color="success"
-            disabled={true}
-            onClick={[Function]}
-            tag="button"
+          </button>
+          <button
+            class="btn-loading btn btn-success disabled"
+            disabled=""
             type="button"
           >
             Reconnect integration
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            intent="destructive"
-            isDisabled={true}
-            onConfirm={[Function]}
+          </button>
+          <button
+            aria-disabled="true"
+            class="wrapper float-right fill destructive medium isDisabled"
+            id="confirm-20"
+            type="button"
           >
-            <ButtonIconLabel
-              icon="delete"
+            <span
+              class="wrapper"
             >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
               Delete App
-            </ButtonIconLabel>
-          </ConfirmButton>
+            </span>
+          </button>
         </div>
-      </Col>
-    </Row>
-  </Container>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<YotpoIntegrationDetailComponent/> render() should render not render deactivate / reactivate buttons because authentication is required 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <PageHeader
-    title={
-      <Breadcrumb
-        aria-label="breadcrumb"
-        listTag="ol"
-        tag="nav"
+  <div
+    class="page-header pageHeader"
+  >
+    <nav
+      aria-label="breadcrumb"
+      class=""
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             All apps
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          aria-current="page"
+          class="active breadcrumb-item"
         />
-      </Breadcrumb>
-    }
-  />
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+      </ol>
+    </nav>
+  </div>
+  <div
+    class="pageContainer container-fluid"
   >
-    <Row
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <div
+      class="row"
     >
-      <Col
-        md="8"
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="col-md-8"
       >
-        <InputField
-          label="Integration name"
-          name="name"
-          onChange={[Function]}
-          type="text"
-        />
-        <ForwardRef(CheckBox)
-          caption={
+        <div
+          class="InputField form-group"
+          color=""
+        >
+          <label
+            class="control-label"
+            for="id-name"
+          >
+            Integration name
+          </label>
+          <div
+            class=""
+          >
+            <input
+              class="field form-control"
+              id="id-name"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            class="label label"
+            for="enable_yotpo_tickets"
+          >
+            <input
+              class="input"
+              id="enable_yotpo_tickets"
+              name="enable_yotpo_tickets"
+              type="checkbox"
+            />
+            Enable Yotpo ticket
+          </label>
+          <div
+            class="caption caption"
+          >
             <div>
               By Enabling Yotpo tickets, you will allow Yotpo reviews to create tickets on Gorgias. If you are using emails to integrate Yotpo reviews you should disable the emails to avoid Yotpo reviews ticket being duplicated.
             </div>
-          }
-          isChecked={true}
-          name="enable_yotpo_tickets"
-          onChange={[Function]}
-        >
-          Enable Yotpo ticket
-        </ForwardRef(CheckBox)>
+          </div>
+        </div>
         <br />
         <div>
-          <Button
-            className="mr-2"
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          <button
+            class="mr-2 btn btn-success"
             type="submit"
           >
             Update integration
-          </Button>
-          <Button
-            className=""
-            color="success"
-            disabled={false}
-            onClick={[Function]}
-            tag="button"
+          </button>
+          <button
+            class="btn btn-success"
             type="button"
           >
             Reconnect integration
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-            intent="destructive"
-            isDisabled={false}
-            onConfirm={[Function]}
+          </button>
+          <button
+            aria-disabled="false"
+            class="wrapper float-right fill destructive medium"
+            id="confirm-22"
+            type="button"
           >
-            <ButtonIconLabel
-              icon="delete"
+            <span
+              class="wrapper"
             >
+              <i
+                class="material-icons icon isLeft medium"
+              >
+                delete
+              </i>
               Delete App
-            </ButtonIconLabel>
-          </ConfirmButton>
+            </span>
+          </button>
         </div>
-      </Col>
-    </Row>
-  </Container>
+      </div>
+    </div>
+  </div>
 </div>
 `;

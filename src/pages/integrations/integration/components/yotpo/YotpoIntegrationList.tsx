@@ -5,8 +5,8 @@ import {Button} from 'reactstrap'
 
 import {IntegrationType} from 'models/integration/types'
 
-import IntegrationList from '../IntegrationList'
-import ForwardIcon from '../../../common/components/ForwardIcon'
+import IntegrationList from 'pages/integrations/integration/components/IntegrationList'
+import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 
 type IReceivedProps = {
     integrations: List<Map<string, string>>
