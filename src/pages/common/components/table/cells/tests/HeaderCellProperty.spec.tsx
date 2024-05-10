@@ -1,9 +1,9 @@
-import {shallow} from 'enzyme'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {OrderDirection} from '../../../../../../models/api/types'
-import HeaderCell from '../HeaderCell'
-import HeaderCellProperty from '../HeaderCellProperty'
+import {render, screen} from '@testing-library/react'
+import {OrderDirection} from 'models/api/types'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 
 describe('<HeaderCellProperty/>', () => {
     const minProps = {
@@ -11,23 +11,19 @@ describe('<HeaderCellProperty/>', () => {
     }
 
     it('should render', () => {
-        const component = shallow(
-            <HeaderCellProperty {...minProps} className="foo" />
-        )
+        render(<HeaderCellProperty {...minProps} className="foo" />)
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByText(minProps.title)).toBeInTheDocument()
     })
 
     it('should render children', () => {
-        const component = shallow(
-            <HeaderCellProperty {...minProps}>Bar</HeaderCellProperty>
-        )
+        render(<HeaderCellProperty {...minProps}>Bar</HeaderCellProperty>)
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByText('Bar')).toBeInTheDocument()
     })
 
     it('should render sorted property', () => {
-        const component = shallow(
+        render(
             <HeaderCellProperty
                 {...minProps}
                 direction={OrderDirection.Asc}
@@ -35,16 +31,15 @@ describe('<HeaderCellProperty/>', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(screen.getByText('arrow_downward')).toBeInTheDocument()
     })
 
     it('should call onClick when clicked', () => {
-        const mockOnClick = jest.fn()
-        const component = shallow(
-            <HeaderCellProperty {...minProps} onClick={mockOnClick} />
-        )
+        const onClick = jest.fn()
 
-        component.find(HeaderCell).simulate('click')
-        expect(mockOnClick).toHaveBeenNthCalledWith(1)
+        render(<HeaderCellProperty {...minProps} onClick={onClick} />)
+        userEvent.click(screen.getByRole('cell'))
+
+        expect(onClick).toHaveBeenCalled()
     })
 })
