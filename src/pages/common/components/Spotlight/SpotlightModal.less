@@ -1,4 +1,5 @@
 @import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 
 :local {
     .spotlightModal {
@@ -12,7 +13,7 @@
     }
 
     .spotlightModalContent {
-        max-height: 640px;
+        max-height: 644px;
         .caption-semibold();
         color: var(--neutral-grey-4);
     }
@@ -123,6 +124,7 @@
         display: flex;
         justify-content: space-between;
         background-color: var(--neutral-grey-0);
+        padding: @layout-spacing-xs @layout-spacing-s;
 
         a {
             .caption-semibold();

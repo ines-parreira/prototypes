@@ -7,6 +7,8 @@ import {
     getTypedHighlightResults,
     ticketHighlightsTransform,
     customerHighlightsTransform,
+    trimWithEllipsisBeforeTheHighlight,
+    HIGHLIGHT_TAG,
 } from 'pages/common/components/Spotlight/helpers'
 import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {Customer} from 'models/customer/types'
@@ -352,4 +354,36 @@ describe('getTypedHighlightResults', () => {
             },
         ])
     })
+})
+
+describe('trimWithEllipsisBeforeTheHighlight', () => {
+    it.each([
+        {
+            highlight: '',
+            trimmedHighlight: '',
+        },
+        {
+            highlight: 'Some text without highlight',
+            trimmedHighlight: 'Some text without highlight',
+        },
+        {
+            highlight: `Some text with ${HIGHLIGHT_TAG}highlight</em> and some more text`,
+            trimmedHighlight: `Some text with ${HIGHLIGHT_TAG}highlight</em> and some more text`,
+        },
+        {
+            highlight: `Some text with long sentence preceeding the ${HIGHLIGHT_TAG}highlight</em> and some more text`,
+            trimmedHighlight: `...preceeding the ${HIGHLIGHT_TAG}highlight</em> and some more text`,
+        },
+        {
+            highlight: `preceeding the ${HIGHLIGHT_TAG}highlight</em> and some more text`,
+            trimmedHighlight: `preceeding the ${HIGHLIGHT_TAG}highlight</em> and some more text`,
+        },
+    ])(
+        'should trim this $highlight to $trimmedHighlight',
+        ({highlight, trimmedHighlight}) => {
+            expect(trimWithEllipsisBeforeTheHighlight(highlight, 15)).toEqual(
+                trimmedHighlight
+            )
+        }
+    )
 })

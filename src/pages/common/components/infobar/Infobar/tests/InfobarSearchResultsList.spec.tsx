@@ -103,6 +103,7 @@ describe('<InfobarSearchResultsList />', () => {
     it('Should render search results with highlights', () => {
         const highlightedEmailPart = 'testemail'
         const highlightedNamePart = 'test'
+        const orderId = '123'
         const searchResults = [
             {
                 id: 1,
@@ -112,6 +113,7 @@ describe('<InfobarSearchResultsList />', () => {
                 highlights: {
                     email: [`<em>${highlightedEmailPart}</em>@test.com`],
                     name: [`<em>${highlightedNamePart}</em> name`],
+                    order_ids: [`<em>${orderId}</em>`],
                 },
             },
         ]
@@ -130,6 +132,11 @@ describe('<InfobarSearchResultsList />', () => {
         expect(screen.getByText(highlightedNamePart)).toBeInTheDocument()
         expect(
             screen.getByText(highlightedNamePart).tagName.toLocaleLowerCase()
+        ).toBe('em')
+        expect(
+            screen
+                .getByText(orderId, {exact: false})
+                .tagName.toLocaleLowerCase()
         ).toBe('em')
     })
 })

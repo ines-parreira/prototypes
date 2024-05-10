@@ -11,6 +11,9 @@ import {
 import {ViewType} from 'models/view/types'
 import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
+export const HIGHLIGHT_TAG = '<em>'
+const DEFAULT_HIGHLIGHT_TRIM_LENGTH = 15
+
 const getCustomer = (
     item: {id: number; name: string; email: string | null},
     sender?: {
@@ -113,4 +116,22 @@ export function getTypedHighlightResults<T extends ViewType>(
         .filter(
             (result) => result.type === entityType
         ) as ResultWithHighlights<T>[]
+}
+
+export const trimWithEllipsisBeforeTheHighlight = (
+    highlight: string,
+    charactersToTrim = DEFAULT_HIGHLIGHT_TRIM_LENGTH
+) => {
+    const firstHighlightPosition = highlight
+        .toLowerCase()
+        .indexOf(HIGHLIGHT_TAG)
+    if (firstHighlightPosition > charactersToTrim) {
+        return `...${highlight.substring(
+            firstHighlightPosition -
+                Math.min(firstHighlightPosition, charactersToTrim),
+            highlight.length
+        )}`
+    }
+
+    return highlight
 }

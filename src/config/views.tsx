@@ -1,6 +1,7 @@
 import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
+import {trimWithEllipsisBeforeTheHighlight} from 'pages/common/components/Spotlight/helpers'
 
 import {fromAST} from 'common/utils'
 import {getChannels} from 'services/channels'
@@ -460,7 +461,9 @@ const defaultTicketView = {
                     }`
                 }
 
-                const body = excerptHighlights || stripHTML(item.get('excerpt'))
+                const body = excerptHighlights
+                    ? trimWithEllipsisBeforeTheHighlight(excerptHighlights)
+                    : stripHTML(item.get('excerpt'))
 
                 return (
                     <div>

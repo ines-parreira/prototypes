@@ -41,7 +41,9 @@ export const InfobarSearchResultsList = ({
         return <p className="centered">{NO_CUSTOMER_FOUND_PLACEHOLDER}</p>
     }
 
-    const results = searchResults.map((item) =>
+    const results: (Pick<Customer, 'id' | 'name' | 'email'> & {
+        orderId?: string
+    })[] = searchResults.map((item) =>
         isWithHighlights(item)
             ? customerHighlightsTransform(item.highlights, item)
             : item
@@ -98,6 +100,19 @@ export const InfobarSearchResultsList = ({
                                         dangerouslySetInnerHTML={{
                                             __html: sanitizeHtmlDefault(
                                                 customer.email
+                                            ),
+                                        }}
+                                    />
+                                )}
+                                {customer?.orderId && (
+                                    <div
+                                        className={classnames(
+                                            css.detail,
+                                            'd-block text-truncate'
+                                        )}
+                                        dangerouslySetInnerHTML={{
+                                            __html: sanitizeHtmlDefault(
+                                                customer.orderId
                                             ),
                                         }}
                                     />
