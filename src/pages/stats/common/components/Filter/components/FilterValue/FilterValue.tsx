@@ -27,6 +27,7 @@ type Props = {
     logicalOperator: LogicalOperatorEnum | null
     onChange: () => void
     onRemove?: () => void
+    pressedState?: boolean
 }
 
 const FilterValue = (
@@ -37,6 +38,7 @@ const FilterValue = (
         logicalOperator,
         onChange,
         onRemove,
+        pressedState = false,
     }: Props,
     ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -66,7 +68,11 @@ const FilterValue = (
         <>
             <div
                 ref={containerRef}
-                className={classNames(css.container, className)}
+                className={classNames(
+                    css.container,
+                    {[css.pressedState]: pressedState},
+                    className
+                )}
                 onClick={onChange}
             >
                 {!!logicalOperator && (

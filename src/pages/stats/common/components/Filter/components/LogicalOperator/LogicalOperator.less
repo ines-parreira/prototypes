@@ -12,11 +12,16 @@
     .radioFieldSet {
         display: flex;
         gap: 12px !important;
+
+        & > div {
+            margin-bottom: 0;
+        }
     }
 
     .logicalOperator {
         .component-button-small();
         flex-shrink: 0;
         color: var(--neutral-grey-5);
+        text-transform: lowercase;
     }
 }

@@ -6,7 +6,7 @@
         align-items: center;
         gap: 4px;
         max-width: 240px;
-        padding: 0 @layout-spacing-xs;
+        padding: 1px @layout-spacing-xs;
         border: 1px solid var(--neutral-grey-3);
         border-radius: 0 @layout-spacing-xxs @layout-spacing-xxs 0;
         cursor: pointer;
@@ -19,6 +19,7 @@
             background-color: var(--main-primary-0);
         }
 
+        &.pressedState,
         &:active:not(:has(.trailIcon:hover)) {
             border-color: var(--main-primary);
         }

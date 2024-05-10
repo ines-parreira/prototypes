@@ -3,6 +3,7 @@ import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Filter from 'pages/stats/common/components/Filter/Filter'
 import {
+    FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
@@ -63,7 +64,7 @@ describe('Filter', () => {
             />
         )
 
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText('Option 2'))
 
@@ -87,7 +88,7 @@ describe('Filter', () => {
             />
         )
 
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(screen.getByText('Select all'))
 
@@ -129,7 +130,7 @@ describe('Filter', () => {
             />
         )
 
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(
             screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
@@ -174,7 +175,7 @@ describe('Filter', () => {
             />
         )
 
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(queryByPlaceholderText('Search')).not.toBeInTheDocument()
     })
@@ -194,7 +195,7 @@ describe('Filter', () => {
             />
         )
 
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(screen.queryByText('Select all')).not.toBeInTheDocument()
     })
@@ -213,7 +214,7 @@ describe('Filter', () => {
             />
         )
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
     })
 
@@ -230,7 +231,7 @@ describe('Filter', () => {
                 onChangeLogicalOperator={onChangeLogicalOperator}
             />
         )
-        userEvent.click(screen.getByText('Select value'))
+        userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByTestId('floating-overlay'))
 
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()

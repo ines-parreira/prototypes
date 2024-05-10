@@ -4,7 +4,7 @@ export const FILTER_VALUE_MAX_WIDTH = 240
 
 export const LABEL_MAX_WIDTH = 262
 
-export const FILTER_VALUE_PLACEHOLDER = 'Select value'
+export const FILTER_VALUE_PLACEHOLDER = 'Select value...'
 
 export const REMOVE_FILTER_LABEL = 'Remove filter'
 
@@ -15,7 +15,7 @@ export enum LogicalOperatorEnum {
 }
 
 export const LogicalOperatorLabel = {
-    [LogicalOperatorEnum.ONE_OF]: 'One of',
-    [LogicalOperatorEnum.NOT_ONE_OF]: 'Not one of',
-    [LogicalOperatorEnum.ALL_OF]: 'All of',
+    [LogicalOperatorEnum.ONE_OF]: 'Is one of',
+    [LogicalOperatorEnum.NOT_ONE_OF]: 'Is not one of',
+    [LogicalOperatorEnum.ALL_OF]: 'Is all of',
 }

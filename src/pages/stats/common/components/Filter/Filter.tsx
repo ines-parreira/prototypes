@@ -82,6 +82,7 @@ const Filter = ({
                 logicalOperator={selectedLogicalOperator}
                 onChange={onOpenDropdown}
                 onRemove={onRemove}
+                pressedState={isDropdownOpen}
             />
             <Dropdown
                 isMultiple={isMultiple}
@@ -91,7 +92,7 @@ const Filter = ({
                 value={selectedValues}
                 className={css.dropdown}
             >
-                {logicalOperators.length && (
+                {logicalOperators.length > 0 && (
                     <LogicalOperator
                         selectedLogicalOperator={selectedLogicalOperator}
                         logicalOperators={logicalOperators}
