@@ -1,6 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
-import Skeleton from 'react-loading-skeleton'
+import {sanitizeHtmlDefault} from 'utils/html'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
@@ -17,16 +18,14 @@ export enum MessageType {
 type Props = {
     sender: string
     type: MessageType
-    message: string
-    isLoading?: boolean
+    message?: string
     aiAgentProcessingStatus?: string
 }
 
 const PlaygroundMessage = ({
     sender,
-    type,
+    type = MessageType.MESSAGE,
     message,
-    isLoading = false,
     aiAgentProcessingStatus = 'Processing',
 }: Props) => {
     const isAiAgentSender = sender === AI_AGENT_SENDER
@@ -40,15 +39,20 @@ const PlaygroundMessage = ({
             <div>
                 {isAiAgentSender ? (
                     <Avatar
+                        size={36}
                         url={aiAgentAvatarSrc}
                         className={css.messageAvatar}
                     />
                 ) : (
-                    <Avatar name={sender} className={css.messageAvatar} />
+                    <Avatar
+                        size={36}
+                        name={sender}
+                        className={css.messageAvatar}
+                    />
                 )}
             </div>
             <div className={css.messageContentContainer}>
-                <div>
+                <div className={css.messageHeader}>
                     {isAiAgentSender && type === MessageType.INTERNAL_NOTE && (
                         <i
                             className={classnames(
@@ -81,7 +85,13 @@ const PlaygroundMessage = ({
                     </i>
                 </div>
                 <div>
-                    {isLoading ? (
+                    {message ? (
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: sanitizeHtmlDefault(message),
+                            }}
+                        />
+                    ) : (
                         <div className={css.aiAgentLoadingSkeletonContainer}>
                             <Skeleton
                                 className={css.aiAgentLoadingSkeleton}
@@ -116,8 +126,6 @@ const PlaygroundMessage = ({
                                 </Badge>
                             )}
                         </div>
-                    ) : (
-                        <div>{message}</div>
                     )}
                 </div>
             </div>

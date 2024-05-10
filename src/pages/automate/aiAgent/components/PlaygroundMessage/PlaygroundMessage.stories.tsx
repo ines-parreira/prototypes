@@ -16,11 +16,6 @@ const meta: Meta<typeof PlaygroundMessage> = {
                 type: 'text',
             },
         },
-        isLoading: {
-            control: {
-                type: 'boolean',
-            },
-        },
         type: {
             control: {
                 type: 'string',
@@ -46,8 +41,6 @@ export const AIAgentMessageLoading: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
         sender: 'AI Agent',
-        message: 'Where is my order?',
-        isLoading: true,
         aiAgentProcessingStatus: 'Processing',
         type: MessageType.MESSAGE,
     },
@@ -59,7 +52,6 @@ export const AIAgentInternalNoteMessage: Story = {
         sender: 'AI Agent',
         message: 'Where is my order?',
         type: MessageType.INTERNAL_NOTE,
-        isLoading: false,
     },
 }
 

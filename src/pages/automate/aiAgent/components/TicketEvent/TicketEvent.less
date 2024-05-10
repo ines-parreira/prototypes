@@ -1,0 +1,68 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    @circle-size: 20px;
+
+    .ticketEventContainer {
+        width: 100%;
+        height: 56px;
+        display: flex;
+        padding-left: @layout-spacing-m;
+
+        .ticketEventBadge {
+            width: @circle-size;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            margin-left: 18px;
+
+            .badgeTopLine {
+                z-index: 1;
+                position: absolute;
+                height: 50%;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                border-left: 1px solid var(--neutral-grey-3);
+            }
+
+            .badgeBottomLine {
+                z-index: 1;
+                position: absolute;
+                height: 50%;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                border-left: 1px solid var(--neutral-grey-3);
+            }
+
+            .badgeIconContainer {
+                z-index: 2;
+                background-color: var(--feedback-success);
+                height: @circle-size;
+                width: @circle-size;
+                border-radius: 50%;
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .badgeIcon {
+                    color: var(--neutral-grey-0);
+                }
+            }
+        }
+
+        .ticketEventLabel {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+            height: 100%;
+            margin-left: @layout-spacing-s;
+            .body-semibold();
+        }
+    }
+}

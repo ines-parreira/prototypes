@@ -7,15 +7,22 @@
         display: flex;
         flex-direction: row;
         gap: @layout-spacing-s;
-        padding: @layout-spacing-s @layout-spacing-m;
+        padding: @layout-spacing-xxs @layout-spacing-m @layout-spacing-s;
 
         .messageAvatar {
             background-color: var(--neutral-grey-3);
         }
 
+        .messageHeader {
+            width: 100%;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: pre;
+        }
+
         .messageSenderCommon {
             color: var(--neutral-grey-6);
-            .caption-semibold();
+            .body-semibold();
         }
 
         .shopperTypeSender {
