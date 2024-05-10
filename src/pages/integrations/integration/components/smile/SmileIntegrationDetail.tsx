@@ -19,9 +19,9 @@ import {
 } from 'state/integrations/actions'
 import withRouter from 'pages/common/utils/withRouter'
 
-import DEPRECATED_InputField from '../../../../common/forms/DEPRECATED_InputField'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
-import css from '../../../../settings/settings.less'
+import css from 'pages/settings/settings.less'
 
 type Props = {
     integration: Map<any, any>

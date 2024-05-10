@@ -1,16 +1,17 @@
-import React, {ComponentProps, SyntheticEvent} from 'react'
+import userEvent from '@testing-library/user-event'
+import React, {ComponentProps} from 'react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
 import {match} from 'react-router-dom'
 import {History, Location} from 'history'
 
+import {render, screen} from '@testing-library/react'
 import {
     PENDING_AUTHENTICATION_STATUS,
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
 } from 'constants/integration'
 
-import {SmileIntegrationDetailComponent} from '../SmileIntegrationDetail'
+import {SmileIntegrationDetailComponent} from 'pages/integrations/integration/components/smile/SmileIntegrationDetail'
 
 jest.useFakeTimers()
 
@@ -47,27 +48,27 @@ describe('<SmileIntegrationDetail/>', () => {
                 name: 'foo',
             })
 
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration}
                 />
             )
 
-            expect(component.state()).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because there is no integration', () => {
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({})}
                 />
             )
 
-            expect(component.state()).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
             jest.runAllTimers()
             expect(actions.fetchIntegration).not.toHaveBeenCalled()
         })
@@ -82,22 +83,21 @@ describe('<SmileIntegrationDetail/>', () => {
                 name: 'foo',
             })
 
-            const component = shallow(
+            const {container, rerender} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration}
                 />
             )
 
-            component.instance().componentWillReceiveProps!(
-                {
-                    ...defaultProps,
-                    integration: integration.set('name', 'bar'),
-                },
-                {}
+            rerender(
+                <SmileIntegrationDetailComponent
+                    {...defaultProps}
+                    integration={integration.set('name', 'bar')}
+                />
             )
 
-            expect(component.state()).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
             jest.runAllTimers()
             expect(actions.fetchIntegration).not.toHaveBeenCalled()
         })
@@ -115,22 +115,21 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
+                const {container, rerender} = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
                     />
                 )
 
-                component.instance().componentWillReceiveProps!(
-                    {
-                        ...defaultProps,
-                        integration,
-                    },
-                    {}
+                rerender(
+                    <SmileIntegrationDetailComponent
+                        {...defaultProps}
+                        integration={integration}
+                    />
                 )
 
-                expect(component.state()).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
                 jest.runAllTimers()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
             }
@@ -150,23 +149,22 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
+                const {container, rerender} = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
                     />
                 )
 
-                component.instance().componentWillReceiveProps!(
-                    {
-                        ...defaultProps,
-                        integration,
-                        location: {search: '?action=authentication'},
-                    },
-                    {}
+                rerender(
+                    <SmileIntegrationDetailComponent
+                        {...defaultProps}
+                        integration={integration}
+                        location={{search: '?action=authentication'} as any}
+                    />
                 )
 
-                expect(component.state()).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
                 jest.runAllTimers()
                 expect(actions.fetchIntegration).toHaveBeenCalledWith(
                     integration.get('id'),
@@ -190,23 +188,22 @@ describe('<SmileIntegrationDetail/>', () => {
                     name: 'foo',
                 })
 
-                const component = shallow(
+                const {container, rerender} = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
                     />
                 )
 
-                component.instance().componentWillReceiveProps!(
-                    {
-                        ...defaultProps,
-                        integration,
-                        location: {search: '?action=authentication'},
-                    },
-                    {}
+                rerender(
+                    <SmileIntegrationDetailComponent
+                        {...defaultProps}
+                        integration={integration}
+                        location={{search: '?action=authentication'} as any}
+                    />
                 )
 
-                expect(component.state()).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
                 jest.runAllTimers()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
             }
@@ -226,23 +223,26 @@ describe('<SmileIntegrationDetail/>', () => {
                     },
                     name: 'foo',
                 })
+                const newName = 'bar'
 
-                const component = shallow<SmileIntegrationDetailComponent>(
+                render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
                     />
                 )
 
-                const newName = 'bar'
-                const preventDefault = jest.fn()
+                userEvent.clear(
+                    screen.getByRole('textbox', {name: 'Integration name'})
+                )
+                userEvent.paste(
+                    screen.getByRole('textbox', {name: 'Integration name'}),
+                    newName
+                )
+                userEvent.click(
+                    screen.getByRole('button', {name: 'Update integration'})
+                )
 
-                component.setState({name: newName})
-                component.instance()._handleUpdate({
-                    preventDefault,
-                } as unknown as SyntheticEvent<HTMLButtonElement>)
-
-                expect(preventDefault).toHaveBeenCalled()
                 expect(actions.updateOrCreateIntegration).toHaveBeenCalledWith(
                     fromJS({id: integration.get('id'), name: newName})
                 )
@@ -252,7 +252,7 @@ describe('<SmileIntegrationDetail/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -266,11 +266,11 @@ describe('<SmileIntegrationDetail/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render an alert because the import is in progress', () => {
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -283,11 +283,11 @@ describe('<SmileIntegrationDetail/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a small paragraph because the import is over', () => {
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -300,11 +300,11 @@ describe('<SmileIntegrationDetail/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render buttons loading and disabled because a submit is in progress', () => {
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -318,11 +318,11 @@ describe('<SmileIntegrationDetail/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
-            const component = shallow(
+            const {container} = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
@@ -335,14 +335,14 @@ describe('<SmileIntegrationDetail/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it(
             'should not render anything about the import and render the re-activate button instead of the deactivate ' +
                 'button because the integration is deactivated',
             () => {
-                const component = shallow(
+                const {container} = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({
@@ -356,7 +356,7 @@ describe('<SmileIntegrationDetail/>', () => {
                     />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
     })

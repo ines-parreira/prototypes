@@ -2,12 +2,10 @@
 
 exports[`Integration should display data about the integration 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="pageContainer container-fluid"
   >
     <p>
       Add the details about the HTTP integration you want to add below. If you need help, you can check our
@@ -22,81 +20,149 @@ exports[`Integration should display data about the integration 1`] = `
        
       or contact us.
     </p>
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <form
+      class=""
     >
-      <InputField
-        disabled={false}
-        label="Integration name"
-        name="name"
-        onChange={[Function]}
-        required={true}
-        type="text"
-        value="foo"
-      />
-      <InputField
-        disabled={false}
-        label="Description"
-        name="description"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
-      <FormGroup
-        tag="div"
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <Label
-          className="control-label"
-          tag="label"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Integration name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-name"
+            required=""
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-description"
+        >
+          Description
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-description"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <label
+          class="control-label"
         >
           Triggers
-        </Label>
+        </label>
         <p>
-          <FormText
-            color="muted"
-            tag="small"
+          <small
+            class="form-text text-muted"
           >
             This HTTP integration will be executed when any of the events below happens.
-          </FormText>
+          </small>
         </p>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={true}
-          name="http.triggers.ticket-created"
-          onChange={[Function]}
+        <div
+          class="mb-2"
         >
-          Ticket created
-        </ForwardRef(CheckBox)>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={false}
-          name="http.triggers.ticket-updated"
-          onChange={[Function]}
+          <label
+            class="label label"
+            for="http.triggers.ticket-created"
+          >
+            <input
+              checked=""
+              class="input"
+              id="http.triggers.ticket-created"
+              name="http.triggers.ticket-created"
+              type="checkbox"
+            />
+            Ticket created
+          </label>
+        </div>
+        <div
+          class="mb-2"
         >
-          Ticket updated
-        </ForwardRef(CheckBox)>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={false}
-          name="http.triggers.ticket-message-created"
-          onChange={[Function]}
+          <label
+            class="label label"
+            for="http.triggers.ticket-updated"
+          >
+            <input
+              class="input"
+              id="http.triggers.ticket-updated"
+              name="http.triggers.ticket-updated"
+              type="checkbox"
+            />
+            Ticket updated
+          </label>
+        </div>
+        <div
+          class="mb-2"
         >
-          Ticket message created
-        </ForwardRef(CheckBox)>
-      </FormGroup>
-      <InputField
-        error="Only https protocol is allowed"
-        help={
+          <label
+            class="label label"
+            for="http.triggers.ticket-message-created"
+          >
+            <input
+              class="input"
+              id="http.triggers.ticket-message-created"
+              name="http.triggers.ticket-message-created"
+              type="checkbox"
+            />
+            Ticket message created
+          </label>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color="danger"
+      >
+        <label
+          class="control-label"
+          for="id-http.url"
+        >
+          URL
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control-danger is-invalid form-control"
+            id="id-http.url"
+            pattern="$a"
+            placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
+            required=""
+            title="Example: https://company.com/api"
+            type="url"
+            value="http://httpbin.org/post"
+          />
+          <div
+            class="invalid-feedback"
+          >
+            Only https protocol is allowed
+          </div>
+        </div>
+        <small
+          class="form-text text-muted"
+        >
           <div>
             You can use
              
@@ -115,163 +181,427 @@ exports[`Integration should display data about the integration 1`] = `
             </a>
             .
           </div>
-        }
-        label="URL"
-        name="http.url"
-        onChange={[Function]}
-        pattern="$a"
-        placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
-        required={true}
-        title="Example: https://company.com/api"
-        type="url"
-        value="http://httpbin.org/post"
-      />
-      <InputField
-        label="HTTP Method"
-        name="http.method"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="POST"
+        </small>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          key="GET"
-          value="GET"
+        <label
+          class="control-label"
+          for="id-http.method"
         >
-          GET
-        </option>
-        <option
-          key="POST"
-          value="POST"
+          HTTP Method
+        </label>
+        <div
+          class="select dropdown-toggle"
         >
-          POST
-        </option>
-        <option
-          key="PUT"
-          value="PUT"
-        >
-          PUT
-        </option>
-        <option
-          key="PATCH"
-          value="PATCH"
-        >
-          PATCH
-        </option>
-        <option
-          key="DELETE"
-          value="DELETE"
-        >
-          DELETE
-        </option>
-      </InputField>
-      <InputField
-        label="Request content type"
-        name="http.request_content_type"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="application/json"
+          <select
+            class="field form-control"
+            id="id-http.method"
+            required=""
+          >
+            <option
+              value="GET"
+            >
+              GET
+            </option>
+            <option
+              value="POST"
+            >
+              POST
+            </option>
+            <option
+              value="PUT"
+            >
+              PUT
+            </option>
+            <option
+              value="PATCH"
+            >
+              PATCH
+            </option>
+            <option
+              value="DELETE"
+            >
+              DELETE
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          value="application/json"
+        <label
+          class="control-label"
+          for="id-http.request_content_type"
         >
-          application/json
-        </option>
-        <option
-          value="application/x-www-form-urlencoded"
+          Request content type
+        </label>
+        <div
+          class="select dropdown-toggle"
         >
-          application/x-www-form-urlencoded
-        </option>
-      </InputField>
-      <InputField
-        label="Response content type"
-        name="http.response_content_type"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="application/json"
+          <select
+            class="field form-control"
+            id="id-http.request_content_type"
+            required=""
+          >
+            <option
+              value="application/json"
+            >
+              application/json
+            </option>
+            <option
+              value="application/x-www-form-urlencoded"
+            >
+              application/x-www-form-urlencoded
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          value="application/json"
+        <label
+          class="control-label"
+          for="id-http.response_content_type"
         >
-          application/json
-        </option>
-      </InputField>
-      <FormGroup
-        tag="div"
+          Response content type
+        </label>
+        <div
+          class="select dropdown-toggle"
+        >
+          <select
+            class="field form-control"
+            id="id-http.response_content_type"
+            required=""
+          >
+            <option
+              value="application/json"
+            >
+              application/json
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group"
       >
-        <ObjectListField
-          fieldName="header"
-          fields={
-            [
-              {
-                "key": "Authorization",
-                "value": "Bearer a57sd4as6d4",
-              },
-              {
-                "key": "Foo",
-                "value": "bar",
-              },
-            ]
-          }
-          onChange={[Function]}
-          title="Header"
-          validate={[Function]}
-        />
-      </FormGroup>
-      <JSONBody
-        form={
-          {
-            "baz": {
-              "bazile": "bazar",
-            },
-            "foo": "bar",
-          }
-        }
-        onChange={[Function]}
-      />
+        <div>
+          <label
+            class="control-label"
+          >
+            Headers
+          </label>
+          <div
+            class="mb-3 form-row row"
+          >
+            <div
+              class="col-5"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-key"
+                    placeholder="Key"
+                    required=""
+                    type="text"
+                    value="Authorization"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-grow col"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-value"
+                    placeholder="Value"
+                    required=""
+                    type="text"
+                    value="Bearer a57sd4as6d4"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-auto"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper float-right wrapper fill destructive medium"
+                title="Remove header"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </div>
+          <div
+            class="mb-3 form-row row"
+          >
+            <div
+              class="col-5"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-key"
+                    placeholder="Key"
+                    required=""
+                    type="text"
+                    value="Foo"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-grow col"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-value"
+                    placeholder="Value"
+                    required=""
+                    type="text"
+                    value="bar"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-auto"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper float-right wrapper fill destructive medium"
+                title="Remove header"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="wrapper fill secondary small"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add 
+              header
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <label
+          class="control-label"
+        >
+          Request Body (JSON)
+          <i
+            class="material-icons ml-2 text-muted"
+            id="json-body-label"
+          >
+            info_outline
+          </i>
+        </label>
+        <div
+          class="mb-2"
+        >
+          <div
+            style="display: inline-block; vertical-align: middle;"
+          >
+            <div>
+              <div
+                class="dropdown"
+              >
+                <div
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class=""
+                  data-toggle="dropdown"
+                >
+                  <div
+                    class="select dropdown-toggle"
+                  >
+                    <span
+                      class="label"
+                      style="min-width: 10px; opacity: 1;"
+                    >
+                      JSON template
+                    </span>
+                    <input
+                      autocomplete="chrome-off"
+                      class="input"
+                      style="min-width: 10px;"
+                      type="text"
+                      value=""
+                    />
+                    <i
+                      class="material-icons dropdownIcon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </div>
+                </div>
+                <div
+                  aria-hidden="true"
+                  class="options dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  
+                  <button
+                    class="option option--focused dropdown-item"
+                    role="menuitem"
+                    tabindex="0"
+                    type="button"
+                  >
+                    <span>
+                      Send the entire ticket/message JSON
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div
+            class="InputField form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <div
+                class="form-group"
+              >
+                <div
+                  class="controls"
+                >
+                  <textarea
+                    class="form-control"
+                    id="id-http.form"
+                    rows="8"
+                  >
+                    {
+    "foo": "bar",
+    "baz": {
+        "bazile": "bazar"
+    }
+}
+                  </textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <small
+            class="form-text text-muted"
+          >
+            See full list of variables
+             
+            <a
+              href="https://docs.gorgias.com/macros/macro-variables"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              here
+            </a>
+          </small>
+        </div>
+      </div>
       <div>
-        <ForwardRef(Button)
-          className="mr-2"
-          isLoading={false}
+        <button
+          aria-disabled="false"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Save changes
-        </ForwardRef(Button)>
-        <ForwardRef(Button)
-          intent="destructive"
-          isLoading={false}
-          onClick={[Function]}
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper fill destructive medium"
+          type="button"
         >
           Deactivate HTTP integration
-        </ForwardRef(Button)>
-        <ConfirmButton
-          className="float-right"
-          confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-          intent="destructive"
-          onConfirm={[Function]}
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper float-right fill destructive medium"
+          id="confirm-8"
+          type="button"
         >
-          <ButtonIconLabel
-            icon="delete"
+          <span
+            class="wrapper"
           >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
             Delete HTTP integration
-          </ButtonIconLabel>
-        </ConfirmButton>
+          </span>
+        </button>
       </div>
-    </Form>
-  </Container>
+    </form>
+  </div>
 </div>
 `;
 
 exports[`Integration should display data with url-encoded format 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="pageContainer container-fluid"
   >
     <p>
       Add the details about the HTTP integration you want to add below. If you need help, you can check our
@@ -286,81 +616,149 @@ exports[`Integration should display data with url-encoded format 1`] = `
        
       or contact us.
     </p>
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <form
+      class=""
     >
-      <InputField
-        disabled={false}
-        label="Integration name"
-        name="name"
-        onChange={[Function]}
-        required={true}
-        type="text"
-        value="foo"
-      />
-      <InputField
-        disabled={false}
-        label="Description"
-        name="description"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
-      <FormGroup
-        tag="div"
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <Label
-          className="control-label"
-          tag="label"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Integration name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-name"
+            required=""
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-description"
+        >
+          Description
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-description"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <label
+          class="control-label"
         >
           Triggers
-        </Label>
+        </label>
         <p>
-          <FormText
-            color="muted"
-            tag="small"
+          <small
+            class="form-text text-muted"
           >
             This HTTP integration will be executed when any of the events below happens.
-          </FormText>
+          </small>
         </p>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={true}
-          name="http.triggers.ticket-created"
-          onChange={[Function]}
+        <div
+          class="mb-2"
         >
-          Ticket created
-        </ForwardRef(CheckBox)>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={false}
-          name="http.triggers.ticket-updated"
-          onChange={[Function]}
+          <label
+            class="label label"
+            for="http.triggers.ticket-created"
+          >
+            <input
+              checked=""
+              class="input"
+              id="http.triggers.ticket-created"
+              name="http.triggers.ticket-created"
+              type="checkbox"
+            />
+            Ticket created
+          </label>
+        </div>
+        <div
+          class="mb-2"
         >
-          Ticket updated
-        </ForwardRef(CheckBox)>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={false}
-          name="http.triggers.ticket-message-created"
-          onChange={[Function]}
+          <label
+            class="label label"
+            for="http.triggers.ticket-updated"
+          >
+            <input
+              class="input"
+              id="http.triggers.ticket-updated"
+              name="http.triggers.ticket-updated"
+              type="checkbox"
+            />
+            Ticket updated
+          </label>
+        </div>
+        <div
+          class="mb-2"
         >
-          Ticket message created
-        </ForwardRef(CheckBox)>
-      </FormGroup>
-      <InputField
-        error="Only https protocol is allowed"
-        help={
+          <label
+            class="label label"
+            for="http.triggers.ticket-message-created"
+          >
+            <input
+              class="input"
+              id="http.triggers.ticket-message-created"
+              name="http.triggers.ticket-message-created"
+              type="checkbox"
+            />
+            Ticket message created
+          </label>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color="danger"
+      >
+        <label
+          class="control-label"
+          for="id-http.url"
+        >
+          URL
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control-danger is-invalid form-control"
+            id="id-http.url"
+            pattern="$a"
+            placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
+            required=""
+            title="Example: https://company.com/api"
+            type="url"
+            value="http://httpbin.org/post"
+          />
+          <div
+            class="invalid-feedback"
+          >
+            Only https protocol is allowed
+          </div>
+        </div>
+        <small
+          class="form-text text-muted"
+        >
           <div>
             You can use
              
@@ -379,175 +777,463 @@ exports[`Integration should display data with url-encoded format 1`] = `
             </a>
             .
           </div>
-        }
-        label="URL"
-        name="http.url"
-        onChange={[Function]}
-        pattern="$a"
-        placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
-        required={true}
-        title="Example: https://company.com/api"
-        type="url"
-        value="http://httpbin.org/post"
-      />
-      <InputField
-        label="HTTP Method"
-        name="http.method"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="POST"
+        </small>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          key="GET"
-          value="GET"
+        <label
+          class="control-label"
+          for="id-http.method"
         >
-          GET
-        </option>
-        <option
-          key="POST"
-          value="POST"
+          HTTP Method
+        </label>
+        <div
+          class="select dropdown-toggle"
         >
-          POST
-        </option>
-        <option
-          key="PUT"
-          value="PUT"
-        >
-          PUT
-        </option>
-        <option
-          key="PATCH"
-          value="PATCH"
-        >
-          PATCH
-        </option>
-        <option
-          key="DELETE"
-          value="DELETE"
-        >
-          DELETE
-        </option>
-      </InputField>
-      <InputField
-        label="Request content type"
-        name="http.request_content_type"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="application/x-www-form-urlencoded"
+          <select
+            class="field form-control"
+            id="id-http.method"
+            required=""
+          >
+            <option
+              value="GET"
+            >
+              GET
+            </option>
+            <option
+              value="POST"
+            >
+              POST
+            </option>
+            <option
+              value="PUT"
+            >
+              PUT
+            </option>
+            <option
+              value="PATCH"
+            >
+              PATCH
+            </option>
+            <option
+              value="DELETE"
+            >
+              DELETE
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          value="application/json"
+        <label
+          class="control-label"
+          for="id-http.request_content_type"
         >
-          application/json
-        </option>
-        <option
-          value="application/x-www-form-urlencoded"
+          Request content type
+        </label>
+        <div
+          class="select dropdown-toggle"
         >
-          application/x-www-form-urlencoded
-        </option>
-      </InputField>
-      <InputField
-        label="Response content type"
-        name="http.response_content_type"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="application/json"
+          <select
+            class="field form-control"
+            id="id-http.request_content_type"
+            required=""
+          >
+            <option
+              value="application/json"
+            >
+              application/json
+            </option>
+            <option
+              value="application/x-www-form-urlencoded"
+            >
+              application/x-www-form-urlencoded
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          value="application/json"
+        <label
+          class="control-label"
+          for="id-http.response_content_type"
         >
-          application/json
-        </option>
-      </InputField>
-      <FormGroup
-        tag="div"
+          Response content type
+        </label>
+        <div
+          class="select dropdown-toggle"
+        >
+          <select
+            class="field form-control"
+            id="id-http.response_content_type"
+            required=""
+          >
+            <option
+              value="application/json"
+            >
+              application/json
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group"
       >
-        <ObjectListField
-          fieldName="header"
-          fields={
-            [
-              {
-                "key": "Authorization",
-                "value": "Bearer a57sd4as6d4",
-              },
-              {
-                "key": "Foo",
-                "value": "bar",
-              },
-            ]
-          }
-          onChange={[Function]}
-          title="Header"
-          validate={[Function]}
-        />
-      </FormGroup>
-      <FormGroup
-        tag="div"
+        <div>
+          <label
+            class="control-label"
+          >
+            Headers
+          </label>
+          <div
+            class="mb-3 form-row row"
+          >
+            <div
+              class="col-5"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-key"
+                    placeholder="Key"
+                    required=""
+                    type="text"
+                    value="Authorization"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-grow col"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-value"
+                    placeholder="Value"
+                    required=""
+                    type="text"
+                    value="Bearer a57sd4as6d4"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-auto"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper float-right wrapper fill destructive medium"
+                title="Remove header"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </div>
+          <div
+            class="mb-3 form-row row"
+          >
+            <div
+              class="col-5"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-key"
+                    placeholder="Key"
+                    required=""
+                    type="text"
+                    value="Foo"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-grow col"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-value"
+                    placeholder="Value"
+                    required=""
+                    type="text"
+                    value="bar"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-auto"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper float-right wrapper fill destructive medium"
+                title="Remove header"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="wrapper fill secondary small"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add 
+              header
+            </span>
+          </button>
+        </div>
+      </div>
+      <div
+        class="form-group"
       >
-        <ObjectListField
-          fieldName="field"
-          fields={
-            [
-              {
-                "key": "foo",
-                "value": "bar",
-              },
-              {
-                "key": "baz",
-                "value": {
-                  "bazile": "bazar",
-                },
-              },
-            ]
-          }
-          onChange={[Function]}
-          title="Form field"
-        />
-      </FormGroup>
+        <div>
+          <label
+            class="control-label"
+          >
+            Form fields
+          </label>
+          <div
+            class="mb-3 form-row row"
+          >
+            <div
+              class="col-5"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-key"
+                    placeholder="Key"
+                    required=""
+                    type="text"
+                    value="foo"
+                  />
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-grow col"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-value"
+                    placeholder="Value"
+                    required=""
+                    type="text"
+                    value="bar"
+                  />
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-auto"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper float-right wrapper fill destructive medium"
+                title="Remove field"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </div>
+          <div
+            class="mb-3 form-row row"
+          >
+            <div
+              class="col-5"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-key"
+                    placeholder="Key"
+                    required=""
+                    type="text"
+                    value="baz"
+                  />
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex-grow col"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <input
+                    class="field form-control"
+                    id="id-value"
+                    placeholder="Value"
+                    required=""
+                    type="text"
+                    value="[object Object]"
+                  />
+                  
+                </div>
+              </div>
+            </div>
+            <div
+              class="col-auto"
+            >
+              <button
+                aria-disabled="false"
+                class="wrapper float-right wrapper fill destructive medium"
+                title="Remove field"
+                type="button"
+              >
+                <i
+                  class="material-icons icon"
+                >
+                  delete
+                </i>
+              </button>
+            </div>
+          </div>
+          <button
+            aria-disabled="false"
+            class="wrapper fill secondary small"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add 
+              field
+            </span>
+          </button>
+        </div>
+      </div>
       <div>
-        <ForwardRef(Button)
-          className="mr-2"
-          isLoading={false}
+        <button
+          aria-disabled="false"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Save changes
-        </ForwardRef(Button)>
-        <ForwardRef(Button)
-          intent="destructive"
-          isLoading={false}
-          onClick={[Function]}
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper fill destructive medium"
+          type="button"
         >
           Deactivate HTTP integration
-        </ForwardRef(Button)>
-        <ConfirmButton
-          className="float-right"
-          confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-          intent="destructive"
-          onConfirm={[Function]}
+        </button>
+        <button
+          aria-disabled="false"
+          class="wrapper float-right fill destructive medium"
+          id="confirm-12"
+          type="button"
         >
-          <ButtonIconLabel
-            icon="delete"
+          <span
+            class="wrapper"
           >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
             Delete HTTP integration
-          </ButtonIconLabel>
-        </ConfirmButton>
+          </span>
+        </button>
       </div>
-    </Form>
-  </Container>
+    </form>
+  </div>
 </div>
 `;
 
 exports[`Integration should display default values because there is no integration (creation) 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="pageContainer container-fluid"
   >
     <p>
       Add the details about the HTTP integration you want to add below. If you need help, you can check our
@@ -562,81 +1248,146 @@ exports[`Integration should display default values because there is no integrati
        
       or contact us.
     </p>
-    <Form
-      onSubmit={[Function]}
-      tag="form"
+    <form
+      class=""
     >
-      <InputField
-        disabled={false}
-        label="Integration name"
-        name="name"
-        onChange={[Function]}
-        required={true}
-        type="text"
-        value=""
-      />
-      <InputField
-        disabled={false}
-        label="Description"
-        name="description"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
-      <FormGroup
-        tag="div"
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <Label
-          className="control-label"
-          tag="label"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Integration name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-name"
+            required=""
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-description"
+        >
+          Description
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-description"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div
+        class="form-group"
+      >
+        <label
+          class="control-label"
         >
           Triggers
-        </Label>
+        </label>
         <p>
-          <FormText
-            color="muted"
-            tag="small"
+          <small
+            class="form-text text-muted"
           >
             This HTTP integration will be executed when any of the events below happens.
-          </FormText>
+          </small>
         </p>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={true}
-          name="http.triggers.ticket-created"
-          onChange={[Function]}
+        <div
+          class="mb-2"
         >
-          Ticket created
-        </ForwardRef(CheckBox)>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={true}
-          name="http.triggers.ticket-updated"
-          onChange={[Function]}
+          <label
+            class="label label"
+            for="http.triggers.ticket-created"
+          >
+            <input
+              checked=""
+              class="input"
+              id="http.triggers.ticket-created"
+              name="http.triggers.ticket-created"
+              type="checkbox"
+            />
+            Ticket created
+          </label>
+        </div>
+        <div
+          class="mb-2"
         >
-          Ticket updated
-        </ForwardRef(CheckBox)>
-        <ForwardRef(CheckBox)
-          className="mb-2"
-          isChecked={true}
-          name="http.triggers.ticket-message-created"
-          onChange={[Function]}
+          <label
+            class="label label"
+            for="http.triggers.ticket-updated"
+          >
+            <input
+              checked=""
+              class="input"
+              id="http.triggers.ticket-updated"
+              name="http.triggers.ticket-updated"
+              type="checkbox"
+            />
+            Ticket updated
+          </label>
+        </div>
+        <div
+          class="mb-2"
         >
-          Ticket message created
-        </ForwardRef(CheckBox)>
-      </FormGroup>
-      <InputField
-        error={null}
-        help={
+          <label
+            class="label label"
+            for="http.triggers.ticket-message-created"
+          >
+            <input
+              checked=""
+              class="input"
+              id="http.triggers.ticket-message-created"
+              name="http.triggers.ticket-message-created"
+              type="checkbox"
+            />
+            Ticket message created
+          </label>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-http.url"
+        >
+          URL
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            id="id-http.url"
+            pattern="*"
+            placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
+            required=""
+            title="Example: https://company.com/api"
+            type="url"
+            value=""
+          />
+        </div>
+        <small
+          class="form-text text-muted"
+        >
           <div>
             You can use
              
@@ -655,155 +1406,237 @@ exports[`Integration should display default values because there is no integrati
             </a>
             .
           </div>
-        }
-        label="URL"
-        name="http.url"
-        onChange={[Function]}
-        pattern="*"
-        placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
-        required={true}
-        title="Example: https://company.com/api"
-        type="url"
-        value=""
-      />
-      <InputField
-        label="HTTP Method"
-        name="http.method"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="GET"
+        </small>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          key="GET"
-          value="GET"
+        <label
+          class="control-label"
+          for="id-http.method"
         >
-          GET
-        </option>
-        <option
-          key="POST"
-          value="POST"
+          HTTP Method
+        </label>
+        <div
+          class="select dropdown-toggle"
         >
-          POST
-        </option>
-        <option
-          key="PUT"
-          value="PUT"
-        >
-          PUT
-        </option>
-        <option
-          key="PATCH"
-          value="PATCH"
-        >
-          PATCH
-        </option>
-        <option
-          key="DELETE"
-          value="DELETE"
-        >
-          DELETE
-        </option>
-      </InputField>
-      <InputField
-        label="Response content type"
-        name="http.response_content_type"
-        onChange={[Function]}
-        required={true}
-        type="select"
-        value="application/json"
+          <select
+            class="field form-control"
+            id="id-http.method"
+            required=""
+          >
+            <option
+              value="GET"
+            >
+              GET
+            </option>
+            <option
+              value="POST"
+            >
+              POST
+            </option>
+            <option
+              value="PUT"
+            >
+              PUT
+            </option>
+            <option
+              value="PATCH"
+            >
+              PATCH
+            </option>
+            <option
+              value="DELETE"
+            >
+              DELETE
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="InputField required form-group"
+        color=""
       >
-        <option
-          value="application/json"
+        <label
+          class="control-label"
+          for="id-http.response_content_type"
         >
-          application/json
-        </option>
-      </InputField>
-      <FormGroup
-        tag="div"
+          Response content type
+        </label>
+        <div
+          class="select dropdown-toggle"
+        >
+          <select
+            class="field form-control"
+            id="id-http.response_content_type"
+            required=""
+          >
+            <option
+              value="application/json"
+            >
+              application/json
+            </option>
+          </select>
+        </div>
+      </div>
+      <div
+        class="form-group"
       >
-        <ObjectListField
-          fieldName="header"
-          fields={[]}
-          onChange={[Function]}
-          title="Header"
-          validate={[Function]}
-        />
-      </FormGroup>
+        <div>
+          <label
+            class="control-label"
+          >
+            Headers
+          </label>
+          <p>
+            No header
+          </p>
+          <button
+            aria-disabled="false"
+            class="wrapper fill secondary small"
+            type="button"
+          >
+            <span
+              class="wrapper"
+            >
+              <i
+                class="material-icons icon isLeft small"
+              >
+                add
+              </i>
+              Add 
+              header
+            </span>
+          </button>
+        </div>
+      </div>
       <div>
-        <ForwardRef(Button)
-          className="mr-2"
-          isLoading={false}
+        <button
+          aria-disabled="false"
+          class="wrapper mr-2 fill primary medium"
           type="submit"
         >
           Add integration
-        </ForwardRef(Button)>
+        </button>
       </div>
-    </Form>
-  </Container>
+    </form>
+  </div>
 </div>
 `;
 
 exports[`Integration should display loading state because the integration is loading 1`] = `
-<Loader
-  inline={false}
-  minHeight="500px"
-  size="40px"
-/>
+<div
+  class="container"
+>
+  <div
+    class="inner"
+    style="min-height: 500px;"
+  >
+    <i
+      class="icon-custom icon-circle-o-notch md-spin"
+      style="font-size: 40px;"
+    />
+  </div>
+</div>
 `;
 
 exports[`Integration should display minimal information because integration is incomplete 1`] = `
 <div
-  className="full-width"
+  class="full-width"
 >
-  <Container
-    className="pageContainer"
-    fluid={true}
-    tag="div"
+  <div
+    class="pageContainer container-fluid"
   >
-    <Alert
-      className="mb-4"
-      icon={true}
-      type="warning"
+    <div
+      class="alert warning mb-4"
     >
-      The settings for this HTTP integration are incomplete and it might not be working as expected. Edition mode has been disabled.
-    </Alert>
-    <Form
-      onSubmit={[Function]}
-      tag="form"
-    >
-      <InputField
-        disabled={true}
-        label="Integration name"
-        name="name"
-        onChange={[Function]}
-        required={true}
-        type="text"
-        value="foo"
-      />
-      <InputField
-        disabled={true}
-        label="Description"
-        name="description"
-        onChange={[Function]}
-        type="text"
-        value=""
-      />
-      <div>
-        <ConfirmButton
-          className="float-right"
-          confirmationContent="Are you sure you want to delete this integration? All associated views and rules will be disabled."
-          intent="destructive"
-          onConfirm={[Function]}
-        >
-          <ButtonIconLabel
-            icon="delete"
-          >
-            Delete HTTP integration
-          </ButtonIconLabel>
-        </ConfirmButton>
+      <div
+        class="iconContainer"
+      >
+        <img
+          alt="icon"
+          src="test-file-stub"
+        />
       </div>
-    </Form>
-  </Container>
+      <div
+        class="content"
+      >
+        <span
+          class="label"
+        >
+          The settings for this HTTP integration are incomplete and it might not be working as expected. Edition mode has been disabled.
+        </span>
+      </div>
+    </div>
+    <form
+      class=""
+    >
+      <div
+        class="InputField required form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-name"
+        >
+          Integration name
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            disabled=""
+            id="id-name"
+            required=""
+            type="text"
+            value="foo"
+          />
+        </div>
+      </div>
+      <div
+        class="InputField form-group"
+        color=""
+      >
+        <label
+          class="control-label"
+          for="id-description"
+        >
+          Description
+        </label>
+        <div
+          class=""
+        >
+          <input
+            class="field form-control"
+            disabled=""
+            id="id-description"
+            type="text"
+            value=""
+          />
+        </div>
+      </div>
+      <div>
+        <button
+          aria-disabled="false"
+          class="wrapper float-right fill destructive medium"
+          id="confirm-4"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft medium"
+            >
+              delete
+            </i>
+            Delete HTTP integration
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;

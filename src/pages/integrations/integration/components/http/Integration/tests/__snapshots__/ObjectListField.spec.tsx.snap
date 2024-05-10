@@ -1,132 +1,375 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ObjectListField component should display the field as empty 1`] = `
-<div>
-  <label
-    className="control-label"
-  >
-    Form fields
-  </label>
-  <p>
-    No field
-  </p>
-  <ForwardRef(Button)
-    intent="secondary"
-    onClick={[Function]}
-    size="small"
-  >
-    <ButtonIconLabel
-      icon="add"
-    >
-      Add 
-      field
-    </ButtonIconLabel>
-  </ForwardRef(Button)>
-</div>
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <label
+          class="control-label"
+        >
+          Form fields
+        </label>
+        <p>
+          No field
+        </p>
+        <button
+          aria-disabled="false"
+          class="wrapper fill secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add 
+            field
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <label
+        class="control-label"
+      >
+        Form fields
+      </label>
+      <p>
+        No field
+      </p>
+      <button
+        aria-disabled="false"
+        class="wrapper fill secondary small"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            add
+          </i>
+          Add 
+          field
+        </span>
+      </button>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
 `;
 
 exports[`ObjectListField component should display the field with items 1`] = `
-<div>
-  <label
-    className="control-label"
-  >
-    Form fields
-  </label>
-  <Row
-    className="mb-3 form-row"
-    key="0"
-    tag="div"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
-  >
-    <Col
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xs="5"
-    >
-      <InputField
-        error="Header name contains invalid characters"
-        name="key"
-        onChange={[Function]}
-        pattern="Header name contains invalid characters"
-        placeholder="Key"
-        required={true}
-        type="text"
-        value="bar"
-      />
-    </Col>
-    <Col
-      className="flex-grow"
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-    >
-      <InputField
-        error="Header name contains invalid characters"
-        name="value"
-        onChange={[Function]}
-        placeholder="Value"
-        required={true}
-        type="text"
-        value="foo"
-      />
-    </Col>
-    <Col
-      tag="div"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
-      xs="auto"
-    >
-      <ForwardRef(IconButton)
-        className="float-right"
-        intent="destructive"
-        onClick={[Function]}
-        title="Remove field"
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div>
+        <label
+          class="control-label"
+        >
+          Form fields
+        </label>
+        <div
+          class="mb-3 form-row row"
+        >
+          <div
+            class="col-5"
+          >
+            <div
+              class="InputField required form-group"
+              color="danger"
+            >
+              <div
+                class=""
+              >
+                <input
+                  class="field form-control-danger is-invalid form-control"
+                  id="id-key"
+                  pattern="Header name contains invalid characters"
+                  placeholder="Key"
+                  required=""
+                  type="text"
+                  value="bar"
+                />
+                <div
+                  class="invalid-feedback"
+                >
+                  Header name contains invalid characters
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex-grow col"
+          >
+            <div
+              class="InputField required form-group"
+              color="danger"
+            >
+              <div
+                class=""
+              >
+                <input
+                  class="field form-control-danger is-invalid form-control"
+                  id="id-value"
+                  placeholder="Value"
+                  required=""
+                  type="text"
+                  value="foo"
+                />
+                <div
+                  class="invalid-feedback"
+                >
+                  Header name contains invalid characters
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-auto"
+          >
+            <button
+              aria-disabled="false"
+              class="wrapper float-right wrapper fill destructive medium"
+              title="Remove field"
+              type="button"
+            >
+              <i
+                class="material-icons icon"
+              >
+                delete
+              </i>
+            </button>
+          </div>
+        </div>
+        <button
+          aria-disabled="false"
+          class="wrapper fill secondary small"
+          type="button"
+        >
+          <span
+            class="wrapper"
+          >
+            <i
+              class="material-icons icon isLeft small"
+            >
+              add
+            </i>
+            Add 
+            field
+          </span>
+        </button>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div>
+      <label
+        class="control-label"
       >
-        delete
-      </ForwardRef(IconButton)>
-    </Col>
-  </Row>
-  <ForwardRef(Button)
-    intent="secondary"
-    onClick={[Function]}
-    size="small"
-  >
-    <ButtonIconLabel
-      icon="add"
-    >
-      Add 
-      field
-    </ButtonIconLabel>
-  </ForwardRef(Button)>
-</div>
+        Form fields
+      </label>
+      <div
+        class="mb-3 form-row row"
+      >
+        <div
+          class="col-5"
+        >
+          <div
+            class="InputField required form-group"
+            color="danger"
+          >
+            <div
+              class=""
+            >
+              <input
+                class="field form-control-danger is-invalid form-control"
+                id="id-key"
+                pattern="Header name contains invalid characters"
+                placeholder="Key"
+                required=""
+                type="text"
+                value="bar"
+              />
+              <div
+                class="invalid-feedback"
+              >
+                Header name contains invalid characters
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex-grow col"
+        >
+          <div
+            class="InputField required form-group"
+            color="danger"
+          >
+            <div
+              class=""
+            >
+              <input
+                class="field form-control-danger is-invalid form-control"
+                id="id-value"
+                placeholder="Value"
+                required=""
+                type="text"
+                value="foo"
+              />
+              <div
+                class="invalid-feedback"
+              >
+                Header name contains invalid characters
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-auto"
+        >
+          <button
+            aria-disabled="false"
+            class="wrapper float-right wrapper fill destructive medium"
+            title="Remove field"
+            type="button"
+          >
+            <i
+              class="material-icons icon"
+            >
+              delete
+            </i>
+          </button>
+        </div>
+      </div>
+      <button
+        aria-disabled="false"
+        class="wrapper fill secondary small"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            add
+          </i>
+          Add 
+          field
+        </span>
+      </button>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
 `;

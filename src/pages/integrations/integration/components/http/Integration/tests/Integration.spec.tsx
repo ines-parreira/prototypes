@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {render} from '@testing-library/react'
 import {baseHttp, httpIntegration} from 'fixtures/integrations'
 
 import {ContentType} from 'models/api/types'
@@ -19,13 +19,13 @@ describe('Integration', () => {
         updateOrCreateIntegration: jest.fn(),
     }
     it('should display default values because there is no integration (creation)', () => {
-        const component = shallow(<Integration {...minProps} />)
+        const {container} = render(<Integration {...minProps} />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display minimal information because integration is incomplete', () => {
-        const component = shallow(
+        const {container} = render(
             <Integration
                 {...minProps}
                 integration={{
@@ -36,11 +36,11 @@ describe('Integration', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display data about the integration', () => {
-        const component = shallow(
+        const {container} = render(
             <Integration
                 {...minProps}
                 integration={httpIntegration}
@@ -48,17 +48,19 @@ describe('Integration', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display loading state because the integration is loading', () => {
-        const component = shallow(<Integration {...minProps} isUpdate={true} />)
+        const {container} = render(
+            <Integration {...minProps} isUpdate={true} />
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display data with url-encoded format', () => {
-        const component = shallow(
+        const {container} = render(
             <Integration
                 {...minProps}
                 integration={{
@@ -73,6 +75,6 @@ describe('Integration', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

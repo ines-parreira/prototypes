@@ -1,7 +1,7 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 
-import ObjectListField from '../ObjectListField'
+import {render, screen} from '@testing-library/react'
+import ObjectListField from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 
 describe('ObjectListField component', () => {
     const minProps: ComponentProps<typeof ObjectListField> = {
@@ -12,13 +12,13 @@ describe('ObjectListField component', () => {
         onChange: jest.fn(),
     }
     it('should display the field as empty', () => {
-        const component = shallow(<ObjectListField {...minProps} />)
+        const component = render(<ObjectListField {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display the field with items', () => {
-        const component = shallow(
+        const component = render(
             <ObjectListField
                 {...minProps}
                 fields={[{key: 'bar', value: 'foo'}]}
@@ -30,19 +30,14 @@ describe('ObjectListField component', () => {
     })
 
     it('should allow any field name if this.props.validate is not presented', () => {
-        const component = shallow<ObjectListField>(
+        render(
             <ObjectListField
                 {...minProps}
                 fields={[{key: 'bar', value: 'foo'}]}
             />
         )
         expect(
-            (
-                component.find('InputField').getElements()[0].props as Record<
-                    string,
-                    unknown
-                >
-            ).pattern
-        ).toBeUndefined()
+            screen.getByPlaceholderText('Key').getAttribute('pattern')
+        ).toBeNull()
     })
 })

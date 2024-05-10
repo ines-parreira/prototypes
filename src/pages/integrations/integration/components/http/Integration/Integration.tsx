@@ -32,10 +32,12 @@ import {
 import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import {getIntegrationsLoading} from 'state/integrations/selectors'
-import ObjectListField, {Field} from './ObjectListField'
-import {DEFAULT_FORM} from './constants'
-import {validateHeaderName} from './httpHeaderValidation'
-import JSONBody from './JSONBody'
+import ObjectListField, {
+    Field,
+} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import {DEFAULT_FORM} from 'pages/integrations/integration/components/http/Integration/constants'
+import {validateHeaderName} from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
+import JSONBody from 'pages/integrations/integration/components/http/Integration/JSONBody'
 
 type Props = {
     integration: HttpIntegration | undefined
