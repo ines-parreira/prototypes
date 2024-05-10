@@ -189,6 +189,7 @@ import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/
 import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidanceDetailContainer'
 import {AiAgentGuidanceTemplatesContainer} from './automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentGuidanceTemplateNewContainer} from './automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
+import {AiAgentPlaygroundContainerV2} from './automate/aiAgent/AiAgentPlaygroundV2Container'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1392,6 +1393,10 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
 
     const showAiAgentGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
+
+    const showAiPlaygroundV2: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentPlaygroundV2]
+
     const {shopType} = useParams<{
         shopType: string
     }>()
@@ -1417,7 +1422,11 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                         <Route
                             path={`${path}/playground`}
                             exact
-                            component={AiAgentPlaygroundContainer}
+                            component={
+                                showAiPlaygroundV2
+                                    ? AiAgentPlaygroundContainerV2
+                                    : AiAgentPlaygroundContainer
+                            }
                         />
                     )}
                     {showAiAgentGuidance !== false && (
