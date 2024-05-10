@@ -28,6 +28,8 @@ type Props = {
     onChange: (value: string) => void
     variables?: WorkflowVariableList
     placeholder?: string
+    noSelectedCategoryText?: string
+    isDisabled?: boolean
 }
 
 const TextInputWithVariables = ({
@@ -35,6 +37,8 @@ const TextInputWithVariables = ({
     onChange,
     variables,
     placeholder,
+    noSelectedCategoryText,
+    isDisabled,
 }: Props) => {
     const editorRef = useRef<Editor | null>()
 
@@ -113,13 +117,14 @@ const TextInputWithVariables = ({
 
     return (
         <ToolbarProvider workflowVariables={variables}>
-            <InputGroup className={css.container}>
+            <InputGroup isDisabled={isDisabled} className={css.container}>
                 <InputGroupContext.Consumer>
                     {(inputGroupContext) => (
                         <>
                             <div className={css.editor}>
                                 <Editor
                                     editorState={editorState}
+                                    readOnly={isDisabled}
                                     onChange={handleChange}
                                     stripPastedStyles
                                     ref={(editor) => {
@@ -162,6 +167,8 @@ const TextInputWithVariables = ({
                 </InputGroupContext.Consumer>
             </InputGroup>
             <WorkflowVariableDropdown
+                isDisabled={isDisabled}
+                noSelectedCategoryText={noSelectedCategoryText}
                 target={dropdownTargetRef}
                 onSelect={handleVariableSelect}
                 isOpen={isDropdownOpen}

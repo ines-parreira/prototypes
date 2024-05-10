@@ -101,7 +101,7 @@ export default function ConditionsNodeEditor({
 
     const handleConditionTypeChange = useCallback(
         (conditions: ConditionSchema[]) =>
-            (branchId: string, type: 'and' | 'or') => {
+            (branchId: string, type: 'and' | 'or' | null) => {
                 const branch = edges.find((e) => e.id === branchId)
 
                 if (!branch) return

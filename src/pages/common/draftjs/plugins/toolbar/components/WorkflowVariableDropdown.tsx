@@ -23,6 +23,7 @@ type Props = {
     dropdownPlacement?: React.ComponentProps<typeof Dropdown>['placement']
     noSelectedCategoryText?: string
     onToggle: (isOpen: boolean) => void
+    isDisabled?: boolean
 }
 
 const WorkflowVariableDropdown = ({
@@ -32,6 +33,7 @@ const WorkflowVariableDropdown = ({
     onToggle,
     dropdownPlacement = 'bottom-end',
     noSelectedCategoryText = 'Insert variable from previous steps',
+    isDisabled,
 }: Props) => {
     const {
         workflowVariables: workflowVariablesProp = [],
@@ -41,6 +43,7 @@ const WorkflowVariableDropdown = ({
             'order_selection',
             'http_request',
             'shopper_authentication',
+            'custom_input',
         ],
     } = useToolbarContext()
 
@@ -127,6 +130,7 @@ const WorkflowVariableDropdown = ({
 
     return (
         <Dropdown
+            isDisabled={isDisabled}
             isOpen={isOpen}
             target={target}
             className={css.dropdown}

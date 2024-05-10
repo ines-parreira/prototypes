@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import {
@@ -417,6 +418,7 @@ declare namespace Components {
                     }[]
                     object_inputs: {
                         kind: 'customer' | 'order'
+                        integration_id?: number
                     }[]
                     conditions?:
                         | {
@@ -511,7 +513,11 @@ declare namespace Components {
                                     }
                               )[]
                           }
-                    output_description: string
+                    outputs: {
+                        id?: string
+                        description?: string
+                        path?: string
+                    }[]
                 }
             }[]
             entrypoints: {
@@ -923,6 +929,7 @@ declare namespace Components {
                     }[]
                     object_inputs: {
                         kind: 'customer' | 'order'
+                        integration_id?: number
                     }[]
                     conditions?:
                         | {
@@ -1017,7 +1024,11 @@ declare namespace Components {
                                     }
                               )[]
                           }
-                    output_description: string
+                    outputs: {
+                        id?: string
+                        description?: string
+                        path?: string
+                    }[]
                 }
             }[]
             entrypoints: {
@@ -1419,118 +1430,135 @@ declare namespace Components {
                 | 'pt-BR'
             )[]
             triggers?:
-                | {
-                      kind: 'llm-prompt'
-                      settings: {
-                          custom_inputs: {
-                              id: string
-                              name: string
-                              instructions: string
-                              data_type:
-                                  | 'string'
-                                  | 'number'
-                                  | 'date'
-                                  | 'boolean'
-                          }[]
-                          object_inputs: {
-                              kind: 'customer' | 'order'
-                          }[]
-                          conditions?:
-                              | {
-                                    or: (
-                                        | {
-                                              equals: any
-                                          }
-                                        | {
-                                              notEqual: any
-                                          }
-                                        | {
-                                              contains: any
-                                          }
-                                        | {
-                                              doesNotContain: any
-                                          }
-                                        | {
-                                              endsWith: any
-                                          }
-                                        | {
-                                              startsWith: any
-                                          }
-                                        | {
-                                              exists: any
-                                          }
-                                        | {
-                                              doesNotExist: any
-                                          }
-                                        | {
-                                              lessThan: any
-                                          }
-                                        | {
-                                              lessThanInterval: any
-                                          }
-                                        | {
-                                              lessOrEqual: any
-                                          }
-                                        | {
-                                              greaterThan: any
-                                          }
-                                        | {
-                                              greaterThanInterval: any
-                                          }
-                                        | {
-                                              greaterOrEqual: any
-                                          }
-                                    )[]
-                                }
-                              | {
-                                    and: (
-                                        | {
-                                              equals: any
-                                          }
-                                        | {
-                                              notEqual: any
-                                          }
-                                        | {
-                                              contains: any
-                                          }
-                                        | {
-                                              doesNotContain: any
-                                          }
-                                        | {
-                                              endsWith: any
-                                          }
-                                        | {
-                                              startsWith: any
-                                          }
-                                        | {
-                                              exists: any
-                                          }
-                                        | {
-                                              doesNotExist: any
-                                          }
-                                        | {
-                                              lessThan: any
-                                          }
-                                        | {
-                                              lessThanInterval: any
-                                          }
-                                        | {
-                                              lessOrEqual: any
-                                          }
-                                        | {
-                                              greaterThan: any
-                                          }
-                                        | {
-                                              greaterThanInterval: any
-                                          }
-                                        | {
-                                              greaterOrEqual: any
-                                          }
-                                    )[]
-                                }
-                          output_description: string
-                      }
-                  }[]
+                | (
+                      | {
+                            kind: 'llm-prompt'
+                            settings: {
+                                custom_inputs: {
+                                    id: string
+                                    name: string
+                                    instructions: string
+                                    data_type:
+                                        | 'string'
+                                        | 'number'
+                                        | 'date'
+                                        | 'boolean'
+                                }[]
+                                object_inputs: (
+                                    | {
+                                          kind: 'customer' | 'order'
+                                          integration_id: number
+                                      }
+                                    | {
+                                          kind: 'order'
+                                          integration_id: number
+                                      }
+                                )[]
+                                conditions?:
+                                    | {
+                                          or: (
+                                              | {
+                                                    equals: any
+                                                }
+                                              | {
+                                                    notEqual: any
+                                                }
+                                              | {
+                                                    contains: any
+                                                }
+                                              | {
+                                                    doesNotContain: any
+                                                }
+                                              | {
+                                                    endsWith: any
+                                                }
+                                              | {
+                                                    startsWith: any
+                                                }
+                                              | {
+                                                    exists: any
+                                                }
+                                              | {
+                                                    doesNotExist: any
+                                                }
+                                              | {
+                                                    lessThan: any
+                                                }
+                                              | {
+                                                    lessThanInterval: any
+                                                }
+                                              | {
+                                                    lessOrEqual: any
+                                                }
+                                              | {
+                                                    greaterThan: any
+                                                }
+                                              | {
+                                                    greaterThanInterval: any
+                                                }
+                                              | {
+                                                    greaterOrEqual: any
+                                                }
+                                          )[]
+                                      }
+                                    | {
+                                          and: (
+                                              | {
+                                                    equals: any
+                                                }
+                                              | {
+                                                    notEqual: any
+                                                }
+                                              | {
+                                                    contains: any
+                                                }
+                                              | {
+                                                    doesNotContain: any
+                                                }
+                                              | {
+                                                    endsWith: any
+                                                }
+                                              | {
+                                                    startsWith: any
+                                                }
+                                              | {
+                                                    exists: any
+                                                }
+                                              | {
+                                                    doesNotExist: any
+                                                }
+                                              | {
+                                                    lessThan: any
+                                                }
+                                              | {
+                                                    lessThanInterval: any
+                                                }
+                                              | {
+                                                    lessOrEqual: any
+                                                }
+                                              | {
+                                                    greaterThan: any
+                                                }
+                                              | {
+                                                    greaterThanInterval: any
+                                                }
+                                              | {
+                                                    greaterOrEqual: any
+                                                }
+                                          )[]
+                                      }
+                                outputs: {
+                                    id: string
+                                    description: string
+                                    path: string
+                                }[]
+                            }
+                        }
+                      | {
+                            kind: 'channel'
+                            settings: {}
+                        }
+                  )[]
                 | null
             entrypoints?:
                 | {
@@ -1597,6 +1625,18 @@ declare namespace Paths {
             internal_id: Parameters.InternalId
         }
     }
+    namespace WfConfigurationControllerGet {
+        namespace Parameters {
+            export type Id = string
+        }
+        export interface PathParameters {
+            id: Parameters.Id
+        }
+        namespace Responses {
+            export type $201 =
+                Components.Schemas.UpsertWfConfigurationRequestDto
+        }
+    }
 }
 
 export interface OperationMethods {
@@ -1619,6 +1659,14 @@ export interface OperationMethods {
         data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
+    /**
+     * WfConfigurationController_get
+     */
+    'WfConfigurationController_get'(
+        parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$201>
     /**
      * WfConfigurationController_delete
      */
@@ -1652,6 +1700,16 @@ export interface PathsDictionary {
             data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
+    }
+    ['/configurations/{id}']: {
+        /**
+         * WfConfigurationController_get
+         */
+        'get'(
+            parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$201>
     }
     ['/configurations/{internal_id}']: {
         /**

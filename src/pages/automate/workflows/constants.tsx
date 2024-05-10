@@ -3,10 +3,13 @@ import React, {ReactNode} from 'react'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 import conditionsMergeIcon from 'assets/img/workflows/icons/conditions-merge-sm.svg'
 
+import {ActionTriggerType} from 'pages/automate/workflows/models/variables.types'
+
 import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
 
 export const colorByVisualBuilderNodeType: Record<
-    Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
+    | Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>
+    | ActionTriggerType,
     {color: string; backgroundColor: string}
 > = {
     automated_message: {
@@ -45,10 +48,15 @@ export const colorByVisualBuilderNodeType: Record<
         color: 'var(--accessory-teal-3)',
         backgroundColor: 'var(--accessory-teal-1)',
     },
+    custom_input: {
+        color: 'var(--neutral-grey-5)',
+        backgroundColor: 'var(--neutral-grey-2)',
+    },
 }
 
 export const iconByVisualBuilderNodeType: Record<
-    Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>,
+    | Exclude<NonNullable<VisualBuilderNode['type']>, 'trigger_button' | 'end'>
+    | ActionTriggerType,
     ReactNode
 > = {
     automated_message: <i className="material-icons">chat_bubble</i>,
@@ -60,6 +68,7 @@ export const iconByVisualBuilderNodeType: Record<
     shopper_authentication: <i className="material-icons">person</i>,
     conditions: <img src={conditionsMergeIcon} alt="merge" />,
     order_line_item_selection: <i className="material-icons">label</i>,
+    custom_input: <i className="material-icons">input</i>,
 }
 
 export const labelByVisualBuilderNodeType: Record<

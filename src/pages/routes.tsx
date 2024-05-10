@@ -166,6 +166,8 @@ import SupportPerformanceTicketInsights from 'pages/stats/SupportPerformanceTick
 import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
+import EditCustomActionsFormView from 'pages/automate/actions/EditCustomActionsFormView'
+import NewCustomActionsFormView from 'pages/automate/actions/NewCustomActionsFormView'
 import AutomateRoute from 'pages/automate/common/components/AutomateRoute'
 import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
@@ -1484,9 +1486,6 @@ export function AutomationRoutes() {
 function AutomationContent() {
     const {path} = useRouteMatch()
 
-    const showAutomateActions: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateActions]
-
     return (
         <Switch>
             <Route
@@ -1640,16 +1639,30 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
-            {!!showAutomateActions && (
-                <Route
-                    path={`${path}/:shopType/:shopName/actions`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        ActionsViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
+            <Route
+                path={`${path}/:shopType/:shopName/actions`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    ActionsViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/actions/new`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    NewCustomActionsFormView,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/actions/edit/:id`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    EditCustomActionsFormView,
+                    AGENT_ROLE
+                )}
+            />
             <Route path={`${path}/:shopType/:shopName/connected-channels`}>
                 <SelfServiceHelpCentersProvider>
                     <SelfServiceContactFormsProvider>

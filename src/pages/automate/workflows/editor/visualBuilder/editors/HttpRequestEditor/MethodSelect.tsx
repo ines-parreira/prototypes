@@ -13,17 +13,19 @@ import css from '../NodeEditor.less'
 const methods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'] as const
 
 type Props = {
+    isDisabled?: boolean
     value: HttpRequestNodeType['data']['method']
     onChange: (value: HttpRequestNodeType['data']['method']) => void
 }
 
-const MethodSelect = ({value, onChange}: Props) => {
+const MethodSelect = ({value, onChange, isDisabled}: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
     return (
         <SelectInputBox
+            isDisabled={isDisabled}
             floating={floatingRef}
             label={value}
             onToggle={setIsOpen}

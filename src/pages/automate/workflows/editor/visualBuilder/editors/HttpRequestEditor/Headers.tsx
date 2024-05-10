@@ -20,14 +20,25 @@ type Props = {
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
+    isDisabled?: boolean
+    noSelectedCategoryText?: string
 }
 
-const Headers = ({variables, headers, onChange, onDelete, onAdd}: Props) => {
+const Headers = ({
+    variables,
+    headers,
+    onChange,
+    onDelete,
+    onAdd,
+    isDisabled,
+    noSelectedCategoryText = 'Insert variable from previous steps',
+}: Props) => {
     return (
         <div className={css.keyValueContainer}>
             {headers.map((header, index) => (
                 <div key={index} className={css.keyValueRow}>
                     <TextInput
+                        isDisabled={isDisabled}
                         value={header.name}
                         className={css.textInput}
                         placeholder="Key"
@@ -36,6 +47,8 @@ const Headers = ({variables, headers, onChange, onDelete, onAdd}: Props) => {
                         }}
                     />
                     <TextInputWithVariables
+                        noSelectedCategoryText={noSelectedCategoryText}
+                        isDisabled={isDisabled}
                         value={header.value}
                         onChange={(value) => {
                             onChange(index, {...header, value})
@@ -44,6 +57,7 @@ const Headers = ({variables, headers, onChange, onDelete, onAdd}: Props) => {
                         placeholder="Value"
                     />
                     <IconButton
+                        isDisabled={isDisabled}
                         intent="destructive"
                         fillStyle="ghost"
                         onClick={() => {
@@ -59,7 +73,12 @@ const Headers = ({variables, headers, onChange, onDelete, onAdd}: Props) => {
                     Key and value pairs to be added as headers in all requests
                 </div>
             )}
-            <Button intent="secondary" onClick={onAdd} size="small">
+            <Button
+                isDisabled={isDisabled}
+                intent="secondary"
+                onClick={onAdd}
+                size="small"
+            >
                 <ButtonIconLabel icon="add">Add Header</ButtonIconLabel>
             </Button>
         </div>

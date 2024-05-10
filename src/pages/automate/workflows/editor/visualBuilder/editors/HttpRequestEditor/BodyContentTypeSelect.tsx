@@ -17,18 +17,20 @@ const bodyContentTypes = [
 
 type Props = {
     value: NonNullable<HttpRequestNodeType['data']['bodyContentType']>
+    isDisabled?: boolean
     onChange: (
         value: NonNullable<HttpRequestNodeType['data']['bodyContentType']>
     ) => void
 }
 
-const BodyContentTypeSelect = ({value, onChange}: Props) => {
+const BodyContentTypeSelect = ({value, onChange, isDisabled}: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
     return (
         <SelectInputBox
+            isDisabled={isDisabled}
             floating={floatingRef}
             label={value}
             onToggle={setIsOpen}

@@ -8,7 +8,7 @@ import {
     storeWorkflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
 
-import {Actions} from '../types'
+import {StoresWorkflowConfiguration} from '../types'
 import {handleError} from './errorHandler'
 
 export default function useDeleteAction(
@@ -25,7 +25,7 @@ export default function useDeleteAction(
     })
 
     return useDeleteWorkflowsConfiguration<{
-        previousActionsConfiguration: Actions | undefined
+        previousActionsConfiguration: StoresWorkflowConfiguration | undefined
     }>({
         onMutate: ([params]) => {
             if (
@@ -36,7 +36,9 @@ export default function useDeleteAction(
                 const internalId = params['internal_id']
 
                 const previousActionsConfiguration =
-                    queryClient.getQueryData<Actions>(queryKey)
+                    queryClient.getQueryData<StoresWorkflowConfiguration>(
+                        queryKey
+                    )
 
                 // Optimistically update the cache
                 queryClient.setQueryData(

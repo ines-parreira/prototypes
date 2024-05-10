@@ -1,0 +1,108 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xl;
+
+        section {
+            header {
+                display: flex;
+                align-items: baseline;
+                gap: @layout-spacing-xs;
+                padding-bottom: @layout-spacing-m;
+                h1 {
+                    .heading-section-semibold();
+                    margin: 0;
+                }
+            }
+
+            .formSessionContainer {
+                display: flex;
+                flex-direction: column;
+                gap: @layout-spacing-l;
+            }
+        }
+
+        .formItem {
+            & > label {
+                margin-bottom: @layout-spacing-xs;
+            }
+        }
+
+        .inputVariables {
+            & > label {
+                margin-bottom: @layout-spacing-xxs;
+            }
+            & > p {
+                .body-regular();
+                padding-bottom: @layout-spacing-xs;
+                margin: 0;
+            }
+
+            .customInputsContainer {
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                gap: @layout-spacing-xs;
+
+                .customInputItem {
+                    display: flex;
+                    gap: @layout-spacing-xs;
+                }
+            }
+        }
+        .urlFormContainer {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: @layout-spacing-xs;
+
+            & > div {
+                width: 100%;
+            }
+        }
+
+        .formInputFooterInfo {
+            .caption-regular();
+            color: var(--neutral-grey-5);
+        }
+
+        .httpTestContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            & > label {
+                margin-bottom: @layout-spacing-xxs;
+            }
+            & > p {
+                .body-regular();
+                padding-bottom: @layout-spacing-xs;
+                margin: 0;
+            }
+        }
+
+        .formActionEnabled {
+            display: flex;
+            p {
+                .body-semibold();
+                margin: 0;
+            }
+        }
+
+        .buttonGroup {
+            display: flex;
+            justify-content: space-between;
+
+            & > div {
+                display: flex;
+                gap: @layout-spacing-xs;
+            }
+        }
+
+        .httpBodyInput {
+            padding-top: @layout-spacing-xs;
+        }
+    }
+}

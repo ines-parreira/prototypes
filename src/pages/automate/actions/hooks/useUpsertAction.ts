@@ -6,9 +6,13 @@ import {NotificationStatus} from 'state/notifications/types'
 import {
     useUpsertStoreWorkflowsConfiguration,
     storeWorkflowsConfigurationDefinitionKeys,
+    workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
 
-import {Actions} from '../types'
+import {
+    StoresWorkflowConfiguration,
+    StoreWorkflowsConfiguration,
+} from '../types'
 import {handleError} from './errorHandler'
 
 export default function useUpsertAction(
@@ -19,39 +23,60 @@ export default function useUpsertAction(
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const queryKey = storeWorkflowsConfigurationDefinitionKeys.list({
-        storeName,
-        storeType,
-    })
+    const storeWorkflowsConfigurationQueryKey =
+        storeWorkflowsConfigurationDefinitionKeys.list({
+            storeName,
+            storeType,
+        })
 
     return useUpsertStoreWorkflowsConfiguration<{
-        previousActionsConfiguration: Actions | undefined
+        previousStoreWorkflowConfiguration?: StoresWorkflowConfiguration
+        previousWorkflowConfiguration?: StoreWorkflowsConfiguration
     }>({
         onMutate: async ([, data]) => {
             await queryClient.cancelQueries({
-                queryKey,
+                queryKey: storeWorkflowsConfigurationQueryKey,
             })
 
-            const previousActionsConfiguration =
-                queryClient.getQueryData<Actions>(queryKey)
+            const previousStoreWorkflowConfiguration =
+                queryClient.getQueryData<StoresWorkflowConfiguration>(
+                    storeWorkflowsConfigurationQueryKey
+                ) ?? []
 
             // Optimistically update the cache
-            queryClient.setQueryData(
-                queryKey,
-                actionType === 'update'
-                    ? previousActionsConfiguration?.map((action) => {
-                          if (action.id === data?.id) {
-                              return data
-                          }
-                          return action
-                      })
-                    : [...(previousActionsConfiguration ?? []), data]
-            )
+            if (actionType === 'update') {
+                queryClient.setQueryData(
+                    storeWorkflowsConfigurationQueryKey,
+                    previousStoreWorkflowConfiguration.map((action) => {
+                        if (action.id === data?.id) {
+                            return data
+                        }
+                        return action
+                    })
+                )
+            }
+
             return {
-                previousActionsConfiguration,
+                previousStoreWorkflowConfiguration,
             }
         },
-        onSuccess: () => {
+        onSuccess: ({data}) => {
+            const previousStoreWorkflowConfiguration =
+                queryClient.getQueryData<StoresWorkflowConfiguration>(
+                    storeWorkflowsConfigurationQueryKey
+                ) ?? []
+
+            const workflowConfigurationQueryKey =
+                workflowsConfigurationDefinitionKeys.get(data.id)
+            queryClient.setQueryData(workflowConfigurationQueryKey, data)
+
+            if (actionType === 'create') {
+                queryClient.setQueryData(storeWorkflowsConfigurationQueryKey, [
+                    ...previousStoreWorkflowConfiguration,
+                    data,
+                ])
+            }
+
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
@@ -69,8 +94,8 @@ export default function useUpsertAction(
                     : `Fail to update action. Please try again later.`
             handleError(error, errorMessage, dispatch)
             queryClient.setQueryData(
-                queryKey,
-                context?.previousActionsConfiguration
+                storeWorkflowsConfigurationQueryKey,
+                context?.previousStoreWorkflowConfiguration
             )
         },
     })

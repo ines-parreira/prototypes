@@ -7,12 +7,12 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 
 import useOrderBy from 'hooks/useOrderBy'
-import {Actions} from '../types'
+import {StoresWorkflowConfiguration} from '../types'
 import css from './ActionsList.less'
 import ActionsRow from './ActionsRow'
 
 type Props = {
-    actions: Actions
+    actions: StoresWorkflowConfiguration
 }
 
 export default function ActionsList({actions}: Props) {

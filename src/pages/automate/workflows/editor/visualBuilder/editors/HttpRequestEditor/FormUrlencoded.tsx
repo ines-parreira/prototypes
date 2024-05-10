@@ -14,12 +14,14 @@ import css from '../NodeEditor.less'
 type Props = {
     items: HttpRequestNodeType['data']['formUrlencoded']
     variables?: WorkflowVariableList
+    isDisabled?: boolean
     onChange: (
         index: number,
         item: NonNullable<HttpRequestNodeType['data']['formUrlencoded']>[number]
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
+    noSelectedCategoryText?: string
 }
 
 const FormUrlencoded = ({
@@ -28,12 +30,15 @@ const FormUrlencoded = ({
     onChange,
     onDelete,
     onAdd,
+    isDisabled,
+    noSelectedCategoryText = 'Insert variable from previous steps',
 }: Props) => {
     return (
         <div className={css.keyValueContainer}>
             {items.map((item, index) => (
                 <div key={index} className={css.keyValueRow}>
                     <TextInput
+                        isDisabled={isDisabled}
                         value={item.key}
                         className={css.textInput}
                         placeholder="Key"
@@ -42,14 +47,17 @@ const FormUrlencoded = ({
                         }}
                     />
                     <TextInputWithVariables
+                        isDisabled={isDisabled}
                         value={item.value}
                         onChange={(value) => {
                             onChange(index, {...item, value})
                         }}
                         variables={variables}
+                        noSelectedCategoryText={noSelectedCategoryText}
                         placeholder="Value"
                     />
                     <IconButton
+                        isDisabled={isDisabled}
                         intent="destructive"
                         fillStyle="ghost"
                         onClick={() => {
@@ -63,7 +71,12 @@ const FormUrlencoded = ({
             {items.length > 0 && (
                 <div className={css.description}>Key and value pairs</div>
             )}
-            <Button intent="secondary" onClick={onAdd} size="small">
+            <Button
+                isDisabled={isDisabled}
+                intent="secondary"
+                onClick={onAdd}
+                size="small"
+            >
                 <ButtonIconLabel icon="add">Add Body Data</ButtonIconLabel>
             </Button>
         </div>

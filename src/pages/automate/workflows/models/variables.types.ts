@@ -17,6 +17,7 @@ export type WorkflowVariable = {
         | 'order_selection'
         | 'http_request'
         | 'shopper_authentication'
+        | ActionTriggerType
     type: WorkflowVariableType
     format?: WorkflowVariableFormat
     filter?: string
@@ -24,8 +25,14 @@ export type WorkflowVariable = {
 
 export type WorkflowVariableGroup = {
     name: string
-    nodeType: 'order_selection' | 'http_request' | 'shopper_authentication'
+    nodeType:
+        | 'order_selection'
+        | 'http_request'
+        | 'shopper_authentication'
+        | ActionTriggerType
     variables: WorkflowVariable[]
 }
+
+export type ActionTriggerType = 'custom_input'
 
 export type WorkflowVariableList = (WorkflowVariable | WorkflowVariableGroup)[]

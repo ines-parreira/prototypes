@@ -1,0 +1,266 @@
+import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import {StoreWorkflowsConfiguration} from './types'
+
+type ActionsType = 'custom'
+
+/**
+ * Check what type of Action configuration is being used
+ */
+export function checkConfigurationAction(
+    configuration: StoreWorkflowsConfiguration
+): ActionsType | null {
+    const {entrypoints, triggers} = configuration
+
+    if (
+        entrypoints.some(
+            (entrypoint) => entrypoint.kind === 'llm-conversation'
+        ) &&
+        triggers.some((trigger) => trigger.kind === 'llm-prompt')
+    ) {
+        return 'custom'
+    }
+
+    return null
+}
+
+export const orderVariables: WorkflowVariable[] = [
+    {
+        name: 'Order id',
+        value: 'objects.order.external_id',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Ecommerce customer id',
+        value: 'objects.order.shopper_external_id',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Currency',
+        value: 'objects.order.currency.code',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Total discounts',
+        value: 'objects.order.discount_amount',
+        nodeType: 'order_selection',
+        type: 'number',
+    },
+    {
+        name: 'Subtotal price',
+        value: 'objects.order.subtotal_amount',
+        nodeType: 'order_selection',
+        type: 'number',
+    },
+    {
+        name: 'Shipping price',
+        value: 'objects.order.shipping_amount',
+        nodeType: 'order_selection',
+        type: 'number',
+    },
+    {
+        name: 'Total tax',
+        value: 'objects.order.tax_amount',
+        nodeType: 'order_selection',
+        format: 'currency',
+        type: 'number',
+    },
+    {
+        name: 'Fulfillment status',
+        value: 'objects.order.external_fulfillment_status',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Payment status',
+        value: 'objects.order.external_payment_status',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Order status',
+        value: 'objects.order.external_status',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Cancellation date',
+        value: 'objects.order.cancelled_datetime',
+        nodeType: 'order_selection',
+        type: 'date',
+    },
+    {
+        name: 'Billing address line 1',
+        value: 'objects.order.billing_address.line_1',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address line 2',
+        value: 'objects.order.billing_address.line_2',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address city',
+        value: 'objects.order.billing_address.city',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address state',
+        value: 'objects.order.billing_address.state',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address country',
+        value: 'objects.order.billing_address.country',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address zip code',
+        value: 'objects.order.billing_address.zip_code',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address first name',
+        value: 'objects.order.billing_address.first_name',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address last name',
+        value: 'objects.order.billing_address.last_name',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Billing address phone number',
+        value: 'objects.order.billing_address.phone_number',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address line 1',
+        value: 'objects.order.shipping_address.line_1',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address line 2',
+        value: 'objects.order.shipping_address.line_2',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address city',
+        value: 'objects.order.shipping_address.city',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address state',
+        value: 'objects.order.shipping_address.state',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address country',
+        value: 'objects.order.shipping_address.country',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address zip code',
+        value: 'objects.order.shipping_address.zip_code',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address first name',
+        value: 'objects.order.shipping_address.first_name',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping address last name',
+        value: 'objects.order.shipping_address.last_name',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Tracking url',
+        value: 'objects.order.tracking_url',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Tracking number',
+        value: 'objects.order.tracking_number',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping date',
+        value: 'objects.order.shipping_datetime',
+        nodeType: 'order_selection',
+        type: 'date',
+    },
+    {
+        name: 'Order number',
+        value: 'objects.order.name',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Order total amount',
+        value: 'objects.order.total_amount',
+        nodeType: 'order_selection',
+        type: 'number',
+        format: 'currency',
+    },
+    {
+        name: 'Order date',
+        value: 'objects.order.created_datetime',
+        nodeType: 'order_selection',
+        type: 'date',
+    },
+]
+
+export const customerVariables: WorkflowVariable[] = [
+    {
+        name: 'Customer first name',
+        value: 'objects.customer.firstname',
+        nodeType: 'shopper_authentication',
+        type: 'string',
+    },
+    {
+        name: 'Customer last name',
+        value: 'objects.customer.lastname',
+        nodeType: 'shopper_authentication',
+        type: 'string',
+    },
+    {
+        name: 'Customer full name',
+        value: 'objects.customer.name',
+        nodeType: 'shopper_authentication',
+        type: 'string',
+    },
+    {
+        name: 'Customer email',
+        value: 'objects.customer.email',
+        nodeType: 'shopper_authentication',
+        type: 'string',
+    },
+    {
+        name: 'Customer phone number',
+        value: 'objects.customer.phone_number',
+        nodeType: 'shopper_authentication',
+        type: 'string',
+    },
+]

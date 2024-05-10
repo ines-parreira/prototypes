@@ -1,12 +1,13 @@
-import {useQuery, useMutation} from '@tanstack/react-query'
+import {useQuery, useMutation, UseQueryOptions} from '@tanstack/react-query'
 import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
-import {OperationMethods} from 'rest_api/workflows_api/client.generated'
+import {OperationMethods, Paths} from 'rest_api/workflows_api/client.generated'
 import {MutationOverrides} from 'types/query'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
 const STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY = 'store-workflow-configuration'
+const WORKFLOWS_CONFIGURATION_QUERY_KEY = 'workflow-configuration'
 
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
@@ -14,6 +15,33 @@ export const storeWorkflowsConfigurationDefinitionKeys = {
         ...storeWorkflowsConfigurationDefinitionKeys.all(),
         params,
     ],
+}
+
+export const workflowsConfigurationDefinitionKeys = {
+    all: () => [WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
+    get: (id: string) => [...workflowsConfigurationDefinitionKeys.all(), id],
+}
+
+export const useGetWorkflowConfiguration = (
+    params: {id: string},
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationControllerGet.Responses.$201>
+    >
+) => {
+    const {id} = params
+    return useQuery({
+        queryKey: workflowsConfigurationDefinitionKeys.get(id),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response = await client.WfConfigurationController_get({
+                id,
+            })
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
 }
 
 export const useGetStoreWorkflowsConfigurations = ({
@@ -50,6 +78,7 @@ export const useGetStoreWorkflowsConfigurations = ({
             )
             return response.data
         },
+        refetchOnMount: 'always',
         keepPreviousData: true,
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,

@@ -23,12 +23,15 @@ type Props = {
     onChange: (value: string) => void
     variables?: WorkflowVariableList
     error?: string
+    isDisabled?: boolean
+    noSelectedCategoryText?: string
 }
 
 const workflowVariablesNodeTypes: NonNullable<
     WorkflowVariableList[number]['nodeType']
 >[] = [
     'text_reply',
+    'custom_input',
     'multiple_choices',
     'file_upload',
     'order_selection',
@@ -36,7 +39,14 @@ const workflowVariablesNodeTypes: NonNullable<
     'shopper_authentication',
 ]
 
-const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
+const TextareaWithVariables = ({
+    value,
+    onChange,
+    variables,
+    error,
+    isDisabled,
+    noSelectedCategoryText = 'Insert variable from previous steps',
+}: Props) => {
     const editorRef = useRef<Editor | null>()
 
     const plugins = useMemo(() => [createWorkflowVariablesPlugin()], [])
@@ -144,6 +154,7 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
                         })}
                     >
                         <Editor
+                            readOnly={isDisabled}
                             editorState={editorState}
                             onChange={handleChange}
                             ref={(editor) => {
@@ -155,6 +166,10 @@ const TextareaWithVariables = ({value, onChange, variables, error}: Props) => {
                     </div>
                     <div className={css.variables}>
                         <WorkflowVariablePicker
+                            variableDropdownProps={{
+                                noSelectedCategoryText,
+                            }}
+                            disabled={isDisabled}
                             onSelect={handleVariableSelect}
                         />
                     </div>

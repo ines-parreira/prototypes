@@ -1,6 +1,6 @@
-import {Actions} from '../../types'
+import {StoresWorkflowConfiguration} from '../../types'
 
-export const actionConfigurationFixture: Actions[number] = {
+export const actionConfigurationFixture: StoresWorkflowConfiguration[number] = {
     internal_id: '01HWMV7AMNQYX73B007W65T2SE',
     id: '01HWMV7AMNV8WZV9YN8588C868',
     account_id: 1,
@@ -35,7 +35,7 @@ export const actionConfigurationFixture: Actions[number] = {
             settings: {
                 custom_inputs: [],
                 object_inputs: [],
-                output_description: '',
+                outputs: [],
             },
         },
     ],

@@ -106,6 +106,33 @@
                 }
             }
         },
+        "/configurations/{id}": {
+            "get": {
+                "operationId": "WfConfigurationController_get",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpsertWfConfigurationRequestDto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/configurations/{internal_id}": {
             "delete": {
                 "operationId": "WfConfigurationController_delete",
@@ -921,7 +948,8 @@
                                                                     "number",
                                                                     "date",
                                                                     "boolean"
-                                                                ]
+                                                                ],
+                                                                "nullable": true
                                                             }
                                                         },
                                                         "required": [
@@ -1756,20 +1784,50 @@
                                                 "object_inputs": {
                                                     "type": "array",
                                                     "items": {
-                                                        "type": "object",
-                                                        "properties": {
-                                                            "kind": {
-                                                                "type": "string",
-                                                                "enum": [
-                                                                    "customer",
-                                                                    "order"
-                                                                ]
-                                                            }
+                                                        "discriminator": {
+                                                            "propertyName": "kind"
                                                         },
-                                                        "required": [
-                                                            "kind"
-                                                        ],
-                                                        "additionalProperties": false
+                                                        "oneOf": [
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "kind": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "customer",
+                                                                            "order"
+                                                                        ]
+                                                                    },
+                                                                    "integration_id": {
+                                                                        "type": "number"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "kind",
+                                                                    "integration_id"
+                                                                ],
+                                                                "additionalProperties": false
+                                                            },
+                                                            {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "kind": {
+                                                                        "type": "string",
+                                                                        "enum": [
+                                                                            "order"
+                                                                        ]
+                                                                    },
+                                                                    "integration_id": {
+                                                                        "type": "number"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "kind",
+                                                                    "integration_id"
+                                                                ],
+                                                                "additionalProperties": false
+                                                            }
+                                                        ]
                                                     }
                                                 },
                                                 "conditions": {
@@ -2089,15 +2147,56 @@
                                                     ],
                                                     "nullable": true
                                                 },
-                                                "output_description": {
-                                                    "type": "string"
+                                                "outputs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "path": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "id",
+                                                            "description",
+                                                            "path"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    }
                                                 }
                                             },
                                             "required": [
                                                 "custom_inputs",
                                                 "object_inputs",
-                                                "output_description"
+                                                "outputs"
                                             ],
+                                            "additionalProperties": false
+                                        }
+                                    },
+                                    "required": [
+                                        "kind",
+                                        "settings"
+                                    ],
+                                    "additionalProperties": false
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "kind": {
+                                            "type": "string",
+                                            "enum": [
+                                                "channel"
+                                            ]
+                                        },
+                                        "settings": {
+                                            "type": "object",
+                                            "properties": {},
                                             "additionalProperties": false
                                         }
                                     },
@@ -2999,7 +3098,8 @@
                                                                     "number",
                                                                     "date",
                                                                     "boolean"
-                                                                ]
+                                                                ],
+                                                                "nullable": true
                                                             }
                                                         },
                                                         "required": [
@@ -3857,6 +3957,9 @@
                                                                     "customer",
                                                                     "order"
                                                                 ]
+                                                            },
+                                                            "integration_id": {
+                                                                "type": "number"
                                                             }
                                                         },
                                                         "required": [
@@ -4182,14 +4285,28 @@
                                                     ],
                                                     "nullable": true
                                                 },
-                                                "output_description": {
-                                                    "type": "string"
+                                                "outputs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "path": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             },
                                             "required": [
                                                 "custom_inputs",
                                                 "object_inputs",
-                                                "output_description"
+                                                "outputs"
                                             ],
                                             "additionalProperties": false
                                         }
@@ -5899,6 +6016,9 @@
                                                                     "customer",
                                                                     "order"
                                                                 ]
+                                                            },
+                                                            "integration_id": {
+                                                                "type": "number"
                                                             }
                                                         },
                                                         "required": [
@@ -6224,14 +6344,28 @@
                                                     ],
                                                     "nullable": true
                                                 },
-                                                "output_description": {
-                                                    "type": "string"
+                                                "outputs": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "path": {
+                                                                "type": "string"
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             },
                                             "required": [
                                                 "custom_inputs",
                                                 "object_inputs",
-                                                "output_description"
+                                                "outputs"
                                             ],
                                             "additionalProperties": false
                                         }
