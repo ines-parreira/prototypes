@@ -6,6 +6,7 @@ import {RuleTemplateRecipeSlugs} from '../../constants'
 import {DefaultModalProps} from '../InstallRuleModalBody'
 import css from '../RuleRecipeModal.less'
 import TargetCount from './components/TargetCount'
+import {AiAgentRequirements} from './components/AiAgentRequirement'
 
 const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
     [RuleTemplateRecipeSlugs.AutoCloseStory]:
@@ -30,18 +31,35 @@ const howItWorksText: Record<RuleTemplateRecipeSlugs, string> = {
         'This rule tags order status requests as shipped or not shipped based on a shopper’s last Shopify order. Use this rule to save response time by proactively identifying order status and inform the response.',
     [RuleTemplateRecipeSlugs.AutoTagOfflineCapture]:
         'Tags chat tickets coming from the offline capture so that you can create views to separate them from live chat tickets.',
+    [RuleTemplateRecipeSlugs.AutoTagAiIgnore]:
+        'This rule adds the "ai_ignore" tag to tickets, which will prevent your AI Agent from answering or perform any actions (e.g. auto-tagging).<br/>You can update the conditions in order to exclude tickets coming from certain email addresses, tickets with certain tags, messages from customers that include certain words, etc.',
 }
 
 export const DefaultModal = ({
     recipeSlug,
     triggeredCount,
     viewCreationCheckbox,
+    aiAgentLink,
 }: DefaultModalProps) => (
     <div className={css.container}>
-        <TargetCount count={triggeredCount} />
+        {recipeSlug === RuleTemplateRecipeSlugs.AutoTagAiIgnore ? (
+            <div className={css.count}>
+                <div className={css.targetTitle}>
+                    <AiAgentRequirements aiAgentLink={aiAgentLink} />
+                </div>
+            </div>
+        ) : (
+            <TargetCount count={triggeredCount} />
+        )}
         <div className={css.descriptionBlock}>
             <h4>How it works</h4>
-            <p>{howItWorksText[recipeSlug as RuleTemplateRecipeSlugs]}</p>
+            <p
+                dangerouslySetInnerHTML={{
+                    __html: howItWorksText[
+                        recipeSlug as RuleTemplateRecipeSlugs
+                    ],
+                }}
+            />
         </div>
         <div className={css.descriptionBlock}>
             <h4>Customize it</h4>

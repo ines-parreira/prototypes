@@ -45,6 +45,7 @@ type Props = {
     managedRuleId?: number
     handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
     shouldHandleError: boolean
+    aiAgentLink?: string
 }
 
 export const RuleRecipeModal = ({
@@ -57,6 +58,7 @@ export const RuleRecipeModal = ({
     managedRuleId,
     handleDefaultSettings,
     shouldHandleError,
+    aiAgentLink,
 }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     const {rule, slug, triggered_count, views_per_section} = recipe
@@ -262,6 +264,7 @@ export const RuleRecipeModal = ({
                         viewCreationCheckbox={ViewsCreationCheckbox}
                         handleInstallationError={handleInstallationErrors}
                         handleDefaultSettings={handleDefaultSettings}
+                        aiAgentLink={aiAgentLink}
                     />
                 </ModalBody>
             )}

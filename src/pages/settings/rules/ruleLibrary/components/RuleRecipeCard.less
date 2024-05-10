@@ -1,3 +1,5 @@
+@import (reference) '~css/typography';
+
 :local {
     .card {
         display: grid;
@@ -39,9 +41,10 @@
         padding: 16px;
     }
     .ticketCount {
-        color: var(--neutral-grey-4);
+        color: var(--neutral-grey-5);
         padding: 2px 0px 16px 16px;
-        font-size: 12px;
+        .caption-semibold();
+
         &.important {
             font-weight: 600;
         }

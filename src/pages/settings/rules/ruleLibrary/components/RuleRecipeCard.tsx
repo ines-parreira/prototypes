@@ -48,13 +48,18 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import successIcon from 'assets/img/icons/success.svg'
 
 import {RuleDraft} from 'models/rule/types'
+import {getIntegrationsByType} from 'state/integrations/selectors'
+import {IntegrationType} from 'models/integration/constants'
+import {StoreIntegration} from 'models/integration/types'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {CodeASTType} from '../../types'
 
-import {tagColors} from '../constants'
+import {RuleTemplateRecipeSlugs, tagColors} from '../constants'
 
 import {RuleRecipeModal} from './RuleRecipeModal'
 
 import css from './RuleRecipeCard.less'
+import {AiAgentRequirements} from './installationModals/components/AiAgentRequirement'
 
 type Props = {
     recipe: RuleRecipe
@@ -85,6 +90,19 @@ function RuleRecipeCard({
     const hasAutomate = useAppSelector(getHasAutomate)
     const {rule, tags, recipe_tag, views_per_section} = recipe
     const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
+    const shopifyIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Shopify)
+    )
+
+    const firstShopifyIntegration = shopifyIntegrations[0]
+
+    // TODO: add link to the helpdesk when it will be ready
+    const aiAgentLink =
+        firstShopifyIntegration && hasAutomate
+            ? `/app/automation/shopify/${getShopNameFromStoreIntegration(
+                  firstShopifyIntegration as StoreIntegration
+              )}/ai-agent`
+            : undefined
 
     const handleCodeAst = (
         _path: List<any>,
@@ -351,13 +369,19 @@ function RuleRecipeCard({
                 </div>
             </div>
             <div>
-                <div
-                    className={classnames(css.ticketCount, {
-                        [css.important]: recipe.triggered_count >= 20,
-                    })}
-                >
-                    Target up to {recipe.triggered_count} tickets/month
-                </div>
+                {recipe.slug === RuleTemplateRecipeSlugs.AutoTagAiIgnore ? (
+                    <div className={css.ticketCount}>
+                        <AiAgentRequirements aiAgentLink={aiAgentLink} />
+                    </div>
+                ) : (
+                    <div
+                        className={classnames(css.ticketCount, {
+                            [css.important]: recipe.triggered_count >= 20,
+                        })}
+                    >
+                        Target up to {recipe.triggered_count} tickets/month
+                    </div>
+                )}
                 <RuleRecipeModal
                     recipe={recipe}
                     handleInstall={handleInstall}
@@ -368,6 +392,7 @@ function RuleRecipeCard({
                     managedRuleId={managedRuleId}
                     handleDefaultSettings={setExtraDefaultSettings}
                     shouldHandleError={isReady}
+                    aiAgentLink={aiAgentLink}
                 />
             </div>
         </div>

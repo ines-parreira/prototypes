@@ -18,6 +18,7 @@ describe('<RuleLibrary/>', () => {
         entities: {},
         billing: fromJS(billingState),
         currentAccount: fromJS(account),
+        integrations: fromJS({integrations: []}),
     })
     const minProps: ComponentProps<typeof RuleLibrary> = {
         recipes: [

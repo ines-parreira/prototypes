@@ -76,6 +76,7 @@ describe('<RuleRecipeCard/>', () => {
             billing: fromJS(billingState),
             currentAccount: fromJS(account),
             currentUser: fromJS(user),
+            integrations: fromJS({integrations: []}),
         })
         createRuleMock.mockReset()
         createViewMock.mockReset()

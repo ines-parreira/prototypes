@@ -23,11 +23,12 @@ type Props = {
     viewCreationCheckbox: () => React.ReactNode
     handleInstallationError: (errors: InstallationError) => void
     handleDefaultSettings: (settings: Partial<AnyManagedRuleSettings>) => void
+    aiAgentLink?: string
 }
 
 export type DefaultModalProps = Pick<
     Props,
-    'recipeSlug' | 'triggeredCount' | 'viewCreationCheckbox'
+    'recipeSlug' | 'triggeredCount' | 'viewCreationCheckbox' | 'aiAgentLink'
 >
 
 export type ManagedRuleModalProps = Omit<Props, 'handleRule'>

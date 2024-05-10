@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react'
 import classnames from 'classnames'
 
 import {useHistory} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
 import {ManagedRule, Rule, RuleType} from 'state/rules/types'
@@ -10,9 +11,11 @@ import {RuleRecipe} from 'models/ruleRecipe/types'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import RuleRecipeCard from './components/RuleRecipeCard'
 
 import css from './RuleLibrary.less'
+import {RuleTemplateRecipeSlugs} from './constants'
 
 export type Props = {
     recipes: RuleRecipe[]
@@ -40,6 +43,8 @@ export function RuleLibrary({
     const [installedManagedRules, setInstalledManagedRules] = useState<
         string[]
     >([])
+    const hasAiAgentRuleTemplate: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentRuleTemplate]
 
     const filterRecipes = useCallback(() => {
         return recipes.filter((recipe) => {
@@ -176,7 +181,15 @@ export function RuleLibrary({
             </div>
             {filteredRecipes.length ? (
                 filteredRecipes
-                    .filter((recipe) => recipe.rule.type !== RuleType.Managed)
+                    .filter(
+                        (recipe) =>
+                            recipe.rule.type !== RuleType.Managed &&
+                            (recipe.slug !==
+                                RuleTemplateRecipeSlugs.AutoTagAiIgnore ||
+                                (recipe.slug ===
+                                    RuleTemplateRecipeSlugs.AutoTagAiIgnore &&
+                                    hasAiAgentRuleTemplate))
+                    )
                     .map((recipe) => (
                         <RuleRecipeCard
                             recipe={recipe}
