@@ -674,7 +674,7 @@ export const CreateAiAgentSettingsForm = ({
                         </Label>
                         <div className={css.preventAIAgentTriggerDescription}>
                             Install the "
-                            <Link to="/app/settings/rules/library">
+                            <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
                                 Prevent AI Agent from answering{' '}
                             </Link>
                             " Rule Template. This Rule lets you add conditions
