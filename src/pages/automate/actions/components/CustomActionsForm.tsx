@@ -39,7 +39,7 @@ import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import useUpsertAction from '../hooks/useUpsertAction'
 import useDeleteAction from '../hooks/useDeleteAction'
-import {CustomActionConfigurationFormInput} from '../types'
+import {CustomActionConfigurationFormInput, LlmPromptTrigger} from '../types'
 import {customerVariables, orderVariables} from '../utils'
 import css from './CustomActionsForm.less'
 
@@ -258,7 +258,8 @@ export default function CustomActionsForm({
             ),
         ]
         if (!storeIntegration) return []
-        const objectInputs = []
+        const objectInputs: LlmPromptTrigger['settings']['object_inputs'][number][] =
+            []
         if (
             usedVariableValues.some((variable) =>
                 variable.includes('objects.order')
@@ -266,6 +267,7 @@ export default function CustomActionsForm({
         ) {
             objectInputs.push({
                 kind: 'order' as const,
+                integration_id: storeIntegration.id,
             })
         }
         if (

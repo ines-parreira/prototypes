@@ -6,7 +6,7 @@ export type StoreWorkflowsConfiguration =
 
 export type StoresWorkflowConfiguration = StoreWorkflowsConfiguration[]
 
-type LlmPromptTrigger = NonNullable<
+export type LlmPromptTrigger = NonNullable<
     Components.Schemas.UpsertStoreWfConfigurationRequestBodyDto['triggers']
 >[number]
 
