@@ -334,7 +334,7 @@ function useMenuItemsForConnectedChannels(
                 unsupportedConnectedChannels.length > 0
                     ? ` This step is currently only supported in ${supportedChannels
                           .map(getChannelName)
-                          .join('and')}.
+                          .join(' and ')}.
                     Disable the flow in other channels to use this step.`
                     : ''
             if (disabledText) {
