@@ -109,6 +109,7 @@ const baseIntegration: FacebookIntegration = {
         id: 0,
     },
     meta: baseIntegrationMeta,
+    managed: false,
 }
 
 const checkBoxNameEquivalents = {

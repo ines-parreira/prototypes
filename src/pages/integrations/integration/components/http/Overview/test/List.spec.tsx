@@ -14,6 +14,7 @@ const integrationsState = {
         {...integrationBase, type: IntegrationType.Http},
         {...integrationBase, type: IntegrationType.Http, id: 2},
         {...integrationBase, type: IntegrationType.Shopify, id: 3},
+        {...integrationBase, type: IntegrationType.Http, id: 4, managed: true},
     ],
     state: {
         loading: {},

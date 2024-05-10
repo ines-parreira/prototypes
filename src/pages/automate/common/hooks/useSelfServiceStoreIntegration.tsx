@@ -80,5 +80,6 @@ export function createSelfServiceStoreIntegrationContextForPreview(): StoreInteg
             shop_name: '',
             webhooks: [],
         },
+        managed: false,
     }
 }

@@ -40,6 +40,7 @@ function List() {
             {integrations.length > 0 ? (
                 <ul className={css.list}>
                     {integrations
+                        .filter((integration) => !integration.managed)
                         .sort((a, b) => a.name.localeCompare(b.name))
                         .map((integration) => {
                             const editLink = `${BASE_PATH}/${integration.id}`

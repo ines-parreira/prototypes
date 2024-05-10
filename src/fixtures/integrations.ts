@@ -22,6 +22,7 @@ export const integrationBase: IntegrationBase = {
     user: {
         id: 1,
     },
+    managed: false,
 }
 
 export const shopifyIntegration: Integration = {
@@ -65,6 +66,7 @@ export const shopifyIntegration: Integration = {
     id: 8,
     description: null,
     updated_datetime: '2023-09-07T11:28:13.345251+00:00',
+    managed: false,
 }
 
 export const baseHttp: HttpIntegrationMeta = {
@@ -151,6 +153,7 @@ export const integrationsState = {
             id: 4,
             description: 'Notify on Slack when a new ticket is created.',
             updated_datetime: '2017-02-07T06:07:45.135448+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -181,6 +184,7 @@ export const integrationsState = {
             id: 5,
             description: null,
             updated_datetime: '2017-02-07T06:21:05.655015+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -211,6 +215,7 @@ export const integrationsState = {
             id: 7,
             description: null,
             updated_datetime: '2017-02-07T06:21:05.655015+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -251,6 +256,7 @@ export const integrationsState = {
             id: 3,
             description: 'Test multi-step',
             updated_datetime: '2017-02-07T06:07:45.097905+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -293,6 +299,7 @@ export const integrationsState = {
             id: 2,
             description: 'Get customer data from our backoffice',
             updated_datetime: '2017-02-07T06:07:43.764835+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -320,6 +327,7 @@ export const integrationsState = {
             id: 1,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -343,6 +351,7 @@ export const integrationsState = {
             id: 15,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -366,6 +375,7 @@ export const integrationsState = {
             id: 13,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -393,6 +403,7 @@ export const integrationsState = {
             id: 12,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -427,6 +438,7 @@ export const integrationsState = {
             id: 6,
             description: null,
             updated_datetime: '2021-04-26T19:19:33.451511+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -449,6 +461,7 @@ export const integrationsState = {
             id: 8,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -466,6 +479,7 @@ export const integrationsState = {
             id: 515,
             description: null,
             updated_datetime: '2017-02-07T06:07:43.481517+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -484,6 +498,7 @@ export const integrationsState = {
             id: 666,
             description: null,
             updated_datetime: '2023-12-21T12:15:32.745995+00:00',
+            managed: false,
         },
         {
             deleted_datetime: null,
@@ -502,6 +517,7 @@ export const integrationsState = {
             id: 777,
             description: null,
             updated_datetime: '2023-12-21T12:15:23.771095+00:00',
+            managed: false,
         },
     ],
     state: {

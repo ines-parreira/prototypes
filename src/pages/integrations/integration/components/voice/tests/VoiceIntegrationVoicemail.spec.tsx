@@ -66,6 +66,7 @@ const ivrIntegration: PhoneIntegration = {
             allow_to_leave_voicemail: true,
         },
     },
+    managed: false,
 }
 const standardIntegration: PhoneIntegration = {
     id: 1,
@@ -104,6 +105,7 @@ const standardIntegration: PhoneIntegration = {
             allow_to_leave_voicemail: true,
         },
     },
+    managed: false,
 }
 
 const renderVoiceIntegrationVoicemail = (

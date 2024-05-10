@@ -51,5 +51,6 @@ export const chatIntegrationFixtures: GorgiasChatIntegration[] = [
         description: null,
         updated_datetime: '2023-10-19T14:17:47.887330+00:00',
         user: {id: 1},
+        managed: false,
     },
 ]

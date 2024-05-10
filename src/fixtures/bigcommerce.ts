@@ -152,6 +152,7 @@ export const bigCommerceIntegrationFixture = (): BigCommerceIntegration => ({
     user: {
         id: 1,
     },
+    managed: false,
 })
 
 export const bigCommerceLineItemFixture = (): BigCommerceCartLineItem => ({

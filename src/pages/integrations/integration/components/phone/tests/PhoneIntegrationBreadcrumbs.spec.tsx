@@ -63,6 +63,7 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
                 allow_to_leave_voicemail: true,
             },
         },
+        managed: false,
     }
 
     describe('render()', () => {

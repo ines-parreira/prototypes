@@ -13,6 +13,7 @@ export type IntegrationBase = {
     user: {
         id: number
     }
+    managed: boolean
 }
 
 export type IntegrationDecoration = {

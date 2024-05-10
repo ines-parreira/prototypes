@@ -166,6 +166,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         },
         "id": 4,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {},
         "name": "Slack Webhook",
@@ -185,6 +186,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 5,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "address": "billing@acme.gorgias.io",
@@ -215,6 +217,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 7,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "address": "billing+1@acme.gorgias.io",
@@ -259,6 +262,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         },
         "id": 3,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [
           {
             "destination_key": "customer.data.surname",
@@ -299,6 +303,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         },
         "id": 2,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [
           {
             "destination_key": "customer.data.name",
@@ -327,6 +332,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 1,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "address": "support@acme.gorgias.io",
@@ -354,6 +360,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 15,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "address": "contact@acme.com",
@@ -377,6 +384,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 13,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "address": "unverified@gorgias.io",
@@ -400,6 +408,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 12,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "address": "sendgrid@gorgias.io",
@@ -426,6 +435,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "description": null,
         "id": 6,
         "locked_datetime": null,
+        "managed": false,
         "mappings": [],
         "meta": {
           "area_code": 510,
@@ -460,6 +470,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "facebook": null,
         "id": 8,
         "locked_datetime": null,
+        "managed": false,
         "meta": {
           "preferences": {
             "linked_email_integration": 5,
@@ -481,6 +492,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "description": null,
         "id": 515,
         "locked_datetime": null,
+        "managed": false,
         "meta": {
           "currency": "USD",
           "store_hash": "xb107iaz1n",
@@ -500,6 +512,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "http": null,
         "id": 666,
         "locked_datetime": null,
+        "managed": false,
         "meta": {
           "address": "contact-form|lf25ekct",
         },
@@ -518,6 +531,7 @@ exports[`integration resource fetchIntegrations should return the integrations 1
         "http": null,
         "id": 777,
         "locked_datetime": null,
+        "managed": false,
         "meta": {
           "address": "help-center|khlsuvms",
         },
