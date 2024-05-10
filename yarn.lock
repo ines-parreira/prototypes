@@ -2463,25 +2463,17 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@datadog/browser-core@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-2.0.3.tgz#c90a365b934347f870acdbc661c65c47a06a74df"
-  integrity sha512-XF+em6MFnJ09QJ3sqIft6FlU97TQZGjQMz1D++XPgEsHnXos0Mtm1XYxEQFnkvj3ZtSKxhDqMmHxjZ7PBgpaAg==
-  dependencies:
-    tslib "^1.10.0"
-
 "@datadog/browser-core@5.17.1":
   version "5.17.1"
   resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-5.17.1.tgz#db9d0f735cf1c14e8015c05e1a9e2e91b4f7289f"
   integrity sha512-OsdjeRCCT1U9+ddygqg3PkqHOkkk7Vr2tI3U8xgZQyiqCzCuooDHebq/40UMP6mf9OVETDkqlSWQ/ouqvFKjUQ==
 
-"@datadog/browser-logs@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-2.0.3.tgz#71f0c6ad911eb4700b4c86800100dd8aa32fbc56"
-  integrity sha512-09qR6//mLwIj2E8D/HZKdXHpEs+i74Z8V9EHKEjTdds+nXsAHYX16IVqLeWu8wHzoBQJH/jk2kmwNP6xo+J2Ng==
+"@datadog/browser-logs@^5.17.1":
+  version "5.17.1"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-5.17.1.tgz#763a5f64f946b5efbc2e9b6924f437a50e735db2"
+  integrity sha512-QyoVZTwCwalcCnagpBWvoZ5aZ/xURnysm+78Yb30pQfQUfiEtRJD9hidyIVkXfeVKS0zIiMZbwX0zritwoAswg==
   dependencies:
-    "@datadog/browser-core" "2.0.3"
-    tslib "^1.10.0"
+    "@datadog/browser-core" "5.17.1"
 
 "@datadog/browser-rum-core@5.17.1":
   version "5.17.1"
@@ -18716,7 +18708,7 @@ tsconfig-paths@^3.11.0, tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tslib@^1.10.0, tslib@^1.11.1, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.3:
+tslib@^1.11.1, tslib@^1.13.0, tslib@^1.8.1, tslib@^1.9.3:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==

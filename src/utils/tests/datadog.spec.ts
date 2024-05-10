@@ -3,7 +3,7 @@ import {datadogRum} from '@datadog/browser-rum'
 import {Metric, onINP} from 'web-vitals'
 
 import {
-    DATADOG_LOGS_SAMPLE_RATE,
+    DATADOG_LOGS_SESSION_SAMPLE_RATE,
     DATADOG_LOGS_SERVICE,
     DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION,
     DATADOG_RUM_SESSION_SAMPLE_RATE,
@@ -52,22 +52,25 @@ describe('datadog', () => {
                 version: defaultClientVersion,
                 service: DATADOG_LOGS_SERVICE,
                 env: defaultEnvironment,
-                sampleRate: DATADOG_LOGS_SAMPLE_RATE,
+                sessionSampleRate: DATADOG_LOGS_SESSION_SAMPLE_RATE,
             })
         })
 
         it('should set logger global context', () => {
             initDatadogLogger(defaultOptions)
 
-            expect(datadogLogs.setLoggerGlobalContext).toHaveBeenCalledWith({
-                user: {
-                    id: user.id,
-                    email: user.email,
-                },
-                account: {
-                    domain: account.domain,
-                },
+            expect(datadogLogs.setGlobalContext).toHaveBeenCalledWith({
                 serverVersion: defaultServerVersion,
+            })
+        })
+
+        it('should set user context', () => {
+            initDatadogLogger(defaultOptions)
+
+            expect(datadogLogs.setUser).toHaveBeenLastCalledWith({
+                id: user.id.toString(),
+                email: user.email,
+                domain: account.domain,
             })
         })
     })

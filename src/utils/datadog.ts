@@ -13,7 +13,7 @@ import {GorgiasUIEnv} from './environment'
 
 export const DATADOG_SITE = 'datadoghq.com'
 export const DATADOG_LOGS_SERVICE = 'web-client'
-export const DATADOG_LOGS_SAMPLE_RATE = 100
+export const DATADOG_LOGS_SESSION_SAMPLE_RATE = 100
 export const DATADOG_RUM_SERVICE = 'helpdesk-web-app'
 export const DATADOG_RUM_SESSION_SAMPLE_RATE = 5
 export const DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE = 0
@@ -41,17 +41,15 @@ export const initDatadogLogger = ({
         version: clientVersion,
         env: environment,
         service: DATADOG_LOGS_SERVICE,
-        sampleRate: DATADOG_LOGS_SAMPLE_RATE,
+        sessionSampleRate: DATADOG_LOGS_SESSION_SAMPLE_RATE,
     })
-    datadogLogs.setLoggerGlobalContext({
+    datadogLogs.setGlobalContext({
         serverVersion,
-        user: {
-            id: user.id,
-            email: user.email,
-        },
-        account: {
-            domain: account.domain,
-        },
+    })
+    datadogLogs.setUser({
+        id: user.id.toString(),
+        email: user.email,
+        domain: account.domain,
     })
 }
 
