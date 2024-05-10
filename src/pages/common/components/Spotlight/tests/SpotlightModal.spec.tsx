@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import {createBrowserHistory} from 'history'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
+import {searchCustomers} from 'models/customer/resources'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     CUSTOMERS_LABEL,
@@ -85,6 +86,9 @@ jest.mock(
 jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
     (element) => element as ReactPortal
 )
+
+jest.mock('models/customer/resources')
+const searchCustomersMock = assumeMock(searchCustomers)
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -463,6 +467,7 @@ describe('<SpotlightModal/>', () => {
 
     it('should fetch items for the same search term on tab switch if search was performed', async () => {
         jest.useFakeTimers()
+        searchCustomersMock.mockResolvedValue({data: {data: []}} as any)
         mockServer.onPost().reply(200, {data: []})
 
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
@@ -476,7 +481,8 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         customersTab?.focus()
         await act(flushPromises)
-        expect(mockServer.history.post).toHaveLength(2)
+        expect(mockServer.history.post).toHaveLength(1)
+        expect(searchCustomersMock).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
@@ -498,16 +504,19 @@ describe('<SpotlightModal/>', () => {
         customersTab?.focus()
         await act(flushPromises)
 
-        expect(mockServer.history.post).toHaveLength(2)
+        expect(mockServer.history.post).toHaveLength(1)
+        expect(searchCustomersMock).toHaveBeenCalledTimes(1)
         expect(mockServer.history.post).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
                     data: JSON.stringify({search: searchQuery, filters: ''}),
                 }),
-                expect.objectContaining({
-                    data: JSON.stringify({search: searchQuery}),
-                }),
             ])
+        )
+        expect(searchCustomersMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                search: searchQuery,
+            })
         )
     })
 
@@ -536,7 +545,8 @@ describe('<SpotlightModal/>', () => {
         ticketsTab?.focus()
         await act(flushPromises)
 
-        expect(mockServer.history.post).toHaveLength(2)
+        expect(mockServer.history.post).toHaveLength(1)
+        expect(searchCustomersMock).toHaveBeenCalledTimes(1)
     })
 
     it('should not fetch items for any query on tab switch if the search was not submitted', async () => {
@@ -557,7 +567,8 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should fetch customers on enter keypress', async () => {
-        mockServer.onPost().reply(200, {data: []})
+        // mockServer.onPost().reply(200, {data: []})
+        searchCustomersMock.mockResolvedValue({data: {data: []}} as any)
         jest.useFakeTimers()
         const searchQuery = 'foo2'
 
@@ -572,12 +583,10 @@ describe('<SpotlightModal/>', () => {
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
 
-        expect(mockServer.history.post).toEqual(
-            expect.arrayContaining([
-                expect.objectContaining({
-                    data: JSON.stringify({search: searchQuery}),
-                }),
-            ])
+        expect(searchCustomersMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                search: searchQuery,
+            })
         )
     })
 
@@ -678,10 +687,7 @@ describe('<SpotlightModal/>', () => {
         expect(mockServer.history.post).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
-                    data: JSON.stringify({search: searchQuery}),
-                }),
-                expect.objectContaining({
-                    data: JSON.stringify({search: searchQuery}),
+                    data: JSON.stringify({search: searchQuery, filters: ''}),
                 }),
                 expect.objectContaining({
                     cancelToken: expect.objectContaining({
@@ -693,6 +699,11 @@ describe('<SpotlightModal/>', () => {
                     }),
                 }),
             ])
+        )
+        expect(searchCustomersMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                search: searchQuery,
+            })
         )
         expect(notify).not.toHaveBeenCalled()
     })
@@ -731,13 +742,17 @@ describe('<SpotlightModal/>', () => {
     ])(
         'should fetch more from new endpoint on end reached if meta indicates more items are available',
         async (name, item) => {
-            mockServer.onPost().reply(200, {
+            const response = {
                 data: [item],
                 meta: {
                     prev_cursor: null,
                     next_cursor: 'foo',
                 },
-            })
+            }
+            mockServer.onPost().reply(200, response)
+            searchCustomersMock.mockResolvedValue({
+                data: response,
+            } as any)
             jest.useFakeTimers()
 
             const {rerender} = renderWithRouter(
@@ -759,10 +774,21 @@ describe('<SpotlightModal/>', () => {
             userEvent.click(endTrigger)
 
             await act(flushPromises)
-            expect(
-                (mockServer.history.post[1].params as Record<string, unknown>)
-                    .cursor
-            ).toEqual('foo')
+
+            if (name === TICKETS_LABEL) {
+                expect(
+                    (
+                        mockServer.history.post[1].params as Record<
+                            string,
+                            unknown
+                        >
+                    ).cursor
+                ).toEqual('foo')
+            } else {
+                expect(searchCustomersMock).toHaveBeenCalledWith(
+                    expect.objectContaining({cursor: 'foo'})
+                )
+            }
         }
     )
 

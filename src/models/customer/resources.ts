@@ -1,39 +1,30 @@
 import {CancelToken} from 'axios'
-
+import {searchCustomers as apiSearchCustomers} from '@gorgias/api-client'
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
 import {deepMapKeysToSnakeCase} from 'models/api/utils'
 
 import {Customer} from 'models/customer/types'
-import {
-    CustomerSearchOptions,
-    CustomerWithHighlightsResponse,
-} from 'models/search/types'
+import {CustomerSearchOptions} from 'models/search/types'
 
 export const searchCustomers = async ({
     search,
     cancelToken,
     withHighlights,
+    cursor,
     ...rest
 }: CustomerSearchOptions) =>
-    await client.post<
-        ApiListResponseCursorPagination<
-            Customer[] | CustomerWithHighlightsResponse[]
-        >
-    >(
-        '/api/customers/search',
+    await apiSearchCustomers(
         {
             search,
         },
         {
-            params: {
-                ...deepMapKeysToSnakeCase({
-                    ...rest,
-                    ...(withHighlights === true ? {withHighlights: true} : {}),
-                }),
-            },
-            cancelToken,
-        }
+            ...deepMapKeysToSnakeCase({
+                ...rest,
+                ...(cursor ? {cursor} : {}),
+                ...(withHighlights === true ? {withHighlights: true} : {}),
+            }),
+        },
+        {...(cancelToken ? {cancelToken} : {})}
     )
 
 export const getCustomer = async (id: number, cancelToken?: CancelToken) =>

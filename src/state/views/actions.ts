@@ -30,7 +30,11 @@ import {getMoment} from 'utils/date'
 import {StoreDispatch, RootState} from 'state/types'
 import client from 'models/api/resources'
 import {fetchViewsPaginated} from 'models/view/resources'
-import {SearchEngine, SearchType} from 'models/search/types'
+import {
+    CUSTOMER_SEARCH_ORDERING,
+    SearchEngine,
+    SearchType,
+} from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
 import {getLDClient, LDContext} from 'utils/launchDarkly'
@@ -458,7 +462,7 @@ export function fetchViewItems(
             promise = searchCustomers({
                 search: activeView.get('search') as string,
                 withHighlights: isSearchWithHighlight,
-                orderBy: '_score:desc',
+                orderBy: CUSTOMER_SEARCH_ORDERING,
                 cursor:
                     cursor ||
                     (direction === ViewNavDirection.NextView && nextCursor) ||
@@ -504,7 +508,7 @@ export function fetchViewItems(
             (resp) => {
                 if (shouldRegisterSearchRankRequest) {
                     searchRank?.registerResultsResponse({
-                        numberOfResults: resp.data.data.length,
+                        numberOfResults: resp.data?.data?.length ?? 0,
                         responseTime: Date.now(),
                         searchEngine:
                             resp.headers &&

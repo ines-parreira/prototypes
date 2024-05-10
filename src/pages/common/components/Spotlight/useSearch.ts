@@ -31,6 +31,7 @@ import {ApiListResponseCursorPagination, CursorMeta} from 'models/api/types'
 import {searchCustomers} from 'models/customer/resources'
 import {Customer} from 'models/customer/types'
 import {
+    CUSTOMER_SEARCH_ORDERING,
     CustomerWithHighlights,
     CustomerWithHighlightsResponse,
     isCustomer,
@@ -55,6 +56,11 @@ type OldSearchPaginationMeta = {
     prev_items: string
     next_items: string
 }
+
+type CustomerSearchResponse = ApiListResponseCursorPagination<
+    Customer[] | CustomerWithHighlightsResponse[] | undefined
+>
+
 type MetaType = CursorMeta | OldSearchPaginationMeta
 
 export enum Tabs {
@@ -248,16 +254,15 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
     ])
     const handleCustomerSearchResult = useCallback(
         (
-            data: ApiListResponseCursorPagination<
-                Customer[] | CustomerWithHighlightsResponse[]
-            >,
+            data: CustomerSearchResponse,
             viewType: ViewType,
             searchTerm: string,
             cursor?: string
         ) => {
+            const results = data?.data ?? []
             searchRank.registerResultsResponse({
                 responseTime: Date.now(),
-                numberOfResults: data.data.length,
+                numberOfResults: results.length,
                 searchEngine: SearchEngine.ES,
             })
             if (isSearchWithHighlights) {
@@ -290,7 +295,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
             } else {
                 setCustomers((tickets) =>
                     cursor
-                        ? ([...tickets, ...data.data] as PickedCustomer[])
+                        ? ([...tickets, ...results] as PickedCustomer[])
                         : (data.data as PickedCustomer[])
                 )
             }
@@ -383,7 +388,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
                     ) {
                         customerPromise = searchCustomers({
                             search: searchTerm,
-                            orderBy: '_score:desc',
+                            orderBy: CUSTOMER_SEARCH_ORDERING,
                             cursor,
                             cancelToken,
                             withHighlights: isSearchWithHighlights,
@@ -408,7 +413,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
                     }
                     if (customerData) {
                         handleCustomerSearchResult(
-                            customerData?.data,
+                            customerData?.data as CustomerSearchResponse,
                             viewType,
                             searchTerm,
                             cursor

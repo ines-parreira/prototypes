@@ -5,7 +5,7 @@ import {
     ApiPaginationParams,
     OrderParams,
 } from 'models/api/types'
-import {Customer, CustomerSortableProperties} from 'models/customer/types'
+import {Customer} from 'models/customer/types'
 import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 export enum SearchType {
@@ -159,9 +159,12 @@ export type CustomerWithHighlights = {
     highlights: CustomerHighlights
 }
 
-export type CustomerSearchOptions = ApiPaginationParams &
-    OrderParams<CustomerSortableProperties> & {
-        search: string
-        cancelToken?: CancelToken
-        withHighlights?: boolean
-    }
+export const CUSTOMER_SEARCH_ORDERING = '_score:desc' as const
+
+export type CustomerSearchOptions = ApiPaginationParams & {
+    orderBy?: typeof CUSTOMER_SEARCH_ORDERING | undefined
+} & {
+    search: string
+    cancelToken?: CancelToken
+    withHighlights?: boolean
+}

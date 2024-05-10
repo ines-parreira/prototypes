@@ -1,14 +1,21 @@
 import axios from 'axios'
+
 import MockAdapter from 'axios-mock-adapter'
 
+import {searchCustomers as apiSearchCustomers} from '@gorgias/api-client'
 import client from 'models/api/resources'
+
 import {customer} from 'fixtures/customer'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
+import {assumeMock} from 'utils/testing'
 
-import {getCustomer, searchCustomers} from '../resources'
+import {getCustomer, searchCustomers} from 'models/customer/resources'
 
 const mockedServer = new MockAdapter(client)
+
+jest.mock('@gorgias/api-client')
+const apiSearchCustomersMock = assumeMock(apiSearchCustomers)
 
 describe('Customer resources', () => {
     describe('searchCustomers', () => {
@@ -23,8 +30,11 @@ describe('Customer resources', () => {
         }
 
         beforeEach(() => {
+            apiSearchCustomersMock.mockResolvedValue({data: defaultData} as any)
             mockedServer.reset()
-            mockedServer.onPost('/api/customers/search').reply(201, defaultData)
+            mockedServer
+                .onGet(`/api/customers/${customer.id}`)
+                .reply(201, defaultData)
         })
 
         it('should resolve with the customer list and meta on success', async () => {
@@ -42,9 +52,7 @@ describe('Customer resources', () => {
 
             await searchCustomers(options)
 
-            expect(JSON.parse(mockedServer.history.post[0].data)).toEqual(
-                options
-            )
+            expect(apiSearchCustomersMock).toHaveBeenCalledWith(options, {}, {})
         })
 
         it('should pass cursor and limit in the params', async () => {
@@ -57,19 +65,27 @@ describe('Customer resources', () => {
                 limit,
             })
 
-            expect(mockedServer.history.post[0].params).toEqual({cursor, limit})
+            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
+                {search: 'foo'},
+                {cursor, limit},
+                {}
+            )
         })
 
         it('should cancel the request on cancel token cancel', async () => {
             const source = axios.CancelToken.source()
             source.cancel()
 
-            const res = searchCustomers({
+            await searchCustomers({
                 search: '',
                 cancelToken: source.token,
             })
 
-            await expect(res).rejects.toBeInstanceOf(axios.Cancel)
+            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
+                {search: ''},
+                {},
+                {cancelToken: source.token}
+            )
         })
 
         it('should add with_highlights prop', async () => {
@@ -80,9 +96,13 @@ describe('Customer resources', () => {
 
             await searchCustomers(options)
 
-            expect(mockedServer.history.post[0].params).toEqual({
-                with_highlights: options.withHighlights,
-            })
+            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
+                {search: 'foo'},
+                {
+                    with_highlights: options.withHighlights,
+                },
+                {}
+            )
         })
     })
 

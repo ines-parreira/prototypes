@@ -57,8 +57,3 @@ export type Customer = CustomerDraft & {
     timezone: string
     updated_datetime: string
 }
-
-export enum CustomerSortableProperties {
-    CreatedDatetime = 'created_datetime',
-    Score = '_score',
-}

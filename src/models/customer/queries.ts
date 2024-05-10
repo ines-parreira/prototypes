@@ -1,6 +1,6 @@
 import {UseQueryOptions, useQuery} from '@tanstack/react-query'
 import {AxiosError} from 'axios'
-import {getCustomer} from './resources'
+import {getCustomer} from 'models/customer/resources'
 
 export const customersKeys = {
     all: () => ['customers'] as const,
