@@ -1,8 +1,9 @@
 import React, {useState, MouseEvent} from 'react'
-import {Alert, Form, FormGroup, Input} from 'reactstrap'
+import {Form, FormGroup, Input} from 'reactstrap'
 import {Link, Redirect, useParams} from 'react-router-dom'
 import axios, {isAxiosError} from 'axios'
 import Loader from 'pages/common/components/Loader/Loader'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -20,6 +21,7 @@ import {sanitizeHtmlDefault} from 'utils/html'
 import TextArea from 'pages/common/forms/TextArea'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
+import AutomateViewContent from '../common/components/AutomateViewContent'
 import css from './AiAgentPlaygroundContainer.less'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
@@ -220,12 +222,14 @@ const AiAgentPlaygroundContainer = () => {
 
     return (
         <AutomateView title={AI_AGENT} headerNavbarItems={headerNavbarItems}>
-            <div className={css.playgroundContainer}>
+            <AutomateViewContent>
                 {storeConfigurationNotInitialized && (
-                    <Alert color="danger">
-                        Please configure the AI Agent with an email integration
-                        and help center in order to use the Playground{' '}
-                        <Link to={routes.configuration}>Configure Here</Link>
+                    <Alert icon type={AlertType.Warning}>
+                        Please configure your{' '}
+                        <Link to={routes.configuration}>
+                            AI Agent settings{' '}
+                        </Link>
+                        first.
                     </Alert>
                 )}
                 <Form onSubmit={(e) => e.preventDefault()}>
@@ -267,11 +271,13 @@ const AiAgentPlaygroundContainer = () => {
                         <h2>AI Agent Response</h2>
                         {renderAiAgentResponse()}
                         {submitError && (
-                            <Alert color="danger">{formError}</Alert>
+                            <Alert icon type={AlertType.Error}>
+                                {formError}
+                            </Alert>
                         )}
                     </div>
                 )}
-            </div>
+            </AutomateViewContent>
         </AutomateView>
     )
 }

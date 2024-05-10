@@ -73,7 +73,9 @@ describe('<AiAgentGuidanceContainer />', () => {
 
         renderComponent()
 
-        expect(screen.getByTestId('loader')).toBeInTheDocument()
+        expect(
+            screen.getByText((text) => text.includes('Please configure'))
+        ).toBeInTheDocument()
     })
 
     it('should render empty state component', () => {

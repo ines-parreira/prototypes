@@ -75,24 +75,26 @@ export const AiAgentStoreView = ({
                 headerNavbarItems={headerNavbarItems}
             >
                 <div>
-                    {!storeIntegrationHasShopifyPermissions && (
-                        <Alert icon type={AlertType.Warning}>
-                            <a
-                                href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                Update your Shopify permissions
-                            </a>{' '}
-                            to allow AI Agent access to order fulfillment
-                            knowledge.
-                        </Alert>
-                    )}
-                    <EditAiAgentSettingsForm
-                        shopName={shopName}
-                        accountDomain={accountDomain}
-                        storeConfiguration={serverStoreConfig}
-                    />
+                    <div className={css.configurationWarningContainer}>
+                        {!storeIntegrationHasShopifyPermissions && (
+                            <Alert icon type={AlertType.Warning}>
+                                <a
+                                    href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Update your Shopify permissions
+                                </a>{' '}
+                                to allow AI Agent access to order fulfillment
+                                knowledge.
+                            </Alert>
+                        )}
+                        <EditAiAgentSettingsForm
+                            shopName={shopName}
+                            accountDomain={accountDomain}
+                            storeConfiguration={serverStoreConfig}
+                        />
+                    </div>
                 </div>
             </AutomateView>
         )

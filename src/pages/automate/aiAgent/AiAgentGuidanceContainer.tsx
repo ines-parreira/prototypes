@@ -1,7 +1,8 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
-import Loader from 'pages/common/components/Loader/Loader'
+import {Link, useParams} from 'react-router-dom'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import AutomateView from '../common/components/AutomateView'
+import AutomateViewContent from '../common/components/AutomateViewContent'
 import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
 import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
@@ -13,12 +14,28 @@ export const AiAgentGuidanceContainer = () => {
         shopName: string
     }>()
     const guidanceHelpCenter = useGuidanceHelpCenter({shopName})
-    const {headerNavbarItems} = useAiAgentNavigation({shopName})
+    const {headerNavbarItems, routes} = useAiAgentNavigation({shopName})
 
     // We don't handle for now the case when guidanceHelpCenter is not created.
     // We assume it always created after AI agent initialisation.
     if (!guidanceHelpCenter) {
-        return <Loader data-testid="loader" />
+        return (
+            <AutomateView
+                title={<GuidanceBreadcrumbs shopName={shopName} />}
+                headerNavbarItems={headerNavbarItems}
+                className={css.container}
+            >
+                <AutomateViewContent>
+                    <Alert icon type={AlertType.Warning}>
+                        Please configure your{' '}
+                        <Link to={routes.configuration}>
+                            AI Agent settings{' '}
+                        </Link>
+                        first.
+                    </Alert>
+                </AutomateViewContent>
+            </AutomateView>
+        )
     }
 
     return (
