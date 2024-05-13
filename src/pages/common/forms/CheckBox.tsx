@@ -25,6 +25,7 @@ export type Props = {
     isIndeterminate?: boolean
     labelClassName?: string
     name?: string
+    darkenCaption?: boolean
     onChange?: (nextValue: boolean) => void
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -40,6 +41,7 @@ function CheckBox(
         isDisabled = false,
         isRequired = false,
         isIndeterminate = false,
+        darkenCaption = false,
         labelClassName,
         name,
         onChange,
@@ -80,7 +82,11 @@ function CheckBox(
                 />
                 {children}
             </Label>
-            {!!caption && <Caption className={css.caption}>{caption}</Caption>}
+            {!!caption && (
+                <Caption darken={darkenCaption} className={css.caption}>
+                    {caption}
+                </Caption>
+            )}
         </div>
     )
 }

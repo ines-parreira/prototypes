@@ -2,9 +2,7 @@ import React from 'react'
 
 import chatImage from 'assets/img/actions/chat.png'
 
-import CreateActionButton from '../components/CreateActionButton'
 import css from './ActionsEmptyState.less'
-import ActionsInfoLinks from './ActionsInfoLinks'
 
 export default function ActionsEmptyState() {
     return (
@@ -21,10 +19,6 @@ export default function ActionsEmptyState() {
                             order, get order status, issue refund and more.
                         </p>
                     </div>
-                    <div className={css.createActionButton}>
-                        <CreateActionButton />
-                    </div>
-                    <ActionsInfoLinks />
                 </div>
                 <div className={css.chatImageContainer}>
                     <img

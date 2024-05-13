@@ -18,6 +18,7 @@ type Props = {
     label?: ReactNode
     className?: string
     error?: string | ReactNode
+    darkenCaption?: boolean
 } & ComponentProps<typeof TextInput>
 
 type InputFieldContextState = {
@@ -35,6 +36,7 @@ export default forwardRef<HTMLInputElement, Props>(function InputField(
         error,
         isDisabled = false,
         isRequired = false,
+        darkenCaption = false,
         ...props
     }: Props,
     ref
@@ -66,7 +68,11 @@ export default forwardRef<HTMLInputElement, Props>(function InputField(
                     {...props}
                 />
                 {!!(caption || error) && (
-                    <Caption id={captionId} error={error}>
+                    <Caption
+                        darken={darkenCaption}
+                        id={captionId}
+                        error={error}
+                    >
                         {caption}
                     </Caption>
                 )}

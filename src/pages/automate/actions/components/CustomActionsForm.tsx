@@ -324,16 +324,8 @@ export default function CustomActionsForm({
                     onSave={handleSave}
                 />
                 <section>
-                    <header>
+                    <header data-candu-id="custom-action-form-header">
                         <h1>Define the Action</h1>
-                        <a
-                            href="https://link.gorgias.com/zm2"
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            <i className="material-icons mr-2">menu_book</i>
-                            How to set up Actions
-                        </a>
                     </header>
                     <div className={css.formSessionContainer}>
                         <InputField
@@ -352,6 +344,7 @@ export default function CustomActionsForm({
                                 )
                             }
                             caption="Provide a name for this Action."
+                            darkenCaption
                         />
 
                         <TextArea
@@ -372,9 +365,11 @@ export default function CustomActionsForm({
                                 )
                             }
                             caption="Describe what the Action does."
+                            darkenCaption
                         />
 
                         <CheckBox
+                            darkenCaption
                             isDisabled={isActionUpserting}
                             isChecked={
                                 formValues.entrypoints[0].settings
@@ -870,6 +865,7 @@ export default function CustomActionsForm({
 
                         <TextArea
                             className={css.formItem}
+                            darkenCaption
                             label="Request results explanation for AI Agent (optional)"
                             isDisabled={isActionUpserting}
                             onChange={(value) => {

@@ -240,113 +240,121 @@ export const ConditionsBranchBody = ({
                 />
             </div>
 
-            <div className={css.conditionListWrapper}>
-                {!conditions.length && shouldShowErrors && (
-                    <p className={css.errorMessage}>
-                        A branch must have at least 1 condition
-                    </p>
-                )}
-                {conditions.map((condition, index) => {
-                    const operator = Object.keys(condition)[0] as ConditionKey
-                    const value = (
-                        condition as unknown as Record<
-                            ConditionKey,
-                            [VarSchema]
-                        >
-                    )[operator][0]
-
-                    const variable = availableVariables
-                        .map((vars) => {
-                            if ('variables' in vars) {
-                                return vars.variables.find(
-                                    (v) => v.value === value.var
-                                )
-                            }
-                            if (vars.value === value.var) return vars
-                            return null
-                        })
-                        .find((v) => v?.value === value.var)
-
-                    if (!variable) return null
-                    if (!type) return null
-
-                    const operators = getOperatorListByType(variable.type)
-
-                    return (
-                        <div
-                            className={css.conditionList}
-                            key={`${variable.name}_${index}`}
-                        >
-                            <Condition
-                                label={variable.name}
-                                isFirst={index === 0}
-                                type={type}
-                                onDelete={() => onConditionDelete(index)}
-                                selectedOperatorValue={
-                                    Object.keys(condition)[0]
-                                }
-                                operators={operators}
-                                onOperatorSelect={handleOperatorSelect(
-                                    condition,
-                                    index
-                                )}
-                            >
-                                {renderInput(
-                                    variable.type,
-                                    variable.format,
-                                    index
-                                )}
-                            </Condition>
-                        </div>
-                    )
-                })}
-            </div>
-            <div className={css.cta}>
-                {type && (
-                    <WorkflowVariablePicker
-                        label="Add Condition"
-                        size="medium"
-                        disabled={conditions.length >= 10}
-                        tooltipMessage={
-                            conditions.length >= 10
-                                ? maxConditionsTooltipMessage
-                                : undefined
-                        }
-                        variableDropdownProps={variableDropdownProps}
-                        onSelect={onVariableSelect}
-                    />
-                )}
-                {canDeleteBranch && (
-                    <ConfirmationPopover
-                        buttonProps={{intent: 'destructive'}}
-                        cancelButtonProps={{intent: 'secondary'}}
-                        content="Deleting this branch wil also delete any steps added below and cannot be undone."
-                        title={<b>Delete branch and children?</b>}
-                        onConfirm={onDeleteBranch}
-                        confirmLabel="Delete"
-                        showCancelButton
-                    >
-                        {({uid, onDisplayConfirmation}) => (
-                            <Button
-                                id={uid}
-                                intent="destructive"
-                                fillStyle="ghost"
-                                onClick={
-                                    hasMultipleChildren
-                                        ? onDisplayConfirmation
-                                        : onDeleteBranch
-                                }
-                            >
-                                <ButtonIconLabel
-                                    icon="delete"
-                                    iconClassName={css.deleteIcon}
-                                />
-                                Delete Branch
-                            </Button>
+            {type && (
+                <>
+                    <div className={css.conditionListWrapper}>
+                        {!conditions.length && shouldShowErrors && (
+                            <p className={css.errorMessage}>
+                                A branch must have at least 1 condition
+                            </p>
                         )}
-                    </ConfirmationPopover>
-                )}
-            </div>
+                        {conditions.map((condition, index) => {
+                            const operator = Object.keys(
+                                condition
+                            )[0] as ConditionKey
+                            const value = (
+                                condition as unknown as Record<
+                                    ConditionKey,
+                                    [VarSchema]
+                                >
+                            )[operator][0]
+
+                            const variable = availableVariables
+                                .map((vars) => {
+                                    if ('variables' in vars) {
+                                        return vars.variables.find(
+                                            (v) => v.value === value.var
+                                        )
+                                    }
+                                    if (vars.value === value.var) return vars
+                                    return null
+                                })
+                                .find((v) => v?.value === value.var)
+
+                            if (!variable) return null
+                            if (!type) return null
+
+                            const operators = getOperatorListByType(
+                                variable.type
+                            )
+
+                            return (
+                                <div
+                                    className={css.conditionList}
+                                    key={`${variable.name}_${index}`}
+                                >
+                                    <Condition
+                                        label={variable.name}
+                                        isFirst={index === 0}
+                                        type={type}
+                                        onDelete={() =>
+                                            onConditionDelete(index)
+                                        }
+                                        selectedOperatorValue={
+                                            Object.keys(condition)[0]
+                                        }
+                                        operators={operators}
+                                        onOperatorSelect={handleOperatorSelect(
+                                            condition,
+                                            index
+                                        )}
+                                    >
+                                        {renderInput(
+                                            variable.type,
+                                            variable.format,
+                                            index
+                                        )}
+                                    </Condition>
+                                </div>
+                            )
+                        })}
+                    </div>
+                    <div className={css.cta}>
+                        <WorkflowVariablePicker
+                            label="Add Condition"
+                            size="medium"
+                            disabled={conditions.length >= 10}
+                            tooltipMessage={
+                                conditions.length >= 10
+                                    ? maxConditionsTooltipMessage
+                                    : undefined
+                            }
+                            variableDropdownProps={variableDropdownProps}
+                            onSelect={onVariableSelect}
+                        />
+                        {canDeleteBranch && (
+                            <ConfirmationPopover
+                                buttonProps={{intent: 'destructive'}}
+                                cancelButtonProps={{intent: 'secondary'}}
+                                content="Deleting this branch wil also delete any steps added below and cannot be undone."
+                                title={<b>Delete branch and children?</b>}
+                                onConfirm={onDeleteBranch}
+                                confirmLabel="Delete"
+                                showCancelButton
+                            >
+                                {({uid, onDisplayConfirmation}) => (
+                                    <Button
+                                        id={uid}
+                                        intent="destructive"
+                                        fillStyle="ghost"
+                                        onClick={
+                                            hasMultipleChildren
+                                                ? onDisplayConfirmation
+                                                : onDeleteBranch
+                                        }
+                                    >
+                                        <ButtonIconLabel
+                                            icon="delete"
+                                            iconClassName={css.deleteIcon}
+                                        />
+                                        Delete Branch
+                                    </Button>
+                                )}
+                            </ConfirmationPopover>
+                        )}
+                    </div>
+                </>
+            )}
         </div>
     )
 }

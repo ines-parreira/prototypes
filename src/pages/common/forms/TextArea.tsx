@@ -22,6 +22,7 @@ type Props = {
     isDisabled?: boolean
     isRequired?: boolean
     label?: string
+    darkenCaption?: boolean
     onChange: (nextValue: string) => void
 
     /**
@@ -41,6 +42,7 @@ function TextArea(
         error,
         isDisabled = false,
         isRequired = false,
+        darkenCaption = false,
         id,
         label,
         onChange,
@@ -126,7 +128,7 @@ function TextArea(
                 {...props}
             />
             {!!(caption || error) && (
-                <Caption id={captionId} error={error}>
+                <Caption darken={darkenCaption} id={captionId} error={error}>
                     {caption}
                 </Caption>
             )}
