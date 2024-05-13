@@ -105,9 +105,10 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
 
     useEffect(() => {
         const isStoreRequired =
-            isAutomate || newHelpCenter.platformType === PlatformType.ECOMMERCE
+            newHelpCenter.platformType === PlatformType.ECOMMERCE &&
+            integrationOptions.length > 0
         setIsStoreRequired(isStoreRequired)
-    }, [isAutomate, newHelpCenter.platformType])
+    }, [integrationOptions, newHelpCenter.platformType])
 
     useDebouncedEffect(
         () => {
