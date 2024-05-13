@@ -1182,6 +1182,7 @@ declare namespace Components {
         allow_other: boolean;
       } | null;
       shop_name?: string | null;
+      form_display_mode?: "show_after_button_click" | "show_immediately";
     }
     export interface CreateCustomDomainDto {
       hostname: string;
@@ -2256,8 +2257,8 @@ declare namespace Components {
         allow_other: boolean;
       } | null;
       shop_name?: string | null;
-      deactivated_datetime?: string | null; // date-time
       form_display_mode?: "show_after_button_click" | "show_immediately";
+      deactivated_datetime?: string | null; // date-time
     }
     export interface UpdateEmailIntegrationDto {
       /**

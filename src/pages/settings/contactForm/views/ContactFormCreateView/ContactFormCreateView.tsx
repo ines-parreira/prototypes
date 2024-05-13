@@ -4,6 +4,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
 import {useQueryClient} from '@tanstack/react-query'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import {notify as notifyAction} from 'state/notifications/actions'
@@ -13,6 +14,7 @@ import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
     CONTACT_FORM_DEFAULT_LOCALE,
+    CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE,
 } from 'pages/settings/contactForm/constants'
 import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
 import {CreateContactFormDto} from 'models/contactForm/types'
@@ -21,6 +23,7 @@ import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactForm
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {LocaleCode} from 'models/helpCenter/types'
 import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import {FeatureFlagKey} from 'config/featureFlags'
 import contactFormCss from '../../contactForm.less'
 import {ConnectContactFormToShopSection} from '../../components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
 import {contactFormKeys, useCreateContactForm} from '../../queries'
@@ -32,6 +35,8 @@ const ContactFormCreateView = ({
     const {defaultIntegration, emailIntegrations} = useEmailIntegrations()
     const {checkContactFormName, isReady} = useContactFormApi()
     const [isNameInvalid, setIsNameInvalid] = useState(false)
+    const isContactFormNewEntrypointViewEnabled =
+        useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
     const [createContactFormDto, setCreateContactFormDto] =
         useState<CreateContactFormDto>(() => {
             const integration = defaultIntegration ?? emailIntegrations[0]
@@ -42,6 +47,9 @@ const ContactFormCreateView = ({
                     id: integration.id,
                     email: integration.meta.address,
                 },
+                form_display_mode: isContactFormNewEntrypointViewEnabled
+                    ? CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE
+                    : undefined,
             }
         })
 

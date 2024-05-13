@@ -7176,7 +7176,11 @@
                             }
                         ]
                     },
-                    "shop_name": {"type": "string", "nullable": true}
+                    "shop_name": {"type": "string", "nullable": true},
+                    "form_display_mode": {
+                        "enum": ["show_after_button_click", "show_immediately"],
+                        "type": "string"
+                    }
                 },
                 "required": ["name", "default_locale", "email_integration"]
             },
@@ -7417,14 +7421,14 @@
                         ]
                     },
                     "shop_name": {"type": "string", "nullable": true},
+                    "form_display_mode": {
+                        "enum": ["show_after_button_click", "show_immediately"],
+                        "type": "string"
+                    },
                     "deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
                         "nullable": true
-                    },
-                    "form_display_mode": {
-                        "enum": ["show_after_button_click", "show_immediately"],
-                        "type": "string"
                     }
                 }
             },
