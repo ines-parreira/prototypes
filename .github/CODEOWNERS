@@ -125,3 +125,11 @@ src/state/infobarActions @gorgias/apps-ecom-devrel
 src/state/widgets @gorgias/apps-ecom-devrel
 src/services/channels.ts @gorgias/apps-ecom-devrel
 src/services/applications.ts @gorgias/apps-ecom-devrel
+
+# Automate Observability scope @gorgias/automate-observability-adoption
+src/hooks/reporting/automate/ @gorgias/automate-observability-adoption
+src/models/reporting/queryFactories/automate/ @gorgias/automate-observability-adoption
+src/models/reporting/queryFactories/automate_v2/ @gorgias/automate-observability-adoption
+src/models/reporting/cubes/automate/ @gorgias/automate-observability-adoption
+src/models/reporting/cubes/automate_v2/ @gorgias/automate-observability-adoption
+src/pages/stats/Automate* @gorgias/automate-observability-adoption
