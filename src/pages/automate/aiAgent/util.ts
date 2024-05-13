@@ -14,22 +14,6 @@ export const filterNonNull = <T extends object>(
     return result
 }
 
-export const convertRateToPercentage = (rate: number) => {
-    if (rate > 1 || rate < 0) {
-        throw new Error('Ticket sample rate must be between 0 and 1')
-    }
-    return Math.round(rate * 100)
-}
-
-export const convertPercentageToRate = (
-    ticketSampleRateInPercentage: number
-) => {
-    if (!Number.isInteger(ticketSampleRateInPercentage)) {
-        throw new Error('Ticket sample rate must be an integer')
-    }
-    return ticketSampleRateInPercentage / 100
-}
-
 export const isHandoffEnabled = (silentHandover: boolean) => !silentHandover
 
 export const isAiAgentEnabled = (deactivatedDatetime: string | null) => {

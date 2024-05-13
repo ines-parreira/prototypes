@@ -1,0 +1,23 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        .body-regular();
+        margin-bottom: 24px;
+    }
+
+    p {
+        .body-regular();
+        margin: 0;
+    }
+    .infoLink {
+        display: flex;
+
+        a > {
+            .body-regular();
+            display: block;
+            margin-right: 16px;
+        }
+    }
+}

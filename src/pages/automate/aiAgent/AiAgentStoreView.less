@@ -1,4 +1,5 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
 
 :local {
     .configurationWarningContainer {
@@ -8,6 +9,7 @@
     }
     .automateView {
         padding: @layout-spacing-m;
+        max-width: 728px; // because 680 + 24 + 24 (paddings)
 
         section {
             margin-bottom: 48px;
@@ -18,32 +20,48 @@
             padding: @layout-spacing-s;
         }
 
-        label {
+        .label {
             margin-bottom: @layout-spacing-xs;
         }
 
+        .icon {
+            i {
+                color: var(--neutral-grey-5);
+            }
+        }
+        .toggleInput {
+            .caption {
+                color: var(--neutral-grey-5) !important;
+            }
+        }
+
+        .subsectionHeader {
+            margin-bottom: @layout-spacing-xxs;
+            margin-top: @layout-spacing-l;
+        }
+
         .sectionHeader {
-            margin-bottom: 0;
+            .heading-section-semibold();
+            margin-bottom: 24px;
         }
-
-        .emailSectionHeader {
-            margin-bottom: 20px;
-        }
-
         .sectionDescription {
-            margin-bottom: @layout-spacing-s;
+            .body-regular();
         }
 
         .formGroup {
-            margin-bottom: @layout-spacing-m;
-
+            margin-bottom: @layout-spacing-s;
             .formGroupDescription {
                 margin-bottom: @layout-spacing-s;
             }
         }
 
         .formInputFooterInfo {
+            .caption-regular();
             color: var(--neutral-grey-5);
+            margin-top: 4px;
+        }
+        .featureToggle {
+            margin-bottom: @layout-spacing-xxs;
         }
     }
     .aiAgentToggle {
@@ -51,7 +69,7 @@
     }
 
     .preventAIAgentTriggerDescription {
-        color: var(--neutral-grey-5);
+        .body-regular();
     }
 
     .warningIcon {
@@ -60,6 +78,6 @@
     }
 
     .customToneOfVoiceGuidance {
-        margin-top: @layout-spacing-m;
+        margin-top: @layout-spacing-xs;
     }
 }

@@ -197,6 +197,11 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               >
                 AI Agent
               </span>
+              <div
+                class="badge badge upperCase"
+              >
+                BETA
+              </div>
             </a>
           </div>
           <div
@@ -1178,6 +1183,11 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               >
                 AI Agent
               </span>
+              <div
+                class="badge badge upperCase"
+              >
+                BETA
+              </div>
             </a>
           </div>
           <div

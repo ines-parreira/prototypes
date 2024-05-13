@@ -1,5 +1,4 @@
 import React, {useMemo, useRef, useState} from 'react'
-import classnames from 'classnames'
 import {List} from 'immutable'
 
 import _isEqual from 'lodash/isEqual'
@@ -43,13 +42,12 @@ import {
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
 import {AutoTagList} from './components/AutoTagList'
 import {FormValues} from './types'
+import {filterNonNull, isAiAgentEnabled, isHandoffEnabled} from './util'
 import {
-    convertPercentageToRate,
-    convertRateToPercentage,
-    filterNonNull,
-    isAiAgentEnabled,
-    isHandoffEnabled,
-} from './util'
+    LevelOfCoverage,
+    getEffectiveTicketSampleRate,
+} from './components/LevelOfCoverage/LevelOfCoverage'
+import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntroduction'
 
 const createStoreConfigurationFromFormValues = (
     storeConfig: StoreConfiguration,
@@ -70,9 +68,18 @@ const createStoreConfigurationFromFormValues = (
           }
         : {}
 
-    let ticketSampleRateValue = storeConfig.ticketSampleRate
+    let ticketSampleRateValue: number
+
+    // If the ticketSampleRate is not null, it means it has been touched by the user.
     if (ticketSampleRate !== null) {
-        ticketSampleRateValue = convertPercentageToRate(ticketSampleRate)
+        ticketSampleRateValue = getEffectiveTicketSampleRate(ticketSampleRate)
+    } else {
+        // if not, we fallback to the previous value, but re-compute the rate to
+        // ensure we're using either the beginner or advanced rate
+        // ex. previous value was 0.50, when saving the form, the value becomes ADVANCED = 1.00
+        ticketSampleRateValue = getEffectiveTicketSampleRate(
+            storeConfig.ticketSampleRate
+        )
     }
 
     const dirtyFormValues = filterNonNull(restOfFormValues)
@@ -364,13 +371,9 @@ export const EditAiAgentSettingsForm = ({
             />
 
             <div className={css.automateView}>
+                <AIAgentIntroduction />
                 <section>
-                    <h2 className={css.sectionHeader}>General</h2>
-                    <div className={css.sectionDescription}>
-                        AI Agent uses Help Center articles, Macros, Guidance and
-                        Shopify data to automate responses, enabling your team
-                        to reduce wait time and increase customer satisfaction.
-                    </div>
+                    <h2 className={css.sectionHeader}>General settings</h2>
                     <div className={css.formGroup}>
                         <ToggleInput
                             isToggled={isAIAgentToggled}
@@ -382,15 +385,29 @@ export const EditAiAgentSettingsForm = ({
                                         : null
                                 )
                             }}
+                            caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
                             name={toggleAiAgentId}
-                            caption="When enabled AI will reply to tickets on your team’s behalf."
                         >
-                            Enable AI Agent
+                            Enable AI Agent for email
                         </ToggleInput>
                     </div>
 
+                    <LevelOfCoverage
+                        coverageRate={
+                            formValues.ticketSampleRate !== null
+                                ? formValues.ticketSampleRate
+                                : storeConfiguration.ticketSampleRate
+                        }
+                        onCoverageRateChange={(value: number) => {
+                            latestSampleRateRef.current = value
+                            updateValue('ticketSampleRate', value)
+                        }}
+                    />
+
                     <div className={css.formGroup}>
-                        <Label isRequired={true}>Help Center</Label>
+                        <Label isRequired={true} className={css.label}>
+                            Help Center
+                        </Label>
                         <HelpCenterSelect
                             helpCenter={selectedHelpCenter}
                             setHelpCenterId={setHelpCenterId}
@@ -402,9 +419,12 @@ export const EditAiAgentSettingsForm = ({
                     </div>
 
                     <div className={css.formGroup}>
-                        <Label>
+                        <Label
+                            className={css.label}
+                            style={{marginTop: '32px'}}
+                        >
                             Tone of voice
-                            <IconTooltip>
+                            <IconTooltip className={css.icon}>
                                 Examples of tone of voice:
                                 <br />
                                 <ul>
@@ -484,47 +504,9 @@ export const EditAiAgentSettingsForm = ({
                 </section>
 
                 <section>
-                    <h2
-                        className={classnames(
-                            css.sectionHeader,
-                            css.emailSectionHeader
-                        )}
-                    >
-                        Email
-                    </h2>
+                    <h2 className={css.sectionHeader}>Email Settings</h2>
                     <div className={css.formGroup}>
-                        <Label>Email ticket coverage</Label>
-                        <SelectField
-                            fullWidth
-                            showSelectedOption
-                            value={
-                                formValues.ticketSampleRate !== null
-                                    ? formValues.ticketSampleRate
-                                    : convertRateToPercentage(
-                                          storeConfiguration.ticketSampleRate
-                                      )
-                            }
-                            onChange={(value) => {
-                                if (typeof value === 'number') {
-                                    latestSampleRateRef.current = value
-                                    updateValue('ticketSampleRate', value)
-                                }
-                            }}
-                            options={[
-                                {label: '10%', value: 10},
-                                {label: '50%', value: 50},
-                                {label: '100%', value: 100},
-                            ]}
-                            dropdownMenuClassName={css.longDropdown}
-                        />
-                        <div className={css.formInputFooterInfo}>
-                            Select the percentage of email tickets AI Agent
-                            should attempt to resolve.
-                        </div>
-                    </div>
-
-                    <div className={css.formGroup}>
-                        <Label isRequired={true}>
+                        <Label isRequired={true} className={css.label}>
                             AI Agent responds to tickets sent to the following
                             email addresses
                         </Label>
@@ -548,9 +530,12 @@ export const EditAiAgentSettingsForm = ({
                     </div>
 
                     <div className={css.formGroup}>
-                        <Label isRequired={true}>
+                        <Label
+                            isRequired={true}
+                            className={css.subsectionHeader}
+                        >
                             Email signature
-                            <IconTooltip>
+                            <IconTooltip className={css.icon}>
                                 This will override the current email signature
                                 in your email settings.
                             </IconTooltip>
@@ -580,13 +565,21 @@ export const EditAiAgentSettingsForm = ({
                 </section>
 
                 <section>
-                    <h2 className={css.sectionHeader}>
-                        Exclusion and handover
+                    <h2
+                        className={css.sectionHeader}
+                        style={{marginBottom: '4px'}}
+                    >
+                        Handover and exclusion
                     </h2>
-                    <div className={css.sectionDescription}>
-                        Exclude specific tickets from AI Agent handling and
-                        configure automatic handovers for uncertain responses or
-                        specific topics.
+                    <div
+                        className={css.sectionDescription}
+                        style={{marginBottom: '24px'}}
+                    >
+                        When AI Agent is not confident in an answer, it
+                        automatically hands tickets over to your team. Choose
+                        how AI Agent behaves when handing over tickets, and add
+                        specific handover topics that should never be resolved
+                        by AI Agent.
                     </div>
                     <div className={css.formGroup}>
                         <ToggleInput
@@ -606,16 +599,21 @@ export const EditAiAgentSettingsForm = ({
                                 }
                             }}
                             name={toggleHandoffId}
-                            caption="AI Agent will promptly tell customers their request is being handed over for further assistance."
+                            caption="When enabled, AI Agent will promptly respond and
+                            tell customers their request is being handed over
+                            for further assistance. When disabled, AI Agent will
+                            not respond at all."
                         >
                             Tell customers when handing over
                         </ToggleInput>
                     </div>
                     <div className={css.formGroup}>
-                        <Label>Handover topics</Label>
+                        <Label className={css.subsectionHeader}>
+                            Handover topics
+                        </Label>
                         <div className={css.formGroupDescription}>
-                            AI Agent will always hand over tickets when it
-                            detects a handover topic.
+                            Define topics for AI Agent to always hand over to
+                            agents.
                         </div>
                         <ListField
                             className={css.container}
@@ -632,37 +630,35 @@ export const EditAiAgentSettingsForm = ({
                             }}
                             maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
                             maxItems={MAX_EXCLUDED_TOPICS}
-                            addLabel="Add topic"
+                            addLabel="Add Topic"
                         />
                     </div>
                     <div className={css.formGroup}>
-                        <Label>
+                        <Label className={css.subsectionHeader}>
                             Prevent AI Agent from triggering on specific tickets
-                            <i
-                                id="unassign-info"
-                                className={classnames(
-                                    'material-icons',
-                                    css.warningIcon
-                                )}
-                            >
-                                warning_outline
-                            </i>
                         </Label>
                         <div className={css.preventAIAgentTriggerDescription}>
-                            Install the "
+                            Configure the{' '}
                             <Link to="/app/settings/rules/library?auto-tag-ai-ignore">
-                                Prevent AI Agent from answering{' '}
+                                Prevent AI Agent from answering rule{' '}
                             </Link>
-                            " Rule Template. This Rule lets you add conditions
-                            to prevent the AI Agent from responding (e.g.
-                            tickets from certain email addresses, tickets with
-                            certain tags, etc.).
+                            to prevent AI Agent from reviewing specific tickets
+                            altogether. (e.g. tickets from certain email
+                            addresses, tickets with certain tags).
                         </div>
                     </div>
                 </section>
                 <section>
-                    <h2 className={css.sectionHeader}>AI ticket tagging</h2>
-                    <div className={css.sectionDescription}>
+                    <h2
+                        className={css.sectionHeader}
+                        style={{marginBottom: '4px'}}
+                    >
+                        AI ticket tagging
+                    </h2>
+                    <div
+                        className={css.sectionDescription}
+                        style={{marginBottom: '16px'}}
+                    >
                         Define when AI Agent should tag incoming tickets.
                     </div>
 

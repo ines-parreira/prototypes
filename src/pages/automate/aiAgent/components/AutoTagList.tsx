@@ -20,7 +20,7 @@ export function AutoTagList(props: IProps) {
                 <div className={css.autoTagListHeaders}>
                     <Label>
                         Tag
-                        <IconTooltip>
+                        <IconTooltip className={css.icon}>
                             Choose from current tags or create new ones.
                         </IconTooltip>
                     </Label>
@@ -42,7 +42,7 @@ export function AutoTagList(props: IProps) {
                             newItems[index].name = value
                             onTagUpdate(newItems)
                         }}
-                        placeholder={'eg. discount'}
+                        placeholder={'Tag name'}
                     />
 
                     <AutoTagItem
@@ -54,7 +54,9 @@ export function AutoTagList(props: IProps) {
                             newItems[index].description = value
                             onTagUpdate(newItems)
                         }}
-                        placeholder={'eg. discount or promo code inquiries'}
+                        placeholder={
+                            'e.g. Shipping status or tracking related questions'
+                        }
                         className={css.autoTagDescription}
                     />
                     <i

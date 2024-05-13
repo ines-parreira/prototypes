@@ -103,8 +103,8 @@ export const AiAgentStoreView = ({
     return (
         <AutomateView title={AI_AGENT} headerNavbarItems={headerNavbarItems}>
             <div>
-                <div className={css.configurationWarningContainer}>
-                    {!storeIntegrationHasShopifyPermissions && (
+                {!storeIntegrationHasShopifyPermissions && (
+                    <div className={css.configurationWarningContainer}>
                         <Alert icon type={AlertType.Warning}>
                             <a
                                 href={`/api/integrations/${currentIntegration.id}/sync_permissions`}
@@ -116,8 +116,8 @@ export const AiAgentStoreView = ({
                             to allow AI Agent access to order fulfillment
                             knowledge.
                         </Alert>
-                    )}
-                </div>
+                    </div>
+                )}
                 <CreateAiAgentSettingsForm
                     shopName={shopName}
                     accountDomain={accountDomain}

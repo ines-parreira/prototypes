@@ -85,6 +85,12 @@ const AutomateNavbarSectionBlock = ({
                                 <span className={cssNavbar['item-name']}>
                                     {AI_AGENT}
                                 </span>
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    BETA
+                                </Badge>
                             </NavbarLink>
                         </div>
                     )}
