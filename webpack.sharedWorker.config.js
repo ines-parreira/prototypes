@@ -4,6 +4,7 @@ const webpack = require('webpack')
 
 const TerserPlugin = require('terser-webpack-plugin')
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin')
+const {codecovWebpackPlugin} = require('@codecov/webpack-plugin')
 
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
@@ -56,6 +57,11 @@ module.exports = () => {
             }),
             new webpack.ProvidePlugin({
                 Tether: 'tether',
+            }),
+            codecovWebpackPlugin({
+                enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+                bundleName: 'helpdesk-shared-worker',
+                uploadToken: process.env.CODECOV_TOKEN,
             }),
         ],
     }

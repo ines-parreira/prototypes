@@ -10,6 +10,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 const {WebpackManifestPlugin} = require('webpack-manifest-plugin')
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const {codecovWebpackPlugin} = require('@codecov/webpack-plugin')
 
 const pkg = require('./package.json')
 
@@ -145,6 +146,12 @@ module.exports = (env = {}) => {
                 }),
                 new WebpackManifestPlugin(),
                 new NodePolyfillPlugin(),
+                codecovWebpackPlugin({
+                    enableBundleAnalysis:
+                        process.env.CODECOV_TOKEN !== undefined,
+                    bundleName: 'helpdesk-web-app-vendor',
+                    uploadToken: process.env.CODECOV_TOKEN,
+                }),
             ],
             module: {
                 rules: [
@@ -279,12 +286,20 @@ module.exports = (env = {}) => {
             }),
             new NodePolyfillPlugin(),
             !__PRODUCTION__ && new ReactRefreshWebpackPlugin(),
+            codecovWebpackPlugin({
+                enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+                bundleName: 'helpdesk-web-app',
+                uploadToken: process.env.CODECOV_TOKEN,
+            }),
         ].filter(Boolean),
         resolve: {
             alias: {
                 ...aliasOptions,
                 css: `${srcDir}/assets/css/`,
-                "@tanstack/react-query": path.resolve(__dirname, 'node_modules/@tanstack/react-query'),
+                '@tanstack/react-query': path.resolve(
+                    __dirname,
+                    'node_modules/@tanstack/react-query'
+                ),
             },
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules', srcDir],
