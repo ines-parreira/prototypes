@@ -5,6 +5,7 @@ import Button from 'pages/common/components/button/Button'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {getContrastColor} from 'gorgias-design-system/utils'
+import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'
@@ -13,6 +14,7 @@ import {ImagePosition} from '../ImagePosition'
 import css from './ProductCardView.less'
 
 type Props = {
+    isHighlighted: boolean
     bgColor: string
     currency?: string
     image?: string
@@ -25,6 +27,7 @@ type Props = {
 }
 
 export const ProductCardView = ({
+    isHighlighted,
     bgColor,
     currency = 'USD',
     image,
@@ -63,20 +66,22 @@ export const ProductCardView = ({
         return 'Add to cart'
     }, [isHeadlessStore, isConvertSubscriber, hasOptions])
 
-    const renderFeaturedImage = () => {
+    const renderFeaturedImage = (shouldRenderImageRepositionBtn: boolean) => {
         return (
             <>
-                <div className={css.repositionWrapper}>
-                    {isConvertSubscriber && (
-                        <Button
-                            intent="secondary"
-                            size="small"
-                            onClick={onClickEdit}
-                        >
-                            Reposition image
-                        </Button>
-                    )}
-                </div>
+                {shouldRenderImageRepositionBtn && (
+                    <div className={css.repositionWrapper}>
+                        {isConvertSubscriber && (
+                            <Button
+                                intent="secondary"
+                                size="small"
+                                onClick={onClickEdit}
+                            >
+                                Reposition image
+                            </Button>
+                        )}
+                    </div>
+                )}
                 {image && (
                     <ImagePosition
                         readonly
@@ -91,16 +96,23 @@ export const ProductCardView = ({
     }
 
     return (
-        <BaseProductCard renderFeaturedImage={renderFeaturedImage}>
+        <BaseProductCard
+            renderFeaturedImage={() => renderFeaturedImage(isHighlighted)}
+        >
             <div className={css.details}>
                 <span className={css.title}>{title}</span>
                 {formattedAmount && (
                     <span className={css.cost}>{formattedAmount}</span>
                 )}
             </div>
-            <button className={css.addToCart} style={buttonStyle}>
+            <GorgiasButton
+                isStretched
+                variant="primary"
+                size="small"
+                style={buttonStyle}
+            >
                 {buttonText}
-            </button>
+            </GorgiasButton>
         </BaseProductCard>
     )
 }

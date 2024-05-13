@@ -34,18 +34,15 @@ export const ProductCarousel = ({
     const isHeadlessStore = useIsHeadlessShopifyStore()
 
     const calculateNextTranslate = useCallback(
-        (element: number, products: CampaignProduct[]): number => {
+        (element: number): number => {
             if (element === 0) {
                 return configuration.carouselNavigationPadding
             }
 
-            let nextTranslate =
+            const nextTranslate =
                 element * configuration.frameWidth -
-                configuration.carouselNavigationPadding
-
-            if (element === products.length - 1 || element === 0) {
-                nextTranslate += configuration.frameGutter / 2
-            }
+                configuration.carouselNavigationPadding +
+                element * configuration.frameGutter
 
             return nextTranslate * -1
         },
@@ -56,7 +53,7 @@ export const ProductCarousel = ({
         if (nextElement >= products.length || nextElement < 0) return
 
         setCurrentElement(nextElement)
-        setTranslate(calculateNextTranslate(nextElement, products))
+        setTranslate(calculateNextTranslate(nextElement))
     }
 
     const handleMoveNext = () => {
@@ -68,7 +65,7 @@ export const ProductCarousel = ({
     }
 
     useEffect(() => {
-        setTranslate(calculateNextTranslate(currentElement, products))
+        setTranslate(calculateNextTranslate(currentElement))
     }, [
         setTranslate,
         currentElement,
@@ -95,11 +92,9 @@ export const ProductCarousel = ({
                             [css.frame]: true,
                             [css.highlighted]: currentElement === index,
                         })}
-                        style={{
-                            width: configuration.frameWidth,
-                        }}
                     >
                         <ProductCard
+                            isHighlighted={currentElement === index}
                             currency={product.currency}
                             image={product.featured_image}
                             color={mainColor}

@@ -1,24 +1,4 @@
 :local {
-    .wrapper {
-        position: relative;
-
-        width: 100%;
-        height: 320px;
-
-        background: var(--neutral-grey-2);
-        border-radius: 16px;
-
-        box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.1);
-        transition: box-shadow 350ms ease;
-        list-style-type: none;
-
-        cursor: pointer;
-
-        &:hover {
-            box-shadow: 4px 4px 16px rgba(22, 22, 22, 0.2);
-        }
-    }
-
     .repositionWrapper {
         position: absolute;
         top: 16px;
@@ -37,27 +17,6 @@
         background-position: center;
         background-blend-mode: overlay;
         background-repeat: no-repeat;
-    }
-
-    .container {
-        position: absolute;
-        right: 8px;
-        bottom: 8px;
-        left: 8px;
-
-        max-height: 120px;
-
-        padding: 16px;
-        border-radius: 10px;
-
-        background: var(--neutral-grey-0);
-    }
-
-    .content {
-        display: flex;
-        flex-grow: 1;
-        flex-direction: column;
-        justify-content: space-between;
     }
 
     .details {
@@ -98,29 +57,5 @@
         font-size: 14px;
         line-height: 20px;
         letter-spacing: -0.01em;
-    }
-
-    .addToCart {
-        width: 100%;
-        height: 32px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        margin: 0;
-        padding: 0 12px;
-        border: none;
-        border-radius: 4px;
-
-        color: var(--neutral-grey-0);
-
-        font-weight: 500;
-        font-size: 14px;
-        line-height: 20px;
-
-        cursor: pointer;
-
-        transition: background-color 300ms ease;
     }
 }

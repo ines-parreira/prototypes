@@ -21,6 +21,7 @@ function getBackgroundColorVariant(mainColor: string): string {
 }
 
 type Props = {
+    isHighlighted?: boolean
     color?: string
     currency?: string
     image?: string
@@ -33,6 +34,7 @@ type Props = {
 }
 
 export const ProductCard = ({
+    isHighlighted,
     color,
     currency,
     image,
@@ -67,6 +69,7 @@ export const ProductCard = ({
 
     return (
         <ProductCardView
+            isHighlighted={!!isHighlighted}
             bgColor={color || DEFAULT_COLOR}
             currency={currency}
             image={image}
