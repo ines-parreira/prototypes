@@ -8,7 +8,6 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -29,7 +28,6 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import CancelOrderModal from './CancelOrderModal/CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal/RefundOrderModal'
@@ -370,10 +368,6 @@ type AfterContentProps = {
 export function AfterContent({isEditing}: AfterContentProps) {
     const orderContext = useContext(OrderContext)
     const integrationContext = useContext(IntegrationContext)
-    const render = useFlags()[FeatureFlagKey.ShopifyMetafields] ?? false
-    if (!render) {
-        return null
-    }
     return !isEditing ? (
         <OrderMetafieldsWidget
             orderId={orderContext.orderId as number}

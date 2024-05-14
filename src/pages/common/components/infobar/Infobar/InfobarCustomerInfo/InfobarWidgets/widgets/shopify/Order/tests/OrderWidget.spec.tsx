@@ -4,7 +4,6 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 import {initialState as cancelInitialState} from 'state/infobarActions/shopify/cancelOrder/reducers'
@@ -12,7 +11,7 @@ import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
-import Order, {AfterContent, Wrapper} from '../OrderWidget'
+import Order, {Wrapper} from '../OrderWidget'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -200,52 +199,5 @@ describe('<AfterTitle/>', () => {
                 ).toBe(expected)
             }
         )
-    })
-})
-
-describe('<AfterContent />', () => {
-    jest.mock('launchdarkly-react-client-sdk', () => ({
-        useFlags: jest.fn(),
-    }))
-
-    const flagsMock = useFlags as jest.Mock
-
-    it('should render OrderMetafieldsWidget', () => {
-        const useContextSpy = jest.spyOn(React, 'useContext')
-        useContextSpy
-            .mockReturnValueOnce({
-                orderId: 1,
-            })
-            .mockReturnValueOnce({
-                integrationId: 1,
-            })
-
-        flagsMock.mockReturnValue({
-            'shopify-metafields': true,
-        })
-
-        render(<AfterContent isEditing={false} />)
-
-        expect(screen.getByText('Metafields')).toBeInTheDocument()
-        expect(screen.getByTitle('Unfold this card')).toBeInTheDocument()
-    })
-
-    it('should not render OrderMetafieldsWidget', () => {
-        const useContextSpy = jest.spyOn(React, 'useContext')
-        useContextSpy
-            .mockReturnValueOnce({
-                orderId: 1,
-            })
-            .mockReturnValueOnce({
-                integrationId: 1,
-            })
-
-        flagsMock.mockReturnValue({
-            'shopify-metafields': false,
-        })
-
-        const {container} = render(<AfterContent isEditing={false} />)
-
-        expect(container.firstChild).toBeNull()
     })
 })
