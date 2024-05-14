@@ -620,10 +620,7 @@ export const CreateAiAgentSettingsForm = ({
                                 }
                             }}
                             name={toggleHandoffId}
-                            caption="When enabled, AI Agent will promptly respond and
-                            tell customers their request is being handed over
-                            for further assistance. When disabled, AI Agent will
-                            not respond at all."
+                            caption="When enabled, AI Agent will promptly respond and tell customers their request is being handed over for further assistance. When disabled, AI Agent will not respond before handing over."
                         >
                             Tell customers when handing over
                         </ToggleInput>
@@ -649,6 +646,7 @@ export const CreateAiAgentSettingsForm = ({
                                     excludedTopics.toJS()
                                 )
                             }}
+                            placeholder="Topic"
                             maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
                             maxItems={MAX_EXCLUDED_TOPICS}
                             addLabel="Add Topic"
