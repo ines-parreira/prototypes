@@ -6,6 +6,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
 import {CardTemplate} from 'models/widget/types'
+import {actionFixture} from 'fixtures/infobarCustomActions'
 import CustomActions from '../index'
 
 const mockStore = configureMockStore([thunk])
@@ -24,8 +25,14 @@ describe('<ActionButtons/>', () => {
                     },
                 ],
                 buttons: [
-                    {label: 'button - I am in snapshots'},
-                    {label: 'button - I am in snapshots too'},
+                    {
+                        label: 'button - I am in snapshots',
+                        action: actionFixture(),
+                    },
+                    {
+                        label: 'button - I am in snapshots too',
+                        action: actionFixture(),
+                    },
                 ],
             },
         },

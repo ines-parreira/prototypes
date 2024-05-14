@@ -6,18 +6,22 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {createStore, applyMiddleware, Reducer} from 'redux'
 
+import {actionFixture} from 'fixtures/infobarCustomActions'
 import * as infobarActions from 'state/infobar/actions'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
+import ActionEditor from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor'
+
+import {assumeMock, getLastMockCall} from 'utils/testing'
+import Button from '../Button'
 
 const mockedActionId = 'someActionId'
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(() => () => mockedActionId),
 }))
-
-import {actionFixture} from 'fixtures/infobarCustomActions'
-import {AppContext} from 'providers/infobar/AppContext'
-import Button from '../Button'
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor',
+    () => jest.fn(() => <div>mocked action editor</div>)
+)
+const mockedActionEditor = assumeMock(ActionEditor)
 
 const mockStore = configureMockStore([thunk])
 
@@ -25,14 +29,6 @@ const props = {
     index: 1,
     label: 'something',
     action: actionFixture(),
-    openEditor: jest.fn(),
-}
-
-const propsWithEdit = {
-    index: 1,
-    label: 'something',
-    action: actionFixture({edit: true}),
-    openEditor: jest.fn(),
 }
 
 describe('<Button/>', () => {
@@ -94,70 +90,23 @@ describe('<Button/>', () => {
         )
     })
 
-    it('should have correctly templated action’s payload', () => {
-        const currentListIndex = 2
-        const integrationId = 1337
-        const appId = 'foo'
+    it('should display param editor on button click if some fields are editable', () => {
+        const actionFixtureWithEdit = actionFixture({edit: true})
         render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
                 })}
             >
-                <IntegrationContext.Provider
-                    value={{integration: fromJS({}), integrationId}}
-                >
-                    <AppContext.Provider value={{appId}}>
-                        <WidgetListContext.Provider value={{currentListIndex}}>
-                            <Button
-                                {...props}
-                                action={{
-                                    ...actionFixture(),
-                                    url: 'www.someurl$listIndex$integrationId$appId.com',
-                                }}
-                            />
-                        </WidgetListContext.Provider>
-                    </AppContext.Provider>
-                </IntegrationContext.Provider>
+                <Button {...props} action={actionFixtureWithEdit} />
             </Provider>
         )
         fireEvent.click(screen.getByText(props.label))
-        expect(infobarActions.executeAction).toHaveBeenCalledWith({
-            actionLabel: props.label,
-            actionName: 'customHttpAction',
-            customerId: undefined,
-            integrationId,
-            appId,
-            payload: {
-                form: {},
-                headers: {},
-                json: {},
-                method: 'GET',
-                params: {},
-                url: `www.someurl${currentListIndex}${integrationId}${appId}.com`,
-            },
-        })
-        expect(screen.getByRole('button', {name: props.label})).toHaveAttribute(
-            'aria-disabled',
-            'true'
+        expect(getLastMockCall(mockedActionEditor)[0]).toEqual(
+            expect.objectContaining({action: actionFixtureWithEdit})
         )
-    })
-
-    it('should call openEditor with the right params', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {}}),
-                })}
-            >
-                <Button {...propsWithEdit} />
-            </Provider>
-        )
-        fireEvent.click(screen.getByText(propsWithEdit.label))
-        expect(propsWithEdit.openEditor).toHaveBeenCalledWith(
-            propsWithEdit.index,
-            expect.any(Function)
-        )
+        getLastMockCall(mockedActionEditor)[0].onSubmit(actionFixtureWithEdit)
+        expect(infobarActions.executeAction).toHaveBeenCalledTimes(1)
     })
 
     it('should enable the button once action is done', async () => {

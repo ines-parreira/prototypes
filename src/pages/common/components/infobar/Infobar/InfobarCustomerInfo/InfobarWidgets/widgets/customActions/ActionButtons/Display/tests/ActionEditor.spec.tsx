@@ -1,8 +1,8 @@
 import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 
-import {ContentType} from '../../../../../../../../../../../../models/api/types'
-import {actionFixture} from '../../../../../../../../../../../../fixtures/infobarCustomActions'
+import {ContentType} from 'models/api/types'
+import {actionFixture} from 'fixtures/infobarCustomActions'
 
 import ActionEditor from '../ActionEditor'
 

@@ -1,17 +1,6 @@
 import {ContentType, HttpMethod} from 'models/api/types'
 import {actionFixture} from 'fixtures/infobarCustomActions'
-import {TemplateValues} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/templating'
 import {mapActionToActionPayload} from '../mapActionToActionPayload'
-
-const listIndexTemplateValue = 'you must see me'
-const integrationIdTemplateValue = 'foo'
-const appIdTemplateValue = 'bar'
-
-const templateValues: TemplateValues = {
-    listIndex: listIndexTemplateValue,
-    integrationId: integrationIdTemplateValue,
-    appId: appIdTemplateValue,
-}
 
 describe('mapActionToActionPayload', () => {
     const editableParams = [
@@ -36,7 +25,7 @@ describe('mapActionToActionPayload', () => {
         action.headers = editableParams
         action.params = editableParams
 
-        expect(mapActionToActionPayload(action, templateValues)).toEqual({
+        expect(mapActionToActionPayload(action)).toEqual({
             url: action.url,
             method: action.method,
             headers: {
@@ -57,7 +46,7 @@ describe('mapActionToActionPayload', () => {
         action.body.contentType = ContentType.Form
         action.body[ContentType.Form] = editableParams
 
-        expect(mapActionToActionPayload(action, templateValues)).toEqual({
+        expect(mapActionToActionPayload(action)).toEqual({
             url: action.url,
             method: action.method,
             params: {},
@@ -81,7 +70,7 @@ describe('mapActionToActionPayload', () => {
             une_autre_cle: 'cestdujson!',
         }
 
-        expect(mapActionToActionPayload(action, templateValues)).toEqual({
+        expect(mapActionToActionPayload(action)).toEqual({
             url: action.url,
             method: action.method,
             params: {},
@@ -89,42 +78,6 @@ describe('mapActionToActionPayload', () => {
             content_type: action.body.contentType,
             form: {},
             json: action.body[ContentType.Json],
-        })
-    })
-    it('should return the expected structure with templated values', () => {
-        const action = actionFixture()
-        const templatedParam = {
-            key: 'une_$listIndex_cle',
-            value: 'une value $integrationId',
-            label: 'Un label',
-            editable: false,
-            mandatory: false,
-        }
-        action.url = 'une $appId url'
-        action.headers = [templatedParam]
-        action.params = [templatedParam]
-        action.method = HttpMethod.Post
-        action.body.contentType = ContentType.Json
-        action.body[ContentType.Json] = {
-            une_cle: 'c’est du json!',
-            une_$listIndex_cle: 'une value $listIndex',
-        }
-
-        expect(mapActionToActionPayload(action, templateValues)).toEqual({
-            url: `une ${appIdTemplateValue} url`,
-            method: action.method,
-            params: {
-                [`une_${listIndexTemplateValue}_cle`]: `une value ${integrationIdTemplateValue}`,
-            },
-            headers: {
-                [`une_${listIndexTemplateValue}_cle`]: `une value ${integrationIdTemplateValue}`,
-            },
-            content_type: action.body.contentType,
-            form: {},
-            json: {
-                une_cle: 'c’est du json!',
-                [`une_${listIndexTemplateValue}_cle`]: `une value ${listIndexTemplateValue}`,
-            },
         })
     })
 })

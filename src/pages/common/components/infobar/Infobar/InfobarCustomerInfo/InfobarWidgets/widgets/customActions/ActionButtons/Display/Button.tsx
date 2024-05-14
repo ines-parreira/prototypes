@@ -1,35 +1,34 @@
 import React, {memo, useCallback, useContext, useEffect, useState} from 'react'
 import {DropdownItem} from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {executeAction} from 'state/infobar/actions'
 import {getPendingActionCallbacks} from 'state/infobar/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {ContentType} from 'models/api/types'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {AppContext} from 'providers/infobar/AppContext'
-import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import BaseButton from 'pages/common/components/button/Button'
 import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {mapActionToActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
 
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
+import Modal from 'pages/common/components/modal/Modal'
 
-import {mapActionToActionPayload} from './mapActionToActionPayload'
+import ActionEditor from './ActionEditor'
 
 type Props = {
-    index: number
     label: string
     action: Action
-    openEditor: (index: number, callback: (action: Action) => void) => void
     isDropdown?: boolean
 }
 
-function Button({index, label, action, isDropdown = false, openEditor}: Props) {
+function Button({label, action, isDropdown = false}: Props) {
+    const [isEditorOpen, setEditorOpen] = useState<boolean>(false)
+
     // pending action management
     const getPendingActionCallback = useAppSelector(getPendingActionCallbacks)
     const [loadingId, setLoadingId] = useState<string>('')
@@ -41,11 +40,10 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
 
     // action trigger management
     const dispatch = useAppDispatch()
-    const currentAccount = useAppSelector(getCurrentAccountState)
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
     const {appId} = useContext(AppContext)
-    const {currentListIndex} = useContext(WidgetListContext)
+
     const handleExecuteAction = useCallback(
         (action: Action) => {
             const loadingId = dispatch(
@@ -55,53 +53,25 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
                     integrationId: integrationId,
                     appId: appId,
                     customerId: customerId?.toString(),
-                    payload: mapActionToActionPayload(action, {
-                        listIndex:
-                            currentListIndex !== null
-                                ? currentListIndex.toString()
-                                : undefined,
-                        integrationId: integrationId?.toString(),
-                        appId: appId || undefined,
-                    }),
+                    payload: mapActionToActionPayload(action),
                 })
             )
-            logEvent(SegmentEvent.CustomActionButtonsExecuted, {
-                account_domain: currentAccount.get('domain'),
-                integration_id: integrationId,
-                app_id: appId,
-            })
             setLoadingId(loadingId)
         },
-        [
-            label,
-            dispatch,
-            customerId,
-            integrationId,
-            appId,
-            currentAccount,
-            currentListIndex,
-        ]
+        [label, dispatch, customerId, integrationId, appId]
     )
+
     const handleClick = useCallback(() => {
         if (shouldDisplayEditor(action)) {
-            openEditor(index, handleExecuteAction)
-            logEvent(SegmentEvent.CustomActionButtonsParamOpened, {
-                account_domain: currentAccount.get('domain'),
-                integration_id: integrationId,
-                app_id: appId,
-            })
+            setEditorOpen(true)
         } else {
             handleExecuteAction(action)
         }
-    }, [
-        action,
-        index,
-        openEditor,
-        handleExecuteAction,
-        integrationId,
-        appId,
-        currentAccount,
-    ])
+    }, [action, handleExecuteAction])
+
+    const handleCloseEditor = useCallback(() => {
+        setEditorOpen(false)
+    }, [])
 
     const props = {
         type: 'button',
@@ -110,7 +80,7 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
         children: label,
     } as const
 
-    return isDropdown ? (
+    const CTA = isDropdown ? (
         <DropdownItem className={css.dropdownItem} {...props} />
     ) : (
         <BaseButton
@@ -119,6 +89,18 @@ function Button({index, label, action, isDropdown = false, openEditor}: Props) {
             size="small"
             {...props}
         />
+    )
+    return (
+        <>
+            {CTA}
+            <Modal isOpen={isEditorOpen} onClose={handleCloseEditor}>
+                <ActionEditor
+                    onSubmit={handleExecuteAction}
+                    onClose={handleCloseEditor}
+                    action={action}
+                />
+            </Modal>
+        </>
     )
 }
 

@@ -64,7 +64,7 @@ describe('<Links/>', () => {
         )
 
         expect(
-            screen.queryAllByText(new RegExp(label + '.*', 'gm'))
+            screen.queryAllByText(new RegExp(label + '.*', 'm'))
         ).toHaveLength(0)
         expect(screen.queryByText('Add Redirection Link')).toBeTruthy()
     })
@@ -81,7 +81,7 @@ describe('<Links/>', () => {
         )
 
         expect(
-            screen.queryAllByText(new RegExp(label + '.*', 'gm'))
+            screen.queryAllByText(new RegExp(label + '.*', 'm'))
         ).toHaveLength(4)
         expect(screen.queryByText('SHOW MORE')).toBeNull()
         expect(screen.queryByText('Add Redirection Link')).toBeNull()
@@ -99,7 +99,7 @@ describe('<Links/>', () => {
         )
 
         expect(
-            screen.queryAllByText(new RegExp(label + '.*', 'gm'))
+            screen.queryAllByText(new RegExp(label + '.*', 'm'))
         ).toHaveLength(5)
         expect(screen.queryByText('Add Redirection Link')).toBeFalsy()
         expect(screen.queryByText(/show more/i)).toBeTruthy()

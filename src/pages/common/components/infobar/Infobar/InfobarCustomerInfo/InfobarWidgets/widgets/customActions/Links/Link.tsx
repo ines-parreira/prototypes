@@ -1,32 +1,21 @@
-import React, {useCallback, useContext, useMemo} from 'react'
+import React, {useCallback, useContext} from 'react'
 
-import {isSourceRecord, Source} from 'models/widget/types'
+import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import {Source} from 'models/widget/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
-import {getTicket} from 'state/ticket/selectors'
-import {getActiveCustomer} from 'state/customers/selectors'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUserState} from 'state/currentUser/selectors'
 import useAppSelector from 'hooks/useAppSelector'
-import {renderTemplate} from 'pages/common/utils/template'
 import {
     Link as LinkType,
     RemoveLink,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 
 import css from './Links.less'
 import Editor from './Editor'
-
-const CURRENT_USER_TEMPLATE_FIELDS = [
-    'name',
-    'lastname',
-    'firstname',
-    'email',
-] as const
-
-type CurrentUserTemplateFields = typeof CURRENT_USER_TEMPLATE_FIELDS[number]
 
 type Props = {
     index: number
@@ -54,33 +43,11 @@ export function Link(props: Props) {
     const {appId} = useContext(AppContext)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const ticket = useAppSelector(getTicket)
-    const user = useAppSelector(getActiveCustomer)
-    const currentUser = useAppSelector(getCurrentUserState)
 
-    const templateContext = useMemo(() => {
-        const fullCurrentUserData = currentUser.toJS() as Record<
-            string,
-            unknown
-        >
-        const trimmedCurrentUserData: Partial<
-            Record<CurrentUserTemplateFields, unknown>
-        > = {}
-
-        CURRENT_USER_TEMPLATE_FIELDS.forEach((field) => {
-            trimmedCurrentUserData[field] = fullCurrentUserData[field]
-        })
-
-        return {
-            ...(isSourceRecord(source) ? source : {}),
-            ticket,
-            user,
-            current_user: trimmedCurrentUserData,
-        }
-    }, [user, source, ticket, currentUser])
+    const templateContext = useTemplateContext(source)
 
     const renderLinkUrl = useCallback(() => {
-        return renderTemplate(linkUrl, templateContext)
+        return applyCustomActionTemplate(linkUrl, templateContext)
     }, [linkUrl, templateContext])
 
     const handleClick = useCallback(() => {
@@ -100,7 +67,7 @@ export function Link(props: Props) {
                 className={css.link}
                 onClick={handleClick}
             >
-                {renderTemplate(linkLabel, templateContext)}
+                {applyCustomActionTemplate(linkLabel, templateContext)}
                 <i className={`${css.linkIcon} material-icons`}>open_in_new</i>
             </a>
             {isEditing && (

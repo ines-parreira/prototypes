@@ -1,7 +1,6 @@
-import React, {useCallback, useContext, useMemo, useState} from 'react'
+import React, {useCallback, useMemo, useState} from 'react'
 
 import {Source} from 'models/widget/types'
-import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -10,16 +9,12 @@ import {
     startWidgetEdition,
     updateCustomActions,
 } from 'state/widgets/actions'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {AppContext} from 'providers/infobar/AppContext'
 import {
     Button as ButtonType,
     OnOpenForm,
     OnRemoveButton,
     OnSubmitButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 
 import Modal from 'pages/common/components/modal/Modal'
@@ -34,10 +29,7 @@ type Props = {
 }
 
 export function Editor({templatePath, absolutePath, source, buttons}: Props) {
-    const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
-    const {integrationId} = useContext(IntegrationContext)
-    const {appId} = useContext(AppContext)
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)
     const handleRemove = useCallback<OnRemoveButton>(
@@ -53,12 +45,6 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
                 (_, currentIndex) => currentIndex !== index
             )
 
-            logEvent(SegmentEvent.CustomActionButtonsDeleted, {
-                account_domain: currentAccount.get('domain'),
-                integration_id: integrationId,
-                app_id: appId,
-            })
-
             if (buttons.length > 0) {
                 dispatch(
                     startWidgetEdition(`${templatePath}.meta.custom.buttons`)
@@ -66,15 +52,7 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
                 dispatch(updateCustomActions(newButtons))
             }
         },
-        [
-            buttons,
-            absolutePath,
-            templatePath,
-            currentAccount,
-            integrationId,
-            appId,
-            dispatch,
-        ]
+        [buttons, absolutePath, templatePath, dispatch]
     )
 
     const handleSubmit = useCallback<OnSubmitButton>(
@@ -84,43 +62,26 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
             const newButtons = [...buttons]
 
             if (typeof index === 'number') {
-                logEvent(SegmentEvent.CustomActionButtonsEdited, {
-                    account_domain: currentAccount.get('domain'),
-                    integration_id: integrationId,
-                    app_id: appId,
-                })
                 newButtons[index] = button
             } else {
-                logEvent(SegmentEvent.CustomActionButtonsAdded, {
-                    account_domain: currentAccount.get('domain'),
-                    integration_id: integrationId,
-                    app_id: appId,
-                })
                 newButtons.push(button)
             }
 
             dispatch(updateCustomActions(newButtons))
         },
-        [buttons, templatePath, currentAccount, integrationId, appId, dispatch]
+        [buttons, templatePath, dispatch]
     )
 
-    const handleOpenForm = useCallback<OnOpenForm>(
-        (index) => {
-            if (typeof index === 'number') {
-                setFormIndex(index)
-            } else {
-                setFormIndex(null)
-                logEvent(SegmentEvent.CustomActionButtonsStart, {
-                    account_domain: currentAccount.get('domain'),
-                    integration_id: integrationId,
-                    app_id: appId,
-                })
-            }
-            setFormIndex(typeof index === 'number' ? index : null)
-            setFormOpen(true)
-        },
-        [currentAccount, integrationId, appId]
-    )
+    const handleOpenForm = useCallback<OnOpenForm>((index) => {
+        if (typeof index === 'number') {
+            setFormIndex(index)
+        } else {
+            setFormIndex(null)
+        }
+        setFormIndex(typeof index === 'number' ? index : null)
+        setFormOpen(true)
+    }, [])
+
     const handleCloseForm = useCallback(() => setFormOpen(false), [])
 
     const formProps = useMemo(

@@ -1,8 +1,8 @@
 import {
     Action,
     Parameter,
-} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {ContentType, HttpMethod} from '../models/api/types'
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {ContentType, HttpMethod} from 'models/api/types'
 
 export const actionFixture = ({edit = false} = {}): Action => {
     const action: Action = {

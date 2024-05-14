@@ -15,7 +15,7 @@ describe('<Link/>', () => {
         index: 2,
         targetId: 'somepath-2',
         link: {
-            url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}&partner={{user.name}}&agent={{current_user.name}}',
+            url: 'httpbin.org/get?first_name={{first_name}}&last_name={{last_name}}&partner={{customer.name}}&agent={{current_user.name}}',
             label: 'Query {{ticket.someData}}',
         },
         source: {

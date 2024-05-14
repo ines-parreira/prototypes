@@ -11,8 +11,10 @@ import {set as _set} from 'lodash'
 
 import {ContentType} from 'models/api/types'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-
-import {Action, Parameter} from '../../types'
+import {
+    Action,
+    Parameter,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 type Props = {
     action: Action

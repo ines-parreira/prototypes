@@ -5,8 +5,6 @@ import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
-import * as infobarActions from 'state/infobar/actions'
-
 const mockedActionId = 'someActionId'
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(() => () => mockedActionId),
@@ -14,7 +12,7 @@ jest.mock('state/infobar/actions', () => ({
 
 import {actionFixture} from 'fixtures/infobarCustomActions'
 
-import ButtonsGroup, {computeButtonLength} from '../ButtonsGroup'
+import ButtonsGroup from '../ButtonsGroup'
 
 const mockStore = configureMockStore([thunk])
 
@@ -23,17 +21,9 @@ describe('<ButtonsGroup/>', () => {
 
     const buttons = [
         {label: '{{label_0}}', action},
-        {label: 'ok {{ticket.someData}} {{user.name}}', action},
+        {label: 'ok {{ticket.someData}} {{customer.name}}', action},
         {label: '{{label_1}}', action},
         {label: 'who cares', action},
-    ]
-
-    const buttonEditLabel = 'click me'
-    const buttonWithEdit = [
-        {
-            label: buttonEditLabel,
-            action: actionFixture({edit: true}),
-        },
     ]
 
     const source = {
@@ -134,66 +124,19 @@ describe('<ButtonsGroup/>', () => {
         expect(screen.queryByText('more_horiz')).toBeTruthy()
     })
 
-    it('should display param editor on button click if some fields are editable', () => {
+    it('should call Button with label and action being templated', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({active: {name: 'Johanna'}}),
+                    ticket: fromJS({someData: '1234'}),
                 })}
             >
-                <ButtonsGroup
-                    buttons={[...buttons, buttonWithEdit[0]]}
-                    source={source}
-                />
+                <ButtonsGroup buttons={buttons.slice(0, 2)} source={source} />
             </Provider>
         )
-        fireEvent.click(screen.getByText('more_horiz'))
-        fireEvent.click(screen.getByText(buttonEditLabel))
-        expect(
-            screen.queryByText(buttonWithEdit[0].action.params[0].key)
-        ).toBeTruthy()
-    })
 
-    it('should call executeAction with the right params and disable the button', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {}}),
-                })}
-            >
-                <ButtonsGroup buttons={buttonWithEdit} source={source} />
-            </Provider>
-        )
-        fireEvent.click(screen.getByText(buttonEditLabel))
-        fireEvent.click(screen.getByText('Execute'))
-        expect(infobarActions.executeAction).toHaveBeenCalledWith({
-            actionLabel: buttonEditLabel,
-            actionName: 'customHttpAction',
-            customerId: undefined,
-            appId: null,
-            integrationId: null,
-            payload: {
-                form: {},
-                headers: {},
-                json: {},
-                method: 'GET',
-                params: {someKey: 'somevalue'},
-                url: 'www.someurl.com',
-            },
-        })
-        expect(
-            screen.getByRole('button', {name: buttonEditLabel})
-        ).toHaveAttribute('aria-disabled', 'true')
+        expect(screen.queryByText('renders')).toBeTruthy()
+        expect(screen.queryByText('ok 1234 Johanna')).toBeTruthy()
     })
-
-    it.each([
-        ['label', {}, 78],
-        ['label{{var}}', {}, 78],
-        ['label{{var}}', {var: 'xxx'}, 114],
-    ])(
-        'computeButtonLength(%p) with context %p should equal %p',
-        (label: string, context: Record<string, unknown>, expected: number) => {
-            expect(computeButtonLength({label, action}, context)).toBe(expected)
-        }
-    )
 })
