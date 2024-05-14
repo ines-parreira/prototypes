@@ -10,7 +10,7 @@ import {ThemeProvider} from 'theme'
 import BarChart, {
     CHART_TOOLTIP_TARGET,
     BarChart as BarChartWithoutTheme,
-} from '../BarChart'
+} from 'pages/stats/common/components/charts/BarChart/BarChart'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />

@@ -82,6 +82,7 @@ export function BarChart({
     defaultDatasetVisibility = null,
     skeletonHeight = 250,
     colorTokens = chartColorsFallbackTokens,
+    isStacked = false,
 }: Props) {
     const [chart, setChart] = useState<Chart>()
     const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
@@ -168,6 +169,7 @@ export function BarChart({
                                     return colorTokens.Neutral.Grey_2.value
                                 },
                             },
+                            stacked: isStacked,
                             ...yAxisScale,
                         },
                         x: {
@@ -176,6 +178,7 @@ export function BarChart({
                                     ? {callback: renderXTickLabel}
                                     : {}),
                             },
+                            stacked: isStacked,
                         },
                     },
                     plugins: {
@@ -210,6 +213,7 @@ export function BarChart({
             yLabel,
             renderYTickLabel,
             yAxisBeginAtZero,
+            isStacked,
             yAxisScale,
             renderXTickLabel,
             _displayLegacyTooltip,

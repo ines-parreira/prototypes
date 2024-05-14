@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedAndBreachedTicketsTimeSeries'
+import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {useTimeSeriesPerDimension} from 'hooks/reporting/useTimeSeries'
 import {satisfiedOrBreachedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import {ReportingGranularity} from 'models/reporting/types'

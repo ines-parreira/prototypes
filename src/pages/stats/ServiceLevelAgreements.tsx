@@ -1,4 +1,6 @@
 import React from 'react'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
@@ -20,7 +22,9 @@ export default function ServiceLevelAgreements() {
                 }
             >
                 <DashboardSection title="Overview">
-                    <div style={{height: '100%'}}></div>
+                    <DashboardGridCell size={12}>
+                        <AchievedAndBreachedTicketsChart />
+                    </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
