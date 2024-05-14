@@ -92,6 +92,7 @@ export enum FeatureFlagKey {
     ObservabilityROICalculator = 'roi-calculator-for-automate',
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     ObservabilityShowAILibraryForMultiBrands = 'show-ai-library-for-multi-brands',
+    OfficeHours = 'office-hours',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',

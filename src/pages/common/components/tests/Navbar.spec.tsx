@@ -128,11 +128,29 @@ describe('<Navbar />', () => {
             <Navbar
                 {...minProps}
                 currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                flags={{
+                    [FeatureFlagKey.OfficeHours]: true,
+                }}
             />
         )
 
         userEvent.click(getByText(user.name))
         expect(getByText(/book office hours/i)).toBeTruthy()
+    })
+
+    it('should not render additional item to book office hours if FF is disabled', () => {
+        const {getByText, queryByText} = render(
+            <Navbar
+                {...minProps}
+                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                flags={{
+                    [FeatureFlagKey.OfficeHours]: false,
+                }}
+            />
+        )
+
+        userEvent.click(getByText(user.name))
+        expect(queryByText(/book office hours/i)).toBeFalsy()
     })
 
     it('should not render item to book office hours for trialing customers', () => {
@@ -153,6 +171,9 @@ describe('<Navbar />', () => {
             <Navbar
                 {...minProps}
                 currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                flags={{
+                    [FeatureFlagKey.OfficeHours]: true,
+                }}
             />
         )
 
