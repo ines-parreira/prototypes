@@ -9,6 +9,7 @@ import {
     StoreConfigurationResponse,
     UpsertStoreConfigurationPayload,
 } from '../types'
+import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 
 /**
  * API Client for AI Agent
@@ -27,6 +28,8 @@ const apiClient = axios.create({
         'Content-Type': 'application/json',
     },
 })
+
+apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
 /**
  * Endpoints "/accounts/<gorgiasDomain>"

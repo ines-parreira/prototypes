@@ -6,6 +6,7 @@ import {
 } from '../../aiAgentPlayground/types'
 import {isProduction, isStaging} from '../../../utils/environment'
 import {AiAgentResponse} from '../types'
+import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 
 /**
  * Api Client for AI Agent
@@ -24,6 +25,8 @@ const apiClient = axios.create({
         'Content-Type': 'application/json',
     },
 })
+
+apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
 export const submitAiAgentTicket = async (body: AiAgentInput) => {
     return await apiClient.post<AiAgentResponse>('/', body, {
