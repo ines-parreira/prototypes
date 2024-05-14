@@ -1,8 +1,6 @@
+import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
 import {stringify} from 'qs'
-import {
-    TicketSearchOptions,
-    TicketWithHighlightsResponse,
-} from 'models/search/types'
+import {TicketSearchOptions} from 'models/search/types'
 
 import client from 'models/api/resources'
 import {
@@ -40,26 +38,23 @@ export const searchTickets = async ({
     filters,
     cancelToken,
     withHighlights,
+    cursor,
     ...rest
 }: TicketSearchOptions) => {
-    return await client.post<
-        ApiListResponseCursorPagination<
-            Ticket[] | TicketWithHighlightsResponse[]
-        >
-    >(
-        '/api/tickets/search',
+    return await apiSearchTickets(
         {
-            search,
-            filters,
+            search: search ?? '',
+            filters: filters ?? '',
         },
         {
-            params: {
-                ...deepMapKeysToSnakeCase({
-                    ...rest,
-                    ...(withHighlights === true ? {withHighlights: true} : {}),
-                }),
-            },
-            cancelToken,
+            ...deepMapKeysToSnakeCase({
+                ...rest,
+                ...(cursor ? {cursor} : {}),
+                ...(withHighlights === true ? {withHighlights: true} : {}),
+            }),
+        },
+        {
+            ...(cancelToken ? {cancelToken} : {}),
         }
     )
 }

@@ -1,7 +1,4 @@
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../../business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import {
     hasFailedAction,
     hasPendingAction,

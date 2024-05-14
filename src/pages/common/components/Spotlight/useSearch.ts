@@ -61,6 +61,13 @@ type CustomerSearchResponse = ApiListResponseCursorPagination<
     Customer[] | CustomerWithHighlightsResponse[] | undefined
 >
 
+type TicketSearchResponse = {
+    data?:
+        | Omit<Ticket, 'events' | 'messages' | 'receiver' | 'sender'>[]
+        | TicketWithHighlightsResponse[]
+    meta: MetaType
+}
+
 type MetaType = CursorMeta | OldSearchPaginationMeta
 
 export enum Tabs {
@@ -307,16 +314,15 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
 
     const handleTicketSearchResult = useCallback(
         (
-            data: ApiListResponseCursorPagination<
-                Ticket[] | TicketWithHighlightsResponse[]
-            >,
+            data: TicketSearchResponse,
             viewType: ViewType,
             searchTerm: string,
             cursor?: string
         ) => {
+            const results = data?.data ?? []
             searchRank.registerResultsResponse({
                 responseTime: Date.now(),
-                numberOfResults: data.data.length,
+                numberOfResults: results.length,
                 searchEngine: SearchEngine.ES,
             })
             if (isSearchWithHighlights) {
@@ -335,7 +341,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
 
             if (isSearchWithHighlights) {
                 const typedResults = getTypedHighlightResults(
-                    data.data as
+                    results as
                         | TicketWithHighlightsResponse[]
                         | CustomerWithHighlightsResponse[],
                     ViewType.TicketList
@@ -350,7 +356,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
             } else {
                 setTickets((tickets) =>
                     cursor
-                        ? ([...tickets, ...data.data] as PickedTicket[])
+                        ? ([...tickets, ...results] as PickedTicket[])
                         : (data.data as PickedTicket[])
                 )
             }
@@ -405,7 +411,7 @@ export const useSearch = (isSearchWithHighlights: boolean) => {
                     }
                     if (ticketData) {
                         handleTicketSearchResult(
-                            ticketData?.data,
+                            ticketData?.data as TicketSearchResponse,
                             viewType,
                             searchTerm,
                             cursor

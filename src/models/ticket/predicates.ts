@@ -3,10 +3,7 @@ import moment from 'moment'
 import _get from 'lodash/get'
 import {isObject} from 'lodash'
 
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-} from '../../business/types/ticket'
+import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 
 import type {
     GorgiasContactFormTicketMeta,
@@ -14,7 +11,7 @@ import type {
     SourceAddress,
     TicketEvent,
     TicketMessage,
-} from './types'
+} from 'models/ticket/types'
 
 export const isTicketMessage = (
     obj: Record<string, unknown>

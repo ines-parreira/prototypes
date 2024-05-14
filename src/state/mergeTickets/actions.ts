@@ -31,7 +31,7 @@ export function searchTickets(
         )
 
         const promise = modelSearchTickets({
-            search: (view.get('search') as string) || '',
+            search: (view.get('search', '') as string) || '',
             filters: view.get('filters') as string,
             limit: LIMIT,
             orderBy: `${TicketSearchSortableProperties.CreatedDatetime}:${OrderDirection.Desc}`,

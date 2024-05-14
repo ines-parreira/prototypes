@@ -31,7 +31,7 @@ import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isMacOs} from 'utils/platform'
-import css from './SpotlightModal.less'
+import css from 'pages/common/components/Spotlight/SpotlightModal.less'
 
 type Props = {
     isOpen: boolean

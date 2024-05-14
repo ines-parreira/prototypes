@@ -1,14 +1,14 @@
-import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
 
-import client from 'models/api/resources'
+import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
 import {ticket} from 'fixtures/ticket'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Ticket} from 'models/ticket/types'
-
 import {searchTickets} from 'models/ticket/resources'
+import {assumeMock} from 'utils/testing'
 
-const mockedServer = new MockAdapter(client)
+jest.mock('@gorgias/api-client')
+const searchTicketsMock = assumeMock(apiSearchTickets)
 
 describe('ticket resources', () => {
     describe('searchTickets', () => {
@@ -23,8 +23,7 @@ describe('ticket resources', () => {
         }
 
         beforeEach(() => {
-            mockedServer.reset()
-            mockedServer.onPost('/api/tickets/search').reply(201, defaultData)
+            searchTicketsMock.mockResolvedValue({data: defaultData} as any)
         })
 
         it('should resolve with the ticket list and meta on success', async () => {
@@ -43,47 +42,64 @@ describe('ticket resources', () => {
 
             await searchTickets(options)
 
-            expect(JSON.parse(mockedServer.history.post[0].data)).toEqual(
-                options
-            )
+            expect(searchTicketsMock).toHaveBeenCalledWith(options, {}, {})
         })
 
         it('should pass cursor and limit in the params', async () => {
+            const options = {
+                search: 'foo',
+                filters: '',
+            }
             const cursor = 'some_cursor'
             const limit = 10
 
             await searchTickets({
-                search: 'foo',
+                ...options,
                 cursor,
                 limit,
             })
 
-            expect(mockedServer.history.post[0].params).toEqual({cursor, limit})
+            expect(searchTicketsMock).toHaveBeenCalledWith(
+                options,
+                {cursor, limit},
+                {}
+            )
         })
 
-        it('should cancel the request on cancel token cancel', async () => {
+        it('should pass cancel token', async () => {
             const source = axios.CancelToken.source()
             source.cancel()
 
-            const res = searchTickets({
+            await searchTickets({
                 search: '',
                 cancelToken: source.token,
             })
 
-            await expect(res).rejects.toBeInstanceOf(axios.Cancel)
+            expect(searchTicketsMock).toHaveBeenCalledWith(
+                {
+                    search: '',
+                    filters: '',
+                },
+                {},
+                {cancelToken: source.token}
+            )
         })
 
         it('should add with_highlights prop', async () => {
             const options = {
                 search: 'foo',
+            }
+            const params = {
                 withHighlights: true,
             }
 
-            await searchTickets(options)
+            await searchTickets({...options, ...params})
 
-            expect(mockedServer.history.post[0].params).toEqual({
-                with_highlights: options.withHighlights,
-            })
+            expect(searchTicketsMock).toHaveBeenCalledWith(
+                {...options, filters: ''},
+                {with_highlights: params.withHighlights},
+                {}
+            )
         })
     })
 })

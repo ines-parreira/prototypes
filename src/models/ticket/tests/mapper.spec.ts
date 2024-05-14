@@ -1,4 +1,4 @@
-import {mapNormalizedToArray} from '../mappers'
+import {mapNormalizedToArray} from 'models/ticket/mappers'
 
 describe('mapNormalizedToArray', () => {
     it('should return an array of objects', () => {
