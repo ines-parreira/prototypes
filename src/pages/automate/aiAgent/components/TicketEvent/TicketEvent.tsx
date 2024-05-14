@@ -1,29 +1,47 @@
 import React from 'react'
 import classnames from 'classnames'
+import {TicketOutcome} from 'models/aiAgentPlayground/types'
+import timer from 'assets/img/icons/timer_empty.svg'
+import person_add from 'assets/img/icons/person_add.svg'
+import check from 'assets/img/icons/check.svg'
 import css from './TicketEvent.less'
 
-export enum TicketEventType {
-    Closed = 'Closed',
+type Props = {
+    type: TicketOutcome
 }
 
-type Props = {
-    type: TicketEventType
+const ticketOutcomeToIcon: {[key in TicketOutcome]: string} = {
+    [TicketOutcome.CLOSE]: check,
+    [TicketOutcome.HANDOVER]: person_add,
+    [TicketOutcome.WAIT]: timer,
+}
+
+const ticketOutcomeToLabel: {[key in TicketOutcome]: string} = {
+    [TicketOutcome.CLOSE]: 'Closed',
+    [TicketOutcome.HANDOVER]: 'Handed over',
+    [TicketOutcome.WAIT]: 'Snoozed',
 }
 
 const TicketEvent = ({type}: Props) => {
     return (
-        // TODO: Make Icon change based on event type => Next iteration
         <div className={css.ticketEventContainer}>
             <div className={css.ticketEventBadge}>
                 <div className={css.badgeTopLine}></div>
-                <div className={css.badgeIconContainer}>
-                    <i className={classnames('material-icons', css.badgeIcon)}>
-                        check
-                    </i>
+                <div
+                    className={classnames(
+                        css.badgeIconContainer,
+                        type === TicketOutcome.CLOSE
+                            ? css.badgeIconContainerGreen
+                            : css.badgeIconContainerBlack
+                    )}
+                >
+                    <img alt="timer" src={ticketOutcomeToIcon[type]} />
                 </div>
                 <div className={css.badgeBottomLine}></div>
             </div>
-            <div className={css.ticketEventLabel}>{type}</div>
+            <div className={css.ticketEventLabel}>
+                {ticketOutcomeToLabel[type]}
+            </div>
         </div>
     )
 }

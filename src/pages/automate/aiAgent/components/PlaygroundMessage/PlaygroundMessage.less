@@ -49,9 +49,35 @@
             line-height: 3.5;
         }
 
+        .messageContainer {
+            display: flex;
+            flex-direction: row;
+            padding: 0;
+            gap: 8px;
+            margin-top: @layout-spacing-xxs;
+        }
+
+        .messageErrorContainer {
+            padding: @layout-spacing-xs;
+            border: 1px solid var(--feedback-error);
+            border-radius: 4px;
+        }
+
         .messageTypeIcon {
             margin-left: @layout-spacing-xs;
             color: var(--neutral-grey-4);
+        }
+
+        .messageContent {
+            flex-grow: 1;
+        }
+
+        .aiAgentErrorIconContainer {
+            width: auto;
+        }
+
+        .aiAgentErrorIcon {
+            color: var(--feedback-error);
         }
 
         .avatarIcon {
@@ -59,17 +85,22 @@
             color: var(--main-primary);
         }
 
+        .aiAgentProcessingIcon {
+            width: auto;
+        }
+
         .aiAgentProcessingIcon i {
             color: var(--ai-magenta-3);
         }
 
         .aiAgentProcessingStatus {
-            margin-left: @layout-spacing-xxs;
+            margin-left: @layout-spacing-xs;
         }
     }
 
     .internalNoteContainer {
         background-color: var(--accessory-orange-1);
         border-left: 5px solid var(--feedback-warning-2);
+        padding-left: (@layout-spacing-m - 5px);
     }
 }

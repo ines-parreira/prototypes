@@ -17,7 +17,7 @@
             flex-direction: column;
             justify-content: center;
             position: relative;
-            margin-left: 18px;
+            margin-left: 12px;
 
             .badgeTopLine {
                 z-index: 1;
@@ -41,18 +41,26 @@
 
             .badgeIconContainer {
                 z-index: 2;
-                background-color: var(--feedback-success);
                 height: @circle-size;
                 width: @circle-size;
                 border-radius: 50%;
                 position: absolute;
                 display: flex;
                 justify-content: center;
+                background-color: red;
                 align-items: center;
 
                 .badgeIcon {
                     color: var(--neutral-grey-0);
                 }
+            }
+
+            .badgeIconContainerGreen {
+                background-color: var(--feedback-success);
+            }
+
+            .badgeIconContainerBlack {
+                background-color: var(--neutral-grey-6);
             }
         }
 

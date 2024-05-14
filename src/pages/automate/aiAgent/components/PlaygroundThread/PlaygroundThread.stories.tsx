@@ -1,10 +1,13 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
 import Button from 'pages/common/components/button/Button'
-import PlaygroundMessage, {
+import {
     MessageType,
-} from '../PlaygroundMessage/PlaygroundMessage'
-import TicketEvent, {TicketEventType} from '../TicketEvent/TicketEvent'
+    ProcessingStatus,
+    TicketOutcome,
+} from 'models/aiAgentPlayground/types'
+import PlaygroundMessage from '../PlaygroundMessage/PlaygroundMessage'
+import TicketEvent from '../TicketEvent/TicketEvent'
 import PlaygroundThread from './PlaygroundThread'
 
 const meta: Meta<typeof PlaygroundThread> = {
@@ -50,7 +53,7 @@ export const AIAgentLoading: Story = {
                 <PlaygroundMessage
                     sender={'AI Agent'}
                     type={MessageType.MESSAGE}
-                    aiAgentProcessingStatus="Processing..."
+                    processingStatus={ProcessingStatus.CHECKING_PERMISSIONS}
                 />
             </div>
         ),
@@ -78,7 +81,7 @@ export const WithSubject: Story = {
                     type={MessageType.INTERNAL_NOTE}
                     message={InternalNote}
                 />
-                <TicketEvent type={TicketEventType.Closed} />
+                <TicketEvent type={TicketOutcome.CLOSE} />
             </div>
         ),
         actions: (

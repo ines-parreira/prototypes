@@ -16,9 +16,9 @@ import {
     useGetStoreConfigurationPure,
     useSubmitPlaygroundTicket,
 } from 'models/aiAgent/queries'
-import {AiAgentResponse} from 'models/aiAgent/types'
 import {sanitizeHtmlDefault} from 'utils/html'
 import TextArea from 'pages/common/forms/TextArea'
+import {AiAgentResponse} from 'models/aiAgentPlayground/types'
 import {AI_AGENT} from '../common/components/constants'
 import AutomateView from '../common/components/AutomateView'
 import AutomateViewContent from '../common/components/AutomateViewContent'
@@ -98,6 +98,8 @@ const AiAgentPlaygroundContainer = () => {
         setAiAgentResponse(undefined)
         submitPlaygroundTicket([
             {
+                new_customer_email: false,
+                domain: accountDomain,
                 customer_email: customerEmail,
                 body_text: playgroundTicketMessage,
                 http_integration_id:
@@ -107,6 +109,9 @@ const AiAgentPlaygroundContainer = () => {
                 email_integration_id:
                     storeData!.data.storeConfiguration
                         .monitoredEmailIntegrations[0].id,
+                email_integration_address:
+                    storeData!.data.storeConfiguration
+                        .monitoredEmailIntegrations[0].email,
             },
         ])
         setAiAgentResponse(undefined)

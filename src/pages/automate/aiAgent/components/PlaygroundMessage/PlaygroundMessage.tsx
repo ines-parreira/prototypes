@@ -4,30 +4,23 @@ import {sanitizeHtmlDefault} from 'utils/html'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
+import error from 'assets/img/icons/error.svg'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Loader from 'pages/common/components/Loader/Loader'
+import {
+    MessageType,
+    PlaygroundMessage as PlaygroundMessageType,
+} from 'models/aiAgentPlayground/types'
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
-
-export enum MessageType {
-    INTERNAL_NOTE = 'INTERNAL_NOTE',
-    MESSAGE = 'MESSAGE',
-}
-
-type Props = {
-    sender: string
-    type: MessageType
-    message?: string
-    aiAgentProcessingStatus?: string
-}
 
 const PlaygroundMessage = ({
     sender,
     type = MessageType.MESSAGE,
     message,
-    aiAgentProcessingStatus = 'Processing',
-}: Props) => {
+    processingStatus,
+}: PlaygroundMessageType) => {
     const isAiAgentSender = sender === AI_AGENT_SENDER
 
     return (
@@ -81,18 +74,38 @@ const PlaygroundMessage = ({
                             css.messageTypeIcon
                         )}
                     >
-                        mail
+                        {type === MessageType.MESSAGE ? 'mail' : 'note'}
                     </i>
                 </div>
-                <div>
+                <div
+                    className={classnames(
+                        css.messageContainer,
+                        type === MessageType.ERROR && css.messageErrorContainer
+                    )}
+                >
+                    {type === MessageType.ERROR && (
+                        <div className={css.aiAgentErrorIconContainer}>
+                            <img alt="timer" src={error} />
+                        </div>
+                    )}
                     {message ? (
-                        <div
-                            dangerouslySetInnerHTML={{
-                                __html: sanitizeHtmlDefault(message),
-                            }}
-                        />
+                        typeof message === 'string' ? (
+                            <div
+                                className={css.messageContent}
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtmlDefault(message),
+                                }}
+                            />
+                        ) : (
+                            message
+                        )
                     ) : (
-                        <div className={css.aiAgentLoadingSkeletonContainer}>
+                        <div
+                            className={classnames(
+                                css.messageContent,
+                                css.aiAgentLoadingSkeletonContainer
+                            )}
+                        >
                             <Skeleton
                                 className={css.aiAgentLoadingSkeleton}
                                 height={32}
@@ -112,7 +125,10 @@ const PlaygroundMessage = ({
                                 count={1}
                             />
                             {isAiAgentSender && (
-                                <Badge type={ColorType.Magenta}>
+                                <Badge
+                                    type={ColorType.Magenta}
+                                    className={css.aiAgentProcessingBadge}
+                                >
                                     <Loader
                                         className={css.aiAgentProcessingIcon}
                                         minHeight="12px"
@@ -121,7 +137,7 @@ const PlaygroundMessage = ({
                                     <div
                                         className={css.aiAgentProcessingStatus}
                                     >
-                                        {aiAgentProcessingStatus}
+                                        {processingStatus}
                                     </div>
                                 </Badge>
                             )}

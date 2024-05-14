@@ -1,6 +1,7 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
-import TicketEvent, {TicketEventType} from './TicketEvent'
+import {TicketOutcome} from 'models/aiAgentPlayground/types'
+import TicketEvent from './TicketEvent'
 
 const meta: Meta<typeof TicketEvent> = {
     title: 'AI Agent/Playground/TicketEvent',
@@ -20,9 +21,23 @@ export default meta
 
 type Story = StoryObj<typeof TicketEvent>
 
+export const TicketSnoozed: Story = {
+    render: (args) => <TicketEvent {...args} />,
+    args: {
+        type: TicketOutcome.WAIT,
+    },
+}
+
+export const TicketHandedOver: Story = {
+    render: (args) => <TicketEvent {...args} />,
+    args: {
+        type: TicketOutcome.HANDOVER,
+    },
+}
+
 export const TicketClosed: Story = {
     render: (args) => <TicketEvent {...args} />,
     args: {
-        type: TicketEventType.Closed,
+        type: TicketOutcome.CLOSE,
     },
 }

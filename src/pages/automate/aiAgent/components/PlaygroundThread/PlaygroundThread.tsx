@@ -2,7 +2,7 @@ import React from 'react'
 import css from './PlaygroundThread.less'
 
 type Props = {
-    subject?: string
+    subject: string | null
     threadContent?: React.ReactNode
     actions?: React.ReactNode
 }
@@ -13,9 +13,9 @@ const PlaygroundThread = ({subject, threadContent, actions}: Props) => {
             {subject && <div className={css.header}>{subject}</div>}
             <div className={css.threadContent}>{threadContent}</div>
             {actions && (
-                <div>
+                <div className={css.footer}>
                     <div className={css.bodyBottomBorderContainer} />
-                    <div className={css.footer}>{actions}</div>
+                    <div className={css.actionsContainer}>{actions}</div>
                 </div>
             )}
         </div>

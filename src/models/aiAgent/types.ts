@@ -82,16 +82,3 @@ export type FormValues = {
     toneOfVoice: string
     helpCenter: {id: number; locale: string; subdomain: string} | null
 }
-
-export type AiAgentResponse = {
-    generate: {
-        output: {
-            generated_message: string
-            outcome: string
-        }
-    }
-    postProcessing: {
-        internalNote: string
-        htmlReply: string | null
-    }
-}
