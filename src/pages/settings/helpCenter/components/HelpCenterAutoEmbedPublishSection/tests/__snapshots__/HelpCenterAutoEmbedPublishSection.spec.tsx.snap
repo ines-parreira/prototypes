@@ -57,7 +57,7 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       <span
         class="label"
       >
-        To use the auto-embed feature for your form,
+        To use the auto-embed feature for your help center,
          
         <a
           to="/app/settings/integrations/shopify/3"

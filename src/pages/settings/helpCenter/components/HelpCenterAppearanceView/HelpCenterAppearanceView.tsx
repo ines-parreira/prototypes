@@ -470,7 +470,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         onChangeFile={favicon.changeFile}
                         isTouched={favicon.isTouched}
                         helpTextProps={{
-                            text: 'Ideally a 64px square PNG',
+                            text: 'Ideally a 48px square PNG',
                             className: css.imageUpload,
                         }}
                         accept="image/png,image/jpeg,image/x-icon"

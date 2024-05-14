@@ -428,7 +428,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 <p
                   class="hd-help-text-text"
                 >
-                  Ideally a 64px square PNG
+                  Ideally a 48px square PNG
                 </p>
               </div>
             </div>

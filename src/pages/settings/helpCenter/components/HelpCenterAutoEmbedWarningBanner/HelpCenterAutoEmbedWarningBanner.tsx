@@ -37,7 +37,7 @@ const HelpCenterAutoEmbedWarningBanner = (
                     setPermissionDismissed(true)
                 }}
             >
-                To use the auto-embed feature for your form,{' '}
+                To use the auto-embed feature for your help center,{' '}
                 <Link to={linkToShopifyIntegration(entityId)}>
                     update your Shopify app permissions
                 </Link>
