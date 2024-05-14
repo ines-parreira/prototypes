@@ -8,7 +8,7 @@ type TemplateVariables = typeof TEMPLATE_VARIABLES[number]
 export type TemplateValues = Partial<Record<TemplateVariables, string>>
 
 export function applyCustomActionTemplate(
-    template: string,
+    template: string | undefined,
     templateContext: TemplateContext
 ) {
     const {variables, context} = templateContext
@@ -17,10 +17,10 @@ export function applyCustomActionTemplate(
 }
 
 export function applyCustomActionVariables(
-    template: string,
+    template: string | undefined,
     values: TemplateValues
 ) {
-    let renderedTemplate = template
+    let renderedTemplate = template || ''
     for (const [key, value] of Object.entries(values)) {
         renderedTemplate = renderedTemplate.replace(
             new RegExp(`\\$${key}`, 'gm'),

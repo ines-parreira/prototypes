@@ -57,7 +57,9 @@ describe('<ActionEditor/>', () => {
         const {container} = render(<ActionEditor {...props} />)
 
         expect(container).toMatchSnapshot()
-        expect(screen.queryByText(props.action.headers[1].label)).toBeTruthy()
+        expect(
+            screen.queryByText(props.action.headers[1].label || '')
+        ).toBeTruthy()
         expect(screen.queryByText(props.action.headers[1].key)).toBeFalsy()
         expect(screen.queryByText(props.action.params[0].key)).toBeTruthy()
         expect(

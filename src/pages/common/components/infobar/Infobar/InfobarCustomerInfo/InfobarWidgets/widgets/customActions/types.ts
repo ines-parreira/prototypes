@@ -22,7 +22,7 @@ export type Parameter = {
     id?: string
     key: string
     value: string
-    label: string
+    label?: string
     editable: boolean
     mandatory: boolean
 }
