@@ -31,7 +31,11 @@ const optionLabel = (
 
 export function useStoreOptions(css: CssClasses) {
     const integrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.Shopify])
+        getIntegrationsByTypes([
+            IntegrationType.Shopify,
+            IntegrationType.BigCommerce,
+            IntegrationType.Magento2,
+        ])
     )
 
     const shopsOptions: Option[] = useMemo(() => {
