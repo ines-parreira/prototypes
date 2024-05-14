@@ -450,15 +450,12 @@ const defaultTicketView = {
                     null
                 )
 
-                let subject = ''
+                let subject =
+                    subjectHighlights || stripHTML(item.get('subject')) || ''
 
                 const messageCount: number = item.get('messages_count')
                 if (messageCount > 1) {
-                    subject = `(${messageCount}) ${
-                        subjectHighlights ||
-                        stripHTML(item.get('subject')) ||
-                        ''
-                    }`
+                    subject = `(${messageCount}) ${subject}`
                 }
 
                 const body = excerptHighlights

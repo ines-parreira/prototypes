@@ -38,10 +38,16 @@ describe('Config: views', () => {
     })
 
     describe('ViewField.DetailsWithHighlight cell', () => {
+        const subject = 'qwe'
+        const excerpt = 'asd'
+        const messages_count = 4
+
+        const withHighlightView: Record<'name' | 'cell', unknown> | undefined =
+            (
+                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
+            ).find((view) => view.name === EntityType.TicketWithHighlight)
+
         it('should render the ticket details without highlights', () => {
-            const subject = 'qwe'
-            const excerpt = 'asd'
-            const messages_count = 4
             const ticketWithHighlight = fromJS({
                 ...ticketFixtures.ticket,
                 messages_count,
@@ -49,11 +55,6 @@ describe('Config: views', () => {
                 excerpt,
                 highlight: {},
             })
-            const withHighlightView:
-                | Record<'name' | 'cell', unknown>
-                | undefined = (
-                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
-            ).find((view) => view.name === EntityType.TicketWithHighlight)
 
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
@@ -71,10 +72,30 @@ describe('Config: views', () => {
             expect(screen.getByText(excerpt)).toBeInTheDocument()
         })
 
+        it('should render the ticket details without highlights and just one message', () => {
+            const ticketWithHighlight = fromJS({
+                ...ticketFixtures.ticket,
+                messages_count: 1,
+                subject,
+                excerpt,
+                highlight: {},
+            })
+
+            if (withHighlightView) {
+                const cell = withHighlightView.cell as (
+                    fieldName: ViewField,
+                    item: Map<any, any>
+                ) => ReactComponentElement<any>
+                render(
+                    cell(ViewField.DetailsWithHighlights, ticketWithHighlight)
+                )
+            }
+
+            expect(screen.getByText(`${subject}`)).toBeInTheDocument()
+            expect(screen.getByText(excerpt)).toBeInTheDocument()
+        })
+
         it('should render the ticket details with highlights', () => {
-            const subject = 'qwe'
-            const excerpt = 'asd'
-            const messages_count = 4
             const highlightedSubject = 'highlighted subject'
             const highlightedMessage = 'highlighted message'
             const highlights: TicketHighlights = {
@@ -90,11 +111,6 @@ describe('Config: views', () => {
                 excerpt,
                 highlights: fromJS(highlights),
             })
-            const withHighlightView:
-                | Record<'name' | 'cell', unknown>
-                | undefined = (
-                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
-            ).find((view) => view.name === EntityType.TicketWithHighlight)
 
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
