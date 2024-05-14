@@ -1,8 +1,9 @@
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {shallow, mount} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import DEPRECATED_InputField from '../DEPRECATED_InputField'
+import {render, screen, waitFor} from '@testing-library/react'
+import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
 describe('DEPRECATED_InputField', () => {
     const minProps: ComponentProps<typeof DEPRECATED_InputField> = {
@@ -11,12 +12,13 @@ describe('DEPRECATED_InputField', () => {
     }
 
     it('should use default props', () => {
-        const component = mount(<DEPRECATED_InputField {...minProps} />)
-        expect(component.find('InputField').props()).toMatchSnapshot()
+        const {container} = render(<DEPRECATED_InputField {...minProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a basic text input', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField
                 {...minProps}
                 type="text"
@@ -24,79 +26,88 @@ describe('DEPRECATED_InputField', () => {
                 placeholder="placeholder"
             />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a required text input', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} required />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an inline text input', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} inline />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a help text', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} help="help text" />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a tooltip next to the label', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField
                 {...minProps}
                 label="Label"
                 tooltip="I am a tooltip"
             />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an inline required text input', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} required inline />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a text input with a right addon', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} rightAddon="@rightaddon.io" />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render a text input with an onChange handler, and call this handler on change', () => {
-        let valueStorage = 'value'
+    it('should render a text input with an onChange handler, and call this handler on change', async () => {
+        const valueStorage = ''
+        const newValue = 'newValue'
+        const onChangeSpy = jest.fn()
 
-        const component = mount(
+        const {container} = render(
             <DEPRECATED_InputField
                 {...minProps}
                 value={valueStorage}
-                onChange={(value) => {
-                    valueStorage = value
-                }}
+                onChange={onChangeSpy}
             />
         )
-        expect(component).toMatchSnapshot()
 
-        const newValue = 'newValue'
-        component.find('input').simulate('change', {target: {value: newValue}})
+        expect(container.firstChild).toMatchSnapshot()
+        const input = screen.getByRole('textbox')
+        userEvent.paste(input, newValue)
 
-        expect(valueStorage).toEqual(newValue)
+        await waitFor(() => {
+            expect(onChangeSpy).toHaveBeenCalledWith(newValue)
+        })
     })
 
     it('should render a number input with an onChange handler, and call this handler on change', () => {
         const onChangeSpy = jest.fn()
 
-        const component = mount(
+        const {container} = render(
             <DEPRECATED_InputField
                 {...minProps}
                 type="number"
@@ -104,53 +115,54 @@ describe('DEPRECATED_InputField', () => {
                 onChange={onChangeSpy}
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
 
         const newValue = '12'
-        component.find('input').simulate('change', {target: {value: newValue}})
+        const input = screen.getByRole('spinbutton')
+        userEvent.paste(input, newValue)
 
         expect(onChangeSpy).toHaveBeenCalledWith(parseFloat(newValue))
     })
 
     it('should render a hidden text input', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} hidden />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a text input with a suffix', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} suffix="px" />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the input with an error', () => {
-        const component = shallow(
+        const {container} = render(
             <DEPRECATED_InputField {...minProps} error="the value is wrong" />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a lowercase value and convert any uppercase input to lowercase', () => {
-        let valueStorage = 'value'
+        const valueStorage = ''
+        const onChangeSpy = jest.fn()
 
-        const component = mount(
+        const {container} = render(
             <DEPRECATED_InputField
                 {...minProps}
                 value={valueStorage}
-                onChange={(value) => {
-                    valueStorage = value
-                }}
+                onChange={onChangeSpy}
                 caseInsensitive
             />
         )
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
 
         const newValue = 'newValue'
-        component.find('input').simulate('change', {target: {value: newValue}})
+        const input = screen.getByRole('textbox')
+        userEvent.paste(input, newValue)
 
-        expect(valueStorage).toEqual(newValue.toLowerCase())
+        expect(onChangeSpy).toHaveBeenCalledWith(newValue.toLowerCase())
     })
 })

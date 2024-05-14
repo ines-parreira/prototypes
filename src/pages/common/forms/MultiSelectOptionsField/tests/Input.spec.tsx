@@ -1,8 +1,8 @@
-import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
 
-import Input from '../Input'
+import {createEvent, fireEvent, render, screen} from '@testing-library/react'
+import Input from 'pages/common/forms/MultiSelectOptionsField/Input'
 
 describe('MultiSelectField Input', () => {
     const defaultProps = {
@@ -21,14 +21,16 @@ describe('MultiSelectField Input', () => {
     it('should blur and clean the value on Escape', () => {
         const onChangeSpy = jest.fn()
         const onBlurSpy = jest.fn()
-        const wrapper = mount(
+        render(
             <Input
                 {...defaultProps}
                 onChange={onChangeSpy}
                 onBlur={onBlurSpy}
             />
         )
-        wrapper.find('input').simulate('keyDown', {key: 'Escape'})
+
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Escape'})
+
         expect(onBlurSpy.mock.calls.length).toBe(1)
         expect(onChangeSpy.mock.calls.length).toBe(1)
         expect(onChangeSpy.mock.calls[0]).toEqual([''])
@@ -36,87 +38,102 @@ describe('MultiSelectField Input', () => {
 
     it('should call onDown when ArrowDown pressed', () => {
         const onDownSpy = jest.fn()
-        const wrapper = mount(<Input {...defaultProps} onDown={onDownSpy} />)
-        wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
+        render(<Input {...defaultProps} onDown={onDownSpy} />)
+
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'ArrowDown'})
+
         expect(onDownSpy).toBeCalled()
     })
 
     it('should call onUp when ArrowUp pressed', () => {
         const onUpSpy = jest.fn()
-        const wrapper = mount(<Input {...defaultProps} onUp={onUpSpy} />)
-        wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
+        render(<Input {...defaultProps} onUp={onUpSpy} />)
+
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'ArrowUp'})
+
         expect(onUpSpy).toBeCalled()
     })
 
     it('should call onSubmit when Tab/Enter pressed', () => {
         const onSubmitSpy = jest.fn()
-        const wrapper = mount(
-            <Input {...defaultProps} onSubmit={onSubmitSpy} />
-        )
-        wrapper.find('input').simulate('keyDown', {key: 'Tab'})
-        wrapper.find('input').simulate('keyDown', {key: 'Enter'})
+        render(<Input {...defaultProps} onSubmit={onSubmitSpy} />)
+
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Tab'})
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Enter'})
+
         expect(onSubmitSpy.mock.calls).toHaveLength(2)
     })
 
     it('should call onDelete when Backspace pressed and there is no input', () => {
         const onDeleteSpy = jest.fn()
-        const wrapper = mount(
+        const {rerender} = render(
             <Input {...defaultProps} value="foo" onDelete={onDeleteSpy} />
         )
-        wrapper.find('input').simulate('keyDown', {key: 'Backspace'})
-        wrapper.setProps({value: ''})
-        wrapper.find('input').simulate('keyDown', {key: 'Backspace'})
+
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Backspace'})
+        rerender(<Input {...defaultProps} value="" onDelete={onDeleteSpy} />)
+        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Backspace'})
+
         expect(onDeleteSpy.mock.calls).toHaveLength(1)
     })
 
-    it('should stop propagation of events', () => {
-        const keys = ['ArrowUp', 'ArrowDown', 'Enter']
-        keys.forEach((key: string) => {
+    it.each(['ArrowUp', 'ArrowDown', 'Enter'])(
+        'should stop propagation of events',
+        (key) => {
             const stopPropagationSpy = jest.fn()
             const preventDefaultSpy = jest.fn()
 
-            const wrapper = mount(<Input {...defaultProps} value={undefined} />)
+            render(<Input {...defaultProps} value={undefined} />)
 
-            wrapper.find('input').simulate('keyDown', {
+            const input = screen.getByRole('textbox')
+            const keyDownEvent = createEvent.keyDown(input, {
                 key,
                 preventDefault: preventDefaultSpy,
-                stopPropagation: stopPropagationSpy,
             })
+            keyDownEvent.preventDefault = preventDefaultSpy
+            keyDownEvent.stopPropagation = stopPropagationSpy
+            fireEvent(input, keyDownEvent)
 
-            expect(preventDefaultSpy.mock.calls).toHaveLength(1)
-            expect(stopPropagationSpy.mock.calls).toHaveLength(1)
-        })
-    })
+            expect(preventDefaultSpy).toHaveBeenCalled()
+            expect(stopPropagationSpy).toHaveBeenCalled()
+        }
+    )
 
     it('should stop propagation of "Tab" event because input is not empty', () => {
         const stopPropagationSpy = jest.fn()
         const preventDefaultSpy = jest.fn()
 
-        const wrapper = mount(<Input {...defaultProps} value="foo" />)
+        render(<Input {...defaultProps} value="foo" />)
 
-        wrapper.find('input').simulate('keyDown', {
+        const input = screen.getByRole('textbox')
+        const keyDownEvent = createEvent.keyDown(input, {
             key: 'Tab',
             preventDefault: preventDefaultSpy,
-            stopPropagation: stopPropagationSpy,
         })
+        keyDownEvent.preventDefault = preventDefaultSpy
+        keyDownEvent.stopPropagation = stopPropagationSpy
+        fireEvent(input, keyDownEvent)
 
-        expect(preventDefaultSpy.mock.calls).toHaveLength(1)
-        expect(stopPropagationSpy.mock.calls).toHaveLength(1)
+        expect(preventDefaultSpy).toHaveBeenCalled()
+        expect(stopPropagationSpy).toHaveBeenCalled()
     })
 
     it('should not stop propagation of "Tab" event because input is empty', () => {
         const stopPropagationSpy = jest.fn()
         const preventDefaultSpy = jest.fn()
 
-        const wrapper = mount(<Input {...defaultProps} value="" />)
+        render(<Input {...defaultProps} value="" />)
 
-        wrapper.find('input').simulate('keyDown', {
+        const input = screen.getByRole('textbox')
+        const keyDownEvent = createEvent.keyDown(input, {
             key: 'Tab',
             preventDefault: preventDefaultSpy,
-            stopPropagation: stopPropagationSpy,
         })
+        keyDownEvent.preventDefault = preventDefaultSpy
+        keyDownEvent.stopPropagation = stopPropagationSpy
+        fireEvent(input, keyDownEvent)
 
-        expect(preventDefaultSpy.mock.calls).toHaveLength(0)
-        expect(stopPropagationSpy.mock.calls).toHaveLength(0)
+        expect(preventDefaultSpy).not.toHaveBeenCalled()
+        expect(stopPropagationSpy).not.toHaveBeenCalled()
     })
 })

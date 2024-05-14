@@ -1,11 +1,9 @@
-import {mount} from 'enzyme'
 import _noop from 'lodash/noop'
 import React from 'react'
-import {DropdownItem} from 'reactstrap'
 
-import Menu from '../Menu'
-import MenuItem from '../MenuItem'
-import {Option} from '../types'
+import {render, screen} from '@testing-library/react'
+import Menu from 'pages/common/forms/MultiSelectOptionsField/Menu'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
 
 describe('MultiSelectField Menu', () => {
     const options: Option[] = [
@@ -28,21 +26,24 @@ describe('MultiSelectField Menu', () => {
     }
 
     it('should render displayLabel first and label as a fallback', () => {
-        const component = mount(<Menu {...defaultProps} />)
-        const items = component.find(MenuItem)
-        expect(items.at(0).text()).toBe('Foo')
-        expect(items.at(1).text()).toBe('BarSpan')
+        const {container} = render(<Menu {...defaultProps} />)
+
+        expect(container.firstChild?.textContent).toBe('Foo')
+        expect(container.lastChild?.textContent).toBe('BarSpan')
     })
 
     it('should display loading spinner if loading set to true', () => {
-        const component = mount(<Menu {...defaultProps} isLoading />)
-        const item = component.find(DropdownItem)
-        expect(item.find('.material-icons').text()).toBe('refresh')
-        expect(item.text()).toContain('Loading...')
+        render(<Menu {...defaultProps} isLoading />)
+
+        expect(document.querySelector('.material-icons')?.textContent).toEqual(
+            'refresh'
+        )
+        expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should display "No result" if not loading and no options', () => {
-        const component = mount(<Menu {...defaultProps} options={[]} />)
-        expect(component.find(DropdownItem).text()).toBe('No result')
+        render(<Menu {...defaultProps} options={[]} />)
+
+        expect(screen.getByText('No result')).toBeInTheDocument()
     })
 })

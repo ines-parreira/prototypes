@@ -7,10 +7,10 @@ import {FormGroup, FormText, Input as BootstrapInput, Label} from 'reactstrap'
 import {InputProps} from 'reactstrap/lib/Input'
 
 import {defined} from 'utils'
-import Tooltip from '../components/Tooltip'
+import Tooltip from 'pages/common/components/Tooltip'
 
-import Errors from './Errors'
-import css from './DEPRECATED_InputField.less'
+import Errors from 'pages/common/forms/Errors'
+import css from 'pages/common/forms/DEPRECATED_InputField.less'
 
 export type InputFieldProps<T = any> = {
     onChange?: (value: T) => void

@@ -1,7 +1,7 @@
 import React, {Component, FocusEvent, KeyboardEvent, ChangeEvent} from 'react'
 import classnames from 'classnames'
 
-import css from './Input.less'
+import css from 'pages/common/forms/MultiSelectOptionsField/Input.less'
 
 type Props = {
     placeholder: string

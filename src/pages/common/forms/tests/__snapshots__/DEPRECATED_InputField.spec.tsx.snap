@@ -1,419 +1,316 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`DEPRECATED_InputField should render a basic text input 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
-  <Label
-    className="control-label"
-    htmlFor="id-input-2"
-    tag="label"
-    widths={
-      [
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-      ]
-    }
+  <label
+    class="control-label"
+    for="id-input-2"
   >
     label
-  </Label>
+  </label>
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-2"
-      onChange={[Function]}
       placeholder="placeholder"
       type="text"
       value="value"
     />
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a help text 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-5"
-      onChange={[Function]}
       type="text"
       value="value"
     />
   </div>
-  <FormText
-    color="muted"
-    tag="small"
+  <small
+    class="form-text text-muted"
   >
     help text
-  </FormText>
-</FormGroup>
+  </small>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a hidden text input 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
-      hidden={true}
+    <input
+      class="field form-control"
+      hidden=""
       id="id-input-11"
-      onChange={[Function]}
       type="text"
       value="value"
     />
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a lowercase value and convert any uppercase input to lowercase 1`] = `
-<InputField
-  caseInsensitive={true}
-  onChange={[Function]}
-  type="text"
-  value="value"
+<div
+  class="InputField form-group"
+  color=""
 >
-  <FormGroup
-    className="InputField"
-    color=""
-    tag="div"
+  <div
+    class=""
   >
-    <div
-      className="InputField form-group"
-      color=""
-    >
-      <div
-        className=""
-      >
-        <Input
-          className="field"
-          id="id-input-14"
-          onChange={[Function]}
-          type="text"
-          value="value"
-        >
-          <input
-            className="field form-control"
-            id="id-input-14"
-            onChange={[Function]}
-            type="text"
-            value="value"
-          />
-        </Input>
-      </div>
-    </div>
-  </FormGroup>
-</InputField>
+    <input
+      class="field form-control"
+      id="id-input-14"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a number input with an onChange handler, and call this handler on change 1`] = `
-<InputField
-  onChange={[MockFunction]}
-  type="number"
-  value="value"
+<div
+  class="InputField form-group"
+  color=""
 >
-  <FormGroup
-    className="InputField"
-    color=""
-    tag="div"
+  <div
+    class=""
   >
-    <div
-      className="InputField form-group"
-      color=""
-    >
-      <div
-        className=""
-      >
-        <Input
-          className="field"
-          id="id-input-10"
-          onChange={[Function]}
-          type="number"
-          value="value"
-        >
-          <input
-            className="field form-control"
-            id="id-input-10"
-            onChange={[Function]}
-            type="number"
-            value="value"
-          />
-        </Input>
-      </div>
-    </div>
-  </FormGroup>
-</InputField>
+    <input
+      class="field form-control"
+      id="id-input-10"
+      type="number"
+      value="value"
+    />
+  </div>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a required text input 1`] = `
-<FormGroup
-  className="InputField required"
+<div
+  class="InputField required form-group"
   color=""
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-3"
-      onChange={[Function]}
-      required={true}
+      required=""
       type="text"
       value="value"
     />
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a text input with a right addon 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
   <div
-    className="input-group"
+    class="input-group"
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-8"
-      onChange={[Function]}
       type="text"
       value="value"
     />
     <span
-      className="input-group-append"
+      class="input-group-append"
     >
       <span
-        className="input-group-text inputGroupText"
+        class="input-group-text inputGroupText"
       >
         @rightaddon.io
       </span>
     </span>
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a text input with a suffix 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
   <div
-    className="with-suffix"
+    class="with-suffix"
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-12"
-      onChange={[Function]}
       suffix="px"
       type="text"
       value="value"
     />
     <div
-      className="input-suffix-wrapper"
+      class="input-suffix-wrapper"
     >
       <div
-        className="spacer"
+        class="spacer"
       >
         value
       </div>
       <div
-        className="suffix"
+        class="suffix"
       >
         px
       </div>
     </div>
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a text input with an onChange handler, and call this handler on change 1`] = `
-<InputField
-  onChange={[Function]}
-  type="text"
-  value="value"
+<div
+  class="InputField form-group"
+  color=""
 >
-  <FormGroup
-    className="InputField"
-    color=""
-    tag="div"
+  <div
+    class=""
   >
-    <div
-      className="InputField form-group"
-      color=""
-    >
-      <div
-        className=""
-      >
-        <Input
-          className="field"
-          id="id-input-9"
-          onChange={[Function]}
-          type="text"
-          value="value"
-        >
-          <input
-            className="field form-control"
-            id="id-input-9"
-            onChange={[Function]}
-            type="text"
-            value="value"
-          />
-        </Input>
-      </div>
-    </div>
-  </FormGroup>
-</InputField>
+    <input
+      class="field form-control"
+      id="id-input-9"
+      type="text"
+      value=""
+    />
+  </div>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render a tooltip next to the label 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color=""
-  tag="div"
 >
   <div
-    className="label-wrapper"
+    class="label-wrapper"
   >
-    <Label
-      className="control-label"
-      htmlFor="id-input-6"
-      tag="label"
-      widths={
-        [
-          "xs",
-          "sm",
-          "md",
-          "lg",
-          "xl",
-        ]
-      }
+    <label
+      class="control-label"
+      for="id-input-6"
     >
       Label
-    </Label>
+    </label>
     <span
       id="id-input-6-tooltip"
     >
       <i
-        className="material-icons-outlined tooltip"
+        class="material-icons-outlined tooltip"
       >
         info
       </i>
     </span>
-    <Tooltip
-      style={
-        {
-          "textAlign": "left",
-        }
-      }
-      target="id-input-6-tooltip"
-    >
-      I am a tooltip
-    </Tooltip>
   </div>
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-6"
-      onChange={[Function]}
       type="text"
       value="value"
     />
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render an inline required text input 1`] = `
-<FormGroup
-  className="InputField required d-inline-block"
+<div
+  class="InputField required d-inline-block form-group"
   color=""
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-7"
-      onChange={[Function]}
-      required={true}
+      required=""
       type="text"
       value="value"
     />
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render an inline text input 1`] = `
-<FormGroup
-  className="InputField d-inline-block"
+<div
+  class="InputField d-inline-block form-group"
   color=""
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field"
+    <input
+      class="field form-control"
       id="id-input-4"
-      onChange={[Function]}
       type="text"
       value="value"
     />
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should render the input with an error 1`] = `
-<FormGroup
-  className="InputField"
+<div
+  class="InputField form-group"
   color="danger"
-  tag="div"
 >
   <div
-    className=""
+    class=""
   >
-    <Input
-      className="field form-control-danger is-invalid"
+    <input
+      class="field form-control-danger is-invalid form-control"
       id="id-input-13"
-      onChange={[Function]}
       type="text"
       value="value"
     />
-    <Errors>
+    <div
+      class="invalid-feedback"
+    >
       the value is wrong
-    </Errors>
+    </div>
   </div>
-</FormGroup>
+</div>
 `;
 
 exports[`DEPRECATED_InputField should use default props 1`] = `
-{
-  "onChange": [Function],
-  "type": "text",
-  "value": "value",
-}
+<div
+  class="InputField form-group"
+  color=""
+>
+  <div
+    class=""
+  >
+    <input
+      class="field form-control"
+      id="id-input-1"
+      type="text"
+      value="value"
+    />
+  </div>
+</div>
 `;
