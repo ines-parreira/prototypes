@@ -215,8 +215,8 @@ describe('useAutomationDatasetV2', () => {
             expect(
                 result.current.decreaseInFirstResponseTimeTrend.data
             ).toEqual({
-                prevValue: 3600,
-                value: 1067872.88179248,
+                prevValue: 0,
+                value: 717716.5952535146,
             })
             expect(result.current.decreaseInResolutionTimeTrend.data).toEqual({
                 prevValue: 0,

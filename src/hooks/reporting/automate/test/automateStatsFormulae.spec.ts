@@ -1,7 +1,7 @@
 import {
     automationRate,
     decreaseInFirstResponseTime,
-    resolutionTime,
+    resolutionTimeWithAutomation,
     decreaseInResolutionTime,
 } from '../automateStatsFormulae'
 
@@ -42,28 +42,31 @@ describe('Metrics Calculation Functions', () => {
 
         it('should calculate decrease in first response time correctly', () => {
             expect(decreaseInFirstResponseTime(10, 5, 200)).toBeCloseTo(
-                39.25,
-                3
+                26.666,
+                2
             )
-            expect(decreaseInFirstResponseTime(0, 2, 5)).toBe(2.5)
+            expect(decreaseInFirstResponseTime(0, 2, 5)).toBe(0)
             expect(decreaseInFirstResponseTime(0, 0, 0)).toBeCloseTo(0)
         })
     })
 
     describe('resolutionTime Function', () => {
         it('should return 0 if any parameter is null', () => {
-            expect(resolutionTime(null, 10, 5)).toBe(0)
-            expect(resolutionTime(10, null, 5)).toBe(0)
-            expect(resolutionTime(10, 20, null)).toBe(0)
+            expect(resolutionTimeWithAutomation(null, 10, 5)).toBe(0)
+            expect(resolutionTimeWithAutomation(10, null, 5)).toBe(0)
+            expect(resolutionTimeWithAutomation(10, 20, null)).toBe(0)
         })
 
         it('should return 0 if all parameters are null', () => {
-            expect(resolutionTime(null, null, null)).toBe(0)
+            expect(resolutionTimeWithAutomation(null, null, null)).toBe(0)
         })
 
         it('should calculate resolution time correctly', () => {
-            expect(resolutionTime(100, 5, 50)).toBeCloseTo(1.818, 3)
-            expect(resolutionTime(100, 5, 0)).toBeCloseTo(20)
+            expect(resolutionTimeWithAutomation(100, 5, 50)).toBeCloseTo(
+                1.818,
+                3
+            )
+            expect(resolutionTimeWithAutomation(100, 5, 0)).toBeCloseTo(20)
             expect(decreaseInResolutionTime(0, 0, 0)).toBeCloseTo(0)
             expect(decreaseInResolutionTime(1, 0, 0)).toBeCloseTo(0)
         })

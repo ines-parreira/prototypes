@@ -44,8 +44,8 @@ describe('Wrapper Functions for Trends Calculation', () => {
                 billableTickets,
                 firstResponseTime
             )
-            expect(result.data.value).toBeCloseTo(-25, 1)
-            expect(result.data.prevValue).toBeCloseTo(-52.6666, 1)
+            expect(result.data.value).toBeCloseTo(12.5, 1)
+            expect(result.data.prevValue).toBeCloseTo(31.0, 1)
         })
         it('should return 0 for both current and previous values when any input value is null', () => {
             const result = getDecreaseInFirstResponseTimeTrend(

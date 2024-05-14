@@ -25,6 +25,20 @@ export const automationRate = (
     return 0
 }
 
+const averageFRTWithoutAutomation = (
+    billableTicketCount: number,
+    totalFirstResponseTime: number
+): number => infinityNanToZero(totalFirstResponseTime / billableTicketCount)
+
+const averageFRTWithAutomation = (
+    billableTicketCount: number,
+    totalFirstResponseTime: number,
+    automatedInteractions: number
+): number =>
+    infinityNanToZero(
+        totalFirstResponseTime / (billableTicketCount + automatedInteractions)
+    )
+
 export const decreaseInFirstResponseTime = (
     automatedInteractions: number | null,
     billableTicketCount: number | null,
@@ -34,17 +48,23 @@ export const decreaseInFirstResponseTime = (
         automatedInteractions != null &&
         billableTicketCount != null &&
         totalFirstResponseTime != null
-    )
-        return infinityNanToZero(
-            totalFirstResponseTime / billableTicketCount -
-                automatedInteractions /
-                    (totalFirstResponseTime /
-                        (billableTicketCount + automatedInteractions))
+    ) {
+        return (
+            averageFRTWithoutAutomation(
+                billableTicketCount,
+                totalFirstResponseTime
+            ) -
+            averageFRTWithAutomation(
+                billableTicketCount,
+                totalFirstResponseTime,
+                automatedInteractions
+            )
         )
+    }
     return 0
 }
 
-export const resolutionTime = (
+export const resolutionTimeWithAutomation = (
     totalResolutionTime: number | null,
     billableTicketCount: number | null,
     automatedInteractions: number | null
@@ -53,12 +73,11 @@ export const resolutionTime = (
         totalResolutionTime != null &&
         billableTicketCount != null &&
         automatedInteractions != null
-    )
+    ) {
         return infinityNanToZero(
-            ((totalResolutionTime / billableTicketCount) *
-                billableTicketCount) /
-                (billableTicketCount + automatedInteractions)
+            totalResolutionTime / (billableTicketCount + automatedInteractions)
         )
+    }
     return 0
 }
 
@@ -74,7 +93,7 @@ export const decreaseInResolutionTime = (
     )
         return infinityNanToZero(
             totalResolutionTime / billableTicketCount -
-                resolutionTime(
+                resolutionTimeWithAutomation(
                     totalResolutionTime,
                     billableTicketCount,
                     automatedInteractions
