@@ -217,6 +217,7 @@ export const AiAgentPlaygroundV2View = () => {
     const handleReset = () => {
         setMessages([])
         setFormError(null)
+        setNewCustomerSelected(true)
         setStep(PlaygroundStep.INPUT)
         setSubject(null)
     }
