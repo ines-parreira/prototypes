@@ -42,8 +42,8 @@ describe('useAiAgentNavigation', () => {
                 title: 'Configuration',
             },
             {
-                route: '/app/automation/shopify/test/ai-agent/playground',
-                title: 'Playground',
+                route: '/app/automation/shopify/test/ai-agent/test',
+                title: 'Test',
             },
         ])
     })

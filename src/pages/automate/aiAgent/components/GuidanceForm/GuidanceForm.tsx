@@ -124,7 +124,7 @@ export const GuidanceForm = ({
     }
 
     const onSaveAndTest = async () => {
-        await handleSubmit({redirectTo: routes.playground})
+        await handleSubmit({redirectTo: routes.test})
     }
 
     return (

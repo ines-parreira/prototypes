@@ -250,7 +250,7 @@ export const AiAgentPlaygroundV2View = () => {
         void dispatch(
             notify({
                 message:
-                    'There was an error initializing the AI Agent Playground',
+                    'There was an error initializing the AI Agent Test mode',
                 status: NotificationStatus.Error,
             })
         )

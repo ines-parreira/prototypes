@@ -1420,7 +1420,7 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                     />
                     {showAiAgentPlayground !== false && (
                         <Route
-                            path={`${path}/playground`}
+                            path={`${path}/test`}
                             exact
                             component={
                                 showAiPlaygroundV2

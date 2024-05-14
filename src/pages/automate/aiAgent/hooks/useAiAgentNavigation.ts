@@ -11,7 +11,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
 
     const routes = useMemo(
         () => ({
-            playground: `/app/automation/shopify/${shopName}/ai-agent/playground`,
+            test: `/app/automation/shopify/${shopName}/ai-agent/test`,
             guidance: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
             newGuidanceArticle: `/app/automation/shopify/${shopName}/ai-agent/guidance/new`,
             configuration: `/app/automation/shopify/${shopName}/ai-agent`,
@@ -42,8 +42,8 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             ...(showAiAgentPlayground
                 ? [
                       {
-                          route: routes.playground,
-                          title: 'Playground',
+                          route: routes.test,
+                          title: 'Test',
                       },
                   ]
                 : []),
