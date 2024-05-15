@@ -11,7 +11,7 @@ export const useUpdateChannelConnection = () => {
     return usePureUpdateChannelConnection({
         onSuccess: async () => {
             await queryClient.invalidateQueries({
-                queryKey: channelConnectionKeys.lists(),
+                queryKey: channelConnectionKeys.all(),
             })
         },
     })
