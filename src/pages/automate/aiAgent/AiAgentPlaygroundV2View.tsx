@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import axios, {isAxiosError} from 'axios'
+import {isAxiosError} from 'axios'
 import {Link, Redirect, useParams} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -82,39 +82,28 @@ export const AiAgentPlaygroundV2View = () => {
 
     const {mutate: submitPlaygroundTicket, isLoading: isSubmitting} =
         useSubmitPlaygroundTicket({
-            onError: (error) => {
+            onError: () => {
                 const messages = messagesRef.current
                 const updatedMessages = [messages[0]]
 
-                if (
-                    axios.isAxiosError(error) &&
-                    error.response?.status === 404
-                ) {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.ERROR,
-                        message: 'No customer account was found for that email',
-                    })
-                } else {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.ERROR,
-                        message: (
-                            <div className={css.errorMessageText}>
-                                AI Agent encountered an error and didn’t send a
-                                response.
-                                <span
-                                    className={css.errorMessageLink}
-                                    onClick={() => {
-                                        handleReset()
-                                    }}
-                                >
-                                    Try again
-                                </span>
-                            </div>
-                        ),
-                    })
-                }
+                updatedMessages.push({
+                    sender: AI_AGENT_SENDER,
+                    type: MessageType.ERROR,
+                    message: (
+                        <div className={css.errorMessageText}>
+                            AI Agent encountered an error and didn’t send a
+                            response.
+                            <span
+                                className={css.errorMessageLink}
+                                onClick={() => {
+                                    handleReset()
+                                }}
+                            >
+                                Try again
+                            </span>
+                        </div>
+                    ),
+                })
 
                 setMessages(updatedMessages)
             },
@@ -124,8 +113,11 @@ export const AiAgentPlaygroundV2View = () => {
 
                 // If the AI Agent response is valid, push output to message thread
                 if (
-                    aiAgentResponse.data.generate.output.generated_message &&
-                    aiAgentResponse.data.qa.output.validate_generated_message
+                    (aiAgentResponse.data.generate.output.generated_message &&
+                        aiAgentResponse.data.qa.output
+                            .validate_generated_message) ||
+                    // If silent handover is enabled, don't show the AI Agent response
+                    !storeData?.data.storeConfiguration.silentHandover
                 ) {
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
@@ -173,45 +165,60 @@ export const AiAgentPlaygroundV2View = () => {
 
     const handleSubmit = (
         formValues: FormValues,
-        {customerName}: AdditionalValues
+        {customerName, existingCustomerFound}: AdditionalValues
     ) => {
-        submitPlaygroundTicket([
-            {
-                new_customer_email: newCustomerSelected,
-                domain: accountDomain,
-                customer_email: formValues.customerEmail,
-                body_text: formValues.message,
-                http_integration_id:
-                    //asserting this property existence as we are checking above that it exists once account data is loaded
-                    accountData!.data.accountConfiguration.httpIntegration!.id,
-                account_id: currentAccount.get('id'),
-                email_integration_id:
-                    storeData!.data.storeConfiguration
-                        .monitoredEmailIntegrations[0].id,
-                email_integration_address:
-                    storeData!.data.storeConfiguration
-                        .monitoredEmailIntegrations[0].email,
-            },
-        ])
-        // While ai agent is processing, show the user's message and a processing status
         setSubject(formValues.subject)
-        setMessages([
+        const updatedMessages: PlaygroundMessage[] = [
             {
                 sender: customerName,
                 type: MessageType.MESSAGE,
                 message: formValues.message,
             },
-            {
+        ]
+
+        if (existingCustomerFound === false) {
+            updatedMessages.push({
+                sender: AI_AGENT_SENDER,
+                type: MessageType.ERROR,
+                message: 'No customer account was found for that email.',
+            })
+        } else {
+            submitPlaygroundTicket([
+                {
+                    new_customer_email: newCustomerSelected,
+                    domain: accountDomain,
+                    customer_email: formValues.customerEmail,
+                    body_text: formValues.message,
+                    http_integration_id:
+                        //asserting this property existence as we are checking above that it exists once account data is loaded
+                        accountData!.data.accountConfiguration.httpIntegration!
+                            .id,
+                    account_id: currentAccount.get('id'),
+                    email_integration_id:
+                        storeData!.data.storeConfiguration
+                            .monitoredEmailIntegrations[0].id,
+                    email_integration_address:
+                        storeData!.data.storeConfiguration
+                            .monitoredEmailIntegrations[0].email,
+                },
+            ])
+            // While ai agent is processing, show the user's message and a processing status
+            updatedMessages.push({
                 sender: AI_AGENT_SENDER,
                 type: MessageType.MESSAGE,
                 processingStatus: ProcessingStatus.CHECKING_PERMISSIONS,
-            },
-        ])
+            })
+
+            // Fake processing status updates
+            aiAgentProcessingStatusUpdate(ProcessingStatus.SUMMARIZING, 5000)
+            aiAgentProcessingStatusUpdate(
+                ProcessingStatus.GATHERING_INFO,
+                10000
+            )
+            aiAgentProcessingStatusUpdate(ProcessingStatus.GENERATING, 15000)
+        }
+        setMessages(updatedMessages)
         setStep(PlaygroundStep.OUTPUT)
-        // Fake processing status updates
-        aiAgentProcessingStatusUpdate(ProcessingStatus.SUMMARIZING, 5000)
-        aiAgentProcessingStatusUpdate(ProcessingStatus.GATHERING_INFO, 10000)
-        aiAgentProcessingStatusUpdate(ProcessingStatus.GENERATING, 15000)
     }
 
     const handleReset = () => {
@@ -220,6 +227,7 @@ export const AiAgentPlaygroundV2View = () => {
         setNewCustomerSelected(true)
         setStep(PlaygroundStep.INPUT)
         setSubject(null)
+        setNewCustomerSelected(true)
     }
 
     if (

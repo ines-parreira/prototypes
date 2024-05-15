@@ -17,6 +17,7 @@ export type FormValues = {
 
 export type AdditionalValues = {
     customerName: string
+    existingCustomerFound: boolean | undefined
 }
 
 const initialFormValues: FormValues = {
@@ -92,7 +93,8 @@ export const PlaygroundInputStep = ({
     }
 
     const handleInputStepSubmit = async () => {
-        let customerName = ''
+        let customerName: string
+        let existingCustomerFound: boolean | undefined
 
         // If we are using the new customer option, we use the mock data
         if (senderSelectedOption === SenderTypeValues.NEW_CUSTOMER) {
@@ -103,10 +105,12 @@ export const PlaygroundInputStep = ({
                 search: formValues.customerEmail,
                 limit: 1,
             })
+
             if (
                 selectedCustomer.data.data &&
                 selectedCustomer.data.data.length
             ) {
+                existingCustomerFound = true
                 customerName =
                     // If we don't have a name, we use the email
                     (
@@ -115,10 +119,14 @@ export const PlaygroundInputStep = ({
                     ).name ?? formValues.customerEmail
             } else {
                 customerName = formValues.customerEmail
+                existingCustomerFound = false
             }
         }
 
-        handleSubmit(formValues, {customerName: customerName})
+        handleSubmit(formValues, {
+            customerName: customerName,
+            existingCustomerFound,
+        })
     }
 
     const onClear = () => {
