@@ -1,21 +1,16 @@
 import {createStore, applyMiddleware} from 'redux'
 import {composeWithDevTools} from '@redux-devtools/extension'
 import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
 
-import rootReducer from '../state/reducers'
-import {InitialRootState} from '../types'
+import rootReducer from 'state/reducers'
+import {InitialRootState} from 'types'
 
-import serverErrorHandler from './middlewares/serverErrorHandler'
+import serverErrorHandler from 'store/middlewares/serverErrorHandler'
 
 export default function configureStore(
     initialState: InitialRootState = {} as InitialRootState
 ) {
-    const middlewares = applyMiddleware(
-        thunk,
-        serverErrorHandler,
-        createLogger({collapsed: true})
-    )
+    const middlewares = applyMiddleware(thunk, serverErrorHandler)
 
     const store = createStore(
         rootReducer,

@@ -173,7 +173,6 @@
         "reactstrap": "8.9.0",
         "reapop": "4.0.3",
         "redux": "4.0.5",
-        "redux-logger": "2.7.4",
         "redux-thunk": "2.3.0",
         "reselect": "4.1.7",
         "sanitize-html": "2.12.1",
