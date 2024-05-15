@@ -89,6 +89,7 @@ export const ConditionsBranchItem = ({
                     shouldShowErrors={shouldShowErrors}
                     type={type}
                     showNoneOption={showNoneOption}
+                    emptyBranchErrorMessage="A branch must have at least 1 condition"
                 />
             </AccordionBody>
         </div>

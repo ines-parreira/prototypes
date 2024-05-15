@@ -3,9 +3,14 @@ import {ulid} from 'ulidx'
 import {produce} from 'immer'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconButton from 'pages/common/components/button/IconButton'
+import useAppDispatch from 'hooks/useAppDispatch'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
@@ -22,7 +27,10 @@ import {
     WorkflowVariable,
 } from 'pages/automate/workflows/models/variables.types'
 
-import {extractVariablesFromText} from 'pages/automate/workflows/models/variables.model'
+import {
+    extractVariablesFromText,
+    validateJSONWithVariables,
+} from 'pages/automate/workflows/models/variables.model'
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import TextareaWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextareaWithVariables'
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
@@ -54,6 +62,7 @@ export default function CustomActionsForm({
         shopType: string
         shopName: string
     }>()
+    const dispatch = useAppDispatch()
     const history = useHistory()
     const [formValues, setFormValues] = useState(initialFormValues)
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
@@ -201,6 +210,59 @@ export default function CustomActionsForm({
             ? formValues.internal_id
             : ulid()
 
+        if (
+            contentType === 'application/x-www-form-urlencoded' &&
+            Array.from(
+                new URLSearchParams(formValues.steps[0].settings.body)
+            ).some(([key, value]) => !key.trim() || !value.trim())
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `Invalid Request body`,
+                })
+            )
+            return
+        }
+        if (
+            formValues.triggers[0].settings.custom_inputs.some(
+                (input) => !input.instructions.trim() || !input.name.trim()
+            )
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `Invalid Input variables`,
+                })
+            )
+            return
+        }
+
+        if (validateWebhookURL(formValues.steps[0].settings.url)) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: `Invalid URL`,
+                })
+            )
+            return
+        }
+
+        if (
+            headers.some(
+                (header) =>
+                    !validateHttpHeaderName(header.name) || !header.value.trim()
+            )
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Invalid HTTP Header',
+                })
+            )
+            return
+        }
+
         if (shopType !== 'shopify') {
             throw new Error('Unsupported shop type')
         }
@@ -289,6 +351,13 @@ export default function CustomActionsForm({
         }
     }, [history, isActionDeleted, isActionUpserted, shopName, shopType])
 
+    const isHttpJsonBodyValid = useMemo(() => {
+        return validateJSONWithVariables(
+            formValues.steps[0].settings.body ?? '',
+            inputVariables
+        )
+    }, [formValues.steps, inputVariables])
+
     const isFormValid = useMemo(() => {
         if (!formValues.name) {
             return false
@@ -301,9 +370,33 @@ export default function CustomActionsForm({
         if (formValues.entrypoints[0].settings.instructions.length === 0) {
             return false
         }
+        if (contentType === 'application/json' && !isHttpJsonBodyValid) {
+            return false
+        }
+
+        const conditionsValues = conditions.map(
+            (condition) =>
+                (
+                    Object.values(condition)[0] as [
+                        VarSchema,
+                        string | null | undefined | boolean
+                    ]
+                )[1]
+        )
+        for (const value of conditionsValues) {
+            if (value === null || value === undefined) return false
+            if (typeof value === 'string' && value.length === 0) return false
+        }
 
         return true
-    }, [formValues.entrypoints, formValues.name, formValues.steps])
+    }, [
+        conditions,
+        contentType,
+        formValues.entrypoints,
+        formValues.name,
+        formValues.steps,
+        isHttpJsonBodyValid,
+    ])
 
     return (
         <ToolbarContext.Provider
@@ -407,6 +500,9 @@ export default function CustomActionsForm({
                                                 className={css.customInputItem}
                                             >
                                                 <SelectField
+                                                    className={
+                                                        css.customDataTypeInput
+                                                    }
                                                     disabled={isActionUpserting}
                                                     showSelectedOption
                                                     value={input.data_type}
@@ -502,10 +598,13 @@ export default function CustomActionsForm({
                                         )
                                     }
                                 )}
-                                <div className={css.formInputFooterInfo}>
-                                    Data type, input name, instructions for AI
-                                    Agent to ask for the input
-                                </div>
+                                {formValues.triggers[0].settings.custom_inputs
+                                    .length > 0 && (
+                                    <div className={css.formInputFooterInfo}>
+                                        Data type, input name, instructions for
+                                        AI Agent to ask for the input
+                                    </div>
+                                )}
                                 <div>
                                     <Button
                                         intent="secondary"
@@ -549,7 +648,7 @@ export default function CustomActionsForm({
                                 branchId={formValues.id}
                                 availableVariables={inputVariables}
                                 showNoneOption={true}
-                                shouldShowErrors={false}
+                                shouldShowErrors={true}
                                 type={conditionsType}
                                 conditions={conditions}
                                 onDeleteBranch={() => {}}
@@ -758,7 +857,10 @@ export default function CustomActionsForm({
                                         setFormValues(
                                             produce((draft) => {
                                                 draft.steps[0].settings.body =
-                                                    ''
+                                                    contentType ===
+                                                    'application/json'
+                                                        ? '{}'
+                                                        : ''
                                             })
                                         )
                                     }}
@@ -781,6 +883,11 @@ export default function CustomActionsForm({
                                                 )
                                             }}
                                             variables={inputVariables}
+                                            error={
+                                                isHttpJsonBodyValid
+                                                    ? undefined
+                                                    : 'Invalid JSON'
+                                            }
                                         />
                                     )}
                                     {contentType ===
@@ -962,24 +1069,55 @@ export default function CustomActionsForm({
                             </Button>
                         </div>
                         {!isNewAction && (
-                            <Button
-                                isLoading={isDeletingAction}
-                                intent="destructive"
-                                isDisabled={
-                                    isFormDirty ||
-                                    isActionUpserting ||
-                                    isDeletingAction
+                            <ConfirmModalAction
+                                actions={(onClose) => (
+                                    <div className={css.deleteModalButtonGroup}>
+                                        <Button
+                                            intent="secondary"
+                                            onClick={() => onClose()}
+                                        >
+                                            Cancel
+                                        </Button>
+                                        <Button
+                                            intent="destructive"
+                                            onClick={() => {
+                                                deleteAction([
+                                                    {
+                                                        internal_id:
+                                                            formValues.internal_id!,
+                                                    },
+                                                ])
+                                            }}
+                                        >
+                                            Delete Action
+                                        </Button>
+                                    </div>
+                                )}
+                                content={
+                                    <p>
+                                        Deleting this Action will remove it from
+                                        your store and cannot be undone.
+                                    </p>
                                 }
-                                onClick={() =>
-                                    deleteAction([
-                                        {internal_id: formValues.internal_id!},
-                                    ])
-                                }
+                                title="Delete Action?"
                             >
-                                <ButtonIconLabel icon="delete">
-                                    Delete Action
-                                </ButtonIconLabel>
-                            </Button>
+                                {(onClick) => (
+                                    <Button
+                                        isLoading={isDeletingAction}
+                                        intent="destructive"
+                                        isDisabled={
+                                            isFormDirty ||
+                                            isActionUpserting ||
+                                            isDeletingAction
+                                        }
+                                        onClick={onClick}
+                                    >
+                                        <ButtonIconLabel icon="delete">
+                                            Delete Action
+                                        </ButtonIconLabel>
+                                    </Button>
+                                )}
+                            </ConfirmModalAction>
                         )}
                     </div>
                 </section>

@@ -51,16 +51,21 @@
                 .customInputItem {
                     display: flex;
                     gap: @layout-spacing-xs;
+
+                    & > div:first-child {
+                        min-width: 140px;
+                    }
                 }
             }
         }
         .urlFormContainer {
-            display: grid;
-            grid-template-columns: 1fr auto;
+            display: flex;
+            white-space: nowrap;
             gap: @layout-spacing-xs;
 
-            & > div {
+            & > div:first-child {
                 width: 100%;
+                min-width: 0;
             }
         }
 
@@ -104,5 +109,9 @@
         .httpBodyInput {
             padding-top: @layout-spacing-xs;
         }
+    }
+    .deleteModalButtonGroup {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 }

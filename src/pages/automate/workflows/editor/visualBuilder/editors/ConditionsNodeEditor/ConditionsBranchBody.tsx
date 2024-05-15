@@ -57,12 +57,14 @@ interface Props {
     variableDropdownProps?: Partial<
         React.ComponentProps<typeof WorkflowVariableDropdown>
     >
+    emptyBranchErrorMessage?: string
 }
 
 export const ConditionsBranchBody = ({
     type,
     branchId,
     shouldShowErrors,
+    emptyBranchErrorMessage,
     onConditionTypeChange,
     onDeleteBranch,
     onVariableSelect,
@@ -243,11 +245,13 @@ export const ConditionsBranchBody = ({
             {type && (
                 <>
                     <div className={css.conditionListWrapper}>
-                        {!conditions.length && shouldShowErrors && (
-                            <p className={css.errorMessage}>
-                                A branch must have at least 1 condition
-                            </p>
-                        )}
+                        {emptyBranchErrorMessage &&
+                            !conditions.length &&
+                            shouldShowErrors && (
+                                <p className={css.errorMessage}>
+                                    {emptyBranchErrorMessage}
+                                </p>
+                            )}
                         {conditions.map((condition, index) => {
                             const operator = Object.keys(
                                 condition

@@ -32,14 +32,7 @@ export default function ActionView() {
             {
                 kind: 'llm-prompt',
                 settings: {
-                    custom_inputs: [
-                        {
-                            data_type: 'string',
-                            id: ulid(),
-                            name: '',
-                            instructions: '',
-                        },
-                    ],
+                    custom_inputs: [],
                     object_inputs: [],
                     outputs: [
                         {
