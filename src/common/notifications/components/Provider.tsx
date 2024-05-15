@@ -11,7 +11,7 @@ type Props = {
     children: ReactNode
 }
 
-const KNOCK_API_KEY = 'pk_test_6EdowcXJdHPyjflCKxuwY008jC8O4FpMwQbmk3hm2wA'
+const KNOCK_PUBLIC_KEY = 'pk_pBD7ZMpmXnfj37yQZsvC_9CE2zwk02lh8z8KE-iOAgs'
 const KNOCK_FEED_ID = '975be13d-82a9-4ac4-b8d6-7b6abd4516ae'
 
 export default function Provider({children}: Props) {
@@ -24,7 +24,7 @@ export default function Provider({children}: Props) {
     )
 
     return (
-        <KnockProvider apiKey={KNOCK_API_KEY} userId={userId}>
+        <KnockProvider apiKey={KNOCK_PUBLIC_KEY} userId={userId}>
             <KnockFeedProvider feedId={KNOCK_FEED_ID}>
                 <>{children}</>
             </KnockFeedProvider>
