@@ -13,8 +13,8 @@ export enum SearchRankSource {
     TicketsView = 'tickets_view',
     SpotlightCustomer = 'spotlight_customer',
     SpotlightTicket = 'spotlight_ticket',
-    FederatedSearchTicket = 'federated_search_ticket',
-    FederatedSearchCustomer = 'federated_search_customer',
+    SpotlightAllTicket = 'spotlight_all_ticket',
+    SpotlightAllCustomer = 'spotlight_all_customer',
     SpotlightAll = 'spotlight_all',
 }
 
@@ -60,8 +60,8 @@ const detailedSource = (
 ) => {
     if (source === SearchRankSource.SpotlightAll) {
         return type === 'ticket'
-            ? SearchRankSource.FederatedSearchTicket
-            : SearchRankSource.FederatedSearchCustomer
+            ? SearchRankSource.SpotlightAllTicket
+            : SearchRankSource.SpotlightAllCustomer
     }
     return source
 }
@@ -141,7 +141,9 @@ export default function useSearchRankScenario(
         }
     }, [isRunning, endScenario, scenarioTimeout])
 
-    useUnmount(endScenario)
+    useUnmount(() => {
+        endScenario()
+    })
 
     return useMemo(() => {
         return {

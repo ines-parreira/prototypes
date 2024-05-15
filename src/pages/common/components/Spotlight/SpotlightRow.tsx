@@ -1,5 +1,5 @@
-import React, {ReactNode, MouseEvent, useContext} from 'react'
-import {Link} from 'react-router-dom'
+import React, {ReactNode, MouseEvent, useContext, useEffect} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 import classnames from 'classnames'
 import {EntityType} from 'hooks/useSearchRankScenario'
 
@@ -44,6 +44,24 @@ const SpotlightRow = ({
     entityType,
 }: SpotlightRowProps) => {
     const searchRank = useContext(SearchRankScenarioContext)
+    const history = useHistory()
+    useEffect(() => {
+        if (selected) {
+            return history.listen((location, action) => {
+                if (
+                    selected &&
+                    action === 'PUSH' &&
+                    location.pathname === link
+                ) {
+                    searchRank?.registerResultSelection({
+                        id,
+                        index,
+                        type: entityType,
+                    })
+                }
+            })
+        }
+    }, [entityType, history, id, index, link, searchRank, selected])
 
     const handleClick = (e: MouseEvent) => {
         onClick?.(e)
