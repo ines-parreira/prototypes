@@ -236,6 +236,7 @@ export const workflowConfigurationFactory = (
     accountId: number,
     workflowId: string
 ): WorkflowConfiguration => {
+    const messageStepId = ulid()
     const helpfulPromptStepId = ulid()
     return {
         id: workflowId,
@@ -243,7 +244,7 @@ export const workflowConfigurationFactory = (
         account_id: accountId,
         is_draft: true,
         name: '',
-        initial_step_id: helpfulPromptStepId,
+        initial_step_id: messageStepId,
         available_languages: ['en-US'],
         entrypoint: {
             label: '',
@@ -251,10 +252,30 @@ export const workflowConfigurationFactory = (
         },
         steps: [
             {
+                id: messageStepId,
+                kind: 'message',
+                settings: {
+                    message: {
+                        content: {
+                            text: '',
+                            text_tkey: ulid(),
+                            html: '',
+                            html_tkey: ulid(),
+                        },
+                    },
+                },
+            },
+            {
                 id: helpfulPromptStepId,
                 kind: 'helpful-prompt',
             },
         ],
-        transitions: [],
+        transitions: [
+            {
+                id: ulid(),
+                from_step_id: messageStepId,
+                to_step_id: helpfulPromptStepId,
+            },
+        ],
     }
 }
