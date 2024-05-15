@@ -184,7 +184,6 @@
         "ulidx": "^0.5.0",
         "urlsafe-base64": "1.0.0",
         "uuid": "^9.0.1",
-        "web-vitals": "3.0.1",
         "zen-observable": "^0.10.0"
     },
     "devDependencies": {

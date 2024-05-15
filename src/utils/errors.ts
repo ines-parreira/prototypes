@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/react'
 import {BrowserTracing} from '@sentry/tracing'
-import {ScopeContext, Transaction, TransactionContext} from '@sentry/types'
-import {Metric, onINP} from 'web-vitals'
+import {ScopeContext} from '@sentry/types'
 
 import {User} from 'config/types/user'
 import {Account} from 'state/currentAccount/types'
@@ -63,11 +62,7 @@ export function initErrorReporter({
         enabled: !/^(.+Mobile.+Safari.+|.+MSIE 8\.0;.+)$/.test(
             window.navigator.userAgent
         ),
-        integrations: [
-            withInpMeasurements(
-                new BrowserTracing() as unknown as PatchedBrowserTracing
-            ),
-        ],
+        integrations: [new BrowserTracing()],
         tracesSampleRate: TRACE_SAMPLE_RATE,
         ignoreErrors: IGNORED_ERRORS,
         denyUrls: DENY_URLS,
@@ -96,45 +91,4 @@ export function reportError(error: unknown, options?: Partial<ScopeContext>) {
     if (isStaging() || isProduction()) {
         Sentry.captureException(error, options)
     }
-}
-
-export interface PatchedBrowserTracing
-    extends Omit<BrowserTracing, '_createRouteTransaction'> {
-    _createRouteTransaction: (
-        context: TransactionContext
-    ) => Transaction | undefined
-}
-
-export function withInpMeasurements<T extends PatchedBrowserTracing>(
-    browserTracing: T
-) {
-    let inpMetric: Metric | undefined
-
-    onINP(
-        (metric) => {
-            inpMetric = metric
-        },
-        {
-            reportAllChanges: true,
-        }
-    )
-
-    const _originalCreateRouteTransaction =
-        browserTracing._createRouteTransaction
-
-    browserTracing._createRouteTransaction = (context) => {
-        const transaction = _originalCreateRouteTransaction.call(
-            browserTracing,
-            context
-        )
-
-        if (transaction && inpMetric) {
-            transaction.setMeasurement('inp', inpMetric.value, 'ms')
-            inpMetric = undefined
-        }
-
-        return transaction
-    }
-
-    return browserTracing
 }

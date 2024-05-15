@@ -1,8 +1,6 @@
 import {captureException, init, setTag, setUser} from '@sentry/react'
 import {ScopeContext} from '@sentry/types'
-import {Metric, onINP} from 'web-vitals'
-import {BrowserTracing, Transaction} from '@sentry/tracing'
-import {BrowserTracingOptions} from '@sentry/tracing/types/browser/browsertracing'
+import {BrowserTracing} from '@sentry/tracing'
 
 import {
     ACCOUNT_DOMAIN_TAG,
@@ -13,11 +11,9 @@ import {
     InitErrorReporterParams,
     LANGUAGE_TAG,
     LANGUAGE_TAG_VALUE,
-    PatchedBrowserTracing,
     reportError,
     SERVER_VERSION_TAG,
     TRACE_SAMPLE_RATE,
-    withInpMeasurements,
 } from 'utils/errors'
 import {
     assumeMock,
@@ -30,7 +26,6 @@ import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
 
 jest.mock('@sentry/react')
-jest.mock('web-vitals')
 
 const captureExceptionMock = captureException as jest.MockedFunction<
     typeof captureException
@@ -46,8 +41,6 @@ const userAgentMock = jest.fn()
 Object.defineProperty(global.navigator, 'userAgent', {
     get: userAgentMock,
 })
-
-const onInpMock = onINP as jest.MockedFunction<typeof onINP>
 
 describe('errors util', () => {
     beforeEach(() => {
@@ -193,77 +186,6 @@ describe('errors util', () => {
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
                 defaultOptions.extra
             )
-        })
-    })
-
-    describe('withInpMeasurement', () => {
-        class TestBrowserTracing implements PatchedBrowserTracing {
-            public name: string
-            public options: BrowserTracingOptions
-            public testTransactionSpy?: jest.SpiedFunction<
-                Transaction['setMeasurement']
-            >
-
-            constructor() {
-                this.name = 'TestBrowserTracing'
-                this.options = {} as BrowserTracingOptions
-            }
-
-            setupOnce = jest.fn()
-
-            simulateNavigation = () => {
-                this._createRouteTransaction()
-            }
-
-            _createRouteTransaction = () => {
-                const transaction = new Transaction({name: 'test transaction'})
-                this.testTransactionSpy = jest.spyOn(
-                    transaction,
-                    'setMeasurement'
-                )
-                return transaction
-            }
-        }
-
-        it('should add the last INP measurement to the route transaction', () => {
-            const browserTracing = withInpMeasurements(new TestBrowserTracing())
-            const reportInp = onInpMock.mock.calls[0][0]
-
-            reportInp({
-                value: 123,
-            } as Metric)
-            reportInp({
-                value: 456,
-            } as Metric)
-            browserTracing.simulateNavigation()
-
-            expect(browserTracing.testTransactionSpy).toHaveBeenLastCalledWith(
-                'inp',
-                456,
-                'ms'
-            )
-        })
-
-        it('should not add the INP measurement to the route transaction if no INP measurement available', () => {
-            const browserTracing = withInpMeasurements(new TestBrowserTracing())
-
-            browserTracing.simulateNavigation()
-
-            expect(browserTracing.testTransactionSpy).not.toHaveBeenCalled()
-        })
-
-        it('should add the INP measurement only once', () => {
-            const browserTracing = withInpMeasurements(new TestBrowserTracing())
-            const reportInp = onInpMock.mock.calls[0][0]
-
-            reportInp({
-                value: 123,
-            } as Metric)
-            browserTracing.simulateNavigation()
-            browserTracing.testTransactionSpy?.mockReset()
-            browserTracing.simulateNavigation()
-
-            expect(browserTracing.testTransactionSpy).not.toHaveBeenCalled()
         })
     })
 })

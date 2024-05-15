@@ -1,6 +1,5 @@
 import {datadogLogs} from '@datadog/browser-logs'
 import {datadogRum} from '@datadog/browser-rum'
-import {onINP} from 'web-vitals'
 
 import {Account} from 'state/currentAccount/types'
 import {User} from 'config/types/user'
@@ -17,7 +16,6 @@ export const DATADOG_LOGS_SESSION_SAMPLE_RATE = 100
 export const DATADOG_RUM_SERVICE = 'helpdesk-web-app'
 export const DATADOG_RUM_SESSION_SAMPLE_RATE = 5
 export const DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE = 0
-export const DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION = 'customWebVital'
 
 export type InitDatadogLoggerOptions = {
     account: Account
@@ -88,14 +86,4 @@ export const initDatadogRum = ({
     datadogRum.setGlobalContext({
         serverVersion,
     })
-    onINP(
-        (metric) => {
-            datadogRum.addAction(DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION, {
-                inp: metric.value,
-            })
-        },
-        {
-            reportAllChanges: true,
-        }
-    )
 }

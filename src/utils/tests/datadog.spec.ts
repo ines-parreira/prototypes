@@ -1,11 +1,9 @@
 import {datadogLogs} from '@datadog/browser-logs'
 import {datadogRum} from '@datadog/browser-rum'
-import {Metric, onINP} from 'web-vitals'
 
 import {
     DATADOG_LOGS_SESSION_SAMPLE_RATE,
     DATADOG_LOGS_SERVICE,
-    DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION,
     DATADOG_RUM_SESSION_SAMPLE_RATE,
     DATADOG_RUM_SERVICE,
     DATADOG_RUM_SESSION_REPLAY_SAMPLE_RATE,
@@ -17,7 +15,6 @@ import {
 } from 'utils/datadog'
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
-import {assumeMock} from 'utils/testing'
 import {
     DATADOG_CLIENT_TOKEN,
     DATADOG_RUM_APPLICATION_ID,
@@ -27,7 +24,6 @@ import {GorgiasUIEnv} from 'utils/environment'
 
 jest.mock('@datadog/browser-logs')
 jest.mock('@datadog/browser-rum')
-jest.mock('web-vitals')
 
 describe('datadog', () => {
     describe('initDatadogLogger', () => {
@@ -120,23 +116,6 @@ describe('datadog', () => {
             expect(datadogRum.setGlobalContext).toHaveBeenCalledWith({
                 serverVersion: defaultServerVersion,
             })
-        })
-
-        it('should report INP', () => {
-            const inpValue = 123
-
-            initDatadogRum(defaultOptions)
-            const reportInp = assumeMock(onINP).mock.calls[0][0]
-            reportInp({
-                value: inpValue,
-            } as Metric)
-
-            expect(datadogRum.addAction).toHaveBeenCalledWith(
-                DATADOG_RUM_CUSTOM_WEB_VITAL_ACTION,
-                {
-                    inp: inpValue,
-                }
-            )
         })
     })
 })
