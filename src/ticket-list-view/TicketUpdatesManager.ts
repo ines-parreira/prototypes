@@ -40,7 +40,7 @@ export default class TicketUpdatesManager {
         const {data, meta} = await this.getPage(this.sortOrder, this.nextCursor)
         this.nextCursor = meta.next_cursor
         this.tickets = [...this.tickets, ...data.map(transformApiTicketPartial)]
-        this.listener(this.tickets, this.nextCursor)
+        this.listener?.(this.tickets, this.nextCursor)
 
         this.loading = false
     }
@@ -119,7 +119,7 @@ export default class TicketUpdatesManager {
                 this.tickets = data.map(transformApiTicketPartial)
             } catch (err) {}
 
-            this.listener(this.tickets, this.nextCursor)
+            this.listener?.(this.tickets, this.nextCursor)
             this.loading = false
             return
         }
@@ -148,7 +148,7 @@ export default class TicketUpdatesManager {
             this.tickets = [...newTickets, ...oldTickets]
         } catch (err) {}
 
-        this.listener(this.tickets, this.nextCursor)
+        this.listener?.(this.tickets, this.nextCursor)
         this.loading = false
     }
 
