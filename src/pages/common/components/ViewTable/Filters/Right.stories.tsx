@@ -13,7 +13,7 @@ const storyConfig: Meta = {
     title: 'Data Display/ViewTable/RightContainer',
     component: RightContainer,
     parameters: {
-        chromatic: {disableSnapshot: true},
+        chromatic: {disableSnapshot: false},
     },
 }
 
@@ -76,9 +76,9 @@ const defaultProps: ComponentProps<typeof RightContainer> = {
                 column: 29,
             },
         },
-        raw: "'2021-12-1T06:00:00.000Z'",
+        raw: '2021-12-01T06:00:00.000Z',
         type: 'Literal',
-        value: '2021-12-1T06:00:00.000Z',
+        value: '2021-12-01T06:00:00.000Z',
     },
 }
 

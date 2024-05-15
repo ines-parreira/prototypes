@@ -1,3 +1,5 @@
+import {within} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import {Meta, StoryFn} from '@storybook/react'
@@ -7,12 +9,13 @@ import {ThemeProvider} from 'theme'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 
 const defaultState = {}
+const DATE = '2024-04-14T12:34:56.000Z'
 
 const storyConfig: Meta = {
     title: 'Stats/PeriodStatsFilter',
     component: PeriodStatsFilter,
     parameters: {
-        chromatic: {disableSnapshot: true},
+        chromatic: {disableSnapshot: false},
     },
 }
 
@@ -30,12 +33,16 @@ const Template: StoryFn<ComponentProps<typeof PeriodStatsFilter>> = (
 
 const defaultProps: ComponentProps<typeof PeriodStatsFilter> = {
     value: {
-        end_datetime: moment().format(),
-        start_datetime: moment().subtract(7, 'days').format(),
+        end_datetime: moment(DATE).format(),
+        start_datetime: moment(DATE).subtract(7, 'days').format(),
     },
 }
 
 export const Default = Template.bind({})
 Default.args = defaultProps
+Default.play = ({canvasElement}) => {
+    const canvas = within(canvasElement)
+    userEvent.click(canvas.getByRole('button'))
+}
 
 export default storyConfig

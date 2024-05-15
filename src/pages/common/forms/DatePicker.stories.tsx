@@ -3,11 +3,13 @@ import {Meta, StoryFn} from '@storybook/react'
 import {ThemeProvider} from 'theme'
 import {DatePicker} from 'pages/common/forms/DatePicker'
 
+const DATE = '2024-04-14T12:34:56.000Z'
+
 const storyConfig: Meta = {
     title: 'Data Entry/DatePicker',
     component: DatePicker,
     parameters: {
-        chromatic: {disableSnapshot: true},
+        chromatic: {disableSnapshot: false},
     },
 }
 
@@ -33,7 +35,7 @@ const defaultProps: ComponentProps<typeof DatePicker> = {
         showCustomRangeLabel: false,
         singleDatePicker: true,
         timePicker: false,
-        startDate: new Date(),
+        startDate: new Date(DATE),
     },
     isOpen: true,
 }

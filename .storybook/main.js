@@ -23,6 +23,7 @@ module.exports = {
         '@storybook/addon-links',
         '@storybook/addon-controls',
         '@storybook/addon-essentials',
+        '@storybook/addon-interactions',
     ],
     babel: {
         presets: [

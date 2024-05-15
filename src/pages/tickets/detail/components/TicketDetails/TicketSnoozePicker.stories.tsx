@@ -7,7 +7,7 @@ const storyConfig: Meta = {
     title: 'Tickets/TicketSnoozePicker',
     component: TicketSnoozePicker,
     parameters: {
-        chromatic: {disableSnapshot: true},
+        chromatic: {disableSnapshot: false},
     },
 }
 
@@ -27,6 +27,7 @@ const defaultProps: ComponentProps<typeof TicketSnoozePicker> = {
     onSubmit: () => undefined,
     isOpen: true,
     timezone: null,
+    datetime: '2099-12-01T06:00:00.000Z',
 }
 
 export const Default = Template.bind({})
