@@ -95,18 +95,17 @@ export default function Card(props: Props) {
                         {afterTitle}
                     </>
                 )}
-                {isOpen && (
-                    <div
-                        className={classnames(css.cardContent, {
-                            hidden: !shouldDisplayContent,
-                            [css.canDrop]: isEditionMode && props.canDrop,
-                        })}
-                    >
-                        {beforeContent}
-                        {props.children}
-                        {afterContent}
-                    </div>
-                )}
+
+                <div
+                    className={classnames(css.cardContent, {
+                        hidden: !shouldDisplayContent || !isOpen,
+                        [css.canDrop]: isEditionMode && props.canDrop,
+                    })}
+                >
+                    {beforeContent}
+                    {props.children}
+                    {afterContent}
+                </div>
             </div>
         </div>
     )

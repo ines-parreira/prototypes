@@ -77,7 +77,7 @@ describe('Card', () => {
             expect(container?.firstChild).toHaveClass('onlyContent')
         })
 
-        it('should remove content if "isDefaultOpen" is false and "isEditionMode" is false', () => {
+        it('should add the "hidden" class if "isDefaultOpen" is false and "isEditionMode" is false', () => {
             render(
                 <Card
                     {...defaultProps}
@@ -86,7 +86,13 @@ describe('Card', () => {
                 />
             )
 
-            expect(document.querySelector('.cardContent')).toBeNull()
+            expect(document.querySelector('.cardContent')).toHaveClass('hidden')
+        })
+
+        it('should add the "hidden" class if "shouldDisplayContent" is false', () => {
+            render(<Card {...defaultProps} shouldDisplayContent={false} />)
+
+            expect(document.querySelector('.cardContent')).toHaveClass('hidden')
         })
 
         it('should add the "draggable" class if "isDraggable" is true', () => {
@@ -103,12 +109,6 @@ describe('Card', () => {
             expect(document.querySelector('.cardContent')).toHaveClass(
                 'canDrop'
             )
-        })
-
-        it('should add the "hidden" class if "shouldDisplayContent" is false', () => {
-            render(<Card {...defaultProps} shouldDisplayContent={false} />)
-
-            expect(document.querySelector('.cardContent')).toHaveClass('hidden')
         })
     })
 
