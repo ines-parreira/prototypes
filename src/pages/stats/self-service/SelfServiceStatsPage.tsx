@@ -2,6 +2,8 @@ import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
+import {stringify} from 'csv-stringify/sync' // eslint-disable-line import/no-unresolved
 import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PaywallConfig,
@@ -138,6 +140,35 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     useEffect(() => {
         void retrieveWorkflowConfigurations()
     }, [retrieveWorkflowConfigurations])
+
+    const refineDownloadedWorkflows = useCallback(
+        (csvData: string): string => {
+            try {
+                if (!workflowConfigurations?.length || !csvData) return csvData
+                const flows = parse(csvData, {columns: true}) as {
+                    Flow: string
+                    [key: string]: any
+                }[]
+                if (!flows?.length) return csvData
+                flows.forEach((flow) => {
+                    flow.Flow =
+                        workflowConfigurations.find(
+                            (configuration) => configuration.id === flow.Flow
+                        )?.name ?? flow.Flow
+                })
+                return stringify(flows, {
+                    header: true,
+                })
+            } catch (err) {
+                console.error(
+                    'Error while renaming configurationId to Flow name',
+                    err
+                )
+            }
+            return csvData
+        },
+        [workflowConfigurations]
+    )
 
     const selfServiceConfigurations = useAppSelector(
         getSelfServiceConfigurations
@@ -367,6 +398,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                         resourceName={SELF_SERVICE_WORKFLOWS_PERFORMANCE}
                         statsFilters={pageStatsFilters}
                         isDownloadable={!workflowsPerformanceNoData}
+                        refineDownload={refineDownloadedWorkflows}
                     >
                         {(stat) => (
                             <TableStat

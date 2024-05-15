@@ -44,6 +44,7 @@ type Props = {
     isDownloadable?: boolean
     loaderHeight?: string
     children: (stat: Map<any, any>) => ReactNode
+    refineDownload?: (csvData: string) => string
 } & HTMLAttributes<HTMLDivElement>
 
 export default function StatWrapper({
@@ -59,6 +60,7 @@ export default function StatWrapper({
     className,
     helpAutoHide,
     visibilityLink,
+    refineDownload,
     ...wrapperProps
 }: Props) {
     const dispatch = useAppDispatch()
@@ -82,6 +84,9 @@ export default function StatWrapper({
                         cancelToken,
                     }
                 )
+                if (refineDownload) {
+                    file.data = refineDownload(file.data)
+                }
                 saveFileAsDownloaded(file.name, file.data, file.contentType)
             } catch (error) {
                 if (axios.isCancel(error)) {
