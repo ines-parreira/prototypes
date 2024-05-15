@@ -34,7 +34,7 @@ export enum TicketSLAMember {
 
 export enum TicketSLAStatus {
     Breached = 'BREACHED',
-    Satisfied = 'SATISIFIED',
+    Satisfied = 'SATISFIED',
     Pending = 'PENDING',
 }
 

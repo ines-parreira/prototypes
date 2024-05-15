@@ -39,3 +39,7 @@ export type FilterOptionGroup = {
     title?: string
     options: DropdownOption[]
 }
+
+export type MaybeData<T> = {
+    data?: T
+}

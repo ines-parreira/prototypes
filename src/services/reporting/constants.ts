@@ -20,6 +20,13 @@ export const ONE_TOUCH_TICKETS_LABEL = 'One touch tickets'
 export const TICKET_HANDLE_TIME_LABEL = 'Ticket handle time'
 export const CREATED_VS_CLOSED_TICKETS_LABEL = 'Created vs. closed tickets'
 
+export const ACHIEVEMENT_RATE_LABEL = 'Achievement rate'
+export const TICKETS_WITH_BREACHED_SLAS_LABEL = 'Tickets with breached SLAs'
+export const BREACHED_SLA_LABEL = 'Breached'
+export const ACHIEVED_SLA_LABEL = 'Achieved'
+export const PENDING_SLA_LABEL = 'Pending'
+export const DATES_WITHIN_PERIOD_LABEL = 'Dates within period'
+
 export enum MetricName {
     CustomerSatisfaction = 'customerSatisfaction',
     MedianFirstResponseTime = 'medianFirstResponseTime',

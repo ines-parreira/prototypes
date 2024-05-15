@@ -2,7 +2,7 @@ import moment from 'moment/moment'
 import {Period} from 'models/stat/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {OneDimensionalDataItem} from 'pages/stats/types'
+import {MaybeData, OneDimensionalDataItem} from 'pages/stats/types'
 import {
     CURRENT_PERIOD_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
@@ -22,11 +22,6 @@ import {
 } from 'services/reporting/constants'
 import {createCsv, saveZippedFiles} from 'utils/file'
 
-interface Fetching<T> {
-    isFetching: boolean
-    data?: T
-}
-
 export interface SupportPerformanceReportData {
     customerSatisfactionTrend: MetricTrend
     medianFirstResponseTimeTrend: MetricTrend
@@ -37,12 +32,12 @@ export interface SupportPerformanceReportData {
     ticketsCreatedTrend: MetricTrend
     ticketsRepliedTrend: MetricTrend
     messagesSentTrend: MetricTrend
-    ticketsCreatedTimeSeries: Fetching<TimeSeriesDataItem[][]>
-    ticketsClosedTimeSeries: Fetching<TimeSeriesDataItem[][]>
-    ticketsRepliedTimeSeries: Fetching<TimeSeriesDataItem[][]>
-    messagesSentTimeSeries: Fetching<TimeSeriesDataItem[][]>
-    workloadPerChannel: Fetching<OneDimensionalDataItem[]>
-    workloadPerChannelPrevious: Fetching<OneDimensionalDataItem[]>
+    ticketsCreatedTimeSeries: MaybeData<TimeSeriesDataItem[][]>
+    ticketsClosedTimeSeries: MaybeData<TimeSeriesDataItem[][]>
+    ticketsRepliedTimeSeries: MaybeData<TimeSeriesDataItem[][]>
+    messagesSentTimeSeries: MaybeData<TimeSeriesDataItem[][]>
+    workloadPerChannel: MaybeData<OneDimensionalDataItem[]>
+    workloadPerChannelPrevious: MaybeData<OneDimensionalDataItem[]>
 }
 
 export const saveReport = async (
