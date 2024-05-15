@@ -5,6 +5,7 @@ import TicketIcon from 'pages/common/components/TicketIcon'
 
 import {Notification, NotificationType} from '../types'
 
+import Subtitle from './Subtitle'
 import css from './NotificationContent.less'
 
 type Props = {
@@ -14,8 +15,9 @@ type Props = {
 }
 
 const notificationTypeMap: Record<NotificationType, string> = {
-    'message-received': 'New message',
-    'snooze-expired': 'Snooze expired',
+    'ticket.snooze-expired': 'Snooze expired',
+    'ticket-message.created': 'New message',
+    'user.mentioned': 'New mention',
 }
 
 export default function NotificationContent({
@@ -38,15 +40,12 @@ export default function NotificationContent({
             <div className={css.content}>
                 <header className={css.header}>
                     <h4 className={css.type}>
-                        {notificationTypeMap[notification.type]}
+                        {notificationTypeMap[notification.type] ||
+                            notification.type}
                     </h4>
                     {headerExtra}
                 </header>
-                <p className={css.subtitle}>
-                    <strong>{ticket.subject}</strong> from{' '}
-                    <strong>{ticket.sender.name}</strong>
-                </p>
-
+                <Subtitle notification={notification} />
                 {!!ticket.excerpt && (
                     <div className={css.excerpt}>{ticket.excerpt}</div>
                 )}

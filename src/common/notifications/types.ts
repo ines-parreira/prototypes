@@ -7,7 +7,7 @@ export type Ticket = {
     id: number
     channel: TicketChannel
     excerpt?: string
-    sender: PickedActor
+    sender?: PickedActor
     status: TicketStatus
     subject: string
 }
@@ -25,14 +25,21 @@ export type DefaultPayload = {
 
 export type Notification =
     | (NotificationBase & {
-          type: 'message-received'
+          type: 'ticket.snooze-expired'
           payload: DefaultPayload
       })
     | (NotificationBase & {
-          type: 'snooze-expired'
+          type: 'ticket-message.created'
           payload: DefaultPayload
+      })
+    | (NotificationBase & {
+          type: 'user.mentioned'
+          payload: {
+              sender: PickedActor
+              ticket: Ticket
+          }
       })
 
 export type NotificationType = Notification['type']
 
-export type RawNotification = Omit<Notification, 'id'>
+export type RawNotification = UnionOmit<Notification, 'id'>

@@ -9,9 +9,8 @@ export default function transformKnockNotification(
     if (!data) return null
 
     return {
+        ...data,
         id,
-        type: data.type,
-        payload: data.payload,
         inserted_datetime: inserted_at,
         read_datetime: read_at,
         seen_datetime: seen_at,

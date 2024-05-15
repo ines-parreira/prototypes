@@ -1,5 +1,10 @@
 declare type Maybe<T> = T | undefined | null
 
+declare type UnionOmit<
+    T,
+    K extends string | number | symbol
+> = T extends unknown ? Omit<T, K> : never
+
 declare type ValueOf<T> = T[keyof T]
 
 declare type ArgumentsOf<F extends Function> = F extends (
