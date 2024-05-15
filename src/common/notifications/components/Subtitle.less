@@ -1,12 +1,21 @@
 @import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+
 :local {
     .subtitle {
-        .caption-regular();
+        display: flex;
+        white-space: break-spaces;
+        flex-wrap: wrap;
         margin: 0;
         color: var(--neutral-grey-5);
+        .caption-regular();
 
         strong {
             .caption-semibold();
         }
+    }
+
+    .subject {
+        .line-clamp(1);
     }
 }

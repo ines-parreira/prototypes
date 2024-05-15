@@ -20,7 +20,7 @@ export default function Subtitle({notification}: Props) {
                 ) : (
                     <>You were mentioned in</>
                 )}{' '}
-                <strong>{ticket.subject}</strong>
+                <strong className={css.subject}>{ticket.subject}</strong>
             </p>
         )
     }
@@ -29,7 +29,7 @@ export default function Subtitle({notification}: Props) {
 
     return (
         <p className={css.subtitle}>
-            <strong>{ticket.subject}</strong>
+            <strong className={css.subject}>{ticket.subject} </strong>
             {!!ticket.sender && (
                 <>
                     {' '}
