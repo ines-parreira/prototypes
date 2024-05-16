@@ -1,3 +1,5 @@
 export {default as NotificationsButton} from './components/Button'
+export {default as NotificationsSettings} from './components/Settings'
 export {default as NotificationsProvider} from './components/Provider'
+export {default as SoundSelect} from './components/SoundSelect'
 export {default as NotificationsToasts} from './components/Toasts'

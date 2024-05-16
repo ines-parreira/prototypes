@@ -1,24 +1,11 @@
-import cn from 'classnames'
-import React, {
-    ChangeEvent,
-    ReactNode,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import React, {ChangeEvent, ReactNode, useCallback, useRef} from 'react'
 
+import {SoundSelect} from 'common/notifications'
 import useMouseRelease from 'hooks/useMouseRelease'
 import Button from 'pages/common/components/button/Button'
-import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import SelectInputBox, {
-    SelectInputBoxContext,
-} from 'pages/common/forms/input/SelectInputBox'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {notificationSounds} from 'services'
-import {sounds, SoundValue} from 'services/NotificationSounds'
+import {SoundValue} from 'services/NotificationSounds'
 
 import css from './SoundSetting.less'
 
@@ -26,11 +13,11 @@ type Props = {
     className?: string
     description: ReactNode
     enabled: boolean
-    sound: SoundValue
+    sound: '' | SoundValue
     title: string
     volume: number
     onChangeEnabled: (enabled: boolean) => void
-    onChangeSound: (sound: SoundValue) => void
+    onChangeSound: (sound: '' | SoundValue) => void
     onChangeVolume: (volume: number) => void
 }
 
@@ -45,20 +32,21 @@ export default function SoundSetting({
     onChangeSound,
     onChangeVolume,
 }: Props) {
-    const [isOpen, setIsOpen] = useState(false)
     const volumeRef = useRef<number>(volume)
-    const targetRef = useRef<HTMLDivElement>(null)
-    const floatingRef = useRef<HTMLDivElement>(null)
 
     const handleMouseUp = useCallback(() => {
-        notificationSounds.play(sound, volumeRef.current)
+        if (sound) {
+            notificationSounds.play(sound, volumeRef.current)
+        }
     }, [sound])
 
     const onMouseDown = useMouseRelease(handleMouseUp)
 
     const handleChangeSound = useCallback(
-        (sound: SoundValue) => {
-            notificationSounds.play(sound, volume)
+        (sound: '' | SoundValue) => {
+            if (sound) {
+                notificationSounds.play(sound, volume)
+            }
             onChangeSound(sound)
         },
         [onChangeSound, volume]
@@ -74,13 +62,10 @@ export default function SoundSetting({
     )
 
     const handleTestSound = useCallback(() => {
-        notificationSounds.play(sound, volume)
+        if (sound) {
+            notificationSounds.play(sound, volume)
+        }
     }, [sound, volume])
-
-    const selectedSound = useMemo(
-        () => sounds.find((s) => s.value === sound),
-        [sound]
-    )
 
     return (
         <div className={className}>
@@ -94,45 +79,7 @@ export default function SoundSetting({
                 </ToggleInput>
 
                 <div className={css.soundSelect}>
-                    <SelectInputBox
-                        isDisabled={!enabled}
-                        floating={floatingRef}
-                        label={selectedSound?.label}
-                        prefix={
-                            <i className={cn('material-icons', css.soundIcon)}>
-                                volume_up
-                            </i>
-                        }
-                        onToggle={setIsOpen}
-                        ref={targetRef}
-                    >
-                        <SelectInputBoxContext.Consumer>
-                            {(context) => (
-                                <Dropdown
-                                    isOpen={isOpen}
-                                    onToggle={() => context!.onBlur()}
-                                    ref={floatingRef}
-                                    target={targetRef}
-                                    value={sound}
-                                >
-                                    <DropdownBody>
-                                        {sounds.map((sound) => (
-                                            <DropdownItem
-                                                onClick={() =>
-                                                    handleChangeSound(
-                                                        sound.value
-                                                    )
-                                                }
-                                                key={sound.value}
-                                                option={sound}
-                                                shouldCloseOnSelect
-                                            />
-                                        ))}
-                                    </DropdownBody>
-                                </Dropdown>
-                            )}
-                        </SelectInputBoxContext.Consumer>
-                    </SelectInputBox>
+                    <SoundSelect value={sound} onChange={handleChangeSound} />
                 </div>
             </div>
             <div className={css.volume}>

@@ -1,7 +1,22 @@
+import type {ChannelType} from '@knocklabs/types'
+import type {ReactNode} from 'react'
+
 import type {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {Actor} from 'models/ticket/types'
+import type {SoundValue} from 'services/NotificationSounds'
 
 export type PickedActor = Pick<Actor, 'id' | 'name' | 'firstname' | 'lastname'>
+
+export type Channel = {
+    type: ChannelType
+    label: ReactNode
+}
+
+export type Event = {
+    enabled: boolean
+    label: ReactNode
+    type: NotificationType
+}
 
 export type Ticket = {
     id: number
@@ -43,3 +58,13 @@ export type Notification =
 export type NotificationType = Notification['type']
 
 export type RawNotification = UnionOmit<Notification, 'id'>
+
+export type Settings = {
+    volume: number
+    events: {
+        [notificationType: string]: {
+            sound: '' | SoundValue
+            channels: {[k in ChannelType]?: boolean}
+        }
+    }
+}

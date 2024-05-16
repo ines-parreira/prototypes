@@ -154,4 +154,9 @@ export type UserNotificationPreferencesData = {
         sound: SoundValue
         volume: number
     }
+    events?: {
+        [event: string]: {
+            sound: '' | SoundValue
+        }
+    }
 }

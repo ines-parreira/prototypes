@@ -4,7 +4,7 @@ import {defaultSound, SoundValue} from 'services/NotificationSounds'
 
 export type Setting = {
     enabled: boolean
-    sound: SoundValue
+    sound: '' | SoundValue
     volume: number
 }
 
@@ -15,7 +15,7 @@ export default function useSoundSetting(initialSettings?: Setting) {
         setState((s) => ({...s, enabled}))
     }, [])
 
-    const onChangeSound = useCallback((sound: SoundValue) => {
+    const onChangeSound = useCallback((sound: '' | SoundValue) => {
         setState((s) => ({...s, sound}))
     }, [])
 

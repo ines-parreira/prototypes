@@ -12,6 +12,7 @@ import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 
+import {NotificationsSettings as NewNotificationsSettings} from 'common/notifications'
 import {logPageChange} from 'common/segment'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
@@ -770,6 +771,9 @@ export function SettingsRoutes() {
     const isSLAPoliciesEnabled: boolean =
         useFlags()[FeatureFlagKey.SLAPolicies] || false
 
+    const hasNotifications: boolean =
+        useFlags()[FeatureFlagKey.Notifications] || false
+
     return (
         <Switch>
             <Route
@@ -831,7 +835,11 @@ export function SettingsRoutes() {
                 exact
                 render={() => (
                     <App
-                        content={NotificationSettings}
+                        content={
+                            hasNotifications
+                                ? NewNotificationsSettings
+                                : NotificationSettings
+                        }
                         navbar={SettingsNavbar}
                     />
                 )}
