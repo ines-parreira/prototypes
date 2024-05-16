@@ -12,16 +12,21 @@ import {getHasAutomate} from 'state/billing/selectors'
 import Button from 'pages/common/components/button/Button'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {LocaleCode} from 'models/helpCenter/types'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
+import {useGetAIArticlesByHelpCenter} from 'pages/settings/helpCenter/queries'
+
 import css from './HelpCenterNavigation.less'
 import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import {MINIMUM_AI_ARTICLES} from './CategoriesView/components/ArticleTemplateCard/constants'
 
 type Props = {
     helpCenterId: string | number
     helpCenterShopName?: string | null
     cannotUpdateHelpCenter?: boolean
     isConnectStoreLinkEnabled?: boolean
+    locale: LocaleCode
 }
 
 export const HelpCenterNavigation: React.FC<Props> = ({
@@ -29,6 +34,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     helpCenterId,
     helpCenterShopName,
     isConnectStoreLinkEnabled = true,
+    locale,
 }: Props) => {
     const baseURL = `/app/settings/help-center/${helpCenterId}`
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -40,7 +46,18 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const showAILibraryTab = useHasAccessToAILibrary()
+    const hasAccessToAILibrary = useHasAccessToAILibrary()
+
+    const {data: aiArticles} = useGetAIArticlesByHelpCenter(
+        Number(helpCenterId),
+        locale,
+        {
+            refetchOnWindowFocus: false,
+        }
+    )
+
+    const showAILibraryTab =
+        hasAccessToAILibrary && (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES
 
     const logHelpCenterEvent = (version: string) => {
         if (!changeAutomateSettingButtomPosition) return

@@ -36,6 +36,18 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     }
 })
 
+jest.mock('pages/settings/helpCenter/queries', () => {
+    return {
+        useGetAIArticlesByHelpCenter: jest.fn().mockReturnValue({
+            data: Array(5).map((_, i) => ({
+                id: i,
+                title: `Article ${i}`,
+                content: `Article ${i} content`,
+            })),
+        }),
+    }
+})
+
 const defaultState: Partial<RootState> = {
     entities: {
         contactForm: {

@@ -8,7 +8,7 @@ import Button from 'pages/common/components/button/Button'
 
 import css from './AILibraryBanner.less'
 
-const ArticleTemplatesBanner = () => {
+const AILibraryBanner = () => {
     const helpCenterId = useHelpCenterIdParam()
     const history = useHistory()
 
@@ -50,4 +50,4 @@ const ArticleTemplatesBanner = () => {
     )
 }
 
-export default ArticleTemplatesBanner
+export default AILibraryBanner

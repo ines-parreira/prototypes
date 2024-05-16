@@ -51,6 +51,18 @@ jest.mock('../../hooks/useHelpCenterIdParam', () => {
     }
 })
 
+jest.mock('pages/settings/helpCenter/queries', () => {
+    return {
+        useGetAIArticlesByHelpCenter: jest.fn().mockReturnValue({
+            data: Array(5).map((_, i) => ({
+                id: i,
+                title: `Article ${i}`,
+                content: `Article ${i} content`,
+            })),
+        }),
+    }
+})
+
 describe('<HelpCenterCustomizationView />', () => {
     const props = {}
 
