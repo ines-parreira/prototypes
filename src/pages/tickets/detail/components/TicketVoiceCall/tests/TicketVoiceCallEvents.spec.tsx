@@ -22,6 +22,10 @@ jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () => () => <div>Agent Label</div>
 )
+jest.mock(
+    'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
+    () => () => <div>Customer Label</div>
+)
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
@@ -65,8 +69,8 @@ describe('TicketVoiceCallEvents', () => {
 
     it('should render timeline with events when data is available', () => {
         const mockEvents = [
-            {text: 'Event 1', user_id: 1, datetime: '00:01 AM'},
-            {text: 'Event 2', user_id: 2, datetime: '07:11 PM'},
+            {text: 'Event 1', userId: 1, datetime: '00:01 AM'},
+            {text: 'Event 2', userId: 2, datetime: '07:11 PM'},
         ]
         useListVoiceCallEventsSpy.mockReturnValue({
             data: {data: {data: mockEvents}},
@@ -92,5 +96,26 @@ describe('TicketVoiceCallEvents', () => {
         render(<TicketVoiceCallEvents callId={1} />)
 
         expect(screen.getByText('No events:')).toBeInTheDocument()
+    })
+
+    it('should render customer event', () => {
+        const mockEvents = [
+            {
+                text: 'Event 1',
+                userId: null,
+                datetime: '00:01 AM',
+                customerId: 1,
+            },
+        ]
+        useListVoiceCallEventsSpy.mockReturnValue({
+            data: {data: {data: mockEvents}},
+            isLoading: false,
+            error: null,
+        } as any)
+
+        render(<TicketVoiceCallEvents callId={1} />)
+
+        expect(screen.getByText('Event 1')).toBeInTheDocument()
+        expect(screen.getByText('Customer Label')).toBeInTheDocument()
     })
 })

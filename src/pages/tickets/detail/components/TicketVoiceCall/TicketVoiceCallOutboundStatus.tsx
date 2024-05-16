@@ -1,10 +1,15 @@
 import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getDisplayOutboundVoiceCallStatus,
     VoiceCall,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
+import TicketVoiceCallEvents from './TicketVoiceCallEvents'
+import CollapsibleDetails from './CollapsibleDetails'
 
 import css from './TicketVoiceCallContainer.less'
 
@@ -13,6 +18,16 @@ type Props = {
 }
 
 export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
+    const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
+    const answeredStatus = (
+        <div className={css.statusWrapper}>
+            <div>Answered by</div>
+            <VoiceCallCustomerLabel
+                customerId={voiceCall.customer_id}
+                phoneNumber={voiceCall.phone_number_source}
+            />
+        </div>
+    )
     switch (getDisplayOutboundVoiceCallStatus(voiceCall.status)) {
         case VoiceCallDisplayStatus.Ringing:
             return (
@@ -45,14 +60,12 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
             )
         case VoiceCallDisplayStatus.InProgress:
         case VoiceCallDisplayStatus.Answered:
-            return (
-                <div className={css.statusWrapper}>
-                    <div>Answered by</div>
-                    <VoiceCallCustomerLabel
-                        customerId={voiceCall.customer_id}
-                        phoneNumber={voiceCall.phone_number_source}
-                    />
-                </div>
+            return isCallTransferEnabled ? (
+                <CollapsibleDetails title={answeredStatus}>
+                    <TicketVoiceCallEvents callId={voiceCall.id} />
+                </CollapsibleDetails>
+            ) : (
+                answeredStatus
             )
         default:
             return null

@@ -1,11 +1,11 @@
 import * as momentUtils from 'utils/date'
 import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
 import {
-    isFinalVoiceCallStatus,
-    getFormattedDurationOngoingCall,
     getFormattedDurationEndedCall,
-    processEvents,
+    getFormattedDurationOngoingCall,
+    isFinalVoiceCallStatus,
     isMissedInboundVoiceCall,
+    processEvents,
 } from '../utils'
 import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from '../types'
 
@@ -124,6 +124,12 @@ describe('voice call utils', () => {
                     user_id: 5,
                     created_datetime: '03:04 PM',
                 },
+                {
+                    type: PhoneIntegrationEvent.OutgoingPhoneCallConnected,
+                    user_id: null,
+                    customer_id: 7,
+                    created_datetime: '03:05 PM',
+                },
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
@@ -131,6 +137,12 @@ describe('voice call utils', () => {
                 {text: 'Missed by', userId: 3, datetime: '10:04 AM'},
                 {text: 'Missed by', userId: 4, datetime: '10:05 AM'},
                 {text: 'Answered by', userId: 5, datetime: '03:04 PM'},
+                {
+                    text: 'Answered by',
+                    userId: null,
+                    customerId: 7,
+                    datetime: '03:05 PM',
+                },
             ])
         })
 

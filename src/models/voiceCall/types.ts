@@ -79,7 +79,7 @@ export type VoiceCallEvent = {
     type: PhoneIntegrationEvent
     account_id: number
     call_id: number
-    user_id: number
+    user_id: number | null
     customer_id: number
     created_datetime: string
     meta: Record<string, unknown>

@@ -1,5 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 import TicketVoiceCallOutboundStatus from '../TicketVoiceCallOutboundStatus'
 
@@ -10,11 +12,27 @@ jest.mock(
             <div>TicketVoiceCallCustomerLabel {customerId}</div>
 )
 
+jest.mock('../TicketVoiceCallEvents', () => ({callId}: any) => (
+    <div data-testid="ticket-voice-call-events">{callId}</div>
+))
+
+jest.mock('../CollapsibleDetails', () => ({title, children}: any) => (
+    <div data-testid="collapsible-details">
+        <div>{title}</div>
+        <div>{children}</div>
+    </div>
+))
+
 const renderComponent = (voiceCall: any) => {
     return render(<TicketVoiceCallOutboundStatus voiceCall={voiceCall} />)
 }
 
 describe('TicketVoiceCallOutboundStatus', () => {
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({[FeatureFlagKey.CallTransfer]: true})
+    })
+
     it.each([
         [VoiceCallStatus.Canceled, 'Call missed by'],
         [VoiceCallStatus.NoAnswer, 'Call missed by'],
@@ -45,5 +63,18 @@ describe('TicketVoiceCallOutboundStatus', () => {
         } as VoiceCall
         const {container} = renderComponent(voiceCall)
         expect(container.firstChild).toBeNull()
+    })
+
+    it("should render events when voice call is 'Answered'", () => {
+        const voiceCall = {
+            status: VoiceCallStatus.Connected,
+            customer_id: '123',
+            phone_number_source: '+1234567890',
+        }
+
+        const {getByText, getByTestId} = renderComponent(voiceCall)
+
+        expect(getByText('Answered by')).toBeInTheDocument()
+        expect(getByTestId('collapsible-details')).toBeInTheDocument()
     })
 })

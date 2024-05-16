@@ -3,12 +3,13 @@ import classNames from 'classnames'
 import {useListVoiceCallEvents} from 'models/voiceCall/queries'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import {processEvents} from 'models/voiceCall/utils'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import Timeline from './Timeline'
-import TimelineItem from './TimelineItem'
 
+import TimelineItem from './TimelineItem'
 import css from './TicketVoiceCallContainer.less'
 
 type TicketVoiceCallEventsProps = {
@@ -54,7 +55,17 @@ export default function TicketVoiceCallEvents({
                                 )}
                             >
                                 <div>{event.text}</div>
-                                <VoiceCallAgentLabel agentId={event.userId} />
+                                {event.userId && (
+                                    <VoiceCallAgentLabel
+                                        agentId={event.userId}
+                                    />
+                                )}
+                                {event.customerId && (
+                                    <VoiceCallCustomerLabel
+                                        customerId={event.customerId}
+                                        phoneNumber={'customer'}
+                                    />
+                                )}
                             </div>
                             <DatetimeLabel
                                 dateTime={event.datetime}
