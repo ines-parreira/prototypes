@@ -3,11 +3,16 @@
 
 :local {
     .container {
+        position: relative;
         margin: 0 6px 0 12px;
         border-radius: 4px;
 
         &:hover {
             background: var(--neutral-grey-1);
+
+            .toggleButton {
+                display: block;
+            }
         }
     }
 
@@ -26,6 +31,39 @@
 
     .time {
         .caption-regular();
+        color: var(--neutral-grey-5);
+    }
+
+    .markUnreadIcon {
+        background-color: var(--neutral-grey-5);
+        display: block;
+        mask: url(../assets/mark_as_unread.svg);
+        -webkit-mask: url(../assets/mark_as_unread.svg);
+        height: 16px;
+        width: 16px;
+        transform: scale(0.89);
+    }
+
+    .toggleButton {
+        display: none;
+        position: absolute;
+        top: @layout-spacing-s;
+        right: 12px;
+        background-color: var(--neutral-grey-0) !important;
+        box-shadow: 0px 2px 4px 0px
+            hsla(
+                var(--neutral-grey-5-h),
+                var(--neutral-grey-5-s),
+                var(--neutral-grey-5-l),
+                0.16
+            );
+    }
+
+    .markUnreadButton {
+        padding: 0 3px !important;
+    }
+
+    .icon {
         color: var(--neutral-grey-5);
     }
 }

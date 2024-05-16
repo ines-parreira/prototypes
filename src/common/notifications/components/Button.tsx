@@ -37,6 +37,15 @@ export default function NotificationsButton() {
         [feedClient]
     )
 
+    const handleToggleRead = useCallback(
+        (item: KnockFeedItem) => {
+            !!item.read_at
+                ? void feedClient.markAsUnread(item)
+                : void feedClient.markAsRead(item)
+        },
+        [feedClient]
+    )
+
     const handleClose = useCallback(() => {
         setIsVisible(false)
     }, [])
@@ -49,10 +58,11 @@ export default function NotificationsButton() {
                     key={notification.id}
                     notification={notification}
                     onClick={() => handleClickNotification(item)}
+                    onToggleRead={() => handleToggleRead(item)}
                 />
             )
         },
-        [handleClickNotification]
+        [handleClickNotification, handleToggleRead]
     )
 
     return (
