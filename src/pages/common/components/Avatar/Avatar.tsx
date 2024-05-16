@@ -19,6 +19,7 @@ type Props = {
     tooltipText?: string
     showFirstInitialOnly?: boolean
     shape?: 'square' | 'round'
+    isAIAgent?: boolean
 }
 
 type State = {
@@ -114,7 +115,35 @@ export default class Avatar extends Component<Props, State> {
             tooltipText = '',
             showFirstInitialOnly = false,
             shape = 'square',
+            isAIAgent = false,
         } = this.props
+
+        if (isAIAgent) {
+            return (
+                <div
+                    className={classnames(
+                        css.component,
+                        css.aiAgent,
+                        css[shape],
+                        className
+                    )}
+                    style={{
+                        width: `${size}px`,
+                        height: `${size}px`,
+                        ...style,
+                    }}
+                >
+                    <i
+                        className={classnames(
+                            'material-icons',
+                            css.aiAgentICon
+                        )}
+                    >
+                        auto_awesome
+                    </i>
+                </div>
+            )
+        }
 
         return (
             <div

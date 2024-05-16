@@ -41,6 +41,7 @@ export function AgentLabel({
     shouldDisplayAvatar = false,
     size = 26,
     semibold,
+    isAIAgent = false,
 }: {
     className?: string
     maxWidth?: string
@@ -49,6 +50,7 @@ export function AgentLabel({
     shouldDisplayAvatar?: boolean
     size?: number
     semibold?: boolean
+    isAIAgent?: boolean
 }) {
     const showAvatar = shouldDisplayAvatar || profilePictureUrl
 
@@ -62,17 +64,22 @@ export function AgentLabel({
                     className={css.avatar}
                 />
             ) : (
-                <span
-                    className="material-icons md-2"
-                    data-testid="accountCircle"
-                >
-                    account_circle
-                </span>
+                !isAIAgent && (
+                    <span
+                        className="material-icons md-2"
+                        data-testid="accountCircle"
+                    >
+                        account_circle
+                    </span>
+                )
             )}
 
             {name && (
                 <span
-                    className={classnames(css.name, {[css.semibold]: semibold})}
+                    className={classnames(css.name, {
+                        [css.semibold]: semibold,
+                        [css.aiAgent]: isAIAgent,
+                    })}
                     {...(typeof maxWidth !== 'undefined'
                         ? {style: {maxWidth: `${maxWidth}px`}}
                         : {})}

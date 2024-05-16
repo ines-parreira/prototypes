@@ -29,6 +29,7 @@ type Props = {
     isMessageHidden: boolean
     isMessageDeleted: boolean
     isBodyHighlighted: boolean
+    isAIAgentMessage?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
 }
@@ -51,6 +52,7 @@ export default class Container extends Component<Props> {
             message,
             isMessageHidden,
             isMessageDeleted,
+            isAIAgentMessage = false,
             customer,
             timezone,
             containsLastCustomerMessage,
@@ -132,6 +134,7 @@ export default class Container extends Component<Props> {
                         badgeBorderColor={badgeBorderColor}
                         withTooltip={!!timeReadableValue}
                         tooltipText={tooltipText}
+                        isAIAgent={isAIAgentMessage}
                     />
                 </div>
             )
@@ -158,6 +161,7 @@ export default class Container extends Component<Props> {
                         hasError: isFailed(message),
                         'ticket-message-loading': isPending(message),
                         ticketMessagesHighlighted: this.props.isBodyHighlighted,
+                        ticketHandledByAIAgent: isAIAgentMessage,
                     }
                 )}
             >
@@ -179,6 +183,7 @@ export default class Container extends Component<Props> {
                         hasError={isFailed(message)}
                         isMessageHidden={isMessageHidden}
                         isMessageDeleted={isMessageDeleted}
+                        isMessageFromAIAgent={isAIAgentMessage}
                     />
                     {children}
                     <Footer

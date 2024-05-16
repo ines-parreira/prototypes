@@ -1,6 +1,7 @@
 import React from 'react'
 import moment, {Moment} from 'moment'
 import {fromJS, Map} from 'immutable'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {
     isTicketMessageDeleted,
@@ -10,6 +11,8 @@ import {TicketMessage} from 'models/ticket/types'
 import {HighlightedElements} from 'pages/tickets/detail/components/AuditLogEvent'
 
 import {buildFirstTicketMessage} from 'state/ticket/utils'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 import Container from './Container'
 import Message from './Message'
 
@@ -40,6 +43,9 @@ export default function TicketMessages({
     customer = fromJS({}),
     ticketMeta,
 }: Props) {
+    const isFeedbackToAiAgentEnabled =
+        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
+
     if (!messages.length) {
         return null
     }
@@ -76,6 +82,10 @@ export default function TicketMessages({
               )
     )
 
+    const isAIAgentMessage =
+        isFeedbackToAiAgentEnabled &&
+        message.sender.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+
     return (
         <Container
             id={id}
@@ -88,6 +98,7 @@ export default function TicketMessages({
             isMessageHidden={isTicketMessageHidden(message)}
             isMessageDeleted={isTicketMessageDeleted(message)}
             isBodyHighlighted={containerContainsHighlightedMessages}
+            isAIAgentMessage={isAIAgentMessage}
             customer={customer}
             lastCustomerMessageDateTime={lastCustomerMessage.get(
                 'sent_datetime'

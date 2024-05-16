@@ -21,6 +21,7 @@ type Props = {
     hasError?: boolean
     isMessageHidden?: boolean
     isMessageDeleted?: boolean
+    isMessageFromAIAgent?: boolean
     displayMessageStatusIndicator?: boolean
 }
 
@@ -31,6 +32,7 @@ export default function Header({
     hasError,
     isMessageHidden,
     isMessageDeleted,
+    isMessageFromAIAgent = false,
     displayMessageStatusIndicator = false,
 }: Props) {
     const sender = fromJS(message.sender || {}) as Map<any, any>
@@ -86,6 +88,7 @@ export default function Header({
                     {message.from_agent ? (
                         <AgentLabel
                             name={sender.get('name')}
+                            isAIAgent={isMessageFromAIAgent}
                             className={css.agentIcon}
                         />
                     ) : (
