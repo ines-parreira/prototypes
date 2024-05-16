@@ -1,3 +1,4 @@
+import cn from 'classnames'
 import React from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -58,8 +59,15 @@ export default function EventSettings({
                 <TableBody>
                     {enabledEvents.map((event) => (
                         <TableBodyRow key={event.type}>
-                            <BodyCell>{event.label}</BodyCell>
-                            <BodyCell>
+                            <BodyCell innerClassName={css.bodyCell}>
+                                {event.label}
+                            </BodyCell>
+                            <BodyCell
+                                innerClassName={cn(
+                                    css.bodyCell,
+                                    css.soundSelectCell
+                                )}
+                            >
                                 <SoundSelect
                                     addEmptyValue
                                     value={settings.events[event.type]?.sound}
@@ -69,7 +77,10 @@ export default function EventSettings({
                                 />
                             </BodyCell>
                             {channels.map((channel) => (
-                                <BodyCell key={channel.type}>
+                                <BodyCell
+                                    key={channel.type}
+                                    innerClassName={css.bodyCell}
+                                >
                                     <CheckBox
                                         isDisabled={
                                             event.type ===
