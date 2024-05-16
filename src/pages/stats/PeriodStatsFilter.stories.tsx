@@ -9,7 +9,7 @@ import {ThemeProvider} from 'theme'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 
 const defaultState = {}
-const DATE = '2024-04-14T12:34:56.000Z'
+const DATE = '2023-04-14T12:34:56.000Z'
 
 const storyConfig: Meta = {
     title: 'Stats/PeriodStatsFilter',
