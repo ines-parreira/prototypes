@@ -75,10 +75,6 @@ export class CustomerChannels extends Component<Props> {
             'offset',
         ])
 
-        const hasPhone = channels.find(
-            (channel: Map<any, any>) =>
-                channel.get('type') === TicketChannel.Phone
-        )
         const displayAddNewPhoneNumber =
             !!flags?.[FeatureFlagKey.NewPhoneNumberCustomerSidebar]
 
@@ -151,7 +147,7 @@ export class CustomerChannels extends Component<Props> {
                 {children}
                 <CustomerInfoWrapper>
                     {list}
-                    {!hasPhone && displayAddNewPhoneNumber && (
+                    {displayAddNewPhoneNumber && (
                         <NewPhoneNumber customerId={Number(customerId)} />
                     )}
                     {(country || city) && (

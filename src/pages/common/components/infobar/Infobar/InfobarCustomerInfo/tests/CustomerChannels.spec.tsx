@@ -347,7 +347,7 @@ describe('CustomerChannels component', () => {
         expect(getByText(/Local time:/)).toBeInTheDocument()
     })
 
-    it('should display "Add phone number button when there are no phone channels', async () => {
+    it('should display "Add phone number button', async () => {
         const {getByText} = renderWithQueryClientProvider(
             <Provider store={mockStore(defaultState)}>
                 <CustomerChannels
@@ -364,34 +364,6 @@ describe('CustomerChannels component', () => {
             </Provider>
         )
         await waitFor(() => expect(getByText(/Add phone number/)).toBeVisible())
-    })
-
-    it('should not display "Add phone number button when there is a phone channel', () => {
-        const store = mockStore({
-            ...defaultState,
-            twilio: initialState,
-            integrations: fromJS({
-                integrations: [],
-            }),
-        })
-
-        const {queryByText} = renderWithQueryClientProvider(
-            <Provider store={mockStore(store)}>
-                <CustomerChannels
-                    {...minProps}
-                    channels={fromJS([
-                        {
-                            type: PHONE_CUSTOMER_CHANNEL_TYPE,
-                            address: '+15551238523',
-                            preferred: true,
-                            id: 4,
-                        },
-                    ])}
-                />
-            </Provider>
-        )
-
-        expect(queryByText(/Add phone number/)).toBeNull()
     })
 
     it('should not display "Add phone number button when the FF is off', () => {
