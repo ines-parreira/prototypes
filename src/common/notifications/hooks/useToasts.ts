@@ -2,13 +2,27 @@ import {FeedEventPayload} from '@knocklabs/client'
 import {useKnockFeed} from '@knocklabs/react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
+import useAppSelector from 'hooks/useAppSelector'
 import {notificationSounds} from 'services'
 import {defaultSound} from 'services/NotificationSounds'
+import {getNotificationSettings} from 'state/currentUser/selectors'
 
 import {Notification, RawNotification} from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
 
 export default function useToasts() {
+    const notificationSettings = useAppSelector(getNotificationSettings)
+    const notificationVolume = useMemo(
+        () =>
+            notificationSettings?.data?.notification_sound?.volume ||
+            defaultSound.volume,
+        [notificationSettings]
+    )
+    const eventSettings = useMemo(
+        () => notificationSettings?.data?.events || {},
+        [notificationSettings]
+    )
+
     const {feedClient} = useKnockFeed()
     const [notifications, setNotifications] = useState<Notification[]>([])
     const timeoutsRef = useRef<NodeJS.Timeout[]>([])
@@ -38,14 +52,21 @@ export default function useToasts() {
 
             if (!mappedItems.length) return
 
-            notificationSounds.play(defaultSound.sound, defaultSound.volume)
+            const notificationType = mappedItems[0].type
+            let sound = eventSettings[notificationType]?.sound
+            if (sound === undefined) {
+                sound = defaultSound.sound
+            }
+            if (sound) {
+                notificationSounds.play(sound, notificationVolume)
+            }
 
             mappedItems.forEach((notification) => {
                 queueHide(notification.id)
             })
             setNotifications((n) => [...n, ...mappedItems])
         },
-        [queueHide]
+        [eventSettings, notificationVolume, queueHide]
     )
 
     useEffect(() => {
