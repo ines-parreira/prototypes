@@ -1,6 +1,4 @@
 import {useMemo} from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {GuidanceTemplateKey, GuidanceTemplate} from '../types'
 
 export const GuidanceTemplatesData: Record<
@@ -170,15 +168,9 @@ export const GuidanceTemplatesData: Record<
 // This is a custom hook that returns the GuidanceTemplatesData object.
 // In feature probably we want to fetch this data from the server.
 export const useGuidanceTemplates = () => {
-    const isGuidanceTemplatesEnabled: undefined | boolean =
-        useFlags()[FeatureFlagKey.AiAgentGuidanceTemplates]
-
     const guidanceTemplates = useMemo(
-        () =>
-            isGuidanceTemplatesEnabled
-                ? Object.values(GuidanceTemplatesData)
-                : [],
-        [isGuidanceTemplatesEnabled]
+        () => Object.values(GuidanceTemplatesData),
+        []
     )
 
     return {guidanceTemplates}

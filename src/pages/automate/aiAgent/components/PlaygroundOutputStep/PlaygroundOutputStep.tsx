@@ -13,7 +13,7 @@ type Props = {
 export const PlaygroundOutputStep = ({messages, actions, subject}: Props) => {
     const threadContent = messages.map((message, index) => {
         if (message.type === MessageType.TICKET_EVENT && message.outcome) {
-            return <TicketEvent type={message.outcome} />
+            return <TicketEvent key={index} type={message.outcome} />
         }
 
         return (
