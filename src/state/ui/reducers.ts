@@ -23,6 +23,8 @@ import {HelpCenterState} from './helpCenter/types'
 import helpCenter from './helpCenter/reducer'
 import {ContactFormState} from './contactForm/types'
 import contactForm from './contactForm/reducer'
+import ticketAIAgentFeedback from './ticketAIAgentFeedback'
+import {TicketAIAgentFeedbackState} from './ticketAIAgentFeedback/types'
 
 const uiReducers = combineReducers<{
     editor: EditorState
@@ -32,6 +34,7 @@ const uiReducers = combineReducers<{
     selfServiceConfigurations: SelfServiceConfigurationsState
     helpCenter: HelpCenterState
     contactForm: ContactFormState
+    ticketAIAgentFeedback: TicketAIAgentFeedbackState
     [agentPerformanceSlice.name]: AgentPerformanceState
     [ticketInsightsSlice.name]: TicketInsightsState
     [drillDownSlice.name]: DrillDownState
@@ -43,6 +46,7 @@ const uiReducers = combineReducers<{
     selfServiceConfigurations,
     helpCenter,
     contactForm,
+    ticketAIAgentFeedback,
     [agentPerformanceSlice.name]: agentPerformanceSlice.reducer,
     [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,
     [drillDownSlice.name]: drillDownSlice.reducer,

@@ -10,6 +10,7 @@ import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
 import {assumeMock} from 'utils/testing'
 
 import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/selectors'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 
@@ -211,6 +212,24 @@ describe('ticket selectors', () => {
             ])
         )
         expect(selectors.getMessages(state)).toEqualImmutable(fromJS([]))
+    })
+
+    it('getAIAgentMessages', () => {
+        const aiMessage = {
+            id: 1,
+            from_agent: true,
+            sender: {
+                email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+            },
+            opened_datetime: '2017-07-25T22:00:00',
+            sent_datetime: '2017-07-25T21:01:00',
+            created_datetime: '2017-07-24T21:00:00',
+            meta: {hidden: false},
+        }
+
+        state.ticket = state.ticket.set('messages', fromJS([aiMessage]))
+
+        expect(selectors.getAIAgentMessages(state)).toEqual([aiMessage])
     })
 
     it('getVia', () => {

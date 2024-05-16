@@ -21,6 +21,7 @@ import {
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {VoiceCall} from 'models/voiceCall/types'
 import {getQueryData} from 'state/queries/selectors'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/selectors'
 import {TicketState, TicketStateWithoutImmutable} from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
@@ -113,6 +114,19 @@ export const getCustomerMessages = createImmutableSelector(
     (messages) =>
         (messages.filter((m) => m!.get('from_agent') === false) ||
             fromJS([])) as List<any>
+)
+
+export const getAIAgentMessages = createImmutableSelector(
+    getMessages,
+    (messages) =>
+        (messages
+            .filter(
+                (m) =>
+                    m!.get('from_agent') === true &&
+                    m!.getIn(['sender', 'email']) ===
+                        AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+            )
+            .toJS() || []) as TicketMessage[]
 )
 
 export const getPendingMessages = createImmutableSelector(

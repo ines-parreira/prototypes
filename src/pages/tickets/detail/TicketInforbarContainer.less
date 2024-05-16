@@ -1,0 +1,23 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .autoAwesomeIcon {
+        color: var(--accessory-magenta-3);
+        padding-right: @layout-spacing-xxs;
+    }
+
+    .infoBarContainer {
+        height: 100%;
+
+        &.infoBarContainerWithNavbar {
+            height: calc(100% - 52px);
+        }
+    }
+}
