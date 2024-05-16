@@ -789,10 +789,12 @@ export default function CustomActionsForm({
                                     isDisabled={isActionUpserting}
                                     value={formValues.steps[0].settings.method}
                                     onChange={(value) => {
-                                        setContentType(() => {
+                                        setContentType((prevValue) => {
                                             if (value === 'GET') {
                                                 return null
                                             }
+                                            if (prevValue) return prevValue
+
                                             return 'application/json'
                                         })
                                         setFormValues(
@@ -800,10 +802,12 @@ export default function CustomActionsForm({
                                                 draft.steps[0].settings.method =
                                                     value
 
-                                                if (value === 'GET') {
-                                                    draft.steps[0].settings.body =
-                                                        null as any
-                                                }
+                                                draft.steps[0].settings.body =
+                                                    value === 'GET'
+                                                        ? (null as any)
+                                                        : draft.steps[0]
+                                                              .settings.body ??
+                                                          '{}'
                                             })
                                         )
                                     }}
@@ -852,17 +856,22 @@ export default function CustomActionsForm({
                                 <BodyContentTypeSelect
                                     isDisabled={isActionUpserting}
                                     value={contentType}
-                                    onChange={(contentType) => {
-                                        setContentType(contentType)
+                                    onChange={(newContentType) => {
                                         setFormValues(
                                             produce((draft) => {
-                                                draft.steps[0].settings.body =
+                                                if (
                                                     contentType ===
+                                                    newContentType
+                                                )
+                                                    return
+                                                draft.steps[0].settings.body =
+                                                    newContentType ===
                                                     'application/json'
                                                         ? '{}'
-                                                        : ''
+                                                        : '='
                                             })
                                         )
+                                        setContentType(newContentType)
                                     }}
                                 />
                                 <div className={css.httpBodyInput}>
