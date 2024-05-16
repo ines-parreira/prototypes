@@ -7,6 +7,7 @@ import {getIntegrationsByType} from 'state/integrations/selectors'
 import {Integration, IntegrationType} from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
+import {getHasAutomate} from 'state/billing/selectors'
 import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
 
 export type ContactFormEntrypointPreviewProps = {
@@ -24,7 +25,8 @@ const ContactFormEntrypointPreview = ({
     const contactFormShopIntegration = integrations?.find(
         (integration) => integration.name === contactForm.shop_name
     )
-    if (contactFormShopIntegration) {
+    const hasAutomate = useAppSelector(getHasAutomate)
+    if (contactFormShopIntegration && hasAutomate) {
         return (
             <ContactFormWithShopIntegration
                 contactForm={contactForm}

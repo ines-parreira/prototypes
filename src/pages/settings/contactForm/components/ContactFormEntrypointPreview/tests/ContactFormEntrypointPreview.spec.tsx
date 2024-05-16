@@ -58,6 +58,10 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+jest.mock('state/billing/selectors', () => ({
+    __esModule: true,
+    getHasAutomate: jest.fn(),
+}))
 
 const mockUseContactFormAutomationSettings = jest.mocked(
     useContactFormAutomationSettings
