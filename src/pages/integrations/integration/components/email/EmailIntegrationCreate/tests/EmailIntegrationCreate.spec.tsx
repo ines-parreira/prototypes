@@ -1,20 +1,22 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 
-import {EmailIntegrationCreate} from '../EmailIntegrationCreate'
+import useAppSelector from 'hooks/useAppSelector'
+import EmailIntegrationCreate from '../EmailIntegrationCreate'
+
+jest.mock('hooks/useAppSelector', () => jest.fn())
+const useAppSelectorMock = useAppSelector as jest.Mock
 
 describe('<EmailIntegrationCreate/>', () => {
-    describe('render()', () => {
-        it('should render', () => {
-            const {container} = render(
-                <EmailIntegrationCreate
-                    gmailRedirectUri={'testGmail'}
-                    outlookRedirectUri={'testOutlook'}
-                    dispatch={jest.fn()}
-                />
-            )
+    beforeEach(() => {
+        useAppSelectorMock
+            .mockReturnValueOnce('testGmail')
+            .mockReturnValueOnce('testOutlook')
+    })
 
-            expect(container.firstChild).toMatchSnapshot()
-        })
+    it('should render', () => {
+        const {container} = render(<EmailIntegrationCreate />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

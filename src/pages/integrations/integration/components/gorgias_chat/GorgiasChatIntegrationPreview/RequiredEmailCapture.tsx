@@ -14,43 +14,34 @@ type Props = {
     language?: string
 }
 
-export default class RequiredEmailCapture extends React.Component<Props> {
-    static defaultProps: Pick<Props, 'language'> = {
-        language: GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    }
+export default function RequiredEmailCapture({
+    language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    name,
+}: Props) {
+    const translatedTexts =
+        GORGIAS_CHAT_WIDGET_TEXTS[
+            language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+        ]
 
-    render() {
-        const {name, language} = this.props
-
-        const translatedTexts =
-            GORGIAS_CHAT_WIDGET_TEXTS[
-                language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-            ]
-
-        return (
-            <div className={css.requiredEmailCaptureContent}>
-                <BotMessages
-                    chatTitle={name}
-                    messages={[translatedTexts.requireEmailCaptureIntro]}
-                    language={language}
-                >
-                    <div className={css.optionalEmailCapture}>
-                        <InputPrompt
-                            id="email-capture-intput"
-                            required
-                            isValid
-                            type="email"
-                            readOnly
-                            label={
-                                translatedTexts.requiredEmailCaptureInputLabel
-                            }
-                            placeholder={
-                                translatedTexts.emailCapturePlaceholder
-                            }
-                        />
-                    </div>
-                </BotMessages>
-            </div>
-        )
-    }
+    return (
+        <div className={css.requiredEmailCaptureContent}>
+            <BotMessages
+                chatTitle={name}
+                messages={[translatedTexts.requireEmailCaptureIntro]}
+                language={language}
+            >
+                <div className={css.optionalEmailCapture}>
+                    <InputPrompt
+                        id="email-capture-intput"
+                        required
+                        isValid
+                        type="email"
+                        readOnly
+                        label={translatedTexts.requiredEmailCaptureInputLabel}
+                        placeholder={translatedTexts.emailCapturePlaceholder}
+                    />
+                </div>
+            </BotMessages>
+        </div>
+    )
 }

@@ -1,4 +1,4 @@
-import React, {ReactNode, Component} from 'react'
+import React, {ReactNode, useCallback} from 'react'
 import {
     Modal as BootstrapModal,
     ModalHeader,
@@ -8,7 +8,7 @@ import {
 } from 'reactstrap'
 import _noop from 'lodash/noop'
 
-import {WithAppNodeProps, withAppNode} from 'appNode'
+import {useAppNode} from 'appNode'
 
 type Props = {
     children: ReactNode
@@ -19,67 +19,56 @@ type Props = {
     headerClassName?: string
     footerClassName?: string
     bodyClassName?: string
-} & RemoveIndex<ModalProps> &
-    WithAppNodeProps
+} & RemoveIndex<ModalProps>
 
-class DEPRECATED_Modal extends Component<Props> {
-    static defaultProps: Pick<Props, 'dismissible'> = {
-        dismissible: true,
-    }
+export default function DEPRECATED_Modal({
+    dismissible = true,
+    isOpen,
+    children,
+    header,
+    footer,
+    headerClassName,
+    bodyClassName,
+    footerClassName,
+    container,
+    onClose,
+    ...rest
+}: Props) {
+    const appNode = useAppNode()
 
-    _toggle = () => {
-        if (!this.props.dismissible) {
+    const toggle = useCallback(() => {
+        if (!dismissible) {
             return
         }
 
-        return this.props.onClose()
+        return onClose()
+    }, [dismissible, onClose])
+
+    const toggleProps = {
+        toggle: _noop,
     }
 
-    render() {
-        const {
-            isOpen,
-            children,
-            header,
-            footer,
-            dismissible,
-            headerClassName,
-            bodyClassName,
-            footerClassName,
-            appNode,
-            container,
-            ...rest
-        } = this.props
-
-        const toggleProps = {
-            toggle: _noop,
-        }
-
-        if (dismissible) {
-            toggleProps.toggle = this._toggle
-        }
-
-        return (
-            <BootstrapModal
-                isOpen={isOpen}
-                container={container ?? appNode ?? undefined}
-                {...toggleProps}
-                {...rest}
-                fade={false}
-            >
-                {header && (
-                    <ModalHeader {...toggleProps} className={headerClassName}>
-                        {header}
-                    </ModalHeader>
-                )}
-                <ModalBody className={bodyClassName}>{children}</ModalBody>
-                {footer && (
-                    <ModalFooter className={footerClassName}>
-                        {footer}
-                    </ModalFooter>
-                )}
-            </BootstrapModal>
-        )
+    if (dismissible) {
+        toggleProps.toggle = toggle
     }
+
+    return (
+        <BootstrapModal
+            isOpen={isOpen}
+            container={container ?? appNode ?? undefined}
+            {...toggleProps}
+            {...rest}
+            fade={false}
+        >
+            {header && (
+                <ModalHeader {...toggleProps} className={headerClassName}>
+                    {header}
+                </ModalHeader>
+            )}
+            <ModalBody className={bodyClassName}>{children}</ModalBody>
+            {footer && (
+                <ModalFooter className={footerClassName}>{footer}</ModalFooter>
+            )}
+        </BootstrapModal>
+    )
 }
-
-export default withAppNode(DEPRECATED_Modal)

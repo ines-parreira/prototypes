@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import classNames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
 
@@ -68,20 +68,21 @@ const getVariant = (variant: DistributionStatVariant) => {
     }
 }
 
-export default class DistributionVariantStat extends Component<Props> {
-    render() {
-        const {minValue, maxValue, variant, currentValue} = this.props
+export default function DistributionVariantStat({
+    currentValue,
+    maxValue,
+    minValue,
+    variant,
+}: Props) {
+    const variantComponent = getVariant(variant)
 
-        const variantComponent = getVariant(variant)
-
-        return (
-            <span className={classNames(css.distribution)}>
-                {_rangeRight(minValue, maxValue + 1).map((index) =>
-                    index <= maxValue - currentValue
-                        ? variantComponent.empty(index)
-                        : variantComponent.fill(index)
-                )}
-            </span>
-        )
-    }
+    return (
+        <span className={classNames(css.distribution)}>
+            {_rangeRight(minValue, maxValue + 1).map((index) =>
+                index <= maxValue - currentValue
+                    ? variantComponent.empty(index)
+                    : variantComponent.fill(index)
+            )}
+        </span>
+    )
 }

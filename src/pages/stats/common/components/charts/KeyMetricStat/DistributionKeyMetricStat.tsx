@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
 import {Map} from 'immutable'
@@ -14,40 +14,38 @@ type Props = {
     formattedValue: Map<any, any>
 }
 
-export default class DistributionKeyMetricStat extends Component<Props> {
-    static defaultProps = {}
+export default function DistributionKeyMetricStat({
+    config,
+    formattedValue,
+}: Props) {
+    const maxValue = config.get('maxValue') as number
+    const minValue = config.get('minValue') as number
+    const variant = config.get('variant') as DistributionStatVariant
 
-    render() {
-        const {config, formattedValue} = this.props
-        const maxValue = config.get('maxValue') as number
-        const minValue = config.get('minValue') as number
-        const variant = config.get('variant') as DistributionStatVariant
-
-        return (
-            <div>
-                {_rangeRight(minValue, maxValue + 1).map((index) => (
-                    <div className={classnames('mb-1', 'row')} key={index}>
-                        <div className="col-md-6 ta-left">
-                            <DistributionVariantStat
-                                minValue={minValue}
-                                maxValue={maxValue}
-                                variant={variant}
-                                currentValue={index}
-                            />
-                        </div>
-
-                        <div
-                            className={classnames(
-                                css.value,
-                                'col-md-3',
-                                'ta-right'
-                            )}
-                        >
-                            {formattedValue.get(index.toString())}
-                        </div>
+    return (
+        <div>
+            {_rangeRight(minValue, maxValue + 1).map((index) => (
+                <div className={classnames('mb-1', 'row')} key={index}>
+                    <div className="col-md-6 ta-left">
+                        <DistributionVariantStat
+                            minValue={minValue}
+                            maxValue={maxValue}
+                            variant={variant}
+                            currentValue={index}
+                        />
                     </div>
-                ))}
-            </div>
-        )
-    }
+
+                    <div
+                        className={classnames(
+                            css.value,
+                            'col-md-3',
+                            'ta-right'
+                        )}
+                    >
+                        {formattedValue.get(index.toString())}
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
 }
