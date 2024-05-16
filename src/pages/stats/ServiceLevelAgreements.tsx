@@ -7,10 +7,15 @@ import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
 import DashboardSection from 'pages/stats/DashboardSection'
+import {useGridSize} from 'hooks/useGridSize'
+import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
+import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 
 const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
 
 export default function ServiceLevelAgreements() {
+    const getGridCellSize = useGridSize()
+
     return (
         <div className="full-width">
             <StatsPage
@@ -21,7 +26,13 @@ export default function ServiceLevelAgreements() {
                     </>
                 }
             >
-                <DashboardSection title="Overview">
+                <DashboardSection>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <AchievementRateTrendCard />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <BreachedTicketsRateTrendCard />
+                    </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <AchievedAndBreachedTicketsChart />
                     </DashboardGridCell>

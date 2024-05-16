@@ -3,6 +3,8 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
+import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
@@ -27,10 +29,18 @@ jest.mock('pages/stats/sla/components/AchievedAndBreachedTicketsChart')
 const AchievedAndBreachedTicketsChartMock = assumeMock(
     AchievedAndBreachedTicketsChart
 )
+jest.mock('pages/stats/sla/components/AchievementRateTrendCard')
+const AchievementRateTrendCardMock = assumeMock(AchievementRateTrendCard)
+jest.mock('pages/stats/sla/components/BreachedTicketsRateTrendCard')
+const BreachedTicketsRateTrendCardMock = assumeMock(
+    BreachedTicketsRateTrendCard
+)
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
         AchievedAndBreachedTicketsChartMock.mockImplementation(() => <div />)
+        AchievementRateTrendCardMock.mockImplementation(() => <div />)
+        BreachedTicketsRateTrendCardMock.mockImplementation(() => <div />)
     })
 
     it('should render service level agreements', () => {
@@ -42,5 +52,7 @@ describe('ServiceLevelAgreements', () => {
 
         expect(getByText('SLAs')).toBeInTheDocument()
         expect(AchievedAndBreachedTicketsChartMock).toHaveBeenCalled()
+        expect(AchievementRateTrendCardMock).toHaveBeenCalled()
+        expect(BreachedTicketsRateTrendCardMock).toHaveBeenCalled()
     })
 })

@@ -1,3 +1,4 @@
+import {useBreachedSlaTicketsTrend} from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
@@ -22,5 +23,15 @@ export const SlaMetricConfig: Record<
         useTrend: useTicketSlaAchievementRateTrend,
         interpretAs: 'more-is-better',
         metricFormat: 'percent',
+    },
+
+    [SlaMetric.BreachedTicketsRate]: {
+        hint: {
+            title: 'Number of tickets that breached the SLA policy during the selected timeframe',
+        },
+        title: 'Tickets with breached SLAs',
+        useTrend: useBreachedSlaTicketsTrend,
+        interpretAs: 'less-is-better',
+        metricFormat: 'decimal',
     },
 }
