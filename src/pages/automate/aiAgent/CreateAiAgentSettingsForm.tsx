@@ -1,6 +1,9 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {List} from 'immutable'
+import {isAxiosError} from 'axios'
+
 import _isEqual from 'lodash/isEqual'
+import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
 import {Link} from 'react-router-dom'
@@ -307,13 +310,27 @@ export const CreateAiAgentSettingsForm = ({
 
                 resetForm()
             },
-            onError: () => {
-                void dispatch(
-                    notify({
-                        message: 'Failed to save AI Agent configuration',
-                        status: NotificationStatus.Error,
-                    })
-                )
+            onError: (error) => {
+                if (
+                    isAxiosError(error) &&
+                    _get(error, 'response.data.message') ===
+                        'Email address already used by AI Agent on a different store.'
+                ) {
+                    void dispatch(
+                        notify({
+                            message:
+                                'Email address already used by AI Agent on a different store.',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                } else {
+                    void dispatch(
+                        notify({
+                            message: 'Failed to save AI Agent configuration',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                }
             },
         })
     }
