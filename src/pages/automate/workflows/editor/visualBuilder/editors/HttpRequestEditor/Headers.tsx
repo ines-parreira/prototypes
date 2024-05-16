@@ -22,6 +22,7 @@ type Props = {
     onAdd: () => void
     isDisabled?: boolean
     noSelectedCategoryText?: string
+    inputVariableToolTipMessage?: string | null
 }
 
 const Headers = ({
@@ -31,6 +32,7 @@ const Headers = ({
     onDelete,
     onAdd,
     isDisabled,
+    inputVariableToolTipMessage,
     noSelectedCategoryText = 'Insert variable from previous steps',
 }: Props) => {
     return (
@@ -47,6 +49,7 @@ const Headers = ({
                         }}
                     />
                     <TextInputWithVariables
+                        toolTipMessage={inputVariableToolTipMessage}
                         noSelectedCategoryText={noSelectedCategoryText}
                         isDisabled={isDisabled}
                         value={header.value}

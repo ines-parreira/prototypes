@@ -211,6 +211,20 @@ export default function CustomActionsForm({
             : ulid()
 
         if (
+            !formValues.entrypoints[0].settings.instructions.trim() ||
+            !formValues.steps[0].settings.url.trim() ||
+            !formValues.name.trim()
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Missing required field',
+                })
+            )
+            return
+        }
+
+        if (
             contentType === 'application/x-www-form-urlencoded' &&
             Array.from(
                 new URLSearchParams(formValues.steps[0].settings.body)
@@ -408,12 +422,7 @@ export default function CustomActionsForm({
         >
             <div className={css.container}>
                 <UnsavedChangesPrompt
-                    when={
-                        !isActionDeleted &&
-                        !isActionUpserted &&
-                        isFormDirty &&
-                        !isNewAction
-                    }
+                    when={!isActionDeleted && !isActionUpserted && isFormDirty}
                     onSave={handleSave}
                 />
                 <section>
@@ -643,6 +652,7 @@ export default function CustomActionsForm({
                                     noSelectedCategoryText: 'INSERT variable',
                                     dropdownPlacement: 'bottom-start',
                                 }}
+                                variablePickerTooltipMessage={null}
                                 hasMultipleChildren={true}
                                 canDeleteBranch={false}
                                 branchId={formValues.id}
@@ -769,6 +779,7 @@ export default function CustomActionsForm({
                             <div className={css.formItem}>
                                 <Label isRequired>URL</Label>
                                 <TextInputWithVariables
+                                    toolTipMessage={null}
                                     isDisabled={isActionUpserting}
                                     value={formValues.steps[0].settings.url}
                                     noSelectedCategoryText="INSERT variable"
@@ -819,6 +830,7 @@ export default function CustomActionsForm({
                             <Label>Headers</Label>
                             <Headers
                                 noSelectedCategoryText="INSERT variable"
+                                inputVariableToolTipMessage={null}
                                 isDisabled={isActionUpserting}
                                 variables={inputVariables}
                                 headers={headers}
@@ -877,6 +889,7 @@ export default function CustomActionsForm({
                                 <div className={css.httpBodyInput}>
                                     {contentType === 'application/json' && (
                                         <TextareaWithVariables
+                                            variablePickerTooltipMessage={null}
                                             noSelectedCategoryText="INSERT variable"
                                             isDisabled={isActionUpserting}
                                             value={
@@ -902,6 +915,7 @@ export default function CustomActionsForm({
                                     {contentType ===
                                         'application/x-www-form-urlencoded' && (
                                         <FormUrlencoded
+                                            inputVariableToolTipMessage={null}
                                             noSelectedCategoryText="INSERT variable"
                                             isDisabled={isActionUpserting}
                                             items={Array.from(

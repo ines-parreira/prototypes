@@ -22,6 +22,7 @@ type Props = {
     onDelete: (index: number) => void
     onAdd: () => void
     noSelectedCategoryText?: string
+    inputVariableToolTipMessage?: string | null
 }
 
 const FormUrlencoded = ({
@@ -31,6 +32,7 @@ const FormUrlencoded = ({
     onDelete,
     onAdd,
     isDisabled,
+    inputVariableToolTipMessage,
     noSelectedCategoryText = 'Insert variable from previous steps',
 }: Props) => {
     return (
@@ -47,6 +49,7 @@ const FormUrlencoded = ({
                         }}
                     />
                     <TextInputWithVariables
+                        toolTipMessage={inputVariableToolTipMessage}
                         isDisabled={isDisabled}
                         value={item.value}
                         onChange={(value) => {

@@ -25,6 +25,7 @@ type Props = {
     error?: string
     isDisabled?: boolean
     noSelectedCategoryText?: string
+    variablePickerTooltipMessage?: string | null
 }
 
 const workflowVariablesNodeTypes: NonNullable<
@@ -45,6 +46,7 @@ const TextareaWithVariables = ({
     variables,
     error,
     isDisabled,
+    variablePickerTooltipMessage,
     noSelectedCategoryText = 'Insert variable from previous steps',
 }: Props) => {
     const editorRef = useRef<Editor | null>()
@@ -166,6 +168,7 @@ const TextareaWithVariables = ({
                     </div>
                     <div className={css.variables}>
                         <WorkflowVariablePicker
+                            tooltipMessage={variablePickerTooltipMessage}
                             variableDropdownProps={{
                                 noSelectedCategoryText,
                             }}

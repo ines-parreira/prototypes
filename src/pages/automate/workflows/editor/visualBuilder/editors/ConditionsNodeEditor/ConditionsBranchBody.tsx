@@ -58,6 +58,7 @@ interface Props {
         React.ComponentProps<typeof WorkflowVariableDropdown>
     >
     emptyBranchErrorMessage?: string
+    variablePickerTooltipMessage?: string | null
 }
 
 export const ConditionsBranchBody = ({
@@ -77,6 +78,7 @@ export const ConditionsBranchBody = ({
     showNoneOption,
     maxConditionsTooltipMessage,
     variableDropdownProps,
+    variablePickerTooltipMessage,
 }: Props) => {
     const renderInput = useCallback(
         (
@@ -321,7 +323,7 @@ export const ConditionsBranchBody = ({
                             tooltipMessage={
                                 conditions.length >= 10
                                     ? maxConditionsTooltipMessage
-                                    : undefined
+                                    : variablePickerTooltipMessage
                             }
                             variableDropdownProps={variableDropdownProps}
                             onSelect={onVariableSelect}

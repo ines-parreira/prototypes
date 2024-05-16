@@ -12,7 +12,7 @@ export type WorkflowVariablePickerProps = {
     label?: string
     disabled?: boolean
     size?: ButtonSize
-    tooltipMessage?: string
+    tooltipMessage?: string | null
     variableDropdownProps?: Partial<
         React.ComponentProps<typeof WorkflowVariableDropdown>
     >
@@ -22,8 +22,8 @@ const WorkflowVariablePicker = ({
     onSelect,
     label = `{+} variables`,
     size = 'small',
-    variableDropdownProps,
     tooltipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
+    variableDropdownProps,
     disabled,
 }: WorkflowVariablePickerProps) => {
     const anchorEl = useRef<HTMLButtonElement>(null)
@@ -47,7 +47,9 @@ const WorkflowVariablePicker = ({
                     {label}
                 </ButtonIconLabel>
             </Button>
-            <Tooltip target={anchorEl}>{tooltipMessage}</Tooltip>
+            {tooltipMessage && (
+                <Tooltip target={anchorEl}>{tooltipMessage}</Tooltip>
+            )}
             <WorkflowVariableDropdown
                 target={anchorEl}
                 onSelect={onSelect}

@@ -30,6 +30,7 @@ type Props = {
     placeholder?: string
     noSelectedCategoryText?: string
     isDisabled?: boolean
+    toolTipMessage?: string | null
 }
 
 const TextInputWithVariables = ({
@@ -39,6 +40,7 @@ const TextInputWithVariables = ({
     placeholder,
     noSelectedCategoryText,
     isDisabled,
+    toolTipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
 }: Props) => {
     const editorRef = useRef<Editor | null>()
 
@@ -157,11 +159,11 @@ const TextInputWithVariables = ({
                                     arrow_drop_down
                                 </i>
                             </div>
-                            <Tooltip target={dropdownTargetRef}>
-                                Variables are automatically created and can be
-                                used to recall information from previous steps
-                                in a flow
-                            </Tooltip>
+                            {toolTipMessage && (
+                                <Tooltip target={dropdownTargetRef}>
+                                    {toolTipMessage}
+                                </Tooltip>
+                            )}
                         </>
                     )}
                 </InputGroupContext.Consumer>
