@@ -42,7 +42,7 @@ module.exports = {
     // coverageProvider: "babel",
 
     // A list of reporter names that Jest uses when writing coverage reports
-    coverageReporters: ['text', 'lcov', 'cobertura'],
+    coverageReporters: ['lcov'],
 
     // An object that configures minimum threshold enforcement for coverage results
     // coverageThreshold: undefined,
@@ -108,15 +108,17 @@ module.exports = {
 
     // Use this configuration option to add custom reporters to Jest
     reporters: [
-        "default", !!process.env['CI'] && [
-            "jest-junit", {
-                suiteName: "jest tests",
-                classNameTemplate: "{classname}",
-                titleTemplate: "{title}",
-                addFileAttribute: "true",
-                ancestorSeparator: " › ",
-            }
-        ]
+        'default',
+        !!process.env['CI'] && [
+            'jest-junit',
+            {
+                suiteName: 'jest tests',
+                classNameTemplate: '{classname}',
+                titleTemplate: '{title}',
+                addFileAttribute: 'true',
+                ancestorSeparator: ' › ',
+            },
+        ],
     ].filter(Boolean),
 
     // Automatically reset mock state before every test
@@ -189,7 +191,7 @@ module.exports = {
 
     // A map from regular expressions to paths to transformers
     transform: {
-        '\\.[jt]sx?$': ['babel-jest', { configFile: './babel.config.json' }],
+        '\\.[jt]sx?$': ['babel-jest', {configFile: './babel.config.json'}],
     },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
