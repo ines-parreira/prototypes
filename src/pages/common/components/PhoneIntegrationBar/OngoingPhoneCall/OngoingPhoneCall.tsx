@@ -123,6 +123,7 @@ export function OngoingPhoneCall({
                             }
                             icon="phone_forwarded"
                             ref={transferButtonRef}
+                            isDisabled={isTransferring}
                         >
                             Transfer
                         </IconButtonTooltip>
@@ -130,7 +131,10 @@ export function OngoingPhoneCall({
                             target={transferButtonRef}
                             isOpen={isTransferDropdownOpen}
                             setIsOpen={setIsTransferDropdownOpen}
-                            onTransferInitiated={() => setIsTransferring(true)}
+                            onTransferInitiated={() => {
+                                setIsTransferring(true)
+                                setIsOnHold(true)
+                            }}
                             call={call}
                         />
                     </>
@@ -156,6 +160,7 @@ export function OngoingPhoneCall({
                             })
                         }
                         icon={isOnHold ? 'pause_circle_outline' : 'pause'}
+                        isDisabled={isTransferring}
                     >
                         {isOnHold ? 'Take off hold' : 'Hold'}
                     </IconButtonTooltip>

@@ -403,7 +403,10 @@ describe('<OngoingPhoneCall/>', () => {
             mutate: jest.fn(),
         })
         const call = mockIncomingCall(integrationId) as Call
-        mockFlags({[FeatureFlagKey.CallTransfer]: true})
+        mockFlags({
+            [FeatureFlagKey.CallTransfer]: true,
+            [FeatureFlagKey.CallOnHold]: true,
+        })
 
         const {getByTestId, getByText} = render(
             <Provider store={store}>
@@ -412,6 +415,15 @@ describe('<OngoingPhoneCall/>', () => {
         )
 
         fireEvent.click(getByTestId('confirm-transfer-button'))
+
         expect(getByText('Transferring...')).toBeVisible()
+        expect(getByTestId('hold-call-button')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
+        expect(getByTestId('transfer-call-button')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
     })
 })
