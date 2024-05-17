@@ -4,6 +4,8 @@ import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/Autom
 import {getPreviousPeriod} from 'utils/reporting'
 import {
     automationDatasetQueryFactory,
+    billableTicketDatasetResolvedByAIAgentQueryFactory,
+    billableTicketDatasetExcludingAIAgentQueryFactory,
     billableTicketDatasetQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/metrics'
 import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
@@ -31,12 +33,15 @@ import {
     getDecreaseInFirstResponseTimeTrend,
     getDecreaseInResolutionTimeTrend,
 } from './automateStatsCalculatedTrends'
+import {useAIAgentUserId} from './useAIAgentUserId'
 
 export const useAutomateMetricsTimeseriesV2 = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity
 ): CalculatedTimeseries => {
+    const aiAgentUserId = useAIAgentUserId()
+
     const automatedInteractionsData = useAutomationDatasetTimeSeries(
         filters,
         timezone,
@@ -59,7 +64,8 @@ export const useAutomateMetricsTimeseriesV2 = (
     const billableTicketData = useBillableTicketDatasetTimeSeries(
         filters,
         timezone,
-        granularity
+        granularity,
+        aiAgentUserId
     )
 
     const automatedInteractions = getAutomateStatsByMeasure(
@@ -70,6 +76,7 @@ export const useAutomateMetricsTimeseriesV2 = (
         AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
         automatedInteractionsData.data
     )
+
     const billableTicketCounts = getAutomateStatsByMeasure(
         BillableTicketDatasetMeasure.BillableTicketCount,
         billableTicketData.data
@@ -122,6 +129,8 @@ export const useAutomateMetricsTrendV2 = (
     filters: StatsFilters,
     timezone: string
 ): Record<AutomateTrendMetrics, MetricTrend> => {
+    const aiAgentUserId = useAIAgentUserId()
+
     const automatedInteractionsData = useMultipleMetricsTrends(
         automationDatasetQueryFactory(filters, timezone),
         automationDatasetQueryFactory(
@@ -130,11 +139,37 @@ export const useAutomateMetricsTrendV2 = (
         )
     )
 
-    const ticketDtaset = useMultipleMetricsTrends(
+    const ticketDatasetExcludingAIAgent = useMultipleMetricsTrends(
+        billableTicketDatasetExcludingAIAgentQueryFactory(
+            filters,
+            timezone,
+            aiAgentUserId
+        ),
+        billableTicketDatasetExcludingAIAgentQueryFactory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone,
+            aiAgentUserId
+        )
+    )
+
+    const ticketDatasetIncludingAIAgent = useMultipleMetricsTrends(
         billableTicketDatasetQueryFactory(filters, timezone),
         billableTicketDatasetQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
+        )
+    )
+
+    const ticketDatasetResolvedByAIAgent = useMultipleMetricsTrends(
+        billableTicketDatasetResolvedByAIAgentQueryFactory(
+            filters,
+            timezone,
+            aiAgentUserId
+        ),
+        billableTicketDatasetResolvedByAIAgentQueryFactory(
+            {...filters, period: getPreviousPeriod(filters.period)},
+            timezone,
+            aiAgentUserId
         )
     )
 
@@ -146,15 +181,33 @@ export const useAutomateMetricsTrendV2 = (
         automatedInteractionsData.data?.[
             AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
         ]
-    const billableTickets =
-        ticketDtaset.data?.[BillableTicketDatasetMeasure.BillableTicketCount]
-    const firstResponseTime =
-        ticketDtaset.data?.[BillableTicketDatasetMeasure.TotalFirstResponseTime]
-    const resolutionTime =
-        ticketDtaset.data?.[BillableTicketDatasetMeasure.TotalResolutionTime]
+
+    const billableTicketsExcludingAIAgent =
+        ticketDatasetExcludingAIAgent.data?.[
+            BillableTicketDatasetMeasure.BillableTicketCount
+        ]
+    const firstResponseTimeExcludingAIAgent =
+        ticketDatasetExcludingAIAgent.data?.[
+            BillableTicketDatasetMeasure.TotalFirstResponseTime
+        ]
+    const firstResponseTimeIncludingAIAgent =
+        ticketDatasetIncludingAIAgent.data?.[
+            BillableTicketDatasetMeasure.TotalFirstResponseTime
+        ]
+    const resolutionTimeExcludingAIAgent =
+        ticketDatasetExcludingAIAgent.data?.[
+            BillableTicketDatasetMeasure.TotalResolutionTime
+        ]
+    const resolutionTimeResolvedByAIAgent =
+        ticketDatasetResolvedByAIAgent.data?.[
+            BillableTicketDatasetMeasure.TotalResolutionTime
+        ]
     const isFetching =
-        automatedInteractionsData.isFetching || ticketDtaset.isFetching
-    const isError = automatedInteractionsData.isError || ticketDtaset.isError
+        automatedInteractionsData.isFetching ||
+        ticketDatasetExcludingAIAgent.isFetching
+    const isError =
+        automatedInteractionsData.isError ||
+        ticketDatasetExcludingAIAgent.isError
     return {
         automatedInteractionTrend: {
             isFetching,
@@ -165,22 +218,24 @@ export const useAutomateMetricsTrendV2 = (
             isFetching,
             isError,
             automatedInteractions,
-            billableTickets,
+            billableTicketsExcludingAIAgent,
             automatedInteractionsByAutoResponders
         ),
         decreaseInFirstResponseTimeTrend: getDecreaseInFirstResponseTimeTrend(
             isFetching,
             isError,
             automatedInteractions,
-            billableTickets,
-            firstResponseTime
+            billableTicketsExcludingAIAgent,
+            firstResponseTimeExcludingAIAgent,
+            firstResponseTimeIncludingAIAgent
         ),
         decreaseInResolutionTimeTrend: getDecreaseInResolutionTimeTrend(
             isFetching,
             isError,
             automatedInteractions,
-            billableTickets,
-            resolutionTime
+            billableTicketsExcludingAIAgent,
+            resolutionTimeExcludingAIAgent,
+            resolutionTimeResolvedByAIAgent
         ),
     }
 }

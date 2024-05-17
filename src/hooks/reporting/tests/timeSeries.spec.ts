@@ -18,7 +18,7 @@ import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
 import {
-    billableTicketDatasetTimeSeriesQueryFactory,
+    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
@@ -304,7 +304,7 @@ describe('time series', () => {
                 )
 
                 expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                    billableTicketDatasetTimeSeriesQueryFactory(
+                    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
                         statsFilters,
                         timezone,
                         granularity

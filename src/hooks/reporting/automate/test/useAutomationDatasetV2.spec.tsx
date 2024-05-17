@@ -19,6 +19,7 @@ import {
     useAutomateMetricsTrendV2,
 } from '../useAutomationDatasetV2'
 import {AutomateEventType} from '../utils'
+import {useAIAgentUserId} from '../useAIAgentUserId'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
@@ -68,6 +69,7 @@ const automatedInteractionsDataByEventType = {
 
 jest.mock('hooks/reporting/timeSeries')
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
+jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAutomationDatasetTimeSeriesMock = assumeMock(
     useAutomationDatasetTimeSeries
 )
@@ -78,6 +80,7 @@ const useAutomationDatasetByEventTypeTimeSeriesMock = assumeMock(
 const useBillableTicketDatasetTimeSeriesMock = assumeMock(
     useBillableTicketDatasetTimeSeries
 )
+const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
 const statsFilters: StatsFilters = {
     period: {
@@ -110,6 +113,7 @@ describe('useAutomationDatasetV2', () => {
             ],
             isFetched: true,
         } as UseQueryResult<TimeSeriesDataItem[][]>)
+        useAIAgentUserIdMock.mockReturnValue('4000')
         useAutomationDatasetByEventTypeTimeSeriesMock.mockReturnValue({
             data: automatedInteractionsDataByEventType,
             isFetched: true,
@@ -157,6 +161,7 @@ describe('useAutomationDatasetV2', () => {
         it('should calculate automation rate correctly', () => {
             useMultipleMetricsTrendsMock
                 .mockReturnValueOnce({
+                    // automatedInteractionsData
                     data: {
                         'AutomationDataset.automatedInteractions': {
                             value: 10021,
@@ -171,6 +176,7 @@ describe('useAutomationDatasetV2', () => {
                     isFetched: true,
                 } as any)
                 .mockReturnValueOnce({
+                    // ticketDatasetExcludingAIAgent
                     data: {
                         'BillableTicketDataset.billableTicketCount': {
                             value: 4889,
@@ -183,6 +189,42 @@ describe('useAutomationDatasetV2', () => {
                         'BillableTicketDataset.totalResolutionTime': {
                             value: 14048308139,
                             prevValue: 142113600,
+                        },
+                    },
+                    isFetched: true,
+                } as any)
+                .mockReturnValueOnce({
+                    // ticketDatasetIncludingAIAgent
+                    data: {
+                        'BillableTicketDataset.billableTicketCount': {
+                            value: 4889,
+                            prevValue: 2,
+                        },
+                        'BillableTicketDataset.totalFirstResponseTime': {
+                            value: 5220830659,
+                            prevValue: 7200,
+                        },
+                        'BillableTicketDataset.totalResolutionTime': {
+                            value: 14048308139,
+                            prevValue: 142113600,
+                        },
+                    },
+                    isFetched: true,
+                } as any)
+                .mockReturnValueOnce({
+                    // ticketDatasetResolvedByAIAgent
+                    data: {
+                        'BillableTicketDataset.billableTicketCount': {
+                            value: 0,
+                            prevValue: 0,
+                        },
+                        'BillableTicketDataset.totalFirstResponseTime': {
+                            value: 0,
+                            prevValue: 0,
+                        },
+                        'BillableTicketDataset.totalResolutionTime': {
+                            value: 0,
+                            prevValue: 0,
                         },
                     },
                     isFetched: true,

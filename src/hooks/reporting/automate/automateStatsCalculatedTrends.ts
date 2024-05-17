@@ -33,8 +33,9 @@ export const getDecreaseInFirstResponseTimeTrend = (
     isFetching: boolean,
     isError: boolean,
     automatedInteractions: TrendData,
-    billableTickets: TrendData,
-    firstResponseTime: TrendData
+    billableTicketsExcludingAIAgent: TrendData,
+    totalFirstResponseTimeExcludingAIAgent: TrendData,
+    totalFirstResponseTimeIncludingAIAgent: TrendData
 ) => {
     return {
         isFetching,
@@ -42,13 +43,15 @@ export const getDecreaseInFirstResponseTimeTrend = (
         data: {
             value: decreaseInFirstResponseTime(
                 automatedInteractions?.value,
-                billableTickets?.value,
-                firstResponseTime?.value
+                billableTicketsExcludingAIAgent?.value,
+                totalFirstResponseTimeExcludingAIAgent?.value,
+                totalFirstResponseTimeIncludingAIAgent?.value
             ),
             prevValue: decreaseInFirstResponseTime(
                 automatedInteractions?.prevValue,
-                billableTickets?.prevValue,
-                firstResponseTime?.prevValue
+                billableTicketsExcludingAIAgent?.prevValue,
+                totalFirstResponseTimeExcludingAIAgent?.prevValue,
+                totalFirstResponseTimeIncludingAIAgent?.prevValue
             ),
         },
     }
@@ -58,8 +61,9 @@ export const getDecreaseInResolutionTimeTrend = (
     isFetching: boolean,
     isError: boolean,
     automatedInteractions: TrendData,
-    billableTickets: TrendData,
-    totalResolutionTime: TrendData
+    billableTicketsExcludingAIAgent: TrendData,
+    totalResolutionTimeExcludingAIAgent: TrendData,
+    totalResolutionTimeResolvedByAIAgent: TrendData
 ) => {
     return {
         isFetching,
@@ -67,13 +71,15 @@ export const getDecreaseInResolutionTimeTrend = (
         data: {
             value: decreaseInResolutionTime(
                 automatedInteractions?.value,
-                billableTickets?.value,
-                totalResolutionTime?.value
+                billableTicketsExcludingAIAgent?.value,
+                totalResolutionTimeExcludingAIAgent?.value,
+                totalResolutionTimeResolvedByAIAgent?.value
             ),
             prevValue: decreaseInResolutionTime(
                 automatedInteractions?.prevValue,
-                billableTickets?.prevValue,
-                totalResolutionTime?.prevValue
+                billableTicketsExcludingAIAgent?.prevValue,
+                totalResolutionTimeExcludingAIAgent?.prevValue,
+                totalResolutionTimeResolvedByAIAgent?.prevValue
             ),
         },
     }

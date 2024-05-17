@@ -27,36 +27,43 @@ export const automationRate = (
 
 const averageFRTWithoutAutomation = (
     billableTicketCount: number,
-    totalFirstResponseTime: number
-): number => infinityNanToZero(totalFirstResponseTime / billableTicketCount)
+    totalFirstResponseTimeExcludingAIAgent: number
+): number =>
+    infinityNanToZero(
+        totalFirstResponseTimeExcludingAIAgent / billableTicketCount
+    )
 
 const averageFRTWithAutomation = (
-    billableTicketCount: number,
-    totalFirstResponseTime: number,
+    billableTicketExcludingAIAgentCount: number,
+    totalFirstResponseTimeIncludingAIAgent: number,
     automatedInteractions: number
 ): number =>
     infinityNanToZero(
-        totalFirstResponseTime / (billableTicketCount + automatedInteractions)
+        // AI Agent is not included in billable ticket count but is included in automatedInteractions
+        totalFirstResponseTimeIncludingAIAgent /
+            (billableTicketExcludingAIAgentCount + automatedInteractions)
     )
 
 export const decreaseInFirstResponseTime = (
     automatedInteractions: number | null,
-    billableTicketCount: number | null,
-    totalFirstResponseTime: number | null
+    billableTicketExcludingAIAgentCount: number | null,
+    totalFirstResponseTimeExcludingAIAgent: number | null,
+    totalFirstResponseTimeIncludingAIAgent: number | null
 ): number => {
     if (
         automatedInteractions != null &&
-        billableTicketCount != null &&
-        totalFirstResponseTime != null
+        billableTicketExcludingAIAgentCount != null &&
+        totalFirstResponseTimeExcludingAIAgent != null &&
+        totalFirstResponseTimeIncludingAIAgent != null
     ) {
         return (
             averageFRTWithoutAutomation(
-                billableTicketCount,
-                totalFirstResponseTime
+                billableTicketExcludingAIAgentCount,
+                totalFirstResponseTimeExcludingAIAgent
             ) -
             averageFRTWithAutomation(
-                billableTicketCount,
-                totalFirstResponseTime,
+                billableTicketExcludingAIAgentCount,
+                totalFirstResponseTimeIncludingAIAgent,
                 automatedInteractions
             )
         )
@@ -64,40 +71,44 @@ export const decreaseInFirstResponseTime = (
     return 0
 }
 
-export const resolutionTimeWithAutomation = (
-    totalResolutionTime: number | null,
-    billableTicketCount: number | null,
-    automatedInteractions: number | null
-): number => {
-    if (
-        totalResolutionTime != null &&
-        billableTicketCount != null &&
-        automatedInteractions != null
-    ) {
-        return infinityNanToZero(
-            totalResolutionTime / (billableTicketCount + automatedInteractions)
-        )
-    }
-    return 0
-}
+export const averageResolutionTimeWithAutomation = (
+    totalResolutionTimeExcludingAIAgent: number,
+    billableTicketCountExcludingAIAgent: number,
+    automatedInteractions: number,
+    totalResolutionTimeResolvedByAIAgent: number
+): number =>
+    infinityNanToZero(
+        (totalResolutionTimeExcludingAIAgent +
+            totalResolutionTimeResolvedByAIAgent) /
+            (billableTicketCountExcludingAIAgent + automatedInteractions)
+    )
 
 export const decreaseInResolutionTime = (
     automatedInteractions: number | null,
-    billableTicketCount: number | null,
-    totalResolutionTime: number | null
+    billableTicketCountExcludingAIAgent: number | null,
+    totalResolutionTimeExcludingAIAgent: number | null,
+    totalResolutionTimeResolvedByAIAgent: number | null
 ): number => {
     if (
         automatedInteractions != null &&
-        billableTicketCount != null &&
-        totalResolutionTime != null
-    )
+        billableTicketCountExcludingAIAgent != null &&
+        totalResolutionTimeExcludingAIAgent != null &&
+        totalResolutionTimeResolvedByAIAgent != null
+    ) {
+        const averageResolutionTimeWithoutAutomation = infinityNanToZero(
+            totalResolutionTimeExcludingAIAgent /
+                billableTicketCountExcludingAIAgent
+        )
+
         return infinityNanToZero(
-            totalResolutionTime / billableTicketCount -
-                resolutionTimeWithAutomation(
-                    totalResolutionTime,
-                    billableTicketCount,
-                    automatedInteractions
+            averageResolutionTimeWithoutAutomation -
+                averageResolutionTimeWithAutomation(
+                    totalResolutionTimeExcludingAIAgent,
+                    billableTicketCountExcludingAIAgent,
+                    automatedInteractions,
+                    totalResolutionTimeResolvedByAIAgent
                 )
         )
+    }
     return 0
 }

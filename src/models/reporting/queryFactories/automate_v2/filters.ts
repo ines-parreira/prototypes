@@ -1,6 +1,6 @@
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {ReportingFilterOperator} from 'models/reporting/types'
+import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 
@@ -17,7 +17,9 @@ export const automationDatasetDefaultFilters = (filters: StatsFilters) => [
     },
 ]
 
-export const billableTicketDatasetDefaultFilters = (filters: StatsFilters) => [
+export const billableTicketDatasetDefaultFilters = (
+    filters: StatsFilters
+): ReportingFilter[] => [
     {
         member: BillableTicketDatasetFilterMember.PeriodStart,
         operator: ReportingFilterOperator.AfterDate,

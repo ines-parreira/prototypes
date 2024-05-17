@@ -2,7 +2,11 @@ import {
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
 } from 'models/reporting/queryFactories/automate_v2/filters'
-import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingGranularity,
+    TimeSeriesQuery,
+} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     AutomationDatasetMeasure,
@@ -57,10 +61,11 @@ export const interactionsByEventTypeTimeSeriesQueryFactory = (
     filters: automationDatasetDefaultFilters(filters),
 })
 
-export const billableTicketDatasetTimeSeriesQueryFactory = (
+export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
+    aiAgentUserId?: string
 ): TimeSeriesQuery<BillableTicketDatasetCube> => ({
     measures: [BillableTicketDatasetMeasure.BillableTicketCount],
     dimensions: [],
@@ -72,5 +77,16 @@ export const billableTicketDatasetTimeSeriesQueryFactory = (
         },
     ],
     timezone,
-    filters: billableTicketDatasetDefaultFilters(filters),
+    filters: [
+        ...billableTicketDatasetDefaultFilters(filters),
+        ...(aiAgentUserId
+            ? [
+                  {
+                      member: BillableTicketDatasetDimension.ResolvedByAgentUserId,
+                      operator: ReportingFilterOperator.NotEquals,
+                      values: [aiAgentUserId],
+                  },
+              ]
+            : []),
+    ],
 })

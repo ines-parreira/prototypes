@@ -1,7 +1,7 @@
 import {
     automationRate,
     decreaseInFirstResponseTime,
-    resolutionTimeWithAutomation,
+    averageResolutionTimeWithAutomation,
     decreaseInResolutionTime,
 } from '../automateStatsFormulae'
 
@@ -31,62 +31,56 @@ describe('Metrics Calculation Functions', () => {
 
     describe('decreaseInFirstResponseTime Function', () => {
         it('should return 0 if any parameter is null', () => {
-            expect(decreaseInFirstResponseTime(null, 10, 5)).toBe(0)
-            expect(decreaseInFirstResponseTime(10, null, 5)).toBe(0)
-            expect(decreaseInFirstResponseTime(10, 20, null)).toBe(0)
+            expect(decreaseInFirstResponseTime(null, 10, 5, 5)).toBe(0)
+            expect(decreaseInFirstResponseTime(10, null, 5, 5)).toBe(0)
+            expect(decreaseInFirstResponseTime(10, 20, null, 5)).toBe(0)
+            expect(decreaseInFirstResponseTime(10, 20, 5, null)).toBe(0)
         })
 
         it('should return 0 if all parameters are null', () => {
-            expect(decreaseInFirstResponseTime(null, null, null)).toBe(0)
+            expect(decreaseInFirstResponseTime(null, null, null, null)).toBe(0)
         })
 
         it('should calculate decrease in first response time correctly', () => {
-            expect(decreaseInFirstResponseTime(10, 5, 200)).toBeCloseTo(
+            expect(decreaseInFirstResponseTime(10, 5, 200, 200)).toBeCloseTo(
                 26.666,
                 2
             )
-            expect(decreaseInFirstResponseTime(0, 2, 5)).toBe(0)
-            expect(decreaseInFirstResponseTime(0, 0, 0)).toBeCloseTo(0)
+            expect(decreaseInFirstResponseTime(0, 2, 5, 5)).toBe(0)
+            expect(decreaseInFirstResponseTime(0, 0, 0, 0)).toBeCloseTo(0)
         })
     })
 
     describe('resolutionTime Function', () => {
-        it('should return 0 if any parameter is null', () => {
-            expect(resolutionTimeWithAutomation(null, 10, 5)).toBe(0)
-            expect(resolutionTimeWithAutomation(10, null, 5)).toBe(0)
-            expect(resolutionTimeWithAutomation(10, 20, null)).toBe(0)
-        })
-
-        it('should return 0 if all parameters are null', () => {
-            expect(resolutionTimeWithAutomation(null, null, null)).toBe(0)
-        })
-
         it('should calculate resolution time correctly', () => {
-            expect(resolutionTimeWithAutomation(100, 5, 50)).toBeCloseTo(
-                1.818,
-                3
-            )
-            expect(resolutionTimeWithAutomation(100, 5, 0)).toBeCloseTo(20)
-            expect(decreaseInResolutionTime(0, 0, 0)).toBeCloseTo(0)
-            expect(decreaseInResolutionTime(1, 0, 0)).toBeCloseTo(0)
+            expect(
+                averageResolutionTimeWithAutomation(100, 5, 50, 0)
+            ).toBeCloseTo(1.818, 3)
+            expect(
+                averageResolutionTimeWithAutomation(100, 5, 0, 0)
+            ).toBeCloseTo(20)
         })
     })
 
     describe('decreaseInResolutionTime Function', () => {
         it('should return 0 if any parameter is null', () => {
-            expect(decreaseInResolutionTime(null, 10, 5)).toBe(0)
-            expect(decreaseInResolutionTime(10, null, 5)).toBe(0)
-            expect(decreaseInResolutionTime(10, 20, null)).toBe(0)
+            expect(decreaseInResolutionTime(null, 10, 5, 5)).toBe(0)
+            expect(decreaseInResolutionTime(10, null, 5, 5)).toBe(0)
+            expect(decreaseInResolutionTime(10, 20, null, 5)).toBe(0)
+            expect(decreaseInResolutionTime(10, 20, 5, null)).toBe(0)
         })
 
         it('should return 0 if all parameters are null', () => {
-            expect(decreaseInResolutionTime(null, null, null)).toBe(0)
+            expect(decreaseInResolutionTime(null, null, null, null)).toBe(0)
         })
 
         it('should calculate decrease in resolution time correctly', () => {
-            expect(decreaseInResolutionTime(10, 5, 500)).toBeCloseTo(66.6666, 3)
-            expect(decreaseInResolutionTime(0, 5, 500)).toBeCloseTo(0)
-            expect(decreaseInResolutionTime(0, 0, 0)).toBeCloseTo(0)
+            expect(decreaseInResolutionTime(10, 5, 500, 0)).toBeCloseTo(
+                66.6666,
+                3
+            )
+            expect(decreaseInResolutionTime(0, 5, 500, 0)).toBeCloseTo(0)
+            expect(decreaseInResolutionTime(0, 0, 0, 0)).toBeCloseTo(0)
         })
     })
 })

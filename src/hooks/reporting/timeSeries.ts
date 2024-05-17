@@ -14,7 +14,7 @@ import {automationRateTimeSeriesQueryFactory} from 'models/reporting/queryFactor
 import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
-    billableTicketDatasetTimeSeriesQueryFactory,
+    billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
 import {
     useTimeSeries,
@@ -146,13 +146,15 @@ export function useAutomationDatasetByEventTypeTimeSeries(
 export function useBillableTicketDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
+    aiAgentUserId?: string
 ) {
     return useTimeSeries(
-        billableTicketDatasetTimeSeriesQueryFactory(
+        billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
             filters,
             timezone,
-            granularity
+            granularity,
+            aiAgentUserId
         )
     )
 }

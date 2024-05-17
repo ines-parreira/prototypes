@@ -5,6 +5,7 @@ import {
 } from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+
 import AutomateOverviewContent from './AutomateOverviewContent'
 
 export default function AutomateOverviewV2({
