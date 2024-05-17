@@ -9,7 +9,7 @@ import {
     CONTENT_BODY_TEXT_PARAGRAPH_1,
     CONTENT_BODY_TEXT_PARAGRAPH_2,
     CONTENT_SET_UP_BUTTON_TEXT,
-} from 'pages/stats/ServiceLevelAgreementsEmptyState'
+} from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
 
 describe('ServiceLevelAgreementsEmptyState', () => {
     it('renders page header title', () => {

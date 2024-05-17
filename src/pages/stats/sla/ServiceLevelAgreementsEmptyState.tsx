@@ -2,7 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import icon from 'assets/img/stats/no-slas-icon.png'
 import Button from 'pages/common/components/button/Button'
-import css from 'pages/stats/ServiceLevelAgreementsEmptyState.less'
+import css from 'pages/stats/sla/ServiceLevelAgreementsEmptyState.less'
 import PageHeader from 'pages/common/components/PageHeader'
 import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
 

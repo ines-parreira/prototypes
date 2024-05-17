@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, {ComponentProps, PropsWithChildren} from 'react'
 import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -12,11 +12,16 @@ import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
 import ServiceLevelAgreements, {
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
-} from 'pages/stats/ServiceLevelAgreements'
+} from 'pages/stats/sla/ServiceLevelAgreements'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+jest.mock('pages/stats/sla/components/WithSlaEmptyState', () => ({
+    WithSlaEmptyState: ({children}: PropsWithChildren<unknown>) => (
+        <>{children}</>
+    ),
+}))
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))

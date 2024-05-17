@@ -183,7 +183,7 @@ import {
     CampaignTemplateCustomizeLibraryView,
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import PanelLayout from 'pages/PanelLayout'
-import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
+import ServiceLevelAgreements from 'pages/stats/sla/ServiceLevelAgreements'
 import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
 import {AiAgentGuidanceNewContainer} from './automate/aiAgent/AiAgentGuidanceNewContainer'
 import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
