@@ -203,6 +203,12 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                 },
                 {
+                    name: 'Fulfillment last updated date',
+                    value: `steps_state.${node.id}.order.fulfillments.0.updated_datetime`,
+                    nodeType: 'order_selection',
+                    type: 'date',
+                },
+                {
                     name: 'Payment status',
                     value: `steps_state.${node.id}.order.external_payment_status`,
                     nodeType: 'order_selection',
@@ -324,6 +330,12 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                 },
                 {
+                    name: 'Shipment status',
+                    value: `steps_state.${node.id}.fulfillments.0.external_shipment_status`,
+                    nodeType: 'order_selection',
+                    type: 'string',
+                },
+                {
                     name: 'Tracking url',
                     value: `steps_state.${node.id}.order.tracking_url`,
                     nodeType: 'order_selection',
@@ -341,6 +353,18 @@ export const buildWorkflowVariableFromNode = (
                     filter: 'format_datetime',
                     nodeType: 'order_selection',
                     type: 'date',
+                },
+                {
+                    name: 'Shipping method id',
+                    value: `steps_state.${node.id}.order.shipping_lines.0.external_method_id`,
+                    nodeType: 'order_selection',
+                    type: 'string',
+                },
+                {
+                    name: 'Shipping method name',
+                    value: `steps_state.${node.id}.order.shipping_lines.0.method_name`,
+                    nodeType: 'order_selection',
+                    type: 'string',
                 },
                 {
                     name: 'Order number',

@@ -74,6 +74,12 @@ export const orderVariables: WorkflowVariable[] = [
         type: 'string',
     },
     {
+        name: 'Fulfillment last updated date',
+        value: 'objects.order.fulfillments.0.updated_datetime',
+        nodeType: 'order_selection',
+        type: 'date',
+    },
+    {
         name: 'Payment status',
         value: 'objects.order.external_payment_status',
         nodeType: 'order_selection',
@@ -194,6 +200,12 @@ export const orderVariables: WorkflowVariable[] = [
         type: 'string',
     },
     {
+        name: 'Shipment status',
+        value: 'objects.order.fulfillments.0.external_shipment_status',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
         name: 'Tracking url',
         value: 'objects.order.tracking_url',
         nodeType: 'order_selection',
@@ -210,6 +222,18 @@ export const orderVariables: WorkflowVariable[] = [
         value: 'objects.order.shipping_datetime',
         nodeType: 'order_selection',
         type: 'date',
+    },
+    {
+        name: 'Shipping method id',
+        value: 'objects.order.shipping_lines.0.external_method_id',
+        nodeType: 'order_selection',
+        type: 'string',
+    },
+    {
+        name: 'Shipping method name',
+        value: 'objects.order.shipping_lines.0.method_name',
+        nodeType: 'order_selection',
+        type: 'string',
     },
     {
         name: 'Order number',
