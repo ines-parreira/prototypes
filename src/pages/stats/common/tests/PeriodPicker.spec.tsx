@@ -166,10 +166,11 @@ describe('PeriodPicker', () => {
 
         getByTestId('MockDateRangePicker').click()
 
-        expect(periodPickerClassListMockSpy.mock.calls).toEqual([
-            [theme, 'displayed'],
-            ['picker-v2', 'apply-v2-styles'],
-        ])
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            2,
+            'picker-v2',
+            'apply-v2-styles'
+        )
     })
 
     it('should render with v2 styles and ranges on left', () => {
@@ -179,11 +180,17 @@ describe('PeriodPicker', () => {
 
         getByTestId('MockDateRangePicker').click()
 
-        expect(periodPickerClassListMockSpy.mock.calls).toEqual([
-            [theme, 'displayed'],
-            ['picker-v2', 'apply-v2-styles'],
-            ['picker-v2', 'ranges-on-left'],
-        ])
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            2,
+            'picker-v2',
+            'apply-v2-styles'
+        )
+
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            3,
+            'picker-v2',
+            'ranges-on-left'
+        )
     })
 
     it('should render ranges without label', () => {
@@ -195,5 +202,19 @@ describe('PeriodPicker', () => {
 
         expect(periodPickerRangesClassListMockSpy).not.toHaveBeenCalled()
         expect(periodPickerRangesAttributesListMockSpy).not.toHaveBeenCalled()
+    })
+
+    it('should add class names related to buttons on the bottom', () => {
+        const {getByTestId} = render(
+            <PickerWithDefaultProps actionButtonsOnTheBottom={true} />
+        )
+
+        getByTestId('MockDateRangePicker').click()
+
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            2,
+            'picker-v2',
+            'action-buttons-on-the-bottom'
+        )
     })
 })

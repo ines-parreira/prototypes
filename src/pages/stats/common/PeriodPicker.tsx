@@ -73,6 +73,8 @@ export type Props = {
     pickerV2Styles?: boolean
     rangesOnLeft?: boolean
     showRangesLabel?: boolean
+    actionButtonsOnTheBottom?: boolean
+    changeButtonColorsToV2?: boolean
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -92,8 +94,10 @@ export const PeriodPickerContainer = ({
     userTimezone,
     dateRanges,
     pickerV2Styles = false,
-    rangesOnLeft: rangesLeft = false,
+    rangesOnLeft = false,
     showRangesLabel = true,
+    actionButtonsOnTheBottom = false,
+    changeButtonColorsToV2 = false,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -230,7 +234,11 @@ export const PeriodPickerContainer = ({
                         }}
                         initialSettings={{
                             alwaysShowCalendars: true,
-                            applyButtonClasses: 'btn-success mr-2',
+                            applyButtonClasses: `${
+                                changeButtonColorsToV2
+                                    ? 'btn-primary'
+                                    : 'btn-success'
+                            } mr-2`,
                             cancelButtonClasses: 'btn-secondary',
                             endDate,
                             isCustomDate: (date: Moment) => {
@@ -270,10 +278,17 @@ export const PeriodPickerContainer = ({
                                 )
                             }
 
-                            if (rangesLeft) {
+                            if (rangesOnLeft) {
                                 dateRangerPickerElement.current.classList.add(
                                     'picker-v2',
                                     'ranges-on-left'
+                                )
+                            }
+
+                            if (actionButtonsOnTheBottom) {
+                                dateRangerPickerElement.current.classList.add(
+                                    'picker-v2',
+                                    'action-buttons-on-the-bottom'
                                 )
                             }
 
