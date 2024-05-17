@@ -239,6 +239,12 @@ export function useWorkflowEditor(
     )
 
     useEffect(() => {
+        if (visualBuilderNodeIdEditing !== null && isTesting) {
+            setIsTesting(false)
+        }
+    }, [isTesting, visualBuilderNodeIdEditing])
+
+    useEffect(() => {
         async function fetch() {
             if (!isNew) {
                 setIsFetchPending(true)
