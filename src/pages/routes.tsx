@@ -191,6 +191,7 @@ import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidance
 import {AiAgentGuidanceTemplatesContainer} from './automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentGuidanceTemplateNewContainer} from './automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import {AiAgentPlaygroundContainerV2} from './automate/aiAgent/AiAgentPlaygroundV2Container'
+import {AiAgentErrorBoundary} from './automate/aiAgent/providers/AiAgentErrorBoundary'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1421,24 +1422,28 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
         <Switch>
             <SelfServiceHelpCentersProvider>
                 <AiAgentAccountConfigurationProvider>
-                    <Route
-                        path={`${path}`}
-                        exact
-                        component={AiAgentViewContainer}
-                    />
-                    {showAiAgentPlayground !== false && (
+                    <AiAgentErrorBoundary section="ai-agent-configuration">
                         <Route
-                            path={`${path}/test`}
+                            path={`${path}`}
                             exact
-                            component={
-                                showAiPlaygroundV2
-                                    ? AiAgentPlaygroundContainerV2
-                                    : AiAgentPlaygroundContainer
-                            }
+                            component={AiAgentViewContainer}
                         />
+                    </AiAgentErrorBoundary>
+                    {showAiAgentPlayground !== false && (
+                        <AiAgentErrorBoundary section="ai-agent-playground">
+                            <Route
+                                path={`${path}/test`}
+                                exact
+                                component={
+                                    showAiPlaygroundV2
+                                        ? AiAgentPlaygroundContainerV2
+                                        : AiAgentPlaygroundContainer
+                                }
+                            />
+                        </AiAgentErrorBoundary>
                     )}
                     {showAiAgentGuidance !== false && (
-                        <>
+                        <AiAgentErrorBoundary section="ai-agent-guidance">
                             <Route
                                 path={`${path}/guidance`}
                                 exact
@@ -1475,7 +1480,7 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                                     component={AiAgentGuidanceDetailContainer}
                                 />
                             </Switch>
-                        </>
+                        </AiAgentErrorBoundary>
                     )}
                 </AiAgentAccountConfigurationProvider>
             </SelfServiceHelpCentersProvider>
