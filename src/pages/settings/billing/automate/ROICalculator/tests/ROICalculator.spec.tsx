@@ -192,4 +192,77 @@ describe('<ROICalculator />', () => {
         expect(costWithAutomate).toHaveTextContent('$6,076')
         expect(costWithoutAutomate).toHaveTextContent('$7,952')
     })
+
+    it('should display zeros instead of Infinity or NaN', () => {
+        // Arrange
+        jest.spyOn(
+            metricTrends,
+            'useMedianResolutionTimeTrend'
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 3600,
+                prevValue: 3600,
+            },
+        })
+
+        jest.spyOn(
+            metricTrends,
+            'useMedianFirstResponseTimeTrend'
+        ).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 3600,
+                prevValue: 3600,
+            },
+        })
+
+        const closedTickets = 100
+
+        jest.spyOn(metricTrends, 'useClosedTicketsTrend').mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: closedTickets,
+                prevValue: closedTickets,
+            },
+        })
+
+        jest.spyOn(metricTrends, 'useTicketHandleTimeTrend').mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 120,
+                prevValue: 120,
+            },
+        })
+
+        const {getByTestId} = render(
+            <Provider
+                store={mockStore({billing: fromJS(billingState)} as RootState)}
+            >
+                <QueryClientProvider client={queryClient}>
+                    <ROICalculator />
+                </QueryClientProvider>
+            </Provider>
+        )
+
+        // Act
+        const ticketsClosedPerHourInput = getByTestId(
+            'tickets-closed-per-hour-input'
+        )
+
+        fireEvent.change(ticketsClosedPerHourInput, {target: {value: ''}})
+
+        // Assert
+        const costWithAutomate = getByTestId('cost-with-automate')
+        const costWithoutAutomate = getByTestId('cost-without-automate')
+        const savedInPercentage = getByTestId('saved-in-percentage')
+
+        expect(costWithAutomate).toHaveTextContent('0')
+        expect(costWithoutAutomate).toHaveTextContent('0')
+        expect(savedInPercentage).toHaveTextContent('0%')
+    })
 })

@@ -35,6 +35,8 @@ import {
     getResolutionTimeWithAutomate,
 } from './utils'
 
+const isFiniteAndPositive = (value: number) => isFinite(value) && value > 0
+
 const ROICalculator = () => {
     const agentWagesRef = useRef(null)
     const currentResolutionTimeRef = useRef(null)
@@ -231,16 +233,20 @@ const ROICalculator = () => {
         )
 
         setCostWithoutAutomate(
-            costWithoutAutomate > 0 ? costWithoutAutomate : 0
+            isFiniteAndPositive(costWithoutAutomate) ? costWithoutAutomate : 0
         )
 
-        setCostWithAutomate(costWithAutomate > 0 ? costWithAutomate : 0)
+        setCostWithAutomate(
+            isFiniteAndPositive(costWithAutomate) ? costWithAutomate : 0
+        )
 
         if (costWithoutAutomate > 0) {
+            const saved = Math.round(
+                (1 - costWithAutomate / costWithoutAutomate) * 100
+            )
+
             setSavedInPercentage(
-                `${Math.round(
-                    (1 - costWithAutomate / costWithoutAutomate) * 100
-                )}%`
+                isFiniteAndPositive(saved) ? `${saved}%` : '0%'
             )
         }
     }, [
@@ -489,7 +495,10 @@ const ROICalculator = () => {
                                 )}
                             </div>
                         </div>
-                        <div className={css.savePercentage}>
+                        <div
+                            className={css.savePercentage}
+                            data-testid="saved-in-percentage"
+                        >
                             Save {savedInPercentage}
                         </div>
                     </div>
