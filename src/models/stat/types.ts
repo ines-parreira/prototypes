@@ -17,6 +17,7 @@ export type StatsFilters = {
     channels?: ChannelIdentifier[]
     campaigns?: string[]
     score?: string[]
+    slaPolicies?: string[]
 }
 
 export enum StatType {

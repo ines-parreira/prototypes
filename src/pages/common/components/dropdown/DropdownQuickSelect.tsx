@@ -17,6 +17,9 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {DropdownContext} from './Dropdown'
 import css from './DropdownQuickSelect.less'
 
+export const SELECT_ALL_LABEL = 'Select all'
+export const DESELECT_ALL_LABEL = 'Deselect all'
+
 type Props<T extends boolean | number | string> = {
     addLabel?: ReactNode
     autoFocus?: boolean
@@ -31,13 +34,13 @@ type Props<T extends boolean | number | string> = {
 
 const DropdownQuickSelect = <T extends boolean | number | string>(
     {
-        addLabel = 'Select all',
+        addLabel = SELECT_ALL_LABEL,
         autoFocus,
         className,
         count,
         onRemoveAll,
         onSelectAll,
-        removeLabel = 'Deselect all',
+        removeLabel = DESELECT_ALL_LABEL,
         shouldCloseOnSelect,
         values,
     }: Props<T>,

@@ -53,6 +53,11 @@ export const getStatsStoreIntegrations = makeGetPlainJS<Integration[]>(
 export const getStoreIntegrationsStatsFilter =
     makeIntegrationsStatsFilterSelector(getStatsStoreIntegrations)
 
+export const getSLAPoliciesStatsFilter = createSelector(
+    getStatsFilters,
+    (filters) => filters.slaPolicies ?? []
+)
+
 export const getPageStatsFilters = createSelector(
     getStatsFilters,
     getMessagingIntegrationsStatsFilter,
@@ -66,6 +71,7 @@ export const getPageStatsFilters = createSelector(
             localeCodes,
             score,
             campaigns,
+            slaPolicies,
         } = statsFilters
         return {
             channels,
@@ -77,6 +83,7 @@ export const getPageStatsFilters = createSelector(
             localeCodes,
             score,
             campaigns,
+            slaPolicies,
         }
     }
 )

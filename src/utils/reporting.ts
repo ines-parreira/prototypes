@@ -1,6 +1,7 @@
 import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
 import moment, {Moment} from 'moment'
+import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
 import {
     MetricWithDecile,
     QueryReturnType,
@@ -48,6 +49,11 @@ export const TicketStatsFiltersMembers: StatsFiltersMembers = {
     integrations: TicketMessagesMember.Integration,
     agents: TicketMember.AssigneeUserId,
     tags: TicketMember.Tags,
+}
+
+export const TicketSLAStatsFiltersMembers: StatsFiltersMembers = {
+    ...TicketStatsFiltersMembers,
+    slaPolicies: TicketSLAMember.SlaPolicyUuid,
 }
 
 export const HelpCenterStatsFiltersMembers: StatsFiltersMembers = {
@@ -137,6 +143,7 @@ export const statsFiltersToReportingFilters = (
         tags,
         helpCenters,
         localeCodes,
+        slaPolicies,
     } = statsFilters
     const filters: ReportingFilter[] = [
         {
@@ -192,6 +199,13 @@ export const statsFiltersToReportingFilters = (
             member: members.tags,
             operator: ReportingFilterOperator.Equals,
             values: tags.map((tag) => tag.toString()),
+        })
+    }
+    if (slaPolicies?.length && members.slaPolicies) {
+        filters.push({
+            member: members.slaPolicies,
+            operator: ReportingFilterOperator.Equals,
+            values: slaPolicies.map((policyId) => policyId),
         })
     }
     return filters

@@ -1,6 +1,7 @@
 import React from 'react'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
+import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 
@@ -11,7 +12,8 @@ import {useGridSize} from 'hooks/useGridSize'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 
-const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
+export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
+const OVERVIEW_SECTION_LABEL = 'Overview'
 
 export default function ServiceLevelAgreements() {
     const getGridCellSize = useGridSize()
@@ -26,6 +28,12 @@ export default function ServiceLevelAgreements() {
                     </>
                 }
             >
+                <DashboardSection
+                    title={OVERVIEW_SECTION_LABEL}
+                    className="pb-0"
+                >
+                    <SLAPolicySelect />
+                </DashboardSection>
                 <DashboardSection>
                     <DashboardGridCell size={getGridCellSize(6)}>
                         <AchievementRateTrendCard />

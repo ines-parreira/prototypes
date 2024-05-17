@@ -4,6 +4,7 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -24,6 +25,7 @@ import {
     periodToReportingGranularity,
     sortAllData,
     statsFiltersToReportingFilters,
+    TicketSLAStatsFiltersMembers,
     TicketStatsFiltersMembers,
     withFilter,
 } from 'utils/reporting'
@@ -80,6 +82,37 @@ describe('reporting utils', () => {
                     member: TicketMember.Tags,
                     operator: ReportingFilterOperator.Equals,
                     values: ['1', '2'],
+                },
+            ])
+        })
+
+        it('should convert SLAStatsFilters to an array of ReportingFilter', () => {
+            const statsFilters = {
+                period: {
+                    start_datetime: '2021-05-29T00:00:00.000+02:00',
+                    end_datetime: '2021-06-04T23:59:59.000+02:00',
+                },
+                channels: [TicketChannel.Email, TicketChannel.Chat],
+                integrations: [1],
+                agents: [2],
+                tags: [1, 2],
+                slaPolicies: ['2', '4'],
+            }
+
+            expect(
+                statsFiltersToReportingFilters(
+                    TicketSLAStatsFiltersMembers,
+                    statsFilters
+                )
+            ).toEqual([
+                ...statsFiltersToReportingFilters(
+                    TicketStatsFiltersMembers,
+                    statsFilters
+                ),
+                {
+                    member: TicketSLAMember.SlaPolicyUuid,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.slaPolicies,
                 },
             ])
         })

@@ -14,7 +14,7 @@ import {
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
-    TicketStatsFiltersMembers,
+    TicketSLAStatsFiltersMembers,
 } from 'utils/reporting'
 
 export const slaTicketsQueryFactory = (
@@ -28,7 +28,10 @@ export const slaTicketsQueryFactory = (
     segments: [],
     filters: [
         ...NotSpamNorTrashedTicketsFilter,
-        ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
+        ...statsFiltersToReportingFilters(
+            TicketSLAStatsFiltersMembers,
+            filters
+        ),
     ],
     ...(sorting
         ? {

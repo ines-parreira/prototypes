@@ -30,6 +30,7 @@ export enum TicketSLAMember {
     PeriodEnd = 'TicketSLA.periodEnd',
     SlaStatus = 'TicketSLA.slaStatus',
     SlaAnchorDatetime = 'TicketSLA.slaAnchorDatetime',
+    SlaPolicyUuid = 'TicketsSLA.slaPolicyUuid',
 }
 
 export enum TicketSLAStatus {

@@ -1,15 +1,18 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
+import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
-import ServiceLevelAgreements from 'pages/stats/ServiceLevelAgreements'
+import ServiceLevelAgreements, {
+    SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
+} from 'pages/stats/ServiceLevelAgreements'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -35,6 +38,8 @@ jest.mock('pages/stats/sla/components/BreachedTicketsRateTrendCard')
 const BreachedTicketsRateTrendCardMock = assumeMock(
     BreachedTicketsRateTrendCard
 )
+jest.mock('pages/stats/sla/components/SLAPolicySelect')
+const SLAPolicySelectMock = assumeMock(SLAPolicySelect)
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
@@ -43,16 +48,31 @@ describe('ServiceLevelAgreements', () => {
         BreachedTicketsRateTrendCardMock.mockImplementation(() => <div />)
     })
 
+    beforeEach(() => {
+        SLAPolicySelectMock.mockImplementation(() => <div />)
+    })
     it('should render service level agreements', () => {
-        const {getByText} = render(
+        render(
             <Provider store={mockStore({})}>
                 <ServiceLevelAgreements />
             </Provider>
         )
 
-        expect(getByText('SLAs')).toBeInTheDocument()
+        expect(
+            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE)
+        ).toBeInTheDocument()
         expect(AchievedAndBreachedTicketsChartMock).toHaveBeenCalled()
         expect(AchievementRateTrendCardMock).toHaveBeenCalled()
         expect(BreachedTicketsRateTrendCardMock).toHaveBeenCalled()
+    })
+
+    it('should render SLAPolicySelect', () => {
+        render(
+            <Provider store={mockStore({})}>
+                <ServiceLevelAgreements />
+            </Provider>
+        )
+
+        expect(SLAPolicySelectMock).toHaveBeenCalled()
     })
 })
