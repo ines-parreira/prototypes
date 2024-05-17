@@ -1,4 +1,5 @@
 import {AiAgentInput} from 'models/aiAgentPlayground/types'
+import {CustomerHttpIntegrationDataMock} from '../constants'
 
 export type NewCustomerData = {
     body_text: string
@@ -8,13 +9,6 @@ export type NewCustomerData = {
         id: number
         address: string
     }
-}
-
-export const mockCustomerData = {
-    address: 'oliver.smith@foobar.com',
-    name: 'Oliver Smith',
-    firstname: 'Oliver',
-    lastname: 'Smith',
 }
 
 export const createMockHttpIntegrationPayload = ({
@@ -33,8 +27,8 @@ export const createMockHttpIntegrationPayload = ({
         intents: '[]',
         source: JSON.stringify({
             from: {
-                address: mockCustomerData.address,
-                name: mockCustomerData.name,
+                address: CustomerHttpIntegrationDataMock.address,
+                name: CustomerHttpIntegrationDataMock.name,
             },
             to: [
                 {
@@ -53,8 +47,8 @@ export const createMockHttpIntegrationPayload = ({
         channel: 'email',
         created_datetime,
         customer: {
-            email: mockCustomerData.address,
-            firstname: mockCustomerData.firstname,
+            email: CustomerHttpIntegrationDataMock.address,
+            firstname: CustomerHttpIntegrationDataMock.firstname,
             id: '601409',
             integrations: JSON.stringify({
                 shopify: {
@@ -63,8 +57,8 @@ export const createMockHttpIntegrationPayload = ({
                     orders: [],
                 },
             }),
-            lastname: mockCustomerData.lastname,
-            name: mockCustomerData.name,
+            lastname: CustomerHttpIntegrationDataMock.lastname,
+            name: CustomerHttpIntegrationDataMock.name,
         },
         id: '179772',
         messages: JSON.stringify([
@@ -78,21 +72,21 @@ export const createMockHttpIntegrationPayload = ({
                 id: 233881,
                 integration_id: integration.id,
                 sender: {
-                    email: mockCustomerData.address,
-                    firstname: mockCustomerData.firstname,
+                    email: CustomerHttpIntegrationDataMock.address,
+                    firstname: CustomerHttpIntegrationDataMock.firstname,
                     id: 601409,
-                    lastname: mockCustomerData.lastname,
+                    lastname: CustomerHttpIntegrationDataMock.lastname,
                     meta: {
                         name_set_via: 'shopify',
                     },
-                    name: mockCustomerData.name,
+                    name: CustomerHttpIntegrationDataMock.name,
                 },
                 source: {
                     bcc: [],
                     cc: [],
                     from: {
-                        address: mockCustomerData.address,
-                        name: mockCustomerData.name,
+                        address: CustomerHttpIntegrationDataMock.address,
+                        name: CustomerHttpIntegrationDataMock.name,
                     },
                     to: [
                         {

@@ -6,11 +6,10 @@ import {GuidanceTemplateKey} from '../types'
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
-    const showAiAgentPlayground: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlayground]
 
     const routes = useMemo(
         () => ({
+            automation: `/app/automation`,
             test: `/app/automation/shopify/${shopName}/ai-agent/test`,
             guidance: `/app/automation/shopify/${shopName}/ai-agent/guidance`,
             newGuidanceArticle: `/app/automation/shopify/${shopName}/ai-agent/guidance/new`,
@@ -39,16 +38,13 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 route: routes.configuration,
                 title: 'Configuration',
             },
-            ...(showAiAgentPlayground
-                ? [
-                      {
-                          route: routes.test,
-                          title: 'Test',
-                      },
-                  ]
-                : []),
+
+            {
+                route: routes.test,
+                title: 'Test',
+            },
         ],
-        [routes, showAiAgentPlayground, showGuidance]
+        [routes, showGuidance]
     )
 
     return {headerNavbarItems, routes}

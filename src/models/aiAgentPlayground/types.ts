@@ -1,5 +1,5 @@
 export type CreatePlaygroundRequest = {
-    new_customer_email: boolean
+    use_mock_context: boolean
     domain: string
     customer_email: string
     body_text: string
@@ -55,7 +55,6 @@ export type PlaygroundMessage = {
     type: MessageType
     message?: string | React.ReactNode
     outcome?: TicketOutcome
-    processingStatus?: ProcessingStatus
 }
 
 export enum TicketOutcome {
@@ -88,4 +87,9 @@ export enum ProcessingStatus {
     SUMMARIZING = 'Summarizing',
     GATHERING_INFO = 'Gathering information',
     GENERATING = 'Generating response',
+}
+
+export enum PlaygroundStep {
+    INPUT = 'input',
+    OUTPUT = 'output',
 }

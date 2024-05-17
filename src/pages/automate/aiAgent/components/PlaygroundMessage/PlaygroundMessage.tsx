@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classnames from 'classnames'
 import {sanitizeHtmlDefault} from 'utils/html'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -10,6 +10,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import {
     MessageType,
     PlaygroundMessage as PlaygroundMessageType,
+    ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
 import css from './PlaygroundMessage.less'
 
@@ -19,9 +20,43 @@ const PlaygroundMessage = ({
     sender,
     type = MessageType.MESSAGE,
     message,
-    processingStatus,
 }: PlaygroundMessageType) => {
     const isAiAgentSender = sender === AI_AGENT_SENDER
+    const [processingStatus, setProcessingStatus] = useState(
+        ProcessingStatus.CHECKING_PERMISSIONS
+    )
+
+    const aiAgentProcessingStatusUpdate = (
+        newStatus: ProcessingStatus,
+        delay: number
+    ) => {
+        return setTimeout(() => {
+            setProcessingStatus(newStatus)
+        }, delay)
+    }
+
+    useEffect(() => {
+        const timeoutsToClear: NodeJS.Timeout[] = []
+        if (!message) {
+            timeoutsToClear.push(
+                aiAgentProcessingStatusUpdate(
+                    ProcessingStatus.SUMMARIZING,
+                    5000
+                ),
+                aiAgentProcessingStatusUpdate(
+                    ProcessingStatus.GATHERING_INFO,
+                    10000
+                ),
+                aiAgentProcessingStatusUpdate(
+                    ProcessingStatus.GENERATING,
+                    15000
+                )
+            )
+        }
+        return () => {
+            timeoutsToClear.forEach(clearTimeout)
+        }
+    }, [message])
 
     return (
         <div
@@ -148,5 +183,18 @@ const PlaygroundMessage = ({
         </div>
     )
 }
+
+export const PlaygroundGenericErrorMessage = ({
+    onClick,
+}: {
+    onClick: () => void
+}) => (
+    <div className={css.errorMessageText}>
+        AI Agent encountered an error and didn’t send a response.
+        <span className={css.errorMessageLink} onClick={onClick}>
+            Try again
+        </span>
+    </div>
+)
 
 export default PlaygroundMessage

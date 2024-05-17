@@ -1,6 +1,6 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
-import {MessageType, ProcessingStatus} from 'models/aiAgentPlayground/types'
+import {MessageType} from 'models/aiAgentPlayground/types'
 import PlaygroundMessage, {AI_AGENT_SENDER} from './PlaygroundMessage'
 
 const meta: Meta<typeof PlaygroundMessage> = {
@@ -53,7 +53,6 @@ export const AIAgentMessageLoading: Story = {
     render: (args) => <PlaygroundMessage {...args} />,
     args: {
         sender: AI_AGENT_SENDER,
-        processingStatus: ProcessingStatus.CHECKING_PERMISSIONS,
         type: MessageType.MESSAGE,
     },
 }

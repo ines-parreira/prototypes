@@ -1,11 +1,7 @@
 import React from 'react'
 import {Meta, StoryObj} from '@storybook/react'
 import Button from 'pages/common/components/button/Button'
-import {
-    MessageType,
-    ProcessingStatus,
-    TicketOutcome,
-} from 'models/aiAgentPlayground/types'
+import {MessageType, TicketOutcome} from 'models/aiAgentPlayground/types'
 import PlaygroundMessage from '../PlaygroundMessage/PlaygroundMessage'
 import TicketEvent from '../TicketEvent/TicketEvent'
 import PlaygroundThread from './PlaygroundThread'
@@ -53,7 +49,6 @@ export const AIAgentLoading: Story = {
                 <PlaygroundMessage
                     sender={'AI Agent'}
                     type={MessageType.MESSAGE}
-                    processingStatus={ProcessingStatus.CHECKING_PERMISSIONS}
                 />
             </div>
         ),

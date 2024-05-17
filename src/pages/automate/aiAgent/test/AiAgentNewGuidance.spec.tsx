@@ -27,7 +27,6 @@ jest.mock(
     }
 )
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
     [FeatureFlagKey.AiAgentSettings]: true,
 }))

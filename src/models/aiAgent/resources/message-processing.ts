@@ -42,7 +42,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
 ) => {
     let context
 
-    if (body.new_customer_email) {
+    if (body.use_mock_context) {
         context = {
             data: createMockHttpIntegrationPayload({
                 body_text: body.body_text,

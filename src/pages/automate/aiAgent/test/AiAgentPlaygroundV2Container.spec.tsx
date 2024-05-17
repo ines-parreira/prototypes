@@ -7,7 +7,6 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-    [FeatureFlagKey.AiAgentPlayground]: false,
     [FeatureFlagKey.AiAgentGuidance]: true,
     [FeatureFlagKey.AiAgentSettings]: true,
 }))

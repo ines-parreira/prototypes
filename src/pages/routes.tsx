@@ -174,7 +174,7 @@ import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMig
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import ConvertOnboardingView from 'pages/convert/onboarding/components/ConvertOnboardingView'
 import AiAgentViewContainer from 'pages/automate/aiAgent/AiAgentViewContainer'
-import AiAgentPlaygroundContainer from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
+import {AiAgentPlaygroundContainer} from 'pages/automate/aiAgent/AiAgentPlaygroundContainer'
 import ConvertBundleView from 'pages/convert/bundles/components/ConvertBundleView'
 import ConvertOnboardingWizardView from 'pages/convert/onboarding/components/ConvertOnboardingWizardView'
 import UpdateABTestView from 'pages/convert/abTests/components/UpdateABTestView'
@@ -190,7 +190,6 @@ import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/
 import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidanceDetailContainer'
 import {AiAgentGuidanceTemplatesContainer} from './automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentGuidanceTemplateNewContainer} from './automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
-import {AiAgentPlaygroundContainerV2} from './automate/aiAgent/AiAgentPlaygroundV2Container'
 import {AiAgentErrorBoundary} from './automate/aiAgent/providers/AiAgentErrorBoundary'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
@@ -1397,14 +1396,8 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const showAiAgentSettings: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSettings]
 
-    const showAiAgentPlayground: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlayground]
-
     const showAiAgentGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
-
-    const showAiPlaygroundV2: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlaygroundV2]
 
     const {shopType} = useParams<{
         shopType: string
@@ -1429,19 +1422,13 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             component={AiAgentViewContainer}
                         />
                     </AiAgentErrorBoundary>
-                    {showAiAgentPlayground !== false && (
-                        <AiAgentErrorBoundary section="ai-agent-playground">
-                            <Route
-                                path={`${path}/test`}
-                                exact
-                                component={
-                                    showAiPlaygroundV2
-                                        ? AiAgentPlaygroundContainerV2
-                                        : AiAgentPlaygroundContainer
-                                }
-                            />
-                        </AiAgentErrorBoundary>
-                    )}
+                    <AiAgentErrorBoundary section="ai-agent-playground">
+                        <Route
+                            path={`${path}/test`}
+                            exact
+                            component={AiAgentPlaygroundContainer}
+                        />
+                    </AiAgentErrorBoundary>
                     {showAiAgentGuidance !== false && (
                         <AiAgentErrorBoundary section="ai-agent-guidance">
                             <Route

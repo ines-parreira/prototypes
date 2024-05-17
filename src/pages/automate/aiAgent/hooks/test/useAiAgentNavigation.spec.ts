@@ -6,7 +6,6 @@ import {useAiAgentNavigation} from '../useAiAgentNavigation'
 describe('useAiAgentNavigation', () => {
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AiAgentPlayground]: false,
             [FeatureFlagKey.AiAgentGuidance]: false,
         }))
     })
@@ -19,12 +18,15 @@ describe('useAiAgentNavigation', () => {
                 route: '/app/automation/shopify/test/ai-agent',
                 title: 'Configuration',
             },
+            {
+                route: '/app/automation/shopify/test/ai-agent/test',
+                title: 'Test',
+            },
         ])
     })
 
     it('should return headerNavbarItems with guidance and playground', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AiAgentPlayground]: true,
             [FeatureFlagKey.AiAgentGuidance]: true,
         }))
 

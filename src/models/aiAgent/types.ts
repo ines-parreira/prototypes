@@ -11,6 +11,10 @@ export type AccountConfiguration = {
     helpdeskOAuth: {accessToken: string} | null
 }
 
+export type AccountConfigurationWithHttpIntegration = AccountConfiguration & {
+    httpIntegration: {id: number}
+}
+
 export type GetStoreConfigurationParams = {
     accountDomain: string
     storeName: string

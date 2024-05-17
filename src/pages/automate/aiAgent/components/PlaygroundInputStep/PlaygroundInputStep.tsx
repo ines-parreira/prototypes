@@ -1,34 +1,57 @@
 import React, {useState} from 'react'
+import {UseMutateFunction} from '@tanstack/react-query'
+import {AxiosResponse} from 'axios'
 import classnames from 'classnames'
-import {CustomerSearchResponseDataItem} from '@gorgias/api-queries'
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {
+    AccountConfigurationWithHttpIntegration,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
+import {
+    AiAgentResponse,
+    CreatePlaygroundRequest,
+    MessageType,
+    PlaygroundMessage,
+    PlaygroundStep,
+} from 'models/aiAgentPlayground/types'
 import {searchCustomers} from 'models/customer/resources'
 import Button from 'pages/common/components/button/Button'
-import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {Value} from 'pages/common/forms/SelectField/types'
+import TextInput from 'pages/common/forms/input/TextInput'
+import {reportError} from 'utils/errors'
+import {CustomerHttpIntegrationDataMock} from '../../constants'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
-import {mockCustomerData} from '../../utils/new-customer-playground.util'
+import {
+    AI_AGENT_SENDER,
+    PlaygroundGenericErrorMessage,
+} from '../PlaygroundMessage/PlaygroundMessage'
 import css from './PlaygroundInputStep.less'
 
-export type FormValues = {
+enum SenderTypeValues {
+    NEW_CUSTOMER = 'new-customer',
+    EXISTING_CUSTOMER = 'existing-customer',
+}
+
+type FormValues = {
     subject: string
     message: string
     customerEmail: string
 }
 
-export type AdditionalValues = {
-    customerName: string
-    existingCustomerFound: boolean | undefined
-}
-
-const initialFormValues: FormValues = {
-    subject: '',
-    message: '',
-    customerEmail: mockCustomerData.address,
-}
-
-enum SenderTypeValues {
-    NEW_CUSTOMER = 'new-customer',
-    EXISTING_CUSTOMER = 'existing-customer',
+type Props = {
+    isDisabled: boolean
+    setSubject: (value: string) => void
+    setMessages: (messages: PlaygroundMessage[]) => void
+    setStep: (step: PlaygroundStep) => void
+    submitPlaygroundTicket: UseMutateFunction<
+        AxiosResponse<AiAgentResponse, any>,
+        Record<string, unknown>,
+        [body: CreatePlaygroundRequest],
+        unknown
+    >
+    accountData: AccountConfigurationWithHttpIntegration
+    storeData: StoreConfiguration
 }
 
 const senderSelectOptions = [
@@ -42,19 +65,20 @@ const senderSelectOptions = [
     },
 ]
 
-type Props = {
-    handleSubmit: (
-        formValues: FormValues,
-        additionalValues: AdditionalValues
-    ) => void
-    isDisabled: boolean
-    handleNewCustomerSelected: (value: boolean) => void
+const initialFormValues: FormValues = {
+    subject: '',
+    message: '',
+    customerEmail: CustomerHttpIntegrationDataMock.address,
 }
 
 export const PlaygroundInputStep = ({
-    handleSubmit,
     isDisabled,
-    handleNewCustomerSelected,
+    setSubject,
+    setMessages,
+    setStep,
+    submitPlaygroundTicket,
+    accountData,
+    storeData,
 }: Props) => {
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
@@ -62,71 +86,142 @@ export const PlaygroundInputStep = ({
     )
     const [isFormValid, setIsFormValid] = useState<boolean>(false)
 
-    const handleFormChange = (key: keyof FormValues) => (value: string) => {
-        setFormValues({
-            ...formValues,
-            [key]: value,
-        })
-
-        switch (key) {
-            case 'message':
-                if (
-                    value.trim().length > 0 &&
-                    formValues.customerEmail.trim().length > 0
-                ) {
-                    setIsFormValid(true)
-                } else {
-                    setIsFormValid(false)
-                }
-                break
-            case 'customerEmail':
-                if (
-                    value.trim().length > 0 &&
-                    formValues.message.trim().length > 0
-                ) {
-                    setIsFormValid(true)
-                } else {
-                    setIsFormValid(false)
-                }
-                break
+    const handleSenderSelectChange = (value: Value) => {
+        if (typeof value !== 'string') {
+            return
+        }
+        setSenderSelectedOption(value)
+        if (value === SenderTypeValues.NEW_CUSTOMER) {
+            handleFormChange('customerEmail')(
+                CustomerHttpIntegrationDataMock.address
+            )
+        } else {
+            handleFormChange('customerEmail')('')
         }
     }
 
-    const handleInputStepSubmit = async () => {
-        let customerName: string
-        let existingCustomerFound: boolean | undefined
+    const handleFormChange = (key: keyof FormValues) => (value: string) => {
+        const sanitizedValue = value.trim()
+
+        setFormValues({
+            ...formValues,
+            [key]: sanitizedValue,
+        })
+
+        const isMessageValid =
+            sanitizedValue.length > 0 &&
+            (senderSelectedOption !== SenderTypeValues.EXISTING_CUSTOMER ||
+                formValues.customerEmail.length > 0)
+
+        const isCustomerEmailValid =
+            senderSelectedOption !== SenderTypeValues.EXISTING_CUSTOMER ||
+            (sanitizedValue.length > 0 && formValues.message.length > 0)
+
+        setIsFormValid(isMessageValid && isCustomerEmailValid)
+    }
+
+    const handleSubmit = async () => {
+        const newMessagesThread: PlaygroundMessage[] = []
+        let customerName: string = formValues.customerEmail
+        let isCustomerFound = false
+        let unexpectedError = false
 
         // If we are using the new customer option, we use the mock data
         if (senderSelectedOption === SenderTypeValues.NEW_CUSTOMER) {
-            customerName = mockCustomerData.name
+            customerName = CustomerHttpIntegrationDataMock.name
+            isCustomerFound = true
         } else {
             // Get the customer information to populate its name in the chat
-            const selectedCustomer = await searchCustomers({
-                search: formValues.customerEmail,
-                limit: 1,
-            })
+            try {
+                const selectedCustomer = await searchCustomers({
+                    search: formValues.customerEmail,
+                    limit: 1,
+                })
 
-            if (
-                selectedCustomer.data.data &&
-                selectedCustomer.data.data.length
-            ) {
-                existingCustomerFound = true
-                customerName =
-                    // If we don't have a name, we use the email
-                    (
-                        selectedCustomer.data
-                            .data[0] as CustomerSearchResponseDataItem
-                    ).name ?? formValues.customerEmail
-            } else {
-                customerName = formValues.customerEmail
-                existingCustomerFound = false
+                if (
+                    selectedCustomer.data.data &&
+                    selectedCustomer.data.data.length
+                ) {
+                    isCustomerFound = true
+                    const foundCustomer = selectedCustomer.data.data[0]
+                    customerName =
+                        foundCustomer &&
+                        'name' in foundCustomer &&
+                        foundCustomer.name
+                            ? foundCustomer.name
+                            : formValues.customerEmail
+                } else {
+                    isCustomerFound = false
+                }
+            } catch (e) {
+                // use report error to log the error
+                unexpectedError = true
+                reportError(e, {
+                    extra: {
+                        context:
+                            'Error during account fetching in playground input step.',
+                        tags: [AI_AGENT_SENTRY_TEAM],
+                    },
+                })
             }
         }
 
-        handleSubmit(formValues, {
-            customerName: customerName,
-            existingCustomerFound,
-        })
+        if (unexpectedError) {
+            // Only display an error message from the ai agent
+            newMessagesThread.push({
+                sender: AI_AGENT_SENDER,
+                type: MessageType.ERROR,
+                message: (
+                    <PlaygroundGenericErrorMessage
+                        onClick={() => setStep(PlaygroundStep.INPUT)}
+                    />
+                ),
+            })
+        } else {
+            // Push the customer message
+            newMessagesThread.push({
+                sender: customerName,
+                type: MessageType.MESSAGE,
+                message: formValues.message,
+            })
+
+            if (isCustomerFound === false) {
+                newMessagesThread.push({
+                    sender: AI_AGENT_SENDER,
+                    type: MessageType.ERROR,
+                    message: 'No customer account was found for that email.',
+                })
+            } else {
+                submitPlaygroundTicket([
+                    {
+                        use_mock_context:
+                            senderSelectedOption ===
+                            SenderTypeValues.NEW_CUSTOMER,
+                        domain: accountData.gorgiasDomain,
+                        customer_email: formValues.customerEmail,
+                        body_text: formValues.message,
+                        http_integration_id:
+                            // HttpIntegration is asserted here as parent component checks for it's existence
+                            accountData.httpIntegration.id,
+                        account_id: accountData.accountId,
+                        email_integration_id:
+                            storeData.monitoredEmailIntegrations[0].id,
+                        email_integration_address:
+                            storeData.monitoredEmailIntegrations[0].email,
+                    },
+                ])
+
+                // Show a ai agent processing message during the request
+                newMessagesThread.push({
+                    sender: AI_AGENT_SENDER,
+                    type: MessageType.MESSAGE,
+                })
+            }
+
+            setSubject(formValues.subject)
+            setMessages(newMessagesThread)
+            setStep(PlaygroundStep.OUTPUT)
+        }
     }
 
     const onClear = () => {
@@ -137,73 +232,64 @@ export const PlaygroundInputStep = ({
     }
 
     return (
-        <div
-            className={classnames(
-                css.container,
-                isDisabled && css.formDisabled
-            )}
-        >
-            <div className={css.innerContainer}>
-                <div className={css.itemContainer}>
-                    <SelectField
-                        fullWidth
-                        showSelectedOption
-                        value={senderSelectedOption}
-                        onChange={(value) => {
-                            setSenderSelectedOption(value as string)
-                            if (value === SenderTypeValues.NEW_CUSTOMER) {
-                                handleNewCustomerSelected(true)
-                                handleFormChange('customerEmail')(
-                                    mockCustomerData.address
-                                )
-                            } else {
-                                handleNewCustomerSelected(false)
-                                handleFormChange('customerEmail')('')
-                            }
-                        }}
-                        options={senderSelectOptions}
-                        dropdownMenuClassName={css.longDropdown}
-                    />
-                    {senderSelectedOption ===
-                        SenderTypeValues.EXISTING_CUSTOMER && (
-                        <TextInput
-                            className={css.customerEmailInput}
-                            value={formValues.customerEmail}
-                            onChange={handleFormChange('customerEmail')}
-                            placeholder="Customer email"
+        <>
+            <div
+                className={classnames(
+                    css.container,
+                    isDisabled && css.formDisabled
+                )}
+            >
+                <div className={css.innerContainer}>
+                    <div className={css.itemContainer}>
+                        <SelectField
+                            fullWidth
+                            showSelectedOption
+                            value={senderSelectedOption}
+                            onChange={handleSenderSelectChange}
+                            options={senderSelectOptions}
+                            dropdownMenuClassName={css.longDropdown}
                         />
-                    )}
-                </div>
-                <div className={css.itemContainer}>
-                    <TextInput
-                        className={css.subjectInput}
-                        value={formValues.subject}
-                        onChange={handleFormChange('subject')}
-                        maxLength={135}
-                        prefix={
-                            <span className="body-semibold">Subject: </span>
-                        }
-                    />
-                </div>
-                <div className={css.itemContainer}>
-                    <PlaygroundEditor
-                        value={formValues.message}
-                        onChange={handleFormChange('message')}
-                    />
-                </div>
+                        {senderSelectedOption ===
+                            SenderTypeValues.EXISTING_CUSTOMER && (
+                            <TextInput
+                                className={css.customerEmailInput}
+                                value={formValues.customerEmail}
+                                onChange={handleFormChange('customerEmail')}
+                                placeholder="Customer email"
+                            />
+                        )}
+                    </div>
+                    <div className={css.itemContainer}>
+                        <TextInput
+                            className={css.subjectInput}
+                            value={formValues.subject}
+                            onChange={handleFormChange('subject')}
+                            maxLength={135}
+                            prefix={
+                                <span className="body-semibold">Subject: </span>
+                            }
+                        />
+                    </div>
+                    <div className={css.itemContainer}>
+                        <PlaygroundEditor
+                            value={formValues.message}
+                            onChange={handleFormChange('message')}
+                        />
+                    </div>
 
-                <div className={css.submitContainer}>
-                    <Button
-                        isDisabled={!isFormValid}
-                        onClick={handleInputStepSubmit}
-                    >
-                        Submit
-                    </Button>
-                    <Button intent="secondary" onClick={onClear}>
-                        Clear
-                    </Button>
+                    <div className={css.submitContainer}>
+                        <Button
+                            isDisabled={!isFormValid}
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </Button>
+                        <Button intent="secondary" onClick={onClear}>
+                            Clear
+                        </Button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
