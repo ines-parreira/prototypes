@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef} from 'react'
+import React, {useCallback, useMemo} from 'react'
 import classNames from 'classnames'
 import {ulid} from 'ulidx'
 import {Drawer} from 'pages/common/components/Drawer'
@@ -17,7 +17,6 @@ import Button from 'pages/common/components/button/Button'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Tooltip from 'pages/common/components/Tooltip'
 import css from '../NodeEditor.less'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
 import {ConditionsBranchItem} from './ConditionsBranchItem'
@@ -40,7 +39,6 @@ export default function ConditionsNodeEditor({
     const edges = visualBuilderGraph.edges.filter(
         (edge) => edge.source === nodeInEdition.id
     )
-    const tooltipTargetRef = useRef<HTMLButtonElement>(null)
     const workflowVariables = useMemo(
         () =>
             getWorkflowVariableListForNode(
@@ -346,19 +344,11 @@ export default function ConditionsNodeEditor({
                             <Button
                                 intent="secondary"
                                 onClick={handleAddConditionBranch}
-                                isDisabled={branches.length >= 5}
-                                ref={tooltipTargetRef}
                             >
                                 <ButtonIconLabel icon="add">
                                     Add Branch
                                 </ButtonIconLabel>
                             </Button>
-                            {branches.length >= 5 && (
-                                <Tooltip target={tooltipTargetRef}>
-                                    You've reached the maximum number of
-                                    branches for this step
-                                </Tooltip>
-                            )}
                         </div>
                     </div>
                 </ToolbarProvider>
