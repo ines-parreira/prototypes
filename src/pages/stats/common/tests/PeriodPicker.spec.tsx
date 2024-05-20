@@ -217,4 +217,42 @@ describe('PeriodPicker', () => {
             'action-buttons-on-the-bottom'
         )
     })
+
+    it('should add class related to date ranges and check that it is added only when buttons on the bottom is enabled', () => {
+        //Check if neither classNames were added for buttons nor date ranges in the footer
+        const {getByTestId, rerender} = render(
+            <PickerWithDefaultProps
+                actionButtonsOnTheBottom={false}
+                rangeDatesInFooter={true}
+            />
+        )
+
+        getByTestId('MockDateRangePicker').click()
+
+        expect(periodPickerClassListMockSpy.mock.calls.length).toEqual(1)
+
+        periodPickerClassListMockSpy.mockClear()
+
+        //Check if classNames were added for buttons and date ranges in the footer
+        rerender(
+            <PickerWithDefaultProps
+                actionButtonsOnTheBottom={true}
+                rangeDatesInFooter={true}
+            />
+        )
+
+        getByTestId('MockDateRangePicker').click()
+
+        expect(periodPickerClassListMockSpy.mock.calls.length).toEqual(3)
+
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            2,
+            'picker-v2',
+            'action-buttons-on-the-bottom'
+        )
+        expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
+            3,
+            'range-dates-in-footer'
+        )
+    })
 })

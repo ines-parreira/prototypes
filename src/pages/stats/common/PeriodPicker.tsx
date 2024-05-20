@@ -75,6 +75,7 @@ export type Props = {
     showRangesLabel?: boolean
     actionButtonsOnTheBottom?: boolean
     changeButtonColorsToV2?: boolean
+    rangeDatesInFooter?: boolean
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -98,6 +99,7 @@ export const PeriodPickerContainer = ({
     showRangesLabel = true,
     actionButtonsOnTheBottom = false,
     changeButtonColorsToV2 = false,
+    rangeDatesInFooter = false,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -290,6 +292,12 @@ export const PeriodPickerContainer = ({
                                     'picker-v2',
                                     'action-buttons-on-the-bottom'
                                 )
+
+                                if (rangeDatesInFooter) {
+                                    dateRangerPickerElement.current.classList.add(
+                                        'range-dates-in-footer'
+                                    )
+                                }
                             }
 
                             const cancelBtn = target.container

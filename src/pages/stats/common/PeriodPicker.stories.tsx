@@ -28,6 +28,19 @@ const storyConfig: Meta = {
                 type: 'radio',
             },
         },
+        actionButtonsOnTheBottom: {
+            defaultValue: false,
+            control: {
+                type: 'boolean',
+            },
+        },
+        rangeDatesInFooter: {
+            defaultValue: false,
+            control: {
+                type: 'boolean',
+            },
+            if: {arg: 'actionButtonsOnTheBottom'},
+        },
     },
 }
 
@@ -50,7 +63,6 @@ const defaultProps: ComponentProps<typeof PeriodPicker> = {
     pickerV2Styles: false,
     rangesOnLeft: false,
     showRangesLabel: true,
-    actionButtonsOnTheBottom: false,
     changeButtonColorsToV2: false,
 }
 
