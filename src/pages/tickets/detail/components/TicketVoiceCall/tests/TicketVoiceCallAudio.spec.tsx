@@ -4,42 +4,55 @@ import * as voiceCallQueries from 'models/voiceCall/queries'
 import {
     VoiceCall,
     VoiceCallRecording,
-    VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
 
-import DownloadableDeletableRecording from '../../PhoneEvent/DownloadableDeletableRecording'
-import TicketVoiceCallAudio from '../TicketVoiceCallAudio'
+import VoiceCallAudio from '../VoiceCallAudio'
+import TicketVoiceCallAudios from '../TicketVoiceCallAudios'
 
-jest.mock('../../PhoneEvent/DownloadableDeletableRecording', () =>
-    jest.fn(() => null)
-)
+jest.mock('../VoiceCallAudio', () => jest.fn(() => null))
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div>Loading...</div>
 ))
+jest.mock(
+    'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
+    () =>
+        ({agentId}: {agentId: number}) =>
+            <div>VoiceCallAgentLabel {agentId}</div>
+)
 
 const useListRecordingSpy = jest.spyOn(voiceCallQueries, 'useListRecordings')
 
 const renderComponent = (voiceCall: any, type: VoiceCallRecordingType) => {
     return render(
-        <TicketVoiceCallAudio type={type} voiceCall={voiceCall as VoiceCall} />
+        <TicketVoiceCallAudios type={type} voiceCall={voiceCall as VoiceCall} />
     )
 }
 
-describe('TicketVoiceCallAudio', () => {
+describe('TicketVoiceCallAudios', () => {
     const voiceCall = {id: 1, integration_id: 2, external_id: '3'}
     const audio = {
         type: VoiceCallRecordingType.Recording,
         url: 'http://example.com/audio.mp3',
         external_id: '4',
+        id: 1,
+        created_datetime: '2021-01-01T00:00:00Z',
     } as VoiceCallRecording
+    const anotherAudio = {
+        type: VoiceCallRecordingType.Recording,
+        url: 'http://example.com/audio2.mp3',
+        external_id: '5',
+        id: 2,
+        created_datetime: '2021-01-01T00:01:00Z',
+    } as VoiceCallRecording
+
     const isLoading = false
     const error = undefined
 
     beforeEach(() => {
         useListRecordingSpy.mockReturnValue({
-            data: {data: {data: [audio]}},
+            data: {data: {data: [audio, anotherAudio]}},
             isLoading,
             error,
         } as any)
@@ -49,7 +62,7 @@ describe('TicketVoiceCallAudio', () => {
         jest.resetAllMocks()
     })
 
-    it('should render audio', async () => {
+    it('should render audios', async () => {
         renderComponent(voiceCall, VoiceCallRecordingType.Recording)
 
         await waitFor(() =>
@@ -67,11 +80,17 @@ describe('TicketVoiceCallAudio', () => {
         expect(
             screen.queryByTestId('recording-failure')
         ).not.toBeInTheDocument()
-        expect(DownloadableDeletableRecording).toHaveBeenCalledWith(
+        expect(VoiceCallAudio).toHaveBeenCalledWith(
             expect.objectContaining({
-                downloadRecordingURL: audio.url,
-                deleteRecordingURL: `/api/integrations/${voiceCall.integration_id}/calls/${voiceCall.external_id}/recordings/${audio.external_id}`,
-                callId: voiceCall.id,
+                audio: audio,
+                type: VoiceCallRecordingType.Recording,
+            }),
+            {}
+        )
+        expect(VoiceCallAudio).toHaveBeenCalledWith(
+            expect.objectContaining({
+                audio: anotherAudio,
+                type: VoiceCallRecordingType.Recording,
             }),
             {}
         )
@@ -90,7 +109,7 @@ describe('TicketVoiceCallAudio', () => {
         expect(
             screen.queryByTestId('recording-failure')
         ).not.toBeInTheDocument()
-        expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
+        expect(VoiceCallAudio).not.toHaveBeenCalled()
     })
 
     it('should render no audio state', () => {
@@ -104,32 +123,7 @@ describe('TicketVoiceCallAudio', () => {
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
         expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
-        expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
-    })
-
-    it('should render private recording warning', () => {
-        useListRecordingSpy.mockReturnValue({
-            data: {
-                data: {
-                    data: [
-                        {
-                            ...audio,
-                            error_code:
-                                VoiceCallRecordingErrorCode.RECORDING_IS_PRIVATE,
-                        },
-                    ],
-                },
-            },
-            isLoading: false,
-            error: undefined,
-        } as any)
-
-        renderComponent(voiceCall, VoiceCallRecordingType.Recording)
-
-        expect(
-            screen.getByTestId('private-recording-warning')
-        ).toBeInTheDocument()
-        expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
+        expect(VoiceCallAudio).not.toHaveBeenCalled()
     })
 
     it('should render error state', () => {
@@ -143,6 +137,6 @@ describe('TicketVoiceCallAudio', () => {
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
         expect(screen.getByTestId('recording-failure')).toBeInTheDocument()
-        expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
+        expect(VoiceCallAudio).not.toHaveBeenCalled()
     })
 })

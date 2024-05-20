@@ -28,7 +28,7 @@ jest.mock(
 )
 
 jest.mock(
-    '../TicketVoiceCallAudio',
+    '../TicketVoiceCallAudios',
     () =>
         ({type}: {type: VoiceCallRecordingType}) =>
             <div>Audio {type}</div>

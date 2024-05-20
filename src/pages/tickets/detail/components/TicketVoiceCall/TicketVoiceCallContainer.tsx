@@ -8,7 +8,7 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
 import css from './TicketVoiceCallContainer.less'
 import TicketVoiceCallDuration from './TicketVoiceCallDuration'
-import TicketVoiceCallAudio from './TicketVoiceCallAudio'
+import TicketVoiceCallAudios from './TicketVoiceCallAudios'
 import CollapsibleDetails from './CollapsibleDetails'
 import TicketVoiceCallSource from './TicketVoiceCallSource'
 
@@ -65,7 +65,7 @@ export default function TicketVoiceCallContainer({
                             </div>
                         }
                     >
-                        <TicketVoiceCallAudio
+                        <TicketVoiceCallAudios
                             voiceCall={voiceCall}
                             type={VoiceCallRecordingType.Recording}
                         />
@@ -80,7 +80,7 @@ export default function TicketVoiceCallContainer({
                             </div>
                         }
                     >
-                        <TicketVoiceCallAudio
+                        <TicketVoiceCallAudios
                             voiceCall={voiceCall}
                             type={VoiceCallRecordingType.Voicemail}
                         />
