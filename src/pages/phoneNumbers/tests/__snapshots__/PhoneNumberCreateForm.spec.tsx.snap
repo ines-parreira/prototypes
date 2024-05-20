@@ -24,30 +24,6 @@ exports[`<PhoneNumberCreateForm/> render() should render 1`] = `
 </div>
 `;
 
-exports[`<PhoneNumberCreateForm/> render() should render address validation form for Australia or United Kingdom 1`] = `
-<div
-  class="row"
->
-  <div
-    class="col-lg-6"
-  >
-    <p>
-      Create a new phone number in Gorgias to make and receive phone calls and text messages. If you have an existing number, set up call forwarding to forward calls to a Gorgias internal number. Check out our
-       
-      <a
-        href="https://docs.gorgias.com/en-US/phone-integration-81798"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        phone docs
-      </a>
-       
-      to learn more.
-    </p>
-  </div>
-</div>
-`;
-
 exports[`<PhoneNumberCreateForm/> render() should render when a country and a state are selected 1`] = `
 <div
   class="row"

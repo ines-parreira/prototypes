@@ -85,8 +85,8 @@ describe('<PhoneNumberCreateForm/>', () => {
             expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render address validation form for Australia or United Kingdom', () => {
-            const {container, getByText, queryByText} = render(
+        it('should render address validation form for Australia', () => {
+            const {getByText, queryByText} = render(
                 <Provider store={store}>
                     <QueryClientProvider>
                         <PhoneNumberCreateForm />
@@ -101,12 +101,10 @@ describe('<PhoneNumberCreateForm/>', () => {
             expect(queryByText('Address verification')).toBe(null)
 
             fireEvent.click(getByText('United Kingdom'))
-            expect(queryByText('Address verification')).not.toBe(null)
+            expect(queryByText('Address verification')).toBe(null)
 
             fireEvent.click(getByText('Australia'))
             expect(queryByText('Address verification')).not.toBe(null)
-
-            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should pass the address if a phone of a country with address verification is created', async () => {
@@ -211,7 +209,7 @@ describe('<PhoneNumberCreateForm/>', () => {
                     }
                 )
 
-                // switch back to US, a country with no address verificaiton, and create a phone number
+                // switch back to US, a country with no address verification, and create a phone number
                 fireEvent.click(getByText('United States'))
                 fireEvent.click(getByText('Alabama'))
                 fireEvent.click(getByText('Mobile (251)'))

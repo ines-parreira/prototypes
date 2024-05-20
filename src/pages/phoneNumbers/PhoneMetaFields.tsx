@@ -14,7 +14,6 @@ import type {SelectableOption} from 'pages/common/forms/SelectField/types'
 import rawCountryOptions from './options/countries.json'
 import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
-import rawGbAreaCodeOptions from './options/area-codes/gb.json'
 import rawAuAreaCodeOptions from './options/area-codes/au.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 import {getAvailableStates} from './utils'
@@ -33,7 +32,7 @@ const LOCAL_AREA_CODES: LocalAreaCodes = {
     [PhoneCountry.US]: rawUsAreaCodeOptions,
     [PhoneCountry.CA]: rawCaAreaCodeOptions,
     [PhoneCountry.AU]: rawAuAreaCodeOptions,
-    [PhoneCountry.GB]: rawGbAreaCodeOptions,
+    [PhoneCountry.GB]: [],
     [PhoneCountry.FR]: [],
 }
 
@@ -43,7 +42,7 @@ const TOLL_FREE_AREA_CODE_OPTIONS: SelectableOption[] =
 const COUNTRY_PHONE_TYPES: Record<PhoneCountry, PhoneType[]> = {
     [PhoneCountry.US]: [PhoneType.Local, PhoneType.TollFree],
     [PhoneCountry.CA]: [PhoneType.Local, PhoneType.TollFree],
-    [PhoneCountry.GB]: [PhoneType.Local, PhoneType.National, PhoneType.Mobile],
+    [PhoneCountry.GB]: [],
     [PhoneCountry.AU]: [PhoneType.Local],
     [PhoneCountry.FR]: [],
 }
@@ -172,10 +171,12 @@ export default function PhoneDetailsFields({
     const shouldShowState =
         type === PhoneType.Local && country === PhoneCountry.US
     const shouldShowType =
-        country && country !== PhoneCountry.AU && country !== PhoneCountry.FR
+        country &&
+        ![PhoneCountry.AU, PhoneCountry.FR, PhoneCountry.GB].includes(country)
     const shouldShowAreaCodes =
         (type === PhoneType.Local || type === PhoneType.TollFree) &&
-        country !== PhoneCountry.FR
+        country !== PhoneCountry.FR &&
+        country !== PhoneCountry.GB
 
     const selectedAreaCode =
         (area_code &&

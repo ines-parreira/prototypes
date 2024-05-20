@@ -153,7 +153,10 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                         <Button
                             type="submit"
                             isLoading={isLoading}
-                            isDisabled={country === PhoneCountry.FR}
+                            isDisabled={
+                                country === PhoneCountry.FR ||
+                                country === PhoneCountry.GB
+                            }
                             className={classnames('mt-4', 'mb-4')}
                         >
                             Add phone number

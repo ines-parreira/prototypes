@@ -272,14 +272,17 @@ describe('getCountryFromPhoneNumber()', () => {
 })
 
 describe('shouldValidateAddress()', () => {
-    it.each([PhoneCountry.US, PhoneCountry.CA, PhoneCountry.FR])(
-        'should not validate address',
-        (country) => expect(shouldValidateAddress(country)).toBe(false)
+    it.each([
+        PhoneCountry.US,
+        PhoneCountry.CA,
+        PhoneCountry.FR,
+        PhoneCountry.GB,
+    ])('should not validate address', (country) =>
+        expect(shouldValidateAddress(country)).toBe(false)
     )
 
-    it.each([PhoneCountry.AU, PhoneCountry.GB])(
-        'should validate address',
-        (country) => expect(shouldValidateAddress(country)).toBe(true)
+    it.each([PhoneCountry.AU])('should validate address', (country) =>
+        expect(shouldValidateAddress(country)).toBe(true)
     )
 })
 

@@ -84,7 +84,7 @@ const AVAILABLE_STATES: Record<string, string[]> = {
 }
 
 export function shouldValidateAddress(country: PhoneCountry): boolean {
-    return country === PhoneCountry.GB || country === PhoneCountry.AU
+    return country === PhoneCountry.AU
 }
 
 export function getAvailableStates(country: string): State[] {
