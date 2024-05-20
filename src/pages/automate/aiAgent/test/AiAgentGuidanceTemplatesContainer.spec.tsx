@@ -8,7 +8,6 @@ import {AiAgentGuidanceTemplatesContainer} from '../AiAgentGuidanceTemplatesCont
 import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
 import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
 import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {GuidanceTemplateKey} from '../types'
 
 jest.mock('../hooks/useGuidanceHelpCenter', () => ({
     useGuidanceHelpCenter: jest.fn(),
@@ -50,9 +49,7 @@ describe('<AiAgentGuidanceTemplatesContainer />', () => {
     })
 
     it('should render guidance templates', () => {
-        const template = getGuidanceTemplateFixture(
-            GuidanceTemplateKey.OrderStatus
-        )
+        const template = getGuidanceTemplateFixture('order-status')
 
         mockedUseGuidanceTemplates.mockReturnValue({
             guidanceTemplates: [template],

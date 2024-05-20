@@ -1,11 +1,10 @@
 import {useMemo} from 'react'
-import {GuidanceTemplateKey} from '../types'
 import {GuidanceTemplatesData} from './useGuidanceTemplates'
 
-export const useGuidanceTemplate = (templateKey: GuidanceTemplateKey) => {
+export const useGuidanceTemplate = (templateId: string) => {
     const guidanceTemplate = useMemo(
-        () => GuidanceTemplatesData[templateKey],
-        [templateKey]
+        () => GuidanceTemplatesData.find(({id}) => id === templateId),
+        [templateId]
     )
 
     return {guidanceTemplate}

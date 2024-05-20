@@ -1,7 +1,15 @@
 import React from 'react'
+import sanitizeHtml from 'sanitize-html'
 import {TemplateCard} from 'pages/common/components/TemplateCard'
 import {GuidanceTemplate} from '../../types'
 import css from './GuidanceTemplateCard.less'
+
+const getHtmlExcerpt = (html: string) => {
+    return sanitizeHtml(html, {
+        allowedTags: [],
+        allowedAttributes: {},
+    })
+}
 
 type Props = {
     guidanceTemplate: GuidanceTemplate
@@ -25,7 +33,7 @@ export const GuidanceTemplateCard = ({guidanceTemplate, onClick}: Props) => {
                 </div>
             }
             title={guidanceTemplate.name}
-            description={guidanceTemplate.excerpt}
+            description={getHtmlExcerpt(guidanceTemplate.content)}
         />
     )
 }

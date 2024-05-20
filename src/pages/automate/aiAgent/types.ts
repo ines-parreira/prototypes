@@ -41,23 +41,10 @@ export type UpdateGuidanceArticle = Omit<
     'lastUpdated' | 'id'
 >
 
-export enum GuidanceTemplateKey {
-    OrderStatus = 'OrderStatus',
-    DeliveryTime = 'DeliveryTime',
-    ReturnsAndExchanges = 'ReturnsAndExchanges',
-    Cancellation = 'Cancellation',
-    DiscountsAndPromos = 'DiscountsAndPromos',
-}
-
-export const isGuidanceTemplateKey = (
-    key: string
-): key is GuidanceTemplateKey => key in GuidanceTemplateKey
-
 export type GuidanceTemplate = {
-    id: GuidanceTemplateKey
+    id: string
     name: string
     content: string
-    excerpt: string
     tag: string
     style: {color: string; background: string}
 }

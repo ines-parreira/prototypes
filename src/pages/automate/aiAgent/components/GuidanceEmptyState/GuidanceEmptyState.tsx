@@ -9,7 +9,6 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {GuidanceTemplateKey} from '../../types'
 import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
 import css from './GuidanceEmptyState.less'
 
@@ -25,7 +24,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
     const onNewClick = () => {
         history.push(routes.newGuidanceArticle)
     }
-    const onGuidanceTemplateClick = (templateId: GuidanceTemplateKey) => {
+    const onGuidanceTemplateClick = (templateId: string) => {
         history.push(routes.newGuidanceTemplateArticle(templateId))
     }
 

@@ -1,7 +1,6 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {GuidanceTemplateKey} from '../types'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showGuidance: boolean | undefined =
@@ -17,7 +16,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             guidanceArticleEdit: (articleId: number) =>
                 `/app/automation/shopify/${shopName}/ai-agent/guidance/${articleId}`,
             guidanceTemplates: `/app/automation/shopify/${shopName}/ai-agent/guidance/templates`,
-            newGuidanceTemplateArticle: (templateId: GuidanceTemplateKey) =>
+            newGuidanceTemplateArticle: (templateId: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/guidance/templates/${templateId}`,
         }),
         [shopName]

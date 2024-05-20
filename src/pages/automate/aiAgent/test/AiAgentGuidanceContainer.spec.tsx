@@ -19,6 +19,7 @@ jest.mock('../hooks/useGuidanceHelpCenter', () => ({
     useGuidanceHelpCenter: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
+jest.mock('sanitize-html', () => () => jest.fn())
 jest.mock('../hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(),
 }))

@@ -5,8 +5,8 @@ import AutomateView from '../common/components/AutomateView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
 import {AiAgentGuidanceTemplateNewView} from './AiAgentGuidanceTemplateNewView'
-import {isGuidanceTemplateKey} from './types'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
+import {useGuidanceTemplate} from './hooks/useGuidanceTemplate'
 
 export const AiAgentGuidanceTemplateNewContainer = () => {
     const {shopName, templateId} = useParams<{
@@ -15,8 +15,9 @@ export const AiAgentGuidanceTemplateNewContainer = () => {
     }>()
     const {routes, headerNavbarItems} = useAiAgentNavigation({shopName})
     const guidanceHelpCenter = useGuidanceHelpCenter({shopName})
+    const {guidanceTemplate} = useGuidanceTemplate(templateId)
 
-    if (!isGuidanceTemplateKey(templateId)) {
+    if (!guidanceTemplate) {
         return <Redirect to={routes.guidanceTemplates} />
     }
 
@@ -35,7 +36,7 @@ export const AiAgentGuidanceTemplateNewContainer = () => {
                 guidanceHelpCenterId={guidanceHelpCenter.id}
                 locale={guidanceHelpCenter.default_locale}
                 shopName={shopName}
-                templateId={templateId}
+                guidanceTemplate={guidanceTemplate}
             />
         </AutomateView>
     )

@@ -1,6 +1,6 @@
 import React from 'react'
 import history from 'pages/history'
-import {GuidanceTemplate, GuidanceTemplateKey} from '../../types'
+import {GuidanceTemplate} from '../../types'
 import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
 import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
@@ -14,7 +14,7 @@ type Props = {
 export const GuidanceTemplatesList = ({guidanceTemplates, shopName}: Props) => {
     const {routes} = useAiAgentNavigation({shopName})
 
-    const onTemplateClick = (templateId: GuidanceTemplateKey) => {
+    const onTemplateClick = (templateId: string) => {
         history.push(routes.newGuidanceTemplateArticle(templateId))
     }
 

@@ -9,7 +9,6 @@ import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useGuidanceTemplate} from '../hooks/useGuidanceTemplate'
 import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {GuidanceTemplateKey} from '../types'
 import {AiAgentGuidanceTemplateNewContainer} from '../AiAgentGuidanceTemplateNewContainer'
 
 jest.mock('../hooks/useGuidanceHelpCenter', () => ({
@@ -38,9 +37,7 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceTemplate = jest.mocked(useGuidanceTemplate)
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
-const guidanceTemplate = getGuidanceTemplateFixture(
-    GuidanceTemplateKey.OrderStatus
-)
+const guidanceTemplate = getGuidanceTemplateFixture('order-status')
 const defaultGuidanceArticleMutationProps: ReturnType<
     typeof useGuidanceArticleMutation
 > = {

@@ -4,24 +4,22 @@ import {
     GuidanceForm,
     GuidanceFormFields,
 } from './components/GuidanceForm/GuidanceForm'
-import {GuidanceTemplateKey} from './types'
-import {useGuidanceTemplate} from './hooks/useGuidanceTemplate'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
+import {GuidanceTemplate} from './types'
 
 type Props = {
     shopName: string
-    templateId: GuidanceTemplateKey
+    guidanceTemplate: GuidanceTemplate
     guidanceHelpCenterId: number
     locale: LocaleCode
 }
 
 export const AiAgentGuidanceTemplateNewView = ({
     shopName,
-    templateId,
+    guidanceTemplate,
     guidanceHelpCenterId,
     locale,
 }: Props) => {
-    const {guidanceTemplate} = useGuidanceTemplate(templateId)
     const {createGuidanceArticle, isGuidanceArticleUpdating} =
         useGuidanceArticleMutation({
             guidanceHelpCenterId,
