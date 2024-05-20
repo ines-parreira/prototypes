@@ -6,8 +6,8 @@ import {AlertNotifications, BannerNotifications} from 'notifications'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import KeyboardHelp from 'pages/common/components/KeyboardHelp/KeyboardHelp'
-import LogoutDetection from 'pages/common/components/LogoutDetection'
 import PhoneIntegrationBar from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar'
+import SessionChangeDetection from 'pages/common/components/SessionChangeDetection'
 import ScriptTagMigrationBanner from 'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner'
 import ScriptTagMigrationModal from 'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
@@ -41,7 +41,7 @@ export default function App({children}: Props) {
 
     return (
         <AppNode className={theme}>
-            <LogoutDetection />
+            <SessionChangeDetection />
             <NotificationsToasts />
             <BannerNotifications />
             <EmailMigrationBanner />
