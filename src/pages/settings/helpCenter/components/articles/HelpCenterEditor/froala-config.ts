@@ -325,6 +325,9 @@ const config = {
     videoInsertButtons: ['videoBack', '|', 'videoByURL', 'videoEmbed'],
     videoResponsive: true,
     videoUpload: false,
+
+    // Paste plugin
+    pasteAllowedStyleProps: ['text-decoration'],
 }
 
 export {FroalaEditor, config}
