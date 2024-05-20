@@ -30,6 +30,9 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
+export const CUSTOMER_INFORMATION_TAB = 'Customer Information'
+export const AI_AGENT_TAB = 'AI Agent'
+
 export const TicketInfobarContainer = ({
     isEditingWidgets,
     isOnNewLayout,
@@ -50,7 +53,9 @@ export const TicketInfobarContainer = ({
     useEffect(() => {
         return () => {
             dispatch(
-                changeActiveTab(TicketAIAgentFeedbackTab.CustomerInformation)
+                changeActiveTab({
+                    activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
+                })
             )
         }
     }, [dispatch, params.ticketId])
@@ -59,7 +64,11 @@ export const TicketInfobarContainer = ({
         sources.getIn(['ticket', 'customer']) || (fromJS({}) as Map<any, any>)
 
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
-        dispatch(changeActiveTab(tab))
+        if (activeTab === tab) {
+            return
+        }
+
+        dispatch(changeActiveTab({activeTab: tab}))
     }
 
     const aiMessages = useAppSelector(getAIAgentMessages)
@@ -86,7 +95,7 @@ export const TicketInfobarContainer = ({
                             )
                         }
                     >
-                        Customer Information
+                        {CUSTOMER_INFORMATION_TAB}
                     </div>
                     <div
                         className={classNames(secondaryNavbarCSS.link, {
@@ -104,7 +113,7 @@ export const TicketInfobarContainer = ({
                         >
                             auto_awesome
                         </i>{' '}
-                        AI Agent
+                        {AI_AGENT_TAB}
                     </div>
                 </Navbar>
             )}

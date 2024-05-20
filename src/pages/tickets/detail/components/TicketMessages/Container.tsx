@@ -13,6 +13,7 @@ import {TicketMessage} from 'models/ticket/types'
 import css from './Container.less'
 import Header from './Header'
 import Footer from './Footer'
+import AIAgentBanner from './AIAgentBanner'
 
 const classNames = classNamesBind.bind(css)
 
@@ -186,6 +187,7 @@ export default class Container extends Component<Props> {
                         isMessageFromAIAgent={isAIAgentMessage}
                     />
                     {children}
+                    {isAIAgentMessage && <AIAgentBanner message={message} />}
                     <Footer
                         id={this.props.id}
                         message={message}

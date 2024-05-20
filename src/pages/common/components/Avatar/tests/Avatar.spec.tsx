@@ -38,6 +38,11 @@ describe('Avatar component', () => {
         )
     })
 
+    it('should return Avatar for AI agent', () => {
+        render(<Avatar isAIAgent size={32} />)
+        expect(screen.getByText('auto_awesome')).toBeInTheDocument()
+    })
+
     it('should render avatar from cache', () => {
         getAvatarFromCacheMock.mockReturnValue(gravatarUrl)
         render(<Avatar email="alex@gorgias.io" />)

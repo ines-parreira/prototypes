@@ -1,4 +1,5 @@
-import {changeActiveTab} from '../actions'
+import {TicketMessage} from 'models/ticket/types'
+import {changeActiveTab, changeTicketMessage} from '../actions'
 import {TicketAIAgentFeedbackTab} from '../constants'
 import {UIActions} from '../types'
 
@@ -7,8 +8,19 @@ describe('changeActiveTab', () => {
         const tab: TicketAIAgentFeedbackTab = TicketAIAgentFeedbackTab.AIAgent
         const expectedAction = {
             type: UIActions.ChangeActiveTab,
-            payload: tab,
+            payload: {activeTab: tab},
         }
-        expect(changeActiveTab(tab)).toEqual(expectedAction)
+        expect(changeActiveTab({activeTab: tab})).toEqual(expectedAction)
+    })
+})
+
+describe('changeTicketMessage', () => {
+    it('should create an action to change the active tab with a message', () => {
+        const message = {id: '1'} as unknown as TicketMessage
+        const expectedAction = {
+            type: UIActions.ChangeTicketMessage,
+            payload: {message},
+        }
+        expect(changeTicketMessage({message})).toEqual(expectedAction)
     })
 })

@@ -136,7 +136,7 @@ export default class Avatar extends Component<Props, State> {
                     <i
                         className={classnames(
                             'material-icons',
-                            css.aiAgentICon
+                            css.aiAgentIcon
                         )}
                     >
                         auto_awesome
