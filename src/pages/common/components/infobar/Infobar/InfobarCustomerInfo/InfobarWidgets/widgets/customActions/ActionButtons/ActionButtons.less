@@ -74,6 +74,17 @@
     .actionButtons {
         display: flex !important;
         flex-wrap: nowrap !important;
+        // https://github.com/reactstrap/reactstrap/issues/1070#issuecomment-1669005425
+        :global {
+            .dropdown-menu {
+                display: block;
+                visibility: hidden;
+            }
+
+            .dropdown-menu.show {
+                visibility: visible;
+            }
+        }
     }
     .actionButton {
         flex: 1 1 auto;

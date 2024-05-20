@@ -58,7 +58,7 @@ function ButtonsGroup({buttons, source}: Props) {
                                 more_horiz
                             </IconButton>
                         </DropdownToggle>
-                        <DropdownMenu right>
+                        <DropdownMenu persist right>
                             {dropdownButtons.map((button, index) => (
                                 <TemplatedButton
                                     key={index}
