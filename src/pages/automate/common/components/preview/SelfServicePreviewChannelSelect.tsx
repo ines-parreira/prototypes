@@ -18,6 +18,7 @@ type Props<T extends SelfServiceChannel> = {
     onChange: (channel?: T) => void
     channels: T[]
     className?: string
+    isDisabled?: boolean
 }
 
 const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
@@ -25,6 +26,7 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
     onChange,
     channels,
     className,
+    isDisabled,
 }: Props<T>) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -61,7 +63,7 @@ const SelfServicePreviewChannelSelect = <T extends SelfServiceChannel>({
             label={channel?.value?.name}
             onToggle={setIsSelectOpen}
             ref={targetRef}
-            isDisabled={!channels.length}
+            isDisabled={!channels.length || isDisabled}
             prefix={channel && <ChannelIcon type={channel.type} />}
         >
             <SelectInputBoxContext.Consumer>

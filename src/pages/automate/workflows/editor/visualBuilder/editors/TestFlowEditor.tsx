@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react'
 
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
+import _throttle from 'lodash/throttle'
 import {Drawer} from 'pages/common/components/Drawer'
-
 import {useGetInstallationSnippet} from 'models/integration/queries'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import {notify} from 'state/notifications/actions'
 import useKey from 'hooks/useKey'
 import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Spinner from 'pages/common/components/Spinner'
@@ -15,12 +16,16 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import LanguageSelector from 'pages/automate/workflows/components/LanguageSelector'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useEffectOnce from 'hooks/useEffectOnce'
 import SelfServicePreviewChannelSelect from 'pages/automate/common/components/preview/SelfServicePreviewChannelSelect'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {NotificationStatus} from 'state/notifications/types'
 import nodeEditorCss from '../NodeEditorDrawer.less'
 import EditorDrawerHeader from '../EditorDrawerHeader'
 import css from './TestFlowEditor.less'
+
+const TIMEOUT_CHAT_FLOW_STARTED_MS = 40_000
 
 type Props = {
     isTesting: boolean
@@ -34,23 +39,33 @@ export const TestFlowEditor = ({
     isAuthenticationBannerVisible,
     startFlowNode,
 }: Props) => {
+    const dispatch = useAppDispatch()
     const {shopType, shopName, editWorkflowId} = useParams<{
         shopType: string
         shopName: string
         editWorkflowId: string
     }>()
+
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
     const {
-        visualBuilderGraph: {available_languages},
+        currentLanguage,
+        translateKey,
+        visualBuilderGraph: {available_languages, wfConfigurationOriginal},
     } = useWorkflowEditorContext()
     const [selectedTestLanguage, setSelectedTestLanguage] =
         // one of the languages from available_languages
-        useState<typeof available_languages[number]>()
-    const [isLoading, setIsLoading] = useState(true)
+        useState<typeof available_languages[number]>(currentLanguage)
+    const [isFlowInterpreterStarted, setIsFlowInterpreterStarted] =
+        useState<boolean>(false)
+    const [iframeSrcDoc, setIframeSrcDoc] = useState<string>()
+    const [
+        isFlowInterpreterStartedTimeout,
+        setIsFlowInterpreterStartedTimeout,
+    ] = useState(false)
     const [selectedChatChannel, setSelectedChatChannel] =
         useState<SelfServiceChatChannel>()
 
-    const iframeRef = React.createRef<HTMLIFrameElement>()
+    const chatIFrameElement = React.createRef<HTMLIFrameElement>()
 
     const selectedChannelApplicationId = selectedChatChannel
         ? selectedChatChannel.value.meta?.app_id ?? ''
@@ -65,19 +80,24 @@ export const TestFlowEditor = ({
         () => {
             if (isTesting) {
                 onClose()
-                setIsLoading(true)
             }
         },
         undefined,
         [onClose]
     )
 
-    const label =
-        startFlowNode.type === 'trigger_button' ? startFlowNode.data.label : ''
-
     const selectedLanguage = selectedTestLanguage
         ? selectedTestLanguage
         : available_languages[0]
+
+    const label =
+        translateKey(
+            wfConfigurationOriginal.entrypoint?.label_tkey ?? '',
+            selectedLanguage
+        ) ||
+        (startFlowNode.type === 'trigger_button'
+            ? startFlowNode.data.label
+            : '')
 
     function resetChatFlow({
         label,
@@ -89,13 +109,13 @@ export const TestFlowEditor = ({
         id: string
     }) {
         if (
-            !iframeRef.current ||
-            !iframeRef.current.contentWindow ||
-            !iframeRef.current.contentWindow?.GorgiasChat
+            !chatIFrameElement.current ||
+            !chatIFrameElement.current.contentWindow ||
+            !chatIFrameElement.current.contentWindow?.GorgiasChat
         )
             return
 
-        const gorgiasChat = iframeRef.current.contentWindow.GorgiasChat
+        const gorgiasChat = chatIFrameElement.current.contentWindow.GorgiasChat
         gorgiasChat.setPage('homepage')
         gorgiasChat.previewFlow({
             flowLabel: label,
@@ -104,15 +124,45 @@ export const TestFlowEditor = ({
         })
     }
 
-    useEffect(() => {
-        if (!installationSnippet) return
-        setIsLoading(true)
+    useEffectOnce(() => {
+        const timeoutId = window.setTimeout(() => {
+            if (!isFlowInterpreterStarted) {
+                setIsFlowInterpreterStartedTimeout(true)
+            }
+        }, TIMEOUT_CHAT_FLOW_STARTED_MS)
+        return () => clearTimeout(timeoutId)
+    })
 
-        if (iframeRef.current) {
-            iframeRef.current.srcdoc = `
+    useEffect(() => {
+        if (
+            isFlowInterpreterStartedTimeout &&
+            !isFlowInterpreterStarted &&
+            isTesting
+        ) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Failed Loading Flow Testing. Please try again later',
+                })
+            )
+        }
+    }, [
+        dispatch,
+        isFlowInterpreterStarted,
+        isFlowInterpreterStartedTimeout,
+        isTesting,
+    ])
+
+    useEffect(() => {
+        if (!installationSnippet || isFlowInterpreterStarted) return
+        setIframeSrcDoc(`
         <body>
             ${installationSnippet.snippet}
             <script type="application/javascript">
+            window.localStorage.setItem = function() {}
+            window.localStorage.getItem = function() {}
+            window.WebSocket = function() {}
             GorgiasChat.init().then(() => {
                 GorgiasChat.open();
                 gorgiasChatConfiguration.selfServiceConfiguration = {
@@ -140,23 +190,28 @@ export const TestFlowEditor = ({
             })
             </script>
          </body>
-        `
+        `)
+    }, [
+        editWorkflowId,
+        installationSnippet,
+        isFlowInterpreterStarted,
+        label,
+        selectedLanguage,
+    ])
 
-            window.addEventListener('message', (e) => {
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                if (e.data.type === 'flow-interpreter-started') {
-                    setIsLoading(false)
-                }
-            })
-        }
-
+    useEffectOnce(() => {
+        window.addEventListener('message', (e) => {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if (e.data.type === 'flow-interpreter-started') {
+                setIsFlowInterpreterStarted(true)
+            }
+        })
         return () => {
             window.removeEventListener('message', () => {
-                setIsLoading(true)
+                setIsFlowInterpreterStarted(false)
             })
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [editWorkflowId, installationSnippet, label])
+    })
 
     useEffect(() => {
         resetChatFlow({
@@ -184,8 +239,13 @@ export const TestFlowEditor = ({
                         channels={chatChannels}
                         channel={selectedChatChannel}
                         onChange={(channel) => {
-                            setSelectedChatChannel(channel)
+                            if (channel !== selectedChatChannel) {
+                                setIsFlowInterpreterStartedTimeout(false)
+                                setIsFlowInterpreterStarted(false)
+                                setSelectedChatChannel(channel)
+                            }
                         }}
+                        isDisabled={!isFlowInterpreterStarted}
                     />
                     <LanguageSelector
                         languages={available_languages}
@@ -235,15 +295,16 @@ export const TestFlowEditor = ({
                 <div className={css.paper}>
                     <Button
                         fillStyle="ghost"
-                        isDisabled={isLoading}
-                        disabled={isLoading}
-                        onClick={() => {
-                            resetChatFlow({
-                                label,
-                                language: selectedLanguage,
-                                id: editWorkflowId,
-                            })
-                        }}
+                        isDisabled={!isFlowInterpreterStarted}
+                        onClick={_throttle(
+                            () =>
+                                resetChatFlow({
+                                    label,
+                                    language: selectedLanguage,
+                                    id: editWorkflowId,
+                                }),
+                            2000
+                        )}
                         intent="secondary"
                     >
                         <ButtonIconLabel icon="refresh" position="left">
@@ -252,16 +313,16 @@ export const TestFlowEditor = ({
                     </Button>
 
                     <div className={classNames(css['iframe-container'])}>
-                        {isLoading && (
+                        {!isFlowInterpreterStarted && (
                             <Spinner color="dark" className={css.spinner} />
                         )}
                         <iframe
                             title="Test Flow Editor"
-                            ref={iframeRef}
-                            style={{
-                                display: isLoading ? 'none' : 'block',
-                            }}
-                            className={css.iframe}
+                            ref={chatIFrameElement}
+                            className={classNames(css['iframe'], {
+                                [css['hidden']]: !isFlowInterpreterStarted,
+                            })}
+                            srcDoc={iframeSrcDoc}
                         ></iframe>
                     </div>
                 </div>
