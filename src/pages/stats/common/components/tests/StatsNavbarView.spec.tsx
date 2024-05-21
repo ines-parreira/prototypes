@@ -104,7 +104,6 @@ describe('StatsNavbarView', () => {
         expect(
             screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL)
         ).toBeInTheDocument()
-        expect(screen.queryByText(NEW_NAV_LABEL)).toBeInTheDocument()
     })
 
     describe('New Agents Performance', () => {

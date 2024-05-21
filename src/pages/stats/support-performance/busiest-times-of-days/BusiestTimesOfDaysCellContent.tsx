@@ -52,7 +52,8 @@ export const BusiestTimesOfDaysCellContent = ({
             )}
             innerClassName={classnames(
                 [heatmapCss.heatmap],
-                isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`]
+                isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`],
+                css.cellContent
             )}
             justifyContent={justify}
             size={'small'}

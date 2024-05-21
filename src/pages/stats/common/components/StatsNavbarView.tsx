@@ -119,12 +119,6 @@ export default function StatsNavbarView() {
                                 to="/app/stats/busiest-times-of-days"
                             >
                                 {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    {NEW_NAV_LABEL}
-                                </Badge>
                             </NavbarLink>
                         </div>
                     )}
