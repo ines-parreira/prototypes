@@ -1,10 +1,9 @@
 import {useMemo} from 'react'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
-    getHumanAndAutomationBotAgentsJS,
-} from 'state/agents/selectors'
+import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {UserRole} from 'config/types/user'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 
 export const useAIAgentUserId = (): string | undefined => {
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)

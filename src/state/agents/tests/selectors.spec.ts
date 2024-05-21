@@ -3,6 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 import {UserRole} from 'config/types/user'
 
 import * as selectors from 'state/agents/selectors'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {initialState} from 'state/agents/reducers'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 import * as agentFixtures from 'fixtures/agents'
@@ -14,7 +15,7 @@ describe('agents selectors', () => {
     const automationBotAgent = {
         id: 3,
         role: {name: UserRole.Bot},
-        email: selectors.AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+        email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
     }
     const allAgents = [{id: 1}, {id: 2}, automationBotAgent]
     let state: RootState

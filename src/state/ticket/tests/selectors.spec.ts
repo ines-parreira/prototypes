@@ -10,7 +10,7 @@ import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
 import {assumeMock} from 'utils/testing'
 
 import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/selectors'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 

@@ -8,9 +8,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {CurrentUser, RootState} from 'state/types'
 
 import {Agent, Agents, AgentsState} from 'state/agents/types'
-
-export const AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS =
-    'bot@658d6f54fbff9b7c6f2d0321'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from './constants'
 
 export const isHumanAgent = (agent: Map<any, any>) =>
     agent.getIn(['role', 'name'], '') !== UserRole.Bot

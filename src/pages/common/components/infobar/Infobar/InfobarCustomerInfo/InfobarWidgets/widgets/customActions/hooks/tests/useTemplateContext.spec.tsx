@@ -1,21 +1,28 @@
 import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
 
+import {assumeMock} from 'utils/testing'
 import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
 import {AppContext} from 'providers/infobar/AppContext'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
+import {getTicket} from 'state/ticket/selectors'
+import {getActiveCustomer} from 'state/customers/selectors'
+import {Customer} from 'models/customer/types'
+import {Ticket} from 'models/ticket/types'
 
 import {useTemplateContext} from '../useTemplateContext'
 
 const defaultTicket = {
     id: 'ticket_id',
-}
+} as unknown as Ticket
+
 const defaultCustomer = {
     id: 'customer_id',
-}
+} as unknown as Customer
+
 const defaultCurrentUser = {
     id: 'current_user_id',
     email: 'current_user_email',
@@ -26,18 +33,16 @@ const defaultCurrentUser = {
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
-    default: jest.fn((anything: unknown) => anything),
+    default: jest.fn((cb: (() => unknown) | undefined) => cb?.()),
 }))
-jest.mock('state/customers/selectors', () => ({
-    getActiveCustomer: defaultCustomer,
-}))
-jest.mock('state/ticket/selectors', () => ({
-    getTicket: defaultTicket,
-}))
+jest.mock('state/customers/selectors')
+jest.mock('state/ticket/selectors')
+const mockedGetActiveCustomer = assumeMock(getActiveCustomer)
+const mockedGetTicket = assumeMock(getTicket)
 jest.mock('state/currentUser/selectors', () => ({
-    getCurrentUserState: {
+    getCurrentUserState: () => ({
         toJS: () => defaultCurrentUser,
-    },
+    }),
 }))
 
 const defaultSource = {
@@ -45,6 +50,10 @@ const defaultSource = {
 }
 
 describe('useTemplateContext', () => {
+    beforeEach(() => {
+        mockedGetActiveCustomer.mockReturnValue(defaultCustomer)
+        mockedGetTicket.mockReturnValue(defaultTicket)
+    })
     // With react 18, you will be able to test this by using standard `.toThrow()` assertion
     it('should not break if source is not a record', () => {
         expect(
@@ -57,21 +66,102 @@ describe('useTemplateContext', () => {
             renderHook(() => useTemplateContext()).result.error
         ).not.toBeDefined()
     })
+
     it("should return a context merged with the provided source if it's a record", () => {
         const {result} = renderHook(() => useTemplateContext(defaultSource))
         expect(result.current.context).toHaveProperty('ok', true)
     })
+
     it('should return a context with ticket and user', () => {
         const {result} = renderHook(() => useTemplateContext(defaultSource))
-        expect(result.current.context.ticket).toBe(defaultTicket)
-        expect(result.current.context.customer).toBe(defaultCustomer)
+        expect(result.current.context.ticket).toEqual(
+            expect.objectContaining(defaultTicket)
+        )
+        expect(result.current.context.customer).toEqual(
+            expect.objectContaining(defaultCustomer)
+        )
     })
+
+    describe('Mapped integrations', () => {
+        const integrationID = 1234
+        const ticket = {
+            id: 'ticket_id',
+            customer: {
+                integrations: {
+                    [integrationID]: {
+                        myMagentoData: 'myData',
+                        __integration_type__: 'magento2',
+                    },
+                },
+            },
+        } as unknown as Ticket
+
+        const customer = {
+            id: 'customer_id',
+            integrations: {
+                [integrationID]: {
+                    myShopifyData: 'myData',
+                    __integration_type__: 'shopify',
+                },
+            },
+        } as unknown as Customer
+
+        it('should return nothing if there are multiple integrations of the same type', () => {
+            mockedGetTicket.mockReturnValue({
+                ...ticket,
+                customer: {
+                    ...ticket.customer,
+                    integrations: {
+                        ...ticket.customer?.integrations,
+                        [1235]: {
+                            myMagentoData: 'myData',
+                            __integration_type__: 'magento2',
+                        },
+                    },
+                } as unknown as Customer,
+            })
+            const {result} = renderHook(() => useTemplateContext(defaultSource))
+            expect(
+                result.current.context.ticket.customer.integrations.magento2
+            ).toBe(undefined)
+            expect(result.current.context.customer.integrations).toEqual({})
+        })
+
+        it('should return a context with ticket mapped integrations', () => {
+            mockedGetActiveCustomer.mockReturnValue(customer)
+            mockedGetTicket.mockReturnValue(ticket)
+            const {result} = renderHook(() => useTemplateContext(defaultSource))
+            expect(result.current.context.ticket.customer.integrations).toEqual(
+                {
+                    ...ticket.customer?.integrations,
+                    magento2: ticket.customer?.integrations[integrationID],
+                }
+            )
+            expect(result.current.context.customer.integrations).toEqual(
+                customer.integrations
+            )
+        })
+
+        it('should return a customer context with customer mapped integrations', () => {
+            mockedGetActiveCustomer.mockReturnValue(customer)
+            const {result} = renderHook(() => useTemplateContext(defaultSource))
+            expect(result.current.context.customer.integrations).toEqual({
+                ...customer.integrations,
+                shopify: customer.integrations[integrationID],
+            })
+            expect(result.current.context.ticket.customer.integrations).toEqual(
+                {}
+            )
+        })
+    })
+
     it("should return a context with a subset of the current user's data", () => {
         const {result} = renderHook(() => useTemplateContext(defaultSource))
         expect(defaultCurrentUser).toEqual(
             expect.objectContaining(result.current.context.current_user)
         )
     })
+
     it('should return variables', () => {
         const {result} = renderHook(() => useTemplateContext(defaultSource), {
             wrapper: ({children}) => (
