@@ -3,18 +3,21 @@ import {render, screen} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {IntegrationType} from '@gorgias/api-queries'
+import {fromJS} from 'immutable'
+import _keyBy from 'lodash/keyBy'
 import {
     automationSettingsFixture,
     selfServiceConfigurationFixture,
-    shopifyShopIntegrationFixture,
 } from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
-import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
 import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
-import ContactFormEntrypointPreview, {
-    ContactFormWithShopIntegration,
-} from '../ContactFormEntrypointPreview'
+import {getHasAutomate} from 'state/billing/selectors'
+import {Components} from 'rest_api/help_center_api/client.generated'
+import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'
+
+const CONTACT_FORM_SHOP_NAME = 'acme'
 
 const mockSelfServiceConfiguration = {
     isFetchPending: false,
@@ -24,36 +27,6 @@ const mockSelfServiceConfiguration = {
     handleSelfServiceConfigurationUpdate: jest.fn(),
 }
 
-const mockAutomationSettings = {
-    isFetchPending: false,
-    isUpdatePending: false,
-    automationSettings: automationSettingsFixture,
-    handleContactFormAutomationSettingsUpdate: jest.fn(),
-    handleContactFormAutomationSettingsFetch: jest.fn(),
-}
-
-const mockEmptyAutomationSettings = {
-    isFetchPending: false,
-    isUpdatePending: false,
-    automationSettings: CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
-    handleContactFormAutomationSettingsUpdate: jest.fn(),
-    handleContactFormAutomationSettingsFetch: jest.fn(),
-}
-
-jest.mock('hooks/useAppSelector', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
-jest.mock('state/integrations/selectors', () => ({
-    getIntegrationsByType: jest.fn(),
-}))
-jest.mock(
-    'pages/automate/common/hooks/useContactFormAutomationSettings',
-    () => ({
-        __esModule: true,
-        default: jest.fn(),
-    })
-)
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     __esModule: true,
     default: jest.fn(),
@@ -63,18 +36,62 @@ jest.mock('state/billing/selectors', () => ({
     getHasAutomate: jest.fn(),
 }))
 
-const mockUseContactFormAutomationSettings = jest.mocked(
-    useContactFormAutomationSettings
-)
 const mockUseSelfServiceConfiguration = jest.mocked(useSelfServiceConfiguration)
-const mockStore = configureMockStore([thunk])()
+const mockGetHasAutomate = jest.mocked(getHasAutomate)
+const mockStore = configureMockStore([thunk])
 
-const renderComponent = () => {
+type automationSettings = {
+    order_management: {
+        enabled: boolean
+    }
+    workflows: {
+        id: string
+        enabled: boolean
+    }[]
+}
+
+const renderComponent = ({
+    isFormHidden = true,
+    contactForm = ContactFormFixture,
+    automationSettings = automationSettingsFixture,
+}: {
+    isFormHidden?: boolean
+    contactForm?: Components.Schemas.ContactFormDto
+    automationSettings?: automationSettings
+}) => {
+    const mockedStore = mockStore({
+        integrations: fromJS({
+            integrations: [
+                {
+                    id: 1,
+                    name: CONTACT_FORM_SHOP_NAME,
+                    type: IntegrationType.Shopify,
+                    meta: {
+                        shop_name: CONTACT_FORM_SHOP_NAME,
+                    },
+                },
+            ],
+        }),
+        entities: {
+            contactForm: {
+                contactFormsAutomationSettings: {
+                    automationSettingsByContactFormId: {
+                        [contactForm.id]: automationSettings,
+                    },
+                },
+                contactForms: {
+                    contactFormById: _keyBy([contactForm], 'id'),
+                },
+            },
+            selfServiceConfigurations: selfServiceConfigurationFixture,
+        },
+    })
+
     render(
-        <Provider store={mockStore}>
+        <Provider store={mockedStore}>
             <ContactFormEntrypointPreview
-                contactForm={ContactFormFixture}
-                isFormHidden={true}
+                contactForm={contactForm}
+                isFormHidden={isFormHidden}
             />
         </Provider>
     )
@@ -85,57 +102,58 @@ describe('<ContactFormEntrypointPreview />', () => {
         mockUseSelfServiceConfiguration.mockReturnValue(
             mockSelfServiceConfiguration
         )
-        mockUseContactFormAutomationSettings.mockReturnValue(
-            mockAutomationSettings
-        )
+        mockGetHasAutomate.mockReturnValue(true)
     })
     it('should render component with form when Contact Form does not have shop integration', () => {
-        renderComponent()
+        renderComponent({})
 
         expect(screen.getByText('Write your message')).toBeInTheDocument()
     })
+    it('should render component with form when Contact Form does not have Automate subscription', () => {
+        mockGetHasAutomate.mockReturnValue(false)
+        renderComponent({
+            contactForm: {
+                ...ContactFormFixture,
+                shop_name: CONTACT_FORM_SHOP_NAME,
+            },
+        })
+
+        expect(screen.getByText('Write your message')).toBeInTheDocument()
+        expect(screen.queryByText('Report issue')).not.toBeInTheDocument()
+    })
     it('should render component with Contact Us button', () => {
-        render(
-            <Provider store={mockStore}>
-                <ContactFormWithShopIntegration
-                    contactForm={ContactFormFixture}
-                    isFormHidden={true}
-                    shopIntegration={shopifyShopIntegrationFixture}
-                />
-            </Provider>
-        )
+        renderComponent({
+            contactForm: {
+                ...ContactFormFixture,
+                shop_name: CONTACT_FORM_SHOP_NAME,
+            },
+        })
 
         expect(screen.getByText('Contact Us')).toBeInTheDocument()
         expect(screen.getByText('Report issue')).toBeInTheDocument()
     })
     it('should render component with form displays immediately', () => {
-        render(
-            <Provider store={mockStore}>
-                <ContactFormWithShopIntegration
-                    contactForm={ContactFormFixture}
-                    isFormHidden={false}
-                    shopIntegration={shopifyShopIntegrationFixture}
-                />
-            </Provider>
-        )
+        renderComponent({
+            isFormHidden: false,
+            contactForm: {
+                ...ContactFormFixture,
+                shop_name: CONTACT_FORM_SHOP_NAME,
+            },
+        })
 
         expect(screen.getByText('Report issue')).toBeInTheDocument()
         expect(screen.getByText('Write your message')).toBeInTheDocument()
     })
     it('should render component with form display immediately when order management and flows disabled', () => {
-        mockUseContactFormAutomationSettings.mockReturnValueOnce(
-            mockEmptyAutomationSettings
-        )
-        render(
-            <Provider store={mockStore}>
-                <ContactFormWithShopIntegration
-                    contactForm={ContactFormFixture}
-                    isFormHidden={true}
-                    shopIntegration={shopifyShopIntegrationFixture}
-                />
-            </Provider>
-        )
+        renderComponent({
+            contactForm: {
+                ...ContactFormFixture,
+                shop_name: CONTACT_FORM_SHOP_NAME,
+            },
+            automationSettings: CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
+        })
 
         expect(screen.getByText('Write your message')).toBeInTheDocument()
+        expect(screen.queryByText('Report issue')).not.toBeInTheDocument()
     })
 })

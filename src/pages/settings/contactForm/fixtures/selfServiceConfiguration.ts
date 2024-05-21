@@ -49,7 +49,7 @@ export const selfServiceConfigurationFixture = {
         eligibilities: [],
         enabled: true,
         exceptions: [],
-        shop_name: 'foctavia',
+        shop_name: 'acme',
     },
     quick_response_policies: [],
     article_recommendation_help_center_id: 22,
