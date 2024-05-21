@@ -67,7 +67,6 @@ describe('Metrics Calculation Functions', () => {
             expect(decreaseInResolutionTime(null, 10, 5, 5)).toBe(0)
             expect(decreaseInResolutionTime(10, null, 5, 5)).toBe(0)
             expect(decreaseInResolutionTime(10, 20, null, 5)).toBe(0)
-            expect(decreaseInResolutionTime(10, 20, 5, null)).toBe(0)
         })
 
         it('should return 0 if all parameters are null', () => {
@@ -81,6 +80,13 @@ describe('Metrics Calculation Functions', () => {
             )
             expect(decreaseInResolutionTime(0, 5, 500, 0)).toBeCloseTo(0)
             expect(decreaseInResolutionTime(0, 0, 0, 0)).toBeCloseTo(0)
+        })
+
+        it('calculates decrease in resolution time correctly when totalResolutionTimeResolvedByAIAgent is 0', () => {
+            expect(decreaseInResolutionTime(10, 5, 500, null)).toBeCloseTo(
+                66.6666,
+                3
+            )
         })
     })
 })

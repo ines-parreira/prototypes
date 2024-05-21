@@ -92,8 +92,7 @@ export const decreaseInResolutionTime = (
     if (
         automatedInteractions != null &&
         billableTicketCountExcludingAIAgent != null &&
-        totalResolutionTimeExcludingAIAgent != null &&
-        totalResolutionTimeResolvedByAIAgent != null
+        totalResolutionTimeExcludingAIAgent != null
     ) {
         const averageResolutionTimeWithoutAutomation = infinityNanToZero(
             totalResolutionTimeExcludingAIAgent /
@@ -106,7 +105,7 @@ export const decreaseInResolutionTime = (
                     totalResolutionTimeExcludingAIAgent,
                     billableTicketCountExcludingAIAgent,
                     automatedInteractions,
-                    totalResolutionTimeResolvedByAIAgent
+                    totalResolutionTimeResolvedByAIAgent ?? 0
                 )
         )
     }
