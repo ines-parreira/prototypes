@@ -39,6 +39,11 @@ type FormValues = {
     customerEmail: string
 }
 
+type FormValuesValidity = {
+    message: boolean
+    customerEmail: boolean
+}
+
 type Props = {
     isDisabled: boolean
     setSubject: (value: string) => void
@@ -84,7 +89,19 @@ export const PlaygroundInputStep = ({
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER
     )
-    const [isFormValid, setIsFormValid] = useState<boolean>(false)
+
+    const validateFormValues = (formValues: FormValues) => {
+        const formValuesValidity: FormValuesValidity = {
+            message: formValues.message.length > 0,
+            customerEmail:
+                senderSelectedOption === SenderTypeValues.NEW_CUSTOMER ||
+                formValues.customerEmail.length > 0,
+        }
+
+        return Object.values(formValuesValidity).every((value) => value)
+    }
+
+    const isFormValid = validateFormValues(formValues)
 
     const handleSenderSelectChange = (value: Value) => {
         if (typeof value !== 'string') {
@@ -101,27 +118,16 @@ export const PlaygroundInputStep = ({
     }
 
     const handleFormChange = (key: keyof FormValues) => (value: string) => {
-        const sanitizedValue = value.trim()
-
         setFormValues({
             ...formValues,
-            [key]: sanitizedValue,
+            [key]: value,
         })
-
-        const isMessageValid =
-            sanitizedValue.length > 0 &&
-            (senderSelectedOption !== SenderTypeValues.EXISTING_CUSTOMER ||
-                formValues.customerEmail.length > 0)
-
-        const isCustomerEmailValid =
-            senderSelectedOption !== SenderTypeValues.EXISTING_CUSTOMER ||
-            (sanitizedValue.length > 0 && formValues.message.length > 0)
-
-        setIsFormValid(isMessageValid && isCustomerEmailValid)
     }
 
     const handleSubmit = async () => {
         const newMessagesThread: PlaygroundMessage[] = []
+        const subject = formValues.subject.trim()
+        const message = formValues.message.trim()
         let customerName: string = formValues.customerEmail
         let isCustomerFound = false
         let unexpectedError = false
@@ -182,7 +188,7 @@ export const PlaygroundInputStep = ({
             newMessagesThread.push({
                 sender: customerName,
                 type: MessageType.MESSAGE,
-                message: formValues.message,
+                message,
             })
 
             if (isCustomerFound === false) {
@@ -199,7 +205,7 @@ export const PlaygroundInputStep = ({
                             SenderTypeValues.NEW_CUSTOMER,
                         domain: accountData.gorgiasDomain,
                         customer_email: formValues.customerEmail,
-                        body_text: formValues.message,
+                        body_text: message,
                         http_integration_id:
                             // HttpIntegration is asserted here as parent component checks for it's existence
                             accountData.httpIntegration.id,
@@ -218,7 +224,7 @@ export const PlaygroundInputStep = ({
                 })
             }
 
-            setSubject(formValues.subject)
+            setSubject(subject)
             setMessages(newMessagesThread)
             setStep(PlaygroundStep.OUTPUT)
         }

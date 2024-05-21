@@ -97,8 +97,7 @@ export const AiAgentPlaygroundView = () => {
 
                 // If the AI Agent response is valid, push output to message thread
                 if (
-                    aiAgentResponse.data.generate.output.generated_message?.trim()
-                        .length &&
+                    aiAgentResponse.data.postProcessing.htmlReply &&
                     aiAgentResponse.data.qa.output.validate_generated_message &&
                     // If silent handover is enabled, don't show the AI Agent response
                     !storeData?.data.storeConfiguration.silentHandover
@@ -106,9 +105,7 @@ export const AiAgentPlaygroundView = () => {
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
                         type: MessageType.MESSAGE,
-                        message:
-                            aiAgentResponse.data.generate.output
-                                .generated_message,
+                        message: aiAgentResponse.data.postProcessing.htmlReply,
                     })
                 }
                 // If the AI Agent response is invalid, only show internal note
