@@ -92,7 +92,7 @@ describe('<Body/>', () => {
 
         fireEvent.click(
             screen.getByRole('button', {
-                name: 'add',
+                name: 'add Body Parameter',
             })
         )
         expect(onChange).toHaveBeenCalled()

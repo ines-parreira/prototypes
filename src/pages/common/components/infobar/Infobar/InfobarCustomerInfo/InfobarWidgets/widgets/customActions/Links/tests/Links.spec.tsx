@@ -49,10 +49,10 @@ describe('<Links/>', () => {
         )
 
         expect(container).toMatchSnapshot()
-        expect(screen.queryByText('Add Redirection Link')).toBeNull()
+        expect(screen.queryByText('Add Link')).toBeNull()
     })
 
-    it('should render no links but an `Add Redirection Link` button', () => {
+    it('should render no links but an `Add Link` button', () => {
         render(
             <Provider
                 store={mockStore({
@@ -66,10 +66,10 @@ describe('<Links/>', () => {
         expect(
             screen.queryAllByText(new RegExp(label + '.*', 'm'))
         ).toHaveLength(0)
-        expect(screen.queryByText('Add Redirection Link')).toBeTruthy()
+        expect(screen.queryByText('Add Link')).toBeTruthy()
     })
 
-    it('should render all the links without the `Add Redirection Link` button and without a `SHOW MORE` button', () => {
+    it('should render all the links without the `Add Link` button and without a `SHOW MORE` button', () => {
         render(
             <Provider
                 store={mockStore({
@@ -84,10 +84,10 @@ describe('<Links/>', () => {
             screen.queryAllByText(new RegExp(label + '.*', 'm'))
         ).toHaveLength(4)
         expect(screen.queryByText('SHOW MORE')).toBeNull()
-        expect(screen.queryByText('Add Redirection Link')).toBeNull()
+        expect(screen.queryByText('Add Link')).toBeNull()
     })
 
-    it('should render some links and a `SHOW MORE` button but without an `Add Redirection Link` button', () => {
+    it('should render some links and a `SHOW MORE` button but without an `Add Link` button', () => {
         render(
             <Provider
                 store={mockStore({
@@ -101,11 +101,11 @@ describe('<Links/>', () => {
         expect(
             screen.queryAllByText(new RegExp(label + '.*', 'm'))
         ).toHaveLength(5)
-        expect(screen.queryByText('Add Redirection Link')).toBeFalsy()
+        expect(screen.queryByText('Add Link')).toBeFalsy()
         expect(screen.queryByText(/show more/i)).toBeTruthy()
     })
 
-    it('should open Editor when clicking on Add Redirection Link', async () => {
+    it('should open Editor when clicking on Add Link', async () => {
         render(
             <Provider
                 store={mockStore({
@@ -116,7 +116,7 @@ describe('<Links/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('Add Redirection Link'))
+        fireEvent.click(screen.getByText('Add Link'))
         await waitFor(() => {
             expect(screen.queryByText('Save')).toBeTruthy()
         })
@@ -186,7 +186,7 @@ describe('<Links/>', () => {
             </Provider>
         )
 
-        fireEvent.click(screen.getByText('Add Redirection Link'))
+        fireEvent.click(screen.getByText('Add Link'))
         await waitFor(() => {
             expect(screen.getByText('Save'))
         })

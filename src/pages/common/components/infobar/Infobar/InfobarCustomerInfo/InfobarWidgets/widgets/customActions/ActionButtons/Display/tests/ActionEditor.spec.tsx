@@ -54,11 +54,10 @@ describe('<ActionEditor/>', () => {
     })
 
     it('should render with correct labels', () => {
-        const {container} = render(<ActionEditor {...props} />)
+        render(<ActionEditor {...props} />)
 
-        expect(container).toMatchSnapshot()
         expect(
-            screen.queryByText(props.action.headers[1].label || '')
+            screen.queryByText(new RegExp(props.action.headers[1].label || ''))
         ).toBeTruthy()
         expect(screen.queryByText(props.action.headers[1].key)).toBeFalsy()
         expect(screen.queryByText(props.action.params[0].key)).toBeTruthy()
@@ -76,7 +75,7 @@ describe('<ActionEditor/>', () => {
     it('should call onSubmit with proper params when clicking the execute button and then onClose', () => {
         const newValue = 'edited'
         render(<ActionEditor {...props} />)
-        fireEvent.change(screen.getByLabelText('ok1'), {
+        fireEvent.change(screen.getByLabelText(/ok1/), {
             target: {value: newValue},
         })
         fireEvent.click(screen.getByText('Execute'))

@@ -102,7 +102,7 @@ describe('<Editor/>', () => {
         )
         fireEvent.click(screen.getByRole('button', {name: 'add Add Button'}))
         await screen.findByRole('button', {name: 'Save'})
-        fireEvent.change(screen.getByLabelText('Button title'), {
+        fireEvent.change(screen.getByLabelText(/Button title/), {
             target: {value: 'ok'},
         })
         fireEvent.click(screen.getByRole('button', {name: 'Save'}))

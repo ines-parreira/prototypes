@@ -33,7 +33,7 @@ const props = {
 
 describe('<Button/>', () => {
     it('should render a basic button', () => {
-        const {container} = render(
+        render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
@@ -42,11 +42,14 @@ describe('<Button/>', () => {
                 <Button {...props} />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(
+            screen.getByRole('button', {name: props.label})
+        ).toBeInTheDocument()
     })
 
     it('should render a dropdow button', () => {
-        const {container} = render(
+        render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {}}),
@@ -55,7 +58,9 @@ describe('<Button/>', () => {
                 <Button {...props} isDropdown />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(
+            screen.getByRole('menuitem', {name: props.label})
+        ).toBeInTheDocument()
     })
 
     it('should call executeAction with the right params and disable the button', () => {

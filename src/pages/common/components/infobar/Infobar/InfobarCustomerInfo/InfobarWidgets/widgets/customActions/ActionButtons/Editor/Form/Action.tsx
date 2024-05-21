@@ -1,8 +1,7 @@
 import React from 'react'
-import {FormGroup, Label} from 'reactstrap'
 
 import {AVAILABLE_HTTP_METHODS} from 'config'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
 
 import {
@@ -10,7 +9,9 @@ import {
     OnChangeAction,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
 
+import Label from 'pages/common/forms/Label/Label'
 import css from '../../ActionButtons.less'
 
 import Parameters from './Parameters'
@@ -25,24 +26,24 @@ export default function Action({action, onChange}: Props) {
     return (
         <div className="http">
             <div className={css.formParamRow}>
-                <div>
-                    <DEPRECATED_InputField
-                        type="select"
-                        name="method"
-                        label="Method"
+                <div className={css.formParamSelect}>
+                    <Label htmlFor="httpMethod" className={css.selectLabel}>
+                        Method
+                    </Label>
+                    <SelectField
+                        id="httpMethod"
+                        showSelectedOption
                         value={action.method}
                         onChange={(value) => onChange('method', value)}
-                        required
-                    >
-                        {AVAILABLE_HTTP_METHODS.map((method) => (
-                            <option key={method} value={method}>
-                                {method}
-                            </option>
-                        ))}
-                    </DEPRECATED_InputField>
+                        options={AVAILABLE_HTTP_METHODS.map((method) => ({
+                            value: method,
+                            label: method,
+                        }))}
+                        dropdownMenuClassName={css.longDropdown}
+                    />
                 </div>
                 <div className={css.formParamLargeCol}>
-                    <DEPRECATED_InputField
+                    <InputField
                         type="text"
                         name="url"
                         label="URL"
@@ -50,26 +51,25 @@ export default function Action({action, onChange}: Props) {
                         value={action.url}
                         onChange={(value) => onChange('url', value)}
                         pattern={validateWebhookURLToPattern(action.url)}
-                        required
+                        isRequired
                     />
                 </div>
             </div>
-            <FormGroup className="mt-3">
-                <Label className="control-label">Headers</Label>
-                <Parameters
-                    path={`headers`}
-                    value={action.headers}
-                    onChange={onChange}
-                />
-            </FormGroup>
-            <FormGroup className="mt-3">
-                <Label className="control-label">Query Parameters</Label>
-                <Parameters
-                    path={`params`}
-                    value={action.params}
-                    onChange={onChange}
-                />
-            </FormGroup>
+            <div className={css.formParamSection}>Headers</div>
+            <Parameters
+                addLabel="Header"
+                path={`headers`}
+                value={action.headers}
+                onChange={onChange}
+            />
+
+            <div className={css.formParamSection}>Query Parameters</div>
+            <Parameters
+                path={`params`}
+                value={action.params}
+                onChange={onChange}
+            />
+
             {httpMethodsWithBody.includes(action.method) && (
                 <Body body={action.body} onChange={onChange} />
             )}

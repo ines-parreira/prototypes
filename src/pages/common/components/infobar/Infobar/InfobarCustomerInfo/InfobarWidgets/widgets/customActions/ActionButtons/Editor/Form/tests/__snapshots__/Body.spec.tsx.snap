@@ -2,144 +2,16 @@
 
 exports[`<Body/> should render with a json textarea 1`] = `
 <div
-  class="form-group"
+  class="formParamSection"
 >
-  <label
-    class="control-label"
-  >
-    Body
-  </label>
-  <div
-    class="mb-3"
-  >
-    <fieldset
-      class=""
-      name="radio-field-1"
-    >
-      <div
-        class="option"
-      >
-        <label
-          class="label label"
-          for="application/json"
-        >
-          <input
-            checked=""
-            class="input"
-            id="application/json"
-            name="radio-field-1"
-            type="radio"
-          />
-          application/json
-        </label>
-      </div>
-      <div
-        class="option"
-      >
-        <label
-          class="label label"
-          for="application/x-www-form-urlencoded"
-        >
-          <input
-            class="input"
-            id="application/x-www-form-urlencoded"
-            name="radio-field-1"
-            type="radio"
-          />
-          application/x-www-form-urlencoded
-        </label>
-      </div>
-    </fieldset>
-  </div>
-  <div
-    class="InputField form-group"
-    color=""
-  >
-    <div
-      class=""
-    >
-      <div
-        class="form-group"
-      >
-        <div
-          class="controls"
-        >
-          <textarea
-            class="form-control"
-            id="id-json"
-            rows="6"
-          >
-            {}
-          </textarea>
-        </div>
-      </div>
-    </div>
-  </div>
+  Body
 </div>
 `;
 
 exports[`<Body/> should render with parameter fields 1`] = `
 <div
-  class="form-group"
+  class="formParamSection"
 >
-  <label
-    class="control-label"
-  >
-    Body
-  </label>
-  <div
-    class="mb-3"
-  >
-    <fieldset
-      class=""
-      name="radio-field-2"
-    >
-      <div
-        class="option"
-      >
-        <label
-          class="label label"
-          for="application/json"
-        >
-          <input
-            class="input"
-            id="application/json"
-            name="radio-field-2"
-            type="radio"
-          />
-          application/json
-        </label>
-      </div>
-      <div
-        class="option"
-      >
-        <label
-          class="label label"
-          for="application/x-www-form-urlencoded"
-        >
-          <input
-            checked=""
-            class="input"
-            id="application/x-www-form-urlencoded"
-            name="radio-field-2"
-            type="radio"
-          />
-          application/x-www-form-urlencoded
-        </label>
-      </div>
-    </fieldset>
-  </div>
-  <div>
-    <button
-      class="btn btn-secondary btn-sm"
-      type="button"
-    >
-      <i
-        class="material-icons formParamIcon"
-      >
-        add
-      </i>
-    </button>
-  </div>
+  Body
 </div>
 `;

@@ -15,7 +15,7 @@ type Props = {
     isEditing: boolean
 }
 
-function ActionButtons({
+export function ActionButtons({
     templatePath,
     absolutePath,
     buttons,

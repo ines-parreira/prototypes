@@ -5,7 +5,7 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import {Form, Popover, PopoverBody} from 'reactstrap'
+import {Popover, PopoverBody} from 'reactstrap'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -15,11 +15,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import {ensureHTTPS} from 'utils/url'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import Button from 'pages/common/components/button/Button'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {
     Link,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+
+import css from './Links.less'
 
 type Props = {
     target: string
@@ -123,16 +125,16 @@ export default function Editor(props: Props) {
             container={appNode ?? undefined}
         >
             <PopoverBody>
-                <Form onSubmit={handleSubmit}>
-                    <DEPRECATED_InputField
-                        type="text"
+                <form onSubmit={handleSubmit}>
+                    <InputField
+                        className={css.inputSpacing}
                         name="redirectionLink.title"
                         label="Title"
                         defaultValue={redirectionLinkTitle}
                         onChange={(value) => setRedirectionLinkTitle(value)}
                     />
-                    <DEPRECATED_InputField
-                        type="text"
+                    <InputField
+                        className={css.inputSpacing}
                         name="redirectionLink.url"
                         value={redirectionLinkUrl}
                         label="Link"
@@ -142,20 +144,16 @@ export default function Editor(props: Props) {
                     <div>
                         <Button
                             type="submit"
-                            className="mr-2"
                             isDisabled={!canSubmit}
+                            className={css.buttonSpacing}
                         >
                             Save
                         </Button>
-                        <Button
-                            intent="secondary"
-                            type="button"
-                            onClick={handleCancel}
-                        >
+                        <Button intent="secondary" onClick={handleCancel}>
                             Cancel
                         </Button>
                     </div>
-                </Form>
+                </form>
             </PopoverBody>
         </Popover>
     )

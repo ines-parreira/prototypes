@@ -1,20 +1,17 @@
 import React, {FormEvent, useMemo, useState, useCallback, memo} from 'react'
-import {
-    Button,
-    Form as ReactStrapForm,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-} from 'reactstrap'
 import {produce} from 'immer'
 import {set as _set} from 'lodash'
 
 import {ContentType} from 'models/api/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {
     Action,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalBody from 'pages/common/components/modal/ModalBody'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import Button from 'pages/common/components/button/Button'
 
 type Props = {
     action: Action
@@ -39,14 +36,14 @@ function ActionEditor({action, onSubmit, onClose}: Props) {
             params?.map(({editable, label, key, value, mandatory}, index) => {
                 if (!editable) return null
                 return (
-                    <DEPRECATED_InputField
+                    <InputField
                         autoFocus={index === 0}
                         type="text"
                         key={index}
                         name={key}
                         label={label || key}
                         defaultValue={value}
-                        required={mandatory}
+                        isRequired={mandatory}
                         onChange={(value) =>
                             setActionState((previousActionState) =>
                                 produce(previousActionState, (draft) => {
@@ -84,27 +81,20 @@ function ActionEditor({action, onSubmit, onClose}: Props) {
 
     return (
         <>
-            <ModalHeader toggle={onClose}>Edit fields</ModalHeader>
-            <ReactStrapForm onSubmit={handleSubmit}>
+            <ModalHeader forceCloseButton title="Edit fields" />
+            <form onSubmit={handleSubmit}>
                 <ModalBody>
                     {headerInputs}
                     {paramInputs}
                     {bodyFormInputs}
                 </ModalBody>
-                <ModalFooter>
-                    <Button
-                        color="secondary"
-                        type="button"
-                        onClick={onClose}
-                        className="mr-2"
-                    >
+                <ModalActionsFooter>
+                    <Button intent="secondary" onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button color="primary" type="submit">
-                        Execute
-                    </Button>
-                </ModalFooter>
-            </ReactStrapForm>
+                    <Button type="submit">Execute</Button>
+                </ModalActionsFooter>
+            </form>
         </>
     )
 }

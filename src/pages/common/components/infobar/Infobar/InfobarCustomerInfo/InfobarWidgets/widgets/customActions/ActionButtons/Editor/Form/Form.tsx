@@ -1,23 +1,21 @@
 import React, {FormEvent, useState, useCallback, memo} from 'react'
-import {
-    Button,
-    Form as ReactStrapForm,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-} from 'reactstrap'
 import {produce} from 'immer'
 import {set as _set} from 'lodash'
 
 import {ContentType, HttpMethod} from 'models/api/types'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
+import InputField from 'pages/common/forms/input/InputField'
 import {
     Button as ButtonType,
     OnSubmitButton,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
+import ModalHeader from 'pages/common/components/modal/ModalHeader'
+import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import Button from 'pages/common/components/button/Button'
+import ModalBody from 'pages/common/components/modal/ModalBody'
 
+import css from '../../ActionButtons.less'
 import Action from './Action'
 
 type Props = {
@@ -75,36 +73,31 @@ function Form({button = initialState, onSubmit, index, onClose}: Props) {
 
     return (
         <>
-            <ModalHeader toggle={onClose}>Configure HTTP action</ModalHeader>
-            <ReactStrapForm onSubmit={handleSubmit}>
+            <ModalHeader forceCloseButton title="Configure HTTP action" />
+            <form onSubmit={handleSubmit}>
                 <ModalBody>
-                    <DEPRECATED_InputField
-                        type="text"
-                        name="label"
-                        label="Button title"
-                        defaultValue={button.label}
-                        onChange={handleLabelChange}
-                        required
-                    />
+                    <div className={css.formParamRow}>
+                        <InputField
+                            type="text"
+                            name="label"
+                            label="Button title"
+                            defaultValue={button.label}
+                            onChange={handleLabelChange}
+                            isRequired
+                        />
+                    </div>
                     <Action
                         action={formState.action}
                         onChange={handleActionChange}
                     />
                 </ModalBody>
-                <ModalFooter>
-                    <Button
-                        color="secondary"
-                        type="button"
-                        onClick={onClose}
-                        className="mr-2"
-                    >
+                <ModalActionsFooter>
+                    <Button intent="secondary" onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button color="primary" type="submit">
-                        Save
-                    </Button>
-                </ModalFooter>
-            </ReactStrapForm>
+                    <Button type="submit">Save</Button>
+                </ModalActionsFooter>
+            </form>
         </>
     )
 }

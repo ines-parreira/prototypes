@@ -1,19 +1,21 @@
 import React, {memo, useEffect, useState} from 'react'
 import {ulid} from 'ulidx'
-import {Button} from 'reactstrap'
 import debounce from 'lodash/debounce'
+import classnames from 'classnames'
 
 import {MAX_HEADER_LENGTH} from 'config'
-import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import Tooltip from 'pages/common/components/Tooltip'
+import InputField from 'pages/common/forms/input/InputField'
 import Errors from 'pages/common/forms/Errors'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import CheckBox from 'pages/common/forms/CheckBox'
 import {hasUnicodeChars} from 'utils'
 
 import {Parameter, OnChangeAction} from '../../../types'
-
-import css from '../../ActionButtons.less'
+import css from './Parameters.less'
 
 type Props = {
+    addLabel?: string
     path: string
     value: Parameter[]
     onChange: OnChangeAction
@@ -21,10 +23,7 @@ type Props = {
 
 const DEBOUNCE_DURATION = 200
 
-const generateBaseId = (path: string, index: number) =>
-    `action-button-${path.replace(/[./]/g, '-')}-${index}`
-
-function Parameters({value, path, onChange}: Props) {
+function Parameters({addLabel = 'Parameter', value, path, onChange}: Props) {
     // NOTE: Not every values comes with an ID
     // so we need to generate the missing ones
     if (!value.every((field) => field.id)) {
@@ -78,131 +77,79 @@ function Parameters({value, path, onChange}: Props) {
                         key={field.id || index}
                         className={`${css.formParamRow} ${css.squash}`}
                     >
-                        <div>
-                            <DEPRECATED_InputField
-                                type="text"
-                                placeholder="Key"
-                                defaultValue={field.key}
-                                error={validateHeaderName(field.key, path)}
-                                required
-                                maxLength={MAX_HEADER_LENGTH}
-                                onChange={(value) =>
-                                    debouncedOnChange(
-                                        `${indexedPath}.key`,
-                                        value
-                                    )
-                                }
-                            />
-                        </div>
-                        <div>
-                            <DEPRECATED_InputField
-                                type="text"
-                                placeholder="Value"
-                                defaultValue={field.value}
-                                required={path.includes('headers')}
-                                onChange={(value) =>
-                                    debouncedOnChange(
-                                        `${indexedPath}.value`,
-                                        value
-                                    )
-                                }
-                            />
-                        </div>
-                        <div>
-                            <DEPRECATED_InputField
-                                type="text"
-                                placeholder="Edit Label"
-                                defaultValue={field.label}
-                                onChange={(value) =>
-                                    debouncedOnChange(
-                                        `${indexedPath}.label`,
-                                        value
-                                    )
-                                }
-                            />
-                        </div>
-                        <div className={css.formParamGroupIcon}>
-                            <Button
-                                type="button"
-                                size="sm"
-                                id={generateBaseId(path, index) + 'editable'}
-                                className="mr-2"
-                                color={field.editable ? 'primary' : 'secondary'}
-                                onClick={() => {
-                                    onChange(
-                                        `${indexedPath}.editable`,
-                                        !field.editable
-                                    )
-                                }}
-                            >
-                                <i
-                                    className={`material-icons ${css.formParamIcon}`}
-                                >
-                                    edit
-                                </i>
-                            </Button>
-                            <Tooltip
-                                placement="top"
-                                target={
-                                    generateBaseId(path, index) + 'editable'
-                                }
-                            >
-                                {field.editable
-                                    ? 'Click to make this field not editable'
-                                    : 'Click to make this field editable'}
-                            </Tooltip>
+                        <InputField
+                            label={index === 0 ? 'Label' : undefined}
+                            placeholder="Label"
+                            defaultValue={field.label}
+                            onChange={(value) =>
+                                debouncedOnChange(`${indexedPath}.label`, value)
+                            }
+                        />
+                        <InputField
+                            label={index === 0 ? 'Key' : undefined}
+                            placeholder="Key"
+                            defaultValue={field.key}
+                            error={validateHeaderName(field.key, path)}
+                            isRequired
+                            maxLength={MAX_HEADER_LENGTH}
+                            onChange={(value) =>
+                                debouncedOnChange(`${indexedPath}.key`, value)
+                            }
+                        />
+                        <InputField
+                            label={index === 0 ? 'Value' : undefined}
+                            placeholder="Value"
+                            defaultValue={field.value}
+                            isRequired={path.includes('headers')}
+                            onChange={(value) =>
+                                debouncedOnChange(`${indexedPath}.value`, value)
+                            }
+                        />
 
-                            <Button
-                                type="button"
-                                size="sm"
-                                id={generateBaseId(path, index) + 'mandatory'}
-                                className="mr-2"
-                                color={
-                                    field.editable && field.mandatory
-                                        ? 'primary'
-                                        : 'secondary'
-                                }
-                                disabled={!field.editable}
-                                onClick={() => {
-                                    onChange(
-                                        `${indexedPath}.mandatory`,
-                                        !field.mandatory
-                                    )
-                                }}
-                            >
-                                <i
-                                    className={`icon-custom icon-asterisk ${css.formParamCustomIcon}`}
-                                >
-                                    <span>mandatory</span>
-                                </i>
-                            </Button>
-                            {field.editable && (
-                                <Tooltip
-                                    placement="top"
-                                    target={
-                                        generateBaseId(path, index) +
-                                        'mandatory'
-                                    }
-                                >
-                                    {field.mandatory
-                                        ? 'Click to make this field not mandatory'
-                                        : 'Click to make this field mandatory'}
-                                </Tooltip>
-                            )}
+                        <CheckBox
+                            className={css.editableCheck}
+                            labelClassName={classnames(css.verticalCheckbox, {
+                                [css.withoutLabel]: index !== 0,
+                            })}
+                            isChecked={Boolean(field.editable)}
+                            onClick={() => {
+                                onChange(
+                                    `${indexedPath}.editable`,
+                                    !field.editable
+                                )
+                                onChange(`${indexedPath}.mandatory`, false)
+                            }}
+                        >
+                            {index === 0 ? 'Editable' : undefined}
+                        </CheckBox>
+                        <CheckBox
+                            className={css.mandatoryCheck}
+                            isChecked={field.mandatory}
+                            isDisabled={!field.editable}
+                            labelClassName={classnames(css.verticalCheckbox, {
+                                [css.withoutLabel]: index !== 0,
+                            })}
+                            onClick={() => {
+                                onChange(
+                                    `${indexedPath}.mandatory`,
+                                    !field.mandatory
+                                )
+                            }}
+                        >
+                            {index === 0 ? 'Required' : undefined}
+                        </CheckBox>
 
-                            <Button
-                                type="button"
-                                size="sm"
-                                onClick={() => onDelete(index)}
-                                data-testid={`delete-${index}`}
-                            >
-                                <i
-                                    className={`material-icons text-danger ${css.formParamIcon}`}
-                                >
-                                    delete
-                                </i>
-                            </Button>
-                        </div>
+                        <Button
+                            className={classnames(css.deleteButton, {
+                                [css.withoutLabel]: index !== 0,
+                            })}
+                            fillStyle="ghost"
+                            intent="destructive"
+                            onClick={() => onDelete(index)}
+                            data-testid={`delete-${index}`}
+                        >
+                            <ButtonIconLabel icon="close" />
+                        </Button>
                     </div>
                 )
             })}
@@ -211,8 +158,9 @@ function Parameters({value, path, onChange}: Props) {
                     Beware, you have duplicate keys, only one will be kept.
                 </Errors>
             )}
-            <Button size="sm" onClick={onAdd}>
-                <i className={`material-icons ${css.formParamIcon}`}>add</i>
+            <Button intent="secondary" size="small" onClick={onAdd}>
+                <ButtonIconLabel icon="add" />
+                {addLabel}
             </Button>
         </div>
     )

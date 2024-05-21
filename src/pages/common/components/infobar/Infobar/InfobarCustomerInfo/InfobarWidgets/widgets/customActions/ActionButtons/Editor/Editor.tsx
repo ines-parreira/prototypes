@@ -121,7 +121,7 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
                 <ButtonIconLabel icon="add" />
                 Add Button
             </Button>
-            <Modal isOpen={isFormOpen} onClose={handleCloseForm} size="large">
+            <Modal isOpen={isFormOpen} onClose={handleCloseForm} size="huge">
                 <Form {...formProps} />
             </Modal>
         </>

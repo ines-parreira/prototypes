@@ -1,24 +1,31 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography.less';
+
 :local {
     .editList {
         margin: 0 0 12px 0;
         padding: 0;
     }
+
     .editRow {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        margin-bottom: @layout-spacing-xs;
         padding: 0;
+
         button {
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
             background-color: var(--neutral-grey-0) !important;
         }
+
         &:hover .editIcons {
             display: inline;
         }
     }
+
     .editIcons {
         display: none;
         flex: 0 0 auto;
@@ -29,48 +36,37 @@
             cursor: pointer;
         }
     }
+
     .addButton {
         width: 100%;
     }
+
+    .formParamSection {
+        margin: @layout-spacing-m 0 @layout-spacing-s;
+        .heading-section-semibold();
+    }
+
     .formParamRow {
         display: flex;
-        align-items: flex-start;
-        margin-bottom: 0.7rem;
-        :global .form-group {
-            margin-bottom: 0;
-        }
+        align-items: stretch;
+        margin-bottom: @layout-spacing-s;
+
         & > div {
             flex: 1 1 auto;
             &:not(:last-of-type) {
                 margin-right: 1.1rem;
             }
         }
-        &.squash > div {
-            &:not(:last-of-type) {
-                margin-right: 0.6rem;
-            }
+
+        .formParamSelect {
+            flex: 1 1 10%;
         }
+
         .formParamLargeCol {
-            flex: 1 1 80%;
+            flex: 1 1 90%;
         }
     }
-    .formParamError {
-        display: block !important;
-        margin-bottom: 0.7rem;
-    }
-    .formParamGroupIcon {
-        display: flex;
-        flex: 0 0 auto !important;
-    }
-    .formParamIcon {
-        font-size: 1.4rem !important;
-    }
-    .formParamCustomIcon {
-        padding: 0 0.2rem;
-        span {
-            display: none;
-        }
-    }
+
     .actionButtons {
         display: flex !important;
         flex-wrap: nowrap !important;
@@ -86,16 +82,22 @@
             }
         }
     }
+
     .actionButton {
         flex: 1 1 auto;
         display: block;
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
     .dropdownItem {
         max-width: 260px;
         overflow: hidden;
         text-overflow: ellipsis;
         font-size: 12px;
+    }
+
+    .selectLabel {
+        margin-bottom: @layout-spacing-xs;
     }
 }

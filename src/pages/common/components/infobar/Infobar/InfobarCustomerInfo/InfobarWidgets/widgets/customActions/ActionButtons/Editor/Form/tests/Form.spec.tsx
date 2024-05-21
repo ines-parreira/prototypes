@@ -70,7 +70,7 @@ describe('<Form/>', () => {
     it('should submit updated label', () => {
         render(<Form button={button} onClose={onClose} onSubmit={onSubmit} />)
         const newValue = ' newValue '
-        fireEvent.change(screen.getByRole('textbox', {name: 'Button title'}), {
+        fireEvent.change(screen.getByRole('textbox', {name: /Button title/}), {
             target: {value: newValue},
         })
         fireEvent.click(screen.getByRole('button', {name: 'Save'}))
@@ -90,7 +90,7 @@ describe('<Form/>', () => {
             />
         )
         const newValue = 'newValue'
-        fireEvent.click(screen.getAllByRole('button', {name: 'add'})[0])
+        fireEvent.click(screen.getAllByRole('button', {name: 'add Header'})[0])
         fireEvent.change(screen.getByPlaceholderText('Key'), {
             target: {value: newValue},
         })

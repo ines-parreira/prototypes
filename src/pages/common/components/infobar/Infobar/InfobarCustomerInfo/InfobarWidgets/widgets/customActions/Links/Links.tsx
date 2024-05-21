@@ -153,7 +153,6 @@ export function Links(props: Props) {
                     </ul>
                     {isCollapsible && (
                         <Button
-                            type="button"
                             intent="secondary"
                             size="small"
                             className={css.showMore}
@@ -173,14 +172,13 @@ export function Links(props: Props) {
             {isEditing && (
                 <>
                     <Button
-                        type="button"
                         id={targetId}
                         className={css.addButton}
                         intent="secondary"
                         size="small"
                     >
                         <ButtonIconLabel icon="add" />
-                        Add Redirection Link
+                        Add Link
                     </Button>
                     <Editor target={targetId} onSubmit={handleSubmit} />
                 </>

@@ -7,73 +7,135 @@ exports[`<Action/> should render with a Body component 1`] = `
   <div
     class="formParamRow"
   >
-    <div>
-      <div
-        class="InputField required form-group"
-        color=""
+    <div
+      class="formParamSelect"
+    >
+      <label
+        class="label selectLabel"
+        for="httpMethod"
       >
-        <label
-          class="control-label"
-          for="id-method"
-        >
-          Method
-        </label>
+        Method
+      </label>
+      <div>
         <div
-          class="select dropdown-toggle"
+          class="dropdown"
         >
-          <select
-            class="field form-control"
-            id="id-method"
-            required=""
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
           >
-            <option
-              value="GET"
+            <div
+              class="select dropdown-toggle"
             >
-              GET
-            </option>
-            <option
-              value="POST"
+              <span
+                class="label"
+                data-testid="selected-httpMethod"
+                style="min-width: 10px; opacity: 1;"
+              >
+                PUT
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="httpMethod"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options longDropdown dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              POST
-            </option>
-            <option
-              value="PUT"
+              <span>
+                GET
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              PUT
-            </option>
-            <option
-              value="PATCH"
+              <span>
+                POST
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              PATCH
-            </option>
-            <option
-              value="DELETE"
+              <span>
+                PUT
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              DELETE
-            </option>
-          </select>
+              <span>
+                PATCH
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                DELETE
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <div
       class="formParamLargeCol"
     >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
+      <div>
         <label
-          class="control-label"
-          for="id-url"
+          class="label label"
+          for="input-text-3"
         >
           URL
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="field form-control"
-            id="id-url"
+            class="input"
+            id="input-text-3"
+            name="url"
             pattern="*"
             required=""
             type="text"
@@ -84,118 +146,114 @@ exports[`<Action/> should render with a Body component 1`] = `
     </div>
   </div>
   <div
-    class="mt-3 form-group"
+    class="formParamSection"
   >
-    <label
-      class="control-label"
+    Headers
+  </div>
+  <div>
+    <button
+      aria-disabled="false"
+      class="wrapper fill secondary small"
+      type="button"
     >
-      Headers
-    </label>
-    <div>
-      <button
-        class="btn btn-secondary btn-sm"
-        type="button"
+      <span
+        class="wrapper"
       >
         <i
-          class="material-icons formParamIcon"
+          class="material-icons icon isLeft small"
         >
           add
         </i>
-      </button>
-    </div>
+      </span>
+      Header
+    </button>
   </div>
   <div
-    class="mt-3 form-group"
+    class="formParamSection"
   >
-    <label
-      class="control-label"
+    Query Parameters
+  </div>
+  <div>
+    <button
+      aria-disabled="false"
+      class="wrapper fill secondary small"
+      type="button"
     >
-      Query Parameters
-    </label>
-    <div>
-      <button
-        class="btn btn-secondary btn-sm"
-        type="button"
+      <span
+        class="wrapper"
       >
         <i
-          class="material-icons formParamIcon"
+          class="material-icons icon isLeft small"
         >
           add
         </i>
-      </button>
-    </div>
+      </span>
+      Parameter
+    </button>
   </div>
   <div
-    class="form-group"
+    class="formParamSection"
   >
-    <label
-      class="control-label"
-    >
-      Body
-    </label>
+    Body
+  </div>
+  <fieldset
+    class="mb-4"
+    name="radio-field-5"
+  >
     <div
-      class="mb-3"
+      class="option"
     >
-      <fieldset
-        class=""
-        name="radio-field-1"
+      <label
+        class="label label"
+        for="application/json"
       >
-        <div
-          class="option"
-        >
-          <label
-            class="label label"
-            for="application/json"
-          >
-            <input
-              checked=""
-              class="input"
-              id="application/json"
-              name="radio-field-1"
-              type="radio"
-            />
-            application/json
-          </label>
-        </div>
-        <div
-          class="option"
-        >
-          <label
-            class="label label"
-            for="application/x-www-form-urlencoded"
-          >
-            <input
-              class="input"
-              id="application/x-www-form-urlencoded"
-              name="radio-field-1"
-              type="radio"
-            />
-            application/x-www-form-urlencoded
-          </label>
-        </div>
-      </fieldset>
+        <input
+          checked=""
+          class="input"
+          id="application/json"
+          name="radio-field-5"
+          type="radio"
+        />
+        application/json
+      </label>
     </div>
     <div
-      class="InputField form-group"
-      color=""
+      class="option"
+    >
+      <label
+        class="label label"
+        for="application/x-www-form-urlencoded"
+      >
+        <input
+          class="input"
+          id="application/x-www-form-urlencoded"
+          name="radio-field-5"
+          type="radio"
+        />
+        application/x-www-form-urlencoded
+      </label>
+    </div>
+  </fieldset>
+  <div
+    class="InputField form-group"
+    color=""
+  >
+    <div
+      class=""
     >
       <div
-        class=""
+        class="form-group"
       >
         <div
-          class="form-group"
+          class="controls"
         >
-          <div
-            class="controls"
+          <textarea
+            class="form-control"
+            id="id-json"
+            rows="6"
           >
-            <textarea
-              class="form-control"
-              id="id-json"
-              rows="6"
-            >
-              {}
-            </textarea>
-          </div>
+            {}
+          </textarea>
         </div>
       </div>
     </div>
@@ -210,73 +268,135 @@ exports[`<Action/> should render without a Body component 1`] = `
   <div
     class="formParamRow"
   >
-    <div>
-      <div
-        class="InputField required form-group"
-        color=""
+    <div
+      class="formParamSelect"
+    >
+      <label
+        class="label selectLabel"
+        for="httpMethod"
       >
-        <label
-          class="control-label"
-          for="id-method"
-        >
-          Method
-        </label>
+        Method
+      </label>
+      <div>
         <div
-          class="select dropdown-toggle"
+          class="dropdown"
         >
-          <select
-            class="field form-control"
-            id="id-method"
-            required=""
+          <div
+            aria-expanded="false"
+            aria-haspopup="true"
+            class=""
+            data-toggle="dropdown"
           >
-            <option
-              value="GET"
+            <div
+              class="select dropdown-toggle"
             >
-              GET
-            </option>
-            <option
-              value="POST"
+              <span
+                class="label"
+                data-testid="selected-httpMethod"
+                style="min-width: 10px; opacity: 1;"
+              >
+                GET
+              </span>
+              <input
+                autocomplete="chrome-off"
+                class="input"
+                id="httpMethod"
+                style="min-width: 10px;"
+                type="text"
+                value=""
+              />
+              <i
+                class="material-icons dropdownIcon"
+              >
+                arrow_drop_down
+              </i>
+            </div>
+          </div>
+          <div
+            aria-hidden="true"
+            class="options longDropdown dropdown-menu"
+            role="menu"
+            tabindex="-1"
+          >
+            
+            <button
+              class="option option--focused dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              POST
-            </option>
-            <option
-              value="PUT"
+              <span>
+                GET
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              PUT
-            </option>
-            <option
-              value="PATCH"
+              <span>
+                POST
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              PATCH
-            </option>
-            <option
-              value="DELETE"
+              <span>
+                PUT
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
             >
-              DELETE
-            </option>
-          </select>
+              <span>
+                PATCH
+              </span>
+            </button>
+            <button
+              class="option dropdown-item"
+              role="menuitem"
+              tabindex="0"
+              type="button"
+            >
+              <span>
+                DELETE
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <div
       class="formParamLargeCol"
     >
-      <div
-        class="InputField required form-group"
-        color=""
-      >
+      <div>
         <label
-          class="control-label"
-          for="id-url"
+          class="label label"
+          for="input-text-1"
         >
           URL
+          <abbr
+            aria-label="required"
+            class="abbr"
+            title="required"
+          >
+            *
+          </abbr>
         </label>
         <div
-          class=""
+          class="wrapper"
         >
           <input
-            class="field form-control"
-            id="id-url"
+            class="input"
+            id="input-text-1"
+            name="url"
             pattern="*"
             required=""
             type="text"
@@ -287,46 +407,50 @@ exports[`<Action/> should render without a Body component 1`] = `
     </div>
   </div>
   <div
-    class="mt-3 form-group"
+    class="formParamSection"
   >
-    <label
-      class="control-label"
+    Headers
+  </div>
+  <div>
+    <button
+      aria-disabled="false"
+      class="wrapper fill secondary small"
+      type="button"
     >
-      Headers
-    </label>
-    <div>
-      <button
-        class="btn btn-secondary btn-sm"
-        type="button"
+      <span
+        class="wrapper"
       >
         <i
-          class="material-icons formParamIcon"
+          class="material-icons icon isLeft small"
         >
           add
         </i>
-      </button>
-    </div>
+      </span>
+      Header
+    </button>
   </div>
   <div
-    class="mt-3 form-group"
+    class="formParamSection"
   >
-    <label
-      class="control-label"
+    Query Parameters
+  </div>
+  <div>
+    <button
+      aria-disabled="false"
+      class="wrapper fill secondary small"
+      type="button"
     >
-      Query Parameters
-    </label>
-    <div>
-      <button
-        class="btn btn-secondary btn-sm"
-        type="button"
+      <span
+        class="wrapper"
       >
         <i
-          class="material-icons formParamIcon"
+          class="material-icons icon isLeft small"
         >
           add
         </i>
-      </button>
-    </div>
+      </span>
+      Parameter
+    </button>
   </div>
 </div>
 `;

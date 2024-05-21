@@ -32,7 +32,7 @@ describe('<ButtonsGroup/>', () => {
     }
 
     it('should render with correct label and without a dropdown ', () => {
-        const {container} = render(
+        render(
             <Provider
                 store={mockStore({
                     customers: fromJS({active: {name: 'Johanna'}}),
@@ -43,7 +43,6 @@ describe('<ButtonsGroup/>', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
         expect(screen.queryByText(source.label_0)).toBeTruthy()
         expect(screen.queryByText('more_horiz')).toBeFalsy()
     })

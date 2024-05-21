@@ -32,16 +32,15 @@ describe('<Action/>', () => {
 
     it('should call onChange when changing action method', () => {
         render(<Action {...props} />)
-        fireEvent.change(screen.getByRole('combobox', {name: 'Method'}), {
-            target: {value: HttpMethod.Post},
-        })
+        fireEvent.click(screen.getByRole('textbox', {name: /Method/}))
+        fireEvent.click(screen.getByRole('menuitem', {name: HttpMethod.Post}))
         expect(props.onChange).toHaveBeenCalledWith('method', HttpMethod.Post)
     })
 
     it('should call onChange when changing action url', () => {
         render(<Action {...props} />)
         const newValue = 'newValue'
-        fireEvent.change(screen.getByRole('textbox', {name: 'URL'}), {
+        fireEvent.change(screen.getByRole('textbox', {name: /URL/}), {
             target: {value: newValue},
         })
         expect(props.onChange).toHaveBeenCalledWith('url', newValue)
@@ -52,7 +51,7 @@ describe('<Action/>', () => {
 
         fireEvent.click(
             screen.getAllByRole('button', {
-                name: 'add',
+                name: 'add Header',
             })[0]
         )
         expect(props.onChange).toHaveBeenCalled()
@@ -63,7 +62,7 @@ describe('<Action/>', () => {
 
         fireEvent.click(
             screen.getAllByRole('button', {
-                name: 'add',
+                name: 'add Parameter',
             })[0]
         )
         expect(props.onChange).toHaveBeenCalled()

@@ -1,16 +1,18 @@
-@import (reference) '~css/typography';
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
 
 :local {
     .linkList {
         margin: 12px 0 0 0;
         padding: 0;
     }
+
     .linkRow {
         position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 8px;
+        margin-bottom: @layout-spacing-xs;
         &:hover .editIcons {
             display: block;
         }
@@ -18,41 +20,55 @@
             margin-bottom: 0px;
         }
     }
+
     .link {
         display: flex;
         flex: 0 1 auto;
         align-items: center;
-        padding: 4px;
+        padding: @layout-spacing-xxs;
         line-height: 1;
         font-size: 13px;
         font-weight: 500;
     }
+
     .linkIcon {
         margin-left: 6px;
         font-size: 14px;
     }
+
     .editIcons {
         display: none;
         flex: 0 0 auto;
         font-size: 1.3rem;
         line-height: 1.3rem;
         i {
-            padding: 0 4px;
+            padding: 0 @layout-spacing-xxs;
             cursor: pointer;
         }
     }
+
     .collapseGroup {
         margin: 0;
         & > li:first-child {
-            margin-top: 8px;
+            margin-top: @layout-spacing-xs;
         }
     }
+
     .showMore {
-        margin-top: 8px;
+        margin-top: @layout-spacing-xs;
         .caption-allcaps();
     }
+
     .addButton {
         margin-top: 12px;
         width: 100%;
+    }
+
+    .inputSpacing {
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .buttonSpacing {
+        margin-right: @layout-spacing-xs;
     }
 }

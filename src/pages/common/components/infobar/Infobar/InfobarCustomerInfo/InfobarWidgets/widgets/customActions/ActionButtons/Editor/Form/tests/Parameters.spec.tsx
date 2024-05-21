@@ -32,7 +32,7 @@ describe('<Parameters/>', () => {
 
         fireEvent.click(
             screen.getByRole('button', {
-                name: 'add',
+                name: 'add Parameter',
             })
         )
         expect(props.onChange).toHaveBeenCalledWith(props.path, [
@@ -74,31 +74,28 @@ describe('<Parameters/>', () => {
 
     it('should call onChange when clicking editable', () => {
         render(<Parameters {...props} />)
-        fireEvent.click(screen.getByRole('button', {name: 'edit'}))
+        fireEvent.click(screen.getByLabelText('Editable'))
         expect(props.onChange).toHaveBeenCalledWith(
             `${props.path}[0].editable`,
             true
         )
     })
 
-    it('should render the mandatory button conditionnally and call onChange when clicking it', () => {
+    it('should enable the mandatory button conditionally and call onChange when clicking it', () => {
         const {rerender} = render(<Parameters {...props} />)
         expect(
-            screen
-                .getByRole('button', {name: 'mandatory'})
-                .getAttribute('disabled')
+            screen.getByLabelText('Editable').getAttribute('disabled')
         ).toBeDefined()
+
         rerender(
             <Parameters
                 {...{...props, value: [{...props.value[0], editable: true}]}}
             />
         )
         expect(
-            screen
-                .getByRole('button', {name: 'mandatory'})
-                .getAttribute('disabled')
+            screen.getByLabelText('Required').getAttribute('disabled')
         ).toBeFalsy()
-        fireEvent.click(screen.getByRole('button', {name: 'mandatory'}))
+        fireEvent.click(screen.getByLabelText('Required'))
         expect(props.onChange).toHaveBeenCalledWith(
             `${props.path}[0].mandatory`,
             true
@@ -107,7 +104,7 @@ describe('<Parameters/>', () => {
 
     it('should call onChange when removing param', () => {
         render(<Parameters {...props} />)
-        fireEvent.click(screen.getByRole('button', {name: 'delete'}))
+        fireEvent.click(screen.getByRole('button', {name: 'close'}))
         expect(props.onChange).toHaveBeenCalledWith(props.path, [])
     })
 
