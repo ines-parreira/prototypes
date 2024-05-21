@@ -14,7 +14,7 @@ import {TicketNavbarContainer} from 'pages/tickets/navbar/TicketNavbar'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
 import {AccountSettingType} from 'state/currentAccount/types'
-import {ThemeProvider, useTheme} from 'theme'
+import {Theme} from 'theme'
 
 const currentUser = Map({
     id: Math.random() * 1000,
@@ -65,19 +65,17 @@ const storyConfig: Meta = {
     },
     decorators: [
         (Component) => (
-            <ThemeProvider>
-                <Provider store={configureMockStore([thunk])(defaultState)}>
-                    <SplitTicketViewProvider>
-                        <DndProvider backend={HTML5Backend}>
-                            <MemoryRouter>
-                                <div>
-                                    <Component />
-                                </div>
-                            </MemoryRouter>
-                        </DndProvider>
-                    </SplitTicketViewProvider>
-                </Provider>
-            </ThemeProvider>
+            <Provider store={configureMockStore([thunk])(defaultState)}>
+                <SplitTicketViewProvider>
+                    <DndProvider backend={HTML5Backend}>
+                        <MemoryRouter>
+                            <div>
+                                <Component />
+                            </div>
+                        </MemoryRouter>
+                    </DndProvider>
+                </SplitTicketViewProvider>
+            </Provider>
         ),
     ],
     args: {
@@ -105,17 +103,34 @@ export const Default = {
         primary: true,
     },
 }
-export const WithDefaultAppTheme: Meta = {
+export const WithLightAppTheme: Meta = {
     ...Default,
     decorators: [
-        (Component) => {
-            const theme = useTheme()
-            return (
-                <div className={theme}>
-                    <Component />
-                </div>
-            )
-        },
+        (Component) => (
+            <div className={Theme.Light}>
+                <Component />
+            </div>
+        ),
+    ],
+}
+export const WithDarkAppTheme: Meta = {
+    ...Default,
+    decorators: [
+        (Component) => (
+            <div className={Theme.Dark}>
+                <Component />
+            </div>
+        ),
+    ],
+}
+export const WithModernAppTheme: Meta = {
+    ...Default,
+    decorators: [
+        (Component) => (
+            <div className={Theme.Modern}>
+                <Component />
+            </div>
+        ),
     ],
 }
 export default storyConfig
