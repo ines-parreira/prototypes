@@ -78,14 +78,10 @@ export const billableTicketDatasetResolvedByAIAgentQueryFactory = (
     timezone,
     filters: [
         ...billableTicketDatasetDefaultFilters(filters),
-        ...(aiAgentUserId
-            ? [
-                  {
-                      member: BillableTicketDatasetDimension.ResolvedByAgentUserId,
-                      operator: ReportingFilterOperator.Equals,
-                      values: [aiAgentUserId],
-                  },
-              ]
-            : []),
+        {
+            member: BillableTicketDatasetDimension.ResolvedByAgentUserId,
+            operator: ReportingFilterOperator.Equals,
+            values: [aiAgentUserId ?? '-1'], // -1 ensures no data will be returned if there is no AI agent
+        },
     ],
 })
