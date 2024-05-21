@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useMemo, useState} from 'react'
 import {List, Map} from 'immutable'
 import _getIn from 'lodash/get'
 import {Badge} from 'reactstrap'
@@ -52,6 +52,7 @@ import {getIntegrationsByType} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import {StoreIntegration} from 'models/integration/types'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import {compare} from 'utils'
 import {CodeASTType} from '../../types'
 
 import {RuleTemplateRecipeSlugs, tagColors} from '../constants'
@@ -93,8 +94,12 @@ function RuleRecipeCard({
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Shopify)
     )
+    const sortedShopifyIntegrations = useMemo(
+        () => [...shopifyIntegrations].sort((a, b) => compare(a.name, b.name)),
+        [shopifyIntegrations]
+    )
 
-    const firstShopifyIntegration = shopifyIntegrations[0]
+    const firstShopifyIntegration = sortedShopifyIntegrations[0]
 
     // TODO: add link to the helpdesk when it will be ready
     const aiAgentLink =
