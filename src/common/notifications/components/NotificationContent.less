@@ -12,6 +12,34 @@
     .icon {
         flex-grow: 0;
         flex-shrink: 0;
+        position: relative;
+    }
+
+    .typeIcon {
+        @iconSize: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: @iconSize;
+        width: @iconSize;
+        position: absolute;
+        top: @iconSize;
+        right: -(@iconSize / 2);
+        border-radius: (@iconSize / 2);
+        border: 1px solid var(--neutral-grey-0);
+        color: var(--neutral-grey-0);
+
+        &.snooze {
+            background-color: var(--main-primary);
+        }
+
+        &.mention {
+            background-color: var(--feedback-warning-3);
+        }
+
+        :global(.material-icons-outlined) {
+            font-size: 12px;
+        }
     }
 
     .content {

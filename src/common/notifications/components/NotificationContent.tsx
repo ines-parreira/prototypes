@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 import {Link} from 'react-router-dom'
+import cn from 'classnames'
 
 import TicketIcon from 'pages/common/components/TicketIcon'
 
@@ -28,6 +29,10 @@ export default function NotificationContent({
     const {ticket} = notification.payload || {}
     if (!ticket) return null
 
+    const hasTypeIcon =
+        notification.type === 'ticket.snooze-expired' ||
+        notification.type === 'user.mentioned'
+
     return (
         <Link
             to={`/app/ticket/${ticket.id}`}
@@ -36,6 +41,23 @@ export default function NotificationContent({
         >
             <div className={css.icon}>
                 <TicketIcon channel={ticket.channel} status={ticket.status} />
+                {hasTypeIcon && (
+                    <div
+                        className={cn(css.typeIcon, {
+                            [css.snooze]:
+                                notification.type === 'ticket.snooze-expired',
+                            [css.mention]:
+                                notification.type === 'user.mentioned',
+                        })}
+                    >
+                        <i className="material-icons-outlined">
+                            {notification.type === 'ticket.snooze-expired' &&
+                                'snooze'}
+                            {notification.type === 'user.mentioned' &&
+                                'alternate_email'}
+                        </i>
+                    </div>
+                )}
             </div>
             <div className={css.content}>
                 <header className={css.header}>
