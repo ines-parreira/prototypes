@@ -45,24 +45,64 @@ describe('agents selectors', () => {
         expect(selectors.getState({} as RootState)).toEqualImmutable(fromJS({}))
     })
 
-    it('getHumanAgents()', () => {
-        expect(selectors.getHumanAgents(state)).toEqualImmutable(
-            (state.agents.get('all') as List<any>).filter(
-                selectors.isHumanAgent
+    describe('getHumanAgents()', () => {
+        it('should return a list of all human agents', () => {
+            expect(selectors.getHumanAgents(state)).toEqualImmutable(
+                (state.agents.get('all') as List<any>).filter(
+                    selectors.isHumanAgent
+                )
             )
-        )
-        expect(selectors.getHumanAgents({} as RootState)).toEqualImmutable(
-            fromJS([])
-        )
+        })
+
+        it('should return an empty list when state is empty', () => {
+            expect(selectors.getHumanAgents({} as RootState)).toEqualImmutable(
+                fromJS([])
+            )
+        })
+
+        it('should return the same reference on agents state change when change is not in "all" part of the state', () => {
+            const newState = {
+                ...state,
+                agents: state.agents.set(
+                    'locations',
+                    fromJS({
+                        ...agentFixtures.locations['1'],
+                    })
+                ),
+            }
+            expect(selectors.getHumanAgents(state)).toBe(
+                selectors.getHumanAgents(newState)
+            )
+        })
     })
 
-    it('getHumanAndAutomationBotAgents', () => {
-        expect(
-            selectors.getHumanAndAutomationBotAgents(state)
-        ).toEqualImmutable(state.agents.get('all'))
-        expect(
-            selectors.getHumanAndAutomationBotAgents({} as RootState)
-        ).toEqualImmutable(fromJS([]))
+    describe('getHumanAndAutomationBotAgents', () => {
+        it('should return a list of all human and automation bot agents', () => {
+            expect(
+                selectors.getHumanAndAutomationBotAgents(state)
+            ).toEqualImmutable(state.agents.get('all'))
+        })
+
+        it('should return an empty list when state is empty', () => {
+            expect(
+                selectors.getHumanAndAutomationBotAgents({} as RootState)
+            ).toEqualImmutable(fromJS([]))
+        })
+
+        it('should return the same reference on agents state change when change is not in "all" part of the state', () => {
+            const newState = {
+                ...state,
+                agents: state.agents.set(
+                    'locations',
+                    fromJS({
+                        ...agentFixtures.locations['1'],
+                    })
+                ),
+            }
+            expect(selectors.getHumanAndAutomationBotAgents(state)).toBe(
+                selectors.getHumanAndAutomationBotAgents(newState)
+            )
+        })
     })
 
     it('getHumanAndAutomationBotAgentsJS', () => {

@@ -23,21 +23,23 @@ export const isHumanOrAutomationBotAgent = (agent: Map<any, any>) =>
 export const getState = (state: RootState): AgentsState =>
     state.agents || fromJS({})
 
+const getAllAgents = createImmutableSelector(getState, (agents) => {
+    return agents.get('all') as List<any>
+})
+
 export const getHumanAgents = createImmutableSelector(
-    getState,
-    (state: AgentsState) => {
-        return ((state.get('all') as List<any>) || fromJS([])).filter(
-            isHumanAgent
-        ) as List<any>
+    getAllAgents,
+    (agents) => {
+        return (agents || fromJS([])).filter(isHumanAgent) as List<any>
     }
 )
 
 export const getHumanAgentsJS = makeGetPlainJS<User[]>(getHumanAgents)
 
 export const getHumanAndAutomationBotAgents = createImmutableSelector(
-    getState,
-    (state: AgentsState) => {
-        return ((state.get('all') as List<any>) || fromJS([])).filter(
+    getAllAgents,
+    (agents) => {
+        return (agents || fromJS([])).filter(
             isHumanOrAutomationBotAgent
         ) as List<any>
     }
