@@ -9,6 +9,7 @@ import React, {
     useImperativeHandle,
     useMemo,
     useRef,
+    useState,
 } from 'react'
 import {createPortal} from 'react-dom'
 import classnames from 'classnames'
@@ -65,6 +66,9 @@ const Modal = (
     }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>
 ) => {
+    const [mouseDownTarget, setMouseDownTarget] = useState<EventTarget | null>(
+        null
+    )
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
 
@@ -98,13 +102,23 @@ const Modal = (
 
     const handleClose = useCallback(
         (event: MouseEvent) => {
-            if (!isClosable || ref.current?.contains(event.target as Node)) {
+            if (
+                !isClosable ||
+                ref.current?.contains(event.target as Node) ||
+                (mouseDownTarget && mouseDownTarget !== event.target)
+            ) {
                 return
             }
             onClose()
         },
-        [isClosable, onClose]
+        [isClosable, onClose, mouseDownTarget]
     )
+
+    // Make sure we don’t close the modal if the user has "mousedowned"
+    // in the modal content but ended the click action outside of the modal
+    const handleMouseDown = useCallback((event: MouseEvent) => {
+        setMouseDownTarget(event.target)
+    }, [])
 
     const contextValue = useMemo(
         () => ({
@@ -145,6 +159,7 @@ const Modal = (
                                 aria-labelledby={labelId}
                                 aria-describedby={bodyId}
                                 onClick={handleClose}
+                                onMouseDown={handleMouseDown}
                             >
                                 <div
                                     className={classnames(

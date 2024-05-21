@@ -103,4 +103,17 @@ describe('<Modal />', () => {
 
         expect(baseElement).toMatchSnapshot()
     })
+
+    it('should not close the modal if the click started inside the modal but finished outside the modal', () => {
+        render(
+            <Modal {...minProps} isOpen={true}>
+                <ModalHeader title="target" />
+            </Modal>
+        )
+
+        fireEvent.mouseDown(screen.getByText('target'))
+        fireEvent.click(screen.getByRole('dialog'))
+
+        expect(minProps.onClose).not.toHaveBeenCalled()
+    })
 })
