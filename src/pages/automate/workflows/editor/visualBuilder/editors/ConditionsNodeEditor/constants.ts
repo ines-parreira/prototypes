@@ -5,7 +5,7 @@ export interface ConditionOperator {
     key: ConditionKey
 }
 
-export const TIMEPERIOD_REGEX = /^(?<value>\d+)(?<unit>[mhdw])$/
+export const TIMEPERIOD_REGEX = /^(?<sign>[-+])?(?<value>\d+)(?<unit>[mhdw])$/
 
 export const STRING_CONDITION_OPERATORS: ConditionOperator[] = [
     {

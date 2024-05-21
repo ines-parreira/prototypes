@@ -5,7 +5,8 @@ import {
     DateSchema,
     DoesNotExistSchema,
     ExistsSchema,
-    Interval,
+    IntervalSign,
+    IntervalUnit,
 } from 'pages/automate/workflows/models/conditions.types'
 import InputField from 'pages/common/forms/input/InputField'
 import DatePicker from 'pages/common/forms/DatePicker'
@@ -95,10 +96,12 @@ export const DateConditionType = ({condition, onChange}: Props) => {
         return null
     }
 
-    const value = schema[1]
-    const groups = value?.match?.(TIMEPERIOD_REGEX)?.groups
+    const timeperiod = schema[1]
+    const groups = timeperiod?.match?.(TIMEPERIOD_REGEX)?.groups
 
-    const unit = (groups?.unit ?? 'd') as Interval
+    const sign = (groups?.sign ?? '-') as IntervalSign
+    const value = Number(groups?.value ?? 1) || 1
+    const unit = (groups?.unit ?? 'd') as IntervalUnit
 
     return (
         <>
@@ -114,7 +117,7 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                                 return
                             }
 
-                            schema[1] = `${nextValue ?? 1}${unit}`
+                            schema[1] = `${sign}${nextValue ?? 1}${unit}`
                         })
                     )
                 }}
@@ -131,28 +134,57 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                                 return
                             }
 
-                            schema[1] = `${Number(groups?.value ?? 1) || 1}${
-                                nextValue as Interval
+                            schema[1] = `${sign}${value}${
+                                nextValue as IntervalUnit
                             }`
                         })
                     )
                 }}
                 options={[
                     {
-                        label: 'Minutes ago',
+                        label: 'Minutes',
                         value: 'm',
                     },
                     {
-                        label: 'Hours ago',
-                        value: 'h',
+                        label: 'Hours',
+                        value: '-h',
                     },
                     {
-                        label: 'Days ago',
+                        label: 'Days',
                         value: 'd',
                     },
                     {
-                        label: 'Weeks ago',
+                        label: 'Weeks',
                         value: 'w',
+                    },
+                ]}
+            />
+            <SelectField
+                showSelectedOption
+                value={sign}
+                onChange={(nextValue) => {
+                    onChange(
+                        produce(condition, (draft) => {
+                            const schema = draft[key]
+
+                            if (!schema) {
+                                return
+                            }
+
+                            schema[1] = `${
+                                nextValue as IntervalSign
+                            }${value}${unit}`
+                        })
+                    )
+                }}
+                options={[
+                    {
+                        label: 'Ago',
+                        value: '-',
+                    },
+                    {
+                        label: 'From now',
+                        value: '+',
                     },
                 ]}
             />

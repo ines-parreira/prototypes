@@ -190,7 +190,7 @@ export const ConditionsBranchBody = ({
                         key !== 'lessThanInterval' &&
                         key !== 'greaterThanInterval'
                     ) {
-                        draft[nextKey] = [schema[0], '1d']
+                        draft[nextKey] = [schema[0], '-1d']
                     } else if (isExistenceOperator(nextKey)) {
                         draft[nextKey] = [schema[0]]
                     } else if (
