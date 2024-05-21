@@ -20,7 +20,7 @@ import {
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     get24Hours,
-    getWorkingHours,
+    getWorkingHoursInTimeZone,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
 
@@ -35,7 +35,7 @@ export const BusiestTimesOfDaysTable = ({
     useMetricQuery: TimeSeriesHook
     isHeatmapMode: boolean
 }) => {
-    const {btodData, max, isLoading} =
+    const {btodData, max, isLoading, userTimezone} =
         useAggregatedBusiestTimesOfDayData(useMetricQuery)
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
@@ -53,7 +53,7 @@ export const BusiestTimesOfDaysTable = ({
 
     const wh = useAppSelector(getBusinessHoursSettings)
 
-    const workingHours = getWorkingHours(wh)
+    const workingHours = getWorkingHoursInTimeZone(wh, userTimezone)
 
     return (
         <div ref={ref} className={css.container} onScroll={handleScroll}>

@@ -1,3 +1,4 @@
+import moment, {Moment} from 'moment-timezone'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -85,6 +86,168 @@ export function getAggregatedBusiestTimesOfDayData(
     })
 
     return {btodData: result, max}
+}
+
+type BusinessHour = {
+    days: string
+    from_time: string
+    to_time: string
+}
+
+const startsYesterday = (
+    fromTime: moment.Moment,
+    targetFromTime: moment.Moment
+): boolean =>
+    fromTime.isoWeekday() !== 1 && targetFromTime.isoWeekday() !== 1
+        ? targetFromTime.isoWeekday() < fromTime.isoWeekday()
+        : targetFromTime.isoWeekday() === 7
+
+const endsToday = (
+    fromTime: moment.Moment,
+    targetToTime: moment.Moment
+): boolean => targetToTime.isoWeekday() === fromTime.isoWeekday()
+
+const startsToday = (
+    fromTime: moment.Moment,
+    targetFromTime: moment.Moment
+): boolean => targetFromTime.isoWeekday() === fromTime.isoWeekday()
+
+const endsTomorrow = (
+    fromTime: moment.Moment,
+    targetToTime: moment.Moment
+): boolean =>
+    fromTime.isoWeekday() !== 7
+        ? targetToTime.isoWeekday() > fromTime.isoWeekday()
+        : targetToTime.isoWeekday() === 1
+
+const startsTomorrow = (
+    fromTime: moment.Moment,
+    targetFromTime: moment.Moment
+): boolean =>
+    fromTime.isoWeekday() !== 7
+        ? targetFromTime.isoWeekday() > fromTime.isoWeekday()
+        : targetFromTime.isoWeekday() === 1
+
+const BUSINESS_HOUR_TIME_FORMAT = 'HH:mm'
+const format = (date: Moment) => date.format(BUSINESS_HOUR_TIME_FORMAT)
+const newPeriod = (fromTime: Moment, toTime: Moment, days: number[]) => ({
+    days: days.map(String).join(','),
+    from_time: format(fromTime),
+    to_time: format(toTime),
+})
+
+export const businessHourToNewTimeZone = (
+    currentBusinessHour: BusinessHour,
+    sourceTimeZone: string,
+    targetTimeZone: string
+): BusinessHour[] => {
+    const daysAsNumbers = currentBusinessHour.days
+        .split(',')
+        .map((n) => parseInt(n))
+    const fromTime = moment.tz(
+        currentBusinessHour.from_time,
+        BUSINESS_HOUR_TIME_FORMAT,
+        sourceTimeZone
+    )
+    const targetFromTime = fromTime.clone().tz(targetTimeZone)
+    const toTime = moment.tz(
+        currentBusinessHour.to_time,
+        BUSINESS_HOUR_TIME_FORMAT,
+        sourceTimeZone
+    )
+    const targetToTime = toTime.clone().tz(targetTimeZone)
+
+    const newPeriods: BusinessHour[] = []
+    if (
+        startsYesterday(fromTime, targetFromTime) &&
+        endsToday(fromTime, targetToTime)
+    ) {
+        newPeriods.push(
+            newPeriod(
+                targetFromTime,
+                targetFromTime.clone().hour(23).minutes(59),
+                daysAsNumbers.map((day) => (day !== 1 ? day - 1 : 7))
+            ),
+            newPeriod(
+                targetToTime.clone().startOf('day'),
+                targetToTime,
+                daysAsNumbers
+            )
+        )
+    } else if (
+        startsToday(fromTime, targetFromTime) &&
+        endsToday(fromTime, targetToTime)
+    ) {
+        newPeriods.push(newPeriod(targetFromTime, targetToTime, daysAsNumbers))
+    } else if (
+        startsToday(fromTime, targetFromTime) &&
+        endsTomorrow(fromTime, targetToTime)
+    ) {
+        newPeriods.push(
+            newPeriod(
+                targetFromTime,
+                targetFromTime.clone().hour(23).minutes(59),
+                daysAsNumbers
+            ),
+            newPeriod(
+                targetToTime.clone().startOf('day'),
+                targetToTime,
+                daysAsNumbers.map((day) => (day !== 7 ? day + 1 : 1))
+            )
+        )
+    } else if (
+        startsTomorrow(fromTime, targetFromTime) &&
+        endsTomorrow(fromTime, targetToTime)
+    ) {
+        newPeriods.push(
+            newPeriod(
+                targetFromTime,
+                targetToTime,
+                daysAsNumbers.map((day) => (day !== 7 ? day + 1 : 1))
+            )
+        )
+    }
+
+    return newPeriods
+}
+
+export const changeBusinessHoursTimeZone = (
+    businessHours: BusinessHour[],
+    sourceTimeZone: string,
+    targetTimeZone: string
+): BusinessHour[] => {
+    return businessHours.reduce<BusinessHour[]>((acc, currentBusinessHour) => {
+        const formattedNewPeriods = businessHourToNewTimeZone(
+            currentBusinessHour,
+            sourceTimeZone,
+            targetTimeZone
+        )
+        return [...acc, ...formattedNewPeriods]
+    }, [])
+}
+
+export const getWorkingHoursInTimeZone = (
+    businessHours: AccountSettingBusinessHours | undefined,
+    timeZone: string
+) => {
+    if (businessHours === undefined) {
+        return getWorkingHours(businessHours)
+    }
+
+    const fromTimeZone = businessHours?.data.timezone
+    const businessHoursInTimeZone = changeBusinessHoursTimeZone(
+        businessHours.data.business_hours,
+        fromTimeZone,
+        timeZone
+    )
+
+    return getWorkingHours({
+        ...businessHours,
+        data: {
+            timezone: timeZone,
+            business_hours: businessHoursInTimeZone,
+        },
+    })
 }
 
 export const getWorkingHours = (

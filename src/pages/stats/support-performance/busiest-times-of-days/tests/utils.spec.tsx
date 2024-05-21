@@ -6,9 +6,12 @@ import {
     DayOfWeek,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
+    businessHourToNewTimeZone,
+    changeBusinessHoursTimeZone,
     getAggregatedBusiestTimesOfDayData,
     getMetricQuery,
     getWorkingHours,
+    getWorkingHoursInTimeZone,
     weekDayLabel,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import * as timeSeriesHooks from 'hooks/reporting/timeSeries'
@@ -163,43 +166,43 @@ describe('weekdayLabel', () => {
     })
 })
 
+const workingHours: AccountSettingBusinessHours = {
+    id: 456,
+    type: AccountSettingType.BusinessHours,
+    data: {
+        timezone: 'US/Pacific',
+        business_hours: [
+            {
+                days: '1,2,3,4,5',
+                to_time: '03:00',
+                from_time: '00:00',
+            },
+            {
+                days: '1,2,3,4,5',
+                to_time: '08:00',
+                from_time: '04:00',
+            },
+            {
+                days: '1,2,3,4,5',
+                to_time: '19:00',
+                from_time: '09:00',
+            },
+            {
+                days: '1,2,3,4,5',
+                to_time: '23:59',
+                from_time: '20:00',
+            },
+            {
+                days: '6,7',
+                to_time: '23:59',
+                from_time: '00:00',
+            },
+        ],
+    },
+}
+
 describe('getWorkingHours', () => {
     it('should translate business hours to table mapping of working hours', () => {
-        const workingHours: AccountSettingBusinessHours = {
-            id: 456,
-            type: AccountSettingType.BusinessHours,
-            data: {
-                timezone: 'US/Pacific',
-                business_hours: [
-                    {
-                        days: '1,2,3,4,5',
-                        to_time: '03:00',
-                        from_time: '00:00',
-                    },
-                    {
-                        days: '1,2,3,4,5',
-                        to_time: '08:00',
-                        from_time: '04:00',
-                    },
-                    {
-                        days: '1,2,3,4,5',
-                        to_time: '19:00',
-                        from_time: '09:00',
-                    },
-                    {
-                        days: '1,2,3,4,5',
-                        to_time: '23:59',
-                        from_time: '20:00',
-                    },
-                    {
-                        days: '6,7',
-                        to_time: '23:59',
-                        from_time: '00:00',
-                    },
-                ],
-            },
-        }
-
         const hours = getWorkingHours(workingHours)
 
         expect(hours).toEqual(
@@ -231,4 +234,250 @@ describe('getWorkingHours', () => {
             })
         )
     })
+})
+
+describe('getWorkingHoursInTimeZone', () => {
+    it('should return working hours after changing their time zone', () => {
+        const newTimeZone = 'CET'
+        const newWorkingHours = getWorkingHoursInTimeZone(
+            workingHours,
+            newTimeZone
+        )
+
+        expect(newWorkingHours).toEqual(
+            getWorkingHours({
+                id: workingHours.id,
+                type: workingHours.type,
+                data: {
+                    timezone: newTimeZone,
+                    business_hours: changeBusinessHoursTimeZone(
+                        workingHours.data.business_hours,
+                        workingHours.data.timezone,
+                        newTimeZone
+                    ),
+                },
+            })
+        )
+    })
+})
+
+describe('changeBusinessHoursTimeZone', () => {
+    it('should return Business Hours in different time zone', () => {
+        const newTimeZone = 'CET'
+        const newBusinessHours = changeBusinessHoursTimeZone(
+            workingHours.data.business_hours,
+            workingHours.data.timezone,
+            newTimeZone
+        )
+
+        expect(newBusinessHours).toEqual([
+            {
+                days: '1,2,3,4,5',
+                from_time: '09:00',
+                to_time: '12:00',
+            },
+            {
+                days: '1,2,3,4,5',
+                from_time: '13:00',
+                to_time: '17:00',
+            },
+            {
+                days: '1,2,3,4,5',
+                from_time: '18:00',
+                to_time: '23:59',
+            },
+            {
+                days: '2,3,4,5,6',
+                from_time: '00:00',
+                to_time: '04:00',
+            },
+            {
+                days: '2,3,4,5,6',
+                from_time: '05:00',
+                to_time: '08:59',
+            },
+            {
+                days: '6,7',
+                from_time: '09:00',
+                to_time: '23:59',
+            },
+            {
+                days: '7,1',
+                from_time: '00:00',
+                to_time: '08:59',
+            },
+        ])
+    })
+})
+
+describe('businessHourToNewTimeZone', () => {
+    const testCases: [
+        {
+            timeZone: string
+            business_hour: {
+                days: string
+                from_time: string
+                to_time: string
+            }
+        },
+        {
+            timeZone: string
+            business_hours: {
+                days: string
+                from_time: string
+                to_time: string
+            }[]
+        }
+    ][] = [
+        [
+            {
+                timeZone: 'US/Pacific',
+                business_hour: {
+                    days: '2',
+                    from_time: '09:00',
+                    to_time: '11:00',
+                },
+            },
+            {
+                timeZone: 'Australia/Sydney',
+                business_hours: [
+                    {
+                        days: '3',
+                        from_time: '02:00',
+                        to_time: '04:00',
+                    },
+                ],
+            },
+        ],
+        [
+            {
+                timeZone: 'US/Pacific',
+                business_hour: {
+                    days: '2',
+                    from_time: '09:00',
+                    to_time: '23:59',
+                },
+            },
+            {
+                timeZone: 'CET',
+                business_hours: [
+                    {
+                        days: '2',
+                        from_time: '18:00',
+                        to_time: '23:59',
+                    },
+                    {
+                        days: '3',
+                        from_time: '00:00',
+                        to_time: '08:59',
+                    },
+                ],
+            },
+        ],
+        [
+            {
+                timeZone: 'US/Pacific',
+                business_hour: {
+                    days: '2',
+                    from_time: '12:00',
+                    to_time: '23:59',
+                },
+            },
+            {
+                timeZone: 'CET',
+                business_hours: [
+                    {
+                        days: '2',
+                        from_time: '21:00',
+                        to_time: '23:59',
+                    },
+                    {
+                        days: '3',
+                        from_time: '00:00',
+                        to_time: '08:59',
+                    },
+                ],
+            },
+        ],
+        [
+            {
+                timeZone: 'EST',
+                business_hour: {
+                    days: '1,2,3,4,5',
+                    from_time: '07:00',
+                    to_time: '21:30',
+                },
+            },
+            {
+                timeZone: 'Australia/Sydney',
+                business_hours: [
+                    {
+                        days: '1,2,3,4,5',
+                        from_time: '22:00',
+                        to_time: '23:59',
+                    },
+                    {
+                        days: '2,3,4,5,6',
+                        from_time: '00:00',
+                        to_time: '12:30',
+                    },
+                ],
+            },
+        ],
+        [
+            {
+                timeZone: 'Australia/Sydney',
+                business_hour: {
+                    days: '1,2,3,4,5',
+                    from_time: '07:00',
+                    to_time: '21:30',
+                },
+            },
+            {
+                timeZone: 'EST',
+                business_hours: [
+                    {
+                        days: '7,1,2,3,4',
+                        from_time: '16:00',
+                        to_time: '23:59',
+                    },
+                    {
+                        days: '1,2,3,4,5',
+                        from_time: '00:00',
+                        to_time: '06:30',
+                    },
+                ],
+            },
+        ],
+    ]
+
+    it.each(testCases)(
+        'should change the Business Hour to new time zone',
+        (from, to) => {
+            const onMonday = new Date('2019-05-13T12:34:56.000Z')
+
+            global.Date.now = jest.fn(
+                () => onMonday
+            ) as unknown as typeof Date.now
+            expect(
+                businessHourToNewTimeZone(
+                    from.business_hour,
+                    from.timeZone,
+                    to.timeZone
+                )
+            ).toEqual(to.business_hours)
+            const onSunday = new Date('2019-05-19T12:34:56.000Z')
+
+            global.Date.now = jest.fn(
+                () => onSunday
+            ) as unknown as typeof Date.now
+            expect(
+                businessHourToNewTimeZone(
+                    from.business_hour,
+                    from.timeZone,
+                    to.timeZone
+                )
+            ).toEqual(to.business_hours)
+        }
+    )
 })

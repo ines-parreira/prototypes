@@ -26,5 +26,6 @@ export const useAggregatedBusiestTimesOfDayData = (
         max,
         isLoading: data.isLoading,
         period: cleanStatsFilters.period,
+        userTimezone,
     }
 }
