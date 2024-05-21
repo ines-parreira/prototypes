@@ -1,14 +1,19 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {IntegrationSelectContainer} from '../IntegrationSelect'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {IntegrationSelectContainer} from 'pages/common/components/ast/widget/IntegrationSelect'
+
+const mockStore = configureMockStore([thunk])
 
 describe('ast', () => {
     describe('widgets', () => {
         describe('IntegrationSelect', () => {
             it('should render a loading imput (no integrations)', () => {
-                const component = shallow(
+                const {container} = render(
                     <IntegrationSelectContainer
                         value={undefined}
                         fetchIntegrations={jest.fn()}
@@ -16,7 +21,8 @@ describe('ast', () => {
                         integrations={fromJS([])}
                     />
                 )
-                expect(component).toMatchSnapshot()
+
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render a SelectField', () => {
@@ -30,15 +36,18 @@ describe('ast', () => {
                         },
                     },
                 ])
-                const component = shallow(
-                    <IntegrationSelectContainer
-                        value={1}
-                        fetchIntegrations={jest.fn()}
-                        integrations={integrations}
-                        onChange={jest.fn()}
-                    />
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <IntegrationSelectContainer
+                            value={1}
+                            fetchIntegrations={jest.fn()}
+                            integrations={integrations}
+                            onChange={jest.fn()}
+                        />
+                    </Provider>
                 )
-                expect(component).toMatchSnapshot()
+
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })

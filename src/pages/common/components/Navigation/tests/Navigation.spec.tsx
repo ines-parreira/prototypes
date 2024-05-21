@@ -1,7 +1,8 @@
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 
-import Navigation from '../Navigation'
+import {render} from '@testing-library/react'
+import Navigation from 'pages/common/components/Navigation/Navigation'
 
 const commonProps: ComponentProps<typeof Navigation> = {
     hasNextItems: true,
@@ -19,7 +20,7 @@ describe('Navigation component', () => {
         it(`should render with (prev button disabled: ${String(
             !hasPrevItems
         )}) and (next button disabled: ${String(!hasNextItems)})`, () => {
-            const component = shallow(
+            const {container} = render(
                 <Navigation
                     {...commonProps}
                     hasNextItems={hasNextItems}
@@ -27,12 +28,12 @@ describe('Navigation component', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     it('should not render because there is no previous items nor next items', () => {
-        const component = shallow(
+        const {container} = render(
             <Navigation
                 {...commonProps}
                 hasNextItems={false}
@@ -40,26 +41,26 @@ describe('Navigation component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should fetch previous items when the previous button is clicked', () => {
         const prevSpy = jest.fn()
-        const component = shallow(
-            <Navigation {...commonProps} fetchPrevItems={prevSpy} />
-        )
+        render(<Navigation {...commonProps} fetchPrevItems={prevSpy} />)
 
-        component.find('#prev-btn').simulate('click')
-        expect(prevSpy).toHaveBeenCalledWith()
+        const prevButton = document.getElementById('prev-btn')
+        prevButton && userEvent.click(prevButton)
+
+        expect(prevSpy).toHaveBeenCalled()
     })
 
     it('should fetch next items when the next button is clicked', () => {
         const nextSpy = jest.fn()
-        const component = shallow(
-            <Navigation {...commonProps} fetchNextItems={nextSpy} />
-        )
+        render(<Navigation {...commonProps} fetchNextItems={nextSpy} />)
 
-        component.find('#next-btn').simulate('click')
-        expect(nextSpy).toHaveBeenCalledWith()
+        const nextButton = document.getElementById('next-btn')
+        nextButton && userEvent.click(nextButton)
+
+        expect(nextSpy).toHaveBeenCalled()
     })
 })

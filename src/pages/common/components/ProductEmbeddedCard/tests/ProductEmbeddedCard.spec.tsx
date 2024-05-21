@@ -1,8 +1,9 @@
-import {shallow} from 'enzyme'
-
 import React from 'react'
 
-import ProductEmbeddedCard from '../ProductEmbeddedCard'
+import {render} from '@testing-library/react'
+import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
+
+jest.mock('react-rating-stars-component', () => () => null)
 
 const defaultPropsWithImages = {
     product: {
@@ -50,10 +51,8 @@ describe('<ProductEmbeddedCard/>', () => {
         defaultPropsEmptyImages,
         defaultPropsNoImages,
     ])('Should render a product card', (defaultProps) => {
-        const component = shallow(
-            <ProductEmbeddedCard {...defaultProps} />
-        ).dive()
+        const {container} = render(<ProductEmbeddedCard {...defaultProps} />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

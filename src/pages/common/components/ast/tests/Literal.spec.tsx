@@ -1,9 +1,15 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import Literal from '../Literal'
-import {RuleItemActions} from '../../../../settings/rules/types'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import Literal from 'pages/common/components/ast/Literal'
+import {RootState, StoreDispatch} from 'state/types'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const value = 'hey'
 const commonProps = {
@@ -18,30 +24,36 @@ describe('Literal component', () => {
     it('should return null because the operator is an empty operator', () => {
         const callee = {name: 'isEmpty'}
 
-        const component = shallow(
-            <Literal {...commonProps} callee={callee} value={value} />
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <Literal {...commonProps} callee={callee} value={value} />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display an error because the value is empty', () => {
         const callee = {name: 'eq'}
 
-        const component = shallow(
-            <Literal {...commonProps} callee={callee} value="" />
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <Literal {...commonProps} callee={callee} value="" />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not display an error because the value is not empty', () => {
         const callee = {name: 'eq'}
 
-        const component = shallow(
-            <Literal {...commonProps} callee={callee} value={value} />
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <Literal {...commonProps} callee={callee} value={value} />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

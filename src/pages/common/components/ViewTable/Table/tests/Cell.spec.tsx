@@ -1,12 +1,13 @@
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS, Map, List} from 'immutable'
 import _omit from 'lodash/omit'
 import _noop from 'lodash/noop'
 
-import * as viewsConfig from '../../../../../../config/views'
-import * as ticketFixtures from '../../../../../../fixtures/ticket'
-import {CellContainer} from '../Cell'
+import * as ticketFixtures from 'fixtures/ticket'
+import {CellContainer} from 'pages/common/components/ViewTable/Table/Cell'
+import * as viewsConfig from 'config/views'
 
 describe('ViewTable::Table::Cell', () => {
     const viewConfig = viewsConfig.views.first() as Map<any, any>
@@ -20,32 +21,37 @@ describe('ViewTable::Table::Cell', () => {
 
     it('should use default props', () => {
         const props = {..._omit(minProps, ['item'])}
-        const component = shallow(<CellContainer {...props} />)
-        expect(component.props()).toMatchSnapshot()
+        const {container} = render(<CellContainer {...props} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('default cell with no click handler passed (cant open items)', () => {
-        const component = shallow(<CellContainer {...minProps} />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<CellContainer {...minProps} />)
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('default cell with a url passed', () => {
-        const component = shallow(
+        const {container} = render(
             <CellContainer {...minProps} itemUrl="/app/ticket/123" />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('default cell with a click handler passed', () => {
-        const component = shallow(
+        const {container} = render(
             <CellContainer {...minProps} onClick={_noop} />
         )
-        expect(component).toMatchSnapshot()
+
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('it should call onClick handler when itemUrl is passed', () => {
         const onClick = jest.fn()
-        const component = shallow(
+
+        render(
             <CellContainer
                 {...minProps}
                 itemUrl="/app/ticket/123"
@@ -53,7 +59,7 @@ describe('ViewTable::Table::Cell', () => {
             />
         )
 
-        component.find('Link').simulate('click')
+        userEvent.click(screen.getByText(ticketFixtures.ticket.subject))
 
         expect(onClick).toHaveBeenLastCalledWith(minProps.item)
     })

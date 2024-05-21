@@ -2,83 +2,55 @@
 
 exports[`Literal component should display an error because the value is empty 1`] = `
 <span
-  className="Literal"
+  class="Literal"
 >
-  <Connect(Widget)
-    actions={{}}
-    className="LiteralWidget"
-    compact={true}
-    leftsiblings={
-      Immutable.List [
-        Immutable.Map {
-          "foo": "leftsiblings",
-        },
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "value",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    value=""
-  />
-  <Errors
-    inline={true}
+  <div
+    class="InputField LiteralWidget d-inline-block form-group"
+    color=""
+  >
+    <div
+      class=""
+    >
+      <input
+        class="field form-control"
+        id="id-input-1"
+        min="0"
+        placeholder=""
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    class="d-inline-block text-danger ml-2"
   >
     This field cannot be empty
-  </Errors>
+  </div>
 </span>
 `;
 
 exports[`Literal component should not display an error because the value is not empty 1`] = `
 <span
-  className="Literal"
+  class="Literal"
 >
-  <Connect(Widget)
-    actions={{}}
-    className="LiteralWidget"
-    compact={true}
-    leftsiblings={
-      Immutable.List [
-        Immutable.Map {
-          "foo": "leftsiblings",
-        },
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "value",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    value="hey"
-  />
+  <div
+    class="InputField LiteralWidget d-inline-block form-group"
+    color=""
+  >
+    <div
+      class=""
+    >
+      <input
+        class="field form-control"
+        id="id-input-3"
+        min="0"
+        placeholder=""
+        type="text"
+        value="hey"
+      />
+    </div>
+  </div>
 </span>
 `;
 
-exports[`Literal component should return null because the operator is an empty operator 1`] = `""`;
+exports[`Literal component should return null because the operator is an empty operator 1`] = `null`;

@@ -2,62 +2,18 @@
 
 exports[`ast expressions ArrayExpression should display an error because the field is empty 1`] = `
 <span
-  className="Literal"
+  class="Literal"
 >
-  <Connect(Widget)
-    actions={{}}
-    className="LiteralWidget"
-    compact={true}
-    leftsiblings={Immutable.List []}
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "arguments",
-        1,
-        "elements",
-      ]
-    }
-    rule={Immutable.Map {}}
-    schemas={Immutable.Map {}}
-    value={[]}
-  />
-  <Errors
-    inline={true}
+  <div
+    class="d-inline-block text-danger ml-2"
   >
     This field cannot be empty
-  </Errors>
+  </div>
 </span>
 `;
 
 exports[`ast expressions ArrayExpression should render component and not display any error 1`] = `
 <span
-  className="Literal"
->
-  <Connect(Widget)
-    actions={{}}
-    className="LiteralWidget"
-    compact={true}
-    leftsiblings={Immutable.List []}
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "test",
-        "arguments",
-        1,
-        "elements",
-      ]
-    }
-    rule={Immutable.Map {}}
-    schemas={Immutable.Map {}}
-    value={
-      [
-        "hello",
-        "world!",
-      ]
-    }
-  />
-</span>
+  class="Literal"
+/>
 `;

@@ -1,8 +1,14 @@
 import React, {ComponentProps} from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import Property from '../Property'
+import {render} from '@testing-library/react'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {Provider} from 'react-redux'
+import {RootState, StoreDispatch} from 'state/types'
+import Property from 'pages/common/components/ast/Property'
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const commonProps = {
     parent: fromJS(['body', 0, 'expression']),
@@ -13,33 +19,46 @@ const commonProps = {
 
 describe('Property component', () => {
     it("should display errors if the validate method of the field's config raises any", () => {
-        const component = shallow(
-            <Property
-                {...commonProps}
-                config={{validate: () => 'error!error!'}}
-            />
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <Property
+                    {...commonProps}
+                    config={{validate: () => 'error!error!'}}
+                />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it("should not display errors if the validate method of the field's config does not raise any", () => {
-        const component = shallow(
-            <Property {...commonProps} config={{validate: () => undefined}} />
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <Property
+                    {...commonProps}
+                    config={{validate: () => undefined}}
+                />
+            </Provider>
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not display errors if there is no validate method', () => {
-        const component = shallow(<Property {...commonProps} config={{}} />)
+        const {container} = render(
+            <Provider store={mockStore({})}>
+                <Property {...commonProps} config={{}} />
+            </Provider>
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a compact (inline) Property', () => {
-        const component = shallow(
-            <Property {...commonProps} config={{}} compact={true} />
+        const component = render(
+            <Provider store={mockStore({})}>
+                <Property {...commonProps} config={{}} compact={true} />
+            </Provider>
         )
 
         expect(component).toMatchSnapshot()

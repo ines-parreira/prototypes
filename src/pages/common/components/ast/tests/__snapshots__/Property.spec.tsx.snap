@@ -2,137 +2,94 @@
 
 exports[`Property component should display errors if the validate method of the field's config raises any 1`] = `
 <div
-  className=""
+  class=""
 >
-  <Connect(Widget)
-    compact={false}
-    config={
-      {
-        "validate": [Function],
-      }
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "expression",
-        "value",
-        "value",
-      ]
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    theKey={
-      {
-        "foo": "theKey",
-      }
-    }
-    value="foo"
-  />
-  <Errors
-    belowInput={true}
+  <div
+    class="text-danger"
+    style="margin-top: -8px; margin-bottom: .5rem;"
   >
     error!error!
-  </Errors>
+  </div>
 </div>
 `;
 
 exports[`Property component should not display errors if the validate method of the field's config does not raise any 1`] = `
 <div
-  className=""
->
-  <Connect(Widget)
-    compact={false}
-    config={
-      {
-        "validate": [Function],
-      }
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "expression",
-        "value",
-        "value",
-      ]
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    theKey={
-      {
-        "foo": "theKey",
-      }
-    }
-    value="foo"
-  />
-</div>
+  class=""
+/>
 `;
 
 exports[`Property component should not display errors if there is no validate method 1`] = `
 <div
-  className=""
->
-  <Connect(Widget)
-    compact={false}
-    config={{}}
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "expression",
-        "value",
-        "value",
-      ]
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    theKey={
-      {
-        "foo": "theKey",
-      }
-    }
-    value="foo"
-  />
-</div>
+  class=""
+/>
 `;
 
 exports[`Property component should render a compact (inline) Property 1`] = `
-<div
-  className="d-flex"
->
-  <Connect(Widget)
-    compact={true}
-    config={{}}
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "expression",
-        "value",
-        "value",
-      ]
-    }
-    schemas={
-      Immutable.Map {
-        "foo": "schemas",
-      }
-    }
-    theKey={
-      {
-        "foo": "theKey",
-      }
-    }
-    value="foo"
-  />
-</div>
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="d-flex"
+      />
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="d-flex"
+    />
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
 `;

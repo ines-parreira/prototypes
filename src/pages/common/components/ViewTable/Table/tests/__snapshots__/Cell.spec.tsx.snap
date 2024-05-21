@@ -2,137 +2,96 @@
 
 exports[`ViewTable::Table::Cell default cell with a click handler passed 1`] = `
 <td
-  className="limit-overflow"
+  class="limit-overflow"
 >
   <div
-    className="cell-wrapper"
-    onClick={[Function]}
+    class="cell-wrapper"
   >
-    <RenderLabel
-      field={
-        Immutable.Map {
-          "name": "details",
-          "title": "Details",
-        }
-      }
-      value={
-        <div>
-          <div
-            className="subject"
-          >
-            Great ticket
-          </div>
-          <div
-            className="description"
-          >
-            undefined
-          </div>
-        </div>
-      }
-    />
+    <div>
+      <div
+        class="subject"
+      >
+        Great ticket
+      </div>
+      <div
+        class="description"
+      >
+        undefined
+      </div>
+    </div>
   </div>
 </td>
 `;
 
 exports[`ViewTable::Table::Cell default cell with a url passed 1`] = `
 <td
-  className="limit-overflow"
+  class="limit-overflow"
 >
-  <Link
-    onClick={[Function]}
+  <a
     to="/app/ticket/123"
   >
     <div
-      className="cell-wrapper"
+      class="cell-wrapper"
     >
-      <RenderLabel
-        field={
-          Immutable.Map {
-            "name": "details",
-            "title": "Details",
-          }
-        }
-        value={
-          <div>
-            <div
-              className="subject"
-            >
-              Great ticket
-            </div>
-            <div
-              className="description"
-            >
-              undefined
-            </div>
-          </div>
-        }
-      />
+      <div>
+        <div
+          class="subject"
+        >
+          Great ticket
+        </div>
+        <div
+          class="description"
+        >
+          undefined
+        </div>
+      </div>
     </div>
-  </Link>
+  </a>
 </td>
 `;
 
 exports[`ViewTable::Table::Cell default cell with no click handler passed (cant open items) 1`] = `
 <td
-  className="limit-overflow"
+  class="limit-overflow"
 >
   <div
-    className="cell-wrapper"
+    class="cell-wrapper"
   >
-    <RenderLabel
-      field={
-        Immutable.Map {
-          "name": "details",
-          "title": "Details",
-        }
-      }
-      value={
-        <div>
-          <div
-            className="subject"
-          >
-            Great ticket
-          </div>
-          <div
-            className="description"
-          >
-            undefined
-          </div>
-        </div>
-      }
-    />
+    <div>
+      <div
+        class="subject"
+      >
+        Great ticket
+      </div>
+      <div
+        class="description"
+      >
+        undefined
+      </div>
+    </div>
   </div>
 </td>
 `;
 
 exports[`ViewTable::Table::Cell should use default props 1`] = `
-{
-  "children": <div
-    className="cell-wrapper"
+<td
+  class="limit-overflow"
+>
+  <div
+    class="cell-wrapper"
   >
-    <RenderLabel
-      field={
-        Immutable.Map {
-          "name": "details",
-          "title": "Details",
-        }
-      }
-      value={
-        <div>
-          <div
-            className="subject"
-          >
-            undefined
-          </div>
-          <div
-            className="description"
-          >
-            undefined
-          </div>
-        </div>
-      }
-    />
-  </div>,
-  "className": "limit-overflow",
-}
+    <div>
+      <div
+        class="subject"
+      >
+        undefined
+      </div>
+      <div
+        class="description"
+      >
+        undefined
+      </div>
+    </div>
+  </div>
+</td>
 `;

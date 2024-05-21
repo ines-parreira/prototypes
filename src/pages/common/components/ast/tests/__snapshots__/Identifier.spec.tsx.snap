@@ -2,33 +2,6 @@
 
 exports[`Identifier component should render 1`] = `
 <span
-  className="Identifier"
->
-  <Connect(Widget)
-    actions={{}}
-    className="foo"
-    leftsiblings={
-      Immutable.List [
-        Immutable.Map {
-          "foo": "leftsiblings",
-        },
-      ]
-    }
-    parent={
-      Immutable.List [
-        "body",
-        0,
-        "expression",
-        "name",
-      ]
-    }
-    rule={
-      Immutable.Map {
-        "foo": "rule",
-      }
-    }
-    schemas={Immutable.Map {}}
-    value="eq"
-  />
-</span>
+  class="Identifier"
+/>
 `;

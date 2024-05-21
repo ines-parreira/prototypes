@@ -1,9 +1,14 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import ArrayExpression from '../ArrayExpression'
-import {RuleItemActions} from '../../../../../settings/rules/types'
+import {render} from '@testing-library/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
+
+const mockStore = configureMockStore([thunk])
 
 describe('ast', () => {
     describe('expressions', () => {
@@ -26,17 +31,24 @@ describe('ast', () => {
                         value: 'world!',
                     },
                 ]
-                expect(
-                    shallow(
+
+                const {container} = render(
+                    <Provider store={mockStore({})}>
                         <ArrayExpression {...minProps} elements={elements} />
-                    )
-                ).toMatchSnapshot()
+                    </Provider>
+                )
+
+                expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display an error because the field is empty', () => {
-                expect(
-                    shallow(<ArrayExpression {...minProps} />)
-                ).toMatchSnapshot()
+                const {container} = render(
+                    <Provider store={mockStore({})}>
+                        <ArrayExpression {...minProps} />
+                    </Provider>
+                )
+
+                expect(container.firstChild).toMatchSnapshot()
             })
         })
     })

@@ -1,57 +1,77 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
-<SelectField
-  allowCustomValue={false}
-  fixedWidth={false}
-  fullWidth={false}
-  id={null}
-  isSearchable={true}
-  onChange={[Function]}
-  onSearchChange={[Function]}
-  options={
-    [
-      {
-        "label": <RenderLabel
-          field={
-            Immutable.Map {
-              "name": "integrations",
-            }
-          }
-          value={
-            Immutable.Map {
-              "id": 1,
-              "name": "Acme Support",
-              "type": "email",
-              "meta": Immutable.Map {
-                "address": "support@acme.gorgias.io",
-              },
-            }
-          }
-        />,
-        "text": "Acme Support",
-        "value": 1,
-      },
-    ]
-  }
-  placeholder="Select an integration"
-  required={false}
-  singular="option"
-  style={
-    {
-      "display": "inline-block",
-      "verticalAlign": "top",
-    }
-  }
-  value={1}
-/>
+<div
+  style="display: inline-block; vertical-align: top;"
+>
+  <div
+    class="dropdown"
+  >
+    <div
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
+      data-toggle="dropdown"
+    >
+      <div
+        class="select dropdown-toggle"
+      >
+        <span
+          class="label"
+          style="min-width: 10px; opacity: 1;"
+        >
+          <span>
+            <i
+              class="icon d-inline-block material-icons mr-2"
+            >
+              email
+            </i>
+            Acme Support &lt;support@acme.gorgias.io&gt;
+          </span>
+        </span>
+        <input
+          autocomplete="chrome-off"
+          class="input"
+          style="min-width: 10px;"
+          type="text"
+          value=""
+        />
+        <i
+          class="material-icons dropdownIcon"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <h6
+        class="dropdown-header"
+        tabindex="-1"
+      >
+        No result
+      </h6>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`ast widgets IntegrationSelect should render a loading imput (no integrations) 1`] = `
-<ForwardRef(TextInput)
-  className="shadow-none border-0"
-  placeholder="Loading integrations..."
-  readOnly={true}
-  type="text"
-/>
+<div
+  class="wrapper shadow-none border-0"
+>
+  <input
+    class="input"
+    id="input-text-1"
+    name="input-text-1"
+    placeholder="Loading integrations..."
+    readonly=""
+    type="text"
+    value=""
+  />
+</div>
 `;

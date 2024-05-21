@@ -1,203 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
-<Card
-  className="genericCard"
-  tag="div"
+<div
+  class="genericCard card"
 >
-  <CardBody
-    tag="div"
+  <div
+    class="card-body"
   >
-    <Container
-      className="cardContainer"
-      tag="div"
+    <div
+      class="cardContainer container"
     >
-      <Row
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="col"
         >
           <img
             alt="product"
-            className="productImage"
+            class="productImage"
             src="string"
           />
-        </Col>
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        </div>
+        <div
+          class="col"
         >
-          <Row
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <div
+            class="row"
           >
             <strong>
               Tandem washing machine
             </strong>
-          </Row>
-          <Row
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          </div>
+          <div
+            class="row"
           >
             <div>
               <span
-                className="starRatingWrapper"
-              >
-                <ReactStars
-                  a11y={true}
-                  activeColor="#FDAB40"
-                  char="★"
-                  color="#E8EBEF"
-                  count={5}
-                  edit={false}
-                  emptyIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star
-                    </span>
-                  }
-                  filledIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star
-                    </span>
-                  }
-                  half={false}
-                  halfIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star_half
-                    </span>
-                  }
-                  isHalf={true}
-                  onChange={[Function]}
-                  size={15}
-                  value={4.3}
-                />
-              </span>
+                class="starRatingWrapper"
+              />
               <span
-                className="totalReviews"
+                class="totalReviews"
               >
                 (
                 100
                 )
               </span>
             </div>
-          </Row>
-        </Col>
-        <Col
-          className="chevronButton"
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+          </div>
+        </div>
+        <div
+          class="chevronButton col"
         >
           <i
-            className="material-icons"
-            onClick={[Function]}
+            class="material-icons"
           >
             unfold_more
           </i>
-        </Col>
-      </Row>
-      <Row
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+        </div>
+      </div>
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="col"
         >
-          <Collapse
-            appear={false}
-            enter={true}
-            exit={true}
-            in={false}
-            isOpen={false}
-            mountOnEnter={false}
-            onEnter={[Function]}
-            onEntered={[Function]}
-            onEntering={[Function]}
-            onExit={[Function]}
-            onExited={[Function]}
-            onExiting={[Function]}
-            tag="div"
-            timeout={350}
-            unmountOnExit={false}
+          <div
+            class="collapse"
           >
             <table>
               <tbody>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Description:
                   </td>
@@ -207,7 +82,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
                 </tr>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Product page:
                   </td>
@@ -223,226 +98,101 @@ exports[`<ProductEmbeddedCard/> Should render a product card 1`] = `
                 </tr>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Category:
                   </td>
                   <th>
-                    <Badge
-                      type="grey"
+                    <div
+                      class="badge upperCase"
                     >
                       electronics
-                    </Badge>
+                    </div>
                   </th>
                 </tr>
               </tbody>
             </table>
-          </Collapse>
-        </Col>
-      </Row>
-    </Container>
-  </CardBody>
-</Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
-<Card
-  className="genericCard"
-  tag="div"
+<div
+  class="genericCard card"
 >
-  <CardBody
-    tag="div"
+  <div
+    class="card-body"
   >
-    <Container
-      className="cardContainer"
-      tag="div"
+    <div
+      class="cardContainer container"
     >
-      <Row
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="col"
         >
           <img
             alt="product"
-            className="productImage"
+            class="productImage"
             src="test-file-stub"
           />
-        </Col>
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        </div>
+        <div
+          class="col"
         >
-          <Row
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <div
+            class="row"
           >
             <strong>
               Tandem washing machine
             </strong>
-          </Row>
-          <Row
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          </div>
+          <div
+            class="row"
           >
             <div>
               <span
-                className="starRatingWrapper"
-              >
-                <ReactStars
-                  a11y={true}
-                  activeColor="#FDAB40"
-                  char="★"
-                  color="#E8EBEF"
-                  count={5}
-                  edit={false}
-                  emptyIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star
-                    </span>
-                  }
-                  filledIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star
-                    </span>
-                  }
-                  half={false}
-                  halfIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star_half
-                    </span>
-                  }
-                  isHalf={true}
-                  onChange={[Function]}
-                  size={15}
-                  value={4.3}
-                />
-              </span>
+                class="starRatingWrapper"
+              />
               <span
-                className="totalReviews"
+                class="totalReviews"
               >
                 (
                 100
                 )
               </span>
             </div>
-          </Row>
-        </Col>
-        <Col
-          className="chevronButton"
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+          </div>
+        </div>
+        <div
+          class="chevronButton col"
         >
           <i
-            className="material-icons"
-            onClick={[Function]}
+            class="material-icons"
           >
             unfold_more
           </i>
-        </Col>
-      </Row>
-      <Row
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+        </div>
+      </div>
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="col"
         >
-          <Collapse
-            appear={false}
-            enter={true}
-            exit={true}
-            in={false}
-            isOpen={false}
-            mountOnEnter={false}
-            onEnter={[Function]}
-            onEntered={[Function]}
-            onEntering={[Function]}
-            onExit={[Function]}
-            onExited={[Function]}
-            onExiting={[Function]}
-            tag="div"
-            timeout={350}
-            unmountOnExit={false}
+          <div
+            class="collapse"
           >
             <table>
               <tbody>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Description:
                   </td>
@@ -452,7 +202,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
                 </tr>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Product page:
                   </td>
@@ -468,226 +218,101 @@ exports[`<ProductEmbeddedCard/> Should render a product card 2`] = `
                 </tr>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Category:
                   </td>
                   <th>
-                    <Badge
-                      type="grey"
+                    <div
+                      class="badge upperCase"
                     >
                       electronics
-                    </Badge>
+                    </div>
                   </th>
                 </tr>
               </tbody>
             </table>
-          </Collapse>
-        </Col>
-      </Row>
-    </Container>
-  </CardBody>
-</Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
-<Card
-  className="genericCard"
-  tag="div"
+<div
+  class="genericCard card"
 >
-  <CardBody
-    tag="div"
+  <div
+    class="card-body"
   >
-    <Container
-      className="cardContainer"
-      tag="div"
+    <div
+      class="cardContainer container"
     >
-      <Row
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="col"
         >
           <img
             alt="product"
-            className="productImage"
+            class="productImage"
             src="test-file-stub"
           />
-        </Col>
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        </div>
+        <div
+          class="col"
         >
-          <Row
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          <div
+            class="row"
           >
             <strong>
               Tandem washing machine
             </strong>
-          </Row>
-          <Row
-            tag="div"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
+          </div>
+          <div
+            class="row"
           >
             <div>
               <span
-                className="starRatingWrapper"
-              >
-                <ReactStars
-                  a11y={true}
-                  activeColor="#FDAB40"
-                  char="★"
-                  color="#E8EBEF"
-                  count={5}
-                  edit={false}
-                  emptyIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star
-                    </span>
-                  }
-                  filledIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star
-                    </span>
-                  }
-                  half={false}
-                  halfIcon={
-                    <span
-                      className="material-icons"
-                    >
-                      star_half
-                    </span>
-                  }
-                  isHalf={true}
-                  onChange={[Function]}
-                  size={15}
-                  value={4.3}
-                />
-              </span>
+                class="starRatingWrapper"
+              />
               <span
-                className="totalReviews"
+                class="totalReviews"
               >
                 (
                 100
                 )
               </span>
             </div>
-          </Row>
-        </Col>
-        <Col
-          className="chevronButton"
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+          </div>
+        </div>
+        <div
+          class="chevronButton col"
         >
           <i
-            className="material-icons"
-            onClick={[Function]}
+            class="material-icons"
           >
             unfold_more
           </i>
-        </Col>
-      </Row>
-      <Row
-        tag="div"
-        widths={
-          [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+        </div>
+      </div>
+      <div
+        class="row"
       >
-        <Col
-          tag="div"
-          widths={
-            [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
+        <div
+          class="col"
         >
-          <Collapse
-            appear={false}
-            enter={true}
-            exit={true}
-            in={false}
-            isOpen={false}
-            mountOnEnter={false}
-            onEnter={[Function]}
-            onEntered={[Function]}
-            onEntering={[Function]}
-            onExit={[Function]}
-            onExited={[Function]}
-            onExiting={[Function]}
-            tag="div"
-            timeout={350}
-            unmountOnExit={false}
+          <div
+            class="collapse"
           >
             <table>
               <tbody>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Description:
                   </td>
@@ -697,7 +322,7 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
                 </tr>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Product page:
                   </td>
@@ -713,24 +338,24 @@ exports[`<ProductEmbeddedCard/> Should render a product card 3`] = `
                 </tr>
                 <tr>
                   <td
-                    className="cardDetail"
+                    class="cardDetail"
                   >
                     Category:
                   </td>
                   <th>
-                    <Badge
-                      type="grey"
+                    <div
+                      class="badge upperCase"
                     >
                       electronics
-                    </Badge>
+                    </div>
                   </th>
                 </tr>
               </tbody>
             </table>
-          </Collapse>
-        </Col>
-      </Row>
-    </Container>
-  </CardBody>
-</Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 `;
