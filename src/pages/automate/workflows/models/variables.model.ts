@@ -205,6 +205,7 @@ export const buildWorkflowVariableFromNode = (
                 {
                     name: 'Fulfillment last updated date',
                     value: `steps_state.${node.id}.order.fulfillments.0.updated_datetime`,
+                    filter: 'format_datetime',
                     nodeType: 'order_selection',
                     type: 'date',
                 },
