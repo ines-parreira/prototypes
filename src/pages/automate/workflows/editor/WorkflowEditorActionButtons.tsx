@@ -89,7 +89,7 @@ export const WorkflowEditorActionButtons = ({
         <>
             {isPreviewTestButtonVisible && (
                 <Button
-                    onClick={() => onTest(true)}
+                    onClick={() => onTest(!isDirty)}
                     intent="secondary"
                     isDisabled={isTestDisabled}
                     id="test-disabled"

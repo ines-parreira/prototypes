@@ -163,10 +163,23 @@ function WorkflowEditorViewWrapped({
         if (isTestable) {
             workflowEditorContext.setIsTesting(true)
         } else {
-            notifyMerchant({
-                message: 'Save as draft or publish in order to test this Flow',
-                status: NotificationStatus.Error,
-            })
+            const configurationError =
+                workflowEditorContext.handleValidate(true)
+
+            if (configurationError) {
+                workflowEditorContext.setShouldShowErrors(true)
+                notifyMerchant({
+                    message:
+                        'Complete steps and save in order to test this Flow',
+                    status: NotificationStatus.Error,
+                })
+            } else {
+                notifyMerchant({
+                    message:
+                        'Save as draft or publish in order to test this Flow',
+                    status: NotificationStatus.Error,
+                })
+            }
         }
     }
 
