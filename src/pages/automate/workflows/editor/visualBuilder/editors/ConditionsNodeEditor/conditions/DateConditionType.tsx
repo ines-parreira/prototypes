@@ -147,7 +147,7 @@ export const DateConditionType = ({condition, onChange}: Props) => {
                     },
                     {
                         label: 'Hours',
-                        value: '-h',
+                        value: 'h',
                     },
                     {
                         label: 'Days',
