@@ -10,7 +10,11 @@ import {
     useSubmitPlaygroundTicket,
 } from 'models/aiAgent/queries'
 import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
-import {MessageType, PlaygroundMessage} from 'models/aiAgentPlayground/types'
+import {
+    MessageType,
+    PlaygroundMessage,
+    TicketOutcome,
+} from 'models/aiAgentPlayground/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
@@ -95,17 +99,23 @@ export const AiAgentPlaygroundView = () => {
                 const currentMessages = messagesRef.current // Use ref to access current messages
                 const updatedMessages = [...currentMessages.slice(0, -1)]
 
-                // If the AI Agent response is valid, push output to message thread
                 if (
-                    aiAgentResponse.data.postProcessing.htmlReply &&
-                    aiAgentResponse.data.qa.output.validate_generated_message &&
-                    // If silent handover is enabled, don't show the AI Agent response
-                    !storeData?.data.storeConfiguration.silentHandover
+                    (aiAgentResponse.data.generate.output.outcome ===
+                        TicketOutcome.HANDOVER &&
+                        !storeData?.data.storeConfiguration.silentHandover) ||
+                    ((aiAgentResponse.data.postProcessing.htmlReply ||
+                        aiAgentResponse.data.generate.output
+                            .generated_message) &&
+                        aiAgentResponse.data.qa.output
+                            .validate_generated_message)
                 ) {
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
                         type: MessageType.MESSAGE,
-                        message: aiAgentResponse.data.postProcessing.htmlReply,
+                        message:
+                            aiAgentResponse.data.postProcessing.htmlReply ??
+                            aiAgentResponse.data.generate.output
+                                .generated_message,
                     })
                 }
                 // If the AI Agent response is invalid, only show internal note

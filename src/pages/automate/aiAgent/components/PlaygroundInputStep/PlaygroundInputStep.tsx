@@ -89,7 +89,6 @@ export const PlaygroundInputStep = ({
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER
     )
-
     const validateFormValues = (formValues: FormValues) => {
         const formValuesValidity: FormValuesValidity = {
             message: formValues.message.length > 0,
