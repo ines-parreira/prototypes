@@ -350,6 +350,7 @@ export const HelpCenterCategoryEdit = ({
                 })
             )
         }
+        imageFile.discardFile()
 
         if (isCreate) {
             onCreate?.({
