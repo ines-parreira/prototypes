@@ -215,13 +215,14 @@ export const TestFlowEditor = ({
     })
 
     useEffect(() => {
+        if (!isTesting) return
         resetChatFlow({
             label,
             language: selectedLanguage,
             id: editWorkflowId,
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedLanguage])
+    }, [selectedLanguage, isTesting])
 
     return (
         <Drawer
