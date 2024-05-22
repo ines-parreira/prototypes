@@ -275,7 +275,7 @@ export const TestFlowEditor = ({
                                         your store.
                                     </span>
                                     <a
-                                        href="https://docs.gorgias.com/en-US/flows-101-252069"
+                                        href="https://link.gorgias.com/5j"
                                         rel="noopener noreferrer"
                                         target="_blank"
                                         className={css.bannerContentLink}
