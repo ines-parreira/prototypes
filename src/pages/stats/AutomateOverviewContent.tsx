@@ -187,6 +187,8 @@ export default function AutomateOverviewContent({
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
     const isAutomateOverviewChannelsFilter: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
+    const isAutomateAnalyticsV2: boolean | undefined =
+        useFlags()[FeatureFlagKey.ObservabilityAutomateAnalyticsv2]
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
         true
@@ -229,17 +231,24 @@ export default function AutomateOverviewContent({
 
     const showGreyArea = useMemo((): Moment[] => {
         const endDateTime = moment(statsFilters.period.end_datetime)
-        const startdDateTime = moment(statsFilters.period.start_datetime)
-        const threeDaysAgo = moment().subtract(2, 'days')
+        const startDateTime = moment(statsFilters.period.start_datetime)
+        const threeDaysAgo = moment().subtract(
+            isAutomateAnalyticsV2 ? 3 : 2,
+            'days'
+        )
         if (endDateTime.isAfter(threeDaysAgo, 'date')) {
-            if (startdDateTime.isAfter(threeDaysAgo)) {
-                return [startdDateTime, endDateTime]
+            if (startDateTime.isAfter(threeDaysAgo)) {
+                return [startDateTime, endDateTime]
             }
             return [threeDaysAgo, endDateTime]
         }
 
         return []
-    }, [statsFilters.period.end_datetime, statsFilters.period.start_datetime])
+    }, [
+        statsFilters.period.end_datetime,
+        statsFilters.period.start_datetime,
+        isAutomateAnalyticsV2,
+    ])
 
     const isDurationLast3Days = useMemo(() => {
         const startDateTime = moment(statsFilters.period.start_datetime)
