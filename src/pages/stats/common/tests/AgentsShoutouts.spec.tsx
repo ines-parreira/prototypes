@@ -206,4 +206,42 @@ describe('<AgentsShoutouts />', () => {
             satisfactionShoutout.getAllByText(SHOUTOUT_NO_VALUE_PLACEHOLDER)
         ).toHaveLength(3)
     })
+
+    it.each([
+        {screenWidth: 1800, expectedColumns: 4},
+        {screenWidth: 700, expectedColumns: 0},
+    ])(
+        'it should check the number of grid columns for $screenWidth should be $expectedColumns',
+        ({screenWidth, expectedColumns}) => {
+            global.innerWidth = screenWidth
+            useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(
+                allDataMockedMetric
+            )
+            useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(
+                allDataMockedMetric
+            )
+            useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(
+                allDataMockedMetric
+            )
+            useClosedTicketsMetricPerAgentMock.mockReturnValue(
+                allDataMockedMetric
+            )
+
+            const {container} = render(
+                <Provider store={mockStore(defaultState as any)}>
+                    <AgentsShoutouts />
+                </Provider>
+            )
+
+            const shoutoutsContainerComputedStyle = getComputedStyle(
+                container.querySelector('.grid') as HTMLElement
+            )
+
+            expect(
+                shoutoutsContainerComputedStyle.getPropertyValue(
+                    '--agents-shoutouts-columns'
+                )
+            ).toEqual(`${expectedColumns}`)
+        }
+    )
 })

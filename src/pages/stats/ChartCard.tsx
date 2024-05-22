@@ -2,9 +2,9 @@ import classnames from 'classnames'
 import React, {ReactNode} from 'react'
 
 import {Card} from '@gorgias/analytics-ui-kit'
-import css from './ChartCard.less'
-import {TooltipData} from './types'
-import {HintTooltip} from './common/HintTooltip'
+import css from 'pages/stats/ChartCard.less'
+import {TooltipData} from 'pages/stats/types'
+import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 type Props = {
     children?: ReactNode

@@ -2,15 +2,19 @@ import React from 'react'
 
 import css from 'pages/stats/AgentsShoutouts.less'
 import {agentsShoutoutsConfig} from 'pages/stats/AgentsShoutoutsConfig'
-import AgentsShoutout from './AgentShoutout'
+import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
+import AgentsShoutout from 'pages/stats/AgentShoutout'
 
 export default function AgentsShoutouts() {
+    const isMobileResolution = useIsMobileResolution()
     return (
         <div
             className={css.grid}
             style={
                 {
-                    '--agents-shoutouts-columns': agentsShoutoutsConfig.length,
+                    '--agents-shoutouts-columns': isMobileResolution
+                        ? 0
+                        : agentsShoutoutsConfig.length,
                 } as React.CSSProperties
             }
         >

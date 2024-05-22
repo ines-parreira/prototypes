@@ -34,7 +34,10 @@ import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {StatsFilters} from 'models/stat/types'
-import {isExtraLargeScreen} from 'pages/common/utils/mobile'
+import {
+    isExtraLargeScreen,
+    isMediumOrSmallScreen,
+} from 'pages/common/utils/mobile'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {
     TableColumn,
@@ -97,8 +100,10 @@ export const TableLabels: Record<TableColumn, string> = {
     [TableColumn.TicketHandleTime]: 'Ticket Handle time',
 }
 
-export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 200 : 300
+export const AGENT_NAME_COLUMN_WIDTH = isExtraLargeScreen() ? 160 : 300
+export const MOBILE_AGENT_NAME_COLUMN_WIDTH = 140
 export const METRIC_COLUMN_WIDTH = 160
+export const MOBILE_METRIC_COLUMN_WIDTH = 120
 
 export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     [TableColumn.AgentName]: undefined,
@@ -179,10 +184,16 @@ export const MetricFormat: Record<
     [TableColumn.TicketHandleTime]: {format: 'duration', perAgent: false},
 }
 
-export const getColumnWidth = (column: TableColumn) =>
-    column === TableColumn.AgentName
+export const getColumnWidth = (column: TableColumn) => {
+    if (isMediumOrSmallScreen()) {
+        return column === TableColumn.AgentName
+            ? MOBILE_AGENT_NAME_COLUMN_WIDTH
+            : MOBILE_METRIC_COLUMN_WIDTH
+    }
+    return column === TableColumn.AgentName
         ? AGENT_NAME_COLUMN_WIDTH
         : METRIC_COLUMN_WIDTH
+}
 
 export const getColumnAlignment = (column: TableColumn) =>
     column === TableColumn.AgentName ? 'left' : 'right'

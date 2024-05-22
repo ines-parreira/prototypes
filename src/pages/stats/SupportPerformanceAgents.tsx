@@ -7,9 +7,9 @@ import ChartCard from 'pages/stats/ChartCard'
 import {AgentsTable} from 'pages/stats/AgentsTable'
 
 import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
-import DashboardSection from './DashboardSection'
-import StatsPage from './StatsPage'
-import {DownloadAgentsPerformanceDataButton} from './DownloadAgentsPerformanceDataButton'
+import DashboardSection from 'pages/stats/DashboardSection'
+import StatsPage from 'pages/stats/StatsPage'
+import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPerformanceDataButton'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 export const AGENT_PERFORMANCE_SECTION_TITLE = 'Agent Performance'

@@ -13,7 +13,10 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {agents} from 'fixtures/agents'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import {AgentsTable} from 'pages/stats/AgentsTable'
-import {TableColumnsOrderWithOnlineTime} from 'pages/stats/AgentsTableConfig'
+import {
+    TableColumnsOrderWithOnlineTime,
+    getColumnWidth,
+} from 'pages/stats/AgentsTableConfig'
 import {AgentsTableSummaryCell} from 'pages/stats/AgentsTableSummaryCell'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
@@ -33,6 +36,7 @@ import {
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
+import {TableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -262,5 +266,35 @@ describe('<AgentTable>', () => {
 
             expect(store.getActions()).toContainEqual(pageSet(pageToClick))
         })
+    })
+
+    describe('getColumnWidth', () => {
+        it.each([
+            {
+                screenResolution: 1200,
+                expectedAgentsWidth: 160,
+                expectedOtherColumnsWidth: 160,
+            },
+            {
+                screenResolution: 700,
+                expectedAgentsWidth: 140,
+                expectedOtherColumnsWidth: 120,
+            },
+        ])(
+            'should return correct width',
+            ({
+                screenResolution,
+                expectedAgentsWidth,
+                expectedOtherColumnsWidth,
+            }) => {
+                global.innerWidth = screenResolution
+                expect(getColumnWidth(TableColumn.AgentName)).toEqual(
+                    expectedAgentsWidth
+                )
+                expect(
+                    getColumnWidth(TableColumn.CustomerSatisfaction)
+                ).toEqual(expectedOtherColumnsWidth)
+            }
+        )
     })
 })
