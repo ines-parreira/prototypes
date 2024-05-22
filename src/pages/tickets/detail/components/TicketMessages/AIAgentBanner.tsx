@@ -5,6 +5,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {TicketMessage} from 'models/ticket/types'
+import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
@@ -41,15 +42,40 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
         )
     }
 
+    const {data, isLoading, isError} = useGetAiAgentFeedback(
+        message.ticket_id!,
+        {
+            refetchOnWindowFocus: false,
+        }
+    )
+
+    if (isLoading || isError) {
+        return null
+    }
+
+    const ticketFeedback = data?.data
+
+    const messageFeedback = ticketFeedback?.messages?.find(
+        (messageFeedback) => messageFeedback.messageId === message.id
+    )
+
+    const positiveFeedback =
+        messageFeedback &&
+        messageFeedback.actions?.every((action) => action.feedback === 1) &&
+        messageFeedback.guidance?.every(
+            (guidance) => guidance.feedback === 1
+        ) &&
+        messageFeedback.knowledge?.every(
+            (knowledge) => knowledge.feedback === 1
+        )
+
     return (
         <div className={css.container}>
             <i className={classNames('material-icons', css.icon)}>
                 auto_awesome
             </i>
             <div className={css.content}>
-                <div className={css.message}>
-                    This message was sent by an AI agent
-                </div>
+                <div className={css.message}>{messageFeedback?.summary}</div>
                 <div className={css.feedbackContainer}>
                     <div className={css.feedbackQuestion}>
                         {ACCURATE_RESPONSE}
@@ -59,7 +85,14 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
                             fillStyle="fill"
                             intent="secondary"
                             size="small"
-                            iconClassName="material-icons-outlined"
+                            iconClassName={
+                                positiveFeedback
+                                    ? 'material-icons'
+                                    : 'material-icons-outlined'
+                            }
+                            className={classNames(css.feedbackButton, {
+                                [css.positiveFeedback]: positiveFeedback,
+                            })}
                         >
                             thumb_up
                         </IconButton>
@@ -69,6 +102,7 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
                             fillStyle="fill"
                             onClick={handleImproveResponse}
                             isDisabled={selectedAIMessage === message}
+                            className={css.feedbackButton}
                         >
                             {IMPROVE_RESPONSE}
                         </Button>

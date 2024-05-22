@@ -31,6 +31,7 @@ type Props = {
     isMessageDeleted: boolean
     isBodyHighlighted: boolean
     isAIAgentMessage?: boolean
+    isAIAgentMessageSelected?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
 }
@@ -54,6 +55,7 @@ export default class Container extends Component<Props> {
             isMessageHidden,
             isMessageDeleted,
             isAIAgentMessage = false,
+            isAIAgentMessageSelected = false,
             customer,
             timezone,
             containsLastCustomerMessage,
@@ -163,6 +165,7 @@ export default class Container extends Component<Props> {
                         'ticket-message-loading': isPending(message),
                         ticketMessagesHighlighted: this.props.isBodyHighlighted,
                         ticketHandledByAIAgent: isAIAgentMessage,
+                        aiMessageSelected: isAIAgentMessageSelected,
                     }
                 )}
             >

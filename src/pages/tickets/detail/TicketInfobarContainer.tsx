@@ -9,7 +9,11 @@ import {Navbar} from 'reactstrap'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {changeActiveTab, getActiveTab} from 'state/ui/ticketAIAgentFeedback'
+import {
+    changeActiveTab,
+    changeTicketMessage,
+    getActiveTab,
+} from 'state/ui/ticketAIAgentFeedback'
 import * as layoutSelectors from 'state/layout/selectors'
 import {RootState} from 'state/types'
 import * as actions from 'state/widgets/actions'
@@ -57,6 +61,7 @@ export const TicketInfobarContainer = ({
                     activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
                 })
             )
+            dispatch(changeTicketMessage({message: undefined}))
         }
     }, [dispatch, params.ticketId])
 
@@ -69,6 +74,7 @@ export const TicketInfobarContainer = ({
         }
 
         dispatch(changeActiveTab({activeTab: tab}))
+        dispatch(changeTicketMessage({message: undefined}))
     }
 
     const aiMessages = useAppSelector(getAIAgentMessages)

@@ -1,7 +1,125 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
 :local {
     .container {
         display: flex;
         flex: 1;
+        flex-direction: column;
         background-color: var(--neutral-grey-0);
+        padding: @layout-spacing-s 0;
+        gap: @layout-spacing-m;
+    }
+
+    .title {
+        .heading-section-regular();
+        font-weight: 500;
+        padding: 0 @layout-spacing-s;
+    }
+
+    .subtitle {
+        .caption-allcaps();
+        color: var(--neutral-grey-5);
+    }
+
+    .summary {
+        .body-regular();
+        padding: 0 @layout-spacing-s;
+    }
+
+    .orderContainer {
+        display: flex;
+        gap: @layout-spacing-xxs;
+        flex-direction: column;
+
+        .subtitle {
+            padding: 0 @layout-spacing-s;
+        }
+    }
+
+    .order {
+        .body-semibold();
+        display: flex;
+        gap: @layout-spacing-xxs;
+        align-items: center;
+        padding: @layout-spacing-xxs @layout-spacing-s;
+
+        i {
+            display: none;
+            font-size: 16px !important;
+        }
+
+        &:hover {
+            cursor: pointer;
+            background-color: var(--neutral-grey-1);
+            color: var(--main-primary);
+
+            i {
+                display: inline-block;
+            }
+        }
+    }
+
+    .lineSeparator {
+        border-top: 1px solid var(--neutral-grey-3);
+        width: 100%;
+        height: 1px;
+        padding: 0 @layout-spacing-s;
+    }
+
+    .sectionContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+
+        .subtitle {
+            padding: 0 @layout-spacing-s;
+        }
+    }
+
+    .section {
+        display: flex;
+        gap: @layout-spacing-xs;
+        justify-content: space-between;
+        padding: @layout-spacing-xxs @layout-spacing-s;
+
+        .sectionText i {
+            display: none;
+            font-size: 16px !important;
+        }
+
+        &:hover:not(:has(.feedback:hover)) {
+            background-color: var(--neutral-grey-1);
+            cursor: pointer;
+
+            .sectionText {
+                color: var(--main-primary);
+                i {
+                    display: inline-block;
+                }
+            }
+        }
+    }
+
+    .sectionText {
+        .body-semibold();
+        display: flex;
+        gap: @layout-spacing-xxs;
+        align-items: center;
+    }
+
+    .feedback {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .positiveFeedback {
+        color: var(--feedback-success-4) !important;
+        pointer-events: none;
+    }
+
+    .negativeFeedback {
+        color: var(--feedback-error) !important;
+        pointer-events: none;
     }
 }

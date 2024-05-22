@@ -175,4 +175,20 @@ describe('<TicketInfobarContainer />', () => {
 
         expect(screen.queryByText(CUSTOMER_INFORMATION_TAB)).toBeNull()
     })
+
+    it('should not render secondary navbar if there are no AI messages', () => {
+        mockedGetAIAgentMessages.mockReturnValue([])
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
+
+        expect(screen.queryByText(CUSTOMER_INFORMATION_TAB)).toBeNull()
+    })
 })
