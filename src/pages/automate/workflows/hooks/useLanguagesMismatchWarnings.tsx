@@ -41,7 +41,8 @@ function getChannelLanguageLabel(l: ChannelLanguage): string {
             return 'German'
         case 'nl':
             return 'Dutch'
-        case 'cz':
+        //AUTEN-3246: Temp fix There is an issue with the cz in channel and in workflows cs-CZ
+        case 'cs':
             return 'Czech'
         case 'da':
             return 'Danish'
