@@ -77,13 +77,14 @@ export const TestFlowEditor = ({
 
     useKey(
         'Escape',
-        () => {
+        (event) => {
             if (isTesting) {
+                event.stopPropagation()
                 onClose()
             }
         },
         undefined,
-        [onClose]
+        [onClose, isTesting]
     )
 
     const selectedLanguage = selectedTestLanguage
