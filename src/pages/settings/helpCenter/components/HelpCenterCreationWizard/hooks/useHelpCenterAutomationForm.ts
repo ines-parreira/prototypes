@@ -1,5 +1,7 @@
 import {useCallback, useReducer} from 'react'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import {logEvent} from 'common/segment/segment'
+import {SegmentEvent} from 'common/segment'
 
 type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean
@@ -67,6 +69,9 @@ export const useHelpCenterAutomationForm = (
     )
 
     const updateFlows = useCallback((flows: Entrypoint[]) => {
+        logEvent(SegmentEvent.AutomateChannelUpdateFromHelpCenterWizard, {
+            page: 'HelpCenterWizard',
+        })
         dispatch({type: 'flowsUpdate', payload: flows})
     }, [])
 

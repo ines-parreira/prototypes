@@ -13,6 +13,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import {getHasAutomate} from 'state/billing/selectors'
 import {TicketChannel} from 'business/types/ticket'
 
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
     MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS,
@@ -112,6 +113,9 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                 entrypoints={workflowsEntrypoints}
                 limitTooltipMessage="You have reached the maximum number of enabled Flows in this channel. Disable another Flow in order to enable this Flow."
                 onChange={(nextEntrypoints) => {
+                    logEvent(SegmentEvent.AutomateChannelUpdateFromChannels, {
+                        page: 'Channels',
+                    })
                     void handleHelpCenterAutomationSettingsUpdate({
                         workflows: nextEntrypoints.map(
                             ({workflow_id, enabled}) => ({

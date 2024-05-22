@@ -1,0 +1,61 @@
+@import '~css/typography';
+@import '~css/util';
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .channelHeader {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-6);
+    }
+    .channelAlertHeader {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-6);
+        margin-bottom: @layout-spacing-s;
+    }
+    .headerDescription {
+        .body-regular();
+        margin-bottom: @layout-spacing-m;
+    }
+    .channelContainer {
+        margin-bottom: @layout-spacing-l;
+    }
+    .channelToggle {
+        margin: @layout-spacing-s 0;
+    }
+    .channelsView {
+        display: flex;
+        justify-content: space-between;
+        gap: @layout-spacing-s;
+        > div {
+            flex: 1;
+            min-width: 0;
+        }
+    }
+    .channelAlert {
+        margin-bottom: @layout-spacing-s;
+    }
+    .channellabelcontainer {
+    }
+    .channelLabel {
+        display: flex;
+        justify-content: space-between;
+        // 50px is the size of blue toggle
+        width: calc(100% - 50px);
+        > div:first-child {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-right: @layout-spacing-xxs;
+        }
+    }
+    .previewDescription {
+        .caption-regular();
+        color: var(--neutral-grey-5);
+        text-align: center;
+        margin-top: 8px;
+    }
+    .warningIcon {
+        color: var(--feedback-warning);
+    }
+}

@@ -1,0 +1,170 @@
+import React, {useCallback, useMemo} from 'react'
+import _ from 'lodash'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} from 'pages/automate/common/components/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    SelfServiceChannel,
+    SelfServiceChannelType,
+} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {TicketChannel} from 'business/types/ticket'
+import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
+import {ChannelLanguage} from 'pages/automate/common/types'
+import {SegmentEvent, logEvent} from 'common/segment'
+import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import css from '../WorkflowsPublisher.less'
+import ChannelWarning from '../helper/ChannelWarning'
+
+const getChannelLanguages = (
+    channel: SelfServiceChannel
+): ChannelLanguage[] => {
+    switch (channel.type) {
+        case TicketChannel.Chat:
+            return getLanguagesFromChatConfig(
+                channel.value.meta
+            ) as ChannelLanguage[]
+        case TicketChannel.HelpCenter:
+            return channel.value.supported_locales
+        case TicketChannel.ContactForm:
+            return [channel.value.default_locale]
+    }
+    return []
+}
+
+type Workflow = {id?: string; workflow_id?: string; enabled: boolean}
+
+type Props = {
+    channel: SelfServiceChannel
+    isLoading: boolean
+    workflows: Workflow[]
+    handleAutomationSettingUpdate: (workflows: Workflow[]) => void
+    enabledQuickResponsesCount?: number
+    isQuickResponseEnabled?: boolean
+    onlySupportedChannels: SelfServiceChannelType[]
+    configuration: WorkflowConfiguration
+}
+const ChannelToggle = ({
+    channel,
+    workflows,
+    isLoading,
+    handleAutomationSettingUpdate,
+    isQuickResponseEnabled,
+    enabledQuickResponsesCount = 0,
+    onlySupportedChannels,
+    configuration,
+}: Props) => {
+    const toggleId = `channel-toggle-${channel.type}-${channel.value.id}`
+    const isChat = TicketChannel.Chat === channel.type
+    const idKey = isChat ? 'workflow_id' : 'id'
+
+    const isMLFlowRecommendationEnabled =
+        useFlags()[FeatureFlagKey.MLFlowsRecommendation]
+
+    const clonedWorkflows = useMemo(() => {
+        return _.cloneDeep(workflows || [])
+    }, [workflows])
+    const currentFlowIndex = clonedWorkflows.findIndex(
+        (entry) => entry[idKey] === configuration.id
+    )
+
+    const isWorkflowEnabled =
+        currentFlowIndex > -1 && clonedWorkflows[currentFlowIndex]?.enabled
+
+    const {getLanguagesMismatchWarning} = useLanguagesMismatchWarnings(
+        channel.type,
+        channel.value.id,
+        getChannelLanguages(channel)
+    )
+
+    const languagesMismatchWarning = getLanguagesMismatchWarning(
+        configuration.id
+    )
+
+    const isLanguageMismatchError =
+        languagesMismatchWarning && languagesMismatchWarning.type === 'error'
+
+    const handleUpdate = useCallback(() => {
+        if (currentFlowIndex > -1) {
+            clonedWorkflows[currentFlowIndex].enabled = !isWorkflowEnabled
+        } else {
+            clonedWorkflows.push({
+                [idKey]: configuration.id,
+                enabled: true,
+            })
+        }
+        logEvent(SegmentEvent.AutomateChannelUpdateFromFlows, {
+            page: 'Workflows',
+        })
+        handleAutomationSettingUpdate(clonedWorkflows)
+    }, [
+        currentFlowIndex,
+        handleAutomationSettingUpdate,
+        clonedWorkflows,
+        isWorkflowEnabled,
+        idKey,
+        configuration.id,
+    ])
+    const maxWorkflowsLimitReached = useMemo(() => {
+        const enabledFlowsCount = clonedWorkflows.filter(
+            (workflow) => workflow.enabled
+        ).length
+        if (isChat) {
+            if (isMLFlowRecommendationEnabled) return false
+            return (
+                enabledFlowsCount >=
+                Math.max(
+                    MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS -
+                        enabledQuickResponsesCount *
+                            Number(isQuickResponseEnabled),
+                    0
+                )
+            )
+        }
+        return enabledFlowsCount >= MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS
+    }, [
+        clonedWorkflows,
+        isChat,
+        isMLFlowRecommendationEnabled,
+        enabledQuickResponsesCount,
+        isQuickResponseEnabled,
+    ])
+
+    return (
+        <div>
+            <ToggleInput
+                id={toggleId}
+                className={css.channelToggle}
+                name={channel.value.name}
+                isToggled={isWorkflowEnabled}
+                isLoading={isLoading}
+                onClick={handleUpdate}
+                isDisabled={
+                    (!!onlySupportedChannels.length ||
+                        isLanguageMismatchError ||
+                        maxWorkflowsLimitReached) &&
+                    !isWorkflowEnabled
+                }
+            >
+                <div className={css.channelLabel}>
+                    <div>{channel.value.name} </div>
+                    {
+                        <ChannelWarning
+                            maxWorkflowsLimitReached={maxWorkflowsLimitReached}
+                            channel={channel}
+                            toggleId={toggleId}
+                            isWorkflowEnabled={isWorkflowEnabled}
+                            onlySupportedChannels={onlySupportedChannels}
+                            missMatchMessage={
+                                languagesMismatchWarning &&
+                                languagesMismatchWarning.message
+                            }
+                        />
+                    }
+                </div>
+            </ToggleInput>
+        </div>
+    )
+}
+export default ChannelToggle

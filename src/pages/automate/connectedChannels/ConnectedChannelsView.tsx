@@ -1,10 +1,9 @@
 import React, {useMemo, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {IntegrationType} from 'models/integration/constants'
 import useSelfServiceChannels, {
     isSelfServiceChatChannel,
@@ -14,7 +13,6 @@ import useSelfServiceChannels, {
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
-import Button from 'pages/common/components/button/Button'
 import useSearch from 'hooks/useSearch'
 import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import AutomateView from 'pages/automate/common/components/AutomateView'
@@ -29,6 +27,7 @@ import {FeatureFlagKey} from '../../../config/featureFlags'
 import {CHANNELS} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useContactFormsAutomationSettings from '../common/hooks/useContactFormsAutomationSettings'
+import NoChannelsAlert from '../workflows/editor/visualBuilder/publisher/helper/NoChannelAlert'
 import ConnectedChannelAccordionItem from './components/ConnectedChannelAccordionItem'
 import ConnectedChannelsPreview from './ConnectedChannelsPreview'
 import ConnectedChannelsViewContext, {
@@ -200,41 +199,19 @@ const ConnectedChannelsView = () => {
                 )}
                 <div className={css.alertsContainer}>
                     {!hasChatChannel && (
-                        <Alert
-                            icon
-                            type={AlertType.Warning}
-                            customActions={
-                                <Link
-                                    to={`/app/settings/channels/gorgias_chat`}
-                                >
-                                    <Button size="small" fillStyle="ghost">
-                                        Go To Chat
-                                    </Button>
-                                </Link>
-                            }
-                        >
-                            Connect a Chat to this store to use Automate
-                            features.
-                        </Alert>
+                        <NoChannelsAlert channelType={TicketChannel.Chat} />
                     )}
                     {!hasHelpCenterChannel &&
                         shopType === IntegrationType.Shopify && (
-                            <Alert
-                                icon
-                                type={AlertType.Warning}
-                                customActions={
-                                    <Link to={`/app/settings/help-center`}>
-                                        <Button size="small" fillStyle="ghost">
-                                            Go To Help Center
-                                        </Button>
-                                    </Link>
-                                }
-                            >
-                                Connect a Help Center to this store to use
-                                Automate features. Currently only available for
-                                Shopify stores.
-                            </Alert>
+                            <NoChannelsAlert
+                                channelType={TicketChannel.HelpCenter}
+                            />
                         )}
+                    {!hasContactFormChannel && (
+                        <NoChannelsAlert
+                            channelType={TicketChannel.ContactForm}
+                        />
+                    )}
                 </div>
             </AutomateViewContent>
             <ConnectedChannelsPreview

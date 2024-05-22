@@ -14,6 +14,7 @@ import {TicketChannel} from 'business/types/ticket'
 
 import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
 import {
     ARTICLE_RECOMMENDATION,
@@ -143,6 +144,9 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
                     </>
                 }
                 onChange={(nextEntrypoints) => {
+                    logEvent(SegmentEvent.AutomateChannelUpdateFromChannels, {
+                        page: 'Channels',
+                    })
                     void handleChatApplicationAutomationSettingsUpdate({
                         ...applicationAutomationSettings,
                         workflows: {

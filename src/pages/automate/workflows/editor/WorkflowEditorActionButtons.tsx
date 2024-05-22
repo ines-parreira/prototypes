@@ -4,6 +4,7 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 import {FeatureFlagKey} from 'config/featureFlags'
+import IconButton from 'pages/common/components/button/IconButton'
 import {ConfirmationButton} from './ConfirmationButton'
 
 interface Props {
@@ -19,6 +20,7 @@ interface Props {
     onPublish: () => void
     onTest: (isTestable: boolean) => void
     onDiscard: () => void
+    onViewChannel: () => void
 }
 
 export const WorkflowEditorActionButtons = ({
@@ -34,9 +36,12 @@ export const WorkflowEditorActionButtons = ({
     onTest,
     onPublish,
     onDiscard,
+    onViewChannel,
 }: Props) => {
     const isPreviewTestButtonVisible =
         useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
+    const isPublishFlowFromFlowBuilder =
+        useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
 
     if (isNewWorkflow) {
         return (
@@ -81,6 +86,20 @@ export const WorkflowEditorActionButtons = ({
                 >
                     Publish
                 </Button>
+                {isPublishFlowFromFlowBuilder && !isDraft && (
+                    <>
+                        <IconButton
+                            id="view-channel"
+                            intent="secondary"
+                            onClick={onViewChannel}
+                        >
+                            chat
+                        </IconButton>
+                        <Tooltip target="view-channel">
+                            Display in channels
+                        </Tooltip>
+                    </>
+                )}
             </>
         )
     }
@@ -134,6 +153,18 @@ export const WorkflowEditorActionButtons = ({
             >
                 Publish
             </Button>
+            {isPublishFlowFromFlowBuilder && !isDraft && (
+                <>
+                    <IconButton
+                        id="view-channel"
+                        intent="secondary"
+                        onClick={onViewChannel}
+                    >
+                        chat
+                    </IconButton>
+                    <Tooltip target="view-channel">Display in channels</Tooltip>
+                </>
+            )}
         </>
     )
 }

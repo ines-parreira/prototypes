@@ -2,6 +2,7 @@ import React, {useCallback, useMemo} from 'react'
 import {Redirect, useHistory, useParams} from 'react-router-dom'
 import {ulid} from 'ulidx'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getHasAutomate} from 'state/billing/selectors'
@@ -10,6 +11,7 @@ import {notify} from 'state/notifications/actions'
 import {Notification} from 'state/notifications/types'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import WorkflowEditorView from './WorkflowEditorView'
 
 export default function WorkflowEditorViewContainer() {
@@ -37,6 +39,8 @@ export default function WorkflowEditorViewContainer() {
             {from: 'workflow-editor'}
         )
     }, [history, shopName, shopType])
+    const isPublishFlowFromFlowBuilder =
+        useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
 
     const isNewWorkflow = editWorkflowId == null
     const workflowId = useMemo(() => editWorkflowId ?? ulid(), [editWorkflowId])
@@ -56,9 +60,10 @@ export default function WorkflowEditorViewContainer() {
 
     const handleFlowPublished = useCallback(
         (isFirstTimePublish: boolean) => {
-            if (isFirstTimePublish) goToConnectedChannelsPage()
+            if (isFirstTimePublish && !isPublishFlowFromFlowBuilder)
+                goToConnectedChannelsPage()
         },
-        [goToConnectedChannelsPage]
+        [goToConnectedChannelsPage, isPublishFlowFromFlowBuilder]
     )
 
     const handleFlowDiscard = useCallback(

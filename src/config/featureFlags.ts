@@ -92,6 +92,7 @@ export enum FeatureFlagKey {
     ObservabilityShowAILibraryForMultiBrands = 'show-ai-library-for-multi-brands',
     OfficeHours = 'office-hours',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
+    PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',
     RevenueBetaTesters = 'revenue-beta-testers',
     RevenueDisableUtmParams = 'revenue-disable-utm-params',

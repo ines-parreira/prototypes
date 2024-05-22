@@ -116,6 +116,8 @@ export type WorkflowEditorContext = {
     ) => Promise<void>
     isDownloadPending: boolean
     checkNewVisualBuilderNode: (nodeId: string) => boolean
+    isFlowPublishingInChannels: boolean
+    setFlowPublishingInChannels: (flag: boolean) => void
 }
 
 export const WorkflowEditorContext = createContext<
@@ -174,6 +176,8 @@ export function useWorkflowEditor(
     const [isDownloadPending, setIsDownloadPending] = useState(false)
     const [shouldShowErrors, setShouldShowErrors] = useState(false)
     const [isTesting, setIsTesting] = useState(false)
+    const [isFlowPublishingInChannels, setFlowPublishingInChannels] =
+        useState(false)
     const [visualBuilderNodeIdEditing, setVisualBuilderNodeIdEditing] =
         useState<VisualBuilderNode['id'] | null>(null)
     const [
@@ -243,7 +247,11 @@ export function useWorkflowEditor(
             setIsTesting(false)
         }
     }, [isTesting, visualBuilderNodeIdEditing])
-
+    useEffect(() => {
+        if (visualBuilderNodeIdEditing && isFlowPublishingInChannels) {
+            setFlowPublishingInChannels(false)
+        }
+    }, [isFlowPublishingInChannels, visualBuilderNodeIdEditing])
     useEffect(() => {
         async function fetch() {
             if (!isNew) {
@@ -726,6 +734,8 @@ export function useWorkflowEditor(
         checkNewVisualBuilderNode,
         setVisualBuilderBranchIdsEditing,
         visualBuilderBranchIdsEditing,
+        isFlowPublishingInChannels,
+        setFlowPublishingInChannels,
     }
 }
 
@@ -902,6 +912,8 @@ export function createWorkflowEditorContextForPreview(
         isDirty: false,
         isTesting: false,
         setIsTesting: () => null,
+        isFlowPublishingInChannels: false,
+        setFlowPublishingInChannels: () => null,
         getVariableListInChildren: () => [],
         checkInvalidVariablesForNode: () => false,
         checkNodeHasVariablesUsedInChildren: () => false,

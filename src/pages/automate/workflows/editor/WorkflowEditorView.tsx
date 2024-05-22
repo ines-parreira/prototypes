@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef} from 'react'
 import {Container} from 'reactstrap'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
 import TextInput from 'pages/common/forms/input/TextInput'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -21,6 +22,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {supportedLanguages} from '../models/workflowConfiguration.types'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {
@@ -70,6 +72,8 @@ function WorkflowEditorViewWrapped({
         useSearch<{template: string | undefined; from: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
+    const isPublishFlowFromFlowBuilder =
+        useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -187,6 +191,10 @@ function WorkflowEditorViewWrapped({
 
     const handlePublish = () => upsertWorkflow(false)
 
+    const openChannelSidePanel = () => {
+        workflowEditorContext.setFlowPublishingInChannels(true)
+    }
+
     const upsertWorkflow = async (isDraft = true) => {
         const configurationError = workflowEditorContext.handleValidate(
             !isDraft
@@ -235,6 +243,8 @@ function WorkflowEditorViewWrapped({
 
         if (!isDraft) {
             onPublish(isFirstTimePublish)
+            if (isPublishFlowFromFlowBuilder && isFirstTimePublish)
+                openChannelSidePanel()
         } else if (isDraft) {
             if (isNewWorkflow) onDraftCreated()
             else onSave?.()
@@ -385,6 +395,7 @@ function WorkflowEditorViewWrapped({
                                 onSave={handleSave}
                                 onPublish={handlePublish}
                                 onDiscard={handleDiscard}
+                                onViewChannel={openChannelSidePanel}
                             />
                         </div>
                         {!isNewWorkflow &&

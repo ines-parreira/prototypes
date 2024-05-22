@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 
+import classNames from 'classnames'
 import Tooltip from 'pages/common/components/Tooltip'
 import {Drawer} from 'pages/common/components/Drawer'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -13,15 +14,26 @@ type Props = {
     onClose: () => void
     children?: ReactNode
     isPreview?: boolean
+    headerSaperator?: boolean
 }
 
-const EditorDrawerHeader = ({onClose, children, label, isPreview}: Props) => {
+const EditorDrawerHeader = ({
+    onClose,
+    children,
+    label,
+    isPreview,
+    headerSaperator,
+}: Props) => {
     const closeButtonId = `${
         isPreview ? 'preview-' : ''
     }close-button-${useId()}`
 
     return (
-        <Drawer.Header className={css.header}>
+        <Drawer.Header
+            className={classNames(css.header, {
+                [css.headerSaperator]: headerSaperator,
+            })}
+        >
             <div className={css.headerTop}>
                 {label && <h3>{label}</h3>}
                 <Drawer.HeaderActions>

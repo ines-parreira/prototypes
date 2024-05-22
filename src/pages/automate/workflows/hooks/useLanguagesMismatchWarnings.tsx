@@ -41,7 +41,7 @@ function getChannelLanguageLabel(l: ChannelLanguage): string {
             return 'German'
         case 'nl':
             return 'Dutch'
-        case 'cs':
+        case 'cz':
             return 'Czech'
         case 'da':
             return 'Danish'
@@ -64,7 +64,7 @@ export default function useLanguagesMismatchWarnings(
     integrationId: number,
     channelLanguages: ChannelLanguage[]
 ) {
-    const chatLanguageSettingsLink = `/app/settings/channels/gorgias_chat/${integrationId}/appearance`
+    const chatLanguageSettingsLink = `/app/settings/channels/gorgias_chat/${integrationId}/preferences`
     const helpCenterLanguageSettingsLink = `/app/settings/help-center/${integrationId}/preferences`
     const contactFormLanguageSettingsLink = `/app/settings/contact-form/${integrationId}/preferences`
     const channelLanguageSettingsLink =
@@ -116,7 +116,7 @@ export default function useLanguagesMismatchWarnings(
                     type: 'error',
                     message: (
                         <>
-                            This flow is in{' '}
+                            This Flow is in{' '}
                             {workflowLanguages
                                 .map(getChannelLanguageLabel)
                                 .join(', ')}
@@ -124,8 +124,8 @@ export default function useLanguagesMismatchWarnings(
                             {channelLanguages
                                 .map(getChannelLanguageLabel)
                                 .join(', ')}
-                            . At least one flow language must match a channel
-                            language in order to enable this flow.
+                            . At least one Flow language must match a channel
+                            language in order to enable this Flow.
                             <br />
                             <Link to={channelLanguageSettingsLink}>
                                 See channel preferences
@@ -146,7 +146,7 @@ export default function useLanguagesMismatchWarnings(
                     message: (
                         <>
                             This channel does not currently support multiple
-                            languages. This flow will be displayed only in the{' '}
+                            languages. This Flow will be displayed only in the{' '}
                             <Link to={channelLanguageSettingsLink}>
                                 channel's selected language
                             </Link>
@@ -166,11 +166,11 @@ export default function useLanguagesMismatchWarnings(
                     type: 'warning',
                     message: (
                         <>
-                            You have not added a version of this flow in{' '}
+                            You have not added a version of this Flow in{' '}
                             {extraChannelLanguages
                                 .map(getChannelLanguageLabel)
                                 .join(', ')}
-                            . This flow will be hidden from customers using the{' '}
+                            . This Flow will be hidden from customers using the{' '}
                             {extraChannelLanguages
                                 .map(getChannelLanguageLabel)
                                 .join(', ')}{' '}
@@ -190,7 +190,7 @@ export default function useLanguagesMismatchWarnings(
                     type: 'warning',
                     message: (
                         <>
-                            For customers to see this flow in{' '}
+                            For customers to see this Flow in{' '}
                             {extraWorkflowLanguages
                                 .map(getChannelLanguageLabel)
                                 .join(', ')}

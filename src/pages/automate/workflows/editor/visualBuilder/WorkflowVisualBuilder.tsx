@@ -37,6 +37,7 @@ import NodeEditorDrawer from './NodeEditorDrawer'
 
 import css from './WorkflowVisualBuilder.less'
 import {TestFlowEditor} from './editors/TestFlowEditor'
+import WorkflowsPublisher from './publisher/WorkflowsPublisher'
 
 const nodeTypes = {
     trigger_button: TriggerButtonNode,
@@ -201,6 +202,7 @@ export function WorkflowVisualBuilderWrapped() {
                             onClose={onDrawerTestEditorClose}
                         />
                     )}
+                    <WorkflowsPublisher />
                 </>
             )}
         </div>

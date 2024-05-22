@@ -8,6 +8,8 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {TicketChannel} from 'business/types/ticket'
+import {logEvent, SegmentEvent} from 'common/segment'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
@@ -128,6 +130,9 @@ const WorkflowsFeatureList = ({
     const handleToggle = (index: number, isEnabled: boolean) => {
         const nextEntrypoints = [...dirtyEntrypoints]
         nextEntrypoints[index] = {...nextEntrypoints[index], enabled: isEnabled}
+        logEvent(SegmentEvent.AutomateChannelUpdateFromFlows, {
+            page: 'Workflows',
+        })
         onChange(nextEntrypoints)
     }
 
@@ -140,9 +145,10 @@ const WorkflowsFeatureList = ({
     const isMLFlowRecommendationEnabled =
         useFlags()[FeatureFlagKey.MLFlowsRecommendation]
 
-    const isLimitReached = isMLFlowRecommendationEnabled
-        ? false
-        : enabledEntrypointsCount >= maxActiveWorkflows
+    const isLimitReached =
+        channelType === TicketChannel.Chat && isMLFlowRecommendationEnabled
+            ? false
+            : enabledEntrypointsCount >= maxActiveWorkflows
 
     return (
         <div className={css.container}>
