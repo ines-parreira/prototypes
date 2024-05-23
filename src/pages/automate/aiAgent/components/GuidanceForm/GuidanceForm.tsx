@@ -136,7 +136,7 @@ export const GuidanceForm = ({
                 shouldRedirectAfterSave={true}
             />
 
-            <div className={css.container}>
+            <div>
                 <div className={css.content}>
                     <BackLink path={routes.guidance} label="Back to Guidance" />
 

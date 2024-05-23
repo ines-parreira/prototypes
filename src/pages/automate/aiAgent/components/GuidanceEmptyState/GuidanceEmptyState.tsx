@@ -90,7 +90,10 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
 
                         {isShowMoreTemplates ? (
                             <li>
-                                <Link to={routes.guidanceTemplates}>
+                                <Link
+                                    to={routes.guidanceTemplates}
+                                    className={css.showMoreLink}
+                                >
                                     <Button
                                         intent="secondary"
                                         fillStyle="ghost"

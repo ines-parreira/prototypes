@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import AutomateView from '../common/components/AutomateView'
 import {useGuidanceArticle} from './hooks/useGuidanceArticle'
 import {
     GuidanceForm,
@@ -9,7 +8,7 @@ import {
 } from './components/GuidanceForm/GuidanceForm'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
 
 type Props = {
     guidanceHelpCenterId: number
@@ -24,7 +23,6 @@ export const AiAgentGuidanceDetailView = ({
     shopName,
     locale,
 }: Props) => {
-    const {headerNavbarItems} = useAiAgentNavigation({shopName})
     const {guidanceArticle, isGuidanceArticleLoading} = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
@@ -69,14 +67,14 @@ export const AiAgentGuidanceDetailView = ({
     }
 
     return (
-        <AutomateView
+        <AiAgentLayout
+            shopName={shopName}
             title={
                 <GuidanceBreadcrumbs
                     shopName={shopName}
                     title={guidanceArticle.title}
                 />
             }
-            headerNavbarItems={headerNavbarItems}
         >
             <GuidanceForm
                 actionType="update"
@@ -88,6 +86,6 @@ export const AiAgentGuidanceDetailView = ({
                     isGuidanceArticleUpdating || isGuidanceArticleLoading
                 }
             />
-        </AutomateView>
+        </AiAgentLayout>
     )
 }
