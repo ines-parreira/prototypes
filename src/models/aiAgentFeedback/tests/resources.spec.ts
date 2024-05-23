@@ -1,8 +1,8 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {
-    apiClient,
     getAIAgentTicketMessagesFeedback,
+    apiClient,
 } from 'models/aiAgentFeedback/resources'
 
 const mockedServer = new MockAdapter(apiClient)

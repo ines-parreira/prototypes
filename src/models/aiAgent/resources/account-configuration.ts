@@ -22,7 +22,7 @@ const baseURL = isProduction()
     : `http://localhost:8096`
 
 // eslint-disable-next-line no-restricted-properties
-const apiClient = axios.create({
+export const apiClient = axios.create({
     baseURL,
     headers: {
         'Content-Type': 'application/json',
