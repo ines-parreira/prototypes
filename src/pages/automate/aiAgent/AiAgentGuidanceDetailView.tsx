@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import AutomateView from '../common/components/AutomateView'
@@ -53,13 +53,19 @@ export const AiAgentGuidanceDetailView = ({
         )
     }
 
+    const initialFields = useMemo(
+        () =>
+            guidanceArticle
+                ? {
+                      name: guidanceArticle.title,
+                      content: guidanceArticle.content,
+                  }
+                : undefined,
+        [guidanceArticle]
+    )
+
     if (!guidanceArticle) {
         return <Loader data-testid="article-loader" />
-    }
-
-    const initialFields = {
-        name: guidanceArticle.title,
-        content: guidanceArticle.content,
     }
 
     return (

@@ -28,11 +28,12 @@ export const useGuidanceHelpCenter = ({
                     reportError(
                         `Guidance Help Center not found for shop: ${shopName}`,
                         {
+                            tags: {team: AI_AGENT_SENTRY_TEAM},
                             extra: {
                                 context:
                                     'Error during fetching of guidance help center',
-                                tags: [AI_AGENT_SENTRY_TEAM],
                             },
+                            level: 'error',
                         }
                     )
                     void dispatch(
