@@ -6,7 +6,6 @@ export type TwilioState = {
     isConnecting: boolean
     isDialing: boolean
     isRinging: boolean
-    isRecording: boolean
     warning: string | null
     error: Error | null
     reconnectAttempts: number

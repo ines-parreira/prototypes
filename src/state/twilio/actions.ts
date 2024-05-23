@@ -5,7 +5,6 @@ import {
     SET_TWILIO_DEVICE,
     SET_TWILIO_IS_CONNECTING,
     SET_TWILIO_IS_DIALING,
-    SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
     SET_TWILIO_ERROR,
     SET_TWILIO_WARNING,
@@ -38,10 +37,6 @@ export type SetIsRingingAction = {
     payload: boolean
 }
 
-export type SetIsRecordingAction = {
-    type: string
-    payload: boolean
-}
 export type SetErrorAction = {
     type: string
     payload: Error | null
@@ -96,13 +91,6 @@ export function setIsRinging(isRinging: boolean): SetIsRingingAction {
     return {
         type: SET_TWILIO_IS_RINGING,
         payload: isRinging,
-    }
-}
-
-export function setIsRecording(isRecording: boolean): SetIsRingingAction {
-    return {
-        type: SET_TWILIO_IS_RECORDING,
-        payload: isRecording,
     }
 }
 

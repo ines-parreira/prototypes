@@ -4,7 +4,6 @@ import {
     SetErrorAction,
     SetIsConnectingAction,
     SetIsDialingAction,
-    SetIsRecordingAction,
     SetIsRingingAction,
     SetWarningAction,
     TwilioAction,
@@ -14,7 +13,6 @@ import {
     SET_TWILIO_DEVICE,
     SET_TWILIO_ERROR,
     SET_TWILIO_IS_DIALING,
-    SET_TWILIO_IS_RECORDING,
     SET_TWILIO_IS_RINGING,
     SET_TWILIO_WARNING,
     INCREMENT_TWILIO_RECONNECT_ATTEMPTS,
@@ -29,7 +27,6 @@ export const initialState: TwilioState = {
     isConnecting: false,
     isDialing: false,
     isRinging: false,
-    isRecording: false,
     warning: null,
     error: null,
     reconnectAttempts: 0,
@@ -66,11 +63,6 @@ export default function reducer(
             return {
                 ...state,
                 isRinging: (action as SetIsRingingAction).payload,
-            }
-        case SET_TWILIO_IS_RECORDING:
-            return {
-                ...state,
-                isRecording: (action as SetIsRecordingAction).payload,
             }
         case SET_TWILIO_ERROR:
             return {

@@ -13,7 +13,6 @@ import {TwilioSocketEventType} from 'business/twilio'
 import * as utils from 'hooks/integrations/phone/utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {SET_TWILIO_IS_RECORDING} from 'state/twilio/constants'
 import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
 import client from '../../../../../../models/api/resources'
@@ -86,7 +85,6 @@ describe('<OngoingPhoneCall/>', () => {
                 call: null,
                 isDialing: false,
                 isRinging: false,
-                isRecording: false,
                 isConnecting: false,
                 warning: null,
                 error: null,
@@ -145,14 +143,6 @@ describe('<OngoingPhoneCall/>', () => {
 
         fireEvent.click(getByTestId('end-call-button'))
         expect(call.disconnect).toHaveBeenCalled()
-
-        const actions = store.getActions() as {
-            type: string
-            payload: {message: any}
-        }[]
-        const lastAction = actions[actions.length - 1]
-        expect(lastAction.type).toBe(SET_TWILIO_IS_RECORDING)
-        expect(lastAction.payload).toBe(false)
     })
 
     it('should start recording', async () => {
@@ -180,7 +170,7 @@ describe('<OngoingPhoneCall/>', () => {
                 put: [{url}],
             })
             expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
-                type: TwilioSocketEventType.CallRecordingStarted,
+                type: TwilioSocketEventType.CallRecordingPaused,
                 data: {
                     call_sid: 'fake-call-sid',
                     id: '8fa8cf4781de72d0e14a34f0fce1b953d8d59bf41e5b7fec05de8088b54de687',
@@ -426,4 +416,75 @@ describe('<OngoingPhoneCall/>', () => {
             'true'
         )
     })
+
+    it.each([
+        {
+            direction: 'inbound',
+            recordInbound: true,
+            recordOutbound: false,
+            expectedIcon: 'stop_circle', // we're recording
+        },
+        {
+            direction: 'inbound',
+            recordInbound: false,
+            recordOutbound: false,
+            expectedIcon: 'fiber_manual_record', // we're not recording
+        },
+        {
+            direction: 'outbound',
+            recordInbound: false,
+            recordOutbound: true,
+            expectedIcon: 'stop_circle', // we're recording
+        },
+        {
+            direction: 'outbound',
+            recordInbound: false,
+            recordOutbound: false,
+            expectedIcon: 'fiber_manual_record', // we're not recording
+        },
+    ])(
+        'should display recording correctly on transfer',
+        ({direction, recordOutbound, recordInbound, expectedIcon}) => {
+            const mockMutate = jest.fn()
+            mockUsePutCallParticipantOnHold.mockReturnValue({
+                mutate: mockMutate,
+            })
+            const call = mockIncomingCall(integrationId) as Call
+            call.customParameters.set('call_direction', direction)
+
+            const testIntegration = {
+                ...integration,
+                meta: {
+                    ...integration.meta,
+                    preferences: {
+                        record_inbound_calls: recordInbound,
+                        record_outbound_calls: recordOutbound,
+                    },
+                },
+            }
+            const testStore = mockStore({
+                twilio: {
+                    device: null,
+                    call: null,
+                    isDialing: false,
+                    isRinging: false,
+                    isConnecting: false,
+                    warning: null,
+                    error: null,
+                    reconnectAttempts: 0,
+                },
+                integrations: fromJS({
+                    integrations: [testIntegration],
+                }),
+            })
+
+            const {getByText} = render(
+                <Provider store={testStore}>
+                    <OngoingPhoneCall call={call} />
+                </Provider>
+            )
+
+            expect(getByText(expectedIcon)).toBeInTheDocument()
+        }
+    )
 })

@@ -25,7 +25,6 @@ import {
 
 import client from 'models/api/resources'
 import {RootState} from 'state/types'
-import {setIsRecording} from 'state/twilio/actions'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
@@ -44,8 +43,6 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 export function OngoingPhoneCall({
     call,
-    isRecording,
-    setIsRecording,
     integration,
     notify,
 }: Props): JSX.Element {
@@ -55,6 +52,7 @@ export function OngoingPhoneCall({
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
     const [isTransferring, setIsTransferring] = useState(false)
+    const [isRecording, setIsRecording] = useState(false)
     const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
     const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
 
@@ -87,9 +85,23 @@ export function OngoingPhoneCall({
         call.disconnect()
     }
 
+    const getCallDirection = (call: Call) => {
+        const direction = call.customParameters.get('call_direction')
+            ? (call.customParameters.get('call_direction') as string)
+            : call.direction
+        if (direction === 'inbound') {
+            return Call.CallDirection.Incoming
+        }
+        if (direction === 'outbound') {
+            return Call.CallDirection.Outgoing
+        }
+        return direction
+    }
+
     useEffect(() => {
-        const isInbound = call.direction === Call.CallDirection.Incoming
-        const isOutbound = call.direction === Call.CallDirection.Outgoing
+        const direction = getCallDirection(call)
+        const isInbound = direction === Call.CallDirection.Incoming
+        const isOutbound = direction === Call.CallDirection.Outgoing
 
         const isInboundAndRecordingEnabled =
             isInbound &&
@@ -282,12 +294,10 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         integrationsSelectors.getIntegrationById(integrationId)(state)
 
     return {
-        isRecording: state.twilio.isRecording,
         integration,
     }
 }
 const mapDispatchToProps = {
-    setIsRecording,
     notify: notifyAction,
 }
 
