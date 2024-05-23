@@ -14,18 +14,6 @@ import {
     VoiceAppErrorCode,
     VoiceAppError,
 } from 'business/twilio'
-import {StoreDispatch} from 'state/types'
-import {
-    incrementReconnectAttempts,
-    resetReconnectAttempts,
-    setCall,
-    setDevice,
-    setError,
-    setIsConnecting,
-    setIsDialing,
-    setIsRinging,
-    setWarning,
-} from 'state/twilio/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {
@@ -39,8 +27,10 @@ import {appQueryClient} from 'api/queryClient'
 import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
 import {ListVoiceCallsParams} from 'models/voiceCall/types'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import {StoreDispatch} from 'state/types'
 
 import {isProduction} from 'utils/environment'
+import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
 import * as utils from './utils'
 
 export async function refreshToken(device: Device) {
@@ -56,17 +46,18 @@ export async function refreshToken(device: Device) {
 
 export async function connectDevice(
     dispatch: StoreDispatch,
-    reconnectAttempts: number
+    reconnectAttempts: number,
+    actions: VoiceDeviceActions
 ) {
-    dispatch(setIsConnecting())
+    actions.setIsConnecting(true)
     await utils.sleep(reconnectAttempts * 5000)
-    dispatch(incrementReconnectAttempts())
+    actions.incrementReconnectAttempts()
 
     const isHttps = window.location.protocol.startsWith('https')
     if (isProduction() && !isHttps) {
         const error = new VoiceAppError(VoiceAppErrorCode.HttpsProtoRequired)
-        dispatch(setError(error))
-        dispatch(setIsConnecting(false))
+        actions.setError(error)
+        actions.setIsConnecting(false)
         reportError(error)
         return
     }
@@ -76,8 +67,8 @@ export async function connectDevice(
         const error = new VoiceAppError(
             VoiceAppErrorCode.TooManyReconnectionAttepts
         )
-        dispatch(setError(error))
-        dispatch(setIsConnecting(false))
+        actions.setError(error)
+        actions.setIsConnecting(false)
         reportError(error)
         return
     }
@@ -85,17 +76,17 @@ export async function connectDevice(
     const token = await getToken()
     if (!token) {
         const error = new VoiceAppError(VoiceAppErrorCode.MissingOrInvalidToken)
-        dispatch(setError(error))
-        dispatch(setIsConnecting(false))
+        actions.setError(error)
+        actions.setIsConnecting(false)
         reportError(error)
         return
     }
 
     const device = utils.createDevice(token)
-    await utils.registerDevice(device, dispatch)
-    dispatch(setDevice(device))
-    dispatch(resetReconnectAttempts())
-    dispatch(setIsConnecting(false))
+    await utils.registerDevice(device, dispatch, actions)
+    actions.setDevice(device)
+    actions.resetReconnectAttempts()
+    actions.setIsConnecting(false)
 }
 
 export const createDevice = (token: string): Device => {
@@ -108,18 +99,26 @@ export const createDevice = (token: string): Device => {
     })
 }
 
-export async function registerDevice(device: Device, dispatch: StoreDispatch) {
+export async function registerDevice(
+    device: Device,
+    dispatch: StoreDispatch,
+    actions: VoiceDeviceActions
+) {
     await device.register()
-    utils.handleDeviceEvents(device, dispatch)
+    utils.handleDeviceEvents(device, dispatch, actions)
 }
 
-export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
+export function handleDeviceEvents(
+    device: Device,
+    dispatch: StoreDispatch,
+    actions: VoiceDeviceActions
+) {
     device.on(Device.EventName.Registered, () => {
         utils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.DeviceRegistered,
         })
 
-        dispatch(setError(null))
+        actions.setError(null)
     })
 
     device.on(Device.EventName.Error, (error: TwilioError.TwilioError) => {
@@ -130,12 +129,12 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
             },
         })
 
-        dispatch(setError(error))
+        actions.setError(error)
 
         switch (error.code) {
             case TwilioErrorCode.AuthorizationAccessTokenExpired:
             case TwilioErrorCode.AuthorizationAccessTokenInvalid:
-                void disconnectDevice(dispatch, device)
+                void utils.disconnectDevice(device, actions)
                 break
 
             default:
@@ -173,22 +172,26 @@ export function handleDeviceEvents(device: Device, dispatch: StoreDispatch) {
             data: gatherCallContext(call),
         })
 
-        dispatch(setIsRinging(true))
-        dispatch(setCall(call))
+        actions.setIsRinging(true)
+        actions.setCall(call)
 
-        utils.handleCallEvents(call, dispatch)
+        utils.handleCallEvents(call, dispatch, actions)
     })
 }
 
-export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
+export function handleCallEvents(
+    call: Call,
+    dispatch: StoreDispatch,
+    actions: VoiceDeviceActions
+) {
     call.on('accept', () => {
         utils.sendTwilioSocketEvent({
             type: TwilioSocketEventType.CallAccepted,
             data: gatherCallContext(call),
         })
 
-        dispatch(setIsRinging(false))
-        dispatch(setIsDialing(false))
+        actions.setIsRinging(false)
+        actions.setIsDialing(false)
 
         // When two agents pick up simultaneously, they both receive an "accept" event. However, the call is
         // actually accepted by the first agent only. The second agent then receives a "cancel" event and the
@@ -204,10 +207,10 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             data: gatherCallContext(call),
         })
 
-        dispatch(setCall(null))
-        dispatch(setIsRinging(false))
-        dispatch(setWarning(null))
-        dispatch(setIsDialing(false))
+        actions.setCall(null)
+        actions.setIsRinging(false)
+        actions.setWarning(null)
+        actions.setIsDialing(false)
     })
 
     call.on('cancel', () => {
@@ -216,10 +219,10 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             data: gatherCallContext(call),
         })
 
-        dispatch(setCall(null))
-        dispatch(setIsRinging(false))
-        dispatch(setWarning(null))
-        dispatch(setIsDialing(false))
+        actions.setCall(null)
+        actions.setIsRinging(false)
+        actions.setWarning(null)
+        actions.setIsDialing(false)
 
         void cancelCall(call)
     })
@@ -232,10 +235,10 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             data: gatherCallContext(call),
         })
 
-        dispatch(setCall(null))
-        dispatch(setIsRinging(false))
-        dispatch(setWarning(null))
-        dispatch(setIsDialing(false))
+        actions.setCall(null)
+        actions.setIsRinging(false)
+        actions.setWarning(null)
+        actions.setIsDialing(false)
 
         void disconnectCall()
     })
@@ -246,7 +249,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             data: gatherCallContext(call),
         })
 
-        dispatch(setError(null))
+        actions.setError(null)
     })
 
     call.on('error', (error: TwilioError.TwilioError) => {
@@ -258,7 +261,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             },
         })
 
-        dispatch(setError(error))
+        actions.setError(error)
         reportError(error)
     })
 
@@ -271,7 +274,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             },
         })
 
-        dispatch(setWarning(metricName))
+        actions.setWarning(metricName)
     })
 
     call.on('warning-cleared', (metricName: string) => {
@@ -283,7 +286,7 @@ export function handleCallEvents(call: Call, dispatch: StoreDispatch) {
             },
         })
 
-        dispatch(setWarning(null))
+        actions.setWarning(null)
     })
 }
 
@@ -338,8 +341,8 @@ export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
 }
 
 export async function disconnectDevice(
-    dispatch: StoreDispatch,
-    device: Device
+    device: Device,
+    actions: VoiceDeviceActions
 ) {
     try {
         if (
@@ -360,7 +363,7 @@ export async function disconnectDevice(
             reportError(error)
         }
     } finally {
-        dispatch(setDevice(null))
+        actions.setDevice(null)
     }
 }
 

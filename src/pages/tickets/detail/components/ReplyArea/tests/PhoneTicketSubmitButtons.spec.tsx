@@ -9,7 +9,7 @@ import {resetLDMocks} from 'jest-launchdarkly-mock'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {mockDevice} from 'tests/twilioMocks'
-import {initialState} from 'state/twilio/reducers'
+import {initialState} from 'state/twilio/voiceDevice'
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 
 describe('<PhoneTicketSubmitButtons/>', () => {
@@ -66,13 +66,13 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         const state = getState()
         store = mockStore(state)
 
-        const {container} = render(
+        const {getByText} = render(
             <Provider store={store}>
                 <PhoneTicketSubmitButtons />
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(getByText('Call')).toBeVisible()
     })
 
     const invalidStates = [
@@ -87,13 +87,13 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         (invalidState) => {
             store = mockStore(invalidState)
 
-            const {container} = render(
+            const {getByText} = render(
                 <Provider store={store}>
                     <PhoneTicketSubmitButtons />
                 </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('Call')).toHaveAttribute('aria-disabled', 'true')
         }
     )
 })

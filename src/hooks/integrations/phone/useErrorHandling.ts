@@ -2,14 +2,13 @@ import {useEffect} from 'react'
 import {dismissNotification} from 'reapop'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {setWarning} from 'state/twilio/actions'
 import {notify} from 'state/notifications/actions'
 import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
 import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
 
 import refreshIcon from 'assets/img/icons/refresh.svg'
+import useVoiceDevice from './useVoiceDevice'
 
 enum PhoneBannerNotification {
     Error = 'phone-error-banner',
@@ -18,7 +17,7 @@ enum PhoneBannerNotification {
 
 export function useErrorHandling() {
     const dispatch = useAppDispatch()
-    const {error, warning} = useAppSelector((state) => state.twilio)
+    const {error, warning, actions} = useVoiceDevice()
 
     useEffect(() => {
         if (error && !isRecoverableError(error)) {
@@ -54,12 +53,12 @@ export function useErrorHandling() {
                     style: NotificationStyle.Banner,
                     id: PhoneBannerNotification.Warning,
                     onClick: () => {
-                        dispatch(setWarning(null))
+                        actions.setWarning(null)
                     },
                 })
             )
         } else {
             dispatch(dismissNotification(PhoneBannerNotification.Warning))
         }
-    }, [dispatch, warning])
+    }, [dispatch, warning, actions])
 }

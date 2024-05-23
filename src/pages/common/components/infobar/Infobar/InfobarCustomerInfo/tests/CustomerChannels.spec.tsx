@@ -10,7 +10,7 @@ import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from 'constants/user'
-import {initialState} from 'state/twilio/reducers'
+import {initialState} from 'state/twilio/voiceDevice'
 import {UserSettingType} from 'config/types/user'
 import {
     DateFormatType,

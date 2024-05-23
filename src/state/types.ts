@@ -37,7 +37,6 @@ import rootReducer from './reducers'
 import {Rule, RuleOperation, RulePriority} from './rules/types'
 import {UIState} from './ui/reducers'
 import {Widget, WidgetEnvironment, WidgetType} from './widgets/types'
-import {TwilioState} from './twilio/types'
 import {Notification} from './notifications/types'
 import {QueriesState} from './queries/types'
 
@@ -64,7 +63,6 @@ export type StoreState = {
     teams: Map<any, any>
     ticket: Map<any, any>
     tickets: Map<any, any>
-    twilio: TwilioState
     ui: UIState
     usersAudit: Map<any, any>
     views: Map<any, any>

@@ -1,0 +1,76 @@
+import React, {useEffect, useMemo, useReducer} from 'react'
+import {Device} from '@twilio/voice-sdk'
+import {Dispatch, bindActionCreators} from '@reduxjs/toolkit'
+import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
+import useAppSelector from 'hooks/useAppSelector'
+import {isDesktopDevice} from 'utils/device'
+import {
+    connectDevice,
+    disconnectDevice,
+    isRecoverableError,
+} from 'hooks/integrations/phone/utils'
+import {isActive} from 'state/currentUser/selectors'
+import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useHasPhone from 'core/app/hooks/useHasPhone'
+import {initialState} from 'state/twilio/voiceDevice'
+import {Context} from './VoiceDeviceContext'
+
+const {actions: contextActions, reducer} = slice
+
+export default function VoiceDeviceProvider({
+    children,
+}: {
+    children: React.ReactNode
+}) {
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const isAgentActive = useAppSelector(isActive)
+    const isDesktop = isDesktopDevice()
+    const hasPhone = useHasPhone()
+
+    const appDispatch = useAppDispatch()
+
+    useErrorHandling()
+
+    const actions = useMemo(
+        () => bindActionCreators(contextActions, dispatch as Dispatch),
+        [dispatch]
+    )
+
+    useEffect(() => {
+        if (state.error && !isRecoverableError(state.error)) {
+            return
+        }
+
+        if (!isDesktop || !hasPhone) {
+            return
+        }
+
+        if (state.isConnecting) {
+            return
+        }
+
+        if (!state.device) {
+            void connectDevice(appDispatch, state.reconnectAttempts, actions)
+            return
+        }
+
+        switch (state.device.state) {
+            case Device.State.Registered:
+            case Device.State.Registering:
+                break
+
+            case Device.State.Unregistered:
+            case Device.State.Destroyed:
+                void disconnectDevice(state.device, actions)
+                break
+
+            default:
+                break
+        }
+    }, [state, appDispatch, isDesktop, isAgentActive, actions, hasPhone])
+
+    const value = useMemo(() => ({...state, actions}), [state, actions])
+
+    return <Context.Provider value={value}>{children}</Context.Provider>
+}

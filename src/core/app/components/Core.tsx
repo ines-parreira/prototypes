@@ -6,6 +6,7 @@ import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {ThemeProvider} from 'theme'
 
+import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import App from './App'
 
 type Props = {
@@ -18,9 +19,11 @@ export default function Core({children}: Props) {
             <ThemeProvider>
                 <NotificationsProvider>
                     <SpotlightProvider>
-                        <SplitTicketViewProvider>
-                            <App>{children}</App>
-                        </SplitTicketViewProvider>
+                        <VoiceDeviceProvider>
+                            <SplitTicketViewProvider>
+                                <App>{children}</App>
+                            </SplitTicketViewProvider>
+                        </VoiceDeviceProvider>
                     </SpotlightProvider>
                 </NotificationsProvider>
             </ThemeProvider>

@@ -9,7 +9,6 @@ import MockAdapter from 'axios-mock-adapter'
 import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {TwilioSocketEventType} from 'business/twilio'
-
 import * as utils from 'hooks/integrations/phone/utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -80,16 +79,6 @@ describe('<OngoingPhoneCall/>', () => {
         mockedServer.reset()
 
         store = mockStore({
-            twilio: {
-                device: null,
-                call: null,
-                isDialing: false,
-                isRinging: false,
-                isConnecting: false,
-                warning: null,
-                error: null,
-                reconnectAttempts: 0,
-            },
             integrations: fromJS({
                 integrations: [integration],
             }),
@@ -463,16 +452,6 @@ describe('<OngoingPhoneCall/>', () => {
                 },
             }
             const testStore = mockStore({
-                twilio: {
-                    device: null,
-                    call: null,
-                    isDialing: false,
-                    isRinging: false,
-                    isConnecting: false,
-                    warning: null,
-                    error: null,
-                    reconnectAttempts: 0,
-                },
                 integrations: fromJS({
                     integrations: [testIntegration],
                 }),

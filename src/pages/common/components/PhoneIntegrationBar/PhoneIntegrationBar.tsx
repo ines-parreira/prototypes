@@ -1,11 +1,10 @@
 import React, {useCallback} from 'react'
 import classNames from 'classnames'
 
-import {useDevice} from 'hooks/integrations/phone/useDevice'
-import useAppSelector from 'hooks/useAppSelector'
 import useBeforeUnload from 'hooks/useBeforeUnload'
 import {useTheme} from 'theme'
 
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import OngoingPhoneCall from './OngoingPhoneCall/OngoingPhoneCall'
 import IncomingPhoneCall from './IncomingPhoneCall/IncomingPhoneCall'
 import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
@@ -13,10 +12,9 @@ import OutgoingPhoneCall from './OutgoingPhoneCall/OutgoingPhoneCall'
 import css from './PhoneIntegrationBar.less'
 
 export default function PhoneIntegrationBar(): JSX.Element | null {
-    useDevice()
     const theme = useTheme()
 
-    const {call, isDialing, isRinging} = useAppSelector((state) => state.twilio)
+    const {call, isDialing, isRinging} = useVoiceDevice()
 
     const isInProgress = useCallback(
         () => !!call || isDialing || isRinging,

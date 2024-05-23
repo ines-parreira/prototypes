@@ -1,16 +1,14 @@
 import {useCallback} from 'react'
 
 import {PhoneCallDirection, TwilioSocketEventType} from 'business/twilio'
-import {setCall, setIsDialing} from 'state/twilio/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import {RootState} from 'state/types'
 import {
     sendTwilioSocketEvent,
     gatherCallContext,
     handleCallEvents,
 } from 'hooks/integrations/phone/utils'
 import {connectCall} from 'hooks/integrations/phone/api'
+import useVoiceDevice from './useVoiceDevice'
 
 type Options = {
     fromAddress: string
@@ -23,7 +21,7 @@ type Options = {
 
 export function useOutboundCall(): (options: Options) => void {
     const dispatch = useAppDispatch()
-    const {device} = useAppSelector((state: RootState) => state.twilio)
+    const {device, actions} = useVoiceDevice()
 
     return useCallback(
         async ({
@@ -63,12 +61,12 @@ export function useOutboundCall(): (options: Options) => void {
                 data: gatherCallContext(call),
             })
 
-            handleCallEvents(call, dispatch)
+            handleCallEvents(call, dispatch, actions)
 
-            dispatch(setIsDialing(true))
-            dispatch(setCall(call))
+            actions.setIsDialing(true)
+            actions.setCall(call)
             await connectCall()
         },
-        [device, dispatch]
+        [device, dispatch, actions]
     )
 }

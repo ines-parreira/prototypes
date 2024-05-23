@@ -1,20 +1,32 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
-import {render, fireEvent, waitFor} from '@testing-library/react'
+import {
+    render,
+    fireEvent,
+    waitFor,
+    cleanup,
+    screen,
+} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
-import {Device} from '@twilio/voice-sdk'
 import thunk from 'redux-thunk'
 
 import {IntegrationType} from 'models/integration/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/twilio/reducers'
+import {initialState} from 'state/twilio/voiceDevice'
 import {mockDevice} from 'tests/twilioMocks'
 import {phoneNumbers as phoneNumberFixtures} from 'fixtures/newPhoneNumber'
 import history from 'pages/history'
 
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import {assumeMock} from 'utils/testing'
+import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
+
+jest.mock('hooks/integrations/phone/useVoiceDevice')
+
+const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const newPhoneNumbers = phoneNumberFixtures.reduce(
@@ -40,13 +52,17 @@ describe('<ClickablePhoneNumber/>', () => {
         }
     }
 
+    afterEach(cleanup)
+
     it('should render href with prefix "tel:" because there is no phone integration', () => {
         const store = mockStore({
-            twilio: initialState,
             integrations: fromJS({integrations: []}),
         })
+        useVoiceDeviceMock.mockReturnValue(
+            initialState as VoiceDeviceContextState
+        )
 
-        const {container} = render(
+        render(
             <Provider store={store}>
                 <ClickablePhoneNumber
                     id="phone-number-1"
@@ -57,14 +73,16 @@ describe('<ClickablePhoneNumber/>', () => {
             </Provider>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('+33 6 11 22 33 44')).toHaveAttribute(
+            'href',
+            'tel:+33611223344'
+        )
     })
 
     it.each([[[getIntegration(1), getIntegration(2)]], [[getIntegration(1)]]])(
         'should render a dropdown listing the phone integrations, with disabled buttons because there is no device',
         (integrations) => {
             const store = mockStore({
-                twilio: initialState,
                 integrations: fromJS({
                     integrations,
                 }),
@@ -72,6 +90,9 @@ describe('<ClickablePhoneNumber/>', () => {
                     newPhoneNumbers,
                 },
             } as RootState)
+            useVoiceDeviceMock.mockReturnValue(
+                initialState as VoiceDeviceContextState
+            )
 
             const {container} = render(
                 <Provider store={store}>
@@ -84,7 +105,11 @@ describe('<ClickablePhoneNumber/>', () => {
                 </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            const options = container.querySelectorAll('.dropdown-item')
+            expect(options).toHaveLength(integrations.length)
+            options.forEach((option) => {
+                expect(option).toHaveClass('disabled')
+            })
         }
     )
 
@@ -92,7 +117,6 @@ describe('<ClickablePhoneNumber/>', () => {
         'should render a dropdown listing the phone integrations, with disabled buttons because the address is invalid',
         (integrations) => {
             const store = mockStore({
-                twilio: initialState,
                 integrations: fromJS({
                     integrations,
                 }),
@@ -100,6 +124,9 @@ describe('<ClickablePhoneNumber/>', () => {
                     newPhoneNumbers,
                 },
             } as RootState)
+            useVoiceDeviceMock.mockReturnValue(
+                initialState as VoiceDeviceContextState
+            )
 
             const {container} = render(
                 <Provider store={store}>
@@ -112,7 +139,11 @@ describe('<ClickablePhoneNumber/>', () => {
                 </Provider>
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            const options = container.querySelectorAll('.dropdown-item')
+            expect(options).toHaveLength(integrations.length)
+            options.forEach((option) => {
+                expect(option).toHaveClass('disabled')
+            })
         }
     )
 
@@ -120,10 +151,6 @@ describe('<ClickablePhoneNumber/>', () => {
         'should render a dropdown listing the phone integrations',
         async (integrations) => {
             const store = mockStore({
-                twilio: {
-                    ...initialState,
-                    device: mockDevice() as Device,
-                },
                 integrations: fromJS({
                     integrations,
                 }),
@@ -131,8 +158,12 @@ describe('<ClickablePhoneNumber/>', () => {
                     newPhoneNumbers,
                 },
             } as RootState)
+            useVoiceDeviceMock.mockReturnValue({
+                ...initialState,
+                device: mockDevice as any,
+            } as VoiceDeviceContextState)
 
-            const {container, getByText, queryByText} = render(
+            render(
                 <Provider store={store}>
                     <ClickablePhoneNumber
                         id="phone-number-1"
@@ -143,21 +174,22 @@ describe('<ClickablePhoneNumber/>', () => {
                 </Provider>
             )
 
-            userEvent.hover(getByText('+33 6 11 22 33 44'))
+            userEvent.hover(screen.getByText('+33 6 11 22 33 44'))
             await waitFor(() => {
-                expect(queryByText('Make outbound call')).not.toBeNull()
+                expect(screen.queryByText('Make outbound call')).not.toBeNull()
             })
 
-            expect(container.firstChild).toMatchSnapshot()
+            integrations.forEach((integration) => {
+                const option = screen.getByText(
+                    new RegExp(`${integration.name}`, 'i')
+                )
+                expect(option).not.toHaveAttribute('disabled')
+            })
         }
     )
 
     it('should render a dropdown listing SMS integrations', async () => {
         const store = mockStore({
-            twilio: {
-                ...initialState,
-                device: mockDevice() as Device,
-            },
             integrations: fromJS({
                 integrations: [
                     getIntegration(1, IntegrationType.Sms),
@@ -168,8 +200,12 @@ describe('<ClickablePhoneNumber/>', () => {
                 newPhoneNumbers,
             },
         } as RootState)
+        useVoiceDeviceMock.mockReturnValue({
+            ...initialState,
+            device: mockDevice as any,
+        } as VoiceDeviceContextState)
 
-        const {container, getByText, queryByText} = render(
+        const {container} = render(
             <Provider store={store}>
                 <ClickablePhoneNumber
                     id="phone-number-1"
@@ -180,18 +216,18 @@ describe('<ClickablePhoneNumber/>', () => {
             </Provider>
         )
 
-        userEvent.hover(getByText('+33 6 11 22 33 44'))
+        userEvent.hover(screen.getByText('+33 6 11 22 33 44'))
         await waitFor(() => {
-            expect(queryByText('Send SMS')).not.toBeNull()
+            expect(screen.queryByText('Send SMS')).not.toBeNull()
         })
 
-        expect(container.firstChild).toMatchSnapshot()
+        const options = container.querySelectorAll('.dropdown-item')
+        expect(options).toHaveLength(2)
     })
 
     it('should render a dropdown to choose between phone and SMS', async () => {
         const push = jest.spyOn(history, 'push')
         const store = mockStore({
-            twilio: {...initialState, device: mockDevice() as Device},
             integrations: fromJS({
                 integrations: [
                     getIntegration(1, IntegrationType.Sms),
@@ -202,8 +238,12 @@ describe('<ClickablePhoneNumber/>', () => {
                 newPhoneNumbers,
             },
         } as RootState)
+        useVoiceDeviceMock.mockReturnValue({
+            ...initialState,
+            device: mockDevice as any,
+        } as VoiceDeviceContextState)
 
-        const {container, queryByText, getByText} = render(
+        const {queryByText, getByText} = render(
             <Provider store={store}>
                 <ClickablePhoneNumber
                     id="phone-number-1"
@@ -228,8 +268,6 @@ describe('<ClickablePhoneNumber/>', () => {
         await waitFor(() => {
             expect(queryByText('Make outbound call or send SMS')).not.toBeNull()
         })
-
-        expect(container.firstChild).toMatchSnapshot()
 
         fireEvent.click(getByText('My Phone Integration 1 (+1 213 373 4253)'))
 

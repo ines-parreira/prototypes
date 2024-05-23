@@ -10,6 +10,7 @@ import {getCurrentUser} from 'state/currentUser/selectors'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
 import useAppSelector from 'hooks/useAppSelector'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 
 type Props = {
     address: string
@@ -22,12 +23,11 @@ const PhoneIntegrationsDropdownList = ({
     customerName,
     integrations,
 }: Props) => {
-    const call = useAppSelector((state) => state.twilio.call)
-    const device = useAppSelector((state) => state.twilio.device)
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
     const ticketId = useAppSelector(DEPRECATED_getTicket).get('id')
     const agentId = useAppSelector(getCurrentUser).get('id')
 
+    const {call, device} = useVoiceDevice()
     const makeOutboundCall = useOutboundCall()
 
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''

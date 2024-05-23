@@ -16,15 +16,16 @@ import {getNewMessageSource} from 'state/newMessage/selectors'
 import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
+import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 
 import css from './PhoneTicketSubmitButtons.less'
 
 function PhoneTicketSubmitButtons() {
     const agent = useAppSelector(getCurrentUser)
-    const call = useAppSelector((state) => state.twilio.call)
-    const device = useAppSelector((state) => state.twilio.device)
     const source = useAppSelector(getNewMessageSource)
     const ticket = useAppSelector(DEPRECATED_getTicket)
+
+    const {call, device} = useVoiceDevice()
 
     const agentId = useMemo(() => agent.get('id') as number, [agent])
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])

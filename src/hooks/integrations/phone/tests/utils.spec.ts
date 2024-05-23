@@ -5,16 +5,7 @@ import {waitFor} from '@testing-library/react'
 
 import {reportError} from 'utils/errors'
 import {
-    incrementReconnectAttempts,
-    setCall,
-    setDevice,
-    setError,
-    setIsConnecting,
-    setIsDialing,
-    setIsRinging,
-    setWarning,
-} from 'state/twilio/actions'
-import {
+    TwilioErrorCode,
     TwilioSocketEventType,
     VoiceAppError,
     VoiceAppErrorCode,
@@ -40,6 +31,8 @@ import * as activityTracker from 'services/activityTracker'
 import * as envUtils from 'utils/environment'
 import {ActivityEvents} from 'services/activityTracker'
 import {appQueryClient} from 'api/queryClient'
+import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
+import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
@@ -54,6 +47,14 @@ const device = {
     register: jest.fn(),
     updateToken: jest.fn(),
 } as unknown as Device
+
+const actions = Object.keys(slice.actions).reduce(
+    (acc, key) => ({
+        ...acc,
+        [key]: jest.fn(),
+    }),
+    {}
+) as VoiceDeviceActions
 
 describe('refreshToken', () => {
     it('should update the device token', async () => {
@@ -97,14 +98,14 @@ describe('connectDevice', () => {
             VoiceAppErrorCode.HttpsProtoRequired
         )
 
-        void connectDevice(dispatch, 0)
+        void connectDevice(dispatch, 0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
-            expect(dispatch).toHaveBeenCalledWith(incrementReconnectAttempts())
-            expect(dispatch).toHaveBeenCalledWith(setError(expectedError))
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting(false))
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(true)
+            expect(actions.incrementReconnectAttempts).toHaveBeenCalled()
+            expect(actions.setError).toHaveBeenCalledWith(expectedError)
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(false)
             expect(reportError).toHaveBeenCalledWith(expectedError)
         })
     })
@@ -114,14 +115,14 @@ describe('connectDevice', () => {
             VoiceAppErrorCode.TooManyReconnectionAttepts
         )
 
-        void connectDevice(dispatch, 6)
+        void connectDevice(dispatch, 6, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
-            expect(dispatch).toHaveBeenCalledWith(incrementReconnectAttempts())
-            expect(dispatch).toHaveBeenCalledWith(setError(expectedError))
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting(false))
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(true)
+            expect(actions.incrementReconnectAttempts).toHaveBeenCalled()
+            expect(actions.setError).toHaveBeenCalledWith(expectedError)
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(false)
             expect(reportError).toHaveBeenCalledWith(expectedError)
         })
     })
@@ -133,14 +134,14 @@ describe('connectDevice', () => {
 
         jest.spyOn(api, 'getToken').mockReturnValue(Promise.resolve(null))
 
-        void connectDevice(dispatch, 0)
+        void connectDevice(dispatch, 0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
-            expect(dispatch).toHaveBeenCalledWith(incrementReconnectAttempts())
-            expect(dispatch).toHaveBeenCalledWith(setError(expectedError))
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting(false))
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(true)
+            expect(actions.incrementReconnectAttempts).toHaveBeenCalled()
+            expect(actions.setError).toHaveBeenCalledWith(expectedError)
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(false)
             expect(reportError).toHaveBeenCalledWith(expectedError)
         })
     })
@@ -148,13 +149,13 @@ describe('connectDevice', () => {
     it('should implement an exponential backoff for connections', () => {
         const sleep = jest.spyOn(utils, 'sleep')
 
-        void connectDevice(dispatch, 1)
+        void connectDevice(dispatch, 1, actions)
         expect(sleep).toHaveBeenCalledWith(5000)
 
-        void connectDevice(dispatch, 2)
+        void connectDevice(dispatch, 2, actions)
         expect(sleep).toHaveBeenCalledWith(10000)
 
-        void connectDevice(dispatch, 5)
+        void connectDevice(dispatch, 5, actions)
         expect(sleep).toHaveBeenCalledWith(25000)
     })
 
@@ -163,15 +164,15 @@ describe('connectDevice', () => {
 
         const register = jest.spyOn(utils, 'registerDevice')
 
-        void connectDevice(dispatch, 0)
+        void connectDevice(dispatch, 0, actions)
         jest.advanceTimersToNextTimer()
 
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting())
-            expect(dispatch).toHaveBeenCalledWith(incrementReconnectAttempts())
-            expect(dispatch).toHaveBeenCalledWith(setDevice(device))
-            expect(dispatch).toHaveBeenCalledWith(setIsConnecting(false))
-            expect(register).toHaveBeenCalledWith(device, dispatch)
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(true)
+            expect(actions.incrementReconnectAttempts).toHaveBeenCalled()
+            expect(actions.setDevice).toHaveBeenCalledWith(device)
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(false)
+            expect(register).toHaveBeenCalledWith(device, dispatch, actions)
         })
     })
 })
@@ -185,25 +186,31 @@ describe('disconnectDevice', () => {
     } as unknown as Device
 
     it('should disconnect, unregister, destroy device and remove listeners', async () => {
-        void disconnectDevice(dispatch, {
-            ...device,
-            state: Device.State.Registered,
-        } as Device)
+        void disconnectDevice(
+            {
+                ...device,
+                state: Device.State.Registered,
+            } as Device,
+            actions
+        )
 
         await waitFor(() => {
             expect(device.disconnectAll).toHaveBeenCalledTimes(1)
             expect(device.unregister).toHaveBeenCalledTimes(1)
             expect(device.destroy).toHaveBeenCalledTimes(1)
             expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
-            expect(dispatch).toHaveBeenCalledWith(setDevice(null))
+            expect(actions.setDevice).toHaveBeenCalledWith(null)
         })
     })
 
     it('should not call disconnect and unregister if the device is unregistered', async () => {
-        void disconnectDevice(dispatch, {
-            ...device,
-            state: Device.State.Unregistered,
-        } as Device)
+        void disconnectDevice(
+            {
+                ...device,
+                state: Device.State.Unregistered,
+            } as Device,
+            actions
+        )
 
         await waitFor(() => {
             expect(device.disconnectAll).toHaveBeenCalledTimes(0)
@@ -211,15 +218,18 @@ describe('disconnectDevice', () => {
 
             expect(device.destroy).toHaveBeenCalledTimes(1)
             expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
-            expect(dispatch).toHaveBeenCalledWith(setDevice(null))
+            expect(actions.setDevice).toHaveBeenCalledWith(null)
         })
     })
 
     it('should only remove listeners and clear the redux state if the device is already destroyed', async () => {
-        void disconnectDevice(dispatch, {
-            ...device,
-            state: Device.State.Destroyed,
-        } as Device)
+        void disconnectDevice(
+            {
+                ...device,
+                state: Device.State.Destroyed,
+            } as Device,
+            actions
+        )
 
         await waitFor(() => {
             expect(device.disconnectAll).toHaveBeenCalledTimes(0)
@@ -227,7 +237,7 @@ describe('disconnectDevice', () => {
             expect(device.destroy).toHaveBeenCalledTimes(0)
 
             expect(device.removeAllListeners).toHaveBeenCalledTimes(1)
-            expect(dispatch).toHaveBeenCalledWith(setDevice(null))
+            expect(actions.setDevice).toHaveBeenCalledWith(null)
         })
     })
 })
@@ -236,11 +246,15 @@ describe('registerDevice', () => {
     it('should register the device and bind the event handlers', async () => {
         const handleDeviceEvents = jest.spyOn(utils, 'handleDeviceEvents')
 
-        void registerDevice(device, dispatch)
+        void registerDevice(device, dispatch, actions)
 
         await waitFor(() => {
             expect(device.register).toHaveBeenCalledTimes(1)
-            expect(handleDeviceEvents).toHaveBeenCalledWith(device, dispatch)
+            expect(handleDeviceEvents).toHaveBeenCalledWith(
+                device,
+                dispatch,
+                actions
+            )
         })
     })
 })
@@ -256,7 +270,7 @@ describe('handleDeviceEvents', () => {
         const handleCallEvents = jest.spyOn(utils, 'handleCallEvents')
 
         beforeAll(() => {
-            handleDeviceEvents(device as Device, dispatch)
+            handleDeviceEvents(device as Device, dispatch, actions)
         })
 
         it('should handle Device.EventName.Registered event', () => {
@@ -266,7 +280,7 @@ describe('handleDeviceEvents', () => {
                 type: TwilioSocketEventType.DeviceRegistered,
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setError(null))
+            expect(actions.setError).toHaveBeenCalledWith(null)
         })
 
         it('should handle Device.EventName.Error event', () => {
@@ -280,8 +294,21 @@ describe('handleDeviceEvents', () => {
                 },
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setError(expectedError))
+            expect(actions.setError).toHaveBeenCalledWith(expectedError)
             expect(reportError).toHaveBeenCalledWith(expectedError)
+        })
+
+        it('should handle Device.EventName.Error event with a Twilio error', async () => {
+            const disconnectDeviceSpy = jest.spyOn(utils, 'disconnectDevice')
+            const expectedError = {
+                code: TwilioErrorCode.AuthorizationAccessTokenInvalid,
+            }
+
+            device.emit(Device.EventName.Error, expectedError)
+
+            await waitFor(() => {
+                expect(disconnectDeviceSpy).toHaveBeenCalled()
+            })
         })
 
         it('should handle Device.EventName.Unregistered event', () => {
@@ -320,9 +347,13 @@ describe('handleDeviceEvents', () => {
                 },
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setIsRinging(true))
-            expect(dispatch).toHaveBeenCalledWith(setCall(call))
-            expect(handleCallEvents).toHaveBeenCalledWith(call, dispatch)
+            expect(actions.setIsRinging).toHaveBeenCalledWith(true)
+            expect(actions.setCall).toHaveBeenCalledWith(call)
+            expect(handleCallEvents).toHaveBeenCalledWith(
+                call,
+                dispatch,
+                actions
+            )
         })
 
         it('should handle Device.EventName.Incoming event when the device is busy', () => {
@@ -350,7 +381,7 @@ describe('handleDeviceEvents', () => {
             expect(reportError).toHaveBeenCalledTimes(1)
 
             expect(call.ignore).not.toHaveBeenCalled()
-            expect(dispatch).not.toHaveBeenCalledWith(setIsRinging(true))
+            expect(actions.setIsRinging).not.toHaveBeenCalledWith(true)
         })
     })
 })
@@ -372,7 +403,7 @@ describe('handleCallEvents', () => {
         }
 
         beforeAll(() => {
-            handleCallEvents(call as Call, dispatch)
+            handleCallEvents(call as Call, dispatch, actions)
         })
 
         it('should handle "accept" event', () => {
@@ -385,8 +416,8 @@ describe('handleCallEvents', () => {
                 data: callContext,
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
-            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
+            expect(actions.setIsRinging).toHaveBeenCalledWith(false)
+            expect(actions.setIsDialing).toHaveBeenCalledWith(false)
             expect(setTimeout).toHaveBeenCalled()
         })
 
@@ -398,10 +429,10 @@ describe('handleCallEvents', () => {
                 data: callContext,
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setCall(null))
-            expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
-            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
-            expect(dispatch).toHaveBeenCalledWith(setWarning(null))
+            expect(actions.setCall).toHaveBeenCalledWith(null)
+            expect(actions.setIsRinging).toHaveBeenCalledWith(false)
+            expect(actions.setIsDialing).toHaveBeenCalledWith(false)
+            expect(actions.setWarning).toHaveBeenCalledWith(null)
         })
 
         it('should handle "cancel" event', () => {
@@ -412,10 +443,10 @@ describe('handleCallEvents', () => {
                 data: callContext,
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setCall(null))
-            expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
-            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
-            expect(dispatch).toHaveBeenCalledWith(setWarning(null))
+            expect(actions.setCall).toHaveBeenCalledWith(null)
+            expect(actions.setIsRinging).toHaveBeenCalledWith(false)
+            expect(actions.setIsDialing).toHaveBeenCalledWith(false)
+            expect(actions.setWarning).toHaveBeenCalledWith(null)
             expect(cancelCall).toHaveBeenCalledWith(call)
         })
 
@@ -429,10 +460,10 @@ describe('handleCallEvents', () => {
                 data: callContext,
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setCall(null))
-            expect(dispatch).toHaveBeenCalledWith(setIsRinging(false))
-            expect(dispatch).toHaveBeenCalledWith(setIsDialing(false))
-            expect(dispatch).toHaveBeenCalledWith(setWarning(null))
+            expect(actions.setCall).toHaveBeenCalledWith(null)
+            expect(actions.setIsRinging).toHaveBeenCalledWith(false)
+            expect(actions.setIsDialing).toHaveBeenCalledWith(false)
+            expect(actions.setWarning).toHaveBeenCalledWith(null)
 
             expect(disconnectCall).toHaveBeenCalledTimes(1)
         })
@@ -445,7 +476,7 @@ describe('handleCallEvents', () => {
                 data: callContext,
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setError(null))
+            expect(actions.setError).toHaveBeenCalledWith(null)
         })
 
         it('should handle "error" event', () => {
@@ -460,7 +491,7 @@ describe('handleCallEvents', () => {
                 },
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setError(expectedError))
+            expect(actions.setError).toHaveBeenCalledWith(expectedError)
         })
 
         it('should handle "warning" event', () => {
@@ -475,7 +506,7 @@ describe('handleCallEvents', () => {
                 },
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setWarning(warning))
+            expect(actions.setWarning).toHaveBeenCalledWith(warning)
         })
 
         it('should handle "warning-cleared" event', () => {
@@ -490,7 +521,7 @@ describe('handleCallEvents', () => {
                 },
             })
 
-            expect(dispatch).toHaveBeenCalledWith(setWarning(null))
+            expect(actions.setWarning).toHaveBeenCalledWith(null)
         })
     })
 })
