@@ -125,7 +125,7 @@ const minProps = {
     fetchViewItemsCancellable: jest.fn(),
     isSearch: false,
     isUpdate: true,
-    type: 'ticket',
+    type: EntityType.Ticket,
 } as unknown as ComponentProps<typeof FilterTopbar>
 
 describe('<FilterTopbar />', () => {

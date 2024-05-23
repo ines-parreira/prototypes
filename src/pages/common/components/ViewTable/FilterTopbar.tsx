@@ -1,3 +1,7 @@
+import * as Sentry from '@sentry/react'
+import classnames from 'classnames'
+
+import {List, Map} from 'immutable'
 import React, {
     MouseEvent,
     useCallback,
@@ -7,8 +11,6 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {List, Map} from 'immutable'
-import classnames from 'classnames'
 import {
     ButtonDropdown,
     Card,
@@ -19,13 +21,14 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
-import * as Sentry from '@sentry/react'
-
 import {logEvent, SegmentEvent} from 'common/segment'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import usePrevious from 'hooks/usePrevious'
+import useUnmount from 'hooks/useUnmount'
+import useUpdateEffect from 'hooks/useUpdateEffect'
 import {JobType} from 'models/job/types'
 import {
     EntityType,
@@ -43,10 +46,10 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import Tooltip from 'pages/common/components/Tooltip'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
-import history from 'pages/history'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
+import history from 'pages/history'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     viewCreated,
@@ -66,6 +69,10 @@ import {
     submitView as submitViewAction,
 } from 'state/views/actions'
 import {
+    SUBMIT_NEW_VIEW_ERROR,
+    SUBMIT_UPDATE_VIEW_ERROR,
+} from 'state/views/constants'
+import {
     areFiltersValid as getAreFiltersValid,
     getActiveView,
     getLastViewId,
@@ -73,16 +80,9 @@ import {
     getViewIdToDisplay,
     isDirty as getIsViewDirty,
 } from 'state/views/selectors'
-import {
-    SUBMIT_NEW_VIEW_ERROR,
-    SUBMIT_UPDATE_VIEW_ERROR,
-} from 'state/views/constants'
 import {FetchViewItemsOptions} from 'state/views/types'
 import {fieldPath, getDefaultOperator, slugify} from 'utils'
 import {reportError} from 'utils/errors'
-import usePrevious from 'hooks/usePrevious'
-import useUpdateEffect from 'hooks/useUpdateEffect'
-import useUnmount from 'hooks/useUnmount'
 
 import Filters from './Filters/ViewFilters'
 import css from './FilterTopbar.less'
@@ -337,18 +337,20 @@ export const FilterTopbar = ({
             <CardBody className="filter-topbar-content">
                 {isUpdate && !isSearch && (
                     <div className={css.cardActions}>
-                        {!tickets.isEmpty() && type === 'ticket' && (
-                            <Button
-                                intent="secondary"
-                                onClick={createExportTicketJob}
-                                isDisabled={isLaunchingJob}
-                                title="Export all view tickets"
-                            >
-                                <ButtonIconLabel icon="file_download">
-                                    Export tickets
-                                </ButtonIconLabel>
-                            </Button>
-                        )}
+                        {!tickets.isEmpty() &&
+                            (type === EntityType.Ticket ||
+                                type === EntityType.TicketWithHighlight) && (
+                                <Button
+                                    intent="secondary"
+                                    onClick={createExportTicketJob}
+                                    isDisabled={isLaunchingJob}
+                                    title="Export all view tickets"
+                                >
+                                    <ButtonIconLabel icon="file_download">
+                                        Export tickets
+                                    </ButtonIconLabel>
+                                </Button>
+                            )}
                         <ViewSharingButton view={activeView} />
                     </div>
                 )}

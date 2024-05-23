@@ -7,7 +7,8 @@ import * as viewsConfig from 'config/views'
 import Search from 'pages/common/components/Search'
 import Table from 'pages/common/components/ViewTable/Table'
 
-import css from './SelectTargetTicket.less'
+import {EntityType} from 'models/view/types'
+import css from 'pages/common/components/MergeTickets/SelectTargetTicket.less'
 
 type Props = ConnectedProps<typeof connector> & {
     sourceTicket: Map<any, any>
@@ -86,7 +87,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
             sourceTicket.get('id') as number
         )
 
-        const config = viewsConfig.getConfigByName('ticket')
+        const config = viewsConfig.getConfigByName(EntityType.Ticket)
         const fields = (config.get('fields') as List<Map<any, any>>).filter(
             (field) => {
                 return (baseView.get('fields') as List<any>).includes(

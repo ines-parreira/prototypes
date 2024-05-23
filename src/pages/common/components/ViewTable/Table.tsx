@@ -2,6 +2,7 @@ import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
+import {EntityType} from 'models/view/types'
 
 import BlankState from 'pages/common/components/BlankState/BlankState'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -27,10 +28,10 @@ import {
 } from 'state/views/types'
 import usePrevious from 'hooks/usePrevious'
 
-import HeaderCell from './Table/HeaderCell'
-import Row from './Table/Row'
-import ViewSelection from './Table/ViewSelection'
-import css from './Table.less'
+import HeaderCell from 'pages/common/components/ViewTable/Table/HeaderCell'
+import Row from 'pages/common/components/ViewTable/Table/Row'
+import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
+import css from 'pages/common/components/ViewTable/Table.less'
 
 type OwnProps = {
     headerRow?: ReactNode
@@ -71,7 +72,7 @@ const TableContainer = ({
     selectedItemsIds,
     toggleIdInPageSelection,
     toggleViewSelection,
-    type = 'ticket',
+    type = EntityType.Ticket,
     updatePageSelection,
     view,
     viewSelected,
@@ -305,7 +306,8 @@ const TableContainer = ({
                     {(!!navigation.get('next_items') ||
                         !!navigation.get('prev_items')) &&
                     areAllSelected &&
-                    type === 'ticket' ? (
+                    (type === EntityType.Ticket ||
+                        type === EntityType.TicketWithHighlight) ? (
                         <ViewSelection
                             colSize={fields.size + 1}
                             selectedCount={items.size}

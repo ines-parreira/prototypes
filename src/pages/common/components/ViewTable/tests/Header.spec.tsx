@@ -2,6 +2,7 @@ import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
+import {EntityType} from 'models/view/types'
 
 import {getConfigByName} from 'config/views'
 import {view as viewsFixture} from 'fixtures/views'
@@ -10,7 +11,7 @@ import {getLDClient} from 'utils/launchDarkly'
 
 import {newViews} from 'models/view/mocks'
 import {systemViewIcons} from 'utils/views'
-import {HeaderContainer} from '../Header'
+import {HeaderContainer} from 'pages/common/components/ViewTable/Header'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 
@@ -32,7 +33,7 @@ describe('ViewTable::Header', () => {
         editMode: true,
     }) as Map<any, any>
 
-    const type = 'ticket'
+    const type = EntityType.Ticket
 
     const minProps = {
         type,

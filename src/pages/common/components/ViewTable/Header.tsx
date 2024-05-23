@@ -8,7 +8,7 @@ import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import {getConfigByName} from 'config/views'
-import {ViewCategory} from 'models/view/types'
+import {EntityType, ViewCategory} from 'models/view/types'
 import EditableTitle from 'pages/common/components/EditableTitle'
 import Search from 'pages/common/components/Search'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -237,11 +237,16 @@ export class HeaderContainer extends React.Component<Props, State> {
                             ) : (
                                 <div
                                     className={classnames(css.title, {
-                                        [css.editable]: type !== 'customer',
+                                        [css.editable]:
+                                            type !== EntityType.Customer &&
+                                            type !==
+                                                EntityType.CustomerWithHighlight,
                                     })}
                                     color="transparent"
                                     onClick={() =>
-                                        type !== 'customer' &&
+                                        type !== EntityType.Customer &&
+                                        type !==
+                                            EntityType.CustomerWithHighlight &&
                                         this.props.setViewEditMode(activeView)
                                     }
                                 >

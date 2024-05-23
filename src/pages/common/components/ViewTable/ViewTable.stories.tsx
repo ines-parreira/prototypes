@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {EntityType} from 'models/view/types'
 
 import * as ticketFixtures from 'fixtures/ticket'
 import {view as fixtureView} from 'fixtures/views'
@@ -30,7 +31,7 @@ const storyConfig: Meta = {
 }
 
 const defaultProps = {
-    type: 'ticket',
+    type: EntityType.Ticket,
     isLoading: () => false,
     items: fromJS([ticketFixtures.ticket]),
     activeView: fromJS(fixtureView),

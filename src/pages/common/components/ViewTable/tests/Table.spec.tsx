@@ -4,6 +4,7 @@ import {createEvent, fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
+import {EntityType} from 'models/view/types'
 
 import * as viewsConfig from 'config/views'
 import * as ticketFixtures from 'fixtures/ticket'
@@ -15,7 +16,7 @@ import BlankState from 'pages/common/components/BlankState/BlankState'
 import Row from 'pages/common/components/ViewTable/Table/Row'
 import {ViewNavDirection} from 'state/views/types'
 
-import Table from '../Table'
+import Table from 'pages/common/components/ViewTable/Table'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
@@ -70,7 +71,7 @@ describe('<Table />', () => {
         view: fromJS({}),
         type: viewConfig.get('name'),
         fields: (viewConfig.get('fields') as List<any>).take(3) as List<any>,
-        config: viewsConfig.getConfigByName('ticket'),
+        config: viewsConfig.getConfigByName(EntityType.Ticket),
         items: fromJS([ticketFixtures.ticket]),
         isSearch: false,
         isLoading: () => false,

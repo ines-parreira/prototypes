@@ -52,7 +52,7 @@ const createLocation = ({
 }
 
 const defaultProps = {
-    config: viewsConfig.getConfigByName('ticket'),
+    config: viewsConfig.getConfigByName(EntityType.Ticket),
     isSearch: true,
     activeView: searchView(''),
     updateView: jest.fn(),

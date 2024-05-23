@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
 
 import {getConfigByName, getTicketViewField} from 'config/views'
-import {ViewField} from 'models/view/types'
+import {EntityType, ViewField} from 'models/view/types'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
 import FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
@@ -74,7 +74,7 @@ describe('FilterDropdown', () => {
     const defaultSearchResults = [defaultItem]
     const minProps: ComponentProps<typeof FilterDropdown> = {
         field: getTicketViewField(ViewField.Customer),
-        viewConfig: getConfigByName('ticket'),
+        viewConfig: getConfigByName(EntityType.Ticket),
         updateFieldFilter: jest.fn(),
         toggleDropdown: jest.fn(),
     }
