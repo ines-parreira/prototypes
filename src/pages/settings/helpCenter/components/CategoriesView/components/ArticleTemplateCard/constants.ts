@@ -10,11 +10,32 @@ export const ARTICLE_TEMPLATE_CATEGORIES: Record<
         icon?: {name: string; color: string}
     }
 > = {
+    [ArticleTemplateCategory.AccountAndSubscriptions]: {
+        label: 'Account & Subscriptions',
+        style: {
+            color: 'var(--accessory-magenta-3)',
+            background: 'var(--accessory-magenta-1)',
+        },
+    },
+    [ArticleTemplateCategory.OrderIssues]: {
+        label: 'Order Issues',
+        style: {
+            color: 'var(--neutral-grey-6)',
+            background: 'var(--neutral-grey-3)',
+        },
+    },
     [ArticleTemplateCategory.OrderManagement]: {
         label: 'Order Management',
         style: {
             color: 'var(--accessory-orange-3)',
             background: 'var(--accessory-orange-1)',
+        },
+    },
+    [ArticleTemplateCategory.PaymentsAndDiscounts]: {
+        label: 'Payments & Discounts',
+        style: {
+            color: 'var(--accessory-blue-3)',
+            background: 'var(--accessory-blue-1)',
         },
     },
     [ArticleTemplateCategory.ReturnsRefunds]: {

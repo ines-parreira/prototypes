@@ -7,7 +7,10 @@ export type ArticleTemplateKey =
     | 'packageLostOrDamaged'
 
 export enum ArticleTemplateCategory {
+    AccountAndSubscriptions = 'accountAndSubscriptions',
+    OrderIssues = 'orderIssues',
     OrderManagement = 'orderManagement',
+    PaymentsAndDiscounts = 'paymentsAndDiscounts',
     ReturnsRefunds = 'returnsAndRefunds',
     ShippingDelivery = 'shippingAndDelivery',
 }
