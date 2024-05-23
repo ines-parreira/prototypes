@@ -100,8 +100,12 @@ describe('<AiAgentGuidanceDetail />', () => {
     it('should disable inputs when data not changed', () => {
         renderComponent()
 
-        expect(screen.getByText('Save Changes')).toBeDisabled()
-        expect(screen.getByText('Save And Test')).toBeDisabled()
+        expect(
+            screen.getByRole('button', {name: 'Save Changes'})
+        ).toBeDisabled()
+        expect(
+            screen.getByRole('button', {name: 'Save And Test'})
+        ).toBeDisabled()
     })
 
     it('should disable save when name input is empty', () => {
@@ -109,8 +113,12 @@ describe('<AiAgentGuidanceDetail />', () => {
 
         userEvent.clear(screen.getByLabelText(/Guidance name/))
 
-        expect(screen.getByText('Save Changes')).toBeDisabled()
-        expect(screen.getByText('Save And Test')).toBeDisabled()
+        expect(
+            screen.getByRole('button', {name: 'Save Changes'})
+        ).toBeDisabled()
+        expect(
+            screen.getByRole('button', {name: 'Save And Test'})
+        ).toBeDisabled()
     })
 
     it('should update guidance article', async () => {

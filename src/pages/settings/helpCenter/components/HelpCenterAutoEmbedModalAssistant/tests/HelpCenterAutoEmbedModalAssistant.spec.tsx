@@ -47,7 +47,7 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
         )
 
         screen.getByText(MODAL_LABELS.TITLE, {selector: 'div'})
-        screen.getByText(MODAL_LABELS.EMBED, {selector: 'button'})
+        screen.getByRole('button', {name: MODAL_LABELS.EMBED})
         screen.getByText(MODAL_LABELS.CANCEL)
 
         // a PageEmbedmentForm label
@@ -94,8 +94,8 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
             </QueryClientProvider>
         )
 
-        const embedButton = screen.getByText(MODAL_LABELS.EMBED, {
-            selector: 'button',
+        const embedButton = screen.getByRole('button', {
+            name: MODAL_LABELS.EMBED,
         })
 
         expect(embedButton).toHaveClass('isDisabled')

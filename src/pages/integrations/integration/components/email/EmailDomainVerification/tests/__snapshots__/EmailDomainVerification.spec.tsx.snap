@@ -567,7 +567,9 @@ exports[`<EmailDomainVerification/> render() should render the page when there i
     color="primary"
     type="submit"
   >
-    Add Domain
+    <span>
+      Add Domain
+    </span>
   </button>
 </div>
 `;
@@ -646,7 +648,9 @@ exports[`<EmailDomainVerification/> render() should render the page when there i
     color="primary"
     type="submit"
   >
-    Add Domain
+    <span>
+      Add Domain
+    </span>
   </button>
 </div>
 `;
@@ -724,7 +728,9 @@ exports[`<EmailDomainVerification/> render() should render the page with an opti
     color="primary"
     type="submit"
   >
-    Add Domain
+    <span>
+      Add Domain
+    </span>
   </button>
 </div>
 `;
@@ -802,7 +808,9 @@ exports[`<EmailDomainVerification/> render() should render the page with an opti
     color="primary"
     type="submit"
   >
-    Add Domain
+    <span>
+      Add Domain
+    </span>
   </button>
 </div>
 `;

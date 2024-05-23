@@ -195,7 +195,9 @@ exports[`<RulesLibrary/> should render the rule library view 1`] = `
             class="wrapper float-right fill primary medium"
             type="button"
           >
-            Create Custom Rule
+            <span>
+              Create Custom Rule
+            </span>
           </button>
         </div>
       </div>
@@ -416,7 +418,9 @@ exports[`<RulesLibrary/> should render the rules library view 1`] = `
             class="wrapper float-right fill primary medium"
             type="button"
           >
-            Create Custom Rule
+            <span>
+              Create Custom Rule
+            </span>
           </button>
         </div>
       </div>

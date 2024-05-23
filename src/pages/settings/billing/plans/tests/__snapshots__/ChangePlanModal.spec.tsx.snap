@@ -69,14 +69,18 @@ exports[`<ChangePlanModal /> should display only compared plan when there is no 
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Confirm
+                <span>
+                  Confirm
+                </span>
               </button>
             </div>
           </div>
@@ -282,14 +286,18 @@ exports[`<ChangePlanModal /> should render 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Confirm
+                <span>
+                  Confirm
+                </span>
               </button>
             </div>
           </div>
@@ -496,14 +504,18 @@ exports[`<ChangePlanModal /> should render a discount when discounted prices 1`]
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Confirm
+                <span>
+                  Confirm
+                </span>
               </button>
             </div>
           </div>
@@ -704,14 +716,18 @@ exports[`<ChangePlanModal /> should render the Automate plan features for the cu
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Confirm
+                <span>
+                  Confirm
+                </span>
               </button>
             </div>
           </div>

@@ -229,14 +229,18 @@ exports[`<EditTicketField/> should render 2`] = `
               id="custom-fields-form-save-button"
               type="button"
             >
-              Save changes
+              <span>
+                Save changes
+              </span>
             </button>
             <button
               aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
-              Cancel
+              <span>
+                Cancel
+              </span>
             </button>
           </div>
           <div
@@ -247,7 +251,9 @@ exports[`<EditTicketField/> should render 2`] = `
               class="wrapper fill secondary medium"
               type="button"
             >
-              Archive field
+              <span>
+                Archive field
+              </span>
             </button>
           </div>
         </div>

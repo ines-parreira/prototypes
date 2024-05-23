@@ -176,14 +176,18 @@ exports[`<FieldForm/> should render correctly 1`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
     <div
@@ -194,7 +198,9 @@ exports[`<FieldForm/> should render correctly 1`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        Archive field
+        <span>
+          Archive field
+        </span>
       </button>
     </div>
   </div>
@@ -373,7 +379,9 @@ exports[`<FieldForm/> should render correctly 2`] = `
         class="wrapper import ghost primary small"
         type="button"
       >
-        Import from CSV
+        <span>
+          Import from CSV
+        </span>
       </button>
     </span>
     <div
@@ -559,14 +567,18 @@ exports[`<FieldForm/> should render correctly 2`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
     <div
@@ -577,7 +589,9 @@ exports[`<FieldForm/> should render correctly 2`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        Archive field
+        <span>
+          Archive field
+        </span>
       </button>
     </div>
   </div>
@@ -739,14 +753,18 @@ exports[`<FieldForm/> should render correctly 3`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
     <div
@@ -757,7 +775,9 @@ exports[`<FieldForm/> should render correctly 3`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        Archive field
+        <span>
+          Archive field
+        </span>
       </button>
     </div>
   </div>
@@ -919,14 +939,18 @@ exports[`<FieldForm/> should render correctly 4`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
     <div
@@ -937,7 +961,9 @@ exports[`<FieldForm/> should render correctly 4`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        Archive field
+        <span>
+          Archive field
+        </span>
       </button>
     </div>
   </div>
@@ -1121,14 +1147,18 @@ exports[`<FieldForm/> should render correctly 5`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
     <div
@@ -1139,7 +1169,9 @@ exports[`<FieldForm/> should render correctly 5`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        Archive field
+        <span>
+          Archive field
+        </span>
       </button>
     </div>
   </div>

@@ -57,7 +57,11 @@ const Button = (
                         : {})}
                 >
                     {isLoading && <ButtonSpinner />}
-                    {children}
+                    {typeof children === 'string' ? (
+                        <span>{children}</span>
+                    ) : (
+                        children
+                    )}
                 </button>
             )}
         </BaseButton>

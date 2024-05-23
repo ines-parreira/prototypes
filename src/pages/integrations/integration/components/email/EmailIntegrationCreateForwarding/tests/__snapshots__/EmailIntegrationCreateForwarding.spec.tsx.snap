@@ -176,7 +176,9 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
         color="primary"
         type="submit"
       >
-        Verify email forwarding
+        <span>
+          Verify email forwarding
+        </span>
       </button>
     </div>
   </div>
@@ -359,7 +361,9 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
         color="primary"
         type="submit"
       >
-        Verify email forwarding
+        <span>
+          Verify email forwarding
+        </span>
       </button>
     </div>
   </div>

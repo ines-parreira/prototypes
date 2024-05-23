@@ -130,7 +130,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     it.each(['confirmation message', 'sms content'])(
         'should disable save changes button',
         (inputText) => {
-            const {getByText} = renderComponent(
+            const {getByText, getByRole} = renderComponent(
                 {
                     confirmation_message: {
                         voice_message_type: VoiceMessageType.TextToSpeech,
@@ -150,7 +150,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
 
             userEvent.clear(getByText(inputText))
 
-            expect(getByText('Save Changes')).toHaveAttribute(
+            expect(getByRole('button', {name: 'Save Changes'})).toHaveAttribute(
                 'aria-disabled',
                 'true'
             )

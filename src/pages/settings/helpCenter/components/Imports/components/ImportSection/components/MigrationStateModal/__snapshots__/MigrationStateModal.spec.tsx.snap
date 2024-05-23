@@ -378,7 +378,9 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
               class="wrapper actionsButton fill secondary medium"
               type="button"
             >
-              Close
+              <span>
+                Close
+              </span>
             </button>
           </div>
         </div>
@@ -488,7 +490,9 @@ exports[`<MigrationStateModal /> snapshots Connected 1`] = `
             class="wrapper w-100 fill primary medium"
             type="button"
           >
-            Start migrating
+            <span>
+              Start migrating
+            </span>
           </button>
         </div>
       </div>
@@ -837,7 +841,9 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                 Loading...
               </span>
             </svg>
-            Loading
+            <span>
+              Loading
+            </span>
           </button>
         </div>
       </div>
@@ -1062,7 +1068,9 @@ exports[`<MigrationStateModal /> snapshots In progress without failures 1`] = `
                 Loading...
               </span>
             </svg>
-            Loading
+            <span>
+              Loading
+            </span>
           </button>
         </div>
       </div>
@@ -1200,7 +1208,9 @@ exports[`<MigrationStateModal /> snapshots Migration start loading 1`] = `
                 Loading...
               </span>
             </svg>
-            Start migrating
+            <span>
+              Start migrating
+            </span>
           </button>
         </div>
       </div>
@@ -1532,7 +1542,9 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
             class="wrapper w-100 fill secondary medium"
             type="button"
           >
-            End migration
+            <span>
+              End migration
+            </span>
           </button>
         </div>
       </div>
@@ -1726,7 +1738,9 @@ exports[`<MigrationStateModal /> snapshots Succeeded 1`] = `
             class="wrapper w-100 fill primary medium"
             type="button"
           >
-            Finish
+            <span>
+              Finish
+            </span>
           </button>
         </div>
       </div>

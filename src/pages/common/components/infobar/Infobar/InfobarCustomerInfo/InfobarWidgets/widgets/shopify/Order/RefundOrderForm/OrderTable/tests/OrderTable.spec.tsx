@@ -173,10 +173,10 @@ describe('<OrderTable/>', () => {
         screen.getAllByRole('textbox').forEach((textbox) => {
             expect(textbox).toBeDisabled()
         })
-        screen.getAllByText('▼').forEach((button) => {
+        screen.getAllByRole('button', {name: '▼'}).forEach((button) => {
             expect(button).toHaveAttribute('aria-disabled', 'true')
         })
-        screen.getAllByText('▲').forEach((button) => {
+        screen.getAllByRole('button', {name: '▲'}).forEach((button) => {
             expect(button).toHaveAttribute('aria-disabled', 'true')
         })
     })

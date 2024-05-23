@@ -136,10 +136,9 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         it('disables the button until the form is valid', () => {
-            expect(screen.getByText('Create')).toHaveAttribute(
-                'aria-disabled',
-                'true'
-            )
+            expect(
+                screen.getByRole('button', {name: 'Create'})
+            ).toHaveAttribute('aria-disabled', 'true')
 
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
@@ -150,10 +149,9 @@ describe('<CampaignDetailsForm />', () => {
                 </Provider>
             )
 
-            expect(screen.getByText('Create')).toHaveAttribute(
-                'aria-disabled',
-                'false'
-            )
+            expect(
+                screen.getByRole('button', {name: 'Create'})
+            ).toHaveAttribute('aria-disabled', 'false')
         })
     })
 

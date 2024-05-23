@@ -23,14 +23,18 @@ exports[`<ErrorBoundary/> should render an error message because an error occurr
     class="wrapper mr-2 mb-2 float-left fill primary medium"
     type="button"
   >
-    Reload page
+    <span>
+      Reload page
+    </span>
   </button>
   <button
     aria-disabled="false"
     class="wrapper mr-2 mb-2 fill secondary medium"
     type="button"
   >
-    Show details
+    <span>
+      Show details
+    </span>
   </button>
   <div
     class="collapse"

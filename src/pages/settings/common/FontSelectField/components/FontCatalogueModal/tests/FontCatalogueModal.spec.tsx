@@ -337,9 +337,9 @@ describe('<FontCatalogueModal />', () => {
             </Provider>
         )
 
-        const submitButton = screen.getByText<HTMLButtonElement>(
-            'Save Selected Fonts'
-        )
+        const submitButton = screen.getByRole('button', {
+            name: 'Save Selected Fonts',
+        })
         expect(submitButton).toHaveAttribute('aria-disabled', 'true')
 
         fireEvent.click(screen.getByText('Adriana'))

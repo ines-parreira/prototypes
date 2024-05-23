@@ -10,14 +10,18 @@ exports[`<ActionButtons/> should render the action buttons if isEditing is set t
       class="wrapper actionButton fill secondary small left"
       type="button"
     >
-      I am in snapshots
+      <span>
+        I am in snapshots
+      </span>
     </button>
     <button
       aria-disabled="false"
       class="wrapper actionButton fill secondary small right"
       type="button"
     >
-      I am in snapshots too
+      <span>
+        I am in snapshots too
+      </span>
     </button>
   </span>
 </div>
@@ -35,7 +39,9 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       class="wrapper fill secondary small"
       type="button"
     >
-      I am in snapshots
+      <span>
+        I am in snapshots
+      </span>
     </button>
     <span
       class="editIcons"
@@ -60,7 +66,9 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       class="wrapper fill secondary small"
       type="button"
     >
-      I am in snapshots too
+      <span>
+        I am in snapshots too
+      </span>
     </button>
     <span
       class="editIcons"

@@ -37,7 +37,9 @@ exports[`<YotpoIntegrationList/> render() should not render an integration cause
         class="wrapper fill primary medium"
         type="submit"
       >
-        Add Yotpo account
+        <span>
+          Add Yotpo account
+        </span>
       </button>
     </div>
   </div>
@@ -118,7 +120,9 @@ exports[`<YotpoIntegrationList/> render() should render a deactivated integratio
         class="wrapper fill primary medium"
         type="submit"
       >
-        Add Yotpo account
+        <span>
+          Add Yotpo account
+        </span>
       </button>
     </div>
   </div>
@@ -238,7 +242,9 @@ exports[`<YotpoIntegrationList/> render() should render a loader because the int
         class="wrapper fill primary medium"
         type="submit"
       >
-        Add Yotpo account
+        <span>
+          Add Yotpo account
+        </span>
       </button>
     </div>
   </div>
@@ -351,7 +357,9 @@ exports[`<YotpoIntegrationList/> render() should render the Yotpo integration 1`
         class="wrapper fill primary medium"
         type="submit"
       >
-        Add Yotpo account
+        <span>
+          Add Yotpo account
+        </span>
       </button>
     </div>
   </div>

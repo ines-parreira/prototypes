@@ -290,7 +290,9 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
               id="rule-item-save"
               type="button"
             >
-              Create rule
+              <span>
+                Create rule
+              </span>
             </button>
           </div>
         </div>
@@ -317,7 +319,9 @@ exports[`<RuleFormEditor /> should render editor for creating rule 1`] = `
               class="wrapper cardButton fill primary medium"
               type="button"
             >
-              Browse Templates
+              <span>
+                Browse Templates
+              </span>
             </button>
           </a>
         </div>
@@ -631,7 +635,9 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
               id="rule-item-save"
               type="button"
             >
-              Update rule
+              <span>
+                Update rule
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -639,7 +645,9 @@ exports[`<RuleFormEditor /> should render editor for rule 1`] = `
               id="rule-item-duplicate"
               type="submit"
             >
-              Duplicate rule
+              <span>
+                Duplicate rule
+              </span>
             </button>
           </div>
           <div>

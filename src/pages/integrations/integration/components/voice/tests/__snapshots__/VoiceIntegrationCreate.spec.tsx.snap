@@ -311,7 +311,9 @@ exports[`<VoiceIntegrationCreate/> render() should prefill the title field using
               Loading...
             </span>
           </svg>
-          Add Voice
+          <span>
+            Add Voice
+          </span>
         </button>
       </form>
     </div>
@@ -601,7 +603,9 @@ exports[`<VoiceIntegrationCreate/> render() should render 1`] = `
           class="wrapper mt-4 mb-4 fill primary medium"
           type="submit"
         >
-          Add Voice
+          <span>
+            Add Voice
+          </span>
         </button>
       </form>
     </div>
@@ -920,7 +924,9 @@ exports[`<VoiceIntegrationCreate/> render() should submit a valid payload with t
               Loading...
             </span>
           </svg>
-          Add Voice
+          <span>
+            Add Voice
+          </span>
         </button>
       </form>
     </div>

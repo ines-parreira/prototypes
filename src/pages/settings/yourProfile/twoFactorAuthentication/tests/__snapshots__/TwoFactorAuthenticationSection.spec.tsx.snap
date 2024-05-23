@@ -23,14 +23,18 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       class="wrapper mr-2 fill secondary medium"
       type="button"
     >
-      Update 2FA
+      <span>
+        Update 2FA
+      </span>
     </button>
     <button
       aria-disabled="false"
       class="wrapper fill destructive medium"
       type="button"
     >
-      Disable 2FA
+      <span>
+        Disable 2FA
+      </span>
     </button>
     <div>
       TwoFactorAuthenticationModal mocked
@@ -67,7 +71,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should open the Two-Factor 
       class="wrapper mr-2 fill primary medium"
       type="button"
     >
-      Enable 2FA
+      <span>
+        Enable 2FA
+      </span>
     </button>
     <div>
       TwoFactorAuthenticationModal mocked
@@ -104,14 +110,18 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       class="wrapper mr-2 fill secondary medium"
       type="button"
     >
-      Update 2FA
+      <span>
+        Update 2FA
+      </span>
     </button>
     <button
       aria-disabled="false"
       class="wrapper fill destructive medium"
       type="button"
     >
-      Disable 2FA
+      <span>
+        Disable 2FA
+      </span>
     </button>
   </div>
 </body>
@@ -140,7 +150,9 @@ exports[`<TwoFactorAuthenticationSection /> render() should render the Two-Facto
       class="wrapper mr-2 fill primary medium"
       type="button"
     >
-      Enable 2FA
+      <span>
+        Enable 2FA
+      </span>
     </button>
   </div>
 </body>

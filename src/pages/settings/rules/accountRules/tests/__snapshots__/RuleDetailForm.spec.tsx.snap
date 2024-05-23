@@ -308,7 +308,9 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
               id="rule-item-save"
               type="button"
             >
-              Update rule
+              <span>
+                Update rule
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -316,7 +318,9 @@ exports[`<RuleDetailForm /> rendering should render a filled form when rule id a
               id="rule-item-duplicate"
               type="submit"
             >
-              Duplicate rule
+              <span>
+                Duplicate rule
+              </span>
             </button>
           </div>
           <div>
@@ -651,7 +655,9 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
               id="rule-item-save"
               type="button"
             >
-              Update rule
+              <span>
+                Update rule
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -659,7 +665,9 @@ exports[`<RuleDetailForm /> rendering should render a loader when rule id before
               id="rule-item-duplicate"
               type="submit"
             >
-              Duplicate rule
+              <span>
+                Duplicate rule
+              </span>
             </button>
           </div>
           <div>
@@ -980,7 +988,9 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
               id="rule-item-save"
               type="button"
             >
-              Create rule
+              <span>
+                Create rule
+              </span>
             </button>
           </div>
         </div>
@@ -1007,7 +1017,9 @@ exports[`<RuleDetailForm /> rendering should render an empty form when no rule i
               class="wrapper cardButton fill primary medium"
               type="button"
             >
-              Browse Templates
+              <span>
+                Browse Templates
+              </span>
             </button>
           </a>
         </div>

@@ -126,7 +126,9 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     id="productCardButton_helpdesk"
                     type="button"
                   >
-                    Subscribe
+                    <span>
+                      Subscribe
+                    </span>
                   </button>
                 </div>
               </div>
@@ -178,7 +180,9 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     id="productCardButton_automation"
                     type="button"
                   >
-                    Subscribe
+                    <span>
+                      Subscribe
+                    </span>
                   </button>
                 </div>
               </div>
@@ -230,7 +234,9 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     id="productCardButton_voice"
                     type="button"
                   >
-                    Subscribe
+                    <span>
+                      Subscribe
+                    </span>
                   </button>
                 </div>
               </div>
@@ -282,7 +288,9 @@ exports[`BillingStartView should render a BillingStartView component and load th
                     id="productCardButton_sms"
                     type="button"
                   >
-                    Subscribe
+                    <span>
+                      Subscribe
+                    </span>
                   </button>
                 </div>
               </div>
@@ -336,7 +344,9 @@ exports[`BillingStartView should render a BillingStartView component and load th
                   id="productCardButton_convert"
                   type="button"
                 >
-                  Manage
+                  <span>
+                    Manage
+                  </span>
                 </button>
               </div>
               <div>

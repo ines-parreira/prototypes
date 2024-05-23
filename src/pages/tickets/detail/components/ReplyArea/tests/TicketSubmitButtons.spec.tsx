@@ -134,7 +134,7 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should render buttons with contentless action', () => {
-        const {getAllByText} = render(
+        const {getAllByRole} = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -149,7 +149,7 @@ describe('<TicketSubmitButtons />', () => {
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
             </Provider>
         )
-        const buttons = getAllByText(/Apply Macro/)
+        const buttons = getAllByRole('button', {name: /Apply Macro/})
         expect(buttons[0]).toBeInTheDocument()
         expect(buttons[0]).toHaveAttribute('aria-disabled', 'false')
         expect(buttons[1]).toBeInTheDocument()
@@ -157,7 +157,7 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should render buttons with contentless action and message content', () => {
-        const {getAllByText} = render(
+        const {getAllByRole} = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -172,7 +172,7 @@ describe('<TicketSubmitButtons />', () => {
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
             </Provider>
         )
-        const buttons = getAllByText(/Send/)
+        const buttons = getAllByRole('button', {name: /Send/})
         expect(buttons[0]).toBeInTheDocument()
         expect(buttons[0]).toHaveAttribute('aria-disabled', 'false')
         expect(buttons[1]).toBeInTheDocument()

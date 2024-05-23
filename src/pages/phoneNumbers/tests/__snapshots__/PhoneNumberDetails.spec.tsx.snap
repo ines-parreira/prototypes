@@ -218,7 +218,9 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -491,7 +493,9 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -759,7 +763,9 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -1032,7 +1038,9 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -1323,7 +1331,9 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -1566,7 +1576,9 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -1839,7 +1851,9 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
           class="wrapper fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"

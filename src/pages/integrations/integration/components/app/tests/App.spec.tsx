@@ -114,7 +114,7 @@ describe(`App`, () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the connections tab when there are conencted integrations', async () => {
+    it('should render the connections tab when there are connected integrations', async () => {
         mockServer
             .onGet(`/api/apps/${appId}`)
             .reply(200, {...dummyAppData, is_installed: true})
@@ -349,7 +349,7 @@ describe(`App`, () => {
                 ],
             }),
         } as unknown as RootState)
-        const {getByText} = renderWithRouter(
+        const {getByRole} = renderWithRouter(
             <Provider store={integrationsStore}>
                 <App />
             </Provider>,
@@ -359,7 +359,7 @@ describe(`App`, () => {
             }
         )
         await screen.findAllByText(new RegExp(dummyAppData.name))
-        const disconnectButton = getByText('Disconnect App')
+        const disconnectButton = getByRole('button', {name: 'Disconnect App'})
         expect(disconnectButton).toHaveClass('isDisabled')
     })
 })

@@ -106,7 +106,9 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
         class="wrapper fill secondary small"
         type="button"
       >
-        I am in snapshots
+        <span>
+          I am in snapshots
+        </span>
       </button>
       <span
         class="editIcons"
@@ -131,7 +133,9 @@ exports[`<Editor/> should render with buttons and "add button" button 1`] = `
         class="wrapper fill secondary small"
         type="button"
       >
-        I am in snapshots too
+        <span>
+          I am in snapshots too
+        </span>
       </button>
       <span
         class="editIcons"

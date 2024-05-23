@@ -65,7 +65,9 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
                     class="wrapper fill secondary small"
                     type="button"
                   >
-                    Replace File
+                    <span>
+                      Replace File
+                    </span>
                   </button>
                 </div>
               </div>
@@ -91,14 +93,18 @@ exports[`<ImportArticlesModal /> snapshots file selected 1`] = `
             class="wrapper fill secondary medium"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
-            Import File
+            <span>
+              Import File
+            </span>
           </button>
         </div>
       </div>

@@ -82,7 +82,9 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
             color="primary"
             type="submit"
           >
-            Verify your integration
+            <span>
+              Verify your integration
+            </span>
           </button>
         </form>
         <br />

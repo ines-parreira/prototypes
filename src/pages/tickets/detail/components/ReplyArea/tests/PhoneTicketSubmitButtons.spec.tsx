@@ -87,13 +87,16 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         (invalidState) => {
             store = mockStore(invalidState)
 
-            const {getByText} = render(
+            const {getByRole} = render(
                 <Provider store={store}>
                     <PhoneTicketSubmitButtons />
                 </Provider>
             )
 
-            expect(getByText('Call')).toHaveAttribute('aria-disabled', 'true')
+            expect(getByRole('button', {name: 'Call'})).toHaveAttribute(
+                'aria-disabled',
+                'true'
+            )
         }
     )
 })

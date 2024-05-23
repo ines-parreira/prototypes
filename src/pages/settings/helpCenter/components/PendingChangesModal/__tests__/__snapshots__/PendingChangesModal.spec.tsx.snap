@@ -63,7 +63,9 @@ exports[`<PendingChangesModal /> matches snapshot 1`] = `
                   class="wrapper discardBtn ghost primary medium"
                   type="button"
                 >
-                  Discard Changes
+                  <span>
+                    Discard Changes
+                  </span>
                 </button>
                 <div>
                   <button
@@ -71,14 +73,18 @@ exports[`<PendingChangesModal /> matches snapshot 1`] = `
                     class="wrapper fill secondary medium"
                     type="button"
                   >
-                    Back To Editing
+                    <span>
+                      Back To Editing
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
                     class="wrapper ml-3 confirmBtn fill primary medium"
                     type="button"
                   >
-                    Save Changes
+                    <span>
+                      Save Changes
+                    </span>
                   </button>
                 </div>
               </div>

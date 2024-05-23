@@ -114,7 +114,9 @@ exports[`<SmileIntegrationDetail/> componentDidMount() should set the integratio
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -254,7 +256,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -355,7 +359,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do any
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -495,7 +501,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -635,7 +643,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -775,7 +785,9 @@ exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the na
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -876,14 +888,18 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
-            Reconnect
+            <span>
+              Reconnect
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -1009,7 +1025,9 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -1147,7 +1165,9 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"
@@ -1314,7 +1334,9 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
                 Loading...
               </span>
             </svg>
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="true"
@@ -1452,7 +1474,9 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             class="wrapper mr-2 fill primary medium"
             type="submit"
           >
-            Update integration
+            <span>
+              Update integration
+            </span>
           </button>
           <button
             aria-disabled="false"

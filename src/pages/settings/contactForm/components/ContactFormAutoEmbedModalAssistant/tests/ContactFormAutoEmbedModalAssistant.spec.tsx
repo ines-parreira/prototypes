@@ -94,8 +94,8 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
             </QueryClientProvider>
         )
 
-        const embedButton = screen.getByText(MODAL_LABELS.EMBED, {
-            selector: 'button',
+        const embedButton = screen.getByRole('button', {
+            name: MODAL_LABELS.EMBED,
         })
 
         expect(embedButton).toHaveClass('isDisabled')

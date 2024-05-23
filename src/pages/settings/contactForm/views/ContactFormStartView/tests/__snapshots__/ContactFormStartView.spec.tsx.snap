@@ -133,7 +133,9 @@ exports[`<ContactFormStartView /> \`About\` section should display description 1
                 class="wrapper full-width fill primary medium"
                 type="button"
               >
-                Create Contact Form
+                <span>
+                  Create Contact Form
+                </span>
               </button>
             </a>
           </div>

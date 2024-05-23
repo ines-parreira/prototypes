@@ -412,7 +412,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                   class="wrapper ghost secondary medium"
                   type="button"
                 >
-                  Satisfaction Survey
+                  <span>
+                    Satisfaction Survey
+                  </span>
                 </button>
               </div>
               <div
@@ -568,7 +570,9 @@ exports[`SatisfactionSurveyView render should render current survey settings for
             class="wrapper fill primary medium"
             type="submit"
           >
-            Save
+            <span>
+              Save
+            </span>
           </button>
         </form>
       </div>

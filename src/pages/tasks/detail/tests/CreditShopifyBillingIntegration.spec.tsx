@@ -71,7 +71,7 @@ describe('<CreditShopifyBillingIntegration />', () => {
     })
 
     it('should disable the submit button when form is not valid', async () => {
-        const {getByText, getByLabelText} = render(
+        const {getByRole, getByLabelText} = render(
             <Provider store={store}>
                 <CreditShopifyBillingIntegration />
             </Provider>
@@ -81,7 +81,7 @@ describe('<CreditShopifyBillingIntegration />', () => {
             target: {value: 'One month free of charge for a loyal customer'},
         })
 
-        const button = getByText('Add credit')
+        const button = getByRole('button', {name: 'Add credit'})
 
         expect(button).toHaveProperty('disabled')
 

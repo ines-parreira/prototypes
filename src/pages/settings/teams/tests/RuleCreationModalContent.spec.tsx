@@ -80,7 +80,7 @@ describe('<RuleCreationModalContent />', () => {
     })
 
     it('should disable submit when the form is not valid', () => {
-        const {getByPlaceholderText, getByText} = render(
+        const {getByPlaceholderText, getByText, getByRole} = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
             </Provider>
@@ -92,7 +92,7 @@ describe('<RuleCreationModalContent />', () => {
         fireEvent.focus(getByText(/Channel/))
         fireEvent.click(screen.getByText('Tag'))
 
-        expect(getByText(/^Create Rule$/) as HTMLButtonElement).toHaveAttribute(
+        expect(getByRole('button', {name: /^Create Rule$/})).toHaveAttribute(
             'aria-disabled',
             'true'
         )

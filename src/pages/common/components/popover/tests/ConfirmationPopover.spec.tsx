@@ -112,7 +112,7 @@ describe('<ConfirmationPopover />', () => {
 
     it('should not open the confirmation when the form is wrong', () => {
         const handleSubmit = jest.fn()
-        const {getByText, queryByText} = render(
+        const {getByRole, queryByText} = render(
             <form onSubmit={handleSubmit}>
                 <input type="text" required value="" />
                 <ConfirmationPopover
@@ -132,7 +132,7 @@ describe('<ConfirmationPopover />', () => {
             </form>
         )
 
-        fireEvent.click(getByText(/Click me!/i))
+        fireEvent.click(getByRole('button', {name: /Click me!/i}))
         expect(queryByText(/I'm a title/i)).toBeFalsy()
     })
 

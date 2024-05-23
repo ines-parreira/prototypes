@@ -71,7 +71,9 @@ HTMLCollection [
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Update permissions
+                <span>
+                  Update permissions
+                </span>
               </button>
             </div>
           </div>

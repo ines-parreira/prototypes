@@ -143,7 +143,9 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when Automa
                 class="wrapper button fill primary medium"
                 type="button"
               >
-                Start a return
+                <span>
+                  Start a return
+                </span>
               </button>
               <p>
                 This is an automated message. If you need more help, just reply to this message and we will get back to you as soon as possible.
@@ -308,7 +310,9 @@ exports[`<AutoReplyReturnModal/> should render the instalation modal when Automa
                 class="wrapper button fill primary medium"
                 type="button"
               >
-                Start a return
+                <span>
+                  Start a return
+                </span>
               </button>
               <p>
                 This is an automated message. If you need more help, just reply to this message and we will get back to you as soon as possible.

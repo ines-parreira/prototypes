@@ -61,7 +61,9 @@ exports[`<CloseModal /> matches snapshot 1`] = `
                   class="wrapper discardBtn ghost primary medium"
                   type="button"
                 >
-                  Discard label
+                  <span>
+                    Discard label
+                  </span>
                 </button>
                 <div>
                   <button
@@ -69,14 +71,18 @@ exports[`<CloseModal /> matches snapshot 1`] = `
                     class="wrapper fill secondary medium"
                     type="button"
                   >
-                    Edit label
+                    <span>
+                      Edit label
+                    </span>
                   </button>
                   <button
                     aria-disabled="false"
                     class="wrapper ml-3 confirmBtn fill primary medium"
                     type="button"
                   >
-                    Save label
+                    <span>
+                      Save label
+                    </span>
                   </button>
                 </div>
               </div>

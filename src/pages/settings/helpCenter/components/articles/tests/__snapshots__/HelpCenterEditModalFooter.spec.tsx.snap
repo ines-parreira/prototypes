@@ -24,7 +24,9 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
               color="primary"
               type="button"
             >
-              Save & Publish
+              <span>
+                Save & Publish
+              </span>
             </button>
             <span
               aria-expanded="false"
@@ -74,7 +76,9 @@ exports[`<HelpCenterEditModalFooter /> should display the component correctly 1`
           class="wrapper fill secondary medium"
           type="button"
         >
-          Discard changes
+          <span>
+            Discard changes
+          </span>
         </button>
       </div>
       <div

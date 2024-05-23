@@ -901,14 +901,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="wrapper fill primary medium isDisabled"
                   type="submit"
                 >
-                  Add new chat
+                  <span>
+                    Add new chat
+                  </span>
                 </button>
                 <button
                   aria-disabled="false"
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
-                  Cancel
+                  <span>
+                    Cancel
+                  </span>
                 </button>
               </div>
             </div>
@@ -2377,7 +2381,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       Loading...
                     </span>
                   </svg>
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -3817,7 +3823,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -5257,7 +5265,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -6697,7 +6707,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -8137,7 +8149,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -9458,14 +9472,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Add new chat
+                  <span>
+                    Add new chat
+                  </span>
                 </button>
                 <button
                   aria-disabled="false"
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
-                  Cancel
+                  <span>
+                    Cancel
+                  </span>
                 </button>
               </div>
             </div>
@@ -10803,7 +10821,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -12287,7 +12307,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>
@@ -13636,14 +13658,18 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="wrapper fill primary medium isDisabled"
                   type="submit"
                 >
-                  Add new chat
+                  <span>
+                    Add new chat
+                  </span>
                 </button>
                 <button
                   aria-disabled="false"
                   class="wrapper cancelButton fill secondary medium"
                   type="button"
                 >
-                  Cancel
+                  <span>
+                    Cancel
+                  </span>
                 </button>
               </div>
             </div>
@@ -15083,7 +15109,9 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Save changes
+                  <span>
+                    Save changes
+                  </span>
                 </button>
               </div>
             </div>

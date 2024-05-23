@@ -190,7 +190,9 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   tabindex="0"
                   type="button"
                 >
-                  ▲
+                  <span>
+                    ▲
+                  </span>
                 </button>
                 <button
                   aria-disabled="false"
@@ -198,7 +200,9 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   tabindex="0"
                   type="button"
                 >
-                  ▼
+                  <span>
+                    ▼
+                  </span>
                 </button>
               </div>
             </div>
@@ -309,7 +313,9 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   tabindex="0"
                   type="button"
                 >
-                  ▲
+                  <span>
+                    ▲
+                  </span>
                 </button>
                 <button
                   aria-disabled="false"
@@ -317,7 +323,9 @@ exports[`<CancelOrderContainer /> should render with a populated order table whe
                   tabindex="0"
                   type="button"
                 >
-                  ▼
+                  <span>
+                    ▼
+                  </span>
                 </button>
               </div>
             </div>

@@ -50,7 +50,9 @@ exports[`ManageTags component should render a loader while fetching data 1`] = `
             id="create-tag-button"
             type="button"
           >
-            Create tag
+            <span>
+              Create tag
+            </span>
           </button>
         </div>
       </div>

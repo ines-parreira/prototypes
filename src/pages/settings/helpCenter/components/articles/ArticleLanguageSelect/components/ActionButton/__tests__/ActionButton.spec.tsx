@@ -10,11 +10,11 @@ describe('<ActionButton />', () => {
     })
 
     it('applies the correct variant class', () => {
-        const {getByText, rerender} = render(
+        const {getByRole, rerender} = render(
             <ActionButton variant="danger">Delete</ActionButton>
         )
 
-        const btn = getByText('Delete')
+        const btn = getByRole('button', {name: 'Delete'})
 
         expect(btn.classList.contains('destructive')).toBe(true)
 

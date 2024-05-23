@@ -144,7 +144,9 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
             class="wrapper fill primary medium"
             type="button"
           >
-            Create API key
+            <span>
+              Create API key
+            </span>
           </button>
         </div>
       </div>
@@ -199,7 +201,9 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
         class="wrapper fill primary medium"
         type="button"
       >
-        Subscribe
+        <span>
+          Subscribe
+        </span>
       </button>
     </div>
   </div>
@@ -450,7 +454,9 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
         class="wrapper fill primary medium"
         type="button"
       >
-        Subscribe
+        <span>
+          Subscribe
+        </span>
       </button>
     </div>
   </div>

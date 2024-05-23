@@ -145,7 +145,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             ).toBeInTheDocument()
         })
 
-        it('should disable creation button when guidance limit riched', () => {
+        it('should disable creation button when guidance limit reached', () => {
             const guidanceArticles = Array(GUIDANCE_ARTICLE_LIMIT)
                 .fill(null)
                 .map((_, index) => getGuidanceArticleFixture(index))
@@ -157,7 +157,9 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Create From Template')).toBeDisabled()
+            expect(
+                screen.getByRole('button', {name: 'Create From Template'})
+            ).toBeDisabled()
         })
 
         it('should sort guidance articles by last updated', () => {

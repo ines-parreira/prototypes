@@ -103,26 +103,28 @@ describe('<CampaignFooter />', () => {
         const onSave = jest.fn()
 
         it('blocks the create button when creation is disabled', () => {
-            const {getByText} = renderComponent({
+            const {getByRole} = renderComponent({
                 ...defaultProps,
                 onSave,
                 isCreateDisabled: true,
                 isUpdate: false,
             })
 
-            expect(getByText('Create')).toHaveAttribute('aria-disabled')
+            expect(getByRole('button', {name: 'Create'})).toHaveAttribute(
+                'aria-disabled'
+            )
             expect(onSave).not.toHaveBeenCalled()
         })
 
         it('blocks creation when user manually enables button', () => {
-            const {getByText} = renderComponent({
+            const {getByRole, getByText} = renderComponent({
                 ...defaultProps,
                 onSave,
                 isCreateDisabled: true,
                 isUpdate: false,
             })
 
-            const button = getByText('Create')
+            const button = getByRole('button', {name: 'Create'})
             button.removeAttribute('aria-disabled')
             button.removeAttribute('class')
 

@@ -111,7 +111,9 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
           class="wrapper fill secondary medium"
           type="button"
         >
-          Create rule later
+          <span>
+            Create rule later
+          </span>
         </button>
       </div>
       <div
@@ -122,7 +124,9 @@ exports[`<RuleCreationModalContent /> should render 1`] = `
           class="wrapper fill primary medium"
           type="submit"
         >
-          Create Rule
+          <span>
+            Create Rule
+          </span>
         </button>
       </div>
     </div>

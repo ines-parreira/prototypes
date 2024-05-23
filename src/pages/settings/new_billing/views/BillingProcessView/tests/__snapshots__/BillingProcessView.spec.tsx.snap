@@ -81,7 +81,9 @@ exports[`UsageAndPlansView should render 1`] = `
                   class="wrapper ghost destructive small"
                   type="button"
                 >
-                  Cancel auto-renewal
+                  <span>
+                    Cancel auto-renewal
+                  </span>
                 </button>
               </div>
               <div
@@ -470,7 +472,9 @@ exports[`UsageAndPlansView should render 1`] = `
                 id="update-subscription"
                 type="button"
               >
-                Update Subscription
+                <span>
+                  Update Subscription
+                </span>
               </button>
             </div>
           </div>

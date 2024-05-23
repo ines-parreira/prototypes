@@ -52,7 +52,9 @@ exports[`<TicketFields/> should render active ticket fields 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Create Field
+              <span>
+                Create Field
+              </span>
             </button>
           </a>
         </div>
@@ -144,7 +146,9 @@ exports[`<TicketFields/> should render archived ticket fields 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Create Field
+              <span>
+                Create Field
+              </span>
             </button>
           </a>
         </div>
@@ -231,7 +235,9 @@ exports[`<TicketFields/> should render get started 1`] = `
         class="wrapper fill primary medium"
         type="button"
       >
-        Create Field
+        <span>
+          Create Field
+        </span>
       </button>
     </a>
   </div>
@@ -290,7 +296,9 @@ exports[`<TicketFields/> should render no active ticket fields 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Create Field
+              <span>
+                Create Field
+              </span>
             </button>
           </a>
         </div>
@@ -388,7 +396,9 @@ exports[`<TicketFields/> should render no archived ticket fields 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Create Field
+              <span>
+                Create Field
+              </span>
             </button>
           </a>
         </div>
@@ -486,7 +496,9 @@ exports[`<TicketFields/> should render no results found 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Create Field
+              <span>
+                Create Field
+              </span>
             </button>
           </a>
         </div>

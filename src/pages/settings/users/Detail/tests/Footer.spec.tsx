@@ -30,10 +30,9 @@ describe('Footer', () => {
             />
         )
 
-        expect(screen.getByText('Create user')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Create user'})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should not disable submit button in edit mode if something is different', () => {
@@ -51,10 +50,9 @@ describe('Footer', () => {
             />
         )
 
-        expect(screen.getByText('Save Changes')).not.toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Save Changes'})
+        ).not.toHaveAttribute('aria-disabled', 'true')
         expect(screen.getByText('Cancel'))
     })
 
@@ -73,10 +71,9 @@ describe('Footer', () => {
             />
         )
 
-        expect(screen.getByText('Save Changes')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Save Changes'})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should disable submit button if viewing account owner and show a tooltip', async () => {
@@ -96,7 +93,7 @@ describe('Footer', () => {
             />
         )
 
-        const submitButton = screen.getByText('Save Changes')
+        const submitButton = screen.getByRole('button', {name: 'Save Changes'})
         expect(submitButton).toHaveAttribute('aria-disabled', 'true')
         userEvent.hover(submitButton)
         await waitFor(() => {

@@ -754,7 +754,9 @@ exports[`YourProfileView render should render current user profile form 1`] = `
         class="wrapper fill primary medium"
         type="submit"
       >
-        Save Changes
+        <span>
+          Save Changes
+        </span>
       </button>
     </form>
   </div>

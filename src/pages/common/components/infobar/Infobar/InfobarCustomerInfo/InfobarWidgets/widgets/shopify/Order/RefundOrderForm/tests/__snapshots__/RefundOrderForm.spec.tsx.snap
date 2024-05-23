@@ -124,7 +124,9 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -132,7 +134,9 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -281,7 +285,9 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -289,7 +295,9 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -439,7 +447,9 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
                 tabindex="0"
                 type="button"
               >
-                ▲
+                <span>
+                  ▲
+                </span>
               </button>
               <button
                 aria-disabled="true"
@@ -447,7 +457,9 @@ exports[`<RefundOrderForm/> render() should render with zero quantity 1`] = `
                 tabindex="0"
                 type="button"
               >
-                ▼
+                <span>
+                  ▼
+                </span>
               </button>
             </div>
           </div>

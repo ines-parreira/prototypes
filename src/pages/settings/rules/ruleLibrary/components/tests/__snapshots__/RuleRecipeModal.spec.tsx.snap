@@ -228,7 +228,9 @@ exports[`RuleRecipeModal should render the modal 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <span
                 id="rule-recipe-fixture-install-button"

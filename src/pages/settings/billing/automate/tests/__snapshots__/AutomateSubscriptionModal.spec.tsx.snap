@@ -9,13 +9,9 @@ exports[`<AutomateSubscriptionModal /> should display image 1`] = `
 `;
 
 exports[`<AutomateSubscriptionModal /> should display loader 1`] = `
-<button
-  aria-disabled="true"
-  class="wrapper fill primary medium isDisabled"
-  type="button"
->
+<span>
   I am sure
-</button>
+</span>
 `;
 
 exports[`<AutomateSubscriptionModal /> should not render the modal 1`] = `
@@ -302,14 +298,18 @@ exports[`<AutomateSubscriptionModal /> should render for customers already with 
                 class="wrapper fill destructive medium"
                 type="button"
               >
-                Cancel subscription
+                <span>
+                  Cancel subscription
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                OK
+                <span>
+                  OK
+                </span>
               </button>
             </div>
           </div>
@@ -601,7 +601,9 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <div>
                 <button
@@ -609,7 +611,9 @@ exports[`<AutomateSubscriptionModal /> should render the modal 1`] = `
                   class="wrapper fill primary medium isDisabled"
                   type="button"
                 >
-                  I am sure
+                  <span>
+                    I am sure
+                  </span>
                 </button>
               </div>
             </div>

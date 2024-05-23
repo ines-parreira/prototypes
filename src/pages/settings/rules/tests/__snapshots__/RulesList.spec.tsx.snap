@@ -52,7 +52,9 @@ exports[`<RulesList/> should render the rules list 1`] = `
               class="wrapper float-right fill primary medium"
               type="button"
             >
-              Create rule
+              <span>
+                Create rule
+              </span>
             </button>
           </a>
         </div>

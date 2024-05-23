@@ -275,13 +275,16 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
         it('should disable save button if title is invalid', () => {
             renderComponent()
 
-            const selectRow = screen.getByText('How to cancel order')
-            const editArticleButton = selectRow.nextElementSibling!
+            const editArticleButton = screen.getByRole('button', {
+                name: /How to cancel order/,
+            })
             userEvent.click(editArticleButton)
 
             userEvent.clear(screen.getByPlaceholderText('Title'))
 
-            const savedButton = screen.getByText('Save changes')
+            const savedButton = screen.getByRole('button', {
+                name: 'Save changes',
+            })
 
             expect(savedButton).toHaveClass('isDisabled')
         })

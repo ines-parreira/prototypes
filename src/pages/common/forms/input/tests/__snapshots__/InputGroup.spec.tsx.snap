@@ -9,7 +9,9 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     class="wrapper fill secondary medium left isAuxiliaryButton"
     type="button"
   >
-    Foo
+    <span>
+      Foo
+    </span>
   </button>
   <span
     class="wrapper center isNested group horizontal"
@@ -54,14 +56,18 @@ exports[`<InputGroup /> should render a group input wrapper 1`] = `
     class="wrapper fill secondary medium center isAuxiliaryButton"
     type="button"
   >
-    Bar
+    <span>
+      Bar
+    </span>
   </button>
   <button
     aria-disabled="false"
     class="wrapper fill secondary medium right isAuxiliaryButton"
     type="button"
   >
-    Baz
+    <span>
+      Baz
+    </span>
   </button>
 </span>
 `;

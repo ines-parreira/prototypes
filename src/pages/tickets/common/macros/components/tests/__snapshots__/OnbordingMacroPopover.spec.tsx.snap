@@ -43,7 +43,9 @@ exports[`<OnbordingMacroPopover /> should display popover 1`] = `
                 class="wrapper mx-1 fill secondary medium"
                 type="button"
               >
-                Got it
+                <span>
+                  Got it
+                </span>
               </button>
             </div>
           </div>

@@ -61,7 +61,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
     })
 
     it('submits form when fields have been changed', () => {
-        const {container, getByText, getByLabelText} = render(
+        const {container, getByRole, getByLabelText} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -79,13 +79,13 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByText('Next', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Next'}))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })
 
     it('disables buttons when submitting form', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -98,8 +98,10 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
             </MemoryRouter>
         )
 
-        expect(getByText('Save & Customize Later')).toHaveClass('isDisabled')
-        expect(getByText('Back')).toHaveClass('isDisabled')
-        expect(getByText('Next')).toHaveClass('isDisabled')
+        expect(
+            getByRole('button', {name: 'Save & Customize Later'})
+        ).toHaveClass('isDisabled')
+        expect(getByRole('button', {name: 'Back'})).toHaveClass('isDisabled')
+        expect(getByRole('button', {name: /Next/})).toHaveClass('isDisabled')
     })
 })

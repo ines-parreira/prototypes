@@ -65,7 +65,7 @@ describe('<CreateShopifyCharge />', () => {
     })
 
     it('should disable the submit button when the form is not valid', () => {
-        const {getByText, getByLabelText} = render(
+        const {getByRole, getByLabelText} = render(
             <Provider store={store}>
                 <CreateShopifyCharge />
             </Provider>
@@ -76,7 +76,7 @@ describe('<CreateShopifyCharge />', () => {
             target: {value: 'test charge'},
         })
 
-        const button = getByText('Create charge')
+        const button = getByRole('button', {name: 'Create charge'})
         expect(button).toHaveProperty('disabled')
     })
 })

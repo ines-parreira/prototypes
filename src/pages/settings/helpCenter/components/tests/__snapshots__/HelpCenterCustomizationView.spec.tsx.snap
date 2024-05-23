@@ -560,14 +560,18 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             class="wrapper mr-2 fill primary medium isDisabled"
             type="button"
           >
-            Save Changes
+            <span>
+              Save Changes
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
         </div>
       </div>

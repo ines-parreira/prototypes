@@ -225,7 +225,9 @@ exports[`<ColorPicker /> should render with minimal props 1`] = `
     id="color-picker-1"
     type="button"
   >
-    Pick a color
+    <span>
+      Pick a color
+    </span>
   </button>
   <input
     class="input form-control"

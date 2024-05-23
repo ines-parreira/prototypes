@@ -32,7 +32,9 @@ exports[`TicketListActions component should render agents options in assign agen
           class="wrapper fill secondary small left"
           type="button"
         >
-          Close
+          <span>
+            Close
+          </span>
         </button>
         <span
           aria-expanded="false"
@@ -85,7 +87,9 @@ exports[`TicketListActions component should render agents options in assign agen
           class="wrapper fill secondary small left"
           type="button"
         >
-          Assign to me
+          <span>
+            Assign to me
+          </span>
         </button>
         <span
           aria-expanded="false"
@@ -486,7 +490,9 @@ exports[`TicketListActions component should render teams in assign team dropdown
           class="wrapper fill secondary small left"
           type="button"
         >
-          Close
+          <span>
+            Close
+          </span>
         </button>
         <span
           aria-expanded="false"
@@ -539,7 +545,9 @@ exports[`TicketListActions component should render teams in assign team dropdown
           class="wrapper fill secondary small left"
           type="button"
         >
-          Assign to me
+          <span>
+            Assign to me
+          </span>
         </button>
         <span
           aria-expanded="false"

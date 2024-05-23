@@ -124,7 +124,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -132,7 +134,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -243,7 +247,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -251,7 +257,9 @@ exports[`<OrderTable/> should render 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -400,7 +408,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -408,7 +418,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -519,7 +531,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -527,7 +541,9 @@ exports[`<OrderTable/> should render for multi-currency order 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -676,7 +692,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -684,7 +702,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>
@@ -795,7 +815,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              ▲
+              <span>
+                ▲
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -803,7 +825,9 @@ exports[`<OrderTable/> should render with zero quantity 1`] = `
               tabindex="0"
               type="button"
             >
-              ▼
+              <span>
+                ▼
+              </span>
             </button>
           </div>
         </div>

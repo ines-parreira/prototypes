@@ -77,10 +77,9 @@ describe('<VoiceIntegrationPreferences />', () => {
     it('should display the submit button as disabled when the form is not dirty', () => {
         renderComponent(props)
 
-        expect(screen.getByText('Save changes')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Save changes'})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     describe('when the form is dirty', () => {
@@ -91,10 +90,9 @@ describe('<VoiceIntegrationPreferences />', () => {
             fireEvent.change(titleInput, {target: {value: 'New title'}})
 
             await waitFor(() => {
-                expect(screen.getByText('Save changes')).toHaveAttribute(
-                    'aria-disabled',
-                    'false'
-                )
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toHaveAttribute('aria-disabled', 'false')
             })
         })
 
@@ -105,10 +103,9 @@ describe('<VoiceIntegrationPreferences />', () => {
             fireEvent.change(teamIdSelection, {target: {value: 2}})
 
             await waitFor(() => {
-                expect(screen.getByText('Save changes')).toHaveAttribute(
-                    'aria-disabled',
-                    'false'
-                )
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toHaveAttribute('aria-disabled', 'false')
             })
         })
 
@@ -119,10 +116,9 @@ describe('<VoiceIntegrationPreferences />', () => {
             fireEvent.change(preferencesInput, {target: {value: 'new value'}})
 
             await waitFor(() => {
-                expect(screen.getByText('Save changes')).toHaveAttribute(
-                    'aria-disabled',
-                    'false'
-                )
+                expect(
+                    screen.getByRole('button', {name: 'Save changes'})
+                ).toHaveAttribute('aria-disabled', 'false')
             })
         })
     })

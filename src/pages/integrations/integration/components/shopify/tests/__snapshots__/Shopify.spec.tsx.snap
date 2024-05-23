@@ -502,7 +502,9 @@ exports[`<Shopify/> Integration should render 1`] = `
               class="wrapper mr-2 fill primary medium"
               type="submit"
             >
-              Update Connection
+              <span>
+                Update Connection
+              </span>
             </button>
             <button
               aria-disabled="false"

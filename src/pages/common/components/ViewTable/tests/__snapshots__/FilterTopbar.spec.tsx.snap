@@ -166,14 +166,18 @@ exports[`<FilterTopbar /> render should not render delete button when creating n
           class="wrapper fill primary medium"
           type="submit"
         >
-          Create view
+          <span>
+            Create view
+          </span>
         </button>
         <button
           aria-disabled="false"
           class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
-          Cancel
+          <span>
+            Cancel
+          </span>
         </button>
         <span
           class="updateViewFeedback"
@@ -538,7 +542,9 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
               id="confirm-1"
               type="button"
             >
-              Update view
+              <span>
+                Update view
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -585,7 +591,9 @@ exports[`<FilterTopbar /> render should render active view filters 1`] = `
           class="wrapper ml-2 fill secondary medium"
           type="submit"
         >
-          Cancel
+          <span>
+            Cancel
+          </span>
         </button>
         <span
           class="updateViewFeedback"

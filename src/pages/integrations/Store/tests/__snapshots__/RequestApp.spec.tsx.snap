@@ -19,7 +19,9 @@ exports[`<RequestApp /> should render correctly 1`] = `
     class="wrapper fill primary medium"
     type="button"
   >
-    Request App
+    <span>
+      Request App
+    </span>
   </button>
 </footer>
 `;

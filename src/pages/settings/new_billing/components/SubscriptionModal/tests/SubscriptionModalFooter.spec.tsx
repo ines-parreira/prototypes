@@ -33,17 +33,17 @@ describe('SubscriptionModalFooter', () => {
     }
 
     it('should render clickable button for admin', () => {
-        const {getByText} = renderForRole(UserRole.Admin)
+        const {getByRole} = renderForRole(UserRole.Admin)
 
-        const confirmButton = getByText(confirmLabel)
+        const confirmButton = getByRole('button', {name: confirmLabel})
 
         expect(confirmButton).not.toHaveClass('isDisabled')
     })
 
     it('should render disabled button for non-admin', () => {
-        const {getByText} = renderForRole(UserRole.BasicAgent)
+        const {getByRole} = renderForRole(UserRole.BasicAgent)
 
-        const confirmButton = getByText(confirmLabel)
+        const confirmButton = getByRole('button', {name: confirmLabel})
 
         expect(confirmButton).toHaveClass('isDisabled')
     })

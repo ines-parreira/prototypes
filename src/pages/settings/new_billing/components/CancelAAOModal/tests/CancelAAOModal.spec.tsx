@@ -83,11 +83,11 @@ describe('CancelAAOModal', () => {
     })
 
     it('should enable the Submit button and call the handleCancelAAO', async () => {
-        const {getByText, getByPlaceholderText} = screen
+        const {getByText, getByPlaceholderText, getByRole} = screen
         setup()
         const continueButton = getByText('Continue')
         userEvent.click(continueButton)
-        const submitButton = getByText('Submit')
+        const submitButton = getByRole('button', {name: 'Submit'})
         expect(submitButton).toHaveClass('isDisabled')
         const firstCheckbox = getByText(`It's not automating enough`)
         userEvent.click(firstCheckbox)

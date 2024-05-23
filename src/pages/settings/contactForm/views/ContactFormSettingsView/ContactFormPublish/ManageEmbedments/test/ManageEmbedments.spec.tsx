@@ -164,7 +164,7 @@ describe('ContactFormPublish', () => {
     it('saves the changes when Save Changes is clicked', async () => {
         renderView({state: defaultState, embedments: [embedments[0]]})
 
-        const button = screen.getByText(/save changes/i)
+        const button = screen.getByRole('button', {name: /save changes/i})
         //expect Save button to be disabled
         expect(button).toHaveClass('isDisabled')
 
@@ -188,9 +188,7 @@ describe('ContactFormPublish', () => {
 
         const deleteButton = screen.getByTestId(`delete-button-1`)
         userEvent.click(deleteButton)
-        const confirmButton = screen.getByText(/remove form/i, {
-            selector: 'button',
-        })
+        const confirmButton = screen.getByRole('button', {name: /remove form/i})
         userEvent.click(confirmButton)
 
         //expect Delete action to be called

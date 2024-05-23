@@ -262,7 +262,9 @@ exports[`<Form/> should render with preloaded data 1`] = `
             class="wrapper fill secondary medium"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
         </div>
         <div
@@ -273,7 +275,9 @@ exports[`<Form/> should render with preloaded data 1`] = `
             class="wrapper fill primary medium"
             type="submit"
           >
-            Save
+            <span>
+              Save
+            </span>
           </button>
         </div>
       </div>
@@ -544,7 +548,9 @@ exports[`<Form/> should render without any data 1`] = `
             class="wrapper fill secondary medium"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
         </div>
         <div
@@ -555,7 +561,9 @@ exports[`<Form/> should render without any data 1`] = `
             class="wrapper fill primary medium"
             type="submit"
           >
-            Save
+            <span>
+              Save
+            </span>
           </button>
         </div>
       </div>

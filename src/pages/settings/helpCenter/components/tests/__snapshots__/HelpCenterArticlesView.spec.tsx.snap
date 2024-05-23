@@ -789,14 +789,18 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             data-testid="button-save"
             type="button"
           >
-            Save
+            <span>
+              Save
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper fill secondary medium"
             type="button"
           >
-            Discard Changes
+            <span>
+              Discard Changes
+            </span>
           </button>
         </header>
       </div>

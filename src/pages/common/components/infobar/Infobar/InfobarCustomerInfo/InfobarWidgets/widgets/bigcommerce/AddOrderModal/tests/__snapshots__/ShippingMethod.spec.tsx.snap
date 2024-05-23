@@ -136,14 +136,18 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
             class="wrapper fill secondary medium"
             type="button"
           >
-            Close
+            <span>
+              Close
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper fill primary medium"
             type="button"
           >
-            Apply
+            <span>
+              Apply
+            </span>
           </button>
         </div>
       </div>

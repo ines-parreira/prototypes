@@ -391,7 +391,9 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               class="wrapper mb-4 fill primary medium"
               type="submit"
             >
-              Restart import
+              <span>
+                Restart import
+              </span>
             </button>
           </form>
         </div>

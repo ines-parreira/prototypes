@@ -837,7 +837,9 @@ exports[`<PhoneNumberCreateModalForm/> render() should render a second with for 
                   class="wrapper fill primary medium"
                   type="button"
                 >
-                  Next
+                  <span>
+                    Next
+                  </span>
                 </button>
               </div>
             </div>
@@ -1703,7 +1705,9 @@ exports[`<PhoneNumberCreateModalForm/> render() should render no steps when no a
                   class="wrapper fill primary medium"
                   type="button"
                 >
-                  Create phone number
+                  <span>
+                    Create phone number
+                  </span>
                 </button>
               </div>
             </div>
@@ -1988,7 +1992,9 @@ exports[`<PhoneNumberCreateModalForm/> render() should render when isOpen is tru
                   class="wrapper fill primary medium"
                   type="button"
                 >
-                  Create phone number
+                  <span>
+                    Create phone number
+                  </span>
                 </button>
               </div>
             </div>

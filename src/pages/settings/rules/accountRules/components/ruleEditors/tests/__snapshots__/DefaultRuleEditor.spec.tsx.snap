@@ -255,7 +255,9 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         id="rule-item-save"
         type="button"
       >
-        Update rule
+        <span>
+          Update rule
+        </span>
       </button>
       <button
         aria-disabled="false"
@@ -263,7 +265,9 @@ exports[`<DefaultRuleEditor/> should render correctly 1`] = `
         id="rule-item-duplicate"
         type="submit"
       >
-        Duplicate rule
+        <span>
+          Duplicate rule
+        </span>
       </button>
     </div>
     <div>

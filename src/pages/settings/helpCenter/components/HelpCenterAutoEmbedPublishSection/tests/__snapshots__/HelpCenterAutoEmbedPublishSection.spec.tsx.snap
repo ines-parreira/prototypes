@@ -30,7 +30,9 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a non-
       data-testid="help-center-auto-embed-card__embed-button"
       type="button"
     >
-      Embed Help Center
+      <span>
+        Embed Help Center
+      </span>
     </button>
   </div>
 </div>
@@ -104,7 +106,9 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       data-testid="help-center-auto-embed-card__embed-button"
       type="button"
     >
-      Embed Help Center
+      <span>
+        Embed Help Center
+      </span>
     </button>
   </div>
 </div>
@@ -140,7 +144,9 @@ exports[`<HelpCenterAutoEmbedPublishSection /> Help Center - connected to a shop
       data-testid="help-center-auto-embed-card__embed-button"
       type="button"
     >
-      Embed Help Center
+      <span>
+        Embed Help Center
+      </span>
     </button>
   </div>
 </div>

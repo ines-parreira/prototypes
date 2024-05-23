@@ -104,7 +104,7 @@ describe('<CreateTicketButton />', () => {
 
     describe('custom link and button props', () => {
         it('should display for existing draft', () => {
-            const {getByText} = renderWithRouter(
+            const {getByText, getByRole} = renderWithRouter(
                 <CreateTicketButton
                     buttonProps={{intent: 'secondary'}}
                     to={{
@@ -113,7 +113,9 @@ describe('<CreateTicketButton />', () => {
                 />
             )
 
-            const buttonClasses = getByText('Create ticket').classList
+            const buttonClasses = getByRole('button', {
+                name: 'Create ticket',
+            }).classList
             expect(buttonClasses).toContain('secondary')
             expect(buttonClasses).not.toContain('primary')
             const arrowClasses =
@@ -129,7 +131,7 @@ describe('<CreateTicketButton />', () => {
                 onDiscardDraft: jest.fn(),
             })
 
-            const {getByText} = renderWithRouter(
+            const {getByRole} = renderWithRouter(
                 <CreateTicketButton
                     buttonProps={{intent: 'secondary'}}
                     to={{
@@ -138,7 +140,9 @@ describe('<CreateTicketButton />', () => {
                 />
             )
 
-            const buttonClasses = getByText('Create ticket').classList
+            const buttonClasses = getByRole('button', {
+                name: 'Create ticket',
+            }).classList
             expect(buttonClasses).toContain('secondary')
             expect(buttonClasses).not.toContain('primary')
         })

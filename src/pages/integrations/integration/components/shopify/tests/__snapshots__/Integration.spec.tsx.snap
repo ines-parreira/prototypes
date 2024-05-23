@@ -157,7 +157,9 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
               class="wrapper mr-2 fill primary medium"
               type="submit"
             >
-              Update Connection
+              <span>
+                Update Connection
+              </span>
             </button>
             <button
               aria-disabled="false"

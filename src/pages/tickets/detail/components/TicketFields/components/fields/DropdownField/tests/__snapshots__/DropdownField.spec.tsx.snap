@@ -222,7 +222,9 @@ exports[`<DropdownField /> should display results when searching 1`] = `
             class="wrapper clearButton ghost primary medium"
             type="button"
           >
-            Clear Selection
+            <span>
+              Clear Selection
+            </span>
           </button>
         </div>
       </div>
@@ -469,7 +471,9 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
             class="wrapper clearButton ghost primary medium"
             type="button"
           >
-            Clear Selection
+            <span>
+              Clear Selection
+            </span>
           </button>
         </div>
       </div>

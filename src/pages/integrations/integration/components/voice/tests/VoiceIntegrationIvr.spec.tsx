@@ -83,7 +83,7 @@ describe('<VoiceIntegrationIvr />', () => {
             [FeatureFlagKey.DeflectToSMS]: true,
         })
 
-        const {getByText, getByLabelText} = renderComponent()
+        const {getByText, getByLabelText, getByRole} = renderComponent()
 
         expect(getByText('Set greeting message')).toBeInTheDocument()
         expect(
@@ -100,7 +100,7 @@ describe('<VoiceIntegrationIvr />', () => {
 
         expect(getByText('test actions')).toBeInTheDocument()
         expect(getByText('Save changes')).toBeInTheDocument()
-        expect(getByText('Save changes')).toHaveAttribute(
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
             'aria-disabled',
             'true'
         )
@@ -112,17 +112,17 @@ describe('<VoiceIntegrationIvr />', () => {
             [FeatureFlagKey.DeflectToSMS]: true,
         })
 
-        const {getByText, getByLabelText} = renderComponent()
+        const {getByText, getByLabelText, getByRole} = renderComponent()
 
         userEvent.click(getByLabelText('None'))
-        expect(getByText('Save changes')).toHaveAttribute(
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
             'aria-disabled',
             'false'
         )
 
         userEvent.click(getByText('Cancel'))
         expect(getByText('None')).not.toBeChecked()
-        expect(getByText('Save changes')).toHaveAttribute(
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
             'aria-disabled',
             'true'
         )
@@ -133,7 +133,7 @@ describe('<VoiceIntegrationIvr />', () => {
             [FeatureFlagKey.DeflectToSMS]: false,
         })
 
-        const {getByText, getByLabelText} = renderComponent()
+        const {getByText, getByLabelText, getByRole} = renderComponent()
 
         expect(getByText('Greeting message')).toBeInTheDocument()
         expect(getByLabelText('Text To Speech')).toBeChecked()
@@ -145,7 +145,7 @@ describe('<VoiceIntegrationIvr />', () => {
 
         expect(getByText('test actions')).toBeInTheDocument()
         expect(getByText('Save changes')).toBeInTheDocument()
-        expect(getByText('Save changes')).toHaveAttribute(
+        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
             'aria-disabled',
             'false'
         )

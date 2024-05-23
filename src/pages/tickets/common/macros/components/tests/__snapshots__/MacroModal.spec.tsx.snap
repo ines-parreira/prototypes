@@ -95,7 +95,9 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                   class="wrapper fill secondary medium"
                   type="submit"
                 >
-                  Discard Changes
+                  <span>
+                    Discard Changes
+                  </span>
                 </button>
               </form>
               <form
@@ -107,7 +109,9 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                   class="wrapper fill secondary medium"
                   type="submit"
                 >
-                  Duplicate
+                  <span>
+                    Duplicate
+                  </span>
                 </button>
               </form>
               <form
@@ -119,7 +123,9 @@ exports[`<MacroModal /> should render MacroModal 1`] = `
                   class="wrapper fill primary medium"
                   type="submit"
                 >
-                  Update
+                  <span>
+                    Update
+                  </span>
                 </button>
               </form>
             </div>

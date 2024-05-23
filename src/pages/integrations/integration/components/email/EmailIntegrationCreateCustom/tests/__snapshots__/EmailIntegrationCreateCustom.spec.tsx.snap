@@ -101,7 +101,9 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
             class="wrapper fill primary medium isDisabled"
             type="submit"
           >
-            Connect this email account
+            <span>
+              Connect this email account
+            </span>
           </button>
         </div>
       </form>
@@ -211,7 +213,9 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
             class="wrapper btn-loading fill primary medium isDisabled"
             type="submit"
           >
-            Connect this email account
+            <span>
+              Connect this email account
+            </span>
           </button>
         </div>
       </form>

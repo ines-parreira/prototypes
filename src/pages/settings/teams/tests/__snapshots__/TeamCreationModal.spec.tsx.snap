@@ -152,7 +152,9 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                     class="wrapper fill secondary medium"
                     type="button"
                   >
-                    Cancel
+                    <span>
+                      Cancel
+                    </span>
                   </button>
                 </div>
                 <div
@@ -163,7 +165,9 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                     class="wrapper fill primary medium isDisabled"
                     type="submit"
                   >
-                    Create team
+                    <span>
+                      Create team
+                    </span>
                   </button>
                 </div>
               </div>

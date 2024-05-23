@@ -139,14 +139,18 @@ exports[`HelpCenterChangePlanModal should render the Automate plan card when cur
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Confirm Upgrade
+                <span>
+                  Confirm Upgrade
+                </span>
               </button>
             </div>
           </div>

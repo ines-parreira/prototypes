@@ -241,7 +241,9 @@ exports[`App should render 2`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Connect App
+              <span>
+                Connect App
+              </span>
             </button>
           </a>
         </div>

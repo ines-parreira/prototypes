@@ -56,7 +56,7 @@ describe('ChurnMitigationOfferFooter', () => {
     })
 
     it('disables buttons when isLoading is true', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <ChurnMitigationOfferFooter
                 onAccept={onAcceptMock}
                 onContinue={onContinueMock}
@@ -64,8 +64,12 @@ describe('ChurnMitigationOfferFooter', () => {
             />
         )
 
-        const acceptButton = getByText('Accept offer')
-        const continueButton = getByText('Continue cancelling')
+        const acceptButton = getByRole('button', {
+            name: /Accept offer/,
+        })
+        const continueButton = getByRole('button', {
+            name: 'Continue cancelling',
+        })
 
         expect(acceptButton).toHaveClass('isDisabled')
         expect(continueButton).toHaveClass('isDisabled')

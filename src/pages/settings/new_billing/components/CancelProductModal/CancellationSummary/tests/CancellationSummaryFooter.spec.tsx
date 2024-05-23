@@ -11,27 +11,31 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('renders correctly', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={isLoading}
             />
         )
 
-        const confirmButton = getByText('Confirm Auto-Renewal Cancellation')
+        const confirmButton = getByRole('button', {
+            name: 'Confirm Auto-Renewal Cancellation',
+        })
         expect(confirmButton).toBeInTheDocument()
         expect(confirmButton).toHaveClass('isDisabled')
     })
 
     it('calls onConfirm when "Confirm" button is clicked and agreement is checked', async () => {
-        const {getByText, getByRole} = render(
+        const {getByRole} = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={isLoading}
             />
         )
 
-        const confirmButton = getByText('Confirm Auto-Renewal Cancellation')
+        const confirmButton = getByRole('button', {
+            name: 'Confirm Auto-Renewal Cancellation',
+        })
         const agreementCheckbox = getByRole('checkbox')
 
         fireEvent.click(agreementCheckbox)
@@ -46,14 +50,16 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('does not call onConfirm when "Confirm" button is clicked and agreement is not checked', async () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={isLoading}
             />
         )
 
-        const confirmButton = getByText('Confirm Auto-Renewal Cancellation')
+        const confirmButton = getByRole('button', {
+            name: 'Confirm Auto-Renewal Cancellation',
+        })
         fireEvent.click(confirmButton)
 
         await waitFor(() => {
@@ -62,14 +68,16 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('disables "Confirm" button when isLoading is true', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={true}
             />
         )
 
-        const confirmButton = getByText('Confirm Auto-Renewal Cancellation')
+        const confirmButton = getByRole('button', {
+            name: /Confirm Auto-Renewal Cancellation/,
+        })
         expect(confirmButton).toHaveClass('isDisabled')
     })
 })

@@ -106,8 +106,8 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const helpers = renderWithStore(props)
-            const {getByText} = helpers
-            const saveButton = getByText('Save changes')
+            const {getByRole} = helpers
+            const saveButton = getByRole('button', {name: 'Save changes'})
 
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 
@@ -158,8 +158,8 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const helpers = renderWithStore(props)
-            const {getByText, getAllByRole} = helpers
-            const saveButton = getByText('Save changes')
+            const {getByRole, getAllByRole} = helpers
+            const saveButton = getByRole('button', {name: 'Save changes'})
             const deliverabilitySettingsRadioButtons = getAllByRole('radio')
             const useDefaultProviderRadioButton =
                 deliverabilitySettingsRadioButtons[0]
@@ -201,8 +201,8 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const helpers = renderWithStore(props)
-            const {getByText} = helpers
-            const saveButton = getByText('Save changes')
+            const {getByRole} = helpers
+            const saveButton = getByRole('button', {name: 'Save changes'})
 
             expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 
@@ -241,11 +241,11 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         }
 
         const helpers = renderWithStore(props)
-        const {getByText, getByRole} = helpers
+        const {getByRole} = helpers
         const displayNameInput = getByRole('textbox', {
             name: /display name required/i,
         })
-        const saveButton = getByText('Save changes')
+        const saveButton = getByRole('button', {name: 'Save changes'})
 
         expect(saveButton).toHaveAttribute('aria-disabled', 'true')
 

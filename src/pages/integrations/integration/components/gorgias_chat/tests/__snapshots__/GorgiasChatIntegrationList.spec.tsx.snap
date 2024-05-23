@@ -29,7 +29,9 @@ exports[`<GorgiasChatIntegrationList /> should display correcty the list of chat
           class="wrapper fill primary medium"
           type="button"
         >
-          Add Chat
+          <span>
+            Add Chat
+          </span>
         </button>
       </div>
     </div>

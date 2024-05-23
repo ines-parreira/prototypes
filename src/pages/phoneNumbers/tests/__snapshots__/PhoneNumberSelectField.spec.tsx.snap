@@ -540,7 +540,9 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                   class="wrapper fill primary medium"
                   type="button"
                 >
-                  Create phone number
+                  <span>
+                    Create phone number
+                  </span>
                 </button>
               </div>
             </div>

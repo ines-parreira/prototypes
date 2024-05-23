@@ -134,7 +134,9 @@ exports[`<DiscountCodeCreateModal /> should render the component 1`] = `
             class="wrapper ml-3 fill primary medium"
             type="button"
           >
-            Generate
+            <span>
+              Generate
+            </span>
           </button>
           <div
             class="invalid-feedback"
@@ -240,7 +242,9 @@ exports[`<DiscountCodeCreateModal /> should render the component 1`] = `
             class="wrapper mr-2 fill secondary medium"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
         </div>
         <div
@@ -252,7 +256,9 @@ exports[`<DiscountCodeCreateModal /> should render the component 1`] = `
             color="primary"
             type="submit"
           >
-            Save
+            <span>
+              Save
+            </span>
           </button>
         </div>
       </div>

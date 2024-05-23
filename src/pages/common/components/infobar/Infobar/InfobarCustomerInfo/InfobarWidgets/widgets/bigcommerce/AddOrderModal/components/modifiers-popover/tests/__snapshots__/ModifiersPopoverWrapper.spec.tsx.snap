@@ -267,14 +267,18 @@ exports[`<ModifiersPopover/> can submit the form when all required fields are fi
         class="wrapper fill secondary medium"
         type="button"
       >
-        Close
+        <span>
+          Close
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >
-        Apply
+        <span>
+          Apply
+        </span>
       </button>
     </div>
   </div>
@@ -538,14 +542,18 @@ exports[`<ModifiersPopover/> prefills values based on initialModifierValues and 
         class="wrapper fill secondary medium"
         type="button"
       >
-        Close
+        <span>
+          Close
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >
-        Apply
+        <span>
+          Apply
+        </span>
       </button>
     </div>
   </div>
@@ -794,14 +802,18 @@ exports[`<ModifiersPopover/> renders as expected 1`] = `
         class="wrapper fill secondary medium"
         type="button"
       >
-        Close
+        <span>
+          Close
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill primary medium"
         type="button"
       >
-        Apply
+        <span>
+          Apply
+        </span>
       </button>
     </div>
   </div>

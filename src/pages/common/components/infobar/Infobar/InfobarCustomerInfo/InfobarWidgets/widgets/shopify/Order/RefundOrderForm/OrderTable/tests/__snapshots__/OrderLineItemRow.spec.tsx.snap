@@ -91,7 +91,9 @@ exports[`<LineItemRow/> should render 1`] = `
           tabindex="0"
           type="button"
         >
-          ▲
+          <span>
+            ▲
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -99,7 +101,9 @@ exports[`<LineItemRow/> should render 1`] = `
           tabindex="0"
           type="button"
         >
-          ▼
+          <span>
+            ▼
+          </span>
         </button>
       </div>
     </div>
@@ -204,7 +208,9 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
           tabindex="0"
           type="button"
         >
-          ▲
+          <span>
+            ▲
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -212,7 +218,9 @@ exports[`<LineItemRow/> should render for multi-currency order 1`] = `
           tabindex="0"
           type="button"
         >
-          ▼
+          <span>
+            ▼
+          </span>
         </button>
       </div>
     </div>
@@ -326,7 +334,9 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
           tabindex="0"
           type="button"
         >
-          ▲
+          <span>
+            ▲
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -334,7 +344,9 @@ exports[`<LineItemRow/> should render with discounted price 1`] = `
           tabindex="0"
           type="button"
         >
-          ▼
+          <span>
+            ▼
+          </span>
         </button>
       </div>
     </div>
@@ -448,7 +460,9 @@ exports[`<LineItemRow/> should render with the zero quantity 1`] = `
           tabindex="0"
           type="button"
         >
-          ▲
+          <span>
+            ▲
+          </span>
         </button>
         <button
           aria-disabled="true"
@@ -456,7 +470,9 @@ exports[`<LineItemRow/> should render with the zero quantity 1`] = `
           tabindex="0"
           type="button"
         >
-          ▼
+          <span>
+            ▼
+          </span>
         </button>
       </div>
     </div>

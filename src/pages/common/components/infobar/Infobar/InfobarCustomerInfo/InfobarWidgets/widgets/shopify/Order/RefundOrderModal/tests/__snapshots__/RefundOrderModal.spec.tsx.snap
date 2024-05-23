@@ -198,7 +198,9 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   tabindex="0"
                   type="button"
                 >
-                  ▲
+                  <span>
+                    ▲
+                  </span>
                 </button>
                 <button
                   aria-disabled="true"
@@ -206,7 +208,9 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   tabindex="0"
                   type="button"
                 >
-                  ▼
+                  <span>
+                    ▼
+                  </span>
                 </button>
               </div>
             </div>
@@ -317,7 +321,9 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   tabindex="0"
                   type="button"
                 >
-                  ▲
+                  <span>
+                    ▲
+                  </span>
                 </button>
                 <button
                   aria-disabled="true"
@@ -325,7 +331,9 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                   tabindex="0"
                   type="button"
                 >
-                  ▼
+                  <span>
+                    ▼
+                  </span>
                 </button>
               </div>
             </div>

@@ -204,7 +204,9 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         class="wrapper import ghost primary small"
         type="button"
       >
-        Import from CSV
+        <span>
+          Import from CSV
+        </span>
       </button>
     </span>
     <div
@@ -264,14 +266,18 @@ exports[`<AddFieldForm/> should render correctly 1`] = `
         id="custom-fields-form-save-button"
         type="button"
       >
-        Create field
+        <span>
+          Create field
+        </span>
       </button>
       <button
         aria-disabled="false"
         class="wrapper fill secondary medium"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
   </div>

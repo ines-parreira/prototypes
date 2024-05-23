@@ -215,7 +215,9 @@ exports[`UsageAndPlansView should render 1`] = `
                 id="update-subscription"
                 type="button"
               >
-                Update Subscription
+                <span>
+                  Update Subscription
+                </span>
               </button>
             </div>
           </div>

@@ -86,32 +86,42 @@ describe('SidebarSettings', () => {
     })
 
     it('should disable the save button if no views have been modified', () => {
-        const {getByText} = render(<WrappedGeneralSettings />)
-        expect(getByText('Save Changes').getAttribute('aria-disabled')).toBe(
-            'true'
-        )
+        const {getByRole} = render(<WrappedGeneralSettings />)
+        expect(
+            getByRole('button', {name: 'Save Changes'}).getAttribute(
+                'aria-disabled'
+            )
+        ).toBe('true')
     })
 
     it('should enable the save button if a view has been modified', () => {
-        const {getByText, rerender} = render(<WrappedGeneralSettings />)
+        const {getByText, getByRole, rerender} = render(
+            <WrappedGeneralSettings />
+        )
         userEvent.click(getByText('Spam'))
         rerender(<WrappedGeneralSettings />)
 
-        expect(getByText('Save Changes').getAttribute('aria-disabled')).toBe(
-            'false'
-        )
+        expect(
+            getByRole('button', {name: 'Save Changes'}).getAttribute(
+                'aria-disabled'
+            )
+        ).toBe('false')
     })
 
     it('should disable the save button if a view has been modified and then unmodified', () => {
-        const {getByText, rerender} = render(<WrappedGeneralSettings />)
+        const {getByText, getByRole, rerender} = render(
+            <WrappedGeneralSettings />
+        )
         userEvent.click(getByText('Spam'))
         rerender(<WrappedGeneralSettings />)
         userEvent.click(getByText('Spam'))
         rerender(<WrappedGeneralSettings />)
 
-        expect(getByText('Save Changes').getAttribute('aria-disabled')).toBe(
-            'true'
-        )
+        expect(
+            getByRole('button', {name: 'Save Changes'}).getAttribute(
+                'aria-disabled'
+            )
+        ).toBe('true')
     })
 
     it('should enable saving the performed changes and logging them via segment', async () => {
@@ -155,13 +165,15 @@ describe('SidebarSettings', () => {
     })
 
     it('should disable the save button while saving is in progress', async () => {
-        const {getByText} = render(<WrappedGeneralSettings />)
+        const {getByText, getByRole} = render(<WrappedGeneralSettings />)
         userEvent.click(getByText('Spam'))
         userEvent.click(getByText('Save Changes'))
 
         await waitFor(() => {
             expect(
-                getByText('Save Changes').getAttribute('aria-disabled')
+                getByRole('button', {name: /Save Changes/}).getAttribute(
+                    'aria-disabled'
+                )
             ).toBe('true')
         })
     })

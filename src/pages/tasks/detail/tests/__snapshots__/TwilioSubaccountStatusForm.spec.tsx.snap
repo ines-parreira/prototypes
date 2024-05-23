@@ -124,7 +124,9 @@ exports[`<TwilioSubaccountStatusForm /> render() should render with the Twillio 
             class="wrapper fill primary medium isDisabled"
             type="submit"
           >
-            Save changes
+            <span>
+              Save changes
+            </span>
           </button>
         </div>
       </form>

@@ -9,21 +9,27 @@ exports[`<Group /> should render a group of buttons 1`] = `
     class="wrapper fill primary medium left"
     type="button"
   >
-    Foo
+    <span>
+      Foo
+    </span>
   </button>
   <button
     aria-disabled="false"
     class="wrapper fill primary medium center"
     type="button"
   >
-    Bar
+    <span>
+      Bar
+    </span>
   </button>
   <button
     aria-disabled="false"
     class="wrapper fill primary medium right"
     type="button"
   >
-    Baz
+    <span>
+      Baz
+    </span>
   </button>
 </span>
 `;

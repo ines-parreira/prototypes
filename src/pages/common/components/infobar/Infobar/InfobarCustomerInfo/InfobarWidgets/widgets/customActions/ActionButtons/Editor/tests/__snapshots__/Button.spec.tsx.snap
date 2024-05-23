@@ -6,6 +6,8 @@ exports[`<Button/> should render with correct label 1`] = `
   class="wrapper fill secondary small"
   type="button"
 >
-  should render
+  <span>
+    should render
+  </span>
 </button>
 `;

@@ -564,14 +564,18 @@ exports[`Integration should display data about the integration 1`] = `
           class="wrapper mr-2 fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
           class="wrapper fill destructive medium"
           type="button"
         >
-          Deactivate HTTP integration
+          <span>
+            Deactivate HTTP integration
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -1196,14 +1200,18 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="wrapper mr-2 fill primary medium"
           type="submit"
         >
-          Save changes
+          <span>
+            Save changes
+          </span>
         </button>
         <button
           aria-disabled="false"
           class="wrapper fill destructive medium"
           type="button"
         >
-          Deactivate HTTP integration
+          <span>
+            Deactivate HTTP integration
+          </span>
         </button>
         <button
           aria-disabled="false"
@@ -1517,7 +1525,9 @@ exports[`Integration should display default values because there is no integrati
           class="wrapper mr-2 fill primary medium"
           type="submit"
         >
-          Add integration
+          <span>
+            Add integration
+          </span>
         </button>
       </div>
     </form>

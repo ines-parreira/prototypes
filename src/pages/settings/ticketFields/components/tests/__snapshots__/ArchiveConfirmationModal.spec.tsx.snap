@@ -70,14 +70,18 @@ exports[`<ArchiveConfirmationModal/> should render 1`] = `
                 class="wrapper fill secondary medium"
                 type="button"
               >
-                Cancel
+                <span>
+                  Cancel
+                </span>
               </button>
               <button
                 aria-disabled="false"
                 class="wrapper ml-3 confirmBtn fill primary medium"
                 type="button"
               >
-                Archive
+                <span>
+                  Archive
+                </span>
               </button>
             </div>
           </div>

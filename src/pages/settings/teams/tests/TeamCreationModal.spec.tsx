@@ -58,14 +58,16 @@ describe('<TeamCreationModal />', () => {
 
     it('should disable submit button when filling conditions are not met', () => {
         const store = mockStore({})
-        const {getAllByText} = render(
+        const {getByRole} = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
             </Provider>
         )
 
         expect(
-            getAllByText(/create team/i)[1].classList.contains('isDisabled')
+            getByRole('button', {
+                name: /create team/i,
+            }).classList.contains('isDisabled')
         ).toBe(true)
     })
 

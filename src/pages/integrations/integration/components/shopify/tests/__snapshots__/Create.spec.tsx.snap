@@ -53,7 +53,9 @@ exports[`<Create/> should render a create view 1`] = `
             class="wrapper fill primary medium"
             type="submit"
           >
-            Connect App
+            <span>
+              Connect App
+            </span>
           </button>
         </div>
       </form>

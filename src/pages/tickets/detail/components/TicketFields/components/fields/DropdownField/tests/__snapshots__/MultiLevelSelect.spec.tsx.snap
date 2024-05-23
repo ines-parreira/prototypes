@@ -182,7 +182,9 @@ exports[`<MultiLevelSelect /> should display display results when searching 1`] 
             class="wrapper clearButton ghost primary medium"
             type="button"
           >
-            Clear Selection
+            <span>
+              Clear Selection
+            </span>
           </button>
         </div>
       </div>
@@ -383,7 +385,9 @@ exports[`<MultiLevelSelect /> should render the dropdown component correctly 1`]
             class="wrapper clearButton ghost primary medium"
             type="button"
           >
-            Clear Selection
+            <span>
+              Clear Selection
+            </span>
           </button>
         </div>
       </div>

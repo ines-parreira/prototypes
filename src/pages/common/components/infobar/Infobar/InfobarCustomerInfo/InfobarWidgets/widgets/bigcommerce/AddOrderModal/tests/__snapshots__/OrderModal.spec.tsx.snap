@@ -383,7 +383,9 @@ exports[`OrderModal should render Create Order 1`] = `
               tabindex="0"
               type="button"
             >
-              Cancel
+              <span>
+                Cancel
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -391,7 +393,9 @@ exports[`OrderModal should render Create Order 1`] = `
               tabindex="0"
               type="button"
             >
-              Create Draft Order
+              <span>
+                Create Draft Order
+              </span>
             </button>
           </div>
         </div>
@@ -795,7 +799,9 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               tabindex="0"
               type="button"
             >
-              Cancel
+              <span>
+                Cancel
+              </span>
             </button>
             <button
               aria-disabled="true"
@@ -803,7 +809,9 @@ exports[`OrderModal should render Duplicate Order 1`] = `
               tabindex="0"
               type="button"
             >
-              Create Draft Order
+              <span>
+                Create Draft Order
+              </span>
             </button>
           </div>
         </div>

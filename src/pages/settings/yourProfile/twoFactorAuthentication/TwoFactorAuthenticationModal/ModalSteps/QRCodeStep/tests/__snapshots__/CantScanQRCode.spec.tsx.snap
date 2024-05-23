@@ -10,7 +10,9 @@ exports[`<CantScanQRCode /> render() should render the component with extra hidd
       class="wrapper ghost primary medium"
       type="button"
     >
-      Can't scan the QR code?
+      <span>
+        Can't scan the QR code?
+      </span>
     </button>
   </div>
 </div>
@@ -26,7 +28,9 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
       class="wrapper ghost primary medium"
       type="button"
     >
-      Can't scan the QR code?
+      <span>
+        Can't scan the QR code?
+      </span>
     </button>
   </div>
   <div

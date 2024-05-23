@@ -529,7 +529,9 @@ exports[`<Infobar/> should render selected customer 1`] = `
               class="wrapper fill secondary medium"
               type="button"
             >
-              Merge
+              <span>
+                Merge
+              </span>
             </button>
           </div>
         </div>
@@ -723,14 +725,18 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
         class="wrapper mr-2 fill primary medium isDisabled"
         type="button"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
       <button
         aria-disabled="true"
         class="wrapper fill secondary medium isDisabled"
         type="button"
       >
-        Cancel
+        <span>
+          Cancel
+        </span>
       </button>
     </div>
   </div>

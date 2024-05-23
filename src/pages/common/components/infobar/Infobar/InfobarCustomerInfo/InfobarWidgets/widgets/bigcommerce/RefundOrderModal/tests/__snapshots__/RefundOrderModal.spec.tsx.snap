@@ -189,7 +189,9 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             tabindex="0"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
           <button
             aria-disabled="true"
@@ -197,7 +199,9 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             tabindex="0"
             type="button"
           >
-            Refund €0.00
+            <span>
+              Refund €0.00
+            </span>
           </button>
         </div>
       </div>
@@ -260,7 +264,9 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Got it
+                <span>
+                  Got it
+                </span>
               </button>
             </div>
           </div>
@@ -930,7 +936,9 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             tabindex="0"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
           <button
             aria-disabled="true"
@@ -938,7 +946,9 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             tabindex="0"
             type="button"
           >
-            Refund €0.00
+            <span>
+              Refund €0.00
+            </span>
           </button>
         </div>
       </div>
@@ -1001,7 +1011,9 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Got it
+                <span>
+                  Got it
+                </span>
               </button>
             </div>
           </div>
@@ -1201,7 +1213,9 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             tabindex="0"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
           <button
             aria-disabled="true"
@@ -1209,7 +1223,9 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             tabindex="0"
             type="button"
           >
-            Refund €0.00
+            <span>
+              Refund €0.00
+            </span>
           </button>
         </div>
       </div>
@@ -1272,7 +1288,9 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
                 class="wrapper fill primary medium"
                 type="button"
               >
-                Got it
+                <span>
+                  Got it
+                </span>
               </button>
             </div>
           </div>

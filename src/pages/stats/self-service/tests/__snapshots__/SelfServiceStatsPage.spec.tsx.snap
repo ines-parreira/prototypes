@@ -2071,7 +2071,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Quick Responses
+              <span>
+                Go to Quick Responses
+              </span>
             </button>
           </div>
         </div>
@@ -2129,7 +2131,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to article recommendation
+              <span>
+                Go to article recommendation
+              </span>
             </button>
           </div>
         </div>
@@ -2187,7 +2191,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Order Management
+              <span>
+                Go to Order Management
+              </span>
             </button>
           </div>
         </div>
@@ -2237,7 +2243,9 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
               class="wrapper fill primary medium"
               type="button"
             >
-              Go to Order Management
+              <span>
+                Go to Order Management
+              </span>
             </button>
           </div>
         </div>

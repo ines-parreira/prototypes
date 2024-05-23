@@ -261,14 +261,18 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               id="custom-fields-form-save-button"
               type="button"
             >
-              Save changes
+              <span>
+                Save changes
+              </span>
             </button>
             <button
               aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
-              Cancel
+              <span>
+                Cancel
+              </span>
             </button>
           </div>
           <div
@@ -279,7 +283,9 @@ exports[`<EditTicketField/> should render an info alert and the edit form becaus
               class="wrapper fill secondary medium"
               type="button"
             >
-              Archive field
+              <span>
+                Archive field
+              </span>
             </button>
           </div>
         </div>
@@ -502,14 +508,18 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
               id="custom-fields-form-save-button"
               type="button"
             >
-              Save changes
+              <span>
+                Save changes
+              </span>
             </button>
             <button
               aria-disabled="false"
               class="wrapper fill secondary medium"
               type="button"
             >
-              Cancel
+              <span>
+                Cancel
+              </span>
             </button>
           </div>
           <div
@@ -520,7 +530,9 @@ exports[`<EditTicketField/> should render no info alert and the edit form becaus
               class="wrapper fill secondary medium"
               type="button"
             >
-              Archive field
+              <span>
+                Archive field
+              </span>
             </button>
           </div>
         </div>

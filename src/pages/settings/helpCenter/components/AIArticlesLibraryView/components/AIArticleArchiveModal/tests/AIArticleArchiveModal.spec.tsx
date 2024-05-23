@@ -77,12 +77,15 @@ describe('<AIArticleArchiveModal />', () => {
         const onArchiveMock = jest.fn()
 
         const ref = createRef<AIArticleArchiveModalHandle>()
-        const {getByText, getByPlaceholderText} = render(
+        const {getByText, getByPlaceholderText, getByRole} = render(
             <AIArticleArchiveModal onArchive={onArchiveMock} ref={ref} />
         )
         act(() => ref.current?.open(article))
 
-        expect(getByText('Archive')).toHaveAttribute('aria-disabled', 'true')
+        expect(getByRole('button', {name: 'Archive'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
 
         fireEvent.click(getByText(ArchiveReason.AlreadyExists))
 
@@ -113,12 +116,15 @@ describe('<AIArticleArchiveModal />', () => {
         const onArchiveMock = jest.fn()
 
         const ref = createRef<AIArticleArchiveModalHandle>()
-        const {getByText, getByPlaceholderText} = render(
+        const {getByText, getByPlaceholderText, getByRole} = render(
             <AIArticleArchiveModal onArchive={onArchiveMock} ref={ref} />
         )
         act(() => ref.current?.open(article))
 
-        expect(getByText('Archive')).toHaveAttribute('aria-disabled', 'true')
+        expect(getByRole('button', {name: 'Archive'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
 
         fireEvent.click(getByText(ArchiveReason.Other))
 

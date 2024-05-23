@@ -137,7 +137,9 @@ exports[`<HelpCenterStartView /> should render the About component 1`] = `
                 class="wrapper full-width fill primary medium"
                 type="button"
               >
-                Create Help Center
+                <span>
+                  Create Help Center
+                </span>
               </button>
             </a>
           </div>

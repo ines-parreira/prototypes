@@ -9,7 +9,7 @@ describe('CanduActionInfobar', () => {
         const canduId = 'test-candu-id'
         const onClick = jest.fn()
 
-        const {getByText} = render(
+        const {getByRole, getByText} = render(
             <CanduActionInfobar
                 text={text}
                 btnLabel={btnLabel}
@@ -20,7 +20,7 @@ describe('CanduActionInfobar', () => {
 
         expect(getByText(text)).toBeInTheDocument()
 
-        const button = getByText(btnLabel, {selector: 'button'})
+        const button = getByRole('button', {name: btnLabel})
         expect(button).toBeInTheDocument()
 
         button.click()

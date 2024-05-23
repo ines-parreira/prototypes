@@ -317,14 +317,18 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="wrapper fill primary medium isDisabled"
             type="button"
           >
-            Create Contact Form
+            <span>
+              Create Contact Form
+            </span>
           </button>
           <button
             aria-disabled="false"
             class="wrapper mlXs fill secondary medium"
             type="button"
           >
-            Cancel
+            <span>
+              Cancel
+            </span>
           </button>
         </div>
       </div>

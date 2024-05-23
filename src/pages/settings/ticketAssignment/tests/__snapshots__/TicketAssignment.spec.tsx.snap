@@ -417,7 +417,9 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             Loading...
           </span>
         </svg>
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
     </form>
   </div>
@@ -499,7 +501,9 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
                   class="wrapper ghost primary medium"
                   type="button"
                 >
-                  Create team
+                  <span>
+                    Create team
+                  </span>
                 </button>
               </div>
             </div>
@@ -578,7 +582,9 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
         class="wrapper fill primary medium"
         type="submit"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
     </form>
   </div>
@@ -869,7 +875,9 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
         class="wrapper fill primary medium"
         type="submit"
       >
-        Save changes
+        <span>
+          Save changes
+        </span>
       </button>
     </form>
   </div>

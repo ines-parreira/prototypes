@@ -29,7 +29,9 @@ exports[`<EmailIntegrationList/> render() should render the page when there are 
           class="wrapper fill primary medium"
           type="submit"
         >
-          Add email address
+          <span>
+            Add email address
+          </span>
         </button>
       </div>
     </div>
@@ -87,7 +89,9 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
           class="wrapper fill primary medium"
           type="submit"
         >
-          Add email address
+          <span>
+            Add email address
+          </span>
         </button>
       </div>
     </div>

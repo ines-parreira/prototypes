@@ -110,7 +110,9 @@ describe('AIAgentBanner', () => {
             </QueryClientProvider>
         )
         expect(
-            screen.getByText(IMPROVE_RESPONSE).classList.contains('isDisabled')
+            screen
+                .getByRole('button', {name: IMPROVE_RESPONSE})
+                .classList.contains('isDisabled')
         ).toBe(true)
     })
 

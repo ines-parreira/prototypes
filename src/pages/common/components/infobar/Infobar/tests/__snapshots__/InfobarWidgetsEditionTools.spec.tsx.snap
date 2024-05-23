@@ -9,14 +9,18 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
     class="wrapper mr-2 fill primary medium isDisabled"
     type="button"
   >
-    Save changes
+    <span>
+      Save changes
+    </span>
   </button>
   <button
     aria-disabled="true"
     class="wrapper fill secondary medium isDisabled"
     type="button"
   >
-    Cancel
+    <span>
+      Cancel
+    </span>
   </button>
 </div>
 `;
@@ -30,14 +34,18 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
     class="wrapper mr-2 fill primary medium"
     type="button"
   >
-    Save changes
+    <span>
+      Save changes
+    </span>
   </button>
   <button
     aria-disabled="false"
     class="wrapper fill secondary medium"
     type="button"
   >
-    Cancel
+    <span>
+      Cancel
+    </span>
   </button>
 </div>
 `;
@@ -80,7 +88,9 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
         Loading...
       </span>
     </svg>
-    Save changes
+    <span>
+      Save changes
+    </span>
   </button>
   <button
     aria-disabled="true"
@@ -116,7 +126,9 @@ exports[`InfobarWidgetsEditionTools component should render widgets edition tool
         Loading...
       </span>
     </svg>
-    Cancel
+    <span>
+      Cancel
+    </span>
   </button>
 </div>
 `;

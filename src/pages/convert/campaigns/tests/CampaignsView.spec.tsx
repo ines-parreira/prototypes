@@ -304,9 +304,9 @@ describe('<CampaignsView/>', () => {
                 }),
             }
 
-            const {getByText, getByRole} = renderComponent(state)
+            const {getByRole} = renderComponent(state)
 
-            const button = getByText('Create Campaign')
+            const button = getByRole('button', {name: 'Create Campaign'})
             expect(button).toBeInTheDocument()
             expect(button).toHaveAttribute('aria-disabled')
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access

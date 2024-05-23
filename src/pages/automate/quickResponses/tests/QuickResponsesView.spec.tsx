@@ -129,10 +129,9 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
-        expect(screen.getByText('Save changes')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Save changes'})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should allow to edit quick response and save changes', () => {
@@ -367,10 +366,9 @@ describe('<QuickResponsesView />', () => {
             fireEvent.change(input, {target: {value: ''}})
         })
 
-        expect(screen.getByText('Save changes')).toHaveAttribute(
-            'aria-disabled',
-            'true'
-        )
+        expect(
+            screen.getByRole('button', {name: 'Save changes'})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should limit the number of active quick responses', () => {

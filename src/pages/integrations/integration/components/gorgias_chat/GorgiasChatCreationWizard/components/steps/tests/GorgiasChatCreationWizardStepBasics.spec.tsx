@@ -80,7 +80,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
     })
 
     it('renders error for empty fields after submit attempt', () => {
-        const {getByText, getByLabelText, getAllByText} = render(
+        const {getByLabelText, getAllByText, getByRole} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -90,7 +90,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             </MemoryRouter>
         )
 
-        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Create & Customize'}))
 
         expect(getAllByText('This field is required.')).toHaveLength(2)
 
@@ -102,13 +102,13 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             getByLabelText('Ecommerce platforms', {selector: 'input'})
         ).toBeChecked()
 
-        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Create & Customize'}))
 
         expect(getAllByText('This field is required.')).toHaveLength(2)
     })
 
     it('submits form with default values when creating chat', () => {
-        const {getByText, getByLabelText} = render(
+        const {getByRole, getByLabelText} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -128,13 +128,13 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Create & Customize'}))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })
 
     it('submits form when updating chat', () => {
-        const {getByText, getByLabelText} = render(
+        const {getByRole, getByLabelText} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -158,13 +158,13 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByText('Next', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Next'}))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })
 
     it('disables buttons when submitting create form', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -177,12 +177,14 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             </MemoryRouter>
         )
 
-        expect(getByText('Cancel')).toHaveClass('isDisabled')
-        expect(getByText('Create & Customize')).toHaveClass('isDisabled')
+        expect(getByRole('button', {name: 'Cancel'})).toHaveClass('isDisabled')
+        expect(getByRole('button', {name: /Create & Customize/})).toHaveClass(
+            'isDisabled'
+        )
     })
 
     it('disables buttons when submitting update form', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -197,15 +199,17 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             </MemoryRouter>
         )
 
-        expect(getByText('Save & Customize Later')).toHaveClass('isDisabled')
-        expect(getByText('Next')).toHaveClass('isDisabled')
+        expect(
+            getByRole('button', {name: 'Save & Customize Later'})
+        ).toHaveClass('isDisabled')
+        expect(getByRole('button', {name: /Next/})).toHaveClass('isDisabled')
     })
 
     it('should include languages when creating chat', () => {
         mockFlags({
             [FeatureFlagKey.ChatMultiLanguages]: true,
         })
-        const {getByText, getByLabelText} = render(
+        const {getByRole, getByLabelText} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -225,7 +229,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByText('Create & Customize', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Create & Customize'}))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })
@@ -235,7 +239,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
             [FeatureFlagKey.ChatMultiLanguages]: true,
         })
 
-        const {getByText, getByLabelText} = render(
+        const {getByRole, getByLabelText} = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -259,7 +263,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByText('Next', {selector: 'button'}))
+        fireEvent.click(getByRole('button', {name: 'Next'}))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })

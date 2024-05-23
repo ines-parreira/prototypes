@@ -56,7 +56,7 @@ describe('CancellationReasonsFooter', () => {
     })
 
     it('disables "Continue cancelling" button when continueDisabled is true', () => {
-        const {getByText} = render(
+        const {getByRole} = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
                 productType={productType}
@@ -65,7 +65,9 @@ describe('CancellationReasonsFooter', () => {
             />
         )
 
-        const continueButton = getByText('Continue cancelling')
+        const continueButton = getByRole('button', {
+            name: 'Continue cancelling',
+        })
         expect(continueButton).toHaveClass('isDisabled')
     })
 })

@@ -18,7 +18,9 @@ exports[`<PhoneNumberListContainer /> render() should render Candu selector with
         class="wrapper fill primary medium"
         type="button"
       >
-        Add Phone Number
+        <span>
+          Add Phone Number
+        </span>
       </button>
     </div>
   </div>
@@ -57,7 +59,9 @@ exports[`<PhoneNumberListContainer /> render() should render with a number 1`] =
         class="wrapper fill primary medium"
         type="button"
       >
-        Add Phone Number
+        <span>
+          Add Phone Number
+        </span>
       </button>
     </div>
   </div>

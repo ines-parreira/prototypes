@@ -20,7 +20,9 @@ exports[`<ConnectToShopSection /> renders in disabled state while fetching data 
       class="wrapper fill secondary medium"
       type="button"
     >
-      Connect
+      <span>
+        Connect
+      </span>
     </button>
   </section>
 </div>

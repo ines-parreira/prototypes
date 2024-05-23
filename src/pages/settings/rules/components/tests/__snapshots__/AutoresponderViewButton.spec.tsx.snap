@@ -6,6 +6,8 @@ exports[`<AutoresponderViewButton/> should render correctly 1`] = `
   class="wrapper fill secondary medium"
   type="button"
 >
-  View Tickets Closed By Rule
+  <span>
+    View Tickets Closed By Rule
+  </span>
 </button>
 `;

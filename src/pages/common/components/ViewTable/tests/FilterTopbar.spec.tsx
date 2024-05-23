@@ -454,7 +454,7 @@ describe('<FilterTopbar />', () => {
         const {id, ...activeView} = createViewWithFilters(
             ticketChannelEqualsEmailFilter
         )
-        const {getByText} = render(
+        const {getByText, getByRole} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -470,9 +470,10 @@ describe('<FilterTopbar />', () => {
 
         fireEvent.click(getByText(/Create view/i))
         await waitFor(() => {
-            expect(
-                getByText(/Create view/i) as HTMLButtonElement
-            ).toHaveAttribute('aria-disabled', 'false')
+            expect(getByRole('button', {name: /Create view/i})).toHaveAttribute(
+                'aria-disabled',
+                'false'
+            )
         })
 
         expect(viewCreatedMock).not.toHaveBeenCalled()

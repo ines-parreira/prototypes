@@ -159,7 +159,9 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  1`]
                 class="wrapper fill secondary small"
                 type="button"
               >
-                Change reason
+                <span>
+                  Change reason
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -262,7 +264,9 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  2`]
                 class="wrapper fill secondary small"
                 type="button"
               >
-                Change reason
+                <span>
+                  Change reason
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -361,7 +365,9 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  3`]
                 class="wrapper fill secondary small"
                 type="button"
               >
-                Change reason
+                <span>
+                  Change reason
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -464,7 +470,9 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  4`]
                 class="wrapper fill secondary small"
                 type="button"
               >
-                Change reason
+                <span>
+                  Change reason
+                </span>
               </button>
               <button
                 aria-disabled="false"
@@ -567,7 +575,9 @@ exports[`<AISuggestionContactReason /> should match snapshot for prediction  5`]
                 class="wrapper fill secondary small"
                 type="button"
               >
-                Change reason
+                <span>
+                  Change reason
+                </span>
               </button>
               <button
                 aria-disabled="false"

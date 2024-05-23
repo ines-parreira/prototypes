@@ -427,7 +427,9 @@ exports[`<Magento2/> Integration should render 1`] = `
               class="wrapper mr-2 fill primary medium isDisabled"
               type="submit"
             >
-              Update Connection
+              <span>
+                Update Connection
+              </span>
             </button>
             <button
               aria-disabled="false"
@@ -727,7 +729,9 @@ exports[`<Magento2/> New should render 1`] = `
               class="wrapper mr-2 fill primary medium isDisabled"
               type="submit"
             >
-              Connect App
+              <span>
+                Connect App
+              </span>
             </button>
           </div>
         </form>

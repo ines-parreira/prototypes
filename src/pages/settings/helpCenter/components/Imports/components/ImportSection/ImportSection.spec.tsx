@@ -224,7 +224,7 @@ describe('<ImportSection />', () => {
         renderWithStore(<ImportSection />)
 
         const importArticlesButton = await waitFor(() =>
-            screen.getByText(/Import Articles/, {selector: 'button'})
+            screen.getByRole('button', {name: /Import Articles/})
         )
         fireEvent.click(importArticlesButton)
 
@@ -246,7 +246,7 @@ describe('<ImportSection />', () => {
         await userEvent.type(apiKeyInput, 'api-key')
         fireEvent.click(submitButton)
         const startMigrationButton = await waitFor(() =>
-            screen.getByText('Start migrating', {selector: 'button'})
+            screen.getByRole('button', {name: 'Start migrating'})
         )
         fireEvent.click(startMigrationButton)
 
@@ -265,8 +265,8 @@ describe('<ImportSection />', () => {
         )
         expect(fullProgressElement).not.toBeNull()
 
-        const finishButton = screen.getByText('Finish', {
-            selector: 'button',
+        const finishButton = screen.getByRole('button', {
+            name: 'Finish',
         })
 
         fireEvent.click(finishButton)
@@ -293,7 +293,9 @@ describe('<ImportSection />', () => {
         renderWithStore(<ImportSection />)
 
         const importArticlesButton = await waitFor(() =>
-            screen.getByText(/Import Articles/, {selector: 'button'})
+            screen.getByRole('button', {
+                name: /Import Articles/,
+            })
         )
         fireEvent.click(importArticlesButton)
 
@@ -315,7 +317,9 @@ describe('<ImportSection />', () => {
         await userEvent.type(apiKeyInput, 'api-key')
         fireEvent.click(submitButton)
         const startMigrationButton = await waitFor(() =>
-            screen.getByText('Start migrating', {selector: 'button'})
+            screen.getByRole('button', {
+                name: 'Start migrating',
+            })
         )
         fireEvent.click(startMigrationButton)
 
@@ -369,8 +373,8 @@ describe('<ImportSection />', () => {
             .replyOnce(200, rollbackMigration)
 
         const revertButton = await waitFor(() =>
-            screen.getByText('Revert', {
-                selector: 'button',
+            screen.getByRole('button', {
+                name: /Revert/,
             })
         )
 

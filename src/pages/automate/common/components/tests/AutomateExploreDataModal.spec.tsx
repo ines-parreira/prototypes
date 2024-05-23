@@ -152,7 +152,7 @@ describe('<AutomateExploreDataModal />', () => {
         const agentCost = screen.getByTestId('agent-cost')
         const yearly = screen.getByTestId('yearly')
         const ticketHandleTime = screen.getByTestId('ticket-handle-time')
-        const updateButton = screen.getByText('Update')
+        const updateButton = screen.getByRole('button', {name: 'Update'})
 
         expect(resolutionTime).toHaveValue('1h')
         expect(firstResponseTime).toHaveValue('40m')
@@ -390,7 +390,7 @@ describe('<AutomateExploreDataModal />', () => {
         // Act
         modal.current?.open()
 
-        const updateButton = screen.getByText('Update')
+        const updateButton = screen.getByRole('button', {name: 'Update'})
 
         // Assert
         expect(updateButton).toHaveAttribute('aria-disabled', 'true')

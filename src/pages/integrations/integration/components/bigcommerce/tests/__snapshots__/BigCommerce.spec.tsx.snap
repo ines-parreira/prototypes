@@ -189,7 +189,9 @@ exports[`<BigCommerce/> Detail should render a detail view 1`] = `
               class="wrapper fill primary medium"
               type="button"
             >
-              Connect BigCommerce
+              <span>
+                Connect BigCommerce
+              </span>
             </button>
           </a>
         </div>
@@ -455,7 +457,9 @@ exports[`<BigCommerce/> List should render 1`] = `
           class="wrapper fill primary medium"
           type="button"
         >
-          Connect BigCommerce
+          <span>
+            Connect BigCommerce
+          </span>
         </button>
       </a>
     </div>

@@ -204,7 +204,7 @@ describe('<ChangePassword />', () => {
         it('should disable button because some fields are empty', async () => {
             const mockChangePassword = jest.fn().mockResolvedValue({})
 
-            const {getAllByText, getAllByLabelText} = render(
+            const {getAllByText, getAllByLabelText, getByRole} = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     changePassword={mockChangePassword}
@@ -217,7 +217,7 @@ describe('<ChangePassword />', () => {
                 newPwd: '',
                 confirmNewPwd: '',
             })
-            const button = getAllByText(/Update Password/i)[1]
+            const button = getByRole('button', {name: /Update Password/i})
             fireEvent.click(button)
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenCalledTimes(0)
