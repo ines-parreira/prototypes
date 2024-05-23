@@ -89,7 +89,7 @@ export default function SLAFormView({
                                     settingsCss.mb24
                                 )}
                             >
-                                Define response and next response times to be
+                                Define first response and resolution times to be
                                 used as goals by your team(s).
                             </div>
                             <div
@@ -157,7 +157,7 @@ export default function SLAFormView({
                                 }
                                 className={settingsCss.mb48}
                             >
-                                Enable SLA (service level agreement)
+                                Enable SLA
                             </FormField>
                             <div className={css.buttonGroup}>
                                 <div>
