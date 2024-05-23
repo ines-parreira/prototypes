@@ -12,7 +12,12 @@ import {
     gatherCallContext,
     getCallSid,
 } from 'hooks/integrations/phone/utils'
-
+import socketManager from 'services/socketManager'
+import {
+    SocketEventType,
+    VoiceCallTransferFailedEvent,
+    ServerMessage,
+} from 'services/socketManager/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
@@ -22,7 +27,6 @@ import {
     CallRecordingStatus,
     TWILIO_CURRENT_ITEM,
 } from 'pages/common/components/PhoneIntegrationBar/constants'
-
 import client from 'models/api/resources'
 import {RootState} from 'state/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
@@ -79,6 +83,38 @@ export function OngoingPhoneCall({
     )
 
     const transferButtonRef = useRef<HTMLButtonElement>(null)
+
+    const handleReceiveTransferFailedEvent = useCallback(
+        (json: ServerMessage) => {
+            const eventData = json as VoiceCallTransferFailedEvent
+            setIsTransferring(false)
+
+            void notify({
+                dismissAfter: 5000,
+                status: NotificationStatus.Info,
+                message: eventData.event.data.error.message,
+            })
+        },
+        [notify, setIsTransferring]
+    )
+
+    useEffect(() => {
+        socketManager.registerReceivedEvents([
+            {
+                name: SocketEventType.VoiceCallTransferFailed,
+                onReceive: handleReceiveTransferFailedEvent,
+            },
+        ])
+
+        return () => {
+            socketManager.unregisterReceivedEvents([
+                {
+                    name: SocketEventType.VoiceCallTransferFailed,
+                    onReceive: function () {},
+                },
+            ])
+        }
+    }, [handleReceiveTransferFailedEvent])
 
     const handleDisconnect = () => {
         setIsRecording(false)

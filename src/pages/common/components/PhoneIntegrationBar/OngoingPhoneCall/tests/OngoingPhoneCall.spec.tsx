@@ -12,11 +12,16 @@ import {TwilioSocketEventType} from 'business/twilio'
 import * as utils from 'hooks/integrations/phone/utils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import {mockIncomingCall} from '../../../../../../tests/twilioMocks'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import client from '../../../../../../models/api/resources'
-import OngoingPhoneCall from '../OngoingPhoneCall'
+import {mockIncomingCall} from 'tests/twilioMocks'
+import {RootState, StoreDispatch} from 'state/types'
+import client from 'models/api/resources'
+import socketManager from 'services/socketManager'
+import {
+    SocketEventType,
+    VoiceCallTransferFailedEvent,
+} from 'services/socketManager/types'
 import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
+import OngoingPhoneCall from '../OngoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
 
@@ -466,4 +471,65 @@ describe('<OngoingPhoneCall/>', () => {
             expect(getByText(expectedIcon)).toBeInTheDocument()
         }
     )
+
+    it('should display notification and resume transfer buttons on transfer failure', () => {
+        mockUsePutCallParticipantOnHold.mockReturnValue({
+            mutate: jest.fn(),
+        })
+        const call = mockIncomingCall(integrationId) as Call
+        mockFlags({
+            [FeatureFlagKey.CallTransfer]: true,
+            [FeatureFlagKey.CallOnHold]: true,
+        })
+
+        const {getByTestId, getByText} = render(
+            <Provider store={store}>
+                <OngoingPhoneCall call={call} />
+            </Provider>
+        )
+
+        // start the transfer
+        fireEvent.click(getByTestId('confirm-transfer-button'))
+
+        expect(getByText('Transferring...')).toBeVisible()
+        expect(getByTestId('hold-call-button')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
+        expect(getByTestId('transfer-call-button')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
+
+        // send failure message from the backend
+        socketManager.onServerMessage({
+            event: {
+                type: SocketEventType.VoiceCallTransferFailed,
+                data: {
+                    error: {
+                        message: 'The customer is still on the line.',
+                    },
+                },
+            },
+        } as VoiceCallTransferFailedEvent)
+
+        const actions = store.getActions() as {
+            type: string
+            payload: {message: any}
+        }[]
+        expect(actions[actions.length - 1].payload.message).toBe(
+            'The customer is still on the line.'
+        )
+
+        // the buttons should be enabled again
+        expect(getByText('Connected')).toBeVisible()
+        expect(getByTestId('hold-call-button')).toHaveAttribute(
+            'aria-disabled',
+            'false'
+        )
+        expect(getByTestId('transfer-call-button')).toHaveAttribute(
+            'aria-disabled',
+            'false'
+        )
+    })
 })

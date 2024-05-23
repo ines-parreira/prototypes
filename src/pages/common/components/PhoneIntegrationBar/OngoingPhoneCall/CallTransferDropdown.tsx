@@ -1,4 +1,5 @@
 import React, {ComponentProps, useState} from 'react'
+import {get} from 'lodash'
 import {
     TransferCallBodyReceiverType,
     TransferCallBodyType,
@@ -49,11 +50,18 @@ export default function CallTransferDropdown({
                     setIsOpen(false)
                     onTransferInitiated()
                 },
-                onError: () => {
+                onError: (error) => {
+                    const message =
+                        get(error, 'response.data.error.msg') ??
+                        'Call transfer failed because an error occurred. Please try again.'
+
                     void dispatch(
                         notify({
-                            status: NotificationStatus.Error,
-                            message: 'Call transfer failed',
+                            status:
+                                error.response?.status === 400
+                                    ? NotificationStatus.Info
+                                    : NotificationStatus.Error,
+                            message,
                         })
                     )
                 },

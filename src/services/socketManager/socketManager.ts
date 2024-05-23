@@ -99,6 +99,14 @@ export class SocketManager {
         events.forEach((event) => this.sendEvents.push(event))
     }
 
+    unregisterReceivedEvents(events: ReceivedEvent[]) {
+        events.forEach((event) => {
+            this.receivedEvents = this.receivedEvents.filter(
+                (receivedEvent) => receivedEvent.name !== event.name
+            )
+        })
+    }
+
     onMessage = (message: WSMessage) => {
         switch (message.type) {
             case BroadcastChannelEvent.WsConnected:

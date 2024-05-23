@@ -87,6 +87,7 @@ export enum SocketEventType {
     ViewSectionUpdated = 'view-section-updated',
     VoiceCallCreated = 'voice-call-created',
     VoiceCallUpdated = 'voice-call-updated',
+    VoiceCallTransferFailed = 'voice-call-transfer-failed',
     WhatsAppOnboardingSucceeded = 'whatsapp-onboarding-succeeded',
     WhatsAppOnboardingFailed = 'whatsapp-onboarding-failed',
     ShopperCreated = 'shopper-created',
@@ -366,6 +367,15 @@ export type VoiceCallUpdatedEvent = {
     voice_call: VoiceCall
 }
 
+export type VoiceCallTransferFailedEvent = {
+    event: {
+        type: SocketEventType.VoiceCallTransferFailed
+        data: {
+            error: {message: string}
+        }
+    }
+}
+
 export type ShopperEvent = {
     event: {
         type: SocketEventType.ShopperCreated | SocketEventType.ShopperUpdated
@@ -436,6 +446,7 @@ export type ServerMessage =
     | WhatsAppOnboardingFailedEvent
     | VoiceCallCreatedEvent
     | VoiceCallUpdatedEvent
+    | VoiceCallTransferFailedEvent
     | ShopperEvent
     | ShopperAddressEvent
     | OrderEvent

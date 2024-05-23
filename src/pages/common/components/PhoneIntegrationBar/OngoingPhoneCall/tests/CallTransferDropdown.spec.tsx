@@ -146,7 +146,7 @@ describe('CallTransferDropdown', () => {
         expect(setIsOpen).toHaveBeenLastCalledWith(false)
     })
 
-    it('displays notification on transfer error', () => {
+    it('displays warning notification on transfer failure if status is 400', () => {
         const notify = jest.spyOn(notificationActions, 'notify')
         mockUseTransferCall.mockReturnValue({
             mutate: jest.fn(),
@@ -154,13 +154,76 @@ describe('CallTransferDropdown', () => {
         renderComponent()
         ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
             .mock.calls[0][0]?.mutation?.onError!(
-            '' as any,
+            {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Call transfer could not be attempted because the agent is offline or unavailable for calls. The customer is still on the line.',
+                        },
+                    },
+                    status: 400,
+                },
+            },
             '' as any,
             '' as any
         )
 
         expect(notify).toHaveBeenCalledWith({
-            message: 'Call transfer failed',
+            message:
+                'Call transfer could not be attempted because the agent is offline or unavailable for calls. The customer is still on the line.',
+            status: 'info',
+        })
+    })
+
+    it('displays error notification on transfer failure if status is not 400', () => {
+        const notify = jest.spyOn(notificationActions, 'notify')
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
+        renderComponent()
+        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
+            .mock.calls[0][0]?.mutation?.onError!(
+            {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Call transfer failed because an error occurred. Please try again.',
+                        },
+                    },
+                    status: 500,
+                },
+            },
+            '' as any,
+            '' as any
+        )
+
+        expect(notify).toHaveBeenCalledWith({
+            message:
+                'Call transfer failed because an error occurred. Please try again.',
+            status: 'error',
+        })
+    })
+
+    it('displays default error notification on transfer failure if no message', () => {
+        const notify = jest.spyOn(notificationActions, 'notify')
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
+        renderComponent()
+        ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
+            .mock.calls[0][0]?.mutation?.onError!(
+            {
+                response: {
+                    status: 500,
+                },
+            },
+            '' as any,
+            '' as any
+        )
+
+        expect(notify).toHaveBeenCalledWith({
+            message:
+                'Call transfer failed because an error occurred. Please try again.',
             status: 'error',
         })
     })
