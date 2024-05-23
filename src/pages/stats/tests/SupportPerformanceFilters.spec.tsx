@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import LD from 'launchdarkly-react-client-sdk'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -18,7 +19,8 @@ import {integrationsStatsFilterLabels} from 'pages/stats/IntegrationsStatsFilter
 import {tagsStatsFilterLabels} from 'pages/stats/TagsStatsFilter'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {CALENDAR_ICON} from '../common/PeriodPicker'
+import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -61,6 +63,12 @@ describe('Support Performance Filters', () => {
         integrationsStatsFilterLabels,
         tagsStatsFilterLabels,
     ]
+
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
+    })
 
     it('should render the filters with no selected value', () => {
         render(

@@ -30,9 +30,6 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="d-flex flex-wrap float-right"
                 >
                   <div>
-                    ChannelsStatsFilter
-                  </div>
-                  <div>
                     <button
                       aria-disabled="false"
                       class="wrapper ghost secondary medium"
@@ -706,9 +703,6 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                 class="d-flex flex-wrap float-right"
               >
                 <div>
-                  ChannelsStatsFilter
-                </div>
-                <div>
                   <button
                     aria-disabled="false"
                     class="wrapper ghost secondary medium"
@@ -1360,9 +1354,6 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 <div
                   class="d-flex flex-wrap float-right"
                 >
-                  <div>
-                    ChannelsStatsFilter
-                  </div>
                   <div>
                     <button
                       aria-disabled="false"
@@ -2037,9 +2028,6 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                 class="d-flex flex-wrap float-right"
               >
                 <div>
-                  ChannelsStatsFilter
-                </div>
-                <div>
                   <button
                     aria-disabled="false"
                     class="wrapper ghost secondary medium"
@@ -2691,9 +2679,6 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 <div
                   class="d-flex flex-wrap float-right"
                 >
-                  <div>
-                    ChannelsStatsFilter
-                  </div>
                   <div>
                     <button
                       aria-disabled="false"
@@ -3368,9 +3353,6 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                 class="d-flex flex-wrap float-right"
               >
                 <div>
-                  ChannelsStatsFilter
-                </div>
-                <div>
                   <button
                     aria-disabled="false"
                     class="wrapper ghost secondary medium"
@@ -4019,9 +4001,6 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="d-flex flex-wrap float-right"
           >
             <div>
-              ChannelsStatsFilter
-            </div>
-            <div>
               <button
                 aria-disabled="false"
                 class="wrapper ghost secondary medium"
@@ -4616,9 +4595,6 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
           <div
             class="d-flex flex-wrap float-right"
           >
-            <div>
-              ChannelsStatsFilter
-            </div>
             <div>
               <button
                 aria-disabled="false"

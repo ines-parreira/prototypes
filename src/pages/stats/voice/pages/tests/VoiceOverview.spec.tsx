@@ -36,7 +36,7 @@ import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCall
 import {assumeMock} from 'utils/testing'
 import {user} from 'fixtures/users'
 import {VOICE_PRODUCT_ID, voicePrice1} from 'fixtures/productPrices'
-import VoiceOverview from '../VoiceOverview'
+import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -66,6 +66,7 @@ describe('VoiceOverview', () => {
         mockFlags({
             [FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true,
             [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
+            [FeatureFlagKey.NewDatePickerVariant]: false,
         })
     })
 

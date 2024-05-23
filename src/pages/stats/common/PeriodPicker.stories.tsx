@@ -2,7 +2,7 @@ import {within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
-import {Meta, StoryFn} from '@storybook/react'
+import {Meta, StoryFn, StoryObj} from '@storybook/react'
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
@@ -19,28 +19,6 @@ const storyConfig: Meta = {
     component: PeriodPicker,
     parameters: {
         chromatic: {disableSnapshot: false},
-    },
-    argTypes: {
-        dateRanges: {
-            options: ['custom', 'default'],
-            mapping: rangeOptions,
-            control: {
-                type: 'radio',
-            },
-        },
-        actionButtonsOnTheBottom: {
-            defaultValue: false,
-            control: {
-                type: 'boolean',
-            },
-        },
-        rangeDatesInFooter: {
-            defaultValue: false,
-            control: {
-                type: 'boolean',
-            },
-            if: {arg: 'actionButtonsOnTheBottom'},
-        },
     },
 }
 
@@ -60,10 +38,14 @@ const defaultProps: ComponentProps<typeof PeriodPicker> = {
     endDatetime: moment(DATE),
     startDatetime: moment(DATE).subtract(7, 'days'),
     onChange: () => {},
-    pickerV2Styles: false,
-    rangesOnLeft: false,
-    showRangesLabel: true,
-    changeButtonColorsToV2: false,
+}
+
+const pickerV2Props: ComponentProps<typeof PeriodPicker> = {
+    ...defaultProps,
+    pickerV2Styles: true,
+    rangesOnLeft: true,
+    showRangesLabel: false,
+    changeButtonColorsToV2: true,
 }
 
 export const Default = Template.bind({})
@@ -74,3 +56,46 @@ Default.play = ({canvasElement}) => {
 }
 
 export default storyConfig
+
+type Story = StoryObj<typeof PeriodPicker>
+
+export const PeriodPickerV2: Story = {
+    argTypes: {
+        dateRanges: {
+            options: ['custom', 'default'],
+            mapping: rangeOptions,
+            control: {
+                type: 'radio',
+            },
+        },
+        actionButtonsOnTheBottom: {
+            control: {
+                type: 'boolean',
+            },
+        },
+        rangeDatesInFooter: {
+            control: {
+                type: 'boolean',
+            },
+            if: {arg: 'actionButtonsOnTheBottom'},
+        },
+    },
+    args: {
+        ...pickerV2Props,
+        actionButtonsOnTheBottom: true,
+        rangeDatesInFooter: true,
+        dateRanges: rangeOptions.custom,
+    },
+    render: (props) => (
+        <ThemeProvider>
+            <Provider store={configureMockStore()(defaultState)}>
+                <PeriodPicker {...props} />
+            </Provider>
+        </ThemeProvider>
+    ),
+}
+
+PeriodPickerV2.play = ({canvasElement}) => {
+    const canvas = within(canvasElement)
+    userEvent.click(canvas.getByRole('button'))
+}

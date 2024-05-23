@@ -235,6 +235,9 @@ describe('<AutomateOverview />', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
         }))
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
         useFirstResponseTimeWithAutomationTrendMock.mockReturnValue(
             firstResponseTimeWithAutomationTrend
         )

@@ -73,6 +73,16 @@ export default function PeriodStatsFilter({
     const isNewDatePickerVariant =
         useFlags()[FeatureFlagKey.NewDatePickerVariant]
 
+    const pickerV2Props = {
+        dateRanges: !!isNewDatePickerVariant ? getNewSetOfRanges() : undefined,
+        pickerV2Styles: !!isNewDatePickerVariant,
+        rangesOnLeft: !!isNewDatePickerVariant,
+        showRangesLabel: !isNewDatePickerVariant,
+        actionButtonsOnTheBottom: !!isNewDatePickerVariant,
+        changeButtonColorsToV2: !!isNewDatePickerVariant,
+        rangeDatesInFooter: !!isNewDatePickerVariant,
+    }
+
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
@@ -148,9 +158,8 @@ export default function PeriodStatsFilter({
                     endDate: value.end_datetime,
                 })
             }}
-            dateRanges={
-                !!isNewDatePickerVariant ? getNewSetOfRanges() : undefined
-            }
+            isDisabled={isNewDatePickerVariant === undefined}
+            {...pickerV2Props}
         />
     )
 }

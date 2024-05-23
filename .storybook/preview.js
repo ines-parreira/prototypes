@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 
 import {ThemeContext, useThemeContext} from '../src/theme'
+import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.ts';
 
 require('@storybook/addon-console')
 
@@ -129,6 +130,6 @@ const withTheme = (StoryFn, context) => {
     )
 }
 
-export const decorators = [withTheme]
+export const decorators = [withTheme, LDDecorator]
 
 export default preview

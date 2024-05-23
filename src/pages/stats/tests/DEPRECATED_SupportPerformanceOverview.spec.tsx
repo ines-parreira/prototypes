@@ -38,8 +38,8 @@ import {StatsFilters} from 'models/stat/types'
 import {account} from 'fixtures/account'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import TagsStatsFilter from '../TagsStatsFilter'
-import DEPRECATED_SupportPerformanceOverview from '../DEPRECATED_SupportPerformanceOverview'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import DEPRECATED_SupportPerformanceOverview from 'pages/stats/DEPRECATED_SupportPerformanceOverview'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({
@@ -98,6 +98,9 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
         mathRandomSpy = jest.spyOn(Math, 'random').mockImplementation(() => 42)
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsProductivityMetrics]: false,
+        }))
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
         }))
     })
 

@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {ticketsPerTagStat} from 'fixtures/stats'
@@ -14,8 +15,9 @@ import {integrationsState} from 'fixtures/integrations'
 import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import SupportPerformanceTags from '../SupportPerformanceTags'
-import TagsStatsFilter from '../TagsStatsFilter'
+import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock(
     '../TagsStatsFilter',
@@ -64,6 +66,9 @@ describe('SupportPerformanceTags', () => {
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
     })
 
     afterEach(() => {

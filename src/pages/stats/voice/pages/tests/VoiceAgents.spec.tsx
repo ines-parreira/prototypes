@@ -5,6 +5,7 @@ import {fromJS, Map} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
+import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
@@ -23,7 +24,8 @@ import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agent
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
 
 import {VOICE_PRODUCT_ID, voicePrice1} from 'fixtures/productPrices'
-import VoiceAgents from '../VoiceAgents'
+import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -84,6 +86,13 @@ describe('VoiceAgents', () => {
             </QueryClientProvider>
         )
     }
+
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        })
+    })
 
     it('should render page', () => {
         const {queryByText} = renderVoiceAgents()

@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -17,7 +18,8 @@ import {TICKETS_CREATED_PER_CHANNEL_PER_DAY} from 'config/stats'
 import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import SupportPerformanceChannels from '../SupportPerformanceChannels'
+import SupportPerformanceChannels from 'pages/stats/SupportPerformanceChannels'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -58,6 +60,9 @@ describe('SupportPerformanceChannels', () => {
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
     })
 
     afterEach(() => {

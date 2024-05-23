@@ -6,6 +6,7 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {latestSatisfactionSurveys, satisfactionSurveys} from 'fixtures/stats'
@@ -21,8 +22,9 @@ import {StatsFilters} from 'models/stat/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import SupportPerformanceSatisfaction from '../SupportPerformanceSatisfaction'
-import TagsStatsFilter from '../TagsStatsFilter'
+import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisfaction'
+import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -86,6 +88,9 @@ describe('SupportPerformanceSatisfaction', () => {
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
         mathRandomSpy = jest.spyOn(Math, 'random').mockImplementation(() => 42)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
     })
 
     afterEach(() => {

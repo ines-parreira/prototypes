@@ -6,6 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 
+import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {flushPromises, renderWithRouter} from 'utils/testing'
@@ -39,7 +40,8 @@ import {account} from 'fixtures/account'
 import {entitiesInitialState} from 'fixtures/entities'
 import {IntegrationType} from 'models/integration/constants'
 import useStatResource from 'hooks/reporting/useStatResource'
-import SelfServiceStatsPage from '../SelfServiceStatsPage'
+import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
@@ -118,6 +120,9 @@ describe('<SelfServiceStatsPage />', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewDatePickerVariant]: false,
+        }))
     })
 
     it('should display the loader on loading', () => {

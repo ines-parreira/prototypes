@@ -239,8 +239,8 @@ export const PeriodPickerContainer = ({
                             applyButtonClasses: `${
                                 changeButtonColorsToV2
                                     ? 'btn-primary'
-                                    : 'btn-success'
-                            } mr-2`,
+                                    : 'btn-success mr-2'
+                            }`,
                             cancelButtonClasses: 'btn-secondary',
                             endDate,
                             isCustomDate: (date: Moment) => {
