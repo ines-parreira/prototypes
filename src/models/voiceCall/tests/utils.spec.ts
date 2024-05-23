@@ -130,6 +130,16 @@ describe('voice call utils', () => {
                     customer_id: 7,
                     created_datetime: '03:05 PM',
                 },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                    user_id: 8,
+                    created_datetime: '03:06 PM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferFailed,
+                    user_id: 9,
+                    created_datetime: '03:07 PM',
+                },
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
@@ -143,6 +153,12 @@ describe('voice call utils', () => {
                     customerId: 7,
                     datetime: '03:05 PM',
                 },
+                {
+                    text: 'Transfer initiated by',
+                    userId: 8,
+                    datetime: '03:06 PM',
+                },
+                {text: 'Transfer failed to', userId: 9, datetime: '03:07 PM'},
             ])
         })
 
@@ -169,6 +185,110 @@ describe('voice call utils', () => {
             const result = processEvents(events)
             expect(result).toEqual([{text: 'Missed by', userId: 1}])
         })
+
+        it('should handle transfers', () => {
+            const events: VoiceCallEvent[] = [
+                {
+                    type: PhoneIntegrationEvent.PhoneCallRinging,
+                    user_id: 2,
+                    created_datetime: '10:00 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallAnswered,
+                    user_id: 1,
+                    created_datetime: '10:01 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                    user_id: 1,
+                    created_datetime: '10:02 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferFailed,
+                    user_id: 1,
+                    created_datetime: '10:03 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                    user_id: 1,
+                    created_datetime: '10:04 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallAnswered,
+                    user_id: 2,
+                    created_datetime: '10:05 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                    user_id: 2,
+                    created_datetime: '10:04 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallRinging,
+                    user_id: 3,
+                    created_datetime: '10:06 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferFailed,
+                    user_id: 3,
+                    created_datetime: '10:06 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferInitiated,
+                    user_id: 2,
+                    created_datetime: '10:07 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallRinging,
+                    user_id: 3,
+                    created_datetime: '10:08 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.DeclinedPhoneCall,
+                    user_id: 3,
+                    created_datetime: '10:09 AM',
+                },
+                {
+                    type: PhoneIntegrationEvent.PhoneCallTransferFailed,
+                    user_id: 3,
+                    created_datetime: '10:10 AM',
+                },
+            ] as VoiceCallEvent[]
+            const result = processEvents(events)
+            expect(result).toEqual([
+                {text: 'Missed by', userId: 2, datetime: '10:00 AM'},
+                {text: 'Answered by', userId: 1, datetime: '10:01 AM'},
+                {
+                    text: 'Transfer initiated by',
+                    userId: 1,
+                    datetime: '10:02 AM',
+                },
+                {text: 'Transfer failed to', userId: 1, datetime: '10:03 AM'},
+                {
+                    datetime: '10:04 AM',
+                    text: 'Transfer initiated by',
+                    userId: 1,
+                },
+                {
+                    text: 'Transfer answered by',
+                    userId: 2,
+                    datetime: '10:05 AM',
+                },
+                {
+                    datetime: '10:04 AM',
+                    text: 'Transfer initiated by',
+                    userId: 2,
+                },
+                {text: 'Transfer missed by', userId: 3, datetime: '10:06 AM'},
+                {
+                    datetime: '10:07 AM',
+                    text: 'Transfer initiated by',
+                    userId: 2,
+                },
+                {text: 'Transfer declined by', userId: 3, datetime: '10:09 AM'},
+            ])
+        })
+
         describe('isMissedInboundVoiceCall', () => {
             it('should return true for missed inbound calls', () => {
                 expect(

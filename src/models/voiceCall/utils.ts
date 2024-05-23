@@ -53,6 +53,33 @@ export const getFormattedDurationOngoingCall = (
     return utcMoment.format('mm:ss')
 }
 
+const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
+    // we should check if the call was missed/answered/declined before a transfer was initiated
+    const checkEventsLimit = nextEvents.findIndex(
+        (e) => e.type === PhoneIntegrationEvent.PhoneCallTransferInitiated
+    )
+    const searchEvents =
+        checkEventsLimit > 0
+            ? nextEvents.slice(0, checkEventsLimit)
+            : nextEvents
+
+    const missedCallEvent = searchEvents.find(
+        (e) =>
+            e.user_id === event.user_id &&
+            e.type === PhoneIntegrationEvent.ChildCallNotAnswered
+    )
+
+    const answeredOrDeclinedEvent = missedCallEvent
+        ? null
+        : searchEvents.find(
+              (e) =>
+                  e.user_id === event.user_id &&
+                  (e.type === PhoneIntegrationEvent.PhoneCallAnswered ||
+                      e.type === PhoneIntegrationEvent.DeclinedPhoneCall)
+          )
+    return missedCallEvent || !answeredOrDeclinedEvent
+}
+
 export const processEvents = (
     events: VoiceCallEvent[]
 ): {
@@ -69,48 +96,51 @@ export const processEvents = (
             PhoneIntegrationEvent.PhoneCallRinging,
             PhoneIntegrationEvent.ChildCallNotAnswered,
             PhoneIntegrationEvent.OutgoingPhoneCallConnected,
+            PhoneIntegrationEvent.PhoneCallTransferInitiated,
+            PhoneIntegrationEvent.PhoneCallTransferFailed,
         ].includes(event.type)
     )
 
-    for (const event of handled) {
+    let isTransfer = false
+    for (const [index, event] of handled.entries()) {
         let newEvent
 
         if (event.type === PhoneIntegrationEvent.PhoneCallAnswered) {
             newEvent = {
-                text: `Answered by`,
+                text: isTransfer ? 'Transfer answered by' : `Answered by`,
             }
         } else if (event.type === PhoneIntegrationEvent.DeclinedPhoneCall) {
             newEvent = {
-                text: `Declined by`,
+                text: isTransfer ? 'Transfer declined by' : `Declined by`,
             }
         } else if (event.type === PhoneIntegrationEvent.PhoneCallRinging) {
-            const missedCallEvent = handled.find(
-                (e) =>
-                    e.user_id === event.user_id &&
-                    e.type === PhoneIntegrationEvent.ChildCallNotAnswered
-            )
-
-            const answeredOrDeclinedEvent = missedCallEvent
-                ? null
-                : handled.find(
-                      (e) =>
-                          e.user_id === event.user_id &&
-                          (e.type === PhoneIntegrationEvent.PhoneCallAnswered ||
-                              e.type ===
-                                  PhoneIntegrationEvent.DeclinedPhoneCall)
-                  )
-
-            if (missedCallEvent || !answeredOrDeclinedEvent) {
+            if (isMissedEvent(event, handled.slice(index))) {
                 newEvent = {
-                    text: `Missed by`,
+                    text: isTransfer ? 'Transfer missed by' : `Missed by`,
                 }
             }
         } else if (
             event.type === PhoneIntegrationEvent.OutgoingPhoneCallConnected
         ) {
+            // we don't have a transfer context for this event,
+            // we will emit PhoneCallAnswered events for outbound transfers
             newEvent = {
                 text: 'Answered by',
                 customerId: event.customer_id,
+            }
+        } else if (
+            event.type === PhoneIntegrationEvent.PhoneCallTransferInitiated
+        ) {
+            newEvent = {
+                text: 'Transfer initiated by',
+            }
+        } else if (
+            event.type === PhoneIntegrationEvent.PhoneCallTransferFailed &&
+            isTransfer
+        ) {
+            // we only want to show the transfer failed event if there's no other events after transfer initiated
+            newEvent = {
+                text: 'Transfer failed to',
             }
         }
 
@@ -120,6 +150,10 @@ export const processEvents = (
                 userId: event.user_id,
                 datetime: event.created_datetime,
             })
+            // If the current event is not a transfer initiated event,
+            // then we're not in a transfer context anymore
+            isTransfer =
+                event.type === PhoneIntegrationEvent.PhoneCallTransferInitiated
         }
     }
 
