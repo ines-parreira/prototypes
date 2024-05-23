@@ -9,6 +9,8 @@ import Label from 'pages/common/forms/Label/Label'
 import {getChannels} from 'services/channels'
 import {Channel} from 'models/channel/types'
 
+import css from './ChannelSelectBox.less'
+
 type ChannelSelectBoxProps = {
     value: Channel['slug'][] | undefined
     onChange: (value: Channel['slug'][]) => void
@@ -63,7 +65,9 @@ export default forwardRef(function ChannelSelectBox({
 
     return (
         <>
-            <Label htmlFor={channelSelectId}>Channel(s)</Label>
+            <Label className={css.label} htmlFor={channelSelectId}>
+                Channel(s)
+            </Label>
             <SelectInputBox
                 placeholder="Select channels the SLA should apply to"
                 id={channelSelectId}
@@ -89,7 +93,6 @@ export default forwardRef(function ChannelSelectBox({
                                             key={channel.label}
                                             option={channel}
                                             onClick={handleChannelChange}
-                                            shouldCloseOnSelect
                                         />
                                     )
                                 })}
