@@ -1,7 +1,7 @@
 import React, {ComponentType, Context, ReactElement, useContext} from 'react'
+import {Provider} from 'react-redux'
 import configureMockStore, {MockStore} from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {shallow} from 'enzyme'
 import {act, render, RenderOptions} from '@testing-library/react'
 import {Route, Router} from 'react-router-dom'
 import {createMemoryHistory, History} from 'history'
@@ -10,8 +10,9 @@ import _findLast from 'lodash/findLast'
 import {BackendFactory} from 'dnd-core'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+import {RootState} from 'state/types'
 
-import shortcutManager from '../services/shortcutManager/shortcutManager'
+import shortcutManager from 'services/shortcutManager/shortcutManager'
 
 const middlewares = [thunk]
 
@@ -21,20 +22,17 @@ const middlewares = [thunk]
 export const mockStore = (store: MockStore) =>
     configureMockStore(middlewares)(store)
 
-/**
- * Render a React node with Redux store
- */
-export const shallowWithStore = (
-    component: ReactElement<any>,
-    store: MockStore
-) => shallow(component, {context: {store}})
-
 export type RenderWithRouterParams = {
     options?: Omit<RenderOptions, 'wrapper'>
     path?: string
     route?: string
     history?: History
 }
+
+export const renderWithStore = (ui: ReactElement, state: Partial<RootState>) =>
+    render(
+        <Provider store={configureMockStore(middlewares)(state)}>{ui}</Provider>
+    )
 
 export const renderWithRouter = (
     ui: ReactElement,

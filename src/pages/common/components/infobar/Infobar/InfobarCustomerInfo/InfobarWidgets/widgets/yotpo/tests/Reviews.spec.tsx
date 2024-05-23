@@ -1,8 +1,11 @@
-import {shallow} from 'enzyme'
 import React from 'react'
 import {fromJS} from 'immutable'
 
-import Reviews from '../Reviews'
+import {render} from '@testing-library/react'
+import Reviews from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
+import {renderWithStore} from 'utils/testing'
+
+jest.mock('react-rating-stars-component', () => () => null)
 
 const TitleWrapper = Reviews().TitleWrapper
 const AfterTitle = Reviews().AfterTitle
@@ -13,12 +16,13 @@ describe('<TitleWrapper/>', () => {
         it.each([true, false])(
             'should render both visible and invisible reviews correctly',
             (published) => {
-                const component = shallow(
+                const {container} = render(
                     <TitleWrapper
                         source={fromJS({source: {published: published}})}
                     />
                 )
-                expect(component).toMatchSnapshot()
+
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
     })
@@ -33,8 +37,12 @@ describe('<AfterTitle/>', () => {
             {source: {created_at: created_at, score: 5}},
         ])('should render with different score values', (props) => {
             const {source} = props
-            const component = shallow(<AfterTitle source={fromJS(source)} />)
-            expect(component).toMatchSnapshot()
+            const {container} = renderWithStore(
+                <AfterTitle source={fromJS(source)} />,
+                {}
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })
@@ -42,7 +50,7 @@ describe('<AfterTitle/>', () => {
 describe('<BeforeContent/>', () => {
     describe('render()', () => {
         it('should render with no images', () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         title: 'Review title',
@@ -54,10 +62,11 @@ describe('<BeforeContent/>', () => {
                     })}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should render images correctly', () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         title: 'Review title',
@@ -84,10 +93,11 @@ describe('<BeforeContent/>', () => {
                     })}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should render votes up correctly', () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         title: 'Review title',
@@ -99,10 +109,12 @@ describe('<BeforeContent/>', () => {
                     })}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
+
         it('should render votes down correctly', () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         title: 'Review title',
@@ -114,10 +126,11 @@ describe('<BeforeContent/>', () => {
                     })}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should render with both votes up and down correctly', () => {
-            const component = shallow(
+            const {container} = render(
                 <BeforeContent
                     source={fromJS({
                         title: 'Review title',
@@ -129,7 +142,8 @@ describe('<BeforeContent/>', () => {
                     })}
                 />
             )
-            expect(component).toMatchSnapshot()
+
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })
