@@ -22,6 +22,8 @@ const AutomateNavbar = () => {
     )
     const isNewLandingPageVisible: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateLandingPage]
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     return (
         <Navbar activeContent="automate">
@@ -36,12 +38,16 @@ const AutomateNavbar = () => {
                             data-candu-id="automate-link-my-automate"
                         >
                             <NavbarLink to="/app/automation" exact>
-                                <span>
-                                    <i className="material-icons mr-2 icon">
-                                        bolt
-                                    </i>{' '}
-                                    My Automate
-                                </span>
+                                {isImprovedNavigationEnabled ? (
+                                    <span>Overview</span>
+                                ) : (
+                                    <span>
+                                        <i className="material-icons mr-2 icon">
+                                            bolt
+                                        </i>{' '}
+                                        My Automate
+                                    </span>
+                                )}
                             </NavbarLink>
                         </div>
                     )}

@@ -45,6 +45,8 @@ const AutomateNavbarSectionBlock = ({
 
     const showAutomateActions: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateActions]
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     const getIconSrc = () => {
         switch (shopType) {
@@ -140,26 +142,30 @@ const AutomateNavbarSectionBlock = ({
                             </span>
                         </NavbarLink>
                     </div>
-                    <div
-                        className={classNames(
-                            cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
-                        )}
-                        {...(shouldRenderCanduIds && {
-                            ['data-candu-id']: 'automate-link-quick-responses',
-                        })}
-                    >
-                        <NavbarLink
-                            to={{
-                                pathname: `/app/automation/${shopType}/${shopName}/quick-responses`,
-                                state: {from: FROM_LOCATION},
-                            }}
+
+                    {!isImprovedNavigationEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                            {...(shouldRenderCanduIds && {
+                                ['data-candu-id']:
+                                    'automate-link-quick-responses',
+                            })}
                         >
-                            <span className={cssNavbar['item-name']}>
-                                {QUICK_RESPONSES}
-                            </span>
-                        </NavbarLink>
-                    </div>
+                            <NavbarLink
+                                to={{
+                                    pathname: `/app/automation/${shopType}/${shopName}/quick-responses`,
+                                    state: {from: FROM_LOCATION},
+                                }}
+                            >
+                                <span className={cssNavbar['item-name']}>
+                                    {QUICK_RESPONSES}
+                                </span>
+                            </NavbarLink>
+                        </div>
+                    )}
                 </>
             ) : (
                 <>
@@ -169,14 +175,16 @@ const AutomateNavbarSectionBlock = ({
                     >
                         <span className={cssNavbar['item-name']}>{FLOWS}</span>
                     </AutomateNavbarPaywallNavbarLink>
-                    <AutomateNavbarPaywallNavbarLink
-                        to="/app/automation/quick-responses"
-                        isNested
-                    >
-                        <span className={cssNavbar['item-name']}>
-                            {QUICK_RESPONSES}
-                        </span>
-                    </AutomateNavbarPaywallNavbarLink>
+                    {!isImprovedNavigationEnabled && (
+                        <AutomateNavbarPaywallNavbarLink
+                            to="/app/automation/quick-responses"
+                            isNested
+                        >
+                            <span className={cssNavbar['item-name']}>
+                                {QUICK_RESPONSES}
+                            </span>
+                        </AutomateNavbarPaywallNavbarLink>
+                    )}
                 </>
             )}
             {shopType === 'shopify' && (
@@ -251,26 +259,28 @@ const AutomateNavbarSectionBlock = ({
                     <span className={cssNavbar['item-name']}>{CHANNELS}</span>
                 </NavbarLink>
             </div>
-            <div
-                className={classNames(
-                    cssNavbar['link-wrapper'],
-                    cssNavbar.isNested
-                )}
-                {...(shouldRenderCanduIds && {
-                    ['data-candu-id']: 'automate-link-train-my-ai',
-                })}
-            >
-                <NavbarLink
-                    to={{
-                        pathname: `/app/automation/${shopType}/${shopName}/train-my-ai`,
-                        state: {from: FROM_LOCATION},
-                    }}
+            {!isImprovedNavigationEnabled && (
+                <div
+                    className={classNames(
+                        cssNavbar['link-wrapper'],
+                        cssNavbar.isNested
+                    )}
+                    {...(shouldRenderCanduIds && {
+                        ['data-candu-id']: 'automate-link-train-my-ai',
+                    })}
                 >
-                    <span className={cssNavbar['item-name']}>
-                        {TRAIN_MY_AI}
-                    </span>
-                </NavbarLink>
-            </div>
+                    <NavbarLink
+                        to={{
+                            pathname: `/app/automation/${shopType}/${shopName}/train-my-ai`,
+                            state: {from: FROM_LOCATION},
+                        }}
+                    >
+                        <span className={cssNavbar['item-name']}>
+                            {TRAIN_MY_AI}
+                        </span>
+                    </NavbarLink>
+                </div>
+            )}
         </NavbarSectionBlock>
     )
 }
