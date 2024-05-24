@@ -43,18 +43,25 @@ const ChannelWarning = ({
             message = (
                 <>
                     You have reached the maximum number of enabled Flows in this
-                    channel. <ChannelsLink linkText="Disable another Flow" /> in
-                    order to enable this Flow.
+                    channel.{' '}
+                    <ChannelsLink
+                        type={channel.type}
+                        id={channel.value.id}
+                        linkText="Disable another Flow"
+                    />{' '}
+                    in order to enable this Flow.
                 </>
             )
         }
 
         return {message, icon}
     }, [
+        missMatchMessage,
         onlySupportedChannels,
         maxWorkflowsLimitReached,
         isWorkflowEnabled,
-        missMatchMessage,
+        channel.type,
+        channel.value.id,
     ])
 
     if (!message) return <></>

@@ -1,7 +1,15 @@
 import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 
-const ChannelsLink = ({linkText}: {linkText: string}) => {
+const ChannelsLink = ({
+    linkText,
+    type,
+    id,
+}: {
+    linkText: string
+    type?: string
+    id?: number
+}) => {
     const {shopType, shopName} = useParams<{
         shopType: string
         shopName: string
@@ -11,6 +19,7 @@ const ChannelsLink = ({linkText}: {linkText: string}) => {
         <Link
             to={{
                 pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
+                search: `?type=${type}&id=${id}`,
                 state: {
                     from: 'workflow-editor',
                 },

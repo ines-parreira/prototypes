@@ -8,6 +8,7 @@ import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/h
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {TicketChannel} from 'business/types/ticket'
+import useKey from 'hooks/useKey'
 import EditorDrawerHeader from '../EditorDrawerHeader'
 import nodeEditorCss from '../NodeEditorDrawer.less'
 import ChatChannels from './channels/ChatChannels'
@@ -46,6 +47,16 @@ export default function WorkflowsPublisher() {
         chatChannels.length ||
         helpCentersChannels.length ||
         standaloneContactFormsChannels.length
+
+    useKey(
+        'Escape',
+        (event) => {
+            event.stopPropagation()
+            setFlowPublishingInChannels(false)
+        },
+        undefined,
+        [setFlowPublishingInChannels]
+    )
     return (
         <Drawer
             className={nodeEditorCss.drawer}
@@ -59,7 +70,6 @@ export default function WorkflowsPublisher() {
             <EditorDrawerHeader
                 label={'Display in channels'}
                 onClose={() => setFlowPublishingInChannels(false)}
-                headerSaperator={true}
             />
 
             {isFlowPublishingInChannels && (
