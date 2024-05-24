@@ -1,5 +1,6 @@
 import {StatsFilters} from 'models/stat/types'
 import {
+    automationDatasetAdditionalFilters,
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
 } from 'models/reporting/queryFactories/automate_v2/filters'
@@ -21,7 +22,10 @@ export const automationDatasetQueryFactory = (
     ],
     dimensions: [],
     timezone,
-    filters: automationDatasetDefaultFilters(filters),
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        ...automationDatasetAdditionalFilters(filters),
+    ],
 })
 
 export const billableTicketDatasetQueryFactory = (

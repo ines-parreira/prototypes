@@ -12,12 +12,14 @@ export enum BillableTicketDatasetDimension {
     PeriodStart = 'BillableTicketDataset.periodStart',
     PeriodEnd = 'BillableTicketDataset.periodEnd',
     ResolvedByAgentUserId = 'BillableTicketDataset.resolvedByAgentUserId',
+    Channel = 'BillableTicketDataset.channel',
 }
 
 export enum BillableTicketDatasetFilterMember {
     AccountId = 'BillableTicketDataset.accountId',
     PeriodStart = 'BillableTicketDataset.periodStart',
     PeriodEnd = 'BillableTicketDataset.periodEnd',
+    Channel = 'BillableTicketDataset.channel',
 }
 
 export enum BillableTicketDatasetSegment {}

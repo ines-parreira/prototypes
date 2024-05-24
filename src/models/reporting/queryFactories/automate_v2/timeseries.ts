@@ -1,4 +1,5 @@
 import {
+    automationDatasetAdditionalFilters,
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
 } from 'models/reporting/queryFactories/automate_v2/filters'
@@ -39,7 +40,10 @@ export const interactionsTimeSeriesQueryFactory = (
         },
     ],
     timezone,
-    filters: automationDatasetDefaultFilters(filters),
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        ...automationDatasetAdditionalFilters(filters),
+    ],
 })
 
 export const interactionsByEventTypeTimeSeriesQueryFactory = (
@@ -58,7 +62,10 @@ export const interactionsByEventTypeTimeSeriesQueryFactory = (
         },
     ],
     timezone,
-    filters: automationDatasetDefaultFilters(filters),
+    filters: [
+        ...automationDatasetDefaultFilters(filters),
+        ...automationDatasetAdditionalFilters(filters),
+    ],
 })
 
 export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (

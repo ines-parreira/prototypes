@@ -1,17 +1,13 @@
 import moment from 'moment/moment'
 
-import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
-import {
-    AutomationBillingEventMeasure,
-    AutomationBillingEventMember,
-} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
-import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
-import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
-import {decreaseInResolutionTimeQueryFactory} from '../../automate/decreaseInResolutionTime'
+import {
+    AutomationDatasetFilterMember,
+    AutomationDatasetMeasure,
+} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import {automationDatasetQueryFactory} from '../metrics'
 
 describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -21,57 +17,41 @@ describe('Automate', () => {
             end_datetime: periodEnd,
             start_datetime: periodStart,
         },
+        channels: ['chat', 'help-center'],
     }
     const timezone = 'someTimeZone'
 
     describe.each([
         [
-            'FirstResponseTimeWithAutomation',
-            AutomationBillingEventMeasure.FirstResponseTimeWithAutomateFeatures,
-            firstResponseTimeWithAutomateFeaturesQueryFactory,
-        ],
-        [
-            'ResolutionTimeWithAutomation',
-            AutomationBillingEventMeasure.ResolutionTimeWithAutomateFeatures,
-            resolutionTimeWithAutomateFeaturesQueryFactory,
-        ],
-        [
-            'DecreaseInResolutionTime',
-            AutomationBillingEventMeasure.DecreaseInResolutionTimeWithAutomateFeatures,
-            decreaseInResolutionTimeQueryFactory,
-        ],
-        [
-            'AutomationRate',
-            AutomationBillingEventMeasure.AutomationRate,
-            automationRateQueryFactory,
-        ],
-        [
             'AutomatedInteractions',
-            AutomationBillingEventMeasure.AutomatedInteractions,
-            automatedInteractionsQueryFactory,
+            [
+                AutomationDatasetMeasure.AutomatedInteractions,
+                AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
+            ],
+            automationDatasetQueryFactory,
         ],
     ])('%s', (_testName, kpi, getAutomationFactory) => {
         it('should create a query', () => {
             const query = getAutomationFactory(statsFilters, timezone)
 
             expect(query).toEqual({
-                measures: [kpi],
+                measures: [...kpi],
                 dimensions: [],
                 filters: [
                     {
-                        member: AutomationBillingEventMember.CreatedDate,
-                        operator: ReportingFilterOperator.InDateRange,
-                        values: [periodStart, periodEnd],
-                    },
-                    {
-                        member: AutomationBillingEventMember.PeriodStart,
-                        operator: ReportingFilterOperator.AfterOrOnDate,
+                        member: AutomationDatasetFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
                         values: [periodStart],
                     },
                     {
-                        member: AutomationBillingEventMember.PeriodEnd,
-                        operator: ReportingFilterOperator.BeforeOrOnDate,
+                        member: AutomationDatasetFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
+                    },
+                    {
+                        member: AutomationDatasetFilterMember.Channel,
+                        operator: ReportingFilterOperator.Equals,
+                        values: ['chat', 'help-center'],
                     },
                 ],
                 timezone,
