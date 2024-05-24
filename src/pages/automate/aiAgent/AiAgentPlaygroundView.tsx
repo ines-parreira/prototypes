@@ -9,8 +9,12 @@ import {
     useGetStoreConfigurationPure,
     useSubmitPlaygroundTicket,
 } from 'models/aiAgent/queries'
-import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
 import {
+    AccountConfigurationWithHttpIntegration,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
+import {
+    AiAgentResponse,
     MessageType,
     PlaygroundMessage,
     TicketOutcome,
@@ -34,6 +38,18 @@ import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 enum PlaygroundStep {
     INPUT = 'input',
     OUTPUT = 'output',
+}
+
+const shouldAiAgentResponseDisplay = (
+    aiAgentResponse: AiAgentResponse,
+    storeData: StoreConfiguration
+) => {
+    const isHandover =
+        aiAgentResponse.generate.output.outcome === TicketOutcome.HANDOVER
+    const isSilentHandover = storeData.silentHandover
+    const hasHtmlReply = aiAgentResponse.postProcessing.htmlReply
+
+    return (isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply)
 }
 
 export const AiAgentPlaygroundView = () => {
@@ -100,14 +116,11 @@ export const AiAgentPlaygroundView = () => {
                 const updatedMessages = [...currentMessages.slice(0, -1)]
 
                 if (
-                    (aiAgentResponse.data.generate.output.outcome ===
-                        TicketOutcome.HANDOVER &&
-                        !storeData?.data.storeConfiguration.silentHandover) ||
-                    ((aiAgentResponse.data.postProcessing.htmlReply ||
-                        aiAgentResponse.data.generate.output
-                            .generated_message) &&
-                        aiAgentResponse.data.qa.output
-                            .validate_generated_message)
+                    storeData &&
+                    shouldAiAgentResponseDisplay(
+                        aiAgentResponse.data,
+                        storeData.data.storeConfiguration
+                    )
                 ) {
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
@@ -118,7 +131,7 @@ export const AiAgentPlaygroundView = () => {
                                 .generated_message,
                     })
                 }
-                // If the AI Agent response is invalid, only show internal note
+
                 updatedMessages.push({
                     sender: AI_AGENT_SENDER,
                     type: MessageType.INTERNAL_NOTE,
@@ -126,7 +139,7 @@ export const AiAgentPlaygroundView = () => {
                 })
 
                 // Add a ticket event message if outcome is also validated
-                if (aiAgentResponse.data.qa.output.validate_outcome) {
+                if (aiAgentResponse.data.generate.output.outcome) {
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
                         type: MessageType.TICKET_EVENT,
