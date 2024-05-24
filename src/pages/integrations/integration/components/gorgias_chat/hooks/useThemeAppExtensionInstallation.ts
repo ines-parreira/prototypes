@@ -2,6 +2,7 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ShopifyIntegration} from 'models/integration/types'
+import {GorgiasUIEnv, getEnvironment} from 'utils/environment'
 
 const useThemeAppExtensionInstallation = (
     shopifyIntegration?: ShopifyIntegration
@@ -30,14 +31,30 @@ const useThemeAppExtensionInstallation = (
             themeAppExtensionInstallationUrl: null,
         }
     }
-
-    // TODO. We can improve it once we have published the theme app extension. CF https://shopify.dev/docs/apps/online-store/theme-app-extensions/extensions-framework#app-embed-block-deep-linking-url.
-    const themeAppExtensionInstallationUrl = `https://admin.shopify.com/store/${shopifyIntegration.name}/themes/current/editor?context=apps`
+    // Deep link to the settings. The theme app extension should be pre-toggled ON (if getThemeAppExtensionId() is not empty).
+    // What's remaining is to click Save.
+    const themeAppExtensionInstallationUrl = `https://admin.shopify.com/store/${
+        shopifyIntegration.name
+    }/themes/current/editor?context=apps&activateAppId=${getThemeAppExtensionId()}/gorgias`
 
     return {
         shouldUseThemeAppExtensionInstallation:
             new Date(shopifyIntegration.created_datetime) > switchDate,
         themeAppExtensionInstallationUrl,
+    }
+}
+
+const getThemeAppExtensionId = (): string => {
+    const env = getEnvironment()
+
+    switch (env) {
+        case GorgiasUIEnv.Production:
+            return encodeURI('') // TODO. Fill here once deployed.
+        case GorgiasUIEnv.Staging:
+            return encodeURI('de98a9b4-b32b-4d92-8c0f-210c8cbebd9e')
+        case GorgiasUIEnv.Development: // Every developer have their own Theme App Extension.
+        default:
+            return ''
     }
 }
 

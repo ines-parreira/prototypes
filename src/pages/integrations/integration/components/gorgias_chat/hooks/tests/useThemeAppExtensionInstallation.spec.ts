@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {getEnvironment, GorgiasUIEnv} from 'utils/environment'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {ShopifyIntegration} from 'models/integration/types'
@@ -9,8 +10,13 @@ import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallatio
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
 }))
+jest.mock('utils/environment')
 
 describe('useThemeAppExtensionInstallation', () => {
+    beforeEach(() => {
+        ;(getEnvironment as jest.Mock).mockReturnValue(GorgiasUIEnv.Staging)
+    })
+
     it.each([
         undefined, // This has a floating moment with undefined during page load.
         0, // This is the value when the flag is turned off.
@@ -55,7 +61,7 @@ describe('useThemeAppExtensionInstallation', () => {
 
         expect(result.current).toEqual({
             shouldUseThemeAppExtensionInstallation: true,
-            themeAppExtensionInstallationUrl: `https://admin.shopify.com/store/test-store/themes/current/editor?context=apps`,
+            themeAppExtensionInstallationUrl: `https://admin.shopify.com/store/test-store/themes/current/editor?context=apps&activateAppId=de98a9b4-b32b-4d92-8c0f-210c8cbebd9e/gorgias`,
         })
     })
 
@@ -97,7 +103,7 @@ describe('useThemeAppExtensionInstallation', () => {
         expect(result.current).toEqual({
             shouldUseThemeAppExtensionInstallation: false,
             themeAppExtensionInstallationUrl:
-                'https://admin.shopify.com/store/test-store/themes/current/editor?context=apps',
+                'https://admin.shopify.com/store/test-store/themes/current/editor?context=apps&activateAppId=de98a9b4-b32b-4d92-8c0f-210c8cbebd9e/gorgias',
         })
     })
 })
