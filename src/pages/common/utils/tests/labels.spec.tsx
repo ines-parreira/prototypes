@@ -305,6 +305,38 @@ describe('components utils: labels', () => {
             expect(name).toHaveClass('semibold')
         })
 
+        it('should render the status badge because the `badgeColor` option is passed', () => {
+            AvatarSpy.mockImplementation((({
+                badgeColor,
+            }: {
+                badgeColor: string
+            }) => <div data-testid="avatar">{badgeColor}</div>) as jest.Mock)
+            const {getByTestId} = render(
+                <labels.AgentLabel
+                    name="Marie Curie"
+                    shouldDisplayAvatar
+                    badgeColor="testColor"
+                />
+            )
+
+            const avatar = getByTestId('avatar')
+            expect(avatar).toHaveTextContent('testColor')
+        })
+
+        it('should not render the status badge because the `badgeColor` option is not passed', () => {
+            AvatarSpy.mockImplementation((({
+                badgeColor,
+            }: {
+                badgeColor: string
+            }) => <div data-testid="avatar">{badgeColor}</div>) as jest.Mock)
+            const {getByTestId} = render(
+                <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
+            )
+
+            const avatar = getByTestId('avatar')
+            expect(avatar).toHaveTextContent('')
+        })
+
         it('should render the avatar because the `avatar` option is passed but no profile picture url is passed', () => {
             AvatarSpy.mockImplementation((() => (
                 <div data-testid="avatar" />

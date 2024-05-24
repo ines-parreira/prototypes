@@ -1,8 +1,10 @@
 import React, {ComponentProps, useState} from 'react'
 import {get} from 'lodash'
 import {
+    ListUsersRelationshipsItem,
     TransferCallBodyReceiverType,
     TransferCallBodyType,
+    useListUsers,
     useTransferCall,
 } from '@gorgias/api-queries'
 import {Call} from '@twilio/voice-sdk'
@@ -22,6 +24,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {getCallSid} from 'hooks/integrations/phone/utils'
 import DropdownSection from '../../dropdown/DropdownSection'
 import css from './CallTransferDropdown.less'
+import {getAvailabilityBadgeColor, mergeAgentData} from './utils'
 
 type Props = Pick<
     ComponentProps<typeof Dropdown>,
@@ -42,6 +45,23 @@ export default function CallTransferDropdown({
 }: Props) {
     const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
     const dispatch = useAppDispatch()
+
+    const {data: agentsDataWithStatus} = useListUsers(
+        {
+            limit: 100,
+            relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
+        },
+        {
+            http: {
+                paramsSerializer: {
+                    indexes: null,
+                },
+            },
+            query: {
+                enabled: !!isOpen,
+            },
+        }
+    )
 
     const {mutate: transferCall, isLoading: isRequestingTransfer} =
         useTransferCall({
@@ -72,6 +92,10 @@ export default function CallTransferDropdown({
     const currentAgentId = useAppSelector(getCurrentUserId)
 
     const filteredAgents = agents.filter((agent) => agent.id !== currentAgentId)
+    const mergedAgentData = mergeAgentData(
+        filteredAgents,
+        agentsDataWithStatus?.data?.data
+    )
 
     const handleTransferCallClick = () => {
         if (!selectedAgent) return
@@ -98,7 +122,7 @@ export default function CallTransferDropdown({
             <DropdownSearch />
             <DropdownBody className={css.dropdownBody}>
                 <DropdownSection title="Agents">
-                    {filteredAgents.map((option) => (
+                    {mergedAgentData.map((option) => (
                         <DropdownItem
                             key={`agent-${option.id}`}
                             option={{
@@ -113,6 +137,9 @@ export default function CallTransferDropdown({
                                 profilePictureUrl={
                                     option.meta?.profile_picture_url
                                 }
+                                badgeColor={getAvailabilityBadgeColor(
+                                    option.status
+                                )}
                             />
                         </DropdownItem>
                     ))}

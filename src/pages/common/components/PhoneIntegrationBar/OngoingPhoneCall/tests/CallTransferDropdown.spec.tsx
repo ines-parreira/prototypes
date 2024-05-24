@@ -12,16 +12,30 @@ import {
     TransferCallBodyReceiverType,
     TransferCallBodyType,
     useTransferCall,
+    useListUsers,
 } from '@gorgias/api-queries'
 import {Call} from '@twilio/voice-sdk'
 import {mockStore} from 'utils/testing'
 import * as notificationActions from 'state/notifications/actions'
 import {mockIncomingCall} from 'tests/twilioMocks'
 import CallTransferDropdown from '../CallTransferDropdown'
+import {getAvailabilityBadgeColor, mergeAgentData} from '../utils'
 
+jest.mock('pages/common/utils/labels', () => ({
+    AgentLabel: ({name, badgeColor}: {name: string; badgeColor?: string}) => (
+        <div>
+            {name}
+            <div data-testid="badge">{badgeColor}</div>
+        </div>
+    ),
+}))
+jest.mock('pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/utils')
 jest.mock('@gorgias/api-queries')
 
 const mockUseTransferCall = useTransferCall as jest.Mock
+const mockUseListUsers = useListUsers as jest.Mock
+const mockGetAvailabilityBadgeColor = getAvailabilityBadgeColor as jest.Mock
+const mockMergeAgentData = mergeAgentData as jest.Mock
 
 describe('CallTransferDropdown', () => {
     const setIsOpen = jest.fn()
@@ -35,6 +49,13 @@ describe('CallTransferDropdown', () => {
         call: mockIncomingCall() as Call,
     }
 
+    const allAgents = [
+        {id: 1, name: 'Agent 1'},
+        {id: 2, name: 'Agent 2'},
+        {id: 3, name: 'Agent 3'},
+        {id: 4, name: 'Agent 4'},
+    ]
+
     const renderComponent = (
         props: ComponentProps<typeof CallTransferDropdown> = baseProps
     ) =>
@@ -42,12 +63,7 @@ describe('CallTransferDropdown', () => {
             <Provider
                 store={mockStore({
                     agents: fromJS({
-                        all: [
-                            {id: 1, name: 'Agent 1'},
-                            {id: 2, name: 'Agent 2'},
-                            {id: 3, name: 'Agent 3'},
-                            {id: 4, name: 'Agent 4'},
-                        ],
+                        all: allAgents,
                     }),
                     currentUser: fromJS({
                         id: 2,
@@ -58,33 +74,71 @@ describe('CallTransferDropdown', () => {
             </Provider>
         )
 
+    beforeEach(() => {
+        mockUseTransferCall.mockReturnValue({
+            mutate: jest.fn(),
+        })
+        mockUseListUsers.mockReturnValue({
+            data: {
+                data: [],
+            },
+        })
+        mockMergeAgentData.mockReturnValue(allAgents)
+    })
+
     afterEach(cleanup)
 
     it(`renders the dropdown body when isOpen is true and doesn't display current agent`, () => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent()
 
-        expect(screen.getByText('Agents')).toBeInTheDocument()
-        expect(screen.getByText('Agent 1')).toBeInTheDocument()
-        expect(screen.queryByText('Agent 2')).not.toBeInTheDocument()
-        expect(screen.getByText('Agent 4')).toBeInTheDocument()
+        expect(mockMergeAgentData).toHaveBeenCalledWith(
+            allAgents.filter((agent) => agent.id !== 2),
+            undefined
+        )
+    })
+
+    it('renders the dropdown body with the correct agent availability status', () => {
+        const agentsWithStatus = [
+            {
+                id: 1,
+                name: 'Agent 1',
+                availability_status: {
+                    status: 'online',
+                },
+            },
+        ]
+
+        mockUseListUsers.mockReturnValue({
+            data: {
+                data: agentsWithStatus,
+            },
+        })
+
+        mockGetAvailabilityBadgeColor.mockImplementation(
+            (status: string) => status
+        )
+        mockMergeAgentData.mockReturnValue([
+            {
+                id: 1,
+                name: 'Agent 1',
+                status: 'online',
+            },
+        ])
+
+        renderComponent()
+
+        const agent1 = screen.getByText('Agent 1')
+        expect(agent1).toBeInTheDocument()
+        expect(within(agent1).getByTestId('badge')).toHaveTextContent('online')
     })
 
     it('does not render the dropdown body when isOpen is false', () => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent({...baseProps, isOpen: false})
 
         expect(screen.queryByText('Agents')).not.toBeInTheDocument()
     })
 
     it('calls the setIsOpen function when the target element is clicked', () => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent()
 
         fireEvent.click(screen.getByTestId('floating-overlay'))
@@ -92,9 +146,6 @@ describe('CallTransferDropdown', () => {
     })
 
     it(`doesn't select more than one agent`, () => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent()
 
         const agent1 = screen.getByRole('option', {
@@ -112,9 +163,6 @@ describe('CallTransferDropdown', () => {
     })
 
     it('only enables the transfer button when an agent is selected', () => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent()
 
         expect(
@@ -131,9 +179,6 @@ describe('CallTransferDropdown', () => {
     })
 
     it('calls the onTransferInitiated function when the transfer button is clicked', () => {
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent()
         ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
             .mock.calls[0][0]?.mutation?.onSuccess!(
@@ -148,9 +193,6 @@ describe('CallTransferDropdown', () => {
 
     it('displays warning notification on transfer failure if status is 400', () => {
         const notify = jest.spyOn(notificationActions, 'notify')
-        mockUseTransferCall.mockReturnValue({
-            mutate: jest.fn(),
-        })
         renderComponent()
         ;(mockUseTransferCall as jest.MockedFunction<typeof useTransferCall>)
             .mock.calls[0][0]?.mutation?.onError!(
