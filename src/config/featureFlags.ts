@@ -108,4 +108,5 @@ export enum FeatureFlagKey {
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
     ConvertUniqueDiscountCodes = 'convert-unique-discount-codes',
+    SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
 }

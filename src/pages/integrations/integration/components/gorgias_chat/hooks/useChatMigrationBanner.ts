@@ -108,15 +108,15 @@ const useChatMigrationBanner = (
             isConnectedToShopify &&
             activeOrRecentOneClickUsage &&
             (!hasShopifyScriptTagScope ||
-                oneClickInstallationMethod !==
-                    GorgiasChatInstallationMethod.ScriptTag)
+                oneClickInstallationMethod ===
+                    GorgiasChatInstallationMethod.Asset)
 
         showSnippetV3Banner =
             minimumSnippetVersion !== latestSnippetVersion &&
             isChatSnippetV3BannerEnabled &&
             // We do not show the banner for script_tag migrated integrations.
-            oneClickInstallationMethod !==
-                GorgiasChatInstallationMethod.ScriptTag &&
+            oneClickInstallationMethod ===
+                GorgiasChatInstallationMethod.Asset &&
             // Do not show 2 banners at the same time.
             !showScriptTagBanner
 

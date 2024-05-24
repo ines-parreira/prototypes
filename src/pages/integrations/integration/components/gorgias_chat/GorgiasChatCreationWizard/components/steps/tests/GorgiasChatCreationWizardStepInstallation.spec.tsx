@@ -111,7 +111,7 @@ describe('<GorgiasChatCreationWizardStepInstallation />', () => {
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByText('Install Chat'))
+        fireEvent.click(getByText('Install'))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })

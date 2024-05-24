@@ -25,6 +25,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import GorgiasChatIntegrationConnectedChannel from '../GorgiasChatIntegrationConnectedChannel'
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
+import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
@@ -72,6 +73,12 @@ const GorgiasChatIntegrationInstall = ({
 
     const {showScriptTagMigrationBanner, hasShopifyScriptTagScope} =
         useChatMigrationBanner(integration)
+    const {
+        shouldUseThemeAppExtensionInstallation,
+        themeAppExtensionInstallationUrl,
+    } = useThemeAppExtensionInstallation(
+        isConnectedToShopify ? storeIntegration : undefined
+    )
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
@@ -133,13 +140,21 @@ const GorgiasChatIntegrationInstall = ({
                                         className={css.migrationBannerIcon}
                                     />
                                     <b>
-                                        Update 1-click installation for Shopify
+                                        Update{' '}
+                                        {shouldUseThemeAppExtensionInstallation
+                                            ? 'quick'
+                                            : '1-click'}{' '}
+                                        installation for Shopify
                                     </b>
                                 </p>
                                 <p>
-                                    We enhanced the 1-click installation for
-                                    Shopify to ensure better stability. Please
-                                    follow the steps below to update your chat:
+                                    We enhanced the{' '}
+                                    {shouldUseThemeAppExtensionInstallation
+                                        ? 'quick'
+                                        : '1-click'}{' '}
+                                    installation for Shopify to ensure better
+                                    stability. Please follow the steps below to
+                                    update your chat:
                                 </p>
                                 <InstallationTab>
                                     <InstallationStep index={1}>
@@ -157,7 +172,11 @@ const GorgiasChatIntegrationInstall = ({
                                     </InstallationStep>
                                     <InstallationStep index={2}>
                                         <b>Uninstall and reinstall</b> your chat
-                                        via 1-click installation for Shopify.
+                                        via{' '}
+                                        {shouldUseThemeAppExtensionInstallation
+                                            ? 'quick'
+                                            : '1-click'}{' '}
+                                        installation for Shopify.
                                     </InstallationStep>
                                 </InstallationTab>
                             </Alert>
@@ -168,7 +187,10 @@ const GorgiasChatIntegrationInstall = ({
                             </div>
                             <div className={css.connectStoreDescription}>
                                 A store connection is required to use Automate
-                                features in chat and to enable 1-click
+                                features in chat and to enable{' '}
+                                {shouldUseThemeAppExtensionInstallation
+                                    ? 'quick'
+                                    : '1-click'}{' '}
                                 installation for Shopify stores.
                             </div>
                             <GorgiasChatIntegrationConnectStore
@@ -192,6 +214,12 @@ const GorgiasChatIntegrationInstall = ({
                                         integration={integration}
                                         updateOrCreateIntegration={
                                             updateOrCreateIntegration
+                                        }
+                                        themeAppExtensionInstallation={
+                                            shouldUseThemeAppExtensionInstallation
+                                        }
+                                        themeAppExtensionInstallationUrl={
+                                            themeAppExtensionInstallationUrl
                                         }
                                         isConnected={isConnected}
                                         isInstalled={

@@ -1,12 +1,11 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_WIDGET_TEXTS,
@@ -25,7 +24,6 @@ import {
     getGorgiasChatLanguageOptions,
     getHasShopifyScriptTagScopes,
 } from 'config/integrations/gorgias_chat'
-
 import {
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarImageType,
@@ -34,20 +32,14 @@ import {
     GorgiasChatCreationWizardInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
-
 import {SegmentEvent} from 'common/segment'
-
 import {updateOrCreateIntegration} from 'state/integrations/actions'
-
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-
 import history from 'pages/history'
-
 import {
     DEPRECATED_getIntegrationsByTypes,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
-
 import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
@@ -55,7 +47,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-
 import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
 import {
     LanguagePicker,
@@ -67,10 +58,10 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
-
+import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
@@ -192,6 +183,13 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const isStoreOfShopifyType = storeIntegration
         ? storeIntegration?.get('type') === IntegrationType.Shopify
         : false
+
+    const {shouldUseThemeAppExtensionInstallation} =
+        useThemeAppExtensionInstallation(
+            isStoreOfShopifyType
+                ? (storeIntegration as Immutable.Map<any, any>)?.toJS()
+                : undefined
+        )
 
     const hasShopifyScriptTagScope =
         storeIntegration &&
@@ -606,7 +604,11 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         </Label>
                         <div className={css.connectStoreDescription}>
                             Connect a store to use Automate features in chat and
-                            to enable 1-click install for Shopify.
+                            to enable{' '}
+                            {shouldUseThemeAppExtensionInstallation
+                                ? 'quick'
+                                : '1-click'}{' '}
+                            install for Shopify.
                         </div>
                         <StoreNameDropdown
                             storeIntegrationId={

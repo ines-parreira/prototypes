@@ -6,7 +6,8 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-
+import useAppDispatch from 'hooks/useAppDispatch'
+import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -23,6 +24,8 @@ import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 type Props = {
     integration: Map<any, any>
     updateOrCreateIntegration: (integration: Map<any, any>) => Promise<void>
+    themeAppExtensionInstallation: boolean
+    themeAppExtensionInstallationUrl: string | null
     isConnected: boolean
     isInstalled: boolean
     hasShopifyScriptTagScope: boolean
@@ -31,11 +34,15 @@ type Props = {
 const GorgiasChatIntegrationOneClickInstallationCard = ({
     integration,
     updateOrCreateIntegration,
+    themeAppExtensionInstallation,
+    themeAppExtensionInstallationUrl,
     isConnected,
     isInstalled,
     hasShopifyScriptTagScope,
 }: Props) => {
     const hasIntegrationLoaded = !!integration.get('id')
+
+    const dispatch = useAppDispatch()
 
     const flags = useFlags()
 
@@ -93,7 +100,15 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     ),
             }
 
-            await updateOrCreateIntegration(fromJS(form))
+            await dispatch(
+                updateOrCreateIntegrationRequest(
+                    fromJS(form),
+                    undefined,
+                    null,
+                    true,
+                    openShopifyThemeSettingsInNewTab
+                )
+            )
         }, [integration, updateOrCreateIntegration])
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -112,6 +127,16 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
             shop_name: shopName,
         })
         window.location.href = redirectUri
+    }
+
+    const openShopifyThemeSettingsInNewTab = () => {
+        if (themeAppExtensionInstallation && themeAppExtensionInstallationUrl) {
+            window.open(
+                themeAppExtensionInstallationUrl,
+                '_blank',
+                'noopener noreferrer'
+            )
+        }
     }
 
     const canSubmitInstall = isConnected && !isInstallPending
@@ -157,14 +182,31 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     </i>
                 ) : null}
                 <div>
-                    <div className={css.title}>
-                        1-click installation for Shopify
-                    </div>
-                    <div>
-                        Add the chat widget to your Shopify store in one click.
-                        Note that this will automatically enable Automate
-                        features if available.
-                    </div>
+                    {themeAppExtensionInstallation ? (
+                        <>
+                            <div className={css.title}>
+                                Quick installation for Shopify
+                            </div>
+                            <div>
+                                To easily add Chat to your Shopify store, click
+                                Install then click Save in the new Shopify
+                                window. No need to edit anything in the new
+                                window. Note that this will automatically enable
+                                Automate features if available.
+                            </div>
+                        </>
+                    ) : (
+                        <>
+                            <div className={css.title}>
+                                1-click installation for Shopify
+                            </div>
+                            <div>
+                                Add the chat widget to your Shopify store in one
+                                click. Note that this will automatically enable
+                                Automate features if available.
+                            </div>
+                        </>
+                    )}
                 </div>
                 {isInstalled ? (
                     <Button

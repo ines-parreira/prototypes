@@ -4,9 +4,7 @@ import classnames from 'classnames'
 
 import history from 'pages/history'
 import {updateOrCreateIntegration} from 'state/integrations/actions'
-
 import {SegmentEvent} from 'common/segment'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -16,7 +14,6 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import {getStoreIntegrations} from 'state/integrations/selectors'
-
 import {Tab} from 'pages/integrations/integration/types'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -28,9 +25,8 @@ import {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 
 import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
-
+import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
 
@@ -66,6 +62,16 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     const [currentInstallationMethod, setCurrentInstallationMethod] =
         useState<GorgiasChatCreationWizardInstallationMethod>()
+
+    const isStoreOfShopifyType =
+        storeIntegration?.type === IntegrationType.Shopify
+
+    const {
+        shouldUseThemeAppExtensionInstallation,
+        themeAppExtensionInstallationUrl,
+    } = useThemeAppExtensionInstallation(
+        isStoreOfShopifyType ? storeIntegration : undefined
+    )
 
     const installationMethod = isOneClickInstallationAllowed
         ? currentInstallationMethod ??
@@ -138,6 +144,18 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             }
 
                         history.push(redirectUrl, locationState)
+
+                        if (
+                            isOneClickInstallation &&
+                            shouldUseThemeAppExtensionInstallation &&
+                            themeAppExtensionInstallationUrl
+                        ) {
+                            window.open(
+                                themeAppExtensionInstallationUrl,
+                                '_blank',
+                                'noopener noreferrer'
+                            )
+                        }
                     }
                 },
                 shouldPublish,
@@ -188,7 +206,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 isLoading={isSubmitting}
                             >
                                 Install{' '}
-                                {isOneClickInstallation ? 'Chat' : 'Manually'}
+                                {isOneClickInstallation ? '' : 'Manually'}
                             </Button>
                         </div>
                     </>
@@ -207,7 +225,11 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             </div>
                             <p className={css.sectionHeadingLabel}>
                                 Connect a store to use Automate features in chat
-                                and to enable 1-click install for Shopify.
+                                and to enable{' '}
+                                {shouldUseThemeAppExtensionInstallation
+                                    ? 'quick'
+                                    : '1-click'}{' '}
+                                install for Shopify.
                             </p>
                             <GorgiasChatIntegrationConnectStore
                                 integration={integration}
@@ -227,8 +249,16 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             <PreviewRadioButton
                                 isDisabled={!isOneClickInstallationAllowed}
                                 isSelected={isOneClickInstallation}
-                                label="1-click installation for Shopify"
-                                caption="Add the chat widget to your Shopify store in one click."
+                                label={`${
+                                    shouldUseThemeAppExtensionInstallation
+                                        ? 'Quick'
+                                        : '1-click'
+                                } installation for Shopify`}
+                                caption={
+                                    shouldUseThemeAppExtensionInstallation
+                                        ? 'To easily add Chat to your Shopify store, click Install then click Save in the new Shopify window. No need to edit anything in the new window.'
+                                        : 'Add the chat widget to your Shopify store in one click.'
+                                }
                                 value="true"
                                 onClick={() =>
                                     setCurrentInstallationMethod(

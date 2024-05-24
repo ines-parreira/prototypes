@@ -4,18 +4,14 @@ import classNames from 'classnames'
 import {v4 as uuidv4} from 'uuid'
 
 import history from 'pages/history'
-
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
 import {SegmentEvent} from 'common/segment'
-
 import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
 import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
-
 import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatIntegration,
@@ -27,7 +23,6 @@ import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomatio
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
 import Label from 'pages/common/forms/Label/Label'
@@ -36,15 +31,14 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import SelfServiceChatIntegrationQuickResponsePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationQuickResponsePage'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
-
 import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
-import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 
+import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import useHelpCenterOfShop from '../../../hooks/useHelpCenterOfShop'
-
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
+import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 
 import css from './GorgiasChatCreationWizardStepAutomate.less'
 import useSelfServiceConfiguration from './hooks/useSelfServiceConfiguration'
@@ -172,6 +166,14 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         )
 
     const shopIntegrationId = storeIntegration?.id
+
+    const isStoreOfShopifyType =
+        storeIntegration?.type === IntegrationType.Shopify
+
+    const {shouldUseThemeAppExtensionInstallation} =
+        useThemeAppExtensionInstallation(
+            isStoreOfShopifyType ? storeIntegration : undefined
+        )
 
     const {selfServiceConfiguration, isLoadingSelfServiceConfiguration} =
         useSelfServiceConfiguration(shopIntegrationId)
@@ -545,7 +547,11 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                         <Label>Connect a store</Label>
                         <div className={css.connectStoreDescription}>
                             Connect a store to use Automate features in chat and
-                            to enable 1-click install for Shopify.
+                            to enable{' '}
+                            {shouldUseThemeAppExtensionInstallation
+                                ? 'quick'
+                                : '1-click'}{' '}
+                            install for Shopify.
                         </div>
                         <StoreNameDropdown
                             storeIntegrationId={
