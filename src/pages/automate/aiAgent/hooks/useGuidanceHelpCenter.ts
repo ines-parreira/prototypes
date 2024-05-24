@@ -26,7 +26,9 @@ export const useGuidanceHelpCenter = ({
 
                 if (!guidanceHelpCenter) {
                     reportError(
-                        `Guidance Help Center not found for shop: ${shopName}`,
+                        new Error(
+                            `Guidance Help Center not found for shop: ${shopName}`
+                        ),
                         {
                             tags: {team: AI_AGENT_SENTRY_TEAM},
                             extra: {
