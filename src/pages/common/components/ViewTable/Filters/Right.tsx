@@ -6,13 +6,11 @@ import moment from 'moment-timezone'
 import {Input} from 'reactstrap'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {humanizeChannel} from 'state/ticket/utils'
 import {formatDatetime, getLanguageDisplayName} from 'utils'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {IntegrationType} from 'models/integration/constants'
 import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {stringToDatetime} from '../../../../../utils/date'
 
@@ -112,16 +110,8 @@ export class RightContainer extends Component<Props, State> {
     }
 
     render() {
-        const {
-            operator,
-            node,
-            config,
-            field,
-            updateFieldFilter,
-            index,
-            empty,
-            flags,
-        } = this.props
+        const {operator, node, config, field, updateFieldFilter, index, empty} =
+            this.props
 
         if (empty) {
             return <span />
@@ -150,12 +140,6 @@ export class RightContainer extends Component<Props, State> {
                     return (opt as Literal).value
                 })
                 const options = this.props.integrations
-                    .filter((integration) => {
-                        return !(
-                            integration?.get('type') === IntegrationType.App &&
-                            !flags?.[FeatureFlagKey.HelpCenterRulesAndViews]
-                        )
-                    })
                     .map((integration) => ({
                         label: integration!.get('name') as string,
                         displayLabel: (

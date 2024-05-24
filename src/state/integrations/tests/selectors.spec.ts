@@ -113,11 +113,7 @@ describe('integrations selectors', () => {
                         IntegrationType.Twitter,
                         IntegrationType.GorgiasChat,
                     ].includes(integration.type) ||
-                    (integration.type === IntegrationType.App &&
-                        (integration.meta.address.startsWith('help-center') ||
-                            integration.meta.address.startsWith(
-                                'contact-form'
-                            )))
+                    integration.type === IntegrationType.App
             )
 
             expect(messagingIntegrations).toEqual(expected)

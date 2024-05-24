@@ -2,7 +2,6 @@ import classnames from 'classnames'
 import pluralize from 'pluralize'
 import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {ISO639English} from 'constants/languages'
@@ -34,8 +33,6 @@ import {NotificationStatus} from 'state/notifications/types'
 import {getEmptyRule} from 'state/rules/utils'
 import {getAST} from 'utils'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/constants'
 import css from './RuleCreationModalContent.less'
 
 type Props = {
@@ -72,16 +69,7 @@ function makeRuleCode(teamId: number, conditionStatement: string) {
 
 export default function RuleCreationModalContent({onClose, team}: Props) {
     const dispatch = useAppDispatch()
-    const isAppIntegrationEnabled =
-        useFlags()[FeatureFlagKey.HelpCenterRulesAndViews]
-    const integrations = useAppSelector(getOperationalIntegrations).filter(
-        (integration) => {
-            return !(
-                integration?.get('type') === IntegrationType.App &&
-                !isAppIntegrationEnabled
-            )
-        }
-    )
+    const integrations = useAppSelector(getOperationalIntegrations)
     const tags = useAppSelector((state) => state.entities.tags)
     const ref = useRef<HTMLFormElement>(null)
     const defaultTeamName = useMemo(

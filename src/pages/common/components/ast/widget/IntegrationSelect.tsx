@@ -3,17 +3,14 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import _isNumber from 'lodash/isNumber'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/constants'
-import SelectField from '../../../forms/SelectField/SelectField'
-import {RenderLabel} from '../../../utils/labels'
-import {RuleItemActions} from '../../../../settings/rules/types'
-import {RootState} from '../../../../../state/types'
-import {getOperationalIntegrations} from '../../../../../state/integrations/selectors'
-import {fetchIntegrations} from '../../../../../state/integrations/actions'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import {RenderLabel} from 'pages/common/utils/labels'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import {RootState} from 'state/types'
+import {getOperationalIntegrations} from 'state/integrations/selectors'
+import {fetchIntegrations} from 'state/integrations/actions'
 
 type OwnProps = {
     onChange: (value: number) => ReturnType<RuleItemActions['modifyCodeAST']>
@@ -26,9 +23,6 @@ export function IntegrationSelectContainer({
     value,
     onChange,
 }: ConnectedProps<typeof connector> & OwnProps) {
-    const isAppIntegrationEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.HelpCenterRulesAndViews]
-
     useEffect(() => {
         if (integrations.isEmpty()) {
             void fetchIntegrations()
@@ -39,23 +33,13 @@ export function IntegrationSelectContainer({
     const field = fromJS({name: 'integrations'})
     let options = fromJS([]) as List<any>
 
-    integrations
-        .filter((integration) => {
-            if (
-                integration?.get('type') === IntegrationType.App &&
-                !isAppIntegrationEnabled
-            ) {
-                return false
-            }
-            return true
+    integrations.forEach((integration) => {
+        options = options.push({
+            value: integration!.get('id'),
+            text: integration!.get('name'),
+            label: <RenderLabel field={field} value={integration} />,
         })
-        .forEach((integration) => {
-            options = options.push({
-                value: integration!.get('id'),
-                text: integration!.get('name'),
-                label: <RenderLabel field={field} value={integration} />,
-            })
-        })
+    })
 
     if (options.isEmpty()) {
         return (

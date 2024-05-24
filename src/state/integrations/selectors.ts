@@ -595,38 +595,22 @@ export const makeGetPreRedirectUri =
 
 // return the list of integrations:
 // - integrations that can send messages from the helpdesk, like Facebook or Email
-// - `app` integrations, like Help Center or Contact Form
+// - `app` integrations
 export const getOperationalIntegrations = createSelector(
     DEPRECATED_getIntegrationsByTypes([
         ...MESSAGING_INTEGRATION_TYPES,
-        // Including app integrations, such as `help center` and `contact form`
         IntegrationType.App,
     ]),
     (integrations) => {
-        return integrations
-            .filter((integration: Map<any, any>) => {
-                const type = integration.get('type')
-                if (type === IntegrationType.App) {
-                    const address: string =
-                        integration.getIn(['meta', 'address']) ?? ''
-
-                    return (
-                        address.startsWith('help-center') ||
-                        address.startsWith('contact-form')
-                    )
-                }
-
-                return true
-            })
-            .map((integration: Map<any, any>) => {
-                if (integration.get('type') === IntegrationType.Facebook) {
-                    return integration.set(
-                        'name',
-                        integration.getIn(['meta', 'name'])
-                    )
-                }
-                return integration
-            })
+        return integrations.map((integration: Map<any, any>) => {
+            if (integration.get('type') === IntegrationType.Facebook) {
+                return integration.set(
+                    'name',
+                    integration.getIn(['meta', 'name'])
+                )
+            }
+            return integration
+        })
     }
 )
 
