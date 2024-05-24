@@ -215,7 +215,7 @@ export const TestFlowEditor = ({
     })
 
     useEffect(() => {
-        if (!isTesting) return
+        if (!isTesting || !isFlowInterpreterStarted) return
         resetChatFlow({
             label,
             language: selectedLanguage,
