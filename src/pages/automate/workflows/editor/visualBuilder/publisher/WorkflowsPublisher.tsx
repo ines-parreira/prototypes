@@ -68,6 +68,7 @@ export default function WorkflowsPublisher() {
             transitionDurationMs={300}
         >
             <EditorDrawerHeader
+                testId="publisher"
                 label={'Display in channels'}
                 onClose={() => setFlowPublishingInChannels(false)}
             />

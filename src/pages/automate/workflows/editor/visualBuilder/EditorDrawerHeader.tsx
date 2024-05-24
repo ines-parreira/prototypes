@@ -15,6 +15,7 @@ type Props = {
     children?: ReactNode
     isPreview?: boolean
     headerSaperator?: boolean
+    testId: string
 }
 
 const EditorDrawerHeader = ({
@@ -23,6 +24,7 @@ const EditorDrawerHeader = ({
     label,
     isPreview,
     headerSaperator,
+    testId,
 }: Props) => {
     const closeButtonId = `${
         isPreview ? 'preview-' : ''
@@ -45,7 +47,7 @@ const EditorDrawerHeader = ({
                         intent="secondary"
                         size="medium"
                         aria-label="close edit modal"
-                        data-testid="close-drawer"
+                        data-testid={`${testId}-close-drawer`}
                     >
                         keyboard_tab
                     </IconButton>

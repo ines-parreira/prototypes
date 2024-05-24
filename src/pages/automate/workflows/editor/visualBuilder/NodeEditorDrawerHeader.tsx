@@ -23,6 +23,7 @@ const NodeEditorDrawerHeader = ({nodeInEdition, children}: Props) => {
                 labelByVisualBuilderNodeType[nodeInEdition.type]
             }
             onClose={onClose}
+            testId="node-editor"
         >
             {children}
         </EditorDrawerHeader>
