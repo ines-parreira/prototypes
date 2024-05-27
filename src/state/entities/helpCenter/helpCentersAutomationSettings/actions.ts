@@ -7,6 +7,12 @@ export const helpCenterAutomationSettingsFetched = createAction<{
     helpCenterId: string
     automationSettings: HelpCenterAutomationSettings
 }>(HelpCentersAutomationSettingsActions.HELPCENTER_AUTOMATION_SETTINGS_FETCHED)
+export const helpCentersAutomationSettingsFetched = createAction<
+    {
+        helpCenterId: number
+        automationSettings: HelpCenterAutomationSettings
+    }[]
+>(HelpCentersAutomationSettingsActions.HELPCENTERS_AUTOMATION_SETTINGS_FETCHED)
 
 export const helpCenterAutomationSettingsUpdated = createAction<{
     helpCenterId: string

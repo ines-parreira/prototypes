@@ -111,13 +111,19 @@ const renderComponent = (
         billing: fromJS({products: [mockedProMonthlyHelpdeskPrice]}),
         integrations: fromJS({integrations}),
         entities: {
-            contactForm: {contactForms: {contactFormById: {}}},
+            contactForm: {
+                contactForms: {contactFormById: {}},
+                contactFormsAutomationSettings: {
+                    automationSettingsByContactFormId: {},
+                },
+            },
             helpCenter: {
                 helpCenters: {helpCentersById: {[helpCenter.id]: helpCenter}},
                 helpCentersAutomationSettings: {
                     automationSettingsByHelpCenterId: {},
                 },
             },
+            chatsApplicationAutomationSettings: {},
             selfServiceConfigurations: {},
         },
     } as unknown as StoreState

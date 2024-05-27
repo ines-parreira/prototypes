@@ -3,17 +3,15 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
-import useSelfServiceChannels, {
-    SelfServiceChannelType,
-} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {fetchChatsApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import {WorkflowStep} from '../models/workflowConfiguration.types'
 import {VisualBuilderNode} from '../models/visualBuilderGraph.types'
+import {
+    useWorkflowsIdsEnabledInChat,
+    useWorkflowsIdsEnabledInContactForm,
+    useWorkflowsIdsEnabledInHelpCenter,
+} from './useWorkflowEnabledInChannels'
 
 const allChannels: SelfServiceChannelType[] = [
     TicketChannel.Chat,
@@ -45,7 +43,7 @@ type WorkflowChannelSupportContext = {
     getUnsupportedConnectedChannels: (
         workflowId: string,
         nodeType: NonNullable<VisualBuilderNode['type']>
-    ) => Promise<SelfServiceChannelType[]>
+    ) => SelfServiceChannelType[]
     getSupportedChannels: (
         type: VisualBuilderNode['type']
     ) => (
@@ -147,100 +145,29 @@ function useGetChannelTypesWhereWorkflowIsEnabled(
     shopType: string,
     shopName: string
 ) {
-    const channels = useSelfServiceChannels(shopType, shopName)
-    const {client: helpCenterClient} = useHelpCenterApi()
+    const workflowsIdsEnabledInChat = useWorkflowsIdsEnabledInChat(
+        shopType,
+        shopName
+    )
 
-    const workflowsIdsEnabledInChat = useMemo(async () => {
-        const chatApplicationIds = channels
-            .filter(
-                (c): c is SelfServiceChatChannel =>
-                    c.type === TicketChannel.Chat
-            )
-            .map((c) => c.value.meta.app_id!)
-        const workflowIdsEnabled = new Set<string>()
-        if (chatApplicationIds.length === 0) return workflowIdsEnabled
-        const automationSettings =
-            await fetchChatsApplicationAutomationSettings(
-                chatApplicationIds
-            ).catch(() => []) // do not block the UI in case of failure
-        automationSettings.forEach((settings) => {
-            const entrypoints = settings.workflows?.entrypoints ?? []
-            entrypoints.forEach((workflow) => {
-                if (workflow.enabled) {
-                    workflowIdsEnabled.add(workflow.workflow_id)
-                }
-            })
-        })
-        return workflowIdsEnabled
-    }, [channels])
+    const workflowsIdsEnabledInHelpCenter = useWorkflowsIdsEnabledInHelpCenter(
+        shopType,
+        shopName
+    )
 
-    const workflowsIdsEnabledInHelpCenter = useMemo(async () => {
-        const helpCenterIds = channels
-            .filter(
-                (c): c is SelfServiceHelpCenterChannel =>
-                    c.type === TicketChannel.HelpCenter
-            )
-            .map((c) => c.value.id)
-        const workflowIdsEnabled = new Set<string>()
-        if (helpCenterIds.length === 0 || !helpCenterClient)
-            return workflowIdsEnabled
-        const automationSettings = await Promise.all(
-            helpCenterIds.map(
-                (help_center_id) =>
-                    helpCenterClient
-                        .getHelpCenterAutomationSettings({
-                            help_center_id,
-                        })
-                        .catch(() => undefined) // do not block the UI in case of failure
-            )
-        )
-        automationSettings.forEach((settings) => {
-            settings?.data.workflows.forEach((workflow) => {
-                if (workflow.enabled) {
-                    workflowIdsEnabled.add(workflow.id)
-                }
-            })
-        })
-        return workflowIdsEnabled
-    }, [channels, helpCenterClient])
-
-    const workflowsIdsEnabledInContactForm = useMemo(async () => {
-        const contactFormIds = channels
-            .filter(
-                (c): c is SelfServiceStandaloneContactFormChannel =>
-                    c.type === TicketChannel.ContactForm
-            )
-            .map((c) => c.value.id)
-        const workflowIdsEnabled = new Set<string>()
-        if (contactFormIds.length === 0 || !helpCenterClient)
-            return workflowIdsEnabled
-        const automationSettings = await Promise.all(
-            contactFormIds.map((id) =>
-                helpCenterClient?.getContactFormAutomationSettings({
-                    id,
-                })
-            )
-        ).catch(() => []) // do not block the UI in case of failure
-        automationSettings.forEach((settings) => {
-            settings?.data.workflows.forEach((workflow) => {
-                if (workflow.enabled) {
-                    workflowIdsEnabled.add(workflow.id)
-                }
-            })
-        })
-        return workflowIdsEnabled
-    }, [channels, helpCenterClient])
+    const workflowsIdsEnabledInContactForm =
+        useWorkflowsIdsEnabledInContactForm(shopType, shopName)
 
     return useCallback(
-        async (workflowId: string) => {
+        (workflowId: string) => {
             const channelsWhereEnabled: SelfServiceChannelType[] = []
-            if ((await workflowsIdsEnabledInChat).has(workflowId)) {
+            if (workflowsIdsEnabledInChat.has(workflowId)) {
                 channelsWhereEnabled.push(TicketChannel.Chat)
             }
-            if ((await workflowsIdsEnabledInHelpCenter).has(workflowId)) {
+            if (workflowsIdsEnabledInHelpCenter.has(workflowId)) {
                 channelsWhereEnabled.push(TicketChannel.HelpCenter)
             }
-            if ((await workflowsIdsEnabledInContactForm).has(workflowId)) {
+            if (workflowsIdsEnabledInContactForm.has(workflowId)) {
                 channelsWhereEnabled.push(TicketChannel.ContactForm)
             }
             return channelsWhereEnabled
@@ -272,11 +199,11 @@ export default function useWorkflowChannelSupport(
     const getUnsupportedConnectedChannels: (
         workflowId: string,
         nodeType: NonNullable<VisualBuilderNode['type']>
-    ) => Promise<SelfServiceChannelType[]> = useCallback(
-        async (workflowId, nodeType) => {
+    ) => SelfServiceChannelType[] = useCallback(
+        (workflowId, nodeType) => {
             if (!optionalNodeTypes.includes(nodeType)) return []
             const embeddingChannels =
-                await getChannelTypesWhereWorkflowIsEnabled(workflowId)
+                getChannelTypesWhereWorkflowIsEnabled(workflowId)
             if (nodeType === 'text_reply' || nodeType === 'file_upload') {
                 return embeddingChannels.filter(
                     (c) => !shopperInputSupportedChannels.has(c)
@@ -526,7 +453,7 @@ export default function useWorkflowChannelSupport(
 export function createWorkflowChannelSupportContextForPreview(): WorkflowChannelSupportContext {
     return {
         isStepUnsupportedInAllChannels: () => false,
-        getUnsupportedConnectedChannels: () => Promise.resolve([]),
+        getUnsupportedConnectedChannels: () => [],
         getSupportedChannels: () => [],
         getUnsupportedChannels: () => [],
         getUnsupportedNodeTypes: () => [],

@@ -38,6 +38,11 @@ import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
 import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
 import {WORKFLOW_TEMPLATES} from '../workflowTemplates'
 import {DraftBadge} from '../components/DraftBadge'
+import {
+    useWorkflowsIdsEnabledInChat,
+    useWorkflowsIdsEnabledInContactForm,
+    useWorkflowsIdsEnabledInHelpCenter,
+} from '../hooks/useWorkflowEnabledInChannels'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 
 import css from './WorkflowEditorView.less'
@@ -194,6 +199,34 @@ function WorkflowEditorViewWrapped({
     const openChannelSidePanel = () => {
         workflowEditorContext.setFlowPublishingInChannels(true)
     }
+    const workflowsEnabledInChats = useWorkflowsIdsEnabledInChat(
+        shopType,
+        shopName
+    )
+    const workflowsEnabledInHC = useWorkflowsIdsEnabledInHelpCenter(
+        shopType,
+        shopName
+    )
+    const workflowsEnabledInCF = useWorkflowsIdsEnabledInContactForm(
+        shopType,
+        shopName
+    )
+
+    const doOpenChannelsSidePanel = useCallback(
+        (workflowId: string) => {
+            if (!isPublishFlowFromFlowBuilder) return false
+            if (workflowsEnabledInChats.has(workflowId)) return false
+            if (workflowsEnabledInCF.has(workflowId)) return false
+            if (workflowsEnabledInHC.has(workflowId)) return false
+            return true
+        },
+        [
+            isPublishFlowFromFlowBuilder,
+            workflowsEnabledInCF,
+            workflowsEnabledInChats,
+            workflowsEnabledInHC,
+        ]
+    )
 
     const upsertWorkflow = async (isDraft = true) => {
         const configurationError = workflowEditorContext.handleValidate(
@@ -243,8 +276,7 @@ function WorkflowEditorViewWrapped({
 
         if (!isDraft) {
             onPublish(isFirstTimePublish)
-            if (isPublishFlowFromFlowBuilder && isFirstTimePublish)
-                openChannelSidePanel()
+            if (doOpenChannelsSidePanel(workflowId)) openChannelSidePanel()
         } else if (isDraft) {
             if (isNewWorkflow) onDraftCreated()
             else onSave?.()

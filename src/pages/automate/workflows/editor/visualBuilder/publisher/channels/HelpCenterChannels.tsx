@@ -1,9 +1,10 @@
-import React, {useCallback} from 'react'
-import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
+import React, {useCallback, useMemo} from 'react'
 import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
 import {TicketChannel} from 'business/types/ticket'
 import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
 import ChannelBlock from '../helper/ChannelBlock'
 import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
 import ChannelToggle from './ChannelToggle'
@@ -12,36 +13,43 @@ const ChannelItem = ({
     channel,
     onlySupportedChannels,
     configuration,
+    isLoading,
+    applicationAutomationSettings,
+    handleHelpCenterAutomationSettingsUpdate,
 }: {
     configuration: WorkflowConfiguration
     channel: SelfServiceHelpCenterChannel
     onlySupportedChannels: SelfServiceChannelType[]
+    isLoading: boolean
+    applicationAutomationSettings: HelpCenterAutomationSettings
+    handleHelpCenterAutomationSettingsUpdate: (
+        helpCenterId: number,
+        chatApplicationAutomationSettings: Partial<HelpCenterAutomationSettings>
+    ) => Promise<void>
 }) => {
-    const {
-        automationSettings,
-        isUpdatePending,
-        isFetchPending,
-        handleHelpCenterAutomationSettingsUpdate,
-    } = useHelpCentersAutomationSettings(channel.value.id)
-    const workflows = automationSettings?.workflows || []
+    const workflows = applicationAutomationSettings?.workflows || []
 
-    const handleUpdate = useCallback(
+    const handleHCUpdate = useCallback(
         (workflows) => {
-            void handleHelpCenterAutomationSettingsUpdate({
-                ...automationSettings,
+            void handleHelpCenterAutomationSettingsUpdate(channel.value.id, {
+                ...applicationAutomationSettings,
                 workflows,
             })
         },
-        [automationSettings, handleHelpCenterAutomationSettingsUpdate]
+        [
+            applicationAutomationSettings,
+            channel.value.id,
+            handleHelpCenterAutomationSettingsUpdate,
+        ]
     )
     return (
         <ChannelToggle
             configuration={configuration}
             onlySupportedChannels={onlySupportedChannels}
             channel={channel}
-            isLoading={isUpdatePending || isFetchPending}
+            isLoading={isLoading}
             workflows={workflows}
-            handleAutomationSettingUpdate={handleUpdate}
+            handleAutomationSettingUpdate={handleHCUpdate}
         />
     )
 }
@@ -57,14 +65,31 @@ const HelpCenterChannels = ({
         configuration,
         TicketChannel.HelpCenter
     )
+    const appIds = useMemo(() => {
+        return helpCentersChannels.map((channel) => channel.value.id)
+    }, [helpCentersChannels])
+
+    const {
+        helpCentersAutomationSettings,
+        isUpdatePending,
+        isFetchPending,
+        handleHelpCenterAutomationSettingsUpdate,
+    } = useHelpCentersAutomationSettings(appIds)
     return (
         <ChannelBlock channelType={TicketChannel.HelpCenter}>
             {helpCentersChannels.map((channel) => (
                 <ChannelItem
                     configuration={configuration}
                     onlySupportedChannels={onlySupportedChannels}
-                    key={channel.value.id}
                     channel={channel}
+                    key={channel.value.id}
+                    applicationAutomationSettings={
+                        helpCentersAutomationSettings[channel.value.id]
+                    }
+                    isLoading={isUpdatePending || isFetchPending}
+                    handleHelpCenterAutomationSettingsUpdate={
+                        handleHelpCenterAutomationSettingsUpdate
+                    }
                 />
             ))}
         </ChannelBlock>

@@ -2,6 +2,7 @@ import {createReducer} from '@reduxjs/toolkit'
 import {
     contactFormAutomationSettingsFetched,
     contactFormAutomationSettingsUpdated,
+    contactFormsAutomationSettingsFetched,
 } from 'state/entities/contactForm/contactFormsAutomationSettings/actions'
 import {ContactFormsAutomationSettingsState} from './types'
 
@@ -19,6 +20,16 @@ const contactFormAutomationSettingsReducer =
                     (state, {payload: {contactFormId, automationSettings}}) => {
                         state.automationSettingsByContactFormId[contactFormId] =
                             automationSettings
+                    }
+                )
+                .addCase(
+                    contactFormsAutomationSettingsFetched,
+                    (state, {payload}) => {
+                        payload.forEach((settings) => {
+                            state.automationSettingsByContactFormId[
+                                settings.contactFormId
+                            ] = settings.automationSettings
+                        })
                     }
                 )
                 .addCase(

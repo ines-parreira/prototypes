@@ -2,6 +2,7 @@ import {createReducer} from '@reduxjs/toolkit'
 import {
     helpCenterAutomationSettingsFetched,
     helpCenterAutomationSettingsUpdated,
+    helpCentersAutomationSettingsFetched,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings/actions'
 import {HelpCentersAutomationSettingsState} from './types'
 
@@ -17,6 +18,16 @@ const helpCenterAutomationSettingsReducer =
                 (state, {payload: {helpCenterId, automationSettings}}) => {
                     state.automationSettingsByHelpCenterId[helpCenterId] =
                         automationSettings
+                }
+            )
+            .addCase(
+                helpCentersAutomationSettingsFetched,
+                (state, {payload}) => {
+                    payload.forEach((settings) => {
+                        state.automationSettingsByHelpCenterId[
+                            settings.helpCenterId
+                        ] = settings.automationSettings
+                    })
                 }
             )
             .addCase(

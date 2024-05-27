@@ -9,6 +9,14 @@ export const contactFormAutomationSettingsFetched = createAction<{
 }>(
     ContactFormsAutomationSettingsActions.CONTACTFORM_AUTOMATION_SETTINGS_FETCHED
 )
+export const contactFormsAutomationSettingsFetched = createAction<
+    {
+        contactFormId: string
+        automationSettings: ContactFormAutomationSettings
+    }[]
+>(
+    ContactFormsAutomationSettingsActions.CONTACTFORMS_AUTOMATION_SETTINGS_FETCHED
+)
 
 export const contactFormAutomationSettingsUpdated = createAction<{
     contactFormId: string

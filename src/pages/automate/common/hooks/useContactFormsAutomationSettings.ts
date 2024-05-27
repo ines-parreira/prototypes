@@ -6,7 +6,10 @@ import useAsyncFn from 'hooks/useAsyncFn'
 
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
+import {
+    contactFormsAutomationSettingsFetched,
+    getContactFormsAutomationSettings,
+} from 'state/entities/contactForm/contactFormsAutomationSettings'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {ContactFormAutomationSettings} from 'models/contactForm/types'
 
@@ -32,9 +35,28 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
             }
 
             try {
-                await Promise.all(
+                const responses = await Promise.all(
                     contactFormIds.map((contactFormId) =>
                         fetchAutomationSettingsByContactFormId(contactFormId)
+                    )
+                )
+                const automationSettingsIdMap = responses
+                    .filter(
+                        (
+                            response
+                        ): response is {
+                            type: string
+                            payload: {
+                                contactFormId: string
+                                automationSettings: ContactFormAutomationSettings
+                            }
+                        } => Boolean(response?.payload)
+                    )
+                    .map((response) => response?.payload)
+
+                void dispatch(
+                    contactFormsAutomationSettingsFetched(
+                        automationSettingsIdMap
                     )
                 )
             } catch (error) {

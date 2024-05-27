@@ -286,7 +286,6 @@ function useMenuItems(
                 }
             })
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         visualBuilderGraph.nodes.length,
@@ -307,6 +306,9 @@ function useMenuItemsForConnectedChannels(
     configurationId: string
 ) {
     const {menuItems, updateMenuItems} = useMenuItems(nodeId, dispatch)
+    const [stepAdditionalWarningMap, setStepAdditionalWarning] = useState<
+        Record<string, string>
+    >({})
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
@@ -325,9 +327,9 @@ function useMenuItemsForConnectedChannels(
     }, [isStepUnsupportedInAllChannels, updateMenuItems])
 
     useEffect(() => {
-        void optionalNodeTypes.map(async (nodeType) => {
+        void optionalNodeTypes.map((nodeType) => {
             const unsupportedConnectedChannels =
-                await getUnsupportedConnectedChannels(configurationId, nodeType)
+                getUnsupportedConnectedChannels(configurationId, nodeType)
             const supportedChannels = getSupportedChannels(nodeType)
 
             const disabledText =
@@ -337,13 +339,9 @@ function useMenuItemsForConnectedChannels(
                           .join(' and ')}.
                     Disable the flow in other channels to use this step.`
                     : ''
-            if (disabledText) {
-                updateMenuItems((draft) => {
-                    if (draft.type === nodeType) {
-                        draft.disabledText = disabledText
-                    }
-                })
-            }
+            setStepAdditionalWarning({
+                [nodeType]: disabledText,
+            })
         })
     }, [
         getSupportedChannels,
@@ -354,6 +352,7 @@ function useMenuItemsForConnectedChannels(
     return {
         menuItems,
         updateMenuItems,
+        stepAdditionalWarningMap,
     }
 }
 
@@ -406,11 +405,8 @@ export default function EdgeBlock({
         setFloatingRef(node)
     }, [])
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
-    const {menuItems} = useMenuItemsForConnectedChannels(
-        nodeId,
-        dispatch,
-        configurationId
-    )
+    const {menuItems, stepAdditionalWarningMap} =
+        useMenuItemsForConnectedChannels(nodeId, dispatch, configurationId)
 
     const visibleMenuItems = useMemo(
         () => menuItems.filter((item) => !item.hidden),
@@ -515,40 +511,55 @@ export default function EdgeBlock({
                             style,
                             disabledText,
                             onClick,
-                        }) => (
-                            <DropdownItem
-                                id={`dropdown-item-${type}`}
-                                key={label}
-                                option={{
-                                    label,
-                                    value: label,
-                                }}
-                                onClick={disabledText ? noop : onClick}
-                                shouldCloseOnSelect={!disabledText}
-                                className={classNames(css.menuItemContainer, {
-                                    [css.disabled]: disabledText,
-                                })}
-                            >
-                                <div className={css.menuIcon} style={style}>
-                                    {icon}
-                                </div>
-                                <div>
-                                    {label}
-                                    <div className={css.menuItemDescription}>
-                                        {description}
+                        }) => {
+                            const disableTooltipMessage =
+                                stepAdditionalWarningMap[type] || disabledText
+                            return (
+                                <DropdownItem
+                                    id={`dropdown-item-${type}`}
+                                    key={label}
+                                    option={{
+                                        label,
+                                        value: label,
+                                    }}
+                                    onClick={
+                                        disableTooltipMessage ? noop : onClick
+                                    }
+                                    shouldCloseOnSelect={!disableTooltipMessage}
+                                    className={classNames(
+                                        css.menuItemContainer,
+                                        {
+                                            [css.disabled]:
+                                                disableTooltipMessage,
+                                        }
+                                    )}
+                                >
+                                    <div className={css.menuIcon} style={style}>
+                                        {icon}
                                     </div>
-                                </div>
-                                {disabledText && floatingRef?.parentElement && (
-                                    <Tooltip
-                                        placement="top-start"
-                                        target={`dropdown-item-${type}`}
-                                        container={floatingRef.parentElement}
-                                    >
-                                        {disabledText}
-                                    </Tooltip>
-                                )}
-                            </DropdownItem>
-                        )
+                                    <div>
+                                        {label}
+                                        <div
+                                            className={css.menuItemDescription}
+                                        >
+                                            {description}
+                                        </div>
+                                    </div>
+                                    {disableTooltipMessage &&
+                                        floatingRef?.parentElement && (
+                                            <Tooltip
+                                                placement="top-start"
+                                                target={`dropdown-item-${type}`}
+                                                container={
+                                                    floatingRef.parentElement
+                                                }
+                                            >
+                                                {disableTooltipMessage}
+                                            </Tooltip>
+                                        )}
+                                </DropdownItem>
+                            )
+                        }
                     )}
                 </DropdownBody>
             </Dropdown>
