@@ -1,4 +1,3 @@
-import {SLAPolicyTargetChannelsItem} from '@gorgias/api-queries'
 import {MappedFormSLAPolicy} from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
 
 export type SLATemplate = Omit<MappedFormSLAPolicy, 'uuid'> & {
@@ -11,7 +10,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         name: 'Chat',
         description:
             'Provide customers with best-in-class chat support by using the suggested SLA settings for chat.',
-        target_channels: [SLAPolicyTargetChannelsItem.Chat],
+        target_channels: ['chat'],
         metrics: {
             FRT: {
                 threshold: 1,
@@ -29,7 +28,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         name: 'Email',
         description:
             'Provide customers with best-in-class email support by using the suggested SLA settings for email.',
-        target_channels: [SLAPolicyTargetChannelsItem.Email],
+        target_channels: ['email'],
         metrics: {
             FRT: {
                 threshold: 25,
@@ -48,17 +47,17 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         description:
             'Provide customers with best-in-class social channel support by using the suggested SLA settings for social channels.',
         target_channels: [
-            SLAPolicyTargetChannelsItem.Facebook,
-            SLAPolicyTargetChannelsItem.FacebookMention,
-            SLAPolicyTargetChannelsItem.FacebookMessenger,
-            SLAPolicyTargetChannelsItem.FacebookRecommendations,
-            SLAPolicyTargetChannelsItem.InstagramAdComment,
-            SLAPolicyTargetChannelsItem.InstagramComment,
-            SLAPolicyTargetChannelsItem.InstagramDirectMessage,
-            SLAPolicyTargetChannelsItem.InstagramMention,
-            SLAPolicyTargetChannelsItem.TiktokShop,
-            SLAPolicyTargetChannelsItem.Twitter,
-            SLAPolicyTargetChannelsItem.TwitterDirectMessage,
+            'facebook',
+            'facebook-mention',
+            'facebook-messenger',
+            'facebook-recommendations',
+            'instagram-ad-comment',
+            'instagram-comment',
+            'instagram-direct-message',
+            'instagram-mention',
+            'tiktok-shop',
+            'twitter',
+            'twitter-direct-message',
         ],
         metrics: {
             FRT: {

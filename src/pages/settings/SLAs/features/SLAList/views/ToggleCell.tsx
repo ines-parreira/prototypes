@@ -1,4 +1,5 @@
 import React, {PropsWithRef, useCallback} from 'react'
+import cn from 'classnames'
 
 import BodyCell, {
     Props as BodyCellProps,
@@ -14,10 +15,12 @@ export default function ToggleCell({
     policy,
     bodyCellProps,
     onToggle,
+    dragRef,
 }: {
     policy: UISLAPolicy
     onToggle: OnTogglePolicyFn
     bodyCellProps?: PropsWithRef<BodyCellProps>
+    dragRef: React.Ref<HTMLElement>
 }) {
     const {uuid, isActive, name} = policy
 
@@ -31,6 +34,9 @@ export default function ToggleCell({
 
     return (
         <BodyCell {...bodyCellProps}>
+            <i className={cn('material-icons', css.dragIcon)} ref={dragRef}>
+                drag_indicator
+            </i>
             <CellLinkWrapper to={`/app/settings/sla/${uuid}`}>
                 <ToggleInput isToggled={isActive} onClick={handleClick} />
                 <div className={css.name}>{name}</div>

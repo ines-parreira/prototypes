@@ -19,12 +19,13 @@ export default function SLAListController() {
 
     const hasSLAs = SLAPolicies && SLAPolicies?.length > 0
 
-    const {mutateAsync: toggleSLA} = useUpdateSlaPolicy()
+    const {mutateAsync: updateSLA, isLoading: isSubmitting} =
+        useUpdateSlaPolicy()
 
     const togglePolicy = (id: string, active: boolean) => {
         void (async function () {
             try {
-                await toggleSLA({id, data: {active: active}})
+                await updateSLA({id, data: {active: active}})
 
                 void dispatch(
                     notify({
@@ -44,12 +45,33 @@ export default function SLAListController() {
         })()
     }
 
+    const changePolicyPriority = (id: string, priority: number) => {
+        void (async function () {
+            try {
+                await updateSLA({id, data: {priority: String(priority)}})
+                void refetchSLAPolicies()
+            } catch (e) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message: `Failed to change SLA policy priority`,
+                    })
+                )
+            }
+        })()
+    }
+
     return (
         <>
             {isLoading ? (
                 <Loader />
             ) : hasSLAs ? (
-                <SLAListView data={SLAPolicies} onTogglePolicy={togglePolicy} />
+                <SLAListView
+                    data={SLAPolicies}
+                    onTogglePolicy={togglePolicy}
+                    onPolicyPriorityChange={changePolicyPriority}
+                    isSubmitting={isSubmitting}
+                />
             ) : (
                 <LandingPage />
             )}

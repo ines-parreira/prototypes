@@ -15,7 +15,9 @@ export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 export default function useGetSLAPolicies() {
     const transformData = useCallback(
         (data: HttpResponse<ListSlaPolicies200>) =>
-            data?.data?.data.map<UISLAPolicy>(makeUISLAPolicy),
+            data?.data?.data
+                .map<UISLAPolicy>(makeUISLAPolicy)
+                .sort((a, b) => b.priority - a.priority),
         []
     )
 

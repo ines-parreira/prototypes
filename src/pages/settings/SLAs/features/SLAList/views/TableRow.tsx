@@ -1,14 +1,18 @@
-import React from 'react'
+import React, {Ref, RefObject} from 'react'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
+    OnDropPolicyFn,
+    OnMovePolicyFn,
     OnTogglePolicyFn,
+    PolicyDragItem,
     TableColumn,
     UISLAPolicy,
 } from 'pages/settings/SLAs/features/SLAList/types'
+import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 
 import CellLinkWrapper from './CellLinkWrapper'
 import {columnOrder, getTableCell} from './config'
@@ -17,10 +21,41 @@ import css from './TableRow.less'
 type TableRowProps = {
     policy: UISLAPolicy
     onToggle: OnTogglePolicyFn
+    dragItem: PolicyDragItem
+    onMovePolicy: OnMovePolicyFn
+    onDropPolicy: OnDropPolicyFn
+    isSubmitting: boolean
 }
-export default function TableRow({policy, onToggle}: TableRowProps) {
+export default function TableRow({
+    policy,
+    onToggle,
+    dragItem,
+    onMovePolicy,
+    onDropPolicy,
+    isSubmitting,
+}: TableRowProps) {
+    const {dragRef, dropRef, handlerId, isDragging} =
+        useReorderDnD<PolicyDragItem>(
+            dragItem,
+            [dragItem.type],
+            {
+                onHover: onMovePolicy,
+                onDrop: onDropPolicy,
+            },
+            !isSubmitting
+        )
+
+    const opacity = isDragging ? 0.5 : 1
+
     return (
-        <TableBodyRow className={css.tableRow}>
+        <TableBodyRow
+            ref={dropRef as Ref<HTMLTableRowElement>}
+            data-handler-id={handlerId}
+            className={css.tableRow}
+            style={{
+                opacity,
+            }}
+        >
             {columnOrder.map((column) => (
                 <React.Fragment key={`${column}-${policy.uuid}`}>
                     {React.createElement(getTableCell(column), {
@@ -31,6 +66,7 @@ export default function TableRow({policy, onToggle}: TableRowProps) {
                                 innerClassName: css.cellContent,
                             }),
                         },
+                        dragRef: dragRef as RefObject<HTMLElement>,
                     })}
                 </React.Fragment>
             ))}

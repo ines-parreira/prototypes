@@ -13,16 +13,16 @@ type UseReorderDnDInterface = {
     isDragging: boolean
 }
 
-export type Callbacks = {
+export type Callbacks<T = unknown> = {
     onHover?: (dragIndex: number, hoverIndex: number, type: string) => void
-    onDrop?: (item: unknown, monitor: DropTargetMonitor) => void
+    onDrop?: (item: T, monitor: DropTargetMonitor) => void
     onCancel?: (type: string) => void
 }
 
 export const useReorderDnD = <ItemType extends DragItemRequired>(
     dragItem: ItemType,
     acceptEntities: string[],
-    callbacks: Callbacks = {},
+    callbacks: Callbacks<ItemType> = {},
     canDrag = true
 ): UseReorderDnDInterface => {
     const $dropRef = React.useRef<HTMLTableRowElement>(null)

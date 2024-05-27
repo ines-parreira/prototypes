@@ -10,5 +10,6 @@ export default function makeUISLAPolicy(policy: SLAPolicy): UISLAPolicy {
         channels: policy.target_channels as TicketChannel[] | null,
         isActive: policy.deactivated_datetime === null,
         updatedDatetime: policy.updated_datetime || policy.created_datetime,
+        priority: Number(policy.priority || 0),
     }
 }

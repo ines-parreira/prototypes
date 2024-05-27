@@ -5,6 +5,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import {
+    OnPolicyPriorityChangeFn,
     OnTogglePolicyFn,
     UISLAPolicy,
 } from 'pages/settings/SLAs/features/SLAList/types'
@@ -14,13 +15,26 @@ import PageHeader from '../../PageHeader/PageHeader'
 import {columnConfig} from './config'
 import Header from './Header'
 import TableRow from './TableRow'
+import useSortablePolicies from './useSortablePolicies'
 import css from './SLAListView.less'
 
 type SLAListViewProps = {
     data: UISLAPolicy[]
     onTogglePolicy: OnTogglePolicyFn
+    onPolicyPriorityChange: OnPolicyPriorityChangeFn
+    isSubmitting: boolean
 }
-export default function SLAListView({data, onTogglePolicy}: SLAListViewProps) {
+export default function SLAListView({
+    data,
+    onTogglePolicy,
+    onPolicyPriorityChange,
+    isSubmitting,
+}: SLAListViewProps) {
+    const {policies, handleMovePolicy, handleDropPolicy} = useSortablePolicies(
+        data,
+        onPolicyPriorityChange
+    )
+
     return (
         <div className={css.pageContainer}>
             <PageHeader />
@@ -38,11 +52,19 @@ export default function SLAListView({data, onTogglePolicy}: SLAListViewProps) {
                     ))}
                 </TableHead>
                 <TableBody>
-                    {data.map((policy) => (
+                    {policies.map((policy, index) => (
                         <TableRow
                             policy={policy}
                             key={policy.uuid}
                             onToggle={onTogglePolicy}
+                            dragItem={{
+                                id: policy.uuid,
+                                position: index,
+                                type: 'sla-policy-row',
+                            }}
+                            onMovePolicy={handleMovePolicy}
+                            onDropPolicy={handleDropPolicy}
+                            isSubmitting={isSubmitting}
                         />
                     ))}
                 </TableBody>

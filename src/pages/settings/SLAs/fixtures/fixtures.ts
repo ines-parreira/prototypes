@@ -12,6 +12,7 @@ export const slaPolicy1: SLAPolicy = {
     archived_datetime: null,
     metrics: [],
     version: 1,
+    priority: '1',
 }
 
 export const slaPolicy2: SLAPolicy = {
@@ -32,6 +33,7 @@ export const slaPolicy2: SLAPolicy = {
     archived_datetime: null,
     metrics: [],
     version: 1,
+    priority: '0.5',
 }
 
 export const UISLAPolicy1: UISLAPolicy = {
@@ -40,6 +42,7 @@ export const UISLAPolicy1: UISLAPolicy = {
     channels: [TicketChannel.Email],
     isActive: true,
     updatedDatetime: '2021-07-01T00:00:00Z',
+    priority: 1,
 }
 
 export const UISLAPolicy2: UISLAPolicy = {
@@ -48,4 +51,5 @@ export const UISLAPolicy2: UISLAPolicy = {
     channels: [TicketChannel.Chat],
     isActive: true,
     updatedDatetime: '2021-08-01T00:00:00Z',
+    priority: 0.5,
 }
