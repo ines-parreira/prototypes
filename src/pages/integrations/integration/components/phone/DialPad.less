@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+        align-items: center;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .digit {
+        .heading-page-regular();
+
+        width: 64px;
+        flex: 1;
+        cursor: pointer;
+        text-align: center;
+        user-select: none;
+
+        &:hover {
+            background-color: var(--neutral-grey-2);
+        }
+    }
+
+    .details {
+        font-size: 8px;
+        line-height: 10px;
+        color: var(--neutral-grey-4);
+    }
+}

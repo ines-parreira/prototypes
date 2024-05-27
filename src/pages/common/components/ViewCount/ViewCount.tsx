@@ -1,11 +1,8 @@
 import React, {useMemo} from 'react'
-import classnames from 'classnames'
-import {UncontrolledTooltip} from 'reactstrap'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
 import {compactInteger} from 'utils'
-
-import css from './ViewCount.less'
+import DeactivatedViewIcon from '../DeactivatedViewIcon'
 
 type OwnProps = {
     isDeactivated: boolean
@@ -31,24 +28,11 @@ export function ViewCount({
     )
 
     if (isDeactivated) {
-        const id = `deactivated-view-${viewId}`
-
         return (
-            <>
-                <span id={id}>
-                    <i
-                        className={classnames(
-                            'material-icons text-danger',
-                            css.deactivated
-                        )}
-                    >
-                        error
-                    </i>
-                </span>
-                <UncontrolledTooltip placement="top" target={id}>
-                    This view is deactivated.
-                </UncontrolledTooltip>
-            </>
+            <DeactivatedViewIcon
+                id={`deactivated-view-${viewId}`}
+                tooltipText="This view is deactivated"
+            />
         )
     }
 

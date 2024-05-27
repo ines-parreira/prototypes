@@ -1,0 +1,27 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .dropdownWrapper {
+        width: 287px;
+        overflow: visible;
+    }
+
+    .dropdownBody {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+        padding: @layout-spacing-s;
+        overflow-y: visible;
+        height: 390px;
+    }
+
+    .dialpad {
+        padding: 0 @layout-spacing-m;
+    }
+
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-s;
+    }
+}

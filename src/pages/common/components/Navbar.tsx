@@ -65,6 +65,7 @@ import CreateTicketNavbarButton from './CreateTicket/CreateTicketNavbarButton'
 import Screens from './screens/Screens'
 import Screen from './screens/Screen'
 import css from './Navbar.less'
+import PlaceCallNavbarButton from './PlaceCallNavbarButton'
 
 const unreadCountChangedEvent = 'widget:publication:unread_count:changed'
 
@@ -478,6 +479,7 @@ export class Navbar extends Component<Props, State> {
                                 )}
                             />
                         ) : null}
+                        <PlaceCallNavbarButton />
                     </div>
 
                     <div

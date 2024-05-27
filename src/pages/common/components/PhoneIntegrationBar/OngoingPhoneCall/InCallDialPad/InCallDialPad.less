@@ -1,0 +1,26 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        padding: @layout-spacing-s;
+    }
+
+    .output {
+        font-size: 2rem;
+        height: 3.75rem;
+        font-weight: 600;
+        color: var(--main-primary-3);
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        padding: 0 2rem;
+    }
+
+    .dialpad {
+        padding-bottom: @layout-spacing-m;
+    }
+}

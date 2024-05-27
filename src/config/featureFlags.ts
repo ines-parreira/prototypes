@@ -92,6 +92,7 @@ export enum FeatureFlagKey {
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
     ObservabilityShowAILibraryForMultiBrands = 'show-ai-library-for-multi-brands',
     OfficeHours = 'office-hours',
+    OutboundDialer = 'outbound-dialer',
     PhrasePredictionDebounce = 'phrase-prediction-debounce',
     PublishFlowFromFlowBuilder = 'publish-flow-from-flow-builder',
     RevenueBetaShopifyHeadless = 'revenue-beta-shopify-headless',

@@ -34,7 +34,7 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import DialPad from './DialPad/DialPad'
+import InCallDialPad from './InCallDialPad/InCallDialPad'
 import css from './OngoingPhoneCall.less'
 import IconButtonTooltip from './IconButtonTooltip'
 import CallTransferDropdown from './CallTransferDropdown'
@@ -160,7 +160,7 @@ export function OngoingPhoneCall({
                     name={customerName}
                     phoneNumber={customerPhoneNumber}
                 />
-                <DialPad className={css.dialPad} call={call} />
+                <InCallDialPad className={css.dialPad} call={call} />
                 {isCallTransferEnabled && (
                     <>
                         <IconButtonTooltip
