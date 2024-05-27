@@ -1,7 +1,8 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
+import {useLocation, useParams} from 'react-router-dom'
 import {useGetSlaPolicy} from '@gorgias/api-queries'
 
+import {SLATemplate} from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 
 import SLAFormView from '../views/SLAFormView'
@@ -14,6 +15,10 @@ import useSubmitPolicy from './useSubmitPolicy'
 
 export default function SLAFormController() {
     const {policyId} = useParams<{policyId?: string}>()
+    const location = useLocation<{
+        template?: SLATemplate
+    }>()
+
     const isNewPolicy = policyId === 'new'
     const {data, isLoading} = useGetSlaPolicy(
         isNewPolicy ? '' : policyId || '',
@@ -28,8 +33,14 @@ export default function SLAFormController() {
             },
         }
     )
+    const template = location.state?.template
+        ? {
+              ...location.state.template,
+              name: '',
+          }
+        : undefined
 
-    const defaultValues = useDefaultFormValues(data)
+    const defaultValues = useDefaultFormValues(data ?? template)
 
     const {save, isLoading: isSubmitting} = useSubmitPolicy()
 

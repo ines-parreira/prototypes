@@ -4,7 +4,7 @@ import {CreateSlaPolicyBodyMetricsItemUnit} from '@gorgias/api-types'
 import {MappedFormSLAPolicy} from './makeMappedFormSLAPolicy'
 
 export default function useDefaultFormValues(
-    policy: MappedFormSLAPolicy | undefined
+    policy: Omit<MappedFormSLAPolicy, 'uuid'> | undefined
 ) {
     return useMemo(
         () =>

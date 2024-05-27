@@ -24,17 +24,17 @@ export default function Templates({
 }) {
     return (
         <div className={classNames(css.wrapper, className)}>
-            {templates.map((template) => (
+            {templates.map(({icon, description, ...template}) => (
                 <TemplateCardLink
                     key={template.name}
                     icon={
                         <i className={classNames('material-icons', css.icon)}>
-                            {template.icon}
+                            {icon}
                         </i>
                     }
                     buttonLabel="Use template"
                     title={template.name}
-                    description={template.description}
+                    description={description}
                     to={{
                         pathname: '/app/settings/sla/new',
                         state: {
