@@ -1,0 +1,93 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: @layout-spacing-xxs;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+        border-radius: 4px;
+
+        &.withIconOnly,
+        &.withLeadIcon {
+            padding-left: @layout-spacing-xxs;
+        }
+
+        &.withIconOnly,
+        &.withTrailIcon {
+            padding-right: @layout-spacing-xxs;
+        }
+
+        // Color properties
+
+        &.black {
+            --tag-background-color: var(--neutral-grey-3);
+            --tag-text-color: var(--neutral-grey-6);
+        }
+
+        &.red {
+            --tag-background-color: var(--accessory-red-1);
+            --tag-text-color: var(--accessory-red-3);
+        }
+
+        &.green {
+            --tag-background-color: var(--accessory-green-1);
+            --tag-text-color: var(--accessory-green-3);
+        }
+
+        &.yellow {
+            --tag-background-color: var(--accessory-yellow-1);
+            --tag-text-color: var(--accessory-yellow-3);
+        }
+
+        &.blue {
+            --tag-background-color: var(--accessory-blue-1);
+            --tag-text-color: var(--accessory-blue-3);
+        }
+
+        &.gray {
+            --tag-background-color: var(--neutral-grey-1);
+            --tag-text-color: var(--neutral-grey-5);
+        }
+
+        &.pink {
+            --tag-background-color: var(--accessory-magenta-1);
+            --tag-text-color: var(--accessory-magenta-3);
+        }
+
+        &.purple {
+            --tag-background-color: var(--accessory-violet-1);
+            --tag-text-color: var(--accessory-violet-3);
+        }
+
+        &.orange {
+            --tag-background-color: var(--accessory-orange-1);
+            --tag-text-color: var(--accessory-orange-3);
+        }
+
+        &.teal {
+            --tag-background-color: var(--accessory-teal-1);
+            --tag-text-color: var(--accessory-teal-3);
+        }
+
+        background: var(--tag-background-color);
+        color: var(--tag-text-color);
+    }
+
+    .text {
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 16px;
+        letter-spacing: 0.52px;
+    }
+
+    .icon {
+        font-size: 16px;
+        line-height: 16px;
+
+        &.withClick {
+            cursor: pointer;
+        }
+    }
+}

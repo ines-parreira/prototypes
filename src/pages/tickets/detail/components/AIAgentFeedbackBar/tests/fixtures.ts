@@ -1,4 +1,5 @@
-import {MessageFeedback, OtherIssueEnum} from 'models/aiAgentFeedback/types'
+import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
+import {MessageFeedback} from 'models/aiAgentFeedback/types'
 
 export const messageFeedback: MessageFeedback = {
     messageId: 1137369657,
@@ -32,11 +33,8 @@ export const messageFeedback: MessageFeedback = {
         {type: 'macro', id: 234, name: 'Damaged items', feedback: 0},
     ],
     reportedIssues: [
-        {
-            id: OtherIssueEnum.IncorrectLanguageUsed,
-            label: 'Incorrect language used',
-        },
-        {id: OtherIssueEnum.TooVerbose, label: 'Too verbose'},
-        {id: OtherIssueEnum.OverPromising, label: 'Over promising'},
+        ReportIssueOption.IncorrectLanguageUsed,
+        ReportIssueOption.TooVerbose,
+        ReportIssueOption.OverPromising,
     ],
 }

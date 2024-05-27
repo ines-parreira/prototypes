@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import classNames from 'classnames'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
 import IconButton from 'pages/common/components/button/IconButton'
+
+import ReportIssueSelect from './ReportIssueSelect'
 
 import css from './AIAgentFeedbackBar.less'
 
@@ -15,6 +18,8 @@ export const FEEDBACK_MESSAGE_GUIDANCE_TEST_ID = 'feedback-message-guidance'
 export const FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID = 'feedback-message-knowledge'
 
 const AIAgentFeedbackBar = () => {
+    const [reportIssues, setReportIssues] = useState<ReportIssueOption[]>([])
+
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
 
     const {data} = useGetAiAgentFeedback(selectedAIMessage?.ticket_id || 0, {
@@ -22,19 +27,28 @@ const AIAgentFeedbackBar = () => {
         enabled: !!selectedAIMessage,
     })
 
-    if (!selectedAIMessage) {
+    const ticketFeedback = data?.data
+
+    const messageFeedback = selectedAIMessage
+        ? ticketFeedback?.messages?.find(
+              (messageFeedback) =>
+                  messageFeedback.messageId === selectedAIMessage.id
+          )
+        : null
+
+    useEffect(() => {
+        if (messageFeedback?.reportedIssues) {
+            setReportIssues(messageFeedback?.reportedIssues)
+        }
+    }, [messageFeedback])
+
+    if (!messageFeedback) {
         return (
             <div data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}>
                 Generic data for ticket
             </div>
         )
     }
-
-    const ticketFeedback = data?.data
-
-    const messageFeedback = ticketFeedback?.messages?.find(
-        (messageFeedback) => messageFeedback.messageId === selectedAIMessage.id
-    )
 
     return (
         <div
@@ -199,6 +213,12 @@ const AIAgentFeedbackBar = () => {
                     </div>
                 </div>
             )}
+            <div className={css.reportIssueContainer}>
+                <ReportIssueSelect
+                    value={reportIssues}
+                    onChange={setReportIssues}
+                />
+            </div>
         </div>
     )
 }

@@ -1,3 +1,5 @@
+import {ReportIssueOption} from './constants'
+
 export type GuidanceFeedback = {
     id: number
     name: string
@@ -18,23 +20,6 @@ export type ActionFeedback = {
     feedback: -1 | 0 | 1
 }
 
-export enum OtherIssueEnum {
-    IncorrectLanguageUsed = 'incorrect-language-used',
-    SignOffSignature = 'sign-off-signature',
-    ToneOfVoice = 'tone-of-voice',
-    TooVerbose = 'too-verbose',
-    LackOfEmpathy = 'lack-of-empathy',
-    OverPromising = 'over-promising',
-    MentionsAnActionItDidntPerform = 'mentions-an-action-it-didnt-perform',
-    AsksCustomerToContactSupport = 'asks-customer-to-contact-support',
-    RespondedToHandoverTopic = 'responded-to-handover-topic',
-}
-
-export type OtherIssue = {
-    id: OtherIssueEnum
-    label: string
-}
-
 export type MessageFeedback = {
     messageId: number
     summary: string
@@ -45,7 +30,7 @@ export type MessageFeedback = {
     guidance: GuidanceFeedback[]
     knowledge: KnowledgeFeedback[]
     actions: ActionFeedback[]
-    reportedIssues: OtherIssue[]
+    reportedIssues: ReportIssueOption[]
 }
 
 export type TicketFeedback = {
