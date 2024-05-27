@@ -10,10 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {getIconFromType} from 'state/integrations/helpers'
 import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
 import {bundleKeys} from 'models/convert/bundle/queries'
-import {
-    GORGIAS_CHAT_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE,
-} from 'constants/integration'
+import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
 import {Bundle, BundleActionResponse} from 'models/convert/bundle/types'
 import {convertStatusKeys} from 'pages/convert/common/hooks/useGetConvertStatus'
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
@@ -23,6 +20,8 @@ type Props = {
     chatIntegration?: Map<any, any>
     storeIntegration?: Map<any, any>
     bundle?: Bundle
+    isConnectedToShopify: boolean
+    isThemeAppExtensionInstallation: boolean
     onChange?: (isInstalled: boolean) => void
 }
 
@@ -30,19 +29,12 @@ const ConvertBundleDetail = ({
     bundle,
     chatIntegration,
     storeIntegration,
+    isConnectedToShopify,
+    isThemeAppExtensionInstallation,
     onChange,
 }: Props) => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
-
-    const isConnectedToShopify = useMemo(
-        () =>
-            Boolean(
-                storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE
-            ),
-        [storeIntegration]
-    )
 
     const [code, setCode] = useState('')
     const fetchBundleCode = () => {
@@ -174,6 +166,10 @@ const ConvertBundleDetail = ({
             <ConvertBundle1ClickInstallCard
                 bundle={bundle}
                 isConnectedToShopify={isConnectedToShopify}
+                isThemeAppExtensionInstallation={
+                    isThemeAppExtensionInstallation
+                }
+                chatIntegrationId={chatIntegrationId}
                 integrationId={integrationId}
                 onChange={handle1ClickInstall}
             />

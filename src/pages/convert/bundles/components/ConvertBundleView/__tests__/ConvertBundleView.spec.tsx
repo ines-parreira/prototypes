@@ -11,6 +11,9 @@ import {assumeMock} from 'utils/testing'
 import {useListBundles} from 'models/convert/bundle/queries'
 import {convertBundle} from 'fixtures/convertBundle'
 import client from 'models/api/resources'
+import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import {BundleInstallationMethodResponse} from 'models/convert/bundle/types'
 import ConvertBundleView from '../ConvertBundleView'
 
 const mockedServer = new MockAdapter(client)
@@ -43,55 +46,169 @@ jest.mock('react-router-dom', () => ({
 jest.mock('models/convert/bundle/queries')
 const useListBundlesMock = assumeMock(useListBundles)
 
+const useThemeAppExtensionInstallationSpy = jest.spyOn(
+    useThemeAppExtensionInstallation,
+    'default'
+)
+
+const useIsManualInstallationMethodRequiredSpy = jest.spyOn(
+    useIsManualInstallationMethodRequired,
+    'default'
+)
+
 describe('ConvertBundleView Component', () => {
     beforeEach(() => {
         queryClient.clear()
         mockedServer.reset()
+        useIsManualInstallationMethodRequiredSpy.mockReturnValue(false)
     })
 
-    it('renders installation method selection when is installed', async () => {
-        ;(useParams as jest.Mock).mockReturnValue({id: '123'})
-        useListBundlesMock.mockReturnValue({
-            data: [convertBundle],
-        } as any)
-
-        mockedServer
-            .onGet(`/api/revenue-addon-bundle/${convertBundle.id}/`)
-            .reply(200, {code: 'some code'})
-
-        render(
-            <MemoryRouter>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <ConvertBundleView />
-                    </Provider>
-                </QueryClientProvider>
-            </MemoryRouter>
-        )
-
-        await waitFor(() => {
-            expect(screen.getByText('forum')).toBeInTheDocument()
-            expect(
-                screen.getByText('1-click installation for Shopify')
-            ).toBeInTheDocument()
-            expect(screen.getByText('Manual installation')).toBeInTheDocument()
-            expect(screen.getByText('some code')).toBeInTheDocument()
+    describe('when the script tag is available', () => {
+        beforeEach(() => {
+            useThemeAppExtensionInstallationSpy.mockReturnValue({
+                shouldUseThemeAppExtensionInstallation: false,
+                themeAppExtensionInstallationUrl: null,
+            })
         })
+
+        it('renders installation method selection when is installed', async () => {
+            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            useListBundlesMock.mockReturnValue({
+                data: [convertBundle],
+            } as any)
+
+            mockedServer
+                .onGet(`/api/revenue-addon-bundle/${convertBundle.id}/`)
+                .reply(200, {code: 'some code'})
+
+            render(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore(defaultState)}>
+                            <ConvertBundleView />
+                        </Provider>
+                    </QueryClientProvider>
+                </MemoryRouter>
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('forum')).toBeInTheDocument()
+                expect(
+                    screen.getByText('1-click installation for Shopify')
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Manual installation')
+                ).toBeInTheDocument()
+                expect(screen.getByText('some code')).toBeInTheDocument()
+            })
+        })
+
+        it.each([
+            ['1-click install', 'Install', 'install'],
+            ['Manual install', 'Install manually', 'manual-install'],
+        ])(
+            'renders installation method selection when not installed',
+            async (option, button, action) => {
+                ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+                useListBundlesMock.mockReturnValue({
+                    data: [],
+                } as any)
+
+                mockedServer
+                    .onPost(`/api/revenue-addon-bundle/${action}/`)
+                    .reply(200, {})
+
+                render(
+                    <MemoryRouter>
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore(defaultState)}>
+                                <ConvertBundleView />
+                            </Provider>
+                        </QueryClientProvider>
+                    </MemoryRouter>
+                )
+
+                await waitFor(() => {
+                    expect(
+                        screen.getByText(
+                            'Select installation method for the Campaign bundle'
+                        )
+                    ).toBeInTheDocument()
+                    expect(
+                        screen.getByText('1-click install')
+                    ).toBeInTheDocument()
+                    expect(
+                        screen.getByText('Manual install')
+                    ).toBeInTheDocument()
+                })
+
+                fireEvent.click(screen.getByText(option))
+                fireEvent.click(screen.getByText(button))
+
+                await waitFor(() => {
+                    expect(mockedServer.history.post.length).toBe(1)
+                })
+            }
+        )
     })
 
-    it.each([
-        ['1-click install', 'Install', 'install'],
-        ['Manual install', 'Install manually', 'manual-install'],
-    ])(
-        'renders installation method selection when not installed',
-        async (option, button, action) => {
+    describe('when theme app extension is available', () => {
+        beforeEach(() => {
+            useThemeAppExtensionInstallationSpy.mockReturnValue({
+                shouldUseThemeAppExtensionInstallation: true,
+                themeAppExtensionInstallationUrl: 'test.com',
+            })
+        })
+
+        it('renders installation method selection when is installed', async () => {
+            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            useListBundlesMock.mockReturnValue({
+                data: [
+                    {
+                        ...convertBundle,
+                        method: BundleInstallationMethodResponse.ThemeApp,
+                    },
+                ],
+            } as any)
+
+            mockedServer
+                .onGet(`/api/revenue-addon-bundle/${convertBundle.id}/`)
+                .reply(200, {code: 'some code'})
+
+            render(
+                <MemoryRouter>
+                    <QueryClientProvider client={queryClient}>
+                        <Provider store={mockStore(defaultState)}>
+                            <ConvertBundleView />
+                        </Provider>
+                    </QueryClientProvider>
+                </MemoryRouter>
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('forum')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('1-click installation for Shopify')
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByText('Quick installation for Shopify')
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByText('Manual installation')
+                ).toBeInTheDocument()
+                expect(screen.getByText('some code')).toBeInTheDocument()
+            })
+        })
+
+        it('renders manual installation only when is not installed', async () => {
+            useIsManualInstallationMethodRequiredSpy.mockReturnValue(true)
             ;(useParams as jest.Mock).mockReturnValue({id: '123'})
             useListBundlesMock.mockReturnValue({
                 data: [],
             } as any)
 
             mockedServer
-                .onPost(`/api/revenue-addon-bundle/${action}/`)
+                .onPost('/api/revenue-addon-bundle/manual-install/')
                 .reply(200, {})
 
             render(
@@ -110,16 +227,18 @@ describe('ConvertBundleView Component', () => {
                         'Select installation method for the Campaign bundle'
                     )
                 ).toBeInTheDocument()
-                expect(screen.getByText('1-click install')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('1-click install')
+                ).not.toBeInTheDocument()
                 expect(screen.getByText('Manual install')).toBeInTheDocument()
             })
 
-            fireEvent.click(screen.getByText(option))
-            fireEvent.click(screen.getByText(button))
+            fireEvent.click(screen.getByText('Manual install'))
+            fireEvent.click(screen.getByText('Install manually'))
 
             await waitFor(() => {
                 expect(mockedServer.history.post.length).toBe(1)
             })
-        }
-    )
+        })
+    })
 })

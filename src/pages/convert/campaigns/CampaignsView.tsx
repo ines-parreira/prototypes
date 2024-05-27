@@ -12,7 +12,10 @@ import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGet
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 
 import {useListCampaigns} from 'models/convert/campaign/queries'
-import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import {
+    CampaignCreatePayload,
+    CampaignListOptions as CampaignListOptionsParams,
+} from 'models/convert/campaign/types'
 import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
@@ -100,7 +103,7 @@ export const CampaignsView = () => {
                 const duplicate = duplicateCampaign(
                     campaign,
                     channelConnection.id
-                )
+                ) as CampaignCreatePayload
                 const response = await createCampaign([undefined, duplicate])
                 const newCampaign = response?.data as Campaign
                 history.push(

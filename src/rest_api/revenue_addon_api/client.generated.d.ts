@@ -55,7 +55,11 @@ declare namespace Components {
             /**
              * State
              */
-            state: 'inactive'
+            state?: 'inactive' | null
+            /**
+             * Report Link
+             */
+            report_link?: string /* uri */ | null
         }
         /**
          * ABTestResponseSchema
@@ -96,6 +100,105 @@ declare namespace Components {
          */
         export type BundleOnboardingStatus = 'installed' | 'not_installed'
         /**
+         * CampaignAttachmentExtraSchema
+         */
+        export interface CampaignAttachmentExtraSchema {
+            /**
+             * Price
+             */
+            price?: number | null
+            /**
+             * Currency
+             */
+            currency?: string | null
+            /**
+             * Product Id
+             */
+            product_id?: number | null
+            /**
+             * Product Link
+             */
+            product_link?: string | null
+            /**
+             * Variant Name
+             */
+            variant_name?: string | null
+            position?: CampaignAttachmentProductPositionSchema | null
+            /**
+             * Discount Offer Id
+             */
+            discount_offer_id?: string | null
+        }
+        /**
+         * CampaignAttachmentProductPositionSchema
+         */
+        export interface CampaignAttachmentProductPositionSchema {
+            /**
+             * X
+             */
+            x: number
+            /**
+             * Y
+             */
+            y: number
+            /**
+             * Offsetx
+             */
+            offsetX: number
+            /**
+             * Offsety
+             */
+            offsetY: number
+            /**
+             * Size
+             */
+            size: number
+        }
+        /**
+         * CampaignAttachmentSchema
+         */
+        export interface CampaignAttachmentSchemaInput {
+            contentType: CampaignAttachmentType
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Url
+             */
+            url?: string | null
+            /**
+             * Size
+             */
+            size?: number | null
+            extra?: CampaignAttachmentExtraSchema | null
+        }
+        /**
+         * CampaignAttachmentSchema
+         */
+        export interface CampaignAttachmentSchemaOutput {
+            contentType: CampaignAttachmentType
+            /**
+             * Name
+             */
+            name: string
+            /**
+             * Url
+             */
+            url?: string | null
+            /**
+             * Size
+             */
+            size?: number | null
+            extra?: CampaignAttachmentExtraSchema | null
+        }
+        /**
+         * CampaignAttachmentType
+         */
+        export type CampaignAttachmentType =
+            | 'application/productCard'
+            | 'application/discountOffer'
+        /**
          * CampaignCreateRequestSchema
          */
         export interface CampaignCreateRequestSchema {
@@ -127,7 +230,7 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any[] | null
+            attachments?: CampaignAttachmentSchemaInput[] | null
             /**
              * Meta
              */
@@ -184,7 +287,7 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any[] | null
+            attachments?: CampaignAttachmentSchemaInput[] | null
             /**
              * Meta
              */
@@ -234,7 +337,7 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any[] | null
+            attachments?: CampaignAttachmentSchemaOutput[] | null
             /**
              * Meta
              */
@@ -312,7 +415,7 @@ declare namespace Components {
             /**
              * Value
              */
-            value: number | boolean | string | any[] | any
+            value: number | boolean | string | any[] | {}
             /**
              * Id
              */
@@ -594,10 +697,6 @@ declare namespace Components {
              */
             account_id: number
             /**
-             * Revenue Addon Id
-             */
-            revenue_addon_id: string
-            /**
              * Campaigns
              */
             campaigns: CampaignSchema[]
@@ -636,6 +735,10 @@ declare namespace Components {
              * Shop Integration Id
              */
             shop_integration_id: number
+            /**
+             * Shop Name
+             */
+            shop_name?: string | null
             /**
              * Script Tag Id
              */
@@ -680,7 +783,7 @@ declare namespace Components {
         /**
          * MethodEnum
          */
-        export type MethodEnum = 'one_click' | 'manual'
+        export type MethodEnum = 'theme_app' | 'one_click' | 'manual'
         /**
          * PublicCampaignResponseSchema
          * Contains only fields allowed to be seen by the public, e.g. no channel_connection_id.
@@ -714,7 +817,7 @@ declare namespace Components {
             /**
              * Attachments
              */
-            attachments?: any[] | null
+            attachments?: CampaignAttachmentSchemaOutput[] | null
             /**
              * Meta
              */
@@ -743,6 +846,33 @@ declare namespace Components {
              * Deleted Datetime
              */
             deleted_datetime?: string /* date-time */ | null
+        }
+        /**
+         * RevealDiscountCodeRequestSchema
+         */
+        export interface RevealDiscountCodeRequestSchema {
+            /**
+             * Account Id
+             */
+            account_id: number
+            /**
+             * Campaign Id
+             */
+            campaign_id: string
+        }
+        /**
+         * RevealDiscountCodeResponseSchema
+         */
+        export interface RevealDiscountCodeResponseSchema {
+            /**
+             * Code
+             */
+            code: string
+            type: DiscountOfferTypeEnum
+            /**
+             * Value
+             */
+            value: number
         }
         /**
          * RuleOperator
@@ -1311,6 +1441,28 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace GetConfigByShopName {
+        namespace Parameters {
+            /**
+             * Shop Name
+             */
+            export type ShopName = string
+            /**
+             * Widget-App-Id
+             */
+            export type WidgetAppId = string | null
+        }
+        export interface PathParameters {
+            shop_name: Parameters.ShopName
+        }
+        export interface QueryParameters {
+            'widget-app-id'?: Parameters.WidgetAppId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.ConfigSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace GetCustomDomain {
         namespace Responses {
             export type $200 = Components.Schemas.CustomDomainSchema
@@ -1382,60 +1534,10 @@ declare namespace Paths {
             }
         }
     }
-    namespace HealthCheckAssistantHealthCheckGet {
+    namespace HealthCheckHealthCheckGet {
         namespace Responses {
             /**
-             * Response Health Check Assistant Health Check Get
-             */
-            export interface $200 {
-                [name: string]: string
-            }
-        }
-    }
-    namespace HealthCheckAssistant_Get {
-        namespace Responses {
-            /**
-             * Response Health Check Assistant  Get
-             */
-            export interface $200 {
-                [name: string]: string
-            }
-        }
-    }
-    namespace HealthCheckBillingHealthCheckGet {
-        namespace Responses {
-            /**
-             * Response Health Check Billing Health Check Get
-             */
-            export interface $200 {
-                [name: string]: string
-            }
-        }
-    }
-    namespace HealthCheckBilling_Get {
-        namespace Responses {
-            /**
-             * Response Health Check Billing  Get
-             */
-            export interface $200 {
-                [name: string]: string
-            }
-        }
-    }
-    namespace HealthCheckBundleHealthCheckGet {
-        namespace Responses {
-            /**
-             * Response Health Check Bundle Health Check Get
-             */
-            export interface $200 {
-                [name: string]: string
-            }
-        }
-    }
-    namespace HealthCheckClickTrackingHealthCheckGet {
-        namespace Responses {
-            /**
-             * Response Health Check Click Tracking Health Check Get
+             * Response Health Check Health Check Get
              */
             export interface $200 {
                 [name: string]: string
@@ -1568,6 +1670,15 @@ declare namespace Paths {
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
+    namespace RevealDiscountCode {
+        export type RequestBody =
+            Components.Schemas.RevealDiscountCodeRequestSchema
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.RevealDiscountCodeResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
     namespace ServiceInstallationGetOrCreateBundleInstallationsManagePost {
         export type RequestBody = Components.Schemas.JWTTokenSchema
         namespace Responses {
@@ -1650,6 +1761,20 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.GetConfigByRevenueId.Responses.$200
         | Paths.GetConfigByRevenueId.Responses.$422
+    >
+    /**
+     * get_config_by_shop_name - Get Config By Shop Name
+     */
+    'get_config_by_shop_name'(
+        parameters?: Parameters<
+            Paths.GetConfigByShopName.PathParameters &
+                Paths.GetConfigByShopName.QueryParameters
+        > | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.GetConfigByShopName.Responses.$200
+        | Paths.GetConfigByShopName.Responses.$422
     >
     /**
      * get_campaigns - Get Campaigns
@@ -1793,22 +1918,6 @@ export interface OperationMethods {
         Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
     >
     /**
-     * health_check_assistant_health_check_get - Health Check
-     */
-    'health_check_assistant_health_check_get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckAssistantHealthCheckGet.Responses.$200>
-    /**
-     * health_check_assistant__get - Health Check
-     */
-    'health_check_assistant__get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckAssistant_Get.Responses.$200>
-    /**
      * evaluate_campaign_rules - Evaluate Campaign Rules
      */
     'evaluate_campaign_rules'(
@@ -1818,6 +1927,17 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.EvaluateCampaignRules.Responses.$200
         | Paths.EvaluateCampaignRules.Responses.$422
+    >
+    /**
+     * reveal_discount_code - Reveal
+     */
+    'reveal_discount_code'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.RevealDiscountCode.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.RevealDiscountCode.Responses.$200
+        | Paths.RevealDiscountCode.Responses.$422
     >
     /**
      * get_discount_offers - Get Discount Offers
@@ -1871,14 +1991,6 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
-    /**
-     * health_check_bundle_health_check_get - Health Check
-     */
-    'health_check_bundle_health_check_get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckBundleHealthCheckGet.Responses.$200>
     /**
      * service_installation_status_update_bundle_installations_manage_put - Service Installation Status Update
      */
@@ -1942,22 +2054,6 @@ export interface OperationMethods {
         | Paths.UpdateBundleInstallation.Responses.$200
         | Paths.UpdateBundleInstallation.Responses.$422
     >
-    /**
-     * health_check_click_tracking_health_check_get - Health Check
-     */
-    'health_check_click_tracking_health_check_get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckClickTrackingHealthCheckGet.Responses.$200>
-    /**
-     * health_check__get - Health Check
-     */
-    'health_check__get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
     /**
      * create_click_tracking_post - Create
      */
@@ -2087,22 +2183,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     /**
-     * health_check_billing_health_check_get - Health Check
-     */
-    'health_check_billing_health_check_get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckBillingHealthCheckGet.Responses.$200>
-    /**
-     * health_check_billing__get - Health Check
-     */
-    'health_check_billing__get'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.HealthCheckBilling_Get.Responses.$200>
-    /**
      * get_status_and_usage - Get Status And Usage
      */
     'get_status_and_usage'(
@@ -2132,6 +2212,22 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
+    /**
+     * health_check_health_check_get - Health Check
+     */
+    'health_check_health_check_get'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.HealthCheckHealthCheckGet.Responses.$200>
+    /**
+     * health_check__get - Health Check
+     */
+    'health_check__get'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: any,
+        config?: AxiosRequestConfig
+    ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -2165,6 +2261,22 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.GetConfigByRevenueId.Responses.$200
             | Paths.GetConfigByRevenueId.Responses.$422
+        >
+    }
+    ['/assistant/configs/shop/{shop_name}']: {
+        /**
+         * get_config_by_shop_name - Get Config By Shop Name
+         */
+        'get'(
+            parameters?: Parameters<
+                Paths.GetConfigByShopName.PathParameters &
+                    Paths.GetConfigByShopName.QueryParameters
+            > | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.GetConfigByShopName.Responses.$200
+            | Paths.GetConfigByShopName.Responses.$422
         >
     }
     ['/campaigns']: {
@@ -2323,26 +2435,6 @@ export interface PathsDictionary {
             Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
         >
     }
-    ['/assistant/health-check']: {
-        /**
-         * health_check_assistant_health_check_get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckAssistantHealthCheckGet.Responses.$200>
-    }
-    ['/assistant/']: {
-        /**
-         * health_check_assistant__get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckAssistant_Get.Responses.$200>
-    }
     ['/assistant/evaluations']: {
         /**
          * evaluate_campaign_rules - Evaluate Campaign Rules
@@ -2354,6 +2446,19 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.EvaluateCampaignRules.Responses.$200
             | Paths.EvaluateCampaignRules.Responses.$422
+        >
+    }
+    ['/assistant/discount-codes/reveal']: {
+        /**
+         * reveal_discount_code - Reveal
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.RevealDiscountCode.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.RevealDiscountCode.Responses.$200
+            | Paths.RevealDiscountCode.Responses.$422
         >
     }
     ['/discount-offers']: {
@@ -2411,16 +2516,6 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
-    }
-    ['/bundle/health-check']: {
-        /**
-         * health_check_bundle_health_check_get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckBundleHealthCheckGet.Responses.$200>
     }
     ['/bundle/installations/manage']: {
         /**
@@ -2492,26 +2587,6 @@ export interface PathsDictionary {
             | Paths.UpdateBundleInstallation.Responses.$200
             | Paths.UpdateBundleInstallation.Responses.$422
         >
-    }
-    ['/click-tracking/health-check']: {
-        /**
-         * health_check_click_tracking_health_check_get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckClickTrackingHealthCheckGet.Responses.$200>
-    }
-    ['/']: {
-        /**
-         * health_check__get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
     }
     ['/click-tracking']: {
         /**
@@ -2659,26 +2734,6 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     }
-    ['/billing/health-check']: {
-        /**
-         * health_check_billing_health_check_get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckBillingHealthCheckGet.Responses.$200>
-    }
-    ['/billing/']: {
-        /**
-         * health_check_billing__get - Health Check
-         */
-        'get'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.HealthCheckBilling_Get.Responses.$200>
-    }
     ['/billing/subscriptions/account-status']: {
         /**
          * get_status_and_usage - Get Status And Usage
@@ -2714,6 +2769,26 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
+    }
+    ['/health-check']: {
+        /**
+         * health_check_health_check_get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheckHealthCheckGet.Responses.$200>
+    }
+    ['/']: {
+        /**
+         * health_check__get - Health Check
+         */
+        'get'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: any,
+            config?: AxiosRequestConfig
+        ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
     }
 }
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classnames from 'classnames'
 import useAsyncFn from 'hooks/useAsyncFn'
 import client from 'models/api/resources'
@@ -10,22 +10,27 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import {
     Bundle,
+    BundleInstallationMethod,
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'
 import css from './ConvertBundle1ClickInstallCard.less'
 
 type Props = {
+    chatIntegrationId?: number
     integrationId?: number
     isConnectedToShopify: boolean
+    isThemeAppExtensionInstallation: boolean
     bundle?: Bundle
     onChange?: (isInstalled: boolean) => void
 }
 
 const ConvertBundle1ClickInstallCard = ({
-    bundle,
-    isConnectedToShopify,
+    chatIntegrationId,
     integrationId,
+    isConnectedToShopify,
+    isThemeAppExtensionInstallation,
+    bundle,
     onChange,
 }: Props) => {
     const dispatch = useAppDispatch()
@@ -34,9 +39,18 @@ const ConvertBundle1ClickInstallCard = ({
         bundle?.status === BundleStatus.Installed &&
         bundle?.method === BundleInstallationMethodResponse.OneClick
 
+    const isThemeAppInstalled =
+        bundle?.status === BundleStatus.Installed &&
+        bundle?.method === BundleInstallationMethodResponse.ThemeApp
+
     const [{loading: isUninstallSubmitting}, handleUninstall] =
         useAsyncFn(async () => {
             if (!bundle) {
+                return
+            }
+
+            if (isThemeAppExtensionInstallation) {
+                window.location.href = `/app/settings/channels/gorgias_chat/${chatIntegrationId}/installation`
                 return
             }
 
@@ -67,13 +81,14 @@ const ConvertBundle1ClickInstallCard = ({
                     )
                 )
             }
-        }, [bundle])
+        }, [bundle, isThemeAppExtensionInstallation, chatIntegrationId])
 
     const [{loading: isInstallSubmitting}, handleInstall] = useAsyncFn(
         async () => {
             try {
                 await client.post(`/api/revenue-addon-bundle/install/`, {
                     integration_id: integrationId,
+                    method: BundleInstallationMethod.OneClick,
                 })
 
                 if (onChange) {
@@ -100,11 +115,22 @@ const ConvertBundle1ClickInstallCard = ({
         }
     )
 
+    const shouldDisplay = useMemo(() => {
+        return (
+            isConnectedToShopify &&
+            (!isThemeAppExtensionInstallation || isThemeAppInstalled)
+        )
+    }, [
+        isConnectedToShopify,
+        isThemeAppExtensionInstallation,
+        isThemeAppInstalled,
+    ])
+
     return (
         <>
-            {isConnectedToShopify && (
+            {shouldDisplay && (
                 <div className={classnames(css.containerFlex, css.container)}>
-                    {isOneClickInstalled ? (
+                    {isOneClickInstalled || isThemeAppInstalled ? (
                         <i
                             className="material-icons text-success"
                             style={{fontSize: 24}}
@@ -113,15 +139,31 @@ const ConvertBundle1ClickInstallCard = ({
                         </i>
                     ) : null}
                     <div>
-                        <div className={css.title}>
-                            1-click installation for Shopify
-                        </div>
-                        <div>
-                            Add the Campaign bundle to your Shopify store in one
-                            click.
-                        </div>
+                        {isThemeAppExtensionInstallation &&
+                            isThemeAppInstalled && (
+                                <>
+                                    <div className={css.title}>
+                                        Quick installation for Shopify
+                                    </div>
+                                    <div>
+                                        Campaign bundle added to your Shopify
+                                        store together with Chat.
+                                    </div>
+                                </>
+                            )}
+                        {!isThemeAppExtensionInstallation && (
+                            <>
+                                <div className={css.title}>
+                                    1-click installation for Shopify
+                                </div>
+                                <div>
+                                    Add the Campaign bundle to your Shopify
+                                    store in one click.
+                                </div>
+                            </>
+                        )}
                     </div>
-                    {isOneClickInstalled ? (
+                    {isOneClickInstalled || isThemeAppInstalled ? (
                         <Button
                             intent="secondary"
                             isLoading={isUninstallSubmitting}

@@ -15,7 +15,11 @@ import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {toJS} from 'utils'
 import history from 'pages/history'
-import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import {
+    CampaignCreatePayload,
+    CampaignListOptions as CampaignListOptionsParams,
+    CampaignUpdatePayload,
+} from 'models/convert/campaign/types'
 import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
@@ -133,7 +137,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                         campaign_id: campaignData.id,
                         channelConnectionId: channelConnection.id,
                     },
-                    campaignData,
+                    campaignData as CampaignUpdatePayload,
                 ])
             }
         },
@@ -161,7 +165,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 const duplicate = duplicateCampaign(
                     toJS(campaign),
                     channelConnection.id
-                )
+                ) as CampaignCreatePayload
                 const response = await createCampaign([undefined, duplicate])
                 const newCampaign = response?.data as Campaign
                 history.push(

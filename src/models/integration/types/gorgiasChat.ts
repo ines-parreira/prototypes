@@ -80,6 +80,7 @@ export type GorgiasChatIntegrationMeta = {
 export enum GorgiasChatInstallationMethod {
     Asset = 'asset',
     ScriptTag = 'script_tag',
+    ThemeAppExtension = 'theme_app_extension',
 }
 
 export enum GorgiasChatEmailCaptureType {

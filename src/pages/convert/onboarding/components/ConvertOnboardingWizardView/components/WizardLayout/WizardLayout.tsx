@@ -21,7 +21,7 @@ import {
     BundleActionResponse,
     BundleInstallationMethod,
 } from 'models/convert/bundle/types'
-import {IntegrationType} from 'models/integration/constants'
+import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import WizardFooter from '../WizardFooter'
 import WizardCampaignsStep from '../WizardCampaignsStep'
 import WizardInstallStep from '../WizardInstallStep'
@@ -46,12 +46,17 @@ const WizardLayout = ({
 
     const chatIntegrationId = integration.get('id') as number
 
+    const isManualMethodRequired = useIsManualInstallationMethodRequired(
+        integration.toJS(),
+        storeIntegration.toJS()
+    )
+
     // Install bundle
     const [installationMethod, setInstallationMethod] =
         useState<BundleInstallationMethod>(
-            storeIntegration.get('type') === IntegrationType.Shopify
-                ? BundleInstallationMethod.OneClick
-                : BundleInstallationMethod.Manual
+            isManualMethodRequired
+                ? BundleInstallationMethod.Manual
+                : BundleInstallationMethod.OneClick
         )
 
     const [bundleData, setBundleData] = useState<BundleActionResponse>()
@@ -141,12 +146,14 @@ const WizardLayout = ({
                 <WizardStep name={OnboardingWizardSteps.Install}>
                     <WizardInstallStep
                         integration={integration}
+                        isManualMethodRequired={isManualMethodRequired}
                         installationMethod={installationMethod}
                         setInstallationMethod={setInstallationMethod}
                     />
                     <ConvertInstallModal
                         isOpen={isInstallModalOpen}
                         integration={storeIntegration}
+                        chatIntegration={integration}
                         onSubmit={handleFinishSetup}
                         onClose={() => setInstallModalOpen(false)}
                         initialBundleData={bundleData}

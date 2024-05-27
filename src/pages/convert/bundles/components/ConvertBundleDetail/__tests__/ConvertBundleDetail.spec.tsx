@@ -24,6 +24,8 @@ describe('ConvertBundleDetail', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <ConvertBundleDetail
+                        isConnectedToShopify={true}
+                        isThemeAppExtensionInstallation={false}
                         chatIntegration={fromJS({
                             id: 1,
                             name: 'Test Chat Integration',
@@ -46,6 +48,8 @@ describe('ConvertBundleDetail', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
                     <ConvertBundleDetail
+                        isConnectedToShopify={true}
+                        isThemeAppExtensionInstallation={false}
                         storeIntegration={fromJS({
                             id: 1,
                             name: 'Test Store Integration',
@@ -63,7 +67,10 @@ describe('ConvertBundleDetail', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore({})}>
-                    <ConvertBundleDetail />
+                    <ConvertBundleDetail
+                        isConnectedToShopify={false}
+                        isThemeAppExtensionInstallation={false}
+                    />
                 </Provider>
             </QueryClientProvider>
         )

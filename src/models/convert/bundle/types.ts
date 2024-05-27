@@ -11,11 +11,13 @@ export enum BundleStatus {
 export enum BundleInstallationMethod {
     Manual = 'manual',
     OneClick = '1-click',
+    ThemeApp = 'theme_app',
 }
 
 export enum BundleInstallationMethodResponse {
     Manual = 'manual',
     OneClick = 'one_click',
+    ThemeApp = 'theme_app',
 }
 
 export type BundleActionResponse = {

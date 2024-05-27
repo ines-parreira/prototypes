@@ -25,7 +25,10 @@ import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormCon
 import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
 import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
 import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
-import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import {
+    CampaignListOptions as CampaignListOptionsParams,
+    CampaignUpdatePayload,
+} from 'models/convert/campaign/types'
 import {useListCampaigns} from 'models/convert/campaign/queries'
 import {CampaignDetailsHeader} from 'pages/convert/campaigns/components/CampaignDetailsHeader'
 import {notify} from 'state/notifications/actions'
@@ -184,7 +187,7 @@ const CampaignTemplateCustomizeBaseView = ({
                         campaign_id: campaignData.id,
                         channelConnectionId: channelConnection.id,
                     },
-                    campaignData,
+                    campaignData as CampaignUpdatePayload,
                 ])
                 history.push(backUrl)
             }

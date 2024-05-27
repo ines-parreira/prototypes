@@ -15,10 +15,14 @@ import {
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
+import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
+import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 
 type Props = {
     isOpen: boolean
+    isConnectedToShopify?: boolean
     integration: Map<string, string>
+    chatIntegration: Map<string, string>
     initialBundleData?: BundleActionResponse
     onSubmit: (data: BundleActionResponse) => void
     onClose: () => void
@@ -26,9 +30,11 @@ type Props = {
 
 const ConvertInstallModal = ({
     isOpen,
+    isConnectedToShopify,
     onSubmit,
     onClose,
     integration,
+    chatIntegration,
     initialBundleData,
 }: Props) => {
     const appNode = useAppNode()
@@ -64,11 +70,10 @@ const ConvertInstallModal = ({
         }
     }
 
-    const isManualMethodRequired = useMemo(() => {
-        return (
-            integration && integration.get('type') !== IntegrationType.Shopify
-        )
-    }, [integration])
+    const isManualMethodRequired = useIsManualInstallationMethodRequired(
+        chatIntegration.toJS(),
+        integration.toJS()
+    )
 
     useEffect(() => {
         setInstallationMethod(
@@ -89,6 +94,11 @@ const ConvertInstallModal = ({
             setShowManual(true)
         }
     }, [bundle])
+
+    const {shouldUseThemeAppExtensionInstallation} =
+        useThemeAppExtensionInstallation(
+            isConnectedToShopify ? integration.toJS() : undefined
+        )
 
     const {isSubmitting, installBundle} = useInstallBundle(
         integrationId,
@@ -125,21 +135,23 @@ const ConvertInstallModal = ({
                             Select an installation method to add the campaign
                             bundle to your store or website:
                         </p>
-                        <PreviewRadioButton
-                            value="one-click"
-                            isSelected={
-                                installationMethod ===
-                                BundleInstallationMethod.OneClick
-                            }
-                            isDisabled={isManualMethodRequired}
-                            label="1-click installation for Shopify"
-                            caption="Install the campaign bundle on your Shopify store in one click."
-                            onClick={() => {
-                                setInstallationMethod(
+                        {!shouldUseThemeAppExtensionInstallation && (
+                            <PreviewRadioButton
+                                value="one-click"
+                                isSelected={
+                                    installationMethod ===
                                     BundleInstallationMethod.OneClick
-                                )
-                            }}
-                        />
+                                }
+                                isDisabled={isManualMethodRequired}
+                                label="1-click installation for Shopify"
+                                caption="Install the campaign bundle on your Shopify store in one click."
+                                onClick={() => {
+                                    setInstallationMethod(
+                                        BundleInstallationMethod.OneClick
+                                    )
+                                }}
+                            />
+                        )}
                         <PreviewRadioButton
                             value="manual"
                             className="mt-3"

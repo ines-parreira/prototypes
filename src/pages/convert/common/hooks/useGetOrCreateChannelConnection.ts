@@ -12,7 +12,7 @@ import {
     useCreateChannelConnection,
     useListChannelConnections,
 } from 'models/convert/channelConnection/queries'
-import {useGetOneClickInstallationStatus} from 'pages/convert/common/hooks/useGetOneClickInstallationStatus'
+import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 
 const READ_RETRIES = 3
 
@@ -40,12 +40,13 @@ export const useGetOrCreateChannelConnection = (
         [options]
     )
 
-    const installationStatus = useGetOneClickInstallationStatus(integration)
+    const {installed, method} = useGetChatInstallationStatus(integration)
     const channelConnectionData: ChannelConnectionCreatePayload =
         useMemo(() => {
             const data: ChannelConnectionCreatePayload = {
                 external_id: integration?.meta?.app_id,
-                external_installation_status: installationStatus,
+                external_installation_status:
+                    installed && method ? 'installed' : null,
                 channel: ChannelConnectionChannel.Widget,
             }
 
@@ -58,7 +59,7 @@ export const useGetOrCreateChannelConnection = (
             }
 
             return data
-        }, [integration?.meta, installationStatus])
+        }, [integration?.meta, installed, method])
 
     const handleSuccessCallback = (data: ChannelConnection[]) => {
         if (data.length === 0 && !createError) {

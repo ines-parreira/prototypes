@@ -327,7 +327,9 @@ const ConvertOnboardingView = () => {
             </Container>
             <ConvertInstallModal
                 isOpen={isInstallOpen}
+                isConnectedToShopify={hasStore}
                 integration={hasStore ? storeIntegration : chatIntegration}
+                chatIntegration={chatIntegration}
                 onSubmit={handleInstallChange}
                 onClose={handleInstallChange}
             />

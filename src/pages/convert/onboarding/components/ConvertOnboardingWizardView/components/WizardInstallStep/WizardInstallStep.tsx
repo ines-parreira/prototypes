@@ -1,10 +1,11 @@
 import React, {useMemo} from 'react'
 import {Map} from 'immutable'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
 import {BundleInstallationMethod} from 'models/convert/bundle/types'
+import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import css from './WizardInstallStep.less'
 
 const HEADLESS_INSTRUCTIONS_URL =
@@ -12,12 +13,14 @@ const HEADLESS_INSTRUCTIONS_URL =
 
 type Props = {
     integration: Map<any, any>
+    isManualMethodRequired: boolean
     installationMethod: BundleInstallationMethod
     setInstallationMethod: (method: BundleInstallationMethod) => void
 }
 
 const WizardInstallStep = ({
     integration,
+    isManualMethodRequired,
     installationMethod,
     setInstallationMethod,
 }: Props) => {
@@ -33,12 +36,19 @@ const WizardInstallStep = ({
         getIntegrationById(storeIntegrationId)
     )
 
-    const isManualMethodRequired = useMemo(() => {
-        return (
-            storeIntegration &&
-            storeIntegration.get('type') !== IntegrationType.Shopify
+    const isConnectedToShopify = useMemo(
+        () =>
+            Boolean(
+                storeIntegration &&
+                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE
+            ),
+        [storeIntegration]
+    )
+
+    const {shouldUseThemeAppExtensionInstallation} =
+        useThemeAppExtensionInstallation(
+            isConnectedToShopify ? storeIntegration.toJS() : undefined
         )
-    }, [storeIntegration])
 
     return (
         <div className={css.layout}>
@@ -49,18 +59,20 @@ const WizardInstallStep = ({
                 campaigns.
             </div>
 
-            <PreviewRadioButton
-                value="one-click"
-                isSelected={
-                    installationMethod === BundleInstallationMethod.OneClick
-                }
-                isDisabled={isManualMethodRequired}
-                label="1-click installation for Shopify"
-                caption="Install the campaign bundle on your Shopify store in one click."
-                onClick={() => {
-                    setInstallationMethod(BundleInstallationMethod.OneClick)
-                }}
-            />
+            {!shouldUseThemeAppExtensionInstallation && (
+                <PreviewRadioButton
+                    value="one-click"
+                    isSelected={
+                        installationMethod === BundleInstallationMethod.OneClick
+                    }
+                    isDisabled={isManualMethodRequired}
+                    label="1-click installation for Shopify"
+                    caption="Install the campaign bundle on your Shopify store in one click."
+                    onClick={() => {
+                        setInstallationMethod(BundleInstallationMethod.OneClick)
+                    }}
+                />
+            )}
             <PreviewRadioButton
                 value="manual"
                 isSelected={

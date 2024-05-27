@@ -36,109 +36,198 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
         mockedServer.reset()
     })
 
-    it('renders installation card with install button if not installed', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <ConvertBundle1ClickInstallCard
-                    isConnectedToShopify={true}
-                    bundle={{
-                        ...convertBundle,
-                        status: BundleStatus.Uninstalled,
-                        method: BundleInstallationMethodResponse.OneClick,
-                    }}
-                />
-            </Provider>
-        )
+    describe('when method is script tag', () => {
+        const defaultProps = {
+            chatIntegrationId: 1,
+            isConnectedToShopify: true,
+            isThemeAppExtensionInstallation: false,
+        }
 
-        expect(
-            screen.getByText('1-click installation for Shopify')
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Add the Campaign bundle to your Shopify store in one click.'
+        it('renders installation card with install button if not installed', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Uninstalled,
+                            method: BundleInstallationMethodResponse.OneClick,
+                        }}
+                    />
+                </Provider>
             )
-        ).toBeInTheDocument()
-        expect(screen.getByText('Install')).toBeInTheDocument()
-        expect(screen.queryByText('Uninstall')).not.toBeInTheDocument()
-    })
 
-    it('renders installation card with uninstall button if installed', () => {
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <ConvertBundle1ClickInstallCard
-                    isConnectedToShopify={true}
-                    bundle={{
-                        ...convertBundle,
-                        status: BundleStatus.Installed,
-                        method: BundleInstallationMethodResponse.OneClick,
-                    }}
-                />
-            </Provider>
-        )
+            expect(
+                screen.getByText('1-click installation for Shopify')
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Add the Campaign bundle to your Shopify store in one click.'
+                )
+            ).toBeInTheDocument()
+            expect(screen.getByText('Install')).toBeInTheDocument()
+            expect(screen.queryByText('Uninstall')).not.toBeInTheDocument()
+        })
 
-        expect(
-            screen.getByText('1-click installation for Shopify')
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Add the Campaign bundle to your Shopify store in one click.'
+        it('renders installation card with uninstall button if installed', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Installed,
+                            method: BundleInstallationMethodResponse.OneClick,
+                        }}
+                    />
+                </Provider>
             )
-        ).toBeInTheDocument()
-        expect(screen.queryByText('Install')).not.toBeInTheDocument()
-        expect(screen.getByText('Uninstall')).toBeInTheDocument()
-    })
 
-    it('triggers onChange when install button is clicked', async () => {
-        mockedServer.onPost('/api/revenue-addon-bundle/install/').reply(200, {})
+            expect(
+                screen.getByText('1-click installation for Shopify')
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Add the Campaign bundle to your Shopify store in one click.'
+                )
+            ).toBeInTheDocument()
+            expect(screen.queryByText('Install')).not.toBeInTheDocument()
+            expect(screen.getByText('Uninstall')).toBeInTheDocument()
+        })
 
-        const onChange = jest.fn()
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <ConvertBundle1ClickInstallCard
-                    isConnectedToShopify={true}
-                    bundle={{
-                        ...convertBundle,
-                        status: BundleStatus.Uninstalled,
-                        method: BundleInstallationMethodResponse.OneClick,
-                    }}
-                    onChange={onChange}
-                />
-            </Provider>
-        )
+        it('triggers onChange when install button is clicked', async () => {
+            mockedServer
+                .onPost('/api/revenue-addon-bundle/install/')
+                .reply(200, {})
 
-        const installButton = screen.getByText('Install')
-        fireEvent.click(installButton)
+            const onChange = jest.fn()
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Uninstalled,
+                            method: BundleInstallationMethodResponse.OneClick,
+                        }}
+                        onChange={onChange}
+                    />
+                </Provider>
+            )
 
-        await waitFor(() => {
-            expect(onChange).toHaveBeenCalledWith(true)
+            const installButton = screen.getByText('Install')
+            fireEvent.click(installButton)
+
+            await waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith(true)
+            })
+        })
+
+        it('triggers onChange when uninstall button is clicked', async () => {
+            mockedServer
+                .onPost(
+                    `/api/revenue-addon-bundle/${convertBundle.id}/uninstall/`
+                )
+                .reply(200, {})
+
+            const onChange = jest.fn()
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Installed,
+                            method: BundleInstallationMethodResponse.OneClick,
+                        }}
+                        onChange={onChange}
+                    />
+                </Provider>
+            )
+
+            const uninstallButton = screen.getByText('Uninstall')
+            fireEvent.click(uninstallButton)
+
+            await waitFor(() => {
+                expect(onChange).toHaveBeenCalledWith(false)
+            })
         })
     })
 
-    it('triggers onChange when uninstall button is clicked', async () => {
-        mockedServer
-            .onPost(`/api/revenue-addon-bundle/${convertBundle.id}/uninstall/`)
-            .reply(200, {})
+    describe('when method is theme app', () => {
+        const defaultProps = {
+            chatIntegrationId: 1,
+            isConnectedToShopify: true,
+            isThemeAppExtensionInstallation: true,
+        }
 
-        const onChange = jest.fn()
-        render(
-            <Provider store={mockStore(defaultState)}>
-                <ConvertBundle1ClickInstallCard
-                    isConnectedToShopify={true}
-                    bundle={{
-                        ...convertBundle,
-                        status: BundleStatus.Installed,
-                        method: BundleInstallationMethodResponse.OneClick,
-                    }}
-                    onChange={onChange}
-                />
-            </Provider>
-        )
+        it('renders nothing if theme app is not installed', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Uninstalled,
+                            method: BundleInstallationMethodResponse.ThemeApp,
+                        }}
+                    />
+                </Provider>
+            )
 
-        const uninstallButton = screen.getByText('Uninstall')
-        fireEvent.click(uninstallButton)
+            expect(
+                screen.queryByText('Quick installation for Shopify')
+            ).not.toBeInTheDocument()
+        })
 
-        await waitFor(() => {
-            expect(onChange).toHaveBeenCalledWith(false)
+        it('renders installation card with uninstall button if installed', () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Installed,
+                            method: BundleInstallationMethodResponse.ThemeApp,
+                        }}
+                    />
+                </Provider>
+            )
+
+            expect(
+                screen.getByText('Quick installation for Shopify')
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    'Campaign bundle added to your Shopify store together with Chat.'
+                )
+            ).toBeInTheDocument()
+            expect(screen.queryByText('Install')).not.toBeInTheDocument()
+            expect(screen.getByText('Uninstall')).toBeInTheDocument()
+        })
+
+        it('triggers onChange when uninstall button is clicked', async () => {
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <ConvertBundle1ClickInstallCard
+                        {...defaultProps}
+                        bundle={{
+                            ...convertBundle,
+                            status: BundleStatus.Installed,
+                            method: BundleInstallationMethodResponse.ThemeApp,
+                        }}
+                    />
+                </Provider>
+            )
+
+            const uninstallButton = screen.getByText('Uninstall')
+            fireEvent.click(uninstallButton)
+
+            await waitFor(() => {
+                expect(window.location.href).toBe(
+                    '/app/settings/channels/gorgias_chat/1/installation'
+                )
+            })
         })
     })
 })
