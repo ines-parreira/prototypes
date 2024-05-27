@@ -65,7 +65,7 @@ export default forwardRef(function ChannelSelectBox({
 
     return (
         <>
-            <Label className={css.label} htmlFor={channelSelectId}>
+            <Label className={css.label} htmlFor={channelSelectId} isRequired>
                 Channel(s)
             </Label>
             <SelectInputBox

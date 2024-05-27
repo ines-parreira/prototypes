@@ -111,9 +111,10 @@ export default function SLAFormView({
                                         <FormField
                                             fieldName="metrics.FRT.threshold"
                                             field={NumberInput}
+                                            isRequired
                                             hasControls={false}
                                             placeholder={'0'}
-                                            min={2}
+                                            min={1}
                                         />
                                         <FormField
                                             fieldName="metrics.FRT.unit"
@@ -134,9 +135,10 @@ export default function SLAFormView({
                                         <FormField
                                             fieldName="metrics.RT.threshold"
                                             field={NumberInput}
+                                            isRequired
                                             hasControls={false}
                                             placeholder={'0'}
-                                            min={2}
+                                            min={1}
                                         />
                                         <FormField
                                             fieldName="metrics.RT.unit"

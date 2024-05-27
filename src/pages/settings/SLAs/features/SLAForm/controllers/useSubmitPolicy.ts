@@ -7,6 +7,7 @@ import {
 import {useParams} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
 
+import handleApiError from 'pages/settings/SLAs/utils/handleApiError'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -49,12 +50,16 @@ export default function useSubmitPolicy() {
                 })
                 history.push('/app/settings/sla')
             } catch (e) {
+                const apiErrorMessage = handleApiError(e as Error)
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: `Failed to ${
-                            isNewPolicy ? 'create' : 'update'
-                        } SLA policy.`,
+                        message:
+                            apiErrorMessage ||
+                            `Failed to ${
+                                isNewPolicy ? 'create' : 'update'
+                            } SLA policy.`,
+                        allowHTML: true,
                     })
                 )
             }

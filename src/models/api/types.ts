@@ -99,7 +99,9 @@ const isGorgiasApiResponseDataError = (
     return msg !== undefined && errorData !== undefined
 }
 
-export const isGorgiasApiError = (error: unknown): error is GorgiasApiError => {
+export const isGorgiasApiError = <T>(
+    error: unknown
+): error is GorgiasApiError<T> => {
     return (
         axios.isAxiosError(error) &&
         isGorgiasApiResponseDataError(error.response?.data)
