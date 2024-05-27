@@ -5,6 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
 import {QueryClientProvider} from '@tanstack/react-query'
+import * as Tooltip from 'pages/common/components/Tooltip'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AUTOMATION_PRODUCT_ID,
@@ -25,25 +26,17 @@ import {account} from 'fixtures/account'
 import {assumeMock} from 'utils/testing'
 import {ProductType} from 'models/billing/types'
 import {AlertType} from 'pages/common/components/Alert/Alert'
-import Tooltip from 'pages/common/components/Tooltip'
-import ProductCard from '../../../components/ProductCard'
-import {ProductCardProps} from '../../../components/ProductCard/ProductCard'
-import UsageAndPlansView from '../UsageAndPlansView'
+import ProductCard from 'pages/settings/new_billing/components/ProductCard'
+import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCard/ProductCard'
+import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 
-jest.mock('../../../components/ProductCard', () =>
+jest.mock('pages/settings/new_billing/components/ProductCard', () =>
     jest.fn((props: ProductCardProps) => {
         const dataTestId = `product-card--${props.type}`
         return <div data-testid={dataTestId}></div>
     })
 )
 const ProductCardMock = assumeMock(ProductCard)
-
-jest.mock('pages/common/components/Tooltip', () =>
-    jest.fn(() => {
-        return <div data-testid="tooltip"></div>
-    })
-)
-const TooltipMock = assumeMock(Tooltip)
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
@@ -79,6 +72,7 @@ const store = mockedStore({
 })
 
 describe('UsageAndPlansView', () => {
+    const MockTooltip = jest.spyOn(Tooltip as {default: any}, 'default')
     it('should render with active subscription containing Helpdesk and Convert products', () => {
         const helpdeskBanner = {
             description: 'Helpdesk banner',
@@ -367,7 +361,7 @@ describe('UsageAndPlansView', () => {
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
         expect(updateBillingFrequencyButton).toHaveTextContent('Update')
-        expect(TooltipMock).toHaveBeenCalledWith(
+        expect(MockTooltip).toHaveBeenCalledWith(
             {
                 autohide: false,
                 children: expect.any(Array),
@@ -441,7 +435,7 @@ describe('UsageAndPlansView', () => {
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
         expect(updateBillingFrequencyButton).toHaveTextContent('Update')
-        expect(TooltipMock).toHaveBeenCalledWith(
+        expect(MockTooltip).toHaveBeenCalledWith(
             {
                 autohide: false,
                 children:
@@ -543,7 +537,7 @@ describe('UsageAndPlansView', () => {
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
         expect(updateBillingFrequencyButton).toHaveTextContent('Update')
-        expect(TooltipMock).toHaveBeenCalledWith(
+        expect(MockTooltip).toHaveBeenCalledWith(
             {
                 autohide: false,
                 children:

@@ -32,9 +32,7 @@ describe('<PreviewChannelButton />', () => {
         userEvent.hover(screen.getByTestId('preview-button'))
 
         await waitFor(() =>
-            expect(
-                screen.getByTestId('preview-button-tooltip')
-            ).toHaveTextContent(
+            expect(document.querySelector('.tooltip')).toHaveTextContent(
                 'Your Help Center must be published to view it.'
             )
         )

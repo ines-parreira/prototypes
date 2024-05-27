@@ -364,8 +364,10 @@ export function EmptyHelper({target, id}: EmptyHelperProps) {
             placement="top-start"
             autohide={false}
             arrowClassName={css.emptyHelperArrow}
-            modifiers={{
-                preventOverflow: {boundariesElement: 'viewport'},
+            innerProps={{
+                modifiers: {
+                    preventOverflow: {boundariesElement: 'viewport'},
+                },
             }}
         >
             {isAdmin ? (

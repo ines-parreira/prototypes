@@ -151,8 +151,10 @@ export const ArticleRow = ({
                         delay={100}
                         target={`rating-${article.id}`}
                         placement="top"
-                        popperClassName={css.tooltip}
-                        innerClassName={css['tooltip-inner']}
+                        innerProps={{
+                            popperClassName: css.tooltip,
+                            innerClassName: css['tooltip-inner'],
+                        }}
                         arrowClassName={css['tooltip-arrow']}
                     >
                         <div className={css.rating}>
@@ -205,8 +207,10 @@ export const ArticleRow = ({
                     delay={100}
                     target={`last-update-${article.id}`}
                     placement="top"
-                    popperClassName={css.tooltip}
-                    innerClassName={css['tooltip-inner']}
+                    innerProps={{
+                        popperClassName: css.tooltip,
+                        innerClassName: css['tooltip-inner'],
+                    }}
                     arrowClassName={css['tooltip-arrow']}
                 >
                     {lastUpdateDetailed}

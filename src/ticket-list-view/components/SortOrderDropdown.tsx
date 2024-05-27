@@ -58,9 +58,11 @@ export default function SortingDropdown({onChange, value}: Props) {
                                         tooltipText={option.tooltipText}
                                         className={css.sortingLabel}
                                         tooltipProps={{
-                                            fade: false,
-                                            boundariesElement: 'viewport',
                                             placement: 'right',
+                                            innerProps: {
+                                                fade: false,
+                                                boundariesElement: 'viewport',
+                                            },
                                         }}
                                     />
                                 </DropdownItem>

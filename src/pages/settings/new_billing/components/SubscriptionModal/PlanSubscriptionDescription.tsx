@@ -196,7 +196,7 @@ const PlanSubscriptionDescription = ({
                                 placement="top-start"
                                 target="priceSelectInfo"
                                 className={css.tooltip}
-                                container={ref}
+                                appNode={ref}
                             >
                                 {productInfo.tooltip}
                             </Tooltip>

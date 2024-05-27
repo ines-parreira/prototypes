@@ -128,9 +128,11 @@ const HelpCenterStartView: React.FC = () => {
                             disabled={!isHelpCenterLimitReached}
                             placement="top-start"
                             target="add-new-help-center-button"
-                            style={{
-                                textAlign: 'start',
-                                width: 180,
+                            innerProps={{
+                                style: {
+                                    textAlign: 'start',
+                                    width: 180,
+                                },
                             }}
                         >
                             Please contact us to create more Help Centers.

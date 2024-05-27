@@ -30,7 +30,9 @@ export default function ReconnectButton({
                 trigger={['hover']}
                 target={buttonRef}
                 boundariesElement={document.body}
-                positionFixed
+                innerProps={{
+                    positionFixed: true,
+                }}
                 delay={0}
             >
                 Reconnect

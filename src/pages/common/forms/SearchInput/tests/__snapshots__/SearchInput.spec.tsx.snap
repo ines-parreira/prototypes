@@ -167,13 +167,13 @@ exports[`<SearchInput/> render() should render an open dropdown because input is
           }
         }
       />
-      <Tooltip
+      <withAppNode(Tooltip)
         className="tooltip"
         placement="top"
         target="dropdown-item-1"
       >
         This item cannot be selected.
-      </Tooltip>
+      </withAppNode(Tooltip)>
     </DropdownItem>
     <DropdownItem
       aria-disabled={false}

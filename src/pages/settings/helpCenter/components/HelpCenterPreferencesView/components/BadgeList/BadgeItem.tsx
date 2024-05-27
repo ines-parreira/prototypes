@@ -47,9 +47,11 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({
                     <Tooltip
                         placement="top-start"
                         target={`help-${id}`}
-                        style={{
-                            maxWidth: 180,
-                            textAlign: 'left',
+                        innerProps={{
+                            style: {
+                                maxWidth: 180,
+                                textAlign: 'left',
+                            },
                         }}
                     >
                         {help}

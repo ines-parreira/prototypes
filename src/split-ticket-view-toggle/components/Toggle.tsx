@@ -43,7 +43,9 @@ export default function Toggle() {
                 <Tooltip
                     target={buttonId}
                     placement="bottom-start"
-                    popperClassName={css.tooltip}
+                    innerProps={{
+                        popperClassName: css.tooltip,
+                    }}
                 >
                     Select a view in order to enable the ticket panel.
                 </Tooltip>

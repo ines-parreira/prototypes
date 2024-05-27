@@ -143,7 +143,11 @@ export default class InputField<
 
                         <Tooltip
                             target={`${id as string}-tooltip`}
-                            style={{textAlign: 'left'}}
+                            innerProps={{
+                                style: {
+                                    textAlign: 'left',
+                                },
+                            }}
                         >
                             {tooltip}
                         </Tooltip>

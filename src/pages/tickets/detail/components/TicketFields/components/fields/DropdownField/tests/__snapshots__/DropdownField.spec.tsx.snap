@@ -232,7 +232,7 @@ exports[`<DropdownField /> should display results when searching 1`] = `
   </div>
   <div>
     <div
-      class="tooltip fade"
+      class="Tooltip--tooltip--2MYFQ fade"
     >
       <div
         class="tooltip show bs-tooltip-auto"
@@ -481,7 +481,7 @@ exports[`<DropdownField /> should render the dropdown component correctly 1`] = 
   </div>
   <div>
     <div
-      class="tooltip fade"
+      class="Tooltip--tooltip--2MYFQ fade"
     >
       <div
         class="tooltip show bs-tooltip-auto"

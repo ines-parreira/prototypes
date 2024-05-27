@@ -223,8 +223,10 @@ const ChatApplication = () => {
                         <Tooltip
                             target="enable-chat-widget-info"
                             placement="top-start"
-                            popperClassName={css.tooltip}
-                            innerClassName={css['tooltip-inner']}
+                            innerProps={{
+                                popperClassName: css.tooltip,
+                                innerClassName: css['tooltip-inner'],
+                            }}
                             arrowClassName={css['tooltip-arrow']}
                         >
                             Hidden when Help Center is embedded to avoid
@@ -299,8 +301,10 @@ const ChatApplication = () => {
                             <Tooltip
                                 target="chat-contact-card-info"
                                 placement="top-start"
-                                popperClassName={css.tooltip}
-                                innerClassName={css['tooltip-inner']}
+                                innerProps={{
+                                    popperClassName: css.tooltip,
+                                    innerClassName: css['tooltip-inner'],
+                                }}
                                 arrowClassName={css['tooltip-arrow']}
                             >
                                 Hidden when Help Center is embedded to avoid

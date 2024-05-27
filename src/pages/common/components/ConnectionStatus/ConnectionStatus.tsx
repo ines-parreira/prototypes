@@ -59,7 +59,9 @@ export const ConnectionStatus = ({
                 <Tooltip
                     target={$ref}
                     placement="top-start"
-                    style={{maxWidth: 190, textAlign: 'left'}}
+                    innerProps={{
+                        style: {maxWidth: 190, textAlign: 'left'},
+                    }}
                 >
                     {_capitalize(tooltip)}
                 </Tooltip>

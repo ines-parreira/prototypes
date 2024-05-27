@@ -181,7 +181,9 @@ const TicketTags = ({
                             target="expand-tags-badge"
                             offset="0, 9"
                             placement="bottom-start"
-                            fade={false}
+                            innerProps={{
+                                fade: false,
+                            }}
                         >
                             <ul className={css.tooltipContent}>
                                 {hiddenTags?.map((tag) => (

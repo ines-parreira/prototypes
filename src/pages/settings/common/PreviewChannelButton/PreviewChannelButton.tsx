@@ -85,7 +85,6 @@ export const PreviewChannelButton = ({
                 placement="bottom"
                 target={TOOLTIP_TARGET_ID}
                 autohide={false}
-                data-testid="preview-button-tooltip"
             >
                 {disableMessage ? (
                     disableMessage

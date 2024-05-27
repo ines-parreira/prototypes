@@ -24,7 +24,9 @@ export default function LegacyPlanBadge() {
                 <Tooltip
                     target={tagLegacyRef}
                     placement="top-start"
-                    innerClassName={css.tooltip}
+                    innerProps={{
+                        innerClassName: css.tooltip,
+                    }}
                 >
                     This subscription plan is no longer supported, note that new
                     features will not be available to legacy plans. Please

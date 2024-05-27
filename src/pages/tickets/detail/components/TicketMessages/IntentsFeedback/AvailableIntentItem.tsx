@@ -38,7 +38,7 @@ export const AvailableIntentItem = ({
                     <Tooltip
                         target={buttonId}
                         disabled={!isDisabled}
-                        container={tooltipContainer}
+                        appNode={tooltipContainer}
                     >
                         {Messages.TOOLTIP_DISABLED_ADD_INFO}
                     </Tooltip>

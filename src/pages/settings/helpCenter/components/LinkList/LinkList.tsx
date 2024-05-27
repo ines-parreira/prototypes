@@ -67,7 +67,9 @@ export const LinkList = ({
                 <Tooltip
                     target={`help-${name}`}
                     placement="top-start"
-                    style={{width: 180, textAlign: 'left'}}
+                    innerProps={{
+                        style: {width: 180, textAlign: 'left'},
+                    }}
                 >
                     {`The maximum number of links is ${limit}`}
                 </Tooltip>

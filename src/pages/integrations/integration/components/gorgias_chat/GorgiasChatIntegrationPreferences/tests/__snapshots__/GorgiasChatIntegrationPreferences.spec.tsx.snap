@@ -1170,15 +1170,17 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                     error_outline
                   </i>
                 </span>
-                <Tooltip
+                <withAppNode(Tooltip)
                   autohide={false}
                   delay={100}
-                  placement="top-start"
-                  style={
+                  innerProps={
                     {
-                      "textAlign": "left",
+                      "style": {
+                        "textAlign": "left",
+                      },
                     }
                   }
+                  placement="top-start"
                   target="hide-chat-help"
                 >
                   <div
@@ -1187,7 +1189,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                     Hiding chat removes the widget from your website, but doesn't uninstall it.
                   </div>
                   If you're getting too many live chat messages, you can change your live chat settings above.
-                </Tooltip>
+                </withAppNode(Tooltip)>
                 <div
                   className="form-text text-muted"
                 >
@@ -1218,15 +1220,19 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                     info
                   </i>
                 </span>
-                <Tooltip
+                <withAppNode(Tooltip)
                   arrowClassName="tooltip-arrow"
-                  innerClassName="tooltip-inner"
+                  innerProps={
+                    {
+                      "innerClassName": "tooltip-inner",
+                      "popperClassName": "tooltip",
+                    }
+                  }
                   placement="top-start"
-                  popperClassName="tooltip"
                   target="hide-outside-business-hours-help"
                 >
                   Customers with active conversations will be notified 30 minutes before the chat is hidden.
-                </Tooltip>
+                </withAppNode(Tooltip)>
                 <div
                   className="form-text text-muted"
                 >
@@ -1351,7 +1357,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                             info_outline
                           </i>
                         </span>
-                        <Tooltip
+                        <withAppNode(Tooltip)
                           autohide={false}
                           placement="top"
                           target="dynamic-wait-time-option"
@@ -1365,7 +1371,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                           >
                             Learn more
                           </a>
-                        </Tooltip>
+                        </withAppNode(Tooltip)>
                         <p
                           className="dynamicDescription"
                         >
@@ -1695,15 +1701,17 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     error_outline
                   </i>
                 </span>
-                <Tooltip
+                <withAppNode(Tooltip)
                   autohide={false}
                   delay={100}
-                  placement="top-start"
-                  style={
+                  innerProps={
                     {
-                      "textAlign": "left",
+                      "style": {
+                        "textAlign": "left",
+                      },
                     }
                   }
+                  placement="top-start"
                   target="hide-chat-help"
                 >
                   <div
@@ -1712,7 +1720,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     Hiding chat removes the widget from your website, but doesn't uninstall it.
                   </div>
                   If you're getting too many live chat messages, you can change your live chat settings above.
-                </Tooltip>
+                </withAppNode(Tooltip)>
                 <div
                   className="form-text text-muted"
                 >
@@ -1743,15 +1751,19 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                     info
                   </i>
                 </span>
-                <Tooltip
+                <withAppNode(Tooltip)
                   arrowClassName="tooltip-arrow"
-                  innerClassName="tooltip-inner"
+                  innerProps={
+                    {
+                      "innerClassName": "tooltip-inner",
+                      "popperClassName": "tooltip",
+                    }
+                  }
                   placement="top-start"
-                  popperClassName="tooltip"
                   target="hide-outside-business-hours-help"
                 >
                   Customers with active conversations will be notified 30 minutes before the chat is hidden.
-                </Tooltip>
+                </withAppNode(Tooltip)>
                 <div
                   className="form-text text-muted"
                 >
@@ -1876,7 +1888,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                             info_outline
                           </i>
                         </span>
-                        <Tooltip
+                        <withAppNode(Tooltip)
                           autohide={false}
                           placement="top"
                           target="dynamic-wait-time-option"
@@ -1890,7 +1902,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                           >
                             Learn more
                           </a>
-                        </Tooltip>
+                        </withAppNode(Tooltip)>
                         <p
                           className="dynamicDescription"
                         >

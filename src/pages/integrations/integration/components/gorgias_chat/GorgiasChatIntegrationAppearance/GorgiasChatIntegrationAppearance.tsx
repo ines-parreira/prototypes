@@ -1174,8 +1174,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 info
                                             </i>
                                             <Tooltip
-                                                style={{
-                                                    textAlign: 'left',
+                                                innerProps={{
+                                                    style: {
+                                                        textAlign: 'left',
+                                                    },
                                                 }}
                                                 target="use-main-color-outside-business-hours-tooltip"
                                             >
@@ -1295,9 +1297,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                                         info
                                                                     </i>
                                                                     <Tooltip
-                                                                        style={{
-                                                                            textAlign:
-                                                                                'left',
+                                                                        innerProps={{
+                                                                            style: {
+                                                                                textAlign:
+                                                                                    'left',
+                                                                            },
                                                                         }}
                                                                         target="header-picture-offline"
                                                                     >
@@ -1629,8 +1633,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     info
                                                 </i>
                                                 <Tooltip
-                                                    style={{
-                                                        textAlign: 'left',
+                                                    innerProps={{
+                                                        style: {
+                                                            textAlign: 'left',
+                                                        },
                                                     }}
                                                     target="move-widget-left-right"
                                                 >
@@ -1687,8 +1693,10 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     info
                                                 </i>
                                                 <Tooltip
-                                                    style={{
-                                                        textAlign: 'left',
+                                                    innerProps={{
+                                                        style: {
+                                                            textAlign: 'left',
+                                                        },
                                                     }}
                                                     target="move-widget-up-down"
                                                 >

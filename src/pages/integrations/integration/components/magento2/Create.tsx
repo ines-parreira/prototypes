@@ -69,9 +69,11 @@ function Create({integration, loading, redirectUri}: Props) {
                             delay={{show: 200, hide: 0}}
                             placement="bottom"
                             target={tooltipTargetId}
-                            style={{
-                                textAlign: 'center',
-                                width: 300,
+                            innerProps={{
+                                style: {
+                                    textAlign: 'center',
+                                    width: 300,
+                                },
                             }}
                         >
                             Choose this option if you have a firewall configured

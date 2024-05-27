@@ -181,9 +181,11 @@ export const CategoriesTableBasicRow = ({
                 <Tooltip
                     target={id}
                     placement="bottom-start"
-                    style={{
-                        textAlign: 'left',
-                        width: 180,
+                    innerProps={{
+                        style: {
+                            textAlign: 'left',
+                            width: 180,
+                        },
                     }}
                 >
                     {tooltip}

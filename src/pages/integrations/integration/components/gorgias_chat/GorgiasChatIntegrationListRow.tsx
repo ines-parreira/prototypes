@@ -233,9 +233,11 @@ const GorgiasChatIntegrationListRow = ({
                                         autohide={false}
                                         delay={100}
                                         placement="top"
-                                        style={{
-                                            textAlign: 'center',
-                                            width: 180,
+                                        innerProps={{
+                                            style: {
+                                                textAlign: 'center',
+                                                width: 180,
+                                            },
                                         }}
                                         target={`chat-status-help-${integrationId}`}
                                     >
@@ -261,9 +263,11 @@ const GorgiasChatIntegrationListRow = ({
                                             autohide={false}
                                             delay={100}
                                             placement="top"
-                                            style={{
-                                                textAlign: 'center',
-                                                width: 180,
+                                            innerProps={{
+                                                style: {
+                                                    textAlign: 'center',
+                                                    width: 180,
+                                                },
                                             }}
                                             target={`chat-status-${integrationId}`}
                                         >

@@ -31,7 +31,9 @@ export default function AppPermission(permission: AppOAuthPermission) {
             <Tooltip
                 target={tooltipId}
                 placement="right"
-                innerClassName={css.tooltip}
+                innerProps={{
+                    innerClassName: css.tooltip,
+                }}
             >
                 {permission.description}
             </Tooltip>

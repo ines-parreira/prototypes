@@ -9,8 +9,10 @@ export const HintTooltip = ({title, link, className}: TooltipData) => {
     return (
         <IconTooltip
             tooltipProps={{
-                innerClassName: css.innerTooltip,
-                boundariesElement: 'window',
+                innerProps: {
+                    innerClassName: css.innerTooltip,
+                    boundariesElement: 'window',
+                },
                 delay: {show: 0, hide: 500},
                 autohide: false,
                 placement: 'top-start',

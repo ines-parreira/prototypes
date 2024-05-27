@@ -3099,48 +3099,56 @@ exports[`RichField should render mutable variable 1`] = `
                                 </BaseButton>
                               </ForwardRef(Button)>
                             </ForwardRef(IconButton)>
-                            <Tooltip
+                            <withAppNode(Tooltip)
                               autohide={false}
                               delay={100}
                               placement="bottom"
                               target="toolbar-button-19"
                             >
-                              <UncontrolledTooltip
+                              <Tooltip
+                                appNode={null}
                                 autohide={false}
-                                className="tooltip"
                                 delay={100}
                                 placement="bottom"
                                 target="toolbar-button-19"
                               >
-                                <Tooltip
+                                <UncontrolledTooltip
                                   autohide={false}
-                                  className="tooltip"
+                                  className="Tooltip--tooltip--2MYFQ"
                                   delay={100}
-                                  isOpen={false}
                                   placement="bottom"
-                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-19"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
                                 >
-                                  <TooltipPopoverWrapper
+                                  <Tooltip
                                     autohide={false}
-                                    className="tooltip"
+                                    className="Tooltip--tooltip--2MYFQ"
                                     delay={100}
-                                    fade={true}
-                                    hideArrow={false}
-                                    innerClassName="tooltip-inner"
                                     isOpen={false}
                                     placement="bottom"
                                     placementPrefix="bs-tooltip"
-                                    popperClassName="tooltip show"
                                     target="toolbar-button-19"
                                     toggle={[Function]}
                                     trigger="hover focus"
-                                  />
-                                </Tooltip>
-                              </UncontrolledTooltip>
-                            </Tooltip>
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={false}
+                                      className="Tooltip--tooltip--2MYFQ"
+                                      delay={100}
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="toolbar-button-19"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
+                              </Tooltip>
+                            </withAppNode(Tooltip)>
                           </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
@@ -3200,48 +3208,56 @@ exports[`RichField should render mutable variable 1`] = `
                                 </BaseButton>
                               </ForwardRef(Button)>
                             </ForwardRef(IconButton)>
-                            <Tooltip
+                            <withAppNode(Tooltip)
                               autohide={false}
                               delay={100}
                               placement="bottom"
                               target="toolbar-button-20"
                             >
-                              <UncontrolledTooltip
+                              <Tooltip
+                                appNode={null}
                                 autohide={false}
-                                className="tooltip"
                                 delay={100}
                                 placement="bottom"
                                 target="toolbar-button-20"
                               >
-                                <Tooltip
+                                <UncontrolledTooltip
                                   autohide={false}
-                                  className="tooltip"
+                                  className="Tooltip--tooltip--2MYFQ"
                                   delay={100}
-                                  isOpen={false}
                                   placement="bottom"
-                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-20"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
                                 >
-                                  <TooltipPopoverWrapper
+                                  <Tooltip
                                     autohide={false}
-                                    className="tooltip"
+                                    className="Tooltip--tooltip--2MYFQ"
                                     delay={100}
-                                    fade={true}
-                                    hideArrow={false}
-                                    innerClassName="tooltip-inner"
                                     isOpen={false}
                                     placement="bottom"
                                     placementPrefix="bs-tooltip"
-                                    popperClassName="tooltip show"
                                     target="toolbar-button-20"
                                     toggle={[Function]}
                                     trigger="hover focus"
-                                  />
-                                </Tooltip>
-                              </UncontrolledTooltip>
-                            </Tooltip>
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={false}
+                                      className="Tooltip--tooltip--2MYFQ"
+                                      delay={100}
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="toolbar-button-20"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
+                              </Tooltip>
+                            </withAppNode(Tooltip)>
                           </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
@@ -3301,48 +3317,56 @@ exports[`RichField should render mutable variable 1`] = `
                                 </BaseButton>
                               </ForwardRef(Button)>
                             </ForwardRef(IconButton)>
-                            <Tooltip
+                            <withAppNode(Tooltip)
                               autohide={false}
                               delay={100}
                               placement="bottom"
                               target="toolbar-button-21"
                             >
-                              <UncontrolledTooltip
+                              <Tooltip
+                                appNode={null}
                                 autohide={false}
-                                className="tooltip"
                                 delay={100}
                                 placement="bottom"
                                 target="toolbar-button-21"
                               >
-                                <Tooltip
+                                <UncontrolledTooltip
                                   autohide={false}
-                                  className="tooltip"
+                                  className="Tooltip--tooltip--2MYFQ"
                                   delay={100}
-                                  isOpen={false}
                                   placement="bottom"
-                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-21"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
                                 >
-                                  <TooltipPopoverWrapper
+                                  <Tooltip
                                     autohide={false}
-                                    className="tooltip"
+                                    className="Tooltip--tooltip--2MYFQ"
                                     delay={100}
-                                    fade={true}
-                                    hideArrow={false}
-                                    innerClassName="tooltip-inner"
                                     isOpen={false}
                                     placement="bottom"
                                     placementPrefix="bs-tooltip"
-                                    popperClassName="tooltip show"
                                     target="toolbar-button-21"
                                     toggle={[Function]}
                                     trigger="hover focus"
-                                  />
-                                </Tooltip>
-                              </UncontrolledTooltip>
-                            </Tooltip>
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={false}
+                                      className="Tooltip--tooltip--2MYFQ"
+                                      delay={100}
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="toolbar-button-21"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
+                              </Tooltip>
+                            </withAppNode(Tooltip)>
                           </ForwardRef(Button)>
                         </InlineStyle>
                       </Decorated(InlineStyle)>
@@ -3455,48 +3479,56 @@ exports[`RichField should render mutable variable 1`] = `
                                     </BaseButton>
                                   </ForwardRef(Button)>
                                 </ForwardRef(IconButton)>
-                                <Tooltip
+                                <withAppNode(Tooltip)
                                   autohide={false}
                                   delay={100}
                                   placement="bottom"
                                   target="toolbar-button-22"
                                 >
-                                  <UncontrolledTooltip
+                                  <Tooltip
+                                    appNode={null}
                                     autohide={false}
-                                    className="tooltip"
                                     delay={100}
                                     placement="bottom"
                                     target="toolbar-button-22"
                                   >
-                                    <Tooltip
+                                    <UncontrolledTooltip
                                       autohide={false}
-                                      className="tooltip"
+                                      className="Tooltip--tooltip--2MYFQ"
                                       delay={100}
-                                      isOpen={false}
                                       placement="bottom"
-                                      placementPrefix="bs-tooltip"
                                       target="toolbar-button-22"
-                                      toggle={[Function]}
-                                      trigger="hover focus"
                                     >
-                                      <TooltipPopoverWrapper
+                                      <Tooltip
                                         autohide={false}
-                                        className="tooltip"
+                                        className="Tooltip--tooltip--2MYFQ"
                                         delay={100}
-                                        fade={true}
-                                        hideArrow={false}
-                                        innerClassName="tooltip-inner"
                                         isOpen={false}
                                         placement="bottom"
                                         placementPrefix="bs-tooltip"
-                                        popperClassName="tooltip show"
                                         target="toolbar-button-22"
                                         toggle={[Function]}
                                         trigger="hover focus"
-                                      />
-                                    </Tooltip>
-                                  </UncontrolledTooltip>
-                                </Tooltip>
+                                      >
+                                        <TooltipPopoverWrapper
+                                          autohide={false}
+                                          className="Tooltip--tooltip--2MYFQ"
+                                          delay={100}
+                                          fade={true}
+                                          hideArrow={false}
+                                          innerClassName="tooltip-inner"
+                                          isOpen={false}
+                                          placement="bottom"
+                                          placementPrefix="bs-tooltip"
+                                          popperClassName="tooltip show"
+                                          target="toolbar-button-22"
+                                          toggle={[Function]}
+                                          trigger="hover focus"
+                                        />
+                                      </Tooltip>
+                                    </UncontrolledTooltip>
+                                  </Tooltip>
+                                </withAppNode(Tooltip)>
                               </ForwardRef(Button)>
                               <Popover
                                 className="popover"
@@ -3581,48 +3613,56 @@ exports[`RichField should render mutable variable 1`] = `
                                 </BaseButton>
                               </ForwardRef(Button)>
                             </ForwardRef(IconButton)>
-                            <Tooltip
+                            <withAppNode(Tooltip)
                               autohide={false}
                               delay={100}
                               placement="bottom"
                               target="toolbar-button-23"
                             >
-                              <UncontrolledTooltip
+                              <Tooltip
+                                appNode={null}
                                 autohide={false}
-                                className="tooltip"
                                 delay={100}
                                 placement="bottom"
                                 target="toolbar-button-23"
                               >
-                                <Tooltip
+                                <UncontrolledTooltip
                                   autohide={false}
-                                  className="tooltip"
+                                  className="Tooltip--tooltip--2MYFQ"
                                   delay={100}
-                                  isOpen={false}
                                   placement="bottom"
-                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-23"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
                                 >
-                                  <TooltipPopoverWrapper
+                                  <Tooltip
                                     autohide={false}
-                                    className="tooltip"
+                                    className="Tooltip--tooltip--2MYFQ"
                                     delay={100}
-                                    fade={true}
-                                    hideArrow={false}
-                                    innerClassName="tooltip-inner"
                                     isOpen={false}
                                     placement="bottom"
                                     placementPrefix="bs-tooltip"
-                                    popperClassName="tooltip show"
                                     target="toolbar-button-23"
                                     toggle={[Function]}
                                     trigger="hover focus"
-                                  />
-                                </Tooltip>
-                              </UncontrolledTooltip>
-                            </Tooltip>
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={false}
+                                      className="Tooltip--tooltip--2MYFQ"
+                                      delay={100}
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="toolbar-button-23"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
+                              </Tooltip>
+                            </withAppNode(Tooltip)>
                           </ForwardRef(Button)>
                           <Popover
                             className="popover"
@@ -3705,48 +3745,56 @@ exports[`RichField should render mutable variable 1`] = `
                                 </BaseButton>
                               </ForwardRef(Button)>
                             </ForwardRef(IconButton)>
-                            <Tooltip
+                            <withAppNode(Tooltip)
                               autohide={false}
                               delay={100}
                               placement="bottom"
                               target="toolbar-button-24"
                             >
-                              <UncontrolledTooltip
+                              <Tooltip
+                                appNode={null}
                                 autohide={false}
-                                className="tooltip"
                                 delay={100}
                                 placement="bottom"
                                 target="toolbar-button-24"
                               >
-                                <Tooltip
+                                <UncontrolledTooltip
                                   autohide={false}
-                                  className="tooltip"
+                                  className="Tooltip--tooltip--2MYFQ"
                                   delay={100}
-                                  isOpen={false}
                                   placement="bottom"
-                                  placementPrefix="bs-tooltip"
                                   target="toolbar-button-24"
-                                  toggle={[Function]}
-                                  trigger="hover focus"
                                 >
-                                  <TooltipPopoverWrapper
+                                  <Tooltip
                                     autohide={false}
-                                    className="tooltip"
+                                    className="Tooltip--tooltip--2MYFQ"
                                     delay={100}
-                                    fade={true}
-                                    hideArrow={false}
-                                    innerClassName="tooltip-inner"
                                     isOpen={false}
                                     placement="bottom"
                                     placementPrefix="bs-tooltip"
-                                    popperClassName="tooltip show"
                                     target="toolbar-button-24"
                                     toggle={[Function]}
                                     trigger="hover focus"
-                                  />
-                                </Tooltip>
-                              </UncontrolledTooltip>
-                            </Tooltip>
+                                  >
+                                    <TooltipPopoverWrapper
+                                      autohide={false}
+                                      className="Tooltip--tooltip--2MYFQ"
+                                      delay={100}
+                                      fade={true}
+                                      hideArrow={false}
+                                      innerClassName="tooltip-inner"
+                                      isOpen={false}
+                                      placement="bottom"
+                                      placementPrefix="bs-tooltip"
+                                      popperClassName="tooltip show"
+                                      target="toolbar-button-24"
+                                      toggle={[Function]}
+                                      trigger="hover focus"
+                                    />
+                                  </Tooltip>
+                                </UncontrolledTooltip>
+                              </Tooltip>
+                            </withAppNode(Tooltip)>
                           </ForwardRef(Button)>
                           <Popover
                             className="popover"

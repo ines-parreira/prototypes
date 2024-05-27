@@ -939,7 +939,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             autohide={false}
                             delay={0}
                             placement="top-end"
@@ -971,7 +971,7 @@ exports[`FacebookIntegrationSetup should render an integration for: account not 
                             </a>
                              
                             or contact us via chat.
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -1967,12 +1967,12 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -2719,12 +2719,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -3171,12 +3171,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -3480,12 +3480,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -3789,12 +3789,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -4241,12 +4241,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -4693,12 +4693,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -5145,12 +5145,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>
@@ -6021,12 +6021,12 @@ exports[`FacebookIntegrationSetup should render the integration with meta settin
                         <td
                           className="pl-0"
                         >
-                          <Tooltip
+                          <withAppNode(Tooltip)
                             placement="top-end"
                             target="instagram_direct_message-1"
                           >
                             Reconnect your integration to grant us the permissions to access the Messenger API for Instagram on your behalf
-                          </Tooltip>
+                          </withAppNode(Tooltip)>
                         </td>
                       </tr>
                     </tbody>

@@ -273,8 +273,10 @@ export const HelpCenterEditModalHeader = ({
                                     delay={100}
                                     target={`last-update`}
                                     placement="bottom"
-                                    popperClassName={css.tooltip}
-                                    innerClassName={css['tooltip-inner']}
+                                    innerProps={{
+                                        popperClassName: css.tooltip,
+                                        innerClassName: css['tooltip-inner'],
+                                    }}
                                     arrowClassName={css['tooltip-arrow']}
                                 >
                                     {lastUpdateDetailed}

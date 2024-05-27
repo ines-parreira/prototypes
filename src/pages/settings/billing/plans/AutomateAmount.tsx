@@ -80,8 +80,10 @@ const AutomateAmount = ({
                     <Tooltip
                         target={`automation-text-${checkboxId}`}
                         placement="top-start"
-                        innerClassName={css.tooltip}
-                        fade={false}
+                        innerProps={{
+                            innerClassName: css.tooltip,
+                            fade: false,
+                        }}
                         autohide={false}
                     >
                         Automate up to 20% of all interactions with quick

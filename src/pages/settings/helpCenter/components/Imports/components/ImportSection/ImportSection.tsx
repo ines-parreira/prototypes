@@ -620,7 +620,9 @@ export const ImportSection: React.FC<Props> = ({
                     <Tooltip
                         target="import-button"
                         placement="top"
-                        innerClassName={css.tooltip}
+                        innerProps={{
+                            innerClassName: css.tooltip,
+                        }}
                         autohide={false}
                     >
                         Import articles from another Help Center

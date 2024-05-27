@@ -550,7 +550,7 @@ export default function EdgeBlock({
                                             <Tooltip
                                                 placement="top-start"
                                                 target={`dropdown-item-${type}`}
-                                                container={
+                                                appNode={
                                                     floatingRef.parentElement
                                                 }
                                             >

@@ -85,9 +85,11 @@ const SubscriptionAmount = ({
                 <Tooltip
                     target={tootltipTargetID}
                     placement="top"
-                    innerClassName={css.tooltip}
+                    innerProps={{
+                        innerClassName: css.tooltip,
+                        fade: false,
+                    }}
                     autohide={false}
-                    fade={false}
                 >
                     {tooltipContent}
                 </Tooltip>

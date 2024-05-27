@@ -52,7 +52,9 @@ export default function HelpCenterLabel({disabled}: Props) {
             <Tooltip
                 target={tooltipId}
                 placement="top-start"
-                innerClassName={css.tooltip}
+                innerProps={{
+                    innerClassName: css.tooltip,
+                }}
             >
                 <div>
                     {labels.map(({key, label}) => (

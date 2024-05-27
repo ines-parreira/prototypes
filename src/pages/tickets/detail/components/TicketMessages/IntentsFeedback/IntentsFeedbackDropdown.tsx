@@ -65,8 +65,10 @@ export const IntentsFeedbackDropdown = ({
                 <Tooltip
                     className={css.headerTooltip}
                     target={`intent-info-${messageId}`}
-                    container={tooltipContainer}
-                    fade={false}
+                    appNode={tooltipContainer}
+                    innerProps={{
+                        fade: false,
+                    }}
                 >
                     {Messages.TOOLTIP_HEADER_INFO}
                 </Tooltip>

@@ -1113,7 +1113,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                 delay={100}
                                                 target="hide-chat-help"
                                                 placement="top-start"
-                                                style={{textAlign: 'left'}}
+                                                innerProps={{
+                                                    style: {
+                                                        textAlign: 'left',
+                                                    },
+                                                }}
                                             >
                                                 <div className="mb-3">
                                                     Hiding chat removes the
@@ -1165,10 +1169,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             <Tooltip
                                                 target="hide-outside-business-hours-help"
                                                 placement="top-start"
-                                                popperClassName={css.tooltip}
-                                                innerClassName={
-                                                    css['tooltip-inner']
-                                                }
+                                                innerProps={{
+                                                    popperClassName:
+                                                        css.tooltip,
+                                                    innerClassName:
+                                                        css['tooltip-inner'],
+                                                }}
                                                 arrowClassName={
                                                     css['tooltip-arrow']
                                                 }

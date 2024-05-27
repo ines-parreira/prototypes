@@ -42,7 +42,9 @@ const EditingState = ({state}: EditingStateProps) => {
             <Tooltip
                 target="editingState"
                 placement="bottom-end"
-                innerClassName={css.tooltip}
+                innerProps={{
+                    innerClassName: css.tooltip,
+                }}
             >
                 {options[state].tooltip}
             </Tooltip>

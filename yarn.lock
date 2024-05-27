@@ -3058,6 +3058,11 @@
   resolved "https://npm.pkg.github.com/download/@gorgias/javascript-shared-config/0.1.0/7d832dd420e4b7165cbca667232fd77770f415340f4ec6ba80c782dca614451a#5f7971c2f450c2e94781ad2ae4ff77b4171f453f"
   integrity sha512-GwZtKN2zQxw5kqWmXK0pXjdLXMkdzO9jgE3995zpRM+R965qk88wC1iZOhMwGwgsQOZuX89Y4o1E/zSbjN7Kwg==
 
+"@gorgias/ui-kit@0.1.0":
+  version "0.1.0"
+  resolved "https://npm.pkg.github.com/download/@gorgias/ui-kit/0.1.0/ab2fa9da005163fc57fb9ae16bc47189fd736ada#ab2fa9da005163fc57fb9ae16bc47189fd736ada"
+  integrity sha512-B2RI1p7ciYKx03HUXxIkFThPppVm3ZtEWWdseOPP0HTdWB/cd6rdiWx1wF6UxdqTkhCg91pLhAnQTcnMSO1dXw==
+
 "@hot-loader/react-dom@16.13.0":
   version "16.13.0"
   resolved "https://registry.yarnpkg.com/@hot-loader/react-dom/-/react-dom-16.13.0.tgz#de245b42358110baf80aaf47a0592153d4047997"

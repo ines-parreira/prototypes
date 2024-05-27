@@ -152,9 +152,11 @@ export const SearchResultsArticleRow: FC<Props> = ({
                         delay={100}
                         target={`rating-${article.id}`}
                         placement="top"
-                        popperClassName={css.tooltip}
-                        innerClassName={css['tooltip-inner']}
-                        arrowClassName={css['tooltip-arrow']}
+                        innerProps={{
+                            popperClassName: css.tooltip,
+                            innerClassName: css['tooltip-inner'],
+                            arrowClassName: css['tooltip-arrow'],
+                        }}
                     >
                         <div className={css.rating}>
                             <div>

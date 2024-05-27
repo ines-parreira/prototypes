@@ -45,18 +45,21 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
                         <i className="material-icons">error_outline</i>
                         {error}
                     </span>
-                    <Tooltip
-                        target="error-policy"
-                        placement="bottom-start"
-                        style={{textAlign: 'left'}}
-                    >
-                        <span>Valid subdomain criterias:</span>
-                        <ul data-testid="error-policy" className={css.policy}>
-                            <li>Should have less than 63 characters</li>
-                            <li>Must begin and end with a letter or number</li>
-                            <li>May contain hyphens (dashes)</li>
-                            <li>May not begin or end with a hyphen</li>
-                        </ul>
+                    <Tooltip target="error-policy" placement="bottom-start">
+                        <div style={{textAlign: 'left'}}>
+                            <span>Valid subdomain criterias:</span>
+                            <ul
+                                data-testid="error-policy"
+                                className={css.policy}
+                            >
+                                <li>Should have less than 63 characters</li>
+                                <li>
+                                    Must begin and end with a letter or number
+                                </li>
+                                <li>May contain hyphens (dashes)</li>
+                                <li>May not begin or end with a hyphen</li>
+                            </ul>
+                        </div>
                     </Tooltip>
                 </div>
             )

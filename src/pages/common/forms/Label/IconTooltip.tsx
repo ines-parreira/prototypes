@@ -36,7 +36,11 @@ const IconTooltip = ({
             </i>
             <Tooltip
                 target={tooltipId}
-                style={{textAlign: 'left'}}
+                innerProps={{
+                    style: {
+                        textAlign: 'left',
+                    },
+                }}
                 {...tooltipProps}
             >
                 {children}

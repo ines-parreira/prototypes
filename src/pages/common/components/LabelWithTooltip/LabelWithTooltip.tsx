@@ -24,7 +24,7 @@ export const LabelWithTooltip = ({
         <>
             <span id={tooltipTargetID} className={className}>{`${label}`}</span>
             <Tooltip
-                {...tooltipProps}
+                innerProps={tooltipProps}
                 target={tooltipTargetID}
                 trigger={['hover']}
             >

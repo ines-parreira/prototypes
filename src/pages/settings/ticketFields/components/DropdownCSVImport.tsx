@@ -164,9 +164,11 @@ export const DropdownCSVImport = ({
                                 </span>
                                 <Tooltip
                                     target={tooltipId}
-                                    container=".modal-body"
+                                    appNode=".modal-body"
                                     placement="top"
-                                    innerClassName={css.tooltip}
+                                    innerProps={{
+                                        innerClassName: css.tooltip,
+                                    }}
                                 >
                                     <ul>
                                         <li>UTF-8 format</li>

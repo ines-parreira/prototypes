@@ -319,9 +319,10 @@ export function RuleRow({
                                             hide: 500,
                                         }}
                                         autohide={false}
-                                        onMouseEnter={() =>
-                                            setDescriptionOpen(false)
-                                        }
+                                        innerProps={{
+                                            onMouseEnter: () =>
+                                                setDescriptionOpen(false),
+                                        }}
                                     >
                                         The rule has a “reply to customer” or
                                         "apply macro" action which will create

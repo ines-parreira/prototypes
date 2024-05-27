@@ -395,8 +395,10 @@ export const HelpCenterCustomizationView = () => {
                             <Tooltip
                                 target="custom-header-toggle-info"
                                 placement="top-start"
-                                popperClassName={css.tooltip}
-                                innerClassName={css['tooltip-inner']}
+                                innerProps={{
+                                    innerClassName: css['tooltip-inner'],
+                                    popperClassName: css.tooltip,
+                                }}
                                 arrowClassName={css['tooltip-arrow']}
                             >
                                 Add custom HTML code for the Help Center header.
@@ -492,8 +494,10 @@ export const HelpCenterCustomizationView = () => {
                             <Tooltip
                                 target="custom-footer-toggle-info"
                                 placement="top-start"
-                                popperClassName={css.tooltip}
-                                innerClassName={css['tooltip-inner']}
+                                innerProps={{
+                                    popperClassName: css.tooltip,
+                                    innerClassName: css['tooltip-inner'],
+                                }}
                                 arrowClassName={css['tooltip-arrow']}
                             >
                                 Add custom HTML code for the Help Center footer.

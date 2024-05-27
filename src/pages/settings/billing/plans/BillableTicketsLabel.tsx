@@ -33,7 +33,9 @@ export default function BillableTicketsLabel({
             <Tooltip
                 target={tooltipId}
                 placement="top-start"
-                innerClassName={css.tooltip}
+                innerProps={{
+                    innerClassName: css.tooltip,
+                }}
             >
                 {new Intl.NumberFormat('en-US', {
                     style: 'currency',
