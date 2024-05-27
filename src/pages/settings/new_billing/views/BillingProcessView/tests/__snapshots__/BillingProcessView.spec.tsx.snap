@@ -198,6 +198,7 @@ exports[`UsageAndPlansView should render 1`] = `
                     Basic
                   </div>
                 </div>
+                 
               </div>
             </div>
             <div

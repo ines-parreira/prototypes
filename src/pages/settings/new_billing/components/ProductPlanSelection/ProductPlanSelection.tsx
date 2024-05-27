@@ -369,6 +369,7 @@ const ProductPlanSelection = ({
                             </div>
                         )}
                     </div>
+                    &nbsp;
                     {isActive &&
                         product?.price_id !== selectedPlan?.price_id && (
                             <div className={css.oldPrice}>
