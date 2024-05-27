@@ -26,6 +26,7 @@ describe('useShopifyIntegrationAndScope', () => {
         )
 
         expect(result.current).toEqual({
+            integration: null,
             integrationId: null,
             needScopeUpdate: false,
         })
@@ -72,6 +73,13 @@ describe('useShopifyIntegrationAndScope', () => {
         )
 
         expect(result.current).toEqual({
+            integration: {
+                id: 2,
+                type: 'shopify',
+                meta: {
+                    shop_name: 'bar',
+                },
+            },
             integrationId: 2,
             needScopeUpdate: false,
         })
@@ -88,6 +96,14 @@ describe('useShopifyIntegrationAndScope', () => {
         expect(resultWithScopeUpdate.current).toEqual({
             integrationId: 1,
             needScopeUpdate: true,
+            integration: {
+                id: 1,
+                type: 'shopify',
+                meta: {
+                    need_scope_update: true,
+                    shop_name: 'shopWithScopeUpdate',
+                },
+            },
         })
     })
 })

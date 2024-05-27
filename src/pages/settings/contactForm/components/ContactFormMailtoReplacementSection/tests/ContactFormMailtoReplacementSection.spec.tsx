@@ -5,7 +5,11 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {GmailIntegration, IntegrationType} from 'models/integration/types'
+import {
+    GmailIntegration,
+    IntegrationType,
+    ShopifyIntegration,
+} from 'models/integration/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -43,11 +47,20 @@ const createGmailIntegration = (id: number, email: string): GmailIntegration =>
         meta: {address: email},
     } as GmailIntegration)
 
+const SHOPIFY_INTEGRATION = {
+    id: 2,
+    type: 'shopify',
+    meta: {
+        shop_name: 'bar',
+    },
+} as ShopifyIntegration
+
 const renderComponent = () => {
     render(
         <Provider store={mockStore}>
             <QueryClientProvider client={queryClient}>
                 <ContactFormMailtoReplacementSection
+                    shopifyIntegration={SHOPIFY_INTEGRATION}
                     contactFormId={CONTACT_FORM_ID}
                 />
             </QueryClientProvider>

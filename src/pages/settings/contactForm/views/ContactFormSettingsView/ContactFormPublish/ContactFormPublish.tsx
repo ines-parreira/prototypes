@@ -69,9 +69,8 @@ const ContactFormPublish = (): JSX.Element => {
 
     const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
 
-    const {integrationId, needScopeUpdate} = useShopifyIntegrationAndScope(
-        contactForm.shop_name ?? ''
-    )
+    const {integrationId, integration, needScopeUpdate} =
+        useShopifyIntegrationAndScope(contactForm.shop_name ?? '')
 
     const onCopyClick = () => {
         logEvent(SegmentEvent.HelpCenterContactFormCopyLink)
@@ -182,13 +181,16 @@ const ContactFormPublish = (): JSX.Element => {
                                 shopName={contactForm.shop_name}
                             />
                         </section>
-                        {contactForm.shop_name && canUseIntegration && (
-                            <section>
-                                <ContactFormMailtoReplacementSection
-                                    contactFormId={contactForm.id}
-                                />
-                            </section>
-                        )}
+                        {contactForm.shop_name &&
+                            integration &&
+                            canUseIntegration && (
+                                <section>
+                                    <ContactFormMailtoReplacementSection
+                                        shopifyIntegration={integration}
+                                        contactFormId={contactForm.id}
+                                    />
+                                </section>
+                            )}
                     </div>
                 </Route>
             </Switch>

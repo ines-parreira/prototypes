@@ -20,6 +20,7 @@ import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
 import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
 import {ContactForm} from 'models/contactForm/types'
 import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import {ShopifyIntegration} from 'models/integration/types'
 
 jest.mock('../../../../queries', () => {
     const originalModule: Record<string, unknown> = jest.requireActual(
@@ -41,6 +42,16 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
 const mockedUseShopifyIntegrationAndScope = jest.mocked(
     useShopifyIntegrationAndScope
 )
+
+const SHOP_INTEGRATION = {
+    id: 1,
+    name: 'test',
+    type: 'shopify',
+    meta: {
+        shop_name: 'test',
+        need_scope_update: false,
+    },
+} as ShopifyIntegration
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -82,6 +93,7 @@ describe('ContactFormPublish', () => {
         mockedUseShopifyIntegrationAndScope.mockReturnValue({
             integrationId: null,
             needScopeUpdate: false,
+            integration: SHOP_INTEGRATION,
         })
     })
 
@@ -147,6 +159,7 @@ describe('ContactFormPublish', () => {
             mockedUseShopifyIntegrationAndScope.mockReturnValue({
                 integrationId: 1,
                 needScopeUpdate: true,
+                integration: SHOP_INTEGRATION,
             })
 
             renderView({
@@ -165,6 +178,7 @@ describe('ContactFormPublish', () => {
             mockedUseShopifyIntegrationAndScope.mockReturnValue({
                 integrationId: 1,
                 needScopeUpdate: false,
+                integration: SHOP_INTEGRATION,
             })
 
             renderView({
@@ -178,6 +192,7 @@ describe('ContactFormPublish', () => {
         it('should hide the section when need permision update', () => {
             mockedUseShopifyIntegrationAndScope.mockReturnValue({
                 integrationId: 1,
+                integration: SHOP_INTEGRATION,
                 needScopeUpdate: true,
             })
 

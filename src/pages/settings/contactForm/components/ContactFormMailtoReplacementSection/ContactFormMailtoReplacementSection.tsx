@@ -7,6 +7,11 @@ import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from 'pages/common/components/Tooltip'
 
+import {ShopifyIntegration} from 'models/integration/types'
+import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
+import useThemeAppExtensionInstallation, {
+    getGorgiasMainThemeAppExtensionId,
+} from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 import css from './ContactFormMailtoReplacementSection.less'
 import ContactFormMailtoReplacementSectionItem from './ContactFormMailtoReplacementSectionItem'
 import {useContactFormMailtoReplacementConfig} from './useContactFormMailtoReplacementConfig'
@@ -17,8 +22,10 @@ const UNDO_TOOLTIP_ID = 'undo-btn-tooltip'
 
 type ContactFormMailtoReplacementSectionProps = {
     contactFormId: number
+    shopifyIntegration: ShopifyIntegration
 }
 const ContactFormMailtoReplacementSection = ({
+    shopifyIntegration,
     contactFormId,
 }: ContactFormMailtoReplacementSectionProps) => {
     const [isAlertDiscarded, setAlertDiscarded] = useLocalStorage(
@@ -36,6 +43,23 @@ const ContactFormMailtoReplacementSection = ({
     const onAlertClose = () => {
         setAlertDiscarded(false)
     }
+    const {
+        themeAppExtensionInstallationUrl,
+        shouldUseThemeAppExtensionInstallation,
+    } = useThemeAppExtensionInstallation(shopifyIntegration)
+    const {isInstalled: isThemeAppExtensionInstalled} =
+        useShopifyThemeAppExtension({
+            shopifyIntegration,
+            appUuid: getGorgiasMainThemeAppExtensionId(),
+        })
+
+    // This is needed for optimistic UI update
+    const [wasInstallationInitiated, setWasInstallationInitiated] =
+        useState(false)
+
+    const themeExtensionIsRequiredButNotInstalled =
+        shouldUseThemeAppExtensionInstallation &&
+        !(isThemeAppExtensionInstalled || wasInstallationInitiated)
 
     const onAddEmails = () => {
         const mailtoReplacementConfigEmails =
@@ -48,6 +72,18 @@ const ContactFormMailtoReplacementSection = ({
         upsertMailtoReplacementConfig(uniqNewEmails)
 
         setSelectedEmails([])
+
+        if (
+            themeExtensionIsRequiredButNotInstalled &&
+            themeAppExtensionInstallationUrl
+        ) {
+            window.open(
+                themeAppExtensionInstallationUrl,
+                '_blank',
+                'noopener noreferrer'
+            )
+            setWasInstallationInitiated(true)
+        }
     }
 
     const onRemoveEmail = (email: string) => {
@@ -74,6 +110,14 @@ const ContactFormMailtoReplacementSection = ({
                 website to your Contact Form link instead to easily collect
                 customer information and protect your inbox from spammers.
             </p>
+
+            {themeExtensionIsRequiredButNotInstalled && (
+                <p className="mb-4">
+                    To easily replace email links in your Shopify store, click
+                    "Replace Links" then click Save in the new Shopify window.
+                    No need to edit anything in the new window.
+                </p>
+            )}
 
             {isAlertDiscarded && (
                 <Alert
@@ -163,10 +207,14 @@ const ContactFormMailtoReplacementSection = ({
                         </div>
                     )}
 
-                {emailList.length > 0 && (
+                {(themeExtensionIsRequiredButNotInstalled ||
+                    emailList.length > 0) && (
                     <div>
                         <Button
-                            isDisabled={selectedEmails.length === 0}
+                            isDisabled={
+                                selectedEmails.length === 0 &&
+                                !themeExtensionIsRequiredButNotInstalled
+                            }
                             intent="secondary"
                             onClick={onAddEmails}
                         >

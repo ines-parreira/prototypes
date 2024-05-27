@@ -1,5 +1,9 @@
 import useAppSelector from 'hooks/useAppSelector'
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
+import {
+    isShopifyIntegration,
+    ShopifyIntegration,
+} from 'models/integration/types'
 
 /**
  * Search for a Shopify integration by shop name
@@ -9,20 +13,24 @@ export const useShopifyIntegrationAndScope = (
     shopName: string
 ): {
     integrationId: number | null
+    integration: ShopifyIntegration | null
     needScopeUpdate: boolean
 } => {
-    const shopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName)
-    )
+    const integration =
+        useAppSelector(getShopifyIntegrationByShopName(shopName))?.toJS() ??
+        null
 
-    const needScopeUpdate = !shopifyIntegration.isEmpty()
-        ? Boolean(
-              shopifyIntegration.getIn(['meta', 'need_scope_update'], false)
-          )
-        : false
+    if (!isShopifyIntegration(integration)) {
+        return {
+            integrationId: null,
+            integration: null,
+            needScopeUpdate: false,
+        }
+    }
 
     return {
-        integrationId: shopifyIntegration.getIn(['id'], null),
-        needScopeUpdate,
+        integrationId: integration.id,
+        integration,
+        needScopeUpdate: integration?.meta?.need_scope_update ?? false,
     }
 }
