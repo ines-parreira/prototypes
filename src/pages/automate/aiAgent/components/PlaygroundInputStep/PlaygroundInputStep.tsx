@@ -26,6 +26,7 @@ import {
     AI_AGENT_SENDER,
     PlaygroundGenericErrorMessage,
 } from '../PlaygroundMessage/PlaygroundMessage'
+import {CustomerSearchDropdownSelectView} from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import css from './PlaygroundInputStep.less'
 
 enum SenderTypeValues {
@@ -59,6 +60,10 @@ type Props = {
     storeData: StoreConfiguration
 }
 
+type Control = {
+    clear: () => void
+}
+
 const senderSelectOptions = [
     {
         value: SenderTypeValues.NEW_CUSTOMER,
@@ -89,6 +94,8 @@ export const PlaygroundInputStep = ({
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER
     )
+    const childControlRef = React.createRef<Control>()
+
     const validateFormValues = (formValues: FormValues) => {
         const formValuesValidity: FormValuesValidity = {
             message: formValues.message.length > 0,
@@ -234,6 +241,7 @@ export const PlaygroundInputStep = ({
             ...initialFormValues,
             customerEmail: '',
         })
+        childControlRef.current?.clear()
     }
 
     return (
@@ -256,11 +264,10 @@ export const PlaygroundInputStep = ({
                         />
                         {senderSelectedOption ===
                             SenderTypeValues.EXISTING_CUSTOMER && (
-                            <TextInput
-                                className={css.customerEmailInput}
-                                value={formValues.customerEmail}
-                                onChange={handleFormChange('customerEmail')}
-                                placeholder="Customer email"
+                            <CustomerSearchDropdownSelectView
+                                className={css.customerSearch}
+                                onSelect={handleFormChange('customerEmail')}
+                                ref={childControlRef}
                             />
                         )}
                     </div>

@@ -9,6 +9,10 @@ export type CreatePlaygroundRequest = {
     email_integration_address: string
 }
 
+export type SearchCustomerRequest = {
+    email: string
+}
+
 // All ids are strings here as the jinja templating system is transforming from a dict to a json string
 export type AiAgentInput = {
     ticket: {
@@ -81,6 +85,24 @@ export type AiAgentResponse = {
         htmlReply: string | null
     }
 }
+
+export type CustomerSearchResponse = {
+    data: CustomerList
+}
+
+export type CustomerList = {
+    id: number
+    address: string
+    type: string
+    user: {
+        id: number
+        name: string
+    }
+    customer: {
+        id: number
+        name: string
+    }
+}[]
 
 export enum ProcessingStatus {
     CHECKING_PERMISSIONS = 'Checking permissions',

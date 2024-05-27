@@ -1,7 +1,8 @@
-import {useQuery, UseQueryOptions, useMutation} from '@tanstack/react-query'
+import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 
+import {searchCustomer} from 'models/aiAgentPlayground/resources'
+import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
 import {MutationOverrides} from 'types/query'
-import {GetStoreConfigurationParams} from './types'
 import {
     createStoreConfiguration,
     getAccountConfiguration,
@@ -10,6 +11,7 @@ import {
     upsertStoreConfiguration,
 } from './resources/account-configuration'
 import {createContextAndSubmitPlaygroundTicket} from './resources/message-processing'
+import {GetStoreConfigurationParams} from './types'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -89,6 +91,10 @@ export const useUpsertStoreConfigurationPure = (
 }
 
 // Playground
+export const searchCustomerKeys = {
+    search: (customerEmail: string) => ['search', customerEmail] as const,
+}
+
 export const useSubmitPlaygroundTicket = (
     overrides?: MutationOverrides<typeof createContextAndSubmitPlaygroundTicket>
 ) =>
@@ -96,3 +102,16 @@ export const useSubmitPlaygroundTicket = (
         mutationFn: (body) => createContextAndSubmitPlaygroundTicket(...body),
         ...overrides,
     })
+
+export const useSearchCustomer = (
+    params: SearchCustomerRequest,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof searchCustomer>>>
+) => {
+    return useQuery({
+        queryKey: searchCustomerKeys.search(params.email),
+        queryFn: () => searchCustomer(params),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
+}
