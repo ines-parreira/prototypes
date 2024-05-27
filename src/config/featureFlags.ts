@@ -80,6 +80,7 @@ export enum FeatureFlagKey {
     NewAutomationAddon = 'new-automation-add-on',
     NewBillingInterface = 'new-billing-interface',
     NewPhoneNumberCustomerSidebar = 'new-phone-number-customer-sidebar',
+    NewTicketSnoozeAndTicketDate = 'new-ticket-snooze-and-ticket-date',
     InternalBillingInterface = 'internal-billing-interface',
     NewDatePickerVariant = 'new-date-picker-variant',
     NewSenderSelect = 'new-sender-select',

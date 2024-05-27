@@ -359,6 +359,10 @@
             &.show-ranges.ltr .drp-calendar.left {
                 padding: @layout-spacing-s @layout-spacing-xs @layout-spacing-s
                     @layout-spacing-s;
+
+                &.single {
+                    padding: 16px;
+                }
             }
 
             &.show-calendar {
@@ -369,11 +373,12 @@
 
             .ranges {
                 ul {
-                    width: 220px;
+                    min-width: 120px;
+                    max-width: 250px;
                     padding: @layout-spacing-xs;
                     display: flex;
                     flex-direction: column;
-                    max-height: 245px;
+                    max-height: 265px;
                     overflow-y: auto;
 
                     li {
@@ -420,6 +425,10 @@
                     margin: 0;
                 }
             }
+
+            .calendar-time {
+                margin: 0;
+            }
         }
 
         &.ranges-on-left {
@@ -444,6 +453,7 @@
                 grid-column-end: 1;
                 grid-row-start: 1;
                 grid-row-end: 3;
+                border-right: 1px solid var(--neutral-grey-3);
             }
 
             .drp-buttons {

@@ -1,7 +1,9 @@
 import React, {ReactNode} from 'react'
 import moment, {Moment} from 'moment-timezone'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import DatePicker from 'pages/common/forms/DatePicker'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 type Props = {
     children?: ReactNode
@@ -20,6 +22,9 @@ const TicketSnoozePicker = ({
     timezone,
     toggle,
 }: Props) => {
+    const isNewDatePickerVariant =
+        useFlags()[FeatureFlagKey.NewTicketSnoozeAndTicketDate]
+
     const formattedDate = moment.tz(datetime, timezone!)
     const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
     const ranges: {[label: string]: [Moment, Moment]} = {
@@ -35,6 +40,14 @@ const TicketSnoozePicker = ({
         console.error('Received invalid datetime', datetime)
     }
 
+    const pickerV2Props = {
+        pickerV2Styles: !!isNewDatePickerVariant,
+        rangesOnLeft: !!isNewDatePickerVariant,
+        showRangesLabel: !isNewDatePickerVariant,
+        actionButtonsOnTheBottom: !!isNewDatePickerVariant,
+        changeButtonColorsToV2: !!isNewDatePickerVariant,
+    }
+
     return (
         <DatePicker
             isOpen={isOpen}
@@ -45,10 +58,13 @@ const TicketSnoozePicker = ({
                 endDate: snoozeDatetime,
                 ranges,
                 opens: 'center',
+                applyButtonClasses:
+                    isNewDatePickerVariant === true ? 'btn-primary' : undefined,
             }}
             toggle={toggle}
             rangesLabel="Remind me in"
             unavailableDateMessage="You can’t select a time before current time to snooze a ticket."
+            {...pickerV2Props}
         >
             {children}
         </DatePicker>

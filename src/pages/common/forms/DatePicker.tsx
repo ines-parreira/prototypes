@@ -25,6 +25,12 @@ type Props = {
     rangesLabel?: string
     toggle?: () => void
     unavailableDateMessage?: string
+    pickerV2Styles?: boolean
+    rangesOnLeft?: boolean
+    showRangesLabel?: boolean
+    actionButtonsOnTheBottom?: boolean
+    changeButtonColorsToV2?: boolean
+    rangeDatesInFooter?: boolean
 }
 
 export const DatePicker = ({
@@ -45,6 +51,11 @@ export const DatePicker = ({
     rangesLabel,
     toggle,
     unavailableDateMessage = '',
+    pickerV2Styles = false,
+    rangesOnLeft = false,
+    showRangesLabel = true,
+    actionButtonsOnTheBottom = false,
+    rangeDatesInFooter = false,
 }: Props & Partial<DateRangeProps>) => {
     const datePickerRef = useRef<DateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -201,6 +212,33 @@ export const DatePicker = ({
                         'displayed'
                     )
 
+                    if (pickerV2Styles) {
+                        dateRangerPickerElement.current.classList.add(
+                            'picker-v2',
+                            'apply-v2-styles'
+                        )
+                    }
+
+                    if (rangesOnLeft) {
+                        dateRangerPickerElement.current.classList.add(
+                            'picker-v2',
+                            'ranges-on-left'
+                        )
+                    }
+
+                    if (actionButtonsOnTheBottom) {
+                        dateRangerPickerElement.current.classList.add(
+                            'picker-v2',
+                            'action-buttons-on-the-bottom'
+                        )
+
+                        if (rangeDatesInFooter) {
+                            dateRangerPickerElement.current.classList.add(
+                                'range-dates-in-footer'
+                            )
+                        }
+                    }
+
                     const cancelBtn =
                         dateRangerPickerElement.current?.querySelector(
                             '.cancelBtn'
@@ -227,8 +265,10 @@ export const DatePicker = ({
                             '.ranges ul'
                         )
                     if (ranges && rangesLabel) {
-                        ranges.classList.add('with-label')
-                        ranges.setAttribute('label', rangesLabel)
+                        if (showRangesLabel) {
+                            ranges.classList.add('with-label')
+                            ranges.setAttribute('label', rangesLabel)
+                        }
                     }
                 }}
                 onHide={() => {

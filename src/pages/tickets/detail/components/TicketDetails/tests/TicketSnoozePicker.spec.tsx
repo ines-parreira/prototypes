@@ -1,13 +1,15 @@
 import {render} from '@testing-library/react'
 import React from 'react'
+import LD from 'launchdarkly-react-client-sdk'
 
-import TicketSnoozePicker from '../TicketSnoozePicker'
-import DatePicker from '../../../../../common/forms/DatePicker'
+import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
+import DatePicker from 'pages/common/forms/DatePicker'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 const errorSpy = jest.spyOn(global.console, 'error')
 
 jest.mock(
-    '../../../../../common/forms/DatePicker',
+    'pages/common/forms/DatePicker',
     () => (props: React.ComponentProps<typeof DatePicker>) =>
         (
             <div className="DatePicker">
@@ -28,6 +30,9 @@ describe('<TicketSnoozePicker/>', () => {
 
     beforeEach(() => {
         jest.spyOn(global.Date, 'now').mockImplementation(() => 1513950737000)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.NewTicketSnoozeAndTicketDate]: false,
+        }))
     })
 
     afterEach(() => {
@@ -87,6 +92,54 @@ describe('<TicketSnoozePicker/>', () => {
                 'Received invalid datetime',
                 datetime
             )
+        })
+
+        it('should render with old style DatePicker props when NewTicketSnoozeAndTicketDate flag is disabled', () => {
+            const {container} = render(
+                <TicketSnoozePicker {...minProps} datetime="2018-10-26" />
+            )
+
+            const datePickerPropsShouldContain = [
+                'pickerV2Styles: false',
+                'rangesOnLeft: false',
+                'showRangesLabel: true',
+                'actionButtonsOnTheBottom: false',
+                'changeButtonColorsToV2: false',
+            ]
+            const datePickerProps =
+                container.querySelector('.DatePicker')?.textContent
+
+            const result = datePickerPropsShouldContain.every((prop) => {
+                return datePickerProps?.includes(prop)
+            })
+
+            expect(result).toBe(true)
+        })
+
+        it('should render with new style DatePicker props when NewTicketSnoozeAndTicketDate flag is disabled', () => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.NewTicketSnoozeAndTicketDate]: true,
+            }))
+            const {container} = render(
+                <TicketSnoozePicker {...minProps} datetime="2018-10-26" />
+            )
+
+            const datePickerPropsShouldContain = [
+                'pickerV2Styles: true',
+                'rangesOnLeft: true',
+                'showRangesLabel: false',
+                'actionButtonsOnTheBottom: true',
+                'changeButtonColorsToV2: true',
+                `"applyButtonClasses":"btn-primary"`,
+            ]
+            const datePickerProps =
+                container.querySelector('.DatePicker')?.textContent
+
+            const result = datePickerPropsShouldContain.every((prop) => {
+                return datePickerProps?.includes(prop)
+            })
+
+            expect(result).toBe(true)
         })
     })
 })

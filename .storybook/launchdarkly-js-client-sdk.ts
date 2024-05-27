@@ -1,7 +1,10 @@
 /* eslint-disable */
 import {FeatureFlagKey} from '../src/config/featureFlags'
 
-let _flags = {[FeatureFlagKey.NewDatePickerVariant]: false}
+let _flags =  (Object.keys(FeatureFlagKey).reduce((acc, key) => {
+    acc[key] = false
+    return acc
+}, {}))
 export const useFlags = () => _flags
 
 export function decorator(story, {parameters}) {

@@ -3,7 +3,7 @@ import {fireEvent, render, waitFor} from '@testing-library/react'
 import moment from 'moment-timezone'
 import {Options} from 'daterangepicker'
 
-import DatePicker from '../DatePicker'
+import DatePicker from 'pages/common/forms/DatePicker'
 
 jest.mock('theme/useTheme.ts', () => () => 'modern light')
 
@@ -23,15 +23,24 @@ describe('DatePicker', () => {
         onSubmit: jest.fn(),
     }
 
+    const listOfV2Classes = [
+        'picker-v2',
+        'apply-v2-styles',
+        'ranges-on-left',
+        'action-buttons-on-the-bottom',
+        'range-dates-in-footer',
+    ]
+
+    const ranges: Options['ranges'] = {
+        tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
+    }
+
     beforeEach(() => {
         const mockDate = new Date('2021-05-14T12:34:56.000Z')
         global.Date.now = jest.fn(() => mockDate.getTime())
     })
 
     it('should render a date range picker', () => {
-        const ranges: Options['ranges'] = {
-            tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
-        }
         const {baseElement} = render(
             <DatePicker
                 {...minProps}
@@ -142,5 +151,131 @@ describe('DatePicker', () => {
 
         expect(dateRangePickerElement.classList.contains('modern')).toBe(true)
         expect(dateRangePickerElement.classList.contains('light')).toBe(true)
+    })
+
+    it('should render date picker without the v2 classnames', () => {
+        render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                toggle={jest.fn()}
+                initialSettings={{ranges}}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+        const datePickerElement = document.querySelector('.datepicker')
+        const expectedResult = listOfV2Classes.some((className) =>
+            datePickerElement?.classList.contains(className)
+        )
+
+        expect(expectedResult).toBe(false)
+    })
+
+    it('should render date picker with the v2 classnames', () => {
+        render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                toggle={jest.fn()}
+                initialSettings={{ranges}}
+                pickerV2Styles={true}
+                rangesOnLeft={true}
+                actionButtonsOnTheBottom={true}
+                rangeDatesInFooter={true}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+        const datePickerElement = document.querySelector('.datepicker')
+        const expectedResult = listOfV2Classes.every((className) =>
+            datePickerElement?.classList.contains(className)
+        )
+
+        expect(expectedResult).toBe(false)
+    })
+
+    it('should render date picker without the "range-dates-in-footer" class if actionButtonsOnTheBottom prop is set to false', () => {
+        render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                toggle={jest.fn()}
+                initialSettings={{ranges}}
+                actionButtonsOnTheBottom={false}
+                rangeDatesInFooter={true}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+        const datePickerElement = document.querySelector('.datepicker')
+
+        expect(
+            [...(datePickerElement?.classList || [])].includes(
+                '.range-dates-in-footer'
+            )
+        ).toBe(false)
+    })
+
+    it('should render date picker with the "action-buttons-on-the-bottom" class and no "range-dates-in-footer" class', () => {
+        render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                toggle={jest.fn()}
+                initialSettings={{ranges}}
+                actionButtonsOnTheBottom={true}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+        const datePickerElement = document.querySelector('.datepicker')
+
+        expect(
+            [...(datePickerElement?.classList || [])].includes(
+                '.action-buttons-on-the-bottom'
+            )
+        ).toBe(false)
+    })
+
+    it('should render date picker with the ranges label', () => {
+        const rangesLabel = 'Snooze Ranges'
+
+        render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                toggle={jest.fn()}
+                initialSettings={{ranges: ranges}}
+                rangesLabel="Snooze Ranges"
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        const rangesListElement = document.querySelector('.ranges ul')
+
+        expect(rangesListElement?.hasAttribute('label')).toBeTruthy()
+        expect(rangesListElement?.getAttribute('label')).toEqual(rangesLabel)
+    })
+
+    it('should render date picker with no ranges label if showRangesLabel is set to false', () => {
+        render(
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                toggle={jest.fn()}
+                initialSettings={{ranges: ranges}}
+                rangesLabel="Snooze Ranges"
+                showRangesLabel={false}
+            >
+                <button>Select a date</button>
+            </DatePicker>
+        )
+
+        const rangesListElement = document.querySelector('.ranges ul')
+
+        expect(rangesListElement?.hasAttribute('label')).toBeFalsy()
+        expect(rangesListElement?.getAttribute('label')).toBe(null)
     })
 })
