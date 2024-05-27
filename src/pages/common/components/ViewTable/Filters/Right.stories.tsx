@@ -1,4 +1,6 @@
 import React, {ComponentProps} from 'react'
+import userEvent from '@testing-library/user-event'
+import {within} from '@testing-library/react'
 import {Meta, StoryFn} from '@storybook/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
@@ -6,6 +8,7 @@ import {fromJS} from 'immutable'
 import {Identifier} from 'estree'
 import {ThemeProvider} from 'theme'
 import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 const defaultState = {}
 
@@ -84,5 +87,21 @@ const defaultProps: ComponentProps<typeof RightContainer> = {
 
 export const Default = Template.bind({})
 Default.args = defaultProps
+
+Default.play = ({canvasElement}) => {
+    const canvas = within(canvasElement)
+    userEvent.click(canvas.getByRole('textbox'))
+}
+
+export const RightV2 = Template.bind({})
+RightV2.args = {
+    ...defaultProps,
+    flags: {[FeatureFlagKey.NewTicketSnoozeAndTicketDate]: true},
+}
+
+RightV2.play = ({canvasElement}) => {
+    const canvas = within(canvasElement)
+    userEvent.click(canvas.getByRole('textbox'))
+}
 
 export default storyConfig

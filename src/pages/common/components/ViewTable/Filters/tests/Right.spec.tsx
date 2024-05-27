@@ -8,7 +8,7 @@ import {Identifier} from 'estree'
 import configureMockStore from 'redux-mock-store'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {CHANNELS} from 'tickets/common/config'
-import {RightContainer} from '../Right'
+import {RightContainer} from 'pages/common/components/ViewTable/Filters/Right'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

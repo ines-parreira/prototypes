@@ -425,10 +425,6 @@
                     margin: 0;
                 }
             }
-
-            .calendar-time {
-                margin: 0;
-            }
         }
 
         &.ranges-on-left {
@@ -497,6 +493,14 @@
                 color: var(--neutral-grey-6);
                 padding: 0;
             }
+        }
+
+        &:not(.show-ranges) .drp-calendar.left.single {
+            padding: 0;
+        }
+
+        .calendar-time {
+            margin: 0 0 4px 0;
         }
     }
 }

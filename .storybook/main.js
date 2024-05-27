@@ -106,9 +106,7 @@ module.exports = {
             alias: {
                 ...config.resolve.alias,
                 css: `${srcDir}/assets/css/`,
-                'launchdarkly-react-client-sdk': require.resolve(
-                    './launchdarkly-js-client-sdk.ts'
-                ),
+                'launchdarkly-react-client-sdk': require.resolve('./launchdarkly-js-client-sdk.tsx'),
             },
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules', srcDir],

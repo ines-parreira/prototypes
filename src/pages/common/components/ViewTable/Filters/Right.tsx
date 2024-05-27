@@ -11,28 +11,29 @@ import {humanizeChannel} from 'state/ticket/utils'
 import {formatDatetime, getLanguageDisplayName} from 'utils'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {IntegrationsDetailLabel} from '../../../utils/labels'
-import {stringToDatetime} from '../../../../../utils/date'
+import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
+import {stringToDatetime} from 'utils/date'
 
-import {getOperationalIntegrations} from '../../../../../state/integrations/selectors'
-import * as viewsSelectors from '../../../../../state/views/selectors'
-import {getTags} from '../../../../../state/tags/selectors'
-import {updateFieldFilter} from '../../../../../state/views/actions'
-import {RootState} from '../../../../../state/types'
-import {Option} from '../../../forms/MultiSelectOptionsField/types'
-import {FieldSearchResult} from '../../../../../state/views/types'
+import {getOperationalIntegrations} from 'state/integrations/selectors'
+import * as viewsSelectors from 'state/views/selectors'
+import {getTags} from 'state/tags/selectors'
+import {updateFieldFilter} from 'state/views/actions'
+import {RootState} from 'state/types'
+import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import {FieldSearchResult} from 'state/views/types'
 
-import {timedeltaOperators} from '../../../../../config/rules'
+import {timedeltaOperators} from 'config/rules'
 
-import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
-import FilterDropdown from '../FilterDropdown'
-import DatePicker from '../../../forms/DatePicker'
-import TimedeltaPicker from '../../../forms/TimedeltaPicker'
-import MultiSelectField from '../../../forms/MultiSelectField'
-import FilterMultiSelectField from '../FilterMultiSelectField'
+import FilterDropdown from 'pages/common/components/ViewTable/FilterDropdown'
+import DatePicker from 'pages/common/forms/DatePicker'
+import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
+import MultiSelectField from 'pages/common/forms/MultiSelectField'
+import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
+import {FeatureFlagKey} from 'config/featureFlags'
 
-import css from './Right.less'
+import css from 'pages/common/components/ViewTable/Filters/Right.less'
 
 type OwnProps = {
     operator: Identifier
@@ -218,6 +219,13 @@ export class RightContainer extends Component<Props, State> {
                 )
             }
 
+            const v2StylesEnabled =
+                this.props.flags?.[FeatureFlagKey.NewTicketSnoozeAndTicketDate]
+
+            const v2Props = {
+                actionButtonsOnTheBottom: !!v2StylesEnabled,
+            }
+
             const datetime =
                 (displayedValue &&
                     stringToDatetime(displayedValue as string)) ||
@@ -228,10 +236,15 @@ export class RightContainer extends Component<Props, State> {
                     initialSettings={{
                         endDate: datetime,
                         startDate: datetime,
+                        applyButtonClasses:
+                            v2StylesEnabled === true
+                                ? 'btn-primary'
+                                : undefined,
                     }}
                     onSubmit={(date) => {
                         updateFieldFilter(index, date.toISOString())
                     }}
+                    {...v2Props}
                 >
                     <div>
                         <Input

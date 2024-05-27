@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 
 import {ThemeContext, useThemeContext} from '../src/theme'
-import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.ts';
+import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx';
 
 require('@storybook/addon-console')
 
