@@ -117,18 +117,22 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                 })
             } else {
                 let newEditorState
+                const productTitle =
+                    productCardDetails.fullProductTitle ??
+                    productCardDetails.productTitle
 
                 if (!canAddProductLink) {
                     newEditorState = insertText(
                         editorState,
-                        productCardDetails.link.concat(' ')
+                        [productTitle, productCardDetails.link]
+                            .join(': ')
+                            .concat(' ')
                     )
                 } else {
                     newEditorState = insertLink(
                         editorState,
                         productCardDetails.link,
-                        (productCardDetails.fullProductTitle ||
-                            productCardDetails.productTitle)!.concat(' ')
+                        productTitle.concat(' ')
                     )
                 }
                 newEditorState = EditorState.forceSelection(

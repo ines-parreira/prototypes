@@ -167,6 +167,7 @@ export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS = [
     TicketChannel.InstagramComment,
     TicketChannel.InstagramMention,
     TicketChannel.InstagramDirectMessage,
+    TicketChannel.WhatsApp,
 ]
 
 export const UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES = [
