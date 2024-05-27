@@ -83,9 +83,12 @@ const optimization = {
 }
 const cssLoaderOptions = {
     sourceMap: true,
-    localIdentName: __PRODUCTION__
-        ? '[hash:base64]'
-        : '[name]--[local]--[hash:base64:5]',
+    modules: {
+        mode: 'global',
+        localIdentName: __PRODUCTION__
+            ? '[hash:base64]'
+            : '[name]--[local]--[hash:base64:5]',
+    },
 }
 
 let urlLoaderName = '[path][name].[ext]'

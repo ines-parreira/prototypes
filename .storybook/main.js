@@ -7,9 +7,12 @@ const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const cssLoaderOptions = {
     sourceMap: true,
-    localIdentName: __PRODUCTION__
-        ? '[hash:base64]'
-        : '[name]--[local]--[hash:base64:5]',
+    modules: {
+        mode: 'global',
+        localIdentName: __PRODUCTION__
+            ? '[hash:base64]'
+            : '[name]--[local]--[hash:base64:5]',
+    },
 }
 const styleBundleFile = __PRODUCTION__
     ? `helpdesk.app.${HASH}.css`
@@ -103,7 +106,9 @@ module.exports = {
             alias: {
                 ...config.resolve.alias,
                 css: `${srcDir}/assets/css/`,
-                'launchdarkly-react-client-sdk': require.resolve('./launchdarkly-js-client-sdk.ts'),
+                'launchdarkly-react-client-sdk': require.resolve(
+                    './launchdarkly-js-client-sdk.ts'
+                ),
             },
             extensions: ['.ts', '.tsx', '.js'],
             modules: ['node_modules', srcDir],
