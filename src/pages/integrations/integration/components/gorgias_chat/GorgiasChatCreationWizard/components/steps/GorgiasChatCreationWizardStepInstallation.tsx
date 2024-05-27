@@ -25,10 +25,13 @@ import {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 
 import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
-import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
+import useThemeAppExtensionInstallation, {
+    getGorgiasMainThemeAppExtensionId,
+} from '../../../hooks/useThemeAppExtensionInstallation'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
+import useShopifyThemeAppExtension from '../../../hooks/useShopifyThemeAppExtension'
 
 import css from './GorgiasChatCreationWizardStepInstallation.less'
 
@@ -72,6 +75,14 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
     } = useThemeAppExtensionInstallation(
         isStoreOfShopifyType ? storeIntegration : undefined
     )
+
+    const {isInstalled: isThemeAppExtensionInstalled} =
+        useShopifyThemeAppExtension({
+            shopifyIntegration: isStoreOfShopifyType
+                ? storeIntegration
+                : undefined,
+            appUuid: getGorgiasMainThemeAppExtensionId(),
+        })
 
     const installationMethod = isOneClickInstallationAllowed
         ? currentInstallationMethod ??
@@ -148,7 +159,8 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                         if (
                             isOneClickInstallation &&
                             shouldUseThemeAppExtensionInstallation &&
-                            themeAppExtensionInstallationUrl
+                            themeAppExtensionInstallationUrl &&
+                            !isThemeAppExtensionInstalled
                         ) {
                             window.open(
                                 themeAppExtensionInstallationUrl,
@@ -256,7 +268,9 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 } installation for Shopify`}
                                 caption={
                                     shouldUseThemeAppExtensionInstallation
-                                        ? 'To easily add Chat to your Shopify store, click Install then click Save in the new Shopify window. No need to edit anything in the new window.'
+                                        ? isThemeAppExtensionInstalled
+                                            ? 'To easily add Chat to your Shopify store, click Install.'
+                                            : 'To easily add Chat to your Shopify store, click Install then click Save in the new Shopify window. No need to edit anything in the new window.'
                                         : 'Add the chat widget to your Shopify store in one click.'
                                 }
                                 value="true"

@@ -12,10 +12,15 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {makeGetPreRedirectUri} from 'state/integrations/selectors'
+import {
+    getStoreIntegrations,
+    makeGetPreRedirectUri,
+} from 'state/integrations/selectors'
 import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
+import useShopifyThemeAppExtension from '../hooks/useShopifyThemeAppExtension'
+import {getGorgiasMainThemeAppExtensionId} from '../hooks/useThemeAppExtensionInstallation'
 import GorgiasChatIntegrationVisibilityControls, {
     GorgiasChatIntegrationVisibilityControlsHandle,
 } from './GorgiasChatIntegrationVisibilityControls'
@@ -51,6 +56,24 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
     const isInstallOnShopifyCallbackEnabled =
         flags[FeatureFlagKey.ChatScopeInstallOnShopifyCallback]
+
+    const storeIntegrations = useAppSelector(getStoreIntegrations)
+
+    const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
+
+    const storeIntegration = storeIntegrations.find(
+        (storeIntegration) => storeIntegration.id === shopIntegrationId
+    )
+    const isStoreOfShopifyType =
+        storeIntegration?.type === IntegrationType.Shopify
+
+    const {isInstalled: isThemeAppExtensionInstalled} =
+        useShopifyThemeAppExtension({
+            shopifyIntegration: isStoreOfShopifyType
+                ? storeIntegration
+                : undefined,
+            appUuid: getGorgiasMainThemeAppExtensionId(),
+        })
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -106,7 +129,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     undefined,
                     null,
                     true,
-                    openShopifyThemeSettingsInNewTab
+                    openShopifyThemeSettingsInNewTabIfNeeded
                 )
             )
         }, [integration, updateOrCreateIntegration])
@@ -129,8 +152,12 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
         window.location.href = redirectUri
     }
 
-    const openShopifyThemeSettingsInNewTab = () => {
-        if (themeAppExtensionInstallation && themeAppExtensionInstallationUrl) {
+    const openShopifyThemeSettingsInNewTabIfNeeded = () => {
+        if (
+            themeAppExtensionInstallation &&
+            themeAppExtensionInstallationUrl &&
+            !isThemeAppExtensionInstalled
+        ) {
             window.open(
                 themeAppExtensionInstallationUrl,
                 '_blank',
@@ -187,13 +214,23 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                             <div className={css.title}>
                                 Quick installation for Shopify
                             </div>
-                            <div>
-                                To easily add Chat to your Shopify store, click
-                                Install then click Save in the new Shopify
-                                window. No need to edit anything in the new
-                                window. Note that this will automatically enable
-                                Automate features if available.
-                            </div>
+                            {isThemeAppExtensionInstalled ? (
+                                <div>
+                                    To easily add Chat to your Shopify store,
+                                    click Install. Note that this will
+                                    automatically enable Automate features if
+                                    available.
+                                </div>
+                            ) : (
+                                <div>
+                                    To easily add Chat to your Shopify store,
+                                    click Install then click Save in the new
+                                    Shopify window. No need to edit anything in
+                                    the new window. Note that this will
+                                    automatically enable Automate features if
+                                    available.
+                                </div>
+                            )}
                         </>
                     ) : (
                         <>

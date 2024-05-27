@@ -35,7 +35,7 @@ const useThemeAppExtensionInstallation = (
     // What's remaining is to click Save.
     const themeAppExtensionInstallationUrl = `https://admin.shopify.com/store/${
         shopifyIntegration.name
-    }/themes/current/editor?context=apps&activateAppId=${getThemeAppExtensionId()}/gorgias`
+    }/themes/current/editor?context=apps&activateAppId=${getGorgiasMainThemeAppExtensionId()}/gorgias`
 
     return {
         shouldUseThemeAppExtensionInstallation:
@@ -44,7 +44,7 @@ const useThemeAppExtensionInstallation = (
     }
 }
 
-const getThemeAppExtensionId = (): string => {
+export const getGorgiasMainThemeAppExtensionId = (): string => {
     const env = getEnvironment()
 
     switch (env) {
