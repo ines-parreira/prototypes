@@ -16,6 +16,7 @@ import {
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import {openPanel} from 'state/layout/actions'
 
 import css from './AIAgentBanner.less'
 
@@ -40,6 +41,7 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
                 message,
             })
         )
+        dispatch(openPanel('infobar'))
     }
 
     const {data, isLoading, isError} = useGetAiAgentFeedback(

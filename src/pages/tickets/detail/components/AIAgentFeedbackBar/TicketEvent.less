@@ -1,0 +1,77 @@
+@import '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    @circle-size: 20px;
+
+    .ticketEventContainer {
+        width: 100%;
+        display: flex;
+
+        .ticketEventBadge {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-top: @layout-spacing-xs;
+            align-items: center;
+
+            .badgeTopLine {
+                z-index: 1;
+                position: absolute;
+                height: @layout-spacing-xs;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                border-left: 1px solid var(--neutral-grey-3);
+            }
+
+            .badgeBottomLine {
+                z-index: 1;
+                position: absolute;
+                height: calc(100% - @layout-spacing-xs);
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                border-left: 1px solid var(--neutral-grey-3);
+            }
+
+            .badgeIconContainer {
+                z-index: 2;
+                height: @circle-size;
+                width: @circle-size;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                background-color: red;
+                align-items: center;
+
+                .badgeIcon {
+                    color: var(--neutral-grey-0);
+                }
+            }
+
+            .badgeIconContainerGreen {
+                background-color: var(--feedback-success);
+            }
+
+            .badgeIconContainerBlack {
+                background-color: var(--neutral-grey-6);
+            }
+        }
+
+        .ticketEventDetails {
+            display: flex;
+            gap: @layout-spacing-xxs;
+            flex-wrap: wrap;
+            padding: @layout-spacing-xs 0;
+            padding-left: @layout-spacing-s;
+        }
+
+        .ticketEventLabel {
+            display: flex;
+            .body-semibold();
+            line-height: 22px;
+        }
+    }
+}

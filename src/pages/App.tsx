@@ -13,6 +13,11 @@ import FullPage from 'pages/common/components/FullPage'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {closePanels, openPanel} from 'state/layout/actions'
 import {getCurrentOpenedPanel} from 'state/layout/selectors'
+import {
+    changeActiveTab,
+    changeTicketMessage,
+} from 'state/ui/ticketAIAgentFeedback'
+import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 
 import css from './App.less'
 
@@ -49,6 +54,16 @@ const App = ({
     const content = !!Content ? <Content /> : children
 
     const hasOpenedPanel = !!openedPanel
+
+    const handleClosePanels = () => {
+        dispatch(closePanels())
+        dispatch(
+            changeActiveTab({
+                activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
+            })
+        )
+        dispatch(changeTicketMessage({message: undefined}))
+    }
 
     return (
         <div id="app-root" className={css.app}>
@@ -105,7 +120,7 @@ const App = ({
                 className={classnames(css.backdrop, {
                     [css.hidden]: !hasOpenedPanel,
                 })}
-                onClick={() => dispatch(closePanels())}
+                onClick={handleClosePanels}
             />
         </div>
     )
