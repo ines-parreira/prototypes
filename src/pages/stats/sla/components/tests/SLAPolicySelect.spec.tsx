@@ -17,6 +17,7 @@ import {
 import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {RootState, StoreDispatch} from 'state/types'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 
@@ -78,7 +79,7 @@ describe('<SLAPolicySelect />', () => {
         useListSlaPoliciesMock.mockReturnValue({
             data: {data: {data: policies}},
             isError: false,
-            isFetching: false,
+            isLoading: false,
         } as any)
     })
 
@@ -86,7 +87,7 @@ describe('<SLAPolicySelect />', () => {
         useListSlaPoliciesMock.mockReturnValue({
             data: undefined,
             isError: false,
-            isFetching: true,
+            isLoading: true,
         } as any)
 
         render(
@@ -279,5 +280,35 @@ describe('<SLAPolicySelect />', () => {
                 slaPolicies: [],
             })
         )
+    })
+
+    it('should submit filters dirty/clean state', async () => {
+        const store = mockStore({
+            ...defaultState,
+            stats: fromJS({
+                filters: {
+                    period: {
+                        start_datetime: '2021-02-03T00:00:00.000Z',
+                        end_datetime: '2021-02-03T23:59:59.999Z',
+                    },
+                    slaPolicies: policies.map((policy) => policy.uuid),
+                },
+            }),
+        })
+
+        render(
+            <Provider store={store}>
+                <SLAPolicySelect />
+            </Provider>
+        )
+
+        userEvent.click(screen.getByRole('button'))
+        userEvent.click(screen.getByText(aPolicy.name))
+        userEvent.click(screen.getByTestId('floating-overlay'))
+
+        await waitFor(() => {
+            expect(store.getActions()).toContainEqual(statFiltersDirty())
+            expect(store.getActions()).toContainEqual(statFiltersClean())
+        })
     })
 })

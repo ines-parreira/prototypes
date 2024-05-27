@@ -1,7 +1,6 @@
 import {useListSlaPolicies} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
@@ -11,7 +10,8 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import css from 'pages/stats/CustomFieldSelect.less'
 import {mergeStatsFilters} from 'state/stats/actions'
-import {getSLAPoliciesStatsFilter, getStatsFilters} from 'state/stats/selectors'
+import {getSLAPoliciesStatsFilter} from 'state/stats/selectors'
+import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 export const SELECT_FIELD_LABEL = 'Select Policies'
 
@@ -19,20 +19,25 @@ export const SLAPolicySelect = () => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef(null)
 
-    const {data, isFetching} = useListSlaPolicies()
+    const {data, isLoading} = useListSlaPolicies()
     const policies = data?.data.data || []
     const policyIds = policies?.map((policy) => policy.uuid)
 
     const dispatch = useAppDispatch()
     const selectedPolicies = useAppSelector(getSLAPoliciesStatsFilter)
-    const statsFilters = useAppSelector(getStatsFilters)
-    useCleanStatsFilters(statsFilters)
+
+    const handleToggle = useCallback(() => {
+        dispatch(statFiltersClean())
+        setIsOpen(!isOpen)
+    }, [dispatch, isOpen])
 
     const handleClick = useCallback(
         (policyId: string) => {
+            dispatch(statFiltersDirty())
             if (selectedPolicies.includes(policyId)) {
                 const policies = [...selectedPolicies]
                 policies.splice(selectedPolicies.indexOf(policyId), 1)
+
                 dispatch(
                     mergeStatsFilters({
                         slaPolicies: [...policies],
@@ -50,6 +55,7 @@ export const SLAPolicySelect = () => {
     )
 
     const onSelectAll = useCallback(() => {
+        dispatch(statFiltersDirty())
         dispatch(
             mergeStatsFilters({
                 slaPolicies: [...policyIds],
@@ -58,6 +64,7 @@ export const SLAPolicySelect = () => {
     }, [dispatch, policyIds])
 
     const onRemoveAll = useCallback(() => {
+        dispatch(statFiltersDirty())
         dispatch(
             mergeStatsFilters({
                 slaPolicies: [],
@@ -65,7 +72,7 @@ export const SLAPolicySelect = () => {
         )
     }, [dispatch])
 
-    return isFetching ? (
+    return isLoading ? (
         <Skeleton inline width={160} />
     ) : (
         <div className={css.wrapper}>
@@ -81,7 +88,7 @@ export const SLAPolicySelect = () => {
 
             <Dropdown
                 isOpen={isOpen}
-                onToggle={setIsOpen}
+                onToggle={handleToggle}
                 target={buttonRef}
                 value={selectedPolicies}
                 isMultiple={true}
