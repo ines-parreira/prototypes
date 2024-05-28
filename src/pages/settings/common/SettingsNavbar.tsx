@@ -3,8 +3,8 @@ import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {useLocation} from 'react-router-dom'
 import _kebabCase from 'lodash/kebabCase'
-
 import {useFlags} from 'launchdarkly-react-client-sdk'
+
 import css from 'assets/css/navbar.less'
 
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -19,6 +19,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Navbar from 'pages/common/components/Navbar'
+import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 
 import {CONTACT_FORM_PAGE_TITLE} from '../contactForm/constants'
 import {buildPasswordAnd2FaText} from '../yourProfile/twoFactorAuthentication/utils'
@@ -131,6 +132,11 @@ const CATEGORIES: Category[] = [
                 to: 'sla',
                 text: 'SLAs',
                 requiredFeatureFlags: [FeatureFlagKey.SLAPolicies],
+                extra: (
+                    <Badge type={ColorType.Blue} className={css.badge}>
+                        NEW
+                    </Badge>
+                ),
             },
         ],
     },
