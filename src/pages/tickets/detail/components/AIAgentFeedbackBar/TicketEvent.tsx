@@ -10,14 +10,14 @@ type Props = {
     children?: React.ReactNode
 }
 
-const TicketEventToIcon: {[key in TicketEventEnum]: string} = {
+export const TicketEventToIcon: {[key in TicketEventEnum]: string} = {
     [TicketEventEnum.CLOSE]: 'check',
     [TicketEventEnum.ASSIGN_TICKET]: 'person_add',
     [TicketEventEnum.SNOOZE]: 'timer',
     [TicketEventEnum.TAGGED]: 'label',
 }
 
-const TicketEventToLabel: {[key in TicketEventEnum]: string} = {
+export const TicketEventToLabel: {[key in TicketEventEnum]: string} = {
     [TicketEventEnum.CLOSE]: 'Closed',
     [TicketEventEnum.ASSIGN_TICKET]: 'Handed over',
     [TicketEventEnum.SNOOZE]: 'Snoozed',

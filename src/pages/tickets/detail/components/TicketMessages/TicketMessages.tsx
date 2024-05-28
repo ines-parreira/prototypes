@@ -10,6 +10,7 @@ import {
 import {TicketMessage} from 'models/ticket/types'
 import {HighlightedElements} from 'pages/tickets/detail/components/AuditLogEvent'
 
+import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
 import {buildFirstTicketMessage} from 'state/ticket/utils'
 import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -49,6 +50,9 @@ export default function TicketMessages({
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
+    const shouldDisplayAuditLogEvents = useAppSelector(
+        getShouldDisplayAuditLogEvents
+    )
 
     if (!messages.length) {
         return null
@@ -104,6 +108,7 @@ export default function TicketMessages({
             isBodyHighlighted={containerContainsHighlightedMessages}
             isAIAgentMessage={isAIAgentMessage}
             isAIAgentMessageSelected={selectedAIMessage?.id === message.id}
+            shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}
             customer={customer}
             lastCustomerMessageDateTime={lastCustomerMessage.get(
                 'sent_datetime'

@@ -587,7 +587,7 @@ type HelperProps = {
     children: ReactNode
 }
 
-const ActionName = ({children}: HelperProps) => (
+export const ActionName = ({children}: HelperProps) => (
     <span className={css.actionName}>{children}</span>
 )
 const Filler = ({children}: HelperProps) => (

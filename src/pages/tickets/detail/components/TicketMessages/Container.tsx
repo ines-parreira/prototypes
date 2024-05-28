@@ -14,6 +14,7 @@ import css from './Container.less'
 import Header from './Header'
 import Footer from './Footer'
 import AIAgentBanner from './AIAgentBanner'
+import AIAgentMessageEvents from './AIAgentMessageEvents'
 
 const classNames = classNamesBind.bind(css)
 
@@ -34,6 +35,7 @@ type Props = {
     isAIAgentMessageSelected?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
+    shouldDisplayAuditLogEvents?: boolean
 }
 
 export default class Container extends Component<Props> {
@@ -60,6 +62,7 @@ export default class Container extends Component<Props> {
             timezone,
             containsLastCustomerMessage,
             displayMessageStatusIndicator = false,
+            shouldDisplayAuditLogEvents = false,
         } = this.props
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
@@ -152,53 +155,64 @@ export default class Container extends Component<Props> {
                 lastMessageDatetimeAfterMount
             ) > 0
 
+        const showAIAgentMessageEvents =
+            isAIAgentMessage && !shouldDisplayAuditLogEvents
+
         return (
-            <div
-                className={classNames(
-                    'ticket-message',
-                    this.props.className,
-                    css.component,
-                    {
-                        internal: !message.public,
-                        appear: appear,
-                        hasError: isFailed(message),
-                        'ticket-message-loading': isPending(message),
-                        ticketMessagesHighlighted: this.props.isBodyHighlighted,
-                        ticketHandledByAIAgent: isAIAgentMessage,
-                        aiMessageSelected: isAIAgentMessageSelected,
-                    }
-                )}
-            >
-                {avatar}
+            <>
                 <div
-                    className={classNames(css.bodyWrapper, {
-                        bodyWrapperForHiddenOrDeletedMessage:
-                            (isMessageHidden && !isMessageDuplicated) ||
-                            isMessageDeleted,
-                    })}
-                >
-                    <Header
-                        id={this.props.id}
-                        message={message}
-                        displayMessageStatusIndicator={
-                            displayMessageStatusIndicator
+                    className={classNames(
+                        'ticket-message',
+                        this.props.className,
+                        css.component,
+                        {
+                            internal: !message.public,
+                            appear: appear,
+                            hasError: isFailed(message),
+                            'ticket-message-loading': isPending(message),
+                            ticketMessagesHighlighted:
+                                this.props.isBodyHighlighted,
+                            ticketHandledByAIAgent: isAIAgentMessage,
+                            aiMessageSelected: isAIAgentMessageSelected,
                         }
-                        timezone={this.props.timezone}
-                        hasError={isFailed(message)}
-                        isMessageHidden={isMessageHidden}
-                        isMessageDeleted={isMessageDeleted}
-                        isMessageFromAIAgent={isAIAgentMessage}
-                    />
-                    {children}
-                    {isAIAgentMessage && <AIAgentBanner message={message} />}
-                    <Footer
-                        id={this.props.id}
-                        message={message}
-                        isMessageHidden={isMessageHidden}
-                        isMessageDeleted={isMessageDeleted}
-                    />
+                    )}
+                >
+                    {avatar}
+                    <div
+                        className={classNames(css.bodyWrapper, {
+                            bodyWrapperForHiddenOrDeletedMessage:
+                                (isMessageHidden && !isMessageDuplicated) ||
+                                isMessageDeleted,
+                        })}
+                    >
+                        <Header
+                            id={this.props.id}
+                            message={message}
+                            displayMessageStatusIndicator={
+                                displayMessageStatusIndicator
+                            }
+                            timezone={this.props.timezone}
+                            hasError={isFailed(message)}
+                            isMessageHidden={isMessageHidden}
+                            isMessageDeleted={isMessageDeleted}
+                            isMessageFromAIAgent={isAIAgentMessage}
+                        />
+                        {children}
+                        {isAIAgentMessage && (
+                            <AIAgentBanner message={message} />
+                        )}
+                        <Footer
+                            id={this.props.id}
+                            message={message}
+                            isMessageHidden={isMessageHidden}
+                            isMessageDeleted={isMessageDeleted}
+                        />
+                    </div>
                 </div>
-            </div>
+                {showAIAgentMessageEvents && (
+                    <AIAgentMessageEvents message={message} />
+                )}
+            </>
         )
     }
 }
