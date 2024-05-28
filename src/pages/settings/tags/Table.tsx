@@ -139,7 +139,9 @@ export class TableContainer extends Component<Props> {
                                         />
                                     )}
                                     <div onClick={this._onSort(column.field)}>
-                                        <span>{column.title}</span>
+                                        <span className="field-title">
+                                            {column.title}
+                                        </span>
                                         {this._sortIcon(
                                             sort,
                                             reverse,

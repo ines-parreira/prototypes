@@ -113,7 +113,9 @@ const HeaderCell = ({
                                 clickable: action === 'sort',
                             })}
                         >
-                            <span>{field.get('title')}</span>
+                            <span className="field-title">
+                                {field.get('title')}
+                            </span>
                             {action === 'sort' &&
                                 renderOrderIcon(fieldPath === orderBy)}
                         </div>

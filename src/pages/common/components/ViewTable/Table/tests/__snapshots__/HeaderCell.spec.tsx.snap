@@ -40,7 +40,9 @@ exports[`ViewTable::Table::HeaderCell displays sortable field cell 1`] = `
       <div
         class="clickable"
       >
-        <span>
+        <span
+          class="field-title"
+        >
           Created
         </span>
       </div>
@@ -58,7 +60,9 @@ exports[`ViewTable::Table::HeaderCell does not display ActionsComponent for non-
       <div
         class=""
       >
-        <span>
+        <span
+          class="field-title"
+        >
           Subject
         </span>
       </div>

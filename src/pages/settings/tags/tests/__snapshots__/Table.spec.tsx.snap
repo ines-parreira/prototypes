@@ -68,7 +68,9 @@ exports[`ManageTags Table component should display the same number of rows as th
             </button>
           </div>
           <div>
-            <span>
+            <span
+              class="field-title"
+            >
               Tag
             </span>
             <i
@@ -84,7 +86,9 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="headerCell cell-wrapper"
         >
           <div>
-            <span>
+            <span
+              class="field-title"
+            >
               Description
             </span>
           </div>
@@ -95,7 +99,9 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="headerCell cell-wrapper"
         >
           <div>
-            <span>
+            <span
+              class="field-title"
+            >
               Tickets
             </span>
           </div>
