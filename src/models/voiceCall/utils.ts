@@ -98,6 +98,7 @@ export const processEvents = (
             PhoneIntegrationEvent.OutgoingPhoneCallConnected,
             PhoneIntegrationEvent.PhoneCallTransferInitiated,
             PhoneIntegrationEvent.PhoneCallTransferFailed,
+            PhoneIntegrationEvent.CompletedPhoneCall,
         ].includes(event.type)
     )
 
@@ -114,7 +115,12 @@ export const processEvents = (
                 text: isTransfer ? 'Transfer declined by' : `Declined by`,
             }
         } else if (event.type === PhoneIntegrationEvent.PhoneCallRinging) {
-            if (isMissedEvent(event, handled.slice(index))) {
+            const nextEvents = handled.slice(index + 1)
+            // we're skipping these events if the call is currently ringing due to a transfer
+            const currentlyOngoingTransfer =
+                isTransfer && nextEvents.length === 0
+
+            if (!currentlyOngoingTransfer && isMissedEvent(event, nextEvents)) {
                 newEvent = {
                     text: isTransfer ? 'Transfer missed by' : `Missed by`,
                 }
