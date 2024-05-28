@@ -35,7 +35,7 @@ export const initDatadogLogger = ({
     datadogLogs.init({
         clientToken: DATADOG_CLIENT_TOKEN,
         site: DATADOG_SITE,
-        forwardErrorsToLogs: true,
+        forwardErrorsToLogs: false,
         version: clientVersion,
         env: environment,
         service: DATADOG_LOGS_SERVICE,

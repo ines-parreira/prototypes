@@ -1,31 +1,96 @@
-import React from 'react'
-import {render} from '@testing-library/react'
+import React, {ComponentProps} from 'react'
+import {fireEvent, render} from '@testing-library/react'
+import {Collapse} from 'reactstrap'
 
-import {ErrorBoundary} from '../ErrorBoundary'
+import {reportError} from 'utils/errors'
+
+import {
+    ErrorBoundary,
+    RELOAD_BUTTON_TEXT,
+    SHOW_DETAILS_BUTTON_TEXT,
+    SUBHEADER,
+} from '../ErrorBoundary'
+
+jest.mock('reactstrap', () => {
+    const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
+    return {
+        ...reactstrap,
+        Collapse: ({isOpen, children}: ComponentProps<typeof Collapse>) => {
+            return isOpen ? children : null
+        },
+    }
+})
+
+jest.mock('utils/errors')
 
 describe('<ErrorBoundary/>', () => {
+    const noErrorChildText = 'foo'
+    const NoErrorChild = () => <div>{noErrorChildText}</div>
+    const error = new Error('foo')
+    const ErrorChild = () => {
+        throw error
+    }
     it('should render children when there is no error', () => {
-        const Foo = () => <div>foo</div>
-        const {container} = render(
+        const {queryByText} = render(
             <ErrorBoundary>
-                <Foo />
+                <NoErrorChild />
             </ErrorBoundary>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(queryByText(noErrorChildText)).toBeInTheDocument()
+        expect(queryByText(SUBHEADER)).not.toBeInTheDocument()
     })
 
     it('should render an error message because an error occurred', () => {
-        const Foo = () => {
-            throw new Error('foo')
-        }
-
-        const {container} = render(
+        const {queryByText} = render(
             <ErrorBoundary>
-                <Foo />
+                <ErrorChild />
             </ErrorBoundary>
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(queryByText(noErrorChildText)).not.toBeInTheDocument()
+        expect(queryByText(SUBHEADER)).toBeInTheDocument()
+    })
+
+    it('should report error', () => {
+        const tags = {
+            foo: 'bar',
+        }
+        render(
+            <ErrorBoundary sentryTags={tags}>
+                <ErrorChild />
+            </ErrorBoundary>
+        )
+
+        expect(reportError).toHaveBeenCalledWith(error, {
+            extra: expect.any(Object),
+            tags,
+        })
+    })
+
+    it('should reload page on reload page button click', () => {
+        const {getByRole} = render(
+            <ErrorBoundary>
+                <ErrorChild />
+            </ErrorBoundary>
+        )
+
+        fireEvent.click(getByRole('button', {name: RELOAD_BUTTON_TEXT}))
+
+        expect(window.location.reload).toHaveBeenCalled()
+    })
+
+    it('should show the error details on show details button click', () => {
+        const {getByRole, queryByText} = render(
+            <ErrorBoundary>
+                <ErrorChild />
+            </ErrorBoundary>
+        )
+
+        expect(queryByText(error.toString())).not.toBeInTheDocument()
+
+        fireEvent.click(getByRole('button', {name: SHOW_DETAILS_BUTTON_TEXT}))
+
+        expect(queryByText(error.toString())).toBeInTheDocument()
     })
 })

@@ -44,7 +44,7 @@ describe('datadog', () => {
             expect(datadogLogs.init).toHaveBeenCalledWith({
                 clientToken: DATADOG_CLIENT_TOKEN,
                 site: DATADOG_SITE,
-                forwardErrorsToLogs: true,
+                forwardErrorsToLogs: false,
                 version: defaultClientVersion,
                 service: DATADOG_LOGS_SERVICE,
                 env: defaultEnvironment,

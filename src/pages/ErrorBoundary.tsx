@@ -1,13 +1,15 @@
 import React, {ReactNode, PureComponent} from 'react'
-import {datadogLogs} from '@datadog/browser-logs'
 import {Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
-import {isProduction, isStaging} from '../utils/environment'
 import {reportError} from '../utils/errors'
 
 import Button from './common/components/button/Button'
 import css from './ErrorBoundary.less'
+
+export const SUBHEADER = 'An error occurred!'
+export const RELOAD_BUTTON_TEXT = 'Reload page'
+export const SHOW_DETAILS_BUTTON_TEXT = 'Show details'
 
 type Props = {
     children: ReactNode
@@ -38,11 +40,6 @@ export class ErrorBoundary extends PureComponent<Props, State> {
             componentStack: string
         }
     ) {
-        if (isStaging() || isProduction()) {
-            datadogLogs.logger.error(error.toString(), {
-                extra: errorInfo,
-            })
-        }
         const {sentryTags} = this.props
         reportError(error, {
             extra: errorInfo,
@@ -78,19 +75,19 @@ export class ErrorBoundary extends PureComponent<Props, State> {
                         forceSize
                     />
                 </h1>
-                <h4>An error occurred!</h4>
+                <h4>{SUBHEADER}</h4>
                 <Button
                     className="mr-2 mb-2 float-left"
                     onClick={this._onReload}
                 >
-                    Reload page
+                    {RELOAD_BUTTON_TEXT}
                 </Button>
                 <Button
                     className="mr-2 mb-2"
                     intent="secondary"
                     onClick={this._onToggle}
                 >
-                    Show details
+                    {SHOW_DETAILS_BUTTON_TEXT}
                 </Button>
                 <Collapse isOpen={areDetailsOpen}>
                     <Card className="mb-2">
