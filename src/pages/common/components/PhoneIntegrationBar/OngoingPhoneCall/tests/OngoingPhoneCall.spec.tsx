@@ -415,6 +415,9 @@ describe('<OngoingPhoneCall/>', () => {
             'true'
         )
         expect(getByText(/Transferring call to/)).toBeInTheDocument()
+        expect(
+            getByTestId('end-call-button-with-confirmation')
+        ).toBeInTheDocument()
     })
 
     it.each([

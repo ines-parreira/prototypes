@@ -34,6 +34,7 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
 import IconButtonTooltip from './IconButtonTooltip'
@@ -237,13 +238,29 @@ export function OngoingPhoneCall({
                 >
                     {isRecording ? 'Stop recording' : 'Start recording'}
                 </IconButtonTooltip>
-                <IconButton
-                    data-testid="end-call-button"
-                    intent="destructive"
-                    onClick={handleDisconnect}
-                >
-                    call_end
-                </IconButton>
+                {isTransferring ? (
+                    <ConfirmButton
+                        data-testid="end-call-button-with-confirmation"
+                        confirmationContent={
+                            'Ending this call before the transfer is complete will end the call for the customer as well.'
+                        }
+                        onConfirm={handleDisconnect}
+                        intent="destructive"
+                        confirmationButtonIntent="destructive"
+                        showCancelButton={true}
+                        className={css.endCallConfirmationButton}
+                    >
+                        <i className="material-icons">call_end</i>
+                    </ConfirmButton>
+                ) : (
+                    <IconButton
+                        data-testid="end-call-button"
+                        intent="destructive"
+                        onClick={handleDisconnect}
+                    >
+                        call_end
+                    </IconButton>
+                )}
             </div>
             <PhoneInfobarWrapper>
                 <span>{isTransferring ? 'Transferring...' : 'Connected'}</span>
