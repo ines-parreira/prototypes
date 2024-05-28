@@ -23,6 +23,8 @@ export const TOTAL_TICKETS_COUNT_PLACEHOLDER = 'All'
 export const DOWNLOAD_LOADING_LABEL = 'Loading'
 const NO_PERMISSIONS_CONTENT =
     'You don’t have enough permissions to download this content.'
+const OPERATION_IN_PROGRESS_CONTENT =
+    'A long-running job (e.g., ticket export, bulk action) is currently in progress on your account. Please wait until it is finished before requesting a new export.'
 const tooltipTargetID = 'download-drill-down-tooltip'
 
 export const DrillDownDownloadButton = ({
@@ -34,13 +36,11 @@ export const DrillDownDownloadButton = ({
     const {isLoading, isError, isRequested} = useAppSelector(getDrillDownExport)
     const currentUser = useAppSelector(getCurrentUser)
     const {running} = useRunningJobs()
-    const isDisabled =
-        !(
-            hasRole(currentUser, UserRole.Admin) ||
-            hasRole(currentUser, UserRole.Agent)
-        ) ||
-        isLoading ||
-        running !== false
+    const hasNoPermissions = !(
+        hasRole(currentUser, UserRole.Admin) ||
+        hasRole(currentUser, UserRole.Agent)
+    )
+    const isDisabled = hasNoPermissions || isLoading || running !== false
     const query = useDrillDownQueryWithoutLimit(metricData)
 
     const clickHandler = () => {
@@ -64,7 +64,9 @@ export const DrillDownDownloadButton = ({
                 target={tooltipTargetID}
                 trigger={['hover']}
             >
-                {NO_PERMISSIONS_CONTENT}
+                {running !== false
+                    ? OPERATION_IN_PROGRESS_CONTENT
+                    : NO_PERMISSIONS_CONTENT}
             </Tooltip>
         </>
     )
