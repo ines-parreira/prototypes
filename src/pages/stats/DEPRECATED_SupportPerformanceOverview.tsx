@@ -31,7 +31,7 @@ import BannerNotification from 'pages/common/components/BannerNotifications/Bann
 import {DEPRECATED_SupportPerformanceOverviewFilters} from 'pages/stats/DEPRECATED_SupportPerformanceOverviewFilters'
 import {NotificationStatus} from 'state/notifications/types'
 import {
-    getMessagingIntegrationsStatsFilter,
+    getMessagingAndAppIntegrationsStatsFilter,
     getStatsFilters,
 } from 'state/stats/selectors'
 import {BarStat} from './common/components/charts/BarStat'
@@ -57,7 +57,7 @@ export default function DEPRECATED_SupportPerformanceOverview() {
     const iAnalyticsProductivityMetricsEnabled =
         useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     const statsFilters = useAppSelector(getStatsFilters)
 

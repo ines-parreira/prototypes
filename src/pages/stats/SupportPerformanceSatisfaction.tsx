@@ -17,7 +17,7 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {SupportPerformanceSatisfactionFilters} from 'pages/stats/SupportPerformanceSatisfactionFilters'
 import {AccountFeature} from 'state/currentAccount/types'
 
-import {getMessagingIntegrationsStatsFilter} from 'state/stats/selectors'
+import {getMessagingAndAppIntegrationsStatsFilter} from 'state/stats/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
@@ -30,7 +30,7 @@ const SUPPORT_PERFORMANCE_SATISFACTION_STAT_NAME =
 
 function SupportPerformanceSatisfaction() {
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     const {cleanStatsFilters: statsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone

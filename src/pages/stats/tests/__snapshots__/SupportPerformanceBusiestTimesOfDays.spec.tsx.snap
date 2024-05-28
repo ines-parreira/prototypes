@@ -74,7 +74,7 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                     <div
                       class="badge"
                     >
-                      8
+                      10
                     </div>
                   </label>
                 </div>
@@ -286,6 +286,56 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                     </span>
                   </label>
                 </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-18"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-18"
+                      name="checkbox-18"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      edit_note
+                    </i>
+                    <span
+                      id="label-tooltip-19"
+                    >
+                      Contact Form (Morty)
+                    </span>
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-20"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-20"
+                      name="checkbox-20"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      live_help
+                    </i>
+                    <span
+                      id="label-tooltip-21"
+                    >
+                      Help Center (Rick)
+                    </span>
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -332,13 +382,13 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                 >
                   <label
                     class="label label quickSelectionOption"
-                    for="checkbox-18"
+                    for="checkbox-22"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-18"
-                      name="checkbox-18"
+                      id="checkbox-22"
+                      name="checkbox-22"
                       type="checkbox"
                     />
                     Deselect
@@ -369,46 +419,6 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                   >
                     <label
                       class="label label labelItem"
-                      for="checkbox-19"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-19"
-                        name="checkbox-19"
-                        type="checkbox"
-                      />
-                      <span
-                        id="label-tooltip-20"
-                      >
-                        Foo
-                      </span>
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
-                      for="checkbox-21"
-                    >
-                      <input
-                        class="input"
-                        id="checkbox-21"
-                        name="checkbox-21"
-                        type="checkbox"
-                      />
-                      <span
-                        id="label-tooltip-22"
-                      >
-                        Phone team - +1 205-396-3441
-                      </span>
-                    </label>
-                  </div>
-                  <div
-                    class="wrapperItem"
-                  >
-                    <label
-                      class="label label labelItem"
                       for="checkbox-23"
                     >
                       <input
@@ -420,7 +430,7 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                       <span
                         id="label-tooltip-24"
                       >
-                        Team: user meta null
+                        Foo
                       </span>
                     </label>
                   </div>
@@ -439,6 +449,46 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                       />
                       <span
                         id="label-tooltip-26"
+                      >
+                        Phone team - +1 205-396-3441
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-27"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-27"
+                        name="checkbox-27"
+                        type="checkbox"
+                      />
+                      <span
+                        id="label-tooltip-28"
+                      >
+                        Team: user meta null
+                      </span>
+                    </label>
+                  </div>
+                  <div
+                    class="wrapperItem"
+                  >
+                    <label
+                      class="label label labelItem"
+                      for="checkbox-29"
+                    >
+                      <input
+                        class="input"
+                        id="checkbox-29"
+                        name="checkbox-29"
+                        type="checkbox"
+                      />
+                      <span
+                        id="label-tooltip-30"
                       >
                         Test
                       </span>
@@ -460,17 +510,17 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-27"
+                    for="checkbox-31"
                   >
                     <input
                       checked=""
                       class="input"
-                      id="checkbox-27"
-                      name="checkbox-27"
+                      id="checkbox-31"
+                      name="checkbox-31"
                       type="checkbox"
                     />
                     <span
-                      id="label-tooltip-28"
+                      id="label-tooltip-32"
                     >
                       Acme Support
                     </span>
@@ -481,16 +531,16 @@ exports[`<SupportPerformanceBusiestTimesOfDays /> should render the page 1`] = `
                 >
                   <label
                     class="label label labelItem"
-                    for="checkbox-29"
+                    for="checkbox-33"
                   >
                     <input
                       class="input"
-                      id="checkbox-29"
-                      name="checkbox-29"
+                      id="checkbox-33"
+                      name="checkbox-33"
                       type="checkbox"
                     />
                     <span
-                      id="label-tooltip-30"
+                      id="label-tooltip-34"
                     >
                       Bob Smith
                     </span>

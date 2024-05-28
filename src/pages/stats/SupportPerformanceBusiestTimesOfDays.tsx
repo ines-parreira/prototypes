@@ -12,7 +12,7 @@ import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
 import {SupportPerformanceBusiestTimesOfDaysFilters} from 'pages/stats/SupportPerformanceBusiestTimesOfDaysFilters'
 import {
-    getMessagingIntegrationsStatsFilter,
+    getMessagingAndAppIntegrationsStatsFilter,
     getStatsFilters,
 } from 'state/stats/selectors'
 
@@ -20,7 +20,7 @@ const SUPPORT_PERFORMANCE_OVERVIEW_STAT_NAME = 'support-performance-overview'
 
 export default function SupportPerformanceBusiestTimesOfDays() {
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     const statsFilters = useAppSelector(getStatsFilters)
 

@@ -13,17 +13,19 @@ import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import {ScoreStatsFilter} from 'pages/stats/ScoreStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
-    getMessagingIntegrationsStatsFilter,
     getStatsFilters,
-    getStatsMessagingIntegrations,
+    getMessagingAndAppIntegrationsStatsFilter,
+    getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
 export const SupportPerformanceSatisfactionFilters = () => {
     const statsFilters = useAppSelector(getStatsFilters)
     useCleanStatsFilters(statsFilters)
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const messagingIntegrations = useAppSelector(
+        getStatsMessagingAndAppIntegrations
+    )
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     return (
         <>

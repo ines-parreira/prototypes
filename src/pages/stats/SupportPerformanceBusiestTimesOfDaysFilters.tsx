@@ -8,13 +8,15 @@ import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
     getStatsFilters,
-    getStatsMessagingIntegrations,
+    getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
 export const SupportPerformanceBusiestTimesOfDaysFilters = () => {
     const statsFilters = useAppSelector(getStatsFilters)
     useCleanStatsFilters(statsFilters)
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const messagingIntegrations = useAppSelector(
+        getStatsMessagingAndAppIntegrations
+    )
 
     return (
         <>

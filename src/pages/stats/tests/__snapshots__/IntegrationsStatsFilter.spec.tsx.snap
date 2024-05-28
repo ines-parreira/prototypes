@@ -409,10 +409,11 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
             name="checkbox-26"
             type="checkbox"
           />
-          <img
-            alt="logo-app"
-            class="integrationIcon"
-          />
+          <i
+            class="icon material-icons icon"
+          >
+            edit_note
+          </i>
           <span
             id="label-tooltip-27"
           >
@@ -433,10 +434,11 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
             name="checkbox-28"
             type="checkbox"
           />
-          <img
-            alt="logo-app"
-            class="integrationIcon"
-          />
+          <i
+            class="icon material-icons icon"
+          >
+            live_help
+          </i>
           <span
             id="label-tooltip-29"
           >

@@ -14,7 +14,7 @@ import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
 import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
 import {stringToDatetime} from 'utils/date'
 
-import {getOperationalIntegrations} from 'state/integrations/selectors'
+import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
 import * as viewsSelectors from 'state/views/selectors'
 import {getTags} from 'state/tags/selectors'
 import {updateFieldFilter} from 'state/views/actions'
@@ -350,7 +350,7 @@ export class RightContainer extends Component<Props, State> {
 
 const connector = connect((state: RootState) => {
     return {
-        integrations: getOperationalIntegrations(state),
+        integrations: getMessagingAndAppIntegrations(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state),
         datetimeFormat: getDateAndTimeFormatter(state)(

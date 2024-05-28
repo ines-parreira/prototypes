@@ -4,9 +4,9 @@ import useAppSelector from 'hooks/useAppSelector'
 import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
-    getMessagingIntegrationsStatsFilter,
     getStatsFilters,
-    getStatsMessagingIntegrations,
+    getMessagingAndAppIntegrationsStatsFilter,
+    getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -20,9 +20,11 @@ import StatWrapper from './StatWrapper'
 export const AUTOMATION_MACROS_STAT_NAME = 'automation-macros'
 
 export default function AutomateMacros() {
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const messagingIntegrations = useAppSelector(
+        getStatsMessagingAndAppIntegrations
+    )
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     const statsFilters = useAppSelector(getStatsFilters)
 

@@ -43,6 +43,9 @@ export enum AddressType {
     Personal = 'personal',
 }
 
+export const HELP_CENTER_INTEGRATION_ADDRESS_PREFIX = 'help-center'
+export const CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX = 'contact-form'
+
 export const MESSAGING_INTEGRATION_TYPES = Object.freeze([
     IntegrationType.Email,
     IntegrationType.Outlook,

@@ -6,13 +6,13 @@ import {IntegrationType} from 'models/integration/constants'
 import {StatsFilters} from 'models/stat/types'
 
 import {
-    getMessagingIntegrationsStatsFilter,
     getStatsFilters,
-    getStatsMessagingIntegrations,
     getStatsStoreIntegrations,
     getStoreIntegrationsStatsFilter,
-} from '../selectors'
-import {initialState} from '../reducers'
+    getMessagingAndAppIntegrationsStatsFilter,
+    getStatsMessagingAndAppIntegrations,
+} from 'state/stats/selectors'
+import {initialState} from 'state/stats/reducers'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -26,6 +26,14 @@ describe('stats selectors', () => {
     const defaultStatsFilters = {
         period: {start_datetime: '0', end_datetime: '0'},
     } as StatsFilters
+    const gmailIntegration = {
+        id: 1,
+        type: IntegrationType.Gmail,
+    }
+    const shopifyIntegration = {
+        id: 2,
+        type: IntegrationType.Shopify,
+    }
 
     beforeEach(() => {
         defaultState = {
@@ -49,13 +57,18 @@ describe('stats selectors', () => {
 
     describe.each([
         [
-            'getStatsMessagingIntegrations',
+            'getStatsMessagingAndAppIntegrations',
             'message',
-            getStatsMessagingIntegrations,
+            getStatsMessagingAndAppIntegrations,
+            [gmailIntegration],
         ],
-
-        ['getStatsStoreIntegrations', 'store', getStatsStoreIntegrations],
-    ])('%s', (testName, integrationType, selector) => {
+        [
+            'getStatsStoreIntegrations',
+            'store',
+            getStatsStoreIntegrations,
+            [shopifyIntegration],
+        ],
+    ])('%s', (testName, integrationType, selector, expectedIntegrations) => {
         it('should return an empty array when integrations are not set', () => {
             expect(selector(defaultState)).toEqual([])
         })
@@ -64,34 +77,27 @@ describe('stats selectors', () => {
             const state = {
                 ...defaultState,
                 integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: IntegrationType.Gmail,
-                        },
-                        {
-                            id: 2,
-                            type: IntegrationType.Shopify,
-                        },
-                    ],
+                    integrations: [gmailIntegration, shopifyIntegration],
                 }),
             }
-            expect(selector(state)).toMatchSnapshot()
+            expect(selector(state)).toEqual(expectedIntegrations)
         })
     })
 
     describe.each([
         [
-            'getMessagingIntegrationsStatsFilter',
+            'getMessagingAndAppIntegrationsStatsFilter',
             'message',
-            getMessagingIntegrationsStatsFilter,
+            getMessagingAndAppIntegrationsStatsFilter,
+            [gmailIntegration],
         ],
         [
             'getStoreIntegrationsStatsFilter',
             'store',
             getStoreIntegrationsStatsFilter,
+            [shopifyIntegration],
         ],
-    ])('%s', (testName, integrationType, selector) => {
+    ])('%s', (testName, integrationType, selector, expectedIntegrations) => {
         it('should return an empty array when the stat filters are not set', () => {
             expect(selector(defaultState)).toEqual([])
         })
@@ -121,19 +127,12 @@ describe('stats selectors', () => {
                     })
                 ),
                 integrations: fromJS({
-                    integrations: [
-                        {
-                            id: 1,
-                            type: IntegrationType.Gmail,
-                        },
-                        {
-                            id: 2,
-                            type: IntegrationType.Shopify,
-                        },
-                    ],
+                    integrations: [gmailIntegration, shopifyIntegration],
                 }),
             }
-            expect(selector(state)).toMatchSnapshot()
+            expect(selector(state)).toEqual(
+                expectedIntegrations.map((integration) => integration.id)
+            )
         })
     })
 })

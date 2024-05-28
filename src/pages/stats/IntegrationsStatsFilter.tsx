@@ -6,10 +6,14 @@ import outlookIcon from 'assets/img/integrations/outlook.svg'
 import shopifyIcon from 'assets/img/integrations/shopify.png'
 import zendeskIcon from 'assets/img/integrations/zendesk.png'
 import whatsAppIcon from 'assets/img/integrations/whatsapp.svg'
-import {IntegrationType} from 'models/integration/constants'
+import {
+    CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX,
+    HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
+    IntegrationType,
+} from 'models/integration/constants'
 import {mergeStatsFilters} from 'state/stats/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {Integration} from 'models/integration/types'
+import {AppIntegration, Integration} from 'models/integration/types'
 import {StatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
@@ -45,6 +49,35 @@ type Props = {
     isMultiple?: boolean
     isRequired?: boolean
     variant?: 'fill' | 'ghost'
+}
+
+const isHelpCenterIntegration = (integration: AppIntegration) =>
+    integration.meta.address.startsWith(HELP_CENTER_INTEGRATION_ADDRESS_PREFIX)
+const isContactFormIntegration = (integration: AppIntegration) =>
+    integration.meta.address.startsWith(CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX)
+const getAppIntegrationIcon = (integration: AppIntegration) => {
+    if (isHelpCenterIntegration(integration)) {
+        return 'live_help'
+    } else if (isContactFormIntegration(integration)) {
+        return 'edit_note'
+    }
+    return ''
+}
+
+const getIntegrationIcon = (integration: Integration) => {
+    if (integration.type === IntegrationType.App) {
+        return getAppIntegrationIcon(integration)
+    }
+
+    return (
+        FONT_ICONS[integration.type as keyof typeof FONT_ICONS] || (
+            <img
+                src={IMAGE_ICONS[integration.type as keyof typeof IMAGE_ICONS]}
+                alt={`logo-${integration.type}`}
+                className={css.integrationIcon}
+            />
+        )
+    )
 }
 
 export default function IntegrationsStatsFilter({
@@ -88,19 +121,8 @@ export default function IntegrationsStatsFilter({
             value={selectedIntegrationsIds}
         >
             {integrations.map((integration) => {
-                const icon = FONT_ICONS[
-                    integration.type as keyof typeof FONT_ICONS
-                ] || (
-                    <img
-                        src={
-                            IMAGE_ICONS[
-                                integration.type as keyof typeof IMAGE_ICONS
-                            ]
-                        }
-                        alt={`logo-${integration.type}`}
-                        className={css.integrationIcon}
-                    />
-                )
+                const icon = getIntegrationIcon(integration)
+
                 return (
                     <Component.Item
                         key={integration.id}

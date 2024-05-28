@@ -38,7 +38,7 @@ import {
     getOnboardingMeta,
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutFacebook,
-    getOperationalIntegrations,
+    getMessagingAndAppIntegrations,
     DEPRECATED_getPhoneIntegrations,
     getActiveIntegrations,
     getChannelsForSourceType,
@@ -95,10 +95,10 @@ describe('integrations selectors', () => {
         expect(integrations).toEqual(expected)
     })
 
-    describe('getOperationalIntegrations()', () => {
-        it('should get messaging integrations', () => {
+    describe('getMessagingAndAppIntegrations()', () => {
+        it('should get messaging and app integrations', () => {
             const messagingIntegrations =
-                getOperationalIntegrations(state).toJS()
+                getMessagingAndAppIntegrations(state).toJS()
             const allIntegrations: Integration[] =
                 DEPRECATED_getIntegrations(state).toJS()
             const expected = allIntegrations.filter(

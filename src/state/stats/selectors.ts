@@ -2,16 +2,16 @@ import {Map} from 'immutable'
 import {createSelector, Selector} from 'reselect'
 
 import {StatsFilters} from 'models/stat/types'
-import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
+import {
+    DEPRECATED_getIntegrationsByTypes,
+    getMessagingAndAppIntegrations,
+} from 'state/integrations/selectors'
 import {Integration} from 'models/integration/types'
 import {makeGetPlainJS} from 'utils'
 
-import {RootState} from '../types'
+import {RootState} from 'state/types'
 
-import {
-    STATS_MESSAGING_INTEGRATIONS_TYPES,
-    STATS_STORE_INTEGRATION_TYPES,
-} from './constants'
+import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
 
 export const getStatsFilters = createSelector(
     (state: RootState) => state.stats,
@@ -20,7 +20,7 @@ export const getStatsFilters = createSelector(
     }
 )
 
-const makeIntegrationsStatsFilterSelector = (
+const makeMessagingStatsFilterSelector = (
     integrationsSelector: Selector<RootState, Integration[]>
 ) => {
     return createSelector(
@@ -39,19 +39,20 @@ const makeIntegrationsStatsFilterSelector = (
     )
 }
 
-export const getStatsMessagingIntegrations = makeGetPlainJS<Integration[]>(
-    DEPRECATED_getIntegrationsByTypes(STATS_MESSAGING_INTEGRATIONS_TYPES)
-)
+export const getStatsMessagingAndAppIntegrations = makeGetPlainJS<
+    Integration[]
+>(getMessagingAndAppIntegrations)
 
-export const getMessagingIntegrationsStatsFilter =
-    makeIntegrationsStatsFilterSelector(getStatsMessagingIntegrations)
+export const getMessagingAndAppIntegrationsStatsFilter =
+    makeMessagingStatsFilterSelector(getStatsMessagingAndAppIntegrations)
 
 export const getStatsStoreIntegrations = makeGetPlainJS<Integration[]>(
     DEPRECATED_getIntegrationsByTypes(STATS_STORE_INTEGRATION_TYPES)
 )
 
-export const getStoreIntegrationsStatsFilter =
-    makeIntegrationsStatsFilterSelector(getStatsStoreIntegrations)
+export const getStoreIntegrationsStatsFilter = makeMessagingStatsFilterSelector(
+    getStatsStoreIntegrations
+)
 
 export const getSLAPoliciesStatsFilter = createSelector(
     getStatsFilters,
@@ -60,7 +61,7 @@ export const getSLAPoliciesStatsFilter = createSelector(
 
 export const getPageStatsFilters = createSelector(
     getStatsFilters,
-    getMessagingIntegrationsStatsFilter,
+    getMessagingAndAppIntegrationsStatsFilter,
     (statsFilters, integrationsStatsFilter) => {
         const {
             channels,

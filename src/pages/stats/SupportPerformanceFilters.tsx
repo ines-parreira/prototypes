@@ -8,11 +8,13 @@ import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
     getPageStatsFilters,
-    getStatsMessagingIntegrations,
+    getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
 export const SupportPerformanceFilters = () => {
-    const messagingIntegrations = useAppSelector(getStatsMessagingIntegrations)
+    const messagingIntegrations = useAppSelector(
+        getStatsMessagingAndAppIntegrations
+    )
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     useCleanStatsFilters(pageStatsFilters)
 

@@ -16,7 +16,11 @@ import {
     isWhatsAppIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
-import {MESSAGING_INTEGRATION_TYPES} from 'models/integration/constants'
+import {
+    CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX,
+    HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
+    MESSAGING_INTEGRATION_TYPES,
+} from 'models/integration/constants'
 import {compare} from 'utils'
 import {RootState} from 'state/types'
 import {getCurrentUserState} from 'state/currentUser/selectors'
@@ -596,21 +600,40 @@ export const makeGetPreRedirectUri =
 // return the list of integrations:
 // - integrations that can send messages from the helpdesk, like Facebook or Email
 // - `app` integrations
-export const getOperationalIntegrations = createSelector(
+export const getMessagingAndAppIntegrations = createSelector(
     DEPRECATED_getIntegrationsByTypes([
         ...MESSAGING_INTEGRATION_TYPES,
         IntegrationType.App,
     ]),
     (integrations) => {
-        return integrations.map((integration: Map<any, any>) => {
-            if (integration.get('type') === IntegrationType.Facebook) {
-                return integration.set(
-                    'name',
-                    integration.getIn(['meta', 'name'])
-                )
-            }
-            return integration
-        })
+        return integrations
+            .filter((integration: Map<any, any>) => {
+                const type = integration.get('type')
+                if (type === IntegrationType.App) {
+                    const address: string =
+                        integration.getIn(['meta', 'address']) ?? ''
+
+                    return (
+                        address.startsWith(
+                            HELP_CENTER_INTEGRATION_ADDRESS_PREFIX
+                        ) ||
+                        address.startsWith(
+                            CONTACT_FORM_INTEGRATION_ADDRESS_PREFIX
+                        )
+                    )
+                }
+
+                return true
+            })
+            .map((integration: Map<any, any>) => {
+                if (integration.get('type') === IntegrationType.Facebook) {
+                    return integration.set(
+                        'name',
+                        integration.getIn(['meta', 'name'])
+                    )
+                }
+                return integration
+            })
     }
 )
 

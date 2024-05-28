@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import {SupportPerformanceChannelsFilters} from 'pages/stats/SupportPerformanceChannelsFilters'
 
-import {getMessagingIntegrationsStatsFilter} from 'state/stats/selectors'
+import {getMessagingAndAppIntegrationsStatsFilter} from 'state/stats/selectors'
 import {
     stats as statsConfig,
     TICKETS_CREATED_PER_CHANNEL,
@@ -22,7 +22,7 @@ const SUPPORT_PERFORMANCE_CHANNELS_STAT_NAME = 'support-performance-channels'
 
 export default function SupportPerformanceChannels() {
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     const {cleanStatsFilters: statsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone

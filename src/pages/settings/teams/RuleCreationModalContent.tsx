@@ -27,7 +27,7 @@ import SelectInputBox, {
 import TextInput from 'pages/common/forms/input/TextInput'
 import Label from 'pages/common/forms/Label/Label'
 import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
-import {getOperationalIntegrations} from 'state/integrations/selectors'
+import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getEmptyRule} from 'state/rules/utils'
@@ -69,7 +69,7 @@ function makeRuleCode(teamId: number, conditionStatement: string) {
 
 export default function RuleCreationModalContent({onClose, team}: Props) {
     const dispatch = useAppDispatch()
-    const integrations = useAppSelector(getOperationalIntegrations)
+    const integrations = useAppSelector(getMessagingAndAppIntegrations)
     const tags = useAppSelector((state) => state.entities.tags)
     const ref = useRef<HTMLFormElement>(null)
     const defaultTeamName = useMemo(

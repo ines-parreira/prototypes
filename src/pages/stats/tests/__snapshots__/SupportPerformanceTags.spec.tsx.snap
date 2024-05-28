@@ -90,7 +90,7 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                     <div
                       class="badge"
                     >
-                      8
+                      10
                     </div>
                   </label>
                 </div>
@@ -299,6 +299,56 @@ exports[`SupportPerformanceTags should render the filters and stats when stats f
                       id="label-tooltip-17"
                     >
                       Chitty chatty
+                    </span>
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-18"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-18"
+                      name="checkbox-18"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      edit_note
+                    </i>
+                    <span
+                      id="label-tooltip-19"
+                    >
+                      Contact Form (Morty)
+                    </span>
+                  </label>
+                </div>
+                <div
+                  class="wrapperItem"
+                >
+                  <label
+                    class="label label labelItem"
+                    for="checkbox-20"
+                  >
+                    <input
+                      class="input"
+                      id="checkbox-20"
+                      name="checkbox-20"
+                      type="checkbox"
+                    />
+                    <i
+                      class="icon material-icons icon"
+                    >
+                      live_help
+                    </i>
+                    <span
+                      id="label-tooltip-21"
+                    >
+                      Help Center (Rick)
                     </span>
                   </label>
                 </div>

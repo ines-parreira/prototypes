@@ -8,7 +8,7 @@ import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {SupportPerformanceTagsFilters} from 'pages/stats/SupportPerformanceTagsFilters'
 
 import {
-    getMessagingIntegrationsStatsFilter,
+    getMessagingAndAppIntegrationsStatsFilter,
     getStatsFilters,
 } from 'state/stats/selectors'
 import {getTags} from 'state/tags/selectors'
@@ -22,7 +22,7 @@ const SUPPORT_PERFORMANCE_TAGS_STAT_NAME = 'support-performance-tags'
 export default function SupportPerformanceTags() {
     const tags = useAppSelector(getTags)
     const integrationsStatsFilter = useAppSelector(
-        getMessagingIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter
     )
     const statsFilters = useAppSelector(getStatsFilters)
 

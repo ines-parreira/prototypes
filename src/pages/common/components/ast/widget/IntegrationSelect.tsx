@@ -9,7 +9,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {RenderLabel} from 'pages/common/utils/labels'
 import {RuleItemActions} from 'pages/settings/rules/types'
 import {RootState} from 'state/types'
-import {getOperationalIntegrations} from 'state/integrations/selectors'
+import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
 import {fetchIntegrations} from 'state/integrations/actions'
 
 type OwnProps = {
@@ -70,7 +70,7 @@ export function IntegrationSelectContainer({
 
 const connector = connect(
     (state: RootState) => ({
-        integrations: getOperationalIntegrations(state),
+        integrations: getMessagingAndAppIntegrations(state),
     }),
     {
         fetchIntegrations,
