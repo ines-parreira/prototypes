@@ -57,7 +57,6 @@ export const TestFlowEditor = ({
         useState<typeof available_languages[number]>(currentLanguage)
     const [isFlowInterpreterStarted, setIsFlowInterpreterStarted] =
         useState<boolean>(false)
-    const [iframeSrcDoc, setIframeSrcDoc] = useState<string>()
     const [
         isFlowInterpreterStartedTimeout,
         setIsFlowInterpreterStartedTimeout,
@@ -74,6 +73,8 @@ export const TestFlowEditor = ({
     const {data: installationSnippet} = useGetInstallationSnippet({
         applicationId: selectedChannelApplicationId,
     })
+
+    const [showIframe, setShowIframe] = useState(true)
 
     useKey(
         'Escape',
@@ -126,6 +127,7 @@ export const TestFlowEditor = ({
     }
 
     useEffectOnce(() => {
+        reloadIframe()
         const timeoutId = window.setTimeout(() => {
             if (!isFlowInterpreterStarted) {
                 setIsFlowInterpreterStartedTimeout(true)
@@ -157,7 +159,7 @@ export const TestFlowEditor = ({
 
     useEffect(() => {
         if (!installationSnippet || isFlowInterpreterStarted) return
-        setIframeSrcDoc(`
+        const iframeSrcDoc = `
         <body>
             ${installationSnippet.snippet}
             <script type="application/javascript">
@@ -191,8 +193,21 @@ export const TestFlowEditor = ({
             })
             </script>
          </body>
-        `)
+        `
+        if (chatIFrameElement.current) {
+            const iframeDocument =
+                chatIFrameElement.current.contentDocument ||
+                chatIFrameElement.current.contentWindow?.document
+
+            if (!iframeDocument) {
+                throw new Error('Not able to find IFrame document')
+            }
+            iframeDocument.open()
+            iframeDocument.write(iframeSrcDoc)
+            iframeDocument.close()
+        }
     }, [
+        chatIFrameElement,
         editWorkflowId,
         installationSnippet,
         isFlowInterpreterStarted,
@@ -213,6 +228,11 @@ export const TestFlowEditor = ({
             })
         }
     })
+
+    const reloadIframe = () => {
+        setShowIframe(false)
+        setTimeout(() => setShowIframe(true), 2000)
+    }
 
     useEffect(() => {
         if (!isTesting || !isFlowInterpreterStarted) return
@@ -250,6 +270,7 @@ export const TestFlowEditor = ({
                                 setIsFlowInterpreterStartedTimeout(false)
                                 setIsFlowInterpreterStarted(false)
                                 setSelectedChatChannel(channel)
+                                reloadIframe()
                             }
                         }}
                         isDisabled={!isFlowInterpreterStarted}
@@ -323,14 +344,15 @@ export const TestFlowEditor = ({
                         {!isFlowInterpreterStarted && (
                             <Spinner color="dark" className={css.spinner} />
                         )}
-                        <iframe
-                            title="Test Flow Editor"
-                            ref={chatIFrameElement}
-                            className={classNames(css['iframe'], {
-                                [css['hidden']]: !isFlowInterpreterStarted,
-                            })}
-                            srcDoc={iframeSrcDoc}
-                        ></iframe>
+                        {showIframe && (
+                            <iframe
+                                title="Test Flow Editor"
+                                ref={chatIFrameElement}
+                                className={classNames(css['iframe'], {
+                                    [css['hidden']]: !isFlowInterpreterStarted,
+                                })}
+                            ></iframe>
+                        )}
                     </div>
                 </div>
             </Drawer.Content>
