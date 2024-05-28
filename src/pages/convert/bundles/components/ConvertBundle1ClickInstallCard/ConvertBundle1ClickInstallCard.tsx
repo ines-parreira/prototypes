@@ -10,7 +10,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import {
     Bundle,
-    BundleInstallationMethod,
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'
@@ -88,7 +87,6 @@ const ConvertBundle1ClickInstallCard = ({
             try {
                 await client.post(`/api/revenue-addon-bundle/install/`, {
                     integration_id: integrationId,
-                    method: BundleInstallationMethod.OneClick,
                 })
 
                 if (onChange) {
