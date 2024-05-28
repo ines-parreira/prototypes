@@ -53,6 +53,11 @@ jest.mock('../CallTransferDropdown', () => ({
     ),
 }))
 
+jest.mock(
+    'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
+    () => () => <div>Agent Label</div>
+)
+
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
 
 describe('<OngoingPhoneCall/>', () => {
@@ -409,6 +414,7 @@ describe('<OngoingPhoneCall/>', () => {
             'aria-disabled',
             'true'
         )
+        expect(getByText(/Transferring call to/)).toBeInTheDocument()
     })
 
     it.each([

@@ -33,7 +33,7 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
             : (call.customParameters.get('To') as string)
 
     const transferFromAgentIdToNumber = Number(
-        call.customParameters.get('transfer_from_agent_id')
+        call.customParameters.get('transfer.from')
     )
     const transferFromAgentId = isNaN(transferFromAgentIdToNumber)
         ? null

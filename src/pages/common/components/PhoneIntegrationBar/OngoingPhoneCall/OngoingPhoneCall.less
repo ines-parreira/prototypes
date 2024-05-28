@@ -1,3 +1,5 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .container {
         background-color: var(--neutral-grey-0);
@@ -28,6 +30,13 @@
             .dialPad {
                 margin-left: auto;
             }
+        }
+
+        .callerDetails {
+            display: flex;
+            align-items: center;
+            gap: @layout-spacing-xxs;
+            flex-wrap: wrap;
         }
     }
 }

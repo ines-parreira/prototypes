@@ -34,10 +34,11 @@ import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
-import css from './OngoingPhoneCall.less'
 import IconButtonTooltip from './IconButtonTooltip'
 import CallTransferDropdown from './CallTransferDropdown'
+import css from './OngoingPhoneCall.less'
 
 type OwnProps = {
     call: Call
@@ -56,6 +57,7 @@ export function OngoingPhoneCall({
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
     const [isTransferring, setIsTransferring] = useState(false)
+    const [transferringTo, setTransferringTo] = useState<number | null>(null)
     const [isRecording, setIsRecording] = useState(false)
     const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
     const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
@@ -88,6 +90,7 @@ export function OngoingPhoneCall({
         (json: ServerMessage) => {
             const eventData = json as VoiceCallTransferFailedEvent
             setIsTransferring(false)
+            setTransferringTo(null)
 
             void notify({
                 dismissAfter: 5000,
@@ -156,10 +159,17 @@ export function OngoingPhoneCall({
         <div data-testid="ongoing-phone-call" className={css.container}>
             <div className={css.inner}>
                 <PhoneIntegrationName integrationId={integrationId} />
-                <PhoneCustomerName
-                    name={customerName}
-                    phoneNumber={customerPhoneNumber}
-                />
+                {transferringTo ? (
+                    <div className={css.callerDetails}>
+                        Transferring call to
+                        <VoiceCallAgentLabel agentId={transferringTo} />
+                    </div>
+                ) : (
+                    <PhoneCustomerName
+                        name={customerName}
+                        phoneNumber={customerPhoneNumber}
+                    />
+                )}
                 <InCallDialPad className={css.dialPad} call={call} />
                 {isCallTransferEnabled && (
                     <>
@@ -179,9 +189,10 @@ export function OngoingPhoneCall({
                             target={transferButtonRef}
                             isOpen={isTransferDropdownOpen}
                             setIsOpen={setIsTransferDropdownOpen}
-                            onTransferInitiated={() => {
+                            onTransferInitiated={(transferTarget) => {
                                 setIsTransferring(true)
                                 setIsOnHold(true)
+                                setTransferringTo(transferTarget)
                             }}
                             call={call}
                         />

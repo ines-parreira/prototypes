@@ -52,7 +52,7 @@ describe('useConnectionParameters()', () => {
 
     it('should return parameters for an incoming call transferred from agent', () => {
         const call = mockIncomingCall(1, 2) as Call
-        call.customParameters.set('transfer_from_agent_id', '3')
+        call.customParameters.set('transfer.from', '3')
         const parameters = useConnectionParameters(call)
 
         expect(parameters.transferFromAgentId).toEqual(3)

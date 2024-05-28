@@ -30,7 +30,7 @@ type Props = Pick<
     ComponentProps<typeof Dropdown>,
     'isOpen' | 'target' | 'placement'
 > & {
-    onTransferInitiated: () => void
+    onTransferInitiated: (transferringTo: number | null) => void
     setIsOpen: (isOpen: boolean) => void
     call: Call
 }
@@ -68,7 +68,7 @@ export default function CallTransferDropdown({
             mutation: {
                 onSuccess: () => {
                     setIsOpen(false)
-                    onTransferInitiated()
+                    onTransferInitiated(selectedAgent)
                 },
                 onError: (error) => {
                     const message =
