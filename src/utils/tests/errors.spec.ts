@@ -55,6 +55,8 @@ describe('errors util', () => {
             clientVersion: 'foo',
             serverVersion: 'bar',
             environment: GorgiasUIEnv.Development,
+            currentAccount: account,
+            currentUser: user,
         }
 
         it('should init sentry', () => {
@@ -90,11 +92,8 @@ describe('errors util', () => {
             )
         })
 
-        it(`should set tag "${ACCOUNT_DOMAIN_TAG}" when currentAccount option is defined`, () => {
-            initErrorReporter({
-                ...defaultInitOptions,
-                currentAccount: account,
-            })
+        it(`should set tag "${ACCOUNT_DOMAIN_TAG}"`, () => {
+            initErrorReporter(defaultInitOptions)
 
             expect(setTagMock).toHaveBeenCalledWith(
                 ACCOUNT_DOMAIN_TAG,
@@ -102,11 +101,8 @@ describe('errors util', () => {
             )
         })
 
-        it('should set user when currentUser option is defined', () => {
-            initErrorReporter({
-                ...defaultInitOptions,
-                currentUser: user,
-            })
+        it('should set user', () => {
+            initErrorReporter(defaultInitOptions)
 
             expect(setUserMock).toHaveBeenCalledWith({
                 id: user.id.toString(),

@@ -37,12 +37,14 @@ import {
     isStaging,
 } from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
+import {identifyUser as identifyHotjarUser} from 'utils/hotjar'
 import {
     getCurrentAutomationProduct,
     getCurrentHelpdeskProduct,
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
+
 import {getCurrentAccountState} from './state/currentAccount/selectors'
 
 setDefaultConfig({
@@ -107,17 +109,18 @@ export function initApp() {
     const {WEB_APP_RELEASE} = envVars
 
     if (WEB_APP_RELEASE) {
+        const {currentUser, currentAccount} = window.GORGIAS_STATE
         if (isStaging() || isProduction()) {
             initDatadogLogger({
-                account: window.GORGIAS_STATE.currentAccount,
-                user: window.GORGIAS_STATE.currentUser,
+                account: currentAccount,
+                user: currentUser,
                 serverVersion: window.GORGIAS_RELEASE,
                 clientVersion: WEB_APP_RELEASE,
                 environment,
             })
             initDatadogRum({
-                account: window.GORGIAS_STATE.currentAccount,
-                user: window.GORGIAS_STATE.currentUser,
+                account: currentAccount,
+                user: currentUser,
                 serverVersion: window.GORGIAS_RELEASE,
                 clientVersion: WEB_APP_RELEASE,
                 environment,
@@ -130,10 +133,17 @@ export function initApp() {
                 clientVersion: WEB_APP_RELEASE,
                 serverVersion: window.GORGIAS_RELEASE,
                 environment,
-                currentUser: window.GORGIAS_STATE.currentUser,
-                currentAccount: window.GORGIAS_STATE.currentAccount,
+                currentUser,
+                currentAccount,
             })
         }
+
+        identifyHotjarUser({
+            currentAccount,
+            currentUser,
+            clientVersion: WEB_APP_RELEASE,
+            serverVersion: window.GORGIAS_RELEASE,
+        })
     }
 
     // Supply an initial state to redux for faster page loads. See #752

@@ -42,8 +42,8 @@ export type InitErrorReporterParams = {
     clientVersion: string
     serverVersion: string
     environment: GorgiasUIEnv
-    currentUser?: User
-    currentAccount?: Account
+    currentUser: User
+    currentAccount: Account
 }
 
 export function initErrorReporter({
@@ -69,16 +69,12 @@ export function initErrorReporter({
     })
     Sentry.setTag(LANGUAGE_TAG, LANGUAGE_TAG_VALUE)
     Sentry.setTag(SERVER_VERSION_TAG, serverVersion)
-    if (currentAccount) {
-        Sentry.setTag(ACCOUNT_DOMAIN_TAG, currentAccount.domain)
-    }
-    if (currentUser) {
-        Sentry.setUser({
-            id: currentUser.id.toString(),
-            name: currentUser.name,
-            email: currentUser.email,
-        })
-    }
+    Sentry.setTag(ACCOUNT_DOMAIN_TAG, currentAccount.domain)
+    Sentry.setUser({
+        id: currentUser.id.toString(),
+        name: currentUser.name,
+        email: currentUser.email,
+    })
 }
 
 export function reportError(error: unknown, options?: Partial<ScopeContext>) {

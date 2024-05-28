@@ -12,6 +12,7 @@ import {account} from 'fixtures/account'
 import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
 import * as envUtils from 'utils/environment'
 import {initErrorReporter} from 'utils/errors'
+import {identifyUser} from 'utils/hotjar'
 
 const mockStore = configureMockStore([thunk])
 
@@ -34,6 +35,7 @@ jest.mock('common/store', () => {
 jest.mock('utils/datadog')
 jest.mock('utils/errors')
 jest.mock('utils/launchDarkly')
+jest.mock('utils/hotjar')
 
 jest.mock('utils/environment')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
@@ -232,6 +234,17 @@ describe('init', () => {
             initApp()
 
             expect(initErrorReporter).not.toHaveBeenCalled()
+        })
+
+        it('should identify hotjar user', () => {
+            initApp()
+
+            expect(identifyUser).toHaveBeenCalledWith({
+                serverVersion: defaultGorgiasRelease,
+                clientVersion: defaultWebAppRelease,
+                currentUser: defaultGorgiasState.currentUser,
+                currentAccount: defaultGorgiasState.currentAccount,
+            })
         })
     })
 })

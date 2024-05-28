@@ -77,6 +77,10 @@ declare global {
                 userId: string
             }
         }
+        hj?: (
+            method: 'event' | 'identify' | 'stateChange',
+            ...data: unknown[]
+        ) => void
     }
 
     function jestSetTimeout(
