@@ -6,13 +6,23 @@ import {getContrastColor} from 'gorgias-design-system/utils'
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'
-import {ImagePosition} from '../ImagePosition'
+import {
+    FeaturedImage,
+    ImagePosition,
+    VISIBLE_IMAGE_CONTAINER,
+} from '../ImagePosition'
 
+import {getDraggableContainerBounds} from '../ImagePosition/utils'
 import css from './ProductCardEdit.less'
+import {
+    convertRangeValueToSize,
+    convertSizeToRangeValue,
+    getMinRangeSize,
+} from './utils'
 
 type Props = {
     bgColor: string
-    image: string
+    image: FeaturedImage
     position?: AttachmentPosition
     onClickCancel: () => void
     onClickSave: (position: AttachmentPosition) => void
@@ -25,12 +35,16 @@ export const ProductCardEdit = ({
     onClickCancel,
     onClickSave,
 }: Props) => {
-    const [size, setSize] = useState(position?.size ?? 100)
+    const minRangeSize = getMinRangeSize(image, VISIBLE_IMAGE_CONTAINER)
+
+    const [size, setSize] = useState(position?.size ?? minRangeSize)
 
     const [x, setX] = useState(position?.x ?? 0)
     const [y, setY] = useState(position?.y ?? 0)
     const [offsetX, setOffsetX] = useState(position?.offsetX ?? 0)
     const [offsetY, setOffsetY] = useState(position?.offsetY ?? 0)
+
+    const inputRangeValue = convertSizeToRangeValue(size, minRangeSize)
 
     useEffect(() => {
         if (!position) {
@@ -61,7 +75,28 @@ export const ProductCardEdit = ({
     }
 
     const handleRangeChange = (ev: ChangeEvent<HTMLInputElement>) => {
-        setSize(parseInt(ev.target.value))
+        // Do not let user modify the size past a point from which the image would not be 100% within container
+        const converted = convertRangeValueToSize(
+            Number(ev.target.value),
+            minRangeSize
+        )
+        const adjustedSize = Math.max(minRangeSize, converted)
+
+        // Check if by zooming, image would get out of bounds and translate the image towards
+        // the other sign of the axis
+        const {left, top} = getDraggableContainerBounds(
+            image,
+            VISIBLE_IMAGE_CONTAINER,
+            adjustedSize
+        )
+
+        const newX = Math.max(x, left)
+        const newY = Math.max(y, top)
+
+        setX(newX)
+        setY(newY)
+
+        setSize(adjustedSize)
     }
 
     const handleSave = () => {
@@ -83,12 +118,13 @@ export const ProductCardEdit = ({
             onDrag={handleDrag}
         />
     )
+
     return (
         <BaseProductCard renderFeaturedImage={renderFeaturedImage}>
             <div className={css.details}>
                 <div className={css.controls}>
                     <InputRange
-                        value={size}
+                        value={inputRangeValue}
                         min={1}
                         max={100}
                         onChange={handleRangeChange}

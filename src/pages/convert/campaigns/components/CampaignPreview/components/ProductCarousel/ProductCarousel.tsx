@@ -96,7 +96,7 @@ export const ProductCarousel = ({
                         <ProductCard
                             isHighlighted={currentElement === index}
                             currency={product.currency}
-                            image={product.featured_image}
+                            imageSrc={product.featured_image}
                             color={mainColor}
                             price={product.price}
                             position={product.position}

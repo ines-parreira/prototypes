@@ -2,16 +2,26 @@ import React, {CSSProperties, useMemo} from 'react'
 
 import Draggable, {DraggableEventHandler} from 'react-draggable'
 
-import useMeasure from 'hooks/useMeasure'
-
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import css from './ImagePosition.less'
+import {getDraggableContainerBounds} from './utils'
+
+export const VISIBLE_IMAGE_CONTAINER = {
+    width: 280,
+    height: 220,
+}
+
+export type FeaturedImage = {
+    src: string
+    width: number
+    height: number
+}
 
 type Props = Omit<AttachmentPosition, 'offsetX' | 'offsetY'> & {
     readonly?: boolean
-    image: string
-    onDrag?: (x: number, y: number, width: number, height: number) => void
+    image: FeaturedImage
+    onDrag?: (x: number, y: number) => void
 }
 
 export const ImagePosition = ({
@@ -22,75 +32,76 @@ export const ImagePosition = ({
     y,
     onDrag,
 }: Props) => {
-    const [ref, {width, height}] = useMeasure<HTMLImageElement>()
+    const {src, ...imageSize} = image
 
     const imageStyle = useMemo<CSSProperties>(() => {
         if (!image) {
             return {}
         }
 
-        const base = {
-            width,
-            height,
-        }
-
         if (readonly) {
-            if (size > 0 && x !== 0 && y !== 0) {
+            if (size > 0 || x !== 0 || y !== 0) {
                 return {
-                    ...base,
-                    backgroundImage: `url("${image}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
+                    ...imageSize,
+                    backgroundImage: `url("${src}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
                     backgroundPosition: `${x}px ${y}px`,
                     backgroundSize: `${size}%`,
                 }
             }
 
             return {
-                backgroundImage: `url("${image}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
+                backgroundImage: `url("${src}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
             }
         }
 
         return {
-            ...base,
-            backgroundImage: `url("${image}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
+            ...imageSize,
+            backgroundImage: `url("${src}"), linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(22, 22, 22, 0.1) 100%)`,
             backgroundPosition: `${x}px ${y}px`,
             backgroundSize: `${size}%`,
         }
-    }, [readonly, image, y, x, width, height, size])
+    }, [image, readonly, imageSize, src, x, y, size])
 
-    const handleDrag: DraggableEventHandler = (event, data) => {
+    const handleDrag: DraggableEventHandler = (_event, data) => {
         const {y, x} = data
-        onDrag && onDrag(x, y, width, height)
+
+        onDrag && onDrag(x, y)
     }
 
-    if (readonly) {
-        return (
-            <>
-                <img ref={ref} className={css.hiddenImage} src={image} alt="" />
-                <div className={css.visibleContainer}>
-                    <div className={css.visibleImage} style={imageStyle} />
-                </div>
-            </>
-        )
+    const containerStyles = {
+        width: `${VISIBLE_IMAGE_CONTAINER.width}px`,
+        height: `${VISIBLE_IMAGE_CONTAINER.height}px`,
     }
+
+    const draggableContainerBounds = getDraggableContainerBounds(
+        imageSize,
+        VISIBLE_IMAGE_CONTAINER,
+        size
+    )
 
     return (
         <>
-            <img ref={ref} className={css.hiddenImage} src={image} alt="" />
-            <Draggable
-                handle=".cursor"
-                defaultPosition={{
-                    x: x ?? 0,
-                    y: y ?? 0,
-                }}
-                onDrag={handleDrag}
-            >
+            {!readonly && (
+                <Draggable
+                    handle=".cursor"
+                    defaultPosition={{
+                        x: x ?? 0,
+                        y: y ?? 0,
+                    }}
+                    onDrag={handleDrag}
+                    bounds={draggableContainerBounds}
+                >
+                    <div
+                        className={`${css.boundingBox} cursor`}
+                        style={imageSize}
+                    />
+                </Draggable>
+            )}
+            <div className={css.visibleContainer} style={containerStyles}>
                 <div
-                    className={`${css.boundingBox} cursor`}
-                    style={{width, height}}
-                ></div>
-            </Draggable>
-            <div className={css.visibleContainer}>
-                <div className={css.visibleImage} style={imageStyle} />
+                    className={css.visibleImage}
+                    style={{...containerStyles, ...imageStyle}}
+                />
             </div>
         </>
     )

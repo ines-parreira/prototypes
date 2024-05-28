@@ -9,7 +9,7 @@ import GorgiasButton from 'gorgias-design-system/Buttons/Button'
 import {AttachmentPosition} from '../../../../types/CampaignAttachment'
 
 import {BaseProductCard} from '../BaseProductCard'
-import {ImagePosition} from '../ImagePosition'
+import {FeaturedImage, ImagePosition} from '../ImagePosition'
 
 import css from './ProductCardView.less'
 
@@ -17,7 +17,7 @@ type Props = {
     isHighlighted: boolean
     bgColor: string
     currency?: string
-    image?: string
+    image?: FeaturedImage
     price: number
     title: string
     hasOptions?: boolean

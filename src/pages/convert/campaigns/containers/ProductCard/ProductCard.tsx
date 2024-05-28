@@ -1,13 +1,16 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {getLuminance, lighten, darken} from 'color2k'
 
 import {updateCampaignProductPosition} from 'state/newMessage/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 
+import useMeasure from 'hooks/useMeasure'
 import {AttachmentPosition} from '../../types/CampaignAttachment'
 
 import {ProductCardView} from './components/ProductCardView'
 import {ProductCardEdit} from './components/ProductCardEdit'
+
+import css from './ProductCard.less'
 
 const COLOR_VARIANT = 0.1
 const COLOR_LUMINANCE_THRESHOLD = 0.5
@@ -24,7 +27,7 @@ type Props = {
     isHighlighted?: boolean
     color?: string
     currency?: string
-    image?: string
+    imageSrc?: string
     price: number
     productId: number
     title: string
@@ -37,7 +40,7 @@ export const ProductCard = ({
     isHighlighted,
     color,
     currency,
-    image,
+    imageSrc,
     isHeadlessStore,
     position,
     price,
@@ -47,6 +50,7 @@ export const ProductCard = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const [isEditOn, setIsEdit] = useState(false)
+    const [hiddenImageRef, {width, height}] = useMeasure<HTMLImageElement>()
 
     const handleClickEdit = () => setIsEdit(true)
     const handleClickCancel = () => setIsEdit(false)
@@ -55,30 +59,51 @@ export const ProductCard = ({
         setIsEdit(false)
     }
 
-    if (isEditOn && image) {
-        return (
-            <ProductCardEdit
-                bgColor={getBackgroundColorVariant(color || DEFAULT_COLOR)}
-                image={image}
-                position={position}
-                onClickCancel={handleClickCancel}
-                onClickSave={handleSaveEdit}
-            />
-        )
-    }
+    const image = imageSrc
+        ? {
+              src: imageSrc,
+              width,
+              height,
+          }
+        : undefined
+
+    // If the product card is not highlighted anymore, exit editMode
+    useEffect(() => {
+        if (!isHighlighted && isEditOn) {
+            setIsEdit(false)
+        }
+    }, [isHighlighted, isEditOn])
 
     return (
-        <ProductCardView
-            isHighlighted={!!isHighlighted}
-            bgColor={color || DEFAULT_COLOR}
-            currency={currency}
-            image={image}
-            isHeadlessStore={isHeadlessStore}
-            position={position}
-            price={price}
-            title={title}
-            hasOptions={hasOptions}
-            onClickEdit={handleClickEdit}
-        />
+        <>
+            <img
+                ref={hiddenImageRef}
+                className={css.hiddenImage}
+                src={imageSrc}
+                alt=""
+            />
+            {isEditOn && image ? (
+                <ProductCardEdit
+                    bgColor={getBackgroundColorVariant(color || DEFAULT_COLOR)}
+                    image={image}
+                    position={position}
+                    onClickCancel={handleClickCancel}
+                    onClickSave={handleSaveEdit}
+                />
+            ) : (
+                <ProductCardView
+                    isHighlighted={!!isHighlighted}
+                    bgColor={color || DEFAULT_COLOR}
+                    currency={currency}
+                    image={image}
+                    isHeadlessStore={isHeadlessStore}
+                    position={position}
+                    price={price}
+                    title={title}
+                    hasOptions={hasOptions}
+                    onClickEdit={handleClickEdit}
+                />
+            )}
+        </>
     )
 }
