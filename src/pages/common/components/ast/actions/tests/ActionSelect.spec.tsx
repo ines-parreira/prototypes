@@ -1,7 +1,8 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
+import {render, screen} from '@testing-library/react'
 import ActionSelect from '../ActionSelect'
 
 const commonProps = {
@@ -18,34 +19,30 @@ const systemRule = fromJS({type: 'system'})
 
 describe('ActionSelect component', () => {
     it('should render all non-system actions for non-system rules', () => {
-        const component = shallow(
+        const {container} = render(
             <ActionSelect {...commonProps} rule={nonSystemRule} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render all actions for system rules', () => {
-        const component = shallow(
+        const {container} = render(
             <ActionSelect {...commonProps} rule={systemRule} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call actions.modifyCodeAST on click', () => {
-        const wrapper = shallow<ActionSelect>(
-            <ActionSelect {...commonProps} rule={nonSystemRule} />
-        )
+        render(<ActionSelect {...commonProps} rule={nonSystemRule} />)
 
-        const component = wrapper.instance()
-        const newValue = 'newValue'
-
-        component._handleClick(newValue)
+        userEvent.click(screen.getByRole('button'))
+        userEvent.click(screen.getByRole('menuitem', {name: 'Add tags'}))
 
         expect(commonProps.actions.modifyCodeAST).toHaveBeenCalledWith(
             commonProps.parent,
-            newValue,
+            commonProps.value,
             'UPDATE'
         )
     })

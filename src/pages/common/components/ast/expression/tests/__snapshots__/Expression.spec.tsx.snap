@@ -1,13 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Expression component should render UnknownSyntax because the passed type is invalid, and pass all props to child 1`] = `
-<UnknownSyntax
-  type="unknownType"
-/>
+<div
+  class="badge unknownstatement upperCase"
+>
+  Unknown 
+  unknownType
+</div>
 `;
 
 exports[`Expression component should render the valid Expression component matching the passed type because it is a valid one 1`] = `
-<Literal
-  type="Literal"
-/>
+<span
+  class="Literal"
+>
+  <div
+    class="d-inline-block text-danger ml-2"
+  >
+    This field cannot be empty
+  </div>
+</span>
 `;

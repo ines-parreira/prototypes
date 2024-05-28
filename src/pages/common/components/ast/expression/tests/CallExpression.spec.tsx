@@ -1,13 +1,14 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
 
+import {render} from '@testing-library/react'
 import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
-import WrappedCallExpression from '../CallExpression'
-import {ObjectExpressionPropertyKey} from '../../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../../settings/rules/types'
-import Expression from '../Expression'
-import Statement from '../../statements/Statement'
+import {ObjectExpressionPropertyKey} from 'state/rules/types'
+import {RuleItemActions} from 'pages/settings/rules/types'
+import Expression from 'pages/common/components/ast/expression/Expression'
+import Statement from 'pages/common/components/ast/statements/Statement'
+import {renderWithStore} from 'utils/testing'
+import WrappedCallExpression from 'pages/common/components/ast/expression/CallExpression'
 
 const commonProps = {
     rule: fromJS({foo: 'rule'}),
@@ -25,46 +26,49 @@ describe('CallExpression component', () => {
         }
 
         it('should not render delete widget because the expression is the only line of the test condition', () => {
-            const nonHoveredComponent = shallow(
+            const {container: nonHoveredContainer} = renderWithStore(
                 <RuleContext.Provider value={{Expression, Statement}}>
                     <WrappedCallExpression
                         {...commonProps}
                         parent={fromJS(['body', 0, 'test'])}
                         callee={callee}
                     />
-                </RuleContext.Provider>
+                </RuleContext.Provider>,
+                {}
             )
 
-            expect(nonHoveredComponent).toMatchSnapshot()
+            expect(nonHoveredContainer.firstChild).toMatchSnapshot()
 
-            const hoveredComponent = shallow(
+            const {container: hoveredContainer} = renderWithStore(
                 <RuleContext.Provider value={{Expression, Statement}}>
                     <WrappedCallExpression
                         {...commonProps}
                         parent={fromJS(['body', 0, 'test'])}
                         callee={callee}
                     />
-                </RuleContext.Provider>
+                </RuleContext.Provider>,
+                {}
             )
 
-            expect(hoveredComponent).toMatchSnapshot()
+            expect(hoveredContainer.firstChild).toMatchSnapshot()
         })
 
         it(
             'should not render delete widget because the expression is not the only line of the test condition and the ' +
                 'expression is not hovered',
             () => {
-                const component = shallow(
+                const {container} = renderWithStore(
                     <RuleContext.Provider value={{Expression, Statement}}>
                         <WrappedCallExpression
                             {...commonProps}
                             parent={fromJS(['body', 0, 'test', 'left'])}
                             callee={callee}
                         />
-                    </RuleContext.Provider>
+                    </RuleContext.Provider>,
+                    {}
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
 
@@ -72,17 +76,18 @@ describe('CallExpression component', () => {
             'should render delete widget because the expression is not the only line of the test condition and the ' +
                 'expression is hovered',
             () => {
-                const component = shallow(
+                const {container} = renderWithStore(
                     <RuleContext.Provider value={{Expression, Statement}}>
                         <WrappedCallExpression
                             {...commonProps}
                             parent={fromJS(['body', 0, 'test', 'left'])}
                             callee={callee}
                         />
-                    </RuleContext.Provider>
+                    </RuleContext.Provider>,
+                    {}
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
     })
@@ -94,7 +99,7 @@ describe('CallExpression component', () => {
         }
 
         it('should render', () => {
-            const component = shallow(
+            const {container} = render(
                 <RuleContext.Provider value={{Expression, Statement}}>
                     <WrappedCallExpression
                         {...commonProps}
@@ -104,7 +109,7 @@ describe('CallExpression component', () => {
                 </RuleContext.Provider>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

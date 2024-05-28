@@ -1,6 +1,5 @@
 import React from 'react'
 import {fromJS, Map} from 'immutable'
-import {shallow} from 'enzyme'
 import {render, cleanup} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -38,13 +37,13 @@ describe('ActionButton component', () => {
     afterEach(cleanup)
 
     it('should display a single option with no parameters', () => {
-        const component = shallow(<ActionButtonContainer {...minProps} />)
+        const component = render(<ActionButtonContainer {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display a single option with a text parameter', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[
@@ -69,7 +68,7 @@ describe('ActionButton component', () => {
     })
 
     it('should display a single option with a number parameter', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[
@@ -97,7 +96,7 @@ describe('ActionButton component', () => {
     })
 
     it('should display a single option with a checkbox parameter', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[
@@ -121,7 +120,7 @@ describe('ActionButton component', () => {
     })
 
     it('should display a single option with a select parameter', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[
@@ -149,7 +148,7 @@ describe('ActionButton component', () => {
     })
 
     it('should display multiple options without parameters', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[
@@ -169,7 +168,7 @@ describe('ActionButton component', () => {
     })
 
     it('should display multiple options with a common parameter', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[
@@ -207,7 +206,7 @@ describe('ActionButton component', () => {
     })
 
     it('should display multiple options with different parameter', () => {
-        const component = shallow(
+        const component = render(
             <ActionButtonContainer
                 {...minProps}
                 options={[

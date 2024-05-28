@@ -1,376 +1,341 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionSelect component should render all actions for system rules 1`] = `
-<UncontrolledButtonDropdown
-  className="ActionSelect"
+<div
+  class="ActionSelect btn-group"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="mr-1"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-1 dropdown-toggle btn btn-secondary"
     type="button"
   >
     Add tags
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      key="0"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Deliver message
-    </DropdownItem>
-    <DropdownItem
-      key="1"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Send email
-    </DropdownItem>
-    <DropdownItem
-      key="2"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Reply to customer
-    </DropdownItem>
-    <DropdownItem
-      key="3"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add internal note
-    </DropdownItem>
-    <DropdownItem
-      key="4"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Apply macro
-    </DropdownItem>
-    <DropdownItem
-      key="5"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add tags
-    </DropdownItem>
-    <DropdownItem
-      key="6"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Remove tags
-    </DropdownItem>
-    <DropdownItem
-      key="7"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Reset tags
-    </DropdownItem>
-    <DropdownItem
-      key="8"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Set subject
-    </DropdownItem>
-    <DropdownItem
-      key="9"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Set status
-    </DropdownItem>
-    <DropdownItem
-      key="10"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Set ticket field
-    </DropdownItem>
-    <DropdownItem
-      key="11"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Snooze for
-    </DropdownItem>
-    <DropdownItem
-      key="12"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Assign agent
-    </DropdownItem>
-    <DropdownItem
-      key="13"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Assign team
-    </DropdownItem>
-    <DropdownItem
-      key="14"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Delete ticket
-    </DropdownItem>
-    <DropdownItem
-      key="15"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Hide Facebook comment
-    </DropdownItem>
-    <DropdownItem
-      key="16"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Like Facebook comment
-    </DropdownItem>
-    <DropdownItem
-      key="17"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Exclude ticket from Auto-Merge
-    </DropdownItem>
-    <DropdownItem
-      key="18"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Exclude ticket from CSAT
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;
 
 exports[`ActionSelect component should render all non-system actions for non-system rules 1`] = `
-<UncontrolledButtonDropdown
-  className="ActionSelect"
+<div
+  class="ActionSelect btn-group"
 >
-  <DropdownToggle
-    aria-haspopup={true}
-    caret={true}
-    className="mr-1"
-    color="secondary"
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-1 dropdown-toggle btn btn-secondary"
     type="button"
   >
     Add tags
-  </DropdownToggle>
-  <DropdownMenu
-    flip={true}
-    tag="div"
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      key="1"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Send email
-    </DropdownItem>
-    <DropdownItem
-      key="2"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Reply to customer
-    </DropdownItem>
-    <DropdownItem
-      key="3"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add internal note
-    </DropdownItem>
-    <DropdownItem
-      key="4"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Apply macro
-    </DropdownItem>
-    <DropdownItem
-      key="5"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Add tags
-    </DropdownItem>
-    <DropdownItem
-      key="6"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Remove tags
-    </DropdownItem>
-    <DropdownItem
-      key="7"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Reset tags
-    </DropdownItem>
-    <DropdownItem
-      key="8"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Set subject
-    </DropdownItem>
-    <DropdownItem
-      key="9"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Set status
-    </DropdownItem>
-    <DropdownItem
-      key="10"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Set ticket field
-    </DropdownItem>
-    <DropdownItem
-      key="11"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Snooze for
-    </DropdownItem>
-    <DropdownItem
-      key="12"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Assign agent
-    </DropdownItem>
-    <DropdownItem
-      key="13"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Assign team
-    </DropdownItem>
-    <DropdownItem
-      key="14"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Delete ticket
-    </DropdownItem>
-    <DropdownItem
-      key="15"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Hide Facebook comment
-    </DropdownItem>
-    <DropdownItem
-      key="16"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Like Facebook comment
-    </DropdownItem>
-    <DropdownItem
-      key="17"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Exclude ticket from Auto-Merge
-    </DropdownItem>
-    <DropdownItem
-      key="18"
-      onClick={[Function]}
-      tag="button"
-      toggle={true}
+    </button>
+    <button
+      class="dropdown-item"
+      role="menuitem"
+      tabindex="0"
       type="button"
     >
       Exclude ticket from CSAT
-    </DropdownItem>
-  </DropdownMenu>
-</UncontrolledButtonDropdown>
+    </button>
+  </div>
+</div>
 `;

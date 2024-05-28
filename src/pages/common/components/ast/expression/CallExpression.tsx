@@ -13,7 +13,7 @@ import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
 
 import useHoverable from 'pages/common/hooks/useHoverable'
 import {useRuleContext} from 'pages/common/hooks/useRuleContext'
-import ObjectExpression from './ObjectExpression'
+import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
 
 type Props = {
     rule: Map<any, any>
