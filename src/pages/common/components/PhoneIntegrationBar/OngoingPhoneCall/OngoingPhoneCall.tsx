@@ -92,6 +92,7 @@ export function OngoingPhoneCall({
             const eventData = json as VoiceCallTransferFailedEvent
             setIsTransferring(false)
             setTransferringTo(null)
+            setIsOnHold(false)
 
             void notify({
                 dismissAfter: 5000,
