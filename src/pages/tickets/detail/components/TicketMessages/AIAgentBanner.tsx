@@ -63,12 +63,14 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
 
     const positiveFeedback =
         messageFeedback &&
-        messageFeedback.actions?.every((action) => action.feedback === 1) &&
+        messageFeedback.actions?.every(
+            (action) => action.feedback === 'thumbs_up'
+        ) &&
         messageFeedback.guidance?.every(
-            (guidance) => guidance.feedback === 1
+            (guidance) => guidance.feedback === 'thumbs_up'
         ) &&
         messageFeedback.knowledge?.every(
-            (knowledge) => knowledge.feedback === 1
+            (knowledge) => knowledge.feedback === 'thumbs_up'
         )
 
     return (

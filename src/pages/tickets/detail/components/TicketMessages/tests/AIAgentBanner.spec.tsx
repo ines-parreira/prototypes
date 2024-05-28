@@ -123,9 +123,9 @@ describe('AIAgentBanner', () => {
                     messages: [
                         {
                             messageId: mockMessage.id,
-                            actions: [{feedback: 1}],
-                            guidance: [{feedback: 1}],
-                            knowledge: [{feedback: 1}],
+                            actions: [{feedback: 'thumbs_up'}],
+                            guidance: [{feedback: 'thumbs_up'}],
+                            knowledge: [{feedback: 'thumbs_up'}],
                         },
                     ],
                 },
@@ -152,9 +152,9 @@ describe('AIAgentBanner', () => {
                     messages: [
                         {
                             messageId: mockMessage.id,
-                            actions: [{feedback: 1}],
-                            guidance: [{feedback: 0}],
-                            knowledge: [{feedback: 1}],
+                            actions: [{feedback: 'thumbs_up'}],
+                            guidance: [{feedback: null}],
+                            knowledge: [{feedback: 'thumbs_up'}],
                         },
                     ],
                 },

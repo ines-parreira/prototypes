@@ -82,13 +82,13 @@ const AIAgentFeedbackBar = () => {
                                     intent="secondary"
                                     size="small"
                                     iconClassName={
-                                        action.feedback === 1
+                                        action.feedback === 'thumbs_up'
                                             ? 'material-icons'
                                             : 'material-icons-outlined'
                                     }
                                     className={classNames({
                                         [css.positiveFeedback]:
-                                            action.feedback === 1,
+                                            action.feedback === 'thumbs_up',
                                     })}
                                 >
                                     thumb_up
@@ -98,13 +98,13 @@ const AIAgentFeedbackBar = () => {
                                     intent="secondary"
                                     size="small"
                                     iconClassName={
-                                        action.feedback === -1
+                                        action.feedback === 'thumbs_down'
                                             ? 'material-icons'
                                             : 'material-icons-outlined'
                                     }
                                     className={classNames({
                                         [css.negativeFeedback]:
-                                            action.feedback === -1,
+                                            action.feedback === 'thumbs_down',
                                     })}
                                 >
                                     thumb_down
@@ -133,13 +133,13 @@ const AIAgentFeedbackBar = () => {
                                     intent="secondary"
                                     size="small"
                                     iconClassName={
-                                        guidance.feedback === 1
+                                        guidance.feedback === 'thumbs_up'
                                             ? 'material-icons'
                                             : 'material-icons-outlined'
                                     }
                                     className={classNames({
                                         [css.positiveFeedback]:
-                                            guidance.feedback === 1,
+                                            guidance.feedback === 'thumbs_up',
                                     })}
                                 >
                                     thumb_up
@@ -149,13 +149,13 @@ const AIAgentFeedbackBar = () => {
                                     intent="secondary"
                                     size="small"
                                     iconClassName={
-                                        guidance.feedback === -1
+                                        guidance.feedback === 'thumbs_down'
                                             ? 'material-icons'
                                             : 'material-icons-outlined'
                                     }
                                     className={classNames({
                                         [css.negativeFeedback]:
-                                            guidance.feedback === -1,
+                                            guidance.feedback === 'thumbs_down',
                                     })}
                                 >
                                     thumb_down
@@ -187,13 +187,14 @@ const AIAgentFeedbackBar = () => {
                                         intent="secondary"
                                         size="small"
                                         iconClassName={
-                                            knowledge.feedback === 1
+                                            knowledge.feedback === 'thumbs_up'
                                                 ? 'material-icons'
                                                 : 'material-icons-outlined'
                                         }
                                         className={classNames({
                                             [css.positiveFeedback]:
-                                                knowledge.feedback === 1,
+                                                knowledge.feedback ===
+                                                'thumbs_up',
                                         })}
                                     >
                                         thumb_up
@@ -203,13 +204,14 @@ const AIAgentFeedbackBar = () => {
                                         intent="secondary"
                                         size="small"
                                         iconClassName={
-                                            knowledge.feedback === -1
+                                            knowledge.feedback === 'thumbs_down'
                                                 ? 'material-icons'
                                                 : 'material-icons-outlined'
                                         }
                                         className={classNames({
                                             [css.negativeFeedback]:
-                                                knowledge.feedback === -1,
+                                                knowledge.feedback ===
+                                                'thumbs_down',
                                         })}
                                     >
                                         thumb_down
