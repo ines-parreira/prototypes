@@ -43,6 +43,7 @@ export enum VoiceCallSegment {
     outboundCalls = 'VoiceCall.outboundCalls',
     missedCalls = 'VoiceCall.missedCalls',
     missedCallsByAgent = 'VoiceCall.missedCallsByAgent',
+    answeredCallsByAgent = 'VoiceCall.answeredCallsByAgent',
 }
 
 export const VoiceCallFiltersMembers: StatsFiltersMembers = {

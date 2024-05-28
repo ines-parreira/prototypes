@@ -8,7 +8,6 @@ import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
-    voiceCallCountPerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
@@ -49,10 +48,10 @@ describe('metricsPerDimension', () => {
         )
 
         expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallCountPerAgentQueryFactory(
+            voiceCallCountPerFilteringAgentQueryFactory(
                 statsFilters,
                 'UTC',
-                VoiceCallSegment.inboundCalls
+                VoiceCallSegment.answeredCallsByAgent
             ),
             '1',
         ])
@@ -77,7 +76,7 @@ describe('metricsPerDimension', () => {
         )
 
         expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
-            voiceCallCountPerAgentQueryFactory(
+            voiceCallCountPerFilteringAgentQueryFactory(
                 statsFilters,
                 'UTC',
                 VoiceCallSegment.outboundCalls

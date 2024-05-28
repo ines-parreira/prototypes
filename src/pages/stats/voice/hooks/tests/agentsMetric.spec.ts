@@ -84,13 +84,13 @@ describe('metricsPerDimension', () => {
                         values: [statsFilters.period.end_datetime],
                     },
                     {
-                        member: VoiceCallMember.AssignedAgentId,
+                        member: VoiceCallMember.AgentId,
                         operator: 'set',
                         values: [],
                     },
                 ],
                 measures: [VoiceCallMeasure.VoiceCallCount],
-                segments: [VoiceCallSegment.inboundCalls],
+                segments: [VoiceCallSegment.answeredCallsByAgent],
                 timezone: 'UTC',
             },
         ])

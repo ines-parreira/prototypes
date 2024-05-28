@@ -2,7 +2,6 @@ import {StatsFilters} from 'models/stat/types'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
-    voiceCallCountPerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
@@ -24,10 +23,10 @@ export const useAnsweredCallsMetricPerAgent = (
     agentAssigneeId?: string
 ) =>
     useMetricPerDimension(
-        voiceCallCountPerAgentQueryFactory(
+        voiceCallCountPerFilteringAgentQueryFactory(
             statsFilters,
             timezone,
-            VoiceCallSegment.inboundCalls
+            VoiceCallSegment.answeredCallsByAgent
         ),
         agentAssigneeId
     )
@@ -52,7 +51,7 @@ export const useOutboundCallsMetricPerAgent = (
     agentAssigneeId?: string
 ) =>
     useMetricPerDimension(
-        voiceCallCountPerAgentQueryFactory(
+        voiceCallCountPerFilteringAgentQueryFactory(
             statsFilters,
             timezone,
             VoiceCallSegment.outboundCalls

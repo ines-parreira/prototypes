@@ -52,9 +52,9 @@ export const useAnsweredCallsMetric = (
             voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
-                VoiceCallSegment.inboundCalls
+                VoiceCallSegment.answeredCallsByAgent
             ),
-            ignoreCallsWithNoAssignedAgentFilter
+            ignoreCallsWithNoAgentsFilter
         )
     )
 
