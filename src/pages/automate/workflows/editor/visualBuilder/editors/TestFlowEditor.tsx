@@ -303,7 +303,7 @@ export const TestFlowEditor = ({
                                         your store.
                                     </span>
                                     <a
-                                        href="https://link.gorgias.com/5j"
+                                        href="https://link.gorgias.com/5je"
                                         rel="noopener noreferrer"
                                         target="_blank"
                                         className={css.bannerContentLink}
