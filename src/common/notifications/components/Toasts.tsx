@@ -1,6 +1,8 @@
 import React, {useCallback, useMemo} from 'react'
 import {useKnockFeed} from '@knocklabs/react'
 
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import useToasts from '../hooks/useToasts'
 
 import Toast from './Toast'
@@ -28,7 +30,8 @@ export default function Toasts() {
     )
 
     const handleClick = useCallback(
-        (itemId: string) => {
+        (itemId) => {
+            logEvent(SegmentEvent.NotificationToastClicked)
             const knockItem = feedClient
                 .getState()
                 .items.find((item) => item.id === itemId)

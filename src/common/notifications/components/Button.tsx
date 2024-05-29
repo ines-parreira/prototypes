@@ -10,6 +10,7 @@ import React, {useCallback, useRef, useState} from 'react'
 import navbarCss from 'assets/css/navbar.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
+import {logEvent, SegmentEvent} from 'common/segment'
 
 import useCount from '../hooks/useCount'
 import transformKnockNotification from '../utils/transformKnockNotification'
@@ -31,6 +32,7 @@ export default function NotificationsButton() {
 
     const handleClickNotification = useCallback(
         (item: KnockFeedItem) => {
+            logEvent(SegmentEvent.NotificationFeedItemClicked)
             void feedClient.markAsRead(item)
             setIsVisible(false)
         },
@@ -39,7 +41,12 @@ export default function NotificationsButton() {
 
     const handleToggleRead = useCallback(
         (item: KnockFeedItem) => {
-            !!item.read_at
+            const isRead = !!item.read_at
+
+            logEvent(SegmentEvent.NotificationStatusToggled, {
+                status: isRead ? 'unread' : 'read',
+            })
+            isRead
                 ? void feedClient.markAsUnread(item)
                 : void feedClient.markAsRead(item)
         },
