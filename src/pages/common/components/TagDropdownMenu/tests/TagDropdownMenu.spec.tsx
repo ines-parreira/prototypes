@@ -1,26 +1,33 @@
+import {render} from '@testing-library/react'
 import React from 'react'
-import {DropdownMenu} from 'reactstrap'
-import {shallow} from 'enzyme'
 
-import TagDropdownMenu from '../TagDropdownMenu'
+import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
 describe('TagDropdownMenu', () => {
     it('should overwrite width style', () => {
         const customStyle = {
             width: '500px',
-            backgroundColor: '#123456',
+            backgroundColor: 'rgb(18, 52, 86)',
         }
-        const wrapper = shallow(<TagDropdownMenu style={customStyle} />)
-        const menuStyle = wrapper
-            .find(DropdownMenu)
-            .prop('style') as typeof customStyle
-        expect(menuStyle.width).not.toBe(customStyle.width)
-        expect(menuStyle.backgroundColor).toBe(customStyle.backgroundColor)
+
+        render(<TagDropdownMenu style={customStyle} />)
+        const menu = document.querySelector('.dropdown-menu')
+
+        expect(menu).not.toBeNull()
+        expect(menu).not.toHaveStyle({width: customStyle.width})
+        if (menu !== null) {
+            expect(window.getComputedStyle(menu)).not.toMatchObject({
+                width: customStyle.width,
+            })
+            expect(window.getComputedStyle(menu)).toMatchObject({
+                backgroundColor: customStyle.backgroundColor,
+            })
+        }
     })
 
     it('should pass props', () => {
-        // @ts-ignore
-        const wrapper = shallow(<TagDropdownMenu foo="bar" />)
-        expect(wrapper.find(DropdownMenu).prop('foo')).toBe('bar')
+        const {container} = render(<TagDropdownMenu foo="bar" />)
+
+        expect(container.firstChild).toHaveAttribute('foo', 'bar')
     })
 })

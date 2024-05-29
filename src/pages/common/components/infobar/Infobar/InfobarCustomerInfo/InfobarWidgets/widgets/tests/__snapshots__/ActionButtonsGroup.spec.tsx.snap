@@ -1,208 +1,138 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionButtonsGroup component should not render the dropdown if there 3 or less actions 1`] = `
-<Group
-  className="container"
+<span
+  class="container group horizontal"
 >
-  <Connect(Component)
-    key="action1"
-    options={
-      [
-        {
-          "label": "Option 1",
-          "value": "option1",
-        },
-      ]
-    }
-    payload={{}}
-    setModalOpen={[Function]}
-    title={
-      <div>
-        Option 1
-      </div>
-    }
+  <button
+    aria-disabled="false"
+    class="wrapper actionButton fill secondary small left"
+    id="action-button-1"
+    type="button"
   >
+    <span
+      id="action-button-1-tooltip-target"
+    />
     <div>
       Option 1
     </div>
-  </Connect(Component)>
-  <Connect(Component)
-    key="action2"
-    options={
-      [
-        {
-          "label": "Option 1",
-          "value": "option1",
-        },
-      ]
-    }
-    payload={{}}
-    setModalOpen={[Function]}
-    title={
-      <div>
-        Option 1
-      </div>
-    }
+  </button>
+  <button
+    aria-disabled="false"
+    class="wrapper actionButton fill secondary small center"
+    id="action-button-2"
+    type="button"
   >
+    <span
+      id="action-button-2-tooltip-target"
+    />
     <div>
       Option 1
     </div>
-  </Connect(Component)>
-  <Connect(Component)
-    key="action3"
-    options={
-      [
-        {
-          "label": "Option 1",
-          "value": "option1",
-        },
-      ]
-    }
-    payload={{}}
-    setModalOpen={[Function]}
-    title={
-      <div>
-        Option 1
-      </div>
-    }
+  </button>
+  <button
+    aria-disabled="false"
+    class="wrapper actionButton fill secondary small right"
+    id="action-button-3"
+    type="button"
   >
+    <span
+      id="action-button-3-tooltip-target"
+    />
     <div>
       Option 1
     </div>
-  </Connect(Component)>
-</Group>
+  </button>
+</span>
 `;
 
-exports[`ActionButtonsGroup component should render null if there's no actions 1`] = `""`;
+exports[`ActionButtonsGroup component should render null if there's no actions 1`] = `null`;
 
 exports[`ActionButtonsGroup component should render the dropdown if there more than 3 actions 1`] = `
-<Group
-  className="container"
+<span
+  class="container group horizontal"
 >
-  <Connect(Component)
-    key="action1"
-    options={
-      [
-        {
-          "label": "Option 1",
-          "value": "option1",
-        },
-      ]
-    }
-    payload={{}}
-    setModalOpen={[Function]}
-    title={
-      <div>
-        Option 1
-      </div>
-    }
+  <button
+    aria-disabled="false"
+    class="wrapper actionButton fill secondary small left"
+    id="action-button-4"
+    type="button"
   >
+    <span
+      id="action-button-4-tooltip-target"
+    />
     <div>
       Option 1
     </div>
-  </Connect(Component)>
-  <Connect(Component)
-    key="action2"
-    options={
-      [
-        {
-          "label": "Option 1",
-          "value": "option1",
-        },
-      ]
-    }
-    payload={{}}
-    setModalOpen={[Function]}
-    title={
-      <div>
-        Option 1
-      </div>
-    }
+  </button>
+  <button
+    aria-disabled="false"
+    class="wrapper actionButton fill secondary small center"
+    id="action-button-5"
+    type="button"
   >
+    <span
+      id="action-button-5-tooltip-target"
+    />
     <div>
       Option 1
     </div>
-  </Connect(Component)>
-  <Connect(Component)
-    key="action3"
-    options={
-      [
-        {
-          "label": "Option 1",
-          "value": "option1",
-        },
-      ]
-    }
-    payload={{}}
-    setModalOpen={[Function]}
-    title={
-      <div>
-        Option 1
-      </div>
-    }
+  </button>
+  <button
+    aria-disabled="false"
+    class="wrapper actionButton fill secondary small center"
+    id="action-button-6"
+    type="button"
   >
+    <span
+      id="action-button-6-tooltip-target"
+    />
     <div>
       Option 1
     </div>
-  </Connect(Component)>
-  <Dropdown
-    a11y={true}
-    active={false}
-    addonType={false}
-    direction="down"
-    inNavbar={false}
-    isOpen={false}
-    nav={false}
-    setActiveFromChild={false}
-    toggle={[Function]}
+  </button>
+  <div
+    class="dropdown"
   >
-    <DropdownToggle
-      aria-haspopup={true}
-      color="secondary"
-      tag="span"
+    <span
+      aria-expanded="false"
+      aria-haspopup="true"
+      class=""
     >
-      <ForwardRef(IconButton)
+      <button
+        aria-disabled="false"
+        class="wrapper wrapper small fill secondary small right"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          more_horiz
+        </i>
+      </button>
+    </span>
+    <div
+      aria-hidden="true"
+      class="dropdown-menu dropdown-menu-right"
+      role="menu"
+      tabindex="-1"
+    >
+      <button
+        class="dropdownItem dropdown-item"
+        id="action-button-7"
         intent="secondary"
-        size="small"
+        role="menuitem"
+        tabindex="0"
+        type="button"
       >
-        more_horiz
-      </ForwardRef(IconButton)>
-    </DropdownToggle>
-    <DropdownMenu
-      flip={true}
-      right={true}
-      tag="div"
-    >
-      <Connect(Component)
-        key="action4"
-        options={
-          [
-            {
-              "label": "Option 1",
-              "value": "option1",
-            },
-          ]
-        }
-        payload={{}}
-        setModalOpen={[Function]}
-        tag={[Function]}
-        tagOptions={
-          {
-            "className": "dropdownItem",
-            "toggle": false,
-          }
-        }
-        title={
-          <div>
-            Option 1
-          </div>
-        }
-      >
+        <span
+          id="action-button-7-tooltip-target"
+        />
         <div>
           Option 1
         </div>
-      </Connect(Component)>
-    </DropdownMenu>
-  </Dropdown>
-</Group>
+      </button>
+    </div>
+  </div>
+</span>
 `;

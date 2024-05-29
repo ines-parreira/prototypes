@@ -5,10 +5,10 @@ import {EditionContext} from 'providers/infobar/EditionContext'
 import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
 
-import ActionButton from './ActionButton'
-import css from './ActionButtons.less'
+import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
+import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtons.less'
 
-import {InfobarAction} from './types'
+import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
 type Props = {
     actions: InfobarAction[]

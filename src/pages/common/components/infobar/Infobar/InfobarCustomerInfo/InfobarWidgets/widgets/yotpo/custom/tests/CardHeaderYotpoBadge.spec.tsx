@@ -1,6 +1,6 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 
+import {render} from '@testing-library/react'
 import {CardHeaderYotpoBadge} from '../CardHeaderYotpoBadge'
 
 describe('<CardHeaderYotpoBadge/>', () => {
@@ -8,51 +8,51 @@ describe('<CardHeaderYotpoBadge/>', () => {
         it.each(['visibilty', 'visibilty_off', 'star'])(
             'should render with material icons',
             (iconName) => {
-                const component = shallow(
+                const {container} = render(
                     <CardHeaderYotpoBadge iconName={iconName} />
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
 
         it.each(['primary', 'secondary'])(
             'should support primary color',
             (color) => {
-                const component = shallow(
+                const {container} = render(
                     <CardHeaderYotpoBadge iconName="star" color={color}>
                         <p>foo</p>
                         <p>bar</p>
                     </CardHeaderYotpoBadge>
                 )
 
-                expect(component).toMatchSnapshot()
+                expect(container.firstChild).toMatchSnapshot()
             }
         )
         it('should render children', () => {
-            const component = shallow(
+            const {container} = render(
                 <CardHeaderYotpoBadge iconName="star">
                     <p>foo</p>
                     <p>bar</p>
                 </CardHeaderYotpoBadge>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should support no children', () => {
-            const component = shallow(<CardHeaderYotpoBadge iconName="star" />)
+            const {container} = render(<CardHeaderYotpoBadge iconName="star" />)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
         it('should support css class injection', () => {
-            const component = shallow(
+            const {container} = render(
                 <CardHeaderYotpoBadge
                     iconName="star"
                     className="custom-css-class"
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

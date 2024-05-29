@@ -1,7 +1,8 @@
 import React from 'react'
-import {shallow} from 'enzyme'
 
-import ActionButtonsGroup from '../ActionButtonsGroup'
+import {render} from '@testing-library/react'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
+import {renderWithStore} from 'utils/testing'
 
 describe('ActionButtonsGroup component', () => {
     const baseAction = {
@@ -11,15 +12,15 @@ describe('ActionButtonsGroup component', () => {
     }
 
     it("should render null if there's no actions", () => {
-        const component = shallow(
+        const {container} = render(
             <ActionButtonsGroup actions={[]} payload={{}} />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the dropdown if there 3 or less actions', () => {
-        const component = shallow(
+        const {container} = renderWithStore(
             <ActionButtonsGroup
                 actions={[
                     {
@@ -36,14 +37,15 @@ describe('ActionButtonsGroup component', () => {
                     },
                 ]}
                 payload={{}}
-            />
+            />,
+            {}
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the dropdown if there more than 3 actions', () => {
-        const component = shallow(
+        const {container} = renderWithStore(
             <ActionButtonsGroup
                 actions={[
                     {
@@ -64,9 +66,10 @@ describe('ActionButtonsGroup component', () => {
                     },
                 ]}
                 payload={{}}
-            />
+            />,
+            {}
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

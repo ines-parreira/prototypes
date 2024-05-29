@@ -1,27 +1,15 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
-import thunk from 'redux-thunk'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-
-import {StoreDispatch} from 'state/types'
 import {channels as mockChannels} from 'fixtures/channels'
+import {renderWithStore} from 'utils/testing'
 
-import SelectTargetTicket from '../SelectTargetTicket'
-
-type MockedRootState = Record<string, unknown>
-
-const middlewares = [thunk]
-const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
-)
+import SelectTargetTicket from 'pages/common/components/MergeTickets/SelectTargetTicket'
 
 jest.mock('services/channels', () => ({
     getChannels: () => mockChannels,
 }))
 
 describe('SelectTargetTicket component', () => {
-    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
     const baseTicket = fromJS({
         subject: 'foo',
         assignee_user: {
@@ -34,20 +22,16 @@ describe('SelectTargetTicket component', () => {
         },
     })
 
-    beforeEach(() => {
-        store = mockStore({})
-    })
-
     it('should render', () => {
-        const component = shallow(
+        const {container} = renderWithStore(
             <SelectTargetTicket
-                {...{store}}
                 sourceTicket={baseTicket}
                 updateTargetTicket={baseTicket}
                 customerId={123}
-            />
-        ).dive()
+            />,
+            {}
+        )
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 })

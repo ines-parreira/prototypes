@@ -2,15 +2,15 @@
 
 exports[`<CardHeaderYotpoBadge/> render() should render children 1`] = `
 <span
-  className=" container primary"
+  class=" container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     star
   </span>
   <span
-    className="children"
+    class="children"
   >
     <p>
       foo
@@ -24,10 +24,10 @@ exports[`<CardHeaderYotpoBadge/> render() should render children 1`] = `
 
 exports[`<CardHeaderYotpoBadge/> render() should render with material icons 1`] = `
 <span
-  className=" container primary"
+  class=" container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     visibilty
   </span>
@@ -36,10 +36,10 @@ exports[`<CardHeaderYotpoBadge/> render() should render with material icons 1`] 
 
 exports[`<CardHeaderYotpoBadge/> render() should render with material icons 2`] = `
 <span
-  className=" container primary"
+  class=" container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     visibilty_off
   </span>
@@ -48,10 +48,10 @@ exports[`<CardHeaderYotpoBadge/> render() should render with material icons 2`] 
 
 exports[`<CardHeaderYotpoBadge/> render() should render with material icons 3`] = `
 <span
-  className=" container primary"
+  class=" container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     star
   </span>
@@ -60,10 +60,10 @@ exports[`<CardHeaderYotpoBadge/> render() should render with material icons 3`] 
 
 exports[`<CardHeaderYotpoBadge/> render() should support css class injection 1`] = `
 <span
-  className="custom-css-class container primary"
+  class="custom-css-class container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     star
   </span>
@@ -72,10 +72,10 @@ exports[`<CardHeaderYotpoBadge/> render() should support css class injection 1`]
 
 exports[`<CardHeaderYotpoBadge/> render() should support no children 1`] = `
 <span
-  className=" container primary"
+  class=" container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     star
   </span>
@@ -84,15 +84,15 @@ exports[`<CardHeaderYotpoBadge/> render() should support no children 1`] = `
 
 exports[`<CardHeaderYotpoBadge/> render() should support primary color 1`] = `
 <span
-  className=" container primary"
+  class=" container primary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     star
   </span>
   <span
-    className="children"
+    class="children"
   >
     <p>
       foo
@@ -106,15 +106,15 @@ exports[`<CardHeaderYotpoBadge/> render() should support primary color 1`] = `
 
 exports[`<CardHeaderYotpoBadge/> render() should support primary color 2`] = `
 <span
-  className=" container secondary"
+  class=" container secondary"
 >
   <span
-    className="material-icons icon"
+    class="material-icons icon"
   >
     star
   </span>
   <span
-    className="children"
+    class="children"
   >
     <p>
       foo
