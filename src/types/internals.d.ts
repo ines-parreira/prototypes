@@ -81,6 +81,8 @@ declare global {
             method: 'event' | 'identify' | 'stateChange',
             ...data: unknown[]
         ) => void
+        KNOCK_PUBLIC_KEY: string
+        KNOCK_TOKEN: string
     }
 
     function jestSetTimeout(
