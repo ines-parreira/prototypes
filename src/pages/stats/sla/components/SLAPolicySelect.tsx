@@ -1,6 +1,7 @@
 import {useListSlaPolicies} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
@@ -99,18 +100,20 @@ export const SLAPolicySelect = () => {
                     values={policyIds}
                     count={policies.length}
                 />
-                {policies?.map((policy) => (
-                    <DropdownItem
-                        key={policy.uuid}
-                        className={classnames(css.dropdownItem)}
-                        onClick={handleClick}
-                        option={{value: policy.uuid, label: policy.name}}
-                    >
-                        <span className={css.dropdownItemContent}>
-                            {policy.name}
-                        </span>
-                    </DropdownItem>
-                ))}
+                <DropdownBody>
+                    {policies?.map((policy) => (
+                        <DropdownItem
+                            key={policy.uuid}
+                            className={classnames(css.dropdownItem)}
+                            onClick={handleClick}
+                            option={{value: policy.uuid, label: policy.name}}
+                        >
+                            <span className={css.dropdownItemContent}>
+                                {policy.name}
+                            </span>
+                        </DropdownItem>
+                    ))}
+                </DropdownBody>
             </Dropdown>
         </div>
     )

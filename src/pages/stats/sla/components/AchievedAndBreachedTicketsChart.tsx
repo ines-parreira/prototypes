@@ -1,4 +1,5 @@
 import React from 'react'
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'
 import useAppSelector from 'hooks/useAppSelector'
@@ -18,6 +19,17 @@ const CHART_COLORS = [
     analyticsColors['analytics'].data.yellow.value,
 ]
 
+export const CHART_FIELDS = [
+    {
+        field: TicketSLAStatus.Satisfied,
+        label: 'Achieved',
+    },
+    {
+        field: TicketSLAStatus.Breached,
+        label: 'Breached',
+    },
+]
+
 export const AchievedAndBreachedTicketsChart = () => {
     const {cleanStatsFilters, userTimezone, granularity} = useAppSelector(
         getCleanStatsFiltersWithTimezone
@@ -29,7 +41,9 @@ export const AchievedAndBreachedTicketsChart = () => {
     )
 
     const formattedData = data
-        ? Object.keys(data).map((metric) => data[metric][0])
+        ? CHART_FIELDS.map((metric) => metric.field).map(
+              (metric) => data[metric][0]
+          )
         : []
 
     return isLoading ? (
@@ -41,7 +55,7 @@ export const AchievedAndBreachedTicketsChart = () => {
                     data !== undefined
                         ? formatLabeledTimeSeriesData(
                               formattedData,
-                              Object.keys(data),
+                              CHART_FIELDS.map((metric) => metric.label),
                               granularity
                           )
                         : []

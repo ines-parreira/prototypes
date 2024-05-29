@@ -11,6 +11,7 @@ import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {
     AchievedAndBreachedTicketsChart,
+    CHART_FIELDS,
     CHART_TITLE,
     HINT,
 } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
@@ -130,10 +131,10 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
             expect.objectContaining({
                 data: formatLabeledTimeSeriesData(
                     [
-                        exampleData[TicketSLAStatus.Breached][0],
                         exampleData[TicketSLAStatus.Satisfied][0],
+                        exampleData[TicketSLAStatus.Breached][0],
                     ],
-                    [TicketSLAStatus.Breached, TicketSLAStatus.Satisfied],
+                    CHART_FIELDS.map((metric) => metric.label),
                     ReportingGranularity.Day
                 ),
             }),

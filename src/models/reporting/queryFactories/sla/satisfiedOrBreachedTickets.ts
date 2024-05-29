@@ -2,10 +2,13 @@ import {OrderDirection} from 'models/api/types'
 import {
     TicketSLACubeWithJoins,
     TicketSLADimension,
+    TicketSLAMember,
     TicketSLASegment,
+    TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import {slaTicketsQueryFactory} from 'models/reporting/queryFactories/sla/slaTickets'
 import {
+    ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
@@ -28,6 +31,14 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
     granularity: ReportingGranularity
 ): TimeSeriesQuery<TicketSLACubeWithJoins> => ({
     ...slaTicketsQueryFactory(filters, timezone),
+    filters: [
+        ...slaTicketsQueryFactory(filters, timezone).filters,
+        {
+            member: TicketSLAMember.SlaStatus,
+            operator: ReportingFilterOperator.Equals,
+            values: [TicketSLAStatus.Satisfied, TicketSLAStatus.Breached],
+        },
+    ],
     timeDimensions: [
         {
             dimension: TicketSLADimension.SlaAnchorDatetime,
