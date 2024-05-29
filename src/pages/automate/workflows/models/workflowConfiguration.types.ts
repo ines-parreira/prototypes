@@ -204,6 +204,7 @@ export enum WorkflowTemplateLabelType {
     Policies = 'Policies',
     SubscriptionManagement = 'Subscription Management',
     ThirdPartyActions = '3rd Party Actions',
+    PaymentAndDiscounts = 'Payment & Discounts',
 }
 
 export type WorkflowTemplate = {

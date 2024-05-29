@@ -30,6 +30,10 @@ const workflowLabelStyles: Record<
         color: 'var(--accessory-yellow-3)',
         backgroundColor: 'var(--accessory-yellow-1)',
     },
+    [WorkflowTemplateLabelType.PaymentAndDiscounts]: {
+        color: 'var(--accessory-teal-3)',
+        backgroundColor: 'var(--accessory-teal-1)',
+    },
 }
 
 type Props = {
