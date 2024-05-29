@@ -1,8 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
-import React, {useMemo, useState} from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
-import {FeatureFlagKey} from 'config/featureFlags'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
@@ -65,9 +63,6 @@ export default function SupportPerformanceOverview() {
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
 
-    const isAnalyticsProductivityMetricsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
-
     const surveySettings = useAppSelector(getSurveysSettingsJS)
     const hasSatisfactionSurveyEnabledAndConfigured =
         hasSatisfactionSurveyEnabled &&
@@ -80,35 +75,10 @@ export default function SupportPerformanceOverview() {
 
     const getGridCellSize = useGridSize()
 
-    const performanceOverviewChartType = useMemo(
-        () => (isAnalyticsProductivityMetricsEnabled ? 'bar' : 'line'),
-        [isAnalyticsProductivityMetricsEnabled]
-    )
+    const performanceOverviewChartType = 'bar'
 
     return (
         <div className="full-width">
-            {!isAnalyticsProductivityMetricsEnabled &&
-            isVersionBannerVisible ? (
-                <BannerNotification
-                    actionHTML={
-                        <Link to="/app/stats/support-performance-overview-legacy">
-                            <i className="material-icons">refresh</i> Switch To
-                            Old Version
-                        </Link>
-                    }
-                    closable
-                    dismissible={false}
-                    message={
-                        <span>
-                            {isAnalyticsProductivityMetricsEnabled
-                                ? BANNER_TEXT
-                                : BANNER_TEXT_DEPRECATED}
-                        </span>
-                    }
-                    onClose={() => setIsVersionBannerVisible(false)}
-                />
-            ) : null}
-
             <StatsPage
                 title={SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE}
                 titleExtra={
@@ -214,191 +184,95 @@ export default function SupportPerformanceOverview() {
                 </DashboardSection>
 
                 <DashboardSection title="Workload">
-                    {isAnalyticsProductivityMetricsEnabled ? (
-                        <>
-                            <DashboardGridCell size={getGridCellSize(4)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.TicketsCreated
-                                    ]}
-                                    drillDownMetric={
-                                        OverviewMetric.TicketsCreated
-                                    }
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(4)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.TicketsClosed
-                                    ]}
-                                    drillDownMetric={
-                                        OverviewMetric.TicketsClosed
-                                    }
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(4)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.OpenTickets
-                                    ]}
-                                    drillDownMetric={OverviewMetric.OpenTickets}
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={12}>
-                                <TicketsCreatedVsClosedChartCard />
-                            </DashboardGridCell>
-                        </>
-                    ) : (
-                        <>
-                            <DashboardGridCell size={getGridCellSize(6)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.OpenTickets
-                                    ]}
-                                    drillDownMetric={OverviewMetric.OpenTickets}
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(6)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.TicketsClosed
-                                    ]}
-                                    drillDownMetric={
-                                        OverviewMetric.TicketsClosed
-                                    }
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(4)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.TicketsCreated
-                                    ]}
-                                    drillDownMetric={
-                                        OverviewMetric.TicketsCreated
-                                    }
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(4)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.TicketsReplied
-                                    ]}
-                                    drillDownMetric={
-                                        OverviewMetric.TicketsReplied
-                                    }
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(4)}>
-                                <TrendCard
-                                    {...OverviewMetricConfig[
-                                        OverviewMetric.MessagesSent
-                                    ]}
-                                    drillDownMetric={
-                                        OverviewMetric.MessagesSent
-                                    }
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(6)}>
-                                <OverviewChartCard
-                                    {...OverviewChartConfig[
-                                        OverviewMetric.TicketsCreated
-                                    ]}
-                                    chartType={performanceOverviewChartType}
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(6)}>
-                                <OverviewChartCard
-                                    {...OverviewChartConfig[
-                                        OverviewMetric.TicketsClosed
-                                    ]}
-                                    chartType={performanceOverviewChartType}
-                                />
-                            </DashboardGridCell>
-                        </>
-                    )}
+                    <>
+                        <DashboardGridCell size={getGridCellSize(4)}>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.TicketsCreated
+                                ]}
+                                drillDownMetric={OverviewMetric.TicketsCreated}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={getGridCellSize(4)}>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.TicketsClosed
+                                ]}
+                                drillDownMetric={OverviewMetric.TicketsClosed}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={getGridCellSize(4)}>
+                            <TrendCard
+                                {...OverviewMetricConfig[
+                                    OverviewMetric.OpenTickets
+                                ]}
+                                drillDownMetric={OverviewMetric.OpenTickets}
+                            />
+                        </DashboardGridCell>
+                        <DashboardGridCell size={12}>
+                            <TicketsCreatedVsClosedChartCard />
+                        </DashboardGridCell>
+                    </>
 
-                    {!isAnalyticsProductivityMetricsEnabled ? (
-                        <>
-                            <DashboardGridCell size={getGridCellSize(6)}>
-                                <OverviewChartCard
-                                    {...OverviewChartConfig[
-                                        OverviewMetric.TicketsReplied
-                                    ]}
-                                    chartType={performanceOverviewChartType}
-                                />
-                            </DashboardGridCell>
-                            <DashboardGridCell size={getGridCellSize(6)}>
-                                <OverviewChartCard
-                                    {...OverviewChartConfig[
-                                        OverviewMetric.MessagesSent
-                                    ]}
-                                    chartType={performanceOverviewChartType}
-                                />
-                            </DashboardGridCell>
-                        </>
-                    ) : null}
                     <DashboardGridCell size={12}>
                         <WorkloadPerChannelChart />
                     </DashboardGridCell>
                 </DashboardSection>
-                {isAnalyticsProductivityMetricsEnabled ? (
-                    <DashboardSection title="Productivity">
-                        <DashboardGridCell size={getGridCellSize(3)}>
-                            <TrendCard
-                                {...OverviewMetricConfig[
-                                    OverviewMetric.TicketsReplied
-                                ]}
-                                drillDownMetric={OverviewMetric.TicketsReplied}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(3)}>
-                            <TrendCard
-                                {...OverviewMetricConfig[
-                                    OverviewMetric.MessagesSent
-                                ]}
-                                drillDownMetric={OverviewMetric.MessagesSent}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(3)}>
-                            <TrendCard
-                                {...OverviewMetricConfig[
-                                    OverviewMetric.TicketHandleTime
-                                ]}
-                                drillDownMetric={
-                                    OverviewMetric.TicketHandleTime
-                                }
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(3)}>
-                            <TrendCard
-                                {...OverviewMetricConfig[
-                                    OverviewMetric.OneTouchTickets
-                                ]}
-                                drillDownMetric={OverviewMetric.OneTouchTickets}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(6)}>
-                            <OverviewChartCard
-                                {...OverviewChartConfig[
-                                    OverviewMetric.TicketsReplied
-                                ]}
-                                chartType={performanceOverviewChartType}
-                            />
-                        </DashboardGridCell>
-                        <DashboardGridCell size={getGridCellSize(6)}>
-                            <OverviewChartCard
-                                {...OverviewChartConfig[
-                                    OverviewMetric.MessagesSent
-                                ]}
-                                chartType={performanceOverviewChartType}
-                            />
-                        </DashboardGridCell>
-                    </DashboardSection>
-                ) : null}
+
+                <DashboardSection title="Productivity">
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <TrendCard
+                            {...OverviewMetricConfig[
+                                OverviewMetric.TicketsReplied
+                            ]}
+                            drillDownMetric={OverviewMetric.TicketsReplied}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <TrendCard
+                            {...OverviewMetricConfig[
+                                OverviewMetric.MessagesSent
+                            ]}
+                            drillDownMetric={OverviewMetric.MessagesSent}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <TrendCard
+                            {...OverviewMetricConfig[
+                                OverviewMetric.TicketHandleTime
+                            ]}
+                            drillDownMetric={OverviewMetric.TicketHandleTime}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(3)}>
+                        <TrendCard
+                            {...OverviewMetricConfig[
+                                OverviewMetric.OneTouchTickets
+                            ]}
+                            drillDownMetric={OverviewMetric.OneTouchTickets}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <OverviewChartCard
+                            {...OverviewChartConfig[
+                                OverviewMetric.TicketsReplied
+                            ]}
+                            chartType={performanceOverviewChartType}
+                        />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <OverviewChartCard
+                            {...OverviewChartConfig[
+                                OverviewMetric.MessagesSent
+                            ]}
+                            chartType={performanceOverviewChartType}
+                        />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
 
-            {isAnalyticsProductivityMetricsEnabled && isVersionBannerVisible ? (
+            {isVersionBannerVisible ? (
                 <BannerNotification
                     actionHTML={
                         <Link to="/app/stats/support-performance-overview-legacy">

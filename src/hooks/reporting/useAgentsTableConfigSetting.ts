@@ -1,11 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     agentPerformanceTableActiveView,
     SystemTableViews,
-    TableColumnsOrder,
     TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/AgentsTableConfig'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -22,17 +19,10 @@ export const useAgentsTableConfigSetting = () => {
             (view) => view.id === currentSettings.active_view
         ) || agentPerformanceTableActiveView
 
-    const isOnlineTimeEnabled =
-        useFlags()[FeatureFlagKey.AnalyticsTimeBasedMetrics]
-
-    const columns = isOnlineTimeEnabled
-        ? TableColumnsOrderWithOnlineTime
-        : TableColumnsOrder
-
     const currentViewColumnsInOrder = currentView.metrics
         .map((metric) => metric.id)
-        .filter((column) => columns.includes(column))
-    const columnsMissingInSettings = columns.filter(
+        .filter((column) => TableColumnsOrderWithOnlineTime.includes(column))
+    const columnsMissingInSettings = TableColumnsOrderWithOnlineTime.filter(
         (column) => !currentViewColumnsInOrder.includes(column)
     )
     const columnsInOrder = [

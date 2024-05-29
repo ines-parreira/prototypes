@@ -5,7 +5,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
   class="full-width"
 >
   <div
-    class="bannerNotification info"
+    class="bannerNotification warning"
   >
     <div
       class="messageContainer"
@@ -14,7 +14,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
         class="messageText"
       >
         <span>
-          This is the old Statistics Overview, which uses our old method of computing metrics and may not fully represent your performance.
+          Warning: The legacy overview page will be deprecated by the end of June 2024.
         </span>
         <a
           to="/app/stats/support-performance-overview"
@@ -25,7 +25,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
             refresh
           </i>
            
-          Switch To New Version
+          Switch To new version
         </a>
       </span>
     </div>
@@ -53,7 +53,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
           class="align-items-center"
         >
           <span>
-            Performance overview
+            Legacy overview
           </span>
           <button
             aria-disabled="false"

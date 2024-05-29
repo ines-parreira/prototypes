@@ -1,33 +1,30 @@
 import {renderHook} from '@testing-library/react-hooks/dom'
 import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {FeatureFlagKey} from 'config/featureFlags'
+import thunk from 'redux-thunk'
 import {
-    TableColumnsOrder,
     SystemTableViews,
     agentPerformanceTableActiveView,
+    TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/AgentsTableConfig'
 import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
 import {account} from 'fixtures/account'
+import {submitSetting} from 'state/currentAccount/actions'
 import {
     AccountSettingAgentsTableConfig,
     AccountSettingType,
 } from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {TableColumn} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
 
-const mockStore = configureMockStore<RootState, StoreDispatch>()
+const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
+jest.mock('state/currentAccount/actions')
+const submitSettingMock = assumeMock(submitSetting)
 
 describe('useAgentsTableConfigSetting', () => {
-    beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsTimeBasedMetrics]: false,
-        }))
-    })
-
     it('should return default order if no Setting available', () => {
         const state = {
             currentAccount: fromJS(account),
@@ -41,17 +38,19 @@ describe('useAgentsTableConfigSetting', () => {
 
         expect(result.current).toEqual({
             settings: SystemTableViews,
-            columnsOrder: TableColumnsOrder,
+            columnsOrder: TableColumnsOrderWithOnlineTime,
             currentView: agentPerformanceTableActiveView,
             submitActiveView: expect.any(Function),
         })
     })
 
     describe('onlineTime', () => {
-        const metrics = Object.keys(TableColumnsOrder).map((column) => ({
-            id: column,
-            visibility: true,
-        }))
+        const metrics = Object.keys(TableColumnsOrderWithOnlineTime).map(
+            (column) => ({
+                id: column,
+                visibility: true,
+            })
+        )
 
         const view = {
             id: 'test',
@@ -74,27 +73,7 @@ describe('useAgentsTableConfigSetting', () => {
             }),
         } as RootState
 
-        it('should return new metrics that were not saved in settings', () => {
-            const {result} = renderHook(() => useAgentsTableConfigSetting(), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(state)}>{children}</Provider>
-                ),
-            })
-
-            expect(result.current.columnsOrder).not.toContain(
-                TableColumn.OnlineTime
-            )
-            expect(result.current.currentView.metrics).not.toContainEqual({
-                id: TableColumn.OnlineTime,
-                visibility: null,
-            })
-        })
-
         it('should return OnlineTime metrics when feature flag is disabled', () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.AnalyticsTimeBasedMetrics]: true,
-            }))
-
             const {result} = renderHook(() => useAgentsTableConfigSetting(), {
                 wrapper: ({children}) => (
                     <Provider store={mockStore(state)}>{children}</Provider>
@@ -112,11 +91,13 @@ describe('useAgentsTableConfigSetting', () => {
     })
 
     it('should return data from Setting', () => {
-        const columns = Object.values(TableColumnsOrder)
-        const metrics = Object.values(TableColumnsOrder).map((column) => ({
-            id: column,
-            visibility: true,
-        }))
+        const columns = Object.values(TableColumnsOrderWithOnlineTime)
+        const metrics = Object.values(TableColumnsOrderWithOnlineTime).map(
+            (column) => ({
+                id: column,
+                visibility: true,
+            })
+        )
         const view = {
             id: 'test',
             name: 'Test view',
@@ -158,8 +139,8 @@ describe('useAgentsTableConfigSetting', () => {
             TableColumn.AgentName,
             TableColumn.CustomerSatisfaction,
         ]
-        const unsupportedColumn = TableColumn.TicketHandleTime
-        const restOfTheColumns = TableColumnsOrder.filter(
+        const unsupportedColumn = 'agent_unsupported_column'
+        const restOfTheColumns = TableColumnsOrderWithOnlineTime.filter(
             (column) => !columnsSavedInCustomOrder.includes(column)
         )
         const metrics = Object.values([
@@ -202,5 +183,32 @@ describe('useAgentsTableConfigSetting', () => {
             ...restOfTheColumns,
         ])
         expect(result.current.columnsOrder).not.toContain(unsupportedColumn)
+    })
+
+    it('should submitActiveView', async () => {
+        submitSettingMock.mockReturnValue({
+            type: 'someType',
+        } as any)
+        const state = {
+            currentAccount: fromJS(account),
+        } as RootState
+        const store = mockStore(state)
+
+        const {result} = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({children}) => (
+                <Provider store={store}>{children}</Provider>
+            ),
+        })
+
+        await result.current.submitActiveView(agentPerformanceTableActiveView)
+
+        expect(submitSettingMock).toHaveBeenCalledWith({
+            id: undefined,
+            type: AccountSettingType.AgentsTableConfig,
+            data: {
+                active_view: agentPerformanceTableActiveView.id,
+                views: [agentPerformanceTableActiveView],
+            },
+        })
     })
 })

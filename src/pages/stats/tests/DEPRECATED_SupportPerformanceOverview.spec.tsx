@@ -97,9 +97,6 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
             .mockImplementation(() => 1487076708000)
         mathRandomSpy = jest.spyOn(Math, 'random').mockImplementation(() => 42)
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsProductivityMetrics]: false,
-        }))
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.NewDatePickerVariant]: false,
         }))
     })

@@ -1,7 +1,6 @@
 import React, {useMemo, useCallback} from 'react'
 import moment from 'moment-timezone'
 import {produce} from 'immer'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {LiveAgentsFilters} from 'pages/stats/LiveAgentsFilters'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -22,7 +21,6 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import StatsPage from 'pages/stats/StatsPage'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import css from 'pages/stats/LiveAgents.less'
@@ -34,9 +32,6 @@ export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
-    const isAnalyticsProductivityMetricsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsProductivityMetrics]
-
     const {cleanStatsFilters: statsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -77,14 +72,8 @@ function LiveAgents() {
     }, [fetchUserPerformancePage, userPerformance])
 
     const formattedUserPerformance = useMemo(() => {
-        return (
-            userPerformance &&
-            formatUserPerformanceData(
-                userPerformance,
-                isAnalyticsProductivityMetricsEnabled
-            )
-        )
-    }, [userPerformance, isAnalyticsProductivityMetricsEnabled])
+        return userPerformance && formatUserPerformanceData(userPerformance)
+    }, [userPerformance])
 
     return (
         <StatsFiltersContext.Provider value={pageStatsFilters}>
@@ -145,8 +134,7 @@ function LiveAgents() {
 }
 
 const formatUserPerformanceData = (
-    stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
-    analyticsMetricEnabled?: boolean
+    stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>
 ) => {
     return produce<
         Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
@@ -192,13 +180,11 @@ const formatUserPerformanceData = (
                 ].includes(i)
         )
 
-        if (analyticsMetricEnabled) {
-            const onlineTimeIndex = data.axes.x.findIndex(
-                (x) => x.type === StatType.OnlineTime
-            )
-            data.axes.x[onlineTimeIndex].name = 'Online status'
-            data.axes.x[onlineTimeIndex].type = StatType.OnlineState
-        }
+        const onlineTimeTypeIndex = data.axes.x.findIndex(
+            (x) => x.type === StatType.OnlineTime
+        )
+        data.axes.x[onlineTimeTypeIndex].name = 'Online status'
+        data.axes.x[onlineTimeTypeIndex].type = StatType.OnlineState
 
         data.lines = data.lines.map((line) =>
             line.reduce((acc, value, index) => {

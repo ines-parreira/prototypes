@@ -321,18 +321,18 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 </span>
               </th>
               <th
-                class="online-time"
+                class="online-state"
               >
                 <span
                   class="cell-wrapper"
                 >
-                  ONLINE TIME
+                  ONLINE STATUS
                   <span
                     class="axisHelperIcon"
                   >
                     <i
                       class="material-icons ml-2 helpIcon"
-                      id="Online-time-tooltip-live-agents-stat"
+                      id="Online-status-tooltip-live-agents-stat"
                     >
                       info_outline
                     </i>
@@ -396,19 +396,17 @@ exports[`LiveAgents should render the filters and stats when stats filters are d
                 </span>
               </td>
               <td
-                class="lineCell online-time link-full-td"
+                class="lineCell online-state link-full-td"
               >
                 <span
                   class="cell-wrapper cell-content"
                 >
                   <div>
                     <div
-                      class="statusDot isOnline"
-                      id="Online-time-tooltip-0"
-                    />
-                    <span>
-                      7h 42m
-                    </span>
+                      class="badge upperCase"
+                    >
+                      Online
+                    </div>
                   </div>
                 </span>
               </td>

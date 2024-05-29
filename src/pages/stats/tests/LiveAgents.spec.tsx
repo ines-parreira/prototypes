@@ -1,6 +1,5 @@
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
-import LD from 'launchdarkly-react-client-sdk'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
@@ -20,7 +19,6 @@ import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywal
 import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import {FeatureFlagKey} from 'config/featureFlags'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import LiveAgents from 'pages/stats/LiveAgents'
 
@@ -81,9 +79,6 @@ describe('LiveAgents', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsProductivityMetrics]: false,
-        }))
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
@@ -91,15 +86,14 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        const {container, getByText} = renderWithRouter(
+        const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <LiveAgents />
             </Provider>
         )
 
         expect(container.firstChild).toMatchSnapshot()
-        expect(getByText('ONLINE TIME')).toBeInTheDocument()
-        expect(screen.queryByText('ONLINE STATUS')).not.toBeInTheDocument()
+        expect(screen.queryByText('ONLINE STATUS')).toBeInTheDocument()
     })
 
     it('should render the paywall when the current account has no user live statistics feature', () => {
@@ -158,9 +152,6 @@ describe('LiveAgents', () => {
     })
 
     it('should render the filters and stats with online status instead of online time', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsProductivityMetrics]: true,
-        }))
         useStatResourceMock.mockImplementation(() => {
             return [userPerformanceOverview, false, _noop]
         })

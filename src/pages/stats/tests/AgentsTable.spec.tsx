@@ -1,6 +1,5 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -9,7 +8,6 @@ import {TicketsRepliedPerHourCellContent} from 'pages/stats/TicketsRepliedPerHou
 import {ClosedTicketsPerHourCellContent} from 'pages/stats/ClosedTicketsPerHourCellContent'
 import {TicketHandleTimeCellContent} from 'pages/stats/TicketHandleTimeCellContent'
 import {MessagesSentPerHourCellContent} from 'pages/stats/MessagesSentPerHourCellContent'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {agents} from 'fixtures/agents'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import {AgentsTable} from 'pages/stats/AgentsTable'
@@ -154,10 +152,6 @@ describe('<AgentTable>', () => {
     metricCells.forEach((metricCell) => metricCell.mockImplementation(cellMock))
     AgentsHeaderCellContentMock.mockImplementation(cellMock)
     AgentsTableSummaryCellMock.mockImplementation(cellMock)
-
-    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-        [FeatureFlagKey.AnalyticsTimeBasedMetrics]: true,
-    }))
 
     it('should render the table title, table header and rows', () => {
         render(
