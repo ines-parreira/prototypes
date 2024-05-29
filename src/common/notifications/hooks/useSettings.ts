@@ -60,7 +60,7 @@ export default function useSettings() {
                                     ...channelsAcc,
                                     [channel.type]:
                                         event.type === 'ticket-message.created'
-                                            ? false
+                                            ? true
                                             : !workflowPreferences ||
                                               typeof workflowPreferences ===
                                                   'boolean'

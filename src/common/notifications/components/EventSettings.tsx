@@ -7,6 +7,7 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {SoundValue} from 'services/NotificationSounds'
 
@@ -82,6 +83,12 @@ export default function EventSettings({
                                     innerClassName={css.bodyCell}
                                 >
                                     <CheckBox
+                                        name={
+                                            event.type ===
+                                            'ticket-message.created'
+                                                ? 'checkbox'
+                                                : undefined
+                                        }
                                         isDisabled={
                                             event.type ===
                                             'ticket-message.created'
@@ -101,6 +108,9 @@ export default function EventSettings({
                                     />
                                 </BodyCell>
                             ))}
+                            <Tooltip target="checkbox">
+                                This setting cannot be deselected
+                            </Tooltip>
                         </TableBodyRow>
                     ))}
                 </TableBody>
