@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import ReactPlayer from 'react-player'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import classNames from 'classnames'
 import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
 import {
     GorgiasChatAvatarImageType,
@@ -183,7 +184,11 @@ export const ChatCampaign = ({
                 />
             )}
             {products.length > 0 && (
-                <div className={css.carouselContainer}>
+                <div
+                    className={classNames(css.carouselContainer, {
+                        [css.noReply]: shouldHideReplyInput,
+                    })}
+                >
                     <ProductCarousel
                         products={products}
                         mainColor={mainColor}

@@ -13,7 +13,7 @@
 
         padding: 20px;
         margin-bottom: 10px;
-        gap: 20px;
+        gap: 8px;
 
         .content {
             display: flex;
@@ -29,6 +29,7 @@
                 display: flex;
                 flex-direction: column;
                 gap: 8px;
+                line-height: 20px;
 
                 .authorName {
                     font-size: 14px;
@@ -63,6 +64,11 @@
             display: flex;
             justify-content: flex-end;
             margin: 0 -20px;
+            padding-bottom: 12px;
+
+            &.noReply {
+                padding-bottom: 20px;
+            }
         }
 
         .footer {
