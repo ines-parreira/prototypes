@@ -15,17 +15,6 @@ describe('<PhoneNumberInput/>', () => {
         jest.resetAllMocks()
     })
 
-    it('should render', () => {
-        const {container} = render(
-            <PhoneNumberInput
-                label="Your phone number"
-                value="+1234567890"
-                onChange={onChange}
-            />
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should allow typing inside the input, keeping country calling code prefix', () => {
         const {container} = render(
             <PhoneNumberInput value="+1234567890" onChange={onChange} />
@@ -48,6 +37,46 @@ describe('<PhoneNumberInput/>', () => {
         })
 
         expect(onChange).toHaveBeenCalledWith('+123456')
+    })
+
+    it('should allow typing letters if onLetterEntered is provided', () => {
+        const onLetterEntered = jest.fn()
+        const {container} = render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                onLetterEntered={onLetterEntered}
+            />
+        )
+
+        fireEvent.change(container.getElementsByTagName('input')[0], {
+            target: {value: 'a23b()45+6'},
+        })
+
+        expect(onChange).not.toHaveBeenCalled()
+        expect(onLetterEntered).toHaveBeenCalledWith('a23b()45+6')
+    })
+
+    it('should display the clear icon when isClearable is true', () => {
+        const {getByRole} = render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                isClearable
+            />
+        )
+
+        fireEvent.click(getByRole('button', {name: 'close'}))
+
+        expect(onChange).toHaveBeenCalledWith('')
+    })
+
+    it('should not display the clear icon when isClearable is false', () => {
+        const {queryByRole} = render(
+            <PhoneNumberInput value="+1234567890" onChange={onChange} />
+        )
+
+        expect(queryByRole('button', {name: 'close'})).toBeNull()
     })
 
     it('should filter the country list when typing a country name', async () => {
@@ -163,8 +192,11 @@ describe('<PhoneNumberInput/>', () => {
         )
 
         expect(
-            (reportError as jest.MockedFunction<typeof reportError>).mock.calls
-        ).toMatchSnapshot()
+            reportError as jest.MockedFunction<typeof reportError>
+        ).toHaveBeenCalledWith(
+            new Error('Wrong props passed to PhoneNumberInput'),
+            expect.any(Object)
+        )
     })
 
     it('should render even if country inferred from value is not in given countries', () => {

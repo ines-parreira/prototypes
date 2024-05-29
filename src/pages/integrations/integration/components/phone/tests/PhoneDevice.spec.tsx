@@ -1,50 +1,18 @@
-import {render, screen, fireEvent} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
 import React from 'react'
 import PhoneDevice from '../PhoneDevice'
 
 jest.mock(
-    'pages/common/forms/PhoneNumberInput/PhoneNumberInput',
-    () =>
-        ({
-            onChange,
-            value,
-        }: {
-            onChange: (value: string) => void
-            value: string
-        }) =>
-            (
-                <input
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    data-testid="mock-phone-input"
-                />
-            )
+    'pages/integrations/integration/components/phone/PhoneDeviceDialer',
+    () => {
+        return () => <div data-testid="mock-phone-device-dialer"></div>
+    }
 )
 
-jest.mock(
-    'pages/integrations/integration/components/phone/DialPad',
-    () =>
-        ({
-            onChange,
-            value,
-        }: {
-            onChange: (value: string) => void
-            value: string
-        }) =>
-            (
-                <div data-testid="mock-dialpad">
-                    <div
-                        onClick={() => onChange(value + '1')}
-                        data-testid="mock-dialpad-digit"
-                    />
-                </div>
-            )
-)
-
-const renderComponent = () => {
+const renderComponent = ({isOpen = true}: {isOpen?: boolean} = {}) => {
     return render(
         <PhoneDevice
-            isOpen={true}
+            isOpen={isOpen}
             setIsOpen={() => {}}
             target={{current: null} as React.RefObject<null>}
         />
@@ -52,25 +20,15 @@ const renderComponent = () => {
 }
 
 describe('PhoneDevice', () => {
-    it('renders initial state correctly: phone number input, dialpad, integration selector and cta', () => {
+    it('renders dialer when isOpen is true', () => {
         renderComponent()
 
-        expect(screen.getByTestId('mock-phone-input')).toBeInTheDocument()
-        expect(screen.getByTestId('mock-dialpad')).toBeInTheDocument()
-        expect(screen.getByText('Select integration')).toBeInTheDocument()
-        expect(screen.getByText('Call')).toBeInTheDocument()
+        expect(screen.getByTestId('mock-phone-device-dialer')).toBeVisible()
     })
 
-    it('updates the input value when handleChange is called', () => {
-        renderComponent()
+    it('does not render dialer when isOpen is false', () => {
+        const {queryByTestId} = renderComponent({isOpen: false})
 
-        const inputElement: HTMLInputElement =
-            screen.getByTestId('mock-phone-input')
-
-        fireEvent.change(inputElement, {target: {value: '1234567890'}})
-        expect(inputElement.value).toBe('1234567890')
-
-        fireEvent.click(screen.getByTestId('mock-dialpad-digit'))
-        expect(inputElement.value).toBe('12345678901')
+        expect(queryByTestId('mock-phone-device-dialer')).toBeNull()
     })
 })

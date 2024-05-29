@@ -34,6 +34,7 @@ import {
     formatAsNationalNumber,
 } from 'pages/phoneNumbers/utils'
 import useUpdateEffect from 'hooks/useUpdateEffect'
+import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './PhoneNumberInput.less'
 
@@ -48,6 +49,8 @@ type Props = {
     error?: string
     value: string
     onCountryChange?: (country: CountryCode) => void
+    onLetterEntered?: (input: string) => void
+    isClearable?: boolean
 } & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = ({
@@ -59,10 +62,12 @@ const PhoneNumberInput = ({
     label,
     onChange,
     onCountryChange,
+    onLetterEntered,
     value,
     isRequired,
     error,
     caption,
+    isClearable,
     ...other
 }: Props) => {
     const containerRef = useRef<HTMLDivElement>(null)
@@ -109,6 +114,13 @@ const PhoneNumberInput = ({
 
     const handleNumberChange = useCallback(
         (number: string, oldCountry: CountryCode) => {
+            const containsLetters = /[a-zA-Z]/.test(number)
+
+            if (containsLetters && onLetterEntered) {
+                onLetterEntered(number)
+                return
+            }
+
             const phoneNumber = isValidPhoneNumber(number)
                 ? parsePhoneNumber(number)
                 : null
@@ -120,7 +132,7 @@ const PhoneNumberInput = ({
                 ? onChange?.('')
                 : onChange?.(buildInternationalNumber(number, country))
         },
-        [onChange, setCurrentCountry]
+        [onChange, setCurrentCountry, onLetterEntered]
     )
 
     const handleCountryChange = useCallback(
@@ -222,6 +234,20 @@ const PhoneNumberInput = ({
                         handleNumberChange(value, currentCountry)
                     }}
                     autoFocus={autoFocus}
+                    suffix={
+                        value &&
+                        isClearable && (
+                            <IconButton
+                                onClick={() =>
+                                    handleNumberChange('', currentCountry)
+                                }
+                                fillStyle="ghost"
+                                intent="secondary"
+                            >
+                                close
+                            </IconButton>
+                        )
+                    }
                 />
             </InputGroup>
             {!error && isPhoneNumberTooLong && (

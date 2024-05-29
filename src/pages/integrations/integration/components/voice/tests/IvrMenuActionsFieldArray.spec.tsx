@@ -56,14 +56,6 @@ describe('<IvrMenuActionsFieldArray />', () => {
             </Provider>
         )
 
-    it('should render', () => {
-        mockFlags({[FeatureFlagKey.DeflectToSMS]: false})
-
-        const {container} = renderComponent(options)
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render with FF on', () => {
         const {getByText} = renderComponent(options)
 

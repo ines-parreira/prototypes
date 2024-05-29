@@ -5,12 +5,15 @@
     .container {
         display: flex;
         flex-direction: column;
-        gap: @layout-spacing-s;
-        align-items: center;
+        gap: @layout-spacing-xs @layout-spacing-s;
     }
 
     .row {
         display: flex;
+
+        &:not(:last-of-type) .digit {
+            padding-bottom: @layout-spacing-xs;
+        }
     }
 
     .digit {

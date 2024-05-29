@@ -1,4 +1,5 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
 
 :local {
     .dropdownWrapper {
@@ -7,21 +8,69 @@
     }
 
     .dropdownBody {
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-m;
         padding: @layout-spacing-s;
         overflow-y: visible;
         height: 390px;
     }
 
+    .dialerWrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
     .dialpad {
-        padding: 0 @layout-spacing-m;
+        padding: 0 @layout-spacing-s;
+        margin-top: @layout-spacing-m;
+    }
+
+    .results {
+        margin-top: @layout-spacing-xs;
+        flex: 1;
+        max-height: 222px;
+        overflow-y: scroll;
+
+        &.noResults {
+            padding: @layout-spacing-xs;
+            color: var(--neutral-grey-5);
+            text-align: center;
+        }
+
+        .result {
+            display: flex;
+            flex-direction: column;
+            padding: @layout-spacing-xs;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--neutral-grey-2);
+            }
+        }
+
+        .address {
+            .caption-regular();
+
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .prefixIcon {
+        color: var(--neutral-grey-0);
+        background-color: var(--neutral-grey-6);
+        border-radius: 3px;
     }
 
     .buttons {
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-s;
+        margin-top: @layout-spacing-m;
+    }
+
+    .skeleton {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
     }
 }
