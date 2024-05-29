@@ -10,9 +10,10 @@ import css from './Toast.less'
 type Props = {
     notification: Notification
     onDismiss: () => void
+    onClick: () => void
 }
 
-export default function Toast({notification, onDismiss}: Props) {
+export default function Toast({notification, onDismiss, onClick}: Props) {
     const handleClickClose = useCallback(
         (e: MouseEvent) => {
             e.preventDefault()
@@ -35,6 +36,7 @@ export default function Toast({notification, onDismiss}: Props) {
                     </IconButton>
                 }
                 notification={notification}
+                onClick={onClick}
             />
         </div>
     )
