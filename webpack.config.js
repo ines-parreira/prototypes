@@ -85,9 +85,7 @@ const cssLoaderOptions = {
     sourceMap: true,
     modules: {
         mode: 'global',
-        localIdentName: __PRODUCTION__
-            ? '[hash:base64]'
-            : '[name]--[local]--[hash:base64:5]',
+        localIdentName: '[name]--[local]--[hash:base64:5]',
     },
 }
 
@@ -294,6 +292,9 @@ module.exports = (env = {}) => {
                 bundleName: 'helpdesk-web-app',
                 uploadToken: process.env.CODECOV_TOKEN,
             }),
+            new webpack.BannerPlugin(
+                'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined'
+            ),
         ].filter(Boolean),
         resolve: {
             alias: {
