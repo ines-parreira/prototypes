@@ -17,8 +17,8 @@ const getTheInfoLabel = (totalResults: number) => {
     }
     return (
         <>
-            First <strong>{DRILLDOWN_QUERY_LIMIT}</strong> tickets are
-            displayed.
+            Displaying (first) <strong>{DRILLDOWN_QUERY_LIMIT}</strong> tickets
+            used to compute the metric.
         </>
     )
 }
