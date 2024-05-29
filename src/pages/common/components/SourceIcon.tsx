@@ -138,7 +138,7 @@ const SourceIcon = ({type, className, variant, ...otherProps}: Props) => {
                     width="13px"
                     height="13px"
                     className={classnames(
-                        'icon d-inline-block',
+                        'icon source-icon d-inline-block',
                         css.newIcon,
                         {[css.secondary]: variant === 'secondary'},
                         className
@@ -154,7 +154,7 @@ const SourceIcon = ({type, className, variant, ...otherProps}: Props) => {
     return (
         <i
             className={classnames(
-                'icon d-inline-block',
+                'icon source-icon d-inline-block',
                 icon.extra,
                 {
                     [`icon-custom icon-${icon.name}`]: icon.custom,

@@ -47,7 +47,7 @@ exports[`<TicketMessageEmbeddedCard/> should render the comment card with differ
               class="source"
             >
               <i
-                class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
+                class="icon source-icon d-inline-block icon-custom icon-facebook-feed uncolored"
               />
             </span>
           </div>
@@ -136,7 +136,7 @@ exports[`<TicketMessageEmbeddedCard/> should render the comment card with differ
                   class="source"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed uncolored"
                   />
                 </span>
               </div>

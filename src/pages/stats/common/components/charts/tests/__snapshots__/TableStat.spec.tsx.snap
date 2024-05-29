@@ -403,7 +403,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Internal Note"
                 >
                   <i
-                    class="icon d-inline-block text-warning material-icons channelIcon"
+                    class="icon source-icon d-inline-block text-warning material-icons channelIcon"
                   >
                     note
                   </i>
@@ -419,7 +419,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -433,7 +433,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -447,7 +447,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -461,7 +461,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Yotpo Review"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-yotpo-review channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -475,7 +475,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Aircall"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -491,7 +491,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook Messenger"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -505,7 +505,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Phone"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -521,7 +521,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -535,7 +535,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Ad Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -549,7 +549,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Twitter"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -563,7 +563,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook Recommendations"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -577,7 +577,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Chat"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     forum
                   </i>
@@ -593,7 +593,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="SMS"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     sms
                   </i>
@@ -609,7 +609,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Api"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     code
                   </i>
@@ -625,7 +625,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Email"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     email
                   </i>
@@ -641,7 +641,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Twitter Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -655,7 +655,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1018,7 +1018,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Internal Note"
                 >
                   <i
-                    class="icon d-inline-block text-warning material-icons channelIcon"
+                    class="icon source-icon d-inline-block text-warning material-icons channelIcon"
                   >
                     note
                   </i>
@@ -1034,7 +1034,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1048,7 +1048,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1062,7 +1062,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1076,7 +1076,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Yotpo Review"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-yotpo-review channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1090,7 +1090,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Aircall"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -1106,7 +1106,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook Messenger"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1120,7 +1120,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Phone"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -1136,7 +1136,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1150,7 +1150,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Ad Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1164,7 +1164,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Twitter"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1178,7 +1178,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Facebook Recommendations"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1192,7 +1192,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Chat"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     forum
                   </i>
@@ -1208,7 +1208,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="SMS"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     sms
                   </i>
@@ -1224,7 +1224,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Api"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     code
                   </i>
@@ -1240,7 +1240,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Email"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     email
                   </i>
@@ -1256,7 +1256,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Twitter Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1270,7 +1270,7 @@ exports[`TableStat should extend the table to show all the elements 1`] = `
                   title="Instagram Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1826,7 +1826,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Internal Note"
                 >
                   <i
-                    class="icon d-inline-block text-warning material-icons channelIcon"
+                    class="icon source-icon d-inline-block text-warning material-icons channelIcon"
                   >
                     note
                   </i>
@@ -1842,7 +1842,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Facebook Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1856,7 +1856,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Instagram Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1870,7 +1870,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Facebook"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1884,7 +1884,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Yotpo Review"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-yotpo-review channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1898,7 +1898,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Aircall"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -1914,7 +1914,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Facebook Messenger"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1928,7 +1928,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Phone"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -1944,7 +1944,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Instagram Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1958,7 +1958,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Instagram Ad Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1972,7 +1972,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Twitter"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -1986,7 +1986,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Facebook Recommendations"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2000,7 +2000,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Chat"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     forum
                   </i>
@@ -2016,7 +2016,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="SMS"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     sms
                   </i>
@@ -2032,7 +2032,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Api"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     code
                   </i>
@@ -2048,7 +2048,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Email"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     email
                   </i>
@@ -2064,7 +2064,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Twitter Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2078,7 +2078,7 @@ exports[`TableStat should render a table chart 1`] = `
                   title="Instagram Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2690,7 +2690,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Internal Note"
                 >
                   <i
-                    class="icon d-inline-block text-warning material-icons channelIcon"
+                    class="icon source-icon d-inline-block text-warning material-icons channelIcon"
                   >
                     note
                   </i>
@@ -2706,7 +2706,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Facebook Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2720,7 +2720,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Instagram Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2734,7 +2734,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Facebook"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2748,7 +2748,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Yotpo Review"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-yotpo-review channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-yotpo-review channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2762,7 +2762,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Aircall"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -2778,7 +2778,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Facebook Messenger"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-messenger channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2792,7 +2792,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Phone"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     phone
                   </i>
@@ -2808,7 +2808,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Instagram Mention"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2822,7 +2822,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Instagram Ad Comment"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2836,7 +2836,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Twitter"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2850,7 +2850,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Facebook Recommendations"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-facebook-feed channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-facebook-feed channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2864,7 +2864,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Chat"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     forum
                   </i>
@@ -2880,7 +2880,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="SMS"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     sms
                   </i>
@@ -2896,7 +2896,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Api"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     code
                   </i>
@@ -2912,7 +2912,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Email"
                 >
                   <i
-                    class="icon d-inline-block material-icons channelIcon"
+                    class="icon source-icon d-inline-block material-icons channelIcon"
                   >
                     email
                   </i>
@@ -2928,7 +2928,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Twitter Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-twitter-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-twitter-dm channelIcon"
                   />
                   <a
                     class="viewLink"
@@ -2942,7 +2942,7 @@ exports[`TableStat should render a table with the expand button and one line vis
                   title="Instagram Direct Message"
                 >
                   <i
-                    class="icon d-inline-block icon-custom icon-instagram-dm channelIcon"
+                    class="icon source-icon d-inline-block icon-custom icon-instagram-dm channelIcon"
                   />
                   <a
                     class="viewLink"

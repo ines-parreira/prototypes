@@ -100,7 +100,7 @@ exports[`<RuleTicketList/> should render the rule ticket list 1`] = `
               class="cellWrapper"
             >
               <i
-                class="icon d-inline-block material-icons secondary"
+                class="icon source-icon d-inline-block material-icons secondary"
               >
                 email
               </i>
@@ -201,7 +201,7 @@ exports[`<RuleTicketList/> should show navigation if response has cursor 1`] = `
               class="cellWrapper"
             >
               <i
-                class="icon d-inline-block material-icons secondary"
+                class="icon source-icon d-inline-block material-icons secondary"
               >
                 email
               </i>

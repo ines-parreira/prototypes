@@ -1,0 +1,32 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        padding: 12px;
+        display: flex;
+        gap: @layout-spacing-xs;
+        border: 1px solid var(--accessory-magenta-3);
+        border-radius: @layout-spacing-xxs;
+        background-color: var(--neutral-grey-0);
+        margin: @layout-spacing-s 0;
+    }
+
+    .icon {
+        font-size: 20px !important;
+        color: var(--accessory-magenta-3);
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+
+        :global {
+            .message-content {
+                background: var(--neutral-grey-0) !important;
+            }
+        }
+    }
+}

@@ -19,7 +19,7 @@ exports[`<SpotlightTicketRow/> should render a date from the current year withou
           id="icon-8-tooltip-target"
         >
           <i
-            class="icon d-inline-block material-icons ticketIcon"
+            class="icon source-icon d-inline-block material-icons ticketIcon"
           >
             email
           </i>
@@ -105,7 +105,7 @@ exports[`<SpotlightTicketRow/> should render closed icon 1`] = `
           id="icon-2-tooltip-target"
         >
           <i
-            class="icon d-inline-block material-icons ticketIcon"
+            class="icon source-icon d-inline-block material-icons ticketIcon"
           >
             email
           </i>
@@ -191,7 +191,7 @@ exports[`<SpotlightTicketRow/> should render current date as "today" 1`] = `
           id="icon-7-tooltip-target"
         >
           <i
-            class="icon d-inline-block material-icons ticketIcon"
+            class="icon source-icon d-inline-block material-icons ticketIcon"
           >
             email
           </i>
@@ -297,7 +297,7 @@ exports[`<SpotlightTicketRow/> should render ticket information 1`] = `
           id="icon-1-tooltip-target"
         >
           <i
-            class="icon d-inline-block material-icons ticketIcon"
+            class="icon source-icon d-inline-block material-icons ticketIcon"
           >
             email
           </i>
@@ -383,7 +383,7 @@ exports[`<SpotlightTicketRow/> should render without customer name 1`] = `
           id="icon-5-tooltip-target"
         >
           <i
-            class="icon d-inline-block material-icons ticketIcon"
+            class="icon source-icon d-inline-block material-icons ticketIcon"
           >
             email
           </i>
@@ -469,7 +469,7 @@ exports[`<SpotlightTicketRow/> should render without customer name and without e
           id="icon-6-tooltip-target"
         >
           <i
-            class="icon d-inline-block material-icons ticketIcon"
+            class="icon source-icon d-inline-block material-icons ticketIcon"
           >
             email
           </i>

@@ -31,8 +31,10 @@ type Props = {
     isMessageHidden: boolean
     isMessageDeleted: boolean
     isBodyHighlighted: boolean
+    isAIAgentInternalNote?: boolean
     isAIAgentMessage?: boolean
     isAIAgentMessageSelected?: boolean
+    allowsAIFeedback?: boolean
     customer: Map<any, any>
     lastCustomerMessageDateTime?: string
     shouldDisplayAuditLogEvents?: boolean
@@ -56,6 +58,7 @@ export default class Container extends Component<Props> {
             message,
             isMessageHidden,
             isMessageDeleted,
+            isAIAgentInternalNote = false,
             isAIAgentMessage = false,
             isAIAgentMessageSelected = false,
             customer,
@@ -166,7 +169,7 @@ export default class Container extends Component<Props> {
                         this.props.className,
                         css.component,
                         {
-                            internal: !message.public,
+                            internal: !isAIAgentMessage && !message.public,
                             appear: appear,
                             hasError: isFailed(message),
                             'ticket-message-loading': isPending(message),
@@ -197,7 +200,7 @@ export default class Container extends Component<Props> {
                             isMessageDeleted={isMessageDeleted}
                             isMessageFromAIAgent={isAIAgentMessage}
                         />
-                        {children}
+                        {!isAIAgentInternalNote && children}
                         {isAIAgentMessage && (
                             <AIAgentBanner message={message} />
                         )}

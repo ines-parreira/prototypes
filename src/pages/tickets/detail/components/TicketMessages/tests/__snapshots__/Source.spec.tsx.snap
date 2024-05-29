@@ -6,7 +6,7 @@ exports[`<Source /> should render a source 1`] = `
     class="clickable source"
   >
     <i
-      class="icon d-inline-block material-icons secondary"
+      class="icon source-icon d-inline-block material-icons secondary"
       id="foo"
     >
       email

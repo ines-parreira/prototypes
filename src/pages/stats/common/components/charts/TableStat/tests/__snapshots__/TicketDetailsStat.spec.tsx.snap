@@ -54,7 +54,7 @@ exports[`TicketDetailsStat should handle an unknown channel and report error 1`]
       title="Chat"
     >
       <i
-        class="icon d-inline-block material-icons channelIcon"
+        class="icon source-icon d-inline-block material-icons channelIcon"
       >
         forum
       </i>
@@ -216,7 +216,7 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
       title="Chat"
     >
       <i
-        class="icon d-inline-block material-icons channelIcon"
+        class="icon source-icon d-inline-block material-icons channelIcon"
       >
         forum
       </i>
@@ -261,7 +261,7 @@ exports[`TicketDetailsStat should render open tickets and channels breakdown 1`]
       title="Email"
     >
       <i
-        class="icon d-inline-block material-icons channelIcon"
+        class="icon source-icon d-inline-block material-icons channelIcon"
       >
         email
       </i>

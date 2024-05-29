@@ -268,7 +268,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
                       class="source"
                     >
                       <i
-                        class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
+                        class="icon source-icon d-inline-block icon-custom icon-facebook-feed uncolored"
                       />
                     </span>
                   </div>
@@ -424,7 +424,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to a Facebook 
                       class="source"
                     >
                       <i
-                        class="icon d-inline-block material-icons uncolored"
+                        class="icon source-icon d-inline-block material-icons uncolored"
                       >
                         live_help
                       </i>
@@ -552,7 +552,7 @@ exports[`<PrivateReplyEvent/> render should render a \`Responding to an Instagra
                       class="source"
                     >
                       <i
-                        class="icon d-inline-block icon-custom icon-facebook-feed uncolored"
+                        class="icon source-icon d-inline-block icon-custom icon-facebook-feed uncolored"
                       />
                     </span>
                   </div>

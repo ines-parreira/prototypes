@@ -2,53 +2,7 @@
 @import (reference) '~css/typography.less';
 
 :local {
-    .container {
-        padding: 12px;
-        display: flex;
-        gap: @layout-spacing-xs;
-        border: 1px solid var(--accessory-magenta-3);
-        border-radius: @layout-spacing-xxs;
-        background-color: var(--neutral-grey-0);
-        margin: @layout-spacing-s 0;
-    }
-
-    .icon {
-        font-size: 20px !important;
-        color: var(--accessory-magenta-3);
-    }
-
-    .content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: @layout-spacing-xxs;
-    }
-
-    .message {
+    .boldMessage {
         .body-semibold();
-    }
-
-    .feedbackContainer {
-        display: flex;
-        gap: @layout-spacing-xs;
-        flex-wrap: wrap;
-    }
-
-    .feedbackQuestion {
-        text-wrap: nowrap;
-    }
-
-    .feedbackButtons {
-        display: flex;
-        gap: @layout-spacing-xs;
-    }
-
-    .feedbackButton {
-        z-index: 0;
-    }
-
-    .positiveFeedback {
-        color: var(--feedback-success-4) !important;
-        pointer-events: none;
     }
 }

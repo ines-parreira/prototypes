@@ -37,7 +37,7 @@ export const messageFeedback: MessageFeedback = {
         ReportIssueOption.TooVerbose,
         ReportIssueOption.OverPromising,
     ],
-    allowsFeedback: true,
+    allowsFeedback: false,
     feedbackOnResource: [
         {resourceId: 234, feedback: 'thumbs_up'},
         {resourceId: 235, feedback: 'thumbs_down'},

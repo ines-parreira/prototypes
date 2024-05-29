@@ -1,27 +1,21 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {render, screen} from '@testing-library/react'
+import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 
-import userEvent from '@testing-library/user-event'
 import {RootState, StoreDispatch} from 'state/types'
-import {
-    changeActiveTab,
-    changeTicketMessage,
-    getSelectedAIMessage,
-} from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+
 import {TicketMessage} from 'models/ticket/types'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import AIAgentBanner, {
-    ACCURATE_RESPONSE,
-    IMPROVE_RESPONSE,
-} from '../AIAgentBanner'
 
-jest.mock('state/ui/ticketAIAgentFeedback')
+import AIAgentBanner from '../AIAgentBanner'
+
+jest.mock('../AIAgentFeedback', () => () => <div data-testid="feedback" />)
+
 jest.mock('models/aiAgentFeedback/queries')
 
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
@@ -30,10 +24,8 @@ const queryClient = mockQueryClient()
 const mockMessage = {
     ticket_id: 1,
     id: '1',
+    public: true,
 } as unknown as TicketMessage
-const mockedChangeActiveTab = assumeMock(changeActiveTab)
-const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
-const mockedGetSelectedAIMessage = assumeMock(getSelectedAIMessage)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -61,62 +53,24 @@ describe('AIAgentBanner', () => {
             isLoading: true,
             isError: false,
         } as any)
-        render(
+        const {container} = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentBanner message={mockMessage} />
                 </Provider>
             </QueryClientProvider>
         )
-        expect(screen.queryByText(ACCURATE_RESPONSE)).not.toBeInTheDocument()
+
+        expect(container).toBeEmptyDOMElement()
     })
 
-    it('renders the component correctly', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentBanner message={mockMessage} />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(screen.getByText(ACCURATE_RESPONSE)).toBeInTheDocument()
+    it('should not render feedback when allowed', () => {
+        const {queryByTestId} = render(<AIAgentBanner message={mockMessage} />)
+
+        expect(queryByTestId('feedback')).not.toBeInTheDocument()
     })
 
-    it('dispatches the changeActiveTab action when improve response button is clicked', () => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentBanner message={mockMessage} />
-                </Provider>
-            </QueryClientProvider>
-        )
-        userEvent.click(screen.getByText(IMPROVE_RESPONSE))
-
-        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
-            activeTab: TicketAIAgentFeedbackTab.AIAgent,
-        })
-        expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
-            message: mockMessage,
-        })
-    })
-
-    it('disables the improve response button when selectedAIMessage is equal to message', () => {
-        mockedGetSelectedAIMessage.mockReturnValue(mockMessage)
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentBanner message={mockMessage} />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(
-            screen
-                .getByRole('button', {name: IMPROVE_RESPONSE})
-                .classList.contains('isDisabled')
-        ).toBe(true)
-    })
-
-    it('shows the thumbs up icon as green when the feedback is positive', () => {
+    it('should render feedback when allowed', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
@@ -126,26 +80,24 @@ describe('AIAgentBanner', () => {
                             actions: [{feedback: 'thumbs_up'}],
                             guidance: [{feedback: 'thumbs_up'}],
                             knowledge: [{feedback: 'thumbs_up'}],
+                            summary: 'summary',
+                            allowsFeedback: true,
                         },
                     ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
                 },
             },
             isLoading: false,
             isError: false,
         } as any)
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentBanner message={mockMessage} />
-                </Provider>
-            </QueryClientProvider>
-        )
-        expect(screen.getByText('thumb_up').parentElement).toHaveClass(
-            'positiveFeedback'
-        )
+
+        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
+
+        expect(getByTestId('feedback')).toBeInTheDocument()
     })
 
-    it('shows the thumbs up icon as neutral when not all feedback is positive', () => {
+    it('should render message in bold', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
@@ -155,22 +107,50 @@ describe('AIAgentBanner', () => {
                             actions: [{feedback: 'thumbs_up'}],
                             guidance: [{feedback: null}],
                             knowledge: [{feedback: 'thumbs_up'}],
+                            summary: 'summary',
                         },
                     ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
                 },
             },
             isLoading: false,
             isError: false,
         } as any)
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentBanner message={mockMessage} />
-                </Provider>
-            </QueryClientProvider>
+
+        const {getByText} = render(<AIAgentBanner message={mockMessage} />)
+
+        const message = getByText('summary')
+
+        expect(message).toBeInTheDocument()
+        expect(message).toHaveClass('boldMessage')
+    })
+
+    it('should not render message in bold', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: '1',
+                            summary: 'summary',
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const {getByText} = render(
+            <AIAgentBanner message={{...mockMessage, public: false}} />
         )
-        expect(screen.getByText('thumb_up').parentElement).not.toHaveClass(
-            'positiveFeedback'
-        )
+
+        const message = getByText('summary')
+
+        expect(message).toBeInTheDocument()
+        expect(message).not.toHaveClass('boldMessage')
     })
 })

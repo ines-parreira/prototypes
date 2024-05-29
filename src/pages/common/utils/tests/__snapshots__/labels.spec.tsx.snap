@@ -102,7 +102,7 @@ exports[`components utils: labels <TimedeltaLabel/> render() should render with 
 exports[`components utils: labels RenderLabel ValueRendered should display name and address formatted as aircall eg: with address into parenthesis 1`] = `
 <span>
   <i
-    class="icon d-inline-block material-icons mr-2"
+    class="icon source-icon d-inline-block material-icons mr-2"
   >
     phone
   </i>
@@ -114,7 +114,7 @@ exports[`components utils: labels RenderLabel ValueRendered should display name 
 <span>
   <img
     alt="TikTok Shop"
-    class="icon d-inline-block newIcon mr-2"
+    class="icon source-icon d-inline-block newIcon mr-2"
     height="13px"
     src="https://gorgias-assets.gorgias.io/static/public/img/tiktok-shop.svg"
     width="13px"
@@ -126,7 +126,7 @@ exports[`components utils: labels RenderLabel ValueRendered should display name 
 exports[`components utils: labels RenderLabel ValueRendered should display the address to prevent confusion 1`] = `
 <span>
   <i
-    class="icon d-inline-block material-icons mr-2"
+    class="icon source-icon d-inline-block material-icons mr-2"
   >
     email
   </i>
@@ -137,7 +137,7 @@ exports[`components utils: labels RenderLabel ValueRendered should display the a
 exports[`components utils: labels RenderLabel ValueRendered should display the name because the address is empty 1`] = `
 <span>
   <i
-    class="icon d-inline-block material-icons mr-2"
+    class="icon source-icon d-inline-block material-icons mr-2"
   >
     email
   </i>
@@ -148,7 +148,7 @@ exports[`components utils: labels RenderLabel ValueRendered should display the n
 exports[`components utils: labels RenderLabel ValueRendered should display the name because the type is facebook 1`] = `
 <span>
   <i
-    class="icon d-inline-block icon-custom icon-facebook-feed mr-2"
+    class="icon source-icon d-inline-block icon-custom icon-facebook-feed mr-2"
   />
   common
 </span>
@@ -186,7 +186,7 @@ exports[`components utils: labels RenderLabel distribution assignee_team label 1
 
 exports[`components utils: labels RenderLabel distribution channel label 1`] = `
 <i
-  class="icon d-inline-block material-icons secondary"
+  class="icon source-icon d-inline-block material-icons secondary"
 >
   email
 </i>
@@ -212,7 +212,7 @@ exports[`components utils: labels RenderLabel distribution customer label 1`] = 
 exports[`components utils: labels RenderLabel distribution integrations label 1`] = `
 <span>
   <i
-    class="icon d-inline-block material-icons mr-2"
+    class="icon source-icon d-inline-block material-icons mr-2"
   >
     email
   </i>

@@ -22,7 +22,7 @@ exports[`ast widgets IntegrationSelect should render a SelectField 1`] = `
         >
           <span>
             <i
-              class="icon d-inline-block material-icons mr-2"
+              class="icon source-icon d-inline-block material-icons mr-2"
             >
               email
             </i>

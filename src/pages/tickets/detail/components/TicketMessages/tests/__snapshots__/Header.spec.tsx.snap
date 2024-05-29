@@ -105,7 +105,7 @@ exports[`Header should not display header with metaContent = "Message hidden" be
         class="clickable source"
       >
         <i
-          class="icon d-inline-block icon-custom icon-facebook-feed secondary"
+          class="icon source-icon d-inline-block icon-custom icon-facebook-feed secondary"
           id="some-header"
         />
       </span>

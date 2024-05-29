@@ -50,6 +50,9 @@ export default function TicketMessages({
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
+
+    const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
+
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents
     )
@@ -58,7 +61,11 @@ export default function TicketMessages({
         return null
     }
 
-    const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
+    const isAIAgentMessage =
+        isFeedbackToAiAgentEnabled &&
+        message.sender.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
+
+    const isAIAgentInternalNote = isAIAgentMessage && !message.public
 
     const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
         lastCustomerMessage.get('sent_datetime')
@@ -90,10 +97,6 @@ export default function TicketMessages({
               )
     )
 
-    const isAIAgentMessage =
-        isFeedbackToAiAgentEnabled &&
-        message.sender.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
-
     return (
         <Container
             id={id}
@@ -106,6 +109,7 @@ export default function TicketMessages({
             isMessageHidden={isTicketMessageHidden(message)}
             isMessageDeleted={isTicketMessageDeleted(message)}
             isBodyHighlighted={containerContainsHighlightedMessages}
+            isAIAgentInternalNote={isAIAgentInternalNote}
             isAIAgentMessage={isAIAgentMessage}
             isAIAgentMessageSelected={selectedAIMessage?.id === message.id}
             shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}

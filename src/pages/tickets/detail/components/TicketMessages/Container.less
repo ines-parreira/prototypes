@@ -74,12 +74,20 @@
         }
     }
 
-    &.ticketHandledByAIAgent:hover {
-        background: var(--accessory-magenta-1);
-
+    &.ticketHandledByAIAgent {
         :global {
-            .message-content {
-                background: var(--accessory-magenta-1);
+            .source-icon {
+                color: var(--neutral-grey-4) !important;
+            }
+        }
+
+        &:hover {
+            background: var(--accessory-magenta-1);
+
+            :global {
+                .message-content {
+                    background: var(--accessory-magenta-1);
+                }
             }
         }
     }

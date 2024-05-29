@@ -1,0 +1,35 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .feedbackContainer {
+        display: flex;
+        gap: @layout-spacing-xs;
+        flex-wrap: wrap;
+    }
+
+    .feedbackQuestion {
+        text-wrap: nowrap;
+    }
+
+    .feedbackButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
+    .feedbackButton {
+        z-index: 0;
+    }
+
+    .withFeedback {
+        pointer-events: none;
+
+        &.thumb_up {
+            color: var(--feedback-success-4) !important;
+        }
+
+        &.thumb_down {
+            color: var(--feedback-error-4) !important;
+        }
+    }
+}

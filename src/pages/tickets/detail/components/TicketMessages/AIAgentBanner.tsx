@@ -1,49 +1,18 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-
 import {TicketMessage} from 'models/ticket/types'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 
-import IconButton from 'pages/common/components/button/IconButton'
-import Button from 'pages/common/components/button/Button'
-
-import {
-    changeActiveTab,
-    changeTicketMessage,
-    getSelectedAIMessage,
-} from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {openPanel} from 'state/layout/actions'
-
 import css from './AIAgentBanner.less'
+import AIBanner from './AIBanner'
+import AIAgentFeedback from './AIAgentFeedback'
 
 export type AIAgentBannerProps = {
     message: TicketMessage
 }
 
-export const ACCURATE_RESPONSE = 'Is the response accurate?'
-export const IMPROVE_RESPONSE = 'Improve response'
-
 const AIAgentBanner = ({message}: AIAgentBannerProps) => {
-    const dispatch = useAppDispatch()
-    const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-    const handleImproveResponse = () => {
-        dispatch(
-            changeActiveTab({
-                activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            })
-        )
-        dispatch(
-            changeTicketMessage({
-                message,
-            })
-        )
-        dispatch(openPanel('infobar'))
-    }
-
     const {data, isLoading, isError} = useGetAiAgentFeedback(
         message.ticket_id!,
         {
@@ -61,59 +30,23 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
         (messageFeedback) => messageFeedback.messageId === message.id
     )
 
-    const positiveFeedback =
-        messageFeedback &&
-        messageFeedback.actions?.every(
-            (action) => action.feedback === 'thumbs_up'
-        ) &&
-        messageFeedback.guidance?.every(
-            (guidance) => guidance.feedback === 'thumbs_up'
-        ) &&
-        messageFeedback.knowledge?.every(
-            (knowledge) => knowledge.feedback === 'thumbs_up'
-        )
+    const allowsFeedback = messageFeedback?.allowsFeedback
+
+    // If message is not public, it is an internal note created by AI Agent
+    const isMessagePublic = message.public
 
     return (
-        <div className={css.container}>
-            <i className={classNames('material-icons', css.icon)}>
-                auto_awesome
-            </i>
-            <div className={css.content}>
-                <div className={css.message}>{messageFeedback?.summary}</div>
-                <div className={css.feedbackContainer}>
-                    <div className={css.feedbackQuestion}>
-                        {ACCURATE_RESPONSE}
-                    </div>
-                    <div className={css.feedbackButtons}>
-                        <IconButton
-                            fillStyle="fill"
-                            intent="secondary"
-                            size="small"
-                            iconClassName={
-                                positiveFeedback
-                                    ? 'material-icons'
-                                    : 'material-icons-outlined'
-                            }
-                            className={classNames(css.feedbackButton, {
-                                [css.positiveFeedback]: positiveFeedback,
-                            })}
-                        >
-                            thumb_up
-                        </IconButton>
-                        <Button
-                            intent="secondary"
-                            size="small"
-                            fillStyle="fill"
-                            onClick={handleImproveResponse}
-                            isDisabled={selectedAIMessage === message}
-                            className={css.feedbackButton}
-                        >
-                            {IMPROVE_RESPONSE}
-                        </Button>
-                    </div>
-                </div>
+        <AIBanner>
+            <div className={classNames({[css.boldMessage]: isMessagePublic})}>
+                {messageFeedback?.summary}
             </div>
-        </div>
+            {allowsFeedback && (
+                <AIAgentFeedback
+                    message={message}
+                    messageFeedback={messageFeedback}
+                />
+            )}
+        </AIBanner>
     )
 }
 

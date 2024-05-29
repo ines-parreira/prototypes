@@ -184,7 +184,7 @@ exports[`<PhoneNumberDetails/> render() should not render a "Add Integration" li
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
@@ -459,7 +459,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Add Integration" link i
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
@@ -729,7 +729,7 @@ exports[`<PhoneNumberDetails/> render() should render a "Manage Integration" lin
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
@@ -1004,7 +1004,7 @@ exports[`<PhoneNumberDetails/> render() should render the link to an SMS integra
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
@@ -1297,7 +1297,7 @@ exports[`<PhoneNumberDetails/> render() should render with a local US number 1`]
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
@@ -1542,7 +1542,7 @@ exports[`<PhoneNumberDetails/> render() should render with a mobile GB number 1`
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
@@ -1817,7 +1817,7 @@ exports[`<PhoneNumberDetails/> render() should render with a toll-free CA number
             class="col-lg-8"
           >
             <i
-              class="icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
+              class="icon source-icon d-inline-block icon-custom icon-whatsapp md-2 align-middle mr-3"
             />
             <strong>
               WhatsApp
