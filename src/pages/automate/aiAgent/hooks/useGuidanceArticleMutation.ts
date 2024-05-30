@@ -66,9 +66,9 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
                     extra: {
                         context: 'Error during guidance article creation',
-                        tags: [AI_AGENT_SENTRY_TEAM],
                     },
                 })
 
@@ -99,9 +99,9 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
                     extra: {
                         context: 'Error during guidance article updating',
-                        tags: [AI_AGENT_SENTRY_TEAM],
                     },
                 })
 
@@ -120,9 +120,9 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
                     extra: {
                         context: 'Error during guidance article deletion',
-                        tags: [AI_AGENT_SENTRY_TEAM],
                     },
                 })
 

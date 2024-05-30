@@ -184,6 +184,13 @@ export const AiAgentPlaygroundView = () => {
                         status: NotificationStatus.Error,
                     })
                 )
+                reportError(storeFetchError, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    extra: {
+                        context:
+                            'Error fetching store configuration for AI Agent Playground',
+                    },
+                })
 
                 return history.push(routes.configuration)
             }
@@ -203,10 +210,10 @@ export const AiAgentPlaygroundView = () => {
         }
 
         reportError(accountFetchError, {
+            tags: {team: AI_AGENT_SENTRY_TEAM},
             extra: {
                 context:
                     'Error fetching account configuration for AI Agent Playground',
-                tags: [AI_AGENT_SENTRY_TEAM],
             },
         })
         return <Redirect to={routes.automation} />
@@ -224,6 +231,13 @@ export const AiAgentPlaygroundView = () => {
                 status: NotificationStatus.Error,
             })
         )
+
+        reportError(new Error('No Account data for Playground'), {
+            tags: {team: AI_AGENT_SENTRY_TEAM},
+            extra: {
+                context: 'No account data for Ai Agent Playground',
+            },
+        })
         return <Redirect to={routes.automation} />
     }
 

@@ -171,10 +171,10 @@ export const PlaygroundInputStep = ({
                 // use report error to log the error
                 unexpectedError = true
                 reportError(e, {
+                    tags: {team: AI_AGENT_SENTRY_TEAM},
                     extra: {
                         context:
                             'Error during account fetching in playground input step.',
-                        tags: [AI_AGENT_SENTRY_TEAM],
                     },
                 })
             }
