@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import moment from 'moment'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 
@@ -9,8 +8,9 @@ import {FeatureFlagKey} from 'config/featureFlags'
 
 import StatsPage from 'pages/stats/StatsPage'
 import {StatsFilters} from 'models/stat/types'
-import AutomateLandingPageDashboardV1 from './AutomateLandingPageDashboardV1'
-import AutomateLandingPageDashboardV2 from './AutomateLandingPageDashboardV2'
+import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
+import AutomateLandingPageDashboardV1 from 'pages/automate/common/components/AutomateLandingPageDashboardV1'
+import AutomateLandingPageDashboardV2 from 'pages/automate/common/components/AutomateLandingPageDashboardV2'
 
 const AutomateLandingPage = () => {
     const isAutomateAnalyticsv2: boolean | undefined =
@@ -19,31 +19,7 @@ const AutomateLandingPage = () => {
     const [checkListNode, setCheckListNode] = useCallbackRef()
     useInjectStyleToCandu(checkListNode)
 
-    const filterDates = useMemo(() => {
-        const nowLess28DaysDatetime = moment()
-            .subtract(28, 'days')
-            .startOf('day')
-            .format()
-
-        const nowDatetime = moment().endOf('day').format()
-
-        return {
-            nowDatetime,
-            nowLess28DaysDatetime,
-        }
-    }, [])
-
-    const {nowDatetime, nowLess28DaysDatetime} = filterDates
-
-    const filters: StatsFilters = useMemo(
-        () => ({
-            period: {
-                end_datetime: nowDatetime,
-                start_datetime: nowLess28DaysDatetime,
-            },
-        }),
-        [nowDatetime, nowLess28DaysDatetime]
-    )
+    const filters: StatsFilters = useMemo(last28DaysStatsFilters, [])
 
     return (
         <StatsPage title="Automate" headerCanduId="header-my-automate">
