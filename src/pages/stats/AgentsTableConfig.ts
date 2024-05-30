@@ -145,17 +145,25 @@ export const HeaderTooltips: Record<TableColumn, TooltipData | undefined> = {
     },
     [TableColumn.MessagesSentPerHour]: {
         title: 'Number of messages sent by the agent divided by the number of online hours',
+        link: 'https://link.gorgias.com/5p9',
     },
     [TableColumn.RepliedTicketsPerHour]: {
         title: 'Number of tickets replied by the agent divided by the number of online hours',
+        link: 'https://link.gorgias.com/zn8',
     },
     [TableColumn.ClosedTicketsPerHour]: {
         title: 'Number of closed tickets assigned to the agent divided by the number of online hours',
+        link: 'https://link.gorgias.com/pcu',
     },
     [TableColumn.TicketHandleTime]: {
         title: 'Average amount of time spent by any agent on the closed tickets assigned to the agent',
         link: 'https://link.gorgias.com/611',
     },
+}
+
+export const averageTooltip = {
+    title: '',
+    link: 'https://link.gorgias.com/a6l',
 }
 
 export const MetricFormat: Record<

@@ -193,5 +193,5 @@ export const WORKLOAD_BY_CHANNEL_HINT = {
 
 export const TICKETS_CREATED_VS_CLOSED_HINT = {
     title: 'Number of tickets created vs closed over time.',
-    link: 'https://link.gorgias.com/3ol',
+    link: 'https://link.gorgias.com/q3m',
 }
