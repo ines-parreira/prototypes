@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {UseMutateFunction} from '@tanstack/react-query'
 import {AxiosResponse} from 'axios'
 import classnames from 'classnames'
+import {CustomerSearchResponse} from '@gorgias/api-queries'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {
     AccountConfigurationWithHttpIntegration,
@@ -58,6 +59,7 @@ type Props = {
     >
     accountData: AccountConfigurationWithHttpIntegration
     storeData: StoreConfiguration
+    initialValues: FormValues
 }
 
 type Control = {
@@ -75,12 +77,6 @@ const senderSelectOptions = [
     },
 ]
 
-const initialFormValues: FormValues = {
-    subject: '',
-    message: '',
-    customerEmail: CustomerHttpIntegrationDataMock.address,
-}
-
 export const PlaygroundInputStep = ({
     isDisabled,
     setSubject,
@@ -89,10 +85,13 @@ export const PlaygroundInputStep = ({
     submitPlaygroundTicket,
     accountData,
     storeData,
+    initialValues,
 }: Props) => {
-    const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
+    const [formValues, setFormValues] = useState<FormValues>(initialValues)
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
-        SenderTypeValues.NEW_CUSTOMER
+        initialValues.customerEmail
+            ? SenderTypeValues.EXISTING_CUSTOMER
+            : SenderTypeValues.NEW_CUSTOMER
     )
     const childControlRef = React.createRef<Control>()
 
@@ -137,7 +136,6 @@ export const PlaygroundInputStep = ({
         let customerName: string = formValues.customerEmail
         let isCustomerFound = false
         let unexpectedError = false
-
         // If we are using the new customer option, we use the mock data
         if (senderSelectedOption === SenderTypeValues.NEW_CUSTOMER) {
             customerName = CustomerHttpIntegrationDataMock.name
@@ -145,17 +143,21 @@ export const PlaygroundInputStep = ({
         } else {
             // Get the customer information to populate its name in the chat
             try {
-                const selectedCustomer = await searchCustomers({
+                const searchCustomerRes = await searchCustomers({
                     search: formValues.customerEmail,
                     limit: 1,
                 })
 
+                const foundCustomer = (
+                    searchCustomerRes.data as CustomerSearchResponse
+                ).data?.[0]
+
                 if (
-                    selectedCustomer.data.data &&
-                    selectedCustomer.data.data.length
+                    foundCustomer &&
+                    foundCustomer.email === formValues.customerEmail
                 ) {
                     isCustomerFound = true
-                    const foundCustomer = selectedCustomer.data.data[0]
+
                     customerName =
                         foundCustomer &&
                         'name' in foundCustomer &&
@@ -238,7 +240,7 @@ export const PlaygroundInputStep = ({
 
     const onClear = () => {
         setFormValues({
-            ...initialFormValues,
+            ...initialValues,
             customerEmail: '',
         })
         childControlRef.current?.clear()
@@ -265,6 +267,7 @@ export const PlaygroundInputStep = ({
                         {senderSelectedOption ===
                             SenderTypeValues.EXISTING_CUSTOMER && (
                             <CustomerSearchDropdownSelectView
+                                baseSearchTerm={initialValues.customerEmail}
                                 className={css.customerSearch}
                                 onSelect={handleFormChange('customerEmail')}
                                 ref={childControlRef}

@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react'
-import {Link, Redirect, useParams} from 'react-router-dom'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
+import {Link, Redirect, useLocation, useParams} from 'react-router-dom'
 import {isAxiosError} from 'axios'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -34,10 +34,15 @@ import {
 } from './components/PlaygroundMessage/PlaygroundMessage'
 import {PlaygroundOutputStep} from './components/PlaygroundOutputStep/PlaygroundOutputStep'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
+import {CustomerHttpIntegrationDataMock} from './constants'
 
 enum PlaygroundStep {
     INPUT = 'input',
     OUTPUT = 'output',
+}
+
+type UrlParams = {
+    shopName: string
 }
 
 const shouldAiAgentResponseDisplay = (
@@ -53,9 +58,18 @@ const shouldAiAgentResponseDisplay = (
 }
 
 export const AiAgentPlaygroundView = () => {
-    const {shopName} = useParams<{
-        shopName: string
-    }>()
+    const {shopName} = useParams<UrlParams>()
+    const {search} = useLocation()
+    const params = useMemo(() => new URLSearchParams(search), [search])
+
+    const initialInputValues = {
+        subject: params.get('subject') ?? '',
+        message: params.get('message') ?? '',
+        customerEmail:
+            params.get('customer_email') ??
+            CustomerHttpIntegrationDataMock.address,
+    }
+
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -251,6 +265,7 @@ export const AiAgentPlaygroundView = () => {
                                     .accountConfiguration as AccountConfigurationWithHttpIntegration
                             }
                             storeData={storeData.data.storeConfiguration}
+                            initialValues={initialInputValues}
                         />
                     )}
                 </div>

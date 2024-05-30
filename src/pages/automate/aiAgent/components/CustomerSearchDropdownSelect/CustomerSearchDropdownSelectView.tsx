@@ -14,12 +14,13 @@ import {CustomerSearchDropdownSelectComponent} from './CustomerSearchDropdownSel
 type Props = {
     onSelect: (value: string) => void
     className?: string
+    baseSearchTerm?: string
 }
 
 export const CustomerSearchDropdownSelectView = forwardRef(
-    ({className, onSelect}: Props, ref) => {
-        const [searchTerm, setSearchTerm] = useState('')
-        const [isSelected, setIsSelected] = useState(false)
+    ({className, onSelect, baseSearchTerm}: Props, ref) => {
+        const [searchTerm, setSearchTerm] = useState(baseSearchTerm ?? '')
+        const [isSelected, setIsSelected] = useState(baseSearchTerm ?? false)
         const [isTyping, setIsTyping] = useState(false)
         const [focusedIndex, setFocusedIndex] = useState(-1)
 
