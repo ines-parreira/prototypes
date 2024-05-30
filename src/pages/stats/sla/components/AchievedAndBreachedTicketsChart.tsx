@@ -41,8 +41,8 @@ export const AchievedAndBreachedTicketsChart = () => {
     )
 
     const formattedData = data
-        ? CHART_FIELDS.map((metric) => metric.field).map(
-              (metric) => data[metric][0]
+        ? CHART_FIELDS.map((metric) => metric.field).map((metric) =>
+              data[metric] ? data[metric][0] : []
           )
         : []
 
