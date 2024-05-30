@@ -1,3 +1,4 @@
+import _isNumber from 'lodash/isNumber'
 import {Metric} from 'hooks/reporting/metrics'
 import {
     useTicketsInPolicyPerStatus,
@@ -8,6 +9,18 @@ import useAppSelector from 'hooks/useAppSelector'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
+
+function getSlaAchievementRate(
+    satisfiedSlaTickets: number | null | undefined,
+    breachedSlaTickets: number | null | undefined
+) {
+    return _isNumber(satisfiedSlaTickets) && _isNumber(breachedSlaTickets)
+        ? calculatePercentage(
+              satisfiedSlaTickets,
+              satisfiedSlaTickets + breachedSlaTickets
+          )
+        : null
+}
 
 export const useTicketSlaAchievementRate = (): Metric => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
@@ -27,14 +40,10 @@ export const useTicketSlaAchievementRate = (): Metric => {
         TicketSLAStatus.Breached
     )
 
-    const slaAchievementRate =
-        satisfiedSlaTickets.data?.value && breachedSlaTickets.data?.value
-            ? calculatePercentage(
-                  satisfiedSlaTickets.data?.value,
-                  satisfiedSlaTickets.data?.value +
-                      breachedSlaTickets.data?.value
-              )
-            : null
+    const slaAchievementRate = getSlaAchievementRate(
+        satisfiedSlaTickets.data?.value,
+        breachedSlaTickets.data?.value
+    )
 
     return {
         isFetching:
@@ -64,25 +73,15 @@ export const useTicketSlaAchievementRateTrend = (): MetricTrend => {
         TicketSLAStatus.Breached
     )
 
-    const slaAchievementRate =
-        satisfiedSlaTicketsTrend.data?.value &&
+    const slaAchievementRate = getSlaAchievementRate(
+        satisfiedSlaTicketsTrend.data?.value,
         breachedSlaTicketsTrend.data?.value
-            ? calculatePercentage(
-                  satisfiedSlaTicketsTrend.data?.value,
-                  satisfiedSlaTicketsTrend.data?.value +
-                      breachedSlaTicketsTrend.data?.value
-              )
-            : null
+    )
 
-    const slaAchievementRatePreviousPeriod =
-        satisfiedSlaTicketsTrend.data?.prevValue &&
+    const slaAchievementRatePreviousPeriod = getSlaAchievementRate(
+        satisfiedSlaTicketsTrend.data?.prevValue,
         breachedSlaTicketsTrend.data?.prevValue
-            ? calculatePercentage(
-                  satisfiedSlaTicketsTrend.data?.prevValue,
-                  satisfiedSlaTicketsTrend.data?.prevValue +
-                      breachedSlaTicketsTrend.data?.prevValue
-              )
-            : null
+    )
 
     return {
         isFetching:

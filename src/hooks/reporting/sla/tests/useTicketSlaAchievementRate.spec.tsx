@@ -49,11 +49,45 @@ describe('useTicketSlaAchievementRate', () => {
         })
     })
 
-    it('should calculate achievement rate', () => {
-        const satisfiedTickets = 10
+    it.each([
+        [10, 30, calculatePercentage(10, 10 + 30)],
+        [null, 30, null],
+        [10, null, null],
+    ])(
+        'should calculate achievement rate',
+        (satisfiedTickets, breachedTickets, rate) => {
+            useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
+                data: {value: satisfiedTickets, decile: 0, allData: []},
+                isFetching: false,
+                isError: false,
+            })
+            useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
+                data: {value: breachedTickets, decile: 0, allData: []},
+                isFetching: false,
+                isError: false,
+            })
+
+            const {result} = renderHook(() => useTicketSlaAchievementRate(), {
+                wrapper: ({children}) => (
+                    <Provider store={mockStore({})}> {children} </Provider>
+                ),
+            })
+
+            expect(result.current).toEqual({
+                data: {
+                    value: rate,
+                },
+                isFetching: false,
+                isError: false,
+            })
+        }
+    )
+
+    it('should not calculate achievement rate when data is not available', () => {
         const breachedTickets = 30
+        const expectedRate = null
         useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
-            data: {value: satisfiedTickets, decile: 0, allData: []},
+            data: null,
             isFetching: false,
             isError: false,
         })
@@ -71,10 +105,7 @@ describe('useTicketSlaAchievementRate', () => {
 
         expect(result.current).toEqual({
             data: {
-                value: calculatePercentage(
-                    satisfiedTickets,
-                    satisfiedTickets + breachedTickets
-                ),
+                value: expectedRate,
             },
             isFetching: false,
             isError: false,
