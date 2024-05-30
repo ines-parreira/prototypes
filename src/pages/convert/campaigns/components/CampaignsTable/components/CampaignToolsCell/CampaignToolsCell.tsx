@@ -4,7 +4,6 @@ import {Map} from 'immutable'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
-import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -43,8 +42,7 @@ export const CampaignToolsCell = ({
         boolean | undefined
     >(storageKey)
 
-    const areLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
-    const isLight = areLightCampaignsEnabled && campaign.is_light
+    const isLight = campaign.is_light
     const isShopifyStore = chatIsShopifyStore(integration)
 
     const onDelete = useCallback(

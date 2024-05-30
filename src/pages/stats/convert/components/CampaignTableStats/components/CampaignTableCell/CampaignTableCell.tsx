@@ -15,7 +15,6 @@ import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/Campaign
 
 import {formatNumber} from 'pages/stats/common/utils'
 
-import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {TotalRevenueCell} from '../TotalRevenueCell'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
@@ -46,8 +45,6 @@ export const CampaignTableCell = ({
     isTableScrolled = false,
     isLoading,
 }: Props) => {
-    const areLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
-
     const bodyCellProps = useMemo(() => {
         return {
             isHighlighted: highlighted.includes(column.key),
@@ -75,10 +72,7 @@ export const CampaignTableCell = ({
     if (column.key === CampaignTableKeys.CampaignName) {
         if (cell.chatIntegration) {
             const url = `/app/convert/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
-            const lightLabel =
-                areLightCampaignsEnabled && cell.campaign.is_light
-                    ? ' (light)'
-                    : ''
+            const lightLabel = cell.campaign.is_light ? ' (light)' : ''
             return (
                 <BodyCell
                     {...bodyCellProps}

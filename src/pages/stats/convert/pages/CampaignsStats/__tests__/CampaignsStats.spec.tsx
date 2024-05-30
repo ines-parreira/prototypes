@@ -7,7 +7,6 @@ import {fromJS} from 'immutable'
 import {RootState} from 'state/types'
 import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as useIsConvertABTestEnabledHook from 'pages/convert/common/hooks/useIsConvertABTestEnabled'
 import {getStateWithPrice} from 'utils/paywallTesting'
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -163,11 +162,6 @@ describe('CampaignsStats', () => {
         jest.spyOn(
             isConvertSubscriberHook,
             'useIsConvertSubscriber'
-        ).mockImplementation(() => true)
-
-        jest.spyOn(
-            useIsConvertABTestEnabledHook,
-            'useIsConvertABTestEnabled'
         ).mockImplementation(() => true)
 
         const {getByText} = renderWithStore(mockedState)

@@ -7,7 +7,6 @@ import useSearch from 'hooks/useSearch'
 import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as useAreConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 import {createTrigger} from '../../../utils/createTrigger'
 
@@ -18,11 +17,6 @@ import {CampaignsTable} from '../CampaignsTable'
 
 jest.mock('hooks/useSearch')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
-
-jest.spyOn(
-    useAreConvertLightCampaignsEnabled,
-    'useAreConvertLightCampaignsEnabled'
-).mockImplementation(() => true)
 
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1

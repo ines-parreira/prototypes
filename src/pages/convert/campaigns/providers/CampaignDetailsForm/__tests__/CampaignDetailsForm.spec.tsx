@@ -15,7 +15,6 @@ import {integrationsState} from 'fixtures/integrations'
 import {RootState, StoreDispatch} from 'state/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as useAreConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 
 import {campaign as campaignFixture} from 'fixtures/campaign'
 import {toJS} from 'utils'
@@ -77,11 +76,6 @@ const shopifyIntegration = fromJS({
 })
 
 const campaign = fromJS(campaignFixture)
-
-const areConvertLightCampaignsEnabledSpy = jest.spyOn(
-    useAreConvertLightCampaignsEnabled,
-    'useAreConvertLightCampaignsEnabled'
-)
 
 const isConvertSubscriberSpy = jest.spyOn(
     isConvertSubscriberHook,
@@ -179,7 +173,6 @@ describe('<CampaignDetailsForm />', () => {
 
         it('renders the banner when campaign is light, is subscriber, is shopify', () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
-            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
 
             const {queryByText} = renderComponent({
                 ...defaultProps,
@@ -196,23 +189,6 @@ describe('<CampaignDetailsForm />', () => {
 
         it('does not render the banner when is not a Convert subscriber', () => {
             isConvertSubscriberSpy.mockImplementation(() => false)
-            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
-
-            const {queryByText} = renderComponent({
-                ...defaultProps,
-                campaign: lightCampaign,
-            })
-
-            expect(
-                queryByText(bannerText, {
-                    exact: false,
-                })
-            ).not.toBeInTheDocument()
-        })
-
-        it('does not render the banner when feature is not enabled', () => {
-            isConvertSubscriberSpy.mockImplementation(() => true)
-            areConvertLightCampaignsEnabledSpy.mockImplementation(() => false)
 
             const {queryByText} = renderComponent({
                 ...defaultProps,
@@ -228,7 +204,6 @@ describe('<CampaignDetailsForm />', () => {
 
         it('does not render the banner when campaign is not light', () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
-            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
 
             const {queryByText} = renderComponent(defaultProps)
 
@@ -241,7 +216,6 @@ describe('<CampaignDetailsForm />', () => {
 
         it('does not render the banner when integration is not shopify', () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
-            areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
 
             const integration = fromJS({
                 ...shopifyChatIntegration.toJS(),

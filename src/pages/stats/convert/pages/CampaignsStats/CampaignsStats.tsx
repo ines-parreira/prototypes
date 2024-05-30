@@ -12,7 +12,6 @@ import StatsPage from 'pages/stats/StatsPage'
 import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
 import {ConvertRouteParams} from 'pages/convert/common/types'
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
-import {useIsConvertABTestEnabled} from 'pages/convert/common/hooks/useIsConvertABTestEnabled'
 import RequestABTest from 'pages/stats/convert/components/RequestABTest'
 
 import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
@@ -31,10 +30,7 @@ type CampaignsStatsProps = {
 const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
     const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
         useParams<ConvertRouteParams>()
-    const isConvertABTestEnabled = useIsConvertABTestEnabled()
-
-    const showButton =
-        isConvertABTestEnabled && isConvertSubscriber && chatIntegrationId
+    const showButton = isConvertSubscriber && chatIntegrationId
 
     return (
         <CampaignStatsFilters>

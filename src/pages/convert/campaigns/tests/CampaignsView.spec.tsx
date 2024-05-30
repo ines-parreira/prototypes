@@ -12,7 +12,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {entitiesInitialState} from 'fixtures/entities'
 import {billingState} from 'fixtures/billing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import * as areConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import useSearch from 'hooks/useSearch'
 
 import {assumeMock, renderWithRouter} from 'utils/testing'
@@ -78,10 +77,6 @@ describe('<CampaignsView/>', () => {
         isConvertSubscriberHook,
         'useIsConvertSubscriber'
     )
-    const areConvertLightCampaignsEnabledSpy = jest.spyOn(
-        areConvertLightCampaignsEnabled,
-        'useAreConvertLightCampaignsEnabled'
-    )
     const mutateCreateMock = jest.fn()
     const mutateDeleteMock = jest.fn()
 
@@ -134,7 +129,6 @@ describe('<CampaignsView/>', () => {
     beforeEach(() => {
         localStorage.clear()
         isConvertSubscriberSpy.mockImplementation(() => true)
-        areConvertLightCampaignsEnabledSpy.mockImplementation(() => true)
         ;(useSearch as jest.Mock).mockImplementation(() => {
             return {
                 search: '',

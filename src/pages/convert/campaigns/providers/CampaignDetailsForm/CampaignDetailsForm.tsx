@@ -42,7 +42,6 @@ import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
-import {useAreConvertLightCampaignsEnabled} from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
 import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
@@ -136,7 +135,6 @@ export const CampaignDetailsForm = ({
     }, [isEditMode, wizardConfiguration])
 
     const isConvertSubscriber = useIsConvertSubscriber()
-    const areConvertLightCampaignsEnabled = useAreConvertLightCampaignsEnabled()
     const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
 
@@ -522,10 +520,7 @@ export const CampaignDetailsForm = ({
         [isEditMode, wizardConfiguration]
     )
 
-    const isLightCampaign = useMemo(() => {
-        return areConvertLightCampaignsEnabled && campaign?.is_light
-    }, [areConvertLightCampaignsEnabled, campaign])
-
+    const isLightCampaign = campaign?.is_light
     const isLightCampaignBannerVisible = useMemo(() => {
         return isLightCampaign && isConvertSubscriber && isShopifyStore
     }, [isLightCampaign, isConvertSubscriber, isShopifyStore])

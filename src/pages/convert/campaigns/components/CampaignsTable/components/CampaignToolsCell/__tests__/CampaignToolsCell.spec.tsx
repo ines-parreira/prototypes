@@ -2,7 +2,6 @@ import React from 'react'
 import {screen, render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
-import * as useAreConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import {Campaign} from '../../../../../types/Campaign'
 
@@ -37,10 +36,6 @@ describe('<CampaignToolsCell />', () => {
     }
 
     beforeEach(() => {
-        jest.spyOn(
-            useAreConvertLightCampaignsEnabled,
-            'useAreConvertLightCampaignsEnabled'
-        ).mockImplementation(() => true)
         useLocalStorageSpy.mockReturnValue([])
     })
 

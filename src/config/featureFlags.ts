@@ -42,8 +42,6 @@ export enum FeatureFlagKey {
     ChatTranscript = 'chat-transcript',
     ContactFormAutoEmbed = 'contact-form-auto-embed',
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
-    ConvertABTest = 'convert-ab-tests',
-    ConvertLightCampaign = 'convert-light-campaign',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
     DeflectToSMS = 'deflect-to-sms',

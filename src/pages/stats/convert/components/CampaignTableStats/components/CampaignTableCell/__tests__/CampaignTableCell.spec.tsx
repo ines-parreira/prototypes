@@ -7,7 +7,6 @@ import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableC
 import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
 
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import * as useAreConvertLightCampaignsEnabled from 'pages/convert/common/hooks/useAreConvertLightCampaignsEnabled'
 import {GorgiasChatIntegration} from 'models/integration/types'
 import {CampaignTableCell} from '../CampaignTableCell'
 
@@ -31,13 +30,6 @@ describe('<CampaignTableCell />', () => {
             name: 'Test integration',
         } as unknown as GorgiasChatIntegration,
     } as CampaignTableContentCell
-
-    beforeEach(() => {
-        jest.spyOn(
-            useAreConvertLightCampaignsEnabled,
-            'useAreConvertLightCampaignsEnabled'
-        ).mockImplementation(() => true)
-    })
 
     it.each([
         [
