@@ -153,4 +153,37 @@ describe('AIAgentBanner', () => {
         expect(message).toBeInTheDocument()
         expect(message).not.toHaveClass('boldMessage')
     })
+
+    it('should fall back to body_html if no summary was provided', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: null,
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const {queryByText} = render(
+            <AIAgentBanner
+                message={{...mockMessage, body_html: 'body_html123'}}
+            />
+        )
+
+        const summary = queryByText('summary')
+
+        expect(summary).not.toBeInTheDocument()
+
+        const bodyHtml = queryByText('body_html123')
+
+        expect(bodyHtml).toBeInTheDocument()
+    })
 })

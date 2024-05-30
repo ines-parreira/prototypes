@@ -3,6 +3,7 @@ import classNames from 'classnames'
 
 import {TicketMessage} from 'models/ticket/types'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 
 import css from './AIAgentBanner.less'
 import AIBanner from './AIBanner'
@@ -38,7 +39,7 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
     return (
         <AIBanner>
             <div className={classNames({[css.boldMessage]: isMessagePublic})}>
-                {messageFeedback?.summary}
+                {messageFeedback?.summary || <Body message={message} />}
             </div>
             {allowsFeedback && (
                 <AIAgentFeedback
