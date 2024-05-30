@@ -46,6 +46,7 @@ const ContactFormMailtoReplacementSection = ({
     const {
         themeAppExtensionInstallationUrl,
         shouldUseThemeAppExtensionInstallation,
+        themeAppExtensionEnabled,
     } = useThemeAppExtensionInstallation(shopifyIntegration)
     const {isInstalled: isThemeAppExtensionInstalled} =
         useShopifyThemeAppExtension({
@@ -53,13 +54,27 @@ const ContactFormMailtoReplacementSection = ({
             appUuid: getGorgiasMainThemeAppExtensionId(),
         })
 
-    // This is needed for optimistic UI update
     const [wasInstallationInitiated, setWasInstallationInitiated] =
         useState(false)
 
-    const themeExtensionIsRequiredButNotInstalled =
-        shouldUseThemeAppExtensionInstallation &&
-        !(isThemeAppExtensionInstalled || wasInstallationInitiated)
+    // We should use the theme app extension installation in 2 cases:
+    // - 1. If it's a new Shopify integration, then `shouldUseThemeAppExtensionInstallation` will be true
+    // - 2. If it's an old Shopify integration, but there are no emails to replace configured.
+    //      It means that a script tag is not created, so we need to install the theme app extension
+    const shouldUseThemeAppExtension =
+        themeAppExtensionEnabled &&
+        (shouldUseThemeAppExtensionInstallation ||
+            mailtoReplacementConfig?.emails.length === 0)
+
+    // Theme app extension is considered installed in 2 cases:
+    // - 1. If it's already installed
+    // - 2. If the installation was initiated (opened in a new tab). It's needed for optimistic UI
+    const isThemeExtensionInstalled =
+        isThemeAppExtensionInstalled || wasInstallationInitiated
+
+    // We need to install the theme app extension if it's required and not installed yet
+    const isThemeExtensionInstallationRequired =
+        shouldUseThemeAppExtension && !isThemeExtensionInstalled
 
     const onAddEmails = () => {
         const mailtoReplacementConfigEmails =
@@ -74,7 +89,7 @@ const ContactFormMailtoReplacementSection = ({
         setSelectedEmails([])
 
         if (
-            themeExtensionIsRequiredButNotInstalled &&
+            isThemeExtensionInstallationRequired &&
             themeAppExtensionInstallationUrl
         ) {
             window.open(
@@ -111,7 +126,7 @@ const ContactFormMailtoReplacementSection = ({
                 customer information and protect your inbox from spammers.
             </p>
 
-            {themeExtensionIsRequiredButNotInstalled && (
+            {isThemeExtensionInstallationRequired && (
                 <p className="mb-4">
                     To easily replace email links in your Shopify store, click
                     "Replace Links" then click Save in the new Shopify window.
@@ -207,13 +222,13 @@ const ContactFormMailtoReplacementSection = ({
                         </div>
                     )}
 
-                {(themeExtensionIsRequiredButNotInstalled ||
+                {(isThemeExtensionInstallationRequired ||
                     emailList.length > 0) && (
                     <div>
                         <Button
                             isDisabled={
                                 selectedEmails.length === 0 &&
-                                !themeExtensionIsRequiredButNotInstalled
+                                !isThemeExtensionInstallationRequired
                             }
                             intent="secondary"
                             onClick={onAddEmails}

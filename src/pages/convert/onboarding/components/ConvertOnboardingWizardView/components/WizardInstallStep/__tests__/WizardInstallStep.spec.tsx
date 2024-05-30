@@ -34,6 +34,7 @@ describe('WizardInstallStep', () => {
         useThemeAppExtensionInstallationSpy.mockReturnValue({
             shouldUseThemeAppExtensionInstallation: false,
             themeAppExtensionInstallationUrl: null,
+            themeAppExtensionEnabled: false,
         })
         setInstallationMethod.mockClear()
     })
@@ -90,6 +91,7 @@ describe('WizardInstallStep', () => {
         useThemeAppExtensionInstallationSpy.mockReturnValue({
             shouldUseThemeAppExtensionInstallation: true,
             themeAppExtensionInstallationUrl: 'test.com',
+            themeAppExtensionEnabled: true,
         })
 
         const {getByText, queryByText} = render(

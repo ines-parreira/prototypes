@@ -38,6 +38,7 @@ describe('useThemeAppExtensionInstallation', () => {
             expect(result.current).toEqual({
                 shouldUseThemeAppExtensionInstallation: false,
                 themeAppExtensionInstallationUrl: null,
+                themeAppExtensionEnabled: false,
             })
         }
     )
@@ -62,6 +63,7 @@ describe('useThemeAppExtensionInstallation', () => {
         expect(result.current).toEqual({
             shouldUseThemeAppExtensionInstallation: true,
             themeAppExtensionInstallationUrl: `https://admin.shopify.com/store/test-store/themes/current/editor?context=apps&activateAppId=de98a9b4-b32b-4d92-8c0f-210c8cbebd9e/gorgias`,
+            themeAppExtensionEnabled: true,
         })
     })
 
@@ -80,6 +82,7 @@ describe('useThemeAppExtensionInstallation', () => {
         expect(result.current).toEqual({
             shouldUseThemeAppExtensionInstallation: true,
             themeAppExtensionInstallationUrl: null,
+            themeAppExtensionEnabled: true,
         })
     })
 
@@ -101,6 +104,7 @@ describe('useThemeAppExtensionInstallation', () => {
         )
 
         expect(result.current).toEqual({
+            themeAppExtensionEnabled: true,
             shouldUseThemeAppExtensionInstallation: false,
             themeAppExtensionInstallationUrl:
                 'https://admin.shopify.com/store/test-store/themes/current/editor?context=apps&activateAppId=de98a9b4-b32b-4d92-8c0f-210c8cbebd9e/gorgias',

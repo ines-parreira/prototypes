@@ -7,14 +7,18 @@ import {GorgiasUIEnv, getEnvironment} from 'utils/environment'
 const useThemeAppExtensionInstallation = (
     shopifyIntegration?: ShopifyIntegration
 ): {
-    shouldUseThemeAppExtensionInstallation: boolean
+    themeAppExtensionEnabled: boolean // This determines if the Theme App Extension is released.
+    shouldUseThemeAppExtensionInstallation: boolean // This determines if the Theme App Extension should be used for this integration.
     themeAppExtensionInstallationUrl: string | null
 } => {
     const switchToShopifyThemeAppExtensionRawValue =
         useFlags()[FeatureFlagKey.SwitchToShopifyThemeAppExtension]
 
+    const themeAppExtensionEnabled = !!switchToShopifyThemeAppExtensionRawValue
+
     if (!switchToShopifyThemeAppExtensionRawValue) {
         return {
+            themeAppExtensionEnabled,
             shouldUseThemeAppExtensionInstallation: false,
             themeAppExtensionInstallationUrl: null,
         }
@@ -27,6 +31,7 @@ const useThemeAppExtensionInstallation = (
     if (!shopifyIntegration) {
         // Consider new installation method if no shopify integration is selected.
         return {
+            themeAppExtensionEnabled,
             shouldUseThemeAppExtensionInstallation: true,
             themeAppExtensionInstallationUrl: null,
         }
@@ -41,6 +46,7 @@ const useThemeAppExtensionInstallation = (
         shouldUseThemeAppExtensionInstallation:
             new Date(shopifyIntegration.created_datetime) > switchDate,
         themeAppExtensionInstallationUrl,
+        themeAppExtensionEnabled,
     }
 }
 
