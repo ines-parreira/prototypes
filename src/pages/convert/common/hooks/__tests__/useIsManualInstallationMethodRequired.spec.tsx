@@ -9,10 +9,16 @@ import {
     GorgiasChatIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
+import * as useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
 import useIsManualInstallationMethodRequired from '../useIsManualInstallationMethodRequired'
 
 const useGetChatInstallationStatusSpy = jest.spyOn(
     useGetChatInstallationStatus,
+    'default'
+)
+
+const useShopifyThemeAppExtensionSpy = jest.spyOn(
+    useShopifyThemeAppExtension,
     'default'
 )
 
@@ -24,6 +30,12 @@ describe('useIsManualInstallationMethodRequired', () => {
     const shopifyIntegration = {
         type: SHOPIFY_INTEGRATION_TYPE,
     } as ShopifyIntegration
+
+    beforeEach(() => {
+        useShopifyThemeAppExtensionSpy.mockReturnValue({
+            isInstalled: false,
+        })
+    })
 
     it('should return true if storeIntegration is not connected to Shopify', () => {
         useGetChatInstallationStatusSpy.mockReturnValue({
@@ -71,6 +83,41 @@ describe('useIsManualInstallationMethodRequired', () => {
         )
 
         expect(result.current).toBe(true)
+    })
+
+    it('should return true if is connected to Shopify, chat is not installed and method is theme app', () => {
+        useGetChatInstallationStatusSpy.mockReturnValue({
+            installed: true, // DB data can say it's installed, but we verify on Shopify side too later
+            method: GorgiasChatInstallationMethod.ThemeAppExtension,
+        })
+
+        const {result} = renderHook(() =>
+            useIsManualInstallationMethodRequired(
+                chatIntegration,
+                shopifyIntegration
+            )
+        )
+
+        expect(result.current).toBe(true)
+    })
+
+    it('should return false if is connected to Shopify, chat is installed and method is theme app', () => {
+        useGetChatInstallationStatusSpy.mockReturnValue({
+            installed: true, // DB data can say it's installed, but we verify on Shopify side too later
+            method: GorgiasChatInstallationMethod.ThemeAppExtension,
+        })
+        useShopifyThemeAppExtensionSpy.mockReturnValue({
+            isInstalled: true,
+        })
+
+        const {result} = renderHook(() =>
+            useIsManualInstallationMethodRequired(
+                chatIntegration,
+                shopifyIntegration
+            )
+        )
+
+        expect(result.current).toBe(false)
     })
 
     it('should return false if is connected to Shopify, chat is installed and method is not null', () => {

@@ -5,6 +5,11 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 
+/*
+ * This hook is used to determine the installation status of the chat integration.
+ * The installation status determined is based on the Chat integration data,
+ * but doesn't perform any API calls to verify the status.
+ */
 const useGetChatInstallationStatus = (
     integration: GorgiasChatIntegration | undefined
 ): {
@@ -30,23 +35,22 @@ const useGetChatInstallationStatus = (
             integration.meta?.one_click_installation_method
 
         if (
-            installationMethod ===
-            GorgiasChatInstallationMethod.ThemeAppExtension
+            !installationMethod ||
+            ![
+                GorgiasChatInstallationMethod.ScriptTag,
+                GorgiasChatInstallationMethod.ThemeAppExtension,
+            ].includes(installationMethod)
         ) {
-            // TODO: handle theme app extension installation later
-            return defaultInstallation
-        }
-
-        if (installationMethod !== GorgiasChatInstallationMethod.ScriptTag) {
             return defaultInstallation
         }
 
         // if shop id is not present in the list, it's not installed with script tag
         if (
-            !integration.meta?.shopify_integration_ids ||
-            !integration.meta?.shopify_integration_ids.includes(
-                integration.meta?.shop_integration_id
-            )
+            installationMethod === GorgiasChatInstallationMethod.ScriptTag &&
+            (!integration.meta?.shopify_integration_ids ||
+                !integration.meta?.shopify_integration_ids.includes(
+                    integration.meta?.shop_integration_id
+                ))
         ) {
             return defaultInstallation
         }
@@ -68,7 +72,7 @@ const useGetChatInstallationStatus = (
         if (!uninstallationDatetime.isValid()) {
             return {
                 installed: true,
-                method: GorgiasChatInstallationMethod.ScriptTag,
+                method: installationMethod,
             }
         }
 
@@ -76,7 +80,7 @@ const useGetChatInstallationStatus = (
         return installationDatetime.isAfter(uninstallationDatetime)
             ? {
                   installed: true,
-                  method: GorgiasChatInstallationMethod.ScriptTag,
+                  method: installationMethod,
               }
             : defaultInstallation
     }, [integration])

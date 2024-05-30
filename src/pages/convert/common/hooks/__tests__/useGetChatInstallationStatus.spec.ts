@@ -23,6 +23,10 @@ describe('useGetOneClickInstallationStatus', () => {
         installed: true,
         method: GorgiasChatInstallationMethod.ScriptTag,
     }
+    const oneClickThemeAppExtensionInstalled = {
+        installed: true,
+        method: GorgiasChatInstallationMethod.ThemeAppExtension,
+    }
     const defaultInstallation = {
         installed: true,
         method: null,
@@ -43,6 +47,20 @@ describe('useGetOneClickInstallationStatus', () => {
             useGetChatInstallationStatus(integration)
         )
         expect(result.current).toStrictEqual(oneClickScriptTagInstalled)
+    })
+
+    it('should return "installed" for a valid installation via theme app extension', () => {
+        const {result} = renderHook(() =>
+            useGetChatInstallationStatus({
+                ...integration,
+                meta: {
+                    ...integration.meta,
+                    one_click_installation_method:
+                        GorgiasChatInstallationMethod.ThemeAppExtension,
+                },
+            })
+        )
+        expect(result.current).toStrictEqual(oneClickThemeAppExtensionInstalled)
     })
 
     it('should return "default" for no integration', () => {
