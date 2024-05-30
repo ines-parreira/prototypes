@@ -3501,13 +3501,13 @@
   resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.4.0.tgz#08d6c5e20cf7e4cc02fd181c4b0c225cd31dbb60"
   integrity sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==
 
-"@knocklabs/client@^0.10.7":
-  version "0.10.7"
-  resolved "https://registry.yarnpkg.com/@knocklabs/client/-/client-0.10.7.tgz#96d42d8e54049d2b7c57a830da83df0cb17118af"
-  integrity sha512-zEAzqPLVcSGhx9wdvGfdyGvP4zyEynpICPAdf7REjmCaJzBN0IbYs/3O+fIFBAAZzaXCIlPOA4f0PVpjY7CWJA==
+"@knocklabs/client@^0.10.10":
+  version "0.10.10"
+  resolved "https://registry.yarnpkg.com/@knocklabs/client/-/client-0.10.10.tgz#daba5dab948c2fc94aef3e6d05a33ff13e12b2d9"
+  integrity sha512-gmOuLYiprKfE4BpVTUF3nMyWYh7VlQ7mzugySLKriwXBWrg1XFwZXIgHvdboC308caWIf474rNsmV53x+Vgmlg==
   dependencies:
     "@babel/runtime" "^7.23.9"
-    "@knocklabs/types" "^0.1.3"
+    "@knocklabs/types" "^0.1.4"
     "@types/phoenix" "^1.5.4"
     axios "^1.6.0"
     axios-retry "^3.1.9"
@@ -3516,23 +3516,23 @@
     phoenix "1.6.16"
     zustand "^3.7.2"
 
-"@knocklabs/react-core@^0.2.17":
-  version "0.2.17"
-  resolved "https://registry.yarnpkg.com/@knocklabs/react-core/-/react-core-0.2.17.tgz#3fe1373685f540a8c35d284075f9ca358ce5a8cd"
-  integrity sha512-bVb8wlY7k1CPNLTLRA3EtZMKem7PxCllwy/S1fDUdQ30TwT0g/JCn1+pySu9OY6Yh0elXWNZz3+AeG4zxjHnXA==
+"@knocklabs/react-core@^0.2.21":
+  version "0.2.21"
+  resolved "https://registry.yarnpkg.com/@knocklabs/react-core/-/react-core-0.2.21.tgz#951d46f2c212ec0eb8a4075dc1e68e2fd39de529"
+  integrity sha512-Zyec0aKZP5b5ti0O19T9F72gppG4C+wlJNRURospInIQLHVTRNTd3dCyrATUU78zuEInvZQEOGDO+tdMyDFzIA==
   dependencies:
-    "@knocklabs/client" "^0.10.7"
+    "@knocklabs/client" "^0.10.10"
     date-fns "^3.3.1"
     swr "^2.2.5"
     zustand "^3.7.2"
 
-"@knocklabs/react@^0.2.19":
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/@knocklabs/react/-/react-0.2.19.tgz#d64b522897d2d98a99b8841f0d9c559726268680"
-  integrity sha512-y8hXYTYnaV5NLC1HYwW/kEAv2xBBnwZS7C2/g3XJvC7QnAx8/u4fUCg+s3i14dtc8ShXfhyOOHbuCkQDDCfScQ==
+"@knocklabs/react@^0.2.23":
+  version "0.2.23"
+  resolved "https://registry.yarnpkg.com/@knocklabs/react/-/react-0.2.23.tgz#a5bfc90602bd0e9cacd654067e4547a0ff3efbde"
+  integrity sha512-xYXtboPEL9syelKEe/DOUMc9DpIjugKUXsLKLGSrCF0Nx5qLKHlN3rcTwAHxcQNMsArYJglpq8UxM8/69xAS4g==
   dependencies:
-    "@knocklabs/client" "^0.10.7"
-    "@knocklabs/react-core" "^0.2.17"
+    "@knocklabs/client" "^0.10.10"
+    "@knocklabs/react-core" "^0.2.21"
     "@popperjs/core" "^2.11.8"
     "@radix-ui/react-popover" "^1.0.7"
     "@radix-ui/react-visually-hidden" "^1.0.3"
@@ -3540,10 +3540,10 @@
     react-popper "^2.3.0"
     react-popper-tooltip "^4.4.2"
 
-"@knocklabs/types@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/@knocklabs/types/-/types-0.1.3.tgz#6a53d7bb0b6e7c63dfa6acfaf4a01fec089f09e4"
-  integrity sha512-8WnEqvcR7ZWPccI/gHdE3mFRWVcbS//QRIRLkcjet0YGX2MROb+ddJ6N9tmZtsz7HcwzU23QE/kgsc2ErnGGfQ==
+"@knocklabs/types@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@knocklabs/types/-/types-0.1.4.tgz#aa7cd4bc9a43d367ea2e0d575f7f5adb3ad4a3f3"
+  integrity sha512-KdEESYtIYDaBy9CTNKco7MJ+PcX9wfWt3WVNBKHrrARX++Fa/gn1Zn8WQ5K39hckXm/c2AL6WhNjGv6ovkxwFw==
 
 "@kurkle/color@^0.3.0":
   version "0.3.2"

@@ -1,4 +1,4 @@
-import {FeedEventPayload} from '@knocklabs/client'
+import {FeedEventPayload, FeedRealTimeCallback} from '@knocklabs/client'
 import {useKnockFeed} from '@knocklabs/react'
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
@@ -70,12 +70,17 @@ export default function useToasts() {
     )
 
     useEffect(() => {
-        feedClient.on('items.received.realtime', handleNotificationsReceived)
+        feedClient.on(
+            'items.received.realtime',
+            // remove cast after consultation with knock team
+            handleNotificationsReceived as unknown as FeedRealTimeCallback
+        )
 
         return () => {
             feedClient.off(
                 'items.received.realtime',
-                handleNotificationsReceived
+                // remove cast after consultation with knock team
+                handleNotificationsReceived as unknown as FeedRealTimeCallback
             )
         }
     }, [feedClient, handleNotificationsReceived])

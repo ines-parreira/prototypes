@@ -1,4 +1,4 @@
-import {FeedItem as KnockFeedItem} from '@knocklabs/client'
+import {FeedItem, FeedItem as KnockFeedItem} from '@knocklabs/client'
 import {
     NotificationFeedPopover,
     RenderItemProps,
@@ -14,8 +14,9 @@ import {logEvent, SegmentEvent} from 'common/segment'
 
 import useCount from '../hooks/useCount'
 import transformKnockNotification from '../utils/transformKnockNotification'
+import {RawNotification} from '../types'
 
-import FeedItem from './FeedItem'
+import FeedItemComponent from './FeedItem'
 import css from './Button.less'
 import './Feed.less'
 
@@ -59,9 +60,12 @@ export default function NotificationsButton() {
 
     const renderItem = useCallback(
         ({item}: RenderItemProps) => {
-            const notification = transformKnockNotification(item)
+            const notification = transformKnockNotification(
+                // remove cast after consultation with knock team
+                item as FeedItem<RawNotification>
+            )
             return !notification ? null : (
-                <FeedItem
+                <FeedItemComponent
                     key={notification.id}
                     notification={notification}
                     onClick={() => handleClickNotification(item)}
