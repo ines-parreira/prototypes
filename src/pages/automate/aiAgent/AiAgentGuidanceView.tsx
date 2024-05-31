@@ -4,6 +4,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
+import {LocaleCode} from 'models/helpCenter/types'
 import {useGuidanceArticles} from './hooks/useGuidanceArticles'
 import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
 import {GuidanceList} from './components/GuidanceList/GuidanceList'
@@ -13,15 +14,21 @@ import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 
 type Props = {
     helpCenterId: number
+    locale: LocaleCode
     shopName: string
 }
 
-export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
+export const AiAgentGuidanceView = ({
+    helpCenterId,
+    shopName,
+    locale,
+}: Props) => {
     const {guidanceArticles, isGuidanceArticleListLoading} =
         useGuidanceArticles(helpCenterId)
-    const {deleteGuidanceArticle} = useGuidanceArticleMutation({
-        guidanceHelpCenterId: helpCenterId,
-    })
+    const {deleteGuidanceArticle, updateGuidanceArticle} =
+        useGuidanceArticleMutation({
+            guidanceHelpCenterId: helpCenterId,
+        })
 
     const {routes} = useAiAgentNavigation({shopName})
 
@@ -41,6 +48,25 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Error during guidance article deletion.',
+                })
+            )
+        }
+    }
+
+    const onChangeVisibility = async (
+        articleId: number,
+        isVisible: boolean
+    ) => {
+        try {
+            await updateGuidanceArticle(
+                {visibility: isVisible ? 'PUBLIC' : 'UNLISTED'},
+                {articleId, locale}
+            )
+        } catch (err) {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message: 'Error during guidance article visibility change.',
                 })
             )
         }
@@ -79,6 +105,7 @@ export const AiAgentGuidanceView = ({helpCenterId, shopName}: Props) => {
                 guidanceArticles={guidanceArticles}
                 onDelete={onDelete}
                 onRowClick={onGuidanceArticleClick}
+                onChangeVisibility={onChangeVisibility}
             />
         </div>
     )

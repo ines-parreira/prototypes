@@ -1,4 +1,5 @@
 import React, {useMemo, useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
@@ -12,6 +13,8 @@ import {OrderDirection} from 'models/api/types'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {formatDatetime} from 'utils'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {GuidanceArticle} from '../../types'
 import css from './GuidanceList.less'
 
@@ -35,14 +38,19 @@ type Props = {
     guidanceArticles: GuidanceArticle[]
     onDelete: (articleId: number) => void
     onRowClick: (articleId: number) => void
+    onChangeVisibility: (articleId: number, isVisible: boolean) => void
 }
 
 export const GuidanceList = ({
     guidanceArticles,
     onDelete,
     onRowClick,
+    onChangeVisibility,
 }: Props) => {
     const [sortState, setSortState] = useState<SortState>(initialSortState)
+
+    const isGuidanceToggleEnabled: undefined | boolean =
+        useFlags()[FeatureFlagKey.AiAgentGuidanceToggle]
 
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.CompactDate
@@ -60,6 +68,10 @@ export const GuidanceList = ({
             column,
             direction: initialDirection ?? newDirection,
         })
+    }
+
+    const onToggle = (articleId: number, isVisible: boolean) => {
+        onChangeVisibility(articleId, isVisible)
     }
 
     const sortedGuidanceArticles = useMemo(
@@ -112,6 +124,17 @@ export const GuidanceList = ({
                             innerClassName={css.itemTitle}
                             data-testid="guidance-title"
                         >
+                            {isGuidanceToggleEnabled && (
+                                <ToggleInput
+                                    isToggled={article.visibility === 'PUBLIC'}
+                                    data-testid="guidance-visibility-toggle"
+                                    aria-label="Toggle guidance visibility"
+                                    onClick={(val, event) => {
+                                        event.stopPropagation()
+                                        onToggle(article.id, val)
+                                    }}
+                                />
+                            )}
                             {article.title}
                         </BodyCell>
                         <BodyCell>

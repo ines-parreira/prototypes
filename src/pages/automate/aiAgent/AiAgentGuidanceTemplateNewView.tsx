@@ -1,11 +1,9 @@
 import React from 'react'
 import {LocaleCode} from 'models/helpCenter/types'
-import {
-    GuidanceForm,
-    GuidanceFormFields,
-} from './components/GuidanceForm/GuidanceForm'
+import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {GuidanceTemplate} from './types'
+import {GuidanceFormFields, GuidanceTemplate} from './types'
+import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
 
 type Props = {
     shopName: string
@@ -25,18 +23,16 @@ export const AiAgentGuidanceTemplateNewView = ({
             guidanceHelpCenterId,
         })
 
-    const onSubmit = async ({name, content}: GuidanceFormFields) => {
-        await createGuidanceArticle({
-            title: name,
-            content,
-            locale,
-            visibility: 'PUBLIC',
-        })
+    const onSubmit = async (guidanceFormFields: GuidanceFormFields) => {
+        await createGuidanceArticle(
+            mapGuidanceFormFieldsToGuidanceArticle(guidanceFormFields, locale)
+        )
     }
 
     const initialFields = {
         name: guidanceTemplate.name,
         content: guidanceTemplate.content,
+        isVisible: true,
     }
 
     return (

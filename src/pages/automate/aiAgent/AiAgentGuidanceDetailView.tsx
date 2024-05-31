@@ -2,13 +2,12 @@ import React, {useMemo} from 'react'
 import {LocaleCode} from 'models/helpCenter/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import {useGuidanceArticle} from './hooks/useGuidanceArticle'
-import {
-    GuidanceForm,
-    GuidanceFormFields,
-} from './components/GuidanceForm/GuidanceForm'
+import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
+import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
+import {GuidanceFormFields} from './types'
 
 type Props = {
     guidanceHelpCenterId: number
@@ -40,13 +39,9 @@ export const AiAgentGuidanceDetailView = ({
         await deleteGuidanceArticle(guidanceArticleId)
     }
 
-    const onSubmit = async ({name, content}: GuidanceFormFields) => {
+    const onSubmit = async (guidanceFormFields: GuidanceFormFields) => {
         await updateGuidanceArticle(
-            {
-                title: name,
-                content,
-                locale,
-            },
+            mapGuidanceFormFieldsToGuidanceArticle(guidanceFormFields, locale),
             {articleId: guidanceArticleId, locale}
         )
     }
@@ -57,6 +52,7 @@ export const AiAgentGuidanceDetailView = ({
                 ? {
                       name: guidanceArticle.title,
                       content: guidanceArticle.content,
+                      isVisible: guidanceArticle.visibility === 'PUBLIC',
                   }
                 : undefined,
         [guidanceArticle]

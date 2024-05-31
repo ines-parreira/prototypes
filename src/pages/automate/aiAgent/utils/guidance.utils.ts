@@ -8,6 +8,7 @@ import {slugify} from 'utils'
 import {
     CreateGuidanceArticle,
     GuidanceArticle,
+    GuidanceFormFields,
     UpdateGuidanceArticle,
 } from '../types'
 
@@ -36,6 +37,7 @@ export const mapUpdateGuidanceArticleToArticleApi = (
     return {
         title: updateGuidanceArticle.title,
         content: updateGuidanceArticle.content,
+        visibility_status: updateGuidanceArticle.visibility,
         slug: updateGuidanceArticle.title
             ? slugify(updateGuidanceArticle.title)
             : undefined,
@@ -52,5 +54,17 @@ export const mapArticleApiToGuidanceArticle = (
         locale: article.translation.locale,
         visibility: article.translation.visibility_status,
         lastUpdated: article.updated_datetime,
+    }
+}
+
+export const mapGuidanceFormFieldsToGuidanceArticle = (
+    formValues: GuidanceFormFields,
+    locale: GuidanceArticle['locale']
+): CreateGuidanceArticle => {
+    return {
+        title: formValues.name,
+        content: formValues.content,
+        visibility: formValues.isVisible ? 'PUBLIC' : 'UNLISTED',
+        locale,
     }
 }

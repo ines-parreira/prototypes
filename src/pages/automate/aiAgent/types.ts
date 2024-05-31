@@ -48,3 +48,9 @@ export type GuidanceTemplate = {
     tag: string
     style: {color: string; background: string}
 }
+
+export type GuidanceFormFields = {
+    name: string
+    content: string
+    isVisible: boolean
+}

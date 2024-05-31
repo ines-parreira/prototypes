@@ -1,5 +1,5 @@
 import React from 'react'
-import {screen, within} from '@testing-library/react'
+import {fireEvent, screen, within} from '@testing-library/react'
 import LD from 'launchdarkly-react-client-sdk'
 import userEvent from '@testing-library/user-event'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -36,6 +36,7 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentGuidance]: true,
     [FeatureFlagKey.AiAgentSettings]: true,
+    [FeatureFlagKey.AiAgentGuidanceToggle]: true,
 }))
 const helpCenter = getHelpCentersResponseFixture.data[0]
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
@@ -195,6 +196,53 @@ describe('<AiAgentGuidanceContainer />', () => {
             expect(
                 within(rowsAfter[0]).getByTestId('guidance-title')
             ).toHaveTextContent('Old article')
+        })
+
+        it('should change guidance visibility', () => {
+            const guidanceArticles = [
+                getGuidanceArticleFixture(1, {
+                    title: 'Old article',
+                    lastUpdated: '2024-03-18T12:21:00.531Z',
+                }),
+                getGuidanceArticleFixture(2, {
+                    title: 'New article',
+                    lastUpdated: '2024-04-18T12:21:00.531Z',
+                }),
+            ]
+            const updateGuidanceArticle = jest.fn()
+
+            mockedUseGuidanceArticles.mockReturnValue({
+                ...defaultGuidanceArticleProps,
+                guidanceArticles,
+                isGuidanceArticleListLoading: false,
+            })
+
+            mockedUseGuidanceArticleMutation.mockReturnValue({
+                ...defaultGuidanceArticleMutationProps,
+                updateGuidanceArticle,
+            })
+
+            renderComponent()
+
+            const rowsBefore = screen.getAllByTestId('guidance-row')
+
+            const firstRowToggle = within(rowsBefore[0]).getByTestId(
+                'guidance-visibility-toggle'
+            )
+
+            expect(firstRowToggle).toBeChecked()
+
+            fireEvent.click(firstRowToggle)
+
+            expect(updateGuidanceArticle).toHaveBeenCalledWith(
+                {
+                    visibility: 'UNLISTED',
+                },
+                {
+                    articleId: guidanceArticles[0].id,
+                    locale: guidanceArticles[0].locale,
+                }
+            )
         })
     })
 })

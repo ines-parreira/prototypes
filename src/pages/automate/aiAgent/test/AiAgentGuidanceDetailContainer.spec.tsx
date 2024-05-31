@@ -1,6 +1,6 @@
 import React from 'react'
 import LD from 'launchdarkly-react-client-sdk'
-import {screen} from '@testing-library/react'
+import {fireEvent, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
@@ -31,6 +31,7 @@ jest.mock(
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentGuidance]: true,
     [FeatureFlagKey.AiAgentSettings]: true,
+    [FeatureFlagKey.AiAgentGuidanceToggle]: true,
 }))
 
 const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
@@ -141,6 +142,32 @@ describe('<AiAgentGuidanceDetail />', () => {
                 title: 'New name',
                 content: guidanceArticle.content,
                 locale: guidanceArticle.locale,
+                visibility: 'PUBLIC',
+            },
+            {articleId: guidanceArticle.id, locale: guidanceArticle.locale}
+        )
+    })
+
+    it('should update guidance article visibility', () => {
+        const updateGuidanceArticle = jest.fn()
+        mockedUseGuidanceArticleMutation.mockReturnValue({
+            ...defaultGuidanceArticleMutationProps,
+            updateGuidanceArticle,
+        })
+
+        renderComponent()
+
+        // Using foreEvent because userEvent has issue with checkbox
+        fireEvent.click(screen.getByLabelText('Available for AI Agent'))
+
+        userEvent.click(screen.getByText('Save Changes'))
+
+        expect(updateGuidanceArticle).toHaveBeenCalledWith(
+            {
+                title: guidanceArticle.title,
+                content: guidanceArticle.content,
+                locale: guidanceArticle.locale,
+                visibility: 'UNLISTED',
             },
             {articleId: guidanceArticle.id, locale: guidanceArticle.locale}
         )

@@ -38,6 +38,7 @@ export const AiAgentGuidanceContainer = () => {
             <AiAgentGuidanceView
                 helpCenterId={guidanceHelpCenter.id}
                 shopName={shopName}
+                locale={guidanceHelpCenter.default_locale}
             />
         </AiAgentLayout>
     )

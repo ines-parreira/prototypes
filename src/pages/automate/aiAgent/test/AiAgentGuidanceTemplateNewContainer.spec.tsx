@@ -30,6 +30,7 @@ jest.mock(
 )
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentGuidance]: true,
+    [FeatureFlagKey.AiAgentGuidanceToggle]: true,
 }))
 
 const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
