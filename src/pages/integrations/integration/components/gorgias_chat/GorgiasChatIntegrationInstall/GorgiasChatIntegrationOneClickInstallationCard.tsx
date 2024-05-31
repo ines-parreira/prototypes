@@ -12,6 +12,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
+import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import {
     getStoreIntegrations,
     makeGetPreRedirectUri,
@@ -67,13 +68,13 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
     const isStoreOfShopifyType =
         storeIntegration?.type === IntegrationType.Shopify
 
-    const {isInstalled: isThemeAppExtensionInstalled} =
-        useShopifyThemeAppExtension({
-            shopifyIntegration: isStoreOfShopifyType
-                ? storeIntegration
-                : undefined,
-            appUuid: getGorgiasMainThemeAppExtensionId(),
-        })
+    const {
+        isInstalled: isThemeAppExtensionInstalled,
+        isLoaded: isThemeAppExtensionStatusLoaded,
+    } = useShopifyThemeAppExtension({
+        shopifyIntegration: isStoreOfShopifyType ? storeIntegration : undefined,
+        appUuid: getGorgiasMainThemeAppExtensionId(),
+    })
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -98,6 +99,23 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
             await updateOrCreateIntegration(fromJS(form))
         }, [integration, updateOrCreateIntegration])
+
+    const [wasShopifyThemeSettingsOpened, setWasShopifyThemeSettingsOpened] =
+        useState(false)
+    const openShopifyThemeSettingsInNewTabIfNeeded = () => {
+        if (
+            themeAppExtensionInstallation &&
+            themeAppExtensionInstallationUrl &&
+            !isThemeAppExtensionInstalled
+        ) {
+            setWasShopifyThemeSettingsOpened(true)
+            window.open(
+                themeAppExtensionInstallationUrl,
+                '_blank',
+                'noopener noreferrer'
+            )
+        }
+    }
 
     const [{loading: isInstallPending}, handleInstall] =
         useAsyncFn(async () => {
@@ -132,7 +150,11 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     openShopifyThemeSettingsInNewTabIfNeeded
                 )
             )
-        }, [integration, updateOrCreateIntegration])
+        }, [
+            integration,
+            updateOrCreateIntegration,
+            openShopifyThemeSettingsInNewTabIfNeeded,
+        ])
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [{loading}, handleShopifyScriptTagScope] = useAsyncFn(async () => {
@@ -150,20 +172,6 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
             shop_name: shopName,
         })
         window.location.href = redirectUri
-    }
-
-    const openShopifyThemeSettingsInNewTabIfNeeded = () => {
-        if (
-            themeAppExtensionInstallation &&
-            themeAppExtensionInstallationUrl &&
-            !isThemeAppExtensionInstalled
-        ) {
-            window.open(
-                themeAppExtensionInstallationUrl,
-                '_blank',
-                'noopener noreferrer'
-            )
-        }
     }
 
     const canSubmitInstall = isConnected && !isInstallPending
@@ -197,6 +205,109 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
         )
     }
 
+    const renderCardSubtext = () => {
+        if (!themeAppExtensionInstallation) {
+            return (
+                <div>
+                    Add the chat widget to your Shopify store in one click. Note
+                    that this will automatically enable Automate features if
+                    available.
+                </div>
+            )
+        }
+
+        if (!isThemeAppExtensionInstalled && !isInstalled) {
+            return (
+                <div>
+                    To easily add Chat to your Shopify store, click Install then
+                    click Save in the new Shopify window. No need to edit
+                    anything in the new window. Note that this will
+                    automatically enable Automate features if available.
+                </div>
+            )
+        }
+
+        if (isThemeAppExtensionInstalled && !isInstalled) {
+            return (
+                <div>
+                    To easily add Chat to your Shopify store, click Install.
+                    Note that this will automatically enable Automate features
+                    if available.
+                </div>
+            )
+        }
+
+        if (!isThemeAppExtensionInstalled && isInstalled) {
+            return (
+                <div>
+                    To add Chat to your Shopify store, click Reinstall and then
+                    Save in the new Shopify window. No edits are needed. This
+                    will automatically enable available Automate features.
+                </div>
+            )
+        }
+
+        return (
+            <div>
+                To easily add Chat to your Shopify store, click Install. Note
+                that this will automatically enable Automate features if
+                available.
+            </div>
+        )
+    }
+
+    const renderCardButton = () => {
+        if (
+            !isThemeAppExtensionInstalled &&
+            isInstalled &&
+            !wasShopifyThemeSettingsOpened
+        ) {
+            return (
+                <Button
+                    isDisabled={!canSubmitInstall || !isVisibilityValid}
+                    intent={'primary'}
+                    onClick={handleShopifyScriptTagScope}
+                >
+                    Reinstall
+                </Button>
+            )
+        }
+
+        if (!isInstalled) {
+            return (
+                <Button
+                    isDisabled={!canSubmitInstall || !isVisibilityValid}
+                    intent={isConnected ? 'primary' : 'secondary'}
+                    onClick={handleShopifyScriptTagScope}
+                >
+                    Install
+                </Button>
+            )
+        }
+
+        return (
+            <Button
+                intent="secondary"
+                isDisabled={isUninstallPending}
+                onClick={handleUninstall}
+            >
+                Uninstall
+            </Button>
+        )
+    }
+
+    if (
+        themeAppExtensionInstallation &&
+        !isThemeAppExtensionStatusLoaded &&
+        isThemeAppExtensionInstalled === undefined
+    ) {
+        return (
+            <div className={css.container}>
+                <SkeletonLoader length={1} />
+            </div>
+        )
+    }
+
     return (
         <div className={css.container}>
             <div className={css.header}>
@@ -210,58 +321,18 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                 ) : null}
                 <div>
                     {themeAppExtensionInstallation ? (
-                        <>
-                            <div className={css.title}>
-                                Quick installation for Shopify
-                            </div>
-                            {isThemeAppExtensionInstalled ? (
-                                <div>
-                                    To easily add Chat to your Shopify store,
-                                    click Install. Note that this will
-                                    automatically enable Automate features if
-                                    available.
-                                </div>
-                            ) : (
-                                <div>
-                                    To easily add Chat to your Shopify store,
-                                    click Install then click Save in the new
-                                    Shopify window. No need to edit anything in
-                                    the new window. Note that this will
-                                    automatically enable Automate features if
-                                    available.
-                                </div>
-                            )}
-                        </>
+                        <div className={css.title}>
+                            Quick installation for Shopify
+                        </div>
                     ) : (
-                        <>
-                            <div className={css.title}>
-                                1-click installation for Shopify
-                            </div>
-                            <div>
-                                Add the chat widget to your Shopify store in one
-                                click. Note that this will automatically enable
-                                Automate features if available.
-                            </div>
-                        </>
+                        <div className={css.title}>
+                            1-click installation for Shopify
+                        </div>
                     )}
+
+                    {renderCardSubtext()}
                 </div>
-                {isInstalled ? (
-                    <Button
-                        intent="secondary"
-                        isDisabled={isUninstallPending}
-                        onClick={handleUninstall}
-                    >
-                        Uninstall
-                    </Button>
-                ) : (
-                    <Button
-                        isDisabled={!canSubmitInstall || !isVisibilityValid}
-                        intent={isConnected ? 'primary' : 'secondary'}
-                        onClick={handleShopifyScriptTagScope}
-                    >
-                        Install
-                    </Button>
-                )}
+                {renderCardButton()}
                 {isShowOrHideOnSelectedUrlsEnabled && (
                     <IconButton
                         className={css.toggleCollapseButton}

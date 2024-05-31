@@ -12,6 +12,7 @@ const useShopifyThemeAppExtension = ({
     shopifyIntegration?: ShopifyIntegration
 }) => {
     const [isInstalled, setIsInstalled] = useState<boolean | undefined>()
+    const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
     const {shouldUseThemeAppExtensionInstallation} =
         useThemeAppExtensionInstallation(shopifyIntegration)
@@ -42,11 +43,13 @@ const useShopifyThemeAppExtension = ({
     ])
 
     useEffect(() => {
-        void fetchData()
+        setIsLoaded(false)
+        void fetchData().finally(() => setIsLoaded(true))
     }, [fetchData])
 
     return {
         isInstalled,
+        isLoaded,
     }
 }
 

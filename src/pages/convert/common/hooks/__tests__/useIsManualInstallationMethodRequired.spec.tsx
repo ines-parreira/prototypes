@@ -34,6 +34,7 @@ describe('useIsManualInstallationMethodRequired', () => {
     beforeEach(() => {
         useShopifyThemeAppExtensionSpy.mockReturnValue({
             isInstalled: false,
+            isLoaded: false,
         })
     })
 
@@ -108,6 +109,7 @@ describe('useIsManualInstallationMethodRequired', () => {
         })
         useShopifyThemeAppExtensionSpy.mockReturnValue({
             isInstalled: true,
+            isLoaded: true,
         })
 
         const {result} = renderHook(() =>
