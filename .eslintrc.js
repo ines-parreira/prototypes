@@ -139,6 +139,7 @@ module.exports = {
         'src/rest_api/migration_api/client.generated.d.ts',
         'src/rest_api/revenue_addon_api/client.generated.d.ts',
         'src/rest_api/ssp_api/client.generated.d.ts',
+        'src/rest_api/workflows_api/client.generated.d.ts',
         'src/coverage/**',
     ],
     settings: {

@@ -25,7 +25,7 @@ export const workflowsConfigurationDefinitionKeys = {
 export const useGetWorkflowConfiguration = (
     params: {id: string},
     overrides?: UseQueryOptions<
-        Awaited<Paths.WfConfigurationControllerGet.Responses.$201>
+        Awaited<Paths.WfConfigurationControllerGet.Responses.$200>
     >
 ) => {
     const {id} = params

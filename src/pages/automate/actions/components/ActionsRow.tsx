@@ -12,13 +12,13 @@ import useDeleteAction from '../hooks/useDeleteAction'
 import useUpsertAction from '../hooks/useUpsertAction'
 import ActionTypeIcon from '../components/ActionTypeIcon'
 
-import {StoresWorkflowConfiguration} from '../types'
+import {StoreWorkflowsConfiguration} from '../types'
 import DeleteActionConfirmation from './DeleteActionConfirmation'
 
 import css from './ActionsRow.less'
 
 type Props = {
-    action: StoresWorkflowConfiguration[number]
+    action: StoreWorkflowsConfiguration
 }
 
 export default function WorkflowRow({action}: Props) {

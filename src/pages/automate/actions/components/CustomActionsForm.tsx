@@ -123,9 +123,7 @@ export default function CustomActionsForm({
     } = useDeleteAction(formValues.name, shopName, shopType)
 
     const inputVariables = useMemo(() => {
-        const {custom_inputs} = formValues.triggers[0].settings
-
-        const customInputs = custom_inputs
+        const customInputs = formValues.triggers[0].settings.custom_inputs
             .filter(
                 (input) => input && input.name.length > 0 && input.data_type
             )

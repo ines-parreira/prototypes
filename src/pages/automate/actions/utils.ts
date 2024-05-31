@@ -1,27 +1,4 @@
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import {StoreWorkflowsConfiguration} from './types'
-
-type ActionsType = 'custom'
-
-/**
- * Check what type of Action configuration is being used
- */
-export function checkConfigurationAction(
-    configuration: StoreWorkflowsConfiguration
-): ActionsType | null {
-    const {entrypoints, triggers} = configuration
-
-    if (
-        entrypoints.some(
-            (entrypoint) => entrypoint.kind === 'llm-conversation'
-        ) &&
-        triggers.some((trigger) => trigger.kind === 'llm-prompt')
-    ) {
-        return 'custom'
-    }
-
-    return null
-}
 
 export const orderVariables: WorkflowVariable[] = [
     {

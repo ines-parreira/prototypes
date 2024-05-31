@@ -5,8 +5,6 @@ import {useQueryClient} from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 
-import {Components} from 'rest_api/workflows_api/client.generated'
-
 import {handleError} from 'pages/automate/actions/hooks/errorHandler'
 import {
     useGetWorkflowConfiguration,
@@ -44,12 +42,10 @@ export default function ActionView() {
         },
         {
             initialData: queryClient
-                .getQueryData<CustomActionConfigurationFormInput[]>(
+                .getQueryData<StoresWorkflowConfiguration>(
                     storeConfigurationQueryKey
                 )
-                ?.find(
-                    (action) => action.id === id
-                ) as Components.Schemas.UpsertWfConfigurationRequestDto,
+                ?.find((action) => action.id === id),
             onError: (error) => {
                 handleError(error, 'Failed to fetch action', dispatch)
                 history.push(`/app/automation/${shopType}/${shopName}/actions`)

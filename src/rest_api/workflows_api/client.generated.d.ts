@@ -1,1726 +1,8552 @@
-/* eslint-disable @typescript-eslint/ban-types */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
 import {
-    OpenAPIClient,
-    Parameters,
-    UnknownParamsObject,
-    OperationResponse,
-    AxiosRequestConfig,
-} from 'openapi-client-axios'
+  OpenAPIClient,
+  Parameters,
+  UnknownParamsObject,
+  OperationResponse,
+  AxiosRequestConfig,
+} from 'openapi-client-axios'; 
 
 declare namespace Components {
-    namespace Schemas {
-        export interface DuplicateWfConfigurationRequestDto {
-            integration_id: number
-        }
-        export interface StoreWfConfigurationResponseDto {
-            internal_id: string
-            id: string
-            account_id?: number | null
-            name: string
-            is_draft: boolean
-            initial_step_id: string
-            entrypoint?: {
-                label: string
-                label_tkey: string
-            } | null
-            steps: (
-                | {
-                      id: string
-                      kind: 'choices'
-                      settings: {
-                          choices: {
-                              event_id: string
-                              label: string
-                              label_tkey: string
-                          }[]
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'handover'
-                      settings?: {
-                          ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
-                      } | null
-                  }
-                | {
-                      id: string
-                      kind: 'workflow_call'
-                      settings: {
-                          configuration_id: string
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'text-input'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'attachments-input'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'shopper-authentication'
-                      settings: {
-                          integration_id: number
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'order-selection'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'http-request'
-                      settings: {
-                          name: string
-                          url: string /* uri */ | ''
-                          method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-                          headers?: {
-                              [name: string]: string
-                          } | null
-                          body?: string | null
-                          variables: {
-                              id: string
-                              name: string
-                              jsonpath: string
-                              data_type?:
-                                  | 'string'
-                                  | 'number'
-                                  | 'date'
-                                  | 'boolean'
-                          }[]
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'helpful-prompt'
-                      settings?: {
-                          ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
-                      } | null
-                  }
-                | {
-                      id: string
-                      kind: 'message'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'end'
-                  }
-                | {
-                      id: string
-                      kind: 'conditions'
-                      settings: {
-                          name: string
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'order-line-item-selection'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-            )[]
-            transitions: {
-                id: string
-                from_step_id: string
-                to_step_id: string
-                event?: {
-                    id: string
-                    kind: 'choices'
-                } | null
-                name?: string | null
-                conditions?:
-                    | {
-                          or: (
-                              | {
-                                    equals: any
-                                }
-                              | {
-                                    notEqual: any
-                                }
-                              | {
-                                    contains: any
-                                }
-                              | {
-                                    doesNotContain: any
-                                }
-                              | {
-                                    endsWith: any
-                                }
-                              | {
-                                    startsWith: any
-                                }
-                              | {
-                                    exists: any
-                                }
-                              | {
-                                    doesNotExist: any
-                                }
-                              | {
-                                    lessThan: any
-                                }
-                              | {
-                                    lessThanInterval: any
-                                }
-                              | {
-                                    lessOrEqual: any
-                                }
-                              | {
-                                    greaterThan: any
-                                }
-                              | {
-                                    greaterThanInterval: any
-                                }
-                              | {
-                                    greaterOrEqual: any
-                                }
-                          )[]
-                      }
-                    | {
-                          and: (
-                              | {
-                                    equals: any
-                                }
-                              | {
-                                    notEqual: any
-                                }
-                              | {
-                                    contains: any
-                                }
-                              | {
-                                    doesNotContain: any
-                                }
-                              | {
-                                    endsWith: any
-                                }
-                              | {
-                                    startsWith: any
-                                }
-                              | {
-                                    exists: any
-                                }
-                              | {
-                                    doesNotExist: any
-                                }
-                              | {
-                                    lessThan: any
-                                }
-                              | {
-                                    lessThanInterval: any
-                                }
-                              | {
-                                    lessOrEqual: any
-                                }
-                              | {
-                                    greaterThan: any
-                                }
-                              | {
-                                    greaterThanInterval: any
-                                }
-                              | {
-                                    greaterOrEqual: any
-                                }
-                          )[]
-                      }
-            }[]
-            available_languages: (
-                | 'en-US'
-                | 'en-GB'
-                | 'fr-FR'
-                | 'fr-CA'
-                | 'es-ES'
-                | 'de-DE'
-                | 'nl-NL'
-                | 'cs-CZ'
-                | 'da-DK'
-                | 'no-NO'
-                | 'it-IT'
-                | 'sv-SE'
-                | 'fi-FI'
-                | 'ja-JP'
-                | 'pt-BR'
-            )[]
-            created_datetime?: string | null // date-time
-            updated_datetime?: string | null // date-time
-            deleted_datetime?: string | null // date-time
-            triggers: {
-                kind: 'llm-prompt'
-                settings: {
-                    custom_inputs: {
-                        id: string
-                        name: string
-                        instructions: string
-                        data_type: 'string' | 'number' | 'date' | 'boolean'
-                    }[]
-                    object_inputs: {
-                        kind: 'customer' | 'order'
-                        integration_id?: number
-                    }[]
-                    conditions?:
-                        | {
-                              or: (
-                                  | {
-                                        equals: any
-                                    }
-                                  | {
-                                        notEqual: any
-                                    }
-                                  | {
-                                        contains: any
-                                    }
-                                  | {
-                                        doesNotContain: any
-                                    }
-                                  | {
-                                        endsWith: any
-                                    }
-                                  | {
-                                        startsWith: any
-                                    }
-                                  | {
-                                        exists: any
-                                    }
-                                  | {
-                                        doesNotExist: any
-                                    }
-                                  | {
-                                        lessThan: any
-                                    }
-                                  | {
-                                        lessThanInterval: any
-                                    }
-                                  | {
-                                        lessOrEqual: any
-                                    }
-                                  | {
-                                        greaterThan: any
-                                    }
-                                  | {
-                                        greaterThanInterval: any
-                                    }
-                                  | {
-                                        greaterOrEqual: any
-                                    }
-                              )[]
-                          }
-                        | {
-                              and: (
-                                  | {
-                                        equals: any
-                                    }
-                                  | {
-                                        notEqual: any
-                                    }
-                                  | {
-                                        contains: any
-                                    }
-                                  | {
-                                        doesNotContain: any
-                                    }
-                                  | {
-                                        endsWith: any
-                                    }
-                                  | {
-                                        startsWith: any
-                                    }
-                                  | {
-                                        exists: any
-                                    }
-                                  | {
-                                        doesNotExist: any
-                                    }
-                                  | {
-                                        lessThan: any
-                                    }
-                                  | {
-                                        lessThanInterval: any
-                                    }
-                                  | {
-                                        lessOrEqual: any
-                                    }
-                                  | {
-                                        greaterThan: any
-                                    }
-                                  | {
-                                        greaterThanInterval: any
-                                    }
-                                  | {
-                                        greaterOrEqual: any
-                                    }
-                              )[]
-                          }
-                    outputs: {
-                        id?: string
-                        description?: string
-                        path?: string
-                    }[]
-                }
-            }[]
-            entrypoints: {
-                deactivated_datetime?: string | null // date-time
-                kind: 'llm-conversation'
-                trigger: 'llm-prompt'
-                settings: {
-                    requires_confirmation: boolean
-                    instructions: string
-                }
-            }[]
-        }
-        export interface UpsertStoreWfConfigurationRequestBodyDto {
-            id: string
-            name: string
-            is_draft: boolean
-            initial_step_id: string
-            entrypoint?: {
-                label: string
-                label_tkey: string
-            } | null
-            steps: (
-                | {
-                      id: string
-                      kind: 'choices'
-                      settings: {
-                          choices: {
-                              event_id: string
-                              label: string
-                              label_tkey: string
-                          }[]
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'handover'
-                      settings?: {
-                          ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
-                      } | null
-                  }
-                | {
-                      id: string
-                      kind: 'workflow_call'
-                      settings: {
-                          configuration_id: string
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'text-input'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'attachments-input'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'shopper-authentication'
-                      settings: {
-                          integration_id: number
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'order-selection'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'http-request'
-                      settings: {
-                          name: string
-                          url: string /* uri */ | ''
-                          method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-                          headers?: {
-                              [name: string]: string
-                          } | null
-                          body?: string | null
-                          variables: {
-                              id: string
-                              name: string
-                              jsonpath: string
-                              data_type?:
-                                  | 'string'
-                                  | 'number'
-                                  | 'date'
-                                  | 'boolean'
-                          }[]
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'helpful-prompt'
-                      settings?: {
-                          ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
-                      } | null
-                  }
-                | {
-                      id: string
-                      kind: 'message'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'end'
-                  }
-                | {
-                      id: string
-                      kind: 'conditions'
-                      settings: {
-                          name: string
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'order-line-item-selection'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-            )[]
-            transitions: {
-                id: string
-                from_step_id: string
-                to_step_id: string
-                event?: {
-                    id: string
-                    kind: 'choices'
-                } | null
-                name?: string | null
-                conditions?:
-                    | {
-                          or: (
-                              | {
-                                    equals: any
-                                }
-                              | {
-                                    notEqual: any
-                                }
-                              | {
-                                    contains: any
-                                }
-                              | {
-                                    doesNotContain: any
-                                }
-                              | {
-                                    endsWith: any
-                                }
-                              | {
-                                    startsWith: any
-                                }
-                              | {
-                                    exists: any
-                                }
-                              | {
-                                    doesNotExist: any
-                                }
-                              | {
-                                    lessThan: any
-                                }
-                              | {
-                                    lessThanInterval: any
-                                }
-                              | {
-                                    lessOrEqual: any
-                                }
-                              | {
-                                    greaterThan: any
-                                }
-                              | {
-                                    greaterThanInterval: any
-                                }
-                              | {
-                                    greaterOrEqual: any
-                                }
-                          )[]
-                      }
-                    | {
-                          and: (
-                              | {
-                                    equals: any
-                                }
-                              | {
-                                    notEqual: any
-                                }
-                              | {
-                                    contains: any
-                                }
-                              | {
-                                    doesNotContain: any
-                                }
-                              | {
-                                    endsWith: any
-                                }
-                              | {
-                                    startsWith: any
-                                }
-                              | {
-                                    exists: any
-                                }
-                              | {
-                                    doesNotExist: any
-                                }
-                              | {
-                                    lessThan: any
-                                }
-                              | {
-                                    lessThanInterval: any
-                                }
-                              | {
-                                    lessOrEqual: any
-                                }
-                              | {
-                                    greaterThan: any
-                                }
-                              | {
-                                    greaterThanInterval: any
-                                }
-                              | {
-                                    greaterOrEqual: any
-                                }
-                          )[]
-                      }
-            }[]
-            available_languages: (
-                | 'en-US'
-                | 'en-GB'
-                | 'fr-FR'
-                | 'fr-CA'
-                | 'es-ES'
-                | 'de-DE'
-                | 'nl-NL'
-                | 'cs-CZ'
-                | 'da-DK'
-                | 'no-NO'
-                | 'it-IT'
-                | 'sv-SE'
-                | 'fi-FI'
-                | 'ja-JP'
-                | 'pt-BR'
-            )[]
-            triggers: {
-                kind: 'llm-prompt'
-                settings: {
-                    custom_inputs: {
-                        id: string
-                        name: string
-                        instructions: string
-                        data_type: 'string' | 'number' | 'date' | 'boolean'
-                    }[]
-                    object_inputs: {
-                        kind: 'customer' | 'order'
-                        integration_id?: number
-                    }[]
-                    conditions?:
-                        | {
-                              or: (
-                                  | {
-                                        equals: any
-                                    }
-                                  | {
-                                        notEqual: any
-                                    }
-                                  | {
-                                        contains: any
-                                    }
-                                  | {
-                                        doesNotContain: any
-                                    }
-                                  | {
-                                        endsWith: any
-                                    }
-                                  | {
-                                        startsWith: any
-                                    }
-                                  | {
-                                        exists: any
-                                    }
-                                  | {
-                                        doesNotExist: any
-                                    }
-                                  | {
-                                        lessThan: any
-                                    }
-                                  | {
-                                        lessThanInterval: any
-                                    }
-                                  | {
-                                        lessOrEqual: any
-                                    }
-                                  | {
-                                        greaterThan: any
-                                    }
-                                  | {
-                                        greaterThanInterval: any
-                                    }
-                                  | {
-                                        greaterOrEqual: any
-                                    }
-                              )[]
-                          }
-                        | {
-                              and: (
-                                  | {
-                                        equals: any
-                                    }
-                                  | {
-                                        notEqual: any
-                                    }
-                                  | {
-                                        contains: any
-                                    }
-                                  | {
-                                        doesNotContain: any
-                                    }
-                                  | {
-                                        endsWith: any
-                                    }
-                                  | {
-                                        startsWith: any
-                                    }
-                                  | {
-                                        exists: any
-                                    }
-                                  | {
-                                        doesNotExist: any
-                                    }
-                                  | {
-                                        lessThan: any
-                                    }
-                                  | {
-                                        lessThanInterval: any
-                                    }
-                                  | {
-                                        lessOrEqual: any
-                                    }
-                                  | {
-                                        greaterThan: any
-                                    }
-                                  | {
-                                        greaterThanInterval: any
-                                    }
-                                  | {
-                                        greaterOrEqual: any
-                                    }
-                              )[]
-                          }
-                    outputs: {
-                        id?: string
-                        description?: string
-                        path?: string
-                    }[]
-                }
-            }[]
-            entrypoints: {
-                deactivated_datetime?: string | null // date-time
-                kind: 'llm-conversation'
-                trigger: 'llm-prompt'
-                settings: {
-                    requires_confirmation: boolean
-                    instructions: string
-                }
-            }[]
-        }
-        export interface UpsertWfConfigurationRequestDto {
-            id: string
-            name: string
-            is_draft: boolean
-            initial_step_id: string
-            entrypoint?: {
-                label: string
-                label_tkey: string
-            } | null
-            steps: (
-                | {
-                      id: string
-                      kind: 'choices'
-                      settings: {
-                          choices: {
-                              event_id: string
-                              label: string
-                              label_tkey: string
-                          }[]
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'handover'
-                      settings?: {
-                          ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
-                      } | null
-                  }
-                | {
-                      id: string
-                      kind: 'workflow_call'
-                      settings: {
-                          configuration_id: string
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'text-input'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'attachments-input'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'shopper-authentication'
-                      settings: {
-                          integration_id: number
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'order-selection'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'http-request'
-                      settings: {
-                          name: string
-                          url: string /* uri */ | ''
-                          method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-                          headers?: {
-                              [name: string]: string
-                          } | null
-                          body?: string | null
-                          variables: {
-                              id: string
-                              name: string
-                              jsonpath: string
-                              data_type?:
-                                  | 'string'
-                                  | 'number'
-                                  | 'date'
-                                  | 'boolean'
-                          }[]
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'helpful-prompt'
-                      settings?: {
-                          ticket_tags?: string[] | null
-                          ticket_assignee_user_id?: null | number
-                          ticket_assignee_team_id?: null | number
-                      } | null
-                  }
-                | {
-                      id: string
-                      kind: 'message'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'end'
-                  }
-                | {
-                      id: string
-                      kind: 'conditions'
-                      settings: {
-                          name: string
-                      }
-                  }
-                | {
-                      id: string
-                      kind: 'order-line-item-selection'
-                      settings: {
-                          message: {
-                              content: {
-                                  html: string
-                                  html_tkey: string
-                                  text: string
-                                  text_tkey: string
-                                  attachments?:
-                                      | {
-                                            content_type: 'application/productCard'
-                                            name?: string | null
-                                            size?: number | null
-                                            url: string
-                                            extra?: {
-                                                product_id?: number | null
-                                                variant_id?: number | null
-                                                price?: string | null
-                                                variant_name?: string | null
-                                                product_link?: string | null
-                                                currency?: string | null
-                                                featured_image?: string | null
-                                            } | null
-                                        }[]
-                                      | null
-                              }
-                          }
-                      }
-                  }
-            )[]
-            transitions: {
-                id: string
-                from_step_id: string
-                to_step_id: string
-                event?: {
-                    id: string
-                    kind: 'choices'
-                } | null
-                name?: string | null
-                conditions?:
-                    | {
-                          or: (
-                              | {
-                                    equals: any
-                                }
-                              | {
-                                    notEqual: any
-                                }
-                              | {
-                                    contains: any
-                                }
-                              | {
-                                    doesNotContain: any
-                                }
-                              | {
-                                    endsWith: any
-                                }
-                              | {
-                                    startsWith: any
-                                }
-                              | {
-                                    exists: any
-                                }
-                              | {
-                                    doesNotExist: any
-                                }
-                              | {
-                                    lessThan: any
-                                }
-                              | {
-                                    lessThanInterval: any
-                                }
-                              | {
-                                    lessOrEqual: any
-                                }
-                              | {
-                                    greaterThan: any
-                                }
-                              | {
-                                    greaterThanInterval: any
-                                }
-                              | {
-                                    greaterOrEqual: any
-                                }
-                          )[]
-                      }
-                    | {
-                          and: (
-                              | {
-                                    equals: any
-                                }
-                              | {
-                                    notEqual: any
-                                }
-                              | {
-                                    contains: any
-                                }
-                              | {
-                                    doesNotContain: any
-                                }
-                              | {
-                                    endsWith: any
-                                }
-                              | {
-                                    startsWith: any
-                                }
-                              | {
-                                    exists: any
-                                }
-                              | {
-                                    doesNotExist: any
-                                }
-                              | {
-                                    lessThan: any
-                                }
-                              | {
-                                    lessThanInterval: any
-                                }
-                              | {
-                                    lessOrEqual: any
-                                }
-                              | {
-                                    greaterThan: any
-                                }
-                              | {
-                                    greaterThanInterval: any
-                                }
-                              | {
-                                    greaterOrEqual: any
-                                }
-                          )[]
-                      }
-            }[]
-            available_languages: (
-                | 'en-US'
-                | 'en-GB'
-                | 'fr-FR'
-                | 'fr-CA'
-                | 'es-ES'
-                | 'de-DE'
-                | 'nl-NL'
-                | 'cs-CZ'
-                | 'da-DK'
-                | 'no-NO'
-                | 'it-IT'
-                | 'sv-SE'
-                | 'fi-FI'
-                | 'ja-JP'
-                | 'pt-BR'
-            )[]
-            triggers?:
-                | (
-                      | {
-                            kind: 'llm-prompt'
-                            settings: {
-                                custom_inputs: {
-                                    id: string
-                                    name: string
-                                    instructions: string
-                                    data_type:
-                                        | 'string'
-                                        | 'number'
-                                        | 'date'
-                                        | 'boolean'
-                                }[]
-                                object_inputs: (
-                                    | {
-                                          kind: 'customer' | 'order'
-                                          integration_id: number
-                                      }
-                                    | {
-                                          kind: 'order'
-                                          integration_id: number
-                                      }
-                                )[]
-                                conditions?:
-                                    | {
-                                          or: (
-                                              | {
-                                                    equals: any
-                                                }
-                                              | {
-                                                    notEqual: any
-                                                }
-                                              | {
-                                                    contains: any
-                                                }
-                                              | {
-                                                    doesNotContain: any
-                                                }
-                                              | {
-                                                    endsWith: any
-                                                }
-                                              | {
-                                                    startsWith: any
-                                                }
-                                              | {
-                                                    exists: any
-                                                }
-                                              | {
-                                                    doesNotExist: any
-                                                }
-                                              | {
-                                                    lessThan: any
-                                                }
-                                              | {
-                                                    lessThanInterval: any
-                                                }
-                                              | {
-                                                    lessOrEqual: any
-                                                }
-                                              | {
-                                                    greaterThan: any
-                                                }
-                                              | {
-                                                    greaterThanInterval: any
-                                                }
-                                              | {
-                                                    greaterOrEqual: any
-                                                }
-                                          )[]
-                                      }
-                                    | {
-                                          and: (
-                                              | {
-                                                    equals: any
-                                                }
-                                              | {
-                                                    notEqual: any
-                                                }
-                                              | {
-                                                    contains: any
-                                                }
-                                              | {
-                                                    doesNotContain: any
-                                                }
-                                              | {
-                                                    endsWith: any
-                                                }
-                                              | {
-                                                    startsWith: any
-                                                }
-                                              | {
-                                                    exists: any
-                                                }
-                                              | {
-                                                    doesNotExist: any
-                                                }
-                                              | {
-                                                    lessThan: any
-                                                }
-                                              | {
-                                                    lessThanInterval: any
-                                                }
-                                              | {
-                                                    lessOrEqual: any
-                                                }
-                                              | {
-                                                    greaterThan: any
-                                                }
-                                              | {
-                                                    greaterThanInterval: any
-                                                }
-                                              | {
-                                                    greaterOrEqual: any
-                                                }
-                                          )[]
-                                      }
-                                outputs: {
-                                    id: string
-                                    description: string
-                                    path: string
-                                }[]
-                            }
-                        }
-                      | {
-                            kind: 'channel'
-                            settings: {}
-                        }
-                  )[]
-                | null
-            entrypoints?:
-                | {
-                      deactivated_datetime?: string | null // date-time
-                      kind: 'llm-conversation'
-                      trigger: 'llm-prompt'
-                      settings: {
-                          requires_confirmation: boolean
-                          instructions: string
-                      }
-                  }[]
-                | null
-        }
-        export interface UpsertWfConfigurationTranslationsRequestBodyDto {
-            [name: string]: string
-        }
-        export interface WfExecutionHandoverCallbackRequestDto {
-            ticket_id: number
-        }
+  namespace Schemas {
+    export interface DuplicateWfConfigurationRequestDto {
+      integration_id: number;
     }
+    export interface DuplicateWfConfigurationResponseDto {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers?: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[] | null;
+      entrypoints?: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[] | null;
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export type GetAppResponseDto = {
+      id: string;
+      auth_type: "api-key";
+      auth_settings: {
+        url?: string | null;
+      };
+    };
+    export interface GetAutomationEventResponseDto {
+      uuid: string; // uuid
+      account_id: number;
+      event_type: "flow_prompt_started" | "flow_prompt_not_helpful" | "flow_ended_without_action" | "flow_started" | "flow_ended_with_ticket_handover" | "flow_handover_ticket_created";
+      channel: "chat" | "help-center" | "contact-form";
+      flow_id: string;
+      user_journey_id: string;
+      created_datetime?: string | null; // date-time
+    }
+    export interface GetWfConfigurationResponseDto {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id?: string | null;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[];
+      entrypoints: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[];
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface GetWfConfigurationTranslationsResponseDto {
+      [name: string]: string;
+    }
+    export type GetWfExecutionResponseDto = {
+      triggerable: "true";
+    } | {
+      triggerable: "false";
+      errors: {
+        code: string;
+        message: string;
+        path: string[];
+      }[];
+      state?: {
+        [name: string]: any;
+        trigger?: "channel" | "llm-prompt";
+      } | null;
+    };
+    export type ListAppResponseDto = ({
+      id: string;
+      auth_type: "api-key";
+      auth_settings: {
+        url?: string | null;
+      };
+    })[];
+    export type ListStoreAppResponseDto = {
+      store_type: "shopify";
+      store_name: string;
+      account_id: number;
+      integration_id: number;
+      type: "recharge";
+    }[];
+    export type ListStoreWfConfigurationsResponseDto = {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id?: string | null;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[];
+      entrypoints: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[];
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }[];
+    export type ListStoreWfEntrypointsResponseDto = {
+      requires_confirmation: boolean;
+      instructions: string;
+      configuration_id: string;
+      trigger: {
+        custom_inputs: {
+          [name: string]: {
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          };
+        };
+        object_inputs: {
+          customer_id?: {
+            instructions: string;
+            data_type: "number";
+          };
+          customer_email?: {
+            instructions: string;
+            data_type: "string";
+          };
+          customer_phone_number?: {
+            instructions: string;
+            data_type: "string";
+          };
+          order_external_id?: {
+            instructions: string;
+            data_type: "string";
+          };
+          order_name?: {
+            instructions: string;
+            data_type: "string";
+          };
+          order_number?: {
+            instructions: string;
+            data_type: "string";
+          };
+        };
+      };
+    }[];
+    export type ListWfConfigurationTemplatesResponseDto = {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers?: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[] | null;
+      entrypoints?: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[] | null;
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }[];
+    export type ListWfConfigurationsResponseDto = {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+    }[];
+    export interface ListWfEntrypointsResponseDto {
+      [name: string]: {
+        label: string;
+      };
+    }
+    export interface SendWfExecutionEventRequestDto {
+      execution_id: string;
+      event: {
+        id: string;
+        kind: "choices";
+        choice_label?: string | null;
+      } | {
+        kind: "go-back";
+      } | {
+        kind: "go-next";
+      } | {
+        kind: "text-input";
+        content: {
+          text: string;
+        };
+      } | {
+        kind: "attachments-input";
+        attachments: {
+          content_type: string;
+          url: string;
+        }[];
+      } | {
+        kind: "shopper-authentication";
+        id_token: string;
+      } | {
+        id: string;
+        kind: "order-selection";
+        order?: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        } | null;
+      } | {
+        items: {
+          external_id: string;
+          quantity: number;
+          name?: string | null;
+        }[];
+        kind: "order-line-item-selection";
+      };
+    }
+    export type SendWfExecutionEventResponseDto = {
+      execution_id: string;
+      channel_actions: ({
+        kind: "messages";
+        messages: {
+          content: {
+            html: string;
+            text: string;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+      } | {
+        kind: "choices";
+        choices: {
+          label: string;
+          event_id: string;
+        }[];
+      } | {
+        kind: "handover";
+        messages: {
+          content: {
+            html?: string | null;
+            text?: string | null;
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+        ticket_tags?: string[] | null;
+        ticket_assignee_user_id?: null | number;
+        ticket_assignee_team_id?: null | number;
+        not_automatable?: boolean | null;
+        shopper_email?: string | null;
+      } | {
+        kind: "text-input";
+        content?: {
+          text: string;
+        } | null;
+      } | {
+        kind: "attachments-input";
+        attachments?: {
+          content_type: string;
+          url: string;
+        }[] | null;
+      } | {
+        kind: "shopper-authentication";
+      } | {
+        kind: "shopper-authentication-success";
+        access_token: string;
+      } | {
+        kind: "order-selection";
+        orders: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        }[];
+      } | {
+        kind: "order-line-item-selection";
+        order: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        };
+      })[];
+      done?: boolean | null;
+      can_go_back?: boolean | null;
+      can_go_next?: boolean | null;
+      needs_auth?: boolean | null;
+    } | {
+      execution_id: string;
+      channel_actions: ({
+        kind: "messages";
+        messages: {
+          content: {
+            html: string;
+            text: string;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+      } | {
+        kind: "choices";
+        choices: {
+          label: string;
+          event_id: string;
+        }[];
+      } | {
+        kind: "handover";
+        messages: {
+          content: {
+            html?: string | null;
+            text?: string | null;
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+        ticket_tags?: string[] | null;
+        ticket_assignee_user_id?: null | number;
+        ticket_assignee_team_id?: null | number;
+        not_automatable?: boolean | null;
+        shopper_email?: string | null;
+      } | {
+        kind: "text-input";
+        content?: {
+          text: string;
+        } | null;
+      } | {
+        kind: "attachments-input";
+        attachments?: {
+          content_type: string;
+          url: string;
+        }[] | null;
+      } | {
+        kind: "shopper-authentication";
+      } | {
+        kind: "shopper-authentication-success";
+        access_token: string;
+      } | {
+        kind: "order-selection";
+        orders: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        }[];
+      } | {
+        kind: "order-line-item-selection";
+        order: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        };
+      })[];
+      done?: boolean | null;
+      success: "true";
+      state: {
+        steps_state?: {
+          [name: string]: {
+            kind: "choices";
+            selected_choice: {
+              event_id: string;
+              label: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "text-input";
+            content: {
+              text: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "attachments-input";
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+            at: string; // date-time
+          } | {
+            kind: "shopper-authentication";
+            customer: {
+              id: number;
+              email?: string | null;
+              firstname?: string | null;
+              lastname?: string | null;
+              name?: string | null;
+              phone_number?: string | null;
+              orders: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                  } | null;
+                }[];
+                fulfillments?: {
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+              }[];
+            };
+            at: string; // date-time
+          } | {
+            kind: "order-selection";
+            order: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            };
+            at: string; // date-time
+          } | {
+            kind: "workflow_call";
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                  }[];
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "http-request";
+            status_code: number;
+            success: boolean;
+            content?: ({
+              [name: string]: number | boolean | string /* date-time */  | string | any;
+            } | null) | any;
+            at: string; // date-time
+          } | {
+            kind: "cancel-order";
+            success: boolean;
+            at: string; // date-time
+          } | {
+            kind: "refund-order";
+            success: boolean;
+            at: string; // date-time
+          };
+        } | null;
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        apps?: {
+          [name: string]: {
+            api_key?: string | null;
+          };
+          // @ts-ignore
+          recharge?: {
+            integration_id: number;
+          } | null;
+        } | null;
+        trigger: "llm-prompt";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            }[];
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+              } | null;
+            }[];
+            fulfillments?: {
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+      };
+      outputs: {
+        [name: string]: {
+          description: string;
+          value?: any;
+        };
+      };
+    } | {
+      execution_id: string;
+      channel_actions: ({
+        kind: "messages";
+        messages: {
+          content: {
+            html: string;
+            text: string;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+      } | {
+        kind: "choices";
+        choices: {
+          label: string;
+          event_id: string;
+        }[];
+      } | {
+        kind: "handover";
+        messages: {
+          content: {
+            html?: string | null;
+            text?: string | null;
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+        ticket_tags?: string[] | null;
+        ticket_assignee_user_id?: null | number;
+        ticket_assignee_team_id?: null | number;
+        not_automatable?: boolean | null;
+        shopper_email?: string | null;
+      } | {
+        kind: "text-input";
+        content?: {
+          text: string;
+        } | null;
+      } | {
+        kind: "attachments-input";
+        attachments?: {
+          content_type: string;
+          url: string;
+        }[] | null;
+      } | {
+        kind: "shopper-authentication";
+      } | {
+        kind: "shopper-authentication-success";
+        access_token: string;
+      } | {
+        kind: "order-selection";
+        orders: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        }[];
+      } | {
+        kind: "order-line-item-selection";
+        order: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        };
+      })[];
+      done?: boolean | null;
+      success: "false";
+      state: {
+        steps_state?: {
+          [name: string]: {
+            kind: "choices";
+            selected_choice: {
+              event_id: string;
+              label: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "text-input";
+            content: {
+              text: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "attachments-input";
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+            at: string; // date-time
+          } | {
+            kind: "shopper-authentication";
+            customer: {
+              id: number;
+              email?: string | null;
+              firstname?: string | null;
+              lastname?: string | null;
+              name?: string | null;
+              phone_number?: string | null;
+              orders: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                  } | null;
+                }[];
+                fulfillments?: {
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+              }[];
+            };
+            at: string; // date-time
+          } | {
+            kind: "order-selection";
+            order: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            };
+            at: string; // date-time
+          } | {
+            kind: "workflow_call";
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                  }[];
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "http-request";
+            status_code: number;
+            success: boolean;
+            content?: ({
+              [name: string]: number | boolean | string /* date-time */  | string | any;
+            } | null) | any;
+            at: string; // date-time
+          } | {
+            kind: "cancel-order";
+            success: boolean;
+            at: string; // date-time
+          } | {
+            kind: "refund-order";
+            success: boolean;
+            at: string; // date-time
+          };
+        } | null;
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        apps?: {
+          [name: string]: {
+            api_key?: string | null;
+          };
+          // @ts-ignore
+          recharge?: {
+            integration_id: number;
+          } | null;
+        } | null;
+        trigger: "llm-prompt";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            }[];
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+              } | null;
+            }[];
+            fulfillments?: {
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+      };
+    };
+    export type StartWfExecutionRequestDto = {
+      configuration_id: string;
+      trigger: "channel";
+      channel: "chat" | "help-center" | "contact-form";
+      channel_language: "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+      shop_name: string;
+      shop_type?: string;
+      user_journey_id: string;
+      preview_mode?: boolean | null;
+      trigger_type?: "recommendation";
+      time_zone?: string | null;
+    } | {
+      configuration_id: string;
+      trigger: "llm-prompt";
+      custom_inputs?: {
+        [name: string]: string;
+      } | null;
+      object_inputs?: {
+        customer_id?: string | null;
+        customer_email?: string | null;
+        customer_phone_number?: string | null;
+        order_external_id?: string | null;
+        order_name?: string | null;
+        order_number?: string | null;
+      } | null;
+    };
+    export type StartWfExecutionResponseDto = {
+      execution_id: string;
+      channel_actions: ({
+        kind: "messages";
+        messages: {
+          content: {
+            html: string;
+            text: string;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+      } | {
+        kind: "choices";
+        choices: {
+          label: string;
+          event_id: string;
+        }[];
+      } | {
+        kind: "handover";
+        messages: {
+          content: {
+            html?: string | null;
+            text?: string | null;
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+        ticket_tags?: string[] | null;
+        ticket_assignee_user_id?: null | number;
+        ticket_assignee_team_id?: null | number;
+        not_automatable?: boolean | null;
+        shopper_email?: string | null;
+      } | {
+        kind: "text-input";
+        content?: {
+          text: string;
+        } | null;
+      } | {
+        kind: "attachments-input";
+        attachments?: {
+          content_type: string;
+          url: string;
+        }[] | null;
+      } | {
+        kind: "shopper-authentication";
+      } | {
+        kind: "shopper-authentication-success";
+        access_token: string;
+      } | {
+        kind: "order-selection";
+        orders: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        }[];
+      } | {
+        kind: "order-line-item-selection";
+        order: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        };
+      })[];
+      done?: boolean | null;
+      can_go_back?: boolean | null;
+      can_go_next?: boolean | null;
+      needs_auth?: boolean | null;
+    } | {
+      execution_id: string;
+      channel_actions: ({
+        kind: "messages";
+        messages: {
+          content: {
+            html: string;
+            text: string;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+      } | {
+        kind: "choices";
+        choices: {
+          label: string;
+          event_id: string;
+        }[];
+      } | {
+        kind: "handover";
+        messages: {
+          content: {
+            html?: string | null;
+            text?: string | null;
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+        ticket_tags?: string[] | null;
+        ticket_assignee_user_id?: null | number;
+        ticket_assignee_team_id?: null | number;
+        not_automatable?: boolean | null;
+        shopper_email?: string | null;
+      } | {
+        kind: "text-input";
+        content?: {
+          text: string;
+        } | null;
+      } | {
+        kind: "attachments-input";
+        attachments?: {
+          content_type: string;
+          url: string;
+        }[] | null;
+      } | {
+        kind: "shopper-authentication";
+      } | {
+        kind: "shopper-authentication-success";
+        access_token: string;
+      } | {
+        kind: "order-selection";
+        orders: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        }[];
+      } | {
+        kind: "order-line-item-selection";
+        order: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        };
+      })[];
+      done?: boolean | null;
+      success: "true";
+      state: {
+        steps_state?: {
+          [name: string]: {
+            kind: "choices";
+            selected_choice: {
+              event_id: string;
+              label: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "text-input";
+            content: {
+              text: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "attachments-input";
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+            at: string; // date-time
+          } | {
+            kind: "shopper-authentication";
+            customer: {
+              id: number;
+              email?: string | null;
+              firstname?: string | null;
+              lastname?: string | null;
+              name?: string | null;
+              phone_number?: string | null;
+              orders: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                  } | null;
+                }[];
+                fulfillments?: {
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+              }[];
+            };
+            at: string; // date-time
+          } | {
+            kind: "order-selection";
+            order: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            };
+            at: string; // date-time
+          } | {
+            kind: "workflow_call";
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                  }[];
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "http-request";
+            status_code: number;
+            success: boolean;
+            content?: ({
+              [name: string]: number | boolean | string /* date-time */  | string | any;
+            } | null) | any;
+            at: string; // date-time
+          } | {
+            kind: "cancel-order";
+            success: boolean;
+            at: string; // date-time
+          } | {
+            kind: "refund-order";
+            success: boolean;
+            at: string; // date-time
+          };
+        } | null;
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        apps?: {
+          [name: string]: {
+            api_key?: string | null;
+          };
+          // @ts-ignore
+          recharge?: {
+            integration_id: number;
+          } | null;
+        } | null;
+        trigger: "llm-prompt";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            }[];
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+              } | null;
+            }[];
+            fulfillments?: {
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+      };
+      outputs: {
+        [name: string]: {
+          description: string;
+          value?: any;
+        };
+      };
+    } | {
+      execution_id: string;
+      channel_actions: ({
+        kind: "messages";
+        messages: {
+          content: {
+            html: string;
+            text: string;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+      } | {
+        kind: "choices";
+        choices: {
+          label: string;
+          event_id: string;
+        }[];
+      } | {
+        kind: "handover";
+        messages: {
+          content: {
+            html?: string | null;
+            text?: string | null;
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+          };
+          author: {
+            kind: "shopper" | "bot";
+          };
+        }[];
+        ticket_tags?: string[] | null;
+        ticket_assignee_user_id?: null | number;
+        ticket_assignee_team_id?: null | number;
+        not_automatable?: boolean | null;
+        shopper_email?: string | null;
+      } | {
+        kind: "text-input";
+        content?: {
+          text: string;
+        } | null;
+      } | {
+        kind: "attachments-input";
+        attachments?: {
+          content_type: string;
+          url: string;
+        }[] | null;
+      } | {
+        kind: "shopper-authentication";
+      } | {
+        kind: "shopper-authentication-success";
+        access_token: string;
+      } | {
+        kind: "order-selection";
+        orders: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        }[];
+      } | {
+        kind: "order-line-item-selection";
+        order: {
+          name: string;
+          external_id?: string | null;
+          shopper_external_id?: string | null;
+          number?: string | null;
+          currency: {
+            code: string;
+            decimals: number;
+          };
+          discount_amount?: number | null;
+          subtotal_amount?: number | null;
+          shipping_amount?: number | null;
+          tax_amount?: number | null;
+          cancelled_datetime?: string | null; // date-time
+          created_datetime: string; // date-time
+          external_status?: string | null;
+          external_fulfillment_status?: string | null;
+          billing_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          shipping_address?: {
+            line_1: string | null;
+            line_2: string | null;
+            city: string | null;
+            country: string | null;
+            state: string | null;
+            zip_code: string | null;
+            first_name: string | null;
+            last_name: string | null;
+            phone_number: string | null;
+          } | null;
+          external_payment_status?: string | null;
+          total_amount: number;
+          tracking_url?: string | null;
+          shipping_datetime?: string | null; // date-time
+          tracking_number?: string | null;
+          line_items: {
+            name: string;
+            total_amount: number;
+            quantity: number;
+            external_id?: string | null;
+            external_product_id?: string | null;
+            product?: {
+              external_id: string;
+              images: string[];
+            } | null;
+          }[];
+          fulfillments?: {
+            external_shipment_status?: string | null;
+            updated_datetime?: string | null; // date-time
+          }[] | null;
+          shipping_lines?: {
+            external_method_id?: string | null;
+            method_name?: string | null;
+          }[] | null;
+        };
+      })[];
+      done?: boolean | null;
+      success: "false";
+      state: {
+        steps_state?: {
+          [name: string]: {
+            kind: "choices";
+            selected_choice: {
+              event_id: string;
+              label: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "text-input";
+            content: {
+              text: string;
+            };
+            at: string; // date-time
+          } | {
+            kind: "attachments-input";
+            attachments?: {
+              content_type: string;
+              url: string;
+            }[] | null;
+            at: string; // date-time
+          } | {
+            kind: "shopper-authentication";
+            customer: {
+              id: number;
+              email?: string | null;
+              firstname?: string | null;
+              lastname?: string | null;
+              name?: string | null;
+              phone_number?: string | null;
+              orders: {
+                name: string;
+                external_id?: string | null;
+                shopper_external_id?: string | null;
+                number?: string | null;
+                currency: {
+                  code: string;
+                  decimals: number;
+                };
+                discount_amount?: number | null;
+                subtotal_amount?: number | null;
+                shipping_amount?: number | null;
+                tax_amount?: number | null;
+                cancelled_datetime?: string | null; // date-time
+                created_datetime: string; // date-time
+                external_status?: string | null;
+                external_fulfillment_status?: string | null;
+                billing_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                shipping_address?: {
+                  line_1: string | null;
+                  line_2: string | null;
+                  city: string | null;
+                  country: string | null;
+                  state: string | null;
+                  zip_code: string | null;
+                  first_name: string | null;
+                  last_name: string | null;
+                  phone_number: string | null;
+                } | null;
+                external_payment_status?: string | null;
+                total_amount: number;
+                tracking_url?: string | null;
+                shipping_datetime?: string | null; // date-time
+                tracking_number?: string | null;
+                line_items: {
+                  name: string;
+                  total_amount: number;
+                  quantity: number;
+                  external_id?: string | null;
+                  external_product_id?: string | null;
+                  product?: {
+                    external_id: string;
+                    images: string[];
+                  } | null;
+                }[];
+                fulfillments?: {
+                  external_shipment_status?: string | null;
+                  updated_datetime?: string | null; // date-time
+                }[] | null;
+                shipping_lines?: {
+                  external_method_id?: string | null;
+                  method_name?: string | null;
+                }[] | null;
+              }[];
+            };
+            at: string; // date-time
+          } | {
+            kind: "order-selection";
+            order: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            };
+            at: string; // date-time
+          } | {
+            kind: "workflow_call";
+            steps_state?: {
+              [name: string]: {
+                kind: "choices";
+                selected_choice: {
+                  event_id: string;
+                  label: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "text-input";
+                content: {
+                  text: string;
+                };
+                at: string; // date-time
+              } | {
+                kind: "attachments-input";
+                attachments?: {
+                  content_type: string;
+                  url: string;
+                }[] | null;
+                at: string; // date-time
+              } | {
+                kind: "shopper-authentication";
+                customer: {
+                  id: number;
+                  email?: string | null;
+                  firstname?: string | null;
+                  lastname?: string | null;
+                  name?: string | null;
+                  phone_number?: string | null;
+                  orders: {
+                    name: string;
+                    external_id?: string | null;
+                    shopper_external_id?: string | null;
+                    number?: string | null;
+                    currency: {
+                      code: string;
+                      decimals: number;
+                    };
+                    discount_amount?: number | null;
+                    subtotal_amount?: number | null;
+                    shipping_amount?: number | null;
+                    tax_amount?: number | null;
+                    cancelled_datetime?: string | null; // date-time
+                    created_datetime: string; // date-time
+                    external_status?: string | null;
+                    external_fulfillment_status?: string | null;
+                    billing_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    shipping_address?: {
+                      line_1: string | null;
+                      line_2: string | null;
+                      city: string | null;
+                      country: string | null;
+                      state: string | null;
+                      zip_code: string | null;
+                      first_name: string | null;
+                      last_name: string | null;
+                      phone_number: string | null;
+                    } | null;
+                    external_payment_status?: string | null;
+                    total_amount: number;
+                    tracking_url?: string | null;
+                    shipping_datetime?: string | null; // date-time
+                    tracking_number?: string | null;
+                    line_items: {
+                      name: string;
+                      total_amount: number;
+                      quantity: number;
+                      external_id?: string | null;
+                      external_product_id?: string | null;
+                      product?: {
+                        external_id: string;
+                        images: string[];
+                      } | null;
+                    }[];
+                    fulfillments?: {
+                      external_shipment_status?: string | null;
+                      updated_datetime?: string | null; // date-time
+                    }[] | null;
+                    shipping_lines?: {
+                      external_method_id?: string | null;
+                      method_name?: string | null;
+                    }[] | null;
+                  }[];
+                };
+                at: string; // date-time
+              } | {
+                kind: "order-selection";
+                order: {
+                  name: string;
+                  external_id?: string | null;
+                  shopper_external_id?: string | null;
+                  number?: string | null;
+                  currency: {
+                    code: string;
+                    decimals: number;
+                  };
+                  discount_amount?: number | null;
+                  subtotal_amount?: number | null;
+                  shipping_amount?: number | null;
+                  tax_amount?: number | null;
+                  cancelled_datetime?: string | null; // date-time
+                  created_datetime: string; // date-time
+                  external_status?: string | null;
+                  external_fulfillment_status?: string | null;
+                  billing_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  shipping_address?: {
+                    line_1: string | null;
+                    line_2: string | null;
+                    city: string | null;
+                    country: string | null;
+                    state: string | null;
+                    zip_code: string | null;
+                    first_name: string | null;
+                    last_name: string | null;
+                    phone_number: string | null;
+                  } | null;
+                  external_payment_status?: string | null;
+                  total_amount: number;
+                  tracking_url?: string | null;
+                  shipping_datetime?: string | null; // date-time
+                  tracking_number?: string | null;
+                  line_items: {
+                    name: string;
+                    total_amount: number;
+                    quantity: number;
+                    external_id?: string | null;
+                    external_product_id?: string | null;
+                    product?: {
+                      external_id: string;
+                      images: string[];
+                    } | null;
+                  }[];
+                  fulfillments?: {
+                    external_shipment_status?: string | null;
+                    updated_datetime?: string | null; // date-time
+                  }[] | null;
+                  shipping_lines?: {
+                    external_method_id?: string | null;
+                    method_name?: string | null;
+                  }[] | null;
+                };
+                at: string; // date-time
+              } | {
+                kind: "http-request";
+                status_code: number;
+                success: boolean;
+                content?: ({
+                  [name: string]: number | boolean | string /* date-time */  | string | any;
+                } | null) | any;
+                at: string; // date-time
+              } | {
+                kind: "cancel-order";
+                success: boolean;
+                at: string; // date-time
+              } | {
+                kind: "refund-order";
+                success: boolean;
+                at: string; // date-time
+              };
+            } | null;
+            at: string; // date-time
+          } | {
+            kind: "http-request";
+            status_code: number;
+            success: boolean;
+            content?: ({
+              [name: string]: number | boolean | string /* date-time */  | string | any;
+            } | null) | any;
+            at: string; // date-time
+          } | {
+            kind: "cancel-order";
+            success: boolean;
+            at: string; // date-time
+          } | {
+            kind: "refund-order";
+            success: boolean;
+            at: string; // date-time
+          };
+        } | null;
+        store?: {
+          type: "shopify";
+          name: string;
+          helpdesk_integration_id: number;
+        } | null;
+        apps?: {
+          [name: string]: {
+            api_key?: string | null;
+          };
+          // @ts-ignore
+          recharge?: {
+            integration_id: number;
+          } | null;
+        } | null;
+        trigger: "llm-prompt";
+        objects?: {
+          customer?: {
+            id: number;
+            email?: string | null;
+            firstname?: string | null;
+            lastname?: string | null;
+            name?: string | null;
+            phone_number?: string | null;
+            orders: {
+              name: string;
+              external_id?: string | null;
+              shopper_external_id?: string | null;
+              number?: string | null;
+              currency: {
+                code: string;
+                decimals: number;
+              };
+              discount_amount?: number | null;
+              subtotal_amount?: number | null;
+              shipping_amount?: number | null;
+              tax_amount?: number | null;
+              cancelled_datetime?: string | null; // date-time
+              created_datetime: string; // date-time
+              external_status?: string | null;
+              external_fulfillment_status?: string | null;
+              billing_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              shipping_address?: {
+                line_1: string | null;
+                line_2: string | null;
+                city: string | null;
+                country: string | null;
+                state: string | null;
+                zip_code: string | null;
+                first_name: string | null;
+                last_name: string | null;
+                phone_number: string | null;
+              } | null;
+              external_payment_status?: string | null;
+              total_amount: number;
+              tracking_url?: string | null;
+              shipping_datetime?: string | null; // date-time
+              tracking_number?: string | null;
+              line_items: {
+                name: string;
+                total_amount: number;
+                quantity: number;
+                external_id?: string | null;
+                external_product_id?: string | null;
+                product?: {
+                  external_id: string;
+                  images: string[];
+                } | null;
+              }[];
+              fulfillments?: {
+                external_shipment_status?: string | null;
+                updated_datetime?: string | null; // date-time
+              }[] | null;
+              shipping_lines?: {
+                external_method_id?: string | null;
+                method_name?: string | null;
+              }[] | null;
+            }[];
+          } | null;
+          order?: {
+            name: string;
+            external_id?: string | null;
+            shopper_external_id?: string | null;
+            number?: string | null;
+            currency: {
+              code: string;
+              decimals: number;
+            };
+            discount_amount?: number | null;
+            subtotal_amount?: number | null;
+            shipping_amount?: number | null;
+            tax_amount?: number | null;
+            cancelled_datetime?: string | null; // date-time
+            created_datetime: string; // date-time
+            external_status?: string | null;
+            external_fulfillment_status?: string | null;
+            billing_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            shipping_address?: {
+              line_1: string | null;
+              line_2: string | null;
+              city: string | null;
+              country: string | null;
+              state: string | null;
+              zip_code: string | null;
+              first_name: string | null;
+              last_name: string | null;
+              phone_number: string | null;
+            } | null;
+            external_payment_status?: string | null;
+            total_amount: number;
+            tracking_url?: string | null;
+            shipping_datetime?: string | null; // date-time
+            tracking_number?: string | null;
+            line_items: {
+              name: string;
+              total_amount: number;
+              quantity: number;
+              external_id?: string | null;
+              external_product_id?: string | null;
+              product?: {
+                external_id: string;
+                images: string[];
+              } | null;
+            }[];
+            fulfillments?: {
+              external_shipment_status?: string | null;
+              updated_datetime?: string | null; // date-time
+            }[] | null;
+            shipping_lines?: {
+              external_method_id?: string | null;
+              method_name?: string | null;
+            }[] | null;
+          } | null;
+        } | null;
+        custom_inputs?: {
+          [name: string]: number | boolean | string /* date-time */  | string;
+        } | null;
+      };
+    };
+    export type TestWfExecutionRequestDto = {
+      configuration_id: string;
+      trigger: "llm-prompt";
+      custom_inputs?: {
+        [name: string]: string;
+      } | null;
+      object_inputs?: {
+        customer_id?: string | null;
+        customer_email?: string | null;
+        customer_phone_number?: string | null;
+        order_external_id?: string | null;
+        order_name?: string | null;
+        order_number?: string | null;
+      } | null;
+    };
+    export type TestWfExecutionResponseDto = {
+      triggerable: "true";
+    } | {
+      triggerable: "false";
+      errors: {
+        code: string;
+        message: string;
+        path: string[];
+      }[];
+      state?: {
+        [name: string]: any;
+        trigger?: "channel" | "llm-prompt";
+      } | null;
+    };
+    export interface UpsertAppRequestBodyDto {
+      auth_type: "api-key";
+      auth_settings: {
+        url?: string | null;
+      };
+    }
+    export type UpsertAppRequestResponseDto = {
+      id: string;
+      auth_type: "api-key";
+      auth_settings: {
+        url?: string | null;
+      };
+    };
+    export interface UpsertStoreAppRequestBodyDto {
+      integration_id: number;
+    }
+    export interface UpsertStoreAppResponseDto {
+      store_type: "shopify";
+      store_name: string;
+      account_id: number;
+      integration_id: number;
+      type: "recharge";
+    }
+    export interface UpsertStoreWfConfigurationRequestBodyDto {
+      id: string;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id?: string | null;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      triggers: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[];
+      entrypoints: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[];
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface UpsertStoreWfConfigurationResponseDto {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id?: string | null;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[];
+      entrypoints: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[];
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface UpsertWfConfigurationRequestDto {
+      id: string;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      triggers?: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[] | null;
+      entrypoints?: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[] | null;
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface UpsertWfConfigurationResponseDto {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "choices";
+        settings: {
+          choices: {
+            event_id: string;
+            label: string;
+            label_tkey: string;
+          }[];
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "handover";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "workflow_call";
+        settings: {
+          configuration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "text-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "attachments-input";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "shopper-authentication";
+        settings: {
+          integration_id: number;
+        };
+      } | {
+        id: string;
+        kind: "order-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "helpful-prompt";
+        settings?: {
+          ticket_tags?: string[] | null;
+          ticket_assignee_user_id?: null | number;
+          ticket_assignee_team_id?: null | number;
+        } | null;
+      } | {
+        id: string;
+        kind: "message";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "end";
+      } | {
+        id: string;
+        kind: "conditions";
+        settings: {
+          name: string;
+        };
+      } | {
+        id: string;
+        kind: "order-line-item-selection";
+        settings: {
+          message: {
+            content: {
+              html: string;
+              html_tkey: string;
+              text: string;
+              text_tkey: string;
+              attachments?: {
+                content_type: "application/productCard";
+                name?: string | null;
+                size?: number | null;
+                url: string;
+                extra?: {
+                  product_id?: number | null;
+                  variant_id?: number | null;
+                  price?: string | null;
+                  variant_name?: string | null;
+                  product_link?: string | null;
+                  currency?: string | null;
+                  featured_image?: string | null;
+                } | null;
+              }[] | null;
+            };
+          };
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers?: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[] | null;
+      entrypoints?: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[] | null;
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface UpsertWfConfigurationTemplateRequestDto {
+      id: string;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      } | {
+        id: string;
+        kind: "refund-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      triggers?: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[] | null;
+      entrypoints?: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[] | null;
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface UpsertWfConfigurationTemplateResponseDto {
+      internal_id: string;
+      id: string;
+      account_id: number | null;
+      template_internal_id?: string | null;
+      name: string;
+      description?: string | null;
+      short_description?: string | null;
+      is_draft: boolean;
+      initial_step_id: string;
+      entrypoint?: {
+        label: string;
+        label_tkey: string;
+      } | null;
+      steps: ({
+        id: string;
+        kind: "http-request";
+        settings: {
+          name: string;
+          url: string /* uri */  | ("");
+          method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+          headers?: {
+            [name: string]: string;
+          } | null;
+          body?: string | null;
+          variables: {
+            id: string;
+            name: string;
+            jsonpath: string;
+            data_type?: "string" | "number" | "date" | "boolean";
+          }[];
+        };
+      } | {
+        id: string;
+        kind: "cancel-order";
+        settings: {
+          customer_id: string;
+          order_external_id: string;
+          integration_id: string;
+        };
+      })[];
+      transitions: {
+        id: string;
+        from_step_id: string;
+        to_step_id: string;
+        event?: {
+          id: string;
+          kind: "choices";
+        } | null;
+        name?: string | null;
+        conditions?: {
+          or: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        } | {
+          and: ({
+            equals: any;
+          } | {
+            notEqual: any;
+          } | {
+            contains: any;
+          } | {
+            doesNotContain: any;
+          } | {
+            endsWith: any;
+          } | {
+            startsWith: any;
+          } | {
+            exists: any;
+          } | {
+            doesNotExist: any;
+          } | {
+            lessThan: any;
+          } | {
+            lessThanInterval: any;
+          } | {
+            lessOrEqual: any;
+          } | {
+            greaterThan: any;
+          } | {
+            greaterThanInterval: any;
+          } | {
+            greaterOrEqual: any;
+          })[];
+        };
+      }[];
+      available_languages: ("en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR")[];
+      created_datetime?: string | null; // date-time
+      updated_datetime?: string | null; // date-time
+      deleted_datetime?: string | null; // date-time
+      triggers?: ({
+        kind: "llm-prompt";
+        settings: {
+          custom_inputs: {
+            id: string;
+            name: string;
+            instructions: string;
+            data_type: "string" | "number" | "date" | "boolean";
+          }[];
+          object_inputs: ({
+            kind: "customer";
+            integration_id: number | string;
+          } | {
+            kind: "order";
+            integration_id: number | string;
+          })[];
+          conditions?: {
+            or: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          } | {
+            and: ({
+              equals: any;
+            } | {
+              notEqual: any;
+            } | {
+              contains: any;
+            } | {
+              doesNotContain: any;
+            } | {
+              endsWith: any;
+            } | {
+              startsWith: any;
+            } | {
+              exists: any;
+            } | {
+              doesNotExist: any;
+            } | {
+              lessThan: any;
+            } | {
+              lessThanInterval: any;
+            } | {
+              lessOrEqual: any;
+            } | {
+              greaterThan: any;
+            } | {
+              greaterThanInterval: any;
+            } | {
+              greaterOrEqual: any;
+            })[];
+          };
+          outputs: {
+            id: string;
+            description: string;
+            path: string;
+          }[];
+        };
+      } | {
+        kind: "channel";
+        settings: {
+        };
+      })[] | null;
+      entrypoints?: ({
+        deactivated_datetime?: string | null; // date-time
+        kind: "llm-conversation";
+        trigger: "llm-prompt";
+        settings: {
+          requires_confirmation: boolean;
+          instructions: string;
+        };
+      })[] | null;
+      apps?: ({
+        type: "shopify";
+      } | {
+        type: "recharge";
+      } | {
+        app_id: string;
+        api_key?: string | null;
+        type: "app";
+      })[] | null;
+    }
+    export interface UpsertWfConfigurationTranslationsRequestBodyDto {
+      [name: string]: string;
+    }
+    export interface UpsertWfConfigurationTranslationsResponseDto {
+      [name: string]: string;
+    }
+    export interface WfExecutionHandoverCallbackRequestDto {
+      ticket_id: number;
+    }
+  }
 }
 declare namespace Paths {
-    namespace StoreWfConfigurationControllerList {
-        namespace Parameters {
-            export type StoreName = string
-            export type StoreType = 'shopify'
-            export type Triggers = any[]
-        }
-        export interface PathParameters {
-            store_type: Parameters.StoreType
-            store_name: Parameters.StoreName
-        }
-        export interface QueryParameters {
-            triggers: Parameters.Triggers
-        }
-        namespace Responses {
-            export type $201 =
-                Components.Schemas.StoreWfConfigurationResponseDto[]
-        }
+  namespace AppControllerDelete {
+    namespace Parameters {
+      export type Id = string;
     }
-    namespace StoreWfConfigurationControllerUpsert {
-        namespace Parameters {
-            export type InternalId = string
-            export type StoreName = string
-            export type StoreType = 'shopify'
-        }
-        export interface PathParameters {
-            store_type: Parameters.StoreType
-            store_name: Parameters.StoreName
-            internal_id: Parameters.InternalId
-        }
-        export type RequestBody =
-            Components.Schemas.UpsertStoreWfConfigurationRequestBodyDto
-        namespace Responses {
-            export type $201 =
-                Components.Schemas.StoreWfConfigurationResponseDto
-        }
+    export interface PathParameters {
+      id: Parameters.Id;
     }
-    namespace WfConfigurationControllerDelete {
-        namespace Parameters {
-            export type InternalId = string
-        }
-        export interface PathParameters {
-            internal_id: Parameters.InternalId
-        }
+  }
+  namespace AppControllerGet {
+    namespace Parameters {
+      export type Id = string;
     }
-    namespace WfConfigurationControllerGet {
-        namespace Parameters {
-            export type Id = string
-        }
-        export interface PathParameters {
-            id: Parameters.Id
-        }
-        namespace Responses {
-            export type $201 =
-                Components.Schemas.UpsertWfConfigurationRequestDto
-        }
+    export interface PathParameters {
+      id: Parameters.Id;
     }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetAppResponseDto;
+    }
+  }
+  namespace AppControllerList {
+    namespace Parameters {
+      export type Ids = any[];
+    }
+    export interface QueryParameters {
+      ids?: Parameters.Ids;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListAppResponseDto;
+    }
+  }
+  namespace AppControllerUpsert {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.UpsertAppRequestBodyDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertAppRequestResponseDto;
+    }
+  }
+  namespace AutomationEventControllerGet {
+    namespace Parameters {
+      export type Uuid = string;
+    }
+    export interface PathParameters {
+      uuid: Parameters.Uuid;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetAutomationEventResponseDto;
+    }
+  }
+  namespace HealthControllerCheck {
+    namespace Responses {
+      export interface $200 {
+        /**
+         * example:
+         * ok
+         */
+        status?: string;
+        /**
+         * example:
+         * {
+         *   "database": {
+         *     "status": "up"
+         *   }
+         * }
+         */
+        info?: {
+          [name: string]: {
+            [name: string]: any;
+            status: string;
+          };
+        } | null;
+        /**
+         * example:
+         * {}
+         */
+        error?: {
+          [name: string]: {
+            [name: string]: any;
+            status: string;
+          };
+        } | null;
+        /**
+         * example:
+         * {
+         *   "database": {
+         *     "status": "up"
+         *   }
+         * }
+         */
+        details?: {
+          [name: string]: {
+            [name: string]: any;
+            status: string;
+          };
+        };
+      }
+      export interface $503 {
+        /**
+         * example:
+         * error
+         */
+        status?: string;
+        /**
+         * example:
+         * {
+         *   "database": {
+         *     "status": "up"
+         *   }
+         * }
+         */
+        info?: {
+          [name: string]: {
+            [name: string]: any;
+            status: string;
+          };
+        } | null;
+        /**
+         * example:
+         * {
+         *   "redis": {
+         *     "status": "down",
+         *     "message": "Could not connect"
+         *   }
+         * }
+         */
+        error?: {
+          [name: string]: {
+            [name: string]: any;
+            status: string;
+          };
+        } | null;
+        /**
+         * example:
+         * {
+         *   "database": {
+         *     "status": "up"
+         *   },
+         *   "redis": {
+         *     "status": "down",
+         *     "message": "Could not connect"
+         *   }
+         * }
+         */
+        details?: {
+          [name: string]: {
+            [name: string]: any;
+            status: string;
+          };
+        };
+      }
+    }
+  }
+  namespace StoreAppControllerDelete {
+    namespace Parameters {
+      export type StoreName = string;
+      export type StoreType = "shopify";
+      export type Type = "recharge";
+    }
+    export interface PathParameters {
+      store_type: Parameters.StoreType;
+      store_name: Parameters.StoreName;
+      type: Parameters.Type;
+    }
+  }
+  namespace StoreAppControllerList {
+    namespace Parameters {
+      export type StoreName = string;
+      export type StoreType = "shopify";
+    }
+    export interface PathParameters {
+      store_type: Parameters.StoreType;
+      store_name: Parameters.StoreName;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListStoreAppResponseDto;
+    }
+  }
+  namespace StoreAppControllerUpsert {
+    namespace Parameters {
+      export type StoreName = string;
+      export type StoreType = "shopify";
+      export type Type = "recharge";
+    }
+    export interface PathParameters {
+      store_type: Parameters.StoreType;
+      store_name: Parameters.StoreName;
+      type: Parameters.Type;
+    }
+    export type RequestBody = Components.Schemas.UpsertStoreAppRequestBodyDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertStoreAppResponseDto;
+    }
+  }
+  namespace StoreWfConfigurationControllerList {
+    namespace Parameters {
+      export type StoreName = string;
+      export type StoreType = "shopify";
+      export type Triggers = any[];
+    }
+    export interface PathParameters {
+      store_type: Parameters.StoreType;
+      store_name: Parameters.StoreName;
+    }
+    export interface QueryParameters {
+      triggers: Parameters.Triggers;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListStoreWfConfigurationsResponseDto;
+    }
+  }
+  namespace StoreWfConfigurationControllerUpsert {
+    namespace Parameters {
+      export type InternalId = string;
+      export type StoreName = string;
+      export type StoreType = "shopify";
+    }
+    export interface PathParameters {
+      store_type: Parameters.StoreType;
+      store_name: Parameters.StoreName;
+      internal_id: Parameters.InternalId;
+    }
+    export type RequestBody = Components.Schemas.UpsertStoreWfConfigurationRequestBodyDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertStoreWfConfigurationResponseDto;
+    }
+  }
+  namespace StoreWfEntrypointControllerList {
+    namespace Parameters {
+      export type AccountId = number;
+      export type StoreName = string;
+      export type StoreType = "shopify";
+    }
+    export interface PathParameters {
+      account_id: Parameters.AccountId;
+      store_type: Parameters.StoreType;
+      store_name: Parameters.StoreName;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListStoreWfEntrypointsResponseDto;
+    }
+  }
+  namespace WfConfigurationControllerDelete {
+    namespace Parameters {
+      export type InternalId = string;
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+    }
+  }
+  namespace WfConfigurationControllerDuplicate {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.DuplicateWfConfigurationRequestDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.DuplicateWfConfigurationResponseDto;
+    }
+  }
+  namespace WfConfigurationControllerExportStepLogs {
+    namespace Parameters {
+      export type InternalId = string;
+      export type StepId = string;
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+      step_id: Parameters.StepId;
+    }
+  }
+  namespace WfConfigurationControllerGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetWfConfigurationResponseDto;
+    }
+  }
+  namespace WfConfigurationControllerList {
+    namespace Parameters {
+      export type IsDraft = any[];
+    }
+    export interface QueryParameters {
+      is_draft?: Parameters.IsDraft;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListWfConfigurationsResponseDto;
+    }
+  }
+  namespace WfConfigurationControllerUpsert {
+    namespace Parameters {
+      export type InternalId = string;
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+    }
+    export type RequestBody = Components.Schemas.UpsertWfConfigurationRequestDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertWfConfigurationResponseDto;
+    }
+  }
+  namespace WfConfigurationTemplateControllerList {
+    namespace Parameters {
+      export type Triggers = any[];
+    }
+    export interface QueryParameters {
+      triggers: Parameters.Triggers;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListWfConfigurationTemplatesResponseDto;
+    }
+  }
+  namespace WfConfigurationTemplateControllerUpsert {
+    namespace Parameters {
+      export type InternalId = string;
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+    }
+    export type RequestBody = Components.Schemas.UpsertWfConfigurationTemplateRequestDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertWfConfigurationTemplateResponseDto;
+    }
+  }
+  namespace WfConfigurationTranslationsControllerDelete {
+    namespace Parameters {
+      export type InternalId = string;
+      export type Lang = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+      lang: Parameters.Lang;
+    }
+  }
+  namespace WfConfigurationTranslationsControllerGet {
+    namespace Parameters {
+      export type InternalId = string;
+      export type Lang = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+      lang: Parameters.Lang;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetWfConfigurationTranslationsResponseDto;
+    }
+  }
+  namespace WfConfigurationTranslationsControllerUpsert {
+    namespace Parameters {
+      export type InternalId = string;
+      export type Lang = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+    }
+    export interface PathParameters {
+      internal_id: Parameters.InternalId;
+      lang: Parameters.Lang;
+    }
+    export type RequestBody = Components.Schemas.UpsertWfConfigurationTranslationsRequestBodyDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.UpsertWfConfigurationTranslationsResponseDto;
+    }
+  }
+  namespace WfEntrypointControllerList {
+    namespace Parameters {
+      export type Ids = any[];
+      export type Language = "en-US" | "en-GB" | "fr-FR" | "fr-CA" | "es-ES" | "de-DE" | "nl-NL" | "cs-CZ" | "da-DK" | "no-NO" | "it-IT" | "sv-SE" | "fi-FI" | "ja-JP" | "pt-BR";
+    }
+    export interface QueryParameters {
+      ids: Parameters.Ids;
+      language: Parameters.Language;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ListWfEntrypointsResponseDto;
+    }
+  }
+  namespace WfExecutionControllerGet {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.GetWfExecutionResponseDto;
+    }
+  }
+  namespace WfExecutionControllerHandleHandoverCallback {
+    namespace Parameters {
+      export type Id = string;
+    }
+    export interface PathParameters {
+      id: Parameters.Id;
+    }
+    export type RequestBody = Components.Schemas.WfExecutionHandoverCallbackRequestDto;
+  }
+  namespace WfExecutionControllerSend {
+    export type RequestBody = Components.Schemas.SendWfExecutionEventRequestDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.SendWfExecutionEventResponseDto;
+    }
+  }
+  namespace WfExecutionControllerStart {
+    export type RequestBody = Components.Schemas.StartWfExecutionRequestDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.StartWfExecutionResponseDto;
+    }
+  }
+  namespace WfExecutionControllerTest {
+    export type RequestBody = Components.Schemas.TestWfExecutionRequestDto;
+    namespace Responses {
+      export type $201 = Components.Schemas.TestWfExecutionResponseDto;
+    }
+  }
 }
 
 export interface OperationMethods {
-    /**
-     * StoreWfConfigurationController_list
-     */
-    'StoreWfConfigurationController_list'(
-        parameters?: Parameters<
-            Paths.StoreWfConfigurationControllerList.PathParameters &
-                Paths.StoreWfConfigurationControllerList.QueryParameters
-        > | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.StoreWfConfigurationControllerList.Responses.$201>
-    /**
-     * StoreWfConfigurationController_upsert
-     */
-    'StoreWfConfigurationController_upsert'(
-        parameters?: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters> | null,
-        data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
-    /**
-     * WfConfigurationController_get
-     */
-    'WfConfigurationController_get'(
-        parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$201>
-    /**
-     * WfConfigurationController_delete
-     */
-    'WfConfigurationController_delete'(
-        parameters?: Parameters<Paths.WfConfigurationControllerDelete.PathParameters> | null,
-        data?: any,
-        config?: AxiosRequestConfig
-    ): OperationResponse<any>
+  /**
+   * AutomationEventController_get
+   */
+  'AutomationEventController_get'(
+    parameters?: Parameters<Paths.AutomationEventControllerGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AutomationEventControllerGet.Responses.$200>
+  /**
+   * WfConfigurationController_list
+   */
+  'WfConfigurationController_list'(
+    parameters?: Parameters<Paths.WfConfigurationControllerList.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationControllerList.Responses.$200>
+  /**
+   * WfConfigurationController_get
+   */
+  'WfConfigurationController_get'(
+    parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$200>
+  /**
+   * WfConfigurationController_upsert
+   */
+  'WfConfigurationController_upsert'(
+    parameters?: Parameters<Paths.WfConfigurationControllerUpsert.PathParameters> | null,
+    data?: Paths.WfConfigurationControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationControllerUpsert.Responses.$201>
+  /**
+   * WfConfigurationController_delete
+   */
+  'WfConfigurationController_delete'(
+    parameters?: Parameters<Paths.WfConfigurationControllerDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * WfConfigurationController_duplicate
+   */
+  'WfConfigurationController_duplicate'(
+    parameters?: Parameters<Paths.WfConfigurationControllerDuplicate.PathParameters> | null,
+    data?: Paths.WfConfigurationControllerDuplicate.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationControllerDuplicate.Responses.$201>
+  /**
+   * WfConfigurationController_exportStepLogs
+   */
+  'WfConfigurationController_exportStepLogs'(
+    parameters?: Parameters<Paths.WfConfigurationControllerExportStepLogs.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * WfConfigurationTranslationsController_get
+   */
+  'WfConfigurationTranslationsController_get'(
+    parameters?: Parameters<Paths.WfConfigurationTranslationsControllerGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationTranslationsControllerGet.Responses.$200>
+  /**
+   * WfConfigurationTranslationsController_upsert
+   */
+  'WfConfigurationTranslationsController_upsert'(
+    parameters?: Parameters<Paths.WfConfigurationTranslationsControllerUpsert.PathParameters> | null,
+    data?: Paths.WfConfigurationTranslationsControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationTranslationsControllerUpsert.Responses.$201>
+  /**
+   * WfConfigurationTranslationsController_delete
+   */
+  'WfConfigurationTranslationsController_delete'(
+    parameters?: Parameters<Paths.WfConfigurationTranslationsControllerDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * WfEntrypointController_list
+   */
+  'WfEntrypointController_list'(
+    parameters?: Parameters<Paths.WfEntrypointControllerList.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfEntrypointControllerList.Responses.$200>
+  /**
+   * WfExecutionController_start
+   */
+  'WfExecutionController_start'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.WfExecutionControllerStart.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfExecutionControllerStart.Responses.$201>
+  /**
+   * WfExecutionController_test
+   */
+  'WfExecutionController_test'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.WfExecutionControllerTest.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfExecutionControllerTest.Responses.$201>
+  /**
+   * WfExecutionController_send
+   */
+  'WfExecutionController_send'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.WfExecutionControllerSend.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfExecutionControllerSend.Responses.$201>
+  /**
+   * WfExecutionController_get
+   */
+  'WfExecutionController_get'(
+    parameters?: Parameters<Paths.WfExecutionControllerGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfExecutionControllerGet.Responses.$200>
+  /**
+   * WfExecutionController_handleHandoverCallback
+   */
+  'WfExecutionController_handleHandoverCallback'(
+    parameters?: Parameters<Paths.WfExecutionControllerHandleHandoverCallback.PathParameters> | null,
+    data?: Paths.WfExecutionControllerHandleHandoverCallback.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * StoreWfConfigurationController_list
+   */
+  'StoreWfConfigurationController_list'(
+    parameters?: Parameters<Paths.StoreWfConfigurationControllerList.PathParameters & Paths.StoreWfConfigurationControllerList.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.StoreWfConfigurationControllerList.Responses.$200>
+  /**
+   * StoreWfConfigurationController_upsert
+   */
+  'StoreWfConfigurationController_upsert'(
+    parameters?: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters> | null,
+    data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
+  /**
+   * StoreWfEntrypointController_list
+   */
+  'StoreWfEntrypointController_list'(
+    parameters?: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.StoreWfEntrypointControllerList.Responses.$200>
+  /**
+   * WfConfigurationTemplateController_upsert
+   */
+  'WfConfigurationTemplateController_upsert'(
+    parameters?: Parameters<Paths.WfConfigurationTemplateControllerUpsert.PathParameters> | null,
+    data?: Paths.WfConfigurationTemplateControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationTemplateControllerUpsert.Responses.$201>
+  /**
+   * WfConfigurationTemplateController_list
+   */
+  'WfConfigurationTemplateController_list'(
+    parameters?: Parameters<Paths.WfConfigurationTemplateControllerList.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.WfConfigurationTemplateControllerList.Responses.$200>
+  /**
+   * StoreAppController_list
+   */
+  'StoreAppController_list'(
+    parameters?: Parameters<Paths.StoreAppControllerList.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.StoreAppControllerList.Responses.$200>
+  /**
+   * StoreAppController_upsert
+   */
+  'StoreAppController_upsert'(
+    parameters?: Parameters<Paths.StoreAppControllerUpsert.PathParameters> | null,
+    data?: Paths.StoreAppControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.StoreAppControllerUpsert.Responses.$201>
+  /**
+   * StoreAppController_delete
+   */
+  'StoreAppController_delete'(
+    parameters?: Parameters<Paths.StoreAppControllerDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * AppController_list
+   */
+  'AppController_list'(
+    parameters?: Parameters<Paths.AppControllerList.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppControllerList.Responses.$200>
+  /**
+   * AppController_get
+   */
+  'AppController_get'(
+    parameters?: Parameters<Paths.AppControllerGet.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppControllerGet.Responses.$200>
+  /**
+   * AppController_upsert
+   */
+  'AppController_upsert'(
+    parameters?: Parameters<Paths.AppControllerUpsert.PathParameters> | null,
+    data?: Paths.AppControllerUpsert.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.AppControllerUpsert.Responses.$201>
+  /**
+   * AppController_delete
+   */
+  'AppController_delete'(
+    parameters?: Parameters<Paths.AppControllerDelete.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * HealthController_check
+   */
+  'HealthController_check'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.HealthControllerCheck.Responses.$200 | Paths.HealthControllerCheck.Responses.$503>
 }
 
 export interface PathsDictionary {
-    ['/stores/{store_type}/{store_name}/configurations']: {
-        /**
-         * StoreWfConfigurationController_list
-         */
-        'get'(
-            parameters?: Parameters<
-                Paths.StoreWfConfigurationControllerList.PathParameters &
-                    Paths.StoreWfConfigurationControllerList.QueryParameters
-            > | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.StoreWfConfigurationControllerList.Responses.$201>
-    }
-    ['/stores/{store_type}/{store_name}/configurations/{internal_id}']: {
-        /**
-         * StoreWfConfigurationController_upsert
-         */
-        'put'(
-            parameters?: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters> | null,
-            data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
-    }
-    ['/configurations/{id}']: {
-        /**
-         * WfConfigurationController_get
-         */
-        'get'(
-            parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$201>
-    }
-    ['/configurations/{internal_id}']: {
-        /**
-         * WfConfigurationController_delete
-         */
-        'delete'(
-            parameters?: Parameters<Paths.WfConfigurationControllerDelete.PathParameters> | null,
-            data?: any,
-            config?: AxiosRequestConfig
-        ): OperationResponse<any>
-    }
+  ['/automation-events/{uuid}']: {
+    /**
+     * AutomationEventController_get
+     */
+    'get'(
+      parameters?: Parameters<Paths.AutomationEventControllerGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AutomationEventControllerGet.Responses.$200>
+  }
+  ['/configurations']: {
+    /**
+     * WfConfigurationController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfConfigurationControllerList.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationControllerList.Responses.$200>
+  }
+  ['/configurations/{id}']: {
+    /**
+     * WfConfigurationController_get
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfConfigurationControllerGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationControllerGet.Responses.$200>
+  }
+  ['/configurations/{internal_id}']: {
+    /**
+     * WfConfigurationController_upsert
+     */
+    'put'(
+      parameters?: Parameters<Paths.WfConfigurationControllerUpsert.PathParameters> | null,
+      data?: Paths.WfConfigurationControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationControllerUpsert.Responses.$201>
+    /**
+     * WfConfigurationController_delete
+     */
+    'delete'(
+      parameters?: Parameters<Paths.WfConfigurationControllerDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/configurations/{id}/duplicate']: {
+    /**
+     * WfConfigurationController_duplicate
+     */
+    'post'(
+      parameters?: Parameters<Paths.WfConfigurationControllerDuplicate.PathParameters> | null,
+      data?: Paths.WfConfigurationControllerDuplicate.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationControllerDuplicate.Responses.$201>
+  }
+  ['/configurations/{internal_id}/steps/{step_id}/logs/export']: {
+    /**
+     * WfConfigurationController_exportStepLogs
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfConfigurationControllerExportStepLogs.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/configurations/{internal_id}/translations/{lang}']: {
+    /**
+     * WfConfigurationTranslationsController_get
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfConfigurationTranslationsControllerGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationTranslationsControllerGet.Responses.$200>
+    /**
+     * WfConfigurationTranslationsController_upsert
+     */
+    'put'(
+      parameters?: Parameters<Paths.WfConfigurationTranslationsControllerUpsert.PathParameters> | null,
+      data?: Paths.WfConfigurationTranslationsControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationTranslationsControllerUpsert.Responses.$201>
+    /**
+     * WfConfigurationTranslationsController_delete
+     */
+    'delete'(
+      parameters?: Parameters<Paths.WfConfigurationTranslationsControllerDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/entrypoints']: {
+    /**
+     * WfEntrypointController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfEntrypointControllerList.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfEntrypointControllerList.Responses.$200>
+  }
+  ['/executions/start']: {
+    /**
+     * WfExecutionController_start
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.WfExecutionControllerStart.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfExecutionControllerStart.Responses.$201>
+  }
+  ['/executions/test']: {
+    /**
+     * WfExecutionController_test
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.WfExecutionControllerTest.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfExecutionControllerTest.Responses.$201>
+  }
+  ['/executions/send']: {
+    /**
+     * WfExecutionController_send
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.WfExecutionControllerSend.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfExecutionControllerSend.Responses.$201>
+  }
+  ['/executions/{id}']: {
+    /**
+     * WfExecutionController_get
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfExecutionControllerGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfExecutionControllerGet.Responses.$200>
+  }
+  ['/executions/{id}/handover-callback']: {
+    /**
+     * WfExecutionController_handleHandoverCallback
+     */
+    'post'(
+      parameters?: Parameters<Paths.WfExecutionControllerHandleHandoverCallback.PathParameters> | null,
+      data?: Paths.WfExecutionControllerHandleHandoverCallback.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/stores/{store_type}/{store_name}/configurations']: {
+    /**
+     * StoreWfConfigurationController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.StoreWfConfigurationControllerList.PathParameters & Paths.StoreWfConfigurationControllerList.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.StoreWfConfigurationControllerList.Responses.$200>
+  }
+  ['/stores/{store_type}/{store_name}/configurations/{internal_id}']: {
+    /**
+     * StoreWfConfigurationController_upsert
+     */
+    'put'(
+      parameters?: Parameters<Paths.StoreWfConfigurationControllerUpsert.PathParameters> | null,
+      data?: Paths.StoreWfConfigurationControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.StoreWfConfigurationControllerUpsert.Responses.$201>
+  }
+  ['/accounts/{account_id}/stores/{store_type}/{store_name}/entrypoints/llm-conversation']: {
+    /**
+     * StoreWfEntrypointController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.StoreWfEntrypointControllerList.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.StoreWfEntrypointControllerList.Responses.$200>
+  }
+  ['/configuration-templates/{internal_id}']: {
+    /**
+     * WfConfigurationTemplateController_upsert
+     */
+    'put'(
+      parameters?: Parameters<Paths.WfConfigurationTemplateControllerUpsert.PathParameters> | null,
+      data?: Paths.WfConfigurationTemplateControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationTemplateControllerUpsert.Responses.$201>
+  }
+  ['/configuration-templates']: {
+    /**
+     * WfConfigurationTemplateController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.WfConfigurationTemplateControllerList.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.WfConfigurationTemplateControllerList.Responses.$200>
+  }
+  ['/stores/{store_type}/{store_name}/apps']: {
+    /**
+     * StoreAppController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.StoreAppControllerList.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.StoreAppControllerList.Responses.$200>
+  }
+  ['/stores/{store_type}/{store_name}/apps/{type}']: {
+    /**
+     * StoreAppController_upsert
+     */
+    'put'(
+      parameters?: Parameters<Paths.StoreAppControllerUpsert.PathParameters> | null,
+      data?: Paths.StoreAppControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.StoreAppControllerUpsert.Responses.$201>
+    /**
+     * StoreAppController_delete
+     */
+    'delete'(
+      parameters?: Parameters<Paths.StoreAppControllerDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/apps']: {
+    /**
+     * AppController_list
+     */
+    'get'(
+      parameters?: Parameters<Paths.AppControllerList.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppControllerList.Responses.$200>
+  }
+  ['/apps/{id}']: {
+    /**
+     * AppController_get
+     */
+    'get'(
+      parameters?: Parameters<Paths.AppControllerGet.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppControllerGet.Responses.$200>
+    /**
+     * AppController_upsert
+     */
+    'put'(
+      parameters?: Parameters<Paths.AppControllerUpsert.PathParameters> | null,
+      data?: Paths.AppControllerUpsert.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.AppControllerUpsert.Responses.$201>
+    /**
+     * AppController_delete
+     */
+    'delete'(
+      parameters?: Parameters<Paths.AppControllerDelete.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/health']: {
+    /**
+     * HealthController_check
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.HealthControllerCheck.Responses.$200 | Paths.HealthControllerCheck.Responses.$503>
+  }
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>

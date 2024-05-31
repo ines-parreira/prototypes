@@ -26,7 +26,7 @@ async function buildGorgiasWfApiClient() {
     }
 
     const api = new OpenAPIClientAxios({
-        definition: OpenAPIDoc as Document,
+        definition: OpenAPIDoc as unknown as Document,
         withServer: {url: getWfApiBaseURL()},
     })
     apiClient = await api.init<Client>()
