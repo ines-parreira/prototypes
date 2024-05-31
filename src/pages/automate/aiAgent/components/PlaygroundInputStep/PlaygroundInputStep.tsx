@@ -89,9 +89,9 @@ export const PlaygroundInputStep = ({
 }: Props) => {
     const [formValues, setFormValues] = useState<FormValues>(initialValues)
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
-        initialValues.customerEmail
-            ? SenderTypeValues.EXISTING_CUSTOMER
-            : SenderTypeValues.NEW_CUSTOMER
+        initialValues.customerEmail === CustomerHttpIntegrationDataMock.address
+            ? SenderTypeValues.NEW_CUSTOMER
+            : SenderTypeValues.EXISTING_CUSTOMER
     )
     const childControlRef = React.createRef<Control>()
 
@@ -267,7 +267,7 @@ export const PlaygroundInputStep = ({
                         {senderSelectedOption ===
                             SenderTypeValues.EXISTING_CUSTOMER && (
                             <CustomerSearchDropdownSelectView
-                                baseSearchTerm={initialValues.customerEmail}
+                                baseSearchTerm={formValues.customerEmail}
                                 className={css.customerSearch}
                                 onSelect={handleFormChange('customerEmail')}
                                 ref={childControlRef}
