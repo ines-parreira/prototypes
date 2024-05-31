@@ -13,6 +13,10 @@ export default function Header() {
                 commitments between your support team and your customers by
                 setting first response and reply timers to be hit.
             </p>
+            <p>
+                The first policy that matches a ticket will apply. Edit the
+                order below to adjust policy priority.
+            </p>
         </div>
     )
 }
