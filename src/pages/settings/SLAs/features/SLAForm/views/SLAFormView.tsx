@@ -10,6 +10,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import settingsCss from 'pages/settings/settings.less'
 import FormSubmitButton from 'pages/settings/SLAs/features/SLAForm/views/FormSubmitButton'
 import {DeleteModal} from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'
+import history from 'pages/history'
 
 import {MappedFormSLAPolicy} from '../controllers/makeMappedFormSLAPolicy'
 
@@ -164,7 +165,14 @@ export default function SLAFormView({
                             <div className={css.buttonGroup}>
                                 <div>
                                     <FormSubmitButton isLoading={isLoading} />
-                                    <Button intent="secondary">Cancel</Button>
+                                    <Button
+                                        intent="secondary"
+                                        onClick={() => {
+                                            history.push('/app/settings/sla')
+                                        }}
+                                    >
+                                        Cancel
+                                    </Button>
                                 </div>
                                 {policy && (
                                     <Button
