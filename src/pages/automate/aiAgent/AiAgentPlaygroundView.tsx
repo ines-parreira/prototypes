@@ -54,7 +54,10 @@ const shouldAiAgentResponseDisplay = (
     const isSilentHandover = storeData.silentHandover
     const hasHtmlReply = aiAgentResponse.postProcessing.htmlReply
 
-    return (isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply)
+    return (
+        aiAgentResponse.qa.output.validate_generated_message &&
+        ((isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply))
+    )
 }
 
 export const AiAgentPlaygroundView = () => {
@@ -153,7 +156,10 @@ export const AiAgentPlaygroundView = () => {
                 })
 
                 // Add a ticket event message if outcome is also validated
-                if (aiAgentResponse.data.generate.output.outcome) {
+                if (
+                    aiAgentResponse.data.generate.output.outcome &&
+                    aiAgentResponse.data.qa.output.validate_outcome
+                ) {
                     updatedMessages.push({
                         sender: AI_AGENT_SENDER,
                         type: MessageType.TICKET_EVENT,
