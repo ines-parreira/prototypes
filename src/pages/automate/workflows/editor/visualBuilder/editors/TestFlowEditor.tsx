@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useMemo, useRef} from 'react'
 
 import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
@@ -25,7 +25,7 @@ import nodeEditorCss from '../NodeEditorDrawer.less'
 import EditorDrawerHeader from '../EditorDrawerHeader'
 import css from './TestFlowEditor.less'
 
-const TIMEOUT_CHAT_FLOW_STARTED_MS = 40_000
+const TIMEOUT_FLOW_INTERPRETER_STARTED = 40_000
 
 type Props = {
     isTesting: boolean
@@ -47,6 +47,16 @@ export const TestFlowEditor = ({
     }>()
 
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
+
+    const availableChatChannels = useMemo(
+        () =>
+            chatChannels.filter(
+                (chat) =>
+                    !chat.value.deactivated_datetime &&
+                    !chat.value.deleted_datetime
+            ),
+        [chatChannels]
+    )
     const {
         currentLanguage,
         translateKey,
@@ -64,17 +74,15 @@ export const TestFlowEditor = ({
     const [selectedChatChannel, setSelectedChatChannel] =
         useState<SelfServiceChatChannel>()
 
-    const chatIFrameElement = React.createRef<HTMLIFrameElement>()
+    const chatIFrameElement = useRef<HTMLIFrameElement | null>(null)
 
     const selectedChannelApplicationId = selectedChatChannel
         ? selectedChatChannel.value.meta?.app_id ?? ''
-        : chatChannels?.[0]?.value.meta?.app_id ?? ''
+        : availableChatChannels?.[0]?.value.meta?.app_id ?? ''
 
     const {data: installationSnippet} = useGetInstallationSnippet({
         applicationId: selectedChannelApplicationId,
     })
-
-    const [showIframe, setShowIframe] = useState(true)
 
     useKey(
         'Escape',
@@ -126,22 +134,13 @@ export const TestFlowEditor = ({
         })
     }
 
-    useEffectOnce(() => {
-        reloadIframe()
-        const timeoutId = window.setTimeout(() => {
-            if (!isFlowInterpreterStarted) {
-                setIsFlowInterpreterStartedTimeout(true)
-            }
-        }, TIMEOUT_CHAT_FLOW_STARTED_MS)
-        return () => clearTimeout(timeoutId)
-    })
-
     useEffect(() => {
         if (
             isFlowInterpreterStartedTimeout &&
             !isFlowInterpreterStarted &&
             isTesting
         ) {
+            setIsFlowInterpreterStartedTimeout(false)
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
@@ -157,63 +156,14 @@ export const TestFlowEditor = ({
         isTesting,
     ])
 
-    useEffect(() => {
-        if (!installationSnippet || isFlowInterpreterStarted) return
-        const iframeSrcDoc = `
-        <body>
-            ${installationSnippet.snippet}
-            <script type="application/javascript">
-            window.localStorage.setItem = function() {}
-            window.localStorage.getItem = function() {}
-            window.WebSocket = function() {}
-            GorgiasChat.init().then(() => {
-                GorgiasChat.open();
-                gorgiasChatConfiguration.selfServiceConfiguration = {
-                    ...gorgiasChatConfiguration.selfServiceConfiguration,
-                    enabled: true,
-                    workflows_entrypoints: [${JSON.stringify({
-                        label: label,
-                        workflow_id: editWorkflowId,
-                        language: selectedLanguage,
-                    })}],
-                }
-                GorgiasChat.setShopifyContext();
-                window.addEventListener('gorgias-widget-loaded', () => {
-                    GorgiasChat.previewFlow(${JSON.stringify({
-                        flowLabel: label,
-                        flowLanguage: selectedLanguage,
-                        flowId: editWorkflowId,
-                    })})
-                })
-                window.addEventListener('flow-interpreter-started', (e) => {
-                    window.parent.postMessage({
-                        type: 'flow-interpreter-started'
-                    }, '*')
-                })
-            })
-            </script>
-         </body>
-        `
-        if (chatIFrameElement.current) {
-            const iframeDocument =
-                chatIFrameElement.current.contentDocument ||
-                chatIFrameElement.current.contentWindow?.document
-
-            if (!iframeDocument) {
-                throw new Error('Not able to find IFrame document')
+    useEffectOnce(() => {
+        const timeoutId = window.setTimeout(() => {
+            if (!isFlowInterpreterStarted) {
+                setIsFlowInterpreterStartedTimeout(true)
             }
-            iframeDocument.open()
-            iframeDocument.write(iframeSrcDoc)
-            iframeDocument.close()
-        }
-    }, [
-        chatIFrameElement,
-        editWorkflowId,
-        installationSnippet,
-        isFlowInterpreterStarted,
-        label,
-        selectedLanguage,
-    ])
+        }, TIMEOUT_FLOW_INTERPRETER_STARTED)
+        return window.clearTimeout(timeoutId)
+    })
 
     useEffectOnce(() => {
         window.addEventListener('message', (e) => {
@@ -228,11 +178,6 @@ export const TestFlowEditor = ({
             })
         }
     })
-
-    const reloadIframe = () => {
-        setShowIframe(false)
-        setTimeout(() => setShowIframe(true), 2000)
-    }
 
     useEffect(() => {
         if (!isTesting || !isFlowInterpreterStarted) return
@@ -263,14 +208,14 @@ export const TestFlowEditor = ({
                 <div className={css.editorHeader}>
                     <SelfServicePreviewChannelSelect
                         className={css.channelSelector}
-                        channels={chatChannels}
+                        channels={availableChatChannels}
                         channel={selectedChatChannel}
                         onChange={(channel) => {
                             if (channel !== selectedChatChannel) {
                                 setIsFlowInterpreterStartedTimeout(false)
                                 setIsFlowInterpreterStarted(false)
+                                chatIFrameElement.current?.remove()
                                 setSelectedChatChannel(channel)
-                                reloadIframe()
                             }
                         }}
                         isDisabled={!isFlowInterpreterStarted}
@@ -344,15 +289,105 @@ export const TestFlowEditor = ({
                         {!isFlowInterpreterStarted && (
                             <Spinner color="dark" className={css.spinner} />
                         )}
-                        {showIframe && (
-                            <iframe
-                                title="Test Flow Editor"
-                                ref={chatIFrameElement}
-                                className={classNames(css['iframe'], {
-                                    [css['hidden']]: !isFlowInterpreterStarted,
-                                })}
-                            ></iframe>
-                        )}
+
+                        <div
+                            id="iframe-wrapper"
+                            className={classNames({
+                                [css['hidden']]: !isFlowInterpreterStarted,
+                            })}
+                            ref={(el) => {
+                                if (!el || !installationSnippet) return
+                                if (el.querySelector('#chat-iframe')) return
+
+                                const iframe = document.createElement('iframe')
+                                iframe.id = 'chat-iframe'
+                                iframe.className = css.iframe
+
+                                el.appendChild(iframe)
+                                let loaded = false
+
+                                const writeIframe = () => {
+                                    const iframeSrcDoc = `
+                                        <body>
+                                            ${installationSnippet.snippet}
+                                            <script type="application/javascript">
+                                            window.localStorage.setItem = function() {}
+                                            window.localStorage.getItem = function() {}
+                                            window.WebSocket = function() {}
+
+                                            GorgiasChat.init().then(() => {
+                                                GorgiasChat.open();
+                                                gorgiasChatConfiguration.selfServiceConfiguration = {
+                                                    ...gorgiasChatConfiguration.selfServiceConfiguration,
+                                                    application: {
+                                                        ...gorgiasChatConfiguration.selfServiceConfiguration?.application,
+                                                        config: {
+                                                            ...gorgiasChatConfiguration.selfServiceConfiguration?.application?.config,
+                                                            preferences: {
+                                                                ...gorgiasChatConfiguration.selfServiceConfiguration?.application?.config?.preferences,
+                                                                hideOutsideBusinessHours: false,
+                                                                hideOnMobile: false,
+                                                            },
+                                                        }
+                                                    },
+                                                    deleted: false,
+                                                    enabled: true,
+                                                    workflows_entrypoints: [${JSON.stringify(
+                                                        {
+                                                            label: label,
+                                                            workflow_id:
+                                                                editWorkflowId,
+                                                            language:
+                                                                selectedLanguage,
+                                                        }
+                                                    )}],
+                                                }
+                                                GorgiasChat.setShopifyContext();
+                                                window.addEventListener('gorgias-widget-loaded', () => {
+                                                    GorgiasChat.previewFlow(${JSON.stringify(
+                                                        {
+                                                            flowLabel: label,
+                                                            flowLanguage:
+                                                                selectedLanguage,
+                                                            flowId: editWorkflowId,
+                                                        }
+                                                    )})
+                                                })
+                                                window.addEventListener('flow-interpreter-started', (e) => {
+                                                    window.parent.postMessage({
+                                                        type: 'flow-interpreter-started'
+                                                    }, '*')
+                                                })
+                                            })
+                                            </script>
+                                         </body>
+                                        `
+
+                                    const doc =
+                                        iframe.contentDocument ||
+                                        iframe.contentWindow?.document
+
+                                    if (!doc) return
+                                    doc.open()
+                                    doc.write(iframeSrcDoc)
+                                    doc.close()
+                                }
+
+                                iframe.addEventListener('load', () => {
+                                    if (loaded) return
+                                    loaded = true
+                                    writeIframe()
+                                })
+
+                                setTimeout(() => {
+                                    if (loaded) return
+                                    loaded = true
+                                    writeIframe()
+                                }, 3000)
+
+                                chatIFrameElement.current = iframe
+                            }}
+                        />
                     </div>
                 </div>
             </Drawer.Content>

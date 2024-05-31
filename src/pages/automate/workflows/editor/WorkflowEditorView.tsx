@@ -415,7 +415,13 @@ function WorkflowEditorViewWrapped({
                             />
 
                             <WorkflowEditorActionButtons
-                                isTestDisabled={chatChannels.length === 0}
+                                isTestDisabled={
+                                    chatChannels.filter(
+                                        (chat) =>
+                                            !chat.value.deactivated_datetime &&
+                                            !chat.value.deleted_datetime
+                                    ).length === 0
+                                }
                                 isNewWorkflow={isNewWorkflow}
                                 isFetchPending={isFetchPending}
                                 isSavePending={isSavePending}
