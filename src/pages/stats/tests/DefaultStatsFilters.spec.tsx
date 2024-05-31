@@ -10,7 +10,7 @@ import {StatsFilters} from 'models/stat/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {user} from 'fixtures/users'
 
-import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
+import DefaultStatsFilters from '../DefaultStatsFilters'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =

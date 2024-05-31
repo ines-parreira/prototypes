@@ -33,7 +33,6 @@ import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
@@ -43,10 +42,6 @@ import {
     AAO_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/AutomateOverview'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {mergeStatsFilters} from 'state/stats/actions'
-
-jest.useFakeTimers().setSystemTime(new Date('2022-02-02'))
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -108,6 +103,7 @@ const usePostReportingMock = assumeMock(usePostReporting)
 jest.mock('hooks/reporting/useCleanStatsFilters')
 const useCleanStatsFiltersMock = assumeMock(useCleanStatsFilters)
 
+// jest.mock('services/performanceTipService')
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
@@ -120,11 +116,6 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 
 jest.mock('services/reporting/automateOverviewReportingService')
 const saveReportMock = assumeMock(saveReport)
-
-jest.mock('hooks/useSearchParam', () => ({
-    useSearchParam: jest.fn(),
-}))
-const mockedUseSearchParam = assumeMock(useSearchParam)
 
 describe('<AutomateOverview />', () => {
     function getIntegration(id: number, type: IntegrationType) {
@@ -181,9 +172,6 @@ describe('<AutomateOverview />', () => {
                 getIntegration(2, IntegrationType.Magento2),
             ],
         }),
-        ui: {
-            stats: initialState,
-        },
     } as RootState
 
     const defaultMetricTrend: MetricTrend = {
@@ -283,8 +271,6 @@ describe('<AutomateOverview />', () => {
         } as UseQueryResult)
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         trendBadgeMock.mockImplementation(() => <div>TrendBadgeMock</div>)
-
-        mockedUseSearchParam.mockReturnValue([null, jest.fn()])
     })
 
     it('should display paywall', () => {
@@ -302,9 +288,6 @@ describe('<AutomateOverview />', () => {
             stats: fromJS({
                 filters: defaultStatsFilters,
             }),
-            ui: {
-                stats: initialState,
-            },
         } as RootState
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
@@ -322,26 +305,6 @@ describe('<AutomateOverview />', () => {
         )
 
         expect(container.firstChild).toMatchSnapshot()
-    })
-    it('should set filters to last 28 days if query param source=automate', () => {
-        mockedUseSearchParam.mockReturnValue(['automate', jest.fn()])
-        const store = mockStore(defaultState)
-        render(
-            <Provider store={store}>
-                <AutomateOverview />
-            </Provider>
-        )
-
-        expect(store.getActions()).toEqual([
-            mergeStatsFilters(
-                fromJS({
-                    period: {
-                        start_datetime: '2022-01-06T00:00:00Z',
-                        end_datetime: '2022-02-02T23:59:59Z',
-                    },
-                })
-            ),
-        ])
     })
     it('should send event to segment and call saveReport on download data button click', () => {
         const {getByText} = render(

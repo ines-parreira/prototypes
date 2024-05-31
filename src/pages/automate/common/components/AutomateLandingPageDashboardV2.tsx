@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import classNames from 'classnames'
 
@@ -12,16 +12,18 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import TipsToggle from 'pages/stats/TipsToggle'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {setStatsFilters} from 'state/stats/actions'
 import {StatsFilters} from 'models/stat/types'
 import {useAutomateMetricsTrendV2} from 'hooks/reporting/automate/useAutomationDatasetV2'
 import {
     AutomatedInteractionsMetric,
     AutomationRateMetric,
-} from 'pages/automate/automate-metrics'
-import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
-import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
-import css from 'pages/automate/common/components/AutomateLandingPage.less'
+} from '../../automate-metrics'
+import {AGENT_COST_PER_TICKET} from '../../automate-metrics/constants'
+import {useMoneySavedPerInteractionWithAutomate} from '../hooks/useMoneySavedPerInteractionWithAutomate'
+import {AutomateSavingsCard} from './AutomateSavingsCard'
+import css from './AutomateLandingPage.less'
 
 const DEFAULT_TIMEZONE = 'UTC'
 
@@ -32,6 +34,8 @@ type Props = {
 }
 
 const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
+    const dispatch = useAppDispatch()
+
     const moneySavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET
     )
@@ -61,6 +65,10 @@ const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
     const handleViewFullReport = () => {
         history.push(`/app/stats/automate-overview?source=automate`)
     }
+
+    useEffect(() => {
+        dispatch(setStatsFilters(filters))
+    }, [dispatch, filters])
 
     const isLoading =
         automatedInteractionTrend.isFetching ||
