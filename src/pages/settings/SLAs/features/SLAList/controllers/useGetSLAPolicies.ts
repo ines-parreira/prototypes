@@ -17,7 +17,7 @@ export default function useGetSLAPolicies() {
         (data: HttpResponse<ListSlaPolicies200>) =>
             data?.data?.data
                 .map<UISLAPolicy>(makeUISLAPolicy)
-                .sort((a, b) => b.priority - a.priority),
+                .sort((a, b) => a.priority - b.priority),
         []
     )
 

@@ -28,7 +28,7 @@ export default function useSortablePolicies(
             const previousItem = newPolicies[item.position - 1]
             const nextItem = newPolicies[item.position + 1]
             const newPriority =
-                ((previousItem?.priority || 1) + (nextItem?.priority || 0)) / 2
+                ((previousItem?.priority || 0) + (nextItem?.priority || 1)) / 2
 
             dropCallback(item.id, newPriority)
         },
