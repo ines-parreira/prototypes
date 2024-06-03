@@ -12,14 +12,17 @@ import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 import {TicketMessage} from 'models/ticket/types'
 import AIAgentFeedbackBar, {
-    FEEDBACK_MESSAGE_ACTIONS_TEST_ID,
-    FEEDBACK_MESSAGE_CONTAINER_TEST_ID,
-    FEEDBACK_MESSAGE_GUIDANCE_TEST_ID,
-    FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID,
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
+    ticketFeedbackSummary,
 } from '../AIAgentFeedbackBar'
 import {messageFeedback} from './fixtures'
 
+jest.mock('../AIAgentMessageFeedback', () => () => (
+    <div data-testid="message-feedback"></div>
+))
+jest.mock('../AIAgentTicketFeedback', () => () => (
+    <div data-testid="ticket-feedback"></div>
+))
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('state/ui/ticketAIAgentFeedback')
 
@@ -71,7 +74,8 @@ describe('AIAgentFeedbackBar', () => {
 
         expect(
             screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
-        ).toBeInTheDocument()
+        ).toHaveTextContent(ticketFeedbackSummary)
+        expect(screen.getByTestId('ticket-feedback')).toBeInTheDocument()
     })
 
     it('renders feedback summary per message if message is selected', () => {
@@ -84,75 +88,8 @@ describe('AIAgentFeedbackBar', () => {
         )
 
         expect(
-            screen.queryByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
-        ).not.toBeInTheDocument()
-
-        expect(
-            screen.getByTestId(FEEDBACK_MESSAGE_CONTAINER_TEST_ID)
-        ).toBeInTheDocument()
-
-        expect(screen.getByText(messageFeedback.summary)).toBeInTheDocument()
-
-        expect(
-            screen.getAllByTestId(FEEDBACK_MESSAGE_ACTIONS_TEST_ID).length
-        ).toBe(messageFeedback.actions.length)
-    })
-
-    it.each([
-        {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
-        {testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance'},
-        {testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge'},
-    ])('$name - renders thumbs up icon for positive feedback', ({testId}) => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentFeedbackBar />
-                </Provider>
-            </QueryClientProvider>
-        )
-
-        const positiveFeedbackElement = screen
-            .getAllByTestId(testId)[0]
-            .querySelector('.feedback i.material-icons')?.parentElement
-        expect(positiveFeedbackElement).toHaveClass('positiveFeedback')
-    })
-
-    it.each([
-        {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
-        {testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance'},
-        {testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge'},
-    ])('$name - renders thumbs down icon for negative feedback', ({testId}) => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentFeedbackBar />
-                </Provider>
-            </QueryClientProvider>
-        )
-
-        const negativeFeedbackElement = screen
-            .getAllByTestId(testId)[1]
-            .querySelector('.feedback i.material-icons')?.parentElement
-        expect(negativeFeedbackElement).toHaveClass('negativeFeedback')
-    })
-
-    it.each([
-        {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
-        {testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance'},
-        {testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge'},
-    ])('$name - renders thumbs up icon for neutral feedback', ({testId}) => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentFeedbackBar />
-                </Provider>
-            </QueryClientProvider>
-        )
-
-        const feedbackActionsElement = screen
-            .getAllByTestId(testId)[2]
-            .querySelector('.feedback i.material-icons-outlined')?.parentElement
-        expect(feedbackActionsElement).not.toHaveClass('positiveFeedback')
-        expect(feedbackActionsElement).not.toHaveClass('negativeFeedback')
+            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+        ).toHaveTextContent(messageFeedback.summary)
+        expect(screen.getByTestId('message-feedback')).toBeInTheDocument()
     })
 })

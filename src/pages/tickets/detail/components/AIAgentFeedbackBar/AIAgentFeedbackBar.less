@@ -67,6 +67,12 @@
         padding: 0 @layout-spacing-s;
     }
 
+    .summaryContainer {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
     .sectionContainer {
         display: flex;
         flex-direction: column;
@@ -83,19 +89,21 @@
         justify-content: space-between;
         padding: @layout-spacing-xxs @layout-spacing-s;
 
-        .sectionText i {
+        .sectionText .openIcon {
             display: none;
             font-size: 16px !important;
         }
 
-        &:hover:not(:has(.feedback:hover)) {
-            background-color: var(--neutral-grey-1);
-            cursor: pointer;
+        &.clickable {
+            &:hover:not(:has(.feedback:hover)) {
+                background-color: var(--neutral-grey-1);
+                cursor: pointer;
 
-            .sectionText {
-                color: var(--main-primary);
-                i {
-                    display: inline-block;
+                .sectionText {
+                    color: var(--main-primary);
+                    .openIcon {
+                        display: inline-block;
+                    }
                 }
             }
         }
@@ -106,6 +114,11 @@
         display: flex;
         gap: @layout-spacing-xxs;
         align-items: center;
+
+        .leadIcon {
+            font-size: 20px !important;
+            margin-right: @layout-spacing-xxs;
+        }
     }
 
     .feedback {
@@ -129,6 +142,10 @@
 
     .ticketEventsContainer {
         padding: 0 @layout-spacing-s;
+    }
+
+    .ticketImproveInfo {
+        margin-top: @layout-spacing-xs;
     }
 
     .eventTypeContainer {

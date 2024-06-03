@@ -18,13 +18,13 @@ export const messageFeedback: MessageFeedback = {
     ],
     knowledge: [
         {
-            type: 'helpCenter',
+            type: 'article',
             id: 234,
             name: 'Refund Policy',
             feedback: 'thumbs_up',
         },
         {
-            type: 'externalURL',
+            type: 'external_snippet',
             id: 235,
             name: 'Shipping times',
             url: 'https://artemis.gorgias.help/en-US#article-13609',

@@ -1,10 +1,8 @@
 import {TicketStatus} from 'business/types/ticket'
-import useAppSelector from 'hooks/useAppSelector'
 import {MacroActionName} from 'models/macroAction/types'
 import {Tag} from 'models/tag/types'
 import {TicketMessage} from 'models/ticket/types'
 import {TicketEventEnum} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import {getTags} from 'state/tags/selectors'
 
 export const getActionAndTagsFromMessage = (
     allTags: Tag[],
@@ -45,31 +43,4 @@ export const getActionAndTagsFromMessage = (
         : null
 
     return {tags: messageTags, action: actionType}
-}
-
-type ActionAndTags = {
-    action: TicketEventEnum | null
-    tags: Tag[]
-}
-
-export const useAIAgentMessageEvents = (
-    message?: TicketMessage
-): ActionAndTags => {
-    const allTags: Tag[] = useAppSelector(getTags).toJS()
-
-    return getActionAndTagsFromMessage(allTags, message)
-}
-
-export const useAIAgentMultipleMessageEvents = (
-    messages?: TicketMessage[]
-): ActionAndTags[] => {
-    const allTags: Tag[] = useAppSelector(getTags).toJS()
-
-    if (!messages) {
-        return []
-    }
-
-    return messages.map((message) =>
-        getActionAndTagsFromMessage(allTags, message)
-    )
 }

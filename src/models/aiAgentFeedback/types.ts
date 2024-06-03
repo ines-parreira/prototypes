@@ -9,7 +9,7 @@ export type GuidanceFeedback = {
 }
 
 export type KnowledgeFeedback = {
-    type: 'helpCenter' | 'externalURL' | 'macro'
+    type: 'article' | 'external_snippet' | 'macro'
     id: number
     name: string
     url?: string
