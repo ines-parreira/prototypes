@@ -25,7 +25,7 @@ export const AUTOMATION_INTENTS_CHANNELS = [
 export const DOWNLOAD_DATA_BUTTON_LABEL = 'Download data'
 
 export const TODAY = 'Today'
-export const LAST_7_DAYS = 'Last 7 days'
-export const LAST_30_DAYS = 'Last 30 days'
-export const LAST_60_DAYS = 'Last 60 days'
-export const LAST_90_DAYS = 'Last 90 days'
+export const PAST_7_DAYS = 'Past 7 days'
+export const PAST_30_DAYS = 'Past 30 days'
+export const PAST_60_DAYS = 'Past 60 days'
+export const PAST_90_DAYS = 'Past 90 days'

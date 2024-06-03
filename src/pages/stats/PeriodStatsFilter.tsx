@@ -20,17 +20,20 @@ import {
     startOfLastMonth,
     startOfMonth,
     dateInPastFromStartOfToday,
+    startOfToday,
 } from 'pages/stats/common/utils'
 import PeriodPicker, {
     getDefaultSetOfRanges,
 } from 'pages/stats/common/PeriodPicker'
 import {
-    LAST_7_DAYS,
-    LAST_30_DAYS,
-    LAST_60_DAYS,
-    LAST_90_DAYS,
+    PAST_7_DAYS,
+    PAST_30_DAYS,
+    PAST_60_DAYS,
+    PAST_90_DAYS,
     TODAY,
 } from 'pages/stats/constants'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 const MAX_SPAN = 90
 
@@ -44,7 +47,10 @@ export const getNewSetOfRanges = (): {[key: string]: [Moment, Moment]} => {
     const defaultSetOfRanges = getDefaultSetOfRanges()
     return {
         [TODAY]: defaultSetOfRanges[TODAY],
-        Yesterday: [dateInPastFromStartOfToday(2), endOfToday()],
+        Yesterday: [
+            dateInPastFromStartOfToday(2),
+            startOfToday().subtract(1, 'seconds'),
+        ],
         'Month to date': [startOfMonth(), endOfToday()],
         'Last week (start on Sun)': [
             lastWeekDateRange(StartDayOfWeek.Sunday).start,
@@ -55,10 +61,10 @@ export const getNewSetOfRanges = (): {[key: string]: [Moment, Moment]} => {
             lastWeekDateRange(StartDayOfWeek.Monday).end,
         ],
         'Last month': [startOfLastMonth(), endOfLastMonth()],
-        [LAST_7_DAYS]: defaultSetOfRanges[LAST_7_DAYS],
-        [LAST_30_DAYS]: defaultSetOfRanges[LAST_30_DAYS],
-        [LAST_60_DAYS]: defaultSetOfRanges[LAST_60_DAYS],
-        [LAST_90_DAYS]: defaultSetOfRanges[LAST_90_DAYS],
+        [PAST_7_DAYS]: defaultSetOfRanges[PAST_7_DAYS],
+        [PAST_30_DAYS]: defaultSetOfRanges[PAST_30_DAYS],
+        [PAST_60_DAYS]: defaultSetOfRanges[PAST_60_DAYS],
+        [PAST_90_DAYS]: defaultSetOfRanges[PAST_90_DAYS],
         'Past year': [lastYearStart(), lastYearEnd()],
     }
 }
@@ -69,6 +75,12 @@ export default function PeriodStatsFilter({
     variant = 'fill',
 }: Props) {
     const dispatch = useAppDispatch()
+    const compactDateBasedOnUserPreferences = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.CompactDate
+    ) as string
+    const shortDateBasedOnUserPreferences = useGetDateAndTimeFormat(
+        DateAndTimeFormatting.ShortDateWithYear
+    )
 
     const isNewDatePickerVariant =
         useFlags()[FeatureFlagKey.NewDatePickerVariant]
@@ -86,6 +98,7 @@ export default function PeriodStatsFilter({
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
+        locale: {format: compactDateBasedOnUserPreferences},
         ...initialSettingsProp,
     }
 
@@ -160,6 +173,7 @@ export default function PeriodStatsFilter({
             }}
             isDisabled={isNewDatePickerVariant === undefined}
             {...pickerV2Props}
+            labelDateFormat={shortDateBasedOnUserPreferences}
         />
     )
 }

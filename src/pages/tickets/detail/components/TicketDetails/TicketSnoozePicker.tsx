@@ -4,6 +4,9 @@ import moment, {Moment} from 'moment-timezone'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import DatePicker from 'pages/common/forms/DatePicker'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTimeFormatPreferenceSetting} from 'state/currentUser/selectors'
+import {TimeFormatType} from 'constants/datetime'
 
 type Props = {
     children?: ReactNode
@@ -24,6 +27,7 @@ const TicketSnoozePicker = ({
 }: Props) => {
     const isNewDatePickerVariant =
         useFlags()[FeatureFlagKey.NewTicketSnoozeAndTicketDate]
+    const timeSettings = useAppSelector(getTimeFormatPreferenceSetting)
 
     const formattedDate = moment.tz(datetime, timezone!)
     const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
@@ -60,6 +64,8 @@ const TicketSnoozePicker = ({
                 opens: 'center',
                 applyButtonClasses:
                     isNewDatePickerVariant === true ? 'btn-primary' : undefined,
+                timePicker24Hour:
+                    timeSettings === TimeFormatType.TwentyFourHour,
             }}
             toggle={toggle}
             rangesLabel="Remind me in"

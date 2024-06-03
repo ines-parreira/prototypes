@@ -9,8 +9,11 @@ import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 
 import {humanizeChannel} from 'state/ticket/utils'
 import {formatDatetime, getLanguageDisplayName} from 'utils'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import {DateAndTimeFormatting, TimeFormatType} from 'constants/datetime'
+import {
+    getDateAndTimeFormatter,
+    getTimeFormatPreferenceSetting,
+} from 'state/currentUser/selectors'
 import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
 import {stringToDatetime} from 'utils/date'
 
@@ -240,6 +243,9 @@ export class RightContainer extends Component<Props, State> {
                             v2StylesEnabled === true
                                 ? 'btn-primary'
                                 : undefined,
+                        timePicker24Hour:
+                            this.props.timeSettings ===
+                            TimeFormatType.TwentyFourHour,
                     }}
                     onSubmit={(date) => {
                         updateFieldFilter(index, date.toISOString())
@@ -356,6 +362,7 @@ const connector = connect((state: RootState) => {
         datetimeFormat: getDateAndTimeFormatter(state)(
             DateAndTimeFormatting.CompactDateWithTime
         ),
+        timeSettings: getTimeFormatPreferenceSetting(state),
     }
 })
 

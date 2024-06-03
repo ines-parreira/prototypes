@@ -611,24 +611,24 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
             Today
           </li>
           <li
-            data-range-key="Last 7 days"
+            data-range-key="Past 7 days"
           >
-            Last 7 days
+            Past 7 days
           </li>
           <li
-            data-range-key="Last 30 days"
+            data-range-key="Past 30 days"
           >
-            Last 30 days
+            Past 30 days
           </li>
           <li
-            data-range-key="Last 60 days"
+            data-range-key="Past 60 days"
           >
-            Last 60 days
+            Past 60 days
           </li>
           <li
-            data-range-key="Last 90 days"
+            data-range-key="Past 90 days"
           >
-            Last 90 days
+            Past 90 days
           </li>
         </ul>
       </div>
@@ -1936,24 +1936,24 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
             Today
           </li>
           <li
-            data-range-key="Last 7 days"
+            data-range-key="Past 7 days"
           >
-            Last 7 days
+            Past 7 days
           </li>
           <li
-            data-range-key="Last 30 days"
+            data-range-key="Past 30 days"
           >
-            Last 30 days
+            Past 30 days
           </li>
           <li
-            data-range-key="Last 60 days"
+            data-range-key="Past 60 days"
           >
-            Last 60 days
+            Past 60 days
           </li>
           <li
-            data-range-key="Last 90 days"
+            data-range-key="Past 90 days"
           >
-            Last 90 days
+            Past 90 days
           </li>
         </ul>
       </div>
@@ -3261,24 +3261,24 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
             Today
           </li>
           <li
-            data-range-key="Last 7 days"
+            data-range-key="Past 7 days"
           >
-            Last 7 days
+            Past 7 days
           </li>
           <li
-            data-range-key="Last 30 days"
+            data-range-key="Past 30 days"
           >
-            Last 30 days
+            Past 30 days
           </li>
           <li
-            data-range-key="Last 60 days"
+            data-range-key="Past 60 days"
           >
-            Last 60 days
+            Past 60 days
           </li>
           <li
-            data-range-key="Last 90 days"
+            data-range-key="Past 90 days"
           >
-            Last 90 days
+            Past 90 days
           </li>
         </ul>
       </div>

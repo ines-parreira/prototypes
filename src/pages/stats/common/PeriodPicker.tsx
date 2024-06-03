@@ -34,10 +34,10 @@ import {
 } from 'pages/stats/common/utils'
 import css from 'pages/stats/common/PeriodPicker.less'
 import {
-    LAST_30_DAYS,
-    LAST_60_DAYS,
-    LAST_7_DAYS,
-    LAST_90_DAYS,
+    PAST_30_DAYS,
+    PAST_60_DAYS,
+    PAST_7_DAYS,
+    PAST_90_DAYS,
     TODAY,
 } from 'pages/stats/constants'
 
@@ -45,10 +45,10 @@ export const getDefaultSetOfRanges = (): {
     [key: string]: [Moment, Moment]
 } => ({
     [TODAY]: [startOfToday(), endOfToday()],
-    [LAST_7_DAYS]: [dateInPastFromStartOfToday(7), endOfToday()],
-    [LAST_30_DAYS]: [dateInPastFromStartOfToday(30), endOfToday()],
-    [LAST_60_DAYS]: [dateInPastFromStartOfToday(60), endOfToday()],
-    [LAST_90_DAYS]: [dateInPastFromStartOfToday(90), endOfToday()],
+    [PAST_7_DAYS]: [dateInPastFromStartOfToday(7), endOfToday()],
+    [PAST_30_DAYS]: [dateInPastFromStartOfToday(30), endOfToday()],
+    [PAST_60_DAYS]: [dateInPastFromStartOfToday(60), endOfToday()],
+    [PAST_90_DAYS]: [dateInPastFromStartOfToday(90), endOfToday()],
 })
 
 export type Props = {

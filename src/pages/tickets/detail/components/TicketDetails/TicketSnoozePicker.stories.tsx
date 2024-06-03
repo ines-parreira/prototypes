@@ -1,8 +1,12 @@
 import React, {ComponentProps} from 'react'
 import {Meta, StoryFn} from '@storybook/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
 import TicketSnoozePicker from 'pages/tickets/detail/components/TicketDetails/TicketSnoozePicker'
 import {FeatureFlagKey} from 'config/featureFlags'
+
+const defaultState = {}
 
 const storyConfig: Meta = {
     title: 'Tickets/TicketSnoozePicker',
@@ -18,9 +22,11 @@ const Template: StoryFn<ComponentProps<typeof TicketSnoozePicker>> = (
 ) => {
     return (
         <ThemeProvider>
-            <TicketSnoozePicker {...props}>
-                <input type="text" />
-            </TicketSnoozePicker>
+            <Provider store={configureMockStore()(defaultState)}>
+                <TicketSnoozePicker {...props}>
+                    <input type="text" />
+                </TicketSnoozePicker>
+            </Provider>
         </ThemeProvider>
     )
 }
