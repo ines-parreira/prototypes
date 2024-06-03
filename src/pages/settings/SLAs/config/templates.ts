@@ -39,7 +39,7 @@ export const TEMPLATES_LIST: SLATemplate[] = [
                 unit: 'hour',
             },
         },
-        icon: 'forum',
+        icon: 'email',
         active: true,
     },
     {
