@@ -88,19 +88,19 @@ export const VoiceAgentsTable = () => {
                             className={css.metricCell}
                         />
                         <HeaderCellProperty
-                            title={'Answered'}
+                            title={'Inbound Answered'}
                             justifyContent={'right'}
                             wrapContent={true}
                             className={css.metricCell}
                         />
                         <HeaderCellProperty
-                            title={'Missed'}
+                            title={'Inbound Missed'}
                             justifyContent={'right'}
                             wrapContent={true}
                             className={css.metricCell}
                         />
                         <HeaderCellProperty
-                            title={'Declined'}
+                            title={'Inbound Declined'}
                             justifyContent={'right'}
                             wrapContent={true}
                             className={css.metricCell}

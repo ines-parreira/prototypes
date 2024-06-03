@@ -81,9 +81,9 @@ describe('VoiceCallTable', () => {
 
         expect(getByText('Agent')).toBeInTheDocument()
         expect(getByText('Total calls')).toBeInTheDocument()
-        expect(getByText('Answered')).toBeInTheDocument()
-        expect(getByText('Missed')).toBeInTheDocument()
-        expect(getByText('Declined')).toBeInTheDocument()
+        expect(getByText('Inbound Answered')).toBeInTheDocument()
+        expect(getByText('Inbound Missed')).toBeInTheDocument()
+        expect(getByText('Inbound Declined')).toBeInTheDocument()
         expect(getByText('Outbound')).toBeInTheDocument()
         expect(getByText('Avg. Talk Time')).toBeInTheDocument()
 
