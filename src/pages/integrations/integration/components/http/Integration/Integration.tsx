@@ -56,6 +56,7 @@ type State = {
     ticketCreated: boolean
     ticketMessageCreated: boolean
     ticketUpdated: boolean
+    ticketSelfUnsnoozed: boolean
     url: string
 }
 
@@ -70,6 +71,7 @@ export class Integration extends Component<Props, State> {
         responseContentType: ContentType.Json,
         ticketCreated: true,
         ticketUpdated: true,
+        ticketSelfUnsnoozed: true,
         ticketMessageCreated: true,
         headers: [],
         form: '',
@@ -122,6 +124,8 @@ export class Integration extends Component<Props, State> {
                 integration.http?.triggers['ticket-created'] || false,
             ticketUpdated:
                 integration.http?.triggers['ticket-updated'] || false,
+            ticketSelfUnsnoozed:
+                integration.http?.triggers['ticket-self-unsnoozed'] || false,
             ticketMessageCreated:
                 integration.http?.triggers['ticket-message-created'] || false,
             form: formData,
@@ -212,6 +216,8 @@ export class Integration extends Component<Props, State> {
                 triggers: {
                     [EventType.TicketCreated]: this.state.ticketCreated,
                     [EventType.TicketUpdated]: this.state.ticketUpdated,
+                    [EventType.TicketSelfUnsnoozed]:
+                        this.state.ticketSelfUnsnoozed,
                     [EventType.TicketMessageCreated]:
                         this.state.ticketMessageCreated,
                 },
@@ -285,6 +291,7 @@ export class Integration extends Component<Props, State> {
             headers,
             ticketCreated,
             ticketUpdated,
+            ticketSelfUnsnoozed,
             ticketMessageCreated,
         } = this.state
 
@@ -379,6 +386,18 @@ export class Integration extends Component<Props, State> {
                                         }
                                     >
                                         Ticket updated
+                                    </CheckBox>
+                                    <CheckBox
+                                        className="mb-2"
+                                        name="http.triggers.ticket-self-unsnoozed"
+                                        isChecked={ticketSelfUnsnoozed}
+                                        onChange={(value: boolean) =>
+                                            this.setState({
+                                                ticketSelfUnsnoozed: value,
+                                            })
+                                        }
+                                    >
+                                        Ticket self unsnoozed
                                     </CheckBox>
                                     <CheckBox
                                         className="mb-2"

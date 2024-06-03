@@ -119,6 +119,22 @@ exports[`Integration should display data about the integration 1`] = `
         >
           <label
             class="label label"
+            for="http.triggers.ticket-self-unsnoozed"
+          >
+            <input
+              class="input"
+              id="http.triggers.ticket-self-unsnoozed"
+              name="http.triggers.ticket-self-unsnoozed"
+              type="checkbox"
+            />
+            Ticket self unsnoozed
+          </label>
+        </div>
+        <div
+          class="mb-2"
+        >
+          <label
+            class="label label"
             for="http.triggers.ticket-message-created"
           >
             <input
@@ -580,7 +596,7 @@ exports[`Integration should display data about the integration 1`] = `
         <button
           aria-disabled="false"
           class="wrapper float-right fill destructive medium"
-          id="confirm-8"
+          id="confirm-10"
           type="button"
         >
           <span
@@ -712,6 +728,22 @@ exports[`Integration should display data with url-encoded format 1`] = `
               type="checkbox"
             />
             Ticket updated
+          </label>
+        </div>
+        <div
+          class="mb-2"
+        >
+          <label
+            class="label label"
+            for="http.triggers.ticket-self-unsnoozed"
+          >
+            <input
+              class="input"
+              id="http.triggers.ticket-self-unsnoozed"
+              name="http.triggers.ticket-self-unsnoozed"
+              type="checkbox"
+            />
+            Ticket self unsnoozed
           </label>
         </div>
         <div
@@ -1216,7 +1248,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
         <button
           aria-disabled="false"
           class="wrapper float-right fill destructive medium"
-          id="confirm-12"
+          id="confirm-15"
           type="button"
         >
           <span
@@ -1349,6 +1381,23 @@ exports[`Integration should display default values because there is no integrati
               type="checkbox"
             />
             Ticket updated
+          </label>
+        </div>
+        <div
+          class="mb-2"
+        >
+          <label
+            class="label label"
+            for="http.triggers.ticket-self-unsnoozed"
+          >
+            <input
+              checked=""
+              class="input"
+              id="http.triggers.ticket-self-unsnoozed"
+              name="http.triggers.ticket-self-unsnoozed"
+              type="checkbox"
+            />
+            Ticket self unsnoozed
           </label>
         </div>
         <div
@@ -1631,7 +1680,7 @@ exports[`Integration should display minimal information because integration is i
         <button
           aria-disabled="false"
           class="wrapper float-right fill destructive medium"
-          id="confirm-4"
+          id="confirm-5"
           type="button"
         >
           <span
