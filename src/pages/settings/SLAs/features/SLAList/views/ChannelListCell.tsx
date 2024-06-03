@@ -4,6 +4,8 @@ import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
+import Tooltip from 'pages/common/components/Tooltip'
+import {getChannelBySlug} from 'services/channels'
 
 import {UISLAPolicy} from '../types'
 
@@ -27,10 +29,19 @@ export default function ChannelListCell({
         [channels]
     )
 
+    const tooltipId = `tooltip-${uuid}`
+    const tooltipContent = useMemo(
+        () =>
+            channels
+                ?.map((channel) => getChannelBySlug(channel)?.name || channel)
+                .join(', '),
+        [channels]
+    )
+
     return (
         <BodyCell {...bodyCellProps}>
             <CellLinkWrapper to={`/app/settings/sla/${uuid}`}>
-                <div className={css.container}>
+                <div className={css.container} id={tooltipId}>
                     {slicedChannels.map((channel) => (
                         <SourceIcon
                             type={channel}
@@ -44,6 +55,7 @@ export default function ChannelListCell({
                         </span>
                     )}
                 </div>
+                <Tooltip target={tooltipId}>{tooltipContent}</Tooltip>
             </CellLinkWrapper>
         </BodyCell>
     )
