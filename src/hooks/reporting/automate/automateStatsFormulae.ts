@@ -2,6 +2,8 @@ const infinityNanToZero = (value: number) => {
     return isNaN(value) || value === Infinity ? 0 : value
 }
 
+const nonNegative = (value: number) => (value < 0 ? 0 : value)
+
 export const automationRate = (
     automatedInteractions: number | null,
     billableTicketCount: number | null,
@@ -25,7 +27,7 @@ export const automationRate = (
     return 0
 }
 
-const averageFRTWithoutAutomation = (
+const averageFirstResponseTimeWithoutAutomation = (
     billableTicketCount: number,
     totalFirstResponseTimeExcludingAIAgent: number
 ): number =>
@@ -33,7 +35,7 @@ const averageFRTWithoutAutomation = (
         totalFirstResponseTimeExcludingAIAgent / billableTicketCount
     )
 
-const averageFRTWithAutomation = (
+const averageFirstResponseTimeWithAutomation = (
     billableTicketExcludingAIAgentCount: number,
     totalFirstResponseTimeIncludingAIAgent: number,
     automatedInteractions: number
@@ -56,16 +58,20 @@ export const decreaseInFirstResponseTime = (
         totalFirstResponseTimeExcludingAIAgent != null &&
         totalFirstResponseTimeIncludingAIAgent != null
     ) {
-        return (
-            averageFRTWithoutAutomation(
+        const averageFRTWithoutAutomation =
+            averageFirstResponseTimeWithoutAutomation(
                 billableTicketExcludingAIAgentCount,
                 totalFirstResponseTimeExcludingAIAgent
-            ) -
-            averageFRTWithAutomation(
-                billableTicketExcludingAIAgentCount,
-                totalFirstResponseTimeIncludingAIAgent,
-                automatedInteractions
             )
+
+        const averageFRTWithAutomation = averageFirstResponseTimeWithAutomation(
+            billableTicketExcludingAIAgentCount,
+            totalFirstResponseTimeIncludingAIAgent,
+            automatedInteractions
+        )
+
+        return nonNegative(
+            averageFRTWithoutAutomation - averageFRTWithAutomation
         )
     }
     return 0
@@ -94,20 +100,19 @@ export const decreaseInResolutionTime = (
         billableTicketCountExcludingAIAgent != null &&
         totalResolutionTimeExcludingAIAgent != null
     ) {
-        const averageResolutionTimeWithoutAutomation = infinityNanToZero(
+        const averageRTWithoutAutomation = infinityNanToZero(
             totalResolutionTimeExcludingAIAgent /
                 billableTicketCountExcludingAIAgent
         )
 
-        return infinityNanToZero(
-            averageResolutionTimeWithoutAutomation -
-                averageResolutionTimeWithAutomation(
-                    totalResolutionTimeExcludingAIAgent,
-                    billableTicketCountExcludingAIAgent,
-                    automatedInteractions,
-                    totalResolutionTimeResolvedByAIAgent ?? 0
-                )
+        const averageRTWithAutomation = averageResolutionTimeWithAutomation(
+            totalResolutionTimeExcludingAIAgent,
+            billableTicketCountExcludingAIAgent,
+            automatedInteractions,
+            totalResolutionTimeResolvedByAIAgent ?? 0
         )
+
+        return nonNegative(averageRTWithoutAutomation - averageRTWithAutomation)
     }
     return 0
 }

@@ -49,6 +49,10 @@ describe('Metrics Calculation Functions', () => {
             expect(decreaseInFirstResponseTime(0, 2, 5, 5)).toBe(0)
             expect(decreaseInFirstResponseTime(0, 0, 0, 0)).toBeCloseTo(0)
         })
+
+        it('caps decrease in first response time to 0 if it is negative', () => {
+            expect(decreaseInFirstResponseTime(10, 10, 10, 1000)).toEqual(0)
+        })
     })
 
     describe('resolutionTime Function', () => {
@@ -87,6 +91,10 @@ describe('Metrics Calculation Functions', () => {
                 66.6666,
                 3
             )
+        })
+
+        it('caps decrease in resolution time to 0 if it is negative', () => {
+            expect(decreaseInResolutionTime(10, 10, 10, 1000)).toEqual(0)
         })
     })
 })
