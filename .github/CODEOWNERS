@@ -126,6 +126,12 @@ src/state/widgets @gorgias/apps-ecom-devrel
 src/services/channels.ts @gorgias/apps-ecom-devrel
 src/services/applications.ts @gorgias/apps-ecom-devrel
 
+# CRM Growth @gorgias/crm-growth
+src/models/billing @gorgias/crm-growth
+src/pages/settings/billing @gorgias/crm-growth
+src/pages/settings/new_billing @gorgias/crm-growth
+src/state/billing @gorgias/crm-growth
+
 # Automate Observability scope @gorgias/automate-observability-adoption
 src/hooks/reporting/automate/ @gorgias/automate-observability-adoption
 src/models/reporting/queryFactories/automate/ @gorgias/automate-observability-adoption
