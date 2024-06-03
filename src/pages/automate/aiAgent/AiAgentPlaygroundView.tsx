@@ -207,14 +207,13 @@ export const AiAgentPlaygroundView = () => {
         return <Loader />
     }
 
-    if (accountFetchError) {
-        if (
-            isAxiosError(accountFetchError) &&
-            accountFetchError.response?.status === 404
-        ) {
-            return <Redirect to={routes.configuration} />
-        }
-
+    if (
+        // Since playground is wrapped in ai agent provider, the account configuration is initialized if it does not exist
+        // We only need to check for other types of errors
+        (accountFetchError && !isAxiosError(accountFetchError)) ||
+        (isAxiosError(accountFetchError) &&
+            accountFetchError.response?.status !== 404)
+    ) {
         reportError(accountFetchError, {
             tags: {team: AI_AGENT_SENTRY_TEAM},
             extra: {
@@ -225,11 +224,7 @@ export const AiAgentPlaygroundView = () => {
         return <Redirect to={routes.automation} />
     }
 
-    if (
-        !accountData ||
-        !accountData.data.accountConfiguration.httpIntegration ||
-        !storeData
-    ) {
+    if (accountData && !accountData.data.accountConfiguration.httpIntegration) {
         void dispatch(
             notify({
                 message:
@@ -238,10 +233,12 @@ export const AiAgentPlaygroundView = () => {
             })
         )
 
-        reportError(new Error('No Account data for Playground'), {
+        const error = `Missing http integration for account ${accountData.data.accountConfiguration.gorgiasDomain}`
+
+        reportError(new Error(error), {
             tags: {team: AI_AGENT_SENTRY_TEAM},
             extra: {
-                context: 'No account data for Ai Agent Playground',
+                context: error,
             },
         })
         return <Redirect to={routes.automation} />
@@ -274,19 +271,22 @@ export const AiAgentPlaygroundView = () => {
                             first.
                         </Alert>
                     ) : (
-                        <PlaygroundInputStep
-                            isDisabled={storeConfigurationNotInitialized}
-                            setSubject={setSubject}
-                            setMessages={setMessages}
-                            setStep={setStep}
-                            submitPlaygroundTicket={submitPlaygroundTicket}
-                            accountData={
-                                accountData.data
-                                    .accountConfiguration as AccountConfigurationWithHttpIntegration
-                            }
-                            storeData={storeData.data.storeConfiguration}
-                            initialValues={initialInputValues}
-                        />
+                        accountData &&
+                        storeData && (
+                            <PlaygroundInputStep
+                                isDisabled={storeConfigurationNotInitialized}
+                                setSubject={setSubject}
+                                setMessages={setMessages}
+                                setStep={setStep}
+                                submitPlaygroundTicket={submitPlaygroundTicket}
+                                accountData={
+                                    accountData.data
+                                        .accountConfiguration as AccountConfigurationWithHttpIntegration
+                                }
+                                storeData={storeData.data.storeConfiguration}
+                                initialValues={initialInputValues}
+                            />
+                        )
                     )}
                 </div>
             ) : (
