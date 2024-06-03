@@ -119,7 +119,7 @@ export default function WorkflowsView({
                                     Join our Flows Masterclass live webinar
                                 </a>
                                 <a
-                                    href="https://docs.gorgias.com/en-US/flows-101-252069"
+                                    href="https://link.gorgias.com/z1e"
                                     rel="noopener noreferrer"
                                     target="_blank"
                                     className={css.descriptionLink}
@@ -127,7 +127,7 @@ export default function WorkflowsView({
                                     <i className="material-icons mr-2">
                                         menu_book
                                     </i>
-                                    Learn more about Flows
+                                    10 Flows use cases and best practices
                                 </a>
                                 <a
                                     href="https://docs.gorgias.com/en-US/create-a-new-flow-256472"

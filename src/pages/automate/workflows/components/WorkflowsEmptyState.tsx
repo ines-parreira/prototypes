@@ -56,6 +56,14 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                                 <i className="material-icons mr-2">menu_book</i>
                                 Learn more about Flows
                             </a>
+                            <a
+                                href="https://link.gorgias.com/z1e"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <i className="material-icons mr-2">menu_book</i>
+                                10 Flows use cases and best practices
+                            </a>
                         </div>
                     </div>
                     <div>
