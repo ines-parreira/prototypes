@@ -269,8 +269,8 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 caption={
                                     shouldUseThemeAppExtensionInstallation
                                         ? isThemeAppExtensionInstalled
-                                            ? 'To easily add Chat to your Shopify store, click Install.'
-                                            : 'To easily add Chat to your Shopify store, click Install then click Save in the new Shopify window. No need to edit anything in the new window.'
+                                            ? 'To add Chat to your Shopify store, click Install.'
+                                            : 'To add Chat, click Install then Save in the new Shopify window without editing anything.'
                                         : 'Add the chat widget to your Shopify store in one click.'
                                 }
                                 value="true"

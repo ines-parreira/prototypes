@@ -209,9 +209,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
         if (!themeAppExtensionInstallation) {
             return (
                 <div>
-                    Add the chat widget to your Shopify store in one click. Note
-                    that this will automatically enable Automate features if
-                    available.
+                    Add the chat widget to your Shopify store in one click.
                 </div>
             )
         }
@@ -219,41 +217,26 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
         if (!isThemeAppExtensionInstalled && !isInstalled) {
             return (
                 <div>
-                    To easily add Chat to your Shopify store, click Install then
-                    click Save in the new Shopify window. No need to edit
-                    anything in the new window. Note that this will
-                    automatically enable Automate features if available.
+                    To add Chat, click Install then Save in the new Shopify
+                    window without editing anything.
                 </div>
             )
         }
 
         if (isThemeAppExtensionInstalled && !isInstalled) {
-            return (
-                <div>
-                    To easily add Chat to your Shopify store, click Install.
-                    Note that this will automatically enable Automate features
-                    if available.
-                </div>
-            )
+            return <div>To add Chat to your Shopify store, click Install.</div>
         }
 
         if (!isThemeAppExtensionInstalled && isInstalled) {
             return (
                 <div>
-                    To add Chat to your Shopify store, click Reinstall and then
-                    Save in the new Shopify window. No edits are needed. This
-                    will automatically enable available Automate features.
+                    To add Chat, click Reinstall then Save in the new Shopify
+                    window without editing anything.
                 </div>
             )
         }
 
-        return (
-            <div>
-                To easily add Chat to your Shopify store, click Install. Note
-                that this will automatically enable Automate features if
-                available.
-            </div>
-        )
+        return <div>To add Chat to your Shopify store, click Install.</div>
     }
 
     const renderCardButton = () => {
