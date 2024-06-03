@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import React, {useEffect, useRef, useState} from 'react'
+import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
@@ -78,27 +79,29 @@ export const CustomFieldSelect = () => {
                 target={buttonRef}
                 value={selectedCustomField.id}
             >
-                {activeDropdownFields.map((field) => (
-                    <DropdownItem
-                        key={field.id}
-                        className={classnames(css.dropdownItem)}
-                        onClick={() => {
-                            dispatch(
-                                setSelectedCustomField({
-                                    id: field.id,
-                                    label: field.label,
-                                    isLoading,
-                                })
-                            )
-                            setIsOpen(false)
-                        }}
-                        option={{value: field.id, label: field.label}}
-                    >
-                        <span className={css.dropdownItemContent}>
-                            {field.label}
-                        </span>
-                    </DropdownItem>
-                ))}
+                <DropdownBody>
+                    {activeDropdownFields.map((field) => (
+                        <DropdownItem
+                            key={field.id}
+                            className={classnames(css.dropdownItem)}
+                            onClick={() => {
+                                dispatch(
+                                    setSelectedCustomField({
+                                        id: field.id,
+                                        label: field.label,
+                                        isLoading,
+                                    })
+                                )
+                                setIsOpen(false)
+                            }}
+                            option={{value: field.id, label: field.label}}
+                        >
+                            <span className={css.dropdownItemContent}>
+                                {field.label}
+                            </span>
+                        </DropdownItem>
+                    ))}
+                </DropdownBody>
             </Dropdown>
             <IconTooltip
                 className={css.tooltip}
