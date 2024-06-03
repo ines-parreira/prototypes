@@ -1,18 +1,17 @@
 import classnames from 'classnames'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useMemo, useState} from 'react'
 import moment from 'moment'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
+import {ReportingGranularity} from 'models/reporting/types'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getStatsFilters} from 'state/stats/selectors'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {TicketChannel} from 'business/types/ticket'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 
 import {
@@ -26,10 +25,8 @@ import {
 import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
-import useAppDispatch from 'hooks/useAppDispatch'
-import useSearch from 'hooks/useSearch'
+
 import useLocalStorage from 'hooks/useLocalStorage'
-import {mergeStatsFilters} from 'state/stats/actions'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
 import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
@@ -49,36 +46,32 @@ import {
     GreyArea,
 } from 'hooks/reporting/automate/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import {periodToReportingGranularity} from 'utils/reporting'
+import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
 import {TimeSavedByAgentsMetric} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
-import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
 import {
     SHORT_FORMAT,
     formatLabeledTimeSeriesData,
     formatTimeSeriesData,
-} from './common/utils'
+} from 'pages/stats/common/utils'
 
-import ChannelsStatsFilter from './ChannelsStatsFilter'
-import ChartCard from './ChartCard'
-import DashboardGridCell from './DashboardGridCell'
-import DashboardSection from './DashboardSection'
-import LineChart from './common/components/charts/LineChart/LineChart'
+import ChartCard from 'pages/stats/ChartCard'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import DashboardSection from 'pages/stats/DashboardSection'
+import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
 
-import PeriodStatsFilter from './PeriodStatsFilter'
-import StatsPage from './StatsPage'
-import css from './AutomateOverview.less'
+import StatsPage from 'pages/stats/StatsPage'
+import css from 'pages/stats/AutomateOverview.less'
 
 import {
     AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL,
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
     PAGE_TITLE_AUTOMATE_PAYWALL,
-} from './self-service/constants'
+} from 'pages/stats/self-service/constants'
 
-import TipsToggle from './TipsToggle'
-import {AutomatedInteractionByFeatures} from './types'
+import TipsToggle from 'pages/stats/TipsToggle'
+import {AutomatedInteractionByFeatures} from 'pages/stats/types'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
@@ -111,11 +104,9 @@ function getGreyAreaHint(showGreyArea: GreyArea | null) {
 
 function useTimeSeriesFormattedData(
     timeseries: AutomateTimeseries,
-    pageStatsFilters: StatsFilters,
+    granularity: ReportingGranularity,
     showGreyArea: GreyArea | null
 ) {
-    const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
-    const granularity = periodToReportingGranularity(requestStatsFilters.period)
     return useMemo(() => {
         const {
             automationRateTimeSeries,
@@ -170,6 +161,7 @@ function useTimeSeriesFormattedData(
         }
     }, [granularity, showGreyArea, timeseries])
 }
+
 export default function AutomateOverviewContent({
     metrics,
     timeseries,
@@ -181,28 +173,22 @@ export default function AutomateOverviewContent({
     const [hide72HourAlert, set72HoursAlert] = useState(false)
     const isTicketTimeToHandleEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
-    const isAutomateOverviewChannelsFilter: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
         true
     )
-    const dispatch = useAppDispatch()
-    const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
-    )
-    const statsFilters = useAppSelector(getStatsFilters)
-    const params = useSearch()
+    const {
+        cleanStatsFilters: statsFilters,
+        userTimezone,
+        granularity,
+    } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     const pageStatsFilters = useMemo<StatsFilters>(() => {
         const {channels, period} = statsFilters
         return {
             channels,
-            period: {
-                start_datetime: period.start_datetime,
-                end_datetime: period.end_datetime,
-            },
+            period,
         }
     }, [statsFilters])
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
@@ -250,29 +236,12 @@ export default function AutomateOverviewContent({
         return startDateTime.isAfter(threeDaysAgo, 'date')
     }, [statsFilters.period.start_datetime])
 
-    useEffect(() => {
-        if (params.source === 'automate') {
-            const newValues = {
-                startDatetime: moment().subtract(28, 'days').format(),
-                endDatetime: moment().endOf('day').format(),
-            }
-
-            dispatch(
-                mergeStatsFilters({
-                    period: {
-                        start_datetime: newValues.startDatetime,
-                        end_datetime: newValues.endDatetime,
-                    },
-                })
-            )
-        }
-    }, [params.source, dispatch])
     const {
         exportableData: timeseriesExportableData,
         automationRateTimeSeriesData,
         automatedInteractionTimeSeriesData,
         automatedInteractionByEventTypesTimeSeriesData,
-    } = useTimeSeriesFormattedData(timeseries, pageStatsFilters, greyArea)
+    } = useTimeSeriesFormattedData(timeseries, granularity, greyArea)
 
     const hasActivity =
         !automatedInteractionTrend.isFetching &&
@@ -284,25 +253,7 @@ export default function AutomateOverviewContent({
                 title={PAGE_TITLE_AUTOMATE_PAYWALL}
                 titleExtra={
                     <>
-                        {isAutomateOverviewChannelsFilter && (
-                            <ChannelsStatsFilter
-                                value={pageStatsFilters.channels}
-                                channelsFilter={[
-                                    TicketChannel.Chat,
-                                    TicketChannel.HelpCenter,
-                                    TicketChannel.ContactForm,
-                                    TicketChannel.Email,
-                                ]}
-                                variant="ghost"
-                            />
-                        )}
-                        <PeriodStatsFilter
-                            initialSettings={{
-                                maxSpan: 365,
-                            }}
-                            value={pageStatsFilters.period}
-                            variant="ghost"
-                        />
+                        <AutomateOverviewFilters />
                         <DownloadOverviewDataButton
                             onClick={async () => {
                                 logEvent(SegmentEvent.StatDownloadClicked, {
