@@ -40,6 +40,10 @@ declare namespace Components {
              */
             channel_connection_id: string
             /**
+             * Store Integration Id
+             */
+            store_integration_id?: number | null
+            /**
              * Ratio
              */
             ratio?: number

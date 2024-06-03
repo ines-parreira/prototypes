@@ -1852,6 +1852,10 @@
                         "type": "string",
                         "title": "Channel Connection Id"
                     },
+                    "store_integration_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Store Integration Id"
+                    },
                     "ratio": {
                         "type": "number",
                         "title": "Ratio",
@@ -1981,9 +1985,9 @@
                 "properties": {
                     "x": {"type": "number", "title": "X"},
                     "y": {"type": "number", "title": "Y"},
-                    "offsetX": {"type": "integer", "title": "Offsetx"},
-                    "offsetY": {"type": "integer", "title": "Offsety"},
-                    "size": {"type": "integer", "title": "Size"}
+                    "offsetX": {"type": "number", "title": "Offsetx"},
+                    "offsetY": {"type": "number", "title": "Offsety"},
+                    "size": {"type": "number", "title": "Size"}
                 },
                 "type": "object",
                 "required": ["x", "y", "offsetX", "offsetY", "size"],
@@ -2231,7 +2235,7 @@
                 },
                 "type": "object",
                 "title": "CampaignPatchRequestSchema",
-                "description": "Defines the fields that can be patched and accepts any subset of the fields.\nSkips advanced validation, it will be handled in PATCH endpoint:\n    see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch"
+                "description": "Defines the fields that can be patched and accepts any subset of the fields.\nValidates `triggers` and `trigger_rule` fields as required together - it has to be done this way\nas long as the IDs are generated on the frontend.\nSkips advanced validation, it will be handled in PATCH endpoint:\n    see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch"
             },
             "CampaignResponseSchema": {
                 "properties": {

@@ -7,6 +7,7 @@ import Button from 'pages/common/components/button/Button'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationById} from 'state/integrations/selectors'
+import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
 
 import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {useListABTests} from 'models/convert/abTest/queries'
@@ -62,15 +63,23 @@ const RequestABTest = () => {
     )
 
     const handleCreateABTest = useCallback(async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+        const chatIntegration = toJS(integration) as GorgiasChatIntegration
+        const shop_integration_id =
+            chatIntegration?.meta?.shop_type === IntegrationType.Shopify
+                ? chatIntegration.meta?.shop_integration_id
+                : null
+
         if (!!channelConnection) {
             await createABTest([
                 undefined,
                 {
                     channel_connection_id: channelConnection.id,
+                    store_integration_id: shop_integration_id,
                 },
             ])
         }
-    }, [channelConnection, createABTest])
+    }, [integration, channelConnection, createABTest])
 
     const handleStopABTest = useCallback(async () => {
         if (!abTests) {
