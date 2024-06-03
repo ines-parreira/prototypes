@@ -8,6 +8,8 @@ export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
 const STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY = 'store-workflow-configuration'
 const WORKFLOWS_CONFIGURATION_QUERY_KEY = 'workflow-configuration'
+const WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY =
+    'workflow-configuration-template'
 
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
@@ -20,6 +22,40 @@ export const storeWorkflowsConfigurationDefinitionKeys = {
 export const workflowsConfigurationDefinitionKeys = {
     all: () => [WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
     get: (id: string) => [...workflowsConfigurationDefinitionKeys.all(), id],
+}
+
+export const workflowsConfigurationTemplateDefinitionKeys = {
+    all: () => [WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY] as const,
+}
+
+export const useGetWorkflowConfigurationTemplates = (
+    triggers: string[],
+    overrides?: UseQueryOptions<
+        Awaited<Paths.WfConfigurationTemplateControllerList.Responses.$200>
+    >
+) => {
+    return useQuery({
+        queryKey: workflowsConfigurationTemplateDefinitionKeys.all(),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response =
+                await client.WfConfigurationTemplateController_list(
+                    {
+                        triggers,
+                    },
+                    {},
+                    {
+                        paramsSerializer: {
+                            indexes: true,
+                        },
+                    }
+                )
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        ...overrides,
+    })
 }
 
 export const useGetWorkflowConfiguration = (
