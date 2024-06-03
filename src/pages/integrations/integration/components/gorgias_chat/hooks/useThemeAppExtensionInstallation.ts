@@ -55,7 +55,7 @@ export const getGorgiasMainThemeAppExtensionId = (): string => {
 
     switch (env) {
         case GorgiasUIEnv.Production:
-            return encodeURI('') // TODO. Fill here once deployed.
+            return encodeURI('a66db725-7b96-4e3f-916e-6c8e6f87aaaa')
         case GorgiasUIEnv.Staging:
             return encodeURI('de98a9b4-b32b-4d92-8c0f-210c8cbebd9e')
         case GorgiasUIEnv.Development: // Every developer have their own Theme App Extension.
