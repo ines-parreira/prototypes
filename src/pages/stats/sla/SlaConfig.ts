@@ -18,6 +18,7 @@ export const SlaMetricConfig: Record<
     [SlaMetric.AchievementRate]: {
         hint: {
             title: 'Percentage of tickets where your team met the SLA during the selected timeframe',
+            link: 'https://link.gorgias.com/jyy',
         },
         title: 'Achievement rate',
         useTrend: useTicketSlaAchievementRateTrend,
@@ -28,6 +29,7 @@ export const SlaMetricConfig: Record<
     [SlaMetric.BreachedTicketsRate]: {
         hint: {
             title: 'Number of tickets that breached the SLA policy during the selected timeframe',
+            link: 'https://link.gorgias.com/b9p',
         },
         title: 'Tickets with breached SLAs',
         useTrend: useBreachedSlaTicketsTrend,

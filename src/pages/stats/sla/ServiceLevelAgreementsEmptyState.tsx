@@ -6,7 +6,7 @@ import css from 'pages/stats/sla/ServiceLevelAgreementsEmptyState.less'
 import PageHeader from 'pages/common/components/PageHeader'
 import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
 
-export const SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH = '/app/settings/slas'
+export const SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH = '/app/settings/sla'
 export const NO_BANNER_ALT_TEXT = 'No SLAs banner'
 export const PAGE_TITLE = 'SLAs'
 export const CONTENT_HEADER_TEXT =

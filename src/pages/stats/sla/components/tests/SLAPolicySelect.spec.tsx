@@ -14,7 +14,10 @@ import {
     DESELECT_ALL_LABEL,
     SELECT_ALL_LABEL,
 } from 'pages/common/components/dropdown/DropdownQuickSelect'
-import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
+import {
+    POLICIES_SEARCH_INPUT_PLACEHOLDER,
+    SLAPolicySelect,
+} from 'pages/stats/sla/components/SLAPolicySelect'
 import {mergeStatsFilters} from 'state/stats/actions'
 import {RootState, StoreDispatch} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
@@ -310,5 +313,34 @@ describe('<SLAPolicySelect />', () => {
             expect(store.getActions()).toContainEqual(statFiltersDirty())
             expect(store.getActions()).toContainEqual(statFiltersClean())
         })
+    })
+
+    it('should allow searching the results', () => {
+        const store = mockStore({
+            ...defaultState,
+            stats: fromJS({
+                filters: {
+                    period: {
+                        start_datetime: '2021-02-03T00:00:00.000Z',
+                        end_datetime: '2021-02-03T23:59:59.999Z',
+                    },
+                    slaPolicies: [aPolicy.uuid],
+                },
+            }),
+        })
+
+        render(
+            <Provider store={store}>
+                <SLAPolicySelect />
+            </Provider>
+        )
+        userEvent.click(screen.getByRole('button'))
+        expect(screen.queryByText(anotherPolicy.name)).toBeInTheDocument()
+        const searchInput = screen.getByPlaceholderText(
+            POLICIES_SEARCH_INPUT_PLACEHOLDER
+        )
+        userEvent.paste(searchInput, aPolicy.name)
+
+        expect(screen.queryByText(anotherPolicy.name)).not.toBeInTheDocument()
     })
 })

@@ -1,6 +1,7 @@
-import {useListSlaPolicies} from '@gorgias/api-queries'
+import {SLAPolicy, useListSlaPolicies} from '@gorgias/api-queries'
 import classnames from 'classnames'
 import React, {useCallback, useRef, useState} from 'react'
+import {Input, DropdownItem as BaseDropdownItem} from 'reactstrap'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,10 +16,13 @@ import {getSLAPoliciesStatsFilter} from 'state/stats/selectors'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 export const SELECT_FIELD_LABEL = 'Select Policies'
+export const POLICIES_SEARCH_INPUT_PLACEHOLDER = `Search policies...`
 
 export const SLAPolicySelect = () => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef(null)
+
+    const [search, setSearch] = useState('')
 
     const {data, isLoading} = useListSlaPolicies()
     const policies = data?.data.data || []
@@ -73,6 +77,10 @@ export const SLAPolicySelect = () => {
         )
     }, [dispatch])
 
+    const isPolicySearchedFor = (policy: SLAPolicy) =>
+        search === '' ||
+        policy.name.toLowerCase().includes(search.toLowerCase())
+
     return isLoading ? (
         <Skeleton inline width={160} />
     ) : (
@@ -101,7 +109,21 @@ export const SLAPolicySelect = () => {
                     count={policies.length}
                 />
                 <DropdownBody>
-                    {policies?.map((policy) => (
+                    <BaseDropdownItem
+                        header
+                        className={classnames(
+                            'dropdown-item-input',
+                            css.dropdownItemInput
+                        )}
+                    >
+                        <Input
+                            autoFocus
+                            onChange={(e) => setSearch(e.target.value)}
+                            placeholder={POLICIES_SEARCH_INPUT_PLACEHOLDER}
+                            value={search}
+                        />
+                    </BaseDropdownItem>
+                    {policies?.filter(isPolicySearchedFor).map((policy) => (
                         <DropdownItem
                             key={policy.uuid}
                             className={classnames(css.dropdownItem)}
