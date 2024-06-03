@@ -2,13 +2,16 @@ import React, {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
-
+import emptyState from 'assets/img/actions/empty-state.png'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {ACTIONS} from '../common/components/constants'
-import ActionsEmptyState from './components/ActionsEmptyState'
+import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
+import {ACTIONS} from 'pages/automate/common/components/constants'
+
 import CreateActionButton from './components/CreateActionButton'
 import ActionsList from './components/ActionsList'
 import {handleError} from './hooks/errorHandler'
+import {ACTIONS_DESCRIPTION} from './constants'
+
 import css from './ActionsView.less'
 
 export default function ActionView() {
@@ -50,16 +53,16 @@ export default function ActionView() {
                     className={css.actionsListContainer}
                 >
                     <div className={css.actionsListHeader}>
-                        <span>
-                            Actions enable AI Agent to perform tasks with your
-                            3rd party apps such as create return label, cancel
-                            order, get order status, issue refund and more.
-                        </span>
+                        <span>{ACTIONS_DESCRIPTION}</span>
                     </div>
                     <ActionsList actions={data} />
                 </div>
             ) : (
-                <ActionsEmptyState />
+                <AutomateViewEmptyStateBanner
+                    title="Configure Actions for AI Agent"
+                    description={ACTIONS_DESCRIPTION}
+                    image={emptyState}
+                />
             )}
         </AutomateView>
     )

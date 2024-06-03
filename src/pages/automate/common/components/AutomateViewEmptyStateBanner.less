@@ -1,0 +1,80 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+@import '~css/new/mixins.less';
+
+:local {
+    .container {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-l;
+        min-height: 260px;
+        background: var(--main-latte);
+
+        @media @mobiles {
+            padding: 0 @layout-spacing-s;
+        }
+
+        @media @tablets {
+            padding: 0 @layout-spacing-l;
+        }
+
+        @media @desktops {
+            padding: 0 @layout-spacing-l;
+        }
+
+        @media @large-desktops {
+            padding: 0 64px;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        gap: @layout-spacing-s;
+        flex: 1 0 0;
+        align-self: stretch;
+        padding: @layout-spacing-l 0;
+        max-width: 500px;
+        min-width: 328px;
+    }
+
+    .texts {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: @layout-spacing-xs;
+        align-self: stretch;
+    }
+
+    .title {
+        .heading-section-semibold();
+    }
+
+    .description {
+        .body-regular();
+    }
+
+    .imageContainer {
+        display: none;
+
+        @media @large-desktops {
+            display: flex;
+        }
+
+        max-width: 500px;
+        justify-content: center;
+        align-items: center;
+        flex: 1 0 0;
+        align-self: stretch;
+        position: relative;
+    }
+
+    .image {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        height: 100%;
+    }
+}
