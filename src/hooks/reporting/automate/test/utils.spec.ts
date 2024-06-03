@@ -10,12 +10,13 @@ import {
     mergeAutomateDataByEventType,
     automatePercentLabel,
     AutomateEventType,
-    addNonExistingEventTypesForGraph,
     renderAutomateXTickLabel,
     renderAutomateTooltipLabel,
     AUTOMATE_STATS_MEASURE_LABEL_MAP,
     sortByAutomateFeatureLabels,
     automateInteractionsByEventTypeToTimeSeries,
+    addNonExistingEventTypesForGraph,
+    calculateGreyArea,
 } from '../utils'
 
 describe('mergeAutomateDataByEventType', () => {
@@ -86,7 +87,7 @@ describe('mergeAutomateDataByEventType', () => {
 })
 
 describe('addZeroValueTimeSeriesForGreyArea', () => {
-    const showGreyArea = [moment('2024-03-15'), moment('2024-03-20')]
+    const showGreyArea = {from: moment('2024-03-15'), to: moment('2024-03-20')}
     it('should add zero value time series data for each dateTime in showGreyArea', () => {
         const timeSeries = [
             {
@@ -103,59 +104,12 @@ describe('addZeroValueTimeSeriesForGreyArea', () => {
                 values: [
                     {x: moment('2024-03-10').format(SHORT_FORMAT), y: 10},
                     {x: moment('2024-03-15').format(SHORT_FORMAT), y: 0},
+                    {x: moment('2024-03-16').format(SHORT_FORMAT), y: 0},
+                    {x: moment('2024-03-17').format(SHORT_FORMAT), y: 0},
+                    {x: moment('2024-03-18').format(SHORT_FORMAT), y: 0},
+                    {x: moment('2024-03-19').format(SHORT_FORMAT), y: 0},
                     {x: moment('2024-03-20').format(SHORT_FORMAT), y: 0},
                     {x: moment('2024-03-25').format(SHORT_FORMAT), y: 20},
-                ],
-            },
-        ]
-        const result = addZeroValueTimeSeriesForGreyArea(
-            showGreyArea,
-            timeSeries
-        )
-        expect(result).toEqual(expectedOutput)
-    })
-    it('should add only one zero value time series data in showGreyArea', () => {
-        const timeSeries = [
-            {
-                label: 'series2',
-                values: [
-                    {x: moment('2024-03-05').format(SHORT_FORMAT), y: 30},
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 40},
-                ],
-            },
-        ]
-        const expectedOutput = [
-            {
-                label: 'series2',
-                values: [
-                    {x: moment('2024-03-05').format(SHORT_FORMAT), y: 30},
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 40},
-                    {x: moment('2024-03-20').format(SHORT_FORMAT), y: 0},
-                ],
-            },
-        ]
-        const result = addZeroValueTimeSeriesForGreyArea(
-            showGreyArea,
-            timeSeries
-        )
-        expect(result).toEqual(expectedOutput)
-    })
-    it('should not add any zero value time series data', () => {
-        const timeSeries = [
-            {
-                label: 'series2',
-                values: [
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 40},
-                    {x: moment('2024-03-20').format(SHORT_FORMAT), y: 30},
-                ],
-            },
-        ]
-        const expectedOutput = [
-            {
-                label: 'series2',
-                values: [
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 40},
-                    {x: moment('2024-03-20').format(SHORT_FORMAT), y: 30},
                 ],
             },
         ]
@@ -223,6 +177,39 @@ describe('automatePercentLabel', () => {
         const expectedOutput = 'Label'
         const result = automatePercentLabel(input)
         expect(result).toBe(expectedOutput)
+    })
+})
+describe('calculateGreyArea', () => {
+    it('should return the correct grey area', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-03-20T00:00:00Z'))
+
+        const startDate = moment('2024-03-15T00:00:00Z')
+        const endDate = moment('2024-03-20T00:00:00Z')
+
+        const result = calculateGreyArea(startDate, endDate)
+        expect(result?.from.toISOString()).toEqual('2024-03-17T00:00:00.000Z')
+        expect(result?.to.toISOString()).toEqual('2024-03-20T00:00:00.000Z')
+    })
+
+    it('should return the correct grey area', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-03-20T00:00:00Z'))
+
+        const startDate = moment('2024-03-15T00:00:00Z')
+        const endDate = moment('2024-03-18T00:00:00Z')
+
+        const result = calculateGreyArea(startDate, endDate)
+        expect(result?.from.toISOString()).toEqual('2024-03-17T00:00:00.000Z')
+        expect(result?.to.toISOString()).toEqual('2024-03-18T00:00:00.000Z')
+    })
+
+    it('should return the correct grey area', () => {
+        jest.useFakeTimers().setSystemTime(new Date('2024-03-30T00:00:00Z'))
+
+        const startDate = moment('2024-03-15T00:00:00Z')
+        const endDate = moment('2024-03-20T00:00:00Z')
+
+        const result = calculateGreyArea(startDate, endDate)
+        expect(result).toBeNull()
     })
 })
 

@@ -17,11 +17,9 @@ import {
 } from 'pages/stats/types'
 import {StatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
-import {
-    TimeSeriesDataItem,
-    getPeriodDateTimes,
-} from 'hooks/reporting/useTimeSeries'
+import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
+import {GreyArea} from './types'
 
 export const AutomateEventType = {
     TRACK_ORDER: 'track_order',
@@ -105,12 +103,32 @@ export function mergeAutomateDataByEventType(
     return {...interactionsDataByEventType, ...mergedData}
 }
 
+function getPeriodDateTimesByGranularity(
+    dateRange: string[],
+    granularity: ReportingGranularity
+): string[] {
+    const momentGranularity =
+        granularity === ReportingGranularity.Week ? 'isoWeek' : granularity
+    const dates = []
+    const end = moment(dateRange[1])
+    let currentDate = moment(dateRange[0])
+    while (currentDate.isBefore(end)) {
+        dates.push(
+            currentDate
+                .startOf(momentGranularity)
+                .format('YYYY-MM-DDTHH:mm:ss.SSS')
+        )
+        currentDate = currentDate.add(1, granularity)
+    }
+    return dates
+}
+
 export function addNonExistingEventTypesForGraph(
     interactionsDataByEventType: Record<string, TimeSeriesDataItem[][]>,
     filter: StatsFilters,
     granularity: ReportingGranularity
 ) {
-    const dateTimes = getPeriodDateTimes(
+    const dateTimes = getPeriodDateTimesByGranularity(
         [filter.period.start_datetime, filter.period.end_datetime],
         granularity
     )
@@ -143,11 +161,13 @@ export function automateInteractionsByEventTypeToTimeSeries(
     interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>
 ): TimeSeriesDataItem[][] {
     if (!interactionsDataByEventType) return []
+
     const allEventTypesData = addNonExistingEventTypesForGraph(
         interactionsDataByEventType,
         filter,
         granularity
     )
+
     const mergedData = mergeAutomateDataByEventType(allEventTypesData, [
         AutomateEventType.FLOW_STARTED,
         AutomateEventType.FLOW_PROMPT_STARTED,
@@ -177,11 +197,29 @@ export function sortByAutomateFeatureLabels(
     )
 }
 
+const getGreyAreaDates = (showGreyArea: GreyArea) => {
+    const currentDate = showGreyArea.from.clone()
+
+    const dates: Moment[] = []
+
+    while (!currentDate.isAfter(showGreyArea.to)) {
+        dates.push(moment(currentDate, SHORT_FORMAT))
+
+        currentDate.add(1, 'days')
+    }
+
+    return dates
+}
+
 export function addZeroValueTimeSeriesForGreyArea(
-    showGreyArea: Moment[],
+    showGreyArea: GreyArea | null,
     timeSeries: TwoDimensionalDataItem[]
 ) {
-    for (const dateTime of showGreyArea) {
+    if (!showGreyArea) return timeSeries
+
+    const greyAreaDates = getGreyAreaDates(showGreyArea)
+
+    for (const dateTime of greyAreaDates) {
         const timeSeriesData = {
             x: dateTime.format(SHORT_FORMAT),
             y: 0,
@@ -231,4 +269,23 @@ export function renderAutomateTooltipLabel(isPercentage = false) {
             isPercentage ? automatePercentLabel(raw as number) : (raw as number)
         }`
     }
+}
+
+export function calculateGreyArea(
+    filtersStartDatetime: Moment,
+    filtersEndDatetime: Moment
+): GreyArea | null {
+    const endDateTime = filtersEndDatetime.clone()
+    const startDateTime = filtersStartDatetime.clone()
+    const threeDaysAgo = moment().subtract(3, 'days')
+
+    if (endDateTime.isAfter(threeDaysAgo, 'date')) {
+        if (startDateTime.isAfter(threeDaysAgo)) {
+            return {from: startDateTime, to: endDateTime}
+        }
+
+        return {from: threeDaysAgo, to: endDateTime}
+    }
+
+    return null
 }

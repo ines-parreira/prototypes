@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import React, {useEffect, useMemo, useState} from 'react'
-import moment, {Moment} from 'moment'
+import moment from 'moment'
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
@@ -38,6 +38,7 @@ import {
     AUTOMATE_STATS_MEASURE_LABEL_MAP,
     addZeroValueTimeSeriesForGreyArea,
     automatePercentLabel,
+    calculateGreyArea,
     renderAutomateTooltipLabel,
     renderAutomateXTickLabel,
     sortByAutomateFeatureLabels,
@@ -45,6 +46,7 @@ import {
 import {
     AutomateTimeseries,
     AutomateTrendMetrics,
+    GreyArea,
 } from 'hooks/reporting/automate/types'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
@@ -82,9 +84,9 @@ export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
-function getGreyAreaHint(showGreyArea: Moment[]) {
+function getGreyAreaHint(showGreyArea: GreyArea | null) {
     return (
-        showGreyArea.length && {
+        showGreyArea && {
             titleExtra: (
                 <div className={css.noDataHint}>
                     <i
@@ -110,7 +112,7 @@ function getGreyAreaHint(showGreyArea: Moment[]) {
 function useTimeSeriesFormattedData(
     timeseries: AutomateTimeseries,
     pageStatsFilters: StatsFilters,
-    showGreyArea: Moment[]
+    showGreyArea: GreyArea | null
 ) {
     const requestStatsFilters = useCleanStatsFilters(pageStatsFilters)
     const granularity = periodToReportingGranularity(requestStatsFilters.period)
@@ -144,12 +146,7 @@ function useTimeSeriesFormattedData(
                 ),
                 granularity
             ).sort(sortByAutomateFeatureLabels)
-        const greyAreaBoundary = showGreyArea?.length
-            ? {
-                  start: showGreyArea[0].format(SHORT_FORMAT),
-                  end: showGreyArea[1].format(SHORT_FORMAT),
-              }
-            : undefined
+
         return {
             automationRateTimeSeriesData: addZeroValueTimeSeriesForGreyArea(
                 showGreyArea,
@@ -170,7 +167,6 @@ function useTimeSeriesFormattedData(
                 automatedInteractionTimeSeries,
                 automatedInteractionByEventTypesTimeSeries,
             },
-            greyAreaBoundary,
         }
     }, [granularity, showGreyArea, timeseries])
 }
@@ -187,8 +183,7 @@ export default function AutomateOverviewContent({
         useFlags()[FeatureFlagKey.ObservabilityTicketTimeToHandle]
     const isAutomateOverviewChannelsFilter: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
-    const isAutomateAnalyticsV2: boolean | undefined =
-        useFlags()[FeatureFlagKey.ObservabilityAutomateAnalyticsv2]
+
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
         true
@@ -229,26 +224,25 @@ export default function AutomateOverviewContent({
         AGENT_COST_PER_TICKET -
         costPerAutomatedInteraction
 
-    const showGreyArea = useMemo((): Moment[] => {
-        const endDateTime = moment(statsFilters.period.end_datetime)
-        const startDateTime = moment(statsFilters.period.start_datetime)
-        const threeDaysAgo = moment().subtract(
-            isAutomateAnalyticsV2 ? 3 : 2,
-            'days'
-        )
-        if (endDateTime.isAfter(threeDaysAgo, 'date')) {
-            if (startDateTime.isAfter(threeDaysAgo)) {
-                return [startDateTime, endDateTime]
-            }
-            return [threeDaysAgo, endDateTime]
-        }
+    const greyArea = useMemo(
+        () =>
+            calculateGreyArea(
+                moment(statsFilters.period.start_datetime),
+                moment(statsFilters.period.end_datetime)
+            ),
+        [statsFilters.period.end_datetime, statsFilters.period.start_datetime]
+    )
 
-        return []
-    }, [
-        statsFilters.period.end_datetime,
-        statsFilters.period.start_datetime,
-        isAutomateAnalyticsV2,
-    ])
+    const greyAreaChartParam = useMemo(
+        () =>
+            greyArea
+                ? {
+                      start: greyArea.from.format(SHORT_FORMAT),
+                      end: greyArea.to.format(SHORT_FORMAT),
+                  }
+                : undefined,
+        [greyArea]
+    )
 
     const isDurationLast3Days = useMemo(() => {
         const startDateTime = moment(statsFilters.period.start_datetime)
@@ -274,12 +268,11 @@ export default function AutomateOverviewContent({
         }
     }, [params.source, dispatch])
     const {
-        greyAreaBoundary,
         exportableData: timeseriesExportableData,
         automationRateTimeSeriesData,
         automatedInteractionTimeSeriesData,
         automatedInteractionByEventTypesTimeSeriesData,
-    } = useTimeSeriesFormattedData(timeseries, pageStatsFilters, showGreyArea)
+    } = useTimeSeriesFormattedData(timeseries, pageStatsFilters, greyArea)
 
     const hasActivity =
         !automatedInteractionTrend.isFetching &&
@@ -438,7 +431,7 @@ export default function AutomateOverviewContent({
                 <DashboardSection title="Performance over time">
                     <DashboardGridCell size={12}>
                         <ChartCard
-                            {...getGreyAreaHint(showGreyArea)}
+                            {...getGreyAreaHint(greyArea)}
                             title={AUTOMATION_RATE_LABEL}
                             hint={{title: AUTOMATION_RATE_TOOLTIP}}
                         >
@@ -446,7 +439,7 @@ export default function AutomateOverviewContent({
                                 isCurvedLine={false}
                                 isLoading={isTimeSeriesFetching}
                                 data={automationRateTimeSeriesData}
-                                greyArea={greyAreaBoundary}
+                                greyArea={greyAreaChartParam}
                                 hasBackground
                                 _displayLegacyTooltip
                                 yAxisBeginAtZero
@@ -461,7 +454,7 @@ export default function AutomateOverviewContent({
 
                     <DashboardGridCell size={12}>
                         <ChartCard
-                            {...getGreyAreaHint(showGreyArea)}
+                            {...getGreyAreaHint(greyArea)}
                             title={AUTOMATED_INTERACTIONS_LABEL}
                             hint={{title: AUTOMATED_INTERACTION_TOOLTIP}}
                         >
@@ -469,7 +462,7 @@ export default function AutomateOverviewContent({
                                 isCurvedLine={false}
                                 isLoading={isTimeSeriesFetching}
                                 data={automatedInteractionTimeSeriesData}
-                                greyArea={greyAreaBoundary}
+                                greyArea={greyAreaChartParam}
                                 hasBackground
                                 _displayLegacyTooltip
                                 _renderLegacyTooltipLabel={renderAutomateTooltipLabel()}
@@ -488,7 +481,7 @@ export default function AutomateOverviewContent({
                     </DashboardGridCell>
                     <DashboardGridCell size={12}>
                         <ChartCard
-                            {...getGreyAreaHint(showGreyArea)}
+                            {...getGreyAreaHint(greyArea)}
                             title={AUTOMATED_INTERACTIONS_BY_FEATURE_LABEL}
                             hint={{title: AUTOMATED_INTERACTION_TOOLTIP}}
                         >
@@ -499,7 +492,7 @@ export default function AutomateOverviewContent({
                                 data={
                                     automatedInteractionByEventTypesTimeSeriesData
                                 }
-                                greyArea={greyAreaBoundary}
+                                greyArea={greyAreaChartParam}
                                 _displayLegacyTooltip
                                 displayLegend
                                 toggleLegend

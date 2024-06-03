@@ -1,3 +1,4 @@
+import {Moment} from 'moment'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 
 export enum AutomateTrendMetrics {
@@ -18,4 +19,9 @@ export type AutomateTimeseries = {
     automationRateTimeSeries: TimeSeriesDataItem[][]
     automatedInteractionTimeSeries: TimeSeriesDataItem[][]
     automatedInteractionByEventTypesTimeSeries: TimeSeriesDataItem[][]
+}
+
+export type GreyArea = {
+    from: Moment
+    to: Moment
 }
