@@ -14,11 +14,7 @@ const LandingPage = () => {
             <PageHeader />
             <div className={css.page}>
                 <LandingBanner />
-                <Templates
-                    className={css.content}
-                    templates={TEMPLATES_LIST}
-                    showSeeAllTemplates={TEMPLATES_LIST.length > 2}
-                />
+                <Templates className={css.content} templates={TEMPLATES_LIST} />
             </div>
         </div>
     )
