@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {EditorState} from 'draft-js'
 import Immutable from 'immutable'
@@ -100,6 +100,14 @@ export default function MessageContentFormField({
         [content.attachments]
     )
 
+    const workflowVariablesRef = useRef(workflowVariables)
+
+    workflowVariablesRef.current = workflowVariables
+
+    const getWorkflowVariables = useCallback(() => {
+        return workflowVariablesRef.current ?? []
+    }, [])
+
     return (
         <div>
             <ToolbarProvider
@@ -125,6 +133,7 @@ export default function MessageContentFormField({
                     displayedActions={toolbarActions}
                     noAutoScroll
                     uploadType={UploadType.PublicAttachment}
+                    getWorkflowVariables={getWorkflowVariables}
                 />
 
                 <TicketAttachments

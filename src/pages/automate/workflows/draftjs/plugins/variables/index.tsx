@@ -7,6 +7,7 @@ import {
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
 import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 
 import WorkflowVariableTag, {
     WorkflowVariableTagProps,
@@ -15,6 +16,7 @@ import {addEntityToVariable} from './utils'
 
 type Options = {
     size?: WorkflowVariableTagProps['size']
+    getVariables?: () => WorkflowVariableList
 }
 
 export default function createWorkflowVariablesPlugin(options: Options = {}) {
@@ -63,7 +65,8 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                                 block,
                                 newContentState,
                                 start,
-                                end
+                                end,
+                                options.getVariables?.()
                             )
                         }
                     )

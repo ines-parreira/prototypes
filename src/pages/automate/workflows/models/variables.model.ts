@@ -33,7 +33,7 @@ export function extractVariablesFromText(text: string): {
     value: string
     filter?: string
 }[] {
-    const match = text.match(workflowVariableRegex)
+    const match = text.match(/{{[^{}]*}}/g)
     if (match) {
         return match.map((variable) => {
             const [value, filter] = variable
@@ -341,6 +341,7 @@ export const buildWorkflowVariableFromNode = (
                     value: `steps_state.${node.id}.order.tracking_url`,
                     nodeType: 'order_selection',
                     type: 'string',
+                    format: 'url',
                 },
                 {
                     name: 'Tracking number',

@@ -5,7 +5,7 @@ export type WorkflowVariableType =
     | 'boolean'
     | 'array'
 
-export type WorkflowVariableFormat = 'currency'
+export type WorkflowVariableFormat = 'currency' | 'url'
 
 export type WorkflowVariable = {
     name: string

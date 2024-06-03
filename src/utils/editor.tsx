@@ -222,6 +222,19 @@ export function convertToHTML(contentState: ContentState): string {
                     }
                 }
 
+                if (
+                    entity.type === 'flow_variable' &&
+                    entity.data?.format === 'url'
+                ) {
+                    // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
+                    return {
+                        start: `<a href="${
+                            entity.data.value as string
+                        }" target="_blank">`,
+                        end: '</a>',
+                    }
+                }
+
                 if (entity.type === draftjsGorgiasCustomBlockRenderers.Img) {
                     const width = entity.data.width || DEFAULT_IMAGE_WIDTH
 

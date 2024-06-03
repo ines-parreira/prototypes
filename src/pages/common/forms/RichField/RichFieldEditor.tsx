@@ -23,6 +23,7 @@ import {extractUrlsFromString} from 'utils'
 import {addVideo} from 'pages/common/draftjs/plugins/utils'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import shortcutManager from 'services/shortcutManager'
+import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
 
 import {ConnectedAction} from '../../../../state/types'
 import {notify} from '../../../../state/notifications/actions'
@@ -100,6 +101,7 @@ type Props = {
     minHeight?: string | number
     noAutoScroll?: boolean
     uploadType?: UploadType
+    getWorkflowVariables?: () => WorkflowVariableList
 } & ToolbarPluginProps &
     MentionFilteredSuggestionsProps &
     GrammarlyUsageTrackingProps
@@ -202,7 +204,9 @@ export class RichFieldEditor extends Component<Props, State> {
             this.quotesPlugin,
         ]
         if (props.displayedActions?.includes(ActionName.WorkflowVariable)) {
-            this.workflowVariablesPlugin = createWorkflowVariablesPlugin()
+            this.workflowVariablesPlugin = createWorkflowVariablesPlugin({
+                getVariables: this.props.getWorkflowVariables,
+            })
             plugins.push(this.workflowVariablesPlugin)
         }
 
