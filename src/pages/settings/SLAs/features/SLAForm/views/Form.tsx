@@ -1,28 +1,29 @@
 import React, {isValidElement, ReactElement} from 'react'
-import {useForm} from 'react-hook-form'
-
-import {MappedFormSLAPolicy} from '../controllers/makeMappedFormSLAPolicy'
+import {DefaultValues, FieldValues, useForm} from 'react-hook-form'
 
 import FormSubmitButton from './FormSubmitButton'
 
 type Child = ReactElement<{fieldName?: string; children: Child[]}>
 
-export default function Form({
+export default function Form<T extends FieldValues>({
     children,
     defaultValues,
+    values,
     onSubmit,
 }: {
     children: Child[]
-    defaultValues?: Record<string, unknown>
-    onSubmit: (data: MappedFormSLAPolicy) => void
+    values?: T
+    defaultValues?: DefaultValues<T>
+    onSubmit: (data: T) => void
 }) {
-    const form = useForm<MappedFormSLAPolicy>({
+    const form = useForm<T>({
         defaultValues,
+        values,
     })
 
     const {control, handleSubmit} = form
 
-    const handleFormSubmit = (data: MappedFormSLAPolicy) => {
+    const handleFormSubmit = (data: T) => {
         onSubmit(data)
     }
 

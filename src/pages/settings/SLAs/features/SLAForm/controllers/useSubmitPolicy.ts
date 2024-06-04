@@ -13,8 +13,8 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import history from 'pages/history'
 
-import {MappedFormSLAPolicy} from './makeMappedFormSLAPolicy'
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
+import {SLAFormValues} from './useFormValues'
 
 export default function useSubmitPolicy() {
     const dispatch = useAppDispatch()
@@ -27,7 +27,7 @@ export default function useSubmitPolicy() {
     const {mutateAsync: updateSLA, isLoading: isUpdating} = useUpdateSlaPolicy()
 
     const save = useCallback(
-        async (data: MappedFormSLAPolicy) => {
+        async (data: SLAFormValues) => {
             const body = makeCreateSLAPolicyBody(data)
             try {
                 isNewPolicy

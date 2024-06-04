@@ -13,6 +13,7 @@ import {DeleteModal} from 'pages/settings/SLAs/features/SLAForm/views/DeleteModa
 import history from 'pages/history'
 
 import {MappedFormSLAPolicy} from '../controllers/makeMappedFormSLAPolicy'
+import {SLAFormValues} from '../controllers/useFormValues'
 
 import TimeUnitSelectBox from './TimeUnitSelectBox'
 import FormField from './FormField'
@@ -23,14 +24,16 @@ import css from './SLAFormView.less'
 
 type SLAFormViewProps = {
     policy: MappedFormSLAPolicy | undefined
-    defaultValues: Record<string, unknown>
-    onSubmit: (data: MappedFormSLAPolicy) => void
+    values: SLAFormValues
+    defaultValues: SLAFormValues
+    onSubmit: (data: SLAFormValues) => void
     isLoading?: boolean
 }
 
 export default function SLAFormView({
     policy,
     defaultValues,
+    values,
     onSubmit,
     isLoading,
 }: SLAFormViewProps) {
@@ -44,7 +47,11 @@ export default function SLAFormView({
             />
             <div className={settingsCss.pageContainer}>
                 <div className={settingsCss.contentWrapper}>
-                    <Form defaultValues={defaultValues} onSubmit={onSubmit}>
+                    <Form
+                        defaultValues={defaultValues}
+                        values={values}
+                        onSubmit={onSubmit}
+                    >
                         <div className={settingsCss.mb48}>
                             <FormField
                                 fieldName="name"

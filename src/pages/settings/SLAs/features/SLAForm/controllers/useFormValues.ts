@@ -3,8 +3,10 @@ import {CreateSlaPolicyBodyMetricsItemUnit} from '@gorgias/api-types'
 
 import {MappedFormSLAPolicy} from './makeMappedFormSLAPolicy'
 
-export default function useDefaultFormValues(
-    policy: Omit<MappedFormSLAPolicy, 'uuid'> | undefined
+export type SLAFormValues = ReturnType<typeof useFormValues>
+
+export default function useFormValues(
+    policy?: Omit<MappedFormSLAPolicy, 'uuid'>
 ) {
     return useMemo(
         () =>

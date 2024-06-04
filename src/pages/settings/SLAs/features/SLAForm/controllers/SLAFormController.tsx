@@ -7,10 +7,8 @@ import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 
 import SLAFormView from '../views/SLAFormView'
 
-import makeMappedFormSLAPolicy, {
-    MappedFormSLAPolicy,
-} from './makeMappedFormSLAPolicy'
-import useDefaultFormValues from './useDefaultFormValues'
+import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
+import useFormValues, {SLAFormValues} from './useFormValues'
 import useSubmitPolicy from './useSubmitPolicy'
 
 export default function SLAFormController() {
@@ -40,11 +38,12 @@ export default function SLAFormController() {
           }
         : undefined
 
-    const defaultValues = useDefaultFormValues(data ?? template)
+    const defaultValues = useFormValues()
+    const values = useFormValues(data ?? template)
 
     const {save, isLoading: isSubmitting} = useSubmitPolicy()
 
-    const handleFormSubmit = (data: MappedFormSLAPolicy) => {
+    const handleFormSubmit = (data: SLAFormValues) => {
         void save(data)
     }
 
@@ -56,6 +55,7 @@ export default function SLAFormController() {
                 <SLAFormView
                     policy={data}
                     defaultValues={defaultValues}
+                    values={values}
                     onSubmit={handleFormSubmit}
                     isLoading={isSubmitting}
                 />

@@ -2,10 +2,11 @@ import {
     CreateSlaPolicyBody,
     CreateSlaPolicyBodyMetricsItemName,
 } from '@gorgias/api-types'
-import {MappedFormSLAPolicy} from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
+
+import {SLAFormValues} from './useFormValues'
 
 export default function makeCreateSLAPolicyBody(
-    formPolicy: MappedFormSLAPolicy
+    formPolicy: SLAFormValues
 ): CreateSlaPolicyBody {
     return {
         ...formPolicy,
