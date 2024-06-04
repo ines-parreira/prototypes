@@ -23,16 +23,18 @@ describe('useAIAgentMessageEvents', () => {
             actions: [{name: 'SomeAction', arguments: {tags: 'tag1'}}],
         } as unknown as TicketMessage
 
-        const {result} = renderHook(() => useAIAgentMessageEvents(message), {
+        const {result} = renderHook(() => useAIAgentMessageEvents([message]), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(store)}>{children}</Provider>
             ),
         })
 
-        expect(result.current).toEqual({
-            tags: [],
-            action: null,
-        })
+        expect(result.current).toEqual([
+            {
+                tags: [],
+                action: null,
+            },
+        ])
     })
 
     it('should return an array of tag names when actions with AddTags name are present', () => {
@@ -43,16 +45,18 @@ describe('useAIAgentMessageEvents', () => {
             ],
         } as unknown as TicketMessage
 
-        const {result} = renderHook(() => useAIAgentMessageEvents(message), {
+        const {result} = renderHook(() => useAIAgentMessageEvents([message]), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(store)}>{children}</Provider>
             ),
         })
 
-        expect(result.current).toEqual({
-            tags: [{name: 'tag1'}, {name: 'tag2'}],
-            action: null,
-        })
+        expect(result.current).toEqual([
+            {
+                tags: [{name: 'tag1'}, {name: 'tag2'}],
+                action: null,
+            },
+        ])
     })
 
     it('should return the close event', () => {
@@ -65,16 +69,18 @@ describe('useAIAgentMessageEvents', () => {
             ],
         } as unknown as TicketMessage
 
-        const {result} = renderHook(() => useAIAgentMessageEvents(message), {
+        const {result} = renderHook(() => useAIAgentMessageEvents([message]), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(store)}>{children}</Provider>
             ),
         })
 
-        expect(result.current).toEqual({
-            tags: [],
-            action: TicketEventEnum.CLOSE,
-        })
+        expect(result.current).toEqual([
+            {
+                tags: [],
+                action: TicketEventEnum.CLOSE,
+            },
+        ])
     })
 
     it('should return the handover event', () => {
@@ -82,16 +88,18 @@ describe('useAIAgentMessageEvents', () => {
             actions: [{name: MacroActionName.SetAssignee}],
         } as unknown as TicketMessage
 
-        const {result} = renderHook(() => useAIAgentMessageEvents(message), {
+        const {result} = renderHook(() => useAIAgentMessageEvents([message]), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(store)}>{children}</Provider>
             ),
         })
 
-        expect(result.current).toEqual({
-            tags: [],
-            action: TicketEventEnum.ASSIGN_TICKET,
-        })
+        expect(result.current).toEqual([
+            {
+                tags: [],
+                action: TicketEventEnum.ASSIGN_TICKET,
+            },
+        ])
     })
 
     it('should return the snooze event', () => {
@@ -99,15 +107,17 @@ describe('useAIAgentMessageEvents', () => {
             actions: [{name: MacroActionName.SnoozeTicket}],
         } as unknown as TicketMessage
 
-        const {result} = renderHook(() => useAIAgentMessageEvents(message), {
+        const {result} = renderHook(() => useAIAgentMessageEvents([message]), {
             wrapper: ({children}) => (
                 <Provider store={mockStore(store)}>{children}</Provider>
             ),
         })
 
-        expect(result.current).toEqual({
-            tags: [],
-            action: TicketEventEnum.SNOOZE,
-        })
+        expect(result.current).toEqual([
+            {
+                tags: [],
+                action: TicketEventEnum.SNOOZE,
+            },
+        ])
     })
 })

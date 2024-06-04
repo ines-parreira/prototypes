@@ -12,7 +12,7 @@ import {TicketFeedback} from 'models/aiAgentFeedback/types'
 import {TicketMessage} from 'models/ticket/types'
 import {Tag} from 'models/tag/types'
 
-import {useAIAgentMultipleMessageEvents} from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
+import {useAIAgentMessageEvents} from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
 
 import {TicketEventEnum} from '../types'
 
@@ -50,9 +50,7 @@ jest.mock(
 )
 
 const getAIAgentMessagesMock = assumeMock(getAIAgentMessages)
-const useAIAgentMultipleMessageEventsMock = assumeMock(
-    useAIAgentMultipleMessageEvents
-)
+const useAIAgentMessageEventsMock = assumeMock(useAIAgentMessageEvents)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -62,8 +60,6 @@ const aiMessage = {
 } as TicketMessage
 
 const ticketFeedback: TicketFeedback = {
-    shopType: 'shopify',
-    shopName: 'store123',
     messages: [messageFeedback],
 }
 
@@ -72,7 +68,7 @@ const store = mockStore({})
 describe('AIAgentTicketFeedback', () => {
     beforeEach(() => {
         getAIAgentMessagesMock.mockReturnValue([aiMessage])
-        useAIAgentMultipleMessageEventsMock.mockReturnValue([
+        useAIAgentMessageEventsMock.mockReturnValue([
             {
                 tags: [],
                 action: null,
@@ -290,7 +286,7 @@ describe('AIAgentTicketFeedback', () => {
     })
 
     it('should not render event section when there are no events', () => {
-        useAIAgentMultipleMessageEventsMock.mockReturnValue([
+        useAIAgentMessageEventsMock.mockReturnValue([
             {
                 tags: [],
                 action: null,
@@ -317,7 +313,7 @@ describe('AIAgentTicketFeedback', () => {
     })
 
     it('should render event section when there are events', () => {
-        useAIAgentMultipleMessageEventsMock.mockReturnValue([
+        useAIAgentMessageEventsMock.mockReturnValue([
             {
                 tags: [
                     {
@@ -342,7 +338,7 @@ describe('AIAgentTicketFeedback', () => {
     })
 
     it('should render all events for multiple messages', () => {
-        useAIAgentMultipleMessageEventsMock.mockReturnValue([
+        useAIAgentMessageEventsMock.mockReturnValue([
             {
                 tags: [
                     {
@@ -399,7 +395,7 @@ describe('AIAgentTicketFeedback', () => {
     })
 
     it('should render improve ticket actions links correctly', () => {
-        useAIAgentMultipleMessageEventsMock.mockReturnValue([
+        useAIAgentMessageEventsMock.mockReturnValue([
             {
                 tags: [],
                 action: TicketEventEnum.CLOSE,
@@ -423,13 +419,13 @@ describe('AIAgentTicketFeedback', () => {
         expect(links?.[0]).toHaveTextContent('Guidance')
         expect(links?.[0]).toHaveAttribute(
             'href',
-            '/app/automation/shopify/store123/ai-agent/guidance'
+            '/app/automation/shopify/fast-cars/ai-agent/guidance'
         )
 
         expect(links?.[1]).toHaveTextContent('AI Agent Configuration')
         expect(links?.[1]).toHaveAttribute(
             'href',
-            '/app/automation/shopify/store123/ai-agent'
+            '/app/automation/shopify/fast-cars/ai-agent'
         )
     })
 })

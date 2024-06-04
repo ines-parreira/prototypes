@@ -53,14 +53,6 @@ type ActionAndTags = {
 }
 
 export const useAIAgentMessageEvents = (
-    message?: TicketMessage
-): ActionAndTags => {
-    const allTags: Tag[] = useAppSelector(getTags).toJS()
-
-    return getActionAndTagsFromMessage(allTags, message)
-}
-
-export const useAIAgentMultipleMessageEvents = (
     messages?: TicketMessage[]
 ): ActionAndTags[] => {
     const allTags: Tag[] = useAppSelector(getTags).toJS()

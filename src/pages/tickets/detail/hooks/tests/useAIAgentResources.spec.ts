@@ -15,6 +15,8 @@ describe('useAIAgentResources', () => {
 
     it('returns actions, guidance, and knowledge with feedback', () => {
         const messageFeedback: MessageFeedback = {
+            shopName: 'fast-cars',
+            shopType: 'shopify',
             messageId: 1137369657,
             summary:
                 'AI Agent sent a response and left the ticket open pending further information from the customer.',

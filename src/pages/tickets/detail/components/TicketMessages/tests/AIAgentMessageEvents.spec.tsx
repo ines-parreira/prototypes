@@ -16,10 +16,12 @@ const message = {
 
 describe('AIAgentMessageEvents', () => {
     beforeEach(() => {
-        mockedUseAIAgentMessageEvents.mockReturnValue({
-            tags: [],
-            action: null,
-        })
+        mockedUseAIAgentMessageEvents.mockReturnValue([
+            {
+                tags: [],
+                action: null,
+            },
+        ])
     })
 
     it('does not render tagged event when tags are not present, nor action if not action is present', () => {
@@ -30,19 +32,23 @@ describe('AIAgentMessageEvents', () => {
         ).not.toBeInTheDocument()
     })
     it('renders tagged event when tags are present', () => {
-        mockedUseAIAgentMessageEvents.mockReturnValue({
-            tags: [{name: 'tag1'}, {name: 'tag2'}],
-            action: null,
-        })
+        mockedUseAIAgentMessageEvents.mockReturnValue([
+            {
+                tags: [{name: 'tag1'}, {name: 'tag2'}],
+                action: null,
+            },
+        ])
 
         render(<AIAgentMessageEvents message={message} />)
         expect(screen.getByText('Tagged')).toBeInTheDocument()
     })
     it('renders action event when action is present', () => {
-        mockedUseAIAgentMessageEvents.mockReturnValue({
-            tags: [],
-            action: TicketEventEnum.CLOSE,
-        })
+        mockedUseAIAgentMessageEvents.mockReturnValue([
+            {
+                tags: [],
+                action: TicketEventEnum.CLOSE,
+            },
+        ])
         render(<AIAgentMessageEvents message={message} />)
 
         expect(

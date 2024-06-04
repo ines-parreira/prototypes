@@ -1,5 +1,4 @@
 import React, {useEffect, useMemo, useState} from 'react'
-import {fromJS} from 'immutable'
 import classNames from 'classnames'
 
 import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
@@ -15,18 +14,18 @@ import {
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import TicketTag from 'pages/common/components/TicketTag'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {useAIAgentMessageEvents} from '../../hooks/useAIAgentMessageEvents'
 import {useAIAgentResources} from '../../hooks/useAIAgentResources'
 import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
 
-import ReportIssueSelect from './ReportIssueSelect'
-import TicketEvent from './TicketEvent'
+import {getActionUrl, getGuidanceUrl, getKnowledgeUrl} from './utils'
 
-import {TicketEventEnum} from './types'
+import ReportIssueSelect from './ReportIssueSelect'
+
+import FeedbackOrders from './FeedbackOrders'
+import FeedbackEvents from './FeedbackEvents'
 
 import css from './AIAgentFeedbackBar.less'
 
@@ -35,15 +34,13 @@ export const FEEDBACK_MESSAGE_GUIDANCE_TEST_ID = 'feedback-message-guidance'
 export const FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID = 'feedback-message-knowledge'
 
 type Props = {
-    messageFeedback?: MessageFeedback
+    messageFeedback: MessageFeedback
 }
 
 const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     const [reportIssues, setReportIssues] = useState<ReportIssueOption[]>([])
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-
-    const {tags, action} = useAIAgentMessageEvents(selectedAIMessage)
 
     const {
         aiAgentSendFeedback: submitFeedback,
@@ -135,9 +132,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 <div className={css.sectionContainer}>
                     <div className={css.subtitle}>Actions</div>
                     {actions?.map((action) => (
-                        <div
-                            className={classNames(css.section, css.clickable)}
+                        <a
                             key={action.id}
+                            href={getActionUrl(
+                                action,
+                                messageFeedback.shopType,
+                                messageFeedback.shopName
+                            )}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className={classNames(css.section, css.clickable)}
                             data-testid={FEEDBACK_MESSAGE_ACTIONS_TEST_ID}
                         >
                             <div className={css.sectionText}>
@@ -203,7 +207,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     thumb_down
                                 </IconButton>
                             </div>
-                        </div>
+                        </a>
                     ))}
                 </div>
             )}
@@ -211,9 +215,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 <div className={css.sectionContainer}>
                     <div className={css.subtitle}>Guidance</div>
                     {guidance?.map((guide) => (
-                        <div
-                            className={classNames(css.section, css.clickable)}
+                        <a
                             key={guide.id}
+                            href={getGuidanceUrl(
+                                guide,
+                                messageFeedback.shopType,
+                                messageFeedback.shopName
+                            )}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className={classNames(css.section, css.clickable)}
                             data-testid={FEEDBACK_MESSAGE_GUIDANCE_TEST_ID}
                         >
                             <div className={css.sectionText}>
@@ -279,7 +290,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     thumb_down
                                 </IconButton>
                             </div>
-                        </div>
+                        </a>
                     ))}
                 </div>
             )}
@@ -287,9 +298,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 <div className={css.sectionContainer}>
                     <div className={css.subtitle}>Knowledge</div>
                     {knowledge?.map((knowledge) => (
-                        <div
-                            className={classNames(css.section, css.clickable)}
+                        <a
                             key={knowledge.id}
+                            href={getKnowledgeUrl(
+                                knowledge,
+                                messageFeedback.shopType,
+                                messageFeedback.shopName
+                            )}
+                            target="_blank"
+                            rel="noreferrer noopener"
+                            className={classNames(css.section, css.clickable)}
                             data-testid={FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID}
                         >
                             <div className={css.sectionText}>
@@ -356,59 +374,16 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     thumb_down
                                 </IconButton>
                             </div>
-                        </div>
+                        </a>
                     ))}
                 </div>
             )}
-            {messageFeedback?.orders && (
-                <div className={css.orderContainer}>
-                    <div className={css.subtitle}>Order data</div>
-                    {messageFeedback?.orders.map((order) => (
-                        <div key={order.id} className={css.order}>
-                            <div>#{order.id}</div>
-                            <i
-                                className={classNames(
-                                    'material-icons',
-                                    css.openIcon
-                                )}
-                            >
-                                open_in_new
-                            </i>
-                        </div>
-                    ))}
-                </div>
-            )}
-            {(tags.length > 0 || !!action) && (
-                <div className={css.ticketEventsContainer}>
-                    <div className={css.subtitle}>Ticket events</div>
-                    {tags.length > 0 && (
-                        <div className={css.eventTypeContainer}>
-                            <TicketEvent
-                                eventType={TicketEventEnum.TAGGED}
-                                isFirst
-                                isLast={action === null}
-                            >
-                                {tags.map((tag) => (
-                                    <TicketTag
-                                        key={tag.id}
-                                        decoration={fromJS(tag.decoration)}
-                                        className={css.tag}
-                                    >
-                                        {tag.name}
-                                    </TicketTag>
-                                ))}
-                            </TicketEvent>
-                        </div>
-                    )}
-                    {!!action && (
-                        <TicketEvent
-                            isFirst={tags.length === 0}
-                            isLast
-                            eventType={action}
-                        />
-                    )}
-                </div>
-            )}
+            <FeedbackOrders orders={messageFeedback?.orders} />
+            <FeedbackEvents
+                messages={selectedAIMessage ? [selectedAIMessage] : []}
+                shopType={messageFeedback.shopType}
+                shopName={messageFeedback.shopName}
+            />
             <div className={css.reportIssueContainer}>
                 <ReportIssueSelect
                     value={reportIssues}

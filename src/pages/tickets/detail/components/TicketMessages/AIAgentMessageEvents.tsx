@@ -29,7 +29,7 @@ const ByAIAgent = () => (
 )
 
 const AIAgentMessageEvents = ({message}: Props) => {
-    const {tags, action} = useAIAgentMessageEvents(message)
+    const [{tags, action}] = useAIAgentMessageEvents([message])
 
     return (
         <>

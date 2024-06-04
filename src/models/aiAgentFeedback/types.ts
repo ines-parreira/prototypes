@@ -8,7 +8,7 @@ export type Guidance = {
 }
 
 export type Knowledge = {
-    type: 'article' | 'external_snippet' | 'macro'
+    type: 'article' | 'external_snippet' | 'macro' | 'flow'
     id: number
     name: string
     url?: string
@@ -27,6 +27,7 @@ export type FeedbackOnResource = {
         | 'article'
         | 'macro'
         | 'external_snippet'
+        | 'flow'
     type: 'binary'
     feedback: Feedback
 }
@@ -57,6 +58,8 @@ export const isIssueFeedbackOnMessage = (
 ): feedback is IssueFeedbackOnMessage => feedback.type === 'issue'
 
 export type MessageFeedback = {
+    shopName: string
+    shopType: string
     messageId: number
     summary: string
     orders: {
@@ -72,8 +75,6 @@ export type MessageFeedback = {
 }
 
 export type TicketFeedback = {
-    shopName: string
-    shopType: string
     messages: MessageFeedback[]
 }
 
