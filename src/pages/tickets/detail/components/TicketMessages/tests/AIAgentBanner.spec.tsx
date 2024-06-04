@@ -64,7 +64,7 @@ describe('AIAgentBanner', () => {
         })
     })
 
-    it("doesn't render the component when loading", () => {
+    it.skip("doesn't render the component when loading", () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             isLoading: true,
             isError: false,

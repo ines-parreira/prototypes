@@ -14,16 +14,9 @@ export type AIAgentBannerProps = {
 }
 
 const AIAgentBanner = ({message}: AIAgentBannerProps) => {
-    const {data, isLoading, isError} = useGetAiAgentFeedback(
-        message.ticket_id!,
-        {
-            refetchOnWindowFocus: false,
-        }
-    )
-
-    if (isLoading || isError) {
-        return null
-    }
+    const {data} = useGetAiAgentFeedback(message.ticket_id!, {
+        refetchOnWindowFocus: false,
+    })
 
     const ticketFeedback = data?.data
 
