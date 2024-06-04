@@ -1,11 +1,15 @@
+import {createMemoryHistory} from 'history'
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {EntityType} from 'models/view/types'
 
 import {view as fixtureView} from 'fixtures/views'
-import ViewTable from 'pages/common/components/ViewTable/ViewTable'
+import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import {fetchTags} from 'state/tags/actions'
 
@@ -17,36 +21,6 @@ import TicketList from '../TicketList'
 const fetchTagsMock = (
     fetchTags as jest.MockedFunction<typeof fetchTags>
 ).mockReturnValue(() => Promise.resolve(undefined))
-
-jest.mock(
-    'pages/common/components/ViewTable/ViewTable',
-    () =>
-        ({
-            items,
-            isUpdate,
-            isSearch,
-            urlViewId,
-            ActionsComponent,
-            viewButtons,
-        }: ComponentProps<typeof ViewTable>) =>
-            (
-                <div>
-                    ViewTable:
-                    <div>items: {JSON.stringify(items)}</div>
-                    <div>isUpdate: {JSON.stringify(isUpdate)}</div>
-                    <div>isSearch: {JSON.stringify(isSearch)}</div>
-                    <div>urlViewId: {JSON.stringify(urlViewId)}</div>
-                    <div>
-                        ActionsComponent:
-                        {
-                            //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-                            ActionsComponent.toString()
-                        }
-                    </div>
-                    <div>{viewButtons}</div>
-                </div>
-            )
-)
 
 jest.mock(
     'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
@@ -86,6 +60,31 @@ const MockCreateTicketButton = CreateTicketButton as jest.Mock
 
 describe('<TicketList />', () => {
     beforeEach(() => {
+        jest.spyOn(ViewTable, 'default').mockImplementation(
+            ({
+                items,
+                isUpdate,
+                isSearch,
+                urlViewId,
+                ActionsComponent,
+                viewButtons,
+            }: ComponentProps<typeof ViewTable.ViewTableContainer>) => {
+                return (
+                    <div>
+                        ViewTable:
+                        <div>items: {JSON.stringify(items)}</div>
+                        <div>isUpdate: {JSON.stringify(isUpdate)}</div>
+                        <div>isSearch: {JSON.stringify(isSearch)}</div>
+                        <div>urlViewId: {JSON.stringify(urlViewId)}</div>
+                        <div>
+                            ActionsComponent:
+                            {ActionsComponent && ActionsComponent.toString()}
+                        </div>
+                        <div>{viewButtons}</div>
+                    </div>
+                )
+            }
+        )
         MockCreateTicketButton.mockImplementation(() => (
             <div>CreateTicketButton</div>
         ))
@@ -185,5 +184,82 @@ describe('<TicketList />', () => {
         )
 
         expect(queryByText('CreateTicketButton')).not.toBeInTheDocument()
+    })
+
+    it.each([false, true])(
+        'should render ViewTable with tickets',
+        (advancedSearchFlagEnabled) => {
+            jest.spyOn(LD, 'useFlags').mockReturnValue({
+                [FeatureFlagKey.AdvancedSearchWithHighlights]:
+                    advancedSearchFlagEnabled,
+            })
+            const spy = jest
+                .spyOn(ViewTable, 'default')
+                .mockImplementation(() => <div />)
+
+            renderWithRouter(
+                <Provider
+                    store={mockStore({
+                        tickets: fromJS({items: []}),
+                        views: fromJS({
+                            active: {...fixtureView, editMode: true},
+                            _internal: {
+                                selectedItemsIds: [],
+                            },
+                        }),
+                    })}
+                >
+                    <TicketList />
+                </Provider>
+            )
+
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isSearch: false,
+                    type: EntityType.Ticket,
+                }),
+                {}
+            )
+        }
+    )
+
+    it('should render Search ViewTable with tickets_with_highlights', () => {
+        const history = createMemoryHistory({
+            initialEntries: ['app/tickets/search'],
+        })
+        jest.spyOn(LD, 'useFlags').mockReturnValue({
+            [FeatureFlagKey.AdvancedSearchWithHighlights]: true,
+        })
+        const spy = jest
+            .spyOn(ViewTable, 'default')
+            .mockImplementation(() => <div />)
+
+        renderWithRouter(
+            <Provider
+                store={mockStore({
+                    tickets: fromJS({items: []}),
+                    views: fromJS({
+                        active: {...fixtureView, editMode: true},
+                        _internal: {
+                            selectedItemsIds: [],
+                        },
+                    }),
+                })}
+            >
+                <TicketList />
+            </Provider>,
+            {
+                path: 'app/tickets/search',
+                history,
+            }
+        )
+
+        expect(spy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isSearch: true,
+                type: EntityType.TicketWithHighlight,
+            }),
+            {}
+        )
     })
 })

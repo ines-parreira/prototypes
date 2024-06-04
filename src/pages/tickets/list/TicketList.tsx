@@ -81,9 +81,10 @@ const TicketList = () => {
 
     const isAdvancedSearchWithHighlights: boolean | undefined =
         useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights]
-    const type = isAdvancedSearchWithHighlights
-        ? EntityType.TicketWithHighlight
-        : EntityType.Ticket
+    const type =
+        isAdvancedSearchWithHighlights && isSearch
+            ? EntityType.TicketWithHighlight
+            : EntityType.Ticket
 
     const viewTable = (
         <ViewTable
