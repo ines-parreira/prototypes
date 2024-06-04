@@ -3,45 +3,28 @@ import {NavLink} from 'react-router-dom'
 import classnames from 'classnames'
 
 import navBarCss from 'assets/css/navbar.less'
-import useHasCanduContent from 'hooks/candu/useHasCanduContent'
 
+import useCandu from 'candu/useCandu'
 import css from './HomePageLink.less'
 
-const CANDU_ID = 'navbar-dropdown'
-
 export const HomePageLink = () => {
-    const {hasCanduContent, ref} = useHasCanduContent<HTMLDivElement>(CANDU_ID)
+    const hasCanduContent = useCandu()
 
-    return (
-        <>
-            <div
-                ref={ref}
-                data-candu-id={CANDU_ID}
-                data-testid="candu-hidden-link"
-                className={css.hiddenLink}
-            />
-            {hasCanduContent && (
-                <NavLink
-                    to="/app/home"
-                    data-testid="home-page-link"
-                    data-candu-id="home-page-button"
-                    className={classnames(css.link, navBarCss.link)}
-                >
-                    <span className={css.title}>
-                        <i
-                            className={classnames(
-                                'material-icons',
-                                navBarCss.icon
-                            )}
-                        >
-                            home
-                        </i>
-                        Home
-                    </span>
-                </NavLink>
-            )}
-        </>
-    )
+    return hasCanduContent ? (
+        <NavLink
+            to="/app/home"
+            data-testid="home-page-link"
+            data-candu-id="home-page-button"
+            className={classnames(css.link, navBarCss.link)}
+        >
+            <span className={css.title}>
+                <i className={classnames('material-icons', navBarCss.icon)}>
+                    home
+                </i>
+                Home
+            </span>
+        </NavLink>
+    ) : null
 }
 
 export default HomePageLink

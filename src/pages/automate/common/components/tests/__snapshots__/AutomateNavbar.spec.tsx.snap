@@ -122,11 +122,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="navbar-cta-group"
       >
         <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
           data-candu-id="navbar-home-spacer"
         />
         <button
@@ -575,11 +570,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="navbar-cta-group"
       >
         <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
           data-candu-id="navbar-home-spacer"
         />
         <button
@@ -926,11 +916,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="navbar-cta-group"
       >
         <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
           data-candu-id="navbar-home-spacer"
         />
         <button
@@ -1107,11 +1092,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-cta-group"
       >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -1548,11 +1528,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         class="navbar-cta-group"
       >
         <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
-        <div
           data-candu-id="navbar-home-spacer"
         />
         <button
@@ -1885,11 +1860,6 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-cta-group"
       >
-        <div
-          class="hiddenLink"
-          data-candu-id="navbar-dropdown"
-          data-testid="candu-hidden-link"
-        />
         <div
           data-candu-id="navbar-home-spacer"
         />

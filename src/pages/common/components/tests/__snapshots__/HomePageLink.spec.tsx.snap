@@ -1,35 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<HomePageLink /> should NOT render the link if candu has only injected the root 1`] = `
-<body>
-  <div>
-    <div
-      class="hiddenLink"
-      data-candu-id="navbar-dropdown"
-      data-testid="candu-hidden-link"
-    />
-  </div>
-</body>
-`;
-
-exports[`<HomePageLink /> should not render the link if candu has not loaded 1`] = `
-<div>
-  <div
-    class="hiddenLink"
-    data-candu-id="navbar-dropdown"
-    data-testid="candu-hidden-link"
-  />
-</div>
-`;
-
 exports[`<HomePageLink /> should render the link if candu has some nodes injected 1`] = `
 <body>
   <div>
-    <div
-      class="hiddenLink"
-      data-candu-id="navbar-dropdown"
-      data-testid="candu-hidden-link"
-    />
     <a
       class="link link"
       data-candu-id="home-page-button"

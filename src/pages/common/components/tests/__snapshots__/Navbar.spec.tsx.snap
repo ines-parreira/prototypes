@@ -120,11 +120,6 @@ exports[`<Navbar /> should render the navbar 1`] = `
       class="navbar-cta-group"
     >
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
         data-candu-id="navbar-home-spacer"
       />
       <button
@@ -311,11 +306,6 @@ exports[`<Navbar /> should render the opened panel 1`] = `
     <div
       class="navbar-cta-group"
     >
-      <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
       <div
         data-candu-id="navbar-home-spacer"
       />
@@ -507,11 +497,6 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
       class="navbar-cta-group"
     >
       <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
-      <div
         data-candu-id="navbar-home-spacer"
       />
       <button
@@ -698,11 +683,6 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
     <div
       class="navbar-cta-group"
     >
-      <div
-        class="hiddenLink"
-        data-candu-id="navbar-dropdown"
-        data-testid="candu-hidden-link"
-      />
       <div
         data-candu-id="navbar-home-spacer"
       />

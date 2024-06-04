@@ -5,7 +5,7 @@ import {renderHook} from '@testing-library/react-hooks'
 
 import useInjectStyleToCandu from '../useInjectStyleToCandu'
 
-describe('useCallbackRef', () => {
+describe('useInjectStyleToCandu', () => {
     it('should inject style into existing shadow root', () => {
         const DummyComponent = <div>Shadow root host</div>
 

@@ -1,8 +1,9 @@
 import React, {ReactElement} from 'react'
 
+import {CanduProvider} from 'candu'
 import {NotificationsProvider} from 'common/notifications'
-import {SpotlightProvider} from 'providers/ui/SpotlightProvider'
 import {ErrorBoundary} from 'pages/ErrorBoundary'
+import {SpotlightProvider} from 'providers/ui/SpotlightProvider'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {ThemeProvider} from 'theme'
 
@@ -21,7 +22,9 @@ export default function Core({children}: Props) {
                     <SpotlightProvider>
                         <VoiceDeviceProvider>
                             <SplitTicketViewProvider>
-                                <App>{children}</App>
+                                <CanduProvider>
+                                    <App>{children}</App>
+                                </CanduProvider>
                             </SplitTicketViewProvider>
                         </VoiceDeviceProvider>
                     </SpotlightProvider>
