@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {createRef} from 'react'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 
 import {reportError} from 'utils/errors'
-import PhoneNumberInput from '../PhoneNumberInput'
+import PhoneNumberInput, {PhoneNumberInputHandle} from '../PhoneNumberInput'
 
 jest.mock('utils/errors')
 
@@ -69,6 +69,20 @@ describe('<PhoneNumberInput/>', () => {
         fireEvent.click(getByRole('button', {name: 'close'}))
 
         expect(onChange).toHaveBeenCalledWith('')
+    })
+
+    it('should trigger onChange when ref.current.onChange is called', () => {
+        const ref = createRef<PhoneNumberInputHandle>()
+        render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                ref={ref}
+            />
+        )
+        ref.current?.onChange('555')
+
+        expect(onChange).toHaveBeenCalledWith('+1555')
     })
 
     it('should not display the clear icon when isClearable is false', () => {

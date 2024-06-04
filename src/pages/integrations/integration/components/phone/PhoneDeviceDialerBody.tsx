@@ -9,7 +9,7 @@ import DialPad from './DialPad'
 type Props = {
     value: string
     onChange: (value: string) => void
-    results: UserSearchResult[]
+    results?: UserSearchResult[]
     isLoading: boolean
     isSearchTypeCustomer: boolean
     selectedCustomer: UserSearchResult | null
@@ -25,13 +25,15 @@ export default function PhoneDeviceDialerBody({
     selectedCustomer,
     onCustomerSelect,
 }: Props) {
+    const noSearchTriggered = !isLoading && !results
+
     const dialPad = (
         <div className={css.dialpad}>
             <DialPad onChange={onChange} value={value} />
         </div>
     )
 
-    if (selectedCustomer || value.length < 3) {
+    if (selectedCustomer || noSearchTriggered) {
         return dialPad
     }
 
@@ -45,7 +47,7 @@ export default function PhoneDeviceDialerBody({
         )
     }
 
-    if (isSearchTypeCustomer && !results.length) {
+    if (isSearchTypeCustomer && !results?.length) {
         return (
             <div className={classNames(css.results, css.noResults)}>
                 No results
@@ -53,7 +55,7 @@ export default function PhoneDeviceDialerBody({
         )
     }
 
-    if (results.length) {
+    if (results?.length) {
         return (
             <div className={classNames(css.results, css.resultsFound)}>
                 {results.map((result) => (

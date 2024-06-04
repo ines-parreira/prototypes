@@ -1,7 +1,10 @@
-import React, {useCallback, useState} from 'react'
+import React, {createRef, useCallback, useState} from 'react'
 import {debounce} from 'lodash'
 import {SearchBodyType, useSearch} from '@gorgias/api-queries'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import {isValidPhoneNumber} from 'libphonenumber-js'
+import PhoneNumberInput, {
+    PhoneNumberInputHandle,
+} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -18,14 +21,17 @@ export default function PhoneDeviceDialer() {
     const [inputValue, setInputValue] = useState('')
     const [selectedCustomer, setSelectedCustomer] =
         useState<UserSearchResult | null>(null)
+    const [phoneNumberInputError, setPhoneNumberInputError] = useState<string>()
+    const phoneNumberInputRef = createRef<PhoneNumberInputHandle>()
 
     const {
         mutate: searchCustomers,
         isLoading: isSearchingCustomers,
         data: data,
+        reset: resetMutation,
     } = useSearch()
 
-    const customers = data?.data.data ?? []
+    const customers = data?.data.data
     const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -44,18 +50,28 @@ export default function PhoneDeviceDialer() {
     const handleChange = (value: string) => {
         setInputValue(value)
         setSelectedCustomer(null)
+        setPhoneNumberInputError(undefined)
 
-        if (!value) {
-            searchCustomers({
-                data: {
-                    type: SearchBodyType.CustomerChannelPhone,
-                    query: '',
-                },
-            })
+        if (
+            (isSearchTypeCustomer && value.length < 3) ||
+            (!isSearchTypeCustomer && value.length < 5)
+        ) {
+            resetMutation()
+            return
         }
 
-        if (value.length >= 3) {
-            debouncedSearchCustomers(value)
+        debouncedSearchCustomers(value)
+    }
+
+    const handleSelectCustomer = (customer: UserSearchResult) => {
+        setInputValue(customer.customer.name)
+        setSelectedCustomer(customer)
+    }
+
+    const handleCallClick = () => {
+        if (!isSearchTypeCustomer && !isValidPhoneNumber(inputValue)) {
+            setPhoneNumberInputError('Enter a valid number')
+            return
         }
     }
 
@@ -75,7 +91,11 @@ export default function PhoneDeviceDialer() {
                             close
                         </IconButton>
                     }
-                    value={inputValue}
+                    value={
+                        selectedCustomer
+                            ? selectedCustomer.customer.name
+                            : inputValue
+                    }
                     onChange={handleChange}
                     autoFocus
                     className={css.dialpadInput}
@@ -85,20 +105,24 @@ export default function PhoneDeviceDialer() {
                     onChange={handleChange}
                     onLetterEntered={handleChange}
                     value={inputValue}
+                    error={phoneNumberInputError}
                     autoFocus
                     className={css.dialpadInput}
                     isClearable
+                    ref={phoneNumberInputRef}
                 />
             )}
 
             <PhoneDeviceDialerBody
                 value={inputValue}
-                onChange={handleChange}
+                onChange={(value) => {
+                    phoneNumberInputRef.current?.onChange(value)
+                }}
                 results={customers}
                 isLoading={isSearchingCustomers}
                 isSearchTypeCustomer={isSearchTypeCustomer}
                 selectedCustomer={selectedCustomer}
-                onCustomerSelect={setSelectedCustomer}
+                onCustomerSelect={handleSelectCustomer}
             />
 
             <div className={css.buttons}>
@@ -107,7 +131,12 @@ export default function PhoneDeviceDialer() {
                     Select integration
                     <ButtonIconLabel icon="arrow_drop_down" />
                 </Button>
-                <Button>Call</Button>
+                <Button
+                    onClick={handleCallClick}
+                    isDisabled={isSearchTypeCustomer && !selectedCustomer}
+                >
+                    Call
+                </Button>
             </div>
         </div>
     )

@@ -61,17 +61,16 @@ describe('PhoneDeviceDialerBody', () => {
         expect(screen.getByTestId('mock-dialpad')).toBeInTheDocument()
     })
 
-    it.each(['', '1', '12'])(
-        'should render dialpad when search value is shorter than 3 characters',
-        (value) => {
-            const props = {
-                ...defaultProps,
-                value,
-            }
-            renderComponent(props)
-            expect(screen.getByTestId('mock-dialpad')).toBeInTheDocument()
+    it('should render dialpad when search value is defined but search was not yet triggered', () => {
+        const props = {
+            ...defaultProps,
+            isLoading: false,
+            results: undefined,
+            value: '1234',
         }
-    )
+        renderComponent(props)
+        expect(screen.getByTestId('mock-dialpad')).toBeInTheDocument()
+    })
 
     it('should render skeleton when loading', () => {
         const props = {

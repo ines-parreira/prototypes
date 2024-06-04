@@ -10,7 +10,7 @@
     .dropdownBody {
         padding: @layout-spacing-s;
         overflow-y: visible;
-        height: 390px;
+        min-height: 390px;
     }
 
     .dialerWrapper {
@@ -27,8 +27,7 @@
 
     .results {
         margin-top: @layout-spacing-xs;
-        flex: 1;
-        max-height: 222px;
+        height: 222px;
         overflow-y: scroll;
 
         &.noResults {

@@ -6,6 +6,9 @@ import React, {
     useCallback,
     ComponentProps,
     ReactNode,
+    forwardRef,
+    useImperativeHandle,
+    ForwardedRef,
 } from 'react'
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 import {
@@ -40,6 +43,10 @@ import css from './PhoneNumberInput.less'
 
 const typedCountries = countries as {value: CountryCode; label: string}[]
 
+export type PhoneNumberInputHandle = {
+    onChange: (value: string) => void
+}
+
 type Props = {
     allowedCountries?: CountryCode[]
     defaultCountry?: CountryCode
@@ -53,23 +60,26 @@ type Props = {
     isClearable?: boolean
 } & ComponentProps<typeof TextInput>
 
-const PhoneNumberInput = ({
-    allowedCountries,
-    autoFocus = false,
-    className,
-    defaultCountry = 'US',
-    disabled = false,
-    label,
-    onChange,
-    onCountryChange,
-    onLetterEntered,
-    value,
-    isRequired,
-    error,
-    caption,
-    isClearable,
-    ...other
-}: Props) => {
+const PhoneNumberInput = (
+    {
+        allowedCountries,
+        autoFocus = false,
+        className,
+        defaultCountry = 'US',
+        disabled = false,
+        label,
+        onChange,
+        onCountryChange,
+        onLetterEntered,
+        value,
+        isRequired,
+        error,
+        caption,
+        isClearable,
+        ...other
+    }: Props,
+    ref: ForwardedRef<PhoneNumberInputHandle>
+) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const [isPhoneNumberTooLong, setIsPhoneNumberTooLong] = useState(false)
@@ -158,6 +168,16 @@ const PhoneNumberInput = ({
     useOnClickOutside<HTMLDivElement>(containerRef, () => {
         setCountrySelectVisible(false)
     })
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            onChange: (value: string) => {
+                handleNumberChange(value, currentCountry)
+            },
+        }),
+        [handleNumberChange, currentCountry]
+    )
 
     const hasError = !!error || isPhoneNumberTooLong
 
@@ -262,4 +282,4 @@ const PhoneNumberInput = ({
     )
 }
 
-export default PhoneNumberInput
+export default forwardRef<PhoneNumberInputHandle, Props>(PhoneNumberInput)
