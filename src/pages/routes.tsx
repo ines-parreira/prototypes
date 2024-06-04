@@ -184,13 +184,14 @@ import {
 } from 'pages/convert/campaigns/containers/CampaignTemplateCustomizeView'
 import PanelLayout from 'pages/PanelLayout'
 import ServiceLevelAgreements from 'pages/stats/sla/ServiceLevelAgreements'
-import {AiAgentGuidanceContainer} from './automate/aiAgent/AiAgentGuidanceContainer'
-import {AiAgentGuidanceNewContainer} from './automate/aiAgent/AiAgentGuidanceNewContainer'
-import {AiAgentAccountConfigurationProvider} from './automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
-import {AiAgentGuidanceDetailContainer} from './automate/aiAgent/AiAgentGuidanceDetailContainer'
-import {AiAgentGuidanceTemplatesContainer} from './automate/aiAgent/AiAgentGuidanceTemplatesContainer'
-import {AiAgentGuidanceTemplateNewContainer} from './automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
-import {AiAgentErrorBoundary} from './automate/aiAgent/providers/AiAgentErrorBoundary'
+import ChannelsReport from 'pages/stats/channels/ChannelsReport'
+import {AiAgentGuidanceContainer} from 'pages/automate/aiAgent/AiAgentGuidanceContainer'
+import {AiAgentGuidanceNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceNewContainer'
+import {AiAgentAccountConfigurationProvider} from 'pages/automate/aiAgent/providers/AiAgentAccountConfigurationProvider'
+import {AiAgentGuidanceDetailContainer} from 'pages/automate/aiAgent/AiAgentGuidanceDetailContainer'
+import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplatesContainer'
+import {AiAgentGuidanceTemplateNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
+import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -489,6 +490,8 @@ export function StatsRoutes() {
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAnalyticsNewBusiestTime: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
+    const newChannelsReport: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
 
     useEffect(logPageChange, [location.pathname])
 
@@ -603,6 +606,18 @@ export function StatsRoutes() {
                         render={() => (
                             <App
                                 content={ServiceLevelAgreements}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
+                {!!newChannelsReport && (
+                    <Route
+                        exact
+                        path={`${path}/new-channels`}
+                        render={() => (
+                            <App
+                                content={ChannelsReport}
                                 navbar={StatsNavbarContainer}
                             />
                         )}

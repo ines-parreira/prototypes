@@ -19,6 +19,7 @@ import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
     NEW_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
+import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreements'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -55,6 +56,9 @@ describe('StatsNavbarView', () => {
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsSLAs]: false,
+        }))
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewChannelsReport]: false,
         }))
     })
 
@@ -183,6 +187,25 @@ describe('StatsNavbarView', () => {
             </Provider>
         )
 
-        expect(screen.getByText('SLAs')).toBeInTheDocument()
+        expect(
+            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE)
+        ).toBeInTheDocument()
+    })
+
+    it('should render the link to the New Channels Reports', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewChannelsReport]: true,
+        }))
+        const {container} = renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+        const newChannelsReportLink = container.querySelector(
+            'a[href="/app/stats/new-channels"]'
+        )
+        expect(newChannelsReportLink).toBeInTheDocument()
     })
 })

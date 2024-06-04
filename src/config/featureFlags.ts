@@ -9,6 +9,7 @@ export enum FeatureFlagKey {
     AutomateActions = 'automate-ai-agent-actions',
     AnalyticsSLAs = 'analytics-slas-report',
     AnalyticsNewBusiestTime = 'analytics-new-busiest-time',
+    AnalyticsNewChannelsReport = 'analytics-new-channels-report',
     AutomateLandingPage = 'automate-landing-page',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
