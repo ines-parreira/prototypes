@@ -21,7 +21,9 @@ import {IntegrationType} from 'models/integration/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useShopifyThemeAppExtension from '../hooks/useShopifyThemeAppExtension'
-import {getGorgiasMainThemeAppExtensionId} from '../hooks/useThemeAppExtensionInstallation'
+import useThemeAppExtensionInstallation, {
+    getGorgiasMainThemeAppExtensionId,
+} from '../hooks/useThemeAppExtensionInstallation'
 import GorgiasChatIntegrationVisibilityControls, {
     GorgiasChatIntegrationVisibilityControlsHandle,
 } from './GorgiasChatIntegrationVisibilityControls'
@@ -67,6 +69,11 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
     )
     const isStoreOfShopifyType =
         storeIntegration?.type === IntegrationType.Shopify
+
+    const {shouldUseThemeAppExtensionInstallation} =
+        useThemeAppExtensionInstallation(
+            isStoreOfShopifyType ? storeIntegration : undefined
+        )
 
     const {
         isInstalled: isThemeAppExtensionInstalled,
@@ -241,6 +248,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
     const renderCardButton = () => {
         if (
+            shouldUseThemeAppExtensionInstallation &&
             !isThemeAppExtensionInstalled &&
             isInstalled &&
             !wasShopifyThemeSettingsOpened
