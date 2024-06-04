@@ -1,19 +1,23 @@
-import {useState} from 'react'
-import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import {useMemo, useState} from 'react'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
-import {MergedRecord} from 'hooks/reporting/withEnrichment'
+import {IDRecord, MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
+import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketSLACubeWithJoins,
+    TicketSLADimension,
+} from 'models/reporting/cubes/sla/TicketSLACube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {OverviewMetric, TableColumn} from 'state/ui/stats/types'
+import {OverviewMetric, SlaMetric, TableColumn} from 'state/ui/stats/types'
 
 export interface TicketDetails {
     id: number | string
@@ -34,6 +38,7 @@ export interface DrillDownRowData {
               id: number
           } & Partial<User>)
         | null
+    rowData?: MergedRecord<any, any>
 }
 
 interface DrillDownData {
@@ -85,6 +90,7 @@ export const formatDrillDownRowData = (
                   )?.name || '',
           }
         : null,
+    ...(row?.['slas'] ? {rowData: row['slas']} : {}),
 })
 
 export const getDrillDownMetricOrder = (
@@ -118,7 +124,11 @@ function withoutLimit<Cube extends Cubes>(
 
 export const useDrillDownQueryWithoutLimit = (
     metricData: DrillDownMetric
-): ReportingQuery<HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins> => {
+): ReportingQuery<
+    | HelpdeskMessageCubeWithJoins
+    | HandleTimeCubeWithJoins
+    | TicketSLACubeWithJoins
+> => {
     const query = useDrillDownQuery(metricData)
 
     return withoutLimit(query)
@@ -135,7 +145,10 @@ export const useDrillDownData = (
         defaultEnrichmentFields
     )
 
-    const rowData = someData?.allData || []
+    const rowData = useMemo(
+        () => aggregateSlas(someData?.allData, metricData, query.dimensions[0]),
+        [metricData, query.dimensions, someData?.allData]
+    )
     const totalResults = rowData.length
 
     return {
@@ -162,4 +175,51 @@ export const useDrillDownData = (
                 Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
             ),
     }
+}
+
+const aggregateSlas = (
+    allData:
+        | (MergedRecord<any, EnrichmentFields | EnrichmentFields.TicketId> &
+              IDRecord<any>)[]
+        | undefined,
+    metricData: DrillDownMetric,
+    ticketIdField: string
+): MergedRecord<any, any>[] => {
+    if (allData === undefined) {
+        return []
+    }
+
+    if (
+        metricData.metricName === SlaMetric.AchievementRate ||
+        metricData.metricName === SlaMetric.BreachedTicketsRate
+    ) {
+        const combinedTicketData = allData.reduce<
+            Record<string, MergedRecord<any, any>[]>
+        >((acc, current) => {
+            const ticketId: string = current[ticketIdField]
+            acc[ticketId] = acc[ticketId]
+                ? [...acc[ticketId], current]
+                : [current]
+            return acc
+        }, {})
+
+        return Object.keys(combinedTicketData).map((key) =>
+            combinedTicketData[key].reduce((acc, current) => {
+                const slaPolicyMetricName =
+                    current[TicketSLADimension.SlaPolicyMetricName]
+                return {
+                    ...acc,
+                    ...current,
+                    slas: {
+                        ...acc.slas,
+                        [slaPolicyMetricName]: {
+                            ...current,
+                        },
+                    },
+                }
+            }, {})
+        )
+    }
+
+    return allData
 }

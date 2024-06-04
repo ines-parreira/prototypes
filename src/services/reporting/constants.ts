@@ -1,3 +1,5 @@
+import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+
 export const CUSTOMER_SATISFACTION_LABEL = 'Customer satisfaction'
 export const MEDIAN_FIRST_RESPONSE_TIME_LABEL = 'First response time'
 export const MEDIAN_RESOLUTION_TIME_LABEL = 'Resolution time'
@@ -32,4 +34,10 @@ export enum MetricName {
     MedianFirstResponseTime = 'medianFirstResponseTime',
     MedianResolutionTime = 'medianResolutionTime',
     MessagesPerTicket = 'messagesPerTicket',
+}
+
+export const SlaStatusLabel: Record<TicketSLAStatus, string> = {
+    [TicketSLAStatus.Breached]: BREACHED_SLA_LABEL,
+    [TicketSLAStatus.Satisfied]: ACHIEVED_SLA_LABEL,
+    [TicketSLAStatus.Pending]: PENDING_SLA_LABEL,
 }

@@ -16,7 +16,7 @@ import {
 } from 'state/ui/stats/drillDownSlice'
 import {hasRole} from 'utils'
 
-import css from './DrillDownDownloadButton.less'
+import css from 'pages/stats/DrillDownDownloadButton.less'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
 export const TOTAL_TICKETS_COUNT_PLACEHOLDER = 'All'

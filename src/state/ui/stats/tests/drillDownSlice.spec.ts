@@ -1,6 +1,7 @@
 import {act} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {appQueryClient} from 'api/queryClient'
 import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
@@ -8,6 +9,7 @@ import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support
 import {RootState, StoreDispatch} from 'state/types'
 import {
     OverviewMetric,
+    SlaMetric,
     TableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
@@ -22,6 +24,7 @@ import {
     buildAgentMetric,
     createExportTicketDrillDownJob,
     closeDrillDownModal,
+    SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
@@ -248,6 +251,23 @@ describe('drillDownSlice', () => {
                 metricTitle: '',
                 showMetric: false,
                 metricValueFormat: 'decimal',
+            })
+
+            expect(
+                getDrillDownMetricColumn({
+                    ...state,
+                    ui: {
+                        [drillDownSlice.name]: {
+                            metricData: {
+                                metricName: SlaMetric.AchievementRate,
+                            },
+                        },
+                    },
+                } as unknown as RootState)
+            ).toEqual({
+                metricTitle: SLA_STATUS_COLUMN_LABEL,
+                showMetric: true,
+                metricValueFormat: SLA_FORMAT,
             })
         })
 

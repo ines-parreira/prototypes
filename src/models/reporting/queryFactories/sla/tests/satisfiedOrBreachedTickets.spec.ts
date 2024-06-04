@@ -1,7 +1,7 @@
 import {QueryFiltersItemOperator} from '@gorgias/api-types'
 import moment from 'moment/moment'
 import {ReportingGranularity} from 'models/reporting/types'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {satisfiedOrBreachedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import {
     TicketSLADimension,
@@ -10,7 +10,6 @@ import {
     TicketSLASegment,
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import {OrderDirection} from 'models/api/types'
-import {slaTicketsQueryFactory} from 'models/reporting/queryFactories/sla/slaTickets'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getFilterDateRange} from 'utils/reporting'
 
@@ -30,8 +29,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
         it('should produce the query', () => {
             const query = satisfiedOrBreachedTicketsDrillDownQueryFactory(
                 statsFilters,
-                timezone,
-                sorting
+                timezone
             )
 
             expect(query).toEqual({
@@ -60,13 +58,13 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                 ],
                 segments: [TicketSLASegment.SatisfiedOrBreachedTickets],
                 dimensions: [
+                    TicketDimension.TicketId,
                     TicketSLADimension.TicketId,
                     TicketSLADimension.SlaStatus,
                     TicketSLADimension.SlaPolicyMetricName,
                     TicketSLADimension.SlaPolicyMetricStatus,
                     TicketSLADimension.SlaDelta,
                 ],
-                order: [[TicketSLAMeasure.TicketCount, OrderDirection.Desc]],
                 timeDimensions: [
                     {
                         dateRange: getFilterDateRange(statsFilters),
@@ -79,15 +77,18 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
         })
 
         it('should produce the query with sorting', () => {
-            const query = slaTicketsQueryFactory(
+            const query = satisfiedOrBreachedTicketsDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 sorting
             )
 
             expect(query).toEqual({
-                ...slaTicketsQueryFactory(statsFilters, timezone),
-                order: [[TicketSLAMeasure.TicketCount, sorting]],
+                ...satisfiedOrBreachedTicketsDrillDownQueryFactory(
+                    statsFilters,
+                    timezone
+                ),
+                order: [[TicketDimension.CreatedDatetime, sorting]],
             })
         })
     })

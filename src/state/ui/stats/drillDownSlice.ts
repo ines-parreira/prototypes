@@ -7,9 +7,11 @@ import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ReportingQuery} from 'models/reporting/types'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
+import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
@@ -17,9 +19,12 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     OverviewMetric,
+    SlaMetric,
     TableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
+
+export const SLA_FORMAT = 'sla'
 
 type CommonMetrics = {
     title?: string
@@ -68,10 +73,15 @@ export type TicketFieldsMetrics = {
     }
 } & CommonMetrics
 
+export type SlaMetrics = {
+    metricName: SlaMetric
+} & CommonMetrics
+
 export type DrillDownMetric =
     | AgentsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
+    | SlaMetrics
 
 export type DrillDownState = {
     isOpen: boolean
@@ -114,13 +124,19 @@ export const EXPORT_TICKET_DRILL_DOWN_JOB_ACTION = 'exportTicketDrillDownJob'
 
 export const createExportTicketDrillDownJob = createAsyncThunk<
     Job,
-    ReportingQuery<HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins>,
+    ReportingQuery<
+        | HelpdeskMessageCubeWithJoins
+        | HandleTimeCubeWithJoins
+        | TicketSLACubeWithJoins
+    >,
     {dispatch: StoreDispatch; state: RootState}
 >(
     EXPORT_TICKET_DRILL_DOWN_JOB_ACTION,
     async (
         query: ReportingQuery<
-            HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins
+            | HelpdeskMessageCubeWithJoins
+            | HandleTimeCubeWithJoins
+            | TicketSLACubeWithJoins
         >,
         {dispatch, getState, rejectWithValue}
     ) => {
@@ -196,7 +212,14 @@ export const getDrillDownMetric = (state: RootState) => {
 
 const getMetricValueFormat = (
     metricName: DrillDownMetric['metricName']
-): MetricValueFormat => {
+): MetricValueFormat | typeof SLA_FORMAT => {
+    if (
+        metricName === SlaMetric.AchievementRate ||
+        metricName === SlaMetric.BreachedTicketsRate
+    ) {
+        return SLA_FORMAT
+    }
+
     if (
         metricName === TableColumn.MedianFirstResponseTime ||
         metricName === TableColumn.MedianResolutionTime ||
@@ -220,7 +243,7 @@ export const getDrillDownMetricColumn = (
 ): {
     metricTitle: string
     showMetric: boolean
-    metricValueFormat: MetricValueFormat
+    metricValueFormat: MetricValueFormat | typeof SLA_FORMAT
 } => {
     const metricData = state.ui[drillDownSlice.name].metricData
     let metricTitle = ''
@@ -237,6 +260,11 @@ export const getDrillDownMetricColumn = (
         metricTitle = TableLabels[metricData.metricName]
     } else if ('customFieldValue' in metricData) {
         metricTitle = ''
+    } else if (
+        metricData.metricName === SlaMetric.AchievementRate ||
+        metricData.metricName === SlaMetric.BreachedTicketsRate
+    ) {
+        metricTitle = SLA_STATUS_COLUMN_LABEL
     } else {
         metricTitle = OverviewMetricConfig[metricData.metricName].title
     }

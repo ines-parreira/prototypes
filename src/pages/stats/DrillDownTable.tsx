@@ -1,32 +1,34 @@
-import React from 'react'
 import classNames from 'classnames'
+import React from 'react'
+import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
+
+import {
+    DRILL_DOWN_PER_PAGE,
+    useDrillDownData,
+} from 'hooks/reporting/useDrillDownData'
+import useAppSelector from 'hooks/useAppSelector'
+import {NumberedPagination} from 'pages/common/components/Paginations'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import useAppSelector from 'hooks/useAppSelector'
-import {
-    DrillDownMetric,
-    getDrillDownMetricColumn,
-} from 'state/ui/stats/drillDownSlice'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {NumberedPagination} from 'pages/common/components/Paginations'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-
 import {
-    DRILL_DOWN_PER_PAGE,
-    useDrillDownData,
-} from 'hooks/reporting/useDrillDownData'
-import {DrillDownTicketDetailsCell} from './DrillDownTicketDetailsCell'
-import {TruncateCellContent} from './TruncateCellContent'
-import {AgentAvatar} from './AgentAvatar'
-import css from './DrillDownTable.less'
+    DrillDownMetric,
+    getDrillDownMetricColumn,
+    SLA_FORMAT,
+} from 'state/ui/stats/drillDownSlice'
+import {AgentAvatar} from 'pages/stats/AgentAvatar'
+import css from 'pages/stats/DrillDownTable.less'
+import {DrillDownTicketDetailsCell} from 'pages/stats/DrillDownTicketDetailsCell'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -139,11 +141,17 @@ export const DrillDownTable = ({metricData}: {metricData: DrillDownMetric}) => {
                                       />
                                       {showMetric && (
                                           <BodyCell width={140}>
-                                              {formatMetricValue(
-                                                  item.metricValue,
-                                                  metricValueFormat,
-                                                  NOT_AVAILABLE_PLACEHOLDER
-                                              )}
+                                              {metricValueFormat !== SLA_FORMAT
+                                                  ? formatMetricValue(
+                                                        item.metricValue,
+                                                        metricValueFormat,
+                                                        NOT_AVAILABLE_PLACEHOLDER
+                                                    )
+                                                  : item.rowData && (
+                                                        <SLAStatusCell
+                                                            item={item.rowData}
+                                                        />
+                                                    )}
                                           </BodyCell>
                                       )}
                                       <BodyCell width={180}>

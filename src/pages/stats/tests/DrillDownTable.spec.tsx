@@ -4,21 +4,28 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {NumberedPagination} from 'pages/common/components/Paginations'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {OverviewMetric} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
-import {DrillDownTable} from 'pages/stats/DrillDownTable'
+import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
+import {
+    TicketSLADimension,
+    TicketSLAStatus,
+} from 'models/reporting/cubes/sla/TicketSLACube'
+import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {
     DrillDownRowData,
     useDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
+import {NumberedPagination} from 'pages/common/components/Paginations'
+import {DrillDownTable} from 'pages/stats/DrillDownTable'
+import {SlaStatusLabel} from 'services/reporting/constants'
+
+import {RootState, StoreDispatch} from 'state/types'
 import {
     DrillDownMetric,
     getDrillDownMetricColumn,
+    SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
+import {OverviewMetric, SlaMetric} from 'state/ui/stats/types'
+import {assumeMock} from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -170,6 +177,44 @@ describe('<DrillDownTable />', () => {
             `/app/ticket/${exampleRow.ticket.id}`,
             '_blank'
         )
+    })
+
+    it('should render SlaStatusCell', () => {
+        const metricName = 'someMetric'
+        const metricStatus = TicketSLAStatus.Breached
+        const dataWithSlas = {
+            ...exampleRow,
+            rowData: {
+                [metricName]: {
+                    [TicketSLADimension.SlaPolicyMetricName]: metricName,
+                    [TicketSLADimension.SlaPolicyMetricStatus]: metricStatus,
+                    [TicketSLADimension.SlaDelta]: 123,
+                },
+            },
+        }
+        getDrillDownMetricColumnMock.mockReturnValue({
+            showMetric: true,
+            metricTitle: SlaMetricConfig[SlaMetric.AchievementRate].title,
+            metricValueFormat: SLA_FORMAT,
+        })
+        useDrillDownDataMock.mockReturnValue({
+            data: [dataWithSlas],
+            currentPage,
+            perPage: 1,
+            isFetching: false,
+        } as any)
+
+        render(
+            <Provider store={mockStore({})}>
+                <DrillDownTable
+                    metricData={{metricName: SlaMetric.AchievementRate}}
+                />
+            </Provider>
+        )
+
+        expect(
+            screen.getByText(SlaStatusLabel[metricStatus])
+        ).toBeInTheDocument()
     })
 
     it('should render Pagination when more then one page of results', () => {

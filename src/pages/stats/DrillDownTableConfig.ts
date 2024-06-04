@@ -1,7 +1,9 @@
 import {OrderDirection} from 'models/api/types'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {satisfiedOrBreachedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {firstResponseTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
@@ -18,22 +20,29 @@ import {StatsFilters} from 'models/stat/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     OverviewMetric,
+    SlaMetric,
     TableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 
-type QueryBuilder = (
+type QueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-) => ReportingQuery<HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins>
+) => ReportingQuery<
+    | HelpdeskMessageCubeWithJoins
+    | HandleTimeCubeWithJoins
+    | TicketSLACubeWithJoins
+>
 
 const queryBuilderWithAgentFilter =
-    (agentId: number, queryBuilder: QueryBuilder): QueryBuilder =>
+    (agentId: number, queryBuilder: QueryFactory): QueryFactory =>
     (statsFilters: StatsFilters, timezone: string, sorting?: OrderDirection) =>
         queryBuilder({...statsFilters, agents: [agentId]}, timezone, sorting)
 
-export const getDrillDownQuery = (metricName: DrillDownMetric) => {
+export const getDrillDownQuery = (
+    metricName: DrillDownMetric
+): QueryFactory => {
     switch (metricName.metricName) {
         case OverviewMetric.CustomerSatisfaction:
             return customerSatisfactionMetricDrillDownQueryFactory
@@ -103,6 +112,9 @@ export const getDrillDownQuery = (metricName: DrillDownMetric) => {
                 metricName.perAgentId,
                 ticketHandleTimePerTicketDrillDownQueryFactory
             )
+        case SlaMetric.AchievementRate:
+        case SlaMetric.BreachedTicketsRate:
+            return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,

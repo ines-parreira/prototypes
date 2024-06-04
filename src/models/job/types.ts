@@ -1,5 +1,6 @@
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ReportingQuery} from 'models/reporting/types'
 
 export enum JobStatus {
@@ -46,7 +47,9 @@ export type JobParams =
 
 export type ReportingQueryJobParams = {
     reporting_query: ReportingQuery<
-        HelpdeskMessageCubeWithJoins | HandleTimeCubeWithJoins
+        | HelpdeskMessageCubeWithJoins
+        | HandleTimeCubeWithJoins
+        | TicketSLACubeWithJoins
     >
 }
 

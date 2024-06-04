@@ -6,6 +6,7 @@ import {
     TicketSLASegment,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {slaTicketsQueryFactory} from 'models/reporting/queryFactories/sla/slaTickets'
 import {
     ReportingFilterOperator,
@@ -55,6 +56,7 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting),
     dimensions: [
+        TicketDimension.TicketId,
         TicketSLADimension.TicketId,
         TicketSLADimension.SlaStatus,
         TicketSLADimension.SlaPolicyMetricName,
@@ -68,4 +70,9 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
             dateRange: getFilterDateRange(filters),
         },
     ],
+    ...(sorting
+        ? {
+              order: [[TicketDimension.CreatedDatetime, sorting]],
+          }
+        : {}),
 })
