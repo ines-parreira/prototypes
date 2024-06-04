@@ -2,28 +2,32 @@ import {ReportIssueOption} from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null
 
-export type GuidanceFeedback = {
+export type Guidance = {
     id: number
     name: string
-    feedback: Feedback
 }
 
-export type KnowledgeFeedback = {
+export type Knowledge = {
     type: 'article' | 'external_snippet' | 'macro'
     id: number
     name: string
     url?: string
-    feedback: Feedback
 }
 
-export type ActionFeedback = {
+export type Action = {
     id: number
     name: string
-    feedback: Feedback
 }
 
 export type FeedbackOnResource = {
     resourceId: number
+    resourceType:
+        | 'action'
+        | 'guidance'
+        | 'article'
+        | 'macro'
+        | 'external_snippet'
+    type: 'binary'
     feedback: Feedback
 }
 
@@ -34,12 +38,12 @@ export type BinaryFeedbackOnMessage = {
 
 export type IssueFeedbackOnMessage = {
     type: 'issue'
-    feedback: Feedback
+    feedback: ReportIssueOption
 }
 
 export type ResourceFeedbackOnMessage = {
     type: 'resource'
-    resourceType: 'article' | 'macro' | 'externalURL'
+    resourceType: 'article' | 'macro' | 'external_snippet'
     resourceId: number
 }
 
@@ -48,6 +52,10 @@ export type FeedbackOnMessage =
     | IssueFeedbackOnMessage
     | ResourceFeedbackOnMessage
 
+export const isIssueFeedbackOnMessage = (
+    feedback: FeedbackOnMessage
+): feedback is IssueFeedbackOnMessage => feedback.type === 'issue'
+
 export type MessageFeedback = {
     messageId: number
     summary: string
@@ -55,10 +63,9 @@ export type MessageFeedback = {
         id: number
         url: string
     }[]
-    guidance: GuidanceFeedback[]
-    knowledge: KnowledgeFeedback[]
-    actions: ActionFeedback[]
-    reportedIssues: ReportIssueOption[]
+    guidance: Guidance[]
+    knowledge: Knowledge[]
+    actions: Action[]
     allowsFeedback: boolean
     feedbackOnResource: FeedbackOnResource[]
     feedbackOnMessage: FeedbackOnMessage[]
@@ -71,6 +78,10 @@ export type TicketFeedback = {
 }
 
 export type SubmitMessageFeedback = {
-    feedbackOnResource: FeedbackOnResource[]
-    feedbackOnMessage: FeedbackOnMessage[]
+    feedbackOnResource?: FeedbackOnResource[]
+    feedbackOnMessage?: FeedbackOnMessage[]
+}
+
+export type DeleteMessageFeedback = {
+    feedbackOnMessage: (IssueFeedbackOnMessage | ResourceFeedbackOnMessage)[]
 }

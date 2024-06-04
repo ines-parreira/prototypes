@@ -10,7 +10,10 @@ import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants
 import {TicketMessage} from 'models/ticket/types'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+import {
+    useGetAiAgentFeedback,
+    useSubmitAIAgentTicketMessagesFeedback,
+} from 'models/aiAgentFeedback/queries'
 
 import AIAgentBanner from '../AIAgentBanner'
 
@@ -19,6 +22,9 @@ jest.mock('../AIAgentFeedback', () => () => <div data-testid="feedback" />)
 jest.mock('models/aiAgentFeedback/queries')
 
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
+const useSubmitAIAgentTicketMessagesFeedbackMock = assumeMock(
+    useSubmitAIAgentTicketMessagesFeedback
+)
 const queryClient = mockQueryClient()
 
 const mockMessage = {
@@ -36,6 +42,7 @@ const store = mockStore({
     },
 } as RootState)
 store.dispatch = jest.fn()
+const submitAIAgentTicketMessagesFeedbackMock = jest.fn()
 
 describe('AIAgentBanner', () => {
     beforeEach(() => {
@@ -46,6 +53,15 @@ describe('AIAgentBanner', () => {
             isLoading: false,
             isError: false,
         } as any)
+
+        useSubmitAIAgentTicketMessagesFeedbackMock.mockImplementation(() => {
+            return {
+                mutate: submitAIAgentTicketMessagesFeedbackMock,
+                mutateAsync: submitAIAgentTicketMessagesFeedbackMock,
+            } as unknown as ReturnType<
+                typeof useSubmitAIAgentTicketMessagesFeedback
+            >
+        })
     })
 
     it("doesn't render the component when loading", () => {
@@ -77,11 +93,13 @@ describe('AIAgentBanner', () => {
                     messages: [
                         {
                             messageId: mockMessage.id,
-                            actions: [{feedback: 'thumbs_up'}],
-                            guidance: [{feedback: 'thumbs_up'}],
-                            knowledge: [{feedback: 'thumbs_up'}],
                             summary: 'summary',
                             allowsFeedback: true,
+                            feedbackOnResource: [
+                                {resourceId: 1, feedback: 'thumbs_up'},
+                                {resourceId: 2, feedback: 'thumbs_up'},
+                                {resourceId: 3, feedback: 'thumbs_up'},
+                            ],
                         },
                     ],
                     shopName: 'shopName',
@@ -104,10 +122,12 @@ describe('AIAgentBanner', () => {
                     messages: [
                         {
                             messageId: mockMessage.id,
-                            actions: [{feedback: 'thumbs_up'}],
-                            guidance: [{feedback: null}],
-                            knowledge: [{feedback: 'thumbs_up'}],
                             summary: 'summary',
+                            feedbackOnResource: [
+                                {resourceId: 1, feedback: 'thumbs_up'},
+                                {resourceId: 2, feedback: 'thumbs_up'},
+                                {resourceId: 3, feedback: 'thumbs_down'},
+                            ],
                         },
                     ],
                     shopName: 'shopName',

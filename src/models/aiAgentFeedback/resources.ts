@@ -1,6 +1,10 @@
 // import {apiClient} from 'models/aiAgent/resources/account-configuration'
 import axios from 'axios'
-import {SubmitMessageFeedback, TicketFeedback} from './types'
+import {
+    SubmitMessageFeedback,
+    TicketFeedback,
+    DeleteMessageFeedback,
+} from './types'
 
 const baseURL = `http://dummy.address.forrequestly`
 
@@ -25,5 +29,16 @@ export const submitAIAgentTicketMessagesFeedback = async (
     return await apiClient.post<SubmitMessageFeedback>(
         `feedback/ticket/${ticketId}/message/${messageId}`,
         feedbackToSubmit
+    )
+}
+
+export const deleteAIAgentTicketMessagesFeedback = async (
+    ticketId: number,
+    messageId: number,
+    feedbackToDelete: DeleteMessageFeedback
+) => {
+    return await apiClient.delete<SubmitMessageFeedback>(
+        `feedback/ticket/${ticketId}/message/${messageId}`,
+        {data: feedbackToDelete}
     )
 }

@@ -148,12 +148,10 @@ describe('AIAgentTicketFeedback', () => {
                                     {
                                         id: 1,
                                         name: 'Cancelling an order',
-                                        feedback: 'thumbs_up',
                                     },
                                     {
                                         id: 2,
                                         name: 'How to make your cat do the laundry',
-                                        feedback: 'thumbs_up',
                                     },
                                 ],
                             },
@@ -185,14 +183,12 @@ describe('AIAgentTicketFeedback', () => {
                                         type: 'article',
                                         id: 234,
                                         name: 'How To Order a Pizza',
-                                        feedback: 'thumbs_up',
                                     },
                                     {
                                         type: 'external_snippet',
                                         id: 235,
                                         name: 'Refund Policy for Aliens',
                                         url: 'https://artemis.gorgias.help/en-US#article-13609',
-                                        feedback: 'thumbs_down',
                                     },
                                 ],
                             },
@@ -223,12 +219,10 @@ describe('AIAgentTicketFeedback', () => {
                                     {
                                         id: 1,
                                         name: 'Snooze',
-                                        feedback: 'thumbs_up',
                                     },
                                     {
                                         id: 2,
                                         name: 'Close',
-                                        feedback: 'thumbs_down',
                                     },
                                 ],
                             },

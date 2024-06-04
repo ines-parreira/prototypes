@@ -1,13 +1,25 @@
 import React from 'react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import {act, renderHook} from '@testing-library/react-hooks'
 
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useGetAiAgentFeedback} from '../queries'
-import {getAIAgentTicketMessagesFeedback} from '../resources'
+import {
+    useGetAiAgentFeedback,
+    useSubmitAIAgentTicketMessagesFeedback,
+    useDeleteAIAgentTicketMessagesFeedback,
+} from '../queries'
+import {
+    deleteAIAgentTicketMessagesFeedback,
+    getAIAgentTicketMessagesFeedback,
+    submitAIAgentTicketMessagesFeedback,
+} from '../resources'
+import {DeleteMessageFeedback, SubmitMessageFeedback} from '../types'
+import {ReportIssueOption} from '../constants'
 
 jest.mock('../resources', () => ({
     getAIAgentTicketMessagesFeedback: jest.fn(),
+    submitAIAgentTicketMessagesFeedback: jest.fn(),
+    deleteAIAgentTicketMessagesFeedback: jest.fn(),
 }))
 
 const queryClient = mockQueryClient()
@@ -39,5 +51,77 @@ describe('useGetAiAgentFeedback', () => {
         expect(result.current.isLoading).toBe(false)
         expect(result.current.data).toBe(mockFeedback)
         expect(getAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(ticketId)
+    })
+})
+
+describe('useSubmitAIAgentTicketMessagesFeedback', () => {
+    it('should call submitAIAgentTicketMessagesFeedback with the correct ticketId and messageId', async () => {
+        const ticketId = 123
+        const messageId = 456
+        const feedback: SubmitMessageFeedback = {
+            feedbackOnResource: [
+                {
+                    resourceId: 1,
+                    resourceType: 'action',
+                    type: 'binary',
+                    feedback: 'thumbs_up',
+                },
+            ],
+            feedbackOnMessage: [
+                {type: 'binary', feedback: 'thumbs_up'},
+                {type: 'resource', resourceType: 'article', resourceId: 2},
+            ],
+        }
+        ;(submitAIAgentTicketMessagesFeedback as jest.Mock).mockResolvedValue(
+            feedback
+        )
+
+        const {result, waitFor} = renderHook(
+            () => useSubmitAIAgentTicketMessagesFeedback(),
+            {wrapper}
+        )
+
+        act(() => result.current.mutate([ticketId, messageId, feedback]))
+
+        await waitFor(() => {
+            expect(submitAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(
+                ticketId,
+                messageId,
+                feedback
+            )
+        })
+    })
+})
+
+describe('useDeleteAIAgentTicketMessagesFeedback', () => {
+    it('should call deleteAIAgentTicketMessagesFeedback with the correct ticketId and messageId', async () => {
+        const ticketId = 123
+        const messageId = 456
+        const feedback: DeleteMessageFeedback = {
+            feedbackOnMessage: [
+                {
+                    type: 'issue',
+                    feedback: ReportIssueOption.IncorrectLanguageUsed,
+                },
+            ],
+        }
+        ;(deleteAIAgentTicketMessagesFeedback as jest.Mock).mockResolvedValue(
+            feedback
+        )
+
+        const {result, waitFor} = renderHook(
+            () => useDeleteAIAgentTicketMessagesFeedback(),
+            {wrapper}
+        )
+
+        act(() => result.current.mutate([ticketId, messageId, feedback]))
+
+        await waitFor(() => {
+            expect(deleteAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(
+                ticketId,
+                messageId,
+                feedback
+            )
+        })
     })
 })

@@ -3,9 +3,11 @@ import MockAdapter from 'axios-mock-adapter'
 import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
+    deleteAIAgentTicketMessagesFeedback,
     apiClient,
 } from 'models/aiAgentFeedback/resources'
-import {SubmitMessageFeedback} from '../types'
+import {SubmitMessageFeedback, DeleteMessageFeedback} from '../types'
+import {ReportIssueOption} from '../constants'
 
 const mockedServer = new MockAdapter(apiClient)
 
@@ -19,10 +21,7 @@ describe('AI Agent Feedback resources', () => {
         const expectedFeedback = {
             shopName: 'sf-bicycle',
             shopType: 'shopify',
-            messages: [
-                {messageId: 1, feedback: 'thumbs_up'},
-                {messageId: 2, feedback: 'thumbs_down'},
-            ],
+            messages: [{messageId: 1}, {messageId: 2}],
         }
 
         mockedServer.onGet(`/tickets/${ticketId}`).reply(200, expectedFeedback)
@@ -44,7 +43,14 @@ describe('AI Agent Feedback resources', () => {
         const ticketId = 123
         const messageId = 456
         const feedbackToSubmit: SubmitMessageFeedback = {
-            feedbackOnResource: [{resourceId: 1, feedback: 'thumbs_up'}],
+            feedbackOnResource: [
+                {
+                    resourceId: 1,
+                    resourceType: 'action',
+                    type: 'binary',
+                    feedback: 'thumbs_up',
+                },
+            ],
             feedbackOnMessage: [
                 {type: 'binary', feedback: 'thumbs_up'},
                 {type: 'resource', resourceType: 'article', resourceId: 2},
@@ -61,5 +67,30 @@ describe('AI Agent Feedback resources', () => {
             feedbackToSubmit
         )
         expect(feedback.data).toEqual(feedbackToSubmit)
+    })
+
+    it('should delete the feedback on success', async () => {
+        const ticketId = 123
+        const messageId = 456
+        const feedbackToDelete: DeleteMessageFeedback = {
+            feedbackOnMessage: [
+                {
+                    type: 'issue',
+                    feedback: ReportIssueOption.IncorrectLanguageUsed,
+                },
+                {type: 'resource', resourceType: 'article', resourceId: 2},
+            ],
+        }
+
+        mockedServer
+            .onDelete(`feedback/ticket/${ticketId}/message/${messageId}`)
+            .reply(200, feedbackToDelete)
+
+        const feedback = await deleteAIAgentTicketMessagesFeedback(
+            ticketId,
+            messageId,
+            feedbackToDelete
+        )
+        expect(feedback.data).toEqual(feedbackToDelete)
     })
 })

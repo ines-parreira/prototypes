@@ -10,6 +10,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
 import {TicketMessage} from 'models/ticket/types'
 import AIAgentFeedbackBar, {
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
@@ -25,8 +26,10 @@ jest.mock('../AIAgentTicketFeedback', () => () => (
 ))
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('state/ui/ticketAIAgentFeedback')
+jest.mock('pages/tickets/detail/hooks/useAIAgentSendFeedback')
 
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
+const useAIAgentSendFeedbackMock = assumeMock(useAIAgentSendFeedback)
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 
 const mockMessage = {
@@ -59,6 +62,10 @@ describe('AIAgentFeedbackBar', () => {
             isError: false,
         } as any)
         getSelectedAIMessageMock.mockReturnValue(mockMessage)
+        useAIAgentSendFeedbackMock.mockReturnValue({
+            aiAgentSendFeedback: jest.fn(),
+            aiAgentDeleteFeedback: jest.fn(),
+        })
     })
 
     it('renders feedback summary per ticket if no message is selected', () => {

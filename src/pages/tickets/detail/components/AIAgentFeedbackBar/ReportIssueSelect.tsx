@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, {useCallback, useRef, useState} from 'react'
 
 import Tag from 'pages/common/components/Tag/Tag'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -31,9 +31,16 @@ const reportIssueOptions = Object.entries(ReportIssueLabels).map(
 type Props = {
     value: ReportIssueOption[]
     onChange: (value: ReportIssueOption[]) => void
+    onClose?: () => void
+    onRemove?: (value: ReportIssueOption[]) => void
 }
 
-const ReportIssueSelect: React.FC<Props> = ({value, onChange}) => {
+const ReportIssueSelect: React.FC<Props> = ({
+    value,
+    onChange,
+    onClose,
+    onRemove,
+}) => {
     const floatingRef = useRef<HTMLDivElement>(null)
     const selectInputBoxRef = useRef<HTMLDivElement>(null)
     const [isOpen, setIsOpen] = useState(false)
@@ -46,12 +53,27 @@ const ReportIssueSelect: React.FC<Props> = ({value, onChange}) => {
         )
     }
 
+    const onRemoveItem = (item: ReportIssueOption) => {
+        onRemove?.([item])
+        onChange(value.filter((v) => v !== item))
+    }
+
+    const onToggle = useCallback(
+        (toggleValue) => {
+            if (isOpen && !toggleValue) {
+                onClose?.()
+            }
+            setIsOpen(toggleValue)
+        },
+        [onClose, isOpen]
+    )
+
     return (
         <div className={css.container}>
             <Label>Report another issue</Label>
             <SelectInputBox
                 placeholder="Select issues"
-                onToggle={setIsOpen}
+                onToggle={onToggle}
                 floating={floatingRef}
                 ref={selectInputBoxRef}
             >
@@ -90,7 +112,7 @@ const ReportIssueSelect: React.FC<Props> = ({value, onChange}) => {
                             key={option.value}
                             text={option.label}
                             trailIcon={closeIcon}
-                            onTrailIconClick={() => onItemClick(option.value)}
+                            onTrailIconClick={() => onRemoveItem(option.value)}
                             data-testid="tag"
                         />
                     )
