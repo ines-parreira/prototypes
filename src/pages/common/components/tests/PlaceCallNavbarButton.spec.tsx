@@ -5,6 +5,7 @@ import {isDesktopDevice} from 'utils/device'
 import {assumeMock} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import useHasPhone from 'core/app/hooks/useHasPhone'
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
 jest.mock('utils/device')
@@ -22,15 +23,18 @@ jest.mock(
             )
 )
 jest.mock('hooks/integrations/phone/useVoiceDevice')
+jest.mock('core/app/hooks/useHasPhone')
 
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
+const useHasPhoneMock = assumeMock(useHasPhone)
 
 describe('<PlaceCallNavbarButton />', () => {
     const renderComponent = () => render(<PlaceCallNavbarButton />)
 
     beforeEach(() => {
         isDesktopDeviceMock.mockReturnValue(true)
+        useHasPhoneMock.mockReturnValue(true)
         mockFlags({
             [FeatureFlagKey.OutboundDialer]: true,
         })
@@ -51,6 +55,13 @@ describe('<PlaceCallNavbarButton />', () => {
 
     it('should not render on mobile devices', () => {
         isDesktopDeviceMock.mockReturnValue(false)
+
+        renderComponent()
+        expect(screen.queryByText('Place call')).toBeNull()
+    })
+
+    it('should not render when there are no phone integrations', () => {
+        useHasPhoneMock.mockReturnValue(false)
 
         renderComponent()
         expect(screen.queryByText('Place call')).toBeNull()

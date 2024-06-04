@@ -2,12 +2,16 @@ import {screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 import {SearchBodyType, useSearch} from '@gorgias/api-queries'
 import {isValidPhoneNumber} from 'libphonenumber-js'
+import {Provider} from 'react-redux'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import {assumeMock, mockStore} from 'utils/testing'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
+import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 
 jest.mock('@gorgias/api-queries')
 jest.mock('libphonenumber-js')
+jest.mock('state/integrations/selectors')
 
 jest.mock(
     'pages/common/forms/input/TextInput',
@@ -89,15 +93,41 @@ jest.mock(
                             })
                         }
                     />
+                    <button
+                        data-testid="select-customer-without-name"
+                        onClick={() =>
+                            onCustomerSelect({
+                                id: '1',
+                                customer: {},
+                                address: 'testAddress',
+                            })
+                        }
+                    />
                 </div>
             )
 )
 
+jest.mock(
+    'pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect'
+)
+
+const PhoneDeviceDialerIntegrationSelectMock = assumeMock(
+    PhoneDeviceDialerIntegrationSelect
+)
+PhoneDeviceDialerIntegrationSelectMock.mockImplementation(() => (
+    <>PhoneDeviceDialerIntegrationSelect</>
+))
+
+const getPhoneIntegrationsMock = assumeMock(getPhoneIntegrations)
 const useSearchMock = assumeMock(useSearch)
 const isValidPhoneNumberMock = assumeMock(isValidPhoneNumber)
 
 const renderComponent = () =>
-    renderWithQueryClientProvider(<PhoneDeviceDialer />)
+    renderWithQueryClientProvider(
+        <Provider store={mockStore({} as any)}>
+            <PhoneDeviceDialer />
+        </Provider>
+    )
 
 describe('PhoneDeviceDialer', () => {
     const useSearchMockValue = {
@@ -106,8 +136,13 @@ describe('PhoneDeviceDialer', () => {
         data: undefined,
         reset: jest.fn(),
     }
+    const mockPhoneIntegrations = [
+        {id: 1, name: 'testIntegration'},
+        {id: 2, name: 'otherTestIntegration2'},
+    ]
     beforeEach(() => {
         useSearchMock.mockReturnValue(useSearchMockValue as any)
+        getPhoneIntegrationsMock.mockReturnValue(mockPhoneIntegrations as any)
     })
 
     it('renders initial state correctly: phone number input, body, integration selector and cta', () => {
@@ -115,7 +150,17 @@ describe('PhoneDeviceDialer', () => {
 
         expect(screen.getByTestId('mock-phone-input')).toBeInTheDocument()
         expect(screen.getByTestId('mock-dialer-body')).toBeInTheDocument()
-        expect(screen.getByText('Select integration')).toBeInTheDocument()
+        expect(
+            screen.getByText('PhoneDeviceDialerIntegrationSelect')
+        ).toBeInTheDocument()
+        expect(PhoneDeviceDialerIntegrationSelectMock).toHaveBeenCalledWith(
+            {
+                value: mockPhoneIntegrations[0],
+                onChange: expect.any(Function),
+                options: mockPhoneIntegrations,
+            },
+            {}
+        )
         expect(screen.getByRole('button', {name: 'Call'})).toBeInTheDocument()
     })
 
@@ -149,6 +194,13 @@ describe('PhoneDeviceDialer', () => {
         expect(screen.getByTestId('mock-text-input')).toHaveValue(
             'testCustomerName'
         )
+    })
+
+    it('displays customer search input with customer address as value when customer is selected and has no name', () => {
+        renderComponent()
+
+        fireEvent.click(screen.getByTestId('select-customer-without-name'))
+        expect(screen.getByTestId('mock-text-input')).toHaveValue('testAddress')
     })
 
     it('calls searchCustomers when input value is changed and value is longer than 3 characters', async () => {

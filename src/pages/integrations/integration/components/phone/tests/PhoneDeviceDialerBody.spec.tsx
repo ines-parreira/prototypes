@@ -27,6 +27,10 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid="skeleton" />
 ))
 
+jest.mock('pages/common/components/Avatar/Avatar', () => () => (
+    <div data-testid="avatar" />
+))
+
 const defaultProps = {
     value: '123',
     onChange: jest.fn(),
@@ -105,6 +109,7 @@ describe('PhoneDeviceDialerBody', () => {
         renderComponent(props)
         expect(screen.getByText('John Doe')).toBeInTheDocument()
         expect(screen.getByText('+123')).toBeInTheDocument()
+        expect(screen.getByTestId('avatar')).toBeInTheDocument()
 
         fireEvent.click(screen.getByText('John Doe'))
         expect(props.onCustomerSelect).toHaveBeenCalledWith(customer)

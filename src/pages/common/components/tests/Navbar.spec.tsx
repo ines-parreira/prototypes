@@ -19,12 +19,15 @@ import {ThemeColors} from 'theme/types'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Navbar} from '../Navbar'
+import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 jest.mock('common/segment')
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/components/CreateTicket/CreateTicketNavbarButton')
+jest.mock('pages/common/components/PlaceCallNavbarButton')
 const MockedCreateTicketNavbarButton = CreateTicketNavbarButton as jest.Mock
+const MockedPlaceCallNavbarButton = PlaceCallNavbarButton as jest.Mock
 
 const allFlagsMock = getLDClient().allFlags as jest.Mock
 allFlagsMock.mockReturnValue({})
@@ -66,6 +69,9 @@ describe('<Navbar />', () => {
     beforeEach(() => {
         MockedCreateTicketNavbarButton.mockImplementation(() => (
             <div>CreateTicketNavbarButton</div>
+        ))
+        MockedPlaceCallNavbarButton.mockImplementation(() => (
+            <div>PlaceCallNavbarButton</div>
         ))
     })
 
@@ -279,7 +285,7 @@ describe('<Navbar />', () => {
     })
 
     it.each(pageTitleTestCases)(
-        'should render CreateTicketNavbarButton if on a ticket page',
+        'should render CreateTicketNavbarButton and PlaceCallNavbarButton if on a ticket page',
         (title) => {
             const {queryByText} = render(
                 <Navbar
@@ -291,13 +297,19 @@ describe('<Navbar />', () => {
                 />
             )
 
-            title === 'Tickets'
-                ? expect(
-                      queryByText(`CreateTicketNavbarButton`)
-                  ).toBeInTheDocument()
-                : expect(
-                      queryByText(`CreateTicketNavbarButton`)
-                  ).not.toBeInTheDocument()
+            if (title === 'Tickets') {
+                expect(
+                    queryByText(`CreateTicketNavbarButton`)
+                ).toBeInTheDocument()
+                expect(queryByText(`PlaceCallNavbarButton`)).toBeInTheDocument()
+            } else {
+                expect(
+                    queryByText(`CreateTicketNavbarButton`)
+                ).not.toBeInTheDocument()
+                expect(
+                    queryByText(`PlaceCallNavbarButton`)
+                ).not.toBeInTheDocument()
+            }
         }
     )
 })

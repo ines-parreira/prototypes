@@ -6,14 +6,16 @@ import PhoneNumberInput, {
     PhoneNumberInputHandle,
 } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {UserSearchResult} from 'models/search/types'
+import {getPhoneIntegrations} from 'state/integrations/selectors'
+import useAppSelector from 'hooks/useAppSelector'
 
 import css from './PhoneDevice.less'
 import PhoneDeviceDialerBody from './PhoneDeviceDialerBody'
+import PhoneDeviceDialerIntegrationSelect from './PhoneDeviceDialerIntegrationSelect'
 
 const SEARCH_DEBOUNCE_VALUE = 500
 
@@ -23,6 +25,10 @@ export default function PhoneDeviceDialer() {
         useState<UserSearchResult | null>(null)
     const [phoneNumberInputError, setPhoneNumberInputError] = useState<string>()
     const phoneNumberInputRef = createRef<PhoneNumberInputHandle>()
+    const phoneIntegrations = useAppSelector(getPhoneIntegrations)
+    const [selectedIntegration, setSelectedIntegration] = useState(
+        phoneIntegrations[0]
+    )
 
     const {
         mutate: searchCustomers,
@@ -93,7 +99,8 @@ export default function PhoneDeviceDialer() {
                     }
                     value={
                         selectedCustomer
-                            ? selectedCustomer.customer.name
+                            ? selectedCustomer.customer.name ??
+                              selectedCustomer.address
                             : inputValue
                     }
                     onChange={handleChange}
@@ -126,11 +133,11 @@ export default function PhoneDeviceDialer() {
             />
 
             <div className={css.buttons}>
-                <Button fillStyle="ghost" size="small" intent="secondary">
-                    <ButtonIconLabel icon="phone" />
-                    Select integration
-                    <ButtonIconLabel icon="arrow_drop_down" />
-                </Button>
+                <PhoneDeviceDialerIntegrationSelect
+                    value={selectedIntegration}
+                    options={phoneIntegrations}
+                    onChange={setSelectedIntegration}
+                />
                 <Button
                     onClick={handleCallClick}
                     isDisabled={isSearchTypeCustomer && !selectedCustomer}

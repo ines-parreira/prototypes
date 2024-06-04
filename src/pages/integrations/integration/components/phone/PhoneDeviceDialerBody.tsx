@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import {UserSearchResult} from 'models/search/types'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
+import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from './PhoneDevice.less'
 import DialPad from './DialPad'
 
@@ -64,8 +65,11 @@ export default function PhoneDeviceDialerBody({
                         className={css.result}
                         onClick={() => onCustomerSelect(result)}
                     >
-                        <div>{result.customer.name}</div>
-                        <div className={css.address}>{result.address}</div>
+                        <Avatar name={result.customer.name} size={20} />
+                        <div className={css.resultDetails}>
+                            <div>{result.customer.name}</div>
+                            <div className={css.address}>{result.address}</div>
+                        </div>
                     </div>
                 ))}
             </div>

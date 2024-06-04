@@ -473,13 +473,15 @@ export class Navbar extends Component<Props, State> {
                         {hasNotifications && <NotificationsButton />}
                         {this.state.title === 'Tickets' &&
                         hasSplitTicketView ? (
-                            <CreateTicketNavbarButton
-                                isDisabled={window.location.pathname.includes(
-                                    '/ticket/new'
-                                )}
-                            />
+                            <>
+                                <CreateTicketNavbarButton
+                                    isDisabled={window.location.pathname.includes(
+                                        '/ticket/new'
+                                    )}
+                                />
+                                <PlaceCallNavbarButton />
+                            </>
                         ) : null}
-                        <PlaceCallNavbarButton />
                     </div>
 
                     <div

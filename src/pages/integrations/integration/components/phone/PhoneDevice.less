@@ -36,21 +36,26 @@
             text-align: center;
         }
 
-        .result {
-            display: flex;
-            flex-direction: column;
-            padding: @layout-spacing-xs;
-            cursor: pointer;
-
-            &:hover {
-                background-color: var(--neutral-grey-2);
-            }
-        }
-
         .address {
             .caption-regular();
 
             color: var(--neutral-grey-5);
+        }
+    }
+
+    .result {
+        display: flex;
+        padding: @layout-spacing-xs;
+        cursor: pointer;
+        column-gap: @layout-spacing-xs;
+
+        &:hover {
+            background-color: var(--neutral-grey-2);
+        }
+
+        .resultDetails {
+            display: flex;
+            flex-direction: column;
         }
     }
 
@@ -71,5 +76,10 @@
         display: flex;
         flex-direction: column;
         gap: @layout-spacing-xxs;
+    }
+
+    .integrationSelectorItem {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 }
