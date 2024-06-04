@@ -7,8 +7,10 @@ import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Value} from 'pages/common/forms/SelectField/types'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
 import useAppSelector from '../../../hooks/useAppSelector'
@@ -50,6 +52,8 @@ import {
     getEffectiveTicketSampleRate,
 } from './components/LevelOfCoverage/LevelOfCoverage'
 import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntroduction'
+import {PublicSourcesSection} from './components/PublicSourcesSection/PublicSourcesSection'
+import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
 
 const createStoreConfigurationFromFormValues = (
     storeConfig: StoreConfiguration,
@@ -209,6 +213,9 @@ export const EditAiAgentSettingsForm = ({
 }: EditAiAgentSettingsFormProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
+
+    const isWebsiteKnowledgeEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
 
     const {mutateAsync: upsertStoreConfiguration, isLoading: isUpsertLoading} =
         useUpsertStoreConfigurationPure()
@@ -518,6 +525,15 @@ export const EditAiAgentSettingsForm = ({
                         )}
                     </div>
                 </section>
+
+                {isWebsiteKnowledgeEnabled && (
+                    <ConfigurationSection
+                        title="Knowledge"
+                        subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                    >
+                        <PublicSourcesSection />
+                    </ConfigurationSection>
+                )}
 
                 <section>
                     <h2 className={css.sectionHeader}>Email Settings</h2>

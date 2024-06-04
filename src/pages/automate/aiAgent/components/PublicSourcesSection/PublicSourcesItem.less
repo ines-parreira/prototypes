@@ -1,0 +1,24 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        display: flex;
+        gap: @layout-spacing-s;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .closeIcon {
+        color: var(--feedback-error) !important;
+    }
+
+    .input {
+        width: 100%;
+    }
+
+    .buttonGroup {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+}

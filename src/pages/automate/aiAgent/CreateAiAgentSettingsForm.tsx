@@ -7,8 +7,10 @@ import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
 import {Link} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import {Value} from 'pages/common/forms/SelectField/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
 import useAppSelector from '../../../hooks/useAppSelector'
@@ -54,6 +56,8 @@ import {
     LevelOfCoverage,
 } from './components/LevelOfCoverage/LevelOfCoverage'
 import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntroduction'
+import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
+import {PublicSourcesSection} from './components/PublicSourcesSection/PublicSourcesSection'
 
 const INITIAL_FORM_VALUES = {
     deactivatedDatetime: new Date().toISOString(),
@@ -400,6 +404,9 @@ export const CreateAiAgentSettingsForm = ({
             : INITIAL_FORM_VALUES.silentHandover
     )
 
+    const isWebsiteKnowledgeEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
+
     const isCustomToneOfVoiceSelected =
         formValues.toneOfVoice === ToneOfVoice.Custom
 
@@ -541,6 +548,15 @@ export const CreateAiAgentSettingsForm = ({
                         )}
                     </div>
                 </section>
+
+                {isWebsiteKnowledgeEnabled && (
+                    <ConfigurationSection
+                        title="Knowledge"
+                        subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                    >
+                        <PublicSourcesSection />
+                    </ConfigurationSection>
+                )}
 
                 <section>
                     <h2 className={css.sectionHeader}>Email settings</h2>

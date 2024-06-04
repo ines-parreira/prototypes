@@ -5,6 +5,7 @@ export enum FeatureFlagKey {
     AiAgentRuleTemplate = 'ai-agent-rule-template',
     AiAgentSettings = 'ai-agent-settings',
     AiAgentGuidance = 'ai-agent-guidance',
+    AiAgentWebsiteKnowledge = 'ai-agent-website-knowledge',
     AiAgentGuidanceToggle = 'ai-agent-guidance-toggle',
     AutomateActions = 'automate-ai-agent-actions',
     AnalyticsSLAs = 'analytics-slas-report',
