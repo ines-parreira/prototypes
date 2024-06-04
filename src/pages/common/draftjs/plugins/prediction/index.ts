@@ -1,13 +1,12 @@
 import {KeyboardEvent} from 'react'
 import {EditorState} from 'draft-js'
-import axios, {CancelTokenSource} from 'axios'
 import {Map} from 'immutable'
-
 import {debounce} from 'lodash'
+
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getLDClient} from 'utils/launchDarkly'
+
 import {Plugin, PluginMethods} from '../types'
-import {createClient} from '../../../../../models/api/resources'
 
 import {
     createPrediction,
@@ -20,23 +19,12 @@ import {
 } from './utils'
 import decorators from './decorators'
 import {cachedSelection, predictionKey} from './state'
-
-const client = createClient()
+import client from './client'
 
 let predictionCache: string[] = []
 export const clearCache = () => (predictionCache = [])
 const inCache = (text: string) => predictionCache.includes((text || '').trim())
 const addCache = (text: string) => predictionCache.push((text || '').trim())
-
-let cancelTokenSource: CancelTokenSource | null = null
-const cancelApiRequest = () => {
-    if (cancelTokenSource) {
-        cancelTokenSource.cancel()
-    }
-
-    cancelTokenSource = axios.CancelToken.source()
-    return cancelTokenSource.token
-}
 
 const currentPrediction: {
     inputText: string
@@ -64,55 +52,35 @@ const removeExistingPrediction = (editorState: EditorState) => {
     return editorState
 }
 
-const requestPrediction = (
+const requestPrediction = async (
     text = '',
     context: Map<any, any>,
     plugin: PluginMethods
 ) => {
     if (!getLDClient()?.variation(FeatureFlagKey.MLFeaturesKillswitch)) return
 
-    return client
-        .post<{prediction: string}>(
-            window.PHRASE_PREDICTION_URL,
-            {
-                query: text,
-                context: context.toJS(),
-            },
-            {
-                cancelToken: cancelApiRequest(),
-                timeout: 2000,
-            }
+    const predictionText = await client.requestPrediction(text, context.toJS())
+
+    if (!predictionText) {
+        return
+    }
+    addCache(text)
+
+    const editorState = plugin.getEditorState()
+    const selection = editorState.getSelection()
+
+    const newEditorState = removeExistingPrediction(editorState)
+    const preKey = createPrediction(predictionText, newEditorState)
+    predictionKey.set(preKey)
+
+    plugin.setEditorState(
+        EditorState.forceSelection(
+            insertPrediction(preKey, newEditorState),
+            selection
         )
-        .then((res) => {
-            const predictionText = res.data.prediction
-            if (!predictionText) {
-                return
-            }
-            addCache(text)
+    )
 
-            const editorState = plugin.getEditorState()
-            const selection = editorState.getSelection()
-
-            const newEditorState = removeExistingPrediction(editorState)
-            const preKey = createPrediction(predictionText, newEditorState)
-            predictionKey.set(preKey)
-
-            plugin.setEditorState(
-                EditorState.forceSelection(
-                    insertPrediction(preKey, newEditorState),
-                    selection
-                )
-            )
-
-            resetCurrentPrediction(text, predictionText)
-        })
-        .catch((err) => {
-            if (axios.isCancel(err)) {
-                return
-            }
-
-            throw err
-        })
+    resetCurrentPrediction(text, predictionText)
 }
 
 const sendFeedback = async (
@@ -140,16 +108,16 @@ const sendFeedback = async (
 
     currentPrediction.numberAcceptedCharacters += acceptedPredictionChars
 
-    await client.post(window.PHRASE_FEEDBACK_URL, {
-        query_text: currentPrediction.inputText,
-        query_context: context.toJS(),
-        result_prediction_text: currentPrediction.predictionText,
-        result_prediction_accepted:
+    await client.sendFeedback({
+        queryText: currentPrediction.inputText,
+        queryContext: context.toJS(),
+        resultPredictionText: currentPrediction.predictionText,
+        resultPredictionAccepted:
             predictionText.length === acceptedPredictionChars && tabKeyUsed,
-        result_number_accepted_characters:
+        resultNumberAcceptedCharacters:
             currentPrediction.numberAcceptedCharacters,
-        diverged_phrase: null,
-        tab_key_used: tabKeyUsed,
+        divergedPhrase: null,
+        tabKeyUsed,
     })
 
     resetCurrentPrediction()
@@ -243,7 +211,7 @@ const predictionPlugin = (config: {
                 void sendFeedback(config.context, addedText, editorState)
             }
 
-            cancelApiRequest()
+            client.cancelPredictionRequest()
             // remove prediction on cursor move or text change
             const newEditorState = removeExistingPrediction(editorState)
 

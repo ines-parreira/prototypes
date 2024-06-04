@@ -1,49 +1,21 @@
 import {fromJS, Map} from 'immutable'
 import {ContentState, EditorState, SelectionState} from 'draft-js'
-import AxiosMock from 'axios-mock-adapter'
 
+import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
+import {assumeMock, flushPromises} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
+import {Plugin, PluginMethods} from 'pages/common/draftjs/plugins/types'
+
 import createPredictionPlugin, {clearCache} from '../index'
-import * as DraftTestUtils from '../../../tests/draftTestUtils'
-import {Plugin, PluginMethods} from '../../types'
-import {flushPromises} from '../../../../../../utils/testing'
-import client from '../../../../../../models/api/resources'
 import {cachedSelection, predictionKey} from '../state'
+import client from '../client'
 
-jest.mock('../../../../../../utils/errors')
+jest.mock('utils/errors')
 jest.mock('utils/launchDarkly', () => ({getLDClient: jest.fn()}))
-
-const axiosMock = new AxiosMock(client)
+jest.mock('../client')
 
 const defaultContext: Map<any, any> = fromJS({})
 
-const PREDICTION_URL = '/prediction'
-const FEEDBACK_URL = '/feedback'
-
-// Setup axios
-beforeEach(() => {
-    axiosMock.reset()
-
-    window.PHRASE_PREDICTION_URL = PREDICTION_URL
-    axiosMock.onPost(PREDICTION_URL).reply(200, {prediction: ''})
-
-    window.PHRASE_FEEDBACK_URL = FEEDBACK_URL
-    axiosMock.onPost(FEEDBACK_URL).reply(200)
-})
-
-const getPredictionCalls = () =>
-    axiosMock.history.post.filter((call) => call.url === PREDICTION_URL)
-
-// It will parse `data` for you
-const getFeedbackCalls = () =>
-    axiosMock.history.post
-        .filter((call) => call.url === FEEDBACK_URL)
-        .map((call) => ({
-            ...call,
-            data: JSON.parse(call.data),
-        }))
-
-// Clear plugin caches
 beforeEach(() => {
     clearCache()
     predictionKey.set(null)
@@ -74,9 +46,7 @@ describe('prediction plugin', () => {
         plugin: Plugin,
         pluginMethods: PluginMethods
     ): Promise<EditorState> => {
-        axiosMock
-            .onPost(PREDICTION_URL)
-            .reply(200, {prediction: predictionText})
+        assumeMock(client.requestPrediction).mockResolvedValue(predictionText)
         const textState = DraftTestUtils.typeText(
             pluginMethods.getEditorState(),
             text
@@ -126,53 +96,45 @@ describe('prediction plugin', () => {
         ).toBeNull()
     }
 
-    const expectToSendFeedbackOnce = (
-        feedbackMatch: Record<string, unknown>
-    ) => {
-        const feedbackCalls = getFeedbackCalls()
-        expect(feedbackCalls).toHaveLength(1)
-        expect(feedbackCalls[0].data).toMatchObject(feedbackMatch)
-    }
-
     describe('onChange()', () => {
         it('should not request prediction if text is 1 character long', async () => {
             const {predictionPlugin, pluginMethods} =
                 createEmptyStatePredictionPlugin()
             await typeAndPredict('H', '', predictionPlugin, pluginMethods)
-            expect(getPredictionCalls()).toHaveLength(0)
+            expect(client.requestPrediction).not.toHaveBeenCalled()
         })
 
         it('should request prediction', async () => {
             const {predictionPlugin, pluginMethods} =
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
+
             await typeAndPredict(
                 text,
                 ' Marie,',
                 predictionPlugin,
                 pluginMethods
             )
-            const predictionCalls = getPredictionCalls()
-            expect(predictionCalls).toHaveLength(1)
-            expect(predictionCalls[0]).toHaveProperty('url', PREDICTION_URL)
-            expect(JSON.parse(predictionCalls[0].data)).toMatchObject({
-                query: text,
-                context: defaultContext.toJS(),
-            })
+
+            expect(client.requestPrediction).toHaveBeenCalledTimes(1)
+            expect(client.requestPrediction).toHaveBeenCalledWith(
+                text,
+                defaultContext.toJS()
+            )
         })
 
         it('should throttle request prediction', async () => {
             const {predictionPlugin, pluginMethods} =
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
+
             await typeAndPredict(text, '', predictionPlugin, pluginMethods)
             await typeAndPredict(' ', '', predictionPlugin, pluginMethods)
             await typeAndPredict('M', '', predictionPlugin, pluginMethods)
             await typeAndPredict('a', '', predictionPlugin, pluginMethods)
             await typeAndPredict('y', '', predictionPlugin, pluginMethods)
 
-            const predictionCalls = getPredictionCalls()
-            expect(predictionCalls).toHaveLength(1)
+            expect(client.requestPrediction).toHaveBeenCalledTimes(1)
         })
 
         it('should display the prediction', async () => {
@@ -206,7 +168,7 @@ describe('prediction plugin', () => {
             await typeAndPredict(' ', '', predictionPlugin, pluginMethods)
             await typeAndPredict('M', '', predictionPlugin, pluginMethods)
 
-            expect(getPredictionCalls()).toHaveLength(1) // It should cache results to avoid excessive requests
+            expect(client.requestPrediction).toHaveBeenCalledTimes(1) // It should cache results to avoid excessive requests
             expectToBeTextWithPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi M',
@@ -226,16 +188,20 @@ describe('prediction plugin', () => {
             )
             await typeAndPredict('P', '', predictionPlugin, pluginMethods)
 
-            expect(getPredictionCalls()).toHaveLength(1)
+            expect(client.requestPrediction).toHaveBeenCalledTimes(1)
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi P'
             )
-            expectToSendFeedbackOnce({
-                result_number_accepted_characters: 0,
-                query_text: 'Hi ',
-                result_prediction_text: 'Marie,',
-                result_prediction_accepted: false,
+            expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+            expect(client.sendFeedback).toHaveBeenCalledWith({
+                queryText: 'Hi ',
+                resultNumberAcceptedCharacters: 0,
+                resultPredictionText: 'Marie,',
+                resultPredictionAccepted: false,
+                queryContext: {},
+                tabKeyUsed: false,
+                divergedPhrase: null,
             })
         })
 
@@ -255,11 +221,15 @@ describe('prediction plugin', () => {
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi Marie'
             )
-            expectToSendFeedbackOnce({
-                result_number_accepted_characters: 1,
-                query_text: 'Hi Mari',
-                result_prediction_text: 'e',
-                result_prediction_accepted: false,
+            expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+            expect(client.sendFeedback).toHaveBeenCalledWith({
+                queryText: 'Hi Mari',
+                resultNumberAcceptedCharacters: 1,
+                resultPredictionText: 'e',
+                resultPredictionAccepted: false,
+                queryContext: {},
+                tabKeyUsed: false,
+                divergedPhrase: null,
             })
         })
 
@@ -342,7 +312,7 @@ describe('prediction plugin', () => {
                     'Hi Mar',
                     'ie,'
                 )
-                expect(getFeedbackCalls()).toHaveLength(0)
+                expect(client.sendFeedback).toHaveBeenCalledTimes(0)
             })
 
             it('should remove prediction and send not accepted feedback on pasting text matching prediction partially', async () => {
@@ -366,11 +336,15 @@ describe('prediction plugin', () => {
                     pluginMethods.getEditorState().getCurrentContent(),
                     'Hi Mario'
                 )
-                expectToSendFeedbackOnce({
-                    result_number_accepted_characters: 4,
-                    query_text: 'Hi ',
-                    result_prediction_text: 'Marie,',
-                    result_prediction_accepted: false,
+                expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+                expect(client.sendFeedback).toHaveBeenCalledWith({
+                    queryText: 'Hi ',
+                    resultNumberAcceptedCharacters: 4,
+                    resultPredictionText: 'Marie,',
+                    resultPredictionAccepted: false,
+                    queryContext: {},
+                    tabKeyUsed: false,
+                    divergedPhrase: null,
                 })
             })
 
@@ -395,11 +369,15 @@ describe('prediction plugin', () => {
                     pluginMethods.getEditorState().getCurrentContent(),
                     'Hi Marie,'
                 )
-                expectToSendFeedbackOnce({
-                    result_number_accepted_characters: 6,
-                    query_text: 'Hi ',
-                    result_prediction_text: 'Marie,',
-                    result_prediction_accepted: false,
+                expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+                expect(client.sendFeedback).toHaveBeenCalledWith({
+                    queryText: 'Hi ',
+                    resultNumberAcceptedCharacters: 6,
+                    resultPredictionText: 'Marie,',
+                    resultPredictionAccepted: false,
+                    queryContext: {},
+                    tabKeyUsed: false,
+                    divergedPhrase: null,
                 })
             })
 
@@ -424,11 +402,15 @@ describe('prediction plugin', () => {
                     pluginMethods.getEditorState().getCurrentContent(),
                     'Hi Marie,'
                 )
-                expectToSendFeedbackOnce({
-                    result_number_accepted_characters: 6,
-                    query_text: 'Hi ',
-                    result_prediction_text: 'Marie,',
-                    result_prediction_accepted: false,
+                expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+                expect(client.sendFeedback).toHaveBeenCalledWith({
+                    queryText: 'Hi ',
+                    resultNumberAcceptedCharacters: 6,
+                    resultPredictionText: 'Marie,',
+                    resultPredictionAccepted: false,
+                    queryContext: {},
+                    tabKeyUsed: false,
+                    divergedPhrase: null,
                 })
             })
         })
@@ -457,11 +439,15 @@ describe('prediction plugin', () => {
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi Marie,'
             )
-            expectToSendFeedbackOnce({
-                result_number_accepted_characters: 7,
-                query_text: 'Hi',
-                result_prediction_text: ' Marie,',
-                result_prediction_accepted: true,
+            expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+            expect(client.sendFeedback).toHaveBeenCalledWith({
+                queryText: 'Hi',
+                resultNumberAcceptedCharacters: 7,
+                resultPredictionText: ' Marie,',
+                resultPredictionAccepted: true,
+                queryContext: {},
+                tabKeyUsed: true,
+                divergedPhrase: null,
             })
         })
     })
@@ -493,11 +479,15 @@ describe('prediction plugin', () => {
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi Marie,'
             )
-            expectToSendFeedbackOnce({
-                result_number_accepted_characters: 7,
-                query_text: 'Hi',
-                result_prediction_text: ' Marie,',
-                result_prediction_accepted: true,
+            expect(client.sendFeedback).toHaveBeenCalledTimes(1)
+            expect(client.sendFeedback).toHaveBeenCalledWith({
+                queryText: 'Hi',
+                resultNumberAcceptedCharacters: 7,
+                resultPredictionText: ' Marie,',
+                resultPredictionAccepted: true,
+                queryContext: {},
+                tabKeyUsed: true,
+                divergedPhrase: null,
             })
         })
     })
