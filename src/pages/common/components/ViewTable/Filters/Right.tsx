@@ -227,6 +227,7 @@ export class RightContainer extends Component<Props, State> {
 
             const v2Props = {
                 actionButtonsOnTheBottom: !!v2StylesEnabled,
+                shouldShowMonthAndYearDropdowns: !!v2StylesEnabled,
             }
 
             const datetime =
@@ -246,6 +247,7 @@ export class RightContainer extends Component<Props, State> {
                         timePicker24Hour:
                             this.props.timeSettings ===
                             TimeFormatType.TwentyFourHour,
+                        showDropdowns: !!v2StylesEnabled,
                     }}
                     onSubmit={(date) => {
                         updateFieldFilter(index, date.toISOString())

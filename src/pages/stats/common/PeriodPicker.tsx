@@ -76,6 +76,7 @@ export type Props = {
     actionButtonsOnTheBottom?: boolean
     changeButtonColorsToV2?: boolean
     rangeDatesInFooter?: boolean
+    shouldShowMonthAndYearDropdowns?: boolean
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -100,6 +101,7 @@ export const PeriodPickerContainer = ({
     actionButtonsOnTheBottom = false,
     changeButtonColorsToV2 = false,
     rangeDatesInFooter = false,
+    shouldShowMonthAndYearDropdowns = false,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -264,6 +266,7 @@ export const PeriodPickerContainer = ({
                                         : [])
                                 ),
                             }),
+                            showDropdowns: shouldShowMonthAndYearDropdowns,
                         }}
                         onShow={(event, target) => {
                             onOpen?.()

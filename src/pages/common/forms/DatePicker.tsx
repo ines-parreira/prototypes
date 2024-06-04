@@ -31,6 +31,7 @@ type Props = {
     actionButtonsOnTheBottom?: boolean
     changeButtonColorsToV2?: boolean
     rangeDatesInFooter?: boolean
+    shouldShowMonthAndYearDropdowns?: boolean
 }
 
 export const DatePicker = ({
@@ -56,6 +57,7 @@ export const DatePicker = ({
     showRangesLabel = true,
     actionButtonsOnTheBottom = false,
     rangeDatesInFooter = false,
+    shouldShowMonthAndYearDropdowns = false,
 }: Props & Partial<DateRangeProps>) => {
     const datePickerRef = useRef<DateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -203,6 +205,7 @@ export const DatePicker = ({
                     singleDatePicker,
                     timePicker,
                     startDate,
+                    showDropdowns: shouldShowMonthAndYearDropdowns,
                     ...otherInitialSettings,
                 }}
                 onShow={(event, target) => {

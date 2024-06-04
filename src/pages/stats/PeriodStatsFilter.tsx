@@ -93,12 +93,14 @@ export default function PeriodStatsFilter({
         actionButtonsOnTheBottom: !!isNewDatePickerVariant,
         changeButtonColorsToV2: !!isNewDatePickerVariant,
         rangeDatesInFooter: !!isNewDatePickerVariant,
+        shouldShowMonthAndYearDropdowns: !!isNewDatePickerVariant,
     }
 
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
         locale: {format: compactDateBasedOnUserPreferences},
+        showDropdowns: !!isNewDatePickerVariant,
         ...initialSettingsProp,
     }
 

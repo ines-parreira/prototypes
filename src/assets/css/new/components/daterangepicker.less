@@ -291,7 +291,9 @@
         &.hourselect,
         &.minuteselect,
         &.secondselect,
-        &.ampmselect {
+        &.ampmselect,
+        &.monthselect,
+        &.yearselect {
             appearance: none;
             -moz-appearance: none;
             -webkit-appearance: none;
@@ -309,6 +311,21 @@
             margin: 0;
             padding: 0 8px;
             width: 69px;
+        }
+
+        &.monthselect,
+        &.yearselect {
+            &:focus-visible {
+                outline: var(--neutral-grey-3) auto 0;
+            }
+        }
+
+        &.monthselect {
+            margin-right: 5px;
+        }
+
+        &.yearselect {
+            margin-left: 5px;
         }
     }
 

@@ -50,6 +50,7 @@ const TicketSnoozePicker = ({
         showRangesLabel: !isNewDatePickerVariant,
         actionButtonsOnTheBottom: !!isNewDatePickerVariant,
         changeButtonColorsToV2: !!isNewDatePickerVariant,
+        shouldShowMonthAndYearDropdowns: !!isNewDatePickerVariant,
     }
 
     return (

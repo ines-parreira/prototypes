@@ -15,6 +15,7 @@ exports[`<TicketSnoozePicker/> rendering should not render the datepicker when c
   showRangesLabel: true
   actionButtonsOnTheBottom: false
   changeButtonColorsToV2: false
+  shouldShowMonthAndYearDropdowns: false
   children: undefined
 </div>
 `;
@@ -36,6 +37,7 @@ exports[`<TicketSnoozePicker/> rendering should render a DatePicker and log erro
       showRangesLabel: true
       actionButtonsOnTheBottom: false
       changeButtonColorsToV2: false
+      shouldShowMonthAndYearDropdowns: false
       children: undefined
     </div>
   </div>
@@ -59,6 +61,7 @@ exports[`<TicketSnoozePicker/> rendering should render the default datetime valu
       showRangesLabel: true
       actionButtonsOnTheBottom: false
       changeButtonColorsToV2: false
+      shouldShowMonthAndYearDropdowns: false
       children: undefined
     </div>
   </div>
@@ -82,6 +85,7 @@ exports[`<TicketSnoozePicker/> rendering should render the provided value 1`] = 
       showRangesLabel: true
       actionButtonsOnTheBottom: false
       changeButtonColorsToV2: false
+      shouldShowMonthAndYearDropdowns: false
       children: undefined
     </div>
   </div>
