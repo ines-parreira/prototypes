@@ -323,17 +323,21 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
                     {renderCardSubtext()}
                 </div>
-                {renderCardButton()}
-                {isShowOrHideOnSelectedUrlsEnabled && (
-                    <IconButton
-                        className={css.toggleCollapseButton}
-                        fillStyle="ghost"
-                        intent="secondary"
-                        onClick={() => setIsOpen(!isOpen)}
-                    >
-                        {isOpen ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}
-                    </IconButton>
-                )}
+                <div className={css.rightSection}>
+                    {renderCardButton()}
+                    {isShowOrHideOnSelectedUrlsEnabled && (
+                        <IconButton
+                            className={css.toggleCollapseButton}
+                            fillStyle="ghost"
+                            intent="secondary"
+                            onClick={() => setIsOpen(!isOpen)}
+                        >
+                            {isOpen
+                                ? 'keyboard_arrow_up'
+                                : 'keyboard_arrow_down'}
+                        </IconButton>
+                    )}
+                </div>
             </div>
             {isShowOrHideOnSelectedUrlsEnabled && hasIntegrationLoaded && (
                 <GorgiasChatIntegrationVisibilityControls

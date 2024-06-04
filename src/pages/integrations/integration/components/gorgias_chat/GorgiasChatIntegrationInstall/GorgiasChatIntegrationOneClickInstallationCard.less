@@ -11,13 +11,20 @@
             display: flex;
             column-gap: @layout-spacing-s;
             align-items: center;
+            justify-content: space-between;
 
-            .toggleCollapseButton {
-                color: var(--neutral-grey-4);
-                font-size: @layout-spacing-m;
-                width: @layout-spacing-m;
-                height: @layout-spacing-m;
-                padding: 0;
+            .rightSection {
+                display: flex;
+                align-items: center;
+
+                .toggleCollapseButton {
+                    color: var(--neutral-grey-4);
+                    font-size: @layout-spacing-m;
+                    width: @layout-spacing-m;
+                    height: @layout-spacing-m;
+                    padding: 0;
+                    margin-left: @layout-spacing-s;
+                }
             }
         }
     }
