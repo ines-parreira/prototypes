@@ -44,18 +44,17 @@ export default function EmailDomainVerificationBanner() {
 
     const message = (
         <span data-testid="email-domain-verification-banner">
-            Starting February 1st, We’re implementing{' '}
-            <b>Mandatory Email verification </b> to enhance our Email
-            authentication protocols. Non-compliance may impact your mail
-            deliverability.{' '}
-            <Link to="/app/settings/channels/email">Verify Now</Link>
+            As of February 1st, 2024, Gmail and Yahoo have stricter email
+            sending rules. Some of your email addresses need to update their
+            settings to comply.{' '}
+            <Link to="/app/settings/channels/email">Verify them now.</Link>
         </span>
     )
 
     return (
         <BannerNotification
             message={message}
-            status={NotificationStatus.Error}
+            status={NotificationStatus.Warning}
             id={'domain-verification-banner'}
             dismissible={false}
             closable={true}
