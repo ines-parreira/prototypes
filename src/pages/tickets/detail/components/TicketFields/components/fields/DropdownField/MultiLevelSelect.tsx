@@ -48,8 +48,13 @@ type Props = {
     showFullValue?: boolean
     autoWidth?: boolean
     inputId: string
+    hasMultipleValues?: boolean
     onChange: (value: CustomFieldValue) => void
     onFocus?: () => void
+    children?: React.ReactNode
+    onToggle?: () => void
+    isOpen?: boolean
+    values?: string[]
 }
 
 export default function MultiLevelSelect({
@@ -63,8 +68,13 @@ export default function MultiLevelSelect({
     showFullValue = false,
     autoWidth = false,
     inputId,
+    hasMultipleValues = false,
     onChange,
     onFocus,
+    children,
+    onToggle,
+    isOpen,
+    values,
 }: Props) {
     const containerRef = useRef<HTMLSpanElement>(null)
     const modalRef = useRef<HTMLDivElement>(null)
@@ -127,10 +137,10 @@ export default function MultiLevelSelect({
 
     const handleChange = useCallback(
         (newValue: CustomFieldValue) => {
-            setActive(false)
+            !hasMultipleValues && setActive(false)
             onChange(newValue)
         },
-        [setActive, onChange]
+        [hasMultipleValues, setActive, onChange]
     )
 
     const handleFocus = useCallback(() => {
@@ -164,56 +174,68 @@ export default function MultiLevelSelect({
 
     return (
         <>
-            <span
-                ref={containerRef}
-                id={inputId}
-                className={classNames(css.wrapper, {
-                    [css.autoWidthInputContainer]: autoWidth,
-                    [css.placeholder]: isValueEmpty,
-                })}
-            >
-                {autoWidth && (
-                    <span onClick={handleFocus} className={css.autoWidthSpan}>
-                        {isValueEmpty ? placeholder : displayValue}
-                    </span>
-                )}
-                <StealthInput
-                    id={inputId + '-input'}
-                    className={
-                        isPredictionCorrect && hiddenRef.current
-                            ? css.inputWithPredictionIcon
-                            : undefined
-                    }
-                    ref={inputRef}
-                    name={label}
-                    value={displayValue}
-                    placeholder={placeholder}
-                    isActive={false}
-                    onFocus={handleFocus}
-                    hasError={hasError}
-                />
-                <span ref={hiddenRef} className={css.hiddenInputValue} />
-                {isPredictionCorrect && hiddenRef.current && (
-                    <i
-                        className={`material-icons ${css.predictionIcon}`}
-                        style={{left: `${iconLeft}px`}}
-                    >
-                        auto_awesome
-                    </i>
-                )}
-            </span>
-            {!choices.length && <EmptyHelper target={containerRef} id={id} />}
+            {children ? (
+                <span ref={containerRef}>{children}</span>
+            ) : (
+                <span
+                    id={inputId}
+                    className={classNames(css.wrapper, {
+                        [css.autoWidthInputContainer]: autoWidth,
+                        [css.placeholder]: isValueEmpty,
+                    })}
+                    ref={containerRef}
+                >
+                    {autoWidth && (
+                        <span
+                            onClick={handleFocus}
+                            className={css.autoWidthSpan}
+                        >
+                            {isValueEmpty ? placeholder : displayValue}
+                        </span>
+                    )}
+                    <StealthInput
+                        id={inputId + '-input'}
+                        className={
+                            isPredictionCorrect && hiddenRef.current
+                                ? css.inputWithPredictionIcon
+                                : undefined
+                        }
+                        ref={inputRef}
+                        name={label}
+                        value={displayValue}
+                        placeholder={placeholder}
+                        isActive={false}
+                        onFocus={handleFocus}
+                        hasError={hasError}
+                    />
+                    <span ref={hiddenRef} className={css.hiddenInputValue} />
+                    {isPredictionCorrect && hiddenRef.current && (
+                        <i
+                            className={`material-icons ${css.predictionIcon}`}
+                            style={{left: `${iconLeft}px`}}
+                        >
+                            auto_awesome
+                        </i>
+                    )}
+                </span>
+            )}
+            {!children && !choices.length && (
+                <EmptyHelper target={containerRef} id={id} />
+            )}
             <Dropdown
-                isOpen={isActive}
+                isOpen={isOpen ?? isActive}
                 onToggle={(isActiveNext) => {
                     if (!isActiveNext) {
                         setCurrentPath(getCurrentPathFromFullValue(value))
                     }
                     setActive(isActiveNext)
+                    onToggle?.()
                 }}
                 target={containerRef}
                 ref={modalRef}
-                className={css.dropdown}
+                className={classNames({[css.dropdown]: !children})}
+                isMultiple={hasMultipleValues}
+                value={values}
             >
                 {currentPath.length > 0 && !isSearching && (
                     <DropdownHeader>
@@ -278,6 +300,7 @@ export default function MultiLevelSelect({
                                         tag="button"
                                         onClick={() => goNext(key)}
                                         option={{label, value: key}}
+                                        hasSubItems
                                     >
                                         <span className={css.choiceButton}>
                                             <span className={css.ellipsis}>
@@ -309,7 +332,7 @@ export default function MultiLevelSelect({
                                         }}
                                         option={{
                                             label,
-                                            value: choice,
+                                            value: fullValue,
                                         }}
                                     >
                                         {fullValue === prediction?.predicted &&

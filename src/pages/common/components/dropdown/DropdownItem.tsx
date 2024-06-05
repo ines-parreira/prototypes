@@ -26,6 +26,7 @@ type Props<T extends boolean | number | string | null> = {
     onClick: (value: T) => void
     shouldCloseOnSelect?: boolean
     isDisabled?: boolean
+    hasSubItems?: boolean
     tag?: keyof JSX.IntrinsicElements
     option: {
         label: string
@@ -39,6 +40,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
     className,
     onClick,
     shouldCloseOnSelect,
+    hasSubItems = false,
     isDisabled,
     tag = 'li',
     option,
@@ -164,7 +166,7 @@ const DropdownItem = <T extends boolean | number | string | null>({
             tabIndex={0}
             {...rest}
         >
-            {isMultiple && (
+            {isMultiple && !hasSubItems && (
                 <CheckBox
                     isChecked={isSelected}
                     className={css.checkbox}

@@ -30,6 +30,7 @@ import FeedbackOrders from './FeedbackOrders'
 import FeedbackEvents from './FeedbackEvents'
 import FeedbackReportIssue from './FeedbackReportIssue'
 import FeedbackCreateResource from './FeedbackCreateResource'
+import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
 
 import css from './AIAgentFeedbackBar.less'
 
@@ -227,6 +228,8 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
 
     return (
         <>
+            <FeedbackOrders orders={messageFeedback?.orders} />
+            <div className={css.lineSeparator} />
             {actions && actions.length > 0 && (
                 <div className={css.sectionContainer}>
                     <div className={css.subtitle}>Actions</div>
@@ -284,22 +287,23 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                     ))}
                 </div>
             )}
-            <FeedbackOrders orders={messageFeedback?.orders} />
+            <FeedbackOtherResourcesSelect />
             <FeedbackCreateResource
                 shopType={messageFeedback.shopType}
                 shopName={messageFeedback.shopName}
                 helpCenterId={messageFeedback.helpCenterId}
-            />
-            <FeedbackEvents
-                messages={selectedAIMessage ? [selectedAIMessage] : []}
-                shopType={messageFeedback.shopType}
-                shopName={messageFeedback.shopName}
             />
             <FeedbackReportIssue
                 value={reportIssues}
                 onChange={setReportIssues}
                 onClose={handleSubmitReportIssues}
                 onRemove={handleDeleteReportIssues}
+            />
+            <div className={css.lineSeparator} />
+            <FeedbackEvents
+                messages={selectedAIMessage ? [selectedAIMessage] : []}
+                shopType={messageFeedback.shopType}
+                shopName={messageFeedback.shopName}
             />
         </>
     )
