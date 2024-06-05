@@ -32,6 +32,9 @@ export type StoreConfiguration = {
     helpCenterLocale: string
     helpCenterSubdomain: string
 
+    snippetHelpCenterId: number
+    guidanceHelpCenterId: number
+
     toneOfVoice: string
     customToneOfVoiceGuidance: string | null
     signature: string

@@ -531,7 +531,11 @@ export const EditAiAgentSettingsForm = ({
                         title="Knowledge"
                         subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
                     >
-                        <PublicSourcesSection />
+                        <PublicSourcesSection
+                            helpCenterId={
+                                storeConfiguration.snippetHelpCenterId
+                            }
+                        />
                     </ConfigurationSection>
                 )}
 

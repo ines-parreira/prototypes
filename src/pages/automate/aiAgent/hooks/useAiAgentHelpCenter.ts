@@ -8,32 +8,33 @@ import {reportError} from 'utils/errors'
 
 const FIVE_MINUTES = 1000 * 60 * 5
 
-export const useGuidanceHelpCenter = ({
+export const useAiAgentHelpCenter = ({
     shopName,
+    helpCenterType,
 }: {
     shopName: string
+    helpCenterType: 'guidance' | 'snippet'
 }): HelpCenter | undefined => {
     const dispatch = useAppDispatch()
 
     // We expect to handle only 1 guidance help center
     const {data} = useGetHelpCenterList(
-        {type: 'guidance', per_page: 1, shop_name: shopName},
+        {type: helpCenterType, per_page: 1, shop_name: shopName},
         {
             // Guidance Help Center is not expected to change frequently
             staleTime: FIVE_MINUTES,
             onSuccess: (data) => {
-                const guidanceHelpCenter = data?.data.data[0]
+                const helpCenter = data?.data.data[0]
 
-                if (!guidanceHelpCenter) {
+                if (!helpCenter) {
                     reportError(
                         new Error(
-                            `Guidance Help Center not found for shop: ${shopName}`
+                            `${helpCenterType} Help Center not found for shop: ${shopName}`
                         ),
                         {
                             tags: {team: AI_AGENT_SENTRY_TEAM},
                             extra: {
-                                context:
-                                    'Error during fetching of guidance help center',
+                                context: `Error during fetching of ${helpCenterType} help center`,
                             },
                             level: 'error',
                         }
@@ -41,14 +42,14 @@ export const useGuidanceHelpCenter = ({
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
-                            message: `Guidance Help Center not found for shop: ${shopName}. Please try again or contact support.`,
+                            message: `${helpCenterType} Help Center not found for shop: ${shopName}. Please try again or contact support.`,
                         })
                     )
                 }
             },
         }
     )
-    const guidanceHelpCenter = data?.data.data[0]
+    const helpCenter = data?.data.data[0]
 
-    return guidanceHelpCenter
+    return helpCenter
 }

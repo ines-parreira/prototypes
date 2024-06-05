@@ -58,6 +58,7 @@ import {
 import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntroduction'
 import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
 import {PublicSourcesSection} from './components/PublicSourcesSection/PublicSourcesSection'
+import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 
 const INITIAL_FORM_VALUES = {
     deactivatedDatetime: new Date().toISOString(),
@@ -410,6 +411,11 @@ export const CreateAiAgentSettingsForm = ({
     const isCustomToneOfVoiceSelected =
         formValues.toneOfVoice === ToneOfVoice.Custom
 
+    const snippetHelpCenter = useAiAgentHelpCenter({
+        shopName,
+        helpCenterType: 'snippet',
+    })
+
     return (
         <>
             <UnsavedChangesPrompt
@@ -549,12 +555,14 @@ export const CreateAiAgentSettingsForm = ({
                     </div>
                 </section>
 
-                {isWebsiteKnowledgeEnabled && (
+                {isWebsiteKnowledgeEnabled && snippetHelpCenter && (
                     <ConfigurationSection
                         title="Knowledge"
                         subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
                     >
-                        <PublicSourcesSection />
+                        <PublicSourcesSection
+                            helpCenterId={snippetHelpCenter.id}
+                        />
                     </ConfigurationSection>
                 )}
 

@@ -6,7 +6,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
 import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
-import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 import {
@@ -15,8 +15,8 @@ import {
 } from '../constants'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 
-jest.mock('../hooks/useGuidanceHelpCenter', () => ({
-    useGuidanceHelpCenter: jest.fn(),
+jest.mock('../hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('sanitize-html', () => () => jest.fn())
@@ -29,7 +29,7 @@ jest.mock('../hooks/useGuidanceArticleMutation', () => ({
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
-const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
+const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 
@@ -61,7 +61,7 @@ const renderComponent = () => {
 }
 describe('<AiAgentGuidanceContainer />', () => {
     beforeEach(() => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
+        mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticles.mockReturnValue(defaultGuidanceArticleProps)
         mockedUseGuidanceArticleMutation.mockReturnValue(
             defaultGuidanceArticleMutationProps
@@ -69,7 +69,7 @@ describe('<AiAgentGuidanceContainer />', () => {
     })
 
     it('should render loader', () => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(undefined)
+        mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
 
         renderComponent()
 

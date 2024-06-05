@@ -5,14 +5,14 @@ import userEvent from '@testing-library/user-event'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {useGuidanceTemplate} from '../hooks/useGuidanceTemplate'
 import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
 import {AiAgentGuidanceTemplateNewContainer} from '../AiAgentGuidanceTemplateNewContainer'
 
-jest.mock('../hooks/useGuidanceHelpCenter', () => ({
-    useGuidanceHelpCenter: jest.fn(),
+jest.mock('../hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(),
 }))
 jest.mock('../hooks/useGuidanceTemplate', () => ({
     useGuidanceTemplate: jest.fn(),
@@ -33,7 +33,7 @@ jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentGuidanceToggle]: true,
 }))
 
-const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
+const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceTemplate = jest.mocked(useGuidanceTemplate)
 
@@ -57,7 +57,7 @@ const renderComponent = () => {
 }
 describe('<AiAgentGuidanceTemplateNewContainer />', () => {
     beforeEach(() => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
+        mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
             defaultGuidanceArticleMutationProps
         )
@@ -65,7 +65,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
     })
 
     it('should render loader when no help center', () => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(undefined)
+        mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
 
         renderComponent()
 

@@ -2,7 +2,7 @@ import React from 'react'
 import {Redirect, useParams} from 'react-router-dom'
 import Loader from 'pages/common/components/Loader/Loader'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 import {AiAgentGuidanceTemplateNewView} from './AiAgentGuidanceTemplateNewView'
 import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
 import {useGuidanceTemplate} from './hooks/useGuidanceTemplate'
@@ -14,7 +14,10 @@ export const AiAgentGuidanceTemplateNewContainer = () => {
         templateId: string
     }>()
     const {routes} = useAiAgentNavigation({shopName})
-    const guidanceHelpCenter = useGuidanceHelpCenter({shopName})
+    const guidanceHelpCenter = useAiAgentHelpCenter({
+        shopName,
+        helpCenterType: 'guidance',
+    })
     const {guidanceTemplate} = useGuidanceTemplate(templateId)
 
     if (!guidanceTemplate) {

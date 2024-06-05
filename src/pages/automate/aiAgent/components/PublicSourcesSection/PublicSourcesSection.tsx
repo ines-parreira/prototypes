@@ -1,8 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
+import {usePublicResources} from '../../hooks/usePublicResources'
 import css from './PublicSourcesSection.less'
 import {PublicSourcesItem} from './PublicSourcesItem'
 import {SourceItem} from './types'
@@ -10,11 +11,19 @@ import {SourceItem} from './types'
 const SOURCES_LIMIT = 10
 
 type Props = {
-    publicSources?: SourceItem[]
+    helpCenterId: number
 }
 
-export const PublicSourcesSection = ({publicSources}: Props) => {
-    const [sources, setSources] = useState<SourceItem[]>(publicSources ?? [])
+export const PublicSourcesSection = ({helpCenterId}: Props) => {
+    const {sourceItems} = usePublicResources({helpCenterId})
+    const [sources, setSources] = useState<SourceItem[]>(sourceItems ?? [])
+
+    useEffect(() => {
+        if (sourceItems) {
+            setSources(sourceItems)
+        }
+    }, [sourceItems])
+
     const onAddClick = () => {
         const newResource: SourceItem = {
             id: Math.random(),

@@ -5,14 +5,14 @@ import userEvent from '@testing-library/user-event'
 import {renderWithRouter} from 'utils/testing'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 import {AiAgentGuidanceDetailContainer} from '../AiAgentGuidanceDetailContainer'
 import {useGuidanceArticle} from '../hooks/useGuidanceArticle'
 import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
 
-jest.mock('../hooks/useGuidanceHelpCenter', () => ({
-    useGuidanceHelpCenter: jest.fn(),
+jest.mock('../hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(),
 }))
 jest.mock('../hooks/useGuidanceArticle', () => ({
     useGuidanceArticle: jest.fn(),
@@ -34,7 +34,7 @@ jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentGuidanceToggle]: true,
 }))
 
-const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
+const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticle = jest.mocked(useGuidanceArticle)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 
@@ -58,7 +58,7 @@ const renderComponent = (articleId = 1) => {
 }
 describe('<AiAgentGuidanceDetail />', () => {
     beforeEach(() => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
+        mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
             defaultGuidanceArticleMutationProps
         )
@@ -69,7 +69,7 @@ describe('<AiAgentGuidanceDetail />', () => {
     })
 
     it('should render loader when no help center', () => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(undefined)
+        mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
 
         renderComponent()
 

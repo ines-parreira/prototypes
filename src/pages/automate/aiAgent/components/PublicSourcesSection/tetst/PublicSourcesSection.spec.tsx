@@ -1,8 +1,15 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 import {SourceItem} from '../types'
 import {PublicSourcesSection} from '../PublicSourcesSection'
+
+jest.mock('../../../hooks/usePublicResources', () => ({
+    usePublicResources: jest.fn(),
+}))
+
+const HELP_CENTER_ID = 1
 
 const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
     id,
@@ -11,10 +18,17 @@ const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
 })
 
 const renderComponent = () => {
-    render(<PublicSourcesSection />)
+    render(<PublicSourcesSection helpCenterId={HELP_CENTER_ID} />)
 }
 
+const mockUsePublicResources = jest.mocked(usePublicResources)
+
 describe('<PublicSourcesSection />', () => {
+    beforeEach(() => {
+        mockUsePublicResources.mockReturnValue({
+            sourceItems: [],
+        })
+    })
     it('should render component', () => {
         renderComponent()
 
@@ -32,8 +46,9 @@ describe('<PublicSourcesSection />', () => {
 
     it('should preprender public sources', () => {
         const sources = [createSource(1), createSource(2), createSource(3)]
+        mockUsePublicResources.mockReturnValue({sourceItems: sources})
 
-        render(<PublicSourcesSection publicSources={sources} />)
+        renderComponent()
 
         expect(screen.getAllByTestId('source-item')).toHaveLength(3)
     })
@@ -70,7 +85,9 @@ describe('<PublicSourcesSection />', () => {
 
     it('should disable add button when limit riched', () => {
         const sources = Array.from({length: 10}, (_, i) => createSource(i + 1))
-        render(<PublicSourcesSection publicSources={sources} />)
+        mockUsePublicResources.mockReturnValue({sourceItems: sources})
+
+        renderComponent()
         const addButton = screen.getByTestId('add-button')
 
         expect(addButton).toBeDisabled()

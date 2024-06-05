@@ -19,8 +19,6 @@ const isUrlValid = (url?: string) => {
     }
 }
 
-const READY_SOURCE_STATUSES = ['idle', 'error', 'success']
-
 type Props = {
     source: SourceItem
     onDelete: (id: number) => void
@@ -52,11 +50,14 @@ export const PublicSourcesItem = ({source, onDelete, onSync}: Props) => {
     const isNotEmpty = value !== '' && value !== undefined
     const isValid = isValidUrl && isNotEmpty
 
+    const isSyncDisabled = source.status !== 'idle' && source.status !== 'error'
+
     return (
         <div className={css.container}>
             <InputField
                 className={css.input}
                 value={value}
+                isDisabled={isSyncDisabled}
                 onChange={handleChange}
                 placeholder="URL"
                 aria-label="Public URL"
@@ -64,10 +65,9 @@ export const PublicSourcesItem = ({source, onDelete, onSync}: Props) => {
             />
             <Button
                 intent="secondary"
-                isDisabled={
-                    !isValid || !READY_SOURCE_STATUSES.includes(source.status)
-                }
+                isDisabled={!isValid || isSyncDisabled}
                 onClick={handleSync}
+                isLoading={source.status === 'loading'}
             >
                 <ButtonIconLabel icon="sync">Sync URL</ButtonIconLabel>
             </Button>

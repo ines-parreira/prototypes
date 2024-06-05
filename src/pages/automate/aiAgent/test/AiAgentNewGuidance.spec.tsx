@@ -6,11 +6,11 @@ import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/
 import {FeatureFlagKey} from 'config/featureFlags'
 import {AiAgentGuidanceNewContainer} from '../AiAgentGuidanceNewContainer'
 import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
-import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
 
-jest.mock('../hooks/useGuidanceHelpCenter', () => ({
-    useGuidanceHelpCenter: jest.fn(),
+jest.mock('../hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(),
 }))
 jest.mock('../hooks/useGuidanceArticles', () => ({
     useGuidanceArticles: jest.fn(),
@@ -31,7 +31,7 @@ jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
     [FeatureFlagKey.AiAgentSettings]: true,
 }))
 
-const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
+const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceArticles = jest.mocked(useGuidanceArticles)
 const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 
@@ -54,7 +54,7 @@ const renderComponent = () => {
 }
 describe('<AiAgentNewGuidance />', () => {
     beforeEach(() => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
+        mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
             defaultGuidanceArticleMutationProps
         )
@@ -65,7 +65,7 @@ describe('<AiAgentNewGuidance />', () => {
     })
 
     it('should render loader when no help center', () => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(undefined)
+        mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
 
         renderComponent()
 

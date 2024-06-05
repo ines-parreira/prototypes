@@ -5,12 +5,12 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {renderWithRouter} from 'utils/testing'
 import {AiAgentGuidanceTemplatesContainer} from '../AiAgentGuidanceTemplatesContainer'
-import {useGuidanceHelpCenter} from '../hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
 import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
 import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
 
-jest.mock('../hooks/useGuidanceHelpCenter', () => ({
-    useGuidanceHelpCenter: jest.fn(),
+jest.mock('../hooks/useAiAgentHelpCenter', () => ({
+    useAiAgentHelpCenter: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../hooks/useGuidanceTemplates', () => ({
@@ -19,7 +19,7 @@ jest.mock('../hooks/useGuidanceTemplates', () => ({
 
 jest.mock('hooks/useGetDateAndTimeFormat', () => () => 'DD/MM/YYYY')
 
-const mockedUseGuidanceHelpCenter = jest.mocked(useGuidanceHelpCenter)
+const mockedUseAiAgentHelpCenter = jest.mocked(useAiAgentHelpCenter)
 const mockedUseGuidanceTemplates = jest.mocked(useGuidanceTemplates)
 
 jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
@@ -36,12 +36,12 @@ const renderComponent = () => {
 }
 describe('<AiAgentGuidanceTemplatesContainer />', () => {
     beforeEach(() => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(helpCenter)
+        mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceTemplates.mockReturnValue({guidanceTemplates: []})
     })
 
     it('should render loader', () => {
-        mockedUseGuidanceHelpCenter.mockReturnValue(undefined)
+        mockedUseAiAgentHelpCenter.mockReturnValue(undefined)
 
         renderComponent()
 

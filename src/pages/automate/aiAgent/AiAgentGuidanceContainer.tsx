@@ -2,7 +2,7 @@ import React from 'react'
 import {Link, useParams} from 'react-router-dom'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import AutomateViewContent from '../common/components/AutomateViewContent'
-import {useGuidanceHelpCenter} from './hooks/useGuidanceHelpCenter'
+import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 import {AiAgentGuidanceView} from './AiAgentGuidanceView'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
@@ -12,7 +12,10 @@ export const AiAgentGuidanceContainer = () => {
     const {shopName} = useParams<{
         shopName: string
     }>()
-    const guidanceHelpCenter = useGuidanceHelpCenter({shopName})
+    const guidanceHelpCenter = useAiAgentHelpCenter({
+        shopName,
+        helpCenterType: 'guidance',
+    })
     const {routes} = useAiAgentNavigation({shopName})
 
     // We don't handle for now the case when guidanceHelpCenter is not created.
