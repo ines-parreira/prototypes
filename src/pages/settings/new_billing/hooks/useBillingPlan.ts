@@ -43,6 +43,7 @@ import useGetConvertStatus, {
     convertStatusKeys,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
+import {handleConvertProductDowngraded} from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -526,6 +527,14 @@ export const useBillingPlans = ({
                 !!notification && notifications.push(notification)
             }
 
+            if (isNewConvertProduct) {
+                handleConvertProductDowngraded(
+                    convertProduct,
+                    selectedPlans[ProductType.Convert].plan,
+                    domain
+                )
+            }
+
             if (selectedPlans[ProductType.Convert]?.plan?.product_id) {
                 const plan = selectedPlans[ProductType.Convert]?.plan
 
@@ -577,6 +586,7 @@ export const useBillingPlans = ({
         isFreeTrial,
         history,
         interval,
+        domain,
         anyProductChanged,
         dispatch,
         dispatchBillingError,

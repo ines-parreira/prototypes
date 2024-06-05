@@ -64,6 +64,7 @@ export enum SegmentEvent {
     ContactFormRedirectToContactFormPreferences = 'contact-form/redirect-to-contact-form-preferences',
     ContactFormRedirectToFlows = 'contact-form/redirect-to-flows',
     ConvertBillingProductRemoved = 'convert/billing-product-removed',
+    ConvertBillingProductScheduledDowngrade = 'convert/billing-product-scheduled-downgrade',
     CustomActionLinksAdded = 'widget/custom-link/link-added',
     CustomActionLinksClicked = 'widget/custom-link/link-clicked',
     CustomActionLinksDeleted = 'widget/custom-link/link-deleted',
