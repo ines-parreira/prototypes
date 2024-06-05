@@ -22,10 +22,10 @@ import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
 
 import {getActionUrl, getGuidanceUrl, getKnowledgeUrl} from './utils'
 
-import ReportIssueSelect from './ReportIssueSelect'
-
 import FeedbackOrders from './FeedbackOrders'
 import FeedbackEvents from './FeedbackEvents'
+import FeedbackReportIssue from './FeedbackReportIssue'
+import FeedbackCreateResource from './FeedbackCreateResource'
 
 import css from './AIAgentFeedbackBar.less'
 
@@ -67,7 +67,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     }, [messageFeedback, issues])
 
     const handleSubmitFeedback = (
-        resourceId: number,
+        resourceId: number | string,
         resourceType: FeedbackOnResource['resourceType'],
         feedback: Feedback
     ) => {
@@ -379,19 +379,22 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 </div>
             )}
             <FeedbackOrders orders={messageFeedback?.orders} />
+            <FeedbackCreateResource
+                shopType={messageFeedback.shopType}
+                shopName={messageFeedback.shopName}
+                helpCenterId={messageFeedback.helpCenterId}
+            />
             <FeedbackEvents
                 messages={selectedAIMessage ? [selectedAIMessage] : []}
                 shopType={messageFeedback.shopType}
                 shopName={messageFeedback.shopName}
             />
-            <div className={css.reportIssueContainer}>
-                <ReportIssueSelect
-                    value={reportIssues}
-                    onChange={setReportIssues}
-                    onClose={handleSubmitReportIssues}
-                    onRemove={handleDeleteReportIssues}
-                />
-            </div>
+            <FeedbackReportIssue
+                value={reportIssues}
+                onChange={setReportIssues}
+                onClose={handleSubmitReportIssues}
+                onRemove={handleDeleteReportIssues}
+            />
         </>
     )
 }

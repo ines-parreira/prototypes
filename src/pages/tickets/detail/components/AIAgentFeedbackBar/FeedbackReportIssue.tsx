@@ -13,7 +13,7 @@ import {
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
 
-import css from './ReportIssueSelect.less'
+import css from './FeedbackReportIssue.less'
 
 const closeIcon = (
     <i data-testid="report-issue-tag-close-icon" className="material-icons">

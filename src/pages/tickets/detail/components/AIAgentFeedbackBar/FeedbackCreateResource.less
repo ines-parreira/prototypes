@@ -1,0 +1,27 @@
+@import '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        position: relative;
+        padding: 0 @layout-spacing-s;
+    }
+
+    .info {
+        font-size: 12px;
+        color: var(--neutral-grey-5);
+    }
+
+    .dropdownItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .openIcon {
+        font-size: 20px !important;
+        color: var(--neutral-grey-4);
+    }
+}

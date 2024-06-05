@@ -9,7 +9,7 @@ export type Guidance = {
 
 export type Knowledge = {
     type: 'article' | 'external_snippet' | 'macro' | 'flow'
-    id: number
+    id: number | string
     name: string
     url?: string
 }
@@ -20,7 +20,7 @@ export type Action = {
 }
 
 export type FeedbackOnResource = {
-    resourceId: number
+    resourceId: number | string
     resourceType:
         | 'action'
         | 'guidance'
@@ -60,6 +60,7 @@ export const isIssueFeedbackOnMessage = (
 export type MessageFeedback = {
     shopName: string
     shopType: string
+    helpCenterId: string
     messageId: number
     summary: string
     orders: {

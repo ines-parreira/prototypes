@@ -6,14 +6,14 @@ import {
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
 
-import ReportIssueSelect from '../ReportIssueSelect'
+import FeedbackReportIssue from '../FeedbackReportIssue'
 
-describe('ReportIssueSelect', () => {
+describe('FeedbackReportIssue', () => {
     it('displays tags for each value', () => {
         const allOptions = Object.values(ReportIssueOption)
 
         const {getAllByTestId} = render(
-            <ReportIssueSelect value={allOptions} onChange={jest.fn()} />
+            <FeedbackReportIssue value={allOptions} onChange={jest.fn()} />
         )
 
         const tags = getAllByTestId('tag')
@@ -30,7 +30,7 @@ describe('ReportIssueSelect', () => {
         const onChange = jest.fn()
 
         const {getAllByTestId} = render(
-            <ReportIssueSelect value={allOptions} onChange={onChange} />
+            <FeedbackReportIssue value={allOptions} onChange={onChange} />
         )
 
         const tags = getAllByTestId('tag')
@@ -51,7 +51,7 @@ describe('ReportIssueSelect', () => {
         const onChange = jest.fn()
 
         const {getAllByTestId, getByRole} = render(
-            <ReportIssueSelect value={[]} onChange={onChange} />
+            <FeedbackReportIssue value={[]} onChange={onChange} />
         )
 
         const listBox = getByRole('listbox')
@@ -69,7 +69,7 @@ describe('ReportIssueSelect', () => {
         const onChange = jest.fn()
 
         const {getAllByTestId, getByRole} = render(
-            <ReportIssueSelect
+            <FeedbackReportIssue
                 value={[ReportIssueOption.IncorrectLanguageUsed]}
                 onChange={onChange}
             />
