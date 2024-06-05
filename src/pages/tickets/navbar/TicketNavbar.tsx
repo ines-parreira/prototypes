@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
@@ -7,7 +6,6 @@ import {DropTargetMonitor} from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     UserRole,
     UserSetting,
@@ -123,9 +121,6 @@ export function TicketNavbarContainer({
     submitSettingSuccess,
     disableResize = false,
 }: Props) {
-    const hasSplitTicketView: boolean | undefined =
-        useFlags()[FeatureFlagKey.SplitTicketView]
-
     const history = useHistory()
     const params = useParams<{viewId?: string}>()
     const {viewId} = useSearch<{viewId?: string}>()
@@ -456,7 +451,7 @@ export function TicketNavbarContainer({
             disableResize={disableResize}
             navbarContentRef={scrollableAreaRef}
             splitTicketViewToggle={
-                hasSplitTicketView && isTicketPath(window.location.pathname) ? (
+                isTicketPath(window.location.pathname) ? (
                     <SplitTicketViewToggle />
                 ) : undefined
             }

@@ -27,8 +27,6 @@ import {TicketListActions} from 'pages/tickets/list/components/TicketListActions
 import css from 'pages/tickets/list/TicketList.less'
 
 const TicketList = () => {
-    const hasSplitTicketView = useFlags()[FeatureFlagKey.SplitTicketView]
-
     const dispatch = useAppDispatch()
 
     const activeView = useAppSelector(getActiveView)
@@ -100,11 +98,7 @@ const TicketList = () => {
             >(TicketListActions, {
                 openMacroModal: () => setIsMacroModalOpen(true),
             })}
-            viewButtons={
-                !isEditMode && (
-                    <CreateTicketButton shouldBindKeys={!hasSplitTicketView} />
-                )
-            }
+            viewButtons={!isEditMode && <CreateTicketButton />}
         />
     )
 

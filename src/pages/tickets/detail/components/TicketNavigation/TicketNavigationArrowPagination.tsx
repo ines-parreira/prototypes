@@ -1,12 +1,10 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {isTicketNavigationAvailable} from 'state/ticket/actions'
 import Tooltip from 'pages/common/components/Tooltip'
 import {ArrowPagination} from 'pages/common/components/Paginations'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 
 import useGoToPreviousTicket from './hooks/useGoToPreviousTicket'
@@ -23,10 +21,7 @@ export default function TicketNavigationArrowPagination({ticketId}: Props) {
     const paginationItemPreviousId = 'pagination-item-arrow-previous'
     const paginationItemNextId = 'pagination-item-arrow-next'
 
-    const hasSplitTicketView: boolean | undefined =
-        useFlags()[FeatureFlagKey.SplitTicketView]
-    const {isEnabled} = useSplitTicketView()
-    const isSplitTicketViewEnabled = hasSplitTicketView && isEnabled
+    const {isEnabled: isSplitTicketViewEnabled} = useSplitTicketView()
 
     const {goToTicket: goToPrevTicket, isEnabled: isPreviousEnabled} =
         useGoToPreviousTicket(ticketId)

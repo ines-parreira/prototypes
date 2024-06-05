@@ -3,7 +3,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
@@ -68,7 +67,6 @@ import {
     pickedTicketFields,
 } from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import Loader from 'pages/common/components/Loader/Loader'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {useListVoiceCalls} from 'models/voiceCall/queries'
 import {getSourceTypeOfResponse} from 'state/ticket/utils'
@@ -243,10 +241,7 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const hasSplitTicketView: boolean | undefined =
-        useFlags()[FeatureFlagKey.SplitTicketView]
-    const {isEnabled} = useSplitTicketView()
-    const isSplitTicketViewEnabled = hasSplitTicketView && isEnabled
+    const {isEnabled: isSplitTicketViewEnabled} = useSplitTicketView()
 
     const {goToTicket: goToPreviousTicketInTicketListPanel} =
         useGoToPreviousTicket()

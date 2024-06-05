@@ -1,12 +1,10 @@
 import React, {ComponentProps} from 'react'
-import LD from 'launchdarkly-react-client-sdk'
 import {render, screen, fireEvent} from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
 import Tooltip from 'pages/common/components/Tooltip'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {FeatureFlagKey} from 'config/featureFlags'
 import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 import useGoToNextTicket from '../hooks/useGoToNextTicket'
 import useGoToPreviousTicket from '../hooks/useGoToPreviousTicket'
@@ -44,9 +42,6 @@ describe('TicketNavigationArrowPagination', () => {
     beforeEach(() => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.SplitTicketView]: false,
-        })
         useSplitTicketViewMock.mockReturnValue({isEnabled: false})
 
         mockUseGoToPreviousTicket.mockReturnValue({
@@ -102,9 +97,6 @@ describe('TicketNavigationArrowPagination', () => {
     })
 
     it('should render without PREV & NEXT buttons when DTP is enabled', () => {
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.SplitTicketView]: true,
-        })
         useSplitTicketViewMock.mockReturnValue({isEnabled: true})
         mockUseGoToPreviousTicket.mockReturnValue({
             isDisabled: true,

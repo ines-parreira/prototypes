@@ -1,9 +1,7 @@
-import LD from 'launchdarkly-react-client-sdk'
 import {renderHook} from '@testing-library/react-hooks'
 import {useParams} from 'react-router-dom'
 
 import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {FeatureFlagKey} from 'config/featureFlags'
 import history from 'pages/history'
 
 import useGoToPreviousTicket from '../useGoToPreviousTicket'
@@ -27,9 +25,6 @@ jest.mock('pages/history')
 
 describe('useGoToPreviousTicket', () => {
     beforeEach(() => {
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.SplitTicketView]: false,
-        })
         mockUseSplitTicketViewMock.mockReturnValue({isEnabled: false})
         useParamsMock.mockReturnValue({})
         mockUsePrevNextTicketNavigation.mockReturnValue(jest.fn())
@@ -49,9 +44,6 @@ describe('useGoToPreviousTicket', () => {
     })
 
     it('should return the DTP ticket navigation method and return isEnabled as true', () => {
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.SplitTicketView]: true,
-        })
         mockUseSplitTicketViewMock.mockReturnValue({
             isEnabled: true,
             previousTicketId: 111,

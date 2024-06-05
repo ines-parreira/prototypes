@@ -10,7 +10,6 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
-import LD from 'launchdarkly-react-client-sdk'
 
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
@@ -42,7 +41,6 @@ import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import * as customFieldsUtils from 'utils/customFields'
 import * as ticketUtils from 'state/ticket/utils'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
@@ -240,9 +238,6 @@ describe('TicketDetailContainer component', () => {
         prepareTicketMessageMock.mockReturnValue(preparedData)
         setStatusMock.mockImplementation((status, callback) => {
             act(callback)
-        })
-        jest.spyOn(LD, 'useFlags').mockReturnValue({
-            [FeatureFlagKey.SplitTicketView]: false,
         })
         useSplitTicketViewMock.mockReturnValue({isEnabled: false})
         mockUseGoToPreviousTicket.mockReturnValue({
@@ -1233,9 +1228,6 @@ describe('TicketDetailContainer component', () => {
             trackedEvent,
             isSplitTicketViewEnabled
         ) => {
-            jest.spyOn(LD, 'useFlags').mockReturnValue({
-                [FeatureFlagKey.SplitTicketView]: isSplitTicketViewEnabled,
-            })
             useSplitTicketViewMock.mockReturnValue({
                 isEnabled: isSplitTicketViewEnabled,
             })

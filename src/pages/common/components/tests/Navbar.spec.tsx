@@ -288,13 +288,7 @@ describe('<Navbar />', () => {
         'should render CreateTicketNavbarButton and PlaceCallNavbarButton if on a ticket page',
         (title) => {
             const {queryByText} = render(
-                <Navbar
-                    {...minProps}
-                    activeContent={title}
-                    flags={{
-                        [FeatureFlagKey.SplitTicketView]: true,
-                    }}
-                />
+                <Navbar {...minProps} activeContent={title} />
             )
 
             if (title === 'Tickets') {

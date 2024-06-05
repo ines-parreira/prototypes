@@ -207,9 +207,6 @@ export default function Routes() {
 export function AppRoutes() {
     const {path} = useRouteMatch()
 
-    const hasSplitTicketView: boolean | undefined =
-        useFlags()[FeatureFlagKey.SplitTicketView]
-
     const splitTicketLayoutProps = useSplitTicketPage()
     const splitViewLayoutProps = useSplitViewPage()
     const fullWidthTicketLayoutProps = useTicketPage()
@@ -257,16 +254,12 @@ export function AppRoutes() {
                     <App content={ReferralContent} navbar={TicketNavbar} />
                 )}
             />
-            {!!hasSplitTicketView && (
-                <Route exact path={`${path}/views/:viewId?`}>
-                    <PanelLayout {...splitViewLayoutProps} />
-                </Route>
-            )}
-            {!!hasSplitTicketView && (
-                <Route exact path={`${path}/views/:viewId/:ticketId`}>
-                    <PanelLayout {...splitTicketLayoutProps} />
-                </Route>
-            )}
+            <Route exact path={`${path}/views/:viewId?`}>
+                <PanelLayout {...splitViewLayoutProps} />
+            </Route>
+            <Route exact path={`${path}/views/:viewId/:ticketId`}>
+                <PanelLayout {...splitTicketLayoutProps} />
+            </Route>
             <Route>
                 <NoMatch />
             </Route>

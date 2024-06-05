@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     forwardRef,
     ForwardedRef,
@@ -11,7 +10,6 @@ import {Link, useLocation} from 'react-router-dom'
 
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import navbarCss from 'assets/css/navbar.less'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useViewId from 'hooks/useViewId'
 import {View} from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
@@ -34,8 +32,6 @@ const TicketNavbarViewLink = (
     {className, icon, view, viewCount}: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>
 ) => {
-    const hasSplitTicketView: boolean | undefined =
-        useFlags()[FeatureFlagKey.SplitTicketView]
     const {isEnabled: splitTicketViewEnabled} = useSplitTicketView()
     const {pathname: path} = useLocation()
 
@@ -70,7 +66,7 @@ const TicketNavbarViewLink = (
                     className
                 )}
                 to={
-                    hasSplitTicketView && splitTicketViewEnabled
+                    splitTicketViewEnabled
                         ? `/app/views/${view.id}`
                         : `/app/tickets/${view.id}/${encodeURIComponent(
                               view.slug

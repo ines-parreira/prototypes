@@ -373,7 +373,6 @@ export class Navbar extends Component<Props, State> {
         )
 
         const hasNotifications = !!flags?.[FeatureFlagKey.Notifications]
-        const hasSplitTicketView = !!flags?.[FeatureFlagKey.SplitTicketView]
         const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
 
         return (
@@ -471,8 +470,7 @@ export class Navbar extends Component<Props, State> {
 
                         <SpotlightButton />
                         {hasNotifications && <NotificationsButton />}
-                        {this.state.title === 'Tickets' &&
-                        hasSplitTicketView ? (
+                        {this.state.title === 'Tickets' ? (
                             <>
                                 <CreateTicketNavbarButton
                                     isDisabled={window.location.pathname.includes(

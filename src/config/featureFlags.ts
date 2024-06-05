@@ -101,7 +101,6 @@ export enum FeatureFlagKey {
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
     SLAPolicies = 'sla-policies',
-    SplitTicketView = 'split-ticket-view',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     VoiceConferenceInboundRoundRobin = 'voice-conference-inbound-round-robin',
