@@ -165,6 +165,7 @@ import SupportPerformanceTicketInsights from 'pages/stats/SupportPerformanceTick
 import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
+import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
 import EditCustomActionsFormView from 'pages/automate/actions/EditCustomActionsFormView'
 import NewCustomActionsFormView from 'pages/automate/actions/NewCustomActionsFormView'
 import AutomateRoute from 'pages/automate/common/components/AutomateRoute'
@@ -1697,6 +1698,14 @@ function AutomationContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     EditCustomActionsFormView,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/actions/templates`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    ActionsTemplatesViewContainer,
                     AGENT_ROLE
                 )}
             />
