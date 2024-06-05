@@ -68,16 +68,30 @@ export const TicketInfobarContainer = ({
     const customer =
         sources.getIn(['ticket', 'customer']) || (fromJS({}) as Map<any, any>)
 
+    const aiMessages = useAppSelector(getAIAgentMessages)
+    const publicAiMessages = aiMessages.filter((message) => message.public)
+
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
         if (activeTab === tab) {
             return
         }
 
         dispatch(changeActiveTab({activeTab: tab}))
-        dispatch(changeTicketMessage({message: undefined}))
+
+        if (tab === TicketAIAgentFeedbackTab.AIAgent) {
+            dispatch(
+                changeTicketMessage({
+                    message:
+                        publicAiMessages.length === 1
+                            ? publicAiMessages[0]
+                            : undefined,
+                })
+            )
+        } else {
+            dispatch(changeTicketMessage({message: undefined}))
+        }
     }
 
-    const aiMessages = useAppSelector(getAIAgentMessages)
     const showNavbar = aiMessages.length > 0 && isFeedbackToAiAgentEnabled
 
     const activeTab = useAppSelector(getActiveTab)

@@ -149,7 +149,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                         size="small"
                         fillStyle="fill"
                         onClick={handleImproveResponse}
-                        isDisabled={selectedAIMessage === message}
+                        isDisabled={selectedAIMessage?.id === message.id}
                         className={css.feedbackButton}
                     >
                         {IMPROVE_RESPONSE}

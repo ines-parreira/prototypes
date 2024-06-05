@@ -10,7 +10,11 @@ import userEvent from '@testing-library/user-event'
 import {selectContext, fetchWidgets} from 'state/widgets/actions'
 import {assumeMock, renderWithRouter} from 'utils/testing'
 import {StoreState} from 'state/types'
-import {changeActiveTab, getActiveTab} from 'state/ui/ticketAIAgentFeedback'
+import {
+    changeActiveTab,
+    changeTicketMessage,
+    getActiveTab,
+} from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getAIAgentMessages} from 'state/ticket/selectors'
@@ -60,6 +64,7 @@ const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)
 const mockedSelectContext = assumeMock(selectContext)
 const mockedFetchWidgets = assumeMock(fetchWidgets)
 const mockedChangeActiveTab = assumeMock(changeActiveTab)
+const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 const mockedGetActiveTab = assumeMock(getActiveTab)
 const mockStore = configureMockStore([thunk])
 const state: Partial<StoreState> = {
@@ -91,6 +96,7 @@ describe('<TicketInfobarContainer />', () => {
         mockedGetAIAgentMessages.mockReturnValue([
             {
                 id: '1',
+                public: true,
             } as any,
         ])
     })
@@ -138,6 +144,73 @@ describe('<TicketInfobarContainer />', () => {
         })
     })
 
+    it('should change selected message when AI agent tab is clicked and there is only 1 public AI message', () => {
+        mockedGetAIAgentMessages.mockReturnValue([
+            {
+                id: '1',
+                public: true,
+            } as any,
+        ])
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
+
+        const aiAgentTab = screen.getByText(AI_AGENT_TAB)
+        userEvent.click(aiAgentTab)
+
+        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
+            activeTab: TicketAIAgentFeedbackTab.AIAgent,
+        })
+
+        expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
+            message: {
+                id: '1',
+                public: true,
+            },
+        })
+    })
+
+    it('should unset selected message when AI agent tab is clicked and there are multiple public AI messages', () => {
+        mockedGetAIAgentMessages.mockReturnValue([
+            {
+                id: '1',
+                public: true,
+            } as any,
+            {
+                id: '2',
+                public: true,
+            } as any,
+        ])
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/new',
+            }
+        )
+
+        const aiAgentTab = screen.getByText(AI_AGENT_TAB)
+        userEvent.click(aiAgentTab)
+
+        expect(mockedChangeActiveTab).toHaveBeenCalledWith({
+            activeTab: TicketAIAgentFeedbackTab.AIAgent,
+        })
+
+        expect(mockedChangeTicketMessage).toHaveBeenCalledWith({
+            message: undefined,
+        })
+    })
+
     it('should not call changeActive tab when AI Agent tab is clicked and is already active', () => {
         mockedGetActiveTab.mockReturnValue(
             TicketAIAgentFeedbackTab.CustomerInformation
@@ -158,22 +231,6 @@ describe('<TicketInfobarContainer />', () => {
         userEvent.click(customerInformationTab)
 
         expect(mockedChangeActiveTab).not.toHaveBeenCalled()
-    })
-
-    it('should not render secondary navbar if there are no AI messages', () => {
-        mockedGetAIAgentMessages.mockReturnValue([])
-
-        renderWithRouter(
-            <Provider store={store}>
-                <TicketInfobarContainer {...minProps} />
-            </Provider>,
-            {
-                path: '/foo/:ticketId?',
-                route: '/foo/new',
-            }
-        )
-
-        expect(screen.queryByText(CUSTOMER_INFORMATION_TAB)).toBeNull()
     })
 
     it('should not render secondary navbar if there are no AI messages', () => {
