@@ -10,7 +10,6 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 
 import {NotificationsSettings as NewNotificationsSettings} from 'common/notifications'
 import {logPageChange} from 'common/segment'
@@ -191,8 +190,9 @@ import {AiAgentGuidanceDetailContainer} from 'pages/automate/aiAgent/AiAgentGuid
 import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentGuidanceTemplateNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
-import QuickResponsesViewContainer from './automate/quickResponses/QuickResponsesViewContainer'
-import WorkflowTemplatesViewContainer from './automate/workflows/WorkflowTemplatesViewContainer'
+import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResponsesViewContainer'
+import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
+import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
