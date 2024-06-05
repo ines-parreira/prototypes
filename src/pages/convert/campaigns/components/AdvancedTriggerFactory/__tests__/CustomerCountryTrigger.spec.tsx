@@ -21,7 +21,7 @@ describe('<CustomerCountryTrigger>', () => {
         )
 
         act(() => {
-            expect(getByText('Customer country')).toBeInTheDocument()
+            expect(getByText('Visitor location')).toBeInTheDocument()
             expect(getByText('Value is required')).toBeInTheDocument()
         })
     })

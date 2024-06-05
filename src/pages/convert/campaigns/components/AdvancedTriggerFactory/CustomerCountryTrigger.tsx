@@ -114,10 +114,10 @@ export const CustomerCountryTrigger = ({
                 <Button
                     intent="secondary"
                     role="button"
-                    aria-label="Customer country"
+                    aria-label="Visitor location"
                     className="btn-frozen"
                 >
-                    Customer country
+                    Visitor location
                 </Button>
             </div>
             <SelectField
@@ -129,8 +129,8 @@ export const CustomerCountryTrigger = ({
                 <MultiSelectOptionsField
                     matchInput
                     className={css.fullWidth}
-                    plural="countries"
-                    singular="country"
+                    plural="locations"
+                    singular="location"
                     onChange={handleChangeValue}
                     options={countriesOptions}
                     selectedOptions={innerValue}

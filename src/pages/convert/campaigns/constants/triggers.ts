@@ -12,7 +12,6 @@ export const CONVERT_LIGHT_TRIGGERS = [
 export const CONVERT_SHOPIFY_TRIGGERS = [
     CampaignTriggerType.AmountSpent,
     CampaignTriggerType.OrdersCount,
-    CampaignTriggerType.CountryCode,
     CampaignTriggerType.CustomerTags,
     CampaignTriggerType.OrderedProducts,
 ]
@@ -229,27 +228,6 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
             },
         },
     },
-    [CampaignTriggerType.CountryCode]: {
-        label: 'Customer country',
-        group: 'Customer',
-        defaults: {
-            value: '',
-            operator: CampaignTriggerOperator.In,
-        },
-        requirements: {
-            revenue: true,
-            shopify: true,
-        },
-        operators: {
-            [CampaignTriggerOperator.In]: {
-                label: 'is',
-            },
-
-            [CampaignTriggerOperator.NotIn]: {
-                label: 'is not',
-            },
-        },
-    },
     [CampaignTriggerType.OrdersCount]: {
         label: 'Number of orders placed',
         group: 'Customer',
@@ -341,6 +319,27 @@ export const TRIGGERS_CONFIG: TriggerConfig = {
         operators: {
             [CampaignTriggerOperator.Eq]: {
                 label: 'equals',
+            },
+        },
+    },
+    [CampaignTriggerType.CountryCode]: {
+        label: 'Visitor location',
+        group: 'Other',
+        defaults: {
+            value: '',
+            operator: CampaignTriggerOperator.In,
+        },
+        requirements: {
+            revenue: true,
+            shopify: true,
+        },
+        operators: {
+            [CampaignTriggerOperator.In]: {
+                label: 'is',
+            },
+
+            [CampaignTriggerOperator.NotIn]: {
+                label: 'is not',
             },
         },
     },

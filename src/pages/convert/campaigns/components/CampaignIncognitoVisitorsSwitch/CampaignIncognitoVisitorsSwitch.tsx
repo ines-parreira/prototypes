@@ -36,7 +36,6 @@ const shouldIncognitoTriggerBeDisabled = (
                         trigger.value &&
                         parseInt(trigger.value as unknown as string) !== 0
                     )
-                case CampaignTriggerType.CountryCode:
                 case CampaignTriggerType.CustomerTags:
                 case CampaignTriggerType.OrderedProducts:
                     if (Array.isArray(trigger.value)) {
