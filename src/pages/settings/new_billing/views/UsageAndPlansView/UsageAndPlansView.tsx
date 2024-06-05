@@ -65,6 +65,7 @@ const UsageAndPlansView = ({
     const dispatch = useAppDispatch()
     const history = useHistory()
     const currentSubscription = useAppSelector(getCurrentSubscription)
+    const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const voiceProduct = useAppSelector(getCurrentVoiceProduct)
     const smsProduct = useAppSelector(getCurrentSMSProduct)
@@ -289,7 +290,9 @@ const UsageAndPlansView = ({
                     )}
                 </div>
             </div>
-            <BillingScheduledDowngrades />
+            {isCurrentSubscriptionCanceled ? null : (
+                <BillingScheduledDowngrades />
+            )}
             <div className={css.productsGridContainer}>
                 <ProductCard
                     type={ProductType.Helpdesk}

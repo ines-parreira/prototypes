@@ -98,6 +98,29 @@ describe('UsageAndPlansView', () => {
         expect(container).toMatchSnapshot()
     })
 
+    it('should NOT render if subscription has been canceled', () => {
+        const {queryByTestId} = renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <BillingProcessView
+                        currentUsage={currentProductsUsage}
+                        contactBilling={jest.fn()}
+                        dispatchBillingError={jest.fn()}
+                        setDefaultMessage={jest.fn()}
+                        setIsModalOpen={jest.fn()}
+                        periodEnd="2021-01-01"
+                        isTrialing={false}
+                        isCurrentSubscriptionCanceled={true}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(
+            queryByTestId('scheduled-cancellation-summary')
+        ).not.toBeInTheDocument()
+    })
+
     it('should render a scheduled cancellation summary if the subscription is scheduled to cancel', () => {
         const scheduledToCancelAt = '2021-01-01T00:00:00Z'
         const alteredStore = mockedStore({
