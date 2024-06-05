@@ -16,9 +16,6 @@ export type LlmConversationEntrypoint = Extract<
     {kind: 'llm-conversation'}
 >
 
-export type TemplateConfiguration =
-    Paths.WfConfigurationTemplateControllerList.Responses.$200[number]
-
 export interface CustomActionConfigurationFormInput
     extends Omit<StoreWorkflowsConfiguration, 'internal_id' | 'account_id'> {
     internal_id?: string
@@ -26,7 +23,3 @@ export interface CustomActionConfigurationFormInput
     triggers: LlmPromptTrigger[]
     entrypoints: LlmConversationEntrypoint[]
 }
-
-export type ActionApps = NonNullable<
-    Paths.WfConfigurationControllerGet.Responses.$200['apps']
->[number]

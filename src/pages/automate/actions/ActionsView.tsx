@@ -1,18 +1,13 @@
 import React, {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
 import AutomateView from 'pages/automate/common/components/AutomateView'
-import {
-    useGetStoreWorkflowsConfigurations,
-    useGetWorkflowConfigurationTemplates,
-} from 'models/workflows/queries'
+import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
 import emptyState from 'assets/img/actions/empty-state.png'
 import useAppDispatch from 'hooks/useAppDispatch'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 import {ACTIONS} from 'pages/automate/common/components/constants'
 
-import ActionsTemplatesCards from './components/ActionsTemplatesCards'
-import CreateCustomActionButton from './components/CreateCustomActionButton'
-import BrowseAllActionsButton from './components/BrowseAllActionsButton'
+import CreateActionButton from './components/CreateActionButton'
 import ActionsList from './components/ActionsList'
 import {handleError} from './hooks/errorHandler'
 import {ACTIONS_DESCRIPTION} from './constants'
@@ -26,21 +21,12 @@ export default function ActionView() {
         shopType: string
         shopName: string
     }>()
-    const {
-        data: storeConfigurations,
-        isInitialLoading: isStoreConfigurationsInitialLoading,
-        isError,
-        error,
-    } = useGetStoreWorkflowsConfigurations({
-        storeName: shopName,
-        storeType: shopType,
-        triggers: ['llm-prompt'],
-    })
-
-    const {
-        data: templateConfigurations,
-        isInitialLoading: istemplateConfigurationsInitialLoading,
-    } = useGetWorkflowConfigurationTemplates(['llm-prompt'])
+    const {data, isInitialLoading, isError, error} =
+        useGetStoreWorkflowsConfigurations({
+            storeName: shopName,
+            storeType: shopType,
+            triggers: ['llm-prompt'],
+        })
 
     useEffect(() => {
         if (isError) {
@@ -52,25 +38,16 @@ export default function ActionView() {
         }
     }, [dispatch, error, isError])
 
-    const hasActions =
-        (storeConfigurations && storeConfigurations.length > 0) ?? false
+    const hasActions = (data && data.length > 0) ?? false
 
     return (
         <AutomateView
             title={ACTIONS}
-            isLoading={
-                isStoreConfigurationsInitialLoading ||
-                istemplateConfigurationsInitialLoading
-            }
+            isLoading={isInitialLoading}
             className={css.container}
-            action={
-                <div className={css.actionButtons}>
-                    <CreateCustomActionButton />
-                    <BrowseAllActionsButton />
-                </div>
-            }
+            action={<CreateActionButton />}
         >
-            {hasActions && storeConfigurations ? (
+            {hasActions && data ? (
                 <div
                     data-candu-id="custom-action-view-header"
                     className={css.actionsListContainer}
@@ -78,31 +55,14 @@ export default function ActionView() {
                     <div className={css.actionsListHeader}>
                         <span>{ACTIONS_DESCRIPTION}</span>
                     </div>
-                    <ActionsList actions={storeConfigurations} />
+                    <ActionsList actions={data} />
                 </div>
             ) : (
-                <>
-                    <AutomateViewEmptyStateBanner
-                        title="Configure Actions for AI Agent"
-                        description={ACTIONS_DESCRIPTION}
-                        image={emptyState}
-                    />
-
-                    {templateConfigurations &&
-                        templateConfigurations?.length > 0 && (
-                            <div className={css.templateCards}>
-                                <p>
-                                    Choose an Action and customize it to fit
-                                    your needs
-                                </p>
-                                <ActionsTemplatesCards
-                                    templateConfigurations={
-                                        templateConfigurations
-                                    }
-                                />
-                            </div>
-                        )}
-                </>
+                <AutomateViewEmptyStateBanner
+                    title="Configure Actions for AI Agent"
+                    description={ACTIONS_DESCRIPTION}
+                    image={emptyState}
+                />
             )}
         </AutomateView>
     )
