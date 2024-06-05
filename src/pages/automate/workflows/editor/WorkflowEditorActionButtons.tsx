@@ -60,8 +60,9 @@ export const WorkflowEditorActionButtons = ({
                 )}
                 {isPreviewTestButtonVisible && isTestDisabled && (
                     <Tooltip target="test-disabled">
-                        Connect a Chat to this store to Test. Testing is
-                        currently available for Chat only.
+                        Connect a Chat to this store to test and make sure it’s
+                        not hidden. Testing is currently available for Chat
+                        only.
                     </Tooltip>
                 )}
                 <Button
@@ -120,8 +121,8 @@ export const WorkflowEditorActionButtons = ({
             )}
             {isPreviewTestButtonVisible && isTestDisabled && (
                 <Tooltip target="test-disabled">
-                    Connect a Chat to this store to Test. Testing is currently
-                    available for Chat only.
+                    Connect a Chat to this store to test and make sure it’s not
+                    hidden. Testing is currently available for Chat only.
                 </Tooltip>
             )}
             <ConfirmationButton
