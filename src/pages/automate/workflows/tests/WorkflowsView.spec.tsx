@@ -77,7 +77,6 @@ describe('<WorkflowsView />', () => {
                     goToWorkflowTemplatesPage={jest.fn()}
                     goToNewWorkflowPage={jest.fn()}
                     goToNewWorkflowFromTemplatePage={jest.fn()}
-                    quickResponsesUrl=""
                     connectedChannelsUrl=""
                     notifyMerchant={jest.fn()}
                 />
@@ -135,7 +134,6 @@ describe('<WorkflowsView />', () => {
                     goToWorkflowTemplatesPage={jest.fn()}
                     goToNewWorkflowPage={jest.fn()}
                     goToNewWorkflowFromTemplatePage={jest.fn()}
-                    quickResponsesUrl=""
                     connectedChannelsUrl=""
                     notifyMerchant={jest.fn()}
                 />

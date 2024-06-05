@@ -61,7 +61,6 @@ export default function WorkflowsViewContainer() {
         [dispatch]
     )
 
-    const quickResponsesUrl = `/app/automation/${shopType}/${shopName}/quick-responses`
     const connectedChannelsUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
 
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -83,7 +82,6 @@ export default function WorkflowsViewContainer() {
                 goToNewWorkflowFromTemplatePage={
                     goToNewWorkflowFromTemplatePage
                 }
-                quickResponsesUrl={quickResponsesUrl}
                 connectedChannelsUrl={connectedChannelsUrl}
                 notifyMerchant={notifyMerchant}
             />

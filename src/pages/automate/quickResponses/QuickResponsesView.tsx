@@ -211,8 +211,14 @@ const QuickResponsesView = () => {
         !selfServiceConfiguration ||
         chatApplicationIds.some((id) => !(id in applicationsAutomationSettings))
 
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
     return (
-        <AutomateView title={QUICK_RESPONSES} isLoading={isLoading}>
+        <AutomateView
+            {...(isImprovedNavigationEnabled ? {} : {title: QUICK_RESPONSES})}
+            isLoading={isLoading}
+        >
             <AutomateViewContent
                 description={`Display up to ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} buttons in your Chat with common questions that customers can click for an instant response. If a customer needs more help, a ticket is created for an agent to handle.`}
                 helpUrl="https://docs.gorgias.com/en-US/custom-self-service-flows-81897"

@@ -16,7 +16,7 @@ type NavbarItem = {
 }
 
 type Props = {
-    title: ReactNode
+    title?: ReactNode
     headerNavbarItems?: NavbarItem[]
     action?: ReactNode
     isLoading?: boolean
@@ -34,7 +34,7 @@ const AutomateView = ({
 }: Props) => {
     return (
         <div className="full-width">
-            <PageHeader title={title}>{action}</PageHeader>
+            {title && <PageHeader title={title}>{action}</PageHeader>}
             {headerNavbarItems && (
                 <SecondaryNavbar>
                     {headerNavbarItems.map(({route, title, exact}) => (

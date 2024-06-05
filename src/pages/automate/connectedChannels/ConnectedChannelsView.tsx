@@ -83,6 +83,9 @@ const ConnectedChannelsView = () => {
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
     useEffectOnce(() => {
         if (!changeAutomateSettingButtomPosition) return
         logEvent(SegmentEvent.AutomateSettingPageViewed, {
@@ -102,7 +105,9 @@ const ConnectedChannelsView = () => {
                     selfServiceConfiguration?.workflows_entrypoints ?? [],
                 workflowsUrl: `/app/automation/${shopType}/${shopName}/flows`,
                 articleRecommendationUrl: `/app/automation/${shopType}/${shopName}/article-recommendation`,
-                quickResponsesUrl: `/app/automation/${shopType}/${shopName}/quick-responses`,
+                quickResponsesUrl: `/app/automation/${shopType}/${shopName}${
+                    isImprovedNavigationEnabled ? '/flows' : ''
+                }/quick-responses`,
                 enabledQuickResponsesCount:
                     selfServiceConfiguration?.quick_response_policies.filter(
                         (quickResponse) => !quickResponse.deactivated_datetime
@@ -112,6 +117,7 @@ const ConnectedChannelsView = () => {
                 articleRecommendationHelpCenterId,
                 helpCenterArticlesCount,
                 shopType,
+                isImprovedNavigationEnabled,
                 shopName,
                 selfServiceConfiguration?.workflows_entrypoints,
                 selfServiceConfiguration?.quick_response_policies,

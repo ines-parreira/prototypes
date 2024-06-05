@@ -6,21 +6,29 @@
     }
 
     .pageHeaderContainer {
-        padding: 0 64px;
+        padding: 54px 0px 0px 64px;
+        @media (max-width: 768px) {
+            padding: 54px 16px 16px 64px;
+        }
         background: var(--main-latte);
         overflow: hidden;
     }
 
     .pageHeader {
-        gap: @layout-spacing-m;
+        gap: @layout-spacing-l;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        max-width: 1074px;
+        max-width: 992px;
+        @media (max-width: 1280px) {
+            img {
+                display: none;
+            }
+        }
     }
 
     .pageIntro {
-        max-width: 380px;
+        max-width: 500px;
     }
 
     .pageTitle {
@@ -37,7 +45,18 @@
         font-weight: 400;
         line-height: 20px;
         letter-spacing: -0.14px;
-        margin-bottom: @layout-spacing-l;
+        margin-bottom: 54px;
+    }
+
+    .pageTitleContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .pageTitleActions {
+        display: flex;
+        gap: @layout-spacing-xs;
     }
 
     .templatesImage {

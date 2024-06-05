@@ -1,5 +1,4 @@
 import React from 'react'
-import classNames from 'classnames'
 
 import {Container} from 'reactstrap'
 
@@ -12,7 +11,6 @@ import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
 import templatesCss from '../WorkflowTemplatesView.less'
 import css from './WorkflowsEmptyState.less'
 import WorkflowTemplateCard from './WorkflowTemplateCard'
-import WorkflowCustomFlowCard from './WorkflowCustomFlowCard'
 
 type Props = {
     goToNewWorkflowPage: () => void
@@ -31,11 +29,13 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                 <div className={css.pageHeader}>
                     <div className={css.pageIntro}>
                         <h1 className={css.pageTitle}>
-                            Get started with Flows
+                            Create Flows to automate customer interactions on
+                            Chat, Help Center and Contact Form
                         </h1>
                         <p className={css.pageDescription}>
-                            Help customers select products, answer support
-                            questions, and more with Flows!
+                            Build single or multi-step Flows to answer
+                            questions, recommend products, help customers
+                            troubleshoot, and more.
                         </p>
                         <div className={css.links}>
                             <a
@@ -66,7 +66,7 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                             </a>
                         </div>
                     </div>
-                    <div>
+                    <div className={css.templatesImageContainer}>
                         <img
                             className={css.templatesImage}
                             src={templatesImage}
@@ -76,10 +76,22 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                 </div>
             </div>
             <div className={css.pageContent}>
-                <p className={css.startWithText}>
-                    Start with a Flow template that you can customize to fit
-                    your needs:
-                </p>
+                <div className={css.pageTitleContainer}>
+                    <p className={css.pageTitle}>
+                        Choose a template and customize it to fit your needs
+                    </p>
+                    <div className={css.pageTitleActions}>
+                        <Button
+                            onClick={goToNewWorkflowPage}
+                            intent="secondary"
+                        >
+                            Create Custom Flow
+                        </Button>
+                        <Button onClick={goToWorkflowTemplatesPage}>
+                            Create From Template
+                        </Button>
+                    </div>
+                </div>
                 <div className={templatesCss.templatesContainer}>
                     {WORKFLOW_TEMPLATES_LIST.slice(0, 2).map((template) => (
                         <WorkflowTemplateCard
@@ -103,14 +115,6 @@ const WorkflowsEmptyState: React.FC<Props> = ({
                             </span>
                         </Button>
                     </div>
-                </div>
-                <div className={classNames('divider', css.divider)}>or</div>
-                <div className={templatesCss.templatesContainer}>
-                    <WorkflowCustomFlowCard
-                        goToNewWorkflowPage={goToNewWorkflowPage}
-                    />
-                    <div className={css.templatePlaceholder} />
-                    <div className={css.templatePlaceholder} />
                 </div>
             </div>
         </Container>

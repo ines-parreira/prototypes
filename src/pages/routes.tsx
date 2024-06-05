@@ -155,13 +155,11 @@ import ReportOrderIssueFlowViewContainer from 'pages/automate/orderManagement/re
 import CreateReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
 import EditReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/EditReportOrderIssueFlowScenarioViewContainer'
 import ArticleRecommendationViewContainer from 'pages/automate/articleRecommendation/ArticleRecommendationViewContainer'
-import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResponsesViewContainer'
 import WorkflowsViewContainer from 'pages/automate/workflows/WorkflowsViewContainer'
 import WorkflowEditorViewContainer from 'pages/automate/workflows/editor/WorkflowEditorViewContainer'
 import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
 import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
 import ConnectedChannelsViewContainer from 'pages/automate/connectedChannels/ConnectedChannelsViewContainer'
-import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
 import SupportPerformanceTicketInsights from 'pages/stats/SupportPerformanceTicketInsights'
 import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
@@ -192,6 +190,8 @@ import {AiAgentGuidanceDetailContainer} from 'pages/automate/aiAgent/AiAgentGuid
 import {AiAgentGuidanceTemplatesContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplatesContainer'
 import {AiAgentGuidanceTemplateNewContainer} from 'pages/automate/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErrorBoundary'
+import QuickResponsesViewContainer from './automate/quickResponses/QuickResponsesViewContainer'
+import WorkflowTemplatesViewContainer from './automate/workflows/WorkflowTemplatesViewContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1509,6 +1509,8 @@ export function AutomationRoutes() {
 
 function AutomationContent() {
     const {path} = useRouteMatch()
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     return (
         <Switch>
@@ -1519,48 +1521,18 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
-            <Route
-                path={`${path}/:shopType/:shopName/quick-responses`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    QuickResponsesViewContainer,
-                    AGENT_ROLE
-                )}
-            />
-            <Route
-                path={`${path}/:shopType/:shopName/flows`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    WorkflowsViewContainer,
-                    AGENT_ROLE
-                )}
-            />
-            <Route
-                path={`${path}/:shopType/:shopName/flows/templates`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    WorkflowTemplatesViewContainer,
-                    AGENT_ROLE
-                )}
-            />
-            <Route
-                path={[
-                    `${path}/:shopType/:shopName/flows/edit/:editWorkflowId`,
-                ]}
-            >
-                <SelfServiceHelpCentersProvider>
-                    <SelfServiceContactFormsProvider>
-                        <Route
-                            path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
-                            exact
-                            component={memoizedWithUserRoleRequired(
-                                WorkflowEditorViewContainer,
-                                AGENT_ROLE
-                            )}
-                        />
-                    </SelfServiceContactFormsProvider>
-                </SelfServiceHelpCentersProvider>
-            </Route>
+
+            {!isImprovedNavigationEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/quick-responses`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        QuickResponsesViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
+
             <Route
                 path={`${path}/:shopType/:shopName/flows/new`}
                 exact
@@ -1569,6 +1541,54 @@ function AutomationContent() {
                     AGENT_ROLE
                 )}
             />
+
+            {!isImprovedNavigationEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/flows/templates`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        WorkflowTemplatesViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
+
+            <Route
+                path={`${path}/:shopType/:shopName/flows/edit/:editWorkflowId`}
+                exact
+                render={(props) => (
+                    <SelfServiceHelpCentersProvider>
+                        <SelfServiceContactFormsProvider>
+                            {React.createElement<{
+                                shopType: string
+                                shopName: string
+                                editWorkflowId: string
+                            }>(
+                                memoizedWithUserRoleRequired(
+                                    WorkflowEditorViewContainer,
+                                    AGENT_ROLE
+                                ),
+                                {
+                                    ...props,
+                                    editWorkflowId:
+                                        props.match.params.editWorkflowId,
+                                    shopType: props.match.params.shopType,
+                                    shopName: props.match.params.shopName,
+                                }
+                            )}
+                        </SelfServiceContactFormsProvider>
+                    </SelfServiceHelpCentersProvider>
+                )}
+            />
+
+            <Route
+                path={`${path}/:shopType/:shopName/flows`}
+                component={memoizedWithUserRoleRequired(
+                    WorkflowsViewContainer,
+                    AGENT_ROLE
+                )}
+            />
+
             <Route
                 path={[
                     `${path}/shopify/:shopName/order-management`,

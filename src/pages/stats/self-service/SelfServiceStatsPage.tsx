@@ -208,6 +208,9 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const overviewNoData =
         overview?.data.data.every((data) => data.value === 0) || false
 
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
     const [volumePerFlow, isFetchingVolumePerFlow] = useStatResource<
         TwoDimensionalChart<AnyStatAxisValue, DataStatLine>
     >({
@@ -310,7 +313,11 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 case 'orderManagement':
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/order-management`
                 case 'quickResponses':
-                    return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/quick-responses`
+                    return `/app/automation/${
+                        firstIntegration.type
+                    }/${firstIntegrationShopName}${
+                        isImprovedNavigationEnabled ? '/flows' : ''
+                    }/quick-responses`
                 case 'articleRecommendation':
                     return `/app/automation/${firstIntegration.type}/${firstIntegrationShopName}/article-recommendation`
                 case 'trainMyAi':
@@ -319,7 +326,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     return '/app/automation/'
             }
         },
-        [storeIntegrations]
+        [storeIntegrations, isImprovedNavigationEnabled]
     )
 
     const allSectionsNoData =

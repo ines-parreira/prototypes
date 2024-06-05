@@ -443,7 +443,7 @@ describe('<QuickResponsesView />', () => {
                 <QuickResponsesView />,
             </Provider>,
             {
-                route: '/app/automation/quick-responses?quickResponseId=57b4828f-c846-4b70-a7a8-b4186f967795',
+                route: '/app/automation/flows/quick-responses?quickResponseId=57b4828f-c846-4b70-a7a8-b4186f967795',
             }
         )
 
@@ -486,7 +486,7 @@ describe('<QuickResponsesView />', () => {
                 <QuickResponsesView />,
             </Provider>,
             {
-                route: '/app/automation/quick-responses',
+                route: '/app/automation/flows/quick-responses',
             }
         )
 

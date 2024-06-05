@@ -1,15 +1,20 @@
 import {Map} from 'immutable'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppSelector from 'hooks/useAppSelector'
 
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
 import {getCurrentAutomationProduct} from 'state/billing/selectors'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
     const automationProduct = useAppSelector(getCurrentAutomationProduct)
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
         ? Number(integration.getIn(['meta', 'shop_integration_id']))
         : undefined
@@ -20,7 +25,9 @@ const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
         : undefined
 
     const quickResponsesLink = storeIntegration
-        ? `/app/automation/shopify/${storeIntegration.name}/quick-responses`
+        ? `/app/automation/shopify/${storeIntegration.name}${
+              isImprovedNavigationEnabled ? '/flows' : ''
+          }/quick-responses`
         : undefined
 
     const flowsLink = storeIntegration
