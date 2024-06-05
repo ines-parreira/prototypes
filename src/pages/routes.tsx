@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 
 import {NotificationsSettings as NewNotificationsSettings} from 'common/notifications'
@@ -1704,6 +1705,14 @@ function AutomationContent() {
                 exact
                 component={memoizedWithUserRoleRequired(
                     EditCustomActionsFormView,
+                    AGENT_ROLE
+                )}
+            />
+            <Route
+                path={`${path}/:shopType/:shopName/actions/templates`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    ActionsTemplatesViewContainer,
                     AGENT_ROLE
                 )}
             />
