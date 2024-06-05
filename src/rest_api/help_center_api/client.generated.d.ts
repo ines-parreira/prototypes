@@ -93,6 +93,16 @@ declare namespace Components {
        */
       num_rows: number;
     }
+    export interface ApifyInputDto {
+      links: LinkDto[];
+    }
+    export interface ApifyWebhookDto {
+      userId: string;
+      createdAt: string;
+      eventType: string;
+      eventData: EventDataDto;
+      resource: ResourceDto;
+    }
     export interface ArticleColumns {
       locales: {
         [name: string]: ArticleLocaleColumns;
@@ -116,6 +126,29 @@ declare namespace Components {
       help_center_id: number;
       template_key?: string | null;
       id: number;
+    }
+    export interface ArticleIngestionLogDto {
+      help_center_id: number;
+      article_ids: number[];
+      raw_text?: string | null;
+      dataset_id: string;
+      latest_sync: string; // date-time
+      id: number;
+      url: string | null;
+      domain: string | null;
+      source: "url";
+      status: "DISABLED" | "FAILED" | "PENDING" | "SUCCESSFUL";
+      meta: ArticleIngestionLogMeta;
+    }
+    export interface ArticleIngestionLogMeta {
+      /**
+       * Gorgias account domain name
+       */
+      "x-gorgias-domain": string | null;
+      /**
+       * UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}
+       */
+      "x-execution-id": string | null;
     }
     export interface ArticleListDataDto {
       id: number;
@@ -440,6 +473,7 @@ declare namespace Components {
           deleted_datetime?: string | null; // date-time
           title: string;
           excerpt: string;
+          content: string;
           slug: string;
           locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
           article_id: number;
@@ -458,6 +492,7 @@ declare namespace Components {
           deleted_datetime?: string | null; // date-time
           title: string;
           excerpt: string;
+          content: string;
           slug: string;
           locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
           article_id: number;
@@ -480,6 +515,7 @@ declare namespace Components {
         deleted_datetime?: string | null; // date-time
         title: string;
         excerpt: string;
+        content: string;
         slug: string;
         locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         article_id: number;
@@ -498,6 +534,7 @@ declare namespace Components {
         deleted_datetime?: string | null; // date-time
         title: string;
         excerpt: string;
+        content: string;
         slug: string;
         locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
         article_id: number;
@@ -1305,7 +1342,7 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
-      type?: "faq" | "guidance";
+      type?: "faq" | "guidance" | "snippet";
       /**
        * Boolean indicating if the help center is deactivated.
        * example:
@@ -1434,6 +1471,10 @@ declare namespace Components {
        * Email value
        */
       email: string;
+    }
+    export interface EventDataDto {
+      actorId: string;
+      actorRunId: string;
     }
     export interface ExtraHTML {
       extra_head: string;
@@ -1576,7 +1617,7 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
-      type: "faq" | "guidance";
+      type: "faq" | "guidance" | "snippet";
       layout: "default" | "1-pager";
       account_id: number;
       translations?: HelpCenterTranslationDto[];
@@ -1659,7 +1700,7 @@ declare namespace Components {
         } | null;
         completed?: boolean | null;
       } | null;
-      type: "faq" | "guidance";
+      type: "faq" | "guidance" | "snippet";
       layout: "default" | "1-pager";
     }
     export interface HelpCenterSiteMapUrlDto {
@@ -1778,6 +1819,9 @@ declare namespace Components {
        */
       progress: "FAILURE" | "IN_PROGRESS" | "NOT_STARTED" | "SUCCESS";
     }
+    export interface LinkDto {
+      url: string;
+    }
     export interface LocalArticleTranslation {
       created_datetime: string; // date-time
       updated_datetime: string; // date-time
@@ -1882,24 +1926,6 @@ declare namespace Components {
       meta: PageMetaDto;
       object: "list";
       data: NavigationLinkDto[];
-    }
-    export interface OmitTypeClass {
-      created_datetime: string; // date-time
-      updated_datetime: string; // date-time
-      deleted_datetime?: string | null; // date-time
-      title: string;
-      excerpt: string;
-      slug: string;
-      locale: "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
-      article_id: number;
-      category_id: number | null;
-      article_unlisted_id: string;
-      seo_meta: {
-        title: string | null;
-        description: string | null;
-      };
-      visibility_status: "PUBLIC" | "UNLISTED";
-      is_current: boolean;
     }
     export interface OrderManagementVo {
       /**
@@ -2062,6 +2088,34 @@ declare namespace Components {
       from: string;
       to: string;
       help_center_id: number;
+    }
+    export interface ResourceDto {
+      id: string;
+      actId: string;
+      userId: string;
+      startedAt: string;
+      finishedAt: string;
+      status: string;
+      statusMessage: string;
+      isStatusMessageTerminal: boolean;
+      meta: {
+      };
+      stats: {
+      };
+      options: {
+      };
+      buildId: string;
+      exitCode: number;
+      defaultKeyValueStoreId: string;
+      defaultDatasetId: string;
+      defaultRequestQueueId: string;
+      buildNumber: string;
+      containerUrl: string;
+      usage: {
+      };
+      usageTotalUsd: number;
+      usageUsd: {
+      };
     }
     export interface SignedPostPolicyDto {
       url: string;
@@ -2843,6 +2897,16 @@ declare namespace Paths {
       help_center_id: Parameters.HelpCenterId;
     }
   }
+  namespace DeleteArticleIngestionLog {
+    namespace Parameters {
+      export type ArticleIngestionLogId = number;
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      article_ingestion_log_id: Parameters.ArticleIngestionLogId;
+    }
+  }
   namespace DeleteArticleTranslation {
     namespace Parameters {
       export type ArticleId = number;
@@ -3031,6 +3095,21 @@ declare namespace Paths {
       export type $200 = Components.Schemas.ArticleWithLocalTranslation;
     }
   }
+  namespace GetArticleIngestionLogs {
+    namespace Parameters {
+      export type AccountId = string;
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export interface QueryParameters {
+      account_id?: Parameters.AccountId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.ArticleIngestionLogDto[];
+    }
+  }
   namespace GetArticleTemplate {
     namespace Parameters {
       export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
@@ -3047,6 +3126,12 @@ declare namespace Paths {
     }
   }
   namespace GetAttachmentUploadPolicy {
+    namespace Parameters {
+      export type IsPrivate = string;
+    }
+    export interface QueryParameters {
+      is_private?: Parameters.IsPrivate;
+    }
     export type RequestBody = Components.Schemas.UploadAttachmentDto;
     namespace Responses {
       export type $201 = Components.Schemas.SignedPostPolicyDto;
@@ -3318,6 +3403,9 @@ declare namespace Paths {
       export type $200 = number[];
     }
   }
+  namespace HandleArticleIngestionDone {
+    export type RequestBody = Components.Schemas.ApifyWebhookDto;
+  }
   namespace HandoverWorkflowExecution {
     export type RequestBody = Components.Schemas.WorkflowHandoverDto;
   }
@@ -3584,7 +3672,7 @@ declare namespace Paths {
       export type PerPage = any;
       export type ShopName = string;
       export type Subdomain = string;
-      export type Type = "faq" | "guidance";
+      export type Type = "faq" | "guidance" | "snippet";
       export type WithWizard = boolean;
     }
     export interface QueryParameters {
@@ -3732,6 +3820,15 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = number[];
     }
+  }
+  namespace StartArticleIngestion {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.ApifyInputDto;
   }
   namespace SubmitContactFormByUid {
     namespace Parameters {
@@ -4534,7 +4631,7 @@ export interface OperationMethods {
    * getAttachmentUploadPolicy - Generate a signed url to upload a file based on the declared policy
    */
   'getAttachmentUploadPolicy'(
-    parameters?: Parameters<UnknownParamsObject> | null,
+    parameters?: Parameters<Paths.GetAttachmentUploadPolicy.QueryParameters> | null,
     data?: Paths.GetAttachmentUploadPolicy.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetAttachmentUploadPolicy.Responses.$201>
@@ -4856,6 +4953,38 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
+  /**
+   * deleteArticleIngestionLog - Delete article ingestion log
+   */
+  'deleteArticleIngestionLog'(
+    parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * getArticleIngestionLogs - Get article ingestion logs
+   */
+  'getArticleIngestionLogs'(
+    parameters?: Parameters<Paths.GetArticleIngestionLogs.PathParameters & Paths.GetArticleIngestionLogs.QueryParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
+  /**
+   * startArticleIngestion - Trigger external content ingestion
+   */
+  'startArticleIngestion'(
+    parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
+    data?: Paths.StartArticleIngestion.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
+  /**
+   * handleArticleIngestionDone - Webhook integration with Apify
+   */
+  'handleArticleIngestionDone'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.HandleArticleIngestionDone.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
 }
 
 export interface PathsDictionary {
@@ -5538,7 +5667,7 @@ export interface PathsDictionary {
      * getAttachmentUploadPolicy - Generate a signed url to upload a file based on the declared policy
      */
     'post'(
-      parameters?: Parameters<UnknownParamsObject> | null,
+      parameters?: Parameters<Paths.GetAttachmentUploadPolicy.QueryParameters> | null,
       data?: Paths.GetAttachmentUploadPolicy.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetAttachmentUploadPolicy.Responses.$201>
@@ -5912,6 +6041,46 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetArticleTemplate.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_log_id}']: {
+    /**
+     * deleteArticleIngestionLog - Delete article ingestion log
+     */
+    'delete'(
+      parameters?: Parameters<Paths.DeleteArticleIngestionLog.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/article-ingestion-log']: {
+    /**
+     * getArticleIngestionLogs - Get article ingestion logs
+     */
+    'get'(
+      parameters?: Parameters<Paths.GetArticleIngestionLogs.PathParameters & Paths.GetArticleIngestionLogs.QueryParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetArticleIngestionLogs.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/article-ingestion/start']: {
+    /**
+     * startArticleIngestion - Trigger external content ingestion
+     */
+    'post'(
+      parameters?: Parameters<Paths.StartArticleIngestion.PathParameters> | null,
+      data?: Paths.StartArticleIngestion.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+  }
+  ['/api/help-center/article-ingestion/done']: {
+    /**
+     * handleArticleIngestionDone - Webhook integration with Apify
+     */
+    'post'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.HandleArticleIngestionDone.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
   }
 }
 

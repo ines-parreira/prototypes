@@ -18,6 +18,8 @@ import {
     deleteArticle,
     deleteArticleTranslation,
     getHelpCenterList,
+    getArticleIngestionLogs,
+    startArticleIngestion,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
@@ -51,6 +53,10 @@ export const helpCenterStatsKeys = {
             parentCategoryId,
             queryParams,
         ] as const,
+    articleIngestionLogs: (helpCenterId: number) => [
+        ...helpCenterStatsKeys.detail(helpCenterId),
+        'article-ingestion-logs',
+    ],
 }
 
 export const helpCenterArticleKeys = (
@@ -298,5 +304,37 @@ export const useGetHelpCenterList = (
         enabled:
             !!helpCenterClient &&
             (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useGetArticleIngestionLogs = (
+    pathParams: Paths.GetArticleIngestionLogs.PathParameters,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getArticleIngestionLogs>>
+    >
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+    return useQuery({
+        queryFn: async () =>
+            getArticleIngestionLogs(helpCenterClient, pathParams),
+        queryKey: helpCenterStatsKeys.articleIngestionLogs(
+            pathParams.help_center_id
+        ),
+        ...overrides,
+        enabled:
+            !!helpCenterClient &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useStartArticleIngestion = (
+    overrides?: MutationOverrides<typeof startArticleIngestion>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            startArticleIngestion(client, pathParams, data),
+        ...overrides,
     })
 }

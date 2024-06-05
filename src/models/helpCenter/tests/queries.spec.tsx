@@ -15,6 +15,8 @@ import {
     useGetHelpCenterArticle,
     useGetHelpCenterCategoryTree,
     useGetHelpCenterList,
+    useGetArticleIngestionLogs,
+    useStartArticleIngestion,
 } from '../queries'
 import * as resources from '../resources'
 import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../../pages/settings/helpCenter/constants'
@@ -28,6 +30,8 @@ const getHelpCenterArticle = jest.spyOn(resources, 'getHelpCenterArticle')
 const getHelpCenter = jest.spyOn(resources, 'getHelpCenter')
 const getCategoryTree = jest.spyOn(resources, 'getCategoryTree')
 const getHelpCenterList = jest.spyOn(resources, 'getHelpCenterList')
+const getArticleIngestionLogs = jest.spyOn(resources, 'getArticleIngestionLogs')
+const startArticleIngestion = jest.spyOn(resources, 'startArticleIngestion')
 
 const queryClient = mockQueryClient()
 const wrapper = ({children}: any) => (
@@ -301,6 +305,63 @@ describe('queries', () => {
             })
 
             expect(getHelpCenterList).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useGetArticleIngestionLogs', () => {
+        it('should return correct data on success', async () => {
+            getArticleIngestionLogs.mockReturnValue(Promise.resolve(null))
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+            const {result, waitFor} = renderHook(
+                () =>
+                    useGetArticleIngestionLogs(
+                        {help_center_id: helpCenterId},
+                        {}
+                    ),
+                {
+                    wrapper,
+                }
+            )
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toStrictEqual(null)
+        })
+
+        it('should not call the api function when enabled false', () => {
+            getArticleIngestionLogs.mockReturnValue(Promise.resolve(null))
+            renderHook(
+                () =>
+                    useGetArticleIngestionLogs(
+                        {help_center_id: helpCenterId},
+                        {enabled: false}
+                    ),
+                {
+                    wrapper,
+                }
+            )
+            expect(getArticleIngestionLogs).toHaveBeenCalledTimes(0)
+        })
+    })
+
+    describe('useCreateArticleIngestion', () => {
+        it('should return correct data on success', async () => {
+            startArticleIngestion.mockReturnValue(Promise.resolve(null))
+            const {result, waitFor} = renderHook(
+                () => useStartArticleIngestion(),
+                {wrapper}
+            )
+
+            await result.current.mutateAsync([
+                undefined,
+                {help_center_id: helpCenterId},
+                {links: []},
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(result.current.data).toStrictEqual(null)
         })
     })
 })

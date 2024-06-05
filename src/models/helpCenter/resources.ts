@@ -171,3 +171,23 @@ export const getHelpCenterList = async (
     const response = await client.listHelpCenters(queryParams)
     return response
 }
+
+export const getArticleIngestionLogs = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.GetArticleIngestionLogs.PathParameters
+) => {
+    if (!client) return null
+    const response = await client.getArticleIngestionLogs(pathParams)
+    return response
+}
+
+export const startArticleIngestion = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.StartArticleIngestion.PathParameters,
+    data: Paths.StartArticleIngestion.RequestBody
+) => {
+    if (!client) return null
+    const response = await client.startArticleIngestion(pathParams, data)
+
+    return response
+}

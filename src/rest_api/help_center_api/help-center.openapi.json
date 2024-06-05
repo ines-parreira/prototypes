@@ -248,7 +248,7 @@
                         "required": false,
                         "in": "query",
                         "schema": {
-                            "enum": ["faq", "guidance"],
+                            "enum": ["faq", "guidance", "snippet"],
                             "type": "string"
                         }
                     },
@@ -2623,7 +2623,15 @@
             "post": {
                 "operationId": "getAttachmentUploadPolicy",
                 "summary": "Generate a signed url to upload a file based on the declared policy",
-                "parameters": [],
+                "parameters": [
+                    {
+                        "name": "is_private",
+                        "required": false,
+                        "in": "query",
+                        "description": "Whether the attachment is private",
+                        "schema": {"type": "string"}
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3905,6 +3913,109 @@
                 },
                 "tags": ["article-templates"]
             }
+        },
+        "/api/help-center/help-centers/{help_center_id}/article-ingestion-log/{article_ingestion_log_id}": {
+            "delete": {
+                "operationId": "deleteArticleIngestionLog",
+                "summary": "Delete article ingestion log",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "article_ingestion_log_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {"204": {"description": ""}},
+                "tags": ["article-ingestion"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/article-ingestion-log": {
+            "get": {
+                "operationId": "getArticleIngestionLogs",
+                "summary": "Get article ingestion logs",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "account_id",
+                        "required": false,
+                        "in": "query",
+                        "schema": {"type": "string"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ArticleIngestionLogDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-ingestion"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/article-ingestion/start": {
+            "post": {
+                "operationId": "startArticleIngestion",
+                "summary": "Trigger external content ingestion",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApifyInputDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"201": {"description": ""}},
+                "tags": ["article-ingestion"]
+            }
+        },
+        "/api/help-center/article-ingestion/done": {
+            "post": {
+                "operationId": "handleArticleIngestionDone",
+                "summary": "Webhook integration with Apify",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ApifyWebhookDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"201": {"description": ""}},
+                "tags": ["article-ingestion"]
+            }
         }
     },
     "info": {
@@ -4367,7 +4478,7 @@
                     },
                     "type": {
                         "default": "faq",
-                        "enum": ["faq", "guidance"],
+                        "enum": ["faq", "guidance", "snippet"],
                         "type": "string"
                     },
                     "deactivated": {
@@ -4524,7 +4635,7 @@
                         ]
                     },
                     "type": {
-                        "enum": ["faq", "guidance"],
+                        "enum": ["faq", "guidance", "snippet"],
                         "type": "string",
                         "nullable": false
                     },
@@ -4981,7 +5092,7 @@
                         ]
                     },
                     "type": {
-                        "enum": ["faq", "guidance"],
+                        "enum": ["faq", "guidance", "snippet"],
                         "type": "string",
                         "nullable": false
                     },
@@ -6019,7 +6130,7 @@
                 },
                 "required": ["title", "description"]
             },
-            "OmitTypeClass": {
+            "ArticleTranslationResponseDto": {
                 "type": "object",
                 "properties": {
                     "created_datetime": {
@@ -6037,6 +6148,7 @@
                     },
                     "title": {"type": "string"},
                     "excerpt": {"type": "string"},
+                    "content": {"type": "string"},
                     "slug": {"type": "string"},
                     "locale": {
                         "enum": [
@@ -6080,6 +6192,7 @@
                     "updated_datetime",
                     "title",
                     "excerpt",
+                    "content",
                     "slug",
                     "locale",
                     "article_id",
@@ -6096,12 +6209,16 @@
                     "current": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/OmitTypeClass"}
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationResponseDto"
+                            }
                         ]
                     },
                     "draft": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/OmitTypeClass"}
+                            {
+                                "$ref": "#/components/schemas/ArticleTranslationResponseDto"
+                            }
                         ]
                     }
                 },
@@ -6844,79 +6961,6 @@
                     }
                 },
                 "required": ["meta", "object", "data"]
-            },
-            "ArticleTranslationResponseDto": {
-                "type": "object",
-                "properties": {
-                    "created_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "updated_datetime": {
-                        "format": "date-time",
-                        "type": "string"
-                    },
-                    "deleted_datetime": {
-                        "format": "date-time",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"},
-                    "locale": {
-                        "enum": [
-                            "cs-CZ",
-                            "da-DK",
-                            "nl-NL",
-                            "en-GB",
-                            "en-US",
-                            "fi-FI",
-                            "fr-CA",
-                            "fr-FR",
-                            "de-DE",
-                            "it-IT",
-                            "ja-JP",
-                            "no-NO",
-                            "pt-BR",
-                            "es-ES",
-                            "sv-SE"
-                        ],
-                        "type": "string"
-                    },
-                    "article_id": {"type": "number"},
-                    "category_id": {"type": "number", "nullable": true},
-                    "article_unlisted_id": {"type": "string"},
-                    "seo_meta": {
-                        "nullable": false,
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/ArticleTranslationSeoMeta"
-                            }
-                        ]
-                    },
-                    "visibility_status": {
-                        "enum": ["PUBLIC", "UNLISTED"],
-                        "type": "string"
-                    },
-                    "is_current": {"type": "boolean"}
-                },
-                "required": [
-                    "created_datetime",
-                    "updated_datetime",
-                    "title",
-                    "excerpt",
-                    "content",
-                    "slug",
-                    "locale",
-                    "article_id",
-                    "category_id",
-                    "article_unlisted_id",
-                    "seo_meta",
-                    "visibility_status",
-                    "is_current"
-                ]
             },
             "UpdateArticleTranslationDto": {
                 "type": "object",
@@ -8013,6 +8057,148 @@
                     "excerpt",
                     "category",
                     "score"
+                ]
+            },
+            "ArticleIngestionLogMeta": {
+                "type": "object",
+                "properties": {
+                    "x-gorgias-domain": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Gorgias account domain name"
+                    },
+                    "x-execution-id": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "UID for this call. e.g. snippet_transformation_{account_name}{help_center_id}_{timestamp}"
+                    }
+                },
+                "required": ["x-gorgias-domain", "x-execution-id"]
+            },
+            "ArticleIngestionLogDto": {
+                "type": "object",
+                "properties": {
+                    "help_center_id": {"type": "number"},
+                    "article_ids": {
+                        "type": "array",
+                        "items": {"type": "number"}
+                    },
+                    "raw_text": {"type": "string", "nullable": true},
+                    "dataset_id": {"type": "string"},
+                    "latest_sync": {"format": "date-time", "type": "string"},
+                    "id": {"type": "number"},
+                    "url": {"type": "string", "nullable": true},
+                    "domain": {"type": "string", "nullable": true},
+                    "source": {"type": "string", "enum": ["url"]},
+                    "status": {
+                        "type": "string",
+                        "nullable": true,
+                        "enum": ["DISABLED", "FAILED", "PENDING", "SUCCESSFUL"]
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/ArticleIngestionLogMeta"
+                    }
+                },
+                "required": [
+                    "help_center_id",
+                    "article_ids",
+                    "dataset_id",
+                    "latest_sync",
+                    "id",
+                    "url",
+                    "domain",
+                    "source",
+                    "status",
+                    "meta"
+                ]
+            },
+            "LinkDto": {
+                "type": "object",
+                "properties": {"url": {"type": "string"}},
+                "required": ["url"]
+            },
+            "ApifyInputDto": {
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "type": "array",
+                        "items": {"$ref": "#/components/schemas/LinkDto"}
+                    }
+                },
+                "required": ["links"]
+            },
+            "EventDataDto": {
+                "type": "object",
+                "properties": {
+                    "actorId": {"type": "string"},
+                    "actorRunId": {"type": "string"}
+                },
+                "required": ["actorId", "actorRunId"]
+            },
+            "ResourceDto": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "actId": {"type": "string"},
+                    "userId": {"type": "string"},
+                    "startedAt": {"type": "string"},
+                    "finishedAt": {"type": "string"},
+                    "status": {"type": "string"},
+                    "statusMessage": {"type": "string"},
+                    "isStatusMessageTerminal": {"type": "boolean"},
+                    "meta": {"type": "object"},
+                    "stats": {"type": "object"},
+                    "options": {"type": "object"},
+                    "buildId": {"type": "string"},
+                    "exitCode": {"type": "number"},
+                    "defaultKeyValueStoreId": {"type": "string"},
+                    "defaultDatasetId": {"type": "string"},
+                    "defaultRequestQueueId": {"type": "string"},
+                    "buildNumber": {"type": "string"},
+                    "containerUrl": {"type": "string"},
+                    "usage": {"type": "object"},
+                    "usageTotalUsd": {"type": "number"},
+                    "usageUsd": {"type": "object"}
+                },
+                "required": [
+                    "id",
+                    "actId",
+                    "userId",
+                    "startedAt",
+                    "finishedAt",
+                    "status",
+                    "statusMessage",
+                    "isStatusMessageTerminal",
+                    "meta",
+                    "stats",
+                    "options",
+                    "buildId",
+                    "exitCode",
+                    "defaultKeyValueStoreId",
+                    "defaultDatasetId",
+                    "defaultRequestQueueId",
+                    "buildNumber",
+                    "containerUrl",
+                    "usage",
+                    "usageTotalUsd",
+                    "usageUsd"
+                ]
+            },
+            "ApifyWebhookDto": {
+                "type": "object",
+                "properties": {
+                    "userId": {"type": "string"},
+                    "createdAt": {"type": "string"},
+                    "eventType": {"type": "string"},
+                    "eventData": {"$ref": "#/components/schemas/EventDataDto"},
+                    "resource": {"$ref": "#/components/schemas/ResourceDto"}
+                },
+                "required": [
+                    "userId",
+                    "createdAt",
+                    "eventType",
+                    "eventData",
+                    "resource"
                 ]
             }
         }
