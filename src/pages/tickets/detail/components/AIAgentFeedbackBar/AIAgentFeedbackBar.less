@@ -80,11 +80,14 @@
         gap: @layout-spacing-xs;
         justify-content: space-between;
         padding: @layout-spacing-xxs @layout-spacing-s;
-        color: initial;
 
-        .sectionText .openIcon {
-            display: none;
-            font-size: 16px !important;
+        &,
+        &:hover {
+            color: initial;
+        }
+
+        &:hover {
+            background-color: var(--neutral-grey-1);
         }
 
         &.clickable {
@@ -99,6 +102,11 @@
                     }
                 }
             }
+        }
+
+        .sectionText .openIcon {
+            display: none;
+            font-size: 16px !important;
         }
     }
 
@@ -135,6 +143,11 @@
         margin-top: @layout-spacing-xs;
         font-size: 12px;
         color: var(--neutral-grey-5);
+
+        a:hover {
+            color: var(--main-primary);
+            text-decoration: underline !important;
+        }
     }
 
     .eventTypeContainer {
