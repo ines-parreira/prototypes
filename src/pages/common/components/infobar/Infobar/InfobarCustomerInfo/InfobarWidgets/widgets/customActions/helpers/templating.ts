@@ -9,11 +9,18 @@ export type TemplateValues = Partial<Record<TemplateVariables, string>>
 
 export function applyCustomActionTemplate(
     template: string | undefined,
-    templateContext: TemplateContext
+    templateContext: TemplateContext,
+    keepTemplateWhenEmpty?: boolean
 ) {
     const {variables, context} = templateContext
-    const renderedValue = applyCustomActionVariables(template, variables)
-    return renderTemplate(renderedValue, context)
+    const firstPassValue = applyCustomActionVariables(template, variables)
+    const templatedValue = renderTemplate(
+        firstPassValue,
+        context,
+        keepTemplateWhenEmpty
+    )
+
+    return templatedValue
 }
 
 export function applyCustomActionVariables(

@@ -311,6 +311,13 @@ describe('utils', () => {
                     }).length
                 ).toBe(MAX_OBJECT_RENDER_LENGTH)
             })
+
+            it('should return template when templated value is empty', () => {
+                expect(renderTemplate('hello {{x}}', {})).toEqual('hello ')
+                expect(renderTemplate('hello {{x}}', {}, true)).toEqual(
+                    'hello {{x}}'
+                )
+            })
         })
     })
 })

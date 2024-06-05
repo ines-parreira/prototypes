@@ -2,10 +2,21 @@ import {
     Parameter,
     TemplateContext,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import {assumeMock} from 'utils/testing'
+
 import {mapTemplateParameters} from '../mapTemplateParameters'
 
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+)
+const applyCustomActionTemplateMock = assumeMock(applyCustomActionTemplate)
+
 describe('mapTemplateParameters', () => {
-    it('should return the expected structure with templated values', () => {
+    beforeEach(() => {
+        applyCustomActionTemplateMock.mockReturnValue('ok')
+    })
+    it('should call applyCustomActionTemplate with correct props', () => {
         const parameters = [
             {
                 key: 'key $listIndex',
@@ -18,13 +29,30 @@ describe('mapTemplateParameters', () => {
                 listIndex: 'foo',
             },
         } as TemplateContext
-        const result = mapTemplateParameters(parameters, templateContext)
+        const result = mapTemplateParameters(parameters, templateContext, true)
         expect(result).toEqual([
             {
-                key: 'key foo',
-                value: 'value foo',
-                label: 'label foo',
+                key: 'ok',
+                value: 'ok',
+                label: 'ok',
             },
         ])
+        expect(applyCustomActionTemplateMock.mock.calls.length).toBe(3)
+        ;['key', 'value', 'label'].forEach((key, index) => {
+            expect(applyCustomActionTemplateMock.mock.calls[index]).toEqual([
+                parameters[0][key as keyof Parameter],
+                templateContext,
+                true,
+            ])
+        })
+
+        applyCustomActionTemplateMock.mockClear()
+        mapTemplateParameters(parameters, templateContext)
+        ;['key', 'value', 'label'].forEach((key, index) => {
+            expect(applyCustomActionTemplateMock.mock.calls[index]).toEqual([
+                parameters[0][key as keyof Parameter],
+                templateContext,
+            ])
+        })
     })
 })

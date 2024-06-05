@@ -63,7 +63,8 @@ const filters = {
  */
 export const renderTemplate = (
     body?: Maybe<string>,
-    context?: unknown
+    context?: unknown,
+    keepTemplateWhenEmpty: boolean = false
 ): string => {
     if (!body) {
         return ''
@@ -127,6 +128,9 @@ export const renderTemplate = (
                             value.slice(0, MAX_OBJECT_RENDER_LENGTH - 3) + '...'
                 }
 
+                if (keepTemplateWhenEmpty && !value) {
+                    return match
+                }
                 return value
             } catch (e) {
                 console.error('Failed to render template', match, variable, e)

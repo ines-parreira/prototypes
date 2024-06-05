@@ -7,7 +7,8 @@ import {
 
 describe('applyCustomActionTemplate', () => {
     it('should output the correct templated string', () => {
-        const template = 'something {{ticket.subject}} templated $integrationId'
+        const template =
+            'something {{ticket.subject}} templated $integrationId {{expect_me}}'
         const templateContext = {
             variables: {
                 integrationId: '1337',
@@ -19,8 +20,11 @@ describe('applyCustomActionTemplate', () => {
             },
         } as TemplateContext
 
-        expect(applyCustomActionTemplate(template, templateContext)).toEqual(
-            'something super duper templated 1337'
+        expect(applyCustomActionTemplate(template, templateContext)).toBe(
+            'something super duper templated 1337 '
+        )
+        expect(applyCustomActionTemplate(template, templateContext, true)).toBe(
+            'something super duper templated 1337 {{expect_me}}'
         )
     })
 })

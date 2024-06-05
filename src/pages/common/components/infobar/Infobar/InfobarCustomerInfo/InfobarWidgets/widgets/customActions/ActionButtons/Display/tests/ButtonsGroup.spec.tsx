@@ -1,141 +1,157 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
-import configureMockStore from 'redux-mock-store'
-import {Provider} from 'react-redux'
-import thunk from 'redux-thunk'
 
-const mockedActionId = 'someActionId'
-jest.mock('state/infobar/actions', () => ({
-    executeAction: jest.fn(() => () => mockedActionId),
-}))
-
+import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import {useComputeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
 import {actionFixture} from 'fixtures/infobarCustomActions'
+import {assumeMock} from 'utils/testing'
 
+import {Button} from '../Button'
 import ButtonsGroup from '../ButtonsGroup'
 
-const mockStore = configureMockStore([thunk])
+jest.mock('../Button')
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+)
+jest.mock(
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
+)
+const ButtonMock = assumeMock(Button)
+const useTemplateContextMock = assumeMock(useTemplateContext)
+const useComputeNbButtonDisplayedMock = assumeMock(useComputeNbButtonDisplayed)
 
 describe('<ButtonsGroup/>', () => {
+    const source = {
+        label_0: 'label 1',
+        label_1: 'label 2',
+    }
+    beforeEach(() => {
+        ButtonMock.mockImplementation(() => <button>buttonMock</button>)
+        useTemplateContextMock.mockReturnValue({
+            context: {
+                ...source,
+            },
+            variables: {},
+        } as unknown as ReturnType<typeof useTemplateContext>)
+        useComputeNbButtonDisplayedMock.mockReturnValue(2)
+    })
     const action = actionFixture()
 
     const buttons = [
         {label: '{{label_0}}', action},
-        {label: 'ok {{ticket.someData}} {{customer.name}}', action},
         {label: '{{label_1}}', action},
+        {label: 'ok', action},
         {label: 'who cares', action},
     ]
 
-    const source = {
-        label_0: 'renders',
-        label_1: 'renders inside dropdow',
-    }
-
     it('should render with correct label and without a dropdown ', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {name: 'Johanna'}}),
-                    ticket: fromJS({someData: '1234'}),
-                })}
-            >
-                <ButtonsGroup buttons={buttons.slice(0, 2)} source={source} />
-            </Provider>
-        )
+        render(<ButtonsGroup buttons={buttons.slice(0, 2)} source={source} />)
 
-        expect(screen.queryByText(source.label_0)).toBeTruthy()
-        expect(screen.queryByText('more_horiz')).toBeFalsy()
+        expect(screen.getAllByRole('button').length).toBe(2)
+        expect(screen.queryByRole('button', {name: 'more_horiz'})).toBeFalsy()
     })
 
     it('should render with a dropdown', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {}}),
-                })}
-            >
-                <ButtonsGroup buttons={buttons} source={source} />
-            </Provider>
-        )
-        expect(screen.queryByText('more_horiz')).toBeTruthy()
+        render(<ButtonsGroup buttons={buttons} source={source} />)
+
+        expect(
+            screen.getByRole('button', {name: 'more_horiz'})
+        ).toBeInTheDocument()
         expect(screen.queryByRole('menu')).toBeFalsy()
     })
 
     it('should show button in dropdown on click, with correct label', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {}}),
-                })}
-            >
-                <ButtonsGroup buttons={buttons} source={source} />
-            </Provider>
-        )
-        expect(screen.queryByRole('menu')).toBeFalsy()
-        fireEvent.click(screen.getByText('more_horiz'))
-        expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
+        render(<ButtonsGroup buttons={buttons} source={source} />)
+
+        fireEvent.click(screen.getByRole('button', {name: 'more_horiz'}))
+        expect(screen.queryByRole('menu')?.getAttribute('aria-hidden')).toBe(
             'false'
         )
-        expect(screen.queryByText(source.label_1)).toBeTruthy()
+        expect(screen.queryByRole('menu')).toContainElement(
+            screen.getAllByRole('button').pop() || null
+        )
     })
 
-    it('should render 5 buttons without a dropdown', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {}}),
-                })}
-            >
-                <ButtonsGroup
-                    buttons={[
-                        {label: 'WW', action},
-                        {label: 'WW', action},
-                        {label: 'WW', action},
-                        {label: 'WW', action},
-                        {label: 'WW', action},
-                    ]}
-                    source={source}
-                />
-            </Provider>
-        )
-        expect(screen.queryAllByText('WW').length).toBe(5)
+    it('should render all buttons without a dropdown', () => {
+        useComputeNbButtonDisplayedMock.mockReturnValue(5)
+        render(<ButtonsGroup buttons={buttons} source={source} />)
+        expect(screen.queryAllByRole('button').length).toBe(buttons.length)
     })
 
-    it('should render 3 buttons with a dropdown', () => {
-        render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {}}),
-                })}
-            >
-                <ButtonsGroup
-                    buttons={[
-                        {label: 'WWWW', action},
-                        {label: 'WWWW', action},
-                        {label: 'WWWW', action},
-                        {label: 'WW', action},
-                    ]}
-                    source={source}
-                />
-            </Provider>
-        )
-        expect(screen.queryAllByText('WWWW').length).toBe(3)
-        expect(screen.queryByText('more_horiz')).toBeTruthy()
-    })
+    const parameter = {
+        key: '{{label_1}}',
+        label: '',
+        value: 'some value',
+        editable: true,
+        mandatory: false,
+    }
 
     it('should call Button with label and action being templated', () => {
         render(
-            <Provider
-                store={mockStore({
-                    customers: fromJS({active: {name: 'Johanna'}}),
-                    ticket: fromJS({someData: '1234'}),
-                })}
-            >
-                <ButtonsGroup buttons={buttons.slice(0, 2)} source={source} />
-            </Provider>
+            <ButtonsGroup
+                buttons={[
+                    {
+                        label: '{{label_0}}',
+                        action: {
+                            ...actionFixture(),
+                            params: [parameter],
+                        },
+                    },
+                ]}
+                source={source}
+            />
         )
 
-        expect(screen.queryByText('renders')).toBeTruthy()
-        expect(screen.queryByText('ok 1234 Johanna')).toBeTruthy()
+        expect(ButtonMock.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                label: source.label_0,
+                action: {
+                    ...actionFixture(),
+                    params: [
+                        {
+                            ...parameter,
+                            key: source.label_1,
+                        },
+                    ],
+                },
+            })
+        )
+    })
+
+    it('should leave template untouched in actions if templated string is empty', () => {
+        render(
+            <ButtonsGroup
+                buttons={[
+                    {
+                        label: '{{label_x}}',
+                        action: {
+                            ...actionFixture(),
+                            params: [
+                                {
+                                    ...parameter,
+                                    key: '{{label_x}}',
+                                },
+                            ],
+                        },
+                    },
+                ]}
+                source={source}
+            />
+        )
+
+        expect(ButtonMock.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                label: '',
+                action: {
+                    ...actionFixture(),
+                    params: [
+                        {
+                            ...parameter,
+                            key: '{{label_x}}',
+                        },
+                    ],
+                },
+            })
+        )
     })
 })

@@ -26,7 +26,7 @@ type Props = {
     isDropdown?: boolean
 }
 
-function Button({label, action, isDropdown = false}: Props) {
+export function Button({label, action, isDropdown = false}: Props) {
     const [isEditorOpen, setEditorOpen] = useState<boolean>(false)
 
     // pending action management

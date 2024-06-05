@@ -88,14 +88,27 @@ function TemplatedButton({
     const templateContext = useTemplateContext(source)
     const templatedAction: Action = {
         ...button.action,
-        url: applyCustomActionTemplate(button.action.url, templateContext),
-        params: mapTemplateParameters(button.action.params, templateContext),
-        headers: mapTemplateParameters(button.action.headers, templateContext),
+        url: applyCustomActionTemplate(
+            button.action.url,
+            templateContext,
+            true
+        ),
+        params: mapTemplateParameters(
+            button.action.params,
+            templateContext,
+            true
+        ),
+        headers: mapTemplateParameters(
+            button.action.headers,
+            templateContext,
+            true
+        ),
         body: {
             ...button.action.body,
             [ContentType.Form]: mapTemplateParameters(
                 button.action.body[ContentType.Form],
-                templateContext
+                templateContext,
+                true
             ),
             [ContentType.Json]: JSON.parse(
                 applyCustomActionVariables(
