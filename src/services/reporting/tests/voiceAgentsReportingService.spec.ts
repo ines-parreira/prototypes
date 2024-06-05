@@ -142,9 +142,9 @@ const testCaseData = [
             [
                 'Agent',
                 'Total calls',
-                'Answered',
-                'Missed',
-                'Declined',
+                'Inbound answered',
+                'Inbound missed',
+                'Inbound declined',
                 'Outbound',
                 'Average talk time',
             ],
@@ -171,7 +171,7 @@ const testCaseData = [
             ]),
             answeredCallsMetric: buildMetric([
                 {
-                    [VoiceCallDimension.AgentId]: '123',
+                    [VoiceCallDimension.FilteringAgentId]: '123',
                     [VoiceCallMeasure.VoiceCallCount]: '20',
                 },
             ]),
@@ -193,11 +193,11 @@ const testCaseData = [
             ]),
             outboundCallsMetric: buildMetric([
                 {
-                    [VoiceCallDimension.AgentId]: '123',
+                    [VoiceCallDimension.FilteringAgentId]: '123',
                     [VoiceCallMeasure.VoiceCallCount]: '6',
                 },
                 {
-                    [VoiceCallDimension.AgentId]: '456',
+                    [VoiceCallDimension.FilteringAgentId]: '456',
                     [VoiceCallMeasure.VoiceCallCount]: '1',
                 },
             ]),
@@ -224,9 +224,9 @@ const testCaseData = [
             [
                 'Agent',
                 'Total calls',
-                'Answered',
-                'Missed',
-                'Declined',
+                'Inbound answered',
+                'Inbound missed',
+                'Inbound declined',
                 'Outbound',
                 'Average talk time',
             ],

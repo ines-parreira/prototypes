@@ -82,7 +82,7 @@ const getAnsweredCallsMetric = (
         getAgentMetric(
             agentId,
             answeredCallsMetric,
-            VoiceCallDimension.AgentId,
+            VoiceCallDimension.FilteringAgentId,
             VoiceCallMeasure.VoiceCallCount
         )
     )
@@ -121,7 +121,7 @@ const getOutboundCallsMetric = (
         getAgentMetric(
             agentId,
             outboundCallsMetric,
-            VoiceCallDimension.AgentId,
+            VoiceCallDimension.FilteringAgentId,
             VoiceCallMeasure.VoiceCallCount
         )
     )
@@ -161,9 +161,9 @@ export const saveReport = async (
         [
             'Agent',
             'Total calls',
-            'Answered',
-            'Missed',
-            'Declined',
+            'Inbound answered',
+            'Inbound missed',
+            'Inbound declined',
             'Outbound',
             'Average talk time',
         ],
