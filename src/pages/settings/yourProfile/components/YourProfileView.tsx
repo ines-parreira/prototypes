@@ -10,7 +10,6 @@ import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 
 import _isEqual from 'lodash/isEqual'
-import {CallForwardingCountries} from 'business/twilio'
 import {UploadType} from 'common/types'
 import {EditableUserProfile, User, UserSetting} from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -18,7 +17,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import FileField from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/input/InputField'
-import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Group from 'pages/common/components/layout/Group'
@@ -28,6 +26,7 @@ import {Theme, ThemeProps, useSavedTheme, withTheme} from 'theme'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
+import ForwardingCallsPreferences from './ForwardingCallsPreferences'
 
 const defaultContent: Pick<
     State,
@@ -601,79 +600,36 @@ export class YourProfileView extends Component<Props, State> {
                                         </Group>
                                     </FormGroup>
                                 </div>
-                                <FormGroup
-                                    className={classnames(
-                                        settingsCss.inputField,
-                                        settingsCss.mb40
-                                    )}
-                                >
-                                    <div
-                                        className={
-                                            settingsCss.headingSubsection
-                                        }
-                                    >
-                                        Forward calls to an external number
-                                    </div>
-                                    <p className="body-regular">
-                                        When you are routed a call in Gorgias,
-                                        forward the call to a mobile device or
-                                        landline.
-                                    </p>
-
-                                    <ToggleInput
-                                        className={classnames(
-                                            settingsCss.inputField,
-                                            settingsCss.subsection
-                                        )}
-                                        name="forward_calls"
-                                        isToggled={
-                                            (this.state.preferences.get(
-                                                'forward_calls'
-                                            ) as boolean) ?? false
-                                        }
-                                        onClick={(value: boolean) => {
-                                            this.isDirty = true
-                                            this.setState({
-                                                preferences:
-                                                    this.state.preferences.set(
-                                                        'forward_calls',
-                                                        value
-                                                    ),
-                                            })
-                                        }}
-                                    >
-                                        Enable call forwarding
-                                    </ToggleInput>
-                                    {this.state.preferences.get(
-                                        'forward_calls'
-                                    ) && (
-                                        <div style={{marginLeft: '50px'}}>
-                                            <PhoneNumberInput
-                                                value={
-                                                    (this.state.preferences.get(
-                                                        'forwarding_phone_number'
-                                                    ) as string) ?? ''
-                                                }
-                                                onChange={(value: string) => {
-                                                    this.isDirty = true
-                                                    this.setState({
-                                                        preferences:
-                                                            this.state.preferences.set(
-                                                                'forwarding_phone_number',
-                                                                value === ''
-                                                                    ? null
-                                                                    : value
-                                                            ),
-                                                    })
-                                                }}
-                                                allowedCountries={Object.values(
-                                                    CallForwardingCountries
-                                                )}
-                                                autoFocus
-                                            />
-                                        </div>
-                                    )}
-                                </FormGroup>
+                                <ForwardingCallsPreferences
+                                    forwardCalls={
+                                        this.state.preferences.get(
+                                            'forward_calls',
+                                            false
+                                        ) as boolean
+                                    }
+                                    forwardingPhoneNumber={
+                                        this.state.preferences.get(
+                                            'forwarding_phone_number',
+                                            ''
+                                        ) as string
+                                    }
+                                    forwardWhenOffline={
+                                        this.state.preferences.get(
+                                            'forward_when_offline',
+                                            false
+                                        ) as boolean
+                                    }
+                                    setPreference={(preferenceKey, value) => {
+                                        this.isDirty = true
+                                        this.setState({
+                                            preferences:
+                                                this.state.preferences.set(
+                                                    preferenceKey,
+                                                    value
+                                                ),
+                                        })
+                                    }}
+                                />
                             </div>
                         </div>
 

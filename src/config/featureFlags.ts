@@ -80,6 +80,7 @@ export enum FeatureFlagKey {
     NewBillingInterface = 'new-billing-interface',
     NewPhoneNumberCustomerSidebar = 'new-phone-number-customer-sidebar',
     NewTicketSnoozeAndTicketDate = 'new-ticket-snooze-and-ticket-date',
+    NewForwardCallsSection = 'new-forward-calls-section',
     InternalBillingInterface = 'internal-billing-interface',
     NewDatePickerVariant = 'new-date-picker-variant',
     NewSenderSelect = 'new-sender-select',

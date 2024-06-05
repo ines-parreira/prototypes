@@ -130,6 +130,7 @@ export type UserPreferences = {
     hide_tips?: boolean
     forward_calls?: boolean
     forwarding_phone_number?: string
+    forward_when_offline?: boolean
     macros_default_to_search_popover?: boolean
     prefill_best_macro?: boolean
     date_format?: DateFormatType
