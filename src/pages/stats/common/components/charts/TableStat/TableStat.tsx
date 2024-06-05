@@ -29,6 +29,7 @@ import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
+    SELF_SERVICE_WORKFLOWS_PERFORMANCE,
     StatConfigCallbacks,
     StatMap,
     StatValueType,
@@ -569,13 +570,34 @@ export class TableStat extends Component<
         }
     }
 
+    filterLinesByExistingWorkflows = (lines: List<List<Map<any, any>>>) => {
+        return lines.filter((line) => {
+            return !line!.some((metric) => {
+                const type = metric!.get('type') as string
+                const value = metric!.get('value') as string
+                if (type === StatValueType.WorkflowName) {
+                    return !this.props.workflowConfigurations?.some(
+                        (configuration) => configuration.id === value
+                    )
+                }
+                return false
+            })
+        })
+    }
+
     // Render the table
     render() {
         const {data, config} = this.props
         const showLines = config.getIn(['tableOptions', 'showLines'])
         const {expanded} = this.state
 
-        const lines = (data.get('lines') as List<List<Map<any, any>>>)
+        const initialLines = data.get('lines') as List<List<Map<any, any>>>
+        const filteredLines =
+            this.props.name === SELF_SERVICE_WORKFLOWS_PERFORMANCE
+                ? this.filterLinesByExistingWorkflows(initialLines)
+                : initialLines
+
+        const lines = filteredLines
             .map((line, lineIdx) => (
                 <tr key={lineIdx}>
                     {line!.map((metric, metricIdx) => {
@@ -616,7 +638,7 @@ export class TableStat extends Component<
 
         const displayExpandButton = showLines && lines.size > showLines
 
-        return (data.get('lines') as List<any>).isEmpty() ? (
+        return filteredLines.isEmpty() ? (
             <div className="text-muted">There is no data for this period.</div>
         ) : (
             <>
