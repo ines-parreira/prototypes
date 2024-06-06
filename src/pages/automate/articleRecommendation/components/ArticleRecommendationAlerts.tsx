@@ -6,7 +6,6 @@ import useLocalStorage from 'hooks/useLocalStorage'
 
 import {CLOSED_MANY_HELP_CENTERS_ALERT_KEY} from '../constants'
 
-import {TRAIN_MY_AI} from '../../common/components/constants'
 import css from './ArticleRecommendationAlerts.less'
 
 export const NoHelpCenterAlert = () => (
@@ -89,24 +88,9 @@ export const ConnectedChannelsInfoAlert = ({
                     },
                 }}
             >
-                connected channels
+                Channels
             </Link>
             .
-            <>
-                <br />
-                Improve Article Recommendation performance in{' '}
-                <Link
-                    to={{
-                        pathname: `/app/automation/${shopType}/${shopName}/train-my-ai`,
-                        state: {
-                            from: 'article-recommendation',
-                        },
-                    }}
-                >
-                    {TRAIN_MY_AI}
-                </Link>
-                .
-            </>
         </Alert>
     )
 }

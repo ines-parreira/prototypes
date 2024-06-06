@@ -3,6 +3,7 @@ import {useParams} from 'react-router-dom'
 import classNames from 'classnames'
 
 import {useQueryClient} from '@tanstack/react-query'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -18,13 +19,18 @@ import {useGetHelpCenter} from 'models/helpCenter/queries'
 import Badge from 'pages/common/components/Badge/Badge'
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {TRAIN_MY_AI} from '../common/components/constants'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    ARTICLE_RECOMMENDATION,
+    TRAIN_MY_AI,
+} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChannels'
 import {useHelpCenterPublishedArticlesCount} from '../common/hooks/useHelpCenterPublishedArticlesCount'
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
 import {assetsUrl} from '../../../utils'
+import {getArticleRecommendationNavItems} from '../common/utils/getArticleRecommendationNavItems'
 import RecommendationDivisor from './components/RecommendationDivisor'
 import RecommendationFilters, {
     FeedbackOptions,
@@ -149,6 +155,9 @@ const TrainMyAiView = () => {
         },
         [recommendationFilterFeedbackOptions]
     )
+
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
     useEffect(() => {
         resetCurrectPagination()
@@ -275,6 +284,8 @@ const TrainMyAiView = () => {
         }
     }, [isAllFeedbacksProvided])
 
+    const baseUrl = `/app/automation/${shopType}/${shopName}/article-recommendation`
+
     if (
         !isLoading &&
         !(
@@ -284,10 +295,10 @@ const TrainMyAiView = () => {
     ) {
         return (
             <Paywall
-                pageHeader={TRAIN_MY_AI}
+                pageHeader={ARTICLE_RECOMMENDATION}
                 previewImage={assetsUrl('/img/train-my-ai/preview.png')}
                 requiredUpgrade={''}
-                header="Enable Article Recommendation to access AI training"
+                header="Configure Article Recommendation to access AI training"
                 description="Review recommendations and provide feedback to optimize AI performance."
                 customBadge={
                     <Badge className={css.badge}>
@@ -307,7 +318,9 @@ const TrainMyAiView = () => {
                 customCta={
                     <LinkButton
                         target=""
-                        href={`/app/automation/${shopType}/${shopName}/article-recommendation`}
+                        href={`${baseUrl}${
+                            isImprovedNavigationEnabled ? '/configuration' : ''
+                        }`}
                     >
                         Set up article recommendation
                     </LinkButton>
@@ -318,14 +331,29 @@ const TrainMyAiView = () => {
 
     return (
         <AutomateView
-            title={TRAIN_MY_AI}
+            title={
+                isImprovedNavigationEnabled
+                    ? ARTICLE_RECOMMENDATION
+                    : TRAIN_MY_AI
+            }
             isLoading={isLoading}
-            className={classNames(css.container, {
-                [css.enabled]:
-                    !isHelpCenterSelfServiceDeleted &&
-                    (isArticleRecommendationEnabled ||
-                        hasArticleRecommendations),
-            })}
+            {...(isImprovedNavigationEnabled && !isLoading
+                ? {
+                      headerNavbarItems: getArticleRecommendationNavItems(
+                          shopType,
+                          shopName
+                      ),
+                  }
+                : {})}
+            className={classNames(
+                isImprovedNavigationEnabled ? css.newContainer : css.container,
+                {
+                    [css.enabled]:
+                        !isHelpCenterSelfServiceDeleted &&
+                        (isArticleRecommendationEnabled ||
+                            hasArticleRecommendations),
+                }
+            )}
         >
             <div ref={leftColRef} className={css.leftCol}>
                 <Header

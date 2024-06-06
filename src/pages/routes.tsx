@@ -1661,14 +1661,16 @@ function AutomationContent() {
                     </SelfServiceContactFormsProvider>
                 </SelfServiceHelpCentersProvider>
             </Route>
+
             <Route
                 path={`${path}/:shopType/:shopName/article-recommendation`}
-                exact
+                exact={isImprovedNavigationEnabled === false ? true : false}
                 component={memoizedWithUserRoleRequired(
                     ArticleRecommendationViewContainer,
                     AGENT_ROLE
                 )}
             />
+
             <Route
                 path={`${path}/:shopType/:shopName/train-my-ai`}
                 exact

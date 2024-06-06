@@ -2,16 +2,31 @@
 @import (reference) '~css/typography.less';
 
 :local {
-    .container:last-child {
-        grid-template-columns: 1fr;
-    }
-    .container.enabled {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 100%;
-        overflow: hidden;
-        height: calc(100% - 60px);
+    .container {
+        &:last-child {
+            grid-template-columns: 1fr;
+            min-height: calc(100% - 60px);
+        }
+        &.enabled {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 100%;
+            overflow: hidden;
+            height: calc(100% - 60px);
+        }
     }
 
+    .newContainer {
+        &:last-child {
+            grid-template-columns: 1fr;
+            min-height: calc(100% - 112px);
+        }
+        &.enabled {
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 100%;
+            overflow: hidden;
+            height: calc(100% - 112px);
+        }
+    }
     .leftCol {
         display: flex;
         flex-direction: column;

@@ -441,7 +441,7 @@ describe('<TrainMyAiView />', () => {
 
         expect(
             screen.queryByText(
-                'Enable Article Recommendation to access AI training'
+                'Configure Article Recommendation to access AI training'
             )
         ).toBeInTheDocument()
     })

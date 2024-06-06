@@ -1,5 +1,5 @@
 import React, {useMemo, useRef, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import {Route, Switch, useParams} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Label from 'pages/common/forms/Label/Label'
@@ -17,6 +17,8 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
 import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
+import TrainMyAiViewContainer from '../trainMyAi/TrainMyAiViewContainer'
+import {getArticleRecommendationNavItems} from '../common/utils/getArticleRecommendationNavItems'
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
@@ -33,6 +35,7 @@ const ArticleRecommendationView = () => {
         shopType: string
         shopName: string
     }>()
+
     const {helpCenters, isLoading: isLoadingHelpCenters} = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
         type: 'faq',
@@ -80,6 +83,9 @@ const ArticleRecommendationView = () => {
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
+    const isImprovedNavigationEnabled =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
     useEffectOnce(() => {
         if (!changeAutomateSettingButtomPosition) return
         logEvent(SegmentEvent.AutomateSettingPageViewed, {
@@ -87,8 +93,21 @@ const ArticleRecommendationView = () => {
         })
     })
 
-    return (
-        <AutomateView title={ARTICLE_RECOMMENDATION} isLoading={isLoading}>
+    const basePath = `/app/automation/:shopType/:shopName/article-recommendation`
+
+    const articleRecommendation = (
+        <AutomateView
+            title={ARTICLE_RECOMMENDATION}
+            isLoading={isLoading}
+            {...(isImprovedNavigationEnabled
+                ? {
+                      headerNavbarItems: getArticleRecommendationNavItems(
+                          shopType,
+                          shopName
+                      ),
+                  }
+                : {})}
+        >
             <AutomateViewContent
                 description="Automatically send a Help Center article in response to customer questions in Chat, if a relevant article exists. If a customer requests more help, a ticket will be created for an agent to handle."
                 helpUrl="https://docs.gorgias.com/en-US/article-recommendations-in-chat-368447"
@@ -123,12 +142,28 @@ const ArticleRecommendationView = () => {
                     />
                 )}
             </AutomateViewContent>
+
             <ArticleRecommendationPreview
                 channels={channels}
                 selfServiceConfiguration={selfServiceConfiguration!}
                 isHelpCenterSelected={Boolean(helpCenter)}
             />
         </AutomateView>
+    )
+
+    if (!isImprovedNavigationEnabled) {
+        return articleRecommendation
+    }
+
+    return (
+        <Switch>
+            <Route path={basePath} exact>
+                <TrainMyAiViewContainer />
+            </Route>
+            <Route path={`${basePath}/configuration`} exact>
+                {articleRecommendation}
+            </Route>
+        </Switch>
     )
 }
 
