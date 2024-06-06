@@ -52,11 +52,17 @@ export default function WorkflowEditorViewContainer() {
         [dispatch]
     )
 
-    const handleFlowDraftCreated = useCallback(() => {
-        history.push(
-            `/app/automation/${shopType}/${shopName}/flows/edit/${workflowId}`
-        )
-    }, [history, shopName, shopType, workflowId])
+    const handleNewWorkflowCreated = useCallback(
+        (isDraft) => {
+            history.replace(
+                `/app/automation/${shopType}/${shopName}/flows/edit/${workflowId}`,
+                {
+                    doShowDisplayInChannels: !isDraft,
+                }
+            )
+        },
+        [history, shopName, shopType, workflowId]
+    )
 
     const handleFlowPublished = useCallback(
         (isFirstTimePublish: boolean) => {
@@ -83,7 +89,7 @@ export default function WorkflowEditorViewContainer() {
                 currentAccountId={currentAccountId}
                 workflowId={workflowId}
                 isNewWorkflow={isNewWorkflow}
-                onDraftCreated={handleFlowDraftCreated}
+                onNewWorkflowCreated={handleNewWorkflowCreated}
                 onPublish={handleFlowPublished}
                 onDiscard={handleFlowDiscard}
                 notifyMerchant={notifyMerchant}

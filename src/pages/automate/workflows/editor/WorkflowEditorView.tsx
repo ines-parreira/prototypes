@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef} from 'react'
 import {Container} from 'reactstrap'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useLocation} from 'react-router-dom'
 import PageHeader from 'pages/common/components/PageHeader'
 import TextInput from 'pages/common/forms/input/TextInput'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -56,7 +57,7 @@ type WorkflowEditorViewProps = {
     isNewWorkflow: boolean
     onDiscard: (fromView: string | undefined) => void
     onSave?: () => void
-    onDraftCreated: () => void
+    onNewWorkflowCreated: (isDraft: boolean) => void
     onPublish: (isFirstTime: boolean) => void
     notifyMerchant: (message: Notification) => void
 }
@@ -67,7 +68,7 @@ function WorkflowEditorViewWrapped({
     isNewWorkflow,
     onSave,
     onDiscard,
-    onDraftCreated,
+    onNewWorkflowCreated,
     onPublish,
     notifyMerchant,
     shopName,
@@ -76,6 +77,7 @@ function WorkflowEditorViewWrapped({
     const {template: templateSlug, from: fromView} =
         useSearch<{template: string | undefined; from: string | undefined}>()
     const workflowEditorContext = useWorkflowEditorContext()
+    const location = useLocation<{doShowDisplayInChannels: boolean}>()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
     const isPublishFlowFromFlowBuilder =
         useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
@@ -196,9 +198,9 @@ function WorkflowEditorViewWrapped({
 
     const handlePublish = () => upsertWorkflow(false)
 
-    const openChannelSidePanel = () => {
+    const openChannelSidePanel = useCallback(() => {
         workflowEditorContext.setFlowPublishingInChannels(true)
-    }
+    }, [workflowEditorContext])
     const workflowsEnabledInChats = useWorkflowsIdsEnabledInChat(
         shopType,
         shopName
@@ -227,6 +229,14 @@ function WorkflowEditorViewWrapped({
             workflowsEnabledInHC,
         ]
     )
+
+    useEffectOnce(() => {
+        if (
+            location.state?.doShowDisplayInChannels &&
+            doOpenChannelsSidePanel(workflowId)
+        )
+            openChannelSidePanel()
+    })
 
     const upsertWorkflow = async (isDraft = true) => {
         const configurationError = workflowEditorContext.handleValidate(
@@ -276,10 +286,16 @@ function WorkflowEditorViewWrapped({
 
         if (!isDraft) {
             onPublish(isFirstTimePublish)
-            if (doOpenChannelsSidePanel(workflowId)) openChannelSidePanel()
-        } else if (isDraft) {
-            if (isNewWorkflow) onDraftCreated()
-            else onSave?.()
+            if (isNewWorkflow && isPublishFlowFromFlowBuilder) {
+                onNewWorkflowCreated(isDraft)
+            } else if (doOpenChannelsSidePanel(workflowId)) {
+                openChannelSidePanel()
+            }
+        } else {
+            onSave?.()
+            if (isNewWorkflow) {
+                onNewWorkflowCreated(isDraft)
+            }
         }
 
         notify({
