@@ -1,5 +1,5 @@
-import moment from 'moment/moment'
 import React, {Fragment} from 'react'
+import {formatDuration} from 'pages/stats/common/utils'
 import useId from 'hooks/useId'
 import {
     TicketSLADimension,
@@ -13,7 +13,10 @@ export type SLAPolicyStatus = {
     [TicketSLADimension.SlaPolicyMetricName]: string
     [TicketSLADimension.SlaPolicyMetricStatus]: TicketSLAStatus
     [TicketSLADimension.SlaDelta]: number | null
+    [TicketSLADimension.SlaStatus]: TicketSLAStatus
 }
+
+export const PENDING_SLA_TIME_LABEL = 'time pending'
 
 export const SLAStatusCell = ({
     item,
@@ -28,16 +31,14 @@ export const SLAStatusCell = ({
     const formatted = metrics.map((sla) => {
         const metricName = rowData[sla][TicketSLADimension.SlaPolicyMetricName]
         const status: TicketSLAStatus =
-            rowData[sla][TicketSLADimension.SlaPolicyMetricStatus]
+            rowData[sla][TicketSLADimension.SlaStatus]
         const delta = rowData[sla][TicketSLADimension.SlaDelta]
-        const formattedDuration = moment.duration(delta, 'seconds')
-        const beforeOrAfter =
-            status === TicketSLAStatus.Satisfied ? 'before' : 'after'
+        const beforeOrAfter = delta !== null && delta < 0 ? 'before' : 'after'
 
         return {
             metricName,
             status,
-            delta: Math.abs(formattedDuration.asMinutes()).toPrecision(2),
+            delta: delta !== null ? formatDuration(Math.abs(delta)) : null,
             beforeOrAfter,
         }
     })
@@ -66,7 +67,14 @@ export const SLAStatusCell = ({
                     <Fragment key={metricName}>
                         <span>
                             <strong>{metricName}</strong> {status.toLowerCase()}{' '}
-                            <strong>{delta}</strong> {beforeOrAfter} due date.
+                            {delta !== null ? (
+                                <>
+                                    <strong>{delta}</strong> {beforeOrAfter} due
+                                    date.
+                                </>
+                            ) : (
+                                <>{`(${PENDING_SLA_TIME_LABEL})`}</>
+                            )}
                         </span>
                         <br />
                     </Fragment>

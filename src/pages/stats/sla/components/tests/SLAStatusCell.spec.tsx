@@ -1,10 +1,15 @@
-import {render, screen} from '@testing-library/react'
+import {render, screen, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {formatDuration} from 'pages/stats/common/utils'
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
+import {
+    PENDING_SLA_TIME_LABEL,
+    SLAStatusCell,
+} from 'pages/stats/sla/components/SlaStatusCell'
 import {SlaStatusLabel} from 'services/reporting/constants'
 
 describe('<SLAStatusCell />', () => {
@@ -16,6 +21,7 @@ describe('<SLAStatusCell />', () => {
                 [TicketSLADimension.SlaPolicyMetricName]: metricName,
                 [TicketSLADimension.SlaPolicyMetricStatus]: metricStatus,
                 [TicketSLADimension.SlaDelta]: null,
+                [TicketSLADimension.SlaStatus]: metricStatus,
             },
         }
         render(<SLAStatusCell item={slaData} />)
@@ -23,25 +29,50 @@ describe('<SLAStatusCell />', () => {
         expect(screen.getByText(SlaStatusLabel[metricStatus]))
     })
 
-    it('should render Breached status if at least one metric is breached', () => {
+    it('should render ticket status and metric details', async () => {
         const metricName = 'someMetric'
+        const ticketSlaStatus = TicketSLAStatus.Breached
         const metricStatus = TicketSLAStatus.Satisfied
         const anotherMetricName = 'anotherMetric'
         const anotherMetricStatus = TicketSLAStatus.Breached
+        const breachedMetric = {
+            [TicketSLADimension.SlaPolicyMetricName]: anotherMetricName,
+            [TicketSLADimension.SlaPolicyMetricStatus]: anotherMetricStatus,
+            [TicketSLADimension.SlaDelta]: 123,
+            [TicketSLADimension.SlaStatus]: ticketSlaStatus,
+        }
+        const breachedWithoutDeltaMetricName = 'breachedWithoutDeltaMetric'
+        const breachedWithoutDeltaMetric = {
+            [TicketSLADimension.SlaPolicyMetricName]:
+                breachedWithoutDeltaMetricName,
+            [TicketSLADimension.SlaPolicyMetricStatus]: anotherMetricStatus,
+            [TicketSLADimension.SlaDelta]: null,
+            [TicketSLADimension.SlaStatus]: ticketSlaStatus,
+        }
         const slaData = {
             [metricName]: {
                 [TicketSLADimension.SlaPolicyMetricName]: metricName,
                 [TicketSLADimension.SlaPolicyMetricStatus]: metricStatus,
-                [TicketSLADimension.SlaDelta]: null,
+                [TicketSLADimension.SlaDelta]: -456,
+                [TicketSLADimension.SlaStatus]: ticketSlaStatus,
             },
-            [anotherMetricName]: {
-                [TicketSLADimension.SlaPolicyMetricName]: anotherMetricName,
-                [TicketSLADimension.SlaPolicyMetricStatus]: anotherMetricStatus,
-                [TicketSLADimension.SlaDelta]: null,
-            },
+            [anotherMetricName]: breachedMetric,
+            [breachedWithoutDeltaMetricName]: breachedWithoutDeltaMetric,
         }
         render(<SLAStatusCell item={slaData} />)
+        const slaStatusBadge = screen.getByText(SlaStatusLabel[ticketSlaStatus])
+        userEvent.hover(slaStatusBadge)
 
-        expect(screen.getByText(SlaStatusLabel[anotherMetricStatus]))
+        expect(slaStatusBadge).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByText(
+                    formatDuration(breachedMetric[TicketSLADimension.SlaDelta])
+                )
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(new RegExp(PENDING_SLA_TIME_LABEL))
+            ).toBeInTheDocument()
+        })
     })
 })

@@ -182,6 +182,7 @@ describe('<DrillDownTable />', () => {
     it('should render SlaStatusCell', () => {
         const metricName = 'someMetric'
         const metricStatus = TicketSLAStatus.Breached
+        const ticketStatus = TicketSLAStatus.Breached
         const dataWithSlas = {
             ...exampleRow,
             rowData: {
@@ -189,6 +190,7 @@ describe('<DrillDownTable />', () => {
                     [TicketSLADimension.SlaPolicyMetricName]: metricName,
                     [TicketSLADimension.SlaPolicyMetricStatus]: metricStatus,
                     [TicketSLADimension.SlaDelta]: 123,
+                    [TicketSLADimension.SlaStatus]: ticketStatus,
                 },
             },
         }

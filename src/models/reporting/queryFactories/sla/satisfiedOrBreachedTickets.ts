@@ -49,7 +49,7 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
     ],
 })
 
-export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
+export const satisfiedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -68,6 +68,52 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
             dimension: TicketSLADimension.SlaAnchorDatetime,
             granularity: ReportingGranularity.Day,
             dateRange: getFilterDateRange(filters),
+        },
+    ],
+    filters: [
+        ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting)
+            .filters,
+        {
+            member: TicketSLADimension.SlaStatus,
+            operator: ReportingFilterOperator.Equals,
+            values: [TicketSLAStatus.Satisfied],
+        },
+    ],
+    ...(sorting
+        ? {
+              order: [[TicketDimension.CreatedDatetime, sorting]],
+          }
+        : {}),
+})
+
+export const breachedTicketsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<TicketSLACubeWithJoins> => ({
+    ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting),
+    dimensions: [
+        TicketDimension.TicketId,
+        TicketSLADimension.TicketId,
+        TicketSLADimension.SlaStatus,
+        TicketSLADimension.SlaPolicyMetricName,
+        TicketSLADimension.SlaPolicyMetricStatus,
+        TicketSLADimension.SlaDelta,
+    ],
+    timeDimensions: [
+        {
+            dimension: TicketSLADimension.SlaAnchorDatetime,
+            granularity: ReportingGranularity.Day,
+            dateRange: getFilterDateRange(filters),
+        },
+    ],
+    filters: [
+        ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting)
+            .filters,
+        {
+            member: TicketSLADimension.SlaStatus,
+            operator: ReportingFilterOperator.Equals,
+            values: [TicketSLAStatus.Breached],
         },
     ],
     ...(sorting
