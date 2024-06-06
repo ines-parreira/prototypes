@@ -89,7 +89,9 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
                         [css.positiveFeedback]:
                             resource.feedback === 'thumbs_up',
                     })}
-                    onClick={() =>
+                    onClick={(ev) => {
+                        ev.preventDefault()
+
                         handleSubmitFeedback(
                             resource.id,
                             resourceType,
@@ -97,7 +99,7 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
                                 ? null
                                 : 'thumbs_up'
                         )
-                    }
+                    }}
                     title="Mark as Correct"
                 >
                     thumb_up
@@ -115,7 +117,9 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
                         [css.negativeFeedback]:
                             resource.feedback === 'thumbs_down',
                     })}
-                    onClick={() =>
+                    onClick={(ev) => {
+                        ev.preventDefault()
+
                         handleSubmitFeedback(
                             resource.id,
                             resourceType,
@@ -123,7 +127,7 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
                                 ? null
                                 : 'thumbs_down'
                         )
-                    }
+                    }}
                     title="Mark as Incorrect"
                 >
                     thumb_down
