@@ -191,3 +191,13 @@ export const startArticleIngestion = async (
 
     return response
 }
+
+export const deleteArticleIngestionLog = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.DeleteArticleIngestionLog.PathParameters
+) => {
+    if (!client) return null
+    const response = await client.deleteArticleIngestionLog(pathParams)
+
+    return response
+}

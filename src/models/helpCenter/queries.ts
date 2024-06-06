@@ -20,6 +20,7 @@ import {
     getHelpCenterList,
     getArticleIngestionLogs,
     startArticleIngestion,
+    deleteArticleIngestionLog,
 } from './resources'
 
 const STALE_TIME = 10 * 60 * 1000
@@ -335,6 +336,18 @@ export const useStartArticleIngestion = (
     return useMutation({
         mutationFn: ([client = helpCenterClient, pathParams, data]) =>
             startArticleIngestion(client, pathParams, data),
+        ...overrides,
+    })
+}
+
+export const useDeleteArticleIngestionLog = (
+    overrides?: MutationOverrides<typeof deleteArticleIngestionLog>
+) => {
+    const {client: helpCenterClient} = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams]) =>
+            deleteArticleIngestionLog(client, pathParams),
         ...overrides,
     })
 }

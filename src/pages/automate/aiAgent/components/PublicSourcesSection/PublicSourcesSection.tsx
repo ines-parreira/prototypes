@@ -3,10 +3,15 @@ import React, {useEffect, useState} from 'react'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
 import {usePublicResources} from '../../hooks/usePublicResources'
+import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import css from './PublicSourcesSection.less'
 import {PublicSourcesItem} from './PublicSourcesItem'
 import {SourceItem} from './types'
+import {mergeSources} from './utils'
 
 const SOURCES_LIMIT = 10
 
@@ -15,12 +20,17 @@ type Props = {
 }
 
 export const PublicSourcesSection = ({helpCenterId}: Props) => {
+    const dispatch = useAppDispatch()
+
     const {sourceItems} = usePublicResources({helpCenterId})
+    const {deletePublicResource, addPublicResource} = usePublicResourceMutation(
+        {helpCenterId}
+    )
     const [sources, setSources] = useState<SourceItem[]>(sourceItems ?? [])
 
     useEffect(() => {
         if (sourceItems) {
-            setSources(sourceItems)
+            setSources((prevSources) => mergeSources(prevSources, sourceItems))
         }
     }, [sourceItems])
 
@@ -32,17 +42,67 @@ export const PublicSourcesSection = ({helpCenterId}: Props) => {
         setSources((prev) => [...prev, newResource])
     }
 
-    const onDeleteSource = (id: number) => {
-        setSources((prev) => prev.filter((resource) => resource.id !== id))
+    const onDeleteSource = async (source: SourceItem) => {
+        setSources((prev) =>
+            prev.filter((resource) => resource.id !== source.id)
+        )
+
+        if (source.status === 'idle') return
+
+        try {
+            await deletePublicResource(source.id)
+
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Public URL successfully deleted',
+                })
+            )
+        } catch (error) {
+            setSources((prev) => [...prev, source])
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Error during Public URL deletion. Try one more time or contact support',
+                })
+            )
+        }
     }
 
-    const onSyncSource = (id: number) => {
-        // eslint-disable-next-line no-console
-        console.log('Syncing source with id:', id)
-        // TODO: Add server request here
+    const onSyncSource = async (url: string, sourceId: number) => {
+        try {
+            setSources((prev) =>
+                prev.map((source) =>
+                    source.id === sourceId
+                        ? {...source, status: 'loading', url}
+                        : {...source}
+                )
+            )
+            await addPublicResource([url])
+        } catch (error) {
+            setSources((prev) =>
+                prev.map((source) =>
+                    source.id === sourceId
+                        ? {...source, status: 'error'}
+                        : {...source}
+                )
+            )
+
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Error during Public URL sync. Try different URL or contact support',
+                })
+            )
+        }
     }
 
     const isLimitReached = sources.length >= SOURCES_LIMIT
+    const existingUrls = sources
+        .map((s) => s.url)
+        .filter((url): url is string => !!url)
 
     return (
         <div className={css.container}>
@@ -59,6 +119,7 @@ export const PublicSourcesSection = ({helpCenterId}: Props) => {
                     {sources.map((source) => (
                         <li key={source.id} data-testid="source-item">
                             <PublicSourcesItem
+                                existingUrls={existingUrls}
                                 source={source}
                                 onDelete={onDeleteSource}
                                 onSync={onSyncSource}

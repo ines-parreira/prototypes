@@ -19,13 +19,39 @@ const isUrlValid = (url?: string) => {
     }
 }
 
-type Props = {
-    source: SourceItem
-    onDelete: (id: number) => void
-    onSync: (id: number) => void
+const getInputError = (
+    isInvalid: boolean,
+    isDuplicate: boolean,
+    status: SourceItem['status']
+) => {
+    if (isInvalid) {
+        return 'Invalid URL'
+    }
+
+    if (isDuplicate) {
+        return 'This URL has already been added'
+    }
+
+    if (status === 'error') {
+        return 'URL cannot be processed'
+    }
+
+    return undefined
 }
 
-export const PublicSourcesItem = ({source, onDelete, onSync}: Props) => {
+type Props = {
+    source: SourceItem
+    existingUrls: string[]
+    onDelete: (source: SourceItem) => void
+    onSync: (url: string, sourceId: number) => void
+}
+
+export const PublicSourcesItem = ({
+    source,
+    onDelete,
+    onSync,
+    existingUrls,
+}: Props) => {
     const [value, setValue] = useState(source.url ?? '')
 
     const handleChange = (value: string) => {
@@ -33,11 +59,11 @@ export const PublicSourcesItem = ({source, onDelete, onSync}: Props) => {
     }
 
     const handleDelete = () => {
-        onDelete(source.id)
+        onDelete(source)
     }
 
     const handleSync = () => {
-        onSync(source.id)
+        onSync(value, source.id)
     }
 
     const handleOpen = () => {
@@ -47,29 +73,50 @@ export const PublicSourcesItem = ({source, onDelete, onSync}: Props) => {
     }
 
     const isValidUrl = isUrlValid(value)
+    const isDuplicate = value !== source.url && existingUrls.includes(value)
     const isNotEmpty = value !== '' && value !== undefined
     const isValid = isValidUrl && isNotEmpty
 
-    const isSyncDisabled = source.status !== 'idle' && source.status !== 'error'
+    const isEditingDisabled =
+        source.status !== 'idle' && source.status !== 'error'
+
+    const isSyncDisabled =
+        (source.status !== 'idle' &&
+            source.status !== 'error' &&
+            source.status !== 'done') ||
+        isDuplicate
+
+    const inputError = getInputError(
+        !isValidUrl && isNotEmpty,
+        isDuplicate,
+        source.status
+    )
 
     return (
         <div className={css.container}>
             <InputField
                 className={css.input}
                 value={value}
-                isDisabled={isSyncDisabled}
+                isDisabled={isEditingDisabled}
                 onChange={handleChange}
                 placeholder="URL"
+                hasError={source.status === 'error' || !!inputError}
                 aria-label="Public URL"
-                error={!isValidUrl && isNotEmpty ? 'Invalid URL' : undefined}
+                error={inputError}
             />
             <Button
                 intent="secondary"
                 isDisabled={!isValid || isSyncDisabled}
+                disabled={!isValid || isSyncDisabled}
                 onClick={handleSync}
                 isLoading={source.status === 'loading'}
+                data-testid="sync-button"
             >
-                <ButtonIconLabel icon="sync">Sync URL</ButtonIconLabel>
+                {source.status === 'loading' ? (
+                    'Sync URL'
+                ) : (
+                    <ButtonIconLabel icon="sync">Sync URL</ButtonIconLabel>
+                )}
             </Button>
 
             <div className={css.buttonGroup}>
