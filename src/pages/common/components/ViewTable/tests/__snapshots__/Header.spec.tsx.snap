@@ -12,7 +12,6 @@ exports[`ViewTable::Header should display an empty view 1`] = `
     >
       <div
         class="title editable"
-        color="transparent"
       >
         <span>
           

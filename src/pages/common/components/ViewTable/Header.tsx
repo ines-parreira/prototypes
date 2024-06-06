@@ -139,8 +139,17 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {activeView, config, isUpdate, isSearch, viewButtons, type} =
-            this.props
+        const {
+            activeView,
+            config,
+            flags,
+            isUpdate,
+            isSearch,
+            viewButtons,
+            type,
+        } = this.props
+
+        const isNewEdition = flags?.[FeatureFlagKey.ViewEditionNewIcon]
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
@@ -148,6 +157,10 @@ export class HeaderContainer extends React.Component<Props, State> {
         const slug = activeView.get('slug') as keyof typeof systemViewIcons
         const shouldDisplaySystemIcon =
             category === ViewCategory.System && !!systemViewIcons[slug]
+        const isEditable = ![
+            EntityType.Customer,
+            EntityType.CustomerWithHighlight,
+        ].includes(type as EntityType)
 
         return (
             <div className={css.component}>
@@ -238,16 +251,14 @@ export class HeaderContainer extends React.Component<Props, State> {
                                 <div
                                     className={classnames(css.title, {
                                         [css.editable]:
-                                            type !== EntityType.Customer &&
-                                            type !==
-                                                EntityType.CustomerWithHighlight,
+                                            !isNewEdition && isEditable,
                                     })}
-                                    color="transparent"
                                     onClick={() =>
-                                        type !== EntityType.Customer &&
-                                        type !==
-                                            EntityType.CustomerWithHighlight &&
-                                        this.props.setViewEditMode(activeView)
+                                        !isNewEdition && isEditable
+                                            ? this.props.setViewEditMode(
+                                                  activeView
+                                              )
+                                            : undefined
                                     }
                                 >
                                     {shouldDisplaySystemIcon && (
@@ -267,9 +278,26 @@ export class HeaderContainer extends React.Component<Props, State> {
                                             'emoji',
                                         ])}
                                     />
-                                    {type !== 'customer' && (
-                                        <i className="material-icons">
-                                            keyboard_arrow_down
+                                    {isEditable && (
+                                        <i
+                                            className={classnames(
+                                                'material-icons',
+                                                {
+                                                    [css.editIcon]:
+                                                        isNewEdition,
+                                                }
+                                            )}
+                                            onClick={() =>
+                                                isNewEdition && isEditable
+                                                    ? this.props.setViewEditMode(
+                                                          activeView
+                                                      )
+                                                    : undefined
+                                            }
+                                        >
+                                            {isNewEdition
+                                                ? 'tune'
+                                                : 'keyboard_arrow_down'}
                                         </i>
                                     )}
                                 </div>

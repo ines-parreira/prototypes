@@ -2,12 +2,12 @@ import React from 'react'
 import {fromJS, Map} from 'immutable'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
-import {EntityType} from 'models/view/types'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {view as viewsFixture} from 'fixtures/views'
+import {EntityType} from 'models/view/types'
 import {fetchViewItems} from 'state/views/actions'
-import {getLDClient} from 'utils/launchDarkly'
 
 import {newViews} from 'models/view/mocks'
 import {systemViewIcons} from 'utils/views'
@@ -23,9 +23,6 @@ jest.mock('state/views/actions.ts', () => {
 })
 jest.mock('react-router-dom')
 jest.mock('pages/history')
-jest.mock('utils/launchDarkly')
-const allFlagsMock = getLDClient().allFlags as jest.Mock
-allFlagsMock.mockReturnValue({})
 
 describe('ViewTable::Header', () => {
     const editModeActiveView = fromJS({
@@ -49,10 +46,6 @@ describe('ViewTable::Header', () => {
         fetchViewItems: jest.fn(),
         resetView: jest.fn(),
     }
-
-    beforeEach(() => {
-        allFlagsMock.mockReturnValue({})
-    })
 
     it('should display an empty view', () => {
         const {container} = render(
@@ -318,5 +311,36 @@ describe('ViewTable::Header', () => {
                 ]
             )
         ).toBeInTheDocument()
+    })
+
+    it('should display default UI', () => {
+        const {getByText, queryByText} = render(
+            <HeaderContainer {...minProps} />
+        )
+
+        fireEvent.click(getByText(viewsFixture.name))
+        expect(minProps.setViewEditMode).toHaveBeenCalled()
+        expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
+        expect(queryByText('tune')).not.toBeInTheDocument()
+    })
+
+    it('should display different UI for new edition mode', () => {
+        const {getByText, queryByText} = render(
+            <HeaderContainer
+                {...minProps}
+                flags={{
+                    [FeatureFlagKey.ViewEditionNewIcon]: true,
+                }}
+            />
+        )
+
+        fireEvent.click(getByText(viewsFixture.name))
+
+        expect(minProps.setViewEditMode).not.toHaveBeenCalled()
+        expect(queryByText('keyboard_arrow_down')).not.toBeInTheDocument()
+        expect(getByText('tune')).toBeInTheDocument()
+
+        fireEvent.click(getByText('tune'))
+        expect(minProps.setViewEditMode).toHaveBeenCalled()
     })
 })
