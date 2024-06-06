@@ -1,5 +1,5 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo} from 'react'
+import React, {useMemo} from 'react'
 import {useLocation} from 'react-router-dom'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
@@ -15,10 +15,6 @@ import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
-import {useSearchParam} from 'hooks/useSearchParam'
 import AutomateOverviewV1 from 'pages/stats/AutomateOverviewV1'
 import AutomateOverviewV2 from 'pages/stats/AutomateOverviewV2'
 import SelfServiceStatsPagePaywallCustomCta from 'pages/stats/self-service/SelfServiceStatsPagePaywallCustomCta'
@@ -38,8 +34,6 @@ export function AutomateOverview() {
         userTimezone,
         granularity,
     } = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const dispatch = useAppDispatch()
-    const [sourceSearchParam, setSourceSearchParam] = useSearchParam('source')
 
     const location = useLocation()
     const pageStatsFilters = useMemo<StatsFilters>(() => {
@@ -49,18 +43,6 @@ export function AutomateOverview() {
             period,
         }
     }, [statsFilters])
-
-    useEffect(() => {
-        if (sourceSearchParam === 'automate') {
-            dispatch(mergeStatsFilters(last28DaysStatsFilters()))
-            setSourceSearchParam(null)
-        }
-    }, [
-        dispatch,
-        sourceSearchParam,
-        setSourceSearchParam,
-        pageStatsFilters.period.start_datetime,
-    ])
 
     if (
         isAutomateAnalyticsv2 ||

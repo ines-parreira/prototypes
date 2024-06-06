@@ -1,18 +1,32 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {useSearchParam} from 'hooks/useSearchParam'
+import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
 import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
 
 export const AutomateOverviewFilters = () => {
     const isAutomateOverviewChannelsFilter: boolean | undefined =
         useFlags()[FeatureFlagKey.AutomateOverviewChannelsFilter]
 
+    const dispatch = useAppDispatch()
     const statsFilters = useAppSelector(getStatsFilters)
+    const [sourceSearchParam, setSourceSearchParam] = useSearchParam('source')
+
+    useEffect(() => {
+        if (sourceSearchParam === 'automate') {
+            dispatch(mergeStatsFilters(last28DaysStatsFilters()))
+            setSourceSearchParam(null)
+        }
+    }, [dispatch, sourceSearchParam, setSourceSearchParam])
+
     useCleanStatsFilters(statsFilters)
 
     return (
@@ -33,7 +47,11 @@ export const AutomateOverviewFilters = () => {
                 initialSettings={{
                     maxSpan: 365,
                 }}
-                value={statsFilters.period}
+                value={
+                    sourceSearchParam === 'automate'
+                        ? last28DaysStatsFilters().period
+                        : statsFilters.period
+                }
                 variant="ghost"
             />
         </>

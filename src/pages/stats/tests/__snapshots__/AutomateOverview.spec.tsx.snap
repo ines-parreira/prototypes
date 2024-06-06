@@ -659,9 +659,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
       >
         <span
           class="drp-selected"
-        >
-          02/03/2021 - 02/03/2021
-        </span>
+        />
         <button
           class="cancelBtn btn btn-sm btn-secondary"
           type="button"
@@ -1986,9 +1984,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
       >
         <span
           class="drp-selected"
-        >
-          02/03/2021 - 02/03/2021
-        </span>
+        />
         <button
           class="cancelBtn btn btn-sm btn-secondary"
           type="button"
@@ -3313,9 +3309,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
       >
         <span
           class="drp-selected"
-        >
-          02/03/2021 - 02/03/2021
-        </span>
+        />
         <button
           class="cancelBtn btn btn-sm btn-secondary"
           type="button"

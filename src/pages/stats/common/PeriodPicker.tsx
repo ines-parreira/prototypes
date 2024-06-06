@@ -158,8 +158,6 @@ export const PeriodPickerContainer = ({
     useEffect(() => {
         setStartDate(startDatetime)
         setEndDate(endDatetime)
-        datePickerRef.current?.setStartDate(startDate)
-        datePickerRef.current?.setEndDate(endDate)
     }, [endDate, endDatetime, startDate, startDatetime])
 
     const handleApply: EventHandler = (event, picker) => {
