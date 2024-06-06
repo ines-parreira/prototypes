@@ -1,5 +1,15 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .name {
         display: flex;
+    }
+
+    .count {
+        min-width: 20px;
+        padding: 0 @layout-spacing-xxs;
+        border-radius: 10px;
+        background: var(--main-secondary);
+        color: var(--neutral-grey-6);
     }
 }
