@@ -30,21 +30,24 @@ export const SLAStatusCell = ({
 
     const formatted = metrics.map((sla) => {
         const metricName = rowData[sla][TicketSLADimension.SlaPolicyMetricName]
-        const status: TicketSLAStatus =
+        const metricStatus: TicketSLAStatus =
+            rowData[sla][TicketSLADimension.SlaPolicyMetricStatus]
+        const ticketStatus: TicketSLAStatus =
             rowData[sla][TicketSLADimension.SlaStatus]
         const delta = rowData[sla][TicketSLADimension.SlaDelta]
         const beforeOrAfter = delta !== null && delta < 0 ? 'before' : 'after'
 
         return {
             metricName,
-            status,
+            metricStatus,
+            ticketStatus,
             delta: delta !== null ? formatDuration(Math.abs(delta)) : null,
             beforeOrAfter,
         }
     })
-    const rowStatus = formatted.reduce<TicketSLAStatus>(
+    const ticketStatus = formatted.reduce<TicketSLAStatus>(
         (acc, current) =>
-            current.status === TicketSLAStatus.Breached
+            current.ticketStatus === TicketSLAStatus.Breached
                 ? TicketSLAStatus.Breached
                 : acc,
         TicketSLAStatus.Satisfied
@@ -55,30 +58,33 @@ export const SLAStatusCell = ({
             <Badge
                 id={badgeId}
                 type={
-                    rowStatus === TicketSLAStatus.Satisfied
+                    ticketStatus === TicketSLAStatus.Satisfied
                         ? ColorType.LightSuccess
                         : ColorType.LightWarning
                 }
             >
-                {SlaStatusLabel[rowStatus]}
+                {SlaStatusLabel[ticketStatus]}
             </Badge>
             <Tooltip target={badgeId}>
-                {formatted.map(({metricName, status, delta, beforeOrAfter}) => (
-                    <Fragment key={metricName}>
-                        <span>
-                            <strong>{metricName}</strong> {status.toLowerCase()}{' '}
-                            {delta !== null ? (
-                                <>
-                                    <strong>{delta}</strong> {beforeOrAfter} due
-                                    date.
-                                </>
-                            ) : (
-                                <>{`(${PENDING_SLA_TIME_LABEL})`}</>
-                            )}
-                        </span>
-                        <br />
-                    </Fragment>
-                ))}
+                {formatted.map(
+                    ({metricName, metricStatus, delta, beforeOrAfter}) => (
+                        <Fragment key={metricName}>
+                            <span>
+                                <strong>{metricName}</strong>{' '}
+                                {SlaStatusLabel[metricStatus].toLowerCase()}{' '}
+                                {delta !== null ? (
+                                    <>
+                                        <strong>{delta}</strong> {beforeOrAfter}{' '}
+                                        due date.
+                                    </>
+                                ) : (
+                                    <>{`(${PENDING_SLA_TIME_LABEL})`}</>
+                                )}
+                            </span>
+                            <br />
+                        </Fragment>
+                    )
+                )}
             </Tooltip>
         </div>
     )

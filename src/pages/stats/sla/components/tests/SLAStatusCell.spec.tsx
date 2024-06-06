@@ -32,7 +32,7 @@ describe('<SLAStatusCell />', () => {
     it('should render ticket status and metric details', async () => {
         const metricName = 'someMetric'
         const ticketSlaStatus = TicketSLAStatus.Breached
-        const metricStatus = TicketSLAStatus.Satisfied
+        const satisfiedMetricStatus = TicketSLAStatus.Satisfied
         const anotherMetricName = 'anotherMetric'
         const anotherMetricStatus = TicketSLAStatus.Breached
         const breachedMetric = {
@@ -52,13 +52,15 @@ describe('<SLAStatusCell />', () => {
         const slaData = {
             [metricName]: {
                 [TicketSLADimension.SlaPolicyMetricName]: metricName,
-                [TicketSLADimension.SlaPolicyMetricStatus]: metricStatus,
+                [TicketSLADimension.SlaPolicyMetricStatus]:
+                    satisfiedMetricStatus,
                 [TicketSLADimension.SlaDelta]: -456,
                 [TicketSLADimension.SlaStatus]: ticketSlaStatus,
             },
             [anotherMetricName]: breachedMetric,
             [breachedWithoutDeltaMetricName]: breachedWithoutDeltaMetric,
         }
+
         render(<SLAStatusCell item={slaData} />)
         const slaStatusBadge = screen.getByText(SlaStatusLabel[ticketSlaStatus])
         userEvent.hover(slaStatusBadge)
@@ -68,6 +70,13 @@ describe('<SLAStatusCell />', () => {
             expect(
                 screen.getByText(
                     formatDuration(breachedMetric[TicketSLADimension.SlaDelta])
+                )
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    new RegExp(
+                        SlaStatusLabel[satisfiedMetricStatus].toLowerCase()
+                    )
                 )
             ).toBeInTheDocument()
             expect(
