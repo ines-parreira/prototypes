@@ -28,7 +28,6 @@ import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import {StatsFilters} from 'models/stat/types'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import {convertStatusOk} from 'fixtures/convert'
@@ -53,7 +52,7 @@ jest.mock(
         }
 )
 jest.mock(
-    '../TagsStatsFilter',
+    'pages/stats/TagsStatsFilter',
     () =>
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
@@ -192,7 +191,7 @@ describe('SupportPerformanceRevenue', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         integrations: fromJS(integrationsState),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -203,8 +202,8 @@ describe('SupportPerformanceRevenue', () => {
                 agents: [agents[0].id],
                 tags: [1],
                 campaigns: [campaign.id],
-            } as StatsFilters,
-        }),
+            },
+        },
         agents: fromJS({
             all: agents,
         }),

@@ -8,7 +8,7 @@ import {
     toChannel,
     toChannels,
 } from 'services/channels'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
 

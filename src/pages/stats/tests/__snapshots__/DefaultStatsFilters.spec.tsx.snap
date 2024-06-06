@@ -15,16 +15,17 @@ exports[`DefaultStatsFilters should render the fallback when stats filters are t
 exports[`DefaultStatsFilters should reset the filters on unmount 1`] = `
 [
   {
-    "filters": Immutable.Map {
-      "period": Immutable.Map {
-        "start_datetime": "2019-08-27T00:00:00-07:00",
+    "payload": {
+      "period": {
         "end_datetime": "2019-09-02T23:59:59-07:00",
+        "start_datetime": "2019-08-27T00:00:00-07:00",
       },
     },
-    "type": "SET_STATS_FILTERS",
+    "type": "stats/setStatsFilters",
   },
   {
-    "type": "RESET_STATS_FILTERS",
+    "payload": undefined,
+    "type": "stats/resetStatsFilters",
   },
 ]
 `;
@@ -32,13 +33,13 @@ exports[`DefaultStatsFilters should reset the filters on unmount 1`] = `
 exports[`DefaultStatsFilters should set the default filters on mount 1`] = `
 [
   {
-    "filters": Immutable.Map {
-      "period": Immutable.Map {
-        "start_datetime": "2019-08-27T00:00:00-07:00",
+    "payload": {
+      "period": {
         "end_datetime": "2019-09-02T23:59:59-07:00",
+        "start_datetime": "2019-08-27T00:00:00-07:00",
       },
     },
-    "type": "SET_STATS_FILTERS",
+    "type": "stats/setStatsFilters",
   },
 ]
 `;
@@ -46,13 +47,13 @@ exports[`DefaultStatsFilters should set the default filters on mount 1`] = `
 exports[`DefaultStatsFilters should set the default period using user timezone  1`] = `
 [
   {
-    "filters": Immutable.Map {
-      "period": Immutable.Map {
-        "start_datetime": "2019-08-28T00:00:00+02:00",
+    "payload": {
+      "period": {
         "end_datetime": "2019-09-03T23:59:59+02:00",
+        "start_datetime": "2019-08-28T00:00:00+02:00",
       },
     },
-    "type": "SET_STATS_FILTERS",
+    "type": "stats/setStatsFilters",
   },
 ]
 `;

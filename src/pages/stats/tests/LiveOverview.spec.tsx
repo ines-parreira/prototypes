@@ -21,7 +21,6 @@ import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
-import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import LiveOverview from '../LiveOverview'
@@ -51,7 +50,7 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 describe('LiveOverview', () => {
     const defaultState = {
         currentAccount: fromJS(account),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -59,8 +58,8 @@ describe('LiveOverview', () => {
                 },
                 channels: [TicketChannel.Chat],
                 agents: [agents[0].id],
-            } as StatsFilters,
-        }),
+            },
+        },
         agents: fromJS({
             all: agents,
         }),

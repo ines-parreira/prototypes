@@ -4,19 +4,18 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
-import {RootState} from '../../../state/types'
-import AgentsStatsFilter from '../AgentsStatsFilter'
-import {agents} from '../../../fixtures/agents'
-import {teams} from '../../../fixtures/teams'
+import {RootState} from 'state/types'
+import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import {agents} from 'fixtures/agents'
+import {teams} from 'fixtures/teams'
 
 const mockStore = configureMockStore([thunk])
 
 describe('AgentsStatsFilter', () => {
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
         agents: fromJS({
             all: agents,
         }),
@@ -44,6 +43,8 @@ describe('AgentsStatsFilter', () => {
 
         fireEvent.click(getByLabelText(agents[0].name))
 
-        expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFilters({agents: [agents[0].id]})
+        )
     })
 })

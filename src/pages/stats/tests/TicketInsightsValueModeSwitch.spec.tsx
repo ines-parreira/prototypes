@@ -9,7 +9,7 @@ import {
     TicketInsightsValueModeSwitch,
     TOTAL_COUNT_LABEL,
 } from 'pages/stats/TicketInsightsValueModeSwitch'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     ticketInsightsSlice,

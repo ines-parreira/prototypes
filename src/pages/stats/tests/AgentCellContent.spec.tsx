@@ -8,7 +8,7 @@ import {fromJS} from 'immutable'
 import {AgentCellContent} from 'pages/stats/AgentCellContent'
 import {RootState, StoreDispatch} from 'state/types'
 import {agents} from 'fixtures/agents'
-import {MERGE_STATS_FILTERS} from 'state/stats/constants'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -43,10 +43,9 @@ describe('<AgentCellContent>', () => {
 
         expect(store.getActions()).toMatchObject(
             expect.arrayContaining([
-                expect.objectContaining({
-                    filters: fromJS({agents: [agents[0].id]}),
-                    type: MERGE_STATS_FILTERS,
-                }),
+                expect.objectContaining(
+                    mergeStatsFilters({agents: [agents[0].id]})
+                ),
             ])
         )
     })

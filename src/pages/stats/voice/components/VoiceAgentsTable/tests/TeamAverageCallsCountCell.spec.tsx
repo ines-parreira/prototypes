@@ -1,6 +1,5 @@
 import React from 'react'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
@@ -28,9 +27,9 @@ describe('TeamAverageCallsCountCell', () => {
             agents: [agents[0].id],
         }
         const state = {
-            stats: fromJS({
+            stats: {
                 filters: statsFilters,
-            }),
+            },
             ui: {
                 stats: {
                     cleanStatsFilters: statsFilters,

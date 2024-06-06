@@ -55,10 +55,9 @@ describe('SupportPerformanceTip', () => {
     const defaultState = {
         currentAccount: fromJS(defaultAccount),
         integrations: fromJS(integrationsState),
-        stats: fromJS({
+        stats: {
             filters: defaultStatsFilters,
-        }),
-        // stats: initialState,
+        },
         agents: fromJS({
             all: agents,
         }),

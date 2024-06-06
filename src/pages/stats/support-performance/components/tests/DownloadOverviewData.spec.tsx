@@ -1,5 +1,4 @@
 import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -101,9 +100,9 @@ describe('DownloadOverviewData', () => {
     }
 
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: defaultStatsFilters,
-        }),
+        },
         ui: {
             stats: uiStatsInitialState,
             [drillDownSlice.name]: initialState,

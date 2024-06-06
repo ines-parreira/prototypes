@@ -3,7 +3,6 @@ import {render, screen, fireEvent, act} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import {UseQueryResult} from '@tanstack/react-query'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 
@@ -17,7 +16,7 @@ import {formatDates} from 'pages/stats/utils'
 import {ReportingGranularity} from 'models/reporting/types'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {RootState} from 'state/types'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {
     ticketInsightsSlice,
@@ -46,12 +45,12 @@ describe('DownloadTicketFieldsDataButton', () => {
     const selectedCustomFieldId = 2
     const granularity = ReportingGranularity.Day
     const defaultState = {
-        stats: fromJS({
+        stats: {
             ...initialState,
             filters: {
                 period,
             },
-        }),
+        },
         ui: {
             [ticketInsightsSlice.name]: {
                 selectedCustomField: {id: selectedCustomFieldId},

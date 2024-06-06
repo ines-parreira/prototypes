@@ -20,7 +20,7 @@ import {TicketDistributionTable} from 'pages/stats/TicketDistributionTable'
 import {TicketFieldsBlankState} from 'pages/stats/TicketFieldsBlankState'
 import {TicketInsightsFieldTrend} from 'pages/stats/TicketInsightsFieldTrend'
 
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {

@@ -1,15 +1,15 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import * as channelsService from 'services/channels'
 import {channels} from 'fixtures/channels'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 
-import ChannelsStatsFilter from '../ChannelsStatsFilter'
+import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 
 const mockStore = configureMockStore([thunk])
 
@@ -18,9 +18,7 @@ jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 describe('ChannelsStatsFilter', () => {
     const allChannels = channelsService.getChannels()
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
     } as RootState
 
     it('should render channels stats filter', () => {
@@ -42,6 +40,8 @@ describe('ChannelsStatsFilter', () => {
 
         fireEvent.click(getByLabelText('Email'))
 
-        expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFilters({channels: []})
+        )
     })
 })

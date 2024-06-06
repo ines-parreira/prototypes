@@ -83,7 +83,7 @@ describe('<SelfServiceStatsPage />', () => {
         }
     }
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -91,7 +91,7 @@ describe('<SelfServiceStatsPage />', () => {
                 },
                 integrations: [integrationsState.integrations[0].id],
             } as StatsFilters,
-        }),
+        },
         currentAccount: fromJS({
             features: {
                 [AccountFeature.AutomationReturnFlow]: {enabled: true},

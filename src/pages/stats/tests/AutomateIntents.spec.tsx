@@ -1,7 +1,6 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
@@ -16,7 +15,6 @@ import {
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
-import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomateIntents from 'pages/stats/AutomateIntents'
@@ -39,15 +37,15 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 
 describe('AutomateIntents', () => {
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
                 channels: [TicketChannel.Chat],
-            } as StatsFilters,
-        }),
+            },
+        },
         ui: {
             stats: uiStatsInitialState,
         },

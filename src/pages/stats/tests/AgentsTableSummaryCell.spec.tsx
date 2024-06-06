@@ -7,7 +7,6 @@ import thunk from 'redux-thunk'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
-import {StatsFilters} from 'models/stat/types'
 import {MetricFormat} from 'pages/stats/AgentsTableConfig'
 import {
     AGENT_SUMMARY_CELL_LABEL,
@@ -26,7 +25,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AgentsTableSummaryCell', () => {
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -35,8 +34,8 @@ describe('<AgentsTableSummaryCell', () => {
                 channels: [TicketChannel.Chat],
                 tags: [1],
                 integrations: [integrationsState.integrations[0].id],
-            } as StatsFilters,
-        }),
+            },
+        },
         ui: {
             stats: uiStatsInitialState,
             [agentPerformanceSlice.name]: initialState,

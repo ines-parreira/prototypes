@@ -1,5 +1,4 @@
 import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -31,7 +30,7 @@ describe('useTicketsClosedPerHour.ts', () => {
         tags: [123],
     }
     const defaultState = {
-        stats: fromJS({filters: statsFilters}),
+        stats: {filters: statsFilters},
         ui: {
             agentPerformance: initialState,
             stats: uiStatsInitialState,
@@ -104,7 +103,7 @@ describe('useTicketsClosedPerHour.ts', () => {
 
     it('should strip the statsFilters to period and no agents', () => {
         const state = {
-            stats: fromJS({filters: {period: statsFilters.period}}),
+            stats: {filters: {period: statsFilters.period}},
             ui: {
                 agentPerformance: initialState,
                 stats: uiStatsInitialState,

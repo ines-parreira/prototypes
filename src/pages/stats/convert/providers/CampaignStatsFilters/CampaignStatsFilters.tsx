@@ -4,7 +4,7 @@ import {useParams} from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {
     getStatsFilters,
     getStoreIntegrationsStatsFilter,

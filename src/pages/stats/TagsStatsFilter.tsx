@@ -2,7 +2,7 @@ import React, {ComponentProps, useCallback, useState} from 'react'
 import {CancelToken} from 'axios'
 
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'

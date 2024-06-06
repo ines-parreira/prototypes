@@ -4,6 +4,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import {initialState} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 
@@ -29,9 +30,7 @@ describe('CampaignsStatsFilter', () => {
     const gorgiasChatId = 8
     const defaultState = {
         integrations: fromJS(integrationsState),
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
     } as RootState
 
     beforeEach(() => {
@@ -69,11 +68,9 @@ describe('CampaignsStatsFilter', () => {
         fireEvent.click(getByLabelText(campaign.name))
 
         const action: Record<string, unknown> = store.getActions()[0]
-        expect(action.type).toBe('MERGE_STATS_FILTERS')
-        expect(action.filters).toEqual(
-            fromJS({
-                campaigns: [campaign.id],
-            })
-        )
+        expect(action.type).toBe('stats/mergeStatsFilters')
+        expect(action.payload).toEqual({
+            campaigns: [campaign.id],
+        })
     })
 })

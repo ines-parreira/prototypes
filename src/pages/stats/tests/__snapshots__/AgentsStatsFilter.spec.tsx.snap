@@ -1,18 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AgentsStatsFilter should merge stats filters on item select 1`] = `
-[
-  {
-    "filters": Immutable.Map {
-      "agents": Immutable.List [
-        1,
-      ],
-    },
-    "type": "MERGE_STATS_FILTERS",
-  },
-]
-`;
-
 exports[`AgentsStatsFilter should render agents stats filter 1`] = `
 <div
   class="dropdown"

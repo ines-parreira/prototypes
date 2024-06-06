@@ -3,7 +3,7 @@ import {DropdownItem} from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getLabelledTeamsJS} from 'state/teams/selectors'
 import {getLabelledHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {StatsFilters} from 'models/stat/types'

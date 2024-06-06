@@ -1,9 +1,9 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 
@@ -12,9 +12,8 @@ import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {channels as mockChannels} from 'fixtures/channels'
 import {Channel} from 'services/channels'
 import {TicketChannel} from 'business/types/ticket'
-import {mergeStatsFilters} from 'state/stats/actions'
 
-import ChannelsStatsFilter from '../ChannelsStatsFilter'
+import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({
@@ -26,9 +25,7 @@ const mockStore = configureMockStore([thunk])
 
 describe('ChannelsStatsFilter', () => {
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
     } as RootState
 
     const defaultStore = mockStore(defaultState)

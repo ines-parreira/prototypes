@@ -1,6 +1,5 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -16,7 +15,6 @@ import {
     HINT,
 } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
 import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {StatsFilters} from 'models/stat/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
@@ -33,14 +31,14 @@ const useSatisfiedAndBreachedTicketsTimeSeriesMock = assumeMock(
 
 describe('<AchievedAndBreachedTicketsChart />', () => {
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-07T23:59:59.999Z',
                 },
-            } as StatsFilters,
-        }),
+            },
+        },
         ui: {
             stats: uiStatsInitialState,
         },

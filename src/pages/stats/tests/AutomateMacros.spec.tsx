@@ -11,7 +11,6 @@ import {TicketChannel} from 'business/types/ticket'
 import {messagesSentPerMacro} from 'fixtures/stats'
 import {renderWithRouter} from 'utils/testing'
 import {integrationsState} from 'fixtures/integrations'
-import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomateMacros from 'pages/stats/AutomateMacros'
@@ -33,7 +32,7 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 
 describe('AutomateMacros', () => {
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -41,8 +40,8 @@ describe('AutomateMacros', () => {
                 },
                 channels: [TicketChannel.Chat],
                 integrations: [integrationsState.integrations[0].id],
-            } as StatsFilters,
-        }),
+            },
+        },
         integrations: fromJS(integrationsState),
     } as RootState
 

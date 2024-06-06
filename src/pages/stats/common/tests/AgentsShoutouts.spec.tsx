@@ -16,7 +16,7 @@ import {
 } from 'hooks/reporting/metricsPerDimension'
 import {assumeMock, mockStore} from 'utils/testing'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Shoutout'
 import AgentsShoutouts from 'pages/stats/AgentsShoutouts'

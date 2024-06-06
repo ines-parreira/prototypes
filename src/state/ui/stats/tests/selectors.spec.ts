@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import {user} from 'fixtures/users'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
-import {initialState as initialStatsFiltersState} from 'state/stats/reducers'
+import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreState} from 'state/types'
 import {

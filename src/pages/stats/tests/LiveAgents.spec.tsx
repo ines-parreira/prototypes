@@ -16,7 +16,6 @@ import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
-import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
@@ -25,7 +24,7 @@ import LiveAgents from 'pages/stats/LiveAgents'
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
 jest.mock(
-    '../TagsStatsFilter',
+    'pages/stats/TagsStatsFilter',
     () =>
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
@@ -53,7 +52,7 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 describe('LiveAgents', () => {
     const defaultState = {
         currentAccount: fromJS(account),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -61,8 +60,8 @@ describe('LiveAgents', () => {
                 },
                 channels: [TicketChannel.Chat],
                 agents: [agents[0].id],
-            } as StatsFilters,
-        }),
+            },
+        },
         agents: fromJS({
             all: agents,
         }),
@@ -115,14 +114,14 @@ describe('LiveAgents', () => {
     it('should fetch prev and next page when navigation buttons are clicked', () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                } as StatsFilters,
-            }),
+                },
+            },
         })
         const fetchPage = jest.fn()
         useStatResourceMock.mockImplementation(() => {

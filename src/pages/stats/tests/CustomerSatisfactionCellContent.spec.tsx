@@ -7,7 +7,7 @@ import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSati
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {useCustomerSatisfactionMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'

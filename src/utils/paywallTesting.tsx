@@ -8,6 +8,7 @@ import {
 } from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
+import {initialState} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 
@@ -19,9 +20,7 @@ export const getStateWithPrice = (
 
     return {
         integrations: fromJS(integrationsStateWithShopify),
-        stats: fromJS({
-            filters: {},
-        }),
+        stats: initialState,
         billing: fromJS({...billingState, products: productsWithExtraPrice}),
         currentAccount: fromJS({
             current_subscription: {

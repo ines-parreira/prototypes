@@ -1,18 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {Provider} from 'react-redux'
 import React from 'react'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {RootState} from 'state/types'
-import {mergeStatsFilters} from 'state/stats/actions'
-import {MERGE_STATS_FILTERS} from 'state/stats/constants'
-import {useStatsFilters} from '../useStatsFilters'
-
-jest.mock('state/stats/actions', () => ({
-    mergeStatsFilters: jest.fn(),
-}))
-const mockMergeStatsFilters = jest.mocked(mergeStatsFilters)
+import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {useStatsFilters} from 'pages/stats/help-center/hooks/useStatsFilters'
 
 const START_DATE = '2021-02-03T00:00:00.000Z'
 const END_DATE = '2021-02-03T23:59:59.999Z'
@@ -32,9 +25,9 @@ const defaultStatsFilters = {
 }
 
 const defaultState = {
-    stats: fromJS({
+    stats: {
         filters: defaultStatsFilters,
-    }),
+    },
     ui: {
         stats: defaultStatsFilters,
     },
@@ -43,12 +36,6 @@ const defaultState = {
 const mockStore = configureMockStore([thunk])(defaultState)
 
 describe('useHelpCenterStatsFilters', () => {
-    beforeEach(() => {
-        mockMergeStatsFilters.mockReturnValue({
-            type: MERGE_STATS_FILTERS,
-            filters: {},
-        })
-    })
     it('should return initial filters', () => {
         renderHook(() => useStatsFilters(initialState), {
             wrapper: ({children}) => (
@@ -56,7 +43,9 @@ describe('useHelpCenterStatsFilters', () => {
             ),
         })
 
-        expect(mockMergeStatsFilters).toHaveBeenCalledWith(initialState)
+        expect(mockStore.getActions()).toContainEqual(
+            mergeStatsFilters(initialState)
+        )
     })
 
     it('should change filter', () => {
@@ -68,8 +57,10 @@ describe('useHelpCenterStatsFilters', () => {
 
         result.current[1]({helpCenters: [2]})
 
-        expect(mockMergeStatsFilters).toHaveBeenLastCalledWith({
-            helpCenters: [2],
-        })
+        expect(mockStore.getActions()).toContainEqual(
+            mergeStatsFilters({
+                helpCenters: [2],
+            })
+        )
     })
 })

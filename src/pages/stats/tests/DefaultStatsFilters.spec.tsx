@@ -5,8 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 
-import {defaultStatsFilters} from 'state/stats/reducers'
-import {StatsFilters} from 'models/stat/types'
+import {defaultStatsFilters} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {user} from 'fixtures/users'
 
@@ -27,14 +26,14 @@ describe('DefaultStatsFilters', () => {
             ...user,
             timezone: 'America/Los_Angeles',
         }),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-            } as StatsFilters,
-        }),
+            },
+        },
     } as RootState
 
     it('should render children when stats filters are not the default stats filters', () => {
@@ -54,9 +53,9 @@ describe('DefaultStatsFilters', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    stats: fromJS({
+                    stats: {
                         filters: defaultStatsFilters,
-                    }),
+                    },
                 })}
             >
                 <DefaultStatsFilters notReadyFallback={<div>fallback</div>}>

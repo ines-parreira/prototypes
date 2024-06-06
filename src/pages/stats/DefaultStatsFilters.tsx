@@ -5,9 +5,12 @@ import _isEqual from 'lodash/isEqual'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
-import {resetStatsFilters, setStatsFilters} from 'state/stats/actions'
+import {
+    defaultStatsFilters,
+    resetStatsFilters,
+    setStatsFilters,
+} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
-import {defaultStatsFilters} from 'state/stats/reducers'
 import {StatsFilters} from 'models/stat/types'
 
 type Props = {

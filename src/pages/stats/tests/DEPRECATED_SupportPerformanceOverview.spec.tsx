@@ -34,7 +34,6 @@ import {
 import {integrationsState} from 'fixtures/integrations'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
-import {StatsFilters} from 'models/stat/types'
 import {account} from 'fixtures/account'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -67,7 +66,7 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         integrations: fromJS(integrationsState),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -77,8 +76,8 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
                 integrations: [integrationsState.integrations[0].id],
                 agents: [agents[0].id],
                 tags: [1],
-            } as StatsFilters,
-        }),
+            },
+        },
         agents: fromJS({
             all: agents,
         }),

@@ -1,5 +1,4 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
@@ -8,20 +7,19 @@ import {Provider} from 'react-redux'
 import {integrationsState} from 'fixtures/integrations'
 import {IntegrationType} from 'models/integration/constants'
 import {Integration} from 'models/integration/types'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 
 import IntegrationsStatsFilter, {
     FONT_ICONS,
     IMAGE_ICONS,
-} from '../IntegrationsStatsFilter'
+} from 'pages/stats/IntegrationsStatsFilter'
 
 const mockStore = configureMockStore([thunk])
 
 describe('IntegrationsStatsFilter', () => {
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
     } as RootState
 
     it('should not render missing integrations', () => {
@@ -123,6 +121,14 @@ describe('IntegrationsStatsFilter', () => {
 
         fireEvent.click(getByLabelText(integrationsState.integrations[1].name))
 
-        expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFilters({
+                campaigns: [],
+                integrations: [
+                    integrationsState.integrations[0].id,
+                    integrationsState.integrations[1].id,
+                ],
+            })
+        )
     })
 })

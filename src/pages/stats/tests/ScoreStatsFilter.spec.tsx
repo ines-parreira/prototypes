@@ -1,20 +1,18 @@
 import React from 'react'
-import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {ScoreStatsFilter} from '../ScoreStatsFilter'
-import {RootState} from '../../../state/types'
+import {ScoreStatsFilter} from 'pages/stats/ScoreStatsFilter'
+import {initialState} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
 describe('ScoreStatsFilter', () => {
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
     } as RootState
 
     it('should render score stats filter', () => {

@@ -1,26 +1,25 @@
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
 import {Action} from 'redux'
 
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {tags as tagsFixtures} from '../../../fixtures/tag'
-import {RootState} from '../../../state/types'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import {fetchTags} from 'models/tag/resources'
+import {TagSortableProperties} from 'models/tag/types'
+import {OrderDirection} from 'models/api/types'
+import * as tagsActions from 'state/entities/tags/actions'
+import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
+import {tags as tagsFixtures} from 'fixtures/tag'
 import TagsStatsFilter from '../TagsStatsFilter'
-import {fetchTags} from '../../../models/tag/resources'
-import {TagSortableProperties} from '../../../models/tag/types'
-import {OrderDirection} from '../../../models/api/types'
-import * as tagsActions from '../../../state/entities/tags/actions'
-import InfiniteScroll from '../../common/components/InfiniteScroll/InfiniteScroll'
-import {MERGE_STATS_FILTERS} from '../../../state/stats/constants'
 
-jest.mock('../../../models/tag/resources')
+jest.mock('models/tag/resources')
 jest.mock(
-    '../../common/components/InfiniteScroll/InfiniteScroll',
+    'pages/common/components/InfiniteScroll/InfiniteScroll',
     () =>
         ({onLoad, children}: ComponentProps<typeof InfiniteScroll>) => {
             return (
@@ -37,9 +36,7 @@ let tagsFetchedSpy: jest.SpiedFunction<typeof tagsActions.tagsFetched>
 
 describe('TagsStatsFilter', () => {
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
         entities: {
             tags: _keyBy(tagsFixtures, (tag) => tag.id),
         } as unknown as RootState['entities'],
@@ -96,8 +93,14 @@ describe('TagsStatsFilter', () => {
 
         const mergeStatsFiltersActions = store
             .getActions()
-            .filter((action: Action) => action.type === MERGE_STATS_FILTERS)
-        expect(mergeStatsFiltersActions).toMatchSnapshot()
+            .filter(
+                (action: Action) => action.type === 'stats/mergeStatsFilters'
+            )
+        expect(mergeStatsFiltersActions).toContainEqual(
+            mergeStatsFilters({
+                tags: [tagsFixtures[0].id],
+            })
+        )
     })
 
     describe('tags search', () => {

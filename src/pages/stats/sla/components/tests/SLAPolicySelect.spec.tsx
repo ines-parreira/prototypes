@@ -1,7 +1,6 @@
 import {SLAPolicy, useListSlaPolicies} from '@gorgias/api-queries'
 import {render, screen, waitFor, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -18,7 +17,7 @@ import {
     POLICIES_SEARCH_INPUT_PLACEHOLDER,
     SLAPolicySelect,
 } from 'pages/stats/sla/components/SLAPolicySelect'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -61,7 +60,7 @@ describe('<SLAPolicySelect />', () => {
         },
     ]
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 integrations: [integrationsState.integrations[1].id],
                 channels: [TicketChannel.Chat],
@@ -72,7 +71,7 @@ describe('<SLAPolicySelect />', () => {
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
             },
-        }),
+        },
         ui: {
             stats: uiStatsInitialState,
         },
@@ -145,7 +144,7 @@ describe('<SLAPolicySelect />', () => {
     it('should allow deselection of a policy', () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
@@ -153,7 +152,7 @@ describe('<SLAPolicySelect />', () => {
                     },
                     slaPolicies: [aPolicy.uuid],
                 },
-            }),
+            },
         })
 
         render(
@@ -174,7 +173,7 @@ describe('<SLAPolicySelect />', () => {
     it('should allow selection of multiple policies', () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
@@ -182,7 +181,7 @@ describe('<SLAPolicySelect />', () => {
                     },
                     slaPolicies: [aPolicy.uuid],
                 },
-            }),
+            },
         })
 
         render(
@@ -209,7 +208,7 @@ describe('<SLAPolicySelect />', () => {
     it('should allow selection of All policies', () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
@@ -217,7 +216,7 @@ describe('<SLAPolicySelect />', () => {
                     },
                     slaPolicies: [],
                 },
-            }),
+            },
         })
 
         render(
@@ -243,7 +242,7 @@ describe('<SLAPolicySelect />', () => {
     it('should allow de selection of All policies', async () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
@@ -251,7 +250,7 @@ describe('<SLAPolicySelect />', () => {
                     },
                     slaPolicies: policies.map((policy) => policy.uuid),
                 },
-            }),
+            },
         })
 
         render(
@@ -288,7 +287,7 @@ describe('<SLAPolicySelect />', () => {
     it('should submit filters dirty/clean state', async () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
@@ -296,7 +295,7 @@ describe('<SLAPolicySelect />', () => {
                     },
                     slaPolicies: policies.map((policy) => policy.uuid),
                 },
-            }),
+            },
         })
 
         render(
@@ -318,7 +317,7 @@ describe('<SLAPolicySelect />', () => {
     it('should allow searching the results', () => {
         const store = mockStore({
             ...defaultState,
-            stats: fromJS({
+            stats: {
                 filters: {
                     period: {
                         start_datetime: '2021-02-03T00:00:00.000Z',
@@ -326,7 +325,7 @@ describe('<SLAPolicySelect />', () => {
                     },
                     slaPolicies: [aPolicy.uuid],
                 },
-            }),
+            },
         })
 
         render(

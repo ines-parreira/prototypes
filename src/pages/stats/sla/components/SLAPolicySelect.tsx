@@ -11,7 +11,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import css from 'pages/stats/CustomFieldSelect.less'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getSLAPoliciesStatsFilter} from 'state/stats/selectors'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 

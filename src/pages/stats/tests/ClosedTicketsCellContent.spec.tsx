@@ -10,7 +10,7 @@ import {
 } from 'pages/stats/common/utils'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
 import {ClosedTicketsCellContent} from 'pages/stats/ClosedTicketsCellContent'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'

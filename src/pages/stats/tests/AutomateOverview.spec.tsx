@@ -44,7 +44,7 @@ import {
 } from 'pages/stats/AutomateOverview'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {useSearchParam} from 'hooks/useSearchParam'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 jest.useFakeTimers().setSystemTime(new Date('2022-02-02'))
 
@@ -172,9 +172,9 @@ describe('<AutomateOverview />', () => {
     const defaultState = {
         billing: fromJS(billingState),
         currentAccount: fromJS(defaultAccount),
-        stats: fromJS({
+        stats: {
             filters: defaultStatsFilters,
-        }),
+        },
         integrations: fromJS({
             integrations: [
                 getIntegration(1, IntegrationType.Shopify),
@@ -299,9 +299,9 @@ describe('<AutomateOverview />', () => {
                     },
                 },
             }),
-            stats: fromJS({
+            stats: {
                 filters: defaultStatsFilters,
-            }),
+            },
             ui: {
                 stats: initialState,
             },
@@ -333,14 +333,12 @@ describe('<AutomateOverview />', () => {
         )
 
         expect(store.getActions()).toEqual([
-            mergeStatsFilters(
-                fromJS({
-                    period: {
-                        start_datetime: '2022-01-06T00:00:00Z',
-                        end_datetime: '2022-02-02T23:59:59Z',
-                    },
-                })
-            ),
+            mergeStatsFilters({
+                period: {
+                    start_datetime: '2022-01-06T00:00:00Z',
+                    end_datetime: '2022-02-02T23:59:59Z',
+                },
+            }),
         ])
     })
     it('should send event to segment and call saveReport on download data button click', () => {

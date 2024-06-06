@@ -1,13 +1,13 @@
 import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment-timezone'
 import LD from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
+import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {formatDatetime} from 'utils'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -25,9 +25,7 @@ jest.mock('common/segment')
 
 describe('PeriodStatsFilter', () => {
     const defaultState = {
-        stats: fromJS({
-            filters: null,
-        }),
+        stats: initialState,
     } as RootState
 
     beforeEach(() => {
@@ -73,7 +71,14 @@ describe('PeriodStatsFilter', () => {
 
         fireEvent.click(getByText('Today'))
 
-        expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFilters({
+                period: {
+                    start_datetime: '2017-02-14T00:00:00Z',
+                    end_datetime: '2017-02-14T23:59:59Z',
+                },
+            })
+        )
     })
 
     it('should log event when date picker is shown', () => {
@@ -124,7 +129,14 @@ describe('PeriodStatsFilter', () => {
             </Provider>
         )
 
-        expect(store.getActions()).toMatchSnapshot()
+        expect(store.getActions()).toContainEqual(
+            mergeStatsFilters({
+                period: {
+                    start_datetime: '2020-05-02T00:00:00Z',
+                    end_datetime: '2020-07-31T23:59:59Z',
+                },
+            })
+        )
     })
 
     it('should render with default set of ranges', () => {

@@ -17,7 +17,7 @@ import {
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import {AgentAvatar} from 'pages/stats/AgentAvatar'
 import {

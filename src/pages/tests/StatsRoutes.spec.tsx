@@ -9,12 +9,11 @@ import {act} from '@testing-library/react'
 import {createBrowserHistory} from 'history'
 
 import {user} from 'fixtures/users'
-import {StatsFilters} from 'models/stat/types'
 import {RootState} from 'state/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {renderWithRouter} from 'utils/testing'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
-import {StatsRoutes} from '../routes'
+import {StatsRoutes} from 'pages/routes'
 
 jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>
@@ -38,14 +37,14 @@ describe('<StatsRoutes/>', () => {
             timezone: 'America/Los_Angeles',
         }),
         currentUser: fromJS({}),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-            } as StatsFilters,
-        }),
+            },
+        },
         notifications: fromJS([]),
     } as RootState
 

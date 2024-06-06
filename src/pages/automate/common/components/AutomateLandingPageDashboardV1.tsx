@@ -19,16 +19,16 @@ import TipsToggle from 'pages/stats/TipsToggle'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {setStatsFilters} from 'state/stats/actions'
+import {setStatsFilters} from 'state/stats/statsSlice'
 import {StatsFilters} from 'models/stat/types'
 import {
     AutomatedInteractionsMetric,
     AutomationRateMetric,
-} from '../../automate-metrics'
-import {AGENT_COST_PER_TICKET} from '../../automate-metrics/constants'
-import {useMoneySavedPerInteractionWithAutomate} from '../hooks/useMoneySavedPerInteractionWithAutomate'
-import {AutomateSavingsCard} from './AutomateSavingsCard'
-import css from './AutomateLandingPage.less'
+} from 'pages/automate/automate-metrics'
+import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
+import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
+import css from 'pages/automate/common/components/AutomateLandingPage.less'
 
 const DEFAULT_TIMEZONE = 'UTC'
 

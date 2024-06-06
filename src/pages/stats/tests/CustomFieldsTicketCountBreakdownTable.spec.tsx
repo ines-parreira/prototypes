@@ -1,6 +1,5 @@
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -33,7 +32,7 @@ import {
 } from 'state/ui/stats/ticketInsightsSlice'
 import {getFilterDateRange} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {formatDates} from '../utils'
+import {formatDates} from 'pages/stats/utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -58,9 +57,9 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         },
     }
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: defaultStatsFilters,
-        }),
+        },
         ui: {
             [ticketInsightsSlice.name]: initialState,
         },

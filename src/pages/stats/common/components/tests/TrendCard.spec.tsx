@@ -1,5 +1,4 @@
 import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -83,9 +82,9 @@ describe('<TrendCard />', () => {
     }
 
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: defaultStatsFilters,
-        }),
+        },
         ui: {
             stats: uiStatsInitialState,
         },

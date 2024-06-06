@@ -1,4 +1,3 @@
-import {Map} from 'immutable'
 import {createSelector, Selector} from 'reselect'
 
 import {StatsFilters} from 'models/stat/types'
@@ -12,11 +11,14 @@ import {makeGetPlainJS} from 'utils'
 import {RootState} from 'state/types'
 
 import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
+import {statsSlice} from 'state/stats/statsSlice'
+
+export const getStats = (state: RootState) => state[statsSlice.name]
 
 export const getStatsFilters = createSelector(
-    (state: RootState) => state.stats,
+    getStats,
     (stats): StatsFilters => {
-        return (stats.get('filters') as Map<any, any>).toJS() as StatsFilters
+        return stats.filters
     }
 )
 

@@ -4,7 +4,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
 import SelfServiceIntegrationsFilter from 'pages/stats/self-service/SelfServiceIntegrationsFilter'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
 
 export const SelfServiceStatsPageFilters = () => {

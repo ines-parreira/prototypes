@@ -22,7 +22,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<AutomateOverviewFilters />', () => {
     const defaultState = {
         currentAccount: fromJS(account),
-        stats: fromJS({
+        stats: {
             filters: {
                 integrations: [integrationsState.integrations[1].id],
                 channels: [TicketChannel.Chat],
@@ -33,7 +33,7 @@ describe('<AutomateOverviewFilters />', () => {
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
             },
-        }),
+        },
         ui: {
             stats: uiStatsInitialState,
         },
@@ -54,7 +54,7 @@ describe('<AutomateOverviewFilters />', () => {
                 <Provider
                     store={mockStore({
                         ...defaultState,
-                        stats: fromJS({
+                        stats: {
                             filters: {
                                 channels: [],
                                 period: {
@@ -62,7 +62,7 @@ describe('<AutomateOverviewFilters />', () => {
                                     end_datetime: '',
                                 },
                             },
-                        }),
+                        },
                     })}
                 >
                     <AutomateOverviewFilters />

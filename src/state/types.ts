@@ -26,6 +26,7 @@ import {
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
+import {StatsState} from 'state/stats/statsSlice'
 import {BillingContact} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
@@ -58,7 +59,7 @@ export type StoreState = {
     newMessage: Map<any, any>
     notifications: Notification[]
     schemas: Map<any, any>
-    stats: Map<any, any>
+    stats: StatsState
     tags: Map<any, any>
     teams: Map<any, any>
     ticket: Map<any, any>
@@ -148,7 +149,6 @@ export type GorgiasAction = {
     operation?: RuleOperation
     schemas?: Map<any, any>
     ruleId?: number
-    filters?: Map<any, any>
     tags?: Tag[]
     tag?: Tag
     page?: number

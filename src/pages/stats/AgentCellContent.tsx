@@ -4,7 +4,7 @@ import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {User} from 'config/types/user'
 import {AgentAvatar} from './AgentAvatar'
 import css from './AgentCellContent.less'

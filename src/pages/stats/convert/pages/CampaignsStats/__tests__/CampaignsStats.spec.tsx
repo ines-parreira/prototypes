@@ -15,8 +15,8 @@ import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaigns
 import {campaign} from 'fixtures/campaign'
 import {Campaign} from 'models/convert/campaign/types'
 import {IntegrationType} from 'models/integration/constants'
-import ConvertCampaignsStats from '../CampaignsStats'
-import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
+import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
+import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion

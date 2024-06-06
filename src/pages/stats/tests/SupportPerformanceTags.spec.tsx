@@ -12,7 +12,6 @@ import {ticketsPerTagStat} from 'fixtures/stats'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {integrationsState} from 'fixtures/integrations'
-import {StatsFilters} from 'models/stat/types'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
@@ -41,7 +40,7 @@ let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 
 describe('SupportPerformanceTags', () => {
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -50,8 +49,8 @@ describe('SupportPerformanceTags', () => {
                 channels: [TicketChannel.Chat],
                 tags: [1],
                 integrations: [integrationsState.integrations[0].id],
-            } as StatsFilters,
-        }),
+            },
+        },
         integrations: fromJS(integrationsState),
         entities: {
             tags: {},

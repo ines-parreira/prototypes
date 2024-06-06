@@ -13,7 +13,6 @@ import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {ticketsCreatedPerHourPerWeekday} from 'fixtures/stats'
 import {teams} from 'fixtures/teams'
-import {StatsFilters} from 'models/stat/types'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import useStatResource from 'hooks/reporting/useStatResource'
 import {RootState, StoreDispatch} from 'state/types'
@@ -46,7 +45,7 @@ describe('<SupportPerformanceBusiestTimesOfDays />', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         integrations: fromJS(integrationsState),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -56,8 +55,8 @@ describe('<SupportPerformanceBusiestTimesOfDays />', () => {
                 integrations: [integrationsState.integrations[0].id],
                 agents: [agents[0].id],
                 tags: [1],
-            } as StatsFilters,
-        }),
+            },
+        },
         agents: fromJS({
             all: agents,
         }),

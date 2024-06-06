@@ -1,16 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChannelsStatsFilter should merge stats filters on item select 1`] = `
-[
-  {
-    "filters": Immutable.Map {
-      "channels": Immutable.List [],
-    },
-    "type": "MERGE_STATS_FILTERS",
-  },
-]
-`;
-
 exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
 <div
   class="dropdown"

@@ -11,8 +11,10 @@ import {
     getStoreIntegrationsStatsFilter,
     getMessagingAndAppIntegrationsStatsFilter,
     getStatsMessagingAndAppIntegrations,
+    getSLAPoliciesStatsFilter,
+    getPageStatsFilters,
 } from 'state/stats/selectors'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -49,8 +51,9 @@ describe('stats selectors', () => {
             }
             const state = {
                 ...defaultState,
-                stats: defaultState.stats.set('filters', fromJS(statFilters)),
+                stats: {filters: statFilters},
             }
+
             expect(getStatsFilters(state)).toEqual(statFilters)
         })
     })
@@ -105,27 +108,26 @@ describe('stats selectors', () => {
         it('should return an empty array when the integrations stat filter is not set', () => {
             const state: RootState = {
                 ...defaultState,
-                stats: defaultState.stats.set(
-                    'filters',
-                    fromJS({
+                stats: {
+                    filters: {
                         ...defaultStatsFilters,
                         channels: [TicketChannel.Email],
-                    })
-                ),
+                    },
+                },
             }
+
             expect(selector(state)).toEqual([])
         })
 
         it(`should return only ${integrationType} integrations`, () => {
             const state = {
                 ...defaultState,
-                stats: defaultState.stats.set(
-                    'filters',
-                    fromJS({
+                stats: {
+                    filters: {
                         ...defaultStatsFilters,
                         integrations: [1, 2, 3],
-                    })
-                ),
+                    },
+                },
                 integrations: fromJS({
                     integrations: [gmailIntegration, shopifyIntegration],
                 }),
@@ -133,6 +135,69 @@ describe('stats selectors', () => {
             expect(selector(state)).toEqual(
                 expectedIntegrations.map((integration) => integration.id)
             )
+        })
+    })
+
+    describe('getPageStatsFilters', () => {
+        it('should return filters with Messaging and App integrations only', () => {
+            const notMessagingNorAppIntegration = shopifyIntegration
+            const nonExistentIntegrationId = 3
+            const state = {
+                ...defaultState,
+                stats: {
+                    filters: {
+                        ...defaultStatsFilters,
+                        integrations: [
+                            gmailIntegration.id,
+                            notMessagingNorAppIntegration.id,
+                            nonExistentIntegrationId,
+                        ],
+                    },
+                },
+                integrations: fromJS({
+                    integrations: [gmailIntegration, shopifyIntegration],
+                }),
+            }
+
+            expect(getPageStatsFilters(state)).toEqual({
+                ...state.stats.filters,
+                integrations: [gmailIntegration.id],
+                agents: undefined,
+                channels: undefined,
+                tags: undefined,
+                helpCenters: undefined,
+                localeCodes: undefined,
+                score: undefined,
+                campaigns: undefined,
+                slaPolicies: undefined,
+            })
+        })
+    })
+
+    describe('getSLAPoliciesStatsFilter', () => {
+        it('should return selected Sla policies ', () => {
+            const state = {
+                ...defaultState,
+                stats: {
+                    filters: {
+                        ...defaultStatsFilters,
+                        slaPolicies: ['1', '2', '3'],
+                    },
+                },
+            }
+
+            expect(getSLAPoliciesStatsFilter(state)).toEqual(
+                state.stats.filters.slaPolicies
+            )
+        })
+
+        it('should return empty array when no policies selected', () => {
+            const state = {
+                ...defaultState,
+                stats: initialState,
+            }
+
+            expect(getSLAPoliciesStatsFilter(state)).toEqual([])
         })
     })
 })

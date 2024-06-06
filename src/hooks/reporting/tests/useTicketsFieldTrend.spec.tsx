@@ -11,7 +11,7 @@ import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
 import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
-import {initialState} from 'state/stats/reducers'
+import {initialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {
     TicketCustomFieldsMeasure,

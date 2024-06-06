@@ -4,7 +4,7 @@ import {StatsFilters} from 'models/stat/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 
 export const useStatsFilters = (initialState: Partial<StatsFilters>) => {
     const dispatch = useDispatch()

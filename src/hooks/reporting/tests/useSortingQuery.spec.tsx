@@ -19,7 +19,7 @@ import {
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as filtersInitialState} from 'state/stats/reducers'
+import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {TableColumn} from 'state/ui/stats/types'
 

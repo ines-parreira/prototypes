@@ -63,9 +63,9 @@ describe('VoiceAgents', () => {
                 }),
             }),
             billing: fromJS(billingState),
-            stats: fromJS({
+            stats: {
                 filters: statsFilters,
-            }),
+            },
             integrations: fromJS({integrations: []}),
             ui: {
                 stats: {

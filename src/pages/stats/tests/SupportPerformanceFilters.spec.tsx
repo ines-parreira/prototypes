@@ -29,7 +29,7 @@ describe('Support Performance Filters', () => {
     const defaultState = {
         currentAccount: fromJS(account),
         integrations: fromJS(integrationsState),
-        stats: fromJS({
+        stats: {
             filters: {
                 integrations: [integrationsState.integrations[1].id],
                 channels: [TicketChannel.Chat],
@@ -40,7 +40,7 @@ describe('Support Performance Filters', () => {
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
             },
-        }),
+        },
         agents: fromJS({
             all: agents,
         }),
@@ -76,7 +76,7 @@ describe('Support Performance Filters', () => {
                 <Provider
                     store={mockStore({
                         ...defaultState,
-                        stats: fromJS({
+                        stats: {
                             filters: {
                                 integrations: [],
                                 channels: [],
@@ -87,7 +87,7 @@ describe('Support Performance Filters', () => {
                                     end_datetime: '',
                                 },
                             },
-                        }),
+                        },
                     })}
                 >
                     <SupportPerformanceFilters />

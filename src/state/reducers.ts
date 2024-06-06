@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux'
 import {reducer as notificationsReducer} from 'reapop'
+import {statsSlice} from 'state/stats/statsSlice'
 
 import agentsReducer from './agents/reducers'
 import authsReducer from './auths/reducers'
@@ -17,7 +18,6 @@ import layoutReducer from './layout/reducers'
 import macrosReducer from './macro/reducer'
 import newMessageReducer from './newMessage/reducers'
 import schemasReducer from './schemas/reducers'
-import statsReducer from './stats/reducers'
 import tagsReducer from './tags/reducers'
 import teamReducer from './teams/reducers'
 import ticketReducer from './ticket/reducers'
@@ -47,7 +47,7 @@ const rootReducer = combineReducers<StoreState>({
     // @ts-ignore
     notifications: notificationsReducer(),
     schemas: schemasReducer,
-    stats: statsReducer,
+    [statsSlice.name]: statsSlice.reducer,
     tags: tagsReducer,
     teams: teamReducer,
     ticket: ticketReducer,

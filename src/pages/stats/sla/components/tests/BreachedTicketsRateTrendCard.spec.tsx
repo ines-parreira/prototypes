@@ -1,5 +1,4 @@
 import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,7 +6,6 @@ import thunk from 'redux-thunk'
 import {TREND_BADGE_FORMAT} from 'pages/stats/TrendBadge'
 import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
 import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {StatsFilters} from 'models/stat/types'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {useBreachedSlaTicketsTrend} from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -21,14 +19,14 @@ const mockStore = configureMockStore([thunk])
 
 describe('BreachedTicketsRateTrendCard', () => {
     const defaultState = {
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-            } as StatsFilters,
-        }),
+            },
+        },
         ui: {
             stats: uiStatsInitialState,
         },

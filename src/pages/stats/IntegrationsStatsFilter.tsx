@@ -11,7 +11,7 @@ import {
     HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
     IntegrationType,
 } from 'models/integration/constants'
-import {mergeStatsFilters} from 'state/stats/actions'
+import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {AppIntegration, Integration} from 'models/integration/types'
 import {StatsFilters} from 'models/stat/types'

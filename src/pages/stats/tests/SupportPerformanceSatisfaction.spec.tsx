@@ -18,7 +18,6 @@ import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import {StatsFilters} from 'models/stat/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -58,7 +57,7 @@ let mathRandomSpy: jest.SpiedFunction<typeof Math.random>
 describe('SupportPerformanceSatisfaction', () => {
     const defaultState = {
         currentAccount: fromJS(account),
-        stats: fromJS({
+        stats: {
             filters: {
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
@@ -69,8 +68,8 @@ describe('SupportPerformanceSatisfaction', () => {
                 tags: [1],
                 agents: [agents[0].id],
                 score: ['2'],
-            } as StatsFilters,
-        }),
+            },
+        },
         agents: fromJS({
             all: agents,
         }),

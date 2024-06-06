@@ -9,7 +9,7 @@ import {
 import {
     defaultStatsFilters,
     initialState as initialStatsFiltersState,
-} from 'state/stats/reducers'
+} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {
     agentPerformanceSlice,
@@ -193,7 +193,7 @@ describe('agentPerformanceSlice', () => {
                     [agentPerformanceSlice.name]: initialState,
                     stats: initialUiStatsState,
                 },
-                stats: fromJS({
+                stats: {
                     filters: {
                         period: {
                             start_datetime: '1970-01-01T00:00:00+00:00',
@@ -201,8 +201,8 @@ describe('agentPerformanceSlice', () => {
                         },
                         agents: [],
                     },
-                }),
-            } as RootState
+                },
+            } as unknown as RootState
 
             expect(getFilteredAgents(state).length).toEqual(agents.length)
         })
@@ -225,10 +225,10 @@ describe('agentPerformanceSlice', () => {
                         cleanStatsFilters: cleanStatsFilters,
                     },
                 },
-                stats: fromJS({
+                stats: {
                     filters: cleanStatsFilters,
-                }),
-            } as RootState
+                },
+            } as unknown as RootState
 
             expect(getFilteredAgents(state).length).toEqual(
                 filteredAgents.length
