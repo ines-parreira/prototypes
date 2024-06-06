@@ -51,8 +51,8 @@ describe('useTicketSlaAchievementRate', () => {
 
     it.each([
         [10, 30, calculatePercentage(10, 10 + 30)],
-        [null, 30, null],
-        [10, null, null],
+        [null, 30, calculatePercentage(0, 30)],
+        [10, null, calculatePercentage(10, 10)],
     ])(
         'should calculate achievement rate',
         (satisfiedTickets, breachedTickets, rate) => {
@@ -83,9 +83,9 @@ describe('useTicketSlaAchievementRate', () => {
         }
     )
 
-    it('should not calculate achievement rate when data is not available', () => {
+    it('should calculate achievement rate even when data is not available', () => {
         const breachedTickets = 30
-        const expectedRate = null
+        const expectedRate = 0
         useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
             data: null,
             isFetching: false,

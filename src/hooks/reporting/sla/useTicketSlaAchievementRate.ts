@@ -1,4 +1,3 @@
-import _isNumber from 'lodash/isNumber'
 import {Metric} from 'hooks/reporting/metrics'
 import {
     useTicketsInPolicyPerStatus,
@@ -10,17 +9,14 @@ import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
 
-function getSlaAchievementRate(
+const getSlaAchievementRate = (
     satisfiedSlaTickets: number | null | undefined,
     breachedSlaTickets: number | null | undefined
-) {
-    return _isNumber(satisfiedSlaTickets) && _isNumber(breachedSlaTickets)
-        ? calculatePercentage(
-              satisfiedSlaTickets,
-              satisfiedSlaTickets + breachedSlaTickets
-          )
-        : null
-}
+) =>
+    calculatePercentage(
+        satisfiedSlaTickets ?? 0,
+        (satisfiedSlaTickets ?? 0) + (breachedSlaTickets ?? 0)
+    )
 
 export const useTicketSlaAchievementRate = (): Metric => {
     const {cleanStatsFilters, userTimezone} = useAppSelector(
