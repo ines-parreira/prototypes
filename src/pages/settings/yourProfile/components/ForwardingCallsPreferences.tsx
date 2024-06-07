@@ -54,7 +54,7 @@ function ForwardingCallsPreferences({
                 Enable call forwarding
             </ToggleInput>
             {(useNewForwardCallsSection || forwardCalls) && (
-                <div>
+                <div className={css.forwardingPhoneNumber}>
                     <PhoneNumberInput
                         value={forwardingPhoneNumber ?? ''}
                         onChange={(value: string) =>
