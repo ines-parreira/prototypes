@@ -181,6 +181,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-ai-agent"
           >
             <a
               class="link"
@@ -1152,6 +1153,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </div>
           <div
             class="link-wrapper isNested"
+            data-candu-id="automate-link-ai-agent"
           >
             <a
               class="link"

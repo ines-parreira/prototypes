@@ -77,6 +77,9 @@ const AutomateNavbarSectionBlock = ({
                                 cssNavbar['link-wrapper'],
                                 cssNavbar.isNested
                             )}
+                            {...(shouldRenderCanduIds && {
+                                ['data-candu-id']: 'automate-link-ai-agent',
+                            })}
                         >
                             <NavbarLink
                                 to={{
