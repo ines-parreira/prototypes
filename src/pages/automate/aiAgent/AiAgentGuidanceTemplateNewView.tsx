@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {LocaleCode} from 'models/helpCenter/types'
 import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
 import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
@@ -29,11 +29,14 @@ export const AiAgentGuidanceTemplateNewView = ({
         )
     }
 
-    const initialFields = {
-        name: guidanceTemplate.name,
-        content: guidanceTemplate.content,
-        isVisible: true,
-    }
+    const initialFields = useMemo(
+        () => ({
+            name: guidanceTemplate.name,
+            content: guidanceTemplate.content,
+            isVisible: true,
+        }),
+        [guidanceTemplate]
+    )
 
     return (
         <GuidanceForm

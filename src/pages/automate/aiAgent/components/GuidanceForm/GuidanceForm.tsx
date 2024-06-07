@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import _isEqual from 'lodash/isEqual'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {notify} from 'state/notifications/actions'
@@ -67,12 +67,6 @@ export const GuidanceForm = ({
         !formState.name ||
         !formState.content ||
         (actionType === 'update' && !isFormDirty)
-
-    useEffect(() => {
-        if (initialFields) {
-            setFormState(initialFields)
-        }
-    }, [initialFields])
 
     const handleDelete = async () => {
         if (!onDelete) return
