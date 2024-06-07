@@ -8,6 +8,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
+import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import css from './PublicSourcesSection.less'
 import {PublicSourcesItem} from './PublicSourcesItem'
 import {SourceItem} from './types'
@@ -17,12 +18,16 @@ const SOURCES_LIMIT = 10
 
 type Props = {
     helpCenterId: number
+    shopName: string
 }
 
-export const PublicSourcesSection = ({helpCenterId}: Props) => {
+export const PublicSourcesSection = ({helpCenterId, shopName}: Props) => {
     const dispatch = useAppDispatch()
 
-    const {sourceItems} = usePublicResources({helpCenterId})
+    const {sourceItems} = usePublicResources({
+        helpCenterId,
+    })
+    usePublicResourcesPooling({helpCenterId, shopName})
     const {deletePublicResource, addPublicResource} = usePublicResourceMutation(
         {helpCenterId}
     )

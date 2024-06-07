@@ -40,3 +40,14 @@ export const mergeSources = (
         return [...acc, newSource]
     }, newElements)
 }
+
+export const updateArticleIngestionLogs = (
+    prevLogs: ArticleIngestionLog[],
+    newLogs: ArticleIngestionLog[]
+): ArticleIngestionLog[] => {
+    return prevLogs.map((log) => {
+        const updatedLog = newLogs.find((l) => l.id === log.id)
+
+        return updatedLog ?? log
+    })
+}

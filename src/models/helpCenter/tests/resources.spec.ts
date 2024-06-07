@@ -113,7 +113,7 @@ describe('resources', () => {
                 {help_center_id}
             )
 
-            expect(result).toEqual({data: []})
+            expect(result).toEqual([])
         })
 
         it('should return null when client is not set', async () => {

@@ -562,6 +562,7 @@ export const CreateAiAgentSettingsForm = ({
                     >
                         <PublicSourcesSection
                             helpCenterId={snippetHelpCenter.id}
+                            shopName={shopName}
                         />
                     </ConfigurationSection>
                 )}

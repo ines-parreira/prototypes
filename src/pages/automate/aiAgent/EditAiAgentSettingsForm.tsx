@@ -535,6 +535,7 @@ export const EditAiAgentSettingsForm = ({
                             helpCenterId={
                                 storeConfiguration.snippetHelpCenterId
                             }
+                            shopName={shopName}
                         />
                     </ConfigurationSection>
                 )}

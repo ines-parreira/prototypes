@@ -13,14 +13,8 @@ export const usePublicResources = ({helpCenterId}: {helpCenterId: number}) => {
             refetchOnWindowFocus: false,
         }
     )
-
     const sourceItems = useMemo(
-        () =>
-            articleIngestionLogs
-                ? articleIngestionLogs.data.map(
-                      mapArticleIngestionLogsToSourceItem
-                  )
-                : undefined,
+        () => articleIngestionLogs?.map(mapArticleIngestionLogsToSourceItem),
         [articleIngestionLogs]
     )
 

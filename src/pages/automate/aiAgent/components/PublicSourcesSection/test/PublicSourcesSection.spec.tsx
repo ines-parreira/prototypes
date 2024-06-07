@@ -1,8 +1,9 @@
 import React from 'react'
-import {render, screen, within} from '@testing-library/react'
+import {screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicResourcesMutation'
+import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {SourceItem} from '../types'
 import {PublicSourcesSection} from '../PublicSourcesSection'
 
@@ -10,6 +11,10 @@ jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('../../../hooks/usePublicResources', () => ({
     usePublicResources: jest.fn(),
 }))
+jest.mock('../../../hooks/usePublicResourcesPooling', () => ({
+    usePublicResourcesPooling: jest.fn(),
+}))
+
 jest.mock('../../../hooks/usePublicResourcesMutation', () => ({
     usePublicResourceMutation: jest.fn(),
 }))
@@ -24,7 +29,9 @@ const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
 })
 
 const renderComponent = () => {
-    render(<PublicSourcesSection helpCenterId={HELP_CENTER_ID} />)
+    renderWithQueryClientProvider(
+        <PublicSourcesSection helpCenterId={HELP_CENTER_ID} shopName="test" />
+    )
 }
 
 const mockUsePublicResources = jest.mocked(usePublicResources)

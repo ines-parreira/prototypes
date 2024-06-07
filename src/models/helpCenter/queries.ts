@@ -54,10 +54,15 @@ export const helpCenterStatsKeys = {
             parentCategoryId,
             queryParams,
         ] as const,
-    articleIngestionLogs: (helpCenterId: number) => [
-        ...helpCenterStatsKeys.detail(helpCenterId),
-        'article-ingestion-logs',
-    ],
+    articleIngestionLogs: (
+        helpCenterId: number,
+        queryParams?: Paths.GetArticleIngestionLogs.QueryParameters
+    ) =>
+        [
+            ...helpCenterStatsKeys.detail(helpCenterId),
+            'article-ingestion-logs',
+            queryParams,
+        ].filter(Boolean),
 }
 
 export const helpCenterArticleKeys = (
@@ -309,7 +314,8 @@ export const useGetHelpCenterList = (
 }
 
 export const useGetArticleIngestionLogs = (
-    pathParams: Paths.GetArticleIngestionLogs.PathParameters,
+    pathParams: Paths.GetArticleIngestionLogs.PathParameters &
+        Paths.GetArticleIngestionLogs.QueryParameters,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getArticleIngestionLogs>>
     >
@@ -319,7 +325,8 @@ export const useGetArticleIngestionLogs = (
         queryFn: async () =>
             getArticleIngestionLogs(helpCenterClient, pathParams),
         queryKey: helpCenterStatsKeys.articleIngestionLogs(
-            pathParams.help_center_id
+            pathParams.help_center_id,
+            pathParams.ids ? {ids: pathParams.ids} : undefined
         ),
         ...overrides,
         enabled:

@@ -174,11 +174,12 @@ export const getHelpCenterList = async (
 
 export const getArticleIngestionLogs = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.GetArticleIngestionLogs.PathParameters
+    pathParams: Paths.GetArticleIngestionLogs.PathParameters &
+        Paths.GetArticleIngestionLogs.QueryParameters
 ) => {
     if (!client) return null
     const response = await client.getArticleIngestionLogs(pathParams)
-    return response
+    return response.data
 }
 
 export const startArticleIngestion = async (

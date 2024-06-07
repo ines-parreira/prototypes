@@ -3099,12 +3099,14 @@ declare namespace Paths {
     namespace Parameters {
       export type AccountId = string;
       export type HelpCenterId = number;
+      export type Ids = number[];
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
     }
     export interface QueryParameters {
       account_id?: Parameters.AccountId;
+      ids?: Parameters.Ids;
     }
     namespace Responses {
       export type $200 = Components.Schemas.ArticleIngestionLogDto[];

@@ -3952,6 +3952,13 @@
                         "required": false,
                         "in": "query",
                         "schema": {"type": "string"}
+                    },
+                    {
+                        "name": "ids",
+                        "required": false,
+                        "in": "query",
+                        "description": "List of numeric ids in the form ids=1&ids=2...",
+                        "schema": {"type": "array", "items": {"type": "number"}}
                     }
                 ],
                 "responses": {

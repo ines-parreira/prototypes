@@ -1,5 +1,9 @@
 import {Components} from 'rest_api/help_center_api/client.generated'
-import {mapArticleIngestionLogsToSourceItem, mergeSources} from '../utils'
+import {
+    mapArticleIngestionLogsToSourceItem,
+    updateArticleIngestionLogs,
+    mergeSources,
+} from '../utils'
 import {SourceItem} from '../types'
 
 describe('PublicSourcesSection utils', () => {
@@ -53,6 +57,25 @@ describe('PublicSourcesSection utils', () => {
                 {id: 4, status: 'loading', url: 'https://example3.com'},
                 {id: 3, status: 'loading', url: 'https://example.com'},
                 {id: 2, status: 'done', url: 'https://example2.com'},
+            ])
+        })
+    })
+
+    describe('updateArticleIngestionLogs', () => {
+        it('should merge logs and update existing', () => {
+            const prevLogs = [
+                {id: 1, status: 'SUCCESSFUL', url: 'https://example.com'},
+                {id: 2, status: 'PENDING', url: 'https://example2.com'},
+            ] as Components.Schemas.ArticleIngestionLogDto[]
+            const newLogs = [
+                {id: 1, status: 'SUCCESSFUL', url: 'https://example.com'},
+                {id: 2, status: 'SUCCESSFUL', url: 'https://example2.com'},
+            ] as Components.Schemas.ArticleIngestionLogDto[]
+
+            const result = updateArticleIngestionLogs(prevLogs, newLogs)
+            expect(result).toEqual([
+                {id: 1, status: 'SUCCESSFUL', url: 'https://example.com'},
+                {id: 2, status: 'SUCCESSFUL', url: 'https://example2.com'},
             ])
         })
     })
