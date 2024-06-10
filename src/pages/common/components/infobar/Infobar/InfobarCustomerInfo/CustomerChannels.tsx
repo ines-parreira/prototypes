@@ -3,11 +3,9 @@ import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 
-import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {RootState} from 'state/types'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
@@ -29,7 +27,6 @@ type Props = {
     customerId: string
     customerName: string
     children?: ReactNode
-    flags?: LDFlagSet
 } & ConnectedProps<typeof connector>
 
 export class CustomerChannels extends Component<Props> {
@@ -48,7 +45,6 @@ export class CustomerChannels extends Component<Props> {
             customerLocationInfo,
             customerId,
             customerName,
-            flags,
         } = this.props
 
         const filteredChannels = channels
@@ -74,9 +70,6 @@ export class CustomerChannels extends Component<Props> {
             'time_zone',
             'offset',
         ])
-
-        const displayAddNewPhoneNumber =
-            !!flags?.[FeatureFlagKey.NewPhoneNumberCustomerSidebar]
 
         const list = filteredChannels.map((channel: Map<any, any>, idx) => {
             let addressComponent = null
@@ -147,9 +140,8 @@ export class CustomerChannels extends Component<Props> {
                 {children}
                 <CustomerInfoWrapper>
                     {list}
-                    {displayAddNewPhoneNumber && (
-                        <NewPhoneNumber customerId={Number(customerId)} />
-                    )}
+                    <NewPhoneNumber customerId={Number(customerId)} />
+
                     {(country || city) && (
                         <p className={css.customerChannel}>
                             <i
@@ -199,4 +191,4 @@ const connector = connect((state: RootState) => {
     }
 })
 
-export default connector(withLDConsumer()(CustomerChannels))
+export default connector(CustomerChannels)

@@ -19,7 +19,6 @@ import {
     TimeFormatType,
 } from 'constants/datetime'
 import {CustomerChannel} from 'models/customerChannel/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {CustomerChannels} from '../CustomerChannels'
 
@@ -42,9 +41,6 @@ const minProps: ComponentProps<typeof CustomerChannels> = {
     channels: fromJS([]),
     customerLocationInfo: fromJS({}),
     customerLastSeenOnChat: null,
-    flags: {
-        [FeatureFlagKey.NewPhoneNumberCustomerSidebar]: true,
-    },
     datetimeFormat:
         DateTimeFormatMapper[DateTimeFormatType.TIME_DOUBLE_DIGIT_HOUR_24HOUR],
     dispatch: jest.fn(),
@@ -364,31 +360,5 @@ describe('CustomerChannels component', () => {
             </Provider>
         )
         await waitFor(() => expect(getByText(/Add phone number/)).toBeVisible())
-    })
-
-    it('should not display "Add phone number button when the FF is off', () => {
-        const store = mockStore({
-            ...defaultState,
-            twilio: initialState,
-            integrations: fromJS({
-                integrations: [],
-            }),
-        })
-
-        const {queryByText} = renderWithQueryClientProvider(
-            <Provider store={mockStore(store)}>
-                <CustomerChannels
-                    {...minProps}
-                    flags={
-                        {
-                            [FeatureFlagKey.NewPhoneNumberCustomerSidebar]:
-                                false,
-                        } as any
-                    }
-                />
-            </Provider>
-        )
-
-        expect(queryByText(/Add phone number/)).toBeNull()
     })
 })

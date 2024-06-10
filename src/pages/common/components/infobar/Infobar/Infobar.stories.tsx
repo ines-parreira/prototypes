@@ -5,10 +5,12 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {ticket} from 'fixtures/ticket'
 import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import {ThemeProvider, useTheme} from 'theme'
+import {appQueryClient} from 'api/queryClient'
 
 const defaultState = {
     currentUser: Map({
@@ -53,13 +55,15 @@ const storyConfig: Meta = {
     decorators: [
         (Component) => (
             <ThemeProvider>
-                <Provider store={configureMockStore([thunk])(defaultState)}>
-                    <MemoryRouter>
-                        <div>
-                            <Component />
-                        </div>
-                    </MemoryRouter>
-                </Provider>
+                <QueryClientProvider client={appQueryClient}>
+                    <Provider store={configureMockStore([thunk])(defaultState)}>
+                        <MemoryRouter>
+                            <div>
+                                <Component />
+                            </div>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>
             </ThemeProvider>
         ),
     ],
