@@ -40,8 +40,7 @@ import {AlertType} from 'pages/common/components/Alert/Alert'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
-import {ProductType} from 'models/billing/types'
-import {isEnterprisePrice} from 'models/billing/utils'
+import {isEnterprise} from 'models/billing/utils'
 import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
 import useGetConvertStatus, {
     BundleOnboardingStatus,
@@ -281,7 +280,7 @@ const BillingStartView = () => {
     useEffect(() => {
         if (convertProduct && convertStatus) {
             let enterpriseCta = <></>
-            if (isEnterprisePrice(convertProduct, ProductType.Convert)) {
+            if (isEnterprise(convertProduct)) {
                 enterpriseCta = (
                     <b>
                         <a href="mailto:billing@gorgias.com" rel="noreferrer">

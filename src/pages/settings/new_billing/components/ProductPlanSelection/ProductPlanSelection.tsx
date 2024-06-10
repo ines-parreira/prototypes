@@ -97,20 +97,20 @@ const ProductPlanSelection = ({
 
     const getLabel = useCallback(
         (
-            price:
+            plan:
                 | HelpdeskPrice
                 | AutomationPrice
                 | SMSOrVoicePrice
                 | ConvertPrice
         ) => {
-            const label = getProductLabel(price, type)
+            const label = getProductLabel(plan)
             if (label) {
                 return label
             }
 
-            return formatNumTickets(price.num_quota_tickets ?? 0)
+            return formatNumTickets(plan.num_quota_tickets ?? 0)
         },
-        [type]
+        []
     )
 
     const options = useMemo(

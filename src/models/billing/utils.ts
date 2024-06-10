@@ -28,16 +28,28 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
     throw new Error('discount amount must be a number between 0 and < 1')
 }
 
-export function isHelpdeskPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
-): price is HelpdeskPrice {
+export function isHelpdeskPrice(price: Price): price is HelpdeskPrice {
     return 'public' in price
 }
 
-export function isAutomationPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
-): price is AutomationPrice {
+export function isAutomationPrice(price: Price): price is AutomationPrice {
     return 'automation_addon_discount' in price
+}
+
+export function isAutomate(plan: Price): plan is AutomationPrice {
+    return plan.product === ProductType.Automation
+}
+
+export function isVoice(plan: Price): plan is SMSOrVoicePrice {
+    return plan.product === ProductType.Voice
+}
+
+export function isSms(plan: Price): plan is SMSOrVoicePrice {
+    return plan.product === ProductType.SMS
+}
+
+export function isConvert(plan: Price): plan is ConvertPrice {
+    return plan.product === ProductType.Convert
 }
 
 export function isStarterTierPrice(
@@ -46,27 +58,28 @@ export function isStarterTierPrice(
     return !!price?.internal_id.startsWith('starter-')
 }
 
-export function isTrialPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice,
-    type: ProductType
-) {
+export function isTrial(plan: Price | undefined) {
+    if (!plan) return false
+
     return (
-        price.num_quota_tickets === 0 &&
-        (type === ProductType.Voice ||
-            type === ProductType.SMS ||
-            type === ProductType.Convert)
+        plan.num_quota_tickets === 0 &&
+        (isVoice(plan) || isSms(plan) || isConvert(plan))
     )
 }
 
-export function isAAOLegacyPrice(
-    price: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice,
-    type: ProductType
-) {
-    return price.num_quota_tickets === null && type === ProductType.Automation
+export function isLegacyAutomate(plan: Price | undefined) {
+    if (!plan) return false
+
+    return (
+        plan.num_quota_tickets === null &&
+        plan.product === ProductType.Automation
+    )
 }
 
-export function isEnterprisePrice(price: ConvertPrice, type: ProductType) {
-    return type === ProductType.Convert && price?.custom
+export function isEnterprise(plan: ConvertPrice | undefined) {
+    if (!plan) return false
+
+    return isConvert(plan) && plan?.custom
 }
 
 export function getFormattedAmount(amountInCents: number) {
@@ -91,19 +104,16 @@ export const getCheapestPrice = (
           )
         : undefined
 
-export function getProductLabel(
-    price: Price,
-    type: ProductType
-): string | undefined {
-    if (isTrialPrice(price, type)) {
-        if (type === ProductType.Convert) {
+export function getProductLabel(plan: Price): string | undefined {
+    if (isTrial(plan)) {
+        if (isConvert(plan)) {
             return 'Pay as you go'
         }
 
         return 'Trial'
     }
 
-    if (isAAOLegacyPrice(price, type)) {
+    if (isLegacyAutomate(plan)) {
         return 'Legacy'
     }
 }

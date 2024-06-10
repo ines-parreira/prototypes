@@ -13,7 +13,6 @@ import {
     AutomationPrice,
     HelpdeskPrice,
     PlanInterval,
-    ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
 import {BillingContact, TicketPurpose} from 'state/billing/types'
@@ -21,7 +20,7 @@ import {countries} from 'config/countries'
 import Loader from 'pages/common/components/Loader/Loader'
 import Tooltip from 'pages/common/components/Tooltip'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
-import {isAAOLegacyPrice} from 'models/billing/utils'
+import {isLegacyAutomate} from 'models/billing/utils'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import {
     BILLING_INFORMATION_PATH,
@@ -52,8 +51,7 @@ const PaymentInformationView = ({
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
     const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
     const isAAOLegacy =
-        !!automationProduct &&
-        isAAOLegacyPrice(automationProduct, ProductType.Automation)
+        !!automationProduct && isLegacyAutomate(automationProduct)
     const isSubscribedToVoiceOrSms = !!voiceProduct || !!smsProduct
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact

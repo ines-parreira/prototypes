@@ -19,11 +19,7 @@ import {
 import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {
-    isAAOLegacyPrice,
-    isEnterprisePrice,
-    isTrialPrice,
-} from 'models/billing/utils'
+import {isLegacyAutomate, isEnterprise, isTrial} from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
@@ -97,7 +93,7 @@ const ProductCard = ({
             return null
         }
 
-        if (product && isTrialPrice(product, type)) {
+        if (product && isTrial(product)) {
             return (
                 <>
                     <strong>
@@ -159,13 +155,13 @@ const ProductCard = ({
     )
 
     const counter = useMemo(() => {
-        if (product && isAAOLegacyPrice(product, type)) {
+        if (product && isLegacyAutomate(product)) {
             return null
         }
 
         return (
             <div className={classNames(css.counter)}>
-                {product && isTrialPrice(product, type) ? (
+                {product && isTrial(product) ? (
                     <div className={className}>
                         {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
                         {PRODUCT_INFO[type].counter} used
@@ -202,7 +198,8 @@ const ProductCard = ({
     const extraCost = useMemo(() => {
         if (
             product &&
-            (isAAOLegacyPrice(product, type) || type === ProductType.Convert)
+            (isLegacyAutomate(product) ||
+                product.product === ProductType.Convert)
         ) {
             return null
         }
@@ -216,7 +213,7 @@ const ProductCard = ({
                 extra cost
             </div>
         )
-    }, [product, type, usage])
+    }, [product, usage])
 
     return (
         <div className={css.container}>
@@ -270,7 +267,7 @@ const ProductCard = ({
 
                     {product &&
                     type === ProductType.Convert &&
-                    !isEnterprisePrice(product, type) ? (
+                    !isEnterprise(product) ? (
                         <div className={css.autoUpgradeLabel}>
                             Auto-upgrade
                             {autoUpgradeEnabled ? ' enabled ' : ' disabled '}

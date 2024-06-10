@@ -62,17 +62,14 @@ const PlanSubscriptionDescription = ({
         [productType]
     )
 
-    const formatOptionLabel = useCallback(
-        (price: Price) => {
-            const label = getProductLabel(price, productType)
-            if (label) {
-                return label
-            }
+    const formatOptionLabel = useCallback((plan: Price) => {
+        const label = getProductLabel(plan)
+        if (label) {
+            return label
+        }
 
-            return formatNumTickets(price.num_quota_tickets ?? 0)
-        },
-        [productType]
-    )
+        return formatNumTickets(plan.num_quota_tickets ?? 0)
+    }, [])
 
     const options = useMemo(() => {
         return [

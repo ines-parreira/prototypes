@@ -28,7 +28,7 @@ import BillingScheduledDowngrades from 'pages/settings/billing/BillingScheduledD
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {isAAOLegacyPrice} from 'models/billing/utils'
+import {isLegacyAutomate} from 'models/billing/utils'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
@@ -80,7 +80,7 @@ const UsageAndPlansView = ({
 
     const isTrialingSubscription = useAppSelector(isTrialing)
     const isAAOLegacy = !!automationProduct
-        ? isAAOLegacyPrice(automationProduct, ProductType.Automation)
+        ? isLegacyAutomate(automationProduct)
         : false
     const trialingStart = moment(
         currentSubscription.get('trial_start_datetime')

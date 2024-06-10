@@ -18,7 +18,6 @@ import {
     isHelpdeskPrice,
     isStarterTierPrice,
 } from '../utils'
-import {ProductType} from '../types'
 
 describe('getFullPrice', () => {
     it('should return the full price from discounted price and the percentage of discount presented in decimal', () => {
@@ -91,14 +90,14 @@ describe('getCheapestPrice', () => {
 
 describe('getProductLabel', () => {
     it.each([
-        [basicMonthlyHelpdeskPrice, ProductType.Helpdesk, undefined],
-        [voicePrice0, ProductType.Voice, 'Trial'],
-        [legacyBasicAutomationPrice, ProductType.Automation, 'Legacy'],
-        [convertPrice0, ProductType.Convert, 'Pay as you go'],
+        [basicMonthlyHelpdeskPrice, undefined],
+        [voicePrice0, 'Trial'],
+        [legacyBasicAutomationPrice, 'Legacy'],
+        [convertPrice0, 'Pay as you go'],
     ])(
         'should return the product label for the given price and type',
-        (price, type, expectedResult) => {
-            expect(getProductLabel(price, type)).toBe(expectedResult)
+        (plan, expectedResult) => {
+            expect(getProductLabel(plan)).toBe(expectedResult)
         }
     )
 })

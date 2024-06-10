@@ -9,8 +9,7 @@ import useGetConvertStatus, {
 import {formatDatetime} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
-import {isEnterprisePrice} from 'models/billing/utils'
-import {ProductType} from 'models/billing/types'
+import {isEnterprise} from 'models/billing/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentConvertProduct} from 'state/billing/selectors'
 import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
@@ -24,7 +23,7 @@ export const ConvertLimitBanner = ({
     classes,
     shopIntegrationId,
 }: Props): JSX.Element => {
-    const convertProduct = useAppSelector(getCurrentConvertProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
     const status = useGetConvertStatus(false, shopIntegrationId)
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.LongDateWithYear
@@ -111,10 +110,7 @@ export const ConvertLimitBanner = ({
         return <></>
     }
 
-    if (
-        convertProduct &&
-        isEnterprisePrice(convertProduct, ProductType.Convert)
-    ) {
+    if (isEnterprise(currentConvertPlan)) {
         cta = (
             <b>
                 <a href="mailto:billing@gorgias.com" rel="noreferrer">
