@@ -107,7 +107,7 @@ export const CampaignAudienceStep = ({
                     CampaignTriggerType.IncognitoVisitor,
                     incognitoVisitorTrigger
                 )
-            } else if (value === false) {
+            } else if (value === false && triggerId) {
                 deleteTrigger(triggerId)
             }
         },
