@@ -38,6 +38,7 @@ import {
 } from 'pages/phoneNumbers/utils'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import IconButton from 'pages/common/components/button/IconButton'
+import Loader from 'pages/common/components/Loader/Loader'
 
 import css from './PhoneNumberInput.less'
 
@@ -58,6 +59,7 @@ type Props = {
     onCountryChange?: (country: CountryCode) => void
     onLetterEntered?: (input: string) => void
     isClearable?: boolean
+    isLoading?: boolean
 } & ComponentProps<typeof TextInput>
 
 const PhoneNumberInput = (
@@ -76,6 +78,7 @@ const PhoneNumberInput = (
         error,
         caption,
         isClearable,
+        isLoading,
         ...other
     }: Props,
     ref: ForwardedRef<PhoneNumberInputHandle>
@@ -255,18 +258,22 @@ const PhoneNumberInput = (
                     }}
                     autoFocus={autoFocus}
                     suffix={
-                        value &&
-                        isClearable && (
-                            <IconButton
-                                onClick={() =>
-                                    handleNumberChange('', currentCountry)
-                                }
-                                fillStyle="ghost"
-                                intent="secondary"
-                            >
-                                close
-                            </IconButton>
-                        )
+                        <>
+                            {isLoading && (
+                                <Loader size={'18px'} className={css.loader} />
+                            )}
+                            {value && isClearable && (
+                                <IconButton
+                                    onClick={() =>
+                                        handleNumberChange('', currentCountry)
+                                    }
+                                    fillStyle="ghost"
+                                    intent="secondary"
+                                >
+                                    close
+                                </IconButton>
+                            )}
+                        </>
                     }
                 />
             </InputGroup>

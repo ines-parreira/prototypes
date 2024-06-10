@@ -9,6 +9,7 @@ import * as selectors from 'state/integrations/selectors'
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import useDialerOutboundCall from '../useDialerOutboundCall'
+import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
 
 jest.mock('@gorgias/api-queries')
 jest.mock('libphonenumber-js')
@@ -68,47 +69,9 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
     }
 })
 
-jest.mock(
-    'pages/integrations/integration/components/phone/PhoneDeviceDialerBody',
-    () =>
-        ({
-            onCustomerSelect,
-        }: {
-            value: string
-            onChange: (value: string) => void
-            results: any[]
-            isLoading: boolean
-            isSearchTypeCustomer: boolean
-            selectedCustomer: any
-            onCustomerSelect: (customer: any) => void
-        }) =>
-            (
-                <div data-testid="mock-dialer-body">
-                    <button
-                        data-testid="select-customer"
-                        onClick={() =>
-                            onCustomerSelect({
-                                id: '1',
-                                customer: {
-                                    name: 'testCustomerName',
-                                },
-                                address: 'testAddress',
-                            })
-                        }
-                    />
-                    <button
-                        data-testid="select-customer-without-name"
-                        onClick={() =>
-                            onCustomerSelect({
-                                id: '1',
-                                customer: {},
-                                address: 'testAddress',
-                            })
-                        }
-                    />
-                </div>
-            )
-)
+const PhoneDeviceDialerBodySpy = jest
+    .spyOn(PhoneDeviceDialerBody, 'default')
+    .mockImplementation(() => <div data-testid="mock-dialer-body" />)
 
 jest.mock(
     'pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect'
@@ -197,7 +160,13 @@ describe('PhoneDeviceDialer', () => {
     it('displays customer search input when customer is selected', () => {
         renderComponent()
 
-        fireEvent.click(screen.getByTestId('select-customer'))
+        PhoneDeviceDialerBodySpy.mock.calls[0][0].onCustomerSelect({
+            id: '1',
+            customer: {
+                name: 'testCustomerName',
+            },
+            address: 'testAddress',
+        } as any)
         expect(screen.getByTestId('mock-text-input')).toHaveValue(
             'testCustomerName'
         )
@@ -206,7 +175,11 @@ describe('PhoneDeviceDialer', () => {
     it('displays customer search input with customer address as value when customer is selected and has no name', () => {
         renderComponent()
 
-        fireEvent.click(screen.getByTestId('select-customer-without-name'))
+        PhoneDeviceDialerBodySpy.mock.calls[0][0].onCustomerSelect({
+            id: '1',
+            customer: {},
+            address: 'testAddress',
+        } as any)
         expect(screen.getByTestId('mock-text-input')).toHaveValue('testAddress')
     })
 
@@ -308,7 +281,13 @@ describe('PhoneDeviceDialer', () => {
 
         fireEvent.change(inputElement, {target: {value: '1234567890a'}})
 
-        fireEvent.click(screen.getByTestId('select-customer'))
+        PhoneDeviceDialerBodySpy.mock.calls[0][0].onCustomerSelect({
+            id: '1',
+            customer: {
+                name: 'testCustomerName',
+            },
+            address: 'testAddress',
+        } as any)
 
         expect(screen.getByRole('button', {name: 'Call'})).not.toHaveAttribute(
             'aria-disabled',
@@ -368,5 +347,34 @@ describe('PhoneDeviceDialer', () => {
         fireEvent.change(inputElement, {target: {value: 'ab'}})
 
         expect(useSearchMockValue.reset).toHaveBeenCalled()
+    })
+
+    it('renders PhoneDeviceDialerBody with isLoading true only if isSearchTypeCustomer is true', () => {
+        useSearchMock.mockReturnValue({
+            isLoading: true,
+            data: {data: {data: []}},
+        } as any)
+
+        renderComponent()
+
+        const inputElement: HTMLInputElement =
+            screen.getByTestId('mock-phone-input')
+
+        fireEvent.change(inputElement, {target: {value: '1234567890'}})
+
+        expect(PhoneDeviceDialerBodySpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isLoading: false,
+            }),
+            {}
+        )
+
+        fireEvent.change(inputElement, {target: {value: '1234567890a'}})
+        expect(PhoneDeviceDialerBodySpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isLoading: true,
+            }),
+            {}
+        )
     })
 })

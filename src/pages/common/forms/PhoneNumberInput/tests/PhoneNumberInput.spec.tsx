@@ -7,6 +7,9 @@ import PhoneNumberInput, {PhoneNumberInputHandle} from '../PhoneNumberInput'
 jest.mock('utils/errors')
 
 jest.mock('lodash/uniqueId', () => (id: string) => `${id || ''}42`)
+jest.mock('pages/common/components/Loader/Loader', () => () => (
+    <div data-testid="loader" />
+))
 
 describe('<PhoneNumberInput/>', () => {
     const onChange: jest.MockedFunction<(value: string) => void> = jest.fn()
@@ -295,5 +298,17 @@ describe('<PhoneNumberInput/>', () => {
         expect(document.activeElement).toEqual(
             document.getElementsByTagName('input')[0]
         )
+    })
+
+    it('should display loader when isLoading is true', () => {
+        const {getByTestId} = render(
+            <PhoneNumberInput
+                value="+1234567890"
+                onChange={onChange}
+                isLoading
+            />
+        )
+
+        expect(getByTestId('loader')).toBeVisible()
     })
 })

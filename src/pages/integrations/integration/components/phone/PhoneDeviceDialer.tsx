@@ -73,6 +73,7 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
             (isSearchTypeCustomer && value.length < 3) ||
             (!isSearchTypeCustomer && value.length < 5)
         ) {
+            debouncedSearchCustomers.cancel()
             resetMutation()
             return
         }
@@ -113,7 +114,7 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
                     }
                     value={
                         selectedCustomer
-                            ? selectedCustomer.customer.name ??
+                            ? selectedCustomer.customer.name ||
                               selectedCustomer.address
                             : inputValue
                     }
@@ -130,6 +131,7 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
                     autoFocus
                     className={css.dialpadInput}
                     isClearable
+                    isLoading={isSearchingCustomers}
                     ref={phoneNumberInputRef}
                 />
             )}
@@ -140,7 +142,7 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
                     phoneNumberInputRef.current?.onChange(value)
                 }}
                 results={customers}
-                isLoading={isSearchingCustomers}
+                isLoading={isSearchTypeCustomer && isSearchingCustomers}
                 isSearchTypeCustomer={isSearchTypeCustomer}
                 selectedCustomer={selectedCustomer}
                 onCustomerSelect={handleSelectCustomer}
