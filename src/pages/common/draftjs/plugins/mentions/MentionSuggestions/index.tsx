@@ -6,16 +6,19 @@ import {List, Map, fromJS} from 'immutable'
 import {genKey, EditorState, SelectionState, DraftHandleValue} from 'draft-js'
 
 import {EditorHandledNotHandled} from 'utils/editor'
-import addMention from '../modifiers/addMention'
-import {decodeOffsetKey, getSearchText} from '../utils'
+import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
+import {
+    decodeOffsetKey,
+    getSearchText,
+} from 'pages/common/draftjs/plugins/mentions/utils'
 import {
     MentionPluginTheme,
     MentionPluginStore,
     MentionSuggestionCallbacks,
-} from '../types'
+} from 'pages/common/draftjs/plugins/mentions/types'
 
-import Entry from './Entry'
-import DefaultEntryComponent from './Entry/DefaultEntryComponent'
+import Entry from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry'
+import DefaultEntryComponent from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry/DefaultEntryComponent'
 
 type Props = {
     callbacks: MentionSuggestionCallbacks

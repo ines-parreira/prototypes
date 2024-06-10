@@ -1,15 +1,18 @@
+import {ContentState, EditorState, SelectionState} from 'draft-js'
 import React, {ComponentProps} from 'react'
-import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import MentionSuggestions from '../index'
+import {render, screen} from '@testing-library/react'
+import MentionSuggestions from 'pages/common/draftjs/plugins/mentions/MentionSuggestions'
+
+const mentionablePerson = {
+    name: 'Matthew Russell',
+    link: 'https://twitter.com/mrussell247',
+    avatar: 'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
+}
 
 const mentions = fromJS([
-    {
-        name: 'Matthew Russell',
-        link: 'https://twitter.com/mrussell247',
-        avatar: 'https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg',
-    },
+    mentionablePerson,
     {
         name: 'Julian Krispel-Samsel',
         link: 'https://twitter.com/juliandoesstuff',
@@ -59,23 +62,72 @@ describe('MentionSuggestions Component', () => {
         },
         theme: {},
         suggestions: mentions,
-        positionSuggestions: jest.fn(),
+        positionSuggestions: jest.fn().mockReturnValue({}),
         mentionTrigger: '',
         entityMutability: 'SEGMENTED',
         mentionPrefix: '',
+        canAddMention: true,
     }
+    const contentState = ContentState.createFromText('Some text Max')
+    const initialEditorState = EditorState.createWithContent(contentState)
+    const sel = initialEditorState
+        .getSelection()
+        .set('anchorOffset', 10)
+        .set('focusKey', 13)
+    const anchorKey = initialEditorState.getSelection().getAnchorKey()
+    const editorStateWithSelection = EditorState.acceptSelection(
+        initialEditorState,
+        sel as SelectionState
+    )
+    const editorState = EditorState.moveFocusToEnd(editorStateWithSelection)
 
-    it('Closes when suggestions is empty', () => {
-        const suggestions = mount<MentionSuggestions>(
-            <MentionSuggestions {...minProps} />
+    it('Should not render the suggestions when "canAddMention" is false', () => {
+        const callbacks = {onChange: jest.fn(), handleKeyCommand: undefined}
+
+        const {container} = render(
+            <MentionSuggestions
+                {...{
+                    ...minProps,
+                    suggestions: fromJS([]),
+                    canAddMention: false,
+                    store: {
+                        ...minProps.store,
+                        getAllSearches: jest
+                            .fn()
+                            .mockReturnValue(fromJS([`${anchorKey}-0-0`])),
+                    },
+                }}
+                callbacks={callbacks}
+            />
         )
 
-        suggestions.instance().openDropdown()
-        expect(suggestions.state().isActive).toEqual(true)
+        expect(container.firstChild).toBeNull()
+    })
 
-        suggestions.setProps({
-            suggestions: fromJS([]),
-        })
-        expect(suggestions.state().isActive).toEqual(false)
+    it('Should render suggestions', () => {
+        const callbacks = {onChange: jest.fn(), handleKeyCommand: undefined}
+
+        render(
+            <MentionSuggestions
+                {...{
+                    ...minProps,
+                    store: {
+                        ...minProps.store,
+                        getAllSearches: jest
+                            .fn()
+                            .mockReturnValue(fromJS([`${anchorKey}-0-0`])),
+                    },
+                }}
+                callbacks={callbacks}
+            />
+        )
+
+        callbacks.onChange(editorState)
+
+        expect(
+            screen.getByRole('option', {
+                name: new RegExp(mentionablePerson.name),
+            })
+        ).toBeInTheDocument()
     })
 })
