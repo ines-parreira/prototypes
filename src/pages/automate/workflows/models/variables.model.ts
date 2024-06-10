@@ -332,7 +332,7 @@ export const buildWorkflowVariableFromNode = (
                 },
                 {
                     name: 'Shipment status',
-                    value: `steps_state.${node.id}.fulfillments.0.external_shipment_status`,
+                    value: `steps_state.${node.id}.order.fulfillments.0.external_shipment_status`,
                     nodeType: 'order_selection',
                     type: 'string',
                 },
