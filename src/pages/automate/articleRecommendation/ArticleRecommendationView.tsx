@@ -1,5 +1,11 @@
 import React, {useMemo, useRef, useState} from 'react'
-import {Route, Switch, useParams} from 'react-router-dom'
+import {
+    Route,
+    Switch,
+    useRouteMatch,
+    useParams,
+    useHistory,
+} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import Label from 'pages/common/forms/Label/Label'
@@ -46,7 +52,7 @@ const ArticleRecommendationView = () => {
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(shopType, shopName)
     const channels = useSelfServiceChatChannels(shopType, shopName)
-
+    const history = useHistory()
     const helpCenterId =
         selfServiceConfiguration?.article_recommendation_help_center_id
 
@@ -93,6 +99,7 @@ const ArticleRecommendationView = () => {
         })
     })
 
+    const {path} = useRouteMatch()
     const basePath = `/app/automation/:shopType/:shopName/article-recommendation`
 
     const articleRecommendation = (
@@ -153,6 +160,14 @@ const ArticleRecommendationView = () => {
 
     if (!isImprovedNavigationEnabled) {
         return articleRecommendation
+    }
+
+    const baseUrl = `/app/automation/${shopType}/${shopName}/article-recommendation`
+    const hasLegacyTrainMyAIUrl =
+        path === '/app/automation/:shopType/:shopName/train-my-ai'
+
+    if (hasLegacyTrainMyAIUrl && isImprovedNavigationEnabled) {
+        history.replace(baseUrl)
     }
 
     return (
