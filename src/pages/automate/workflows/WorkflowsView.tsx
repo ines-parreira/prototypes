@@ -1,14 +1,6 @@
 import React from 'react'
 import {Container} from 'reactstrap'
-import {
-    Link,
-    NavLink,
-    Route,
-    Switch,
-    useHistory,
-    useRouteMatch,
-} from 'react-router-dom'
-
+import {Link, NavLink, Route, Switch, useRouteMatch} from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -59,7 +51,6 @@ export default function WorkflowsView({
     useHistoryTracking(SegmentEvent.AutomateFlowsVisited)
 
     const {path} = useRouteMatch()
-    const history = useHistory()
 
     const {
         isUpdatePending,
@@ -194,13 +185,6 @@ export default function WorkflowsView({
         )
 
     const baseUrl = `/app/automation/${shopType}/${shopName}/flows`
-
-    const hasLegacyQuickResponsesUrl =
-        path === '/app/automation/:shopType/:shopName/quick-responses'
-
-    if (hasLegacyQuickResponsesUrl && isImprovedNavigationEnabled) {
-        history.replace(`${baseUrl}/quick-responses`)
-    }
 
     return (
         <div className="full-width overflow-auto">

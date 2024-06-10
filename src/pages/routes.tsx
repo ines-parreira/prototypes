@@ -1576,10 +1576,7 @@ function AutomationContent() {
             />
 
             <Route
-                path={[
-                    `${path}/:shopType/:shopName/flows`,
-                    `${path}/:shopType/:shopName/quick-responses`,
-                ]}
+                path={`${path}/:shopType/:shopName/flows`}
                 component={memoizedWithUserRoleRequired(
                     WorkflowsViewContainer,
                     AGENT_ROLE
@@ -1666,10 +1663,7 @@ function AutomationContent() {
             </Route>
 
             <Route
-                path={[
-                    `${path}/:shopType/:shopName/article-recommendation`,
-                    `${path}/:shopType/:shopName/train-my-ai`,
-                ]}
+                path={`${path}/:shopType/:shopName/article-recommendation`}
                 exact={isImprovedNavigationEnabled === false ? true : false}
                 component={memoizedWithUserRoleRequired(
                     ArticleRecommendationViewContainer,
@@ -1677,17 +1671,14 @@ function AutomationContent() {
                 )}
             />
 
-            {!isImprovedNavigationEnabled && (
-                <Route
-                    path={`${path}/:shopType/:shopName/train-my-ai`}
-                    exact
-                    component={memoizedWithUserRoleRequired(
-                        TrainMyAiViewContainer,
-                        AGENT_ROLE
-                    )}
-                />
-            )}
-
+            <Route
+                path={`${path}/:shopType/:shopName/train-my-ai`}
+                exact
+                component={memoizedWithUserRoleRequired(
+                    TrainMyAiViewContainer,
+                    AGENT_ROLE
+                )}
+            />
             <Route
                 path={`${path}/:shopType/:shopName/actions`}
                 exact
