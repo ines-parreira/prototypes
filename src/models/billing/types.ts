@@ -43,11 +43,14 @@ export type Product<T = Price> = {
 }
 
 type BasePrice = {
+    product: ProductType
+    num_quota_tickets: number | null // Integers only, is None for the legacy Automate usd-4 plans
     amount: number
     currency: string
     extra_ticket_cost: number
     internal_id: string
     interval: PlanInterval
+    cadence: PlanInterval
     legacy_id: string
     name: string
     order?: number
