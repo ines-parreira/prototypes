@@ -5,13 +5,16 @@ import {isValidPhoneNumber} from 'libphonenumber-js'
 import {Provider} from 'react-redux'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {assumeMock, mockStore} from 'utils/testing'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
+import * as selectors from 'state/integrations/selectors'
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
+import useDialerOutboundCall from '../useDialerOutboundCall'
 
 jest.mock('@gorgias/api-queries')
 jest.mock('libphonenumber-js')
-jest.mock('state/integrations/selectors')
+jest.mock(
+    'pages/integrations/integration/components/phone/useDialerOutboundCall'
+)
 
 jest.mock(
     'pages/common/forms/input/TextInput',
@@ -118,16 +121,10 @@ PhoneDeviceDialerIntegrationSelectMock.mockImplementation(() => (
     <>PhoneDeviceDialerIntegrationSelect</>
 ))
 
-const getPhoneIntegrationsMock = assumeMock(getPhoneIntegrations)
+const getPhoneIntegrationsSpy = jest.spyOn(selectors, 'getPhoneIntegrations')
 const useSearchMock = assumeMock(useSearch)
 const isValidPhoneNumberMock = assumeMock(isValidPhoneNumber)
-
-const renderComponent = () =>
-    renderWithQueryClientProvider(
-        <Provider store={mockStore({} as any)}>
-            <PhoneDeviceDialer />
-        </Provider>
-    )
+const useDialerOutboundCallMock = assumeMock(useDialerOutboundCall)
 
 describe('PhoneDeviceDialer', () => {
     const useSearchMockValue = {
@@ -140,9 +137,19 @@ describe('PhoneDeviceDialer', () => {
         {id: 1, name: 'testIntegration'},
         {id: 2, name: 'otherTestIntegration2'},
     ]
+
+    const onCallInitiated = jest.fn()
+
+    const renderComponent = () =>
+        renderWithQueryClientProvider(
+            <Provider store={mockStore({} as any)}>
+                <PhoneDeviceDialer onCallInitiated={onCallInitiated} />
+            </Provider>
+        )
+
     beforeEach(() => {
         useSearchMock.mockReturnValue(useSearchMockValue as any)
-        getPhoneIntegrationsMock.mockReturnValue(mockPhoneIntegrations as any)
+        getPhoneIntegrationsSpy.mockReturnValue(mockPhoneIntegrations as any)
     })
 
     it('renders initial state correctly: phone number input, body, integration selector and cta', () => {
@@ -322,8 +329,11 @@ describe('PhoneDeviceDialer', () => {
         expect(screen.getByText('Enter a valid number')).toBeInTheDocument()
     })
 
-    it('does not display error when phone number is valid and button was pressed', () => {
+    it('makes outbound call when phone number is valid and button was pressed', () => {
+        const makeOutboundCallMock = jest.fn()
         isValidPhoneNumberMock.mockReturnValue(true)
+        useDialerOutboundCallMock.mockReturnValue(makeOutboundCallMock)
+
         renderComponent()
 
         const inputElement: HTMLInputElement =
@@ -332,6 +342,7 @@ describe('PhoneDeviceDialer', () => {
         fireEvent.change(inputElement, {target: {value: '1234567890'}})
         fireEvent.click(screen.getByRole('button', {name: 'Call'}))
 
+        expect(makeOutboundCallMock).toHaveBeenCalled()
         expect(
             screen.queryByText('Enter a valid number')
         ).not.toBeInTheDocument()

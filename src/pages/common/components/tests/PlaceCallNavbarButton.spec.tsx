@@ -6,28 +6,21 @@ import {assumeMock} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHasPhone from 'core/app/hooks/useHasPhone'
+import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
 jest.mock('utils/device')
 jest.mock('../DeactivatedViewIcon', () => () => (
     <div data-testid="deactivated-view-icon" />
 ))
-jest.mock(
-    'pages/integrations/integration/components/phone/PhoneDevice',
-    () =>
-        ({isOpen}: {isOpen: boolean}) =>
-            (
-                <div data-testid="phone-device">
-                    {isOpen ? 'visible' : 'hidden'}
-                </div>
-            )
-)
+jest.mock('pages/integrations/integration/components/phone/PhoneDevice')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('core/app/hooks/useHasPhone')
 
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 const useHasPhoneMock = assumeMock(useHasPhone)
+const PhoneDeviceMock = assumeMock(PhoneDevice)
 
 describe('<PlaceCallNavbarButton />', () => {
     const renderComponent = () => render(<PlaceCallNavbarButton />)
@@ -39,6 +32,12 @@ describe('<PlaceCallNavbarButton />', () => {
             [FeatureFlagKey.OutboundDialer]: true,
         })
         useVoiceDeviceMock.mockReturnValue({device: {}} as any)
+
+        PhoneDeviceMock.mockImplementation(({isOpen}: {isOpen: boolean}) => (
+            <div data-testid="phone-device">
+                {isOpen ? 'visible' : 'hidden'}
+            </div>
+        ))
     })
 
     afterEach(cleanup)
@@ -93,5 +92,19 @@ describe('<PlaceCallNavbarButton />', () => {
         renderComponent()
 
         expect(screen.getByTestId('deactivated-view-icon')).toBeInTheDocument()
+    })
+
+    it('should close PhoneDevice when device is removed', () => {
+        const {rerender} = renderComponent()
+
+        const button = screen.getByText('Place call')
+        fireEvent.click(button)
+
+        expect(screen.getByTestId('phone-device')).toHaveTextContent('visible')
+
+        useVoiceDeviceMock.mockReturnValue({device: null} as any)
+        rerender(<PlaceCallNavbarButton />)
+
+        expect(screen.getByTestId('phone-device')).toHaveTextContent('hidden')
     })
 })

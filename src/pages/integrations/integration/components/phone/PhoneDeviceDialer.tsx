@@ -16,10 +16,15 @@ import useAppSelector from 'hooks/useAppSelector'
 import css from './PhoneDevice.less'
 import PhoneDeviceDialerBody from './PhoneDeviceDialerBody'
 import PhoneDeviceDialerIntegrationSelect from './PhoneDeviceDialerIntegrationSelect'
+import useDialerOutboundCall from './useDialerOutboundCall'
 
 const SEARCH_DEBOUNCE_VALUE = 500
 
-export default function PhoneDeviceDialer() {
+type Props = {
+    onCallInitiated: () => void
+}
+
+export default function PhoneDeviceDialer({onCallInitiated}: Props) {
     const [inputValue, setInputValue] = useState('')
     const [selectedCustomer, setSelectedCustomer] =
         useState<UserSearchResult | null>(null)
@@ -36,6 +41,12 @@ export default function PhoneDeviceDialer() {
         data: data,
         reset: resetMutation,
     } = useSearch()
+
+    const makeCall = useDialerOutboundCall({
+        inputValue,
+        selectedCustomer,
+        selectedIntegration,
+    })
 
     const customers = data?.data.data
     const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
@@ -79,6 +90,9 @@ export default function PhoneDeviceDialer() {
             setPhoneNumberInputError('Enter a valid number')
             return
         }
+
+        makeCall()
+        onCallInitiated()
     }
 
     return (

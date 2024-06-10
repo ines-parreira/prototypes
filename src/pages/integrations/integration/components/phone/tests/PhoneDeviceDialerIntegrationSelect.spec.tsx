@@ -1,12 +1,18 @@
 import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 import {PhoneIntegration} from 'models/integration/types'
+import {assumeMock} from 'utils/testing'
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
+import usePhoneNumbers from '../usePhoneNumbers'
+
+jest.mock('pages/integrations/integration/components/phone/usePhoneNumbers')
+
+const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 
 describe('PhoneDeviceDialerIntegrationSelect', () => {
     const options = [
-        {id: 1, name: 'Integration 1'},
-        {id: 2, name: 'Integration 2'},
+        {id: 1, name: 'Integration 1', meta: {}},
+        {id: 2, name: 'Integration 2', meta: {}},
     ] as PhoneIntegration[]
     const value = options[0]
     const onChange = jest.fn()
@@ -19,6 +25,14 @@ describe('PhoneDeviceDialerIntegrationSelect', () => {
                 options={options}
             />
         )
+
+    beforeEach(() => {
+        usePhoneNumbersMock.mockReturnValue({
+            getPhoneNumberById: (id: number) => ({
+                phone_number_friendly: `phone_number_friendly_${id}`,
+            }),
+        } as any)
+    })
 
     it('renders the button with the selected integration name', () => {
         renderComponent()

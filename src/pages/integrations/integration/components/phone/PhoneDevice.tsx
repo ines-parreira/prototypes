@@ -21,7 +21,7 @@ export default function PhoneDevice({isOpen, setIsOpen, target}: Props) {
             className={css.dropdownWrapper}
         >
             <DropdownBody className={css.dropdownBody}>
-                <PhoneDeviceDialer />
+                <PhoneDeviceDialer onCallInitiated={() => setIsOpen(false)} />
             </DropdownBody>
         </Dropdown>
     )

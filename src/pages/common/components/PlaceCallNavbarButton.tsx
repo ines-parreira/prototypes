@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import classNames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import navbarCss from 'assets/css/navbar.less'
@@ -21,6 +21,12 @@ export default function PlaceCallNavbarButton() {
     const hasPhone = useHasPhone()
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
+
+    useEffect(() => {
+        if (!device) {
+            setIsDeviceVisible(false)
+        }
+    }, [device])
 
     if (!isOutboundDialerEnabled || !isDesktopDevice() || !hasPhone) {
         return null

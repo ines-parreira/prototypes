@@ -7,6 +7,7 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import {PhoneIntegration} from 'models/integration/types'
 
 import css from './PhoneDevice.less'
+import usePhoneNumbers from './usePhoneNumbers'
 
 type Props = {
     value: PhoneIntegration
@@ -20,6 +21,8 @@ export default function PhoneDeviceDialerIntegrationSelect({
     options,
 }: Props) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+    const {getPhoneNumberById} = usePhoneNumbers()
 
     const targetRef = useRef<HTMLButtonElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -43,25 +46,31 @@ export default function PhoneDeviceDialerIntegrationSelect({
                 onToggle={setIsDropdownOpen}
                 ref={floatingRef}
                 target={targetRef}
-                value={value?.name}
+                value={value?.id}
                 placement="bottom"
             >
                 <DropdownBody>
-                    {options?.map((option) => (
-                        <DropdownItem
-                            key={option.id}
-                            option={{
-                                label: option.name,
-                                value: option.id,
-                            }}
-                            onClick={() => onChange(option)}
-                            shouldCloseOnSelect
-                            className={css.integrationSelectorItem}
-                        >
-                            {option.meta?.emoji}
-                            <div>{option.name}</div>
-                        </DropdownItem>
-                    ))}
+                    {options?.map((option) => {
+                        const friendlyAddress = getPhoneNumberById(
+                            option.meta.phone_number_id
+                        )?.phone_number_friendly
+                        return (
+                            <DropdownItem
+                                key={option.id}
+                                option={{
+                                    label: option.name,
+                                    value: option.id,
+                                }}
+                                onClick={() => onChange(option)}
+                                shouldCloseOnSelect
+                                className={css.integrationSelectorItem}
+                            >
+                                {option.meta.emoji}
+                                <div>{option.name}</div>
+                                {friendlyAddress && `(${friendlyAddress})`}
+                            </DropdownItem>
+                        )
+                    })}
                 </DropdownBody>
             </Dropdown>
         </>
