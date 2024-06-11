@@ -11,7 +11,7 @@ type Props = {
 }
 
 const ContactFormFlowsBanner = ({contactFormId, shopName}: Props) => {
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
     const {automationSettings, isFetchPending} =
         useContactFormsAutomationSettings(contactFormId)
     const hasFlowsEnabled = automationSettings.workflows.some(
@@ -24,7 +24,7 @@ const ContactFormFlowsBanner = ({contactFormId, shopName}: Props) => {
 
     return (
         <FlowsBanner
-            isSubscribedToAutomation={!!automationProduct}
+            isSubscribedToAutomation={!!currentAutomatePlan}
             contactFormId={contactFormId}
             shopName={shopName}
         />

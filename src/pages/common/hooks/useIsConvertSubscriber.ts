@@ -5,10 +5,10 @@ import {getCurrentConvertProduct} from 'state/billing/selectors'
 
 export function useIsConvertSubscriber(): boolean {
     const flags = useFlags()
-    const convertProduct = useAppSelector(getCurrentConvertProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
 
     return (
         Boolean(flags[FeatureFlagKey.RevenueBetaTesters]) ||
-        Boolean(convertProduct)
+        Boolean(currentConvertPlan)
     )
 }

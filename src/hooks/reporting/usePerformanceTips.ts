@@ -9,9 +9,9 @@ export const usePerformanceTips = (
     metric: MetricName,
     value: number | null
 ): Tip | null => {
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const currentPlanName = helpdeskPrice
-        ? convertLegacyPlanNameToPublicPlanName(helpdeskPrice.name)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentPlanName = currentHelpdeskPlan
+        ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
         : null
     return useMemo(
         () => getPerformanceTip(metric, value, currentPlanName),

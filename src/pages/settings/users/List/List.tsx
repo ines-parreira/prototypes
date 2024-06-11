@@ -52,8 +52,8 @@ const UserList = () => {
 
     const {data: {data: agents = []} = {}} = paginatedAgents.data ?? {}
 
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const isStarterPlan = isStarterTierPrice(helpdeskPrice)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const isStarterPlan = isStarterTierPrice(currentHelpdeskPlan)
 
     return (
         <div className={cs('full-width')}>

@@ -13,33 +13,33 @@ interface ScheduledDowngrade {
 }
 
 export default function useScheduledDowngrades() {
-    const products = useAppSelector(getProducts)
-    const pricesMap = useAppSelector(getPricesMap)
+    const availablePlansByProduct = useAppSelector(getProducts)
+    const availablePlansMap = useAppSelector(getPricesMap)
 
     const [state, doFetch] = useAsyncFn(async () => {
         const sub = await fetchSubscription()
 
         const downgrades: ScheduledDowngrade[] = (sub.downgrades || [])
             .filter((downgrade) => {
-                const fromPrice = pricesMap[downgrade.current_price_id]
+                const fromPrice = availablePlansMap[downgrade.current_price_id]
                 return !!fromPrice
             })
             .map((downgrade) => {
-                const fromPrice = pricesMap[downgrade.current_price_id]
+                const fromPrice = availablePlansMap[downgrade.current_price_id]
                 return {
                     datetime: sub.current_billing_cycle_end_datetime,
                     from: fromPrice,
-                    product: products.find(
+                    product: availablePlansByProduct.find(
                         (product) => product.id === fromPrice.product_id
                     ) as Product,
                     to: downgrade.scheduled_price_id
-                        ? pricesMap[downgrade.scheduled_price_id]
+                        ? availablePlansMap[downgrade.scheduled_price_id]
                         : null,
                 }
             })
 
         return downgrades
-    }, [pricesMap, products])
+    }, [availablePlansMap, availablePlansByProduct])
 
     useEffectOnce(() => {
         void doFetch()

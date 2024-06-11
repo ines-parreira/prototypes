@@ -86,10 +86,13 @@ export default function All() {
     const integrations = useAppSelector(getIntegrations)
     const integrationsList = useAppSelector(getIntegrationsList)
     const features = useAppSelector(getCurrentProductsFeatures)
-    const automationPrices = useAppSelector(getAutomationPrices)
-    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
+    const automateAvailablePlans = useAppSelector(getAutomationPrices)
+    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices)
 
-    const prices = [...automationPrices, ...helpdeskPrices]
+    const availablePlans = [
+        ...automateAvailablePlans,
+        ...helpdeskAvailablePlans,
+    ]
 
     const search =
         useSearch<{[SEARCH_URL_PARAM]: string; [CATEGORY_URL_PARAM]: string}>()
@@ -147,7 +150,7 @@ export default function All() {
             filteredIntegrationsList,
             integrations,
             features,
-            prices
+            availablePlans
         ),
         ...integrationApps,
     ]

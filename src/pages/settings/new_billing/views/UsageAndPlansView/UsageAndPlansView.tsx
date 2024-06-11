@@ -67,20 +67,21 @@ const UsageAndPlansView = ({
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
     const interval = useAppSelector(getCurrentHelpdeskInterval)
-    const voiceProduct = useAppSelector(getCurrentVoiceProduct)
-    const smsProduct = useAppSelector(getCurrentSMSProduct)
-    const convertProduct = useAppSelector(getCurrentConvertProduct)
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
-    const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
+    const currentVoicePlan = useAppSelector(getCurrentVoiceProduct)
+    const currentSmsPlan = useAppSelector(getCurrentSMSProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
     const convertStatus = useGetConvertStatus()
 
     const isIntervalMonthly = interval === INTERVAL.Month
-    const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
-    const isSubscribedToVoiceOrSMS = !!voiceProduct || !!smsProduct
+    const isSubscribedToHelpdeskStarter =
+        currentHelpdeskPlan?.name === 'Starter'
+    const isSubscribedToVoiceOrSMS = !!currentVoicePlan || !!currentSmsPlan
 
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const isAAOLegacy = !!automationProduct
-        ? isLegacyAutomate(automationProduct)
+    const isAAOLegacy = !!currentAutomatePlan
+        ? isLegacyAutomate(currentAutomatePlan)
         : false
     const trialingStart = moment(
         currentSubscription.get('trial_start_datetime')
@@ -116,16 +117,16 @@ const UsageAndPlansView = ({
     useEffect(() => {
         if (isTrialingSubscription) {
             if (hasCreditCard) {
-                const plan = helpdeskProduct?.name || ''
+                const helpdeskPlanName = currentHelpdeskPlan?.name || ''
                 const subscriptionStartDate = moment(trialPeriodEnd)
                     .add(1, 'day')
                     .format(DATE_FORMAT)
 
                 const otherPlans = [
-                    !!automationProduct &&
+                    !!currentAutomatePlan &&
                         PRODUCT_INFO[ProductType.Automation].title,
-                    !!voiceProduct && PRODUCT_INFO[ProductType.Voice].title,
-                    !!smsProduct && PRODUCT_INFO[ProductType.SMS].title,
+                    !!currentVoicePlan && PRODUCT_INFO[ProductType.Voice].title,
+                    !!currentSmsPlan && PRODUCT_INFO[ProductType.SMS].title,
                 ]
                     .filter(Boolean)
                     .join(', ')
@@ -138,7 +139,7 @@ const UsageAndPlansView = ({
 
                 void dispatch(
                     notify({
-                        message: `Your subscription to the ${plan} plan ${
+                        message: `Your subscription to the ${helpdeskPlanName} plan ${
                             otherPlans.length > 0 ? `with ${otherPlans}` : ''
                         } starts on <b>${subscriptionStartDate}</b>.`,
                         allowHTML: true,
@@ -165,17 +166,17 @@ const UsageAndPlansView = ({
             }
         }
     }, [
-        automationProduct,
+        currentAutomatePlan,
         dispatch,
         hasCreditCard,
         shouldPayWithShopify,
-        helpdeskProduct?.name,
+        currentHelpdeskPlan?.name,
         history,
         isTrialingSubscription,
         showTrialBanner,
-        smsProduct,
+        currentSmsPlan,
         trialPeriodEnd,
-        voiceProduct,
+        currentVoicePlan,
     ])
 
     return (
@@ -296,40 +297,40 @@ const UsageAndPlansView = ({
             <div className={css.productsGridContainer}>
                 <ProductCard
                     type={ProductType.Helpdesk}
-                    product={helpdeskProduct}
+                    plan={currentHelpdeskPlan}
                     usage={currentUsage?.helpdesk}
                     banner={helpdeskBanner}
                     isDisabled={
                         isSubscribedToHelpdeskStarter ||
-                        (!helpdeskProduct && !!scheduledToCancelAt)
+                        (!currentHelpdeskPlan && !!scheduledToCancelAt)
                     }
                 />
                 <ProductCard
                     type={ProductType.Automation}
-                    product={automationProduct}
+                    plan={currentAutomatePlan}
                     usage={currentUsage?.automation}
-                    isDisabled={!automationProduct && !!scheduledToCancelAt}
+                    isDisabled={!currentAutomatePlan && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.Voice}
-                    product={voiceProduct}
+                    plan={currentVoicePlan}
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
-                    isDisabled={!voiceProduct && !!scheduledToCancelAt}
+                    isDisabled={!currentVoicePlan && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.SMS}
-                    product={smsProduct}
+                    plan={currentSmsPlan}
                     usage={currentUsage?.sms}
                     banner={smsBanner}
-                    isDisabled={!smsProduct && !!scheduledToCancelAt}
+                    isDisabled={!currentSmsPlan && !!scheduledToCancelAt}
                 />
                 <ProductCard
                     type={ProductType.Convert}
-                    product={convertProduct}
+                    plan={currentConvertPlan}
                     usage={currentUsage?.convert}
                     banner={convertBanner}
-                    isDisabled={!convertProduct && !!scheduledToCancelAt}
+                    isDisabled={!currentConvertPlan && !!scheduledToCancelAt}
                     autoUpgradeEnabled={Boolean(
                         convertStatus && convertStatus.auto_upgrade_enabled
                     )}

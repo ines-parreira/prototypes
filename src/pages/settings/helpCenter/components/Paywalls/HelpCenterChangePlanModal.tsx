@@ -34,14 +34,16 @@ const HelpCenterChangePlanModal = ({
     onClose,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
     const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
-        !!currentAutomationPrice
+        !!currentAutomatePlan
     )
-    const pricesMap = useAppSelector(getAutomationPricesMap)
+    const availableAutomatePlansMap = useAppSelector(getAutomationPricesMap)
     const automationPrice = useMemo(
-        () => helpdeskPrice.addons && pricesMap[helpdeskPrice.addons[0]],
-        [helpdeskPrice.addons, pricesMap]
+        () =>
+            helpdeskPrice.addons &&
+            availableAutomatePlansMap[helpdeskPrice.addons[0]],
+        [helpdeskPrice.addons, availableAutomatePlansMap]
     )
     const addOnAmount = useMemo(
         () =>

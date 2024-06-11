@@ -98,28 +98,31 @@ export const useBillingPlans = ({
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
 
     // Helpdesk
-    const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
-    const helpdeskPrices = useAppSelector(getHelpdeskPrices).filter(
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices).filter(
         (price) =>
             price.num_quota_tickets &&
             (filterByInterval ? price.interval === interval : true)
     )
-    const helpdeskPriceIds = useMemo(
-        () => helpdeskPrices.map((price) => price.price_id),
-        [helpdeskPrices]
+    const helpdeskAvailablePlansPriceIds = useMemo(
+        () => helpdeskAvailablePlans.map((plan) => plan.price_id),
+        [helpdeskAvailablePlans]
     )
     const helpdeskCurrentPriceIdIndex = useMemo(
-        () => helpdeskPriceIds.indexOf(helpdeskProduct?.price_id ?? ''),
-        [helpdeskPriceIds, helpdeskProduct]
+        () =>
+            helpdeskAvailablePlansPriceIds.indexOf(
+                currentHelpdeskPlan?.price_id ?? ''
+            ),
+        [helpdeskAvailablePlansPriceIds, currentHelpdeskPlan]
     )
 
     // Automate
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
-    const automationPrices = useAppSelector(
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const automateAvailablePlans = useAppSelector(
         getAutomationProduct
     )?.prices.filter((price) => {
         const isCurrentPriceLegacy =
-            automationProduct && !automationProduct.num_quota_tickets
+            currentAutomatePlan && !currentAutomatePlan.num_quota_tickets
         return (
             price &&
             (filterByInterval ? price.interval === interval : true) &&
@@ -127,8 +130,8 @@ export const useBillingPlans = ({
         )
     })
     const automationHasLegacyPrice = useMemo(
-        () => automationPrices?.some((price) => !price.num_quota_tickets),
-        [automationPrices]
+        () => automateAvailablePlans?.some((price) => !price.num_quota_tickets),
+        [automateAvailablePlans]
     )
     const automationInitialIndex = Math.min(
         5,
@@ -136,31 +139,34 @@ export const useBillingPlans = ({
     )
 
     // Voice
-    const voiceProduct = useAppSelector(getCurrentVoiceProduct)
-    const voicePrices = useAppSelector(getVoiceProduct)?.prices.filter(
+    const currentVoicePlan = useAppSelector(getCurrentVoiceProduct)
+    const voiceAvailablePlans = useAppSelector(getVoiceProduct)?.prices.filter(
         (price) => (filterByInterval ? price.interval === interval : true)
     )
 
     const voiceInitialIndex =
-        voicePrices?.findIndex((price) => !!price.amount) ?? 0
+        voiceAvailablePlans?.findIndex((price) => !!price.amount) ?? 0
 
     // SMS
-    const smsProduct = useAppSelector(getCurrentSMSProduct)
-    const smsPrices = useAppSelector(getSMSProduct)?.prices.filter((price) =>
-        filterByInterval ? price.interval === interval : true
+    const currentSmsPlan = useAppSelector(getCurrentSMSProduct)
+    const smsAvailablePlans = useAppSelector(getSMSProduct)?.prices.filter(
+        (price) => (filterByInterval ? price.interval === interval : true)
     )
 
-    const smsInitialIndex = smsPrices?.findIndex((price) => !!price.amount) ?? 0
+    const smsInitialIndex =
+        smsAvailablePlans?.findIndex((price) => !!price.amount) ?? 0
 
     // Convert
-    const convertProduct = useAppSelector(getCurrentConvertProduct)
-    const convertPrices = useAppSelector(getConvertProduct)?.prices.filter(
-        (price) => (filterByInterval ? price.interval === interval : true)
+    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const convertAvailablePlans = useAppSelector(
+        getConvertProduct
+    )?.prices.filter((price) =>
+        filterByInterval ? price.interval === interval : true
     )
     const convertInitialIndex = getDefaultConvertPriceIndex(
         interval,
-        convertPrices,
-        helpdeskProduct?.name
+        convertAvailablePlans,
+        currentHelpdeskPlan?.name
     )
 
     const {client: convertClient} = useConvertApi()
@@ -172,29 +178,34 @@ export const useBillingPlans = ({
     // Selected plans
     const [selectedPlans, setSelectedPlans] = useState<SelectedPlans>({
         [ProductType.Helpdesk]: {
-            plan: helpdeskProduct || helpdeskPrices?.[0],
+            plan: currentHelpdeskPlan || helpdeskAvailablePlans?.[0],
             isSelected:
-                !!helpdeskProduct || selectedProduct === ProductType.Helpdesk,
+                !!currentHelpdeskPlan ||
+                selectedProduct === ProductType.Helpdesk,
         },
         [ProductType.Automation]: {
             plan:
-                automationProduct || automationPrices?.[automationInitialIndex],
+                currentAutomatePlan ||
+                automateAvailablePlans?.[automationInitialIndex],
             isSelected:
-                !!automationProduct ||
+                !!currentAutomatePlan ||
                 selectedProduct === ProductType.Automation,
         },
         [ProductType.Voice]: {
-            plan: voiceProduct || voicePrices?.[voiceInitialIndex],
-            isSelected: !!voiceProduct || selectedProduct === ProductType.Voice,
+            plan: currentVoicePlan || voiceAvailablePlans?.[voiceInitialIndex],
+            isSelected:
+                !!currentVoicePlan || selectedProduct === ProductType.Voice,
         },
         [ProductType.SMS]: {
-            plan: smsProduct || smsPrices?.[smsInitialIndex],
-            isSelected: !!smsProduct || selectedProduct === ProductType.SMS,
+            plan: currentSmsPlan || smsAvailablePlans?.[smsInitialIndex],
+            isSelected: !!currentSmsPlan || selectedProduct === ProductType.SMS,
         },
         [ProductType.Convert]: {
-            plan: convertProduct || convertPrices?.[convertInitialIndex],
+            plan:
+                currentConvertPlan ||
+                convertAvailablePlans?.[convertInitialIndex],
             isSelected:
-                !!convertProduct || selectedProduct === ProductType.Convert,
+                !!currentConvertPlan || selectedProduct === ProductType.Convert,
             autoUpgrade: convertAutoUpgrade,
         },
     })
@@ -210,98 +221,105 @@ export const useBillingPlans = ({
     // Total amount for existing products
     const totalProductAmount = useMemo(() => {
         return (
-            (helpdeskProduct?.amount ?? 0) +
-            (automationProduct?.amount ?? 0) +
-            (voiceProduct?.amount ?? 0) +
-            (smsProduct?.amount ?? 0)
+            (currentHelpdeskPlan?.amount ?? 0) +
+            (currentAutomatePlan?.amount ?? 0) +
+            (currentVoicePlan?.amount ?? 0) +
+            (currentSmsPlan?.amount ?? 0)
         )
-    }, [helpdeskProduct, automationProduct, voiceProduct, smsProduct])
+    }, [
+        currentHelpdeskPlan,
+        currentAutomatePlan,
+        currentVoicePlan,
+        currentSmsPlan,
+    ])
 
     const anyProductChanged = useMemo(
         () =>
-            (helpdeskProduct?.price_id !==
+            (currentHelpdeskPlan?.price_id !==
                 selectedPlans[ProductType.Helpdesk].plan?.price_id &&
                 selectedPlans[ProductType.Helpdesk].isSelected) ||
-            (automationProduct?.price_id !==
+            (currentAutomatePlan?.price_id !==
                 selectedPlans[ProductType.Automation].plan?.price_id &&
                 selectedPlans[ProductType.Automation].isSelected) ||
-            (!!automationProduct?.price_id &&
+            (!!currentAutomatePlan?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected) ||
-            (voiceProduct?.price_id !==
+            (currentVoicePlan?.price_id !==
                 selectedPlans[ProductType.Voice].plan?.price_id &&
                 selectedPlans[ProductType.Voice].isSelected) ||
-            (!!voiceProduct?.price_id &&
-                voiceProduct.price_id ===
+            (!!currentVoicePlan?.price_id &&
+                currentVoicePlan.price_id ===
                     selectedPlans[ProductType.Voice].plan?.price_id &&
                 !selectedPlans[ProductType.Voice].isSelected) ||
-            (smsProduct?.price_id !==
+            (currentSmsPlan?.price_id !==
                 selectedPlans[ProductType.SMS].plan?.price_id &&
                 selectedPlans[ProductType.SMS].isSelected) ||
-            (!!smsProduct?.price_id &&
-                smsProduct.price_id ===
+            (!!currentSmsPlan?.price_id &&
+                currentSmsPlan.price_id ===
                     selectedPlans[ProductType.SMS].plan?.price_id &&
                 !selectedPlans[ProductType.SMS].isSelected) ||
-            (convertProduct?.price_id !==
+            (currentConvertPlan?.price_id !==
                 selectedPlans[ProductType.Convert].plan?.price_id &&
                 selectedPlans[ProductType.Convert].isSelected) ||
-            (!!convertProduct?.price_id &&
-                convertProduct.price_id ===
+            (!!currentConvertPlan?.price_id &&
+                currentConvertPlan.price_id ===
                     selectedPlans[ProductType.Convert].plan?.price_id &&
                 !selectedPlans[ProductType.Convert].isSelected),
         [
-            helpdeskProduct,
-            automationProduct,
-            voiceProduct,
-            smsProduct,
-            convertProduct,
+            currentHelpdeskPlan,
+            currentAutomatePlan,
+            currentVoicePlan,
+            currentSmsPlan,
+            currentConvertPlan,
             selectedPlans,
         ]
     )
 
     const anyDowngradedPlanSelected = useMemo(
         () =>
-            (helpdeskProduct &&
-                helpdeskProduct.amount >
+            (currentHelpdeskPlan &&
+                currentHelpdeskPlan.amount >
                     (selectedPlans[ProductType.Helpdesk].plan?.amount || 0)) ||
-            (automationProduct &&
-                automationProduct.amount >
+            (currentAutomatePlan &&
+                currentAutomatePlan.amount >
                     (selectedPlans[ProductType.Automation].plan?.amount ||
                         0)) ||
-            (voiceProduct &&
-                voiceProduct.amount >
+            (currentVoicePlan &&
+                currentVoicePlan.amount >
                     (selectedPlans[ProductType.Voice].plan?.amount || 0)) ||
-            (smsProduct &&
-                smsProduct.amount >
+            (currentSmsPlan &&
+                currentSmsPlan.amount >
                     (selectedPlans[ProductType.SMS].plan?.amount || 0)) ||
-            (convertProduct &&
-                convertProduct.amount >
+            (currentConvertPlan &&
+                currentConvertPlan.amount >
                     (selectedPlans[ProductType.Convert].plan?.amount || 0)),
         [
             selectedPlans,
-            helpdeskProduct,
-            automationProduct,
-            voiceProduct,
-            smsProduct,
-            convertProduct,
+            currentHelpdeskPlan,
+            currentAutomatePlan,
+            currentVoicePlan,
+            currentSmsPlan,
+            currentConvertPlan,
         ]
     )
 
     const anyNewProductSelected = useMemo(
         () =>
             (selectedPlans[ProductType.Helpdesk].isSelected &&
-                !helpdeskProduct) ||
+                !currentHelpdeskPlan) ||
             (selectedPlans[ProductType.Automation].isSelected &&
-                !automationProduct) ||
-            (selectedPlans[ProductType.Voice].isSelected && !voiceProduct) ||
-            (selectedPlans[ProductType.SMS].isSelected && !smsProduct) ||
-            (selectedPlans[ProductType.Convert].isSelected && !convertProduct),
+                !currentAutomatePlan) ||
+            (selectedPlans[ProductType.Voice].isSelected &&
+                !currentVoicePlan) ||
+            (selectedPlans[ProductType.SMS].isSelected && !currentSmsPlan) ||
+            (selectedPlans[ProductType.Convert].isSelected &&
+                !currentConvertPlan),
         [
             selectedPlans,
-            helpdeskProduct,
-            automationProduct,
-            voiceProduct,
-            smsProduct,
-            convertProduct,
+            currentHelpdeskPlan,
+            currentAutomatePlan,
+            currentVoicePlan,
+            currentSmsPlan,
+            currentConvertPlan,
         ]
     )
 
@@ -315,7 +333,7 @@ export const useBillingPlans = ({
         [selectedPlans]
     )
 
-    const isIntervalChanged = useMemo(
+    const isPlanCadenceChanged = useMemo(
         () => interval !== selectedPlans[ProductType.Helpdesk].plan?.interval,
         [interval, selectedPlans]
     )
@@ -355,9 +373,9 @@ export const useBillingPlans = ({
                 if (key === ProductType.SMS || key === ProductType.Voice) {
                     if (
                         selectedPlans[key].plan?.internal_id !==
-                            smsProduct?.internal_id &&
+                            currentSmsPlan?.internal_id &&
                         selectedPlans[key].plan?.internal_id !==
-                            voiceProduct?.internal_id
+                            currentVoicePlan?.internal_id
                     ) {
                         plansToBeHandledManually.push(key)
                     }
@@ -390,7 +408,7 @@ export const useBillingPlans = ({
                     to: BILLING_SUPPORT_EMAIL,
                     account: domain,
                     freeTrial: isFreeTrial,
-                    helpdeskPlan: helpdeskProduct?.name ?? '',
+                    helpdeskPlan: currentHelpdeskPlan?.name ?? '',
                 })
                 void dispatch(
                     notify({
@@ -420,34 +438,34 @@ export const useBillingPlans = ({
         domain,
         from,
         selectedPlans,
-        smsProduct?.internal_id,
-        voiceProduct?.internal_id,
+        currentSmsPlan?.internal_id,
+        currentVoicePlan?.internal_id,
         isFreeTrial,
-        helpdeskProduct?.name,
+        currentHelpdeskPlan?.name,
     ])
 
     const handleStripePlansChange = useCallback(async () => {
         const plansToBeUpdated: ProductData = {}
         const notifications: Notification[] = []
 
-        const isNewHelpdeskProduct =
+        const isNewHelpdeskPlan =
             selectedPlans[ProductType.Helpdesk].plan?.price_id !==
-            helpdeskProduct?.price_id
+            currentHelpdeskPlan?.price_id
 
-        const isNewAutomationProduct =
+        const isNewAutomationPlan =
             selectedPlans[ProductType.Automation].plan?.price_id !==
-                automationProduct?.price_id ||
-            (automationProduct?.price_id &&
+                currentAutomatePlan?.price_id ||
+            (currentAutomatePlan?.price_id &&
                 !selectedPlans[ProductType.Automation].isSelected)
 
-        const isNewConvertProduct =
+        const hasConvertPlanChanged =
             selectedPlans[ProductType.Convert].plan?.price_id !==
-                convertProduct?.price_id ||
-            (convertProduct?.price_id &&
+                currentConvertPlan?.price_id ||
+            (currentConvertPlan?.price_id &&
                 !selectedPlans[ProductType.Convert].isSelected)
 
         // Set notification when interval is changing
-        if (isIntervalChanged) {
+        if (isPlanCadenceChanged) {
             notifications.push({
                 message: 'Your billing frequency has been updated to yearly',
                 status: NotificationStatus.Success,
@@ -459,10 +477,10 @@ export const useBillingPlans = ({
         }
 
         // handle subscribe for Helpdesk plan
-        if (isNewHelpdeskProduct && !isIntervalChanged) {
+        if (isNewHelpdeskPlan && !isPlanCadenceChanged) {
             // Set the notification
             const notification = setHelpdeskNotification({
-                oldProduct: helpdeskProduct,
+                oldProduct: currentHelpdeskPlan,
                 newProduct: selectedPlans[ProductType.Helpdesk].plan,
                 periodEnd,
                 onClick: () => {
@@ -484,9 +502,9 @@ export const useBillingPlans = ({
 
         // handle subscribe for Automate plan
         if (selectedPlans[ProductType.Automation].isSelected) {
-            if (isNewAutomationProduct && !isIntervalChanged) {
+            if (isNewAutomationPlan && !isPlanCadenceChanged) {
                 const notification = setAutomationNotification({
-                    oldProduct: automationProduct,
+                    oldProduct: currentAutomatePlan,
                     newProduct: selectedPlans[ProductType.Automation].plan,
                     periodEnd,
                     onClick: () => {
@@ -511,9 +529,9 @@ export const useBillingPlans = ({
 
         // handle subscribe for Convert plan
         if (selectedPlans[ProductType.Convert].isSelected) {
-            if (isNewConvertProduct && !isIntervalChanged) {
+            if (hasConvertPlanChanged && !isPlanCadenceChanged) {
                 const notification = setConvertNotification({
-                    oldProduct: convertProduct,
+                    oldProduct: currentConvertPlan,
                     newProduct: selectedPlans[ProductType.Convert].plan,
                     periodEnd,
                     onClick: () => {
@@ -527,9 +545,9 @@ export const useBillingPlans = ({
                 !!notification && notifications.push(notification)
             }
 
-            if (isNewConvertProduct) {
+            if (hasConvertPlanChanged) {
                 handleConvertProductDowngraded(
-                    convertProduct,
+                    currentConvertPlan,
                     selectedPlans[ProductType.Convert].plan,
                     domain
                 )
@@ -549,7 +567,7 @@ export const useBillingPlans = ({
             // Automate has been removed while in free trial
             if (
                 notifications.length === 0 &&
-                !!automationProduct &&
+                !!currentAutomatePlan &&
                 selectedPlans[ProductType.Automation].isSelected === false
             ) {
                 notifications.push({
@@ -578,10 +596,10 @@ export const useBillingPlans = ({
         }
     }, [
         selectedPlans,
-        helpdeskProduct,
-        automationProduct,
-        convertProduct,
-        isIntervalChanged,
+        currentHelpdeskPlan,
+        currentAutomatePlan,
+        currentConvertPlan,
+        isPlanCadenceChanged,
         periodEnd,
         isFreeTrial,
         history,
@@ -666,19 +684,19 @@ export const useBillingPlans = ({
         anyDowngradedPlanSelected,
         anyNewProductSelected,
         totalProductAmount,
-        helpdeskProduct,
-        helpdeskPrices,
-        automationProduct,
-        automationPrices,
+        helpdeskProduct: currentHelpdeskPlan,
+        helpdeskPrices: helpdeskAvailablePlans,
+        automationProduct: currentAutomatePlan,
+        automationPrices: automateAvailablePlans,
         automationInitialIndex,
-        voiceProduct,
-        voicePrices,
+        voiceProduct: currentVoicePlan,
+        voicePrices: voiceAvailablePlans,
         voiceInitialIndex,
-        smsProduct,
-        smsPrices,
+        smsProduct: currentSmsPlan,
+        smsPrices: smsAvailablePlans,
         smsInitialIndex,
-        convertProduct,
-        convertPrices,
+        convertProduct: currentConvertPlan,
+        convertPrices: convertAvailablePlans,
         convertInitialIndex,
         selectedPlans,
         setSelectedPlans,

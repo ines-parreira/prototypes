@@ -28,8 +28,8 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
     throw new Error('discount amount must be a number between 0 and < 1')
 }
 
-export function isHelpdeskPrice(price: Price): price is HelpdeskPrice {
-    return 'public' in price
+export function isHelpdeskPrice(plan: Price): plan is HelpdeskPrice {
+    return plan.product === ProductType.Helpdesk
 }
 
 export function isAutomationPrice(price: Price): price is AutomationPrice {

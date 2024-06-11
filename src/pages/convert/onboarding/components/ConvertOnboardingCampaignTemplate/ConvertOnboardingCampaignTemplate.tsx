@@ -41,17 +41,17 @@ const ConvertOnboardingCampaignTemplate = ({
     integrationId,
     selected,
 }: Props) => {
-    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
 
     const estimatedRevenue = useMemo(() => {
         const planName =
-            currentHelpdeskPrice &&
-            convertLegacyPlanNameToPublicPlanName(currentHelpdeskPrice.name)
+            currentHelpdeskPlan &&
+            convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
 
         if (template.estimation && planName && template.estimation[planName]) {
             return template.estimation[planName]
         }
-    }, [currentHelpdeskPrice, template])
+    }, [currentHelpdeskPlan, template])
 
     return (
         <div className={css.container}>

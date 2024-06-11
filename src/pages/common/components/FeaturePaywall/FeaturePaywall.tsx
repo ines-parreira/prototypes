@@ -26,20 +26,24 @@ const FeaturePaywall = ({
     feature,
     paywallConfigs = defaultPaywallConfigs,
 }: Props) => {
-    const automationPrices = useAppSelector(getAutomationPrices)
-    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
-    const isProductLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
-    const isProductCustom = useAppSelector(getIsCurrentHelpdeskCustom)
-    const helpdeskName = useAppSelector(getCurrentHelpdeskName)
+    const automateAvailablePlans = useAppSelector(getAutomationPrices)
+    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices)
+    const isLegacyPlan = useAppSelector(getIsCurrentHelpdeskLegacy)
+    const isCustomPlan = useAppSelector(getIsCurrentHelpdeskCustom)
+    const currentHelpdeskPlanName = useAppSelector(getCurrentHelpdeskName)
 
-    const prices = [...automationPrices, ...helpdeskPrices]
+    const availablePlans = [
+        ...automateAvailablePlans,
+        ...helpdeskAvailablePlans,
+    ]
 
-    const shouldKeepPrice =
-        isProductCustom ||
-        (isProductLegacy &&
-            !!prices.find(
+    const shouldKeepPlan =
+        isCustomPlan ||
+        (isLegacyPlan &&
+            !!availablePlans.find(
                 (price) =>
-                    price.name.split(' ')[0] === helpdeskName?.split(' ')[0] &&
+                    price.name.split(' ')[0] ===
+                        currentHelpdeskPlanName?.split(' ')[0] &&
                     (
                         price.features as Record<
                             AccountFeature,
@@ -47,24 +51,24 @@ const FeaturePaywall = ({
                         >
                     )[feature]?.enabled
             ))
-    const requiredPriceName = isProductCustom
+    const requiredPlanName = isCustomPlan
         ? 'Enterprise'
-        : shouldKeepPrice
-        ? helpdeskName?.split(' ')[0]
-        : getCheapestPriceNameForFeature(feature, prices || {})
+        : shouldKeepPlan
+        ? currentHelpdeskPlanName?.split(' ')[0]
+        : getCheapestPriceNameForFeature(feature, availablePlans || {})
     const config = paywallConfigs[feature]!
 
-    return config && requiredPriceName ? (
+    return config && requiredPlanName ? (
         <Paywall
             pageHeader={config.pageHeader}
-            requiredUpgrade={config.requiredUpgrade ?? requiredPriceName}
+            requiredUpgrade={config.requiredUpgrade ?? requiredPlanName}
             upgradeType={config.upgradeType ?? UpgradeType.Plan}
             header={config.header}
             description={config.description}
             previewImage={config.preview}
-            shouldKeepPrice={shouldKeepPrice}
+            shouldKeepPrice={shouldKeepPlan}
             paywallTheme={
-                config.paywallTheme ?? (requiredPriceName as PaywallTheme)
+                config.paywallTheme ?? (requiredPlanName as PaywallTheme)
             }
             showUpgradeCta
             customCta={config.customCta}

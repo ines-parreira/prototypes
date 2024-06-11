@@ -30,29 +30,30 @@ import css from './PaymentInformationView.less'
 
 type PaymentInformationViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
-    helpdeskProduct?: HelpdeskPrice
-    automationProduct?: AutomationPrice
-    voiceProduct?: SMSOrVoicePrice
-    smsProduct?: SMSOrVoicePrice
+    currentHelpdeskPlan?: HelpdeskPrice
+    currentAutomatePlan?: AutomationPrice
+    currentVoicePlan?: SMSOrVoicePrice
+    currentSmsPlan?: SMSOrVoicePrice
     isCurrentSubscriptionCanceled: boolean
 }
 
 const PaymentInformationView = ({
     contactBilling,
-    helpdeskProduct,
-    automationProduct,
-    voiceProduct,
-    smsProduct,
+    currentHelpdeskPlan,
+    currentAutomatePlan,
+    currentVoicePlan,
+    currentSmsPlan,
     isCurrentSubscriptionCanceled,
 }: PaymentInformationViewProps) => {
     const dispatch = useAppDispatch()
 
     const interval =
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
-    const isSubscribedToHelpdeskStarter = helpdeskProduct?.name === 'Starter'
+    const isSubscribedToHelpdeskStarter =
+        currentHelpdeskPlan?.name === 'Starter'
     const isAAOLegacy =
-        !!automationProduct && isLegacyAutomate(automationProduct)
-    const isSubscribedToVoiceOrSms = !!voiceProduct || !!smsProduct
+        !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
+    const isSubscribedToVoiceOrSms = !!currentVoicePlan || !!currentSmsPlan
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact
     const card = useAppSelector(creditCard)

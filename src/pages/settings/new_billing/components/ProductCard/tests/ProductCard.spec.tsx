@@ -35,7 +35,7 @@ describe('ProductCard', () => {
             <Provider store={store}>
                 <ProductCard
                     type={ProductType.Helpdesk}
-                    product={basicMonthlyHelpdeskPrice}
+                    plan={basicMonthlyHelpdeskPrice}
                     isDisabled={false}
                 />
             </Provider>
@@ -48,7 +48,7 @@ describe('ProductCard', () => {
             <Provider store={store}>
                 <ProductCard
                     type={ProductType.Automation}
-                    product={basicYearlyAutomationPrice}
+                    plan={basicYearlyAutomationPrice}
                     isDisabled={false}
                 />
             </Provider>

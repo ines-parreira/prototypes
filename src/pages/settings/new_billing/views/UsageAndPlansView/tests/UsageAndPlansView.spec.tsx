@@ -101,7 +101,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                product: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPrice,
                 usage: mockedUsage[ProductType.Helpdesk],
                 banner: helpdeskBanner,
                 isDisabled: false,
@@ -112,7 +112,7 @@ describe('UsageAndPlansView', () => {
             2,
             {
                 type: ProductType.Automation,
-                product: undefined,
+                plan: undefined,
                 usage: null,
                 isDisabled: false,
             },
@@ -122,7 +122,7 @@ describe('UsageAndPlansView', () => {
             3,
             {
                 type: ProductType.Voice,
-                product: undefined,
+                plan: undefined,
                 usage: null,
                 isDisabled: false,
             },
@@ -132,7 +132,7 @@ describe('UsageAndPlansView', () => {
             4,
             {
                 type: ProductType.SMS,
-                product: undefined,
+                plan: undefined,
                 usage: null,
                 isDisabled: false,
             },
@@ -142,7 +142,7 @@ describe('UsageAndPlansView', () => {
             5,
             {
                 type: ProductType.Convert,
-                product: convertPrice1,
+                plan: convertPrice1,
                 usage: mockedUsage[ProductType.Convert],
                 banner: convertBanner,
                 isDisabled: false,
@@ -184,7 +184,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                product: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPrice,
                 usage: mockedUsage[ProductType.Helpdesk],
                 isDisabled: false,
             },
@@ -221,7 +221,7 @@ describe('UsageAndPlansView', () => {
             5,
             {
                 type: ProductType.Convert,
-                product: convertPrice1,
+                plan: convertPrice1,
                 usage: mockedUsage[ProductType.Convert],
                 isDisabled: false,
                 autoUpgradeEnabled: false,
@@ -304,7 +304,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                product: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPrice,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
@@ -317,7 +317,7 @@ describe('UsageAndPlansView', () => {
             2,
             {
                 type: ProductType.Automation,
-                product: undefined,
+                plan: undefined,
                 usage: null,
                 isDisabled: false,
             },
@@ -327,7 +327,7 @@ describe('UsageAndPlansView', () => {
             3,
             {
                 type: ProductType.Voice,
-                product: undefined,
+                plan: undefined,
                 usage: null,
                 isDisabled: false,
             },
@@ -337,7 +337,7 @@ describe('UsageAndPlansView', () => {
             4,
             {
                 type: ProductType.SMS,
-                product: smsPrice1,
+                plan: smsPrice1,
                 usage: alteredBilling.currentProductsUsage[ProductType.SMS],
                 isDisabled: false,
                 banner: smsBanner,
@@ -348,7 +348,7 @@ describe('UsageAndPlansView', () => {
             5,
             {
                 type: ProductType.Convert,
-                product: undefined,
+                plan: undefined,
                 usage: null,
                 isDisabled: false,
                 autoUpgradeEnabled: false,
@@ -422,7 +422,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                product: starterHelpdeskPrice,
+                plan: starterHelpdeskPrice,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
@@ -512,7 +512,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                product: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPrice,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
@@ -524,7 +524,7 @@ describe('UsageAndPlansView', () => {
             2,
             {
                 type: ProductType.Automation,
-                product: legacyBasicAutomationPrice,
+                plan: legacyBasicAutomationPrice,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Automation
                 ],

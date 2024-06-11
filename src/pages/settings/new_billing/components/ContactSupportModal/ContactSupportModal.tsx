@@ -45,7 +45,7 @@ const ContactSupportModal = ({
     const [message, setMessage] = useState(defaultMessage)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const isFreeTrial = useAppSelector(isTrialing)
-    const helpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
     const history = useHistory()
 
     useEffect(() => {
@@ -65,7 +65,7 @@ const ContactSupportModal = ({
                 to,
                 account: domain,
                 freeTrial: isFreeTrial,
-                helpdeskPlan: helpdeskPlan?.name ?? '',
+                helpdeskPlan: currentHelpdeskPlan?.name ?? '',
             })
 
             void dispatch(

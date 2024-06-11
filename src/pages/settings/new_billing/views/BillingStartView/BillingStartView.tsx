@@ -76,11 +76,11 @@ const BillingStartView = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
-    const voiceProduct = useAppSelector(getCurrentVoiceProduct)
-    const smsProduct = useAppSelector(getCurrentSMSProduct)
-    const convertProduct = useAppSelector(getCurrentConvertProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentVoicePlan = useAppSelector(getCurrentVoiceProduct)
+    const currentSmsPlan = useAppSelector(getCurrentSMSProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
     const isPaymentShopify = payment === 'shopify'
@@ -155,7 +155,7 @@ const BillingStartView = () => {
                     return [
                         `Billing request: Enterprise subscription`,
                         `Merchant Helpdesk plan: ${
-                            helpdeskProduct?.name ?? ''
+                            currentHelpdeskPlan?.name ?? ''
                         }`,
                         `Free trial: ${
                             isTrialingSubscription ? 'true' : 'false'
@@ -184,7 +184,7 @@ const BillingStartView = () => {
                     ].join('\n')
             }
         },
-        [helpdeskProduct?.name, isTrialingSubscription, ticketPurpose]
+        [currentHelpdeskPlan?.name, isTrialingSubscription, ticketPurpose]
     )
 
     useEffect(() => {
@@ -278,9 +278,9 @@ const BillingStartView = () => {
     }, [currentUsage, dispatch, isCurrentHelpdeskLegacy, periodEnd])
 
     useEffect(() => {
-        if (convertProduct && convertStatus) {
+        if (currentConvertPlan && convertStatus) {
             let enterpriseCta = <></>
-            if (isEnterprise(convertProduct)) {
+            if (isEnterprise(currentConvertPlan)) {
                 enterpriseCta = (
                     <b>
                         <a href="mailto:billing@gorgias.com" rel="noreferrer">
@@ -363,7 +363,7 @@ const BillingStartView = () => {
         }
         // trigger useEffect only when convertProduct is changed or status was fetched
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [convertProduct, convertStatus])
+    }, [currentConvertPlan, convertStatus])
 
     const isInternalUIEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.InternalBillingInterface]
@@ -423,10 +423,10 @@ const BillingStartView = () => {
                         <Route exact path={BILLING_PAYMENT_PATH}>
                             <PaymentInformationView
                                 contactBilling={contactBilling}
-                                helpdeskProduct={helpdeskProduct}
-                                automationProduct={automationProduct}
-                                voiceProduct={voiceProduct}
-                                smsProduct={smsProduct}
+                                currentHelpdeskPlan={currentHelpdeskPlan}
+                                currentAutomatePlan={currentAutomatePlan}
+                                currentVoicePlan={currentVoicePlan}
+                                currentSmsPlan={currentSmsPlan}
                                 isCurrentSubscriptionCanceled={
                                     isCurrentSubscriptionCanceled
                                 }

@@ -1,13 +1,7 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {useHistory} from 'react-router-dom'
-import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    ProductType,
-    SMSOrVoicePrice,
-} from 'models/billing/types'
+import {Price, ProductType} from 'models/billing/types'
 
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -19,7 +13,12 @@ import {
 import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
 
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {isLegacyAutomate, isEnterprise, isTrial} from 'models/billing/utils'
+import {
+    isLegacyAutomate,
+    isEnterprise,
+    isTrial,
+    isConvert,
+} from 'models/billing/utils'
 import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
 import Badge, {BadgeType} from '../Badge/Badge'
 import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
@@ -27,16 +26,16 @@ import css from './ProductCard.less'
 
 export type ProductCardProps = {
     type: ProductType
-    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
+    plan?: Price | null
     usage?: CurrentUsagePerProduct | null
-    banner?: BillingBanner
+    banner?: BillingBanner | null
     isDisabled: boolean
-    autoUpgradeEnabled?: boolean
+    autoUpgradeEnabled?: boolean | null
 }
 
 const ProductCard = ({
     type,
-    product,
+    plan,
     usage,
     banner,
     isDisabled,
@@ -49,8 +48,8 @@ const ProductCard = ({
     const {className, canduOverageStatus} = useMemo(() => {
         if (
             !usage ||
-            !product?.num_quota_tickets ||
-            usage.data.num_tickets < 0.8 * (product?.num_quota_tickets || 0)
+            !plan?.num_quota_tickets ||
+            usage.data.num_tickets < 0.8 * (plan?.num_quota_tickets || 0)
         ) {
             return {
                 className: '',
@@ -58,7 +57,7 @@ const ProductCard = ({
             }
         }
 
-        if (usage.data.num_tickets < (product?.num_quota_tickets || 0)) {
+        if (usage.data.num_tickets < (plan?.num_quota_tickets || 0)) {
             return {
                 className: css.warning,
                 canduOverageStatus: 'warning',
@@ -69,10 +68,10 @@ const ProductCard = ({
             className: css.danger,
             canduOverageStatus: 'danger',
         }
-    }, [usage, product])
+    }, [usage, plan])
 
     const {isActive, price, currency, planName} = useMemo(() => {
-        if (!product) {
+        if (!plan) {
             return {
                 isActive: false,
                 price: null,
@@ -81,23 +80,23 @@ const ProductCard = ({
             }
         }
         return {
-            isActive: !!product,
-            price: product.amount / 100,
-            currency: product.currency,
-            planName: product.name,
+            isActive: !!plan,
+            price: plan.amount / 100,
+            currency: plan.currency,
+            planName: plan.name,
         }
-    }, [product])
+    }, [plan])
 
     const currentStatus = useMemo(() => {
         if (!isActive) {
             return null
         }
 
-        if (product && isTrial(product)) {
+        if (plan && isTrial(plan)) {
             return (
                 <>
                     <strong>
-                        ${(product?.extra_ticket_cost ?? 0).toFixed(2)}
+                        ${(plan?.extra_ticket_cost ?? 0).toFixed(2)}
                     </strong>{' '}
                     {PRODUCT_INFO[type].perTicket}
                 </>
@@ -110,7 +109,7 @@ const ProductCard = ({
                 <b>{formatAmount(price ?? 0, currency)}</b>/{interval}
             </>
         )
-    }, [isActive, product, type, planName, price, currency, interval])
+    }, [isActive, plan, type, planName, price, currency, interval])
 
     const subscribeContainer = useMemo(() => {
         return (
@@ -155,13 +154,13 @@ const ProductCard = ({
     )
 
     const counter = useMemo(() => {
-        if (product && isLegacyAutomate(product)) {
+        if (plan && isLegacyAutomate(plan)) {
             return null
         }
 
         return (
             <div className={classNames(css.counter)}>
-                {product && isTrial(product) ? (
+                {plan && isTrial(plan) ? (
                     <div className={className}>
                         {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
                         {PRODUCT_INFO[type].counter} used
@@ -169,7 +168,7 @@ const ProductCard = ({
                 ) : (
                     <div className={className}>
                         {usage ? formatNumTickets(usage.data.num_tickets) : 0}{' '}
-                        of {formatNumTickets(product?.num_quota_tickets || 0)}{' '}
+                        of {formatNumTickets(plan?.num_quota_tickets || 0)}{' '}
                         {PRODUCT_INFO[type].counter} used
                     </div>
                 )}
@@ -193,14 +192,10 @@ const ProductCard = ({
                 </Tooltip>
             </div>
         )
-    }, [product, type, usage, className])
+    }, [plan, type, usage, className])
 
     const extraCost = useMemo(() => {
-        if (
-            product &&
-            (isLegacyAutomate(product) ||
-                product.product === ProductType.Convert)
-        ) {
+        if (plan && (isLegacyAutomate(plan) || isConvert(plan))) {
             return null
         }
 
@@ -213,7 +208,7 @@ const ProductCard = ({
                 extra cost
             </div>
         )
-    }, [product, usage])
+    }, [plan, usage])
 
     return (
         <div className={css.container}>
@@ -265,9 +260,7 @@ const ProductCard = ({
                 <div>
                     {isActive && counter}
 
-                    {product &&
-                    type === ProductType.Convert &&
-                    !isEnterprise(product) ? (
+                    {plan && isConvert(plan) && !isEnterprise(plan) ? (
                         <div className={css.autoUpgradeLabel}>
                             Auto-upgrade
                             {autoUpgradeEnabled ? ' enabled ' : ' disabled '}

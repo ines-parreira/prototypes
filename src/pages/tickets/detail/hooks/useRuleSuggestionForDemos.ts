@@ -33,9 +33,9 @@ export default function useRuleSuggestionForDemos(
         useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS)
 
     const hasAutomate = useAppSelector(getHasAutomate)
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const currentPlanName = helpdeskPrice
-        ? convertLegacyPlanNameToPublicPlanName(helpdeskPrice.name)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentPlanName = currentHelpdeskPlan
+        ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
         : null
 
     const inTicketSuggestionForDemo = useAppSelector(

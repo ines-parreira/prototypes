@@ -16,7 +16,7 @@ export const getNextTier = (
         }
 
         const isSameInterval = priceConfig.interval === price.interval
-        const isSameProduct = priceConfig.product_id === price.product_id
+        const isSameProduct = priceConfig.product === price.product
         const isBigger =
             priceConfig.num_quota_tickets &&
             price.num_quota_tickets &&

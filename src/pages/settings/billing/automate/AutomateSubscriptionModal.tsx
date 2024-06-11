@@ -109,13 +109,13 @@ const AutomateSubscriptionModal = ({
     const dispatch = useAppDispatch()
     const history = useHistory()
     const hasAutomate = useAppSelector(getHasAutomate)
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const helpdeskPrices = useAppSelector(getHelpdeskPrices)
-    const helpdeskPriceIds = helpdeskPrices
-        .filter((price) => price.interval === interval)
-        .map((price) => price.price_id)
+    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices)
+    const helpdeskAvailablePlansPriceIds = helpdeskAvailablePlans
+        .filter((plan) => plan.interval === interval)
+        .map((plan) => plan.price_id)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
@@ -158,22 +158,25 @@ const AutomateSubscriptionModal = ({
     }
 
     const handleUnsubscribeClick = () => {
-        helpdeskPrice && void handleSubscriptionUpdate([helpdeskPrice.price_id])
+        currentHelpdeskPlan &&
+            void handleSubscriptionUpdate([currentHelpdeskPlan.price_id])
     }
 
-    const automationPrices = useAppSelector(
+    const automateAvailablePlans = useAppSelector(
         getAutomationProduct
     )?.prices.filter(
         (price) => price.num_quota_tickets && price.interval === interval
     )
     const helpdeskOptionIndex = Math.max(
-        helpdeskPriceIds.indexOf(helpdeskPrice?.price_id || ''),
+        helpdeskAvailablePlansPriceIds.indexOf(
+            currentHelpdeskPlan?.price_id || ''
+        ),
         0
     )
 
-    const aaoPreselectedOption = Math.min(5, helpdeskOptionIndex)
+    const automatePreselectedOption = Math.min(5, helpdeskOptionIndex)
     const [selectedPrice, setSelectedPrice] = useState<Price | undefined>(
-        automationPrices?.[aaoPreselectedOption]
+        automateAvailablePlans?.[automatePreselectedOption]
     )
 
     const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
@@ -235,7 +238,7 @@ const AutomateSubscriptionModal = ({
                 {!showROICalculatorStep && isOpen && (
                     <AutomateModalStep
                         handleOnClose={handleOnClose}
-                        automationPrices={automationPrices}
+                        automationPrices={automateAvailablePlans}
                         hasAutomate={hasAutomate}
                         header={header}
                         isTrialingSubscription={isTrialingSubscription}

@@ -14,46 +14,47 @@ import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
-    const helpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const currentPlanName = helpdeskPrice
-        ? convertLegacyPlanNameToPublicPlanName(helpdeskPrice.name)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlanName = currentHelpdeskPlan
+        ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
         : null
-    const displayContactUsButton = currentPlanName === PlanName.Enterprise
-    const isEnterprisePlan = !!helpdeskPrice?.custom
-    const prices = useAppSelector(getPrices)
+    const displayContactUsButton =
+        currentHelpdeskPlanName === PlanName.Enterprise
+    const isEnterprisePlan = !!currentHelpdeskPlan?.custom
+    const availablePlans = useAppSelector(getPrices)
     const availableHelpdeskPrice = useMemo(
         () =>
-            prices.find(
-                (price) =>
-                    isHelpdeskPrice(price) &&
-                    price.public &&
-                    price.interval ===
-                        (helpdeskPrice?.interval || PlanInterval.Month) &&
-                    !price.custom &&
-                    price.name === currentPlanName
+            availablePlans.find(
+                (plan) =>
+                    isHelpdeskPrice(plan) &&
+                    plan.public &&
+                    plan.interval ===
+                        (currentHelpdeskPlan?.interval || PlanInterval.Month) &&
+                    !plan.custom &&
+                    plan.name === currentHelpdeskPlanName
             ) as HelpdeskPrice,
-        [currentPlanName, helpdeskPrice, prices]
+        [currentHelpdeskPlanName, currentHelpdeskPlan, availablePlans]
     )
 
     return (
         <Paywall
             pageHeader="Help Center"
-            requiredUpgrade={currentPlanName || PlanName.Basic}
+            requiredUpgrade={currentHelpdeskPlanName || PlanName.Basic}
             header="Change plans to activate your Help Center"
             description={
                 <>
                     Create your own Help Center in order to help users better
                     understand your product and answer frequently asked
                     questions.
-                    {currentPlanName === PlanName.Enterprise
+                    {currentHelpdeskPlanName === PlanName.Enterprise
                         ? 'Contact your customer success manager to upgrade today!'
-                        : currentPlanName === PlanName.Advanced
+                        : currentHelpdeskPlanName === PlanName.Advanced
                         ? 'You can contact your customer success manager or do it from here to upgrade today!'
                         : null}
                 </>
             }
             paywallTheme={
-                (currentPlanName as unknown as PaywallTheme) ||
+                (currentHelpdeskPlanName as unknown as PaywallTheme) ||
                 PaywallTheme.Default
             }
             previewImage={helpCenterImagePreview}

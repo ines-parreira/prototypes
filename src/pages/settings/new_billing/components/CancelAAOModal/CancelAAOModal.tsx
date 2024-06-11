@@ -49,8 +49,8 @@ const CancelAAOModal = ({
     const domain = useAppSelector(getCurrentDomain)
     const currentUser = useAppSelector(getCurrentUser)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const helpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const automationPlan = useAppSelector(getCurrentAutomationProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
 
     const from: string = currentUser.get('email')
     const subject = `Remove Automate - ${domain}`
@@ -104,8 +104,8 @@ const CancelAAOModal = ({
             to: BILLING_SUPPORT_EMAIL,
             account: domain,
             freeTrial: isTrialingSubscription,
-            helpdeskPlan: helpdeskPlan?.name ?? '',
-            automationPlan: automationPlan?.name ?? '',
+            helpdeskPlan: currentHelpdeskPlan?.name ?? '',
+            automationPlan: currentAutomatePlan?.name ?? '',
         })
         setIsOpenModalWithReasons(false)
     }

@@ -9,7 +9,7 @@ import {getCurrentAutomationProduct} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
-    const automationProduct = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const isImprovedNavigationEnabled =
@@ -41,7 +41,7 @@ const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
           }/installation`
 
     return {
-        showAlternatives: !!automationProduct,
+        showAlternatives: !!currentAutomatePlan,
         quickResponsesLink,
         flowsLink,
         installationTabLink,

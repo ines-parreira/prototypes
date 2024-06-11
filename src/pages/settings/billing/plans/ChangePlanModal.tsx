@@ -62,17 +62,17 @@ export const ChangePlanModal = ({
     onConfirm,
     renderComparedPlan,
 }: Props) => {
-    const currentHelpdeskPrice = useAppSelector(getCurrentHelpdeskProduct)
-    const currentAutomationPrice = useAppSelector(getCurrentAutomationProduct)
-    const automationPrices = useAppSelector(getAutomationPricesMap)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const availableAutomatePlansMap = useAppSelector(getAutomationPricesMap)
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskAddons = useAppSelector(getCurrentHelpdeskAddons)
     const features = useMemo(
         () =>
-            currentHelpdeskPrice
-                ? getPlanCardFeaturesForPrices([currentHelpdeskPrice], false)
+            currentHelpdeskPlan
+                ? getPlanCardFeaturesForPrices([currentHelpdeskPlan], false)
                 : [],
-        [currentHelpdeskPrice]
+        [currentHelpdeskPlan]
     )
 
     const currentHelpdeskAutomateAmount = useAppSelector(
@@ -83,19 +83,19 @@ export const ChangePlanModal = ({
     )
     const isEditable = useMemo(
         () =>
-            currentAutomationPrice != null ||
+            currentAutomatePlan != null ||
             currentHelpdeskAddons?.some(
-                (priceId) => !!automationPrices[priceId]
+                (priceId) => !!availableAutomatePlansMap[priceId]
             ),
-        [currentAutomationPrice, currentHelpdeskAddons, automationPrices]
+        [currentAutomatePlan, currentHelpdeskAddons, availableAutomatePlansMap]
     )
     const appNode = useAppNode()
 
     const formattedName =
-        currentHelpdeskPrice &&
-        convertLegacyPlanNameToPublicPlanName(currentHelpdeskPrice.name)
+        currentHelpdeskPlan &&
+        convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
     const formattedAmount =
-        currentHelpdeskPrice && getFormattedAmount(currentHelpdeskPrice.amount)
+        currentHelpdeskPlan && getFormattedAmount(currentHelpdeskPlan.amount)
 
     return (
         <SynchronizedScrollTopProvider>
@@ -111,18 +111,18 @@ export const ChangePlanModal = ({
                     <div className="m-3">{description}</div>
                     <div
                         className={classnames('m-3 flex', {
-                            'justify-content-center': !currentHelpdeskPrice,
-                            'justify-content-between': !!currentHelpdeskPrice,
+                            'justify-content-center': !currentHelpdeskPlan,
+                            'justify-content-between': !!currentHelpdeskPlan,
                         })}
                     >
-                        {currentHelpdeskPrice &&
+                        {currentHelpdeskPlan &&
                             formattedName &&
                             formattedAmount && (
                                 <>
                                     <BillingPlanCard
                                         amount={formattedAmount}
-                                        currency={currentHelpdeskPrice.currency}
-                                        interval={currentHelpdeskPrice.interval}
+                                        currency={currentHelpdeskPlan.currency}
+                                        interval={currentHelpdeskPlan.interval}
                                         name={formattedName}
                                         features={features}
                                         isCurrentPrice
@@ -147,11 +147,11 @@ export const ChangePlanModal = ({
                                                         currentHelpdeskAutomateAmount
                                                     }
                                                     currency={
-                                                        currentHelpdeskPrice.currency
+                                                        currentHelpdeskPlan.currency
                                                     }
                                                     editable={isEditable}
                                                     interval={
-                                                        currentHelpdeskPrice.interval
+                                                        currentHelpdeskPlan.interval
                                                     }
                                                     fullAddOnAmount={
                                                         currentAutomationFullAmount
@@ -166,10 +166,10 @@ export const ChangePlanModal = ({
                                                     }
                                                     amount={formattedAmount}
                                                     currency={
-                                                        currentHelpdeskPrice.currency
+                                                        currentHelpdeskPlan.currency
                                                     }
                                                     interval={
-                                                        currentHelpdeskPrice.interval
+                                                        currentHelpdeskPlan.interval
                                                     }
                                                     isAutomationChecked={
                                                         hasAutomate
@@ -183,7 +183,7 @@ export const ChangePlanModal = ({
                             )}
                         {renderComparedPlan({
                             className: classnames(css.plan, {
-                                [`${css.isSinglePlan}`]: !currentHelpdeskPrice,
+                                [`${css.isSinglePlan}`]: !currentHelpdeskPlan,
                             }),
                             renderBody: (body) => (
                                 <SynchronizedScrollTopContainer height={280}>

@@ -31,25 +31,30 @@ const ConvertSubscriptionModal = ({
 }: Props) => {
     const location = useLocation()
 
-    const helpdeskProduct = useAppSelector(getCurrentHelpdeskProduct)
-    const currentPrice = useAppSelector(getCurrentConvertProduct)
-    const cheapestPrice = useAppSelector(getCheapestConvertPrice)
-    const convertPrices = useAppSelector(getConvertProduct)?.prices
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const cheapestConvertPlan = useAppSelector(getCheapestConvertPrice)
+    const convertAvailablePlans = useAppSelector(getConvertProduct)?.prices
     const isTrialingSubscription = useAppSelector(isTrialing)
 
     const defaultPrice = useMemo((): ConvertPrice | undefined => {
         const convertInitialIndex = getDefaultConvertPriceIndex(
-            helpdeskProduct?.interval,
-            convertPrices,
-            helpdeskProduct?.name
+            currentHelpdeskPlan?.interval,
+            convertAvailablePlans,
+            currentHelpdeskPlan?.name
         )
 
         if (convertInitialIndex === -1) {
-            return currentPrice ?? cheapestPrice
+            return currentConvertPlan ?? cheapestConvertPlan
         }
 
-        return convertPrices?.[convertInitialIndex]
-    }, [convertPrices, currentPrice, cheapestPrice, helpdeskProduct])
+        return convertAvailablePlans?.[convertInitialIndex]
+    }, [
+        convertAvailablePlans,
+        currentConvertPlan,
+        cheapestConvertPlan,
+        currentHelpdeskPlan,
+    ])
 
     const currentPath = redirectPath || location?.pathname
 
@@ -80,7 +85,7 @@ const ConvertSubscriptionModal = ({
         <SubscriptionModal
             productType={ProductType.Convert}
             canduId={canduId}
-            prices={convertPrices ?? []}
+            prices={convertAvailablePlans ?? []}
             headerDescription={'Subscribe to Convert'}
             tagline={'Ready to boost sales with Convert?'}
             currentPage={currentPath}
