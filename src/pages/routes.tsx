@@ -1553,11 +1553,7 @@ function AutomationContent() {
                 render={(props) => (
                     <SelfServiceHelpCentersProvider>
                         <SelfServiceContactFormsProvider>
-                            {React.createElement<{
-                                shopType: string
-                                shopName: string
-                                editWorkflowId: string
-                            }>(
+                            {React.createElement(
                                 memoizedWithUserRoleRequired(
                                     WorkflowEditorViewContainer,
                                     AGENT_ROLE
@@ -1576,11 +1572,34 @@ function AutomationContent() {
             />
 
             <Route
-                path={`${path}/:shopType/:shopName/flows`}
-                component={memoizedWithUserRoleRequired(
-                    WorkflowsViewContainer,
-                    AGENT_ROLE
-                )}
+                path={[
+                    `${path}/:shopType/:shopName/flows`,
+                    `${path}/:shopType/:shopName/quick-responses`,
+                ]}
+                render={(props) => {
+                    if (
+                        props.match.path ===
+                            `${path}/:shopType/:shopName/quick-responses` &&
+                        isImprovedNavigationEnabled === true
+                    ) {
+                        return (
+                            <Redirect
+                                to={`${path}/${props.match.params.shopType}/${props.match.params.shopName}/flows/quick-responses`}
+                            />
+                        )
+                    }
+                    return React.createElement(
+                        memoizedWithUserRoleRequired(
+                            WorkflowsViewContainer,
+                            AGENT_ROLE
+                        ),
+                        {
+                            ...props,
+                            shopType: props.match.params.shopType,
+                            shopName: props.match.params.shopName,
+                        }
+                    )
+                }}
             />
 
             <Route
@@ -1662,23 +1681,49 @@ function AutomationContent() {
                 </SelfServiceHelpCentersProvider>
             </Route>
 
-            <Route
-                path={`${path}/:shopType/:shopName/article-recommendation`}
-                exact={isImprovedNavigationEnabled === false ? true : false}
-                component={memoizedWithUserRoleRequired(
-                    ArticleRecommendationViewContainer,
-                    AGENT_ROLE
-                )}
-            />
+            {!isImprovedNavigationEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/train-my-ai`}
+                    exact
+                    component={memoizedWithUserRoleRequired(
+                        TrainMyAiViewContainer,
+                        AGENT_ROLE
+                    )}
+                />
+            )}
 
             <Route
-                path={`${path}/:shopType/:shopName/train-my-ai`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    TrainMyAiViewContainer,
-                    AGENT_ROLE
-                )}
+                path={[
+                    `${path}/:shopType/:shopName/article-recommendation`,
+                    `${path}/:shopType/:shopName/train-my-ai`,
+                ]}
+                exact={isImprovedNavigationEnabled === false ? true : false}
+                render={(props) => {
+                    if (
+                        props.match.path ===
+                            `${path}/:shopType/:shopName/train-my-ai` &&
+                        isImprovedNavigationEnabled === true
+                    ) {
+                        return (
+                            <Redirect
+                                to={`${path}/${props.match.params.shopType}/${props.match.params.shopName}/article-recommendation`}
+                            />
+                        )
+                    }
+                    return React.createElement(
+                        memoizedWithUserRoleRequired(
+                            ArticleRecommendationViewContainer,
+                            AGENT_ROLE
+                        ),
+                        {
+                            ...props,
+                            shopType: props.match.params.shopType,
+                            shopName: props.match.params.shopName,
+                        }
+                    )
+                }}
             />
+
             <Route
                 path={`${path}/:shopType/:shopName/actions`}
                 exact
