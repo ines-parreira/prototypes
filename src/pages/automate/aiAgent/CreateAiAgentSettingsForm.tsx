@@ -408,6 +408,9 @@ export const CreateAiAgentSettingsForm = ({
     const isWebsiteKnowledgeEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
 
+    const isSkipSampleRateEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSkipSampleRate]
+
     const isCustomToneOfVoiceSelected =
         formValues.toneOfVoice === ToneOfVoice.Custom
 
@@ -448,17 +451,19 @@ export const CreateAiAgentSettingsForm = ({
                         </ToggleInput>
                     </div>
 
-                    <LevelOfCoverage
-                        coverageRate={
-                            formValues.ticketSampleRate !== null
-                                ? formValues.ticketSampleRate
-                                : BEGINNER_COVERAGE_RATE
-                        }
-                        onCoverageRateChange={(value: number) => {
-                            latestSampleRateRef.current = value
-                            updateValue('ticketSampleRate', value)
-                        }}
-                    />
+                    {isSkipSampleRateEnabled ? null : (
+                        <LevelOfCoverage
+                            coverageRate={
+                                formValues.ticketSampleRate !== null
+                                    ? formValues.ticketSampleRate
+                                    : BEGINNER_COVERAGE_RATE
+                            }
+                            onCoverageRateChange={(value: number) => {
+                                latestSampleRateRef.current = value
+                                updateValue('ticketSampleRate', value)
+                            }}
+                        />
+                    )}
 
                     <div className={css.formGroup}>
                         <Label isRequired={true} className={css.label}>

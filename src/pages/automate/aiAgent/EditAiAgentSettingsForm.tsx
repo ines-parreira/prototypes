@@ -217,6 +217,9 @@ export const EditAiAgentSettingsForm = ({
     const isWebsiteKnowledgeEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
 
+    const isSkipSampleRateEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentSkipSampleRate]
+
     const {mutateAsync: upsertStoreConfiguration, isLoading: isUpsertLoading} =
         useUpsertStoreConfigurationPure()
     /**
@@ -415,17 +418,19 @@ export const EditAiAgentSettingsForm = ({
                         </ToggleInput>
                     </div>
 
-                    <LevelOfCoverage
-                        coverageRate={
-                            formValues.ticketSampleRate !== null
-                                ? formValues.ticketSampleRate
-                                : storeConfiguration.ticketSampleRate
-                        }
-                        onCoverageRateChange={(value: number) => {
-                            latestSampleRateRef.current = value
-                            updateValue('ticketSampleRate', value)
-                        }}
-                    />
+                    {isSkipSampleRateEnabled ? null : (
+                        <LevelOfCoverage
+                            coverageRate={
+                                formValues.ticketSampleRate !== null
+                                    ? formValues.ticketSampleRate
+                                    : storeConfiguration.ticketSampleRate
+                            }
+                            onCoverageRateChange={(value: number) => {
+                                latestSampleRateRef.current = value
+                                updateValue('ticketSampleRate', value)
+                            }}
+                        />
+                    )}
 
                     <div className={css.formGroup}>
                         <Label isRequired={true} className={css.label}>
