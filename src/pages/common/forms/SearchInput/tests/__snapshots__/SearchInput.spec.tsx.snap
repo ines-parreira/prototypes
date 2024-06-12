@@ -1,339 +1,233 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SearchInput/> render() should render a closed dropdown because input is empty 1`] = `
-<Dropdown
-  a11y={true}
-  active={false}
-  addonType={false}
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="dropdown show"
 >
-  <DropdownToggle
-    aria-expanded={false}
-    aria-haspopup={true}
-    className="input-icon input-icon-right"
-    color="secondary"
+  <div
+    aria-expanded="true"
+    aria-haspopup="true"
+    class="input-icon input-icon-right"
     data-toggle="dropdown"
-    tag="div"
   >
-    <ForwardRef(TextInput)
-      hasError={false}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
-      suffix={
-        <IconInput
-          icon="more_horiz"
-        />
-      }
-      value=""
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    className="dropdown"
-    flip={true}
-    tag="div"
+    <div
+      class="wrapper isFocused"
+    >
+      <input
+        class="input"
+        id="input-text-2"
+        name="input-text-2"
+        placeholder="Search..."
+        type="text"
+        value=""
+      />
+      <span
+        class="suffix"
+      >
+        <i
+          class="material-icons icon"
+        >
+          more_horiz
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    aria-hidden="false"
+    class="dropdown dropdown-menu show"
+    role="menu"
+    style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+    tabindex="-1"
   >
-    <DropdownItem
-      className="header"
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="header dropdown-header"
+      tabindex="-1"
     >
       0 result
-    </DropdownItem>
-  </DropdownMenu>
-</Dropdown>
+    </h6>
+  </div>
+</div>
 `;
 
 exports[`<SearchInput/> render() should render a closed dropdown because input is not focused 1`] = `
-<Dropdown
-  a11y={true}
-  active={false}
-  addonType={false}
-  direction="down"
-  inNavbar={false}
-  isOpen={false}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="dropdown"
 >
-  <DropdownToggle
-    aria-expanded={false}
-    aria-haspopup={true}
-    className="input-icon input-icon-right"
-    color="secondary"
+  <div
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="input-icon input-icon-right"
     data-toggle="dropdown"
-    tag="div"
   >
-    <ForwardRef(TextInput)
-      hasError={false}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
-      suffix={
-        <IconInput
-          icon="more_horiz"
-        />
-      }
-      value=""
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    className="dropdown"
-    flip={true}
-    tag="div"
+    <div
+      class="wrapper"
+    >
+      <input
+        class="input"
+        id="input-text-1"
+        name="input-text-1"
+        placeholder="Search..."
+        type="text"
+        value=""
+      />
+      <span
+        class="suffix"
+      >
+        <i
+          class="material-icons icon"
+        >
+          more_horiz
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu"
+    role="menu"
+    tabindex="-1"
   >
-    <DropdownItem
-      className="header"
-      header={true}
-      tag="button"
-      toggle={true}
+    <h6
+      class="header dropdown-header"
+      tabindex="-1"
     >
       0 result
-    </DropdownItem>
-  </DropdownMenu>
-</Dropdown>
+    </h6>
+  </div>
+</div>
 `;
 
 exports[`<SearchInput/> render() should render an open dropdown because input is focused and value is not empty 1`] = `
-<Dropdown
-  a11y={true}
-  active={false}
-  addonType={false}
-  direction="down"
-  inNavbar={false}
-  isOpen={true}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="dropdown show"
 >
-  <DropdownToggle
-    aria-expanded={true}
-    aria-haspopup={true}
-    className="input-icon input-icon-right"
-    color="secondary"
+  <div
+    aria-expanded="true"
+    aria-haspopup="true"
+    class="input-icon input-icon-right"
     data-toggle="dropdown"
-    tag="div"
   >
-    <ForwardRef(TextInput)
-      hasError={false}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
-      suffix={
-        <IconInput
-          icon="search"
-        />
-      }
-      value="foo"
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    className="dropdown"
-    flip={true}
-    tag="div"
-  >
-    <DropdownItem
-      className="header"
-      header={true}
-      tag="button"
-      toggle={true}
+    <div
+      class="wrapper isFocused"
     >
-      3 results
-    </DropdownItem>
-    <DropdownItem
-      aria-disabled={true}
-      className="dropdownItem"
-      id="dropdown-item-1"
-      key="result-1"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      tag="button"
-      toggle={false}
-    >
-      <Result
-        result={
-          {
-            "id": 1,
-            "subResults": [],
-          }
-        }
+      <input
+        class="input"
+        id="input-text-3"
+        name="input-text-3"
+        placeholder="Search..."
+        type="text"
+        value="foo"
       />
-      <withAppNode(Tooltip)
-        className="tooltip"
-        placement="top"
-        target="dropdown-item-1"
+      <span
+        class="suffix"
       >
-        This item cannot be selected.
-      </withAppNode(Tooltip)>
-    </DropdownItem>
-    <DropdownItem
-      aria-disabled={false}
-      className="dropdownItem"
-      id="dropdown-item-2"
-      key="result-2"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      tag="button"
-      toggle={false}
+        <i
+          class="material-icons icon"
+        >
+          more_horiz
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    aria-hidden="false"
+    class="dropdown dropdown-menu show"
+    role="menu"
+    style="position: absolute; top: 0px; left: 0px; opacity: 0; pointer-events: none;"
+    tabindex="-1"
+  >
+    <h6
+      class="header dropdown-header"
+      tabindex="-1"
     >
-      <Result
-        result={
-          {
-            "id": 2,
-            "subResults": [],
-          }
-        }
-      />
-    </DropdownItem>
-    <DropdownItem
-      aria-disabled={false}
-      className="dropdownItem"
-      id="dropdown-item-3"
-      key="result-3"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      tag="button"
-      toggle={false}
-    >
-      <Result
-        result={
-          {
-            "id": 3,
-            "subResults": [],
-          }
-        }
-      />
-    </DropdownItem>
-  </DropdownMenu>
-</Dropdown>
+      0 result
+    </h6>
+  </div>
+</div>
 `;
 
 exports[`<SearchInput/> render() should render sub results 1`] = `
-<Dropdown
-  a11y={true}
-  active={false}
-  addonType={false}
-  direction="down"
-  inNavbar={false}
-  isOpen={true}
-  nav={false}
-  setActiveFromChild={false}
-  toggle={[Function]}
+<div
+  class="dropdown show"
 >
-  <DropdownToggle
-    aria-expanded={true}
-    aria-haspopup={true}
-    className="input-icon input-icon-right"
-    color="secondary"
+  <div
+    aria-expanded="true"
+    aria-haspopup="true"
+    class="input-icon input-icon-right"
     data-toggle="dropdown"
-    tag="div"
   >
-    <ForwardRef(TextInput)
-      hasError={false}
-      onChange={[Function]}
-      onFocus={[Function]}
-      onKeyDown={[Function]}
-      placeholder="Search..."
-      suffix={
-        <IconInput
-          icon="search"
-        />
-      }
-      value="foo"
-    />
-  </DropdownToggle>
-  <DropdownMenu
-    className="dropdown"
-    flip={true}
-    tag="div"
-  >
-    <DropdownItem
-      className="header"
-      header={true}
-      tag="button"
-      toggle={true}
+    <div
+      class="wrapper"
     >
-      <ForwardRef(Button)
-        className="mr-2 backButton"
-        intent="secondary"
-        onClick={[Function]}
-        size="small"
+      <input
+        class="input"
+        id="input-text-4"
+        name="input-text-4"
+        placeholder="Search..."
+        type="text"
+        value="foo"
+      />
+      <span
+        class="suffix"
       >
-        <ButtonIconLabel
-          icon="arrow_back"
+        <i
+          class="material-icons icon"
         >
+          search
+        </i>
+      </span>
+    </div>
+  </div>
+  <div
+    aria-hidden="false"
+    class="dropdown dropdown-menu show"
+    role="menu"
+    style="position: absolute; top: 0px; left: 0px; transform: translate3d(NaNpx, NaNpx, 0); will-change: transform;"
+    tabindex="-1"
+    x-placement="bottom-start"
+  >
+    <h6
+      class="header dropdown-header"
+      tabindex="-1"
+    >
+      <button
+        aria-disabled="false"
+        class="wrapper mr-2 backButton fill secondary small"
+        type="button"
+      >
+        <span
+          class="wrapper"
+        >
+          <i
+            class="material-icons icon isLeft small"
+          >
+            arrow_back
+          </i>
           Back
-        </ButtonIconLabel>
-      </ForwardRef(Button)>
+        </span>
+      </button>
       2 sub results
-    </DropdownItem>
-    <DropdownItem
-      className="dropdownItem"
-      key="sub-result-20"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      tag="button"
-      toggle={true}
+    </h6>
+    <button
+      class="dropdownItem dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
     >
-      <SubResult
-        result={
-          {
-            "id": 2,
-            "subResults": [
-              {
-                "id": 20,
-              },
-              {
-                "id": 21,
-              },
-            ],
-          }
-        }
-        subResult={
-          {
-            "id": 20,
-          }
-        }
-      />
-    </DropdownItem>
-    <DropdownItem
-      className="dropdownItem"
-      key="sub-result-21"
-      onClick={[Function]}
-      onMouseEnter={[Function]}
-      tag="button"
-      toggle={true}
+      <div>
+        2 / 20
+      </div>
+    </button>
+    <button
+      class="dropdownItem dropdown-item"
+      role="menuitem"
+      tabindex="0"
+      type="button"
     >
-      <SubResult
-        result={
-          {
-            "id": 2,
-            "subResults": [
-              {
-                "id": 20,
-              },
-              {
-                "id": 21,
-              },
-            ],
-          }
-        }
-        subResult={
-          {
-            "id": 21,
-          }
-        }
-      />
-    </DropdownItem>
-  </DropdownMenu>
-</Dropdown>
+      <div>
+        2 / 21
+      </div>
+    </button>
+  </div>
+</div>
 `;

@@ -2,35 +2,104 @@
 
 exports[`<AmountInput/> render() should render with currency symbol on left 1`] = `
 <div
-  className="container"
+  class="container"
 >
-  <ForwardRef(NumberInput)
-    id="amount"
-    isDisabled={false}
-    isRequired={true}
-    min={0}
-    onChange={[Function]}
-    prefix="$"
-    step={0.01}
-    value={9.99}
-  />
+  <span
+    class="wrapper group horizontal"
+  >
+    <span
+      class="prefix"
+    >
+      $
+    </span>
+    <input
+      class="input"
+      id="amount"
+      max="Infinity"
+      min="0"
+      required=""
+      step="0.01"
+      type="number"
+      value="9.99"
+    />
+    <span
+      class="controls group vertical"
+    >
+      <button
+        aria-disabled="false"
+        class="wrapper button wrapper small fill secondary small top"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_up
+        </i>
+      </button>
+      <button
+        aria-disabled="false"
+        class="wrapper button wrapper small fill secondary small bottom"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_down
+        </i>
+      </button>
+    </span>
+  </span>
 </div>
 `;
 
 exports[`<AmountInput/> render() should render with percentage symbol on right 1`] = `
 <div
-  className="container"
+  class="container"
 >
-  <ForwardRef(NumberInput)
-    id="amount"
-    isDisabled={false}
-    isRequired={true}
-    max={100}
-    min={0}
-    onChange={[Function]}
-    step={0.01}
-    suffix="%"
-    value={25}
-  />
+  <span
+    class="wrapper group horizontal"
+  >
+    <input
+      class="input isAlignedRight"
+      id="amount"
+      max="100"
+      min="0"
+      required=""
+      step="0.01"
+      type="number"
+      value="25.00"
+    />
+    <span
+      class="suffix"
+    >
+      %
+    </span>
+    <span
+      class="controls group vertical"
+    >
+      <button
+        aria-disabled="false"
+        class="wrapper button wrapper small fill secondary small top"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_up
+        </i>
+      </button>
+      <button
+        aria-disabled="false"
+        class="wrapper button wrapper small fill secondary small bottom"
+        type="button"
+      >
+        <i
+          class="material-icons icon"
+        >
+          arrow_drop_down
+        </i>
+      </button>
+    </span>
+  </span>
 </div>
 `;

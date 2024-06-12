@@ -1,14 +1,21 @@
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 import * as React from 'react'
 
 import {ContentState} from 'draft-js'
 import {convertFromHTML} from 'utils/editor'
 
-import createLink from '../link'
-import {DecoratorComponentProps} from '../../../types'
-import LinkPopover from '../../components/LinkPopover'
+import createLink from 'pages/common/draftjs/plugins/toolbar/decorators/link'
+import {DecoratorComponentProps} from 'pages/common/draftjs/plugins/types'
+import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'
+import {assumeMock, renderWithStore} from 'utils/testing'
+
+jest.mock('pages/common/draftjs/plugins/toolbar/components/LinkPopover')
+const LinkPopoverMock = assumeMock(LinkPopover)
 
 describe('link decorator', () => {
+    beforeEach(() => {
+        LinkPopoverMock.mockImplementation(() => <div></div>)
+    })
     describe('strategy', () => {
         const link = createLink({
             isActive: () => true,
@@ -22,6 +29,7 @@ describe('link decorator', () => {
             const block = contentState.getFirstBlock()
             const spy = jest.fn()
             link.strategy(block, spy, contentState)
+
             expect(spy.mock.calls.length).toBe(2)
             expect(spy.mock.calls[0]).toEqual([6, 10])
             expect(spy.mock.calls[1]).toEqual([34, 38])
@@ -46,15 +54,29 @@ describe('link decorator', () => {
                 isActive: () => true,
                 onLinkEdit: editSpy,
             })
-            const component = shallow(
+
+            renderWithStore(
                 <link.component
                     {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
-                />
+                />,
+                {
+                    ui: {
+                        editor: {
+                            isEditingLink: true,
+                            isFocused: true,
+                        },
+                    } as any,
+                }
             )
-            const linkPopover = component.find(LinkPopover).first()
-            expect(linkPopover.props().onEdit).toBeDefined()
+
+            expect(LinkPopoverMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onEdit: expect.any(Function),
+                }),
+                {}
+            )
         })
 
         it('should render component without onEdit prop if not active', () => {
@@ -63,15 +85,21 @@ describe('link decorator', () => {
                 isActive: () => false,
                 onLinkEdit: editSpy,
             })
-            const component = shallow(
+
+            render(
                 <link.component
                     {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />
             )
-            const linkPopover = component.find(LinkPopover).first()
-            expect(linkPopover.props().onEdit).not.toBeDefined()
+
+            expect(LinkPopoverMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onEdit: undefined,
+                }),
+                {}
+            )
         })
 
         it('should not set onDelete prop if url and text are the same', () => {
@@ -82,7 +110,8 @@ describe('link decorator', () => {
                 isActive: () => false,
                 onLinkEdit: editSpy,
             })
-            const component = shallow(
+
+            render(
                 <link.component
                     {...minProps}
                     contentState={
@@ -98,8 +127,13 @@ describe('link decorator', () => {
                     decoratedText={url}
                 />
             )
-            const linkPopover = component.find(LinkPopover).first()
-            expect(linkPopover.props().onDelete).not.toBeDefined()
+
+            expect(LinkPopoverMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    onDelete: undefined,
+                }),
+                {}
+            )
         })
     })
 })

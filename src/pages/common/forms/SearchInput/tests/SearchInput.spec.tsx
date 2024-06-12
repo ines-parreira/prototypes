@@ -1,13 +1,15 @@
+import userEvent from '@testing-library/user-event'
 import React, {FunctionComponent} from 'react'
-import {shallow} from 'enzyme'
 import MockAdapter from 'axios-mock-adapter'
-import {DropdownItem} from 'reactstrap'
 
+import {act, render, screen, waitFor} from '@testing-library/react'
 import client from 'models/api/resources'
-import TextInput from 'pages/common/forms/input/TextInput'
 
-import SearchInput from '../SearchInput'
-import {SearchInputResultProps, SearchInputSubResultProps} from '../types'
+import SearchInput from 'pages/common/forms/SearchInput/SearchInput'
+import {
+    SearchInputResultProps,
+    SearchInputSubResultProps,
+} from 'pages/common/forms/SearchInput/types'
 
 type SubResultType = {
     id: number
@@ -45,26 +47,26 @@ describe('<SearchInput/>', () => {
         })
 
         it('should render a closed dropdown because input is not focused', () => {
-            const component = shallow(
+            const {container} = render(
                 <SearchInput endpoint={endpoint} renderResult={Result} />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a closed dropdown because input is empty', () => {
-            const component = shallow(
+            const {container} = render(
                 <SearchInput endpoint={endpoint} renderResult={Result} />
             )
 
-            const input = component.find(TextInput).dive().find('input')
-            input.simulate('focus', {target: {value: ''}})
+            const input = screen.getByRole('textbox')
+            userEvent.click(input)
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
-        it('should render an open dropdown because input is focused and value is not empty', (done) => {
-            const component = shallow(
+        it('should render an open dropdown because input is focused and value is not empty', async () => {
+            const {container} = render(
                 <SearchInput
                     endpoint={endpoint}
                     renderResult={Result}
@@ -81,18 +83,17 @@ describe('<SearchInput/>', () => {
             ]
             mockServer.onGet(endpoint).reply(200, {data: results})
 
-            const input = component.find(TextInput).dive().find('input')
-            input.simulate('focus', {target: {value: ''}})
-            input.simulate('change', {target: {value: 'foo'}})
+            const input = screen.getByRole('textbox')
+            userEvent.click(input)
+            userEvent.paste(input, 'foo')
 
-            setTimeout(() => {
-                expect(component).toMatchSnapshot()
-                done()
-            }, 0)
+            await waitFor(() => {
+                expect(container.firstChild).toMatchSnapshot()
+            })
         })
 
-        it('should render sub results', (done) => {
-            const component = shallow(
+        it('should render sub results', async () => {
+            const {container} = render(
                 <SearchInput
                     endpoint={endpoint}
                     onResultClicked={(result: ResultType) => result.subResults}
@@ -109,15 +110,20 @@ describe('<SearchInput/>', () => {
             ]
             mockServer.onGet(endpoint).reply(200, {data: results})
 
-            const input = component.find(TextInput).dive().find('input')
-            input.simulate('focus', {target: {value: ''}})
-            input.simulate('change', {target: {value: 'foo'}})
+            const input = screen.getByRole('textbox')
+            act(() => {
+                userEvent.click(input)
+                userEvent.paste(input, 'foo')
+            })
 
-            setTimeout(() => {
-                component.find(DropdownItem).at(2).simulate('click')
-                expect(component).toMatchSnapshot()
-                done()
-            }, 0)
+            await waitFor(() => {
+                const menuItems = screen.getAllByRole('menuitem')
+                userEvent.click(menuItems[1])
+            })
+
+            await waitFor(() => {
+                expect(container.firstChild).toMatchSnapshot()
+            })
         })
     })
 })

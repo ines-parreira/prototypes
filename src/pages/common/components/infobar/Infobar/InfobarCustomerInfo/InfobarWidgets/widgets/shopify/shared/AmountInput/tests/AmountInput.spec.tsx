@@ -1,7 +1,8 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {shallow} from 'enzyme'
 
-import AmountInput from '../AmountInput'
+import {render, screen} from '@testing-library/react'
+import AmountInput from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/AmountInput/AmountInput'
 
 describe('<AmountInput/>', () => {
     let onChange: jest.MockedFunction<any>
@@ -12,7 +13,7 @@ describe('<AmountInput/>', () => {
 
     describe('render()', () => {
         it('should render with currency symbol on left', () => {
-            const component = shallow(
+            const {container} = render(
                 <AmountInput
                     currencyCode="USD"
                     onChange={onChange}
@@ -20,11 +21,11 @@ describe('<AmountInput/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with percentage symbol on right', () => {
-            const component = shallow(
+            const {container} = render(
                 <AmountInput
                     currencyCode="USD"
                     onChange={onChange}
@@ -34,13 +35,13 @@ describe('<AmountInput/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
     describe('onChange()', () => {
         it('should call prop `onChange` with new value', () => {
-            const component = shallow(
+            render(
                 <AmountInput
                     currencyCode="USD"
                     onChange={onChange}
@@ -48,7 +49,8 @@ describe('<AmountInput/>', () => {
                 />
             )
 
-            component.find({id: 'amount'}).simulate('change', 10)
+            userEvent.click(screen.getByText('arrow_drop_up'))
+
             expect(onChange).toHaveBeenCalledWith(10)
         })
     })
