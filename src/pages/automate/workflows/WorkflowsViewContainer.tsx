@@ -61,8 +61,6 @@ export default function WorkflowsViewContainer() {
         [dispatch]
     )
 
-    const connectedChannelsUrl = `/app/automation/${shopType}/${shopName}/connected-channels`
-
     const hasAutomate = useAppSelector(getHasAutomate)
 
     if (!hasAutomate) {
@@ -82,7 +80,6 @@ export default function WorkflowsViewContainer() {
                 goToNewWorkflowFromTemplatePage={
                     goToNewWorkflowFromTemplatePage
                 }
-                connectedChannelsUrl={connectedChannelsUrl}
                 notifyMerchant={notifyMerchant}
             />
         </ErrorBoundary>

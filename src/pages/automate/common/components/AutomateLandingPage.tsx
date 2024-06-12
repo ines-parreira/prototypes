@@ -16,13 +16,19 @@ const AutomateLandingPage = () => {
     const isAutomateAnalyticsv2: boolean | undefined =
         useFlags()[FeatureFlagKey.ObservabilityAutomateAnalyticsv2]
 
+    const isImprovedNavigationEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+
     const [checkListNode, setCheckListNode] = useCallbackRef()
     useInjectStyleToCandu(checkListNode)
 
     const filters: StatsFilters = useMemo(last28DaysStatsFilters, [])
 
     return (
-        <StatsPage title="Automate" headerCanduId="header-my-automate">
+        <StatsPage
+            title={isImprovedNavigationEnabled ? 'Overview' : 'Automate'}
+            headerCanduId="header-my-automate"
+        >
             {isAutomateAnalyticsv2 ? (
                 <AutomateLandingPageDashboardV2 filters={filters} />
             ) : (

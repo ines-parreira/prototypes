@@ -6,6 +6,7 @@ import {v4 as uuidv4} from 'uuid'
 import {fromJS} from 'immutable'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classNames from 'classnames'
 import Button from 'pages/common/components/button/Button'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
@@ -218,6 +219,10 @@ const QuickResponsesView = () => {
         <AutomateView
             {...(isImprovedNavigationEnabled ? {} : {title: QUICK_RESPONSES})}
             isLoading={isLoading}
+            fullWidth={!isImprovedNavigationEnabled}
+            className={classNames({
+                [css.quickResponsesContainer]: isImprovedNavigationEnabled,
+            })}
         >
             <AutomateViewContent
                 description={`Display up to ${MAX_ACTIVE_QUICK_RESPONSES_AND_FLOWS} buttons in your Chat with common questions that customers can click for an instant response. If a customer needs more help, a ticket is created for an agent to handle.`}

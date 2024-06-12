@@ -4,4 +4,11 @@
     .addQuickResponseButton {
         margin-top: @layout-spacing-s;
     }
+
+    .quickResponsesContainer {
+        display: grid;
+        grid-template-columns: minmax(480px, 1000px) 1fr;
+        padding: 0;
+        min-height: ~'calc(100% - 110px)';
+    }
 }

@@ -1,12 +1,11 @@
 import React from 'react'
 import {Container} from 'reactstrap'
-import {Link, NavLink, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {NavLink, Route, Switch, useRouteMatch} from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
-import Alert from 'pages/common/components/Alert/Alert'
 import useEffectOnce from 'hooks/useEffectOnce'
 
 import {SegmentEvent, logEvent} from 'common/segment'
@@ -32,7 +31,6 @@ type WorkflowsViewProps = {
     goToWorkflowTemplatesPage: () => void
     goToEditWorkflowPage: (workflowId: string) => void
     goToNewWorkflowFromTemplatePage: (templateSlug: string) => void
-    connectedChannelsUrl: string
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 }
 
@@ -46,7 +44,6 @@ export default function WorkflowsView({
     goToEditWorkflowPage,
     goToNewWorkflowFromTemplatePage,
     notifyMerchant,
-    connectedChannelsUrl,
 }: WorkflowsViewProps) {
     useHistoryTracking(SegmentEvent.AutomateFlowsVisited)
 
@@ -132,20 +129,6 @@ export default function WorkflowsView({
                                 <i className="material-icons mr-2">menu_book</i>
                                 How to create a Flow
                             </a>
-                            <Alert icon className={css.alert}>
-                                Control where customers see Flows in{' '}
-                                <Link
-                                    to={{
-                                        pathname: connectedChannelsUrl,
-                                        state: {
-                                            from: 'workflow-alert',
-                                        },
-                                    }}
-                                >
-                                    channels
-                                </Link>
-                                .
-                            </Alert>
                         </div>
                         {isImprovedNavigationEnabled && (
                             <div className={css.headerContainer}>
