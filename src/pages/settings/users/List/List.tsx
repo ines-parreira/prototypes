@@ -15,7 +15,7 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import {notify} from 'state/notifications/actions'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 
@@ -52,7 +52,7 @@ const UserList = () => {
 
     const {data: {data: agents = []} = {}} = paginatedAgents.data ?? {}
 
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const isStarterPlan = isStarterTierPrice(currentHelpdeskPlan)
 
     return (

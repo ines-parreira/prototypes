@@ -7,11 +7,11 @@ import {
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
 import {
-    getAutomationPrices,
-    getHelpdeskPrices,
+    getAvailableAutomatePlans,
+    getAvailableHelpdeskPlans,
     getIsCurrentHelpdeskLegacy,
     getIsCurrentHelpdeskCustom,
-    getCurrentHelpdeskName,
+    getCurrentHelpdeskPlanName,
 } from 'state/billing/selectors'
 import {getCheapestPriceNameForFeature} from 'utils/paywalls'
 
@@ -26,11 +26,11 @@ const FeaturePaywall = ({
     feature,
     paywallConfigs = defaultPaywallConfigs,
 }: Props) => {
-    const automateAvailablePlans = useAppSelector(getAutomationPrices)
-    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices)
+    const automateAvailablePlans = useAppSelector(getAvailableAutomatePlans)
+    const helpdeskAvailablePlans = useAppSelector(getAvailableHelpdeskPlans)
     const isLegacyPlan = useAppSelector(getIsCurrentHelpdeskLegacy)
     const isCustomPlan = useAppSelector(getIsCurrentHelpdeskCustom)
-    const currentHelpdeskPlanName = useAppSelector(getCurrentHelpdeskName)
+    const currentHelpdeskPlanName = useAppSelector(getCurrentHelpdeskPlanName)
 
     const availablePlans = [
         ...automateAvailablePlans,

@@ -32,10 +32,6 @@ export function isHelpdeskPrice(plan: Price): plan is HelpdeskPrice {
     return plan.product === ProductType.Helpdesk
 }
 
-export function isAutomationPrice(price: Price): price is AutomationPrice {
-    return 'automation_addon_discount' in price
-}
-
 export function isAutomate(plan: Price): plan is AutomationPrice {
     return plan.product === ProductType.Automation
 }

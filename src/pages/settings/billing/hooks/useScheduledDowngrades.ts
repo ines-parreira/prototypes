@@ -3,7 +3,10 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {fetchSubscription} from 'models/billing/resources'
 import {Price, Product} from 'models/billing/types'
-import {getPricesMap, getProducts} from 'state/billing/selectors'
+import {
+    getAvailablePlansMap,
+    getAvailablePlansByProduct,
+} from 'state/billing/selectors'
 
 interface ScheduledDowngrade {
     datetime: string
@@ -13,8 +16,8 @@ interface ScheduledDowngrade {
 }
 
 export default function useScheduledDowngrades() {
-    const availablePlansByProduct = useAppSelector(getProducts)
-    const availablePlansMap = useAppSelector(getPricesMap)
+    const availablePlansByProduct = useAppSelector(getAvailablePlansByProduct)
+    const availablePlansMap = useAppSelector(getAvailablePlansMap)
 
     const [state, doFetch] = useAsyncFn(async () => {
         const sub = await fetchSubscription()

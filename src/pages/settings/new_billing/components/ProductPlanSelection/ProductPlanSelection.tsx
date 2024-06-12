@@ -15,7 +15,7 @@ import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentProducts} from 'state/billing/selectors'
+import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import {handleConvertProductRemoved} from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -162,7 +162,7 @@ const ProductPlanSelection = ({
         )
     }, [handleClose, selectedPlan, currentAccount])
 
-    const currentProducts = useAppSelector(getCurrentProducts)
+    const currentProducts = useAppSelector(getCurrentPlansByProduct)
     const currentSubscriptionProducts = currentProducts
         ? {
               [ProductType.Helpdesk]: currentProducts.helpdesk,

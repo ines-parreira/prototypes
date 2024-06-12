@@ -39,8 +39,8 @@ import {
 import {initErrorReporter} from 'utils/errors'
 import {identifyUser as identifyHotjarUser} from 'utils/hotjar'
 import {
-    getCurrentAutomationProduct,
-    getCurrentHelpdeskProduct,
+    getCurrentAutomatePlan,
+    getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
 import {RootState} from 'state/types'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
@@ -174,10 +174,10 @@ export function initApp() {
     })
     const hasBillingInitialized = !state.billing.isEmpty()
     const currentHelpdeskProduct = hasBillingInitialized
-        ? getCurrentHelpdeskProduct(state)
+        ? getCurrentHelpdeskPlan(state)
         : undefined
     const currentAutomationProduct = hasBillingInitialized
-        ? getCurrentAutomationProduct(state)
+        ? getCurrentAutomatePlan(state)
         : undefined
 
     initLaunchDarkly(

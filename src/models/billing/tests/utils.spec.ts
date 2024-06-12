@@ -14,7 +14,7 @@ import {
     getFormattedAmount,
     getFullPrice,
     getProductLabel,
-    isAutomationPrice,
+    isAutomate,
     isHelpdeskPrice,
     isStarterTierPrice,
 } from '../utils'
@@ -49,14 +49,14 @@ describe('isHelpdeskPrice', () => {
     )
 })
 
-describe('isAutomationPrice', () => {
+describe('isAutomate', () => {
     it.each([
         [basicMonthlyHelpdeskPrice, false],
         [basicMonthlyAutomationPrice, true],
     ])(
         'should validate if the price is of Automate price',
-        (price, expectedResult) => {
-            expect(isAutomationPrice(price)).toBe(expectedResult)
+        (plan, expectedResult) => {
+            expect(isAutomate(plan)).toBe(expectedResult)
         }
     )
 })

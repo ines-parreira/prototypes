@@ -20,7 +20,7 @@ import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCos
 import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
 import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
 import {PlanInterval} from 'models/billing/types'
-import {getAutomationPrices} from 'state/billing/selectors'
+import {getAvailableAutomatePlans} from 'state/billing/selectors'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 import {SUPPORT_METRICS_TYPES, SALARY_TYPES} from './constants'
 import css from './ROICalculator.less'
@@ -81,7 +81,7 @@ const ROICalculator = () => {
     const costPerAutomatedInteraction = useGetCostPerAutomatedInteraction()
     const costPerBillableTicket = useGetCostPerBillableTicket()
 
-    const automationPrices = useAppSelector(getAutomationPrices)
+    const automationPrices = useAppSelector(getAvailableAutomatePlans)
 
     const [metricsType, setMetricsType] = useState('monthly_support_tickets')
     const [salaryType, setSalaryType] = useState('hourly_rate')

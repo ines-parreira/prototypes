@@ -6,7 +6,10 @@ import UpgradeButton from 'pages/common/components/UpgradeButton'
 import useAppSelector from 'hooks/useAppSelector'
 import {HelpdeskPrice, PlanInterval} from 'models/billing/types'
 import {isHelpdeskPrice} from 'models/billing/utils'
-import {getCurrentHelpdeskProduct, getPrices} from 'state/billing/selectors'
+import {
+    getCurrentHelpdeskPlan,
+    getAvailablePlans,
+} from 'state/billing/selectors'
 import {openChat} from 'utils'
 import {convertLegacyPlanNameToPublicPlanName, PlanName} from 'utils/paywalls'
 
@@ -14,14 +17,14 @@ import HelpCenterChangePlanModal from './HelpCenterChangePlanModal'
 
 const HelpCenterPaywall = (): JSX.Element => {
     const [isPlanChangeModalOpen, setIsPlanChangeModalOpen] = useState(false)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentHelpdeskPlanName = currentHelpdeskPlan
         ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
         : null
     const displayContactUsButton =
         currentHelpdeskPlanName === PlanName.Enterprise
     const isEnterprisePlan = !!currentHelpdeskPlan?.custom
-    const availablePlans = useAppSelector(getPrices)
+    const availablePlans = useAppSelector(getAvailablePlans)
     const availableHelpdeskPrice = useMemo(
         () =>
             availablePlans.find(

@@ -583,8 +583,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         currentAccount: state.currentAccount,
-        currentHelpdeskProduct:
-            billingSelectors.getCurrentHelpdeskProduct(state),
+        currentHelpdeskProduct: billingSelectors.getCurrentHelpdeskPlan(state),
         hasInstagramDMFeature: billingSelectors.makeHasFeature(state)(
             AccountFeature.InstagramDirectMessage
         ),

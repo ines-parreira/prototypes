@@ -9,11 +9,11 @@ import {UserRole} from 'config/types/user'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    getAutomationProduct,
+    getAvailableAutomatePlansInProduct,
     getCurrentHelpdeskInterval,
-    getCurrentHelpdeskProduct,
+    getCurrentHelpdeskPlan,
     getHasAutomate,
-    getHelpdeskPrices,
+    getAvailableHelpdeskPlans,
 } from 'state/billing/selectors'
 import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
@@ -109,10 +109,10 @@ const AutomateSubscriptionModal = ({
     const dispatch = useAppDispatch()
     const history = useHistory()
     const hasAutomate = useAppSelector(getHasAutomate)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices)
+    const helpdeskAvailablePlans = useAppSelector(getAvailableHelpdeskPlans)
     const helpdeskAvailablePlansPriceIds = helpdeskAvailablePlans
         .filter((plan) => plan.interval === interval)
         .map((plan) => plan.price_id)
@@ -163,7 +163,7 @@ const AutomateSubscriptionModal = ({
     }
 
     const automateAvailablePlans = useAppSelector(
-        getAutomationProduct
+        getAvailableAutomatePlansInProduct
     )?.prices.filter(
         (price) => price.num_quota_tickets && price.interval === interval
     )

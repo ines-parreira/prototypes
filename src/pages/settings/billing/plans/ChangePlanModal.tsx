@@ -14,9 +14,9 @@ import {
     getCurrentHelpdeskAutomateAmount,
     getCurrentAutomationFullAmount,
     getHasAutomate,
-    getCurrentHelpdeskProduct,
-    getCurrentAutomationProduct,
-    getAutomationPricesMap,
+    getCurrentHelpdeskPlan,
+    getCurrentAutomatePlan,
+    getAvailableAutomatePlansMap,
     getCurrentHelpdeskAddons,
 } from 'state/billing/selectors'
 import SynchronizedScrollTopProvider from 'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
@@ -62,9 +62,11 @@ export const ChangePlanModal = ({
     onConfirm,
     renderComparedPlan,
 }: Props) => {
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
-    const availableAutomatePlansMap = useAppSelector(getAutomationPricesMap)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const availableAutomatePlansMap = useAppSelector(
+        getAvailableAutomatePlansMap
+    )
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentHelpdeskAddons = useAppSelector(getCurrentHelpdeskAddons)
     const features = useMemo(

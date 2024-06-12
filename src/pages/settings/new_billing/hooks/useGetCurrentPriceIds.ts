@@ -1,8 +1,8 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentProducts} from 'state/billing/selectors'
+import {getCurrentPlansByProduct} from 'state/billing/selectors'
 
 export const useCurrentPriceIds = (): string[] => {
-    const currentProducts = useAppSelector(getCurrentProducts)
+    const currentProducts = useAppSelector(getCurrentPlansByProduct)
 
     const currentPriceIds: string[] = currentProducts
         ? [

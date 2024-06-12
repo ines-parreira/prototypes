@@ -9,7 +9,7 @@ import {
     HelpdeskPrice,
     HelpdeskPriceFeatures,
 } from 'models/billing/types'
-import {isHelpdeskPrice, isAutomationPrice} from 'models/billing/utils'
+import {isHelpdeskPrice, isAutomate} from 'models/billing/utils'
 import {isFeatureEnabled} from '../../../../utils/account'
 import {
     AccountFeature,
@@ -184,12 +184,12 @@ export const getPlanCardFeaturesForPrices = (
         return getEnterprisePlanCardFeatures()
     }
 
-    const automationPrice = prices.find((price) => isAutomationPrice(price)) as
+    const automatePlan = prices.find((plan) => isAutomate(plan)) as
         | AutomationPrice
         | undefined
 
-    const extraTicketCost = automationPrice
-        ? helpdeskPrice.extra_ticket_cost + automationPrice.extra_ticket_cost
+    const extraTicketCost = automatePlan
+        ? helpdeskPrice.extra_ticket_cost + automatePlan.extra_ticket_cost
         : helpdeskPrice.extra_ticket_cost
 
     const planFeatures = prices.reduce(

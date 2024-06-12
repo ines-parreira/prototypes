@@ -8,7 +8,7 @@ import {
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 import css from './ConvertOnboardingCampaignTemplate.less'
 
@@ -41,7 +41,7 @@ const ConvertOnboardingCampaignTemplate = ({
     integrationId,
     selected,
 }: Props) => {
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
 
     const estimatedRevenue = useMemo(() => {
         const planName =

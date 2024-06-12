@@ -11,7 +11,7 @@ import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {isEnterprise} from 'models/billing/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentConvertProduct} from 'state/billing/selectors'
+import {getCurrentConvertPlan} from 'state/billing/selectors'
 import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
 
 type Props = {
@@ -23,7 +23,7 @@ export const ConvertLimitBanner = ({
     classes,
     shopIntegrationId,
 }: Props): JSX.Element => {
-    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const status = useGetConvertStatus(false, shopIntegrationId)
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.LongDateWithYear

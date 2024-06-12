@@ -9,8 +9,8 @@ import {updateSubscription} from 'state/currentAccount/actions'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
-    getAutomationPricesMap,
-    getCurrentAutomationProduct,
+    getAvailableAutomatePlansMap,
+    getCurrentAutomatePlan,
 } from 'state/billing/selectors'
 import {getFormattedAmount, getFullPrice} from 'models/billing/utils'
 
@@ -34,11 +34,13 @@ const HelpCenterChangePlanModal = ({
     onClose,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const [isModalAutomationChecked, setModalIsAutomationChecked] = useState(
         !!currentAutomatePlan
     )
-    const availableAutomatePlansMap = useAppSelector(getAutomationPricesMap)
+    const availableAutomatePlansMap = useAppSelector(
+        getAvailableAutomatePlansMap
+    )
     const automationPrice = useMemo(
         () =>
             helpdeskPrice.addons &&

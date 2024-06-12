@@ -13,7 +13,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {isTrialing} from 'state/currentAccount/selectors'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {sendSupportTicket} from '../../utils/sendSupportTicket'
 import {BILLING_BASE_PATH} from '../../constants'
 import css from './ContactSupportModal.less'
@@ -45,7 +45,7 @@ const ContactSupportModal = ({
     const [message, setMessage] = useState(defaultMessage)
     const [isSubmitting, setIsSubmitting] = useState(false)
     const isFreeTrial = useAppSelector(isTrialing)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const history = useHistory()
 
     useEffect(() => {

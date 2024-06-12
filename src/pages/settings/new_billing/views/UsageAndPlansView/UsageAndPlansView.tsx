@@ -11,12 +11,12 @@ import {
 } from 'state/currentAccount/selectors'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getCurrentAutomationProduct,
+    getCurrentAutomatePlan,
     getCurrentHelpdeskInterval,
-    getCurrentHelpdeskProduct,
-    getCurrentConvertProduct,
-    getCurrentSMSProduct,
-    getCurrentVoiceProduct,
+    getCurrentHelpdeskPlan,
+    getCurrentConvertPlan,
+    getCurrentSmsPlan,
+    getCurrentVoicePlan,
 } from 'state/billing/selectors'
 import {ProductType} from 'models/billing/types'
 import {
@@ -67,11 +67,11 @@ const UsageAndPlansView = ({
     const currentSubscription = useAppSelector(getCurrentSubscription)
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
     const interval = useAppSelector(getCurrentHelpdeskInterval)
-    const currentVoicePlan = useAppSelector(getCurrentVoiceProduct)
-    const currentSmsPlan = useAppSelector(getCurrentSMSProduct)
-    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
+    const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
+    const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const convertStatus = useGetConvertStatus()
 
     const isIntervalMonthly = interval === INTERVAL.Month

@@ -4,7 +4,7 @@ import {SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {CurrentAccountState} from 'state/currentAccount/types'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentProducts} from 'state/billing/selectors'
+import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
@@ -12,7 +12,7 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
         useState(false)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
-    const currentProducts = useAppSelector(getCurrentProducts)
+    const currentProducts = useAppSelector(getCurrentPlansByProduct)
 
     const segmentEventToSend = {
         name: SegmentEvent.PaywallUpgradeButtonSelected,

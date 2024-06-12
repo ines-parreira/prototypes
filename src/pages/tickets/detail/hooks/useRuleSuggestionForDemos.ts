@@ -4,10 +4,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getInTicketSuggestionSettings} from 'state/currentAccount/selectors'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {
-    getCurrentHelpdeskProduct,
-    getHasAutomate,
-} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan, getHasAutomate} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {submitSetting} from 'state/currentAccount/actions'
@@ -33,7 +30,7 @@ export default function useRuleSuggestionForDemos(
         useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS)
 
     const hasAutomate = useAppSelector(getHasAutomate)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentPlanName = currentHelpdeskPlan
         ? convertLegacyPlanNameToPublicPlanName(currentHelpdeskPlan.name)
         : null

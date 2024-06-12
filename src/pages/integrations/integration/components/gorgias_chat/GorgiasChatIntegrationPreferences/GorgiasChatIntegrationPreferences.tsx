@@ -35,7 +35,7 @@ import * as IntegrationsActions from 'state/integrations/actions'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 
-import {getCurrentConvertProduct} from 'state/billing/selectors'
+import {getCurrentConvertPlan} from 'state/billing/selectors'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {
@@ -1637,7 +1637,7 @@ const connector = connect(
         emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(
             state
         ),
-        convertProduct: getCurrentConvertProduct(state),
+        convertProduct: getCurrentConvertPlan(state),
     }),
     {
         updateOrCreateIntegration,

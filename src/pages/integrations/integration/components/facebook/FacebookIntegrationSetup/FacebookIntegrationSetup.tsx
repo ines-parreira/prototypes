@@ -24,7 +24,7 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 import {
     activateOnboardingIntegrations,
@@ -874,7 +874,7 @@ const connector = connect(
         ),
         pagination: getOnboardingMeta(IntegrationType.Facebook)(state),
         currentAccount: state.currentAccount,
-        currentHelpdeskProduct: getCurrentHelpdeskProduct(state),
+        currentHelpdeskProduct: getCurrentHelpdeskPlan(state),
     }),
     {
         activateOnboardingIntegrations,

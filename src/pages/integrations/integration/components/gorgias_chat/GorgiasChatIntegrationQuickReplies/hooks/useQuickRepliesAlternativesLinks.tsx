@@ -5,11 +5,11 @@ import useAppSelector from 'hooks/useAppSelector'
 
 import {getStoreIntegrations} from 'state/integrations/selectors'
 
-import {getCurrentAutomationProduct} from 'state/billing/selectors'
+import {getCurrentAutomatePlan} from 'state/billing/selectors'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 const useQuickRepliesAlternativesLinks = (integration: Map<any, any>) => {
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
 
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const isImprovedNavigationEnabled =

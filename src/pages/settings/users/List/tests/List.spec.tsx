@@ -10,7 +10,7 @@ import {
 import {usePaginatedQuery} from 'hooks/usePaginatedQuery'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import Row from 'pages/settings/users/List/Row'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {getAccountOwnerId} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {assumeMock} from 'utils/testing'
@@ -33,9 +33,9 @@ jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
 jest.mock('state/currentAccount/selectors')
 const mockedGetAccountOwnerId = assumeMock(getAccountOwnerId)
 jest.mock('state/billing/selectors', () => ({
-    getCurrentHelpdeskProduct: jest.fn(() => mockedBasicMonthlyHelpdeskPrice),
+    getCurrentHelpdeskPlan: jest.fn(() => mockedBasicMonthlyHelpdeskPrice),
 }))
-const mockedGetCurrentHelpdeskProduct = assumeMock(getCurrentHelpdeskProduct)
+const mockedGetCurrentHelpdeskProduct = assumeMock(getCurrentHelpdeskPlan)
 
 jest.mock('pages/common/components/Navigation/Navigation', () =>
     jest.fn(() => null)

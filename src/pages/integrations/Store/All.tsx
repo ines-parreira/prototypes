@@ -18,8 +18,8 @@ import {IntegrationListItem} from 'state/integrations/types'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {
-    getAutomationPrices,
-    getHelpdeskPrices,
+    getAvailableAutomatePlans,
+    getAvailableHelpdeskPlans,
     getCurrentProductsFeatures,
 } from 'state/billing/selectors'
 import {
@@ -86,8 +86,8 @@ export default function All() {
     const integrations = useAppSelector(getIntegrations)
     const integrationsList = useAppSelector(getIntegrationsList)
     const features = useAppSelector(getCurrentProductsFeatures)
-    const automateAvailablePlans = useAppSelector(getAutomationPrices)
-    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices)
+    const automateAvailablePlans = useAppSelector(getAvailableAutomatePlans)
+    const helpdeskAvailablePlans = useAppSelector(getAvailableHelpdeskPlans)
 
     const availablePlans = [
         ...automateAvailablePlans,

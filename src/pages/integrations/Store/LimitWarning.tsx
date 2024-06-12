@@ -3,14 +3,14 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCurrentHelpdeskMaxIntegrations,
-    getCurrentHelpdeskName,
+    getCurrentHelpdeskPlanName,
 } from 'state/billing/selectors'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 import {AlertType} from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 
 export default function LimitWarning({className}: {className?: string}) {
-    const helpdeskName = useAppSelector(getCurrentHelpdeskName)
+    const helpdeskName = useAppSelector(getCurrentHelpdeskPlanName)
     const activeIntegrationsNumber = useAppSelector(getActiveIntegrations).size
     const maxIntegrations = useAppSelector(getCurrentHelpdeskMaxIntegrations)
 

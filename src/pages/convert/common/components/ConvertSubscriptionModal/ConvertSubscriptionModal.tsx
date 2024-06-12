@@ -4,9 +4,9 @@ import SubscriptionModal from 'pages/settings/new_billing/components/Subscriptio
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCheapestConvertPrice,
-    getConvertProduct,
-    getCurrentConvertProduct,
-    getCurrentHelpdeskProduct,
+    getAvailableConvertPlansInProduct,
+    getCurrentConvertPlan,
+    getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
 import {ConvertPrice, ProductType} from 'models/billing/types'
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
@@ -31,10 +31,12 @@ const ConvertSubscriptionModal = ({
 }: Props) => {
     const location = useLocation()
 
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const cheapestConvertPlan = useAppSelector(getCheapestConvertPrice)
-    const convertAvailablePlans = useAppSelector(getConvertProduct)?.prices
+    const convertAvailablePlans = useAppSelector(
+        getAvailableConvertPlansInProduct
+    )?.prices
     const isTrialingSubscription = useAppSelector(isTrialing)
 
     const defaultPrice = useMemo((): ConvertPrice | undefined => {

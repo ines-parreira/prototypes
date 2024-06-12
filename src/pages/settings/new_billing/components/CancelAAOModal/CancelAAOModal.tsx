@@ -12,8 +12,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentDomain, isTrialing} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    getCurrentAutomationProduct,
-    getCurrentHelpdeskProduct,
+    getCurrentAutomatePlan,
+    getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
 import {
     AUTOMATION_FEATURES,
@@ -49,8 +49,8 @@ const CancelAAOModal = ({
     const domain = useAppSelector(getCurrentDomain)
     const currentUser = useAppSelector(getCurrentUser)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
 
     const from: string = currentUser.get('email')
     const subject = `Remove Automate - ${domain}`

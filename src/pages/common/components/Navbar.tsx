@@ -31,7 +31,7 @@ import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {tryLocalStorage} from 'services/common/utils'
 import shortcutManager from 'services/shortcutManager/index'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {isTrialing} from 'state/currentAccount/selectors'
 import {submitSetting} from 'state/currentUser/actions'
 import {
@@ -1104,7 +1104,7 @@ const connector = connect(
         const getIsPreferencesLoading = isLoading(['settings', 'preferences'])
 
         return {
-            currentHelpdeskProduct: getCurrentHelpdeskProduct(state),
+            currentHelpdeskProduct: getCurrentHelpdeskPlan(state),
             currentUser: getCurrentUser(state),
             currentUserPreferences: getPreferences(state),
             available: isAvailable(state),

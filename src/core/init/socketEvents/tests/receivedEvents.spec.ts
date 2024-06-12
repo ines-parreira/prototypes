@@ -161,7 +161,10 @@ describe('receivedEvents', () => {
         const accountUpdatedHandler = _find(receivedEvents, {
             name: SocketEventType.AccountUpdated,
         })
-        const getPricesMapSpy = jest.spyOn(billingSelectors, 'getPricesMap')
+        const getPricesMapSpy = jest.spyOn(
+            billingSelectors,
+            'getAvailablePlansMap'
+        )
 
         beforeEach(() => {
             jest.useFakeTimers()

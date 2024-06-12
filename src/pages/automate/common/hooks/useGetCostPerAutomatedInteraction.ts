@@ -1,10 +1,10 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAutomationProduct} from 'state/billing/selectors'
+import {getCurrentAutomatePlan} from 'state/billing/selectors'
 
 const FIXED_COST_PER_AUTOMATED_INTERACTION = 0.85
 
 export const useGetCostPerAutomatedInteraction = () => {
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
 
     if (currentAutomatePlan?.num_quota_tickets) {
         return (

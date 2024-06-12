@@ -17,7 +17,7 @@ import Alert from 'pages/common/components/Alert/Alert'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentSubscription} from 'state/currentAccount/selectors'
-import {getCurrentProducts} from 'state/billing/selectors'
+import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import Card from '../../components/Card'
 import BackLink from '../../components/BackLink'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
@@ -103,7 +103,7 @@ const BillingProcessView = ({
     ).get('scheduled_to_cancel_at')
     const isCurrentSubscriptionScheduledToCancel =
         !!currentSubscriptionScheduledToCancelAt
-    const currentSubscriptionProducts = useAppSelector(getCurrentProducts)
+    const currentSubscriptionProducts = useAppSelector(getCurrentPlansByProduct)
 
     // Selected product to Subscribe or Update
     const {selectedProduct} = useParams<Params>()

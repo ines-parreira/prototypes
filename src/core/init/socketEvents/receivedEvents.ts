@@ -315,7 +315,7 @@ const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.AccountUpdated,
         onReceive: function (json) {
             const state = reduxStore.getState() as RootState
-            const prices = currentBillingSelectors.getPricesMap(state)
+            const plansMap = currentBillingSelectors.getAvailablePlansMap(state)
             const newAccountStatus =
                 (json as AccountUpdatedEvent)?.account?.status?.status ||
                 'active'
@@ -395,7 +395,7 @@ const receivedEvents: ReceivedEvent[] = [
             const newAccountProducts =
                 account.current_subscription?.products || {}
             const areProductsLoaded = Object.values(newAccountProducts).every(
-                (priceId) => !!prices[priceId]
+                (priceId) => !!plansMap[priceId]
             )
 
             if (!areProductsLoaded) {

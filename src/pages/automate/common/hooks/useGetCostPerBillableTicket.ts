@@ -1,8 +1,8 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentHelpdeskProduct} from 'state/billing/selectors'
+import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 
 export const useGetCostPerBillableTicket = () => {
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
 
     if (!currentHelpdeskPlan) return 0
 

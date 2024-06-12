@@ -16,12 +16,12 @@ import {
 } from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    getCurrentAutomationProduct,
-    getCurrentConvertProduct,
-    getCurrentHelpdeskProduct,
+    getCurrentAutomatePlan,
+    getCurrentConvertPlan,
+    getCurrentHelpdeskPlan,
     getCurrentProductsUsage,
-    getCurrentSMSProduct,
-    getCurrentVoiceProduct,
+    getCurrentSmsPlan,
+    getCurrentVoicePlan,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
 import {
@@ -76,11 +76,11 @@ const BillingStartView = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentUsage = useAppSelector(getCurrentProductsUsage)
     const isTrialingSubscription = useAppSelector(isTrialing)
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
-    const currentVoicePlan = useAppSelector(getCurrentVoiceProduct)
-    const currentSmsPlan = useAppSelector(getCurrentSMSProduct)
-    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
+    const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
+    const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
+    const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const isCurrentHelpdeskLegacy = useAppSelector(getIsCurrentHelpdeskLegacy)
     const payment = useAppSelector(paymentMethod)
     const isPaymentShopify = payment === 'shopify'

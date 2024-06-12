@@ -30,7 +30,6 @@ import {
 } from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {PlanInterval, ProductType} from 'models/billing/types'
-import {getFormattedAmount} from 'models/billing/utils'
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState} from 'state/types'
 
@@ -414,25 +413,31 @@ describe('billing selectors', () => {
 
     describe('getProducts', () => {
         it('should return products', () => {
-            expect(selectors.getProducts(state)).toMatchSnapshot()
+            expect(
+                selectors.getAvailablePlansByProduct(state)
+            ).toMatchSnapshot()
         })
     })
 
     describe('getHelpdeskProduct', () => {
         it('should return the helpdesk product', () => {
-            expect(selectors.getHelpdeskProduct(state)).toMatchSnapshot()
+            expect(
+                selectors.getAvailableHelpdeskPlansInProduct(state)
+            ).toMatchSnapshot()
         })
     })
 
     describe('getAutomationProduct', () => {
         it('should return the Automate product', () => {
-            expect(selectors.getAutomationProduct(state)).toMatchSnapshot()
+            expect(
+                selectors.getAvailableAutomatePlansInProduct(state)
+            ).toMatchSnapshot()
         })
     })
 
     describe('getCurrentHelpdeskProduct', () => {
         it('should return the current helpdesk product', () => {
-            expect(selectors.getCurrentHelpdeskProduct(state)).toEqual(
+            expect(selectors.getCurrentHelpdeskPlan(state)).toEqual(
                 basicMonthlyHelpdeskPrice
             )
         })
@@ -441,7 +446,7 @@ describe('billing selectors', () => {
     describe('getCurrentAutomationProduct', () => {
         it('should return the current Automate product', () => {
             expect(
-                selectors.getCurrentAutomationProduct({
+                selectors.getCurrentAutomatePlan({
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         [
@@ -459,7 +464,7 @@ describe('billing selectors', () => {
     describe('getCurrentVoiceProduct', () => {
         it('should return the current voice product', () => {
             expect(
-                selectors.getCurrentVoiceProduct({
+                selectors.getCurrentVoicePlan({
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         ['current_subscription', 'products', VOICE_PRODUCT_ID],
@@ -473,7 +478,7 @@ describe('billing selectors', () => {
     describe('getCurrentSMSProduct', () => {
         it('should return the current SMS product', () => {
             expect(
-                selectors.getCurrentSMSProduct({
+                selectors.getCurrentSmsPlan({
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         ['current_subscription', 'products', SMS_PRODUCT_ID],
@@ -517,25 +522,7 @@ describe('billing selectors', () => {
 
     describe('getCurrentHelpdeskName', () => {
         it('should return the current product name', () => {
-            expect(selectors.getCurrentHelpdeskName(state)).toBe('Basic')
-        })
-    })
-
-    describe('getCurrentProductsAmount', () => {
-        it('should return the amount for the current products', () => {
-            expect(
-                selectors.getCurrentProductsAmount({
-                    ...state,
-                    currentAccount: state.currentAccount.setIn(
-                        [
-                            'current_subscription',
-                            'products',
-                            AUTOMATION_PRODUCT_ID,
-                        ],
-                        basicMonthlyAutomationPrice.price_id
-                    ),
-                })
-            ).toBe(90)
+            expect(selectors.getCurrentHelpdeskPlanName(state)).toBe('Basic')
         })
     })
 
@@ -544,26 +531,6 @@ describe('billing selectors', () => {
             expect(selectors.getCurrentHelpdeskAddons(state)).toEqual(
                 basicMonthlyHelpdeskPrice.addons
             )
-        })
-    })
-
-    describe('getCurrentHelpdeskAmount', () => {
-        it('should return the formatted amount', () => {
-            expect(selectors.getCurrentHelpdeskAmount(state)).toEqual(
-                getFormattedAmount(basicMonthlyHelpdeskPrice.amount)
-            )
-        })
-    })
-
-    describe('getCurrentHelpdeskCurrency', () => {
-        it('should return the product currency', () => {
-            expect(selectors.getCurrentHelpdeskCurrency(state)).toBe('usd')
-        })
-    })
-
-    describe('getCurrentHelpdeskFreeTickets', () => {
-        it('should return the amount of free tickets', () => {
-            expect(selectors.getCurrentHelpdeskFreeTickets(state)).toBe(300)
         })
     })
 
@@ -645,7 +612,7 @@ describe('billing selectors', () => {
 
     describe('getCurrentProducts', () => {
         it('should return the current products', () => {
-            const currentProducts = selectors.getCurrentProducts({
+            const currentProducts = selectors.getCurrentPlansByProduct({
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products', AUTOMATION_PRODUCT_ID],
@@ -662,7 +629,7 @@ describe('billing selectors', () => {
         it('should return the current products without unknown prices for convert', () => {
             // This is a case that should happen only on when account is subscribed to an internal price
             // e.g. revenue beta testers prices
-            const currentProducts = selectors.getCurrentProducts({
+            const currentProducts = selectors.getCurrentPlansByProduct({
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products', CONVERT_PRODUCT_ID],
@@ -687,19 +654,19 @@ describe('billing selectors', () => {
 
     describe('getPrices', () => {
         it('should return the prices', () => {
-            expect(selectors.getPrices(state)).toMatchSnapshot()
+            expect(selectors.getAvailablePlans(state)).toMatchSnapshot()
         })
     })
 
     describe('getHelpdeskPrices', () => {
         it('should return the helpdesk prices', () => {
-            expect(selectors.getHelpdeskPrices(state)).toMatchSnapshot()
+            expect(selectors.getAvailableHelpdeskPlans(state)).toMatchSnapshot()
         })
     })
 
     describe('getAutomationPrices', () => {
         it('should return the Automate prices', () => {
-            expect(selectors.getAutomationPrices(state)).toMatchSnapshot()
+            expect(selectors.getAvailableAutomatePlans(state)).toMatchSnapshot()
         })
     })
 

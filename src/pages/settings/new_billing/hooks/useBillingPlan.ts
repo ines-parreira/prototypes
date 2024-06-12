@@ -4,18 +4,18 @@ import moment from 'moment'
 import {useQueryClient} from '@tanstack/react-query'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getAutomationProduct,
-    getCurrentAutomationProduct,
+    getAvailableAutomatePlansInProduct,
+    getCurrentAutomatePlan,
     getCurrentHelpdeskInterval,
-    getCurrentHelpdeskProduct,
-    getCurrentSMSProduct,
+    getCurrentHelpdeskPlan,
+    getCurrentSmsPlan,
     getCurrentProductsUsage,
-    getCurrentVoiceProduct,
-    getHelpdeskPrices,
-    getSMSProduct,
-    getVoiceProduct,
-    getCurrentConvertProduct,
-    getConvertProduct,
+    getCurrentVoicePlan,
+    getAvailableHelpdeskPlans,
+    getAvailableSmsPlansInProduct,
+    getAvailableVoicePlansInProduct,
+    getCurrentConvertPlan,
+    getAvailableConvertPlansInProduct,
 } from 'state/billing/selectors'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {objKeys} from 'utils'
@@ -98,8 +98,10 @@ export const useBillingPlans = ({
         useAppSelector(getCurrentHelpdeskInterval) ?? PlanInterval.Month
 
     // Helpdesk
-    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskProduct)
-    const helpdeskAvailablePlans = useAppSelector(getHelpdeskPrices).filter(
+    const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const helpdeskAvailablePlans = useAppSelector(
+        getAvailableHelpdeskPlans
+    ).filter(
         (price) =>
             price.num_quota_tickets &&
             (filterByInterval ? price.interval === interval : true)
@@ -117,9 +119,9 @@ export const useBillingPlans = ({
     )
 
     // Automate
-    const currentAutomatePlan = useAppSelector(getCurrentAutomationProduct)
+    const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const automateAvailablePlans = useAppSelector(
-        getAutomationProduct
+        getAvailableAutomatePlansInProduct
     )?.prices.filter((price) => {
         const isCurrentPriceLegacy =
             currentAutomatePlan && !currentAutomatePlan.num_quota_tickets
@@ -139,27 +141,31 @@ export const useBillingPlans = ({
     )
 
     // Voice
-    const currentVoicePlan = useAppSelector(getCurrentVoiceProduct)
-    const voiceAvailablePlans = useAppSelector(getVoiceProduct)?.prices.filter(
-        (price) => (filterByInterval ? price.interval === interval : true)
+    const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
+    const voiceAvailablePlans = useAppSelector(
+        getAvailableVoicePlansInProduct
+    )?.prices.filter((price) =>
+        filterByInterval ? price.interval === interval : true
     )
 
     const voiceInitialIndex =
         voiceAvailablePlans?.findIndex((price) => !!price.amount) ?? 0
 
     // SMS
-    const currentSmsPlan = useAppSelector(getCurrentSMSProduct)
-    const smsAvailablePlans = useAppSelector(getSMSProduct)?.prices.filter(
-        (price) => (filterByInterval ? price.interval === interval : true)
+    const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
+    const smsAvailablePlans = useAppSelector(
+        getAvailableSmsPlansInProduct
+    )?.prices.filter((price) =>
+        filterByInterval ? price.interval === interval : true
     )
 
     const smsInitialIndex =
         smsAvailablePlans?.findIndex((price) => !!price.amount) ?? 0
 
     // Convert
-    const currentConvertPlan = useAppSelector(getCurrentConvertProduct)
+    const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const convertAvailablePlans = useAppSelector(
-        getConvertProduct
+        getAvailableConvertPlansInProduct
     )?.prices.filter((price) =>
         filterByInterval ? price.interval === interval : true
     )
