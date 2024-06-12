@@ -6,10 +6,10 @@ import axios, {AxiosError, CancelToken} from 'axios'
 import _isEqual from 'lodash/isEqual'
 
 import {auditLogEventsFetched} from 'state/entities/auditLogEvents/actions'
+import {getAuditLogEvents} from 'state/entities/auditLogEvents/selectors'
 import {NotificationStatus} from 'state/notifications/types'
 import {notify} from 'state/notifications/actions'
 import {getHumanAgents} from 'state/agents/selectors'
-import {RootState} from 'state/types'
 import {
     EventType,
     EventsDatetimeOperator,
@@ -49,9 +49,7 @@ const eventTypeOptions = Object.values(EventType).map((auditEvent) => ({
 const UserAuditList = () => {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getHumanAgents)
-    const auditLogEvents = useAppSelector((state: RootState) =>
-        Object.values(state.entities.auditLogEvents)
-    )
+    const auditLogEvents = useAppSelector(getAuditLogEvents)
     const datetimeLabelFormat = useGetDateAndTimeFormat(DATETIME_LABEL_FORMAT)
 
     const [meta, setMeta] = useState<CursorMeta | null>(null)
