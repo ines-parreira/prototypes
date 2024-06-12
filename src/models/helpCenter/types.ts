@@ -192,12 +192,32 @@ export enum HelpCenterAutomateType {
 }
 
 export const ARTICLE_TEMPLATES_KEYS = [
-    'shippingPolicy',
-    'howToReturn',
+    'applyDiscount',
+    'cancelMembership',
+    'cancellationPolicy',
+    'damagedItem',
+    'editOrder',
+    'expeditedShipping',
+    'freeShipping',
+    'howLongDelivery',
     'howToCancelOrder',
+    'howToReturn',
     'howToTrackOrder',
-    'refundsOrExchanges',
+    'loginIssue',
+    'missingDelivery',
     'packageLostOrDamaged',
+    'refundPolicy',
+    'refundTiming',
+    'refundsOrExchanges',
+    'rewards',
+    'shippingCost',
+    'shippingPolicy',
+    'skipShipment',
+    'startReturn',
+    'trackOrder',
+    'updateSubscription',
+    'worldwideShipping',
+    'wrongItem',
 ] as const
 
 export type ArticleTemplateKey = typeof ARTICLE_TEMPLATES_KEYS[number]

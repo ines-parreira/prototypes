@@ -2649,6 +2649,7 @@ declare namespace Components {
       body_html?: string;
       attachments: WorkflowHandoverMessageAttachmentDto[];
       from_agent: boolean;
+      sent_datetime: string;
     }
     export interface WorkflowVo {
       /**
@@ -3115,7 +3116,7 @@ declare namespace Paths {
   namespace GetArticleTemplate {
     namespace Parameters {
       export type Locale = "cs-CZ" | "da-DK" | "nl-NL" | "en-GB" | "en-US" | "fi-FI" | "fr-CA" | "fr-FR" | "de-DE" | "it-IT" | "ja-JP" | "no-NO" | "pt-BR" | "es-ES" | "sv-SE";
-      export type TemplateKey = "howToCancelOrder" | "howToReturn" | "howToTrackOrder" | "packageLostOrDamaged" | "refundsOrExchanges" | "shippingPolicy";
+      export type TemplateKey = "applyDiscount" | "cancelMembership" | "cancellationPolicy" | "damagedItem" | "editOrder" | "expeditedShipping" | "freeShipping" | "howLongDelivery" | "howToCancelOrder" | "howToReturn" | "howToTrackOrder" | "loginIssue" | "missingDelivery" | "packageLostOrDamaged" | "refundPolicy" | "refundTiming" | "refundsOrExchanges" | "rewards" | "shippingCost" | "shippingPolicy" | "skipShipment" | "startReturn" | "trackOrder" | "updateSubscription" | "worldwideShipping" | "wrongItem";
     }
     export interface PathParameters {
       template_key: Parameters.TemplateKey;

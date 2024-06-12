@@ -3864,12 +3864,32 @@
                         "schema": {
                             "type": "string",
                             "enum": [
+                                "applyDiscount",
+                                "cancelMembership",
+                                "cancellationPolicy",
+                                "damagedItem",
+                                "editOrder",
+                                "expeditedShipping",
+                                "freeShipping",
+                                "howLongDelivery",
                                 "howToCancelOrder",
                                 "howToReturn",
                                 "howToTrackOrder",
+                                "loginIssue",
+                                "missingDelivery",
                                 "packageLostOrDamaged",
+                                "refundPolicy",
+                                "refundTiming",
                                 "refundsOrExchanges",
-                                "shippingPolicy"
+                                "rewards",
+                                "shippingCost",
+                                "shippingPolicy",
+                                "skipShipment",
+                                "startReturn",
+                                "trackOrder",
+                                "updateSubscription",
+                                "worldwideShipping",
+                                "wrongItem"
                             ]
                         }
                     },
@@ -7877,9 +7897,10 @@
                             "$ref": "#/components/schemas/WorkflowHandoverMessageAttachmentDto"
                         }
                     },
-                    "from_agent": {"type": "boolean"}
+                    "from_agent": {"type": "boolean"},
+                    "sent_datetime": {"type": "string"}
                 },
-                "required": ["attachments", "from_agent"]
+                "required": ["attachments", "from_agent", "sent_datetime"]
             },
             "WorkflowHandoverDto": {
                 "type": "object",

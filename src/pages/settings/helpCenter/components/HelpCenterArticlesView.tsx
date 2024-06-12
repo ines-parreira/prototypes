@@ -142,7 +142,11 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const {data: template} = useGetArticleTemplate(
         selectedTemplateKey,
-        viewLanguage
+        viewLanguage,
+        {
+            refetchOnWindowFocus: false,
+            retry: false,
+        }
     )
 
     // template states
