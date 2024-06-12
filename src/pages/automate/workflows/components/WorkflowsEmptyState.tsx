@@ -10,6 +10,7 @@ import AutomateViewEmptyStateBanner from 'pages/automate/common/components/Autom
 import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
 
 import templatesCss from '../WorkflowTemplatesView.less'
+import {WORKFLOWS_DESCRIPTION, WORKFLOWS_MAIN_TITLE} from '../common/constants'
 import css from './WorkflowsEmptyState.less'
 import WorkflowTemplateCard from './WorkflowTemplateCard'
 
@@ -27,11 +28,8 @@ const WorkflowsEmptyState: React.FC<Props> = ({
     return (
         <>
             <AutomateViewEmptyStateBanner
-                title="Create Flows to automate customer interactions on
-                            Chat, Help Center and Contact Form"
-                description="Build single or multi-step Flows to answer
-                            questions, recommend products, help customers
-                            troubleshoot, and more."
+                title={WORKFLOWS_MAIN_TITLE}
+                description={WORKFLOWS_DESCRIPTION}
                 image={templatesImage}
             />
             <Container fluid className={css.pageContainer}>

@@ -23,6 +23,7 @@ import css from './WorkflowsView.less'
 import useStoreWorkflows from './hooks/useStoreWorkflows'
 import {useStoreWorkflowsApi} from './hooks/useStoreWorkflowsApi'
 import WorkflowTemplatesViewContainer from './WorkflowTemplatesViewContainer'
+import {WORKFLOWS_DESCRIPTION} from './common/constants'
 
 type WorkflowsViewProps = {
     shopType: string
@@ -94,9 +95,7 @@ export default function WorkflowsView({
                     <div className={css.descriptionContainer}>
                         <div className={css.description}>
                             <div className={css.descriptionText}>
-                                Create and edit Flows to automate multi-step
-                                interactions in Chat, Help Center, and Contact
-                                Form.
+                                {WORKFLOWS_DESCRIPTION}
                             </div>
 
                             <a
