@@ -302,26 +302,30 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
     return (
         <div className={css.container}>
             <div className={css.header}>
-                {isInstalled ? (
-                    <i
-                        className="material-icons text-success"
-                        style={{fontSize: 24}}
-                    >
-                        check_circle
-                    </i>
-                ) : null}
-                <div>
-                    {themeAppExtensionInstallation ? (
-                        <div className={css.title}>
-                            Quick installation for Shopify
+                <div className={css.leftSection}>
+                    {isInstalled ? (
+                        <div className={css.installedIcon}>
+                            <i
+                                className="material-icons text-success"
+                                style={{fontSize: 24}}
+                            >
+                                check_circle
+                            </i>
                         </div>
-                    ) : (
-                        <div className={css.title}>
-                            1-click installation for Shopify
-                        </div>
-                    )}
+                    ) : null}
+                    <div>
+                        {themeAppExtensionInstallation ? (
+                            <div className={css.title}>
+                                Quick installation for Shopify
+                            </div>
+                        ) : (
+                            <div className={css.title}>
+                                1-click installation for Shopify
+                            </div>
+                        )}
 
-                    {renderCardSubtext()}
+                        {renderCardSubtext()}
+                    </div>
                 </div>
                 <div className={css.rightSection}>
                     {renderCardButton()}
