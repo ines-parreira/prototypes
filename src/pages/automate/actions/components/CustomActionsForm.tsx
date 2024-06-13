@@ -90,6 +90,7 @@ export default function CustomActionsForm({
     } = useFieldArray({
         control,
         name: 'customInput',
+        keyName: '_id',
     })
 
     const httpBody = useWatch({
