@@ -14,7 +14,9 @@ import {
     ConvertPrice,
     HelpdeskPrice,
     Price,
+    PriceId,
     Product,
+    ProductId,
     ProductType,
     SMSOrVoicePrice,
 } from 'models/billing/types'
@@ -54,75 +56,96 @@ export const getAvailablePlansByProduct = createSelector(
     }
 )
 
-export const getAvailableHelpdeskPlansInProduct = createSelector(
+export const getAvailableHelpdeskPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
-        return products.find(
+        const helpdeskProduct = products.find(
             (product): product is Product<HelpdeskPrice> =>
                 product.type === ProductType.Helpdesk
-        )!
+        )
+        if (!helpdeskProduct) {
+            return []
+        }
+        return helpdeskProduct.prices.sort((a, b) => a.amount - b.amount)
     }
 )
 
-export const getAvailableAutomatePlansInProduct = createSelector(
+export const getAvailableAutomatePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
-        return products.find(
+        const autProduct = products.find(
             (product): product is Product<AutomationPrice> =>
                 product.type === ProductType.Automation
-        )!
+        )
+        if (!autProduct) {
+            return []
+        }
+        return autProduct.prices.sort((a, b) => a.amount - b.amount)
     }
 )
 
-export const getAvailableVoicePlansInProduct = createSelector(
+export const getAvailableVoicePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
-        return products.find(
+        const voiceProduct = products.find(
             (product): product is Product<SMSOrVoicePrice> =>
                 product.type === ProductType.Voice
         )
+        if (!voiceProduct) {
+            return []
+        }
+        return voiceProduct.prices.sort((a, b) => a.amount - b.amount)
     }
 )
 
-export const getAvailableSmsPlansInProduct = createSelector(
+export const getAvailableSmsPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
-        return products.find(
+        const smsProduct = products.find(
             (product): product is Product<SMSOrVoicePrice> =>
                 product.type === ProductType.SMS
         )
+        if (!smsProduct) {
+            return []
+        }
+        return smsProduct.prices.sort((a, b) => a.amount - b.amount)
     }
 )
 
-export const getAvailableConvertPlansInProduct = createSelector(
+export const getAvailableConvertPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
-        return products.find(
+        const convertProduct = products.find(
             (product): product is Product<ConvertPrice> =>
                 product.type === ProductType.Convert
         )
+        if (!convertProduct) {
+            return []
+        }
+        return convertProduct.prices.sort((a, b) => a.amount - b.amount)
     }
 )
 
 export const getCurrentPlansByProduct = createSelector(
     getCurrentSubscription as (state: RootState) => CurrentAccountState,
-    getAvailableHelpdeskPlansInProduct,
-    getAvailableAutomatePlansInProduct,
-    getAvailableVoicePlansInProduct,
-    getAvailableSmsPlansInProduct,
-    getAvailableConvertPlansInProduct,
+    getAvailableHelpdeskPlans,
+    getAvailableAutomatePlans,
+    getAvailableVoicePlans,
+    getAvailableSmsPlans,
+    getAvailableConvertPlans,
     (
         currentSubscription,
-        helpdeskProduct,
-        automateProduct,
-        voiceProduct,
-        smsProduct,
-        convertProduct
+        helpdeskAvailablePlans,
+        automateAvailablePlans,
+        voiceAvailablePlans,
+        smsAvailablePlans,
+        convertAvailablePlans
     ) => {
-        const currentSubscriptionProducts: Record<string, string> = (
+        const currentPlansPriceIdByProduct: Record<ProductId, PriceId> = (
             (currentSubscription.get('products') || fromJS({})) as Map<any, any>
         ).toJS()
 
+        // For now, a helpdesk plan is required for the app to work.
         const currentPlansByProduct: {
             [ProductType.Helpdesk]: HelpdeskPrice
             [ProductType.Automation]?: AutomationPrice
@@ -130,60 +153,53 @@ export const getCurrentPlansByProduct = createSelector(
             [ProductType.SMS]?: SMSOrVoicePrice
             [ProductType.Convert]?: ConvertPrice
         } = {} as any
-        Object.entries(currentSubscriptionProducts).forEach(
-            ([productId, priceId]) => {
-                if (helpdeskProduct.id === productId) {
-                    const helpdeskPlan = helpdeskProduct.prices.find(
-                        (plan) => plan.price_id === priceId
-                    )
 
-                    if (!!helpdeskPlan) {
-                        currentPlansByProduct[ProductType.Helpdesk] =
-                            helpdeskPlan
-                    }
-                }
+        Object.values(currentPlansPriceIdByProduct).forEach((priceId) => {
+            const helpdeskPlan = helpdeskAvailablePlans.find(
+                (plan) => plan.price_id === priceId
+            )
 
-                if (automateProduct.id === productId) {
-                    const autPlan = automateProduct.prices.find(
-                        (plan) => plan.price_id === priceId
-                    )
-
-                    if (!!autPlan) {
-                        currentPlansByProduct[ProductType.Automation] = autPlan
-                    }
-                }
-
-                if (voiceProduct?.id === productId) {
-                    const voicePlan = voiceProduct.prices.find(
-                        (plan) => plan.price_id === priceId
-                    )
-
-                    if (!!voicePlan) {
-                        currentPlansByProduct[ProductType.Voice] = voicePlan
-                    }
-                }
-
-                if (smsProduct?.id === productId) {
-                    const smsPlan = smsProduct.prices.find(
-                        (plan) => plan.price_id === priceId
-                    )
-
-                    if (!!smsPlan) {
-                        currentPlansByProduct[ProductType.SMS] = smsPlan
-                    }
-                }
-
-                if (convertProduct?.id === productId) {
-                    const convertPlan = convertProduct.prices.find(
-                        (plan) => plan.price_id === priceId
-                    )
-
-                    if (!!convertPlan) {
-                        currentPlansByProduct[ProductType.Convert] = convertPlan
-                    }
-                }
+            if (!!helpdeskPlan) {
+                currentPlansByProduct[ProductType.Helpdesk] = helpdeskPlan
+                return
             }
-        )
+
+            const autPlan = automateAvailablePlans.find(
+                (plan) => plan.price_id === priceId
+            )
+
+            if (!!autPlan) {
+                currentPlansByProduct[ProductType.Automation] = autPlan
+                return
+            }
+
+            const voicePlan = voiceAvailablePlans.find(
+                (plan) => plan.price_id === priceId
+            )
+
+            if (!!voicePlan) {
+                currentPlansByProduct[ProductType.Voice] = voicePlan
+                return
+            }
+
+            const smsPlan = smsAvailablePlans.find(
+                (plan) => plan.price_id === priceId
+            )
+
+            if (!!smsPlan) {
+                currentPlansByProduct[ProductType.SMS] = smsPlan
+                return
+            }
+
+            const convertPlan = convertAvailablePlans.find(
+                (plan) => plan.price_id === priceId
+            )
+
+            if (!!convertPlan) {
+                currentPlansByProduct[ProductType.Convert] = convertPlan
+                return
+            }
+        })
         return !_isEmpty(currentPlansByProduct)
             ? currentPlansByProduct
             : undefined
@@ -281,16 +297,6 @@ export const getAvailablePlans = createSelector(
             .sort((a, b) => a.amount - b.amount)
 )
 
-export const getAvailableHelpdeskPlans = createSelector(
-    getAvailableHelpdeskPlansInProduct,
-    (product) => product.prices.sort((a, b) => a.amount - b.amount)
-)
-
-export const getAvailableAutomatePlans = createSelector(
-    getAvailableAutomatePlansInProduct,
-    (product) => product.prices.sort((a, b) => a.amount - b.amount)
-)
-
 export const getAvailablePlansMap = createSelector(
     getAvailablePlansByProduct,
     (products) =>
@@ -303,9 +309,9 @@ export const getAvailablePlansMap = createSelector(
 )
 
 export const getAvailableAutomatePlansMap = createSelector(
-    getAvailableAutomatePlansInProduct,
-    (product) =>
-        product.prices.reduce<Record<string, AutomationPrice>>((acc, plan) => {
+    getAvailableAutomatePlans,
+    (plans) =>
+        plans.reduce<Record<string, AutomationPrice>>((acc, plan) => {
             acc[plan.price_id] = plan
             return acc
         }, {})
@@ -420,45 +426,44 @@ export const makeGetIsAllowedToChangePrice = createSelector(
 )
 
 export const getCheapestSMSPrice = createSelector(
-    getAvailableSmsPlansInProduct,
+    getAvailableSmsPlans,
     getCurrentHelpdeskInterval,
-    (SMSProduct, interval) => getCheapestPrice(SMSProduct?.prices, interval)
+    (smsPlans, interval) => getCheapestPrice(smsPlans, interval)
 )
 
 export const getCheapestVoicePrice = createSelector(
-    getAvailableVoicePlansInProduct,
+    getAvailableVoicePlans,
     getCurrentHelpdeskInterval,
-    (voiceProduct, interval) => getCheapestPrice(voiceProduct?.prices, interval)
+    (voicePlans, interval) => getCheapestPrice(voicePlans, interval)
 )
 
 export const getCheapestConvertPrice = createSelector(
-    getAvailableConvertPlansInProduct,
+    getAvailableConvertPlans,
     getCurrentHelpdeskInterval,
-    (convertProduct, interval) =>
-        getCheapestPrice(convertProduct?.prices, interval)
+    (convertPlans, interval) => getCheapestPrice(convertPlans, interval)
 )
 
 export const getCheapestProductPrices = createSelector(
     getAvailableHelpdeskPlans,
     getAvailableAutomatePlans,
-    getAvailableVoicePlansInProduct,
-    getAvailableSmsPlansInProduct,
-    getAvailableConvertPlansInProduct,
+    getAvailableVoicePlans,
+    getAvailableSmsPlans,
+    getAvailableConvertPlans,
     getCurrentHelpdeskInterval,
     (
-        helpDeskPrices,
-        automationPrices,
-        voiceProduct,
-        smsProduct,
-        convertProduct,
+        helpDeskPlans,
+        automationPlans,
+        voicePlans,
+        smsPlans,
+        convertPlans,
         interval
     ) => {
         return {
-            helpdesk: getCheapestPrice(helpDeskPrices, interval),
-            automation: getCheapestPrice(automationPrices, interval),
-            voice: getCheapestPrice(voiceProduct?.prices, interval),
-            sms: getCheapestPrice(smsProduct?.prices, interval),
-            convert: getCheapestPrice(convertProduct?.prices, interval),
+            helpdesk: getCheapestPrice(helpDeskPlans, interval),
+            automation: getCheapestPrice(automationPlans, interval),
+            voice: getCheapestPrice(voicePlans, interval),
+            sms: getCheapestPrice(smsPlans, interval),
+            convert: getCheapestPrice(convertPlans, interval),
         }
     }
 )

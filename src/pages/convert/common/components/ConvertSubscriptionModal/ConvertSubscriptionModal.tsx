@@ -4,7 +4,7 @@ import SubscriptionModal from 'pages/settings/new_billing/components/Subscriptio
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCheapestConvertPrice,
-    getAvailableConvertPlansInProduct,
+    getAvailableConvertPlans,
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
@@ -34,9 +34,7 @@ const ConvertSubscriptionModal = ({
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const cheapestConvertPlan = useAppSelector(getCheapestConvertPrice)
-    const convertAvailablePlans = useAppSelector(
-        getAvailableConvertPlansInProduct
-    )?.prices
+    const convertAvailablePlans = useAppSelector(getAvailableConvertPlans)
     const isTrialingSubscription = useAppSelector(isTrialing)
 
     const defaultPrice = useMemo((): ConvertPrice | undefined => {

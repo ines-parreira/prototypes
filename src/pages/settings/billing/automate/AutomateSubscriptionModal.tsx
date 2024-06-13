@@ -9,7 +9,7 @@ import {UserRole} from 'config/types/user'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    getAvailableAutomatePlansInProduct,
+    getAvailableAutomatePlans,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskPlan,
     getHasAutomate,
@@ -163,10 +163,8 @@ const AutomateSubscriptionModal = ({
     }
 
     const automateAvailablePlans = useAppSelector(
-        getAvailableAutomatePlansInProduct
-    )?.prices.filter(
-        (price) => price.num_quota_tickets && price.interval === interval
-    )
+        getAvailableAutomatePlans
+    ).filter((plan) => plan.num_quota_tickets && plan.interval === interval)
     const helpdeskOptionIndex = Math.max(
         helpdeskAvailablePlansPriceIds.indexOf(
             currentHelpdeskPlan?.price_id || ''

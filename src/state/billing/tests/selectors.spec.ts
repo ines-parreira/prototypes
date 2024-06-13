@@ -419,19 +419,53 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getHelpdeskProduct', () => {
-        it('should return the helpdesk product', () => {
-            expect(
-                selectors.getAvailableHelpdeskPlansInProduct(state)
-            ).toMatchSnapshot()
+    describe('getAvailableHelpdeskPlans', () => {
+        it('should return the helpdesk plans', () => {
+            const plans = selectors.getAvailableHelpdeskPlans(state)
+
+            plans.forEach((plan) => {
+                expect(plan.product).toEqual(ProductType.Helpdesk)
+            })
         })
     })
 
-    describe('getAutomationProduct', () => {
-        it('should return the Automate product', () => {
-            expect(
-                selectors.getAvailableAutomatePlansInProduct(state)
-            ).toMatchSnapshot()
+    describe('getAvailableAutomatePlans', () => {
+        it('should return the Automate plans', () => {
+            const plans = selectors.getAvailableAutomatePlans(state)
+
+            plans.forEach((plan) => {
+                expect(plan.product).toEqual(ProductType.Automation)
+            })
+        })
+    })
+
+    describe('getAvailableVoicePlans', () => {
+        it('should return the Voice plans', () => {
+            const plans = selectors.getAvailableVoicePlans(state)
+
+            plans.forEach((plan) => {
+                expect(plan.product).toEqual(ProductType.Voice)
+            })
+        })
+    })
+
+    describe('getAvailableSmsPlans', () => {
+        it('should return the SMS plans', () => {
+            const plans = selectors.getAvailableSmsPlans(state)
+
+            plans.forEach((plan) => {
+                expect(plan.product).toEqual(ProductType.SMS)
+            })
+        })
+    })
+
+    describe('getAvailableConvertPlans', () => {
+        it('should return the SMS plans', () => {
+            const plans = selectors.getAvailableConvertPlans(state)
+
+            plans.forEach((plan) => {
+                expect(plan.product).toEqual(ProductType.Convert)
+            })
         })
     })
 
@@ -610,26 +644,36 @@ describe('billing selectors', () => {
         })
     })
 
-    describe('getCurrentProducts', () => {
+    describe('getCurrentPlansByProduct', () => {
         it('should return the current products', () => {
-            const currentProducts = selectors.getCurrentPlansByProduct({
+            const products = {
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
+                [VOICE_PRODUCT_ID]: voicePrice1.price_id,
+                [SMS_PRODUCT_ID]: smsPrice1.price_id,
+                [CONVERT_PRODUCT_ID]: convertPrice1.price_id,
+            }
+            const currentPlansByProduct = selectors.getCurrentPlansByProduct({
                 ...state,
                 currentAccount: state.currentAccount.setIn(
-                    ['current_subscription', 'products', AUTOMATION_PRODUCT_ID],
-                    basicMonthlyAutomationPrice.price_id
+                    ['current_subscription', 'products'],
+                    fromJS(products)
                 ),
             })
 
-            expect(currentProducts && 'helpdesk' in currentProducts).toBe(true)
-            expect(currentProducts && 'automation' in currentProducts).toBe(
-                true
-            )
+            expect(currentPlansByProduct).toEqual({
+                [ProductType.Helpdesk]: basicMonthlyHelpdeskPrice,
+                [ProductType.Automation]: basicMonthlyAutomationPrice,
+                [ProductType.Voice]: voicePrice1,
+                [ProductType.SMS]: smsPrice1,
+                [ProductType.Convert]: convertPrice1,
+            })
         })
 
-        it('should return the current products without unknown prices for convert', () => {
+        it('should return the current plans by product without unknown plans for convert', () => {
             // This is a case that should happen only on when account is subscribed to an internal price
             // e.g. revenue beta testers prices
-            const currentProducts = selectors.getCurrentPlansByProduct({
+            const currentPlansByProduct = selectors.getCurrentPlansByProduct({
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products', CONVERT_PRODUCT_ID],
@@ -637,8 +681,12 @@ describe('billing selectors', () => {
                 ),
             })
 
-            expect(currentProducts && 'helpdesk' in currentProducts).toBe(true)
-            expect(currentProducts && 'convert' in currentProducts).toBe(false)
+            expect(
+                currentPlansByProduct && 'helpdesk' in currentPlansByProduct
+            ).toBe(true)
+            expect(
+                currentPlansByProduct && 'convert' in currentPlansByProduct
+            ).toBe(false)
         })
     })
 

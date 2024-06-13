@@ -4,7 +4,7 @@ import moment from 'moment'
 import {useQueryClient} from '@tanstack/react-query'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    getAvailableAutomatePlansInProduct,
+    getAvailableAutomatePlans,
     getCurrentAutomatePlan,
     getCurrentHelpdeskInterval,
     getCurrentHelpdeskPlan,
@@ -12,10 +12,10 @@ import {
     getCurrentProductsUsage,
     getCurrentVoicePlan,
     getAvailableHelpdeskPlans,
-    getAvailableSmsPlansInProduct,
-    getAvailableVoicePlansInProduct,
+    getAvailableSmsPlans,
+    getAvailableVoicePlans,
     getCurrentConvertPlan,
-    getAvailableConvertPlansInProduct,
+    getAvailableConvertPlans,
 } from 'state/billing/selectors'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {objKeys} from 'utils'
@@ -121,14 +121,14 @@ export const useBillingPlans = ({
     // Automate
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const automateAvailablePlans = useAppSelector(
-        getAvailableAutomatePlansInProduct
-    )?.prices.filter((price) => {
+        getAvailableAutomatePlans
+    ).filter((plan) => {
         const isCurrentPriceLegacy =
             currentAutomatePlan && !currentAutomatePlan.num_quota_tickets
         return (
-            price &&
-            (filterByInterval ? price.interval === interval : true) &&
-            (isCurrentPriceLegacy ? true : !!price.num_quota_tickets)
+            plan &&
+            (filterByInterval ? plan.interval === interval : true) &&
+            (isCurrentPriceLegacy ? true : !!plan.num_quota_tickets)
         )
     })
     const automationHasLegacyPrice = useMemo(
@@ -142,10 +142,8 @@ export const useBillingPlans = ({
 
     // Voice
     const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
-    const voiceAvailablePlans = useAppSelector(
-        getAvailableVoicePlansInProduct
-    )?.prices.filter((price) =>
-        filterByInterval ? price.interval === interval : true
+    const voiceAvailablePlans = useAppSelector(getAvailableVoicePlans).filter(
+        (plan) => (filterByInterval ? plan.interval === interval : true)
     )
 
     const voiceInitialIndex =
@@ -153,10 +151,8 @@ export const useBillingPlans = ({
 
     // SMS
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
-    const smsAvailablePlans = useAppSelector(
-        getAvailableSmsPlansInProduct
-    )?.prices.filter((price) =>
-        filterByInterval ? price.interval === interval : true
+    const smsAvailablePlans = useAppSelector(getAvailableSmsPlans).filter(
+        (plan) => (filterByInterval ? plan.interval === interval : true)
     )
 
     const smsInitialIndex =
@@ -165,10 +161,8 @@ export const useBillingPlans = ({
     // Convert
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const convertAvailablePlans = useAppSelector(
-        getAvailableConvertPlansInProduct
-    )?.prices.filter((price) =>
-        filterByInterval ? price.interval === interval : true
-    )
+        getAvailableConvertPlans
+    ).filter((plan) => (filterByInterval ? plan.interval === interval : true))
     const convertInitialIndex = getDefaultConvertPriceIndex(
         interval,
         convertAvailablePlans,

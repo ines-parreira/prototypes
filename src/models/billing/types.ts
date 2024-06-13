@@ -22,6 +22,11 @@ export enum ProductType {
     Convert = 'convert',
 }
 
+// A Stripe price ID always starts with 'price_'.
+export type PriceId = string
+// A Stripe product ID always starts with 'prod_'.
+export type ProductId = string
+
 export type Price =
     | HelpdeskPrice
     | AutomationPrice
