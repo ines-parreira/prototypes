@@ -36,7 +36,7 @@ export default function PlaceCallNavbarButton() {
         <Button
             className={classNames(navbarCss.navbarButton, 'flex-grow')}
             fillStyle="ghost"
-            isDisabled={false}
+            isDisabled={!device}
             onClick={() => setIsDeviceVisible(!isDeviceVisible)}
             ref={buttonRef}
         >

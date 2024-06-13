@@ -87,11 +87,14 @@ describe('<PlaceCallNavbarButton />', () => {
         expect(screen.getByTestId('phone-device')).toHaveTextContent('hidden')
     })
 
-    it('should render DeactivatedViewIcon when device is not available', () => {
+    it('should render DeactivatedViewIcon and disable button when device is not available', () => {
         useVoiceDeviceMock.mockReturnValue({device: null} as any)
         renderComponent()
 
         expect(screen.getByTestId('deactivated-view-icon')).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {name: /Place call/})
+        ).toHaveAttribute('aria-disabled', 'true')
     })
 
     it('should close PhoneDevice when device is removed', () => {
