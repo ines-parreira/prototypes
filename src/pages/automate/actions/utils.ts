@@ -1,4 +1,21 @@
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import _ from 'lodash'
+import {
+    WorkflowVariableGroup,
+    WorkflowVariable,
+} from 'pages/automate/workflows/models/variables.types'
+import {
+    ConditionSchema,
+    VarSchema,
+} from 'pages/automate/workflows/models/conditions.types'
+import {extractVariablesFromText} from 'pages/automate/workflows/models/variables.model'
+import {
+    StoreWorkflowsConfiguration,
+    CustomActionConfigurationFormInput,
+    CustomActionFormInputValues,
+    LlmPromptTrigger,
+    CustomInput,
+    StepHttpRequest,
+} from './types'
 
 export const orderVariables: WorkflowVariable[] = [
     {
@@ -265,3 +282,205 @@ export const customerVariables: WorkflowVariable[] = [
         type: 'string',
     },
 ]
+
+export function getStepByKind<
+    T extends StoreWorkflowsConfiguration['steps'][number]['kind']
+>(steps: StoreWorkflowsConfiguration['steps'], kind: T) {
+    return steps.find(
+        (step): step is Extract<typeof step, {kind: T}> => step.kind === kind
+    )
+}
+
+export function getEntrypointByKind<
+    T extends StoreWorkflowsConfiguration['entrypoints'][number]['kind']
+>(entrypoints: StoreWorkflowsConfiguration['entrypoints'], kind: T) {
+    return entrypoints.find(
+        (entrypoint): entrypoint is Extract<typeof entrypoint, {kind: T}> =>
+            entrypoint.kind === kind
+    )
+}
+
+export function getTriggerstByKind<
+    T extends StoreWorkflowsConfiguration['triggers'][number]['kind']
+>(triggers: StoreWorkflowsConfiguration['triggers'], kind: T) {
+    return triggers.find(
+        (trigger): trigger is Extract<typeof trigger, {kind: T}> =>
+            trigger.kind === kind
+    )
+}
+function getConditionsType(trigger: LlmPromptTrigger) {
+    if (!trigger.settings.conditions) {
+        return null
+    }
+    if ('and' in trigger.settings.conditions) {
+        return 'and'
+    }
+    if ('or' in trigger.settings.conditions) {
+        return 'or'
+    }
+    return null
+}
+
+export function tranformCustomInputToWorkflowVariable(
+    customInputs: CustomInput[]
+) {
+    return customInputs
+        .filter((input) => input && input.name.length > 0 && input.dataType)
+        .map(
+            (input) =>
+                ({
+                    name: input.name,
+                    value: `custom_inputs.${input.id}`,
+                    nodeType: 'custom_input',
+                    type: input.dataType,
+                } as WorkflowVariable)
+        )
+}
+
+export function getInputVariables(customInputs: CustomInput[]) {
+    const customInputsWorkflowVariables =
+        tranformCustomInputToWorkflowVariable(customInputs)
+
+    const customVariableGroup: WorkflowVariableGroup = {
+        name: 'Inputs',
+        nodeType: 'custom_input',
+        variables: customInputsWorkflowVariables,
+    }
+
+    const customerVariableGroup: WorkflowVariableGroup = {
+        name: 'Existing customer',
+        nodeType: 'shopper_authentication',
+        variables: customerVariables,
+    }
+
+    const orderVariableGroup: WorkflowVariableGroup = {
+        name: 'Order',
+        nodeType: 'order_selection',
+        variables: orderVariables,
+    }
+
+    const variableGroups = [
+        customVariableGroup,
+        customerVariableGroup,
+        orderVariableGroup,
+    ]
+
+    return variableGroups.filter((group) => group.variables.length > 0)
+}
+
+export function storeWorkflowsConfgurationToFormValue(
+    configuration: CustomActionConfigurationFormInput
+): CustomActionFormInputValues {
+    const httpStep = getStepByKind(configuration.steps, 'http-request')
+    const llmPromptTrigger = getTriggerstByKind(
+        configuration.triggers,
+        'llm-prompt'
+    )
+    const llmConversationEntryPoint = getEntrypointByKind(
+        configuration.entrypoints,
+        'llm-conversation'
+    )
+
+    const conditionsType = llmPromptTrigger
+        ? getConditionsType(llmPromptTrigger)
+        : null
+
+    const conditions =
+        conditionsType &&
+        conditionsType in (llmPromptTrigger?.settings.conditions ?? {})
+            ? (
+                  llmPromptTrigger?.settings.conditions as Record<
+                      string,
+                      ConditionSchema[]
+                  >
+              )[conditionsType]
+            : []
+
+    const httpContentType =
+        Object.entries(httpStep?.settings.headers ?? {})
+            .map(([name, value]) => ({name, value}))
+            .find(({name}) => name.toLocaleLowerCase() === 'content-type')
+            ?.value ?? null
+
+    const httpHeaders = Object.entries(httpStep?.settings.headers ?? {}).map(
+        ([name, value]) => ({name, value})
+    )
+
+    const customInput =
+        llmPromptTrigger?.settings.custom_inputs.map((input) => ({
+            id: input.id,
+            name: input.name,
+            instructions: input.instructions,
+            dataType: input.data_type,
+        })) ?? []
+
+    return {
+        aiAgentInstructions:
+            llmConversationEntryPoint?.settings.instructions ?? '',
+        outputsDescription:
+            llmPromptTrigger?.settings.outputs[0].description ?? '',
+        name: configuration.name,
+        requiresConfirmation:
+            llmConversationEntryPoint?.settings.requires_confirmation ?? false,
+        isAvailableForAiAgent:
+            llmConversationEntryPoint?.deactivated_datetime === null ||
+            llmConversationEntryPoint?.deactivated_datetime === undefined,
+        httpMethod: httpStep?.settings.method ?? 'GET',
+        httpHeaders,
+        httpUrl: httpStep?.settings.url ?? '',
+        httpBody: httpStep?.settings.body,
+        httpContentType,
+        conditionsType,
+        conditions,
+        customInput,
+    }
+}
+
+export function generatObjectInputs(
+    variables: string[],
+    storeIntegrationId: number
+) {
+    const objectInputs: LlmPromptTrigger['settings']['object_inputs'] = []
+    if (variables.some((variable) => variable.includes('objects.order'))) {
+        objectInputs.push({
+            kind: 'order' as const,
+            integration_id: storeIntegrationId,
+        })
+    }
+    if (variables.some((variable) => variable.includes('objects.customer'))) {
+        objectInputs.push({
+            kind: 'customer' as const,
+            integration_id: storeIntegrationId,
+        })
+    }
+    return objectInputs
+}
+
+export function getHttpStepUsedVariables(stepHttpRequest: StepHttpRequest) {
+    return [
+        ...extractVariablesFromText(stepHttpRequest.settings.url ?? '').map(
+            (variable) => variable.value
+        ),
+        ..._.flatten(
+            Object.values(stepHttpRequest.settings.headers ?? {}).map(
+                (header) =>
+                    extractVariablesFromText(header).map(
+                        (variable) => variable.value
+                    )
+            )
+        ),
+        ...extractVariablesFromText(stepHttpRequest.settings.body ?? '').map(
+            (variable) => variable.value
+        ),
+    ]
+}
+
+export function getConditionsUsedVariables(conditions: ConditionSchema[]) {
+    return _.flatten(
+        conditions.map((condition) =>
+            Object.values(condition).map(
+                (value: [VarSchema, string | null]) => value[0].var
+            )
+        )
+    )
+}

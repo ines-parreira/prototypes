@@ -1,54 +1,50 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {ulid} from 'ulidx'
-import {produce} from 'immer'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import {useFieldArray, useWatch, useForm, Controller} from 'react-hook-form'
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
-import TextInput from 'pages/common/forms/input/TextInput'
-import IconButton from 'pages/common/components/button/IconButton'
-import useAppDispatch from 'hooks/useAppDispatch'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {
-    ConditionSchema,
-    VarSchema,
-} from 'pages/automate/workflows/models/conditions.types'
+import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
 
 import BodyContentTypeSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect'
 import FormUrlencoded from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/FormUrlencoded'
-import {
-    WorkflowVariableGroup,
-    WorkflowVariable,
-} from 'pages/automate/workflows/models/variables.types'
-
-import {
-    extractVariablesFromText,
-    validateJSONWithVariables,
-} from 'pages/automate/workflows/models/variables.model'
+import {validateJSONWithVariables} from 'pages/automate/workflows/models/variables.model'
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
 import TextareaWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextareaWithVariables'
-import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
-import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
 import MethodSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect'
 import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Headers'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
-import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Label from 'pages/common/forms/Label/Label'
 import TextArea from 'pages/common/forms/TextArea'
-import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import useUpsertAction from '../hooks/useUpsertAction'
 import useDeleteAction from '../hooks/useDeleteAction'
-import {CustomActionConfigurationFormInput, LlmPromptTrigger} from '../types'
-import {customerVariables, orderVariables} from '../utils'
+import {
+    CustomActionFormInputValues,
+    CustomActionConfigurationFormInput,
+} from '../types'
+import {
+    getInputVariables,
+    getStepByKind,
+    getEntrypointByKind,
+    getTriggerstByKind,
+    storeWorkflowsConfgurationToFormValue,
+    generatObjectInputs,
+    getHttpStepUsedVariables,
+    getConditionsUsedVariables,
+} from '../utils'
+import ActionFormInputName from './ActionFormInputName'
+import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
+import ActionFormInputConditions from './ActionFormInputConditions'
+import ActionFormInputVariable from './ActionFormInputVariable'
 import css from './CustomActionsForm.less'
 
 type Props = {
@@ -62,53 +58,55 @@ export default function CustomActionsForm({
         shopType: string
         shopName: string
     }>()
-    const dispatch = useAppDispatch()
+    const {setValue, control, reset, watch, getValues, formState} =
+        useForm<CustomActionFormInputValues>({
+            defaultValues:
+                storeWorkflowsConfgurationToFormValue(initialFormValues),
+        })
+
+    const {
+        remove: removeConditions,
+        update: updateConditions,
+        append: appendConditions,
+    } = useFieldArray({
+        control,
+        name: 'conditions',
+    })
+
+    const {
+        remove: removeHttpHeaders,
+        update: updateHttpHeaders,
+        append: appendHttpHeaders,
+    } = useFieldArray({
+        control,
+        name: 'httpHeaders',
+    })
+
+    const {
+        remove: removeCustomInputs,
+        update: updateCustomInputs,
+        append: appendCustomInputs,
+        fields: customInput,
+    } = useFieldArray({
+        control,
+        name: 'customInput',
+    })
+
+    const httpBody = useWatch({
+        control,
+        name: 'httpBody',
+    })
+
+    const inputVariables = useMemo(
+        () => getInputVariables(customInput),
+        [customInput]
+    )
+
     const history = useHistory()
-    const [formValues, setFormValues] = useState(initialFormValues)
+    const [formValues] = useState(initialFormValues)
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
-    const [headers, setHeaders] = useState<{name: string; value: string}[]>(
-        Object.entries(initialFormValues.steps[0].settings.headers ?? {})
-            .map(([name, value]) => ({name, value}))
-            .filter(({name}) => name !== 'content-type')
-    )
-    const [contentType, setContentType] = useState<string | null>(
-        Object.entries(initialFormValues.steps[0].settings.headers ?? {})
-            .map(([name, value]) => ({name, value}))
-            .find(({name}) => name.toLocaleLowerCase() === 'content-type')
-            ?.value ?? null
-    )
-
-    const conditionsType = useMemo(() => {
-        if (!formValues.triggers[0].settings.conditions) {
-            return null
-        }
-        if ('and' in formValues.triggers[0].settings.conditions) {
-            return 'and'
-        }
-        if ('or' in formValues.triggers[0].settings.conditions) {
-            return 'or'
-        }
-        return null
-    }, [formValues.triggers])
-
-    const conditions = useMemo<ConditionSchema[]>(() => {
-        if (
-            conditionsType &&
-            formValues.triggers[0].settings.conditions &&
-            conditionsType in formValues.triggers[0].settings.conditions
-        ) {
-            return (
-                formValues.triggers[0].settings.conditions as Record<
-                    string,
-                    Array<ConditionSchema>
-                >
-            )[conditionsType]
-        }
-        return []
-    }, [conditionsType, formValues.triggers])
-
-    const isNewAction = !formValues.internal_id
+    const isNewAction = !initialFormValues.internal_id
 
     const {
         mutate: upsertAction,
@@ -122,179 +120,113 @@ export default function CustomActionsForm({
         isSuccess: isActionDeleted,
     } = useDeleteAction(formValues.name, shopName, shopType)
 
-    const inputVariables = useMemo(() => {
-        const customInputs = formValues.triggers[0].settings.custom_inputs
-            .filter(
-                (input) => input && input.name.length > 0 && input.data_type
-            )
-            .map(
-                (input) =>
-                    ({
-                        name: input.name,
-                        value: `custom_inputs.${input.id}`,
-                        nodeType: 'custom_input',
-                        type: input.data_type,
-                    } as WorkflowVariable)
-            )
+    function handleSave() {
+        const data = getValues()
+        const formValuesCopy = _.cloneDeep(initialFormValues)
 
-        const customVariableGroup: WorkflowVariableGroup = {
-            name: 'Inputs',
-            nodeType: 'custom_input',
-            variables: customInputs,
-        }
-
-        const customerVariableGroup: WorkflowVariableGroup = {
-            name: 'Existing customer',
-            nodeType: 'shopper_authentication',
-            variables: customerVariables,
-        }
-
-        const orderVariableGroup: WorkflowVariableGroup = {
-            name: 'Order',
-            nodeType: 'order_selection',
-            variables: orderVariables,
-        }
-
-        const variableGroups = [
-            customVariableGroup,
-            customerVariableGroup,
-            orderVariableGroup,
-        ]
-
-        return variableGroups.filter((group) => group.variables.length > 0)
-    }, [formValues.triggers])
-
-    const isFormDirty = useMemo(() => {
-        const editableFields = [
-            'steps[0].settings.url',
-            'steps[0].settings.method',
-            'steps[0].settings.body',
-            'steps[0].settings.headers',
-            'name',
-            'triggers[0].settings.custom_inputs',
-            'triggers[0].settings.outputs',
-            'triggers[0].settings.conditions',
-            'transitions',
-            'entrypoints',
-        ]
-        return (
-            !_.isEqual(
-                _.pick(formValues, editableFields),
-                _.pick(initialFormValues, editableFields)
-            ) ||
-            !_.isEqual(
-                headers,
-                Object.entries(
-                    initialFormValues.steps[0].settings.headers ?? {}
-                )
-                    .map(([name, value]) => ({name, value}))
-                    .filter(({name}) => name !== 'content-type')
-            ) ||
-            !_.isEqual(
-                contentType,
-                Object.entries(
-                    initialFormValues.steps[0].settings.headers ?? {}
-                )
-                    .map(([name, value]) => ({name, value}))
-                    .find(
-                        ({name}) => name.toLocaleLowerCase() === 'content-type'
-                    )?.value ?? null
-            )
-        )
-    }, [contentType, formValues, headers, initialFormValues])
-
-    const handleSave = () => {
-        const internalId = formValues.internal_id
-            ? formValues.internal_id
+        const internalId = formValuesCopy.internal_id
+            ? formValuesCopy.internal_id
             : ulid()
-
-        if (
-            !formValues.entrypoints[0].settings.instructions.trim() ||
-            !formValues.steps[0].settings.url.trim() ||
-            !formValues.name.trim()
-        ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Missing required field',
-                })
-            )
-            return
-        }
-
-        if (
-            contentType === 'application/x-www-form-urlencoded' &&
-            Array.from(
-                new URLSearchParams(formValues.steps[0].settings.body)
-            ).some(([key, value]) => !key.trim() || !value.trim())
-        ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Invalid Request body`,
-                })
-            )
-            return
-        }
-        if (
-            formValues.triggers[0].settings.custom_inputs.some(
-                (input) => !input.instructions.trim() || !input.name.trim()
-            )
-        ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Invalid Input variables`,
-                })
-            )
-            return
-        }
-
-        if (validateWebhookURL(formValues.steps[0].settings.url)) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: `Invalid URL`,
-                })
-            )
-            return
-        }
-
-        if (
-            headers.some(
-                (header) =>
-                    !validateHttpHeaderName(header.name) || !header.value.trim()
-            )
-        ) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Invalid HTTP Header',
-                })
-            )
-            return
-        }
 
         if (shopType !== 'shopify') {
             throw new Error('Unsupported shop type')
         }
 
-        const formValuesCopy = _.cloneDeep(formValues)
-        formValuesCopy.steps[0].settings.headers = headers.reduce(
-            (acc, {name, value}) => {
-                acc[name] = value
-                return acc
-            },
-            {} as Record<string, string>
+        formValuesCopy.name = data.name
+
+        const httpRequestStepCopy = getStepByKind(
+            formValuesCopy.steps,
+            'http-request'
         )
-        if (contentType) {
-            formValuesCopy.steps[0].settings.headers['content-type'] =
-                contentType
+
+        if (httpRequestStepCopy) {
+            httpRequestStepCopy.settings.headers = data.httpHeaders.reduce(
+                (acc, {name, value}) => {
+                    acc[name] = value
+                    return acc
+                },
+                {} as Record<string, string>
+            )
+
+            const contentType = data.httpContentType
+            if (contentType) {
+                httpRequestStepCopy.settings.headers['content-type'] =
+                    contentType
+            } else {
+                delete httpRequestStepCopy.settings.headers['content-type']
+            }
+
+            httpRequestStepCopy.settings.method = data.httpMethod
+            httpRequestStepCopy.settings.url = data.httpUrl
+            if (data.httpBody) {
+                httpRequestStepCopy.settings.body = data.httpBody
+            } else {
+                delete httpRequestStepCopy.settings.body
+            }
         }
 
-        formValuesCopy.triggers[0].settings.object_inputs =
-            getObjectInput(formValuesCopy)
-        upsertAction([
+        const llmConversationEntryPointCopy = getEntrypointByKind(
+            formValuesCopy.entrypoints,
+            'llm-conversation'
+        )
+
+        if (llmConversationEntryPointCopy) {
+            llmConversationEntryPointCopy.settings.requires_confirmation =
+                data.requiresConfirmation
+
+            llmConversationEntryPointCopy.deactivated_datetime =
+                data.isAvailableForAiAgent ? null : new Date().toISOString()
+
+            llmConversationEntryPointCopy.settings.instructions =
+                data.aiAgentInstructions
+        }
+
+        const llmPromptTriggerCopy = getTriggerstByKind(
+            formValuesCopy.triggers,
+            'llm-prompt'
+        )
+
+        if (llmPromptTriggerCopy) {
+            const httpStepVariables = httpRequestStepCopy
+                ? getHttpStepUsedVariables(httpRequestStepCopy)
+                : []
+
+            const conditionsVariables = getConditionsUsedVariables(
+                data.conditions
+            )
+
+            if (!storeIntegration)
+                throw new Error('Store integration not found')
+
+            const getObjectInput = generatObjectInputs(
+                [...httpStepVariables, ...conditionsVariables],
+                storeIntegration.id
+            )
+
+            llmPromptTriggerCopy.settings.object_inputs = getObjectInput
+
+            llmPromptTriggerCopy.settings.custom_inputs = data.customInput.map(
+                (input) => ({
+                    id: input.id,
+                    name: input.name,
+                    instructions: input.instructions,
+                    data_type: input.dataType,
+                })
+            )
+
+            llmPromptTriggerCopy.settings.outputs[0].description =
+                data.outputsDescription
+
+            if (data.conditionsType) {
+                llmPromptTriggerCopy.settings.conditions = {
+                    [data.conditionsType]: data.conditions,
+                } as any
+            } else {
+                delete llmPromptTriggerCopy.settings.conditions
+            }
+        }
+
+        return upsertAction([
             {
                 internal_id: internalId,
                 store_name: shopName,
@@ -304,59 +236,6 @@ export default function CustomActionsForm({
         ])
     }
 
-    function getObjectInput(
-        actionConfiguration: CustomActionConfigurationFormInput
-    ) {
-        const usedVariableValues = [
-            ...extractVariablesFromText(
-                actionConfiguration.steps[0].settings.url
-            ).map((variable) => variable.value),
-            ..._.flatten(
-                Object.values(
-                    actionConfiguration.steps[0].settings.headers ?? {}
-                ).map((header) =>
-                    extractVariablesFromText(header).map(
-                        (variable) => variable.value
-                    )
-                )
-            ),
-            ...extractVariablesFromText(
-                actionConfiguration.steps[0].settings.body ?? ''
-            ).map((variable) => variable.value),
-            ..._.flatten(
-                conditions.map((condition) =>
-                    Object.values(condition).map(
-                        (value: [VarSchema, string | null]) => value[0].var
-                    )
-                )
-            ),
-        ]
-        if (!storeIntegration) return []
-        const objectInputs: LlmPromptTrigger['settings']['object_inputs'][number][] =
-            []
-        if (
-            usedVariableValues.some((variable) =>
-                variable.includes('objects.order')
-            )
-        ) {
-            objectInputs.push({
-                kind: 'order' as const,
-                integration_id: storeIntegration.id,
-            })
-        }
-        if (
-            usedVariableValues.some((variable) =>
-                variable.includes('objects.customer')
-            )
-        ) {
-            objectInputs.push({
-                kind: 'customer' as const,
-                integration_id: storeIntegration.id,
-            })
-        }
-        return objectInputs
-    }
-
     useEffect(() => {
         if (isActionUpserted || isActionDeleted) {
             history.push(`/app/automation/${shopType}/${shopName}/actions`)
@@ -364,51 +243,8 @@ export default function CustomActionsForm({
     }, [history, isActionDeleted, isActionUpserted, shopName, shopType])
 
     const isHttpJsonBodyValid = useMemo(() => {
-        return validateJSONWithVariables(
-            formValues.steps[0].settings.body ?? '',
-            inputVariables
-        )
-    }, [formValues.steps, inputVariables])
-
-    const isFormValid = useMemo(() => {
-        if (!formValues.name) {
-            return false
-        }
-
-        if (!formValues.steps[0].settings.url) {
-            return false
-        }
-
-        if (formValues.entrypoints[0].settings.instructions.length === 0) {
-            return false
-        }
-        if (contentType === 'application/json' && !isHttpJsonBodyValid) {
-            return false
-        }
-
-        const conditionsValues = conditions.map(
-            (condition) =>
-                (
-                    Object.values(condition)[0] as [
-                        VarSchema,
-                        string | null | undefined | boolean
-                    ]
-                )[1]
-        )
-        for (const value of conditionsValues) {
-            if (value === null || value === undefined) return false
-            if (typeof value === 'string' && value.length === 0) return false
-        }
-
-        return true
-    }, [
-        conditions,
-        contentType,
-        formValues.entrypoints,
-        formValues.name,
-        formValues.steps,
-        isHttpJsonBodyValid,
-    ])
+        return validateJSONWithVariables(httpBody ?? '', inputVariables)
+    }, [httpBody, inputVariables])
 
     return (
         <ToolbarContext.Provider
@@ -420,354 +256,161 @@ export default function CustomActionsForm({
         >
             <div className={css.container}>
                 <UnsavedChangesPrompt
-                    when={!isActionDeleted && !isActionUpserted && isFormDirty}
-                    onSave={handleSave}
+                    when={
+                        !isActionDeleted &&
+                        !isActionUpserted &&
+                        formState.isDirty
+                    }
+                    onSave={() => handleSave()}
                 />
                 <section>
                     <header data-candu-id="custom-action-form-header">
                         <h1>Define the Action</h1>
                     </header>
                     <div className={css.formSessionContainer}>
-                        <InputField
-                            className={css.formItem}
-                            label="Action name"
-                            isRequired
-                            isDisabled={isActionUpserting}
-                            type="text"
-                            placeholder="e.g. Update shipping address"
-                            value={formValues.name}
-                            onChange={(nextValue) =>
-                                setFormValues(
-                                    produce((draft) => {
-                                        draft.name = nextValue
-                                    })
-                                )
-                            }
-                            caption="Provide a name for this Action."
-                            darkenCaption
+                        <Controller
+                            control={control}
+                            name="name"
+                            rules={{
+                                required: true,
+                            }}
+                            render={({field: {onChange, value}}) => (
+                                <ActionFormInputName
+                                    isDisabled={isActionUpserting}
+                                    value={value}
+                                    onChange={onChange}
+                                />
+                            )}
+                        />
+                        <Controller
+                            control={control}
+                            name="aiAgentInstructions"
+                            rules={{
+                                required: true,
+                            }}
+                            render={({field: {onChange, value}}) => (
+                                <ActionFormInputAiInstruction
+                                    value={value}
+                                    isDisabled={isActionUpserting}
+                                    onChange={onChange}
+                                />
+                            )}
                         />
 
-                        <TextArea
-                            className={css.formItem}
-                            label="AI Agent instructions"
-                            isRequired
-                            placeholder="e.g. Update the customer’s shipping address with a new address"
-                            isDisabled={isActionUpserting}
-                            value={
-                                formValues.entrypoints[0].settings.instructions
-                            }
-                            onChange={(nextValue) =>
-                                setFormValues(
-                                    produce((draft) => {
-                                        draft.entrypoints[0].settings.instructions =
-                                            nextValue
-                                    })
-                                )
-                            }
-                            caption="Describe what the Action does."
-                            darkenCaption
-                        />
-
-                        <CheckBox
-                            darkenCaption
-                            isDisabled={isActionUpserting}
-                            isChecked={
-                                formValues.entrypoints[0].settings
-                                    .requires_confirmation
-                            }
-                            onChange={(nextValue) =>
-                                setFormValues(
-                                    produce((draft) => {
-                                        draft.entrypoints[0].settings.requires_confirmation =
-                                            nextValue
-                                    })
-                                )
-                            }
-                            caption="Recommended for irreversible Actions. e.g.
+                        <Controller
+                            control={control}
+                            name="requiresConfirmation"
+                            render={({field: {onChange, value}}) => (
+                                <CheckBox
+                                    darkenCaption
+                                    isDisabled={isActionUpserting}
+                                    isChecked={value}
+                                    onChange={onChange}
+                                    caption="Recommended for irreversible Actions. e.g.
                                     AI Agent will confirm that the customer
                                     wants to cancel a specific order before
                                     cancelling."
-                        >
-                            Require AI Agent to confirm with customers before
-                            completing the Action
-                        </CheckBox>
+                                >
+                                    Require AI Agent to confirm with customers
+                                    before completing the Action
+                                </CheckBox>
+                            )}
+                        />
 
-                        <div className={css.inputVariables}>
-                            <Label>Input variables (Optional)</Label>
-                            <p>
-                                List any information AI Agent needs to collect
-                                from the conversation for this Action.
-                            </p>
-                            <div className={css.customInputsContainer}>
-                                {formValues.triggers[0].settings.custom_inputs.map(
-                                    (input, index) => {
-                                        return (
-                                            <div
-                                                key={index}
-                                                className={css.customInputItem}
-                                            >
-                                                <SelectField
-                                                    className={
-                                                        css.customDataTypeInput
-                                                    }
-                                                    disabled={isActionUpserting}
-                                                    showSelectedOption
-                                                    value={input.data_type}
-                                                    onChange={(nextValue) =>
-                                                        setFormValues(
-                                                            produce((draft) => {
-                                                                draft.triggers[0].settings.custom_inputs[
-                                                                    index
-                                                                ].data_type = nextValue as
-                                                                    | 'string'
-                                                                    | 'number'
-                                                                    | 'boolean'
-                                                                    | 'date'
-                                                            })
-                                                        )
-                                                    }
-                                                    options={[
-                                                        {
-                                                            label: 'String',
-                                                            value: 'string',
-                                                        },
-                                                        {
-                                                            label: 'Number',
-                                                            value: 'number',
-                                                        },
-                                                        {
-                                                            label: 'Boolean',
-                                                            value: 'boolean',
-                                                        },
-                                                        {
-                                                            label: 'Date',
-                                                            value: 'date',
-                                                        },
-                                                    ]}
-                                                />
-                                                <TextInput
-                                                    value={input.name}
-                                                    isDisabled={
-                                                        isActionUpserting
-                                                    }
-                                                    className={css.textInput}
-                                                    placeholder="e.g. Address"
-                                                    onChange={(nextValue) =>
-                                                        setFormValues(
-                                                            produce((draft) => {
-                                                                draft.triggers[0].settings.custom_inputs[
-                                                                    index
-                                                                ].name = nextValue
-                                                            })
-                                                        )
-                                                    }
-                                                />
-                                                <TextInput
-                                                    isDisabled={
-                                                        isActionUpserting
-                                                    }
-                                                    value={input.instructions}
-                                                    className={css.textInput}
-                                                    placeholder="e.g. Ask for customer’s shipping address"
-                                                    onChange={(nextValue) =>
-                                                        setFormValues(
-                                                            produce((draft) => {
-                                                                draft.triggers[0].settings.custom_inputs[
-                                                                    index
-                                                                ].instructions =
-                                                                    nextValue
-                                                            })
-                                                        )
-                                                    }
-                                                />
-
-                                                <IconButton
-                                                    intent="destructive"
-                                                    isDisabled={
-                                                        isActionUpserting
-                                                    }
-                                                    fillStyle="ghost"
-                                                    className={css.deleteIcon}
-                                                    onClick={() => {
-                                                        setFormValues(
-                                                            produce((draft) => {
-                                                                draft.triggers[0].settings.custom_inputs.splice(
-                                                                    index,
-                                                                    1
-                                                                )
-                                                            })
-                                                        )
-                                                    }}
-                                                >
-                                                    close
-                                                </IconButton>
-                                            </div>
-                                        )
+                        <Controller
+                            control={control}
+                            name="customInput"
+                            rules={{
+                                validate: (value) =>
+                                    !value.some(
+                                        (input) =>
+                                            !input.name.trim() ||
+                                            !input.instructions.trim()
+                                    ),
+                            }}
+                            render={({field: {value}}) => (
+                                <ActionFormInputVariable
+                                    customInputs={value}
+                                    isDisabled={isActionUpserting}
+                                    onAddInput={() =>
+                                        appendCustomInputs({
+                                            id: ulid(),
+                                            dataType: 'string',
+                                            name: '',
+                                            instructions: '',
+                                        })
                                     }
-                                )}
-                                {formValues.triggers[0].settings.custom_inputs
-                                    .length > 0 && (
-                                    <div className={css.formInputFooterInfo}>
-                                        Data type, input name, instructions for
-                                        AI Agent to ask for the input
-                                    </div>
-                                )}
-                                <div>
-                                    <Button
-                                        intent="secondary"
-                                        isDisabled={isActionUpserting}
-                                        onClick={() => {
-                                            setFormValues(
-                                                produce((draft) => {
-                                                    draft.triggers[0].settings.custom_inputs.push(
-                                                        {
-                                                            data_type: 'string',
-                                                            instructions: '',
-                                                            name: '',
-                                                            id: ulid(),
-                                                        }
+                                    onDeleteInput={(index) =>
+                                        removeCustomInputs(index)
+                                    }
+                                    onChange={(newCustomInput, index) => {
+                                        updateCustomInputs(
+                                            index,
+                                            newCustomInput
+                                        )
+                                    }}
+                                />
+                            )}
+                        />
+
+                        <Controller
+                            control={control}
+                            name="conditions"
+                            rules={{
+                                validate: (value) => {
+                                    const conditionsValues = value.map(
+                                        (condition) =>
+                                            (
+                                                Object.values(condition)[0] as [
+                                                    VarSchema,
+                                                    (
+                                                        | string
+                                                        | null
+                                                        | undefined
+                                                        | boolean
                                                     )
-                                                })
-                                            )
-                                        }}
-                                        size="small"
-                                    >
-                                        <ButtonIconLabel icon="add">
-                                            Add Input
-                                        </ButtonIconLabel>
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={css.formItem}>
-                            <Label>
-                                Action can only be performed according to the
-                                following conditions
-                            </Label>
-                            <ConditionsBranchBody
-                                maxConditionsTooltipMessage="You’ve reached the maximum number of conditions for this action"
-                                variableDropdownProps={{
-                                    noSelectedCategoryText: 'INSERT variable',
-                                    dropdownPlacement: 'bottom-start',
-                                }}
-                                variablePickerTooltipMessage={null}
-                                hasMultipleChildren={true}
-                                canDeleteBranch={false}
-                                branchId={formValues.id}
-                                availableVariables={inputVariables}
-                                showNoneOption={true}
-                                shouldShowErrors={true}
-                                type={conditionsType}
-                                conditions={conditions}
-                                onDeleteBranch={() => {}}
-                                onConditionDelete={(index) => {
-                                    setFormValues(
-                                        produce((draft) => {
-                                            if (!conditionsType) return
-                                            if (
-                                                !draft.triggers[0].settings
-                                                    .conditions
-                                            ) {
-                                                draft.triggers[0].settings.conditions =
-                                                    {} as any
-                                                return
-                                            }
-                                            ;(
-                                                draft.triggers[0].settings
-                                                    .conditions as Record<
-                                                    string,
-                                                    Array<ConditionSchema>
-                                                >
-                                            )[conditionsType].splice(index, 1)
-                                        })
+                                                ]
+                                            )[1]
                                     )
-                                }}
-                                onVariableSelect={(variable) => {
-                                    setFormValues(
-                                        produce((draft) => {
-                                            if (
-                                                !draft.triggers[0].settings
-                                                    .conditions ||
-                                                !conditionsType
-                                            )
-                                                return
-
-                                            const conditions = (
-                                                draft.triggers[0].settings
-                                                    .conditions as Record<
-                                                    string,
-                                                    Array<ConditionSchema>
-                                                >
-                                            )[conditionsType]
-
-                                            const newCondition =
-                                                buildConditionSchemaByVariableType(
-                                                    variable.type,
-                                                    variable.value
-                                                )
-
-                                            conditions.push(newCondition)
+                                    for (const value of conditionsValues) {
+                                        if (
+                                            value === null ||
+                                            value === undefined
+                                        )
+                                            return false
+                                        if (
+                                            typeof value === 'string' &&
+                                            value.length === 0
+                                        )
+                                            return false
+                                    }
+                                },
+                            }}
+                            render={({field: {value}}) => (
+                                <ActionFormInputConditions
+                                    conditions={value}
+                                    inputVariables={inputVariables}
+                                    conditionsType={watch('conditionsType')}
+                                    onConditionDelete={(index) => {
+                                        removeConditions(index)
+                                    }}
+                                    onVariableSelect={(newCondition) => {
+                                        appendConditions(newCondition)
+                                    }}
+                                    onConditionTypeChange={(type) => {
+                                        setValue('conditionsType', type, {
+                                            shouldDirty: true,
                                         })
-                                    )
-                                }}
-                                onConditionTypeChange={(_branchId, type) => {
-                                    setFormValues(
-                                        produce((draft) => {
-                                            if (type === null) {
-                                                draft.triggers[0].settings.conditions =
-                                                    undefined
-                                                return
-                                            }
-
-                                            if (
-                                                !draft.triggers[0].settings
-                                                    .conditions
-                                            ) {
-                                                ;(draft.triggers[0].settings[
-                                                    'conditions'
-                                                ] as any) = {
-                                                    [type]: [],
-                                                }
-                                            } else {
-                                                const newCondition = _.mapKeys(
-                                                    draft.triggers[0].settings
-                                                        .conditions,
-                                                    () => {
-                                                        return type
-                                                    }
-                                                )
-                                                draft.triggers[0].settings.conditions =
-                                                    newCondition as any
-                                            }
-                                        })
-                                    )
-                                }}
-                                onConditionChange={(condition, index) => {
-                                    setFormValues(
-                                        produce((draft) => {
-                                            if (!conditionsType) return
-                                            if (
-                                                !draft.triggers[0].settings
-                                                    .conditions
-                                            ) {
-                                                draft.triggers[0].settings.conditions =
-                                                    [] as any
-                                                return
-                                            }
-                                            ;(
-                                                draft.triggers[0].settings
-                                                    .conditions as Record<
-                                                    string,
-                                                    Array<ConditionSchema>
-                                                >
-                                            )[conditionsType][index] = condition
-                                        })
-                                    )
-                                }}
-                            />
-                        </div>
+                                    }}
+                                    onConditionChange={(condition, index) => {
+                                        updateConditions(index, condition)
+                                    }}
+                                />
+                            )}
+                        />
                     </div>
                 </section>
+
                 <section>
                     <header>
                         <h1>Configure the HTTP request</h1>
@@ -776,163 +419,223 @@ export default function CustomActionsForm({
                         <div className={css.urlFormContainer}>
                             <div className={css.formItem}>
                                 <Label isRequired>URL</Label>
-                                <TextInputWithVariables
-                                    toolTipMessage={null}
-                                    isDisabled={isActionUpserting}
-                                    value={formValues.steps[0].settings.url}
-                                    noSelectedCategoryText="INSERT variable"
-                                    onChange={(value) => {
-                                        setFormValues(
-                                            produce((draft) => {
-                                                draft.steps[0].settings.url =
-                                                    value
-                                            })
-                                        )
+
+                                <Controller
+                                    control={control}
+                                    name="httpUrl"
+                                    rules={{
+                                        required: true,
+                                        validate: (value) =>
+                                            !validateWebhookURL(value),
                                     }}
-                                    variables={inputVariables}
+                                    render={({field: {onChange, value}}) => (
+                                        <TextInputWithVariables
+                                            toolTipMessage={null}
+                                            isDisabled={isActionUpserting}
+                                            value={value}
+                                            noSelectedCategoryText="INSERT variable"
+                                            onChange={(value) =>
+                                                onChange(value)
+                                            }
+                                            variables={inputVariables}
+                                        />
+                                    )}
                                 />
                             </div>
                             <div className={css.formItem}>
                                 <Label isRequired>HTTP method</Label>
-                                <MethodSelect
-                                    isDisabled={isActionUpserting}
-                                    value={formValues.steps[0].settings.method}
-                                    onChange={(value) => {
-                                        setContentType((prevValue) => {
-                                            if (value === 'GET') {
-                                                return null
-                                            }
-                                            if (prevValue) return prevValue
-
-                                            return 'application/json'
-                                        })
-                                        setFormValues(
-                                            produce((draft) => {
-                                                draft.steps[0].settings.method =
-                                                    value
-
-                                                draft.steps[0].settings.body =
+                                <Controller
+                                    control={control}
+                                    name="httpMethod"
+                                    render={({field: {onChange, value}}) => (
+                                        <MethodSelect
+                                            isDisabled={isActionUpserting}
+                                            value={value}
+                                            onChange={(value) => {
+                                                onChange(value)
+                                                const newBody =
                                                     value === 'GET'
-                                                        ? (null as any)
-                                                        : draft.steps[0]
-                                                              .settings.body ??
-                                                          '{}'
-                                            })
-                                        )
-                                    }}
+                                                        ? null
+                                                        : getValues(
+                                                              'httpBody'
+                                                          ) ?? '{}'
+
+                                                setValue('httpBody', newBody, {
+                                                    shouldDirty: true,
+                                                })
+
+                                                const httpContentType =
+                                                    getValues('httpContentType')
+                                                const newContentType =
+                                                    value === 'GET'
+                                                        ? null
+                                                        : httpContentType ??
+                                                          'application/json'
+
+                                                setValue(
+                                                    'httpContentType',
+                                                    newContentType,
+                                                    {
+                                                        shouldDirty: true,
+                                                    }
+                                                )
+                                            }}
+                                        />
+                                    )}
                                 />
                             </div>
                         </div>
 
                         <div className={css.formItem}>
                             <Label>Headers</Label>
-                            <Headers
-                                noSelectedCategoryText="INSERT variable"
-                                inputVariableToolTipMessage={null}
-                                isDisabled={isActionUpserting}
-                                variables={inputVariables}
-                                headers={headers}
-                                onChange={(index, {name, value}) => {
-                                    setHeaders(
-                                        produce((draft) => {
-                                            draft[index] = {
-                                                name,
-                                                value,
-                                            }
-                                        })
-                                    )
+
+                            <Controller
+                                control={control}
+                                name="httpHeaders"
+                                rules={{
+                                    validate: (value) =>
+                                        !value.some(
+                                            (header) =>
+                                                !validateHttpHeaderName(
+                                                    header.name
+                                                ) || !header.value.trim()
+                                        ),
                                 }}
-                                onDelete={(index) => {
-                                    setHeaders(
-                                        produce((draft) => {
-                                            draft.splice(index, 1)
-                                        })
-                                    )
-                                }}
-                                onAdd={() => {
-                                    setHeaders(
-                                        produce((draft) => {
-                                            draft.push({name: '', value: ''})
-                                        })
-                                    )
-                                }}
+                                render={({field: {value}}) => (
+                                    <Headers
+                                        noSelectedCategoryText="INSERT variable"
+                                        inputVariableToolTipMessage={null}
+                                        isDisabled={isActionUpserting}
+                                        variables={inputVariables}
+                                        headers={value}
+                                        onChange={(index, value) =>
+                                            updateHttpHeaders(index, value)
+                                        }
+                                        onDelete={(index) =>
+                                            removeHttpHeaders(index)
+                                        }
+                                        onAdd={() =>
+                                            appendHttpHeaders({
+                                                name: '',
+                                                value: '',
+                                            })
+                                        }
+                                    />
+                                )}
                             />
                         </div>
-                        {(contentType === 'application/json' ||
-                            contentType ===
+                        {(watch('httpContentType') === 'application/json' ||
+                            watch('httpContentType') ===
                                 'application/x-www-form-urlencoded') && (
                             <div className={css.formItem}>
                                 <Label>Request body</Label>
-                                <BodyContentTypeSelect
-                                    isDisabled={isActionUpserting}
-                                    value={contentType}
-                                    onChange={(newContentType) => {
-                                        setFormValues(
-                                            produce((draft) => {
-                                                if (
-                                                    contentType ===
-                                                    newContentType
-                                                )
-                                                    return
-                                                draft.steps[0].settings.body =
-                                                    newContentType ===
-                                                    'application/json'
-                                                        ? '{}'
-                                                        : '='
-                                            })
-                                        )
-                                        setContentType(newContentType)
-                                    }}
-                                />
-                                <div className={css.httpBodyInput}>
-                                    {contentType === 'application/json' && (
-                                        <TextareaWithVariables
-                                            variablePickerTooltipMessage={null}
-                                            noSelectedCategoryText="INSERT variable"
+                                <Controller
+                                    control={control}
+                                    name="httpContentType"
+                                    render={({field: {onChange, value}}) => (
+                                        <BodyContentTypeSelect
                                             isDisabled={isActionUpserting}
                                             value={
-                                                formValues.steps[0].settings
-                                                    .body ?? ''
+                                                value as
+                                                    | 'application/json'
+                                                    | 'application/x-www-form-urlencoded'
                                             }
-                                            onChange={(json: string) => {
-                                                setFormValues(
-                                                    produce((draft) => {
-                                                        draft.steps[0].settings.body =
-                                                            json
-                                                    })
+                                            onChange={(value) => {
+                                                onChange(value)
+                                                const newHttpBody =
+                                                    value === 'application/json'
+                                                        ? '{}'
+                                                        : '='
+                                                setValue(
+                                                    'httpBody',
+                                                    newHttpBody,
+                                                    {
+                                                        shouldDirty: true,
+                                                    }
                                                 )
                                             }}
-                                            variables={inputVariables}
-                                            error={
-                                                isHttpJsonBodyValid
-                                                    ? undefined
-                                                    : 'Invalid JSON'
-                                            }
                                         />
                                     )}
-                                    {contentType ===
+                                />
+                                <div className={css.httpBodyInput}>
+                                    {watch('httpContentType') ===
+                                        'application/json' && (
+                                        <Controller
+                                            control={control}
+                                            name="httpBody"
+                                            rules={{
+                                                validate: (value) =>
+                                                    validateJSONWithVariables(
+                                                        value ?? '',
+                                                        inputVariables
+                                                    ),
+                                            }}
+                                            render={({
+                                                field: {onChange, value},
+                                            }) => (
+                                                <TextareaWithVariables
+                                                    variablePickerTooltipMessage={
+                                                        null
+                                                    }
+                                                    noSelectedCategoryText="INSERT variable"
+                                                    isDisabled={
+                                                        isActionUpserting
+                                                    }
+                                                    value={value ?? ''}
+                                                    onChange={(value) =>
+                                                        onChange(value)
+                                                    }
+                                                    variables={inputVariables}
+                                                    error={
+                                                        isHttpJsonBodyValid
+                                                            ? undefined
+                                                            : 'Invalid JSON'
+                                                    }
+                                                />
+                                            )}
+                                        />
+                                    )}
+                                    {watch('httpContentType') ===
                                         'application/x-www-form-urlencoded' && (
-                                        <FormUrlencoded
-                                            inputVariableToolTipMessage={null}
-                                            noSelectedCategoryText="INSERT variable"
-                                            isDisabled={isActionUpserting}
-                                            items={Array.from(
-                                                new URLSearchParams(
-                                                    formValues.steps[0].settings.body
-                                                )
-                                            ).map(([key, value]) => ({
-                                                key,
-                                                value,
-                                            }))}
-                                            variables={inputVariables}
-                                            onChange={(index, item) => {
-                                                setFormValues(
-                                                    produce((draft) => {
+                                        <Controller
+                                            control={control}
+                                            name="httpBody"
+                                            rules={{
+                                                validate: (value) =>
+                                                    !Array.from(
+                                                        new URLSearchParams(
+                                                            value ?? ''
+                                                        )
+                                                    ).some(
+                                                        ([key, value]) =>
+                                                            !key.trim() ||
+                                                            !value.trim()
+                                                    ),
+                                            }}
+                                            render={({
+                                                field: {onChange, value},
+                                            }) => (
+                                                <FormUrlencoded
+                                                    inputVariableToolTipMessage={
+                                                        null
+                                                    }
+                                                    noSelectedCategoryText="INSERT variable"
+                                                    isDisabled={
+                                                        isActionUpserting
+                                                    }
+                                                    items={Array.from(
+                                                        new URLSearchParams(
+                                                            value ?? ''
+                                                        )
+                                                    ).map(([key, value]) => ({
+                                                        key,
+                                                        value,
+                                                    }))}
+                                                    variables={inputVariables}
+                                                    onChange={(index, item) => {
                                                         const params =
                                                             new URLSearchParams(
-                                                                draft.steps[0]
-                                                                    .settings
-                                                                    .body ?? ''
+                                                                value ?? ''
                                                             )
                                                         const entries =
                                                             Array.from(params)
@@ -940,99 +643,87 @@ export default function CustomActionsForm({
                                                             item.key,
                                                             item.value,
                                                         ]
-                                                        draft.steps[0].settings.body =
+                                                        const newValue =
                                                             new URLSearchParams(
                                                                 entries
                                                             ).toString()
-                                                    })
-                                                )
-                                            }}
-                                            onDelete={(index) => {
-                                                setFormValues(
-                                                    produce((draft) => {
+                                                        onChange(newValue)
+                                                    }}
+                                                    onDelete={(index) => {
                                                         const params =
                                                             new URLSearchParams(
-                                                                draft.steps[0]
-                                                                    .settings
-                                                                    .body ?? ''
+                                                                getValues(
+                                                                    'httpBody'
+                                                                ) ?? ''
                                                             )
                                                         const entries =
                                                             Array.from(params)
                                                         entries.splice(index, 1)
-                                                        draft.steps[0].settings.body =
+
+                                                        const newValue =
                                                             new URLSearchParams(
                                                                 entries
                                                             ).toString()
-                                                    })
-                                                )
-                                            }}
-                                            onAdd={() => {
-                                                setFormValues(
-                                                    produce((draft) => {
+                                                        onChange(newValue)
+                                                    }}
+                                                    onAdd={() => {
                                                         const params =
                                                             new URLSearchParams(
-                                                                draft.steps[0]
-                                                                    .settings
-                                                                    .body ?? ''
+                                                                getValues(
+                                                                    'httpBody'
+                                                                ) ?? ''
                                                             )
                                                         const entries =
                                                             Array.from(params)
                                                         entries.push(['', ''])
-                                                        draft.steps[0].settings.body =
+
+                                                        const newValue =
                                                             new URLSearchParams(
                                                                 entries
                                                             ).toString()
-                                                    })
-                                                )
-                                            }}
+                                                        onChange(newValue)
+                                                    }}
+                                                />
+                                            )}
                                         />
                                     )}
                                 </div>
                             </div>
                         )}
 
-                        <TextArea
-                            className={css.formItem}
-                            darkenCaption
-                            label="Request results explanation for AI Agent (optional)"
-                            isDisabled={isActionUpserting}
-                            onChange={(value) => {
-                                setFormValues(
-                                    produce((draft) => {
-                                        draft.triggers[0].settings.outputs[0].description =
-                                            value
-                                    })
-                                )
-                            }}
-                            value={
-                                formValues.triggers[0].settings.outputs[0]
-                                    .description ?? ''
-                            }
-                            caption="Provide additional guidance for AI Agent to interpret the HTTP request results."
+                        <Controller
+                            control={control}
+                            name="outputsDescription"
+                            render={({field: {onChange, value}}) => (
+                                <TextArea
+                                    className={css.formItem}
+                                    darkenCaption
+                                    label="Request results explanation for AI Agent (optional)"
+                                    isDisabled={isActionUpserting}
+                                    onChange={onChange}
+                                    value={value}
+                                    caption="Provide additional guidance for AI Agent to interpret the HTTP request results."
+                                />
+                            )}
                         />
                     </div>
                 </section>
                 <section>
-                    <ToggleInput
-                        isDisabled={isActionUpserting || !isFormValid}
-                        onClick={() => {
-                            setFormValues(
-                                produce((draft) => {
-                                    draft.entrypoints[0].deactivated_datetime =
-                                        draft.entrypoints[0]
-                                            .deactivated_datetime
-                                            ? null
-                                            : new Date().toISOString()
-                                })
-                            )
-                        }}
-                        isToggled={
-                            formValues.entrypoints[0].deactivated_datetime ===
-                            null
-                        }
-                    >
-                        Available for AI Agent
-                    </ToggleInput>
+                    <Controller
+                        control={control}
+                        name="isAvailableForAiAgent"
+                        render={({field: {onChange, value}}) => (
+                            <ToggleInput
+                                isDisabled={
+                                    isActionUpserting || !formState.isValid
+                                }
+                                onClick={() => onChange(!value)}
+                                isToggled={value}
+                            >
+                                Available for AI Agent
+                            </ToggleInput>
+                        )}
+                    />
                 </section>
 
                 <section>
@@ -1041,9 +732,10 @@ export default function CustomActionsForm({
                             <Button
                                 isLoading={isActionUpserting}
                                 isDisabled={
-                                    !isFormDirty ||
-                                    isActionUpserting ||
-                                    !isFormValid
+                                    (!isNewAction && !formState.isDirty) ||
+                                    isActionUpserted ||
+                                    isDeletingAction ||
+                                    !formState.isValid
                                 }
                                 onClick={handleSave}
                             >
@@ -1051,39 +743,11 @@ export default function CustomActionsForm({
                             </Button>
                             <Button
                                 intent="secondary"
-                                isDisabled={!isFormDirty || isActionUpserting}
+                                isDisabled={
+                                    !formState.isDirty || isActionUpserting
+                                }
                                 onClick={() => {
-                                    setFormValues(initialFormValues)
-                                    setHeaders(
-                                        Object.entries(
-                                            initialFormValues.steps[0].settings
-                                                .headers ?? {}
-                                        )
-                                            .map(([name, value]) => ({
-                                                name,
-                                                value,
-                                            }))
-                                            .filter(
-                                                ({name}) =>
-                                                    name.toLocaleLowerCase() !==
-                                                    'content-type'
-                                            )
-                                    )
-                                    setContentType(
-                                        Object.entries(
-                                            initialFormValues.steps[0].settings
-                                                .headers ?? {}
-                                        )
-                                            .map(([name, value]) => ({
-                                                name,
-                                                value,
-                                            }))
-                                            .find(
-                                                ({name}) =>
-                                                    name.toLocaleLowerCase() ===
-                                                    'content-type'
-                                            )?.value ?? null
-                                    )
+                                    reset()
                                 }}
                             >
                                 Cancel
@@ -1105,7 +769,7 @@ export default function CustomActionsForm({
                                                 deleteAction([
                                                     {
                                                         internal_id:
-                                                            formValues.internal_id!,
+                                                            initialFormValues.internal_id!,
                                                     },
                                                 ])
                                             }}
@@ -1127,7 +791,7 @@ export default function CustomActionsForm({
                                         isLoading={isDeletingAction}
                                         intent="destructive"
                                         isDisabled={
-                                            isFormDirty ||
+                                            formState.isDirty ||
                                             isActionUpserting ||
                                             isDeletingAction
                                         }
