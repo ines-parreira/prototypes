@@ -52,15 +52,15 @@ type BasePrice = {
     num_quota_tickets: number | null // Integers only, is None for the legacy Automate usd-4 plans
     amount: number
     currency: string
+    custom: boolean
     extra_ticket_cost: number
     internal_id: string
     interval: PlanInterval
     cadence: PlanInterval
-    legacy_id: string
     name: string
-    order?: number
     product_id: string
     price_id: string
+    public: boolean
 }
 
 export type HelpdeskPriceFeatures = Record<
@@ -73,6 +73,8 @@ export type HelpdeskPrice = BasePrice & {
     addons?: string[]
     integrations: number
     is_legacy: boolean
+    legacy_id: string
+    order?: number
     features: HelpdeskPriceFeatures
     legacy_automation_addon_features?: AutomationPriceFeatures
     limits: {
@@ -82,8 +84,6 @@ export type HelpdeskPrice = BasePrice & {
     phone_limits: {
         billing: number
     }
-    public: boolean
-    custom?: boolean
     trial_period_days: number
 }
 
@@ -102,16 +102,17 @@ export type AutomationPrice = BasePrice & {
     automation_addon_included?: boolean
     base_price_id: string
     features: AutomationPriceFeatures
+    legacy_id: string
+    order: number
     num_quota_tickets: number | null
 }
 
-export type SMSOrVoicePrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
+export type SMSOrVoicePrice = BasePrice & {
     num_quota_tickets: number
 }
 
-export type ConvertPrice = Omit<BasePrice, 'legacy_id' | 'order'> & {
+export type ConvertPrice = BasePrice & {
     num_quota_tickets: number | null
-    custom?: boolean
     tier?: number
 }
 

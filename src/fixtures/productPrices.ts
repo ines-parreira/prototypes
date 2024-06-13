@@ -207,6 +207,7 @@ export const starterHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
 }
 
 export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBjXI9qXomtXqSSX34F3we'],
     amount: 6000,
     cadence: PlanInterval.Month,
@@ -244,6 +245,7 @@ export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBjZI9qXomtXqSPNgkEZpl'],
     amount: 60000,
     cadence: PlanInterval.Month,
@@ -281,6 +283,7 @@ export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBjbI9qXomtXqS2sfi1J7P'],
     amount: 36000,
     cadence: PlanInterval.Month,
@@ -318,6 +321,7 @@ export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const proYearlyHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBjdI9qXomtXqSlp9sh6iQ'],
     amount: 360000,
     cadence: PlanInterval.Month,
@@ -355,6 +359,7 @@ export const proYearlyHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBjeI9qXomtXqSXRjmhPsL'],
     amount: 90000,
     cadence: PlanInterval.Month,
@@ -392,6 +397,7 @@ export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBjgI9qXomtXqSBZoBcg7G'],
     amount: 900000,
     cadence: PlanInterval.Month,
@@ -429,6 +435,8 @@ export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const basicMonthlyAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     amount: 3000,
     cadence: PlanInterval.Month,
     extra_ticket_cost: 0.2,
@@ -449,6 +457,8 @@ export const basicMonthlyAutomationPrice: AutomationPrice = {
 }
 
 export const basicYearlyAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     amount: 30000,
     cadence: PlanInterval.Year,
     extra_ticket_cost: 0.2,
@@ -469,6 +479,8 @@ export const basicYearlyAutomationPrice: AutomationPrice = {
 }
 
 export const proMonthlyAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     extra_ticket_cost: 0.18,
     cadence: PlanInterval.Month,
     num_quota_tickets: 190,
@@ -489,6 +501,8 @@ export const proMonthlyAutomationPrice: AutomationPrice = {
 }
 
 export const proYearlyAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     extra_ticket_cost: 0.18,
     num_quota_tickets: 2280,
     cadence: PlanInterval.Year,
@@ -509,6 +523,8 @@ export const proYearlyAutomationPrice: AutomationPrice = {
 }
 
 export const advancedMonthlyAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     extra_ticket_cost: 0.18,
     num_quota_tickets: 530,
     cadence: PlanInterval.Month,
@@ -529,6 +545,8 @@ export const advancedMonthlyAutomationPrice: AutomationPrice = {
 }
 
 export const advancedYearlyAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     extra_ticket_cost: 0.18,
     num_quota_tickets: 6360,
     cadence: PlanInterval.Year,
@@ -549,6 +567,7 @@ export const advancedYearlyAutomationPrice: AutomationPrice = {
 }
 
 export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     addons: ['price_1LJBlbI9qXomtXqSvvtgyZ1z'],
     amount: 6000,
     cadence: PlanInterval.Month,
@@ -586,6 +605,9 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const legacyBasicAutomationPrice: AutomationPrice = {
+    custom: false,
+    order: 0,
+    public: true,
     extra_ticket_cost: 0,
     num_quota_tickets: null,
     cadence: PlanInterval.Month,
@@ -642,6 +664,9 @@ export const customHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const customAutomationPrice: AutomationPrice = {
+    custom: false,
+    order: 0,
+    public: true,
     extra_ticket_cost: 0.16,
     num_quota_tickets: null,
     cadence: PlanInterval.Month,
@@ -661,6 +686,8 @@ export const customAutomationPrice: AutomationPrice = {
 }
 
 export const basicDiscountedAutomationPrice: AutomationPrice = {
+    custom: false,
+    public: true,
     extra_ticket_cost: 0.1,
     num_quota_tickets: null,
     cadence: PlanInterval.Month,
@@ -681,6 +708,7 @@ export const basicDiscountedAutomationPrice: AutomationPrice = {
 }
 
 export const starterHelpdeskPrice: HelpdeskPrice = {
+    custom: false,
     amount: 1000,
     extra_ticket_cost: 0.4,
     cadence: PlanInterval.Month,
@@ -717,6 +745,8 @@ export const starterHelpdeskPrice: HelpdeskPrice = {
 }
 
 export const voicePrice0: SMSOrVoicePrice = {
+    custom: false,
+    public: true,
     amount: 0,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -731,6 +761,8 @@ export const voicePrice0: SMSOrVoicePrice = {
 }
 
 export const voicePrice1: SMSOrVoicePrice = {
+    custom: false,
+    public: true,
     amount: 175,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -745,6 +777,8 @@ export const voicePrice1: SMSOrVoicePrice = {
 }
 
 const voicePrice2: SMSOrVoicePrice = {
+    custom: false,
+    public: true,
     amount: 1750,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -759,6 +793,8 @@ const voicePrice2: SMSOrVoicePrice = {
 }
 
 export const smsPrice1: SMSOrVoicePrice = {
+    custom: false,
+    public: true,
     amount: 90,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -773,6 +809,8 @@ export const smsPrice1: SMSOrVoicePrice = {
 }
 
 const smsPrice2: SMSOrVoicePrice = {
+    custom: false,
+    public: true,
     amount: 5768,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -787,6 +825,8 @@ const smsPrice2: SMSOrVoicePrice = {
 }
 
 export const smsPrice0: SMSOrVoicePrice = {
+    custom: false,
+    public: true,
     amount: 0,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -801,6 +841,8 @@ export const smsPrice0: SMSOrVoicePrice = {
 }
 
 export const convertPrice0: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 0,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -816,6 +858,8 @@ export const convertPrice0: ConvertPrice = {
 }
 
 export const convertPrice1: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 3000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -831,6 +875,8 @@ export const convertPrice1: ConvertPrice = {
 }
 
 export const convertPrice2: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 25000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -846,6 +892,8 @@ export const convertPrice2: ConvertPrice = {
 }
 
 export const convertPrice3: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 80000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -861,6 +909,8 @@ export const convertPrice3: ConvertPrice = {
 }
 
 export const convertPrice4: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 110000,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -876,6 +926,8 @@ export const convertPrice4: ConvertPrice = {
 }
 
 export const convertPrice5: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 157500,
     cadence: PlanInterval.Month,
     currency: 'usd',
@@ -891,6 +943,8 @@ export const convertPrice5: ConvertPrice = {
 }
 
 export const convertPrice6: ConvertPrice = {
+    custom: false,
+    public: true,
     amount: 36000,
     cadence: PlanInterval.Month,
     currency: 'usd',

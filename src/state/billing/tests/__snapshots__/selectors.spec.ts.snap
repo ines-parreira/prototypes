@@ -9,6 +9,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
@@ -39,6 +40,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 18000,
@@ -47,6 +49,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -77,6 +80,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 30000,
@@ -85,6 +89,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "cadence": "year",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
@@ -115,6 +120,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 45000,
@@ -123,6 +129,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -153,6 +160,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 180000,
@@ -161,6 +169,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "cadence": "year",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -191,6 +200,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 450000,
@@ -199,6 +209,7 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "cadence": "year",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -229,10 +240,10 @@ exports[`billing selectors getAutomationPrices should return the Automate prices
     "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
 ]
 `;
-
 
 exports[`billing selectors getCheapestProductPrices should return the cheapest product prices 1`] = `
 {
@@ -243,6 +254,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
@@ -273,11 +285,13 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   "convert": {
     "amount": 3000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-01-monthly-usd-5",
     "interval": "month",
@@ -286,6 +300,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 1,
   },
   "helpdesk": {
@@ -295,6 +310,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "amount": 6000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
@@ -416,6 +432,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "amount": 90,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 1.2,
     "internal_id": "sms-addon-03-monthly-usd-4",
     "interval": "month",
@@ -424,11 +441,13 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
     "product": "sms",
     "product_id": "prod_MT8Fzk7vmcT73m",
+    "public": true,
   },
   "voice": {
     "amount": 175,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 1.4,
     "internal_id": "voc-addon-04-monthly-usd-4",
     "interval": "month",
@@ -437,6 +456,7 @@ exports[`billing selectors getCheapestProductPrices should return the cheapest p
     "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
     "product": "voice",
     "product_id": "prod_MT6fyh00TCFRGZ",
+    "public": true,
   },
 }
 `;
@@ -548,6 +568,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "amount": 6000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
@@ -672,6 +693,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "amount": 36000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -796,6 +818,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "amount": 60000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
@@ -920,6 +943,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "amount": 90000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -1044,6 +1068,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "amount": 360000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -1168,6 +1193,7 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
     "amount": 900000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -1288,13 +1314,13 @@ exports[`billing selectors getHelpdeskPrices should return the helpdesk prices 1
 ]
 `;
 
-
 exports[`billing selectors getPrices should return the prices 1`] = `
 [
   {
     "amount": 0,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 1.6,
     "internal_id": "sms-addon-00-monthly-usd-4",
     "interval": "month",
@@ -1303,11 +1329,13 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
     "product": "sms",
     "product_id": "prod_MT8Fzk7vmcT73m",
+    "public": true,
   },
   {
     "amount": 0,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 2.4,
     "internal_id": "voc-addon-00-monthly-usd-4",
     "interval": "month",
@@ -1316,11 +1344,13 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
     "product": "voice",
     "product_id": "prod_MT6fyh00TCFRGZ",
+    "public": true,
   },
   {
     "amount": 0,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 1,
     "internal_id": "convert-00-monthly-usd-5",
     "interval": "month",
@@ -1329,12 +1359,14 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 0,
   },
   {
     "amount": 90,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 1.2,
     "internal_id": "sms-addon-03-monthly-usd-4",
     "interval": "month",
@@ -1343,11 +1375,13 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
     "product": "sms",
     "product_id": "prod_MT8Fzk7vmcT73m",
+    "public": true,
   },
   {
     "amount": 175,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 1.4,
     "internal_id": "voc-addon-04-monthly-usd-4",
     "interval": "month",
@@ -1356,11 +1390,13 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
     "product": "voice",
     "product_id": "prod_MT6fyh00TCFRGZ",
+    "public": true,
   },
   {
     "amount": 1750,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.47,
     "internal_id": "voc-addon-10-monthly-usd-4",
     "interval": "month",
@@ -1369,6 +1405,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
     "product": "voice",
     "product_id": "prod_MT6fyh00TCFRGZ",
+    "public": true,
   },
   {
     "amount": 3000,
@@ -1377,6 +1414,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
@@ -1407,11 +1445,13 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 3000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-01-monthly-usd-5",
     "interval": "month",
@@ -1420,12 +1460,14 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 1,
   },
   {
     "amount": 5768,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.77,
     "internal_id": "sms-addon-12-monthly-usd-4",
     "interval": "month",
@@ -1434,6 +1476,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
     "product": "sms",
     "product_id": "prod_MT8Fzk7vmcT73m",
+    "public": true,
   },
   {
     "addons": [
@@ -1442,6 +1485,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 6000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
@@ -1566,6 +1610,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -1596,11 +1641,13 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "amount": 25000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-02-monthly-usd-5",
     "interval": "month",
@@ -1609,6 +1656,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 2,
   },
   {
@@ -1618,6 +1666,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
     "cadence": "year",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.2,
     "features": {
       "automation_cancellations_flow": {
@@ -1648,6 +1697,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "addons": [
@@ -1656,6 +1706,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 36000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -1777,6 +1828,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 36000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-01-yearly-usd-6",
     "interval": "year",
@@ -1785,6 +1837,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 1,
   },
   {
@@ -1794,6 +1847,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -1824,6 +1878,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "addons": [
@@ -1832,6 +1887,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 60000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.4,
     "features": {
       "api_1st_party_rate_limit": {
@@ -1953,6 +2009,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 80000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-03-monthly-usd-5",
     "interval": "month",
@@ -1961,6 +2018,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 3,
   },
   {
@@ -1970,6 +2028,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 90000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -2091,6 +2150,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 110000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-04-monthly-usd-6",
     "interval": "month",
@@ -2099,12 +2159,14 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL2",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 4,
   },
   {
     "amount": 157500,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0,
     "internal_id": "convert-05-monthly-usd-6",
     "interval": "month",
@@ -2113,6 +2175,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL1",
     "product": "convert",
     "product_id": "prod_Mwy3exdalDFouZ",
+    "public": true,
     "tier": 5,
   },
   {
@@ -2122,6 +2185,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
     "cadence": "year",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -2152,6 +2216,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "addons": [
@@ -2160,6 +2225,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 360000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -2284,6 +2350,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
     "cadence": "year",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.18,
     "features": {
       "automation_cancellations_flow": {
@@ -2314,6 +2381,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
     "product": "automation",
     "product_id": "prod_LsHD5xmSqoFBBs",
+    "public": true,
   },
   {
     "addons": [
@@ -2322,6 +2390,7 @@ exports[`billing selectors getPrices should return the prices 1`] = `
     "amount": 900000,
     "cadence": "month",
     "currency": "usd",
+    "custom": false,
     "extra_ticket_cost": 0.36,
     "features": {
       "api_1st_party_rate_limit": {
@@ -2454,6 +2523,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 6000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
@@ -2578,6 +2648,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 60000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.4,
         "features": {
           "api_1st_party_rate_limit": {
@@ -2702,6 +2773,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 36000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
@@ -2826,6 +2898,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 360000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
@@ -2950,6 +3023,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 90000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
@@ -3074,6 +3148,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 900000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.36,
         "features": {
           "api_1st_party_rate_limit": {
@@ -3204,6 +3279,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "base_price_id": "price_1LJBjWI9qXomtXqSPZn8LqlD",
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.2,
         "features": {
           "automation_cancellations_flow": {
@@ -3234,6 +3310,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjXI9qXomtXqSSX34F3we",
         "product": "automation",
         "product_id": "prod_LsHD5xmSqoFBBs",
+        "public": true,
       },
       {
         "amount": 30000,
@@ -3242,6 +3319,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "base_price_id": "price_1LJBjYI9qXomtXqSLEjOrpmV",
         "cadence": "year",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.2,
         "features": {
           "automation_cancellations_flow": {
@@ -3272,6 +3350,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjZI9qXomtXqSPNgkEZpl",
         "product": "automation",
         "product_id": "prod_LsHD5xmSqoFBBs",
+        "public": true,
       },
       {
         "amount": 18000,
@@ -3280,6 +3359,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "base_price_id": "price_1LJBjaI9qXomtXqSvYfzmmEU",
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
@@ -3310,6 +3390,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjbI9qXomtXqS2sfi1J7P",
         "product": "automation",
         "product_id": "prod_LsHD5xmSqoFBBs",
+        "public": true,
       },
       {
         "amount": 180000,
@@ -3318,6 +3399,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "base_price_id": "price_1LJBjbI9qXomtXqShB9YLy7V",
         "cadence": "year",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
@@ -3348,6 +3430,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjdI9qXomtXqSlp9sh6iQ",
         "product": "automation",
         "product_id": "prod_LsHD5xmSqoFBBs",
+        "public": true,
       },
       {
         "amount": 45000,
@@ -3356,6 +3439,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "base_price_id": "price_1LJBjdI9qXomtXqS8RzPPA7K",
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
@@ -3386,6 +3470,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjeI9qXomtXqSXRjmhPsL",
         "product": "automation",
         "product_id": "prod_LsHD5xmSqoFBBs",
+        "public": true,
       },
       {
         "amount": 450000,
@@ -3394,6 +3479,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "base_price_id": "price_1LJBjfI9qXomtXqSeKJ5lJjD",
         "cadence": "year",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.18,
         "features": {
           "automation_cancellations_flow": {
@@ -3424,6 +3510,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LJBjgI9qXomtXqSBZoBcg7G",
         "product": "automation",
         "product_id": "prod_LsHD5xmSqoFBBs",
+        "public": true,
       },
     ],
     "type": "automation",
@@ -3435,6 +3522,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 90,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 1.2,
         "internal_id": "sms-addon-03-monthly-usd-4",
         "interval": "month",
@@ -3443,11 +3531,13 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LkBzKI9qXomtXqSEXrSV8o4",
         "product": "sms",
         "product_id": "prod_MT8Fzk7vmcT73m",
+        "public": true,
       },
       {
         "amount": 5768,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.77,
         "internal_id": "sms-addon-12-monthly-usd-4",
         "interval": "month",
@@ -3456,11 +3546,13 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LkBzLI9qXomtXqSgzXlOnP4",
         "product": "sms",
         "product_id": "prod_MT8Fzk7vmcT73m",
+        "public": true,
       },
       {
         "amount": 0,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 1.6,
         "internal_id": "sms-addon-00-monthly-usd-4",
         "interval": "month",
@@ -3469,6 +3561,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1M6V7uI9qXomtXqSpsoVQWUw",
         "product": "sms",
         "product_id": "prod_MT8Fzk7vmcT73m",
+        "public": true,
       },
     ],
     "type": "sms",
@@ -3480,6 +3573,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 175,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 1.4,
         "internal_id": "voc-addon-04-monthly-usd-4",
         "interval": "month",
@@ -3488,11 +3582,13 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LkAzlI9qXomtXqSxOOrhzcU",
         "product": "voice",
         "product_id": "prod_MT6fyh00TCFRGZ",
+        "public": true,
       },
       {
         "amount": 1750,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0.47,
         "internal_id": "voc-addon-10-monthly-usd-4",
         "interval": "month",
@@ -3501,11 +3597,13 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LkB44I9qXomtXqS4aF9ibna",
         "product": "voice",
         "product_id": "prod_MT6fyh00TCFRGZ",
+        "public": true,
       },
       {
         "amount": 0,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 2.4,
         "internal_id": "voc-addon-00-monthly-usd-4",
         "interval": "month",
@@ -3514,6 +3612,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1LkClqI9qXomtXqSlgYCG6Wm",
         "product": "voice",
         "product_id": "prod_MT6fyh00TCFRGZ",
+        "public": true,
       },
     ],
     "type": "voice",
@@ -3525,6 +3624,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "amount": 0,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 1,
         "internal_id": "convert-00-monthly-usd-5",
         "interval": "month",
@@ -3533,12 +3633,14 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1NdBfmI9qXomtXqSFfC7T2xX",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 0,
       },
       {
         "amount": 3000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0,
         "internal_id": "convert-01-monthly-usd-5",
         "interval": "month",
@@ -3547,12 +3649,14 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1NdBiMI9qXomtXqSX8MxFkYW",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 1,
       },
       {
         "amount": 25000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0,
         "internal_id": "convert-02-monthly-usd-5",
         "interval": "month",
@@ -3561,12 +3665,14 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1NdXfXI9qXomtXqS0CDMe7Yy",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 2,
       },
       {
         "amount": 80000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0,
         "internal_id": "convert-03-monthly-usd-5",
         "interval": "month",
@@ -3575,12 +3681,14 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSLS",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 3,
       },
       {
         "amount": 110000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0,
         "internal_id": "convert-04-monthly-usd-6",
         "interval": "month",
@@ -3589,12 +3697,14 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL2",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 4,
       },
       {
         "amount": 157500,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0,
         "internal_id": "convert-05-monthly-usd-6",
         "interval": "month",
@@ -3603,12 +3713,14 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_1NmZrmH2GG3UYmlxBGfOOSL1",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 5,
       },
       {
         "amount": 36000,
         "cadence": "month",
         "currency": "usd",
+        "custom": false,
         "extra_ticket_cost": 0,
         "internal_id": "convert-01-yearly-usd-6",
         "interval": "year",
@@ -3617,6 +3729,7 @@ exports[`billing selectors getProducts should return products 1`] = `
         "price_id": "price_2NmZrmH2GG3UYmlxBGfOOSL1",
         "product": "convert",
         "product_id": "prod_Mwy3exdalDFouZ",
+        "public": true,
         "tier": 1,
       },
     ],
