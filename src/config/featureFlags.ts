@@ -58,8 +58,6 @@ export enum FeatureFlagKey {
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FlowsPreviewTestButton = 'flows-preview-test-button',
-    FlowsStepsConditions = 'flows-steps-conditions',
-    FlowsStepsHttpRequest = 'flows-steps-http-request',
     FlowsStepsOrderLineItemSelection = 'flows-steps-order-line-item-selection',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',
     FlowsStepsShopperAuthentication = 'flows-steps-shopper-authentication-1',

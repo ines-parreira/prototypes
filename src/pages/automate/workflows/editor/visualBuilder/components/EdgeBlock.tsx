@@ -166,7 +166,6 @@ function useMenuItems(
             type: 'http_request',
             icon: iconByVisualBuilderNodeType.http_request,
             style: colorByVisualBuilderNodeType.http_request,
-            hidden: true,
             onClick: () => {
                 dispatch({
                     type: 'INSERT_HTTP_REQUEST_NODE',
@@ -180,7 +179,6 @@ function useMenuItems(
             type: 'conditions',
             icon: iconByVisualBuilderNodeType.conditions,
             style: colorByVisualBuilderNodeType.conditions,
-            hidden: true,
             onClick: () => {
                 dispatch({
                     type: 'INSERT_CONDITIONS_NODE',
