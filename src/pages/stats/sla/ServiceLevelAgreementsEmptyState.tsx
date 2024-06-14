@@ -10,7 +10,7 @@ export const SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH = '/app/settings/sla'
 export const NO_BANNER_ALT_TEXT = 'No SLAs banner'
 export const PAGE_TITLE = 'SLAs'
 export const CONTENT_HEADER_TEXT =
-    'Exceed customer expectations with Service Level Agreements(SLAs)'
+    'Provide a consistent customer experience with SLAs'
 export const CONTENT_BODY_TEXT_PARAGRAPH_1 =
     'Enable SLA policies to set clear internal responsiveness targets and delight customers.'
 export const CONTENT_BODY_TEXT_PARAGRAPH_2 =
@@ -44,8 +44,6 @@ export const ServiceLevelAgreementsEmptyState = () => (
                 <Link
                     className={css.textContentLink}
                     to={SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH}
-                    target="_blank"
-                    rel="noopener noreferrer"
                 >
                     <Button>{CONTENT_SET_UP_BUTTON_TEXT}</Button>
                 </Link>

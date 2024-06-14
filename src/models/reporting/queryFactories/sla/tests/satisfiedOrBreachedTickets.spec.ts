@@ -7,7 +7,7 @@ import {
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {
     breachedTicketsDrillDownQueryFactory,
-    satisfiedTicketsDrillDownQueryFactory,
+    satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import {
     TicketSLADimension,
@@ -32,9 +32,9 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
     const timezone = 'someTimeZone'
     const sorting = OrderDirection.Desc
 
-    describe('satisfiedTicketsDrillDownQueryFactory', () => {
+    describe('satisfiedOrBreachedTicketsDrillDownQueryFactory', () => {
         it('should produce the query', () => {
-            const query = satisfiedTicketsDrillDownQueryFactory(
+            const query = satisfiedOrBreachedTicketsDrillDownQueryFactory(
                 statsFilters,
                 timezone
             )
@@ -65,7 +65,10 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                     {
                         member: TicketSLADimension.SlaStatus,
                         operator: ReportingFilterOperator.Equals,
-                        values: [TicketSLAStatus.Satisfied],
+                        values: [
+                            TicketSLAStatus.Satisfied,
+                            TicketSLAStatus.Breached,
+                        ],
                     },
                 ],
                 segments: [TicketSLASegment.SatisfiedOrBreachedTickets],
@@ -89,14 +92,14 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
         })
 
         it('should produce the query with sorting', () => {
-            const query = satisfiedTicketsDrillDownQueryFactory(
+            const query = satisfiedOrBreachedTicketsDrillDownQueryFactory(
                 statsFilters,
                 timezone,
                 sorting
             )
 
             expect(query).toEqual({
-                ...satisfiedTicketsDrillDownQueryFactory(
+                ...satisfiedOrBreachedTicketsDrillDownQueryFactory(
                     statsFilters,
                     timezone
                 ),

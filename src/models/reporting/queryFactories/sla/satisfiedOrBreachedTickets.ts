@@ -49,7 +49,7 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
     ],
 })
 
-export const satisfiedTicketsDrillDownQueryFactory = (
+export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -76,7 +76,7 @@ export const satisfiedTicketsDrillDownQueryFactory = (
         {
             member: TicketSLADimension.SlaStatus,
             operator: ReportingFilterOperator.Equals,
-            values: [TicketSLAStatus.Satisfied],
+            values: [TicketSLAStatus.Satisfied, TicketSLAStatus.Breached],
         },
     ],
     ...(sorting

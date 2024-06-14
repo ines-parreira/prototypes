@@ -5,7 +5,7 @@ import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {
     breachedTicketsDrillDownQueryFactory,
-    satisfiedTicketsDrillDownQueryFactory,
+    satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -116,7 +116,7 @@ export const getDrillDownQuery = (
                 ticketHandleTimePerTicketDrillDownQueryFactory
             )
         case SlaMetric.AchievementRate:
-            return satisfiedTicketsDrillDownQueryFactory
+            return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:
             return breachedTicketsDrillDownQueryFactory
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:

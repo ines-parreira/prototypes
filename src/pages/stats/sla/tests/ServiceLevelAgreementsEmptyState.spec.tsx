@@ -53,7 +53,5 @@ describe('ServiceLevelAgreementsEmptyState', () => {
             'to',
             SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH
         )
-        expect(linkElement).toHaveAttribute('target', '_blank')
-        expect(linkElement).toHaveAttribute('rel', 'noopener noreferrer')
     })
 })
