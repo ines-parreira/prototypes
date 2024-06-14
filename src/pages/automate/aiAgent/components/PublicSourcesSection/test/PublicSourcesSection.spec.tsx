@@ -30,7 +30,11 @@ const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
 
 const renderComponent = () => {
     renderWithQueryClientProvider(
-        <PublicSourcesSection helpCenterId={HELP_CENTER_ID} shopName="test" />
+        <PublicSourcesSection
+            onPublicURLsChanged={jest.fn()}
+            helpCenterId={HELP_CENTER_ID}
+            shopName="test"
+        />
     )
 }
 

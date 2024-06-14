@@ -28,9 +28,7 @@ export type StoreConfiguration = {
     deactivatedDatetime: string | null
     storeName: string
 
-    helpCenterId: number
-    helpCenterLocale: string
-    helpCenterSubdomain: string
+    helpCenterId: number | null
 
     snippetHelpCenterId: number
     guidanceHelpCenterId: number
@@ -54,8 +52,6 @@ export type CreateStoreConfigurationPayload = Pick<
     StoreConfiguration,
     | 'storeName'
     | 'helpCenterId'
-    | 'helpCenterSubdomain'
-    | 'helpCenterLocale'
     | 'monitoredEmailIntegrations'
     | 'deactivatedDatetime'
     | 'customToneOfVoiceGuidance'

@@ -1,8 +1,7 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef} from 'react'
 import {List} from 'immutable'
 import {isAxiosError} from 'axios'
 
-import _isEqual from 'lodash/isEqual'
 import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
@@ -28,7 +27,9 @@ import {EmailIntegration} from '../../../models/integration/types'
 import SelectField from '../../common/forms/SelectField/SelectField'
 import ListField from '../../common/forms/ListField'
 import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
-import HelpCenterSelect from '../common/components/HelpCenterSelect'
+import HelpCenterSelect, {
+    EMPTY_HELP_CENTER_ID,
+} from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
 import {
     storeConfigurationKeys,
@@ -42,7 +43,6 @@ import {
     MAX_EXCLUDED_TOPICS,
     EXCLUDED_TOPIC_MAX_LENGTH,
     SIGNATURE_MAX_LENGTH,
-    DEFAULT_FORM_VALUES,
     DEFAULT_AI_AGENT_ENABLED_RATE,
     ToneOfVoice,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
@@ -59,6 +59,10 @@ import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntro
 import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
 import {PublicSourcesSection} from './components/PublicSourcesSection/PublicSourcesSection'
 import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
+import {
+    useConfigurationForm,
+    validateConfigurationFormValues,
+} from './hooks/useConfigurationForm'
 
 const INITIAL_FORM_VALUES = {
     deactivatedDatetime: new Date().toISOString(),
@@ -73,24 +77,17 @@ const INITIAL_FORM_VALUES = {
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenter: null,
 }
-
 const createStoreConfigurationFromFormValues = (
     storeName: string,
     formValues: ValidFormValues
 ): CreateStoreConfigurationPayload => {
     const {
-        helpCenter,
+        helpCenterId,
         ticketSampleRate,
         deactivatedDatetime,
         monitoredEmailIntegrations,
         ...restOfFormValues
     } = formValues
-
-    const helpCenterDetails = {
-        helpCenterId: helpCenter.id,
-        helpCenterLocale: helpCenter.locale,
-        helpCenterSubdomain: helpCenter.subdomain,
-    }
 
     const monitoredEmailIntegrationDetails = {
         monitoredEmailIntegrations,
@@ -110,7 +107,6 @@ const createStoreConfigurationFromFormValues = (
     return {
         storeName,
         ...ticketSampleRateDetails,
-        ...helpCenterDetails,
         ...monitoredEmailIntegrationDetails,
         ...dirtyFormValues,
         deactivatedDatetime: deactivatedDatetime as string | null,
@@ -119,125 +115,9 @@ const createStoreConfigurationFromFormValues = (
                 ? formValues.customToneOfVoiceGuidance
                 : null,
         signature,
+        helpCenterId,
     }
 }
-
-const useFormValues = () => {
-    // could have used a useReducer instead, but keeping it simple for now
-    const [formValues, setFormValues] =
-        useState<FormValues>(DEFAULT_FORM_VALUES)
-
-    const resetForm = () => {
-        setFormValues(DEFAULT_FORM_VALUES)
-    }
-
-    const isFormDirty = !_isEqual(formValues, DEFAULT_FORM_VALUES)
-    const isFieldDirty = (key: keyof FormValues) => {
-        return !_isEqual(formValues[key], DEFAULT_FORM_VALUES[key])
-    }
-
-    function updateValue<Key extends keyof FormValues>(
-        key: Key,
-        value: FormValues[Key]
-    ) {
-        setFormValues((prev) => ({
-            ...prev,
-            [key]: value,
-        }))
-    }
-
-    return {
-        formValues,
-        resetForm,
-        isFormDirty,
-        isFieldDirty,
-        updateValue,
-    }
-}
-
-const validateFormValues = (formValues: FormValues): ValidFormValues => {
-    if (formValues.helpCenter === null) {
-        throw new Error('A Help Center selection is required')
-    }
-
-    if (formValues.monitoredEmailIntegrations === null) {
-        throw new Error('Select at least one monitored email integration')
-    }
-
-    if (formValues.signature !== null) {
-        if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
-            throw new Error(
-                `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
-            )
-        }
-
-        if (formValues.signature.length === 0) {
-            throw new Error('Signature can not be empty')
-        }
-    }
-
-    if (
-        formValues.excludedTopics !== null &&
-        formValues.excludedTopics.length > 0
-    ) {
-        const hasEmptyFields = formValues.excludedTopics.some(
-            (topic) => topic === ''
-        )
-        if (hasEmptyFields) {
-            throw new Error('Excluded topic cannot be empty')
-        }
-        if (formValues.excludedTopics.length > MAX_EXCLUDED_TOPICS) {
-            throw new Error(
-                `Excluded topics must be less than ${MAX_EXCLUDED_TOPICS}`
-            )
-        }
-        for (const topic of formValues.excludedTopics) {
-            if (topic.length > EXCLUDED_TOPIC_MAX_LENGTH) {
-                throw new Error(
-                    `Excluded topics must be less than ${EXCLUDED_TOPIC_MAX_LENGTH} characters`
-                )
-            }
-        }
-    }
-
-    if (formValues.tags !== null && formValues.tags.length > 0) {
-        const hasEmptyFields = formValues.tags.some(
-            (tag) => tag.name === '' || tag.description === ''
-        )
-        if (hasEmptyFields) {
-            throw new Error('Tags must have a name and description')
-        }
-    }
-
-    if (formValues.ticketSampleRate === null) {
-        formValues.ticketSampleRate = INITIAL_FORM_VALUES.ticketSampleRate
-    }
-
-    if (
-        formValues.toneOfVoice === ToneOfVoice.Custom &&
-        !formValues.customToneOfVoiceGuidance?.length
-    ) {
-        throw new Error('Custom tone of voice cannot be empty')
-    }
-
-    if (
-        (!formValues.toneOfVoice ||
-            formValues.toneOfVoice === ToneOfVoice.Custom) &&
-        formValues.customToneOfVoiceGuidance &&
-        formValues.customToneOfVoiceGuidance.length > 500
-    ) {
-        throw new Error(
-            'Custom tone of voice should be less than 500 characters'
-        )
-    }
-
-    return {
-        ...formValues,
-        monitoredEmailIntegrations: formValues.monitoredEmailIntegrations,
-        helpCenter: formValues.helpCenter,
-    }
-}
-
 type CreateAiAgentSettingsFormProps = {
     shopName: string
     accountDomain: string
@@ -249,6 +129,9 @@ export const CreateAiAgentSettingsForm = ({
 }: CreateAiAgentSettingsFormProps) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
+
+    const isWebsiteKnowledgeEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
 
     /**
      * Global state retrieval
@@ -271,7 +154,15 @@ export const CreateAiAgentSettingsForm = ({
      * Form states and handlers
      */
 
-    const {formValues, isFormDirty, resetForm, updateValue} = useFormValues()
+    const defaultFormValues: Partial<FormValues> = useMemo(
+        () => ({
+            ticketSampleRate: INITIAL_FORM_VALUES.ticketSampleRate,
+        }),
+        []
+    )
+
+    const {formValues, isFormDirty, resetForm, updateValue} =
+        useConfigurationForm(defaultFormValues)
     const latestSampleRateRef = useRef(DEFAULT_AI_AGENT_ENABLED_RATE)
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
@@ -279,7 +170,10 @@ export const CreateAiAgentSettingsForm = ({
     const handleOnSave = async () => {
         let validFormValues: ValidFormValues
         try {
-            validFormValues = validateFormValues(formValues)
+            validFormValues = validateConfigurationFormValues(
+                formValues,
+                isWebsiteKnowledgeEnabled ?? false
+            )
         } catch (error) {
             if (error instanceof Error) {
                 void dispatch(
@@ -312,8 +206,6 @@ export const CreateAiAgentSettingsForm = ({
                         status: NotificationStatus.Success,
                     })
                 )
-
-                resetForm()
             },
             onError: (error) => {
                 if (
@@ -341,24 +233,16 @@ export const CreateAiAgentSettingsForm = ({
     }
 
     const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
-        const selectedHelpCenterId =
-            formValues.helpCenter !== null
-                ? formValues.helpCenter.id
-                : INITIAL_FORM_VALUES.helpCenter
-        return helpCenter.id === selectedHelpCenterId
+        return helpCenter.id === formValues.helpCenterId
     })
 
     const setHelpCenterId = (id: number) => {
-        const newSelectedHelpCenter = faqHelpCenters.find(
-            (helpCenter) => helpCenter.id === id
-        )
+        if (id === EMPTY_HELP_CENTER_ID) {
+            updateValue('helpCenterId', null)
+            return
+        }
 
-        if (!newSelectedHelpCenter) return
-        updateValue('helpCenter', {
-            id: newSelectedHelpCenter.id,
-            locale: newSelectedHelpCenter.default_locale,
-            subdomain: newSelectedHelpCenter.subdomain,
-        })
+        updateValue('helpCenterId', id)
     }
 
     const handleSelectEmailIntegration = (nextSelectedIds: number[]) => {
@@ -405,9 +289,6 @@ export const CreateAiAgentSettingsForm = ({
             : INITIAL_FORM_VALUES.silentHandover
     )
 
-    const isWebsiteKnowledgeEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
-
     const isSkipSampleRateEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSkipSampleRate]
 
@@ -418,6 +299,13 @@ export const CreateAiAgentSettingsForm = ({
         shopName,
         helpCenterType: 'snippet',
     })
+
+    const handlePublicURLsChange = useCallback(
+        (publicURLs: string[]) => {
+            updateValue('publicURLs', publicURLs)
+        },
+        [updateValue]
+    )
 
     return (
         <>
@@ -465,19 +353,21 @@ export const CreateAiAgentSettingsForm = ({
                         />
                     )}
 
-                    <div className={css.formGroup}>
-                        <Label isRequired={true} className={css.label}>
-                            Help Center
-                        </Label>
-                        <HelpCenterSelect
-                            helpCenter={selectedHelpCenter}
-                            setHelpCenterId={setHelpCenterId}
-                            helpCenters={faqHelpCenters}
-                        />
-                        <div className={css.formInputFooterInfo}>
-                            Select a Help Center to connect to AI Agent.
+                    {!isWebsiteKnowledgeEnabled || !snippetHelpCenter ? (
+                        <div className={css.formGroup}>
+                            <Label isRequired={true} className={css.label}>
+                                Help Center
+                            </Label>
+                            <HelpCenterSelect
+                                helpCenter={selectedHelpCenter}
+                                setHelpCenterId={setHelpCenterId}
+                                helpCenters={faqHelpCenters}
+                            />
+                            <div className={css.formInputFooterInfo}>
+                                Select a Help Center to connect to AI Agent.
+                            </div>
                         </div>
-                    </div>
+                    ) : null}
 
                     <div className={css.formGroup}>
                         <Label
@@ -540,7 +430,8 @@ export const CreateAiAgentSettingsForm = ({
                                     placeholder="Custom tone of voice"
                                     maxLength={CUSTOM_TONE_OF_VOICE_MAX_LENGTH}
                                     value={
-                                        formValues.customToneOfVoiceGuidance!
+                                        formValues.customToneOfVoiceGuidance ??
+                                        undefined
                                     }
                                     onChange={(value: unknown) => {
                                         if (typeof value !== 'string') return
@@ -565,8 +456,24 @@ export const CreateAiAgentSettingsForm = ({
                         title="Knowledge"
                         subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
                     >
+                        <div className={css.formGroup}>
+                            <Label isRequired={true} className={css.label}>
+                                Help Center
+                            </Label>
+                            <HelpCenterSelect
+                                helpCenter={selectedHelpCenter}
+                                setHelpCenterId={setHelpCenterId}
+                                helpCenters={faqHelpCenters}
+                                withEmptyItemSelection
+                            />
+                            <div className={css.formInputFooterInfo}>
+                                Select a Help Center to connect to AI Agent.
+                            </div>
+                        </div>
+
                         <PublicSourcesSection
                             helpCenterId={snippetHelpCenter.id}
+                            onPublicURLsChanged={handlePublicURLsChange}
                             shopName={shopName}
                         />
                     </ConfigurationSection>

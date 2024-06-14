@@ -25,7 +25,8 @@ export const DEFAULT_FORM_VALUES: FormValues = {
     signature: null,
     toneOfVoice: null,
     customToneOfVoiceGuidance: null,
-    helpCenter: null,
+    helpCenterId: null,
+    publicURLs: null,
 }
 
 export const GUIDANCE_ARTICLE_LIMIT = 40

@@ -8,15 +8,19 @@ import DropdownBody from '../../../common/components/dropdown/DropdownBody'
 import DropdownItem from '../../../common/components/dropdown/DropdownItem'
 import {HelpCenter} from '../../../../models/helpCenter/types'
 
+export const EMPTY_HELP_CENTER_ID = -1
+
 type Props = {
     helpCenter: HelpCenter | undefined
     helpCenters: HelpCenter[]
+    withEmptyItemSelection?: boolean
     setHelpCenterId: (id: number) => void
 }
 
 const HelpCenterSelect = ({
     helpCenter,
     helpCenters,
+    withEmptyItemSelection,
     setHelpCenterId,
 }: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
@@ -42,6 +46,17 @@ const HelpCenterSelect = ({
                         isDisabled={!helpCenters.length}
                     >
                         <DropdownBody>
+                            {withEmptyItemSelection && (
+                                <DropdownItem
+                                    option={{
+                                        label: 'No Help Center',
+                                        value: EMPTY_HELP_CENTER_ID,
+                                    }}
+                                    onClick={setHelpCenterId}
+                                    shouldCloseOnSelect
+                                />
+                            )}
+
                             {helpCenters.map((helpCenter) => (
                                 <DropdownItem
                                     key={helpCenter.id}

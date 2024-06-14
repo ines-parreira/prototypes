@@ -1,8 +1,7 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef} from 'react'
 import {List} from 'immutable'
 import {isAxiosError} from 'axios'
 
-import _isEqual from 'lodash/isEqual'
 import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
@@ -24,7 +23,9 @@ import {EmailIntegration} from '../../../models/integration/types'
 import SelectField from '../../common/forms/SelectField/SelectField'
 import ListField from '../../common/forms/ListField'
 import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
-import HelpCenterSelect from '../common/components/HelpCenterSelect'
+import HelpCenterSelect, {
+    EMPTY_HELP_CENTER_ID,
+} from '../common/components/HelpCenterSelect'
 import TextArea from '../../common/forms/TextArea'
 import {
     storeConfigurationKeys,
@@ -38,7 +39,6 @@ import {
     MAX_EXCLUDED_TOPICS,
     EXCLUDED_TOPIC_MAX_LENGTH,
     SIGNATURE_MAX_LENGTH,
-    DEFAULT_FORM_VALUES,
     ToneOfVoice,
     CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
@@ -54,25 +54,16 @@ import {
 import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntroduction'
 import {PublicSourcesSection} from './components/PublicSourcesSection/PublicSourcesSection'
 import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
+import {
+    useConfigurationForm,
+    validateConfigurationFormValues,
+} from './hooks/useConfigurationForm'
 
 const createStoreConfigurationFromFormValues = (
     storeConfig: StoreConfiguration,
     formValues: FormValues
 ): StoreConfiguration => {
-    const {helpCenter, ticketSampleRate, ...restOfFormValues} = formValues
-
-    const helpCenterDetails:
-        | Pick<
-              StoreConfiguration,
-              'helpCenterId' | 'helpCenterLocale' | 'helpCenterSubdomain'
-          >
-        | Record<string, never> = helpCenter
-        ? {
-              helpCenterId: helpCenter.id,
-              helpCenterLocale: helpCenter.locale,
-              helpCenterSubdomain: helpCenter.subdomain,
-          }
-        : {}
+    const {helpCenterId, ticketSampleRate, ...restOfFormValues} = formValues
 
     let ticketSampleRateValue: number
 
@@ -99,105 +90,9 @@ const createStoreConfigurationFromFormValues = (
         ...storeConfig,
         ...dirtyFormValues,
         ticketSampleRate: ticketSampleRateValue,
-        ...helpCenterDetails,
+        helpCenterId,
         deactivatedDatetime,
     }
-}
-
-const useFormValues = () => {
-    // could have used a useReducer instead, but keeping it simple for now
-    const [formValues, setFormValues] =
-        useState<FormValues>(DEFAULT_FORM_VALUES)
-
-    const resetForm = () => {
-        setFormValues(DEFAULT_FORM_VALUES)
-    }
-
-    const isFormDirty = !_isEqual(formValues, DEFAULT_FORM_VALUES)
-
-    function updateValue<Key extends keyof FormValues>(
-        key: Key,
-        value: FormValues[Key]
-    ) {
-        setFormValues((prev) => ({
-            ...prev,
-            [key]: value,
-        }))
-    }
-
-    return {
-        formValues,
-        resetForm,
-        isFormDirty,
-        updateValue,
-    }
-}
-
-const validateFormValues = (formValues: FormValues): FormValues => {
-    if (formValues.signature !== null) {
-        if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
-            throw new Error(
-                `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
-            )
-        }
-
-        if (formValues.signature.length === 0) {
-            throw new Error('Signature can not be empty')
-        }
-    }
-
-    if (
-        formValues.excludedTopics !== null &&
-        formValues.excludedTopics.length > 0
-    ) {
-        const hasEmptyFields = formValues.excludedTopics.some(
-            (topic) => topic === ''
-        )
-        if (hasEmptyFields) {
-            throw new Error('Excluded topic cannot be empty')
-        }
-        if (formValues.excludedTopics.length > MAX_EXCLUDED_TOPICS) {
-            throw new Error(
-                `Excluded topics must be less than ${MAX_EXCLUDED_TOPICS}`
-            )
-        }
-        for (const topic of formValues.excludedTopics) {
-            if (topic.length > EXCLUDED_TOPIC_MAX_LENGTH) {
-                throw new Error(
-                    `Excluded topics must be less than ${EXCLUDED_TOPIC_MAX_LENGTH} characters`
-                )
-            }
-        }
-    }
-
-    if (formValues.tags !== null && formValues.tags.length > 0) {
-        const hasEmptyFields = formValues.tags.some(
-            (tag) => tag.name === '' || tag.description === ''
-        )
-        if (hasEmptyFields) {
-            throw new Error('Tags must have a name and description')
-        }
-    }
-
-    if (
-        (!formValues.toneOfVoice ||
-            formValues.toneOfVoice === ToneOfVoice.Custom) &&
-        formValues.customToneOfVoiceGuidance?.length === 0
-    ) {
-        throw new Error('Custom tone of voice cannot be empty')
-    }
-    if (
-        (!formValues.toneOfVoice ||
-            formValues.toneOfVoice === ToneOfVoice.Custom) &&
-        formValues.customToneOfVoiceGuidance &&
-        formValues.customToneOfVoiceGuidance.length > 500
-    ) {
-        throw new Error(
-            'Custom tone of voice should be less than 500 characters'
-        )
-    }
-
-    return formValues
 }
 
 type EditAiAgentSettingsFormProps = {
@@ -241,7 +136,20 @@ export const EditAiAgentSettingsForm = ({
      * Form states and handlers
      */
 
-    const {formValues, isFormDirty, resetForm, updateValue} = useFormValues()
+    // TODO: Refactor to use all fields from storeConfiguration as default values
+    const defaultFormValues = useMemo(
+        () => ({
+            helpCenterId: storeConfiguration.helpCenterId,
+            monitoredEmailIntegrations:
+                storeConfiguration.monitoredEmailIntegrations,
+            deactivatedDatetime: storeConfiguration.deactivatedDatetime,
+            silentHandover: storeConfiguration.silentHandover,
+            tags: storeConfiguration.tags,
+        }),
+        [storeConfiguration]
+    )
+    const {formValues, isFormDirty, resetForm, updateValue} =
+        useConfigurationForm(defaultFormValues)
     const initialSampleRatePercent = storeConfiguration.ticketSampleRate * 100
     const latestSampleRateRef = useRef(initialSampleRatePercent)
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
@@ -250,7 +158,10 @@ export const EditAiAgentSettingsForm = ({
     const handleOnSave = async () => {
         let validFormValues: FormValues
         try {
-            validFormValues = validateFormValues(formValues)
+            validFormValues = validateConfigurationFormValues(
+                formValues,
+                isWebsiteKnowledgeEnabled ?? false
+            )
         } catch (error) {
             if (error instanceof Error) {
                 void dispatch(
@@ -283,8 +194,6 @@ export const EditAiAgentSettingsForm = ({
                         status: NotificationStatus.Success,
                     })
                 )
-
-                resetForm()
             },
             onError: (error) => {
                 if (
@@ -312,24 +221,17 @@ export const EditAiAgentSettingsForm = ({
     }
 
     const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
-        const selectedHelpCenterId =
-            formValues.helpCenter !== null
-                ? formValues.helpCenter.id
-                : storeConfiguration.helpCenterId
+        const selectedHelpCenterId = formValues.helpCenterId
         return helpCenter.id === selectedHelpCenterId
     })
 
     const setHelpCenterId = (id: number) => {
-        const newSelectedHelpCenter = faqHelpCenters.find(
-            (helpCenter) => helpCenter.id === id
-        )
+        if (id === EMPTY_HELP_CENTER_ID) {
+            updateValue('helpCenterId', null)
+            return
+        }
 
-        if (!newSelectedHelpCenter) return
-        updateValue('helpCenter', {
-            id: newSelectedHelpCenter.id,
-            locale: newSelectedHelpCenter.default_locale,
-            subdomain: newSelectedHelpCenter.subdomain,
-        })
+        updateValue('helpCenterId', id)
     }
 
     const handleSelectEmailIntegration = (nextSelectedIds: number[]) => {
@@ -369,6 +271,13 @@ export const EditAiAgentSettingsForm = ({
         }
         updateValue('toneOfVoice', toneOfVoiceLabel.toString())
     }
+
+    const handlePublicURLsChange = useCallback(
+        (publicURLs: string[]) => {
+            updateValue('publicURLs', publicURLs)
+        },
+        [updateValue]
+    )
 
     const isAIAgentToggled = isAiAgentEnabled(
         formValues.deactivatedDatetime !== undefined
@@ -432,19 +341,21 @@ export const EditAiAgentSettingsForm = ({
                         />
                     )}
 
-                    <div className={css.formGroup}>
-                        <Label isRequired={true} className={css.label}>
-                            Help Center
-                        </Label>
-                        <HelpCenterSelect
-                            helpCenter={selectedHelpCenter}
-                            setHelpCenterId={setHelpCenterId}
-                            helpCenters={faqHelpCenters}
-                        />
-                        <div className={css.formInputFooterInfo}>
-                            Select a Help Center to connect to AI Agent.
+                    {!isWebsiteKnowledgeEnabled && (
+                        <div className={css.formGroup}>
+                            <Label isRequired={true} className={css.label}>
+                                Help Center
+                            </Label>
+                            <HelpCenterSelect
+                                helpCenter={selectedHelpCenter}
+                                setHelpCenterId={setHelpCenterId}
+                                helpCenters={faqHelpCenters}
+                            />
+                            <div className={css.formInputFooterInfo}>
+                                Select a Help Center to connect to AI Agent.
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className={css.formGroup}>
                         <Label
@@ -535,12 +446,27 @@ export const EditAiAgentSettingsForm = ({
                     <ConfigurationSection
                         title="Knowledge"
                         subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                        isRequired={true}
                     >
+                        <div className={css.formGroup}>
+                            <Label className={css.label}>Help Center</Label>
+                            <HelpCenterSelect
+                                helpCenter={selectedHelpCenter}
+                                setHelpCenterId={setHelpCenterId}
+                                helpCenters={faqHelpCenters}
+                                withEmptyItemSelection
+                            />
+                            <div className={css.formInputFooterInfo}>
+                                Select a Help Center to connect to AI Agent.
+                            </div>
+                        </div>
+
                         <PublicSourcesSection
                             helpCenterId={
                                 storeConfiguration.snippetHelpCenterId
                             }
                             shopName={shopName}
+                            onPublicURLsChanged={handlePublicURLsChange}
                         />
                     </ConfigurationSection>
                 )}

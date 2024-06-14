@@ -19,9 +19,14 @@ const SOURCES_LIMIT = 10
 type Props = {
     helpCenterId: number
     shopName: string
+    onPublicURLsChanged: (publicURLs: string[]) => void
 }
 
-export const PublicSourcesSection = ({helpCenterId, shopName}: Props) => {
+export const PublicSourcesSection = ({
+    helpCenterId,
+    shopName,
+    onPublicURLsChanged,
+}: Props) => {
     const dispatch = useAppDispatch()
 
     const {sourceItems} = usePublicResources({
@@ -38,6 +43,16 @@ export const PublicSourcesSection = ({helpCenterId, shopName}: Props) => {
             setSources((prevSources) => mergeSources(prevSources, sourceItems))
         }
     }, [sourceItems])
+
+    useEffect(() => {
+        if (sourceItems) {
+            const publicURLs = sourceItems
+                .map((source) => source.url)
+                .filter((url): url is string => !!url)
+
+            onPublicURLsChanged(publicURLs)
+        }
+    }, [onPublicURLsChanged, sourceItems])
 
     const onAddClick = () => {
         const newResource: SourceItem = {
