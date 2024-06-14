@@ -21,6 +21,7 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {reportError} from 'utils/errors'
+import Tooltip from 'pages/common/components/Tooltip'
 import {CustomerHttpIntegrationDataMock} from '../../constants'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
 import {
@@ -28,6 +29,7 @@ import {
     PlaygroundGenericErrorMessage,
 } from '../PlaygroundMessage/PlaygroundMessage'
 import {CustomerSearchDropdownSelectView} from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
+import {usePublicResources} from '../../hooks/usePublicResources'
 import css from './PlaygroundInputStep.less'
 
 enum SenderTypeValues {
@@ -94,6 +96,12 @@ export const PlaygroundInputStep = ({
             : SenderTypeValues.EXISTING_CUSTOMER
     )
     const childControlRef = React.createRef<Control>()
+    const {sourceItems} = usePublicResources({
+        helpCenterId: storeData.snippetHelpCenterId,
+    })
+    const isPendingResources = sourceItems
+        ? sourceItems.some((item) => item.status === 'loading')
+        : false
 
     const validateFormValues = (formValues: FormValues) => {
         const formValuesValidity: FormValuesValidity = {
@@ -293,9 +301,16 @@ export const PlaygroundInputStep = ({
                     </div>
 
                     <div className={css.submitContainer}>
+                        {isPendingResources && (
+                            <Tooltip target="submit-button">
+                                Testing currently disabled. Please wait for
+                                knowledges sources to sync.
+                            </Tooltip>
+                        )}
                         <Button
-                            isDisabled={!isFormValid}
+                            isDisabled={!isFormValid || isPendingResources}
                             onClick={handleSubmit}
+                            id="submit-button"
                         >
                             Submit
                         </Button>
