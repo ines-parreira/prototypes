@@ -165,8 +165,8 @@ import AutomateStatsPaywall from 'pages/stats/AutomateStatsPaywall'
 import TrainMyAiViewContainer from 'pages/automate/trainMyAi/TrainMyAiViewContainer'
 import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
-import EditCustomActionsFormView from 'pages/automate/actions/EditCustomActionsFormView'
-import NewCustomActionsFormView from 'pages/automate/actions/NewCustomActionsFormView'
+import CreateActionFormView from 'pages/automate/actions/CreateActionFormView'
+import EditActionFormView from 'pages/automate/actions/EditActionFormView'
 import AutomateRoute from 'pages/automate/common/components/AutomateRoute'
 import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
@@ -1736,7 +1736,7 @@ function AutomationContent() {
                 path={`${path}/:shopType/:shopName/actions/new`}
                 exact
                 component={memoizedWithUserRoleRequired(
-                    NewCustomActionsFormView,
+                    CreateActionFormView,
                     AGENT_ROLE
                 )}
             />
@@ -1744,7 +1744,7 @@ function AutomationContent() {
                 path={`${path}/:shopType/:shopName/actions/edit/:id`}
                 exact
                 component={memoizedWithUserRoleRequired(
-                    EditCustomActionsFormView,
+                    EditActionFormView,
                     AGENT_ROLE
                 )}
             />

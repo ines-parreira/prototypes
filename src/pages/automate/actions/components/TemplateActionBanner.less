@@ -1,0 +1,35 @@
+@import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        display: flex;
+        padding: @layout-spacing-s;
+        gap: @layout-spacing-s;
+        border: 1px solid var(--neutral-grey-3);
+        background: var(--neutral-grey-1);
+        border-radius: 4px;
+        width: 100%;
+
+        .appIcon {
+            width: 50px;
+            height: 50px;
+        }
+
+        .information {
+            display: flex;
+            flex-direction: column;
+            gap: @layout-spacing-xxs;
+
+            & > h3 {
+                .heading-section-semibold;
+                margin: 0;
+            }
+
+            & > p {
+                .body-regular();
+                margin: 0;
+            }
+        }
+    }
+}

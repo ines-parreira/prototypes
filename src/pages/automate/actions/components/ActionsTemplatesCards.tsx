@@ -1,14 +1,12 @@
 import React from 'react'
 
 import {useParams} from 'react-router-dom'
-import {assetsUrl} from 'utils'
-import {INTEGRATION_TYPE_CONFIG} from 'config'
 import {
     CustomCardLink,
     TemplateCardLink,
 } from 'pages/common/components/TemplateCard'
-import {useGetApps} from 'models/integration/queries'
-import {TemplateConfiguration} from '../types'
+import {TemplateConfiguration, ActionApps} from '../types'
+import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import css from './ActionsTemplatesCards.less'
 
 type Props = {
@@ -25,46 +23,21 @@ export default function ActionsTemplatesCards({
         shopName: string
     }>()
 
-    const {data: appsList} = useGetApps()
-
     return (
         <div className={css.container}>
             {templateConfigurations.map(({id, name, apps}) => {
-                const app = apps?.[0]
-
-                let appImage: undefined | string = undefined
-
-                if (app?.type === 'app') {
-                    appImage = appsList?.find(
-                        (item) => (item.id = app.app_id)
-                    )?.app_icon
-                } else {
-                    const integrationConfig = INTEGRATION_TYPE_CONFIG.find(
-                        (item) => item.type === app?.type
-                    )
-                    appImage = integrationConfig?.image
-                        ? assetsUrl(integrationConfig?.image)
-                        : undefined
+                if (!apps?.length) {
+                    return null
                 }
+                const app = apps[0]
                 return (
-                    <TemplateCardLink
-                        to={`/app/automation/${shopType}/${shopName}/actions/new/template/${id}`}
-                        description=""
-                        title={name}
+                    <TemplateCard
+                        shopType={shopType}
+                        shopName={shopName}
+                        app={app}
+                        templateName={name}
+                        templateId={id}
                         key={id}
-                        icon={
-                            <>
-                                {!appImage ? (
-                                    <div className={css.appIcon}></div>
-                                ) : (
-                                    <img
-                                        className={css.appIcon}
-                                        src={appImage}
-                                        alt={app?.type}
-                                    />
-                                )}
-                            </>
-                        }
                     />
                 )
             })}
@@ -77,5 +50,42 @@ export default function ActionsTemplatesCards({
                 />
             )}
         </div>
+    )
+}
+
+function TemplateCard({
+    app,
+    shopName,
+    shopType,
+    templateId,
+    templateName,
+}: {
+    app: ActionApps
+    shopType: string
+    shopName: string
+    templateId: string
+    templateName: string
+}) {
+    const appImageUrl = useGetAppImageUrl(app)
+
+    return (
+        <TemplateCardLink
+            to={`/app/automation/${shopType}/${shopName}/actions/new?template_id=${templateId}`}
+            description=""
+            title={templateName}
+            icon={
+                <>
+                    {!appImageUrl ? (
+                        <div className={css.appIcon}></div>
+                    ) : (
+                        <img
+                            className={css.appIcon}
+                            src={appImageUrl}
+                            alt={app?.type}
+                        />
+                    )}
+                </>
+            }
+        />
     )
 }

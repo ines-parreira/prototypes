@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import {ulid} from 'ulidx'
 import {
     WorkflowVariableGroup,
     WorkflowVariable,
@@ -11,7 +12,10 @@ import {extractVariablesFromText} from 'pages/automate/workflows/models/variable
 import {
     StoreWorkflowsConfiguration,
     CustomActionConfigurationFormInput,
+    TemplateConfigurationFormInput,
     CustomActionFormInputValues,
+    TemplateActionFormInputValues,
+    TemplateConfiguration,
     LlmPromptTrigger,
     CustomInput,
     StepHttpRequest,
@@ -368,6 +372,74 @@ export function getInputVariables(customInputs: CustomInput[]) {
     return variableGroups.filter((group) => group.variables.length > 0)
 }
 
+export function wfConfgurationToTemplateFormValue(
+    configuration: TemplateConfigurationFormInput,
+    template: TemplateConfiguration
+): TemplateActionFormInputValues {
+    const llmPromptTrigger = getTriggerstByKind(
+        configuration.triggers,
+        'llm-prompt'
+    )
+
+    if (!template.triggers)
+        throw new Error('Template configuration does not have triggers')
+
+    const templateLlmPromptTrigger = getTriggerstByKind(
+        template.triggers,
+        'llm-prompt'
+    )
+
+    const llmConversationEntryPoint = getEntrypointByKind(
+        configuration.entrypoints!,
+        'llm-conversation'
+    )
+
+    const conditionsType = llmPromptTrigger
+        ? getConditionsType(llmPromptTrigger)
+        : null
+
+    const conditions =
+        conditionsType &&
+        conditionsType in (llmPromptTrigger?.settings.conditions ?? {})
+            ? (
+                  llmPromptTrigger?.settings.conditions as Record<
+                      string,
+                      ConditionSchema[]
+                  >
+              )[conditionsType]
+            : []
+
+    const customInputConfiguration =
+        llmPromptTrigger?.settings.custom_inputs.map((input) => ({
+            id: input.id,
+            name: input.name,
+            instructions: input.instructions,
+            dataType: input.data_type,
+        })) ?? []
+
+    const templateCustomInput =
+        templateLlmPromptTrigger?.settings.custom_inputs.map((input) => ({
+            id: input.id,
+            name: input.name,
+            instructions: input.instructions,
+            dataType: input.data_type,
+            isTemplateCustomInputs: true,
+        })) ?? []
+
+    const customInput = [...templateCustomInput, ...customInputConfiguration]
+
+    return {
+        aiAgentInstructions:
+            llmConversationEntryPoint?.settings.instructions ?? '',
+        name: configuration.name,
+        isAvailableForAiAgent:
+            llmConversationEntryPoint?.deactivated_datetime === null ||
+            llmConversationEntryPoint?.deactivated_datetime === undefined,
+        conditionsType,
+        conditions,
+        customInput,
+    }
+}
 export function storeWorkflowsConfgurationToFormValue(
     configuration: CustomActionConfigurationFormInput
 ): CustomActionFormInputValues {
@@ -483,4 +555,65 @@ export function getConditionsUsedVariables(conditions: ConditionSchema[]) {
             )
         )
     )
+}
+
+export function generateNewCustomActionConfigurationFormInput(): CustomActionConfigurationFormInput {
+    const httpStepId = ulid()
+    const httpStepVariableId = ulid()
+    return {
+        name: '',
+        id: ulid(),
+        initial_step_id: httpStepId,
+        is_draft: false,
+        entrypoints: [
+            {
+                kind: 'llm-conversation',
+                trigger: 'llm-prompt',
+                settings: {
+                    instructions: '',
+                    requires_confirmation: false,
+                },
+                deactivated_datetime: null,
+            },
+        ],
+        triggers: [
+            {
+                kind: 'llm-prompt',
+                settings: {
+                    custom_inputs: [],
+                    object_inputs: [],
+                    outputs: [
+                        {
+                            description: '',
+                            id: ulid(),
+                            path: `steps_state.${httpStepId}.content.${httpStepVariableId}`,
+                        },
+                    ],
+                },
+            },
+        ],
+        steps: [
+            {
+                id: httpStepId,
+                kind: 'http-request',
+                settings: {
+                    url: '',
+                    method: 'GET',
+                    headers: {},
+                    name: '',
+                    variables: [
+                        {
+                            id: httpStepVariableId,
+                            name: 'Request result',
+                            jsonpath: '$',
+                            data_type: null as any,
+                        },
+                    ],
+                },
+            },
+        ],
+        transitions: [],
+        available_languages: [],
+        updated_datetime: new Date().toISOString(),
+    }
 }

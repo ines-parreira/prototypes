@@ -22,11 +22,22 @@ export type LlmConversationEntrypoint = Extract<
 >
 
 export type TemplateConfiguration =
-    Paths.WfConfigurationTemplateControllerList.Responses.$200[number]
+    Components.Schemas.ListWfConfigurationTemplatesResponseDto[number]
 
 export interface CustomActionConfigurationFormInput
     extends Omit<StoreWorkflowsConfiguration, 'internal_id' | 'account_id'> {
     internal_id?: string
+}
+
+export interface TemplateConfigurationFormInput
+    extends Omit<
+        TemplateConfiguration,
+        'internal_id' | 'account_id' | 'id' | 'initial_step_id'
+    > {
+    id?: string
+    internal_id?: string
+    triggers: Trigger[]
+    initial_step_id: string | null
 }
 
 export type CustomInput = {
