@@ -3,6 +3,7 @@ import {Container} from 'reactstrap'
 import {NavLink, Route, Switch, useRouteMatch} from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import classNames from 'classnames'
 import PageHeader from 'pages/common/components/PageHeader'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -92,7 +93,12 @@ export default function WorkflowsView({
         ) : hasStoreWorkflows ? (
             <Container fluid className={css.pageContainer}>
                 <div className={css.pageContainerHeadline}>
-                    <div className={css.descriptionContainer}>
+                    <div
+                        className={classNames(css.descriptionContainer, {
+                            [css.descriptionContainerColumn]:
+                                isImprovedNavigationEnabled,
+                        })}
+                    >
                         <div className={css.description}>
                             <div className={css.descriptionText}>
                                 {WORKFLOWS_DESCRIPTION}
@@ -175,17 +181,19 @@ export default function WorkflowsView({
                     <PageHeader title={FLOWS} />
                 ) : (
                     <PageHeader title={FLOWS}>
-                        <div className={css.headerContainer}>
-                            <Button
-                                onClick={goToNewWorkflowPage}
-                                intent="secondary"
-                            >
-                                Create Custom Flow
-                            </Button>
-                            <Button onClick={goToWorkflowTemplatesPage}>
-                                Create From Template
-                            </Button>
-                        </div>
+                        {hasStoreWorkflows && (
+                            <div className={css.headerContainer}>
+                                <Button
+                                    onClick={goToNewWorkflowPage}
+                                    intent="secondary"
+                                >
+                                    Create Custom Flow
+                                </Button>
+                                <Button onClick={goToWorkflowTemplatesPage}>
+                                    Create From Template
+                                </Button>
+                            </div>
+                        )}
                     </PageHeader>
                 )}
             </div>

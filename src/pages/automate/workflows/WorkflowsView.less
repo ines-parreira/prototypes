@@ -1,5 +1,6 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography.less';
+@import '~css/new/mixins.less';
 
 :local {
     .pageHeaderContainer {
@@ -28,6 +29,22 @@
     .descriptionContainer {
         display: flex;
         gap: @layout-spacing-m;
+    }
+    .descriptionContainerColumn {
+        @media @tablets {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: @layout-spacing-m;
+        }
+
+        @media @mobiles {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: @layout-spacing-m;
+        }
+        @media @desktops {
+            gap: @layout-spacing-m;
+        }
     }
 
     .description {

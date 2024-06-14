@@ -1,4 +1,6 @@
-@import '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+@import '~css/new/mixins.less';
 
 :local {
     .pageContainer {
@@ -52,6 +54,18 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        @media @tablets {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: @layout-spacing-m;
+        }
+
+        @media @mobiles {
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: @layout-spacing-m;
+        }
     }
 
     .pageTitleActions {
