@@ -1,4 +1,5 @@
 @import (reference) '~css/typography';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
 
 :local {
     .container {
@@ -7,5 +8,29 @@
 
     .name {
         .body-semibold();
+    }
+
+    .innerActionCell {
+        display: inline;
+    }
+
+    .actionCell {
+        max-width: 34ch;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+
+        .appImageFiller,
+        img {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+        }
+
+        span {
+            padding-left: @layout-spacing-xs;
+            vertical-align: middle;
+            margin: 0;
+        }
     }
 }

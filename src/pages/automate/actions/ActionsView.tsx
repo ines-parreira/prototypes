@@ -70,24 +70,20 @@ export default function ActionView() {
                 </div>
             }
         >
+            <AutomateViewEmptyStateBanner
+                title="Set up Actions for AI Agent to automate requests involving your 3rd party apps"
+                description={ACTIONS_DESCRIPTION}
+                image={emptyState}
+            />
             {hasActions && storeConfigurations ? (
                 <div
                     data-candu-id="custom-action-view-header"
                     className={css.actionsListContainer}
                 >
-                    <div className={css.actionsListHeader}>
-                        <span>{ACTIONS_DESCRIPTION}</span>
-                    </div>
                     <ActionsList actions={storeConfigurations} />
                 </div>
             ) : (
                 <>
-                    <AutomateViewEmptyStateBanner
-                        title="Configure Actions for AI Agent"
-                        description={ACTIONS_DESCRIPTION}
-                        image={emptyState}
-                    />
-
                     {templateConfigurations &&
                         templateConfigurations?.length > 0 && (
                             <div className={css.templateCards}>
