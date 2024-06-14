@@ -1,5 +1,4 @@
 import React from 'react'
-import {Button} from 'reactstrap'
 import {Map, List} from 'immutable'
 
 import {RuleItemActions} from 'pages/settings/rules/types'
@@ -10,20 +9,19 @@ import {
 
 import {useRuleContext} from 'pages/common/hooks/useRuleContext'
 import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
+import AddSiblingCondition from 'pages/common/components/ast/operations/AddSiblingCondition'
 
 type LogicalExpressionProps = {
     rule: Map<any, any>
     actions: RuleItemActions
     left: Partial<ExpressionProps> & SyntaxTree
     leftsiblings?: List<any>
-    operator: string
     parent: List<any>
     right: Partial<ExpressionProps> & SyntaxTree
     schemas: Map<any, any>
 }
 
 export default function LogicalExpression({
-    operator,
     left,
     right,
     rule,
@@ -56,12 +54,12 @@ export default function LogicalExpression({
                 className="IdentifierDropdown"
             />
             <div className="d-flex align-items-baseline mt-1 ml-3">
-                <Button
-                    className="LogicalOperator btn-frozen mr-1"
-                    type="button"
-                >
-                    {operator === '&&' ? 'AND' : 'OR'}
-                </Button>
+                <AddSiblingCondition
+                    actions={actions}
+                    rule={rule}
+                    parent={parent}
+                    hoverableClassName="d-inline-flex"
+                />
                 <Expression
                     {...(right as ExpressionProps)}
                     parent={parent.push('right')}
