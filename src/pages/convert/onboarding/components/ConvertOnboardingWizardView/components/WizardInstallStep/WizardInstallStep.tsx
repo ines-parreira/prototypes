@@ -50,6 +50,13 @@ const WizardInstallStep = ({
             isConnectedToShopify ? storeIntegration.toJS() : undefined
         )
 
+    const manualInstallationLabel = useMemo(() => {
+        if (shouldUseThemeAppExtensionInstallation) {
+            return 'Add the campaign bundle on your ecommerce store to display onsite campaigns.'
+        }
+        return 'Add the campaign bundle to non-Shopify stores, Shopify Headless, specific pages on a Shopify store, or any other website.'
+    }, [shouldUseThemeAppExtensionInstallation])
+
     return (
         <div className={css.layout}>
             <h1 className={css.title}>Install the campaign bundle</h1>
@@ -80,7 +87,7 @@ const WizardInstallStep = ({
                 }
                 className="mt-3"
                 label="Manual installation"
-                caption="Add the campaign bundle to non-Shopify stores, Shopify Headless, specific pages on a Shopify store, or any other website."
+                caption={manualInstallationLabel}
                 onClick={() => {
                     setInstallationMethod(BundleInstallationMethod.Manual)
                 }}
