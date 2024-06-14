@@ -1,5 +1,5 @@
 export const systemViewIcons = {
-    all: 'people',
+    all: 'all_inbox',
     closed: 'check',
     inbox: 'inbox',
     snoozed: 'snooze',

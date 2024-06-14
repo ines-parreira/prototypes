@@ -24,7 +24,7 @@ export default function CreateTicketNavbarButton({
                 >
                     <ButtonIconLabel
                         icon="add"
-                        iconClassName={navbarCss.buttonIcon}
+                        className={navbarCss.buttonIcon}
                     />
                     Create Ticket
                 </Button>

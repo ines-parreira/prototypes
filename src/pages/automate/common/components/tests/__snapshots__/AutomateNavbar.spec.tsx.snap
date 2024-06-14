@@ -121,6 +121,23 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       <div
         class="navbar-cta-group"
       >
+        <a
+          class="link link"
+          data-candu-id="home-page-button"
+          data-testid="home-page-link"
+          href="/app/home"
+        >
+          <span
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              home
+            </i>
+            Home
+          </span>
+        </a>
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -131,10 +148,10 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           type="button"
         >
           <span
-            class="wrapper"
+            class="wrapper buttonIcon"
           >
             <i
-              class="material-icons icon isLeft buttonIcon medium"
+              class="material-icons icon isLeft medium"
             >
               search
             </i>
@@ -570,6 +587,23 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       <div
         class="navbar-cta-group"
       >
+        <a
+          class="link link"
+          data-candu-id="home-page-button"
+          data-testid="home-page-link"
+          href="/app/home"
+        >
+          <span
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              home
+            </i>
+            Home
+          </span>
+        </a>
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -580,10 +614,10 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           type="button"
         >
           <span
-            class="wrapper"
+            class="wrapper buttonIcon"
           >
             <i
-              class="material-icons icon isLeft buttonIcon medium"
+              class="material-icons icon isLeft medium"
             >
               search
             </i>
@@ -916,6 +950,23 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       <div
         class="navbar-cta-group"
       >
+        <a
+          class="link link"
+          data-candu-id="home-page-button"
+          data-testid="home-page-link"
+          href="/app/home"
+        >
+          <span
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              home
+            </i>
+            Home
+          </span>
+        </a>
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -926,10 +977,10 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           type="button"
         >
           <span
-            class="wrapper"
+            class="wrapper buttonIcon"
           >
             <i
-              class="material-icons icon isLeft buttonIcon medium"
+              class="material-icons icon isLeft medium"
             >
               search
             </i>
@@ -1093,6 +1144,23 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-cta-group"
       >
+        <a
+          class="link link"
+          data-candu-id="home-page-button"
+          data-testid="home-page-link"
+          href="/app/home"
+        >
+          <span
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              home
+            </i>
+            Home
+          </span>
+        </a>
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -1103,10 +1171,10 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           type="button"
         >
           <span
-            class="wrapper"
+            class="wrapper buttonIcon"
           >
             <i
-              class="material-icons icon isLeft buttonIcon medium"
+              class="material-icons icon isLeft medium"
             >
               search
             </i>
@@ -1529,6 +1597,23 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-cta-group"
       >
+        <a
+          class="link link"
+          data-candu-id="home-page-button"
+          data-testid="home-page-link"
+          href="/app/home"
+        >
+          <span
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              home
+            </i>
+            Home
+          </span>
+        </a>
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -1539,10 +1624,10 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           type="button"
         >
           <span
-            class="wrapper"
+            class="wrapper buttonIcon"
           >
             <i
-              class="material-icons icon isLeft buttonIcon medium"
+              class="material-icons icon isLeft medium"
             >
               search
             </i>
@@ -1862,6 +1947,23 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-cta-group"
       >
+        <a
+          class="link link"
+          data-candu-id="home-page-button"
+          data-testid="home-page-link"
+          href="/app/home"
+        >
+          <span
+            class="title"
+          >
+            <i
+              class="material-icons icon"
+            >
+              home
+            </i>
+            Home
+          </span>
+        </a>
         <div
           data-candu-id="navbar-home-spacer"
         />
@@ -1872,10 +1974,10 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           type="button"
         >
           <span
-            class="wrapper"
+            class="wrapper buttonIcon"
           >
             <i
-              class="material-icons icon isLeft buttonIcon medium"
+              class="material-icons icon isLeft medium"
             >
               search
             </i>

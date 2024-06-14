@@ -87,7 +87,7 @@ export default function NotificationsButton() {
                 <span className={cn(navbarCss['item-name'], css.name)}>
                     <ButtonIconLabel
                         icon="notifications"
-                        iconClassName={navbarCss.buttonIcon}
+                        className={navbarCss.buttonIcon}
                     />
                     Notifications
                 </span>

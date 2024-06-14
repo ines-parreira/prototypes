@@ -19,8 +19,6 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {isTicketPath} from 'utils'
 
-import css from './TicketNavbarViewLink.less'
-
 type Props = {
     className?: string
     icon?: string
@@ -74,7 +72,7 @@ const TicketNavbarViewLink = (
                 }
                 onClick={() => dispatch(activeViewIdSet(view.id))}
             >
-                <span className={classnames(navbarCss['item-name'], css.link)}>
+                <span className={navbarCss['item-name']}>
                     {icon && (
                         <i
                             className={classnames(

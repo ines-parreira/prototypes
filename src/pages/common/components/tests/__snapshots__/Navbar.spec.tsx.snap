@@ -119,6 +119,23 @@ exports[`<Navbar /> should render the navbar 1`] = `
     <div
       class="navbar-cta-group"
     >
+      <a
+        class="link link"
+        data-candu-id="home-page-button"
+        data-testid="home-page-link"
+        href="/app/home"
+      >
+        <span
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            home
+          </i>
+          Home
+        </span>
+      </a>
       <div
         data-candu-id="navbar-home-spacer"
       />
@@ -129,10 +146,10 @@ exports[`<Navbar /> should render the navbar 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="wrapper buttonIcon"
         >
           <i
-            class="material-icons icon isLeft buttonIcon medium"
+            class="material-icons icon isLeft medium"
           >
             search
           </i>
@@ -306,6 +323,23 @@ exports[`<Navbar /> should render the opened panel 1`] = `
     <div
       class="navbar-cta-group"
     >
+      <a
+        class="link link"
+        data-candu-id="home-page-button"
+        data-testid="home-page-link"
+        href="/app/home"
+      >
+        <span
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            home
+          </i>
+          Home
+        </span>
+      </a>
       <div
         data-candu-id="navbar-home-spacer"
       />
@@ -316,10 +350,10 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="wrapper buttonIcon"
         >
           <i
-            class="material-icons icon isLeft buttonIcon medium"
+            class="material-icons icon isLeft medium"
           >
             search
           </i>
@@ -496,6 +530,23 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
     <div
       class="navbar-cta-group"
     >
+      <a
+        class="link link"
+        data-candu-id="home-page-button"
+        data-testid="home-page-link"
+        href="/app/home"
+      >
+        <span
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            home
+          </i>
+          Home
+        </span>
+      </a>
       <div
         data-candu-id="navbar-home-spacer"
       />
@@ -506,10 +557,10 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="wrapper buttonIcon"
         >
           <i
-            class="material-icons icon isLeft buttonIcon medium"
+            class="material-icons icon isLeft medium"
           >
             search
           </i>
@@ -683,6 +734,23 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
     <div
       class="navbar-cta-group"
     >
+      <a
+        class="link link"
+        data-candu-id="home-page-button"
+        data-testid="home-page-link"
+        href="/app/home"
+      >
+        <span
+          class="title"
+        >
+          <i
+            class="material-icons icon"
+          >
+            home
+          </i>
+          Home
+        </span>
+      </a>
       <div
         data-candu-id="navbar-home-spacer"
       />
@@ -693,10 +761,10 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         type="button"
       >
         <span
-          class="wrapper"
+          class="wrapper buttonIcon"
         >
           <i
-            class="material-icons icon isLeft buttonIcon medium"
+            class="material-icons icon isLeft medium"
           >
             search
           </i>

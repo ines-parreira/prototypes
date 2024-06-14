@@ -7,14 +7,9 @@
         cursor: pointer;
         height: 28px;
 
-        &:hover {
+        &:global:not(.active):hover {
             color: var(--neutral-grey-2);
             background-color: var(--neutral-grey-5);
-        }
-
-        &:global.active {
-            background-color: var(--main-primary);
-            color: var(--neutral-grey-0);
         }
     }
 

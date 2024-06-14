@@ -41,8 +41,13 @@ const AutomateNavbar = () => {
                                 {isImprovedNavigationEnabled ? (
                                     <span>Overview</span>
                                 ) : (
-                                    <span>
-                                        <i className="material-icons mr-2 icon">
+                                    <span className={navbarCss['item-name']}>
+                                        <i
+                                            className={classNames(
+                                                'material-icons',
+                                                navbarCss.icon
+                                            )}
+                                        >
                                             bolt
                                         </i>{' '}
                                         My Automate

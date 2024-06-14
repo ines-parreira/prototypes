@@ -40,10 +40,7 @@ export default function PlaceCallNavbarButton() {
             onClick={() => setIsDeviceVisible(!isDeviceVisible)}
             ref={buttonRef}
         >
-            <ButtonIconLabel
-                icon="phone"
-                iconClassName={navbarCss.buttonIcon}
-            />
+            <ButtonIconLabel icon="phone" className={navbarCss.buttonIcon} />
             <div className={css.navbarButtonContent}>
                 Place call
                 {!device && (

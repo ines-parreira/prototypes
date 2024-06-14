@@ -30,7 +30,7 @@ const SpotlightButton = () => {
             >
                 <ButtonIconLabel
                     icon="search"
-                    iconClassName={navbarCss.buttonIcon}
+                    className={navbarCss.buttonIcon}
                 />
                 Search
             </Button>
