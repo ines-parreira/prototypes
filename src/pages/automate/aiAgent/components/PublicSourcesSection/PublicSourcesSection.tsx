@@ -44,28 +44,28 @@ export const PublicSourcesSection = ({
         }
     }, [sourceItems])
 
-    useEffect(() => {
-        if (sourceItems) {
-            const publicURLs = sourceItems
-                .map((source) => source.url)
-                .filter((url): url is string => !!url)
+    const handleAddPublicResource = (sources: SourceItem[]) => {
+        const publicURLs = sources
+            .map((source) => source.url)
+            .filter((url): url is string => !!url)
 
-            onPublicURLsChanged(publicURLs)
-        }
-    }, [onPublicURLsChanged, sourceItems])
+        onPublicURLsChanged(publicURLs)
+    }
 
     const onAddClick = () => {
         const newResource: SourceItem = {
             id: Math.random(),
             status: 'idle',
         }
-        setSources((prev) => [...prev, newResource])
+        const newSources = [...sources, newResource]
+        setSources(newSources)
+        handleAddPublicResource(newSources)
     }
 
     const onDeleteSource = async (source: SourceItem) => {
-        setSources((prev) =>
-            prev.filter((resource) => resource.id !== source.id)
-        )
+        const newSources = sources.filter((s) => s.id !== source.id)
+        setSources(newSources)
+        handleAddPublicResource(newSources)
 
         if (source.status === 'idle') return
 
