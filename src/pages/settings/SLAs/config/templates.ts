@@ -31,11 +31,11 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         target_channels: ['email'],
         metrics: {
             FRT: {
-                threshold: 25,
-                unit: 'minute',
+                threshold: 1,
+                unit: 'hour',
             },
             RT: {
-                threshold: 6,
+                threshold: 12,
                 unit: 'hour',
             },
         },
@@ -61,12 +61,12 @@ export const TEMPLATES_LIST: SLATemplate[] = [
         ],
         metrics: {
             FRT: {
-                threshold: 5,
+                threshold: 30,
                 unit: 'minute',
             },
             RT: {
-                threshold: 45,
-                unit: 'minute',
+                threshold: 6,
+                unit: 'hour',
             },
         },
         icon: 'group',

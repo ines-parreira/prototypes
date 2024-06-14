@@ -97,8 +97,10 @@ export default function SLAFormView({
                                     settingsCss.mb24
                                 )}
                             >
-                                Define first response and resolution times to be
-                                used as goals by your team(s).
+                                Define the first response time and / or
+                                resolution times to be set as goals by your
+                                team(s). Clear out the time value to deactivate
+                                the metric.
                             </div>
                             <div
                                 className={classNames(
