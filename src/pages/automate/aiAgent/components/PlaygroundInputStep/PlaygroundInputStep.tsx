@@ -30,6 +30,7 @@ import {
 } from '../PlaygroundMessage/PlaygroundMessage'
 import {CustomerSearchDropdownSelectView} from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import {usePublicResources} from '../../hooks/usePublicResources'
+import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import css from './PlaygroundInputStep.less'
 
 enum SenderTypeValues {
@@ -98,6 +99,10 @@ export const PlaygroundInputStep = ({
     const childControlRef = React.createRef<Control>()
     const {sourceItems} = usePublicResources({
         helpCenterId: storeData.snippetHelpCenterId,
+    })
+    usePublicResourcesPooling({
+        helpCenterId: storeData.snippetHelpCenterId,
+        shopName: storeData.storeName,
     })
     const isPendingResources = sourceItems
         ? sourceItems.some((item) => item.status === 'loading')

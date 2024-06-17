@@ -1,16 +1,12 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {screen, within} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {usePublicResources} from 'pages/automate/aiAgent/hooks/usePublicResources'
 import {usePublicResourceMutation} from 'pages/automate/aiAgent/hooks/usePublicResourcesMutation'
 import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
 import {SourceItem} from '../types'
 import {PublicSourcesSection} from '../PublicSourcesSection'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
-jest.mock('../../../hooks/usePublicResources', () => ({
-    usePublicResources: jest.fn(),
-}))
 jest.mock('../../../hooks/usePublicResourcesPooling', () => ({
     usePublicResourcesPooling: jest.fn(),
 }))
@@ -28,24 +24,23 @@ const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
     ...props,
 })
 
-const renderComponent = () => {
+const renderComponent = (
+    props?: Partial<ComponentProps<typeof PublicSourcesSection>>
+) => {
     renderWithQueryClientProvider(
         <PublicSourcesSection
             onPublicURLsChanged={jest.fn()}
             helpCenterId={HELP_CENTER_ID}
             shopName="test"
+            {...props}
         />
     )
 }
 
-const mockUsePublicResources = jest.mocked(usePublicResources)
 const mockUsePublicResourcesMutation = jest.mocked(usePublicResourceMutation)
 
 describe('<PublicSourcesSection />', () => {
     beforeEach(() => {
-        mockUsePublicResources.mockReturnValue({
-            sourceItems: [],
-        })
         mockUsePublicResourcesMutation.mockReturnValue({
             addPublicResource: jest.fn(),
             deletePublicResource: jest.fn(),
@@ -68,9 +63,8 @@ describe('<PublicSourcesSection />', () => {
 
     it('should preprender public sources', () => {
         const sources = [createSource(1), createSource(2), createSource(3)]
-        mockUsePublicResources.mockReturnValue({sourceItems: sources})
 
-        renderComponent()
+        renderComponent({sourceItems: sources})
 
         expect(screen.getAllByTestId('source-item')).toHaveLength(3)
     })
@@ -107,9 +101,8 @@ describe('<PublicSourcesSection />', () => {
 
     it('should disable add button when limit riched', () => {
         const sources = Array.from({length: 10}, (_, i) => createSource(i + 1))
-        mockUsePublicResources.mockReturnValue({sourceItems: sources})
 
-        renderComponent()
+        renderComponent({sourceItems: sources})
         const addButton = screen.getByTestId('add-button')
 
         expect(addButton).toBeDisabled()
@@ -118,9 +111,8 @@ describe('<PublicSourcesSection />', () => {
     it('should not add duplicates urls', async () => {
         const url = 'https://example.com/article'
         const sources = [createSource(1, {url}), createSource(2)]
-        mockUsePublicResources.mockReturnValue({sourceItems: sources})
 
-        renderComponent()
+        renderComponent({sourceItems: sources})
 
         const addButton = screen.getByTestId('add-button')
         userEvent.click(addButton)
@@ -164,8 +156,7 @@ describe('<PublicSourcesSection />', () => {
 
     it('should show error message when URL cannot be processed', () => {
         const sources = [createSource(1, {status: 'error'})]
-        mockUsePublicResources.mockReturnValue({sourceItems: sources})
-        renderComponent()
+        renderComponent({sourceItems: sources})
 
         const lastElement = screen
             .getAllByTestId('source-item')

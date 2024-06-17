@@ -58,6 +58,7 @@ import {
     useConfigurationForm,
     validateConfigurationFormValues,
 } from './hooks/useConfigurationForm'
+import {usePublicResources} from './hooks/usePublicResources'
 
 const createStoreConfigurationFromFormValues = (
     storeConfig: StoreConfiguration,
@@ -117,6 +118,10 @@ export const EditAiAgentSettingsForm = ({
 
     const {mutateAsync: upsertStoreConfiguration, isLoading: isUpsertLoading} =
         useUpsertStoreConfigurationPure()
+    const {sourceItems} = usePublicResources({
+        helpCenterId: storeConfiguration.snippetHelpCenterId,
+    })
+
     /**
      * Global state retrieval
      */
@@ -145,8 +150,12 @@ export const EditAiAgentSettingsForm = ({
             deactivatedDatetime: storeConfiguration.deactivatedDatetime,
             silentHandover: storeConfiguration.silentHandover,
             tags: storeConfiguration.tags,
+            publicURLs: sourceItems
+                ?.filter((source) => source.status !== 'error')
+                .map((source) => source.url)
+                .filter((url): url is string => !!url),
         }),
-        [storeConfiguration]
+        [storeConfiguration, sourceItems]
     )
     const {formValues, isFormDirty, resetForm, updateValue} =
         useConfigurationForm(defaultFormValues)
@@ -278,7 +287,6 @@ export const EditAiAgentSettingsForm = ({
         },
         [updateValue]
     )
-
     const isAIAgentToggled = isAiAgentEnabled(
         formValues.deactivatedDatetime !== undefined
             ? formValues.deactivatedDatetime
@@ -467,6 +475,7 @@ export const EditAiAgentSettingsForm = ({
                             }
                             shopName={shopName}
                             onPublicURLsChanged={handlePublicURLsChange}
+                            sourceItems={sourceItems}
                         />
                     </ConfigurationSection>
                 )}

@@ -1,5 +1,5 @@
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {
     DEFAULT_FORM_VALUES,
     EXCLUDED_TOPIC_MAX_LENGTH,
@@ -19,6 +19,12 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
     )
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
+
+    useEffect(() => {
+        if (defaultValues !== null) {
+            setFormValues(defaultValues)
+        }
+    }, [defaultValues])
 
     const resetForm = useCallback(() => {
         setFormValues(defaultValues)

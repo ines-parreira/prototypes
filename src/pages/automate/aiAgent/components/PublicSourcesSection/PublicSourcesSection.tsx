@@ -6,7 +6,6 @@ import Tooltip from 'pages/common/components/Tooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
-import {usePublicResources} from '../../hooks/usePublicResources'
 import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
 import css from './PublicSourcesSection.less'
@@ -20,18 +19,17 @@ type Props = {
     helpCenterId: number
     shopName: string
     onPublicURLsChanged: (publicURLs: string[]) => void
+    sourceItems?: SourceItem[]
 }
 
 export const PublicSourcesSection = ({
     helpCenterId,
     shopName,
     onPublicURLsChanged,
+    sourceItems,
 }: Props) => {
     const dispatch = useAppDispatch()
 
-    const {sourceItems} = usePublicResources({
-        helpCenterId,
-    })
     usePublicResourcesPooling({helpCenterId, shopName})
     const {deletePublicResource, addPublicResource} = usePublicResourceMutation(
         {helpCenterId}
@@ -59,7 +57,6 @@ export const PublicSourcesSection = ({
         }
         const newSources = [...sources, newResource]
         setSources(newSources)
-        handleAddPublicResource(newSources)
     }
 
     const onDeleteSource = async (source: SourceItem) => {
@@ -92,13 +89,14 @@ export const PublicSourcesSection = ({
 
     const onSyncSource = async (url: string, sourceId: number) => {
         try {
-            setSources((prev) =>
-                prev.map((source) =>
-                    source.id === sourceId
-                        ? {...source, status: 'loading', url}
-                        : {...source}
-                )
+            const newSources: SourceItem[] = sources.map((source) =>
+                source.id === sourceId
+                    ? {...source, status: 'loading', url}
+                    : {...source}
             )
+
+            setSources(newSources)
+            handleAddPublicResource(newSources)
             await addPublicResource([url])
         } catch (error) {
             setSources((prev) =>

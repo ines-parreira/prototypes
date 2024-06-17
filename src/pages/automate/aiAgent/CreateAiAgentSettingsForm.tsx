@@ -451,7 +451,7 @@ export const CreateAiAgentSettingsForm = ({
                     </div>
                 </section>
 
-                {isWebsiteKnowledgeEnabled && snippetHelpCenter && (
+                {isWebsiteKnowledgeEnabled && (
                     <ConfigurationSection
                         title="Knowledge"
                         subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
@@ -471,11 +471,13 @@ export const CreateAiAgentSettingsForm = ({
                             </div>
                         </div>
 
-                        <PublicSourcesSection
-                            helpCenterId={snippetHelpCenter.id}
-                            onPublicURLsChanged={handlePublicURLsChange}
-                            shopName={shopName}
-                        />
+                        {snippetHelpCenter ? (
+                            <PublicSourcesSection
+                                helpCenterId={snippetHelpCenter.id}
+                                onPublicURLsChanged={handlePublicURLsChange}
+                                shopName={shopName}
+                            />
+                        ) : null}
                     </ConfigurationSection>
                 )}
 
