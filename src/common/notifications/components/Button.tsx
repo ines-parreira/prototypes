@@ -28,8 +28,11 @@ export default function NotificationsButton() {
     const [isVisible, setIsVisible] = useState(false)
 
     const handleClick = useCallback(() => {
-        setIsVisible((v) => !v)
-    }, [])
+        if (!isVisible) {
+            logEvent(SegmentEvent.NotificationCenterOpened)
+        }
+        setIsVisible(!isVisible)
+    }, [isVisible])
 
     const handleClickNotification = useCallback(
         (item: KnockFeedItem) => {
