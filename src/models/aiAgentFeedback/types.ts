@@ -80,10 +80,11 @@ export type TicketFeedback = {
 }
 
 export type SubmitMessageFeedback = {
-    feedbackOnResource?: FeedbackOnResource[]
-    feedbackOnMessage?: FeedbackOnMessage[]
+    feedbackOnResource: FeedbackOnResource[]
+    feedbackOnMessage: FeedbackOnMessage[]
 }
 
 export type DeleteMessageFeedback = {
+    feedbackOnResource: FeedbackOnResource[]
     feedbackOnMessage: (IssueFeedbackOnMessage | ResourceFeedbackOnMessage)[]
 }

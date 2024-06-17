@@ -53,6 +53,7 @@ describe('useAIAgentSendFeedback', () => {
             id: '2',
         } as unknown as TicketMessage
         const payload: SubmitMessageFeedback = {
+            feedbackOnMessage: [],
             feedbackOnResource: [
                 {
                     resourceType: 'action',

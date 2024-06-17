@@ -8,6 +8,7 @@ import {TicketMessage} from 'models/ticket/types'
 import {
     BinaryFeedbackOnMessage,
     Feedback,
+    FeedbackOnResource,
     MessageFeedback,
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
@@ -22,6 +23,8 @@ import {
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+
+import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 
 export const CORRECT_RESPONSE = 'Is this correct?'
 export const ACCURATE_RESPONSE = 'Is the response accurate?'
@@ -68,6 +71,9 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
     const dispatch = useAppDispatch()
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
 
+    const {actions, guidance, knowledge} =
+        useAIAgentResourcesWithFeedback(messageFeedback)
+
     const {aiAgentSendFeedback: submitFeedback} = useAIAgentSendFeedback()
 
     // If message is not public, it is an internal note created by AI Agent
@@ -104,16 +110,53 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
         let feedbackPayload: SubmitMessageFeedback
 
         if (isMessagePublic) {
+            const actionFeedbackOnResource = actions
+                .filter((action) => action.feedback !== 'thumbs_up')
+                .map(
+                    (action) =>
+                        ({
+                            type: 'binary',
+                            resourceType: 'action',
+                            resourceId: action.id,
+                            feedback,
+                        } as FeedbackOnResource)
+                )
+
+            const guidanceFeedbackOnResource = guidance
+                .filter((guidance) => guidance.feedback !== 'thumbs_up')
+                .map(
+                    (guide) =>
+                        ({
+                            type: 'binary',
+                            resourceType: 'guidance',
+                            resourceId: guide.id,
+                            feedback,
+                        } as FeedbackOnResource)
+                )
+
+            const knowledgeFeedbackOnResource = knowledge
+                .filter((knowledge) => knowledge.feedback !== 'thumbs_up')
+                .map(
+                    (knowledge) =>
+                        ({
+                            type: 'binary',
+                            resourceType: knowledge.type,
+                            resourceId: knowledge.id,
+                            feedback,
+                        } as FeedbackOnResource)
+                )
+
             feedbackPayload = {
-                feedbackOnResource: (messageFeedback?.feedbackOnResource || [])
-                    .filter((resource) => resource.feedback !== 'thumbs_up')
-                    .map((resource) => ({
-                        ...resource,
-                        feedback,
-                    })),
+                feedbackOnResource: [
+                    ...actionFeedbackOnResource,
+                    ...guidanceFeedbackOnResource,
+                    ...knowledgeFeedbackOnResource,
+                ],
+                feedbackOnMessage: [],
             }
         } else {
             feedbackPayload = {
+                feedbackOnResource: [],
                 feedbackOnMessage: [
                     {
                         type: 'binary',
@@ -135,11 +178,13 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 <FeedbackIconButton
                     hasFeedback={hasPositiveFeedback}
                     iconType="thumb_up"
-                    onClick={() =>
-                        handleSubmitFeedback(
-                            hasPositiveFeedback ? null : 'thumbs_up'
-                        )
-                    }
+                    onClick={() => {
+                        if (hasPositiveFeedback) {
+                            return
+                        }
+
+                        handleSubmitFeedback('thumbs_up')
+                    }}
                     isMessagePublic={isMessagePublic}
                 />
 
@@ -158,11 +203,13 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                     <FeedbackIconButton
                         hasFeedback={hasNegativeFeedback}
                         iconType="thumb_down"
-                        onClick={() =>
-                            handleSubmitFeedback(
-                                hasNegativeFeedback ? null : 'thumbs_down'
-                            )
-                        }
+                        onClick={() => {
+                            if (hasNegativeFeedback) {
+                                return
+                            }
+
+                            handleSubmitFeedback('thumbs_down')
+                        }}
                     />
                 )}
             </div>

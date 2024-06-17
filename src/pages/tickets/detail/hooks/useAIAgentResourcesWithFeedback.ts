@@ -1,6 +1,6 @@
 import {MessageFeedback} from 'models/aiAgentFeedback/types'
 
-export const useAIAgentResources = (
+export const useAIAgentResourcesWithFeedback = (
     messageFeedback?: MessageFeedback | null
 ) => {
     if (!messageFeedback) {

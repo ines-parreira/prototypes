@@ -1,11 +1,11 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {MessageFeedback} from 'models/aiAgentFeedback/types'
 import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
-import {useAIAgentResources} from '../useAIAgentResources'
+import {useAIAgentResourcesWithFeedback} from '../useAIAgentResourcesWithFeedback'
 
-describe('useAIAgentResources', () => {
+describe('useAIAgentResourcesWithFeedback', () => {
     it('returns empty arrays if no messageFeedback is provided', () => {
-        const {result} = renderHook(() => useAIAgentResources(null))
+        const {result} = renderHook(() => useAIAgentResourcesWithFeedback(null))
         expect(result.current).toEqual({
             actions: [],
             guidance: [],
@@ -87,7 +87,9 @@ describe('useAIAgentResources', () => {
             ],
         }
 
-        const {result} = renderHook(() => useAIAgentResources(messageFeedback))
+        const {result} = renderHook(() =>
+            useAIAgentResourcesWithFeedback(messageFeedback)
+        )
         expect(result.current).toEqual({
             actions: [
                 {id: 1, name: 'Snooze', feedback: 'thumbs_up'},

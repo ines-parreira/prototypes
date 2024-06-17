@@ -98,6 +98,7 @@ describe('useDeleteAIAgentTicketMessagesFeedback', () => {
         const ticketId = 123
         const messageId = 456
         const feedback: DeleteMessageFeedback = {
+            feedbackOnResource: [],
             feedbackOnMessage: [
                 {
                     type: 'issue',

@@ -202,7 +202,13 @@ export default class Container extends Component<Props> {
                         />
                         {!isAIAgentInternalNote && children}
                         {isAIAgentMessage && (
-                            <AIAgentBanner message={message} />
+                            <AIAgentBanner
+                                message={message}
+                                className={classNames({
+                                    [css.withVerticalSpacing]:
+                                        !isAIAgentInternalNote,
+                                })}
+                            />
                         )}
                         <Footer
                             id={this.props.id}

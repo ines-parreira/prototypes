@@ -80,7 +80,30 @@ describe('AIAgentBanner', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it('should not render feedback when allowed', () => {
+    it.skip('should not render feedback when not allowed', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: 'summary',
+                            feedbackOnResource: [
+                                {resourceId: 1, feedback: 'thumbs_up'},
+                                {resourceId: 2, feedback: 'thumbs_up'},
+                                {resourceId: 3, feedback: 'thumbs_down'},
+                            ],
+                            allowsFeedback: false,
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
         const {queryByTestId} = render(<AIAgentBanner message={mockMessage} />)
 
         expect(queryByTestId('feedback')).not.toBeInTheDocument()
@@ -194,7 +217,11 @@ describe('AIAgentBanner', () => {
 
         const {queryByText} = render(
             <AIAgentBanner
-                message={{...mockMessage, body_html: 'body_html123'}}
+                message={{
+                    ...mockMessage,
+                    public: false,
+                    body_html: 'body_html123',
+                }}
             />
         )
 

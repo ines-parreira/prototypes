@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
 import {
@@ -21,7 +22,9 @@ import IconButton from 'pages/common/components/button/IconButton'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
-import {useAIAgentResources} from '../../hooks/useAIAgentResources'
+import {FeatureFlagKey} from 'config/featureFlags'
+
+import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
 import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
 
 import {getActionUrl, getGuidanceUrl, getKnowledgeUrl} from './utils'
@@ -70,7 +73,7 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
             data-testid={dataTestId}
         >
             <div className={css.sectionText}>
-                <div>{resource.name}</div>
+                <div className={css.text}>{resource.name}</div>
                 <i className={classNames('material-icons', css.openIcon)}>
                     open_in_new
                 </i>
@@ -92,12 +95,14 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
                     onClick={(ev) => {
                         ev.preventDefault()
 
+                        if (resource.feedback === 'thumbs_up') {
+                            return
+                        }
+
                         handleSubmitFeedback(
                             resource.id,
                             resourceType,
-                            resource.feedback === 'thumbs_up'
-                                ? null
-                                : 'thumbs_up'
+                            'thumbs_up'
                         )
                     }}
                     title="Mark as Correct"
@@ -120,12 +125,14 @@ const FeedbackResourceSection: React.FC<FeedbackResourceSectionProps> = ({
                     onClick={(ev) => {
                         ev.preventDefault()
 
+                        if (resource.feedback === 'thumbs_down') {
+                            return
+                        }
+
                         handleSubmitFeedback(
                             resource.id,
                             resourceType,
-                            resource.feedback === 'thumbs_down'
-                                ? null
-                                : 'thumbs_down'
+                            'thumbs_down'
                         )
                     }}
                     title="Mark as Incorrect"
@@ -142,6 +149,9 @@ type Props = {
 }
 
 const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
+    const isFeedbackToAiAgentV3Enabled =
+        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3]
+
     const [reportIssues, setReportIssues] = useState<ReportIssueOption[]>([])
 
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
@@ -159,7 +169,8 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         [messageFeedback]
     )
 
-    const {actions, guidance, knowledge} = useAIAgentResources(messageFeedback)
+    const {actions, guidance, knowledge} =
+        useAIAgentResourcesWithFeedback(messageFeedback)
 
     useEffect(() => {
         if (
@@ -176,6 +187,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         feedback: Feedback
     ) => {
         const payload: SubmitMessageFeedback = {
+            feedbackOnMessage: [],
             feedbackOnResource: [
                 {resourceId, resourceType, type: 'binary', feedback},
             ],
@@ -191,6 +203,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
             (issue) => !issues.map((issue) => issue.feedback).includes(issue)
         )
         const payload: SubmitMessageFeedback = {
+            feedbackOnResource: [],
             feedbackOnMessage: newIssues.map((issue) => ({
                 type: 'issue',
                 feedback: issue,
@@ -198,6 +211,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         }
 
         const payloadForDelete: DeleteMessageFeedback = {
+            feedbackOnResource: [],
             feedbackOnMessage: issues
                 .filter((issue) => !reportIssues.includes(issue.feedback))
                 .map((issue) => ({
@@ -219,6 +233,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
 
     const handleDeleteReportIssues = (items: ReportIssueOption[]) => {
         const payload: DeleteMessageFeedback = {
+            feedbackOnResource: [],
             feedbackOnMessage: items.map((item) => ({
                 type: 'issue',
                 feedback: item,
@@ -291,7 +306,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                     ))}
                 </div>
             )}
-            <FeedbackOtherResourcesSelect />
+            {isFeedbackToAiAgentV3Enabled && <FeedbackOtherResourcesSelect />}
             <FeedbackCreateResource
                 shopType={messageFeedback.shopType}
                 shopName={messageFeedback.shopName}

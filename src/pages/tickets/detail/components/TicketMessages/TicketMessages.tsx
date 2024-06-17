@@ -127,6 +127,7 @@ export default function TicketMessages({
                     showSourceDetails={!!index}
                     timezone={timezone}
                     showMessageStatusIndicator={showMessageStatusIndicator}
+                    isAIAgentMessage={isAIAgentMessage}
                 />
             ))}
         </Container>

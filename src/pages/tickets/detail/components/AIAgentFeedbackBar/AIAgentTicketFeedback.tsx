@@ -19,7 +19,7 @@ type Props = {
 const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
     const aiMessages = useAppSelector(getAIAgentMessages)
 
-    if (!ticketFeedback) return null
+    if (!ticketFeedback || !ticketFeedback.messages.length) return null
 
     const publicMessageCount = ticketFeedback.messages.filter(
         (ticketFeedbackMessage) =>

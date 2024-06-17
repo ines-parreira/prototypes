@@ -3,9 +3,13 @@ import classNames from 'classnames'
 
 import css from './AIBanner.less'
 
-const AIBanner: React.FC = ({children}) => {
+type Props = {
+    className?: string
+}
+
+const AIBanner: React.FC<Props> = ({children, className}) => {
     return (
-        <div className={css.container}>
+        <div className={classNames(css.container, className)}>
             <i className={classNames('material-icons', css.icon)}>
                 auto_awesome
             </i>

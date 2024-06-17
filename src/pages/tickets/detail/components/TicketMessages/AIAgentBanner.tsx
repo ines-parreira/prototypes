@@ -11,11 +11,13 @@ import AIAgentFeedback from './AIAgentFeedback'
 
 export type AIAgentBannerProps = {
     message: TicketMessage
+    className?: string
 }
 
-const AIAgentBanner = ({message}: AIAgentBannerProps) => {
+const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
     const {data} = useGetAiAgentFeedback(message.ticket_id!, {
         refetchOnWindowFocus: false,
+        enabled: message.ticket_id !== undefined,
     })
 
     const ticketFeedback = data?.data
@@ -29,12 +31,24 @@ const AIAgentBanner = ({message}: AIAgentBannerProps) => {
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
 
+    const messageToDisplay = isMessagePublic
+        ? messageFeedback?.summary
+        : messageFeedback?.summary || <Body message={message} />
+
+    if (!messageToDisplay) {
+        return null
+    }
+
     return (
-        <AIBanner>
-            <div className={classNames({[css.boldMessage]: isMessagePublic})}>
-                {messageFeedback?.summary || <Body message={message} />}
+        <AIBanner className={className}>
+            <div
+                className={classNames({
+                    [css.boldMessage]: isMessagePublic,
+                })}
+            >
+                {messageToDisplay}
             </div>
-            {allowsFeedback && (
+            {(true || allowsFeedback) && ( // TO DO: Remove the true condition. `allowsFeedback` is always false
                 <AIAgentFeedback
                     message={message}
                     messageFeedback={messageFeedback}

@@ -78,6 +78,7 @@
         display: flex;
         gap: @layout-spacing-xs;
         justify-content: space-between;
+        align-items: center;
         padding: @layout-spacing-xxs @layout-spacing-s;
 
         &,
@@ -97,14 +98,14 @@
                 .sectionText {
                     color: var(--main-primary);
                     .openIcon {
-                        display: inline-block;
+                        visibility: visible;
                     }
                 }
             }
         }
 
         .sectionText .openIcon {
-            display: none;
+            visibility: hidden;
             font-size: 16px !important;
         }
     }
@@ -119,11 +120,24 @@
             font-size: 20px !important;
             margin-right: @layout-spacing-xxs;
         }
+
+        .text {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
     }
 
     .feedback {
         display: flex;
         gap: @layout-spacing-xs;
+    }
+
+    .negativeFeedback,
+    .positiveFeedback {
+        cursor: default !important;
     }
 
     .positiveFeedback {
