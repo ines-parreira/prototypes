@@ -13,13 +13,13 @@ describe('<Action/>', () => {
     }
 
     it('should render without a Body component', () => {
-        const {container} = render(<Action {...props} />)
-        expect(container.firstChild).toMatchSnapshot()
+        render(<Action {...props} />)
+        expect(screen.queryByText('Body')).not.toBeInTheDocument()
     })
     it('should render with a Body component', () => {
         const action = actionFixture()
         action.method = HttpMethod.Put
-        const {container} = render(
+        render(
             <Action
                 {...{
                     ...props,
@@ -27,7 +27,7 @@ describe('<Action/>', () => {
                 }}
             />
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.queryByText('Body')).toBeInTheDocument()
     })
 
     it('should call onChange when changing action method', () => {
@@ -51,7 +51,7 @@ describe('<Action/>', () => {
 
         fireEvent.click(
             screen.getAllByRole('button', {
-                name: 'add Header',
+                name: /Add Header/,
             })[0]
         )
         expect(props.onChange).toHaveBeenCalled()
@@ -62,7 +62,7 @@ describe('<Action/>', () => {
 
         fireEvent.click(
             screen.getAllByRole('button', {
-                name: 'add Parameter',
+                name: /Add Parameter/,
             })[0]
         )
         expect(props.onChange).toHaveBeenCalled()

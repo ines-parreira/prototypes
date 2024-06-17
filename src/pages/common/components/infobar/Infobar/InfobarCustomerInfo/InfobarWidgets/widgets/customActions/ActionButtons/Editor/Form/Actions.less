@@ -1,0 +1,28 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography.less';
+
+:local {
+    .formParamSection {
+        margin: @layout-spacing-m 0 @layout-spacing-s;
+        .heading-section-semibold();
+    }
+
+    .formParamRow {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: stretch;
+        margin-bottom: @layout-spacing-s;
+
+        .formParamSelect {
+            flex: 1 1 10%;
+        }
+
+        .formParamLargeCol {
+            flex: 1 1 90%;
+        }
+    }
+
+    .selectLabel {
+        margin-bottom: @layout-spacing-xs;
+    }
+}

@@ -1,0 +1,69 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .formParamRow {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: stretch;
+        margin-bottom: 28px;
+
+        & > * {
+            flex: 0 1 176px;
+        }
+
+        .typeSelect {
+            flex: 0 0 105px;
+        }
+
+        .valueInput {
+            flex: 1 1 auto;
+        }
+
+        .textArea {
+            min-height: 32px;
+            max-height: 240px;
+            &.hasLabel {
+                margin-top: @layout-spacing-xxs;
+            }
+        }
+
+        .editableCheck {
+            flex-basis: 54px;
+        }
+
+        .mandatoryCheck {
+            flex-basis: 60px;
+        }
+    }
+
+    .dropdownFormParamRow {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .label {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .checkboxWrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 0 1 auto;
+        margin-left: @layout-spacing-xs;
+
+        & input {
+            margin-top: @layout-spacing-xs !important;
+            margin-right: 0 !important;
+        }
+    }
+
+    .deleteButton {
+        // please forgive me for this
+        margin-top: 28px;
+        align-self: flex-start;
+        flex: 0 1 auto;
+        &.withoutLabel {
+            margin-top: 0;
+        }
+    }
+}

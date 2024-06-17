@@ -11,7 +11,7 @@ const mapParametersToPayloadParameters = (
 ): PayloadParameters => {
     const payloadParameters: PayloadParameters = {}
     parameters.forEach(({key, value}) => {
-        payloadParameters[key] = value
+        payloadParameters[key] = value || ''
     })
     return payloadParameters
 }

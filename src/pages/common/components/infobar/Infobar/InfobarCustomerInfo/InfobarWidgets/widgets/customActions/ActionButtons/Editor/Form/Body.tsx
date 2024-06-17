@@ -5,7 +5,7 @@ import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import JsonField from 'pages/common/forms/JsonField'
 import {Action, OnChangeAction} from '../../../types'
 
-import css from '../../ActionButtons.less'
+import css from './Body.less'
 import Parameters from './Parameters'
 
 type Props = {

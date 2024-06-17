@@ -15,11 +15,11 @@ import {
     OnRemoveButton,
     OnSubmitButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 
 import Modal from 'pages/common/components/modal/Modal'
 import Form from './Form'
 import EditableButton from './Button'
+import css from './Editor.less'
 
 type Props = {
     templatePath: string

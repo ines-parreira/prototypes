@@ -1,0 +1,35 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .addButton {
+        width: 100%;
+    }
+
+    .editList {
+        margin: 0 0 12px 0;
+        padding: 0;
+    }
+
+    .editRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: @layout-spacing-xs;
+        padding: 0;
+
+        button {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            background-color: var(--neutral-grey-0) !important;
+        }
+
+        &:hover {
+            :global {
+                .customActionEditIcons {
+                    display: inline;
+                }
+            }
+        }
+    }
+}

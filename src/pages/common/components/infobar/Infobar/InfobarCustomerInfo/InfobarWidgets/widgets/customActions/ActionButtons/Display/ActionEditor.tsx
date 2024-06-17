@@ -1,26 +1,38 @@
-import React, {FormEvent, useMemo, useState, useCallback, memo} from 'react'
-import {produce} from 'immer'
-import {set as _set} from 'lodash'
+import React, {FormEvent, useCallback} from 'react'
+import {get as _get} from 'lodash'
 
-import {ContentType} from 'models/api/types'
 import InputField from 'pages/common/forms/input/InputField'
 import {
     Action,
     Parameter,
+    ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import Label from 'pages/common/forms/Label/Label'
+import {SegmentEvent, logEvent} from 'common/segment'
+
+import {GroupPositionContext} from 'pages/common/components/layout/Group'
+import {useImmerState} from '../hooks/useImmerState'
+import {getDropdownOptions, prepareDropdownValue} from '../helpers/dropdown'
+import {ACTION_PARAMETER_PATHS} from '../../constants'
+
+import css from './ActionsEditor.less'
 
 type Props = {
     action: Action
     onSubmit: (action: Action) => void
     onClose: (doTrack?: boolean | React.MouseEvent) => void
+    trackingData?: Record<string, unknown>
 }
 
-function ActionEditor({action, onSubmit, onClose}: Props) {
-    const [actionState, setActionState] = useState<Action>(action)
+function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
+    const [actionState, setActionState] = useImmerState(
+        prepareDropdownValue(action)
+    )
 
     const handleSubmit = useCallback(
         (evt: FormEvent<HTMLFormElement>) => {
@@ -33,70 +45,91 @@ function ActionEditor({action, onSubmit, onClose}: Props) {
 
     const mapParamsToInput = useCallback(
         (path: string, params?: Parameter[]) =>
-            params?.map(({editable, label, key, value, mandatory}, index) => {
-                if (!editable) return null
-                return (
-                    <InputField
-                        autoFocus={index === 0}
-                        type="text"
-                        key={index}
-                        name={key}
-                        label={label || key}
-                        defaultValue={value}
-                        isRequired={mandatory}
-                        onChange={(value) =>
-                            setActionState((previousActionState) =>
-                                produce(previousActionState, (draft) => {
-                                    _set(
-                                        draft,
-                                        `${path}[${index}].value`,
-                                        value
-                                    )
-                                })
-                            )
-                        }
-                    />
-                )
-            }),
-        []
-    )
+            params?.map(
+                ({type, editable, label, key, value, mandatory}, index) => {
+                    if (!editable && type !== ParameterTypes.Dropdown)
+                        return null
 
-    const headerInputs = useMemo(
-        () => mapParamsToInput('headers', actionState.headers),
-        [mapParamsToInput, actionState.headers]
-    )
-    const paramInputs = useMemo(
-        () => mapParamsToInput('params', actionState.params),
-        [mapParamsToInput, actionState.params]
-    )
-
-    const bodyFormInputs = useMemo(
-        () =>
-            mapParamsToInput(
-                `body[${ContentType.Form}]`,
-                actionState.body[ContentType.Form]
+                    return (
+                        <div key={index} className={css.stack}>
+                            {type === ParameterTypes.Dropdown ? (
+                                <>
+                                    <Label
+                                        htmlFor={`customAction.${path}.${key}`}
+                                        className={css.selectLabel}
+                                        isRequired={mandatory}
+                                    >
+                                        {label || key}
+                                    </Label>
+                                    <SelectField
+                                        showSelectedOption
+                                        id={`customAction.${path}.${key}`}
+                                        value={value}
+                                        fullWidth
+                                        onChange={(value) => {
+                                            logEvent(
+                                                SegmentEvent.CustomActionButtonsDropdownChanged,
+                                                trackingData
+                                            )
+                                            setActionState(
+                                                `${path}[${index}].value`,
+                                                value
+                                            )
+                                        }}
+                                        required={mandatory}
+                                        options={getDropdownOptions(
+                                            value,
+                                            _get(
+                                                action,
+                                                `${path}[${index}].value`
+                                            ),
+                                            !mandatory
+                                        )}
+                                    />
+                                </>
+                            ) : (
+                                <InputField
+                                    autoFocus={index === 0}
+                                    type="text"
+                                    name={key}
+                                    label={label || key}
+                                    defaultValue={value}
+                                    isRequired={mandatory}
+                                    onChange={(value) =>
+                                        setActionState(
+                                            `${path}[${index}].value`,
+                                            value
+                                        )
+                                    }
+                                />
+                            )}
+                        </div>
+                    )
+                }
             ),
-        [mapParamsToInput, actionState.body]
+        [action, setActionState, trackingData]
     )
 
     return (
         <>
-            <ModalHeader forceCloseButton title="Edit fields" />
-            <form onSubmit={handleSubmit}>
-                <ModalBody>
-                    {headerInputs}
-                    {paramInputs}
-                    {bodyFormInputs}
-                </ModalBody>
-                <ModalActionsFooter>
-                    <Button intent="secondary" onClick={onClose}>
-                        Cancel
-                    </Button>
-                    <Button type="submit">Execute</Button>
-                </ModalActionsFooter>
-            </form>
+            <GroupPositionContext.Provider value={null}>
+                <ModalHeader forceCloseButton title="Edit fields" />
+                <form onSubmit={handleSubmit}>
+                    <ModalBody>
+                        {ACTION_PARAMETER_PATHS.map((param) =>
+                            mapParamsToInput(param, _get(actionState, param))
+                        )}
+                    </ModalBody>
+                    <ModalActionsFooter>
+                        <Button intent="secondary" onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button type="submit">Execute</Button>
+                    </ModalActionsFooter>
+                </form>
+            </GroupPositionContext.Provider>
         </>
     )
 }
 
-export default memo(ActionEditor)
+export default ActionEditor

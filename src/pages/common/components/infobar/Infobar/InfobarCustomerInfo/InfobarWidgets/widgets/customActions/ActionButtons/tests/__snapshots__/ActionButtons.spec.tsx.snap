@@ -44,7 +44,7 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       </span>
     </button>
     <span
-      class="editIcons"
+      class="customActionEditIcons"
     >
       <i
         class="material-icons"
@@ -71,7 +71,7 @@ exports[`<ActionButtons/> should render the editor if isEditing is set to true  
       </span>
     </button>
     <span
-      class="editIcons"
+      class="customActionEditIcons"
     >
       <i
         class="material-icons"

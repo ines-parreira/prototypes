@@ -12,8 +12,8 @@ import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/Infob
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import Label from 'pages/common/forms/Label/Label'
-import css from '../../ActionButtons.less'
 
+import css from './Actions.less'
 import Parameters from './Parameters'
 import Body from './Body'
 

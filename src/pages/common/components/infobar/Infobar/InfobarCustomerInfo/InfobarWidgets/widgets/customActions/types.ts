@@ -18,13 +18,21 @@ export type Link = {
 export type RemoveLink = (redirectionLinkIndex: number) => void
 export type SubmitLink = (link: Link, index?: number) => void
 
+export const ParameterTypes = {
+    Text: 'text',
+    Dropdown: 'dropdown',
+} as const
+
+export type ParameterType = typeof ParameterTypes[keyof typeof ParameterTypes]
+
 export type Parameter = {
     id?: string
     key: string
-    value: string
+    type?: ParameterType
+    value?: string
     label?: string
-    editable: boolean
-    mandatory: boolean
+    editable?: boolean
+    mandatory?: boolean
 }
 export type Action = {
     method: HttpMethod

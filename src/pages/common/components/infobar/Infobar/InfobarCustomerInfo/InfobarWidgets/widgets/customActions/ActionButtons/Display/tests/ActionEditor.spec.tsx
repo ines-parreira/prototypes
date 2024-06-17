@@ -19,7 +19,7 @@ describe('<ActionEditor/>', () => {
         props.action = actionFixture()
         props.action.headers = [
             {
-                key: 'somekey',
+                key: 'somekey0',
                 value: 'somevalue',
                 label: 'should not display',
                 editable: false,
@@ -28,7 +28,7 @@ describe('<ActionEditor/>', () => {
             {
                 key: 'somekey1',
                 value: 'somevalue1',
-                label: 'ok1',
+                label: 'textLabel',
                 editable: true,
                 mandatory: true,
             },
@@ -45,8 +45,8 @@ describe('<ActionEditor/>', () => {
         props.action.body[ContentType.Form] = [
             {
                 key: 'somekey3',
-                value: 'somevalue3',
-                label: '',
+                value: 'dropdownValue1;dropdownValue2',
+                label: 'dropdownLabel',
                 editable: true,
                 mandatory: false,
             },
@@ -57,12 +57,18 @@ describe('<ActionEditor/>', () => {
         render(<ActionEditor {...props} />)
 
         expect(
-            screen.queryByText(new RegExp(props.action.headers[1].label || ''))
+            screen.queryByLabelText(
+                new RegExp(props.action.headers[1].label || '')
+            )
         ).toBeTruthy()
-        expect(screen.queryByText(props.action.headers[1].key)).toBeFalsy()
-        expect(screen.queryByText(props.action.params[0].key)).toBeTruthy()
+        expect(screen.queryByLabelText(props.action.headers[1].key)).toBeFalsy()
         expect(
-            screen.getByText(props.action.body[ContentType.Form][0].key)
+            screen.queryByLabelText(new RegExp(props.action.params[0].key))
+        ).toBeTruthy()
+        expect(
+            screen.queryByLabelText(
+                props.action.body[ContentType.Form][0].label || ''
+            )
         ).toBeTruthy()
     })
 
@@ -75,12 +81,33 @@ describe('<ActionEditor/>', () => {
     it('should call onSubmit with proper params when clicking the execute button and then onClose', () => {
         const newValue = 'edited'
         render(<ActionEditor {...props} />)
-        fireEvent.change(screen.getByLabelText(/ok1/), {
+
+        fireEvent.change(screen.getByLabelText(/textLabel/), {
             target: {value: newValue},
         })
+
+        fireEvent.change(screen.getByLabelText(/dropdownLabel/), {
+            target: {value: 'dropdownValue2'},
+        })
+
         fireEvent.click(screen.getByText('Execute'))
-        props.action.headers[1].value = newValue
-        expect(props.onSubmit).toHaveBeenCalledWith(props.action)
+
+        expect(props.onSubmit).toHaveBeenCalledWith({
+            ...props.action,
+            headers: [
+                props.action.headers[0],
+                {...props.action.headers[1], value: newValue},
+            ],
+            body: {
+                ...props.action.body,
+                [ContentType.Form]: [
+                    {
+                        ...props.action.body[ContentType.Form][0],
+                        value: 'dropdownValue2',
+                    },
+                ],
+            },
+        })
         expect(props.onClose).toHaveBeenCalledTimes(1)
     })
 })

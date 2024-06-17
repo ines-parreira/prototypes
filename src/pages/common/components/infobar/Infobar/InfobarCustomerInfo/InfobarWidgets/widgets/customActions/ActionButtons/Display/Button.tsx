@@ -1,23 +1,30 @@
 import React, {memo, useCallback, useContext, useEffect, useState} from 'react'
 import {DropdownItem} from 'reactstrap'
+import _get from 'lodash/get'
 
+import {SegmentEvent, logEvent} from 'common/segment'
 import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {executeAction} from 'state/infobar/actions'
 import {getPendingActionCallbacks} from 'state/infobar/selectors'
-import {ContentType} from 'models/api/types'
 import {CustomerContext} from 'providers/infobar/CustomerContext'
 import {AppContext} from 'providers/infobar/AppContext'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import BaseButton from 'pages/common/components/button/Button'
-import {Action} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import {
+    Action,
+    ParameterTypes,
+    Parameter,
+} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {mapActionToActionPayload} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapActionToActionPayload'
-
-import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
 import Modal from 'pages/common/components/modal/Modal'
+import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import {getCurrentUser} from 'state/currentUser/selectors'
 
+import {ACTION_PARAMETER_PATHS} from '../../constants'
+import css from './Button.less'
 import ActionEditor from './ActionEditor'
 
 type Props = {
@@ -40,9 +47,19 @@ export function Button({label, action, isDropdown = false}: Props) {
 
     // action trigger management
     const dispatch = useAppDispatch()
+    const currentAccount = useAppSelector(getCurrentAccountState)
+    const currentUser = useAppSelector(getCurrentUser)
     const {customerId} = useContext(CustomerContext)
     const {integrationId} = useContext(IntegrationContext)
     const {appId} = useContext(AppContext)
+
+    const trackingData = {
+        account_domain: currentAccount.get('domain'),
+        action_name: label,
+        user_id: currentUser.get('id'),
+        integration_id: integrationId,
+        app_id: appId,
+    }
 
     const handleExecuteAction = useCallback(
         (action: Action) => {
@@ -61,13 +78,18 @@ export function Button({label, action, isDropdown = false}: Props) {
         [label, dispatch, customerId, integrationId, appId]
     )
 
-    const handleClick = useCallback(() => {
+    const handleClick = () => {
+        logEvent(SegmentEvent.CustomActionButtonClicked, trackingData)
         if (shouldDisplayEditor(action)) {
+            logEvent(
+                SegmentEvent.CustomActionButtonsParameterEditorOpened,
+                trackingData
+            )
             setEditorOpen(true)
         } else {
             handleExecuteAction(action)
         }
-    }, [action, handleExecuteAction])
+    }
 
     const handleCloseEditor = useCallback(() => {
         setEditorOpen(false)
@@ -98,6 +120,7 @@ export function Button({label, action, isDropdown = false}: Props) {
                     onSubmit={handleExecuteAction}
                     onClose={handleCloseEditor}
                     action={action}
+                    trackingData={trackingData}
                 />
             </Modal>
         </>
@@ -106,16 +129,20 @@ export function Button({label, action, isDropdown = false}: Props) {
 
 export default memo(Button)
 
-function shouldDisplayEditor({headers, params, body}: Action): boolean {
+function shouldDisplayEditor(action: Action): boolean {
     let shouldDisplayEditor = false
-    headers.forEach(({editable}) => {
-        if (editable) shouldDisplayEditor = true
+    ACTION_PARAMETER_PATHS.forEach((fieldPath) => {
+        const specificParameters: Parameter[] | undefined = _get(
+            action,
+            fieldPath
+        )
+        if (specificParameters && specificParameters.length) {
+            specificParameters.forEach(({type, editable}) => {
+                if (type === ParameterTypes.Dropdown || editable)
+                    shouldDisplayEditor = true
+            })
+        }
     })
-    params.forEach(({editable}) => {
-        if (editable) shouldDisplayEditor = true
-    })
-    body[ContentType.Form].forEach(({editable}) => {
-        if (editable) shouldDisplayEditor = true
-    })
+
     return shouldDisplayEditor
 }

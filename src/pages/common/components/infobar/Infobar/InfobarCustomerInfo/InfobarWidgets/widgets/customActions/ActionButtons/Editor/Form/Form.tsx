@@ -15,7 +15,7 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import Button from 'pages/common/components/button/Button'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
-import css from '../../ActionButtons.less'
+import css from './Form.less'
 import Action from './Action'
 
 type Props = {

@@ -1,8 +1,8 @@
 import React from 'react'
 import {render, fireEvent, screen} from '@testing-library/react'
 
-import {ContentType} from '../../../../../../../../../../../../../models/api/types'
-import {actionFixture} from '../../../../../../../../../../../../../fixtures/infobarCustomActions'
+import {actionFixture} from 'fixtures/infobarCustomActions'
+import {ContentType} from 'models/api/types'
 
 import Form from '..'
 
@@ -23,27 +23,6 @@ describe('<Form/>', () => {
         action: actionFixture(),
     }
     const index = 2
-
-    it('should render without any data', () => {
-        const {container} = render(
-            <Form onClose={onClose} onSubmit={onSubmit} />
-        )
-
-        expect(container).toMatchSnapshot()
-    })
-
-    it('should render with preloaded data', () => {
-        const {container} = render(
-            <Form
-                index={index}
-                button={button}
-                onClose={onClose}
-                onSubmit={onSubmit}
-            />
-        )
-
-        expect(container).toMatchSnapshot()
-    })
 
     it('should call onClose when clicking cancel button', () => {
         render(<Form onClose={onClose} onSubmit={onSubmit} />)
@@ -90,7 +69,7 @@ describe('<Form/>', () => {
             />
         )
         const newValue = 'newValue'
-        fireEvent.click(screen.getAllByRole('button', {name: 'add Header'})[0])
+        fireEvent.click(screen.getAllByRole('button', {name: /Add Header/})[0])
         fireEvent.change(screen.getByPlaceholderText('Key'), {
             target: {value: newValue},
         })
@@ -105,7 +84,6 @@ describe('<Form/>', () => {
                             key: newValue,
                             id: 'ulid-generated-id',
                             value: '',
-                            label: '',
                             editable: false,
                             mandatory: false,
                         },

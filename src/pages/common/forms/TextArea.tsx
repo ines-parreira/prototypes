@@ -76,15 +76,11 @@ function TextArea(
     }, [])
 
     useEffect(() => {
-        if (autoRowHeight) {
-            adjustRowHeight()
-        }
-    }, [props.value, autoRowHeight, adjustRowHeight])
-
-    useEffect(() => {
         if (!autoRowHeight) {
             return
         }
+
+        adjustRowHeight()
 
         window.addEventListener('resize', adjustRowHeight)
 
@@ -95,9 +91,12 @@ function TextArea(
 
     const onChangeHandler = useCallback(
         (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+            if (autoRowHeight) {
+                adjustRowHeight()
+            }
             return onChange(event.target.value)
         },
-        [onChange]
+        [onChange, autoRowHeight, adjustRowHeight]
     )
 
     return (

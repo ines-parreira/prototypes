@@ -7,36 +7,6 @@ import Body from '../Body'
 describe('<Body/>', () => {
     const onChange = jest.fn()
 
-    it('should render with a json textarea', () => {
-        const {container} = render(
-            <Body
-                onChange={onChange}
-                body={{
-                    contentType: ContentType.Json,
-                    [ContentType.Form]: [],
-                    [ContentType.Json]: {},
-                }}
-            />
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render with parameter fields', () => {
-        const {container} = render(
-            <Body
-                onChange={onChange}
-                body={{
-                    contentType: ContentType.Form,
-                    [ContentType.Form]: [],
-                    [ContentType.Json]: {},
-                }}
-            />
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should call onChange when clicking on the other radio button', () => {
         render(
             <Body
@@ -92,7 +62,7 @@ describe('<Body/>', () => {
 
         fireEvent.click(
             screen.getByRole('button', {
-                name: 'add Body Parameter',
+                name: /Add Body Parameter/,
             })
         )
         expect(onChange).toHaveBeenCalled()

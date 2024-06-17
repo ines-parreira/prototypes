@@ -1,0 +1,13 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .selectLabel {
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .stack {
+        & + .stack {
+            margin-top: @layout-spacing-s;
+        }
+    }
+}

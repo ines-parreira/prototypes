@@ -11,7 +11,8 @@ import {
     OnOpenForm,
     OnRemoveButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/ActionButtons.less'
+
+import './Button.less'
 
 type ButtonProps = {
     index: number
@@ -52,7 +53,7 @@ function Button(props: ButtonProps) {
             >
                 {renderTemplate(label, templateContext)}
             </BasicButton>
-            <span className={css.editIcons}>
+            <span className="customActionEditIcons">
                 <i className="material-icons" onClick={() => onOpenForm(index)}>
                     edit
                 </i>
