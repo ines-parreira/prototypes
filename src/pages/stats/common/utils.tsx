@@ -386,8 +386,8 @@ export const dateInPastFromStartOfToday = (daysToSubtract: number) =>
     startOfToday().subtract(daysToSubtract - 1, 'days')
 export const endOfToday = () => moment().endOf('day')
 export const startOfYear = () => moment().startOf('year')
-export const lastYearStart = () => startOfYear().subtract(1, 'years')
-export const lastYearEnd = () => startOfYear().subtract(1, 'seconds')
+export const last365DaysStartingFromToday = () =>
+    startOfToday().subtract(365, 'days')
 export const startOfMonth = () => moment().startOf('month')
 export const startOfLastMonth = () => startOfMonth().subtract(1, 'months')
 export const endOfLastMonth = () => startOfMonth().subtract(1, 'seconds')

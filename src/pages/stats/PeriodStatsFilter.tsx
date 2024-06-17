@@ -14,13 +14,12 @@ import {
     endOfLastMonth,
     endOfToday,
     lastWeekDateRange,
-    lastYearEnd,
-    lastYearStart,
     StartDayOfWeek,
     startOfLastMonth,
     startOfMonth,
     dateInPastFromStartOfToday,
     startOfToday,
+    last365DaysStartingFromToday,
 } from 'pages/stats/common/utils'
 import PeriodPicker, {
     getDefaultSetOfRanges,
@@ -65,7 +64,7 @@ export const getNewSetOfRanges = (): {[key: string]: [Moment, Moment]} => {
         [PAST_30_DAYS]: defaultSetOfRanges[PAST_30_DAYS],
         [PAST_60_DAYS]: defaultSetOfRanges[PAST_60_DAYS],
         [PAST_90_DAYS]: defaultSetOfRanges[PAST_90_DAYS],
-        'Past year': [lastYearStart(), lastYearEnd()],
+        'Past year': [last365DaysStartingFromToday(), endOfToday()],
     }
 }
 

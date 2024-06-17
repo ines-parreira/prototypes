@@ -33,8 +33,7 @@ import {
     startOfLastMonth,
     endOfLastMonth,
     startOfYear,
-    lastYearStart,
-    lastYearEnd,
+    last365DaysStartingFromToday,
     lastWeekDateRange,
     StartDayOfWeek,
 } from '../utils'
@@ -476,8 +475,10 @@ describe('stats components utils', () => {
             {method: startOfLastMonth, expectedResult: '01/04/2023 00:00:00'},
             {method: endOfLastMonth, expectedResult: '30/04/2023 23:59:59'},
             {method: startOfYear, expectedResult: '01/01/2023 00:00:00'},
-            {method: lastYearStart, expectedResult: '01/01/2022 00:00:00'},
-            {method: lastYearEnd, expectedResult: '31/12/2022 23:59:59'},
+            {
+                method: last365DaysStartingFromToday,
+                expectedResult: '16/05/2022 00:00:00',
+            },
         ])(
             'should check if $method.name returns $expectedResult',
             ({method, expectedResult}) => {
