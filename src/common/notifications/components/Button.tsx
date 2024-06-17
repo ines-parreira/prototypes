@@ -57,7 +57,10 @@ export default function NotificationsButton() {
         [feedClient]
     )
 
-    const handleClose = useCallback(() => {
+    const handleClose = useCallback((e: Event) => {
+        if (buttonRef.current?.contains(e.target as Node)) {
+            e.stopPropagation()
+        }
         setIsVisible(false)
     }, [])
 
