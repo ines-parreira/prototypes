@@ -57,7 +57,11 @@ const edgeTypes = {
     custom: CustomEdge,
 }
 
-export function WorkflowVisualBuilderWrapped() {
+interface Props {
+    isNewWorkflow: boolean
+}
+
+export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
     const {
         isFetchPending,
         visualBuilderGraph,
@@ -192,16 +196,18 @@ export function WorkflowVisualBuilderWrapped() {
                         nodeInEdition={visualBuilderNodeEditing}
                         onClose={onDrawerEditorClose}
                     />
-                    {startFlowNode && isPreviewDrawerVisible && (
-                        <TestFlowEditor
-                            startFlowNode={startFlowNode}
-                            isAuthenticationBannerVisible={
-                                hasNodeWithShopperAuthentication
-                            }
-                            isTesting={isTesting}
-                            onClose={onDrawerTestEditorClose}
-                        />
-                    )}
+                    {startFlowNode &&
+                        isPreviewDrawerVisible &&
+                        !isNewWorkflow && (
+                            <TestFlowEditor
+                                startFlowNode={startFlowNode}
+                                isAuthenticationBannerVisible={
+                                    hasNodeWithShopperAuthentication
+                                }
+                                isTesting={isTesting}
+                                onClose={onDrawerTestEditorClose}
+                            />
+                        )}
                     <WorkflowsPublisher />
                 </>
             )}

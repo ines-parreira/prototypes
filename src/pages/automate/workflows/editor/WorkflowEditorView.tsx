@@ -468,7 +468,7 @@ function WorkflowEditorViewWrapped({
                     </>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
-                    <WorkflowVisualBuilder />
+                    <WorkflowVisualBuilder isNewWorkflow={isNewWorkflow} />
                 </Container>
                 <UnsavedChangesPrompt
                     onSave={() => (isDraft ? handleSave() : handlePublish())}
