@@ -1,6 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
+// import {useFlags} from 'launchdarkly-react-client-sdk'
 
+// import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketMessage} from 'models/ticket/types'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
@@ -15,6 +17,9 @@ export type AIAgentBannerProps = {
 }
 
 const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
+    // const isFeedbackToAiAgentV3Enabled =
+    //     useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3]
+
     const {data} = useGetAiAgentFeedback(message.ticket_id!, {
         refetchOnWindowFocus: false,
         enabled: message.ticket_id !== undefined,

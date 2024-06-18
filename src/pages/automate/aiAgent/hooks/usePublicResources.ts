@@ -5,7 +5,11 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {mapArticleIngestionLogsToSourceItem} from '../components/PublicSourcesSection/utils'
 
 export const usePublicResources = ({helpCenterId}: {helpCenterId: number}) => {
-    const {data: articleIngestionLogs, error} = useGetArticleIngestionLogs(
+    const {
+        data: articleIngestionLogs,
+        error,
+        isLoading: isSourceItemsListLoading,
+    } = useGetArticleIngestionLogs(
         {
             help_center_id: helpCenterId,
         },
@@ -13,6 +17,7 @@ export const usePublicResources = ({helpCenterId}: {helpCenterId: number}) => {
             refetchOnWindowFocus: false,
         }
     )
+
     const sourceItems = useMemo(
         () => articleIngestionLogs?.map(mapArticleIngestionLogsToSourceItem),
         [articleIngestionLogs]
@@ -29,5 +34,5 @@ export const usePublicResources = ({helpCenterId}: {helpCenterId: number}) => {
         }
     }, [error])
 
-    return {sourceItems}
+    return {sourceItems, isSourceItemsListLoading}
 }

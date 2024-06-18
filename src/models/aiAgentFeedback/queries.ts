@@ -26,8 +26,12 @@ export const useGetAiAgentFeedback = (
     })
 }
 
-export const useSubmitAIAgentTicketMessagesFeedback = (
-    overrides?: MutationOverrides<typeof submitAIAgentTicketMessagesFeedback>
+export const useSubmitAIAgentTicketMessagesFeedback = <TContext = unknown>(
+    overrides?: MutationOverrides<
+        typeof submitAIAgentTicketMessagesFeedback,
+        false,
+        TContext
+    >
 ) => {
     return useMutation({
         mutationFn: (params) => submitAIAgentTicketMessagesFeedback(...params),

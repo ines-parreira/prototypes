@@ -22,6 +22,8 @@ type Props = {
     text?: string
     leadIcon?: React.ReactNode
     onLeadIconClick?: () => void
+    className?: string
+    textClassName?: string
 }
 
 const Tag: React.FC<Props & HTMLAttributes<HTMLDivElement>> = ({
@@ -31,11 +33,13 @@ const Tag: React.FC<Props & HTMLAttributes<HTMLDivElement>> = ({
     text,
     trailIcon,
     onTrailIconClick,
+    className,
+    textClassName,
     ...props
 }) => {
     return (
         <div
-            className={classNames(css.tag, css[color], {
+            className={classNames(css.tag, css[color], className, {
                 [css.withLeadIcon]: !!leadIcon,
                 [css.withTrailIcon]: !!trailIcon,
                 [css.withIconOnly]: !text,
@@ -54,7 +58,10 @@ const Tag: React.FC<Props & HTMLAttributes<HTMLDivElement>> = ({
                 </span>
             )}
             {text && (
-                <span data-testid="tag-text" className={css.text}>
+                <span
+                    data-testid="tag-text"
+                    className={classNames(css.text, textClassName)}
+                >
                     {text}
                 </span>
             )}

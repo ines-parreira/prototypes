@@ -4,7 +4,9 @@ import {MessageFeedback} from 'models/aiAgentFeedback/types'
 export const messageFeedback: MessageFeedback = {
     shopType: 'shopify',
     shopName: 'fast-cars',
-    helpCenterId: '1234',
+    helpCenterId: 1234,
+    guidanceHelpCenterId: 1235,
+    snippetHelpCenterId: 1236,
     messageId: 1137369657,
     summary:
         'AI Agent sent a response and left the ticket open pending further information from the customer.',

@@ -88,6 +88,10 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
     const hasPositiveFeedback =
         feedbackOnMessage?.feedback === 'thumbs_up' ||
         (feedbackOnResource.length > 0 &&
+            feedbackOnResource.length ===
+                (messageFeedback?.actions.length || 0) +
+                    (messageFeedback?.guidance.length || 0) +
+                    (messageFeedback?.knowledge.length || 0) &&
             feedbackOnResource.every(
                 (feedback) => feedback.feedback === 'thumbs_up'
             ))

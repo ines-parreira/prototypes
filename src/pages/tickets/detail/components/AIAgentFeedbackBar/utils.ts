@@ -1,18 +1,12 @@
 import {Action, Guidance, Knowledge} from 'models/aiAgentFeedback/types'
 
-export const getKnowledgeUrl = (
-    knowledge: Knowledge,
-    shopType: string,
-    shopName: string
-) => {
+export const getKnowledgeUrl = (knowledge: Knowledge) => {
     switch (knowledge.type) {
         case 'article':
         case 'external_snippet':
             return knowledge.url
         case 'macro':
             return `/app/settings/macros/${knowledge.id}`
-        case 'flow':
-            return `/app/automation/${shopType}/${shopName}/flows/edit/${knowledge.id}`
         default:
             return ''
     }
@@ -32,4 +26,20 @@ export const getActionUrl = (
     shopName: string
 ) => {
     return `/app/automation/${shopType}/${shopName}/actions/${action.id}`
+}
+
+export const mapResourceLabelToType = (label: string) => {
+    switch (label) {
+        case 'Guidance':
+            return 'guidance'
+        case 'Help Center articles':
+            return 'article'
+        case 'External websites':
+            return 'external_snippet'
+        case 'Macros':
+            return 'macro'
+        default:
+        case 'Actions':
+            return 'action'
+    }
 }

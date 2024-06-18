@@ -8,7 +8,7 @@ export type Guidance = {
 }
 
 export type Knowledge = {
-    type: 'article' | 'external_snippet' | 'macro' | 'flow'
+    type: 'article' | 'external_snippet' | 'macro'
     id: number | string
     name: string
     url?: string
@@ -27,7 +27,6 @@ export type FeedbackOnResource = {
         | 'article'
         | 'macro'
         | 'external_snippet'
-        | 'flow'
     type: 'binary'
     feedback: Feedback
 }
@@ -44,8 +43,13 @@ export type IssueFeedbackOnMessage = {
 
 export type ResourceFeedbackOnMessage = {
     type: 'resource'
-    resourceType: 'article' | 'macro' | 'external_snippet'
-    resourceId: number
+    resourceType:
+        | 'action'
+        | 'guidance'
+        | 'article'
+        | 'macro'
+        | 'external_snippet'
+    resourceId: number | string
 }
 
 export type FeedbackOnMessage =
@@ -60,7 +64,9 @@ export const isIssueFeedbackOnMessage = (
 export type MessageFeedback = {
     shopName: string
     shopType: string
-    helpCenterId: string
+    helpCenterId: number
+    guidanceHelpCenterId: number
+    snippetHelpCenterId: number
     messageId: number
     summary: string
     orders: {

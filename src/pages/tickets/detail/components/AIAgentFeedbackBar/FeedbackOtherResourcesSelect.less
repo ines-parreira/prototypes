@@ -3,8 +3,32 @@
 :local {
     .container {
         padding: 0 @layout-spacing-s;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
     }
     .label {
         padding: 0 0 @layout-spacing-xs 0;
+    }
+
+    .dropdown {
+        max-width: 302px;
+        max-height: 320px;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: @layout-spacing-xxs;
+    }
+
+    .tag {
+        overflow: hidden;
+    }
+
+    .tagText {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 }

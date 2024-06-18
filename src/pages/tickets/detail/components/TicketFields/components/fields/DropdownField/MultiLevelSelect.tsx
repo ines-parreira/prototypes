@@ -39,6 +39,7 @@ import {usePredictionIconPositionAdjuster} from './hooks/usePredictionIconPositi
 
 type Props = {
     id: CustomFieldState['id']
+    dropdownClassName?: string
     label: string
     value?: CustomFieldValue
     placeholder?: string
@@ -59,6 +60,7 @@ type Props = {
 
 export default function MultiLevelSelect({
     id,
+    dropdownClassName,
     label,
     value,
     placeholder = '+Add',
@@ -233,7 +235,9 @@ export default function MultiLevelSelect({
                 }}
                 target={containerRef}
                 ref={modalRef}
-                className={classNames({[css.dropdown]: !children})}
+                className={classNames(dropdownClassName, {
+                    [css.dropdown]: !children,
+                })}
                 isMultiple={hasMultipleValues}
                 value={values}
             >

@@ -13,7 +13,7 @@ import css from './FeedbackCreateResource.less'
 type Props = {
     shopType: string
     shopName: string
-    helpCenterId: string
+    helpCenterId: number
 }
 
 const FeedbackCreateResource: React.FC<Props> = ({
