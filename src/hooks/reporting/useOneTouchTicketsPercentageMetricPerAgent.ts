@@ -3,7 +3,7 @@ import {useMemo} from 'react'
 import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'

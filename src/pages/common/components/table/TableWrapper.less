@@ -1,6 +1,31 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
 :local {
     .table {
         margin-bottom: 20px;
         width: 100%;
+
+        &.comfortable {
+            thead {
+                tr {
+                    height: @layout-spacing-xl;
+                }
+            }
+
+            tbody {
+                tr {
+                    height: 40px;
+                }
+
+                tr {
+                    .sticky,
+                    td {
+                        height: 40px;
+                        padding-top: @layout-spacing-xs;
+                        padding-bottom: @layout-spacing-xs;
+                    }
+                }
+            }
+        }
     }
 }

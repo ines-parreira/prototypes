@@ -6,11 +6,13 @@ import {
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
@@ -18,8 +20,9 @@ import {
 
 export const customerSatisfactionQueryFactory = (
     statsFilters: StatsFilters,
-    timezone: string
-) => ({
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
     timezone,
@@ -31,15 +34,6 @@ export const customerSatisfactionQueryFactory = (
             statsFilters
         ),
     ],
-})
-
-export const customerSatisfactionMetricPerAgentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...customerSatisfactionQueryFactory(filters, timezone),
-    dimensions: [TicketDimension.AssigneeUserId],
     ...(sorting
         ? {
               order: [
@@ -48,6 +42,18 @@ export const customerSatisfactionMetricPerAgentQueryFactory = (
           }
         : {}),
 })
+
+export const customerSatisfactionMetricPerAgentQueryFactory =
+    perDimensionQueryFactory(
+        customerSatisfactionQueryFactory,
+        TicketDimension.AssigneeUserId
+    )
+
+export const customerSatisfactionMetricPerChannelQueryFactory =
+    perDimensionQueryFactory(
+        customerSatisfactionQueryFactory,
+        CHANNEL_DIMENSION
+    )
 
 export const customerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,

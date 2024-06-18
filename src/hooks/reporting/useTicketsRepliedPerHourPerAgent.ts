@@ -11,7 +11,7 @@ import {
 import {
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {OrderDirection} from 'models/api/types'
 import {

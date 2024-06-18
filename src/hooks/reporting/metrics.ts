@@ -9,6 +9,7 @@ import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactori
 import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -27,6 +28,17 @@ export const ignoreNotAssignedTicketsFilter: ReportingFilter = {
     operator: ReportingFilterOperator.Set,
     values: [],
 }
+
+export const useTicketsCreatedMetric = (
+    statsFilters: StatsFilters,
+    timezone: string
+): Metric =>
+    useMetric(
+        withFilter(
+            ticketsCreatedQueryFactory(statsFilters, timezone),
+            ignoreNotAssignedTicketsFilter
+        )
+    )
 
 export const useClosedTicketsMetric = (
     statsFilters: StatsFilters,

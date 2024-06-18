@@ -3,7 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {useOnlineTimePerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useOnlineTimePerAgent} from 'hooks/reporting/metricsPerAgent'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {
     formatMetricValue,
@@ -23,7 +23,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 

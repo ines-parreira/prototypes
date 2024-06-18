@@ -1,7 +1,7 @@
 import {act, render, screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
+import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
 import {OrderDirection} from 'models/api/types'
 import {AgentsHeaderCellContent} from 'pages/stats/AgentsHeaderCellContent'
 import {
@@ -11,8 +11,8 @@ import {
 import {TableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/useSortingQuery')
-const useSortingQueryMock = assumeMock(useSortingQuery)
+jest.mock('hooks/reporting/useAgentsSortingQuery')
+const useSortingQueryMock = assumeMock(useAgentsSortingQuery)
 
 describe('<AgentsHeaderCellContent>', () => {
     const sortCallback = jest.fn()

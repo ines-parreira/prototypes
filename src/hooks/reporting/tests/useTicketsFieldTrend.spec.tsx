@@ -8,7 +8,7 @@ import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
 import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
 import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
@@ -24,7 +24,7 @@ jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
     useCustomFieldsTicketCountTimeSeries
 )
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
 describe('useTicketsFieldTrend', () => {

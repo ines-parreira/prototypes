@@ -5,7 +5,7 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {OrderDirection} from 'models/api/types'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'

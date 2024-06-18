@@ -10,12 +10,14 @@ import {
     TicketMessagesDimension,
     TicketMessagesMember,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
@@ -69,14 +71,15 @@ export const oneTouchTicketsQueryFactory = (
     }
 }
 
-export const oneTouchTicketsPerAgentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...oneTouchTicketsQueryFactory(filters, timezone, sorting),
-    dimensions: [TicketDimension.AssigneeUserId],
-})
+export const oneTouchTicketsPerAgentQueryFactory = perDimensionQueryFactory(
+    oneTouchTicketsQueryFactory,
+    TicketDimension.AssigneeUserId
+)
+
+export const oneTouchTicketsPerChannelQueryFactory = perDimensionQueryFactory(
+    oneTouchTicketsQueryFactory,
+    CHANNEL_DIMENSION
+)
 
 export const oneTouchTicketsPerTicketQueryFactory = (
     filters: StatsFilters,

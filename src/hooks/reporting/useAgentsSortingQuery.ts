@@ -15,7 +15,7 @@ import {
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {TableColumn} from 'state/ui/stats/types'
 
-export const useSortingQuery = (
+export const useAgentsSortingQuery = (
     column: TableColumn,
     useQuery: (
         statsFilters: StatsFilters,

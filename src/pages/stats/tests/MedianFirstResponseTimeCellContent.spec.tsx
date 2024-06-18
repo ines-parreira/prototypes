@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {useMedianFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useMedianFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -24,7 +24,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
     useMedianFirstResponseTimeMetricPerAgent
 )

@@ -1,6 +1,6 @@
 import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'

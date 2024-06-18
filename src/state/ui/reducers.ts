@@ -3,6 +3,7 @@ import {
     agentPerformanceSlice,
     AgentPerformanceState,
 } from 'state/ui/stats/agentPerformanceSlice'
+import {ChannelsSlice, channelsSlice} from 'state/ui/stats/channelsSlice'
 import {
     ticketInsightsSlice,
     TicketInsightsState,
@@ -36,6 +37,7 @@ const uiReducers = combineReducers<{
     contactForm: ContactFormState
     ticketAIAgentFeedback: TicketAIAgentFeedbackState
     [agentPerformanceSlice.name]: AgentPerformanceState
+    [channelsSlice.name]: ChannelsSlice
     [ticketInsightsSlice.name]: TicketInsightsState
     [drillDownSlice.name]: DrillDownState
 }>({
@@ -48,6 +50,7 @@ const uiReducers = combineReducers<{
     contactForm,
     ticketAIAgentFeedback,
     [agentPerformanceSlice.name]: agentPerformanceSlice.reducer,
+    [channelsSlice.name]: channelsSlice.reducer,
     [ticketInsightsSlice.name]: ticketInsightsSlice.reducer,
     [drillDownSlice.name]: drillDownSlice.reducer,
 })

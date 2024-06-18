@@ -19,6 +19,8 @@ import {
 import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
+    Cube,
+    QueryFactory,
     ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
@@ -252,6 +254,16 @@ export const withFilter = <T extends ReportingQuery>(
 ): T => {
     return {...query, filters: [...query.filters, filter]}
 }
+
+export const perDimensionQueryFactory =
+    <T extends Cube>(
+        queryFactory: QueryFactory<T>,
+        dimension: T['dimensions']
+    ) =>
+    (filters: StatsFilters, timezone: string, sorting?: OrderDirection) => ({
+        ...queryFactory(filters, timezone, sorting),
+        dimensions: [dimension],
+    })
 
 export const agentFilter = (agentAssigneeId?: string): ReportingFilter => ({
     member: TicketMember.AssigneeUserId,

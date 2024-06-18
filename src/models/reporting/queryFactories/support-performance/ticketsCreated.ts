@@ -9,6 +9,7 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -21,6 +22,7 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
@@ -28,8 +30,9 @@ import {
 
 export const ticketsCreatedQueryFactory = (
     filters: StatsFilters,
-    timezone: string
-) => {
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = filters
     const commonFilters: ReportingFilter[] = [
         {
@@ -66,8 +69,16 @@ export const ticketsCreatedQueryFactory = (
                 statFiltersWithoutAgents
             ),
         ],
+        ...(sorting
+            ? {
+                  order: [[TicketMeasure.TicketCount, sorting]],
+              }
+            : {}),
     }
 }
+
+export const ticketsCreatedPerChannelPerChannelQueryFactory =
+    perDimensionQueryFactory(ticketsCreatedQueryFactory, CHANNEL_DIMENSION)
 
 export const ticketsCreatedTimeSeriesQueryFactory = (
     filters: StatsFilters,

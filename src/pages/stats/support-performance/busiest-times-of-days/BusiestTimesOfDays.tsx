@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
 import {bHoursLegend} from 'pages/stats/common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat'
-import {BusiestTimesOfDaysHeatmapSwitch} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysHeatmapSwitch'
+import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {useGridSize} from 'hooks/useGridSize'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import ChartCard from 'pages/stats/ChartCard'
@@ -59,6 +59,7 @@ export const BusiestTimesOfDays = () => {
             BusiestTimeOfDaysMetrics.TicketsCreated
         )
     const [isHeatmapMode, setIsHeatmapMode] = useState(true)
+    const toggleHandler = () => setIsHeatmapMode(!isHeatmapMode)
 
     return (
         <div className="full-width">
@@ -84,9 +85,9 @@ export const BusiestTimesOfDays = () => {
                             title={BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL}
                             hint={{title: SectionTooltips[selectedMetric]}}
                             titleExtra={
-                                <BusiestTimesOfDaysHeatmapSwitch
+                                <TableHeatmapSwitch
                                     isHeatmapMode={isHeatmapMode}
-                                    setIsHeatmapMode={setIsHeatmapMode}
+                                    toggleHandler={toggleHandler}
                                 />
                             }
                         >

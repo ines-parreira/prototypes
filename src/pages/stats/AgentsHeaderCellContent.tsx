@@ -1,5 +1,5 @@
 import React from 'react'
-import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
+import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import {
     HeaderTooltips,
@@ -24,7 +24,10 @@ export const AgentsHeaderCellContent = ({
     justifyContent,
 }: AgentsHeaderCellContentProps) => {
     const query = getQuery(column)
-    const {sortCallback, direction, field} = useSortingQuery(column, query)
+    const {sortCallback, direction, field} = useAgentsSortingQuery(
+        column,
+        query
+    )
     const tooltip = HeaderTooltips[column]
     const isOrderedBy = column === field
 

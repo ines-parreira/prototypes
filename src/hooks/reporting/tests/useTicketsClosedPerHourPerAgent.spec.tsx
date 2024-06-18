@@ -3,7 +3,7 @@ import {User} from 'config/types/user'
 import {
     useClosedTicketsMetricPerAgent,
     useOnlineTimePerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
@@ -12,7 +12,7 @@ import {
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useClosedTicketsMetricPerAgentMock = assumeMock(
     useClosedTicketsMetricPerAgent
 )

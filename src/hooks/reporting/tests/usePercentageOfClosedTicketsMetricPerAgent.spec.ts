@@ -6,11 +6,11 @@ import {OrderDirection} from 'models/api/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
-import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/usePercentageOfClosedTicketsMetricPerAgent'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/metrics')
 const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 const useClosedTicketsMetricPerAgentMock = assumeMock(

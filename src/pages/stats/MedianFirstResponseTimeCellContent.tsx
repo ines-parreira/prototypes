@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
-import {useMedianFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useMedianFirstResponseTimeMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {

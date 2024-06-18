@@ -3,33 +3,37 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
+import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
-    TicketMessagesCube,
-    TicketMessagesMeasure,
-} from 'models/reporting/cubes/TicketMessagesCube'
-import {getQuery} from 'pages/stats/AgentsTableConfig'
+    ChannelColumnConfig,
+    ChannelsTableColumns,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {opposite, OrderDirection} from 'models/api/types'
-import {useSortingQuery} from 'hooks/reporting/useSortingQuery'
 import {RootState, StoreDispatch} from 'state/types'
 import {
-    DEFAULT_SORTING_DIRECTION,
     initialState,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-} from 'state/ui/stats/agentPerformanceSlice'
+    channelsSlice,
+} from 'state/ui/stats/channelsSlice'
 import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {TableColumn} from 'state/ui/stats/types'
+import {notEmpty} from 'utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-describe('useSortingQueries', () => {
+describe('useChannelsSortingQuery', () => {
     const defaultState = {
         stats: filtersInitialState,
         ui: {
-            agentPerformance: initialState,
+            [channelsSlice.name]: initialState,
             stats: uiStatsInitialState,
         },
     } as unknown as RootState
@@ -51,10 +55,10 @@ describe('useSortingQueries', () => {
     describe('sorting callback', () => {
         it('should change the sorting column', () => {
             const store = mockStore(defaultState)
-            const column = TableColumn.MedianFirstResponseTime
+            const column = ChannelsTableColumns.CustomerSatisfaction
 
             const {result} = renderHook(
-                () => useSortingQuery(column, queryHook),
+                () => useChannelsSortingQuery(column, queryHook),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -66,7 +70,7 @@ describe('useSortingQueries', () => {
 
             expect(store.getActions()).toContainEqual(
                 sortingSet({
-                    direction: DEFAULT_SORTING_DIRECTION,
+                    direction: OrderDirection.Desc,
                     field: column,
                 })
             )
@@ -77,7 +81,7 @@ describe('useSortingQueries', () => {
             const column = initialState.sorting.field
 
             const {result} = renderHook(
-                () => useSortingQuery(column, queryHook),
+                () => useChannelsSortingQuery(column, queryHook),
                 {
                     wrapper: ({children}) => (
                         <Provider store={store}>{children}</Provider>
@@ -101,17 +105,23 @@ describe('useSortingQueries', () => {
     })
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
-        const column = TableColumn.ClosedTickets
-        const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
-            value: 123,
-            decile: 5,
-            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
-        }
+        const column = ChannelsTableColumns.CustomerSatisfaction
+        const metricData: MetricWithDecile<HelpdeskMessageCubeWithJoins>['data'] =
+            {
+                value: 123,
+                decile: 5,
+                allData: [
+                    {
+                        [TicketSatisfactionSurveyMeasure.AvgSurveyScore]: '123',
+                        [CHANNEL_DIMENSION]: 'whatsapp',
+                    },
+                ],
+            }
         const store = mockStore({
             ...defaultState,
             ui: {
                 ...defaultState.ui,
-                agentPerformance: {
+                [channelsSlice.name]: {
                     ...initialState,
                     sorting: {
                         field: column,
@@ -127,29 +137,69 @@ describe('useSortingQueries', () => {
             isError: false,
         })
 
-        renderHook(() => useSortingQuery(column, queryHook), {
+        renderHook(() => useChannelsSortingQuery(column, queryHook), {
             wrapper: ({children}) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
 
         expect(store.getActions()).toContainEqual(
-            sortingLoaded(metricData.allData)
+            sortingLoaded(
+                metricData.allData
+                    .map((result) => result[CHANNEL_DIMENSION])
+                    .filter(notEmpty)
+            )
         )
     })
 
+    it('should dispatch empty array on empty query result on sorting isLoading and data fetched', () => {
+        const column = ChannelsTableColumns.CustomerSatisfaction
+        const store = mockStore({
+            ...defaultState,
+            ui: {
+                ...defaultState.ui,
+                [channelsSlice.name]: {
+                    ...initialState,
+                    sorting: {
+                        field: column,
+                        direction: OrderDirection.Asc,
+                        isLoading: true,
+                    },
+                },
+            },
+        } as unknown as RootState)
+        queryHook.mockReturnValue({
+            isFetching: false,
+            data: undefined,
+            isError: false,
+        })
+
+        renderHook(() => useChannelsSortingQuery(column, queryHook), {
+            wrapper: ({children}) => (
+                <Provider store={store}>{children}</Provider>
+            ),
+        })
+
+        expect(store.getActions()).toContainEqual(sortingLoaded([]))
+    })
+
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
-        const column = TableColumn.ClosedTickets
+        const column = ChannelsTableColumns.ClosedTickets
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
+            allData: [
+                {
+                    [TicketMeasure.TicketCount]: '123',
+                    [CHANNEL_DIMENSION]: 'whatsapp',
+                },
+            ],
         }
         const store = mockStore({
             ...defaultState,
             ui: {
                 ...defaultState.ui,
-                agentPerformance: {
+                [channelsSlice.name]: {
                     ...initialState,
                     sorting: {
                         field: column,
@@ -165,28 +215,33 @@ describe('useSortingQueries', () => {
             isError: false,
         })
 
-        renderHook(() => useSortingQuery(column, queryHook), {
+        renderHook(() => useChannelsSortingQuery(column, queryHook), {
             wrapper: ({children}) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
 
         expect(store.getActions()).not.toContainEqual(
-            sortingLoaded(metricData.allData)
+            sortingLoaded(
+                metricData.allData
+                    .map((result) => result[CHANNEL_DIMENSION])
+                    .filter(notEmpty)
+            )
         )
     })
 
-    it('should disable loading when sorting by AgentName', () => {
-        const column = TableColumn.AgentName
+    it('should disable loading when sorting by Channel', () => {
+        const column = ChannelsTableColumns.Channel
         const store = mockStore({
             ...defaultState,
             ui: {
-                agentPerformance: {
+                [channelsSlice.name]: {
                     ...initialState,
                     sorting: {
                         field: column,
                         direction: OrderDirection.Asc,
                         isLoading: true,
+                        lastSortingMetric: null,
                     },
                 },
                 stats: uiStatsInitialState,
@@ -194,7 +249,11 @@ describe('useSortingQueries', () => {
         } as unknown as RootState)
 
         renderHook(
-            () => useSortingQuery(TableColumn.AgentName, getQuery(column)),
+            () =>
+                useChannelsSortingQuery(
+                    column,
+                    ChannelColumnConfig[column].useMetric
+                ),
             {
                 wrapper: ({children}) => (
                     <Provider store={store}>{children}</Provider>
@@ -202,15 +261,15 @@ describe('useSortingQueries', () => {
             }
         )
 
-        expect(store.getActions()).toContainEqual(sortingLoaded(null))
+        expect(store.getActions()).toContainEqual(sortingLoaded([]))
     })
 
     it('should update loading state when the query of a current sorting column starts loading', () => {
-        const column = TableColumn.ClosedTickets
+        const column = ChannelsTableColumns.ClosedTickets
         const store = mockStore({
             ...defaultState,
             ui: {
-                agentPerformance: {
+                [channelsSlice.name]: {
                     ...initialState,
                     sorting: {
                         field: column,
@@ -226,7 +285,7 @@ describe('useSortingQueries', () => {
             isFetching: true,
         })
 
-        renderHook(() => useSortingQuery(column, queryHook), {
+        renderHook(() => useChannelsSortingQuery(column, queryHook), {
             wrapper: ({children}) => (
                 <Provider store={store}>{children}</Provider>
             ),

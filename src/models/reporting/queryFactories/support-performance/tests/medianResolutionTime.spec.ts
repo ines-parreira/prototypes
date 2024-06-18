@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -16,6 +17,7 @@ import {
     medianResolutionTimeMetricPerAgentQueryFactory,
     resolutionTimeMetricPerTicketDrillDownQueryFactory,
     medianResolutionTimeQueryFactory,
+    medianResolutionTimeMetricPerChannelQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
@@ -97,6 +99,121 @@ describe('medianResolutionTimeMetricPerAgent', () => {
             )
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [formatReportingQueryDate(periodStart)],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd)],
+                },
+                {
+                    member: TicketMessagesMember.Integration,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.integrations?.map(String),
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.channels,
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: agents.map(String),
+                },
+                {
+                    member: TicketMember.Tags,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.tags?.map(String),
+                },
+            ],
+            measures: [TicketMessagesMeasure.MedianResolutionTime],
+            order: [[TicketMessagesMeasure.MedianResolutionTime, sorting]],
+            segments: [
+                TicketSegment.ClosedTickets,
+                TicketMessagesSegment.ConversationStarted,
+            ],
+            timezone: timezone,
+        })
+    })
+})
+
+describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+        channels: [TicketChannel.Email, TicketChannel.Chat],
+        integrations: [1],
+        tags: [1, 2],
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        expect(
+            medianResolutionTimeMetricPerChannelQueryFactory(
+                statsFilters,
+                timezone
+            )
+        ).toEqual({
+            dimensions: [CHANNEL_DIMENSION],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [formatReportingQueryDate(periodStart)],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd)],
+                },
+                {
+                    member: TicketMessagesMember.Integration,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.integrations?.map(String),
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.channels,
+                },
+                {
+                    member: TicketMember.Tags,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.tags?.map(String),
+                },
+            ],
+            measures: [TicketMessagesMeasure.MedianResolutionTime],
+            segments: [
+                TicketSegment.ClosedTickets,
+                TicketMessagesSegment.ConversationStarted,
+            ],
+            timezone: timezone,
+        })
+    })
+
+    it('should build a query with and agents sorting', () => {
+        const agents = [2]
+
+        expect(
+            medianResolutionTimeMetricPerChannelQueryFactory(
+                {...statsFilters, agents},
+                timezone,
+                sorting
+            )
+        ).toEqual({
+            dimensions: [CHANNEL_DIMENSION],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
                 {

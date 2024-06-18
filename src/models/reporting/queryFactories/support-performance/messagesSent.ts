@@ -6,6 +6,7 @@ import {
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -19,6 +20,7 @@ import {
     getFilterDateRange,
     HelpdeskMessagesStatsFiltersMembers,
     NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
     PublicHelpdeskAndApiMessagesFilter,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
@@ -26,7 +28,8 @@ import {
 
 export const messagesSentQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
+    sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [HelpdeskMessageMeasure.MessageCount],
     dimensions: [],
@@ -54,6 +57,11 @@ export const messagesSentQueryFactory = (
             filters
         ),
     ],
+    ...(sorting
+        ? {
+              order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
+          }
+        : {}),
 })
 
 export const messagesSentTimeSeriesQueryFactory = (
@@ -71,19 +79,13 @@ export const messagesSentTimeSeriesQueryFactory = (
     ],
 })
 
-export const messagesSentMetricPerAgentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...messagesSentQueryFactory(filters, timezone),
-    dimensions: [HelpdeskMessageDimension.SenderId],
-    ...(sorting
-        ? {
-              order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
-          }
-        : {}),
-})
+export const messagesSentMetricPerAgentQueryFactory = perDimensionQueryFactory(
+    messagesSentQueryFactory,
+    HelpdeskMessageDimension.SenderId
+)
+
+export const messagesSentMetricPerChannelQueryFactory =
+    perDimensionQueryFactory(messagesSentQueryFactory, CHANNEL_DIMENSION)
 
 export const messagesSentMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,

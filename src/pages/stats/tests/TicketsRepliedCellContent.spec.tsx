@@ -7,7 +7,7 @@ import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {TicketsRepliedCellContent} from 'pages/stats/TicketsRepliedCellContent'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
@@ -24,7 +24,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useTicketsRepliedMetricPerAgentMock = assumeMock(
     useTicketsRepliedMetricPerAgent
 )

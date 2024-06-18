@@ -1,7 +1,7 @@
 import React from 'react'
 import {useDispatch} from 'react-redux'
+import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import useAppSelector from 'hooks/useAppSelector'
-import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {
     getHeatmapMode,
     toggleHeatmapMode,
@@ -13,14 +13,9 @@ export const AgentPerformanceHeatmapSwitch = () => {
     const toggleHandler = () => dispatch(toggleHeatmapMode())
 
     return (
-        <ToggleButton.Wrapper
-            type={ToggleButton.Type.Label}
-            value={heatmapMode}
-            onChange={toggleHandler}
-            size={'small'}
-        >
-            <ToggleButton.Option value={false}>Table</ToggleButton.Option>
-            <ToggleButton.Option value={true}>Heatmap</ToggleButton.Option>
-        </ToggleButton.Wrapper>
+        <TableHeatmapSwitch
+            isHeatmapMode={heatmapMode}
+            toggleHandler={toggleHandler}
+        />
     )
 }

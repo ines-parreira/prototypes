@@ -24,7 +24,7 @@ import {
     useOneTouchTicketsMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
@@ -40,7 +40,7 @@ const useCustomTicketFieldWithBreakdownMock = assumeMock(
     useMetricPerDimensionWithBreakdown
 )
 
-describe('metricsPerDimension', () => {
+describe('metricsPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const statsFilters: StatsFilters = {

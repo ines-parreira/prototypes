@@ -3,12 +3,12 @@ import React, {HTMLProps, ReactNode, useRef} from 'react'
 
 import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 
-import {OrderDirection} from '../../../../../models/api/types'
+import {OrderDirection} from 'models/api/types'
 
-import Tooltip from '../../Tooltip'
+import Tooltip from 'pages/common/components/Tooltip'
 
-import HeaderCell from './HeaderCell'
-import css from './HeaderCellProperty.less'
+import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
+import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 
 type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
@@ -22,6 +22,7 @@ type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     justifyContent?: 'left' | 'right' | 'center'
     wrapContent?: boolean
     width?: number | string
+    height?: 'comfortable' | 'compact'
 }
 
 export default function HeaderCellProperty({

@@ -10,7 +10,7 @@ import {
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {assumeMock} from 'utils/testing'
 import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerDimension'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
 import {RootState} from 'state/types'
 import {initialState} from 'state/stats/statsSlice'
@@ -20,7 +20,7 @@ import {Cubes} from 'models/reporting/cubes'
 
 const mockStore = configureMockStore([thunk])
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useCustomFieldsTicketCountMock = assumeMock(useCustomFieldsTicketCount)
 
 const transformData = (

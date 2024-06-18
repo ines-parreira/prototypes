@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
 import {
@@ -10,6 +11,7 @@ import {
 import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
 import {
     closedTicketsPerAgentQueryFactory,
+    closedTicketsPerChannelQueryFactory,
     closedTicketsPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
@@ -86,6 +88,112 @@ describe('closedTicketsMetricPerAgent', () => {
             )
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [formatReportingQueryDate(periodStart)],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd)],
+                },
+                {
+                    member: TicketMessagesMember.Integration,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.integrations?.map(String),
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.channels,
+                },
+                {
+                    member: TicketMember.AssigneeUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: agents?.map(String),
+                },
+                {
+                    member: TicketMember.Tags,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.tags?.map(String),
+                },
+            ],
+            measures: [TicketMeasure.TicketCount],
+            order: [[TicketMeasure.TicketCount, sorting]],
+            segments: [TicketSegment.ClosedTickets],
+            timezone: timezone,
+        })
+    })
+})
+
+describe('closedTicketsPerChannelQueryFactory', () => {
+    const periodStart = moment()
+    const periodEnd = periodStart.add(7, 'days')
+    const statsFilters: StatsFilters = {
+        period: {
+            end_datetime: periodEnd.toISOString(),
+            start_datetime: periodStart.toISOString(),
+        },
+        channels: [TicketChannel.Email, TicketChannel.Chat],
+        integrations: [1],
+        tags: [1, 2],
+    }
+    const timezone = 'someTimeZone'
+    const sorting = OrderDirection.Asc
+
+    it('should build a query', () => {
+        expect(
+            closedTicketsPerChannelQueryFactory(statsFilters, timezone)
+        ).toEqual({
+            dimensions: [CHANNEL_DIMENSION],
+            filters: [
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [formatReportingQueryDate(periodStart)],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd)],
+                },
+                {
+                    member: TicketMessagesMember.Integration,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.integrations?.map(String),
+                },
+                {
+                    member: TicketMember.Channel,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.channels,
+                },
+                {
+                    member: TicketMember.Tags,
+                    operator: ReportingFilterOperator.Equals,
+                    values: statsFilters.tags?.map(String),
+                },
+            ],
+            measures: [TicketMeasure.TicketCount],
+            segments: [TicketSegment.ClosedTickets],
+            timezone: timezone,
+        })
+    })
+
+    it('should build a query with and agents sorting', () => {
+        const agents = [2]
+
+        expect(
+            closedTicketsPerChannelQueryFactory(
+                {...statsFilters, agents},
+                timezone,
+                sorting
+            )
+        ).toEqual({
+            dimensions: [CHANNEL_DIMENSION],
             filters: [
                 ...NotSpamNorTrashedTicketsFilter,
                 {

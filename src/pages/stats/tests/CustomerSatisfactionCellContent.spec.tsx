@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {useCustomerSatisfactionMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useCustomerSatisfactionMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {CustomerSatisfactionCellContent} from 'pages/stats/CustomerSatisfactionCellContent'
 import {initialState} from 'state/stats/statsSlice'
 import {RootState, StoreDispatch} from 'state/types'
@@ -20,7 +20,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useCustomerSatisfactionMetricPerAgentMock = assumeMock(
     useCustomerSatisfactionMetricPerAgent
 )

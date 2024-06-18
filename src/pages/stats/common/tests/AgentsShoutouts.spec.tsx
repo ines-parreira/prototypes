@@ -13,7 +13,7 @@ import {
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {assumeMock, mockStore} from 'utils/testing'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {initialState} from 'state/stats/statsSlice'
@@ -22,7 +22,7 @@ import {SHOUTOUT_NO_VALUE_PLACEHOLDER} from 'pages/common/components/Shoutout/Sh
 import AgentsShoutouts from 'pages/stats/AgentsShoutouts'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
     useMedianFirstResponseTimeMetricPerAgent
 )

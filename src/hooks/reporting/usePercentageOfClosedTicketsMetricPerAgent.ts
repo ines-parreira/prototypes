@@ -1,5 +1,5 @@
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
-import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'

@@ -1,14 +1,14 @@
 import {useMemo} from 'react'
+import {
+    useClosedTicketsMetricPerAgent,
+    useOnlineTimePerAgent,
+} from 'hooks/reporting/metricsPerAgent'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
 import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {
-    useClosedTicketsMetricPerAgent,
-    useOnlineTimePerAgent,
-} from 'hooks/reporting/metricsPerDimension'
 import {calculateDecile} from 'hooks/reporting/useCustomFieldsTicketCountPerCustomFields'
 import {OrderDirection} from 'models/api/types'
 import {

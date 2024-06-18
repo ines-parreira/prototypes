@@ -27,11 +27,21 @@
                 height: 56px;
                 z-index: 3;
                 background-color: var(--neutral-grey-0);
+                cursor: pointer;
             }
 
             &:first-child {
                 td:first-child {
                     z-index: 4;
+                }
+            }
+        }
+
+        tbody {
+            tr {
+                td,
+                div {
+                    cursor: text;
                 }
             }
         }

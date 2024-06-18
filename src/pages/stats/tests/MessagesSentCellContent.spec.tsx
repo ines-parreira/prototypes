@@ -3,7 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {useMessagesSentMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useMessagesSentMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -24,7 +24,7 @@ jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
     <div data-testid={MOCK_SKELETON_TEST_ID} />
 ))
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useMessagesSentMetricPerAgentMock = assumeMock(
     useMessagesSentMetricPerAgent
 )

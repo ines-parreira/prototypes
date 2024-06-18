@@ -49,7 +49,7 @@ export const OverviewMetricConfig: Record<
     [OverviewMetric.CustomerSatisfaction]: {
         title: CUSTOMER_SATISFACTION_LABEL,
         hint: {
-            title: 'Average CSAT score for tickets assigned to the agent for which a survey was sent within the timeframe; surveys are sent following ticket resolution',
+            title: 'Average CSAT score for tickets for which a survey was sent within the timeframe; surveys are sent following ticket resolution.',
             link: 'https://link.gorgias.com/3ol',
         },
         interpretAs: 'more-is-better',
@@ -96,7 +96,7 @@ export const OverviewMetricConfig: Record<
     [OverviewMetric.TicketsClosed]: {
         title: TICKETS_CLOSED_LABEL,
         hint: {
-            title: 'Number of unique closed tickets within the selected timeframe (that did not reopen), assigned to selected agent(s)/team(s)',
+            title: 'Number of unique closed tickets within the selected timeframe (that did not reopen).',
             link: 'https://link.gorgias.com/126',
         },
         interpretAs: 'neutral',

@@ -18,7 +18,7 @@ import {
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
 import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
 import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'

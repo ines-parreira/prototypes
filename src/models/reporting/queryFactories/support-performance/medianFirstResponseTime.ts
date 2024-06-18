@@ -9,6 +9,7 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -26,8 +27,9 @@ import {
 
 export const medianFirstResponseTimeQueryFactory = (
     statsFilters: StatsFilters,
-    timezone: string
-) => {
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<TicketCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = statsFilters
     const commonFilters: ReportingFilter[] = [
         ...NotSpamNorTrashedTicketsFilter,
@@ -57,6 +59,13 @@ export const medianFirstResponseTimeQueryFactory = (
                 statFiltersWithoutAgents
             ),
         ],
+        ...(sorting
+            ? {
+                  order: [
+                      [TicketMessagesMeasure.MedianFirstResponseTime, sorting],
+                  ],
+              }
+            : {}),
     }
 }
 
@@ -65,13 +74,17 @@ export const medianFirstResponseTimeMetricPerAgentQueryFactory = (
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketCubeWithJoins> => ({
-    ...medianFirstResponseTimeQueryFactory(filters, timezone),
+    ...medianFirstResponseTimeQueryFactory(filters, timezone, sorting),
     dimensions: [TicketMessagesDimension.FirstHelpdeskMessageUserId],
-    ...(sorting
-        ? {
-              order: [[TicketMessagesMeasure.MedianFirstResponseTime, sorting]],
-          }
-        : {}),
+})
+
+export const medianFirstResponseTimeMetricPerChannelQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection
+): ReportingQuery<TicketCubeWithJoins> => ({
+    ...medianFirstResponseTimeQueryFactory(filters, timezone, sorting),
+    dimensions: [CHANNEL_DIMENSION],
 })
 
 export const firstResponseTimeMetricPerTicketDrillDownQueryFactory = (

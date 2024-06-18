@@ -5,6 +5,7 @@ import {
     TicketMeasure,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
+import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingGranularity,
     ReportingQuery,
@@ -15,6 +16,7 @@ import {
     DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
     NotSpamNorTrashedTicketsFilter,
+    perDimensionQueryFactory,
     statsFiltersToReportingFilters,
     TicketDrillDownFilter,
     TicketStatsFiltersMembers,
@@ -22,7 +24,8 @@ import {
 
 export const closedTicketsQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
+    sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketMeasure.TicketCount],
     dimensions: [],
@@ -32,6 +35,11 @@ export const closedTicketsQueryFactory = (
         ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
     ],
+    ...(sorting
+        ? {
+              order: [[TicketMeasure.TicketCount, sorting]],
+          }
+        : {}),
 })
 
 export const closedTicketsTimeSeriesQueryFactory = (
@@ -50,19 +58,15 @@ export const closedTicketsTimeSeriesQueryFactory = (
     order: [[TicketDimension.ClosedDatetime, OrderDirection.Asc]],
 })
 
-export const closedTicketsPerAgentQueryFactory = (
-    filters: StatsFilters,
-    timezone: string,
-    sorting?: OrderDirection
-): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
-    ...closedTicketsQueryFactory(filters, timezone),
-    dimensions: [TicketDimension.AssigneeUserId],
-    ...(sorting
-        ? {
-              order: [[TicketMeasure.TicketCount, sorting]],
-          }
-        : {}),
-})
+export const closedTicketsPerAgentQueryFactory = perDimensionQueryFactory(
+    closedTicketsQueryFactory,
+    TicketDimension.AssigneeUserId
+)
+
+export const closedTicketsPerChannelQueryFactory = perDimensionQueryFactory(
+    closedTicketsQueryFactory,
+    CHANNEL_DIMENSION
+)
 
 export const closedTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,

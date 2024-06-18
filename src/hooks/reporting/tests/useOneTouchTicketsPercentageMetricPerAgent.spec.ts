@@ -8,11 +8,11 @@ import {assumeMock} from 'utils/testing'
 import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useOneTouchTicketsMetricPerAgentMock = assumeMock(
     useOneTouchTicketsMetricPerAgent
 )

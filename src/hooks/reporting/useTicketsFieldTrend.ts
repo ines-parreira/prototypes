@@ -15,7 +15,7 @@ import {
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
 import {periodToReportingGranularity} from 'utils/reporting'
-import {useCustomFieldsTicketCount} from './metricsPerDimension'
+import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerAgent'
 
 const DATASET_VISIBILITY_ITEMS = 3
 

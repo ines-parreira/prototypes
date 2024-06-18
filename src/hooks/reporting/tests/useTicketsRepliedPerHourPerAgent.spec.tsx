@@ -3,7 +3,7 @@ import {User} from 'config/types/user'
 import {
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
-} from 'hooks/reporting/metricsPerDimension'
+} from 'hooks/reporting/metricsPerAgent'
 import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import {
     AgentTimeTrackingDimension,
@@ -15,7 +15,7 @@ import {
 } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {assumeMock} from 'utils/testing'
 
-jest.mock('hooks/reporting/metricsPerDimension')
+jest.mock('hooks/reporting/metricsPerAgent')
 const useTicketsRepliedMetricPerAgentMock = assumeMock(
     useTicketsRepliedMetricPerAgent
 )

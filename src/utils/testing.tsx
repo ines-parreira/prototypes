@@ -29,10 +29,17 @@ export type RenderWithRouterParams = {
     history?: History
 }
 
-export const renderWithStore = (ui: ReactElement, state: Partial<RootState>) =>
-    render(
-        <Provider store={configureMockStore(middlewares)(state)}>{ui}</Provider>
-    )
+export const renderWithStore = (
+    ui: ReactElement,
+    state: Partial<RootState>
+) => {
+    const store = configureMockStore(middlewares)(state)
+
+    return {
+        ...render(<Provider store={store}>{ui}</Provider>),
+        store,
+    }
+}
 
 export const renderWithRouter = (
     ui: ReactElement,

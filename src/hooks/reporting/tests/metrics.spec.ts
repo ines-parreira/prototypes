@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
+import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
@@ -24,6 +25,7 @@ import {
     useOneTouchTicketsMetric,
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
+    useTicketsCreatedMetric,
 } from 'hooks/reporting/metrics'
 import {useMetric} from 'hooks/reporting/useMetric'
 
@@ -50,6 +52,11 @@ describe('metrics', () => {
     useMetricMock.mockReturnValue(defaultMetricValue)
 
     describe.each([
+        [
+            'useTicketsCreatedMetric',
+            useTicketsCreatedMetric,
+            ticketsCreatedQueryFactory,
+        ],
         [
             'useClosedTicketsMetric',
             useClosedTicketsMetric,

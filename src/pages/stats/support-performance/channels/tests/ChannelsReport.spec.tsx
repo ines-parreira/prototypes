@@ -1,15 +1,11 @@
 import React, {ComponentProps} from 'react'
-import {render} from '@testing-library/react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 import ChannelsReport, {
     CHANNELS_REPORT_PAGE_TITLE,
-} from 'pages/stats/channels/ChannelsReport'
-import {RootState, StoreDispatch} from 'state/types'
+} from 'pages/stats/support-performance/channels/ChannelsReport'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+import {RootState} from 'state/types'
+import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
+import {renderWithStore} from 'utils/testing'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -22,14 +18,22 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
 jest.mock('pages/stats/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
+jest.mock(
+    'pages/stats/support-performance/channels/ChannelsHeaderCellContent.tsx',
+    () => ({
+        ChannelsHeaderCellContent: () => <div />,
+    })
+)
 
 describe('ChannelsReport', () => {
+    const defaultState = {
+        ui: {
+            [channelsSlice.name]: initialState,
+        },
+    } as RootState
+
     it('should render channels report component', () => {
-        const {getByText} = render(
-            <Provider store={mockStore({})}>
-                <ChannelsReport />
-            </Provider>
-        )
+        const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
 
         expect(getByText(CHANNELS_REPORT_PAGE_TITLE)).toBeInTheDocument()
     })

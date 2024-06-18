@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React, {PropsWithRef} from 'react'
-import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerDimension'
+import {useTicketsRepliedMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import BodyCell, {
