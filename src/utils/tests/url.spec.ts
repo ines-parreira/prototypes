@@ -1,4 +1,8 @@
-import {attachSearchParamsToUrl, ensureHTTPS} from '../url'
+import {
+    attachSearchParamsToUrl,
+    encodeRFC3986URIComponent,
+    ensureHTTPS,
+} from '../url'
 
 describe('ensureHTTPS', () => {
     it('should not do anything if protocol is already https', () => {
@@ -90,5 +94,14 @@ describe('attachSearchParamsToUrl', () => {
         ).toEqual(
             'http://acme.gorgias.docker/?ref=internal&isTest=true&utm_campaign=10%25%20test'
         )
+    })
+})
+
+describe('encodeRFC3986URIComponent', () => {
+    it.each([
+        ['Lorem ipsum dolor sit amet', 'Lorem%20ipsum%20dolor%20sit%20amet'],
+        ["Lorem!'()*ipsum", 'Lorem%21%27%28%29%2Aipsum'],
+    ])('should encode %s to %s', (input, output) => {
+        expect(encodeRFC3986URIComponent(input)).toEqual(output)
     })
 })
