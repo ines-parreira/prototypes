@@ -1,4 +1,10 @@
-import React, {useCallback, useMemo, useRef} from 'react'
+import React, {
+    ComponentProps,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+} from 'react'
 import {List} from 'immutable'
 import {isAxiosError} from 'axios'
 
@@ -63,6 +69,7 @@ import {
     useConfigurationForm,
     validateConfigurationFormValues,
 } from './hooks/useConfigurationForm'
+import {usePublicResources} from './hooks/usePublicResources'
 
 const INITIAL_FORM_VALUES = {
     deactivatedDatetime: new Date().toISOString(),
@@ -472,7 +479,7 @@ export const CreateAiAgentSettingsForm = ({
                         </div>
 
                         {snippetHelpCenter ? (
-                            <PublicSourcesSection
+                            <CreatePublicSourcesSection
                                 helpCenterId={snippetHelpCenter.id}
                                 onPublicURLsChanged={handlePublicURLsChange}
                                 shopName={shopName}
@@ -661,5 +668,31 @@ export const CreateAiAgentSettingsForm = ({
                 </section>
             </div>
         </>
+    )
+}
+
+const CreatePublicSourcesSection = ({
+    onPublicURLsChanged,
+    ...props
+}: ComponentProps<typeof PublicSourcesSection>) => {
+    const {sourceItems} = usePublicResources({helpCenterId: props.helpCenterId})
+
+    useEffect(() => {
+        if (sourceItems) {
+            const publicURLs = sourceItems
+                ?.filter((source) => source.status !== 'error')
+                .map((source) => source.url)
+                .filter((url): url is string => !!url)
+
+            onPublicURLsChanged(publicURLs)
+        }
+    }, [onPublicURLsChanged, sourceItems])
+
+    return (
+        <PublicSourcesSection
+            {...props}
+            sourceItems={sourceItems}
+            onPublicURLsChanged={onPublicURLsChanged}
+        />
     )
 }
