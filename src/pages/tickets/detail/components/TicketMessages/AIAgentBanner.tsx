@@ -31,10 +31,10 @@ const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
         (messageFeedback) => messageFeedback.messageId === message.id
     )
 
-    const allowsFeedback = messageFeedback?.allowsFeedback
-
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
+
+    const allowsFeedback = messageFeedback?.allowsFeedback || isMessagePublic
 
     const messageToDisplay = isMessagePublic
         ? messageFeedback?.summary
@@ -53,7 +53,7 @@ const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
             >
                 {messageToDisplay}
             </div>
-            {(true || allowsFeedback) && ( // TO DO: Remove the true condition. `allowsFeedback` is always false
+            {allowsFeedback && (
                 <AIAgentFeedback
                     message={message}
                     messageFeedback={messageFeedback}

@@ -139,6 +139,13 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
                 shopType={shopType}
                 shopName={shopName}
             />
+            <div className={css.executionId}>
+                {ticketFeedback.messages.map((messageFeedback) => (
+                    <div key={messageFeedback.executionId}>
+                        {messageFeedback.executionId}
+                    </div>
+                ))}
+            </div>
         </>
     )
 }

@@ -67,6 +67,7 @@ export type MessageFeedback = {
     helpCenterId: number
     guidanceHelpCenterId: number
     snippetHelpCenterId: number
+    executionId: string
     messageId: number
     summary: string
     orders: {

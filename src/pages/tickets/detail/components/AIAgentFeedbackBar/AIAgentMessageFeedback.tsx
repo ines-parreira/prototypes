@@ -376,6 +376,9 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                     shopType={messageFeedback.shopType}
                     shopName={messageFeedback.shopName}
                 />
+                <div className={css.executionId}>
+                    {messageFeedback.executionId}
+                </div>
             </HelpCenterApiClientProvider>
         </>
     )
