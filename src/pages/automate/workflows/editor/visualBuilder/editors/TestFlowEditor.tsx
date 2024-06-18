@@ -299,6 +299,21 @@ export const TestFlowEditor = ({
                                 if (!el || !installationSnippet) return
                                 if (el.querySelector('#chat-iframe')) return
 
+                                const snippet = new DOMParser().parseFromString(
+                                    installationSnippet.snippet,
+                                    'text/html'
+                                )
+                                const script = snippet.querySelector('script')
+
+                                if (!script) {
+                                    return
+                                }
+
+                                const scriptSrc = new URL(script.src)
+                                scriptSrc.searchParams.set('source', 'manual')
+
+                                script.src = scriptSrc.toString()
+
                                 const iframe = document.createElement('iframe')
                                 iframe.id = 'chat-iframe'
                                 iframe.className = css.iframe
@@ -309,7 +324,7 @@ export const TestFlowEditor = ({
                                 const writeIframe = () => {
                                     const iframeSrcDoc = `
                                         <body>
-                                            ${installationSnippet.snippet}
+                                            ${script.outerHTML}
                                             <script type="application/javascript">
                                             window.localStorage.setItem = function() {}
                                             window.localStorage.getItem = function() {}
