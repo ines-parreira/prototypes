@@ -1,7 +1,7 @@
-import {Price, ProductType, HelpdeskPrice} from 'models/billing/types'
+import {Plan, ProductType, HelpdeskPlan} from 'models/billing/types'
 
 export type SubscriptionProducts = {
-    [key in ProductType]: Price | null
+    [key in ProductType]: Plan | null
 } & {
-    [ProductType.Helpdesk]: HelpdeskPrice
+    [ProductType.Helpdesk]: HelpdeskPlan
 }

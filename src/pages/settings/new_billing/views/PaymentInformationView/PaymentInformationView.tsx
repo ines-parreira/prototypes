@@ -10,10 +10,10 @@ import {
     getCurrentHelpdeskInterval,
 } from 'state/billing/selectors'
 import {
-    AutomationPrice,
-    HelpdeskPrice,
+    AutomatePlan,
+    HelpdeskPlan,
     PlanInterval,
-    SMSOrVoicePrice,
+    SMSOrVoicePlan,
 } from 'models/billing/types'
 import {BillingContact, TicketPurpose} from 'state/billing/types'
 import {countries} from 'config/countries'
@@ -30,10 +30,10 @@ import css from './PaymentInformationView.less'
 
 type PaymentInformationViewProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
-    currentHelpdeskPlan?: HelpdeskPrice
-    currentAutomatePlan?: AutomationPrice
-    currentVoicePlan?: SMSOrVoicePrice
-    currentSmsPlan?: SMSOrVoicePrice
+    currentHelpdeskPlan?: HelpdeskPlan
+    currentAutomatePlan?: AutomatePlan
+    currentVoicePlan?: SMSOrVoicePlan
+    currentSmsPlan?: SMSOrVoicePlan
     isCurrentSubscriptionCanceled: boolean
 }
 

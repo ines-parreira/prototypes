@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 
 import {useLocation} from 'react-router-dom'
 import classnames from 'classnames'
-import {Price, ProductType} from 'models/billing/types'
+import {Plan, ProductType} from 'models/billing/types'
 import Tooltip from 'pages/common/components/Tooltip'
 import Button from 'pages/common/components/button/Button'
 import ToggleInput from 'pages/common/forms/ToggleInput'
@@ -21,7 +21,7 @@ export type AutoUpgradeToggleProps = {
     type: ProductType
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
-    prices?: Price[]
+    prices?: Plan[]
 }
 
 const AutoUpgradeToggle = ({

@@ -2,24 +2,24 @@ import {
     basicMonthlyHelpdeskPrice,
     basicYearlyHelpdeskPrice,
 } from 'fixtures/productPrices'
-import {HelpdeskPrice, PlanInterval} from 'models/billing/types'
+import {HelpdeskPlan, PlanInterval} from 'models/billing/types'
 import {
     PriceForIntervalProps,
     getPriceForInterval,
 } from '../getPriceForInterval'
 
 describe('getPriceForInterval', () => {
-    const mockPrices: HelpdeskPrice[] = [
+    const mockPrices: HelpdeskPlan[] = [
         basicMonthlyHelpdeskPrice,
         basicYearlyHelpdeskPrice,
     ]
 
-    const mockCurrentPrice: HelpdeskPrice = basicYearlyHelpdeskPrice
+    const mockCurrentPrice: HelpdeskPlan = basicYearlyHelpdeskPrice
 
     const setup = (
-        props: Partial<PriceForIntervalProps<HelpdeskPrice>> = {}
+        props: Partial<PriceForIntervalProps<HelpdeskPlan>> = {}
     ) => {
-        const defaultProps: PriceForIntervalProps<HelpdeskPrice> = {
+        const defaultProps: PriceForIntervalProps<HelpdeskPlan> = {
             prices: mockPrices,
             currentPrice: mockCurrentPrice,
             interval: PlanInterval.Month,

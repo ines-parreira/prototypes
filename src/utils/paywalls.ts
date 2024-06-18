@@ -2,11 +2,7 @@ import {
     AccountFeature,
     AccountFeatureMetadata,
 } from '../state/currentAccount/types'
-import {
-    AutomationPrice,
-    HelpdeskPrice,
-    PlanInterval,
-} from '../models/billing/types'
+import {AutomatePlan, HelpdeskPlan, PlanInterval} from '../models/billing/types'
 
 export enum PlanName {
     Starter = 'Starter',
@@ -41,14 +37,14 @@ export const convertLegacyPlanNameToPublicPlanName = (
 
 export const getCheapestPriceNameForFeature = (
     featureName: AccountFeature,
-    prices: (HelpdeskPrice | AutomationPrice)[]
+    plans: (HelpdeskPlan | AutomatePlan)[]
 ) => {
-    return prices
-        .filter((price) => price.interval === PlanInterval.Month)
+    return plans
+        .filter((plan) => plan.interval === PlanInterval.Month)
         .find(
-            (price) =>
+            (plan) =>
                 (
-                    price.features as Record<
+                    plan.features as Record<
                         AccountFeature,
                         AccountFeatureMetadata
                     >

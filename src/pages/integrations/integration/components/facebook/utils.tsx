@@ -2,7 +2,7 @@ import React from 'react'
 import {Map} from 'immutable'
 
 import {SegmentEvent} from 'common/segment'
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
 import Tooltip from 'pages/common/components/Tooltip'
 import {AccountFeature} from 'state/currentAccount/types'
@@ -253,7 +253,7 @@ export function getInstagramDMSettingStatus(
 export function getInstagramDMSettingsInlineComponent(
     instagramDMSettingStatus: number,
     currentAccount: Map<any, any>,
-    currentHelpdeskProduct: HelpdeskPrice | undefined,
+    currentHelpdeskProduct: HelpdeskPlan | undefined,
     tooltipId?: number
 ) {
     const currentPriceHasInstagramDMFeature =

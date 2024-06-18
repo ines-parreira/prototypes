@@ -1,14 +1,14 @@
-import {ConvertPrice, Price} from 'models/billing/types'
+import {ConvertPlan, Plan} from 'models/billing/types'
 
 export const getNextTier = (
-    prices?: Price[],
-    price?: Price
-): Price | undefined => {
+    prices?: Plan[],
+    price?: Plan
+): Plan | undefined => {
     if (!price || !prices) {
         return undefined
     }
 
-    let minPrice: Price | undefined = undefined
+    let minPrice: Plan | undefined = undefined
 
     for (const priceConfig of prices) {
         if (!priceConfig) {
@@ -25,7 +25,7 @@ export const getNextTier = (
         const isBetter = !minPrice || minPrice.amount > priceConfig.amount
 
         // tier property is only available for convert prices at the moment
-        const tier = (price as ConvertPrice)?.tier
+        const tier = (price as ConvertPlan)?.tier
 
         if (isSameInterval && isSameProduct && isBigger && isBetter && tier) {
             minPrice = priceConfig

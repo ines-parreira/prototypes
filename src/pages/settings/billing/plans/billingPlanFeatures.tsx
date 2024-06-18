@@ -4,12 +4,12 @@ import React from 'react'
 import magentoIcon from 'assets/img/integrations/magento2-mono.svg'
 
 import {
-    AutomationPrice,
-    AutomationPriceFeatures,
-    HelpdeskPrice,
+    AutomatePlan,
+    AutomatePriceFeatures,
+    HelpdeskPlan,
     HelpdeskPriceFeatures,
 } from 'models/billing/types'
-import {isHelpdeskPrice, isAutomate} from 'models/billing/utils'
+import {isHelpdesk, isAutomate} from 'models/billing/utils'
 import {isFeatureEnabled} from '../../../../utils/account'
 import {
     AccountFeature,
@@ -169,35 +169,32 @@ export const getEnterprisePlanCardFeatures = (): PlanCardFeature[] => {
 }
 
 export const getPlanCardFeaturesForPrices = (
-    prices: (HelpdeskPrice | AutomationPrice)[],
+    plans: (HelpdeskPlan | AutomatePlan)[],
     enableHardCodedFeatures = false
 ): PlanCardFeature[] => {
-    const helpdeskPrice = prices.find((price) => isHelpdeskPrice(price)) as
-        | HelpdeskPrice
+    const helpdeskPlan = plans.find((plan) => isHelpdesk(plan)) as
+        | HelpdeskPlan
         | undefined
 
-    if (!helpdeskPrice) {
+    if (!helpdeskPlan) {
         return []
     }
 
-    if (helpdeskPrice.name.toLocaleLowerCase() === 'enterprise') {
+    if (helpdeskPlan.name.toLocaleLowerCase() === 'enterprise') {
         return getEnterprisePlanCardFeatures()
     }
 
-    const automatePlan = prices.find((plan) => isAutomate(plan)) as
-        | AutomationPrice
+    const automatePlan = plans.find((plan) => isAutomate(plan)) as
+        | AutomatePlan
         | undefined
 
     const extraTicketCost = automatePlan
-        ? helpdeskPrice.extra_ticket_cost + automatePlan.extra_ticket_cost
-        : helpdeskPrice.extra_ticket_cost
+        ? helpdeskPlan.extra_ticket_cost + automatePlan.extra_ticket_cost
+        : helpdeskPlan.extra_ticket_cost
 
-    const planFeatures = prices.reduce(
-        (
-            acc: Partial<HelpdeskPriceFeatures & AutomationPriceFeatures>,
-            price
-        ) => {
-            return {...acc, ...price.features}
+    const planFeatures = plans.reduce(
+        (acc: Partial<HelpdeskPriceFeatures & AutomatePriceFeatures>, plan) => {
+            return {...acc, ...plan.features}
         },
         {}
     )
@@ -216,21 +213,21 @@ export const getPlanCardFeaturesForPrices = (
                 label: (
                     <BillableTicketsLabel
                         extraTicketCost={extraTicketCost}
-                        currency={helpdeskPrice.currency}
-                        freeTickets={helpdeskPrice.num_quota_tickets}
+                        currency={helpdeskPlan.currency}
+                        freeTickets={helpdeskPlan.num_quota_tickets}
                     />
                 ),
             },
         ] as PlanCardFeature[]
     ).concat(
         getCommonPlanCardFeatures({
-            planId: helpdeskPrice.name.toLocaleLowerCase(),
-            planName: helpdeskPrice.name,
+            planId: helpdeskPlan.name.toLocaleLowerCase(),
+            planName: helpdeskPlan.name,
             enableHardCodedFeatures,
             enabledFeatures: enabledFeaturesNames,
             phoneNumbersLimit:
                 planFeatures && planFeatures[AccountFeature.PhoneNumber]?.limit,
-            isCustom: helpdeskPrice.custom,
+            isCustom: helpdeskPlan.custom,
         })
     )
 }

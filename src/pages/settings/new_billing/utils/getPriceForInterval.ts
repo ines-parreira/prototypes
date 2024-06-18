@@ -1,22 +1,12 @@
-import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    PlanInterval,
-    SMSOrVoicePrice,
-} from 'models/billing/types'
+import {Plan, PlanInterval} from 'models/billing/types'
 
-export type PriceForIntervalProps<
-    T extends HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
-> = {
+export type PriceForIntervalProps<T extends Plan> = {
     prices: T[]
     currentPrice?: T
     interval: PlanInterval
 }
 
-export const getPriceForInterval = <
-    T extends HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
->({
+export const getPriceForInterval = <T extends Plan>({
     prices,
     currentPrice,
     interval,

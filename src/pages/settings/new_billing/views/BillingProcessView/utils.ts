@@ -1,10 +1,4 @@
-import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    PlanInterval,
-    SMSOrVoicePrice,
-} from 'models/billing/types'
+import {Plan, PlanInterval} from 'models/billing/types'
 import {
     Notification,
     NotificationStatus,
@@ -13,16 +7,8 @@ import {
 import {PRODUCT_INFO} from '../../constants'
 
 export type setNotificationProps = {
-    oldProduct?:
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    newProduct?:
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
+    oldProduct?: Plan
+    newProduct?: Plan
     periodEnd: string
     interval?: PlanInterval
     onClick: () => void

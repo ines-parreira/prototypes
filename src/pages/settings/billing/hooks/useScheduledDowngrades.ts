@@ -2,7 +2,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {fetchSubscription} from 'models/billing/resources'
-import {Price, Product} from 'models/billing/types'
+import {Plan, Product} from 'models/billing/types'
 import {
     getAvailablePlansMap,
     getAvailablePlansByProduct,
@@ -10,9 +10,9 @@ import {
 
 interface ScheduledDowngrade {
     datetime: string
-    from: Price
+    from: Plan
     product: Product
-    to: Price | null
+    to: Plan | null
 }
 
 export default function useScheduledDowngrades() {

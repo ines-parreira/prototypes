@@ -2,13 +2,13 @@ import _minBy from 'lodash/minBy'
 
 import {ColorType} from 'pages/common/components/Badge/Badge'
 import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
+    AutomatePlan,
+    ConvertPlan,
+    HelpdeskPlan,
     PlanInterval,
-    Price,
+    Plan,
     ProductType,
-    SMSOrVoicePrice,
+    SMSOrVoicePlan,
 } from 'models/billing/types'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
@@ -28,33 +28,33 @@ export const getFullPrice = (discounted_amount: number, discount: number) => {
     throw new Error('discount amount must be a number between 0 and < 1')
 }
 
-export function isHelpdeskPrice(plan: Price): plan is HelpdeskPrice {
+export function isHelpdesk(plan: Plan): plan is HelpdeskPlan {
     return plan.product === ProductType.Helpdesk
 }
 
-export function isAutomate(plan: Price): plan is AutomationPrice {
+export function isAutomate(plan: Plan): plan is AutomatePlan {
     return plan.product === ProductType.Automation
 }
 
-export function isVoice(plan: Price): plan is SMSOrVoicePrice {
+export function isVoice(plan: Plan): plan is SMSOrVoicePlan {
     return plan.product === ProductType.Voice
 }
 
-export function isSms(plan: Price): plan is SMSOrVoicePrice {
+export function isSms(plan: Plan): plan is SMSOrVoicePlan {
     return plan.product === ProductType.SMS
 }
 
-export function isConvert(plan: Price): plan is ConvertPrice {
+export function isConvert(plan: Plan): plan is ConvertPlan {
     return plan.product === ProductType.Convert
 }
 
 export function isStarterTierPrice(
-    price: HelpdeskPrice | undefined
-): price is HelpdeskPrice {
+    price: HelpdeskPlan | undefined
+): price is HelpdeskPlan {
     return !!price?.internal_id.startsWith('starter-')
 }
 
-export function isTrial(plan: Price | undefined) {
+export function isTrial(plan: Plan | undefined) {
     if (!plan) return false
 
     return (
@@ -63,7 +63,7 @@ export function isTrial(plan: Price | undefined) {
     )
 }
 
-export function isLegacyAutomate(plan: Price | undefined) {
+export function isLegacyAutomate(plan: Plan | undefined) {
     if (!plan) return false
 
     return (
@@ -72,7 +72,7 @@ export function isLegacyAutomate(plan: Price | undefined) {
     )
 }
 
-export function isEnterprise(plan: ConvertPrice | undefined) {
+export function isEnterprise(plan: ConvertPlan | undefined) {
     if (!plan) return false
 
     return isConvert(plan) && plan?.custom
@@ -82,25 +82,17 @@ export function getFormattedAmount(amountInCents: number) {
     return amountInCents / 100
 }
 
-export const getCheapestPrice = (
-    prices?: (
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    )[],
-    interval?: PlanInterval
-) =>
-    !!prices
+export const getCheapestPrice = (plans?: Plan[], interval?: PlanInterval) =>
+    !!plans
         ? _minBy(
-              prices.filter(
-                  (price) => price.interval === interval && price.amount !== 0
+              plans.filter(
+                  (plan) => plan.interval === interval && plan.amount !== 0
               ),
-              (price) => price.amount
+              (plan) => plan.amount
           )
         : undefined
 
-export function getProductLabel(plan: Price): string | undefined {
+export function getProductLabel(plan: Plan): string | undefined {
     if (isTrial(plan)) {
         if (isConvert(plan)) {
             return 'Pay as you go'

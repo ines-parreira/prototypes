@@ -3,11 +3,11 @@ import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
 import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
+    AutomatePlan,
+    ConvertPlan,
+    HelpdeskPlan,
     ProductType,
-    SMSOrVoicePrice,
+    SMSOrVoicePlan,
 } from 'models/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
@@ -54,27 +54,27 @@ type BillingProcessViewProps = {
 
 export type SelectedPlans = {
     [ProductType.Helpdesk]: {
-        plan?: HelpdeskPrice
+        plan?: HelpdeskPlan
         isSelected: boolean
         autoUpgrade?: false
     }
     [ProductType.Automation]: {
-        plan?: AutomationPrice
+        plan?: AutomatePlan
         isSelected: boolean
         autoUpgrade?: false
     }
     [ProductType.Voice]: {
-        plan?: SMSOrVoicePrice
+        plan?: SMSOrVoicePlan
         isSelected: boolean
         autoUpgrade?: false
     }
     [ProductType.SMS]: {
-        plan?: SMSOrVoicePrice
+        plan?: SMSOrVoicePlan
         isSelected: boolean
         autoUpgrade?: false
     }
     [ProductType.Convert]: {
-        plan?: ConvertPrice
+        plan?: ConvertPlan
         isSelected: boolean
         autoUpgrade?: boolean
     }

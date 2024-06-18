@@ -1,10 +1,10 @@
 import React from 'react'
 import {isLegacyAutomate, isTrial} from 'models/billing/utils'
 import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
-import {Price, ProductType} from 'models/billing/types'
+import {Plan, ProductType} from 'models/billing/types'
 
 export type CounterTextProps = {
-    price: Price | undefined
+    price: Plan | undefined
     type: ProductType
     interval: string
 }

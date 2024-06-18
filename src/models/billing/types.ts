@@ -27,27 +27,23 @@ export type PriceId = string
 // A Stripe product ID always starts with 'prod_'.
 export type ProductId = string
 
-export type Price =
-    | HelpdeskPrice
-    | AutomationPrice
-    | SMSOrVoicePrice
-    | ConvertPrice
+export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
 
-export type Product<T = Price> = {
+export type Product<T = Plan> = {
     id: string
-    type: T extends HelpdeskPrice
+    type: T extends HelpdeskPlan
         ? ProductType.Helpdesk
-        : T extends AutomationPrice
+        : T extends AutomatePlan
         ? ProductType.Automation
-        : T extends SMSOrVoicePrice
+        : T extends SMSOrVoicePlan
         ? ProductType.Voice | ProductType.SMS
-        : T extends ConvertPrice
+        : T extends ConvertPlan
         ? ProductType.Convert
         : never
     prices: T[]
 }
 
-type BasePrice = {
+type BasePlan = {
     product: ProductType
     num_quota_tickets: number | null // Integers only, is None for the legacy Automate usd-4 plans
     amount: number
@@ -68,7 +64,7 @@ export type HelpdeskPriceFeatures = Record<
     AccountFeatureMetadata
 >
 
-export type HelpdeskPrice = BasePrice & {
+export type HelpdeskPlan = BasePlan & {
     num_quota_tickets: number
     addons?: string[]
     integrations: number
@@ -76,7 +72,7 @@ export type HelpdeskPrice = BasePrice & {
     legacy_id: string
     order?: number
     features: HelpdeskPriceFeatures
-    legacy_automation_addon_features?: AutomationPriceFeatures
+    legacy_automation_addon_features?: AutomatePriceFeatures
     limits: {
         messages: PlanLimits
         tickets: PlanLimits
@@ -87,7 +83,7 @@ export type HelpdeskPrice = BasePrice & {
     trial_period_days: number
 }
 
-export type AutomationPriceFeatures = Record<
+export type AutomatePriceFeatures = Record<
     | AccountFeature.AutomationTrackOrderFlow
     | AccountFeature.AutomationReportIssueFlow
     | AccountFeature.AutomationCancellationsFlow
@@ -97,21 +93,21 @@ export type AutomationPriceFeatures = Record<
     AccountFeatureMetadata
 >
 
-export type AutomationPrice = BasePrice & {
+export type AutomatePlan = BasePlan & {
     automation_addon_discount: number
     automation_addon_included?: boolean
     base_price_id: string
-    features: AutomationPriceFeatures
+    features: AutomatePriceFeatures
     legacy_id: string
     order: number
     num_quota_tickets: number | null
 }
 
-export type SMSOrVoicePrice = BasePrice & {
+export type SMSOrVoicePlan = BasePlan & {
     num_quota_tickets: number
 }
 
-export type ConvertPrice = BasePrice & {
+export type ConvertPlan = BasePlan & {
     num_quota_tickets: number | null
     tier?: number
 }

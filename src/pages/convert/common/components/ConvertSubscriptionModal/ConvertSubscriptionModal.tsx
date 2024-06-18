@@ -8,7 +8,7 @@ import {
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import {ConvertPrice, ProductType} from 'models/billing/types'
+import {ConvertPlan, ProductType} from 'models/billing/types'
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
 import {isTrialing} from 'state/currentAccount/selectors'
 import {getDefaultConvertPriceIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPriceIndex'
@@ -37,7 +37,7 @@ const ConvertSubscriptionModal = ({
     const convertAvailablePlans = useAppSelector(getAvailableConvertPlans)
     const isTrialingSubscription = useAppSelector(isTrialing)
 
-    const defaultPrice = useMemo((): ConvertPrice | undefined => {
+    const defaultPrice = useMemo((): ConvertPlan | undefined => {
         const convertInitialIndex = getDefaultConvertPriceIndex(
             currentHelpdeskPlan?.interval,
             convertAvailablePlans,

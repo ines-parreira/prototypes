@@ -1,14 +1,7 @@
 import React, {useMemo} from 'react'
 
 import classNames from 'classnames'
-import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    PlanInterval,
-    ProductType,
-    SMSOrVoicePrice,
-} from 'models/billing/types'
+import {Plan, PlanInterval, ProductType} from 'models/billing/types'
 import {getProductLabel, isTrial} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
@@ -22,13 +15,8 @@ import css from './SummaryItem.less'
 export type SummaryItemProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
-    prices?: (
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    )[]
+    product?: Plan
+    prices?: Plan[]
     selectedPlans: SelectedPlans
     isFrequencyChanged?: boolean
 }

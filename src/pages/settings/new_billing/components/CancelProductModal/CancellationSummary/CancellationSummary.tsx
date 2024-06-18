@@ -1,5 +1,5 @@
 import React, {useMemo} from 'react'
-import {Price, ProductType} from 'models/billing/types'
+import {Plan, ProductType} from 'models/billing/types'
 import SummaryBody from '../UI/SummaryBody'
 import SummaryHeader from '../UI/SummaryHeader'
 import {SummaryItemData} from '../UI/types'
@@ -29,7 +29,7 @@ const CancellationSummary = ({
             .map((key) => {
                 const productType = key as ProductType
                 const toBeRemoved = cancellingProducts.includes(productType)
-                const price = subscriptionProducts[productType] as Price
+                const price = subscriptionProducts[productType] as Plan
 
                 if (!toBeRemoved) {
                     total += (price.amount | 0) / 100

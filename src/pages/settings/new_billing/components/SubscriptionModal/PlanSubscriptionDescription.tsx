@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
-import {PlanInterval, Price, ProductType} from 'models/billing/types'
+import {PlanInterval, Plan, ProductType} from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     formatAmount,
@@ -25,13 +25,13 @@ import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
-    prices: Price[]
+    prices: Plan[]
     tagline?: string
     isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
-    selectedPrice: Price | undefined
-    setSelectedPrice: React.Dispatch<React.SetStateAction<Price | undefined>>
+    selectedPrice: Plan | undefined
+    setSelectedPrice: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -62,7 +62,7 @@ const PlanSubscriptionDescription = ({
         [productType]
     )
 
-    const formatOptionLabel = useCallback((plan: Price) => {
+    const formatOptionLabel = useCallback((plan: Plan) => {
         const label = getProductLabel(plan)
         if (label) {
             return label

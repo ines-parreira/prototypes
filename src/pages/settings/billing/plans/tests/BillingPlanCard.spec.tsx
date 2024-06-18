@@ -20,7 +20,7 @@ import {
     products,
     proMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import {getFormattedAmount} from 'models/billing/utils'
 import BillingPlanCard from '../BillingPlanCard'
 import {getPlanCardFeaturesForPrices} from '../billingPlanFeatures'
@@ -58,7 +58,7 @@ describe('<BillingPlanCard />', () => {
         className: 'fooClass',
     }
 
-    it.each<[string, HelpdeskPrice]>([
+    it.each<[string, HelpdeskPlan]>([
         ['Basic price', basicMonthlyHelpdeskPrice],
         ['Advanced price', advancedMonthlyHelpdeskPrice],
         ['Pro price', proMonthlyHelpdeskPrice],

@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import {
     basicMonthlyHelpdeskPrice,
     HELPDESK_PRODUCT_ID,
@@ -13,7 +13,7 @@ import {RootState} from 'state/types'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 
 export const getStateWithPrice = (
-    price: HelpdeskPrice = basicMonthlyHelpdeskPrice
+    price: HelpdeskPlan = basicMonthlyHelpdeskPrice
 ) => {
     const productsWithExtraPrice = _cloneDeep(products)
     productsWithExtraPrice[0].prices.push(price)

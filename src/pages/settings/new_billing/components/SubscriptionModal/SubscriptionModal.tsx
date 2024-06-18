@@ -17,19 +17,19 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {getCurrentHelpdeskInterval} from 'state/billing/selectors'
-import {Price, ProductType} from 'models/billing/types'
+import {Plan, ProductType} from 'models/billing/types'
 import css from './SubscriptionModal.less'
 
 type Props = {
     productType: ProductType
     canduId: string
-    prices: Price[]
+    prices: Plan[]
     confirmLabel?: string
     confirmEnterpriseLabel?: string
     headerDescription: string
     tagline: string
     currentPage: string
-    defaultPrice: Price | undefined
+    defaultPrice: Plan | undefined
     isTrialingSubscription: boolean
     isOpen: boolean
     onClose: () => void

@@ -1,4 +1,4 @@
-import {AutomationPrice} from 'models/billing/types'
+import {AutomatePlan} from 'models/billing/types'
 import {
     convertSecondsToHours,
     convertSecondsToMinutes,
@@ -72,7 +72,7 @@ describe('getAutomateSubscriptionPrice', () => {
         const numberOfClosedTickets = 2500
         const expectedPrice = 10
         const result = getAutomateSubscriptionPrice(
-            automateSubscriptionPrices as AutomationPrice[],
+            automateSubscriptionPrices as AutomatePlan[],
             numberOfClosedTickets
         )
         expect(result).toBe(expectedPrice)
@@ -80,7 +80,7 @@ describe('getAutomateSubscriptionPrice', () => {
         const numberOfClosedTickets2 = 4500
         const expectedPrice2 = 20
         const result2 = getAutomateSubscriptionPrice(
-            automateSubscriptionPrices as AutomationPrice[],
+            automateSubscriptionPrices as AutomatePlan[],
             numberOfClosedTickets2
         )
         expect(result2).toBe(expectedPrice2)

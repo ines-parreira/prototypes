@@ -4,9 +4,9 @@ import classNames from 'classnames'
 
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import {
-    AutomationPrice,
+    AutomatePlan,
     PlanInterval,
-    Price,
+    Plan,
     ProductType,
 } from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
@@ -17,12 +17,12 @@ type Props = {
     handleOnClose: () => void
     hasAutomate: boolean
     header: string
-    automationPrices: AutomationPrice[]
+    automationPrices: AutomatePlan[]
     isTrialingSubscription: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
-    selectedPrice?: Price
-    setSelectedPrice: React.Dispatch<React.SetStateAction<Price | undefined>>
+    selectedPrice?: Plan
+    setSelectedPrice: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
     image?: string
     handleUnsubscribeClick: () => void

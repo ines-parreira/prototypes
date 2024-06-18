@@ -19,12 +19,12 @@ import TotalAmount from 'pages/settings/billing/plans/TotalAmount'
 import AutomateAmount from 'pages/settings/billing/plans/AutomateAmount'
 import {getActiveIntegrations} from 'state/integrations/selectors'
 
-import {HelpdeskPrice} from '../../../../../models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import OpenChatButton from './components/OpenChatButton'
 
 type Props = {
     isOpen: boolean
-    helpdeskPrice: HelpdeskPrice
+    helpdeskPrice: HelpdeskPlan
     onClose: () => void
 }
 

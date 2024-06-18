@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {useHistory} from 'react-router-dom'
-import {Price, ProductType} from 'models/billing/types'
+import {Plan, ProductType} from 'models/billing/types'
 
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -26,7 +26,7 @@ import css from './ProductCard.less'
 
 export type ProductCardProps = {
     type: ProductType
-    plan?: Price | null
+    plan?: Plan | null
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner | null
     isDisabled: boolean

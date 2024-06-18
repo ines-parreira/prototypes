@@ -7,7 +7,7 @@ import {
     proMonthlyHelpdeskPrice,
     starterHelpdeskPrice,
 } from 'fixtures/productPrices'
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import {
     getEnterprisePlanCardFeatures,
     getPlanCardFeaturesForPrices,
@@ -33,7 +33,7 @@ describe('billingPlanFeatures', () => {
             ).toMatchSnapshot()
         })
 
-        it.each<[string, HelpdeskPrice]>([
+        it.each<[string, HelpdeskPlan]>([
             ['Starter price', starterHelpdeskPrice],
             ['Basic price', basicMonthlyHelpdeskPrice],
             ['Pro price', proMonthlyHelpdeskPrice],

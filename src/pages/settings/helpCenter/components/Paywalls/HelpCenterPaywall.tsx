@@ -4,8 +4,8 @@ import helpCenterImagePreview from 'assets/img/paywalls/screens/helpcenter.png'
 import Paywall, {PaywallTheme} from 'pages/common/components/Paywall/Paywall'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpdeskPrice, PlanInterval} from 'models/billing/types'
-import {isHelpdeskPrice} from 'models/billing/utils'
+import {HelpdeskPlan, PlanInterval} from 'models/billing/types'
+import {isHelpdesk} from 'models/billing/utils'
 import {
     getCurrentHelpdeskPlan,
     getAvailablePlans,
@@ -29,13 +29,13 @@ const HelpCenterPaywall = (): JSX.Element => {
         () =>
             availablePlans.find(
                 (plan) =>
-                    isHelpdeskPrice(plan) &&
+                    isHelpdesk(plan) &&
                     plan.public &&
                     plan.interval ===
                         (currentHelpdeskPlan?.interval || PlanInterval.Month) &&
                     !plan.custom &&
                     plan.name === currentHelpdeskPlanName
-            ) as HelpdeskPrice,
+            ) as HelpdeskPlan,
         [currentHelpdeskPlanName, currentHelpdeskPlan, availablePlans]
     )
 

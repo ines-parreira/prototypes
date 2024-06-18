@@ -1,13 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import classNames from 'classnames'
-import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    PlanInterval,
-    ProductType,
-    SMSOrVoicePrice,
-} from 'models/billing/types'
+import {Plan, PlanInterval, ProductType} from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {getProductLabel, isStarterTierPrice} from 'models/billing/utils'
@@ -33,13 +26,8 @@ import css from './ProductPlanSelection.less'
 export type ProductPlanSelectionProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
-    prices?: (
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    )[]
+    product?: Plan
+    prices?: Plan[]
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isTrialing?: boolean
@@ -95,23 +83,14 @@ const ProductPlanSelection = ({
         [interval]
     )
 
-    const getLabel = useCallback(
-        (
-            plan:
-                | HelpdeskPrice
-                | AutomationPrice
-                | SMSOrVoicePrice
-                | ConvertPrice
-        ) => {
-            const label = getProductLabel(plan)
-            if (label) {
-                return label
-            }
+    const getLabel = useCallback((plan: Plan) => {
+        const label = getProductLabel(plan)
+        if (label) {
+            return label
+        }
 
-            return formatNumTickets(plan.num_quota_tickets ?? 0)
-        },
-        []
-    )
+        return formatNumTickets(plan.num_quota_tickets ?? 0)
+    }, [])
 
     const options = useMemo(
         () => [

@@ -17,7 +17,7 @@ import {
 } from 'fixtures/productPrices'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import {renderWithRouter} from 'utils/testing'
 
 import ConvertStatsNavbar from '../ConvertStatsNavbar'
@@ -30,7 +30,7 @@ jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
 })
 
 describe('ConvertStatsNavbar', () => {
-    const getState = (price: HelpdeskPrice, enabled = false): RootState => {
+    const getState = (price: HelpdeskPlan, enabled = false): RootState => {
         const productsWithStarter = _cloneDeep(products)
         productsWithStarter[0].prices.push(price)
 

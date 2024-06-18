@@ -12,7 +12,7 @@ import {
     Category as CategoryType,
     isCategory,
 } from 'models/integration/types/app'
-import {AutomationPrice, HelpdeskPrice} from 'models/billing/types'
+import {AutomatePlan, HelpdeskPlan} from 'models/billing/types'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {IntegrationListItem} from 'state/integrations/types'
 import {notify} from 'state/notifications/actions'
@@ -60,7 +60,7 @@ export function addRequiredPlanToIntegrations(
     integrationsListItems: IntegrationListItem[],
     integrations: Integration[],
     features: Partial<Record<AccountFeature, AccountFeatureMetadata>>,
-    prices: (HelpdeskPrice | AutomationPrice)[]
+    prices: (HelpdeskPlan | AutomatePlan)[]
 ) {
     return integrationsListItems.map((integration) => {
         const requiredFeature = integration.requiredFeature

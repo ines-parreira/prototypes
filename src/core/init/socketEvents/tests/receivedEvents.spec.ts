@@ -12,7 +12,7 @@ import {
     proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice,
 } from 'fixtures/productPrices'
 import * as currentUserActions from 'state/currentUser/actions'
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan, PriceId} from 'models/billing/types'
 import {TicketStatuses} from 'business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
 
@@ -173,7 +173,7 @@ describe('receivedEvents', () => {
                     ({
                         [mockedProMonthlyHelpdeskPrice.price_id]:
                             mockedProMonthlyHelpdeskPrice,
-                    } as Record<string, HelpdeskPrice>)
+                    } as Record<PriceId, HelpdeskPlan>)
             )
         })
 

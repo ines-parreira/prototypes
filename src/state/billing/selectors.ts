@@ -7,18 +7,18 @@ import {
     getCheapestPrice,
     getFormattedAmount,
     getFullPrice,
-    isHelpdeskPrice,
+    isHelpdesk,
 } from 'models/billing/utils'
 import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    Price,
+    AutomatePlan,
+    ConvertPlan,
+    HelpdeskPlan,
+    Plan,
     PriceId,
     Product,
     ProductId,
     ProductType,
-    SMSOrVoicePrice,
+    SMSOrVoicePlan,
 } from 'models/billing/types'
 import {
     AccountFeature,
@@ -60,7 +60,7 @@ export const getAvailableHelpdeskPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const helpdeskProduct = products.find(
-            (product): product is Product<HelpdeskPrice> =>
+            (product): product is Product<HelpdeskPlan> =>
                 product.type === ProductType.Helpdesk
         )
         if (!helpdeskProduct) {
@@ -74,7 +74,7 @@ export const getAvailableAutomatePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const autProduct = products.find(
-            (product): product is Product<AutomationPrice> =>
+            (product): product is Product<AutomatePlan> =>
                 product.type === ProductType.Automation
         )
         if (!autProduct) {
@@ -88,7 +88,7 @@ export const getAvailableVoicePlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const voiceProduct = products.find(
-            (product): product is Product<SMSOrVoicePrice> =>
+            (product): product is Product<SMSOrVoicePlan> =>
                 product.type === ProductType.Voice
         )
         if (!voiceProduct) {
@@ -102,7 +102,7 @@ export const getAvailableSmsPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const smsProduct = products.find(
-            (product): product is Product<SMSOrVoicePrice> =>
+            (product): product is Product<SMSOrVoicePlan> =>
                 product.type === ProductType.SMS
         )
         if (!smsProduct) {
@@ -116,7 +116,7 @@ export const getAvailableConvertPlans = createSelector(
     getAvailablePlansByProduct,
     (products) => {
         const convertProduct = products.find(
-            (product): product is Product<ConvertPrice> =>
+            (product): product is Product<ConvertPlan> =>
                 product.type === ProductType.Convert
         )
         if (!convertProduct) {
@@ -147,11 +147,11 @@ export const getCurrentPlansByProduct = createSelector(
 
         // For now, a helpdesk plan is required for the app to work.
         const currentPlansByProduct: {
-            [ProductType.Helpdesk]: HelpdeskPrice
-            [ProductType.Automation]?: AutomationPrice
-            [ProductType.Voice]?: SMSOrVoicePrice
-            [ProductType.SMS]?: SMSOrVoicePrice
-            [ProductType.Convert]?: ConvertPrice
+            [ProductType.Helpdesk]: HelpdeskPlan
+            [ProductType.Automation]?: AutomatePlan
+            [ProductType.Voice]?: SMSOrVoicePlan
+            [ProductType.SMS]?: SMSOrVoicePlan
+            [ProductType.Convert]?: ConvertPlan
         } = {} as any
 
         Object.values(currentPlansPriceIdByProduct).forEach((priceId) => {
@@ -290,7 +290,7 @@ export const getAvailablePlans = createSelector(
     getAvailablePlansByProduct,
     (products) =>
         products
-            .reduce<Array<Price>>(
+            .reduce<Array<Plan>>(
                 (acc, product) => acc.concat(product.prices),
                 []
             )
@@ -300,7 +300,7 @@ export const getAvailablePlans = createSelector(
 export const getAvailablePlansMap = createSelector(
     getAvailablePlansByProduct,
     (products) =>
-        products.reduce<Record<string, Price>>((acc, product) => {
+        products.reduce<Record<string, Plan>>((acc, product) => {
             product.prices.map((plan) => {
                 acc[plan.price_id] = plan
             })
@@ -311,7 +311,7 @@ export const getAvailablePlansMap = createSelector(
 export const getAvailableAutomatePlansMap = createSelector(
     getAvailableAutomatePlans,
     (plans) =>
-        plans.reduce<Record<string, AutomationPrice>>((acc, plan) => {
+        plans.reduce<Record<string, AutomatePlan>>((acc, plan) => {
             acc[plan.price_id] = plan
             return acc
         }, {})
@@ -418,7 +418,7 @@ export const makeGetIsAllowedToChangePrice = createSelector(
             const plan = prices[priceId]
 
             return (
-                (isHelpdeskPrice(plan) ? plan.integrations : 0) >=
+                (isHelpdesk(plan) ? plan.integrations : 0) >=
                 activeIntegrations.size
             )
         }

@@ -36,7 +36,7 @@ import {
     isTrialing,
 } from 'state/currentAccount/selectors'
 import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import {Price} from 'models/billing/types'
+import {Plan} from 'models/billing/types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import css from './AutomateSubscriptionModal.less'
 import ROICalculatorModalStep from './ROICalculatorModalStep'
@@ -173,7 +173,7 @@ const AutomateSubscriptionModal = ({
     )
 
     const automatePreselectedOption = Math.min(5, helpdeskOptionIndex)
-    const [selectedPrice, setSelectedPrice] = useState<Price | undefined>(
+    const [selectedPrice, setSelectedPrice] = useState<Plan | undefined>(
         automateAvailablePlans?.[automatePreselectedOption]
     )
 

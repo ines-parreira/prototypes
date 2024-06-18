@@ -1,14 +1,15 @@
 import {AccountFeature} from 'state/currentAccount/types'
 import {
-    AutomationPrice,
-    AutomationPriceFeatures,
-    ConvertPrice,
-    HelpdeskPrice,
+    AutomatePlan,
+    AutomatePriceFeatures,
+    ConvertPlan,
+    HelpdeskPlan,
     HelpdeskPriceFeatures,
+    Plan,
     PlanInterval,
     Product,
     ProductType,
-    SMSOrVoicePrice,
+    SMSOrVoicePlan,
 } from 'models/billing/types'
 import {CurrentProductsUsages} from 'state/billing/types'
 
@@ -52,7 +53,7 @@ export const basicHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
-export const automationPriceFeatures: AutomationPriceFeatures = {
+export const automationPriceFeatures: AutomatePriceFeatures = {
     [AccountFeature.AutomationManagedRules]: {enabled: true},
     [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
     [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
@@ -61,7 +62,7 @@ export const automationPriceFeatures: AutomationPriceFeatures = {
     [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
 }
 
-export const legacyAutomationPriceFeatures: AutomationPriceFeatures = {
+export const legacyAutomationPriceFeatures: AutomatePriceFeatures = {
     [AccountFeature.AutomationManagedRules]: {enabled: false},
     [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
     [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
@@ -206,7 +207,7 @@ export const starterHelpdeskPriceFeatures: HelpdeskPriceFeatures = {
     [AccountFeature.AutomationAddonOverview]: {enabled: false},
 }
 
-export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
+export const basicMonthlyHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBjXI9qXomtXqSSX34F3we'],
     amount: 6000,
@@ -244,7 +245,7 @@ export const basicMonthlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
+export const basicYearlyHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBjZI9qXomtXqSPNgkEZpl'],
     amount: 60000,
@@ -282,7 +283,7 @@ export const basicYearlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
+export const proMonthlyHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBjbI9qXomtXqS2sfi1J7P'],
     amount: 36000,
@@ -320,7 +321,7 @@ export const proMonthlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const proYearlyHelpdeskPrice: HelpdeskPrice = {
+export const proYearlyHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBjdI9qXomtXqSlp9sh6iQ'],
     amount: 360000,
@@ -358,7 +359,7 @@ export const proYearlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
+export const advancedMonthlyHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBjeI9qXomtXqSXRjmhPsL'],
     amount: 90000,
@@ -396,7 +397,7 @@ export const advancedMonthlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
+export const advancedYearlyHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBjgI9qXomtXqSBZoBcg7G'],
     amount: 900000,
@@ -434,7 +435,7 @@ export const advancedYearlyHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const basicMonthlyAutomationPrice: AutomationPrice = {
+export const basicMonthlyAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     amount: 3000,
@@ -456,7 +457,7 @@ export const basicMonthlyAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjXI9qXomtXqSSX34F3we',
 }
 
-export const basicYearlyAutomationPrice: AutomationPrice = {
+export const basicYearlyAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     amount: 30000,
@@ -478,7 +479,7 @@ export const basicYearlyAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjZI9qXomtXqSPNgkEZpl',
 }
 
-export const proMonthlyAutomationPrice: AutomationPrice = {
+export const proMonthlyAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     extra_ticket_cost: 0.18,
@@ -500,7 +501,7 @@ export const proMonthlyAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjbI9qXomtXqS2sfi1J7P',
 }
 
-export const proYearlyAutomationPrice: AutomationPrice = {
+export const proYearlyAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     extra_ticket_cost: 0.18,
@@ -522,7 +523,7 @@ export const proYearlyAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjdI9qXomtXqSlp9sh6iQ',
 }
 
-export const advancedMonthlyAutomationPrice: AutomationPrice = {
+export const advancedMonthlyAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     extra_ticket_cost: 0.18,
@@ -544,7 +545,7 @@ export const advancedMonthlyAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjeI9qXomtXqSXRjmhPsL',
 }
 
-export const advancedYearlyAutomationPrice: AutomationPrice = {
+export const advancedYearlyAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     extra_ticket_cost: 0.18,
@@ -566,7 +567,7 @@ export const advancedYearlyAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjgI9qXomtXqSBZoBcg7G',
 }
 
-export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
+export const legacyBasicHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBlbI9qXomtXqSvvtgyZ1z'],
     amount: 6000,
@@ -604,7 +605,7 @@ export const legacyBasicHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const legacyBasicAutomationPrice: AutomationPrice = {
+export const legacyBasicAutomationPrice: AutomatePlan = {
     custom: false,
     order: 0,
     public: true,
@@ -626,7 +627,7 @@ export const legacyBasicAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBlbI9qXomtXqSvvtgyZ1z',
 }
 
-export const customHelpdeskPrice: HelpdeskPrice = {
+export const customHelpdeskPrice: HelpdeskPlan = {
     addons: ['price_1LJBjiI9qXomtXqSvQBcRw5V'],
     amount: 160000,
     extra_ticket_cost: 0.32,
@@ -663,7 +664,7 @@ export const customHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const customAutomationPrice: AutomationPrice = {
+export const customAutomationPrice: AutomatePlan = {
     custom: false,
     order: 0,
     public: true,
@@ -685,7 +686,7 @@ export const customAutomationPrice: AutomationPrice = {
     price_id: 'price_1LJBjiI9qXomtXqSvQBcRw5V',
 }
 
-export const basicDiscountedAutomationPrice: AutomationPrice = {
+export const basicDiscountedAutomationPrice: AutomatePlan = {
     custom: false,
     public: true,
     extra_ticket_cost: 0.1,
@@ -707,7 +708,7 @@ export const basicDiscountedAutomationPrice: AutomationPrice = {
     features: automationPriceFeatures,
 }
 
-export const starterHelpdeskPrice: HelpdeskPrice = {
+export const starterHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     amount: 1000,
     extra_ticket_cost: 0.4,
@@ -744,7 +745,7 @@ export const starterHelpdeskPrice: HelpdeskPrice = {
     trial_period_days: 7,
 }
 
-export const voicePrice0: SMSOrVoicePrice = {
+export const voicePrice0: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 0,
@@ -760,7 +761,7 @@ export const voicePrice0: SMSOrVoicePrice = {
     extra_ticket_cost: 2.4,
 }
 
-export const voicePrice1: SMSOrVoicePrice = {
+export const voicePrice1: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 175,
@@ -776,7 +777,7 @@ export const voicePrice1: SMSOrVoicePrice = {
     extra_ticket_cost: 1.4,
 }
 
-const voicePrice2: SMSOrVoicePrice = {
+const voicePrice2: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 1750,
@@ -792,7 +793,7 @@ const voicePrice2: SMSOrVoicePrice = {
     extra_ticket_cost: 0.47,
 }
 
-export const smsPrice1: SMSOrVoicePrice = {
+export const smsPrice1: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 90,
@@ -808,7 +809,7 @@ export const smsPrice1: SMSOrVoicePrice = {
     extra_ticket_cost: 1.2,
 }
 
-const smsPrice2: SMSOrVoicePrice = {
+const smsPrice2: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 5768,
@@ -824,7 +825,7 @@ const smsPrice2: SMSOrVoicePrice = {
     extra_ticket_cost: 0.77,
 }
 
-export const smsPrice0: SMSOrVoicePrice = {
+export const smsPrice0: SMSOrVoicePlan = {
     custom: false,
     public: true,
     amount: 0,
@@ -840,7 +841,7 @@ export const smsPrice0: SMSOrVoicePrice = {
     extra_ticket_cost: 1.6,
 }
 
-export const convertPrice0: ConvertPrice = {
+export const convertPrice0: ConvertPlan = {
     custom: false,
     public: true,
     amount: 0,
@@ -857,7 +858,7 @@ export const convertPrice0: ConvertPrice = {
     tier: 0,
 }
 
-export const convertPrice1: ConvertPrice = {
+export const convertPrice1: ConvertPlan = {
     custom: false,
     public: true,
     amount: 3000,
@@ -874,7 +875,7 @@ export const convertPrice1: ConvertPrice = {
     tier: 1,
 }
 
-export const convertPrice2: ConvertPrice = {
+export const convertPrice2: ConvertPlan = {
     custom: false,
     public: true,
     amount: 25000,
@@ -891,7 +892,7 @@ export const convertPrice2: ConvertPrice = {
     tier: 2,
 }
 
-export const convertPrice3: ConvertPrice = {
+export const convertPrice3: ConvertPlan = {
     custom: false,
     public: true,
     amount: 80000,
@@ -908,7 +909,7 @@ export const convertPrice3: ConvertPrice = {
     tier: 3,
 }
 
-export const convertPrice4: ConvertPrice = {
+export const convertPrice4: ConvertPlan = {
     custom: false,
     public: true,
     amount: 110000,
@@ -925,7 +926,7 @@ export const convertPrice4: ConvertPrice = {
     tier: 4,
 }
 
-export const convertPrice5: ConvertPrice = {
+export const convertPrice5: ConvertPlan = {
     custom: false,
     public: true,
     amount: 157500,
@@ -942,7 +943,7 @@ export const convertPrice5: ConvertPrice = {
     tier: 5,
 }
 
-export const convertPrice6: ConvertPrice = {
+export const convertPrice6: ConvertPlan = {
     custom: false,
     public: true,
     amount: 36000,
@@ -965,7 +966,7 @@ export const VOICE_PRODUCT_ID = 'prod_MT6fyh00TCFRGZ'
 export const SMS_PRODUCT_ID = 'prod_MT8Fzk7vmcT73m'
 export const CONVERT_PRODUCT_ID = 'prod_Mwy3exdalDFouZ'
 
-export const helpdeskProduct: Product<HelpdeskPrice> = {
+export const helpdeskProduct: Product<HelpdeskPlan> = {
     id: HELPDESK_PRODUCT_ID,
     type: ProductType.Helpdesk,
     prices: [
@@ -978,7 +979,7 @@ export const helpdeskProduct: Product<HelpdeskPrice> = {
     ],
 }
 
-export const automationProduct: Product<AutomationPrice> = {
+export const automationProduct: Product<AutomatePlan> = {
     id: AUTOMATION_PRODUCT_ID,
     type: ProductType.Automation,
     prices: [
@@ -991,19 +992,19 @@ export const automationProduct: Product<AutomationPrice> = {
     ],
 }
 
-export const voiceProduct: Product<SMSOrVoicePrice> = {
+export const voiceProduct: Product<SMSOrVoicePlan> = {
     id: VOICE_PRODUCT_ID,
     type: ProductType.Voice,
     prices: [voicePrice1, voicePrice2, voicePrice0],
 }
 
-export const smsProduct: Product<SMSOrVoicePrice> = {
+export const smsProduct: Product<SMSOrVoicePlan> = {
     id: SMS_PRODUCT_ID,
     type: ProductType.SMS,
     prices: [smsPrice1, smsPrice2, smsPrice0],
 }
 
-export const convertProduct: Product<ConvertPrice> = {
+export const convertProduct: Product<ConvertPlan> = {
     id: CONVERT_PRODUCT_ID,
     type: ProductType.Convert,
     prices: [
@@ -1017,9 +1018,7 @@ export const convertProduct: Product<ConvertPrice> = {
     ],
 }
 
-export const products: Product<
-    HelpdeskPrice | AutomationPrice | SMSOrVoicePrice | ConvertPrice
->[] = [
+export const products: Product<Plan>[] = [
     helpdeskProduct,
     automationProduct,
     smsProduct,

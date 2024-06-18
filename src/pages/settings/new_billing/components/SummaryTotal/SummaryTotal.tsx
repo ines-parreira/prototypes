@@ -1,12 +1,6 @@
 import React, {useMemo} from 'react'
 
-import {
-    AutomationPrice,
-    ConvertPrice,
-    HelpdeskPrice,
-    PlanInterval,
-    SMSOrVoicePrice,
-} from 'models/billing/types'
+import {Plan, PlanInterval} from 'models/billing/types'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 
 import {formatAmount} from '../../utils/formatAmount'
@@ -16,12 +10,7 @@ import css from './SummaryTotal.less'
 export type SummaryTotalProps = {
     selectedPlans: SelectedPlans
     totalProductAmount: number
-    prices?: (
-        | HelpdeskPrice
-        | AutomationPrice
-        | SMSOrVoicePrice
-        | ConvertPrice
-    )[]
+    prices?: Plan[]
     interval?: PlanInterval
     currency: string
     isFrequencyChanged?: boolean

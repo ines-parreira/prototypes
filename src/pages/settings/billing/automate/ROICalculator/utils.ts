@@ -1,4 +1,4 @@
-import {AutomationPrice} from 'models/billing/types'
+import {AutomatePlan} from 'models/billing/types'
 
 export const convertSecondsToHours = (
     seconds?: string | number | null
@@ -77,7 +77,7 @@ export const getFirstResponseTimeWithAutomate = (val: string | number) => {
 }
 
 export const getAutomateSubscriptionPrice = (
-    automateSubscriptionPrices: AutomationPrice[],
+    automateSubscriptionPrices: AutomatePlan[],
     numberOfClosedTickets: number
 ) => {
     const numQuota = numberOfClosedTickets * 0.3

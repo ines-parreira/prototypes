@@ -1,8 +1,8 @@
-import {HelpdeskPrice} from 'models/billing/types'
+import {HelpdeskPlan} from 'models/billing/types'
 import {isStarterTierPrice} from 'models/billing/utils'
 
 const useAutomatedHelpdeskCancellationFlowAvailable = (
-    helpdeskProduct: HelpdeskPrice | null
+    helpdeskProduct: HelpdeskPlan | null
 ) => {
     if (!helpdeskProduct) {
         return false

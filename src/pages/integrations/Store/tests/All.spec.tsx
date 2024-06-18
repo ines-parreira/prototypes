@@ -17,7 +17,7 @@ import {IntegrationListItem} from 'state/integrations/types'
 import {Integration} from 'models/integration/types'
 import client from 'models/api/resources'
 import {IntegrationType} from 'models/integration/constants'
-import {HelpdeskPrice, PlanInterval, ProductType} from 'models/billing/types'
+import {HelpdeskPlan, PlanInterval, ProductType} from 'models/billing/types'
 
 import {
     CATEGORY_URL_PARAM,
@@ -76,7 +76,7 @@ const prices = [
                 enabled: true,
             } as AccountFeatureMetadata,
         },
-    } as HelpdeskPrice,
+    } as HelpdeskPlan,
 ]
 
 describe('addRequiredPlanToIntegrations()', () => {
