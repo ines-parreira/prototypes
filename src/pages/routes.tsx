@@ -193,6 +193,7 @@ import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErro
 import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResponsesViewContainer'
 import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1505,6 +1506,8 @@ function AutomationContent() {
     const {path} = useRouteMatch()
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+    const isFlowsBuilderAnalyticsEnabled =
+        useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
 
     return (
         <Switch>
@@ -1570,6 +1573,36 @@ function AutomationContent() {
                     </SelfServiceHelpCentersProvider>
                 )}
             />
+
+            {isFlowsBuilderAnalyticsEnabled && (
+                <Route
+                    path={`${path}/:shopType/:shopName/flows/analytics/:editWorkflowId`}
+                    exact
+                    render={(props) => (
+                        <SelfServiceHelpCentersProvider>
+                            <SelfServiceContactFormsProvider>
+                                {React.createElement<{
+                                    shopType: string
+                                    shopName: string
+                                    editWorkflowId: string
+                                }>(
+                                    memoizedWithUserRoleRequired(
+                                        WorkflowAnalyticsContainer,
+                                        AGENT_ROLE
+                                    ),
+                                    {
+                                        ...props,
+                                        editWorkflowId:
+                                            props.match.params.editWorkflowId,
+                                        shopType: props.match.params.shopType,
+                                        shopName: props.match.params.shopName,
+                                    }
+                                )}
+                            </SelfServiceContactFormsProvider>
+                        </SelfServiceHelpCentersProvider>
+                    )}
+                />
+            )}
 
             <Route
                 path={[

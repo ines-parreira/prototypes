@@ -6,8 +6,10 @@ import {
     MiniMap,
     NodeMouseHandler,
     ReactFlow,
+    ReactFlowInstance,
     ReactFlowProvider,
     useNodesInitialized,
+    useReactFlow,
 } from 'reactflow'
 import _keyBy from 'lodash/keyBy'
 import classNames from 'classnames'
@@ -17,6 +19,7 @@ import Loader from 'pages/common/components/Loader/Loader'
 import usePrevious from 'hooks/usePrevious'
 
 import {FeatureFlagKey} from 'config/featureFlags'
+import {useSearchParam} from 'hooks/useSearchParam'
 import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
 import {VisualBuilderBackground} from './components/VisualBuilderBackground'
 
@@ -71,7 +74,10 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
         setVisualBuilderChoiceEventIdEditing,
         setVisualBuilderBranchIdsEditing,
         setIsTesting,
+        setZoom,
     } = useWorkflowEditorContext()
+    const reactFlow = useReactFlow()
+    const [searchParams] = useSearchParam('zoom')
 
     const isPreviewDrawerVisible =
         useFlags()[FeatureFlagKey.FlowsPreviewTestButton]
@@ -139,6 +145,21 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
         )
     }, [visualBuilderGraph.nodes])
 
+    const reactFlowOnInit = useCallback(
+        (instance: ReactFlowInstance) => {
+            const zoomLevel = parseFloat(searchParams || '1.1')
+            if (zoomLevel >= 0.1 && zoomLevel <= 1) {
+                instance.zoomTo(zoomLevel)
+            }
+        },
+        [searchParams]
+    )
+
+    const onPanelMove = useCallback(() => {
+        const zoomLevel = reactFlow.getZoom()
+        setZoom(zoomLevel)
+    }, [reactFlow, setZoom])
+
     return (
         <div className={css.container}>
             {(isFetchPending || !areNodesInitialized) && <Loader />}
@@ -151,6 +172,7 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
                         })}
                     >
                         <ReactFlow
+                            onInit={reactFlowOnInit}
                             proOptions={{
                                 hideAttribution: true,
                             }}
@@ -175,6 +197,7 @@ export function WorkflowVisualBuilderWrapped({isNewWorkflow}: Props) {
                             zoomOnPinch={true}
                             zoomOnScroll={false}
                             panOnScroll={true}
+                            onMove={onPanelMove}
                         >
                             {!isDegradedMode && (
                                 <MiniMap

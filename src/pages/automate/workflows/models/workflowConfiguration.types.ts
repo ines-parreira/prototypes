@@ -218,3 +218,8 @@ export type WorkflowTemplate = {
         integrationId: number
     ) => WorkflowConfiguration
 }
+
+export enum WorkflowToggle {
+    Editor = 'editor',
+    Analytics = 'analytics',
+}

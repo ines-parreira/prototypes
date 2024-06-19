@@ -24,7 +24,11 @@ import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {supportedLanguages} from '../models/workflowConfiguration.types'
+import * as ToggleButton from 'pages/common/components/ToggleButton'
+import {
+    WorkflowToggle,
+    supportedLanguages,
+} from '../models/workflowConfiguration.types'
 import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
 import {
     useWorkflowEditorContext,
@@ -60,6 +64,7 @@ type WorkflowEditorViewProps = {
     onNewWorkflowCreated: (isDraft: boolean) => void
     onPublish: (isFirstTime: boolean) => void
     notifyMerchant: (message: Notification) => void
+    goToWorkflowAnalyticsPage: (zoom: number) => void
 }
 
 function WorkflowEditorViewWrapped({
@@ -73,6 +78,7 @@ function WorkflowEditorViewWrapped({
     notifyMerchant,
     shopName,
     shopType,
+    goToWorkflowAnalyticsPage,
 }: WorkflowEditorViewProps) {
     const {template: templateSlug, from: fromView} =
         useSearch<{template: string | undefined; from: string | undefined}>()
@@ -81,6 +87,8 @@ function WorkflowEditorViewWrapped({
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
     const isPublishFlowFromFlowBuilder =
         useFlags()[FeatureFlagKey.PublishFlowFromFlowBuilder]
+    const isFlowsBuilderAnalyticsEnabled =
+        useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -128,6 +136,7 @@ function WorkflowEditorViewWrapped({
     const workflowNameIsErrored =
         workflowEditorContext.visualBuilderGraph.name.trim().length === 0 ||
         workflowEditorContext.visualBuilderGraph.name.length > 100
+    const zoom = workflowEditorContext.zoom
 
     useEffect(() => {
         if (!isDirty) {
@@ -355,6 +364,12 @@ function WorkflowEditorViewWrapped({
         }
     })
 
+    const onToggleChange = (value: WorkflowToggle) => {
+        if (value === WorkflowToggle.Analytics) {
+            goToWorkflowAnalyticsPage(zoom)
+        }
+    }
+
     return (
         <WorkflowChannelSupportContext.Provider
             value={workflowChannelSupportContext}
@@ -468,6 +483,23 @@ function WorkflowEditorViewWrapped({
                     </>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
+                    {isFlowsBuilderAnalyticsEnabled && (
+                        <ToggleButton.Wrapper
+                            className={css.workflowToggle}
+                            type={ToggleButton.Type.Label}
+                            value={WorkflowToggle.Editor}
+                            onChange={onToggleChange}
+                        >
+                            <ToggleButton.Option value={WorkflowToggle.Editor}>
+                                Editor
+                            </ToggleButton.Option>
+                            <ToggleButton.Option
+                                value={WorkflowToggle.Analytics}
+                            >
+                                Analysis
+                            </ToggleButton.Option>
+                        </ToggleButton.Wrapper>
+                    )}
                     <WorkflowVisualBuilder isNewWorkflow={isNewWorkflow} />
                 </Container>
                 <UnsavedChangesPrompt

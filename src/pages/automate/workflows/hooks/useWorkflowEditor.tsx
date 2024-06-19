@@ -118,6 +118,8 @@ export type WorkflowEditorContext = {
     checkNewVisualBuilderNode: (nodeId: string) => boolean
     isFlowPublishingInChannels: boolean
     setFlowPublishingInChannels: (flag: boolean) => void
+    zoom: number
+    setZoom: (zoom: number) => void
 }
 
 export const WorkflowEditorContext = createContext<
@@ -193,6 +195,7 @@ export function useWorkflowEditor(
     const workflowFactoryInstance = useRef(
         workflowConfigurationFactory(currentAccountId, workflowId)
     )
+    const [zoom, setZoom] = useState(1)
 
     const handleSetVisualBuilderNodeIdEditing = useCallback(
         (visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null) => {
@@ -736,6 +739,8 @@ export function useWorkflowEditor(
         visualBuilderBranchIdsEditing,
         isFlowPublishingInChannels,
         setFlowPublishingInChannels,
+        zoom,
+        setZoom,
     }
 }
 
@@ -947,5 +952,7 @@ export function createWorkflowEditorContextForPreview(
         checkNewVisualBuilderNode: () => false,
         visualBuilderBranchIdsEditing: [],
         setVisualBuilderBranchIdsEditing: () => null,
+        zoom: 1,
+        setZoom: () => null,
     }
 }

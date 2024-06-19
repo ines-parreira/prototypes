@@ -57,6 +57,7 @@ export enum FeatureFlagKey {
     EnableNewLanguages = 'enable-new-languages',
     EnableWhatsAppMigrations = 'enable-whatsapp-migrations',
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
+    FlowsBuilderAnalytics = 'flows-builder-analytics',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',
     FlowsPreviewTestButton = 'flows-preview-test-button',
     FlowsStepsOrderLineItemSelection = 'flows-steps-order-line-item-selection',

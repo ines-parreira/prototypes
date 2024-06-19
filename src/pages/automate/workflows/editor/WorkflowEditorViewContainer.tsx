@@ -79,6 +79,18 @@ export default function WorkflowEditorViewContainer() {
         },
         [goToWorkflowsListPage, goToWorkflowTemplatesPage]
     )
+
+    const goToWorkflowAnalyticsPage = useCallback(
+        (zoom: number) => {
+            const params = new URLSearchParams({zoom: zoom.toString()})
+            history.push({
+                pathname: `/app/automation/${shopType}/${shopName}/flows/analytics/${editWorkflowId}`,
+                search: params.toString(),
+            })
+        },
+        [history, shopName, shopType, editWorkflowId]
+    )
+
     if (!hasAutomate) {
         return <Redirect to="/app/automation" />
     }
@@ -95,6 +107,7 @@ export default function WorkflowEditorViewContainer() {
                 notifyMerchant={notifyMerchant}
                 shopName={shopName}
                 shopType={shopType}
+                goToWorkflowAnalyticsPage={goToWorkflowAnalyticsPage}
             />
         </ErrorBoundary>
     )
