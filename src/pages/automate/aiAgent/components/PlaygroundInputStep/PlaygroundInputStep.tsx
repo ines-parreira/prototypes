@@ -227,6 +227,7 @@ export const PlaygroundInputStep = ({
                         domain: accountData.gorgiasDomain,
                         customer_email: formValues.customerEmail,
                         body_text: message,
+                        subject: subject,
                         http_integration_id:
                             // HttpIntegration is asserted here as parent component checks for it's existence
                             accountData.httpIntegration.id,

@@ -46,6 +46,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
         context = {
             data: createMockHttpIntegrationPayload({
                 body_text: body.body_text,
+                subject: body.subject,
                 domain: body.domain,
                 created_datetime: new Date().toISOString(),
                 integration: {

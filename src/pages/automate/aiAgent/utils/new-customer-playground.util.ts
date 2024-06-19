@@ -3,6 +3,7 @@ import {CustomerHttpIntegrationDataMock} from '../constants'
 
 export type NewCustomerData = {
     body_text: string
+    subject: string
     domain: string
     created_datetime: string
     integration: {
@@ -13,6 +14,7 @@ export type NewCustomerData = {
 
 export const createMockHttpIntegrationPayload = ({
     body_text,
+    subject,
     domain,
     created_datetime,
     integration,
@@ -38,7 +40,7 @@ export const createMockHttpIntegrationPayload = ({
             ],
             type: 'email',
         }),
-        subject: '',
+        subject,
     },
     ticket: {
         account: {
@@ -96,10 +98,10 @@ export const createMockHttpIntegrationPayload = ({
                     ],
                     type: 'email',
                 },
-                subject: '',
+                subject,
             },
         ]),
-        subject: '',
+        subject,
         tags: '[]',
     },
 })

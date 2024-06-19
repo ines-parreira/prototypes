@@ -3,6 +3,7 @@ export type CreatePlaygroundRequest = {
     domain: string
     customer_email: string
     body_text: string
+    subject: string
     http_integration_id: number
     account_id: number
     email_integration_id: number
