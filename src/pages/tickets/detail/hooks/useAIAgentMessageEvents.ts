@@ -20,7 +20,7 @@ export const getActionAndTagsFromMessage = (
 
     const messageTags = messageTagNames
         ?.map((tagName) => allTags.find((tag) => tag.name === tagName))
-        .filter(Boolean) as Tag[]
+        .filter((tag) => !!tag && tag.name.indexOf('ai_') !== 0) as Tag[]
 
     const isHandover = message.actions?.some(
         (action) => action.name === MacroActionName.SetAssignee
