@@ -1,15 +1,16 @@
-import React, {useCallback, useMemo, useRef} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef} from 'react'
 import {List} from 'immutable'
 import {isAxiosError} from 'axios'
-
 import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {reportError} from 'utils/errors'
 import {Value} from 'pages/common/forms/SelectField/types'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import ToggleInput from '../../common/forms/ToggleInput'
 import useId from '../../../hooks/useId'
 import useAppSelector from '../../../hooks/useAppSelector'
@@ -117,7 +118,13 @@ export const EditAiAgentSettingsForm = ({
         useFlags()[FeatureFlagKey.AiAgentSkipSampleRate]
 
     const {mutateAsync: upsertStoreConfiguration, isLoading: isUpsertLoading} =
-        useUpsertStoreConfigurationPure()
+        useUpsertStoreConfigurationPure({
+            onSuccess: () => {
+                void queryClient.invalidateQueries({
+                    queryKey: storeConfigurationKeys.detail(shopName),
+                })
+            },
+        })
     const {sourceItems} = usePublicResources({
         helpCenterId: storeConfiguration.snippetHelpCenterId,
     })
@@ -140,6 +147,14 @@ export const EditAiAgentSettingsForm = ({
     /**
      * Form states and handlers
      */
+    const publicURLs = useMemo(
+        () =>
+            sourceItems
+                ?.filter((source) => source.status !== 'error')
+                .map((source) => source.url)
+                .filter((url): url is string => !!url),
+        [sourceItems]
+    )
 
     // TODO: Refactor to use all fields from storeConfiguration as default values
     const defaultFormValues = useMemo(
@@ -150,12 +165,9 @@ export const EditAiAgentSettingsForm = ({
             deactivatedDatetime: storeConfiguration.deactivatedDatetime,
             silentHandover: storeConfiguration.silentHandover,
             tags: storeConfiguration.tags,
-            publicURLs: sourceItems
-                ?.filter((source) => source.status !== 'error')
-                .map((source) => source.url)
-                .filter((url): url is string => !!url),
+            publicURLs,
         }),
-        [storeConfiguration, sourceItems]
+        [storeConfiguration, publicURLs]
     )
     const {formValues, isFormDirty, resetForm, updateValue} =
         useConfigurationForm(defaultFormValues)
@@ -163,6 +175,45 @@ export const EditAiAgentSettingsForm = ({
     const latestSampleRateRef = useRef(initialSampleRatePercent)
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
+
+    // Public URLS are not part of the form values, but we need to update the form values when the public URLs change
+    useEffect(() => {
+        if (publicURLs) {
+            updateValue('publicURLs', publicURLs)
+        }
+    }, [publicURLs, updateValue])
+
+    const deactivateAiAgent = useCallback(async () => {
+        const deactivatedDatetime = new Date().toISOString()
+        updateValue('deactivatedDatetime', deactivatedDatetime)
+        try {
+            await upsertStoreConfiguration([
+                accountDomain,
+                {...storeConfiguration, deactivatedDatetime},
+            ])
+            void dispatch(
+                notify({
+                    message:
+                        'AI Agent has been disabled, because no Knowledge source is connected.',
+                    status: NotificationStatus.Warning,
+                })
+            )
+        } catch (error) {
+            // nothing to notify here for the user as we do silent disable AI Agent
+            reportError(error, {
+                tags: {team: AI_AGENT_SENTRY_TEAM},
+                extra: {
+                    context: 'Error during disabling AI Agent',
+                },
+            })
+        }
+    }, [
+        accountDomain,
+        storeConfiguration,
+        updateValue,
+        upsertStoreConfiguration,
+        dispatch,
+    ])
 
     const handleOnSave = async () => {
         let validFormValues: FormValues
@@ -193,10 +244,6 @@ export const EditAiAgentSettingsForm = ({
 
         await upsertStoreConfiguration([accountDomain, configurationToSubmit], {
             onSuccess: () => {
-                void queryClient.invalidateQueries({
-                    queryKey: storeConfigurationKeys.detail(shopName),
-                })
-
                 void dispatch(
                     notify({
                         message: 'AI Agent configuration saved!',
@@ -284,8 +331,16 @@ export const EditAiAgentSettingsForm = ({
     const handlePublicURLsChange = useCallback(
         (publicURLs: string[]) => {
             updateValue('publicURLs', publicURLs)
+
+            // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
+            if (
+                publicURLs.length === 0 &&
+                storeConfiguration.helpCenterId === null
+            ) {
+                void deactivateAiAgent()
+            }
         },
-        [updateValue]
+        [updateValue, storeConfiguration.helpCenterId, deactivateAiAgent]
     )
     const isAIAgentToggled = isAiAgentEnabled(
         formValues.deactivatedDatetime !== undefined

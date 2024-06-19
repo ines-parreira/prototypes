@@ -14,7 +14,7 @@ import {getArticleIngestionLogs} from 'models/helpCenter/resources'
 import {updateArticleIngestionLogs} from '../components/PublicSourcesSection/utils'
 import {useAiAgentNavigation} from './useAiAgentNavigation'
 
-const UPDATE_STATUS_INTERVAL = 2000
+const UPDATE_STATUS_INTERVAL = 5000
 
 export const usePublicResourcesPooling = ({
     shopName,

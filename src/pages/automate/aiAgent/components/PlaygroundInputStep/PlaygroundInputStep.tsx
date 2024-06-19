@@ -3,6 +3,7 @@ import {UseMutateFunction} from '@tanstack/react-query'
 import {AxiosResponse} from 'axios'
 import classnames from 'classnames'
 import {CustomerSearchResponse} from '@gorgias/api-queries'
+import {Link} from 'react-router-dom'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {
     AccountConfigurationWithHttpIntegration,
@@ -31,6 +32,7 @@ import {
 import {CustomerSearchDropdownSelectView} from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 import {usePublicResources} from '../../hooks/usePublicResources'
 import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
+import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
 import css from './PlaygroundInputStep.less'
 
 enum SenderTypeValues {
@@ -104,9 +106,14 @@ export const PlaygroundInputStep = ({
         helpCenterId: storeData.snippetHelpCenterId,
         shopName: storeData.storeName,
     })
+    const {routes} = useAiAgentNavigation({shopName: storeData.storeName})
     const isPendingResources = sourceItems
         ? sourceItems.some((item) => item.status === 'loading')
         : false
+    const isKnowledgeBaseEmpty =
+        sourceItems !== undefined &&
+        sourceItems.length === 0 &&
+        storeData.helpCenterId === null
 
     const validateFormValues = (formValues: FormValues) => {
         const formValuesValidity: FormValuesValidity = {
@@ -313,8 +320,23 @@ export const PlaygroundInputStep = ({
                                 knowledges sources to sync.
                             </Tooltip>
                         )}
+                        {isKnowledgeBaseEmpty && (
+                            <Tooltip target="submit-button" autohide={false}>
+                                Testing currently disabled. Please add Help
+                                Center or Public URL on{' '}
+                                <Link to={routes.configuration}>
+                                    Configuration page
+                                </Link>
+                                .
+                            </Tooltip>
+                        )}
+
                         <Button
-                            isDisabled={!isFormValid || isPendingResources}
+                            isDisabled={
+                                !isFormValid ||
+                                isPendingResources ||
+                                isKnowledgeBaseEmpty
+                            }
                             onClick={handleSubmit}
                             id="submit-button"
                         >
