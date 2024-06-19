@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
+import {createPortal} from 'react-dom'
 import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
@@ -14,8 +15,12 @@ import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+
+import {useGetStoreApps} from 'models/workflows/queries'
 import Button from 'pages/common/components/button/Button'
+import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useUpsertAction from '../hooks/useUpsertAction'
+import useAddStoreApp from '../hooks/useAddStoreApp'
 import useDeleteAction from '../hooks/useDeleteAction'
 import {
     TemplateConfigurationFormInput,
@@ -31,6 +36,8 @@ import {
     getConditionsUsedVariables,
     wfConfgurationToTemplateFormValue,
 } from '../utils'
+import {AUTOMATE_VIEW_ACTION_PORTAL_ID} from '../constants'
+import AppConfirmationModal from './AppConfirmationModal'
 import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
 import ActionFormInputConditions from './ActionFormInputConditions'
 import ActionFormInputVariable from './ActionFormInputVariable'
@@ -58,6 +65,12 @@ export default function CustomActionsForm({
             ),
         })
 
+    const isNewAction = !initialFormValues.internal_id
+
+    const automateViewActionElement = document.getElementById(
+        AUTOMATE_VIEW_ACTION_PORTAL_ID
+    )
+
     const {
         remove: removeConditions,
         update: updateConditions,
@@ -78,19 +91,43 @@ export default function CustomActionsForm({
         keyName: '_id',
     })
 
+    const actionApp = initialFormValues.apps?.[0]
+
+    const isNativeAppIntegration = !!actionApp && actionApp.type !== 'app'
+
+    const actionAppIntegration = useGetActionAppIntegration({
+        appType: actionApp?.type,
+        shopName,
+    })
+
+    const {data: storeApps, isInitialLoading: storeAppsisInitialLoading} =
+        useGetStoreApps({
+            storeName: shopName,
+            storeType: shopType,
+        })
+
+    const addStoreApp = useAddStoreApp({
+        storeName: shopName,
+        storeType: shopType,
+        appType: actionApp?.type,
+        integration: actionAppIntegration,
+    })
+
+    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(
+        (isNewAction && !isNativeAppIntegration) ||
+            (isNativeAppIntegration && !actionAppIntegration)
+    )
+
     const inputVariables = useMemo(
         () => getInputVariables(customInput),
         [customInput]
     )
 
     const history = useHistory()
-    const [formValues] = useState(initialFormValues)
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
-    const isNewAction = !initialFormValues.internal_id
-
     const {
-        mutate: upsertAction,
+        mutateAsync: upsertAction,
         isLoading: isActionUpserting,
         isSuccess: isActionUpserted,
     } = useUpsertAction(isNewAction ? 'create' : 'update', shopName, shopType)
@@ -99,9 +136,26 @@ export default function CustomActionsForm({
         mutate: deleteAction,
         isLoading: isDeletingAction,
         isSuccess: isActionDeleted,
-    } = useDeleteAction(formValues.name, shopName, shopType)
+    } = useDeleteAction(initialFormValues.name, shopName, shopType)
 
-    function handleSave() {
+    const connectedStoreApp = useMemo(
+        () =>
+            storeApps?.find((app) => {
+                app.store_name === shopName &&
+                    app.store_type === shopType &&
+                    app.integration_id === actionAppIntegration?.id &&
+                    app.type === actionApp?.type
+            }),
+        [
+            actionApp?.type,
+            actionAppIntegration?.id,
+            shopName,
+            shopType,
+            storeApps,
+        ]
+    )
+
+    async function handleSave() {
         const data = getValues()
         const formValuesCopy = _.cloneDeep(
             initialFormValues as StoreWorkflowsConfiguration
@@ -138,6 +192,10 @@ export default function CustomActionsForm({
             'llm-prompt'
         )
 
+        if (formValuesCopy.apps?.[0].type === 'app') {
+            formValuesCopy.apps[0].api_key = data.appApiKey
+        }
+
         if (llmPromptTriggerCopy) {
             const conditionsVariables = getConditionsUsedVariables(
                 data.conditions
@@ -171,7 +229,7 @@ export default function CustomActionsForm({
             }
         }
 
-        return upsertAction([
+        await upsertAction([
             {
                 internal_id: internalId,
                 store_name: shopName,
@@ -179,6 +237,10 @@ export default function CustomActionsForm({
             },
             formValuesCopy,
         ])
+
+        if (!connectedStoreApp) {
+            await addStoreApp()
+        }
     }
 
     useEffect(() => {
@@ -368,12 +430,16 @@ export default function CustomActionsForm({
                     <div className={css.buttonGroup}>
                         <div>
                             <Button
-                                isLoading={isActionUpserting}
+                                isLoading={
+                                    isActionUpserting ||
+                                    storeAppsisInitialLoading
+                                }
                                 isDisabled={
                                     (!isNewAction && !formState.isDirty) ||
                                     isActionUpserted ||
                                     isDeletingAction ||
-                                    !formState.isValid
+                                    !formState.isValid ||
+                                    storeAppsisInitialLoading
                                 }
                                 onClick={handleSave}
                             >
@@ -446,6 +512,46 @@ export default function CustomActionsForm({
                     </div>
                 </section>
             </div>
+            {actionApp && (
+                <Controller
+                    control={control}
+                    name="appApiKey"
+                    rules={{
+                        required: !isNativeAppIntegration,
+                    }}
+                    render={({field: {onChange, value}}) => (
+                        <AppConfirmationModal
+                            isNewAction={isNewAction}
+                            isNativeIntegrationDisabled={
+                                isNativeAppIntegration && !actionAppIntegration
+                            }
+                            apiKey={value ?? ''}
+                            isOpen={apiKeyModalIsOpen}
+                            setOpen={setApiKeyModalIsOpen}
+                            app={actionApp}
+                            onConfirm={onChange}
+                            templateName={templateConfiguration.name}
+                            templateDescription={
+                                templateConfiguration.description ?? ''
+                            }
+                        />
+                    )}
+                />
+            )}
+            {automateViewActionElement &&
+                !isNativeAppIntegration &&
+                createPortal(
+                    <Button
+                        fillStyle="ghost"
+                        className={css.viewAppAuthButton}
+                        onClick={() => {
+                            setApiKeyModalIsOpen(true)
+                        }}
+                    >
+                        View App Authentication
+                    </Button>,
+                    automateViewActionElement
+                )}
         </ToolbarContext.Provider>
     )
 }

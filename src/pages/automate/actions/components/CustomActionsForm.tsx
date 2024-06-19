@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, {useEffect, useMemo} from 'react'
 import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
@@ -104,7 +104,6 @@ export default function CustomActionsForm({
     )
 
     const history = useHistory()
-    const [formValues] = useState(initialFormValues)
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
     const isNewAction = !initialFormValues.internal_id
@@ -119,7 +118,7 @@ export default function CustomActionsForm({
         mutate: deleteAction,
         isLoading: isDeletingAction,
         isSuccess: isActionDeleted,
-    } = useDeleteAction(formValues.name, shopName, shopType)
+    } = useDeleteAction(initialFormValues.name, shopName, shopType)
 
     function handleSave() {
         const data = getValues()

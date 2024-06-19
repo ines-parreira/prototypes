@@ -13,6 +13,7 @@ import {
 } from 'models/workflows/queries'
 
 import {ACTIONS} from '../common/components/constants'
+import {AUTOMATE_VIEW_ACTION_PORTAL_ID} from './constants'
 import {
     StoresWorkflowConfiguration,
     CustomActionConfigurationFormInput,
@@ -100,6 +101,7 @@ export default function EditActionFormView() {
                     )}
                 </Breadcrumb>
             }
+            action={<div id={AUTOMATE_VIEW_ACTION_PORTAL_ID}></div>}
         >
             {templateConfiguration ? (
                 <TemplateActionsForm

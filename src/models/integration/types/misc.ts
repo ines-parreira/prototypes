@@ -4,8 +4,10 @@ import {Magento2Integration} from './magento2'
 import {BigCommerceIntegration} from './bigcommerce'
 import {Integration} from './index'
 
+type AuthenticationStatus = 'pending' | 'success' | 'error' | ''
+
 export type OAuth2 = {
-    status: string
+    status: AuthenticationStatus
     error: string
     scope: string
 }

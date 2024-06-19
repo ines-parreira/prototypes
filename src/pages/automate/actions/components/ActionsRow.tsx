@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react'
-import {useLocation, useParams} from 'react-router-dom'
+import {Link, useLocation, useParams} from 'react-router-dom'
+import classNames from 'classnames'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -12,6 +13,7 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
+import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import useDeleteAction from '../hooks/useDeleteAction'
 import useUpsertAction from '../hooks/useUpsertAction'
@@ -34,6 +36,8 @@ export default function WorkflowRow({action}: Props) {
         shopType: string
         shopName: string
     }>()
+
+    const disabledNativeAppWarningIconId = `disable-native-app-warning-icon-${action.id}`
 
     const [actionCellRef, actionCellRefDimension] = useDimensions()
     const [actionNameRef, actionNameRefDimension] = useDimensions()
@@ -128,7 +132,16 @@ export default function WorkflowRow({action}: Props) {
         return templateConfiguration?.name ?? ''
     }, [isCustomAction, templateConfiguration?.name])
 
-    const appImageUrl = useGetAppImageUrl(action?.apps?.[0])
+    const actionApp = action.apps?.[0]
+
+    const isNativeAppIntegration = !!actionApp && actionApp.type !== 'app'
+
+    const actionAppIntegration = useGetActionAppIntegration({
+        appType: actionApp?.type,
+        shopName,
+    })
+
+    const appImageUrl = useGetAppImageUrl(actionApp)
 
     return (
         <TableBodyRow
@@ -184,6 +197,33 @@ export default function WorkflowRow({action}: Props) {
                         llmConversationEntryPoint?.deactivated_datetime === null
                     }
                 />
+                {isNativeAppIntegration && !actionAppIntegration && (
+                    <>
+                        <i
+                            id={disabledNativeAppWarningIconId}
+                            className={classNames(
+                                'material-icons-round',
+                                css.warningIcon
+                            )}
+                        >
+                            warning
+                        </i>
+                        <Tooltip
+                            placement="top-end"
+                            target={disabledNativeAppWarningIconId}
+                            autohide={false}
+                        >
+                            The integration associated with this Action has been
+                            disconnected. Reconfigure this integration in{' '}
+                            <Link
+                                to="/app/settings/integrations"
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                the App Store.
+                            </Link>
+                        </Tooltip>
+                    </>
+                )}
             </BodyCell>
             <BodyCell size="smallest" justifyContent="left">
                 {action.updated_datetime &&

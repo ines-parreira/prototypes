@@ -1,0 +1,14 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .modalBody {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-m;
+
+        span {
+            .body-regular();
+        }
+    }
+}

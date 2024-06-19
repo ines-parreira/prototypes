@@ -57,7 +57,12 @@ export type CustomActionFormInputValues = {
 
 export type TemplateActionFormInputValues = ActionFormInputValues &
     InputVariablesFormValues &
-    ConditionsFormValues
+    ConditionsFormValues &
+    ActionAppKey
+
+interface ActionAppKey {
+    appApiKey: string | null
+}
 
 export interface ActionFormInputValues {
     name: string

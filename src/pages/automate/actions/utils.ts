@@ -428,7 +428,13 @@ export function wfConfgurationToTemplateFormValue(
 
     const customInput = [...templateCustomInput, ...customInputConfiguration]
 
+    const appApiKey =
+        configuration.apps?.[0].type === 'app' && configuration.apps[0].api_key
+            ? configuration.apps[0].api_key
+            : null
+
     return {
+        appApiKey,
         aiAgentInstructions:
             llmConversationEntryPoint?.settings.instructions ?? '',
         name: configuration.name,

@@ -11,6 +11,8 @@ const WORKFLOWS_CONFIGURATION_QUERY_KEY = 'workflow-configuration'
 const WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY =
     'workflow-configuration-template'
 
+const STORE_WORKFLOWS_APP_QUERY_KEY = 'store-workflow-app'
+
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
     list: (params: {storeName: string; storeType: string}) => [
@@ -26,6 +28,14 @@ export const workflowsConfigurationDefinitionKeys = {
 
 export const workflowsConfigurationTemplateDefinitionKeys = {
     all: () => [WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY] as const,
+}
+
+export const storeWorkFlowsAppDefinitionKeys = {
+    all: () => [STORE_WORKFLOWS_APP_QUERY_KEY] as const,
+    list: (params: {storeName: string; storeType: string}) => [
+        ...storeWorkFlowsAppDefinitionKeys.all(),
+        params,
+    ],
 }
 
 export const useGetWorkflowConfigurationTemplates = (
@@ -150,5 +160,45 @@ export const useDeleteWorkflowsConfiguration = <TContext = unknown>(
             return await client.WfConfigurationController_delete(...params)
         },
         ...overrides,
+    })
+}
+
+export const useUpsertStoreApps = (
+    overrides?: MutationOverrides<OperationMethods['StoreAppController_upsert']>
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.StoreAppController_upsert(...params)
+        },
+        ...overrides,
+    })
+}
+
+export const useGetStoreApps = ({
+    storeName,
+    storeType,
+}: {
+    storeName: string
+    storeType: string
+}) => {
+    return useQuery({
+        queryKey: storeWorkFlowsAppDefinitionKeys.list({
+            storeName,
+            storeType,
+        }),
+        queryFn: async () => {
+            if (storeType !== 'shopify') {
+                throw new Error('Unsupported store type')
+            }
+            const client = await getGorgiasWfApiClient()
+            const response = await client.StoreAppController_list({
+                store_name: storeName,
+                store_type: storeType,
+            })
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
     })
 }

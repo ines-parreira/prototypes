@@ -6,6 +6,7 @@ import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {ACTIONS} from '../common/components/constants'
 import CustomActionsForm from './components/CustomActionsForm'
 import TemplateActionsForm from './components/TemplateActionsForm'
+import {AUTOMATE_VIEW_ACTION_PORTAL_ID} from './constants'
 import {TemplateConfigurationFormInput} from './types'
 import {
     generateNewCustomActionConfigurationFormInput,
@@ -83,6 +84,7 @@ export default function CreateActionFormView() {
                     <BreadcrumbItem active>New Action</BreadcrumbItem>
                 </Breadcrumb>
             }
+            action={<div id={AUTOMATE_VIEW_ACTION_PORTAL_ID}></div>}
         >
             {templateConfiguration && newActionConfiguration ? (
                 <TemplateActionsForm
