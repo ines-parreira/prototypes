@@ -714,9 +714,7 @@ export default function CustomActionsForm({
                         name="isAvailableForAiAgent"
                         render={({field: {onChange, value}}) => (
                             <ToggleInput
-                                isDisabled={
-                                    isActionUpserting || !formState.isValid
-                                }
+                                isDisabled={isActionUpserting}
                                 onClick={() => onChange(!value)}
                                 isToggled={value}
                             >
