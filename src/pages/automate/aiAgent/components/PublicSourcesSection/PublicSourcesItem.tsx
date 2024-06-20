@@ -19,6 +19,15 @@ const isUrlValid = (url?: string) => {
     }
 }
 
+const isUrlRoot = (url: string) => {
+    try {
+        const urlObj = new URL(url)
+        return urlObj.pathname === '/' || urlObj.pathname === ''
+    } catch (_) {
+        return false
+    }
+}
+
 const getInputError = (
     isInvalid: boolean,
     isDuplicate: boolean,
@@ -103,6 +112,19 @@ export const PublicSourcesItem = ({
                 hasError={source.status === 'error' || !!inputError}
                 aria-label="Public URL"
                 error={inputError}
+                caption={
+                    source.status === 'idle' &&
+                    isValidUrl &&
+                    isUrlRoot(value) ? (
+                        <span className={css.warningCaption}>
+                            Only this specific page is read by AI Agent, please
+                            make sure it has all the information to answer
+                            customer questions. Website home pages often don't
+                            contain enough information to make AI Agent
+                            effective.
+                        </span>
+                    ) : null
+                }
             />
             <Button
                 intent="secondary"

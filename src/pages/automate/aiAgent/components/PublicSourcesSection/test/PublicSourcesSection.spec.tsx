@@ -169,6 +169,29 @@ describe('<PublicSourcesSection />', () => {
         ).toBeInTheDocument()
     })
 
+    it('should show warning message when URL is root', async () => {
+        const url = 'https://example.com'
+        renderComponent()
+
+        const addButton = screen.getByTestId('add-button')
+        userEvent.click(addButton)
+        const input = screen
+            .getAllByLabelText('Public URL')
+            .pop() as HTMLInputElement
+        await userEvent.type(input, url)
+        const lastElement = screen
+            .getAllByTestId('source-item')
+            .pop() as HTMLElement
+        const syncButton = within(lastElement).getByTestId('sync-button')
+
+        expect(syncButton).toBeEnabled()
+        expect(
+            within(lastElement).getByText(
+                "Only this specific page is read by AI Agent, please make sure it has all the information to answer customer questions. Website home pages often don't contain enough information to make AI Agent effective."
+            )
+        ).toBeInTheDocument()
+    })
+
     it('should start loading when URL is syncing', async () => {
         renderComponent()
 
