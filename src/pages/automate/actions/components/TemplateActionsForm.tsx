@@ -355,6 +355,12 @@ export default function CustomActionsForm({
                             name="conditions"
                             rules={{
                                 validate: (value) => {
+                                    if (
+                                        watch('conditionsType') &&
+                                        !value.length
+                                    ) {
+                                        return false
+                                    }
                                     const conditionsValues = value.map(
                                         (condition) =>
                                             (
@@ -370,11 +376,7 @@ export default function CustomActionsForm({
                                             )[1]
                                     )
                                     for (const value of conditionsValues) {
-                                        if (
-                                            value === null ||
-                                            value === undefined
-                                        )
-                                            return false
+                                        if (value === null) return false
                                         if (
                                             typeof value === 'string' &&
                                             value.length === 0
@@ -398,6 +400,14 @@ export default function CustomActionsForm({
                                         setValue('conditionsType', type, {
                                             shouldDirty: true,
                                         })
+                                        // In order to trigger condtions validation when conditions type is changed
+                                        setValue(
+                                            'conditions',
+                                            watch('conditions'),
+                                            {
+                                                shouldDirty: true,
+                                            }
+                                        )
                                     }}
                                     onConditionChange={(condition, index) => {
                                         updateConditions(index, condition)
