@@ -1,5 +1,6 @@
 import React from 'react'
-import {useUpdateSlaPolicy} from '@gorgias/api-queries'
+import {HttpResponse, queryKeys, useUpdateSlaPolicy} from '@gorgias/api-queries'
+import {useQueryClient} from '@tanstack/react-query'
 
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 import {notify} from 'state/notifications/actions'
@@ -14,26 +15,82 @@ import useGetSLAPolicies from './useGetSLAPolicies'
 export default function SLAListController() {
     const dispatch = useAppDispatch()
     const {data, isLoading, refetch: refetchSLAPolicies} = useGetSLAPolicies()
+    const queryClient = useQueryClient()
 
     const SLAPolicies = data || []
 
     const hasSLAs = SLAPolicies && SLAPolicies?.length > 0
 
     const {mutateAsync: updateSLA, isLoading: isSubmitting} =
-        useUpdateSlaPolicy()
+        useUpdateSlaPolicy({
+            mutation: {
+                onMutate: async ({id, data: {active}}) => {
+                    if (active !== undefined) {
+                        const queryKey = queryKeys.slaPolicies.listSlaPolicies()
+                        await queryClient.cancelQueries({
+                            queryKey,
+                        })
+
+                        const previousPolicies =
+                            queryClient.getQueryData(queryKey)
+
+                        queryClient.setQueryData<
+                            HttpResponse<ReturnType<typeof useGetSLAPolicies>>
+                        >(queryKey, (oldQueryResponse) => {
+                            if (oldQueryResponse?.data?.data) {
+                                return {
+                                    ...oldQueryResponse,
+                                    data: {
+                                        ...oldQueryResponse.data,
+                                        data: oldQueryResponse?.data.data.map(
+                                            (policy) =>
+                                                policy.uuid !== id
+                                                    ? policy
+                                                    : {
+                                                          ...policy,
+                                                          deactivated_datetime:
+                                                              active
+                                                                  ? null
+                                                                  : new Date().toISOString(),
+                                                      }
+                                        ),
+                                    },
+                                }
+                            }
+                        })
+
+                        return {previousPolicies}
+                    }
+                },
+                onSettled: (_, error, variables, context) => {
+                    if (variables.data.active !== undefined) {
+                        const queryKey = queryKeys.slaPolicies.listSlaPolicies()
+
+                        if (error) {
+                            queryClient.setQueryData(
+                                queryKey,
+                                context?.previousPolicies
+                            )
+                        }
+                        void queryClient.invalidateQueries({
+                            queryKey,
+                        })
+                    }
+                },
+            },
+        })
 
     const togglePolicy = (id: string, active: boolean) => {
         void (async function () {
             try {
-                await updateSLA({id, data: {active: active}})
+                await updateSLA({id, data: {active}})
 
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
-                        message: `SLA policy toggled`,
+                        message: 'SLA policy toggled',
                     })
                 )
-                void refetchSLAPolicies()
             } catch (e) {
                 void dispatch(
                     notify({

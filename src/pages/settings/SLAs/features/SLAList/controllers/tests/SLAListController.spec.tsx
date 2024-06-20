@@ -1,6 +1,9 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {useUpdateSlaPolicy} from '@gorgias/api-queries'
+import {QueryClientProvider} from '@tanstack/react-query'
+
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
 import SLAListController from '../SLAListController'
 import useGetSLAPolicies from '../useGetSLAPolicies'
@@ -21,6 +24,8 @@ jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('@gorgias/api-queries')
 const mockUseUpdateSlaPolicy = useUpdateSlaPolicy as jest.Mock
 
+const queryClient = mockQueryClient()
+
 describe('<SLAListController />', () => {
     beforeEach(() => {
         mockUseUpdateSlaPolicy.mockImplementation(() => ({
@@ -34,7 +39,11 @@ describe('<SLAListController />', () => {
             isLoading: true,
         }))
 
-        const {getByText} = render(<SLAListController />)
+        const {getByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <SLAListController />
+            </QueryClientProvider>
+        )
 
         expect(getByText('Loader')).toBeInTheDocument()
     })
@@ -45,7 +54,11 @@ describe('<SLAListController />', () => {
             isLoading: false,
         }))
 
-        const {getByText} = render(<SLAListController />)
+        const {getByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <SLAListController />
+            </QueryClientProvider>
+        )
 
         expect(getByText('LandingPage')).toBeInTheDocument()
     })
@@ -56,7 +69,11 @@ describe('<SLAListController />', () => {
             isLoading: false,
         }))
 
-        const {getByText} = render(<SLAListController />)
+        const {getByText} = render(
+            <QueryClientProvider client={queryClient}>
+                <SLAListController />
+            </QueryClientProvider>
+        )
 
         expect(getByText('SLAListView')).toBeInTheDocument()
     })
