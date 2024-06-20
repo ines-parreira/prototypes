@@ -51,7 +51,7 @@ export default function ActionTemplatesView() {
                             handle.
                         </p>
                         <a
-                            href="https://link.gorgias.com/fhc"
+                            href="https://link.gorgias.com/actions"
                             rel="noreferrer"
                             target="_blank"
                         >
