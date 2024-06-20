@@ -1,0 +1,34 @@
+@import (reference) '~css/typography.less';
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+
+:local {
+    .addNodeIconContainer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        top: -30px;
+        cursor: grab;
+    }
+
+    .base() {
+        padding: 2px @layout-spacing-xs;
+        border-radius: 4px;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .edgeLabel {
+        .caption-semibold();
+        .base();
+
+        color: var(--neutral-grey-5);
+        background: var(--neutral-grey-2);
+    }
+}

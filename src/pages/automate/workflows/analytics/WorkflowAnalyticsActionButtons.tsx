@@ -4,7 +4,6 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {ConfirmationButton} from './ConfirmationButton'
 
 interface Props {
     isDirty: boolean
@@ -40,7 +39,7 @@ export const WorkflowAnalyticsActionButtons = ({
                     hidden. Testing is currently available for Chat only.
                 </Tooltip>
             )}
-            <ConfirmationButton isDisabled>Discard Changes</ConfirmationButton>
+            <Button isDisabled>Discard Changes</Button>
             <Button isDisabled>Publish</Button>
         </>
     )

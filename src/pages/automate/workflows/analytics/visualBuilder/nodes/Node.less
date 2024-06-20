@@ -1,0 +1,133 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .node {
+        box-sizing: border-box;
+        font-size: 14px;
+        line-height: 20px;
+        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
+        width: 280px;
+        height: 116px;
+        padding: 12px 16px;
+        border-radius: @layout-spacing-xxs;
+        cursor: pointer;
+        color: var(--classic-neutral-grey-6);
+        pointer-events: all;
+    }
+
+    .shopperAuthenticationNode {
+        height: 80px;
+    }
+
+    .endNode {
+        height: 116px;
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+        padding: 12px 16px;
+    }
+
+    .iconContainer {
+        border-radius: 4px;
+        padding: 4px 4px;
+    }
+
+    .nodeContainer {
+        display: flex;
+        align-items: baseline;
+        flex-direction: column;
+        height: 100%;
+        gap: @layout-spacing-xs;
+    }
+
+    .nodeTitle {
+        .body-semibold();
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
+        cursor: pointer;
+        overflow-wrap: anywhere;
+    }
+
+    .nodeLabel {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-xs;
+    }
+
+    .nodeDelimiter {
+        border-top: 1px solid var(--neutral-grey-3);
+        width: 100%;
+    }
+
+    .nodeMetrics {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .nodeMetric {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xxs;
+        align-items: center;
+    }
+
+    .nodeMetricDropOff {
+        background-color: var(--feedback-error-0);
+        color: var(--accessory-red-3);
+    }
+
+    .metricLabel {
+        .caption-semibold();
+    }
+
+    .metricValue {
+        .heading-subsection-semibold();
+        padding: 4px 8px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nodeContent {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .sourceHandle {
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, 100%) !important;
+        cursor: pointer !important;
+    }
+
+    .clickToAdd {
+        color: var(--neutral-grey-4);
+    }
+
+    .targetHandle {
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -100%) !important;
+        cursor: pointer !important;
+    }
+
+    .endNodeHeader {
+        display: flex;
+        flex-direction: row;
+        gap: @layout-spacing-xs;
+        color: var(--neutral-grey-5);
+        align-items: center;
+    }
+
+    .endNodeTitle {
+        .caption-semibold();
+    }
+}

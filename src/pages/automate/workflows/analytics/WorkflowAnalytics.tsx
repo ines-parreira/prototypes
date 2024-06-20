@@ -28,6 +28,8 @@ import useWorkflowChannelSupport, {
 import {WorkflowToggle} from '../models/workflowConfiguration.types'
 import css from './WorkflowAnalytics.less'
 import {WorkflowAnalyticsActionButtons} from './WorkflowAnalyticsActionButtons'
+import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+import {WorkflowOverviewMetrics} from './WorkflowOverviewMetrics'
 
 type WorkflowAnalyticsProps = {
     currentAccountId: number
@@ -167,9 +169,25 @@ function WorkflowAnalyticsWrapped({
                             Analysis
                         </ToggleButton.Option>
                     </ToggleButton.Wrapper>
-                    {/* 
-                    TODO:
-                    Import Flow Builder Analytics component here */}
+
+                    {/* TODO: Add data once available in CubeJS
+                    mention: data types might be different (metric instead of number, etc.) */}
+                    <WorkflowOverviewMetrics
+                        views={0}
+                        automationRate={0}
+                        trendAutomationRate={{
+                            data: {
+                                value: 10,
+                                prevValue: 5,
+                            },
+                            isFetching: false,
+                            isError: false,
+                        }}
+                        automated={0}
+                        dropOff={0}
+                        ticketCreated={0}
+                    />
+                    <WorkflowVisualBuilder />
                 </Container>
             </div>
         </WorkflowChannelSupportContext.Provider>
