@@ -9,11 +9,11 @@ import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 
 import {RootState} from 'state/types'
 import {getCleanStatsFilters} from 'state/ui/stats/selectors'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
 
 type AgentPerformanceSorting = {
-    field: TableColumn
+    field: AgentsTableColumn
     direction: OrderDirection
 }
 
@@ -35,7 +35,7 @@ export const DEFAULT_SORTING_DIRECTION = OrderDirection.Asc
 
 export const initialState: AgentPerformanceState = {
     sorting: {
-        field: TableColumn.ClosedTickets,
+        field: AgentsTableColumn.ClosedTickets,
         direction: OrderDirection.Desc,
         isLoading: false,
         lastSortingMetric: null,
@@ -117,7 +117,7 @@ export const getSortedAgents = createSelector(
     getAgentSorting,
     (agentsList, {direction, field, lastSortingMetric}) => {
         const agents = agentsList
-        const metricName = field !== TableColumn.AgentName ? field : null
+        const metricName = field !== AgentsTableColumn.AgentName ? field : null
 
         if (metricName && lastSortingMetric) {
             let sortedAgents: User[] = []

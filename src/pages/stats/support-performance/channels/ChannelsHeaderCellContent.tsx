@@ -6,6 +6,7 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 import {
     ChannelColumnConfig,
     ChannelsTableColumns,
+    ChannelsTableLabels,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
@@ -37,7 +38,7 @@ export const ChannelsHeaderCellContent = ({
                     : OrderDirection.Asc
             }
             onClick={sortCallback}
-            title={ChannelColumnConfig[column].label}
+            title={ChannelsTableLabels[column]}
             wrapContent
             justifyContent={column === LeadColumn ? 'left' : 'right'}
             height={'comfortable'}

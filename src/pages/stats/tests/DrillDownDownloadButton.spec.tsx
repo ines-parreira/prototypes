@@ -24,7 +24,7 @@ import {
     initialState,
 } from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
@@ -58,7 +58,7 @@ describe('<DrillDownDownloadButton />', () => {
         })
     })
     const metricData: AgentsMetrics = {
-        metricName: TableColumn.CustomerSatisfaction,
+        metricName: AgentsTableColumn.CustomerSatisfaction,
         perAgentId: 123,
     }
 

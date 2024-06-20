@@ -40,43 +40,43 @@ import {
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 export const getCell = (
-    column: TableColumn
+    column: AgentsTableColumn
 ): React.FunctionComponent<{
     agent: User
     bodyCellProps: PropsWithRef<BodyCellProps>
-    column: TableColumn
+    column: AgentsTableColumn
 }> => {
     switch (column) {
-        case TableColumn.RepliedTickets:
+        case AgentsTableColumn.RepliedTickets:
             return TicketsRepliedCellContent
-        case TableColumn.ClosedTickets:
+        case AgentsTableColumn.ClosedTickets:
             return ClosedTicketsCellContent
-        case TableColumn.PercentageOfClosedTickets:
+        case AgentsTableColumn.PercentageOfClosedTickets:
             return PercentageOfClosedTicketsCellContent
-        case TableColumn.MessagesSent:
+        case AgentsTableColumn.MessagesSent:
             return MessagesSentCellContent
-        case TableColumn.MedianFirstResponseTime:
+        case AgentsTableColumn.MedianFirstResponseTime:
             return MedianFirstResponseTimeCellContent
-        case TableColumn.CustomerSatisfaction:
+        case AgentsTableColumn.CustomerSatisfaction:
             return CustomerSatisfactionCellContent
-        case TableColumn.AgentName:
+        case AgentsTableColumn.AgentName:
             return AgentCellContent
-        case TableColumn.MedianResolutionTime:
+        case AgentsTableColumn.MedianResolutionTime:
             return MedianResolutionTimeCellContent
-        case TableColumn.OneTouchTickets:
+        case AgentsTableColumn.OneTouchTickets:
             return OneTouchTicketsCellContent
-        case TableColumn.OnlineTime:
+        case AgentsTableColumn.OnlineTime:
             return OnlineTimeCellContent
-        case TableColumn.MessagesSentPerHour:
+        case AgentsTableColumn.MessagesSentPerHour:
             return MessagesSentPerHourCellContent
-        case TableColumn.RepliedTicketsPerHour:
+        case AgentsTableColumn.RepliedTicketsPerHour:
             return TicketsRepliedPerHourCellContent
-        case TableColumn.ClosedTicketsPerHour:
+        case AgentsTableColumn.ClosedTicketsPerHour:
             return ClosedTicketsPerHourCellContent
-        case TableColumn.TicketHandleTime:
+        case AgentsTableColumn.TicketHandleTime:
             return TicketHandleTimeCellContent
     }
 }
@@ -131,7 +131,8 @@ export const AgentsTable = () => {
                                     justifyContent={getColumnAlignment(column)}
                                     className={classNames(css.BodyCell, {
                                         [css.withShadow]:
-                                            column === TableColumn.AgentName &&
+                                            column ===
+                                                AgentsTableColumn.AgentName &&
                                             isTableScrolled,
                                         [css.highlight]: true,
                                     })}
@@ -160,7 +161,7 @@ export const AgentsTable = () => {
                                                     {
                                                         [css.withShadow]:
                                                             column ===
-                                                                TableColumn.AgentName &&
+                                                                AgentsTableColumn.AgentName &&
                                                             isTableScrolled,
                                                     }
                                                 ),

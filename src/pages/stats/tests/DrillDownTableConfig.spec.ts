@@ -5,7 +5,7 @@ import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {AgentsMetrics, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     OverviewMetric,
-    TableColumn,
+    AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
@@ -18,15 +18,21 @@ const customerSatisfactionQueryFactoryMock = assumeMock(
 )
 describe('getDrillDownQuery', () => {
     const agentsMetrics: AgentsMetrics[] = [
-        {metricName: TableColumn.CustomerSatisfaction, perAgentId: 123},
-        {metricName: TableColumn.MedianFirstResponseTime, perAgentId: 123},
-        {metricName: TableColumn.MedianResolutionTime, perAgentId: 123},
-        {metricName: TableColumn.MessagesSent, perAgentId: 123},
-        {metricName: TableColumn.PercentageOfClosedTickets, perAgentId: 123},
-        {metricName: TableColumn.ClosedTickets, perAgentId: 123},
-        {metricName: TableColumn.RepliedTickets, perAgentId: 123},
-        {metricName: TableColumn.OneTouchTickets, perAgentId: 123},
-        {metricName: TableColumn.TicketHandleTime, perAgentId: 123},
+        {metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123},
+        {
+            metricName: AgentsTableColumn.MedianFirstResponseTime,
+            perAgentId: 123,
+        },
+        {metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123},
+        {metricName: AgentsTableColumn.MessagesSent, perAgentId: 123},
+        {
+            metricName: AgentsTableColumn.PercentageOfClosedTickets,
+            perAgentId: 123,
+        },
+        {metricName: AgentsTableColumn.ClosedTickets, perAgentId: 123},
+        {metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123},
+        {metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123},
+        {metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123},
     ]
     const supportedMetrics: DrillDownMetric[] = [
         {

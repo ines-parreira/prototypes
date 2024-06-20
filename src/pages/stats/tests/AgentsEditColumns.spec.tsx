@@ -7,27 +7,29 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
+import {AgentsEditColumns} from 'pages/stats/AgentsEditColumns'
 import {
-    AgentsEditColumns,
     SAVE_BUTTON_TEXT,
     TOGGLE_LABEL,
-} from 'pages/stats/AgentsEditColumns'
+} from 'pages/stats/common/components/Table/EditTableColumns'
 import {
     agentPerformanceTableActiveView,
     TableLabels,
 } from 'pages/stats/AgentsTableConfig'
-import {AccountSettingType} from 'state/currentAccount/types'
 import * as currentAccount from 'state/currentAccount/actions'
 import {RootState, StoreDispatch} from 'state/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
-const submitSettingSpy = jest.spyOn(currentAccount, 'submitSetting')
+const submitSettingSpy = jest.spyOn(
+    currentAccount,
+    'submitAgentTableConfigView'
+)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<AgentsEditColumns>', () => {
-    const columnTitle = TableLabels[TableColumn.ClosedTickets]
+    const columnTitle = TableLabels[AgentsTableColumn.ClosedTickets]
 
     it('should render dropdown toggle button', () => {
         render(
@@ -91,28 +93,17 @@ describe('<AgentsEditColumns>', () => {
         fireEvent.click(save)
 
         expect(submitSettingSpy).toBeCalledWith({
-            id: undefined,
-            type: AccountSettingType.AgentsTableConfig,
-            data: {
-                active_view: expect.any(String),
-                views: [
-                    {
-                        id: expect.any(String),
-                        name: expect.any(String),
-                        metrics: agentPerformanceTableActiveView?.metrics.map(
-                            (metric) => {
-                                if (metric.id === TableColumn.ClosedTickets) {
-                                    return {
-                                        ...metric,
-                                        visibility: false,
-                                    }
-                                }
-                                return metric
-                            }
-                        ),
-                    },
-                ],
-            },
+            id: expect.any(String),
+            name: expect.any(String),
+            metrics: agentPerformanceTableActiveView?.metrics.map((metric) => {
+                if (metric.id === AgentsTableColumn.ClosedTickets) {
+                    return {
+                        ...metric,
+                        visibility: false,
+                    }
+                }
+                return metric
+            }),
         })
     })
 

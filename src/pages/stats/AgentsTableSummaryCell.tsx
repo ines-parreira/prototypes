@@ -2,7 +2,7 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {
-    MetricFormat,
+    AgentsColumnConfig,
     MetricQueryHook,
     averageTooltip,
 } from 'pages/stats/AgentsTableConfig'
@@ -12,7 +12,7 @@ import {
 } from 'pages/stats/common/utils'
 import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 export const AGENT_SUMMARY_CELL_LABEL = 'Average'
@@ -22,9 +22,9 @@ export const AgentsTableSummaryCell = ({
     column,
 }: {
     useMetric: MetricQueryHook
-    column: TableColumn
+    column: AgentsTableColumn
 }) => {
-    const {format, perAgent} = MetricFormat[column]
+    const {format, perAgent} = AgentsColumnConfig[column]
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -34,7 +34,7 @@ export const AgentsTableSummaryCell = ({
     const metricValue =
         perAgent && data?.value ? data.value / agents.length : data?.value
 
-    if (column === TableColumn.AgentName) {
+    if (column === AgentsTableColumn.AgentName) {
         return (
             <>
                 {AGENT_SUMMARY_CELL_LABEL} <HintTooltip {...averageTooltip} />

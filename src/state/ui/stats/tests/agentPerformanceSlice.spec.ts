@@ -25,7 +25,7 @@ import {
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as initialUiStatsState} from 'state/ui/stats/reducer'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {getSortByName} from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {
@@ -65,13 +65,13 @@ describe('agentPerformanceSlice', () => {
             const newState = agentPerformanceSlice.reducer(
                 initialState,
                 sortingSet({
-                    field: TableColumn.ClosedTickets,
+                    field: AgentsTableColumn.ClosedTickets,
                     direction: OrderDirection.Desc,
                 })
             )
 
             expect(newState.sorting).toEqual({
-                field: TableColumn.ClosedTickets,
+                field: AgentsTableColumn.ClosedTickets,
                 direction: OrderDirection.Desc,
                 isLoading: true,
                 lastSortingMetric: null,
@@ -245,7 +245,7 @@ describe('agentPerformanceSlice', () => {
                         ...initialState,
                         sorting: {
                             ...initialState.sorting,
-                            field: TableColumn.ClosedTickets,
+                            field: AgentsTableColumn.ClosedTickets,
                             direction: OrderDirection.Asc,
                         },
                     },
@@ -283,7 +283,7 @@ describe('agentPerformanceSlice', () => {
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.MedianFirstResponseTime,
+                            field: AgentsTableColumn.MedianFirstResponseTime,
                             direction: OrderDirection.Desc,
                             isLoading: false,
                             lastSortingMetric: metricData,
@@ -325,7 +325,7 @@ describe('agentPerformanceSlice', () => {
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.ClosedTickets,
+                            field: AgentsTableColumn.ClosedTickets,
                             direction: OrderDirection.Desc,
                             isLoading: false,
                             lastSortingMetric: metricData,
@@ -358,7 +358,7 @@ describe('agentPerformanceSlice', () => {
                     ui: {
                         [agentPerformanceSlice.name]: {
                             sorting: {
-                                field: TableColumn.ClosedTickets,
+                                field: AgentsTableColumn.ClosedTickets,
                                 direction,
                                 isLoading: false,
                                 lastSortingMetric: metricData,
@@ -393,7 +393,7 @@ describe('agentPerformanceSlice', () => {
                 ui: {
                     [agentPerformanceSlice.name]: {
                         sorting: {
-                            field: TableColumn.MedianFirstResponseTime,
+                            field: AgentsTableColumn.MedianFirstResponseTime,
                             direction: OrderDirection.Asc,
                             isLoading: false,
                             lastSortingMetric,

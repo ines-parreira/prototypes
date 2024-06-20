@@ -7,7 +7,7 @@ import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {agents} from 'fixtures/agents'
 import {RootState} from 'state/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
@@ -38,10 +38,10 @@ const useMedianResolutionTimeMetricPerAgentMock = assumeMock(
 
 describe('<AgentsShoutouts />', () => {
     const tableLabels = [
-        TableLabels[TableColumn.CustomerSatisfaction],
-        TableLabels[TableColumn.MedianFirstResponseTime],
-        TableLabels[TableColumn.MedianResolutionTime],
-        TableLabels[TableColumn.ClosedTickets],
+        TableLabels[AgentsTableColumn.CustomerSatisfaction],
+        TableLabels[AgentsTableColumn.MedianFirstResponseTime],
+        TableLabels[AgentsTableColumn.MedianResolutionTime],
+        TableLabels[AgentsTableColumn.ClosedTickets],
     ]
 
     const defaultState = {

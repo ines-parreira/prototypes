@@ -10,7 +10,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     OverviewMetric,
     SlaMetric,
-    TableColumn,
+    AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 import {OrderDirection} from 'models/api/types'
@@ -49,13 +49,13 @@ describe('drillDownSlice', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
                 setMetricData({
-                    metricName: TableColumn.CustomerSatisfaction,
+                    metricName: AgentsTableColumn.CustomerSatisfaction,
                     perAgentId: 1,
                 })
             )
 
             expect(newState.metricData?.metricName).toEqual(
-                TableColumn.CustomerSatisfaction
+                AgentsTableColumn.CustomerSatisfaction
             )
             expect(newState.isOpen).toBeTruthy()
         })
@@ -64,13 +64,13 @@ describe('drillDownSlice', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
                 setMetricData({
-                    metricName: TableColumn.ClosedTickets,
+                    metricName: AgentsTableColumn.ClosedTickets,
                     perAgentId: 1,
                 })
             )
 
             expect(newState.metricData?.metricName).toEqual(
-                TableColumn.ClosedTickets
+                AgentsTableColumn.ClosedTickets
             )
             expect(newState.isOpen).toEqual(true)
         })
@@ -135,14 +135,15 @@ describe('drillDownSlice', () => {
                     ui: {
                         [drillDownSlice.name]: {
                             metricData: {
-                                metricName: TableColumn.CustomerSatisfaction,
+                                metricName:
+                                    AgentsTableColumn.CustomerSatisfaction,
                             },
                         },
                     },
                 } as unknown as RootState)
             ).toEqual({
                 metricData: {
-                    metricName: TableColumn.CustomerSatisfaction,
+                    metricName: AgentsTableColumn.CustomerSatisfaction,
                 },
                 metricOrder: OrderDirection.Asc,
             })
@@ -152,14 +153,14 @@ describe('drillDownSlice', () => {
                     ui: {
                         [drillDownSlice.name]: {
                             metricData: {
-                                metricName: TableColumn.ClosedTickets,
+                                metricName: AgentsTableColumn.ClosedTickets,
                             },
                         },
                     },
                 } as unknown as RootState)
             ).toEqual({
                 metricData: {
-                    metricName: TableColumn.ClosedTickets,
+                    metricName: AgentsTableColumn.ClosedTickets,
                 },
                 metricOrder: OrderDirection.Desc,
             })
@@ -172,14 +173,14 @@ describe('drillDownSlice', () => {
                     ui: {
                         [drillDownSlice.name]: {
                             metricData: {
-                                metricName: TableColumn.OneTouchTickets,
+                                metricName: AgentsTableColumn.OneTouchTickets,
                                 perAgentId: 1,
                             },
                         },
                     },
                 } as unknown as RootState)
             ).toEqual({
-                metricTitle: TableLabels[TableColumn.OneTouchTickets],
+                metricTitle: TableLabels[AgentsTableColumn.OneTouchTickets],
                 showMetric: false,
                 metricValueFormat: 'percent',
             })
@@ -190,14 +191,14 @@ describe('drillDownSlice', () => {
                     ui: {
                         [drillDownSlice.name]: {
                             metricData: {
-                                metricName: TableColumn.ClosedTickets,
+                                metricName: AgentsTableColumn.ClosedTickets,
                                 perAgentId: 1,
                             },
                         },
                     },
                 } as unknown as RootState)
             ).toEqual({
-                metricTitle: TableLabels[TableColumn.ClosedTickets],
+                metricTitle: TableLabels[AgentsTableColumn.ClosedTickets],
                 showMetric: false,
                 metricValueFormat: 'decimal',
             })
@@ -320,12 +321,12 @@ describe('drillDownSlice', () => {
         } as User
 
         expect(
-            buildAgentMetric(TableColumn.CustomerSatisfaction, agent)
+            buildAgentMetric(AgentsTableColumn.CustomerSatisfaction, agent)
         ).toEqual({
-            title: `${TableLabels[TableColumn.CustomerSatisfaction]} | ${
+            title: `${TableLabels[AgentsTableColumn.CustomerSatisfaction]} | ${
                 agent.name
             }`,
-            metricName: TableColumn.CustomerSatisfaction,
+            metricName: AgentsTableColumn.CustomerSatisfaction,
             perAgentId: agent.id,
         })
     })

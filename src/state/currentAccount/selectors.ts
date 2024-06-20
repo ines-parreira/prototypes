@@ -1,17 +1,21 @@
-import {createSelector} from 'reselect'
 import {fromJS, List, Map} from 'immutable'
 import moment, {Moment} from 'moment-timezone'
-
-import {toJS} from 'utils'
-import {isFeatureEnabled} from 'utils/account'
-import {getTimezone} from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
+import {createSelector} from 'reselect'
+import {
+    agentPerformanceTableActiveView,
+    AgentsTableViews,
+} from 'pages/stats/AgentsTableConfig'
+import {
+    channelsReportTableActiveView,
+    ChannelsTableViews,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     AccountFeature,
     AccountSettingAgentCosts,
     AccountSettingAgentsTableConfig,
     AccountSettingAutoMerge,
     AccountSettingBusinessHours,
+    AccountSettingChannelsTableConfig,
     AccountSettingInTicketSuggestion,
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
@@ -19,6 +23,11 @@ import {
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
 } from 'state/currentAccount/types'
+import {getTimezone} from 'state/currentUser/selectors'
+import {RootState} from 'state/types'
+
+import {toJS} from 'utils'
+import {isFeatureEnabled} from 'utils/account'
 
 export const getCurrentAccountState = (state: RootState) =>
     state.currentAccount || fromJS({})
@@ -138,6 +147,42 @@ export const getAgentsTableConfigSettingsJS = createSelector(
         setting.isEmpty()
             ? undefined
             : (setting.toJS() as AccountSettingAgentsTableConfig)
+)
+
+export const getAgentsTableActiveView = createSelector(
+    getAgentsTableConfigSettingsJS,
+    (setting) => {
+        const currentSettings = setting ? setting.data : AgentsTableViews
+        return (
+            currentSettings.views.find(
+                (view) => view.id === currentSettings.active_view
+            ) || agentPerformanceTableActiveView
+        )
+    }
+)
+
+export const getChannelsTableConfigSettings = createSettingByTypeSelector(
+    AccountSettingType.ChannelsTableConfig
+)
+
+export const getChannelsTableConfigSettingsJS = createSelector(
+    getChannelsTableConfigSettings,
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingChannelsTableConfig)
+)
+
+export const getChannelsTableActiveView = createSelector(
+    getChannelsTableConfigSettingsJS,
+    (setting) => {
+        const currentSettings = setting ? setting.data : ChannelsTableViews
+        return (
+            currentSettings.views.find(
+                (view) => view.id === currentSettings.active_view
+            ) || channelsReportTableActiveView
+        )
+    }
 )
 
 export const getSurveysSettings = createSettingByTypeSelector(

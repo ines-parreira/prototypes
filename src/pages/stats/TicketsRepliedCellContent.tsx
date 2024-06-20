@@ -17,7 +17,7 @@ import {
     isSortingMetricLoading,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
 import {DrillDownModalTrigger} from './DrillDownModalTrigger'
@@ -62,7 +62,7 @@ export const TicketsRepliedCellContent = ({
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
                     metricData={buildAgentMetric(
-                        TableColumn.RepliedTickets,
+                        AgentsTableColumn.RepliedTickets,
                         agent
                     )}
                 >

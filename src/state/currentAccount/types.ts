@@ -1,8 +1,13 @@
 import {Map} from 'immutable'
 
 import {TicketChannel} from 'business/types/ticket'
+import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {Notification} from 'state/notifications/types'
-import {TableSetting} from 'state/ui/stats/types'
+import {
+    AgentsTableColumn,
+    TableColumnSet,
+    TableSetting,
+} from 'state/ui/stats/types'
 
 export type CurrentAccountState = Map<any, any>
 
@@ -14,6 +19,7 @@ export enum AccountSettingType {
     Access = 'access',
     AgentCosts = 'agent-costs',
     AgentsTableConfig = 'agents-table-config',
+    ChannelsTableConfig = 'channels-table-config',
     BusinessHours = 'business-hours',
     SatisfactionSurveys = 'satisfaction-surveys',
     TicketAssignment = 'ticket-assignment',
@@ -67,6 +73,7 @@ export type AccountSetting =
     | AccountSettingAutoMerge
     | AccountSettingAgentCosts
     | AccountSettingAgentsTableConfig
+    | AccountSettingChannelsTableConfig
     | AccountSettingInTicketSuggestion
 
 export type AccountSettingAgentCostType = 'yearly' | 'hourly'
@@ -121,7 +128,21 @@ export type AccountSettingSatisfactionSurvey = {
 export type AccountSettingAgentsTableConfig = {
     id: number
     type: AccountSettingType.AgentsTableConfig
-    data: TableSetting
+    data: TableSetting<AgentsTableColumn>
+}
+
+export type AccountSettingChannelsTableConfig = {
+    id: number
+    type: AccountSettingType.ChannelsTableConfig
+    data: TableSetting<ChannelsTableColumns>
+}
+
+export type AccountSettingTableConfig<T extends TableColumnSet> = {
+    id: number
+    type:
+        | AccountSettingType.AgentsTableConfig
+        | AccountSettingType.ChannelsTableConfig
+    data: TableSetting<T>
 }
 
 export type AccountViewsOrderingSettingData = {
@@ -142,6 +163,7 @@ export type AccountSettingAccess = {
         two_fa_enforced_datetime: string | null
     }
 }
+
 export enum AccountSettingAccessSignupMode {
     Invite = 'invite',
     AllowedDomains = 'allowed-domains',

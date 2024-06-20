@@ -2,6 +2,7 @@ import {fromJS, Map} from 'immutable'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import MockAdapter from 'axios-mock-adapter'
+import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
 import {billingState} from 'fixtures/billing'
 import {
@@ -9,14 +10,19 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import * as constants from '../constants'
-import * as actions from '../actions'
-import {initialState} from '../reducers'
-import {StoreDispatch} from '../../types'
-import {AccountSettingType, AccountSetting} from '../types'
-import {notify} from '../../notifications/actions'
-import {assumeMock} from '../../../utils/testing'
-import {NotificationStatus} from '../../notifications/types'
+import {
+    submitAgentTableConfigView,
+    submitChannelsTableConfigView,
+} from 'state/currentAccount/actions'
+import {AgentsTableColumn} from 'state/ui/stats/types'
+import * as actions from 'state/currentAccount/actions'
+import * as constants from 'state/currentAccount/constants'
+import {initialState} from 'state/currentAccount/reducers'
+import {StoreDispatch} from 'state/types'
+import {AccountSettingType, AccountSetting} from 'state/currentAccount/types'
+import {notify} from 'state/notifications/actions'
+import {assumeMock} from 'utils/testing'
+import {NotificationStatus} from 'state/notifications/types'
 
 type MockedRootState = {
     currentAccount: Map<any, any>
@@ -221,13 +227,142 @@ describe('current account actions', () => {
                     expect(store.getActions()).toEqual([])
                     expect(notifyMock).toHaveBeenCalledWith({
                         status: NotificationStatus.Error,
-                        message: `Failed to cancel Helpdesk auto-renewal. If the problem persists, 
-                           please contact our billing team via chat or at 
+                        message: `Failed to cancel Helpdesk auto-renewal. If the problem persists,
+                           please contact our billing team via chat or at
                            <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.`,
                         allowHTML: true,
                     })
                     expect(res).toEqual(false)
                 })
         })
+    })
+
+    describe('submitAgentTableConfigView', () => {
+        it.each([
+            [
+                AccountSettingType.AgentsTableConfig,
+                submitAgentTableConfigView,
+                AgentsTableColumn.ClosedTickets,
+            ],
+            [
+                AccountSettingType.ChannelsTableConfig,
+                submitChannelsTableConfigView,
+                ChannelsTableColumns.ClosedTickets,
+            ],
+        ])(
+            'should submit new TableConfig if none present in the state ',
+            async (tableConfigType, submitAction, metric) => {
+                const data = {hello: 'world'}
+                mockServer.onPost('/api/account/settings/').reply(200, data)
+                store = mockStore({
+                    currentAccount: initialState,
+                    billing: fromJS(billingState),
+                })
+                const metrics = [
+                    {
+                        id: metric,
+                        visibility: true,
+                    },
+                ]
+                const activeView = {
+                    id: 'some-id',
+                    metrics,
+                    name: 'Some name',
+                } as any
+
+                await store.dispatch(submitAction(activeView))
+
+                expect(mockServer.history.post[0].data).toEqual(
+                    JSON.stringify({
+                        type: tableConfigType,
+                        data: {
+                            active_view: activeView.id,
+                            views: [activeView],
+                        },
+                    })
+                )
+            }
+        )
+
+        it.each([
+            [
+                AccountSettingType.AgentsTableConfig,
+                submitAgentTableConfigView,
+                AgentsTableColumn.ClosedTickets,
+                AgentsTableColumn.MessagesSentPerHour,
+            ],
+            [
+                AccountSettingType.ChannelsTableConfig,
+                submitChannelsTableConfigView,
+                ChannelsTableColumns.ClosedTickets,
+                ChannelsTableColumns.TicketHandleTime,
+            ],
+        ])(
+            'should submit updated TableConfig from state ',
+            async (tableConfigType, submitAction, metric, newMetric) => {
+                const data = {hello: 'world'}
+                mockServer.onPost('/api/account/settings/').reply(200, data)
+                const settingId = 'setting-id'
+                const activeViewId = 'view-id'
+                const metrics = [
+                    {
+                        id: metric,
+                        visibility: true,
+                    },
+                ]
+                const activeView = {
+                    id: activeViewId,
+                    name: 'Some name',
+                    metrics,
+                } as any
+                store = mockStore({
+                    currentAccount: fromJS({
+                        settings: [
+                            {
+                                id: settingId,
+                                type: tableConfigType,
+                                data: {
+                                    active_view: activeViewId,
+                                    views: [activeView],
+                                },
+                            },
+                        ],
+                        _internal: {
+                            loading: {},
+                        },
+                    }),
+                    billing: fromJS(billingState),
+                })
+
+                const updatedMetrics = [
+                    {
+                        id: metric,
+                        visibility: true,
+                    },
+                    {
+                        id: newMetric,
+                        visibility: true,
+                    },
+                ]
+                const updatedView = {
+                    ...activeView,
+                    name: 'New name',
+                    metrics: updatedMetrics,
+                }
+
+                await store.dispatch(submitAction(updatedView))
+
+                expect(mockServer.history.put[0].data).toEqual(
+                    JSON.stringify({
+                        id: settingId,
+                        type: tableConfigType,
+                        data: {
+                            active_view: activeView.id,
+                            views: [updatedView],
+                        },
+                    })
+                )
+            }
+        )
     })
 })

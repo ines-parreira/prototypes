@@ -13,10 +13,10 @@ import {
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 export const useAgentsSortingQuery = (
-    column: TableColumn,
+    column: AgentsTableColumn,
     useQuery: (
         statsFilters: StatsFilters,
         timezone: string,

@@ -15,7 +15,7 @@ import {
 import {buildAgentMetric} from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {DrillDownModalTrigger} from './DrillDownModalTrigger'
 import {formatMetricValue, NOT_AVAILABLE_PLACEHOLDER} from './common/utils'
 
@@ -59,7 +59,7 @@ export const MedianFirstResponseTimeCellContent = ({
                 <DrillDownModalTrigger
                     enabled={!!metricValue}
                     metricData={buildAgentMetric(
-                        TableColumn.MedianFirstResponseTime,
+                        AgentsTableColumn.MedianFirstResponseTime,
                         agent
                     )}
                 >

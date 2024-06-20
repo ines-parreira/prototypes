@@ -1,6 +1,6 @@
 import moment from 'moment'
 import {Period} from 'models/stat/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
 import {
@@ -63,7 +63,7 @@ const buildQuery = <T>(isFetching: boolean, data: T) => ({
     isError: false,
 })
 
-const columnsOrder: TableColumn[] = Object.values(TableColumn)
+const columnsOrder: AgentsTableColumn[] = Object.values(AgentsTableColumn)
 
 const emptyAgents: User[] = []
 const agents: User[] = [

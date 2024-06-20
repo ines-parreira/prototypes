@@ -4,13 +4,13 @@ import {fireEvent, render, screen} from '@testing-library/react'
 
 import {DndProvider} from 'react-dnd'
 import {HTML5Backend} from 'react-dnd-html5-backend'
-import {AgentsEditColumnsItem} from 'pages/stats/AgentsEditColumnsItem'
+import {EditColumnsItem} from 'pages/stats/common/components/Table/EditColumnsItem'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
-describe('<AgentsEditColumnsItem>', () => {
+describe('<EditColumnsItem>', () => {
     const title = 'item title'
-    const minProps: ComponentProps<typeof AgentsEditColumnsItem> = {
+    const minProps: ComponentProps<typeof EditColumnsItem> = {
         title,
         isChecked: false,
         onChange: (v) => v,
@@ -21,7 +21,7 @@ describe('<AgentsEditColumnsItem>', () => {
     it('should render dropdown item', () => {
         render(
             <DndProvider manager={manager}>
-                <AgentsEditColumnsItem {...minProps} />
+                <EditColumnsItem {...minProps} />
             </DndProvider>
         )
 
@@ -31,7 +31,7 @@ describe('<AgentsEditColumnsItem>', () => {
     it('should render disabled dropdown item', () => {
         render(
             <DndProvider manager={manager}>
-                <AgentsEditColumnsItem {...minProps} disabled />
+                <EditColumnsItem {...minProps} disabled />
             </DndProvider>
         )
         const dropdown = document.querySelector('.dropdownItem')
@@ -43,7 +43,7 @@ describe('<AgentsEditColumnsItem>', () => {
         const tooltip = 'test tooltip'
         render(
             <DndProvider manager={manager}>
-                <AgentsEditColumnsItem {...minProps} tooltip={tooltip} />
+                <EditColumnsItem {...minProps} tooltip={tooltip} />
             </DndProvider>
         )
 
@@ -56,7 +56,7 @@ describe('<AgentsEditColumnsItem>', () => {
         const onChange = jest.fn()
         render(
             <DndProvider manager={manager}>
-                <AgentsEditColumnsItem {...minProps} onChange={onChange} />
+                <EditColumnsItem {...minProps} onChange={onChange} />
             </DndProvider>
         )
 

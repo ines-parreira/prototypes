@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useState} from 'react'
+import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
 import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
 import useMeasure from 'hooks/useMeasure'
@@ -11,7 +12,6 @@ import css from 'pages/stats/AgentsTable.less'
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
 import {
     ChannelColumnConfig,
-    columnsOrder,
     getColumnWidth,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
@@ -26,6 +26,7 @@ export const ChannelsTable = () => {
     }
     const [ref, {width}] = useMeasure<HTMLDivElement>()
     const {sortedChannels, isLoading} = useSortedChannels()
+    const {columnsOrder} = useChannelsTableSetting()
 
     return (
         <div ref={ref} className={css.container} onScroll={handleScroll}>

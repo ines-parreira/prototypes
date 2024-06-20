@@ -1,0 +1,58 @@
+import {CombinedState} from 'redux'
+import {Selector} from 'reselect'
+import useAppDispatch from 'hooks/useAppDispatch'
+import useAppSelector from 'hooks/useAppSelector'
+
+import {RootState, StoreDispatch, StoreState} from 'state/types'
+import {TableColumnSet, TableView} from 'state/ui/stats/types'
+
+export const useTableConfigSetting = <T extends TableColumnSet>(
+    tableSettingSelector: Selector<RootState, TableView<T>>,
+    columnsOrder: T[],
+    submitActiveViewAction: (
+        activeView: TableView<T>
+    ) => (
+        dispatch: StoreDispatch,
+        getState: () => CombinedState<StoreState>
+    ) => Promise<ReturnType<StoreDispatch>>
+) => {
+    const dispatch = useAppDispatch()
+    const currentView = useAppSelector(tableSettingSelector)
+
+    const currentViewColumnsInOrder = currentView.metrics
+        .map((metric) => metric.id)
+        .filter((column) => columnsOrder.includes(column))
+    const columnsMissingInSettings = columnsOrder.filter(
+        (column) => !currentViewColumnsInOrder.includes(column)
+    )
+    const columnsInOrder = [
+        ...currentViewColumnsInOrder,
+        ...columnsMissingInSettings,
+    ]
+
+    currentView.metrics = columnsInOrder.map((metric) => {
+        const savedSetting = currentView.metrics.find(
+            (entry) => entry.id === metric
+        )
+        return {
+            id: metric,
+            visibility:
+                savedSetting?.visibility !== undefined
+                    ? savedSetting?.visibility
+                    : null,
+        }
+    })
+
+    const submitActiveView = async (activeView: TableView<T>) => {
+        await dispatch(submitActiveViewAction(activeView))
+    }
+
+    return {
+        currentView,
+        columnsOrder:
+            currentView?.metrics
+                .filter((metric) => metric.visibility !== false)
+                .map((metric) => metric.id) || [],
+        submitActiveView,
+    }
+}

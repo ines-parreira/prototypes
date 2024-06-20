@@ -1,19 +1,33 @@
+import {useTableConfigSetting} from 'hooks/reporting/useTableConfigSetting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     agentPerformanceTableActiveView,
-    SystemTableViews,
+    AgentsTableViews,
     TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/AgentsTableConfig'
-import {submitSetting} from 'state/currentAccount/actions'
-import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
+import {
+    submitAgentTableConfigView,
+    submitSetting,
+} from 'state/currentAccount/actions'
+import {
+    getAgentsTableConfigSettingsJS,
+    getAgentsTableActiveView,
+} from 'state/currentAccount/selectors'
 import {AccountSettingType} from 'state/currentAccount/types'
-import {TableView} from 'state/ui/stats/types'
+import {AgentsTableColumn, TableView} from 'state/ui/stats/types'
+
+export const useAgentTableSetting = () =>
+    useTableConfigSetting(
+        getAgentsTableActiveView,
+        TableColumnsOrderWithOnlineTime,
+        submitAgentTableConfigView
+    )
 
 export const useAgentsTableConfigSetting = () => {
     const dispatch = useAppDispatch()
     const settings = useAppSelector(getAgentsTableConfigSettingsJS)
-    const currentSettings = settings ? settings.data : SystemTableViews
+    const currentSettings = settings ? settings.data : AgentsTableViews
     const currentView =
         currentSettings.views.find(
             (view) => view.id === currentSettings.active_view
@@ -43,7 +57,9 @@ export const useAgentsTableConfigSetting = () => {
         }
     })
 
-    const submitActiveView = async (activeView: TableView) => {
+    const submitActiveView = async (
+        activeView: TableView<AgentsTableColumn>
+    ) => {
         await dispatch(
             submitSetting({
                 id: settings?.id,

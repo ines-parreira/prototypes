@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
-import {MetricFormat} from 'pages/stats/AgentsTableConfig'
+import {AgentsColumnConfig} from 'pages/stats/AgentsTableConfig'
 import {
     AGENT_SUMMARY_CELL_LABEL,
     AgentsTableSummaryCell,
@@ -19,7 +19,7 @@ import {
     initialState,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -57,7 +57,7 @@ describe('<AgentsTableSummaryCell', () => {
             <Provider store={mockStore(defaultState)}>
                 <AgentsTableSummaryCell
                     useMetric={metricQuery}
-                    column={TableColumn.AgentName}
+                    column={AgentsTableColumn.AgentName}
                 />
             </Provider>
         )
@@ -76,7 +76,7 @@ describe('<AgentsTableSummaryCell', () => {
             <Provider store={mockStore(defaultState)}>
                 <AgentsTableSummaryCell
                     useMetric={metricQuery}
-                    column={TableColumn.CustomerSatisfaction}
+                    column={AgentsTableColumn.CustomerSatisfaction}
                 />
             </Provider>
         )
@@ -85,7 +85,7 @@ describe('<AgentsTableSummaryCell', () => {
     })
 
     it('should call the useMetric hook and render formatted value', () => {
-        const simpleMetric = TableColumn.CustomerSatisfaction
+        const simpleMetric = AgentsTableColumn.CustomerSatisfaction
 
         render(
             <Provider store={mockStore(defaultState)}>
@@ -100,14 +100,14 @@ describe('<AgentsTableSummaryCell', () => {
             screen.getByText(
                 formatMetricValue(
                     metricValue,
-                    MetricFormat[simpleMetric].format
+                    AgentsColumnConfig[simpleMetric].format
                 )
             )
         )
     })
 
     it('should divide metric by number of agents', () => {
-        const simpleMetric = TableColumn.MessagesSent
+        const simpleMetric = AgentsTableColumn.MessagesSent
         const metricValue = 123
         const metricQuery = () => ({
             isFetching: false,
@@ -128,7 +128,7 @@ describe('<AgentsTableSummaryCell', () => {
             screen.getByText(
                 formatMetricValue(
                     metricValue / agents.length,
-                    MetricFormat[simpleMetric].format
+                    AgentsColumnConfig[simpleMetric].format
                 )
             )
         )

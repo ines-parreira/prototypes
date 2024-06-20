@@ -1,5 +1,5 @@
 import React from 'react'
-import {ChannelsHeatmapSwitch} from 'pages/stats/support-performance/channels/ChannelsHeatmapSwitch'
+import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {useGridSize} from 'hooks/useGridSize'
 import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
@@ -32,7 +32,7 @@ export default function ChannelsReport() {
                         <ChartCard
                             title={CHANNEL_PERFORMANCE_TABLE_TITLE}
                             noPadding
-                            titleExtra={<ChannelsHeatmapSwitch />}
+                            titleExtra={<ChannelsCardExtra />}
                         >
                             <ChannelsTable />
                         </ChartCard>

@@ -20,7 +20,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     OverviewMetric,
     SlaMetric,
-    TableColumn,
+    AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 
@@ -46,17 +46,17 @@ type PerformanceOverviewMetrics = {
 } & CommonMetrics
 
 export type AgentMetricColumn =
-    | TableColumn.CustomerSatisfaction
-    | TableColumn.MedianFirstResponseTime
-    | TableColumn.MedianResolutionTime
-    | TableColumn.MessagesSent
-    | TableColumn.PercentageOfClosedTickets
-    | TableColumn.ClosedTickets
-    | TableColumn.RepliedTickets
-    | TableColumn.OneTouchTickets
-    | TableColumn.RepliedTicketsPerHour
-    | TableColumn.ClosedTicketsPerHour
-    | TableColumn.TicketHandleTime
+    | AgentsTableColumn.CustomerSatisfaction
+    | AgentsTableColumn.MedianFirstResponseTime
+    | AgentsTableColumn.MedianResolutionTime
+    | AgentsTableColumn.MessagesSent
+    | AgentsTableColumn.PercentageOfClosedTickets
+    | AgentsTableColumn.ClosedTickets
+    | AgentsTableColumn.RepliedTickets
+    | AgentsTableColumn.OneTouchTickets
+    | AgentsTableColumn.RepliedTicketsPerHour
+    | AgentsTableColumn.ClosedTicketsPerHour
+    | AgentsTableColumn.TicketHandleTime
 
 export type AgentsMetrics = {
     metricName: AgentMetricColumn
@@ -101,13 +101,13 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     OverviewMetric.MessagesSent,
     OverviewMetric.OneTouchTickets,
     TicketFieldsMetric.TicketCustomFieldsTicketCount,
-    TableColumn.ClosedTickets,
-    TableColumn.PercentageOfClosedTickets,
-    TableColumn.RepliedTickets,
-    TableColumn.MessagesSent,
-    TableColumn.OneTouchTickets,
-    TableColumn.RepliedTicketsPerHour,
-    TableColumn.ClosedTicketsPerHour,
+    AgentsTableColumn.ClosedTickets,
+    AgentsTableColumn.PercentageOfClosedTickets,
+    AgentsTableColumn.RepliedTickets,
+    AgentsTableColumn.MessagesSent,
+    AgentsTableColumn.OneTouchTickets,
+    AgentsTableColumn.RepliedTicketsPerHour,
+    AgentsTableColumn.ClosedTicketsPerHour,
 ]
 
 export const initialState: DrillDownState = {
@@ -204,7 +204,7 @@ export const getDrillDownMetric = (state: RootState) => {
         metricData,
         metricOrder:
             metricData?.metricName === OverviewMetric.CustomerSatisfaction ||
-            metricData?.metricName === TableColumn.CustomerSatisfaction
+            metricData?.metricName === AgentsTableColumn.CustomerSatisfaction
                 ? OrderDirection.Asc
                 : OrderDirection.Desc,
     }
@@ -221,9 +221,9 @@ const getMetricValueFormat = (
     }
 
     if (
-        metricName === TableColumn.MedianFirstResponseTime ||
-        metricName === TableColumn.MedianResolutionTime ||
-        metricName === TableColumn.TicketHandleTime ||
+        metricName === AgentsTableColumn.MedianFirstResponseTime ||
+        metricName === AgentsTableColumn.MedianResolutionTime ||
+        metricName === AgentsTableColumn.TicketHandleTime ||
         metricName === OverviewMetric.MedianFirstResponseTime ||
         metricName === OverviewMetric.MedianResolutionTime ||
         metricName === OverviewMetric.TicketHandleTime
@@ -231,7 +231,7 @@ const getMetricValueFormat = (
         return 'duration'
     }
 
-    if (metricName === TableColumn.OneTouchTickets) {
+    if (metricName === AgentsTableColumn.OneTouchTickets) {
         return 'percent'
     }
 

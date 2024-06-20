@@ -2,18 +2,18 @@ import React from 'react'
 import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import {
-    HeaderTooltips,
     TableLabels,
     getQuery,
+    AgentsColumnConfig,
 } from 'pages/stats/AgentsTableConfig'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {OrderDirection} from 'models/api/types'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
 type AgentsHeaderCellContentProps = {
     width?: number | string
     justifyContent?: 'left' | 'right' | 'center'
-    column: TableColumn
+    column: AgentsTableColumn
     className?: string
 }
 
@@ -28,7 +28,7 @@ export const AgentsHeaderCellContent = ({
         column,
         query
     )
-    const tooltip = HeaderTooltips[column]
+    const tooltip = AgentsColumnConfig[column].hint
     const isOrderedBy = column === field
 
     return (

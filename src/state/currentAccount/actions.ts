@@ -1,17 +1,31 @@
 import {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 import {Map} from 'immutable'
+import {AgentsTableViews} from 'pages/stats/AgentsTableConfig'
+import {
+    ChannelsTableColumns,
+    ChannelsTableViews,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {
+    getAgentsTableConfigSettingsJS,
+    getChannelsTableConfigSettingsJS,
+} from 'state/currentAccount/selectors'
+import {AgentsTableColumn, TableView} from 'state/ui/stats/types'
 
-import {ProductData, Subscription} from '../billing/types'
-import GorgiasApi from '../../services/gorgiasApi'
-import {notify} from '../notifications/actions'
-import {Notification, NotificationStatus} from '../notifications/types'
-import {StoreDispatch} from '../types'
-import client from '../../models/api/resources'
+import {RootState, StoreDispatch} from 'state/types'
+import client from 'models/api/resources'
 
-import {GorgiasApiError, isGorgiasApiError} from '../../models/api/types'
-import * as constants from './constants'
-import {Account, AccountSetting} from './types'
+import {GorgiasApiError, isGorgiasApiError} from 'models/api/types'
+import * as constants from 'state/currentAccount/constants'
+import {
+    Account,
+    AccountSetting,
+    AccountSettingType,
+} from 'state/currentAccount/types'
+import {ProductData, Subscription} from 'state/billing/types'
+import GorgiasApi from 'services/gorgiasApi'
+import {notify} from 'state/notifications/actions'
+import {Notification, NotificationStatus} from 'state/notifications/types'
 
 export const updateAccount =
     (values: Account) =>
@@ -101,6 +115,62 @@ export function submitSetting(
                     })
                 }
             )
+    }
+}
+
+export function submitAgentTableConfigView(
+    activeView: TableView<AgentsTableColumn>
+) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const settings = getAgentsTableConfigSettingsJS(getState())
+        const currentSettings = settings ? settings.data : AgentsTableViews
+        return dispatch(
+            submitSetting({
+                id: settings?.id,
+                type: AccountSettingType.AgentsTableConfig,
+                data: {
+                    active_view: activeView.id,
+                    views: currentSettings.views.find(
+                        (view) => view.id === activeView.id
+                    )
+                        ? currentSettings.views.map((view) =>
+                              view.id === activeView.id ? activeView : view
+                          )
+                        : [...currentSettings.views, activeView],
+                },
+            })
+        )
+    }
+}
+
+export function submitChannelsTableConfigView(
+    activeView: TableView<ChannelsTableColumns>
+) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const settings = getChannelsTableConfigSettingsJS(getState())
+        const currentSettings = settings ? settings.data : ChannelsTableViews
+        return dispatch(
+            submitSetting({
+                id: settings?.id,
+                type: AccountSettingType.ChannelsTableConfig,
+                data: {
+                    active_view: activeView.id,
+                    views: currentSettings.views.find(
+                        (view) => view.id === activeView.id
+                    )
+                        ? currentSettings.views.map((view) =>
+                              view.id === activeView.id ? activeView : view
+                          )
+                        : [...currentSettings.views, activeView],
+                },
+            })
+        )
     }
 }
 
@@ -247,8 +317,8 @@ export function cancelHelpdeskAutoRenewal() {
                 (error: GorgiasApiError) => {
                     const message = isGorgiasApiError(error)
                         ? error.response.data.error.msg
-                        : `Failed to cancel Helpdesk auto-renewal. If the problem persists, 
-                           please contact our billing team via chat or at 
+                        : `Failed to cancel Helpdesk auto-renewal. If the problem persists,
+                           please contact our billing team via chat or at
                            <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.`
 
                     void dispatch(

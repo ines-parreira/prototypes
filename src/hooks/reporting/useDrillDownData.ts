@@ -17,7 +17,11 @@ import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {OverviewMetric, SlaMetric, TableColumn} from 'state/ui/stats/types'
+import {
+    OverviewMetric,
+    SlaMetric,
+    AgentsTableColumn,
+} from 'state/ui/stats/types'
 
 export interface TicketDetails {
     id: number | string
@@ -97,7 +101,7 @@ export const getDrillDownMetricOrder = (
     metricName: DrillDownMetric['metricName']
 ) => {
     return metricName === OverviewMetric.CustomerSatisfaction ||
-        metricName === TableColumn.CustomerSatisfaction
+        metricName === AgentsTableColumn.CustomerSatisfaction
         ? OrderDirection.Asc
         : OrderDirection.Desc
 }

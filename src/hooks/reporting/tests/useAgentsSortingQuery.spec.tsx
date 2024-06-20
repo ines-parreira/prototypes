@@ -21,7 +21,7 @@ import {
 } from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as filtersInitialState} from 'state/stats/statsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -51,7 +51,7 @@ describe('useAgentsSortingQuery', () => {
     describe('sorting callback', () => {
         it('should change the sorting column', () => {
             const store = mockStore(defaultState)
-            const column = TableColumn.MedianFirstResponseTime
+            const column = AgentsTableColumn.MedianFirstResponseTime
 
             const {result} = renderHook(
                 () => useAgentsSortingQuery(column, queryHook),
@@ -101,7 +101,7 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should dispatch query result on sorting isLoading and data fetched', () => {
-        const column = TableColumn.ClosedTickets
+        const column = AgentsTableColumn.ClosedTickets
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
@@ -139,7 +139,7 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should not dispatch query result on sorting isLoading and data is fetching', () => {
-        const column = TableColumn.ClosedTickets
+        const column = AgentsTableColumn.ClosedTickets
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
@@ -177,7 +177,7 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should disable loading when sorting by AgentName', () => {
-        const column = TableColumn.AgentName
+        const column = AgentsTableColumn.AgentName
         const store = mockStore({
             ...defaultState,
             ui: {
@@ -195,7 +195,10 @@ describe('useAgentsSortingQuery', () => {
 
         renderHook(
             () =>
-                useAgentsSortingQuery(TableColumn.AgentName, getQuery(column)),
+                useAgentsSortingQuery(
+                    AgentsTableColumn.AgentName,
+                    getQuery(column)
+                ),
             {
                 wrapper: ({children}) => (
                     <Provider store={store}>{children}</Provider>
@@ -207,7 +210,7 @@ describe('useAgentsSortingQuery', () => {
     })
 
     it('should update loading state when the query of a current sorting column starts loading', () => {
-        const column = TableColumn.ClosedTickets
+        const column = AgentsTableColumn.ClosedTickets
         const store = mockStore({
             ...defaultState,
             ui: {

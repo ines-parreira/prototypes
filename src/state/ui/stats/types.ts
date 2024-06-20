@@ -1,4 +1,5 @@
 import {StatsFilters} from 'models/stat/types'
+import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 
 export type StatsState = {
     fetchingMap: {
@@ -22,7 +23,7 @@ export enum OverviewMetric {
     TicketHandleTime = 'ticket_handle_time',
 }
 
-export enum TableColumn {
+export enum AgentsTableColumn {
     AgentName = 'agent_name',
     CustomerSatisfaction = 'agent_customer_satisfaction',
     MedianFirstResponseTime = 'agent_median_first_response_time',
@@ -48,22 +49,28 @@ export enum SlaMetric {
     BreachedTicketsRate = 'sla-breached-tickets-rate',
 }
 
-export enum TableViewIdentifier {
+export enum AgentsTableViewIdentifier {
     AgentPerformanceMetrics = 'agent_performance_metrics',
 }
 
-export type TableViewColumn = {
-    id: TableColumn
+export enum ChannelsTableViewIdentifier {
+    ChannelsReport = 'channelsReport',
+}
+
+export type TableViewColumn<T> = {
+    id: T
     visibility: boolean | null
 }
 
-export type TableView = {
+export type TableView<T> = {
     id: string
     name: string
-    metrics: TableViewColumn[]
+    metrics: TableViewColumn<T>[]
 }
 
-export type TableSetting = {
-    active_view: TableViewIdentifier | string
-    views: TableView[]
+export type TableSetting<T> = {
+    active_view: string
+    views: TableView<T>[]
 }
+
+export type TableColumnSet = AgentsTableColumn | ChannelsTableColumns

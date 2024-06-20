@@ -4,7 +4,7 @@ import {useDrag, useDrop} from 'react-dnd'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'
 
-import css from './AgentsEditColumns.less'
+import css from 'pages/stats/common/components/Table/EditColumns.less'
 
 type Props = {
     title: string
@@ -17,7 +17,7 @@ type Props = {
     onDrop: (item: {id: string}, monitor: {id: string}) => {id: string}
 }
 
-export const AgentsEditColumnsItem = ({
+export const EditColumnsItem = ({
     title,
     tooltip,
     isChecked,

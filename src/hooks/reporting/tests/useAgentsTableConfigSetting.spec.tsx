@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {
-    SystemTableViews,
+    AgentsTableViews,
     agentPerformanceTableActiveView,
     TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/AgentsTableConfig'
@@ -17,7 +17,7 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
@@ -37,7 +37,7 @@ describe('useAgentsTableConfigSetting', () => {
         })
 
         expect(result.current).toEqual({
-            settings: SystemTableViews,
+            settings: AgentsTableViews,
             columnsOrder: TableColumnsOrderWithOnlineTime,
             currentView: agentPerformanceTableActiveView,
             submitActiveView: expect.any(Function),
@@ -81,10 +81,10 @@ describe('useAgentsTableConfigSetting', () => {
             })
 
             expect(result.current.columnsOrder).toContain(
-                TableColumn.OnlineTime
+                AgentsTableColumn.OnlineTime
             )
             expect(result.current.currentView.metrics).toContainEqual({
-                id: TableColumn.OnlineTime,
+                id: AgentsTableColumn.OnlineTime,
                 visibility: null,
             })
         })
@@ -135,9 +135,9 @@ describe('useAgentsTableConfigSetting', () => {
 
     it('should return columns in order they are stored in settings and ignore unsupported ones', () => {
         const columnsSavedInCustomOrder = [
-            TableColumn.ClosedTickets,
-            TableColumn.AgentName,
-            TableColumn.CustomerSatisfaction,
+            AgentsTableColumn.ClosedTickets,
+            AgentsTableColumn.AgentName,
+            AgentsTableColumn.CustomerSatisfaction,
         ]
         const unsupportedColumn = 'agent_unsupported_column'
         const restOfTheColumns = TableColumnsOrderWithOnlineTime.filter(

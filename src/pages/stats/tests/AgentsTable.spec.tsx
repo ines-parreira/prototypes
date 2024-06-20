@@ -34,7 +34,7 @@ import {
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
 import {assumeMock} from 'utils/testing'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -282,11 +282,11 @@ describe('<AgentTable>', () => {
                 expectedOtherColumnsWidth,
             }) => {
                 global.innerWidth = screenResolution
-                expect(getColumnWidth(TableColumn.AgentName)).toEqual(
+                expect(getColumnWidth(AgentsTableColumn.AgentName)).toEqual(
                     expectedAgentsWidth
                 )
                 expect(
-                    getColumnWidth(TableColumn.CustomerSatisfaction)
+                    getColumnWidth(AgentsTableColumn.CustomerSatisfaction)
                 ).toEqual(expectedOtherColumnsWidth)
             }
         )

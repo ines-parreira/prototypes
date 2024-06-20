@@ -24,7 +24,7 @@ import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     OverviewMetric,
     SlaMetric,
-    TableColumn,
+    AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 
@@ -69,48 +69,48 @@ export const getDrillDownQuery = (
             return oneTouchTicketsPerTicketQueryFactory
         case OverviewMetric.TicketHandleTime:
             return ticketHandleTimePerTicketDrillDownQueryFactory
-        case TableColumn.CustomerSatisfaction:
+        case AgentsTableColumn.CustomerSatisfaction:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 customerSatisfactionMetricDrillDownQueryFactory
             )
 
-        case TableColumn.MedianFirstResponseTime:
+        case AgentsTableColumn.MedianFirstResponseTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 firstResponseTimeMetricPerTicketDrillDownQueryFactory
             )
-        case TableColumn.MedianResolutionTime:
+        case AgentsTableColumn.MedianResolutionTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 resolutionTimeMetricPerTicketDrillDownQueryFactory
             )
 
-        case TableColumn.MessagesSent:
+        case AgentsTableColumn.MessagesSent:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 messagesSentMetricPerTicketDrillDownQueryFactory
             )
 
-        case TableColumn.PercentageOfClosedTickets:
-        case TableColumn.ClosedTicketsPerHour:
-        case TableColumn.ClosedTickets:
+        case AgentsTableColumn.PercentageOfClosedTickets:
+        case AgentsTableColumn.ClosedTicketsPerHour:
+        case AgentsTableColumn.ClosedTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 closedTicketsPerTicketDrillDownQueryFactory
             )
-        case TableColumn.RepliedTickets:
-        case TableColumn.RepliedTicketsPerHour:
+        case AgentsTableColumn.RepliedTickets:
+        case AgentsTableColumn.RepliedTicketsPerHour:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 ticketsRepliedMetricPerTicketDrillDownQueryFactory
             )
-        case TableColumn.OneTouchTickets:
+        case AgentsTableColumn.OneTouchTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 oneTouchTicketsPerTicketQueryFactory
             )
-        case TableColumn.TicketHandleTime:
+        case AgentsTableColumn.TicketHandleTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 ticketHandleTimePerTicketDrillDownQueryFactory

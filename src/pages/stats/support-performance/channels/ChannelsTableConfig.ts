@@ -29,7 +29,11 @@ import {
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
 } from 'services/reporting/constants'
-import {OverviewMetric} from 'state/ui/stats/types'
+import {
+    ChannelsTableViewIdentifier,
+    OverviewMetric,
+    TableSetting,
+} from 'state/ui/stats/types'
 
 export enum ChannelsTableColumns {
     Channel = 'channels_channel',
@@ -58,19 +62,30 @@ export const columnsOrder: ChannelsTableColumns[] = [
     ChannelsTableColumns.CustomerSatisfaction,
 ]
 
+export const ChannelsTableLabels: Record<ChannelsTableColumns, string> = {
+    [ChannelsTableColumns.Channel]: 'Channel',
+    [ChannelsTableColumns.TicketsCreated]: TICKETS_CREATED_LABEL,
+    [ChannelsTableColumns.CreatedTicketsPercentage]: PERCENT_OF_CREATED_TICKETS,
+    [ChannelsTableColumns.ClosedTickets]: TICKETS_CLOSED_LABEL,
+    [ChannelsTableColumns.TicketHandleTime]: TICKET_HANDLE_TIME_LABEL,
+    [ChannelsTableColumns.FirstResponseTime]: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
+    [ChannelsTableColumns.MedianResolutionTime]: MEDIAN_RESOLUTION_TIME_LABEL,
+    [ChannelsTableColumns.TicketsReplied]: TICKETS_REPLIED_LABEL,
+    [ChannelsTableColumns.MessagesSent]: MESSAGES_SENT_LABEL,
+    [ChannelsTableColumns.CustomerSatisfaction]: CUSTOMER_SATISFACTION_LABEL,
+}
+
 export const ChannelColumnConfig: Record<
     ChannelsTableColumns,
     {
         format: MetricValueFormat
         hint: TooltipData | null
-        label: string
         useMetric: MetricPerChannelQueryHook
     }
 > = {
     [ChannelsTableColumns.Channel]: {
         format: 'integer',
         hint: null,
-        label: 'Channel',
         useMetric: () => ({
             isFetching: false,
             isError: false,
@@ -84,7 +99,6 @@ export const ChannelColumnConfig: Record<
     [ChannelsTableColumns.TicketsCreated]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsCreated].hint,
-        label: TICKETS_CREATED_LABEL,
         useMetric: useCreatedTicketsMetricPerChannel,
     },
     [ChannelsTableColumns.CreatedTicketsPercentage]: {
@@ -92,55 +106,56 @@ export const ChannelColumnConfig: Record<
         hint: {
             title: 'Proportion of tickets created in the given channel.',
         },
-        label: PERCENT_OF_CREATED_TICKETS,
         useMetric: usePercentageOfCreatedTicketsMetricPerChannel,
     },
     [ChannelsTableColumns.ClosedTickets]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsClosed].hint,
-        label: TICKETS_CLOSED_LABEL,
         useMetric: useClosedTicketsMetricPerChannel,
     },
     [ChannelsTableColumns.TicketHandleTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.TicketHandleTime].hint,
-        label: TICKET_HANDLE_TIME_LABEL,
         useMetric: useTicketAverageHandleTimePerChannel,
     },
     [ChannelsTableColumns.FirstResponseTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime].hint,
-        label: MEDIAN_FIRST_RESPONSE_TIME_LABEL,
         useMetric: useMedianFirstResponseTimeMetricPerChannel,
     },
     [ChannelsTableColumns.MedianResolutionTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianResolutionTime].hint,
-        label: MEDIAN_RESOLUTION_TIME_LABEL,
         useMetric: useMedianResolutionTimeMetricPerChannel,
     },
     [ChannelsTableColumns.TicketsReplied]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsReplied].hint,
-        label: TICKETS_REPLIED_LABEL,
         useMetric: useTicketsRepliedMetricPerChannel,
     },
     [ChannelsTableColumns.MessagesSent]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.MessagesSent].hint,
-        label: MESSAGES_SENT_LABEL,
         useMetric: useMessagesSentMetricPerChannel,
     },
     [ChannelsTableColumns.CustomerSatisfaction]: {
         format: 'decimal',
         hint: OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].hint,
-        label: CUSTOMER_SATISFACTION_LABEL,
         useMetric: useCustomerSatisfactionMetricPerChannel,
     },
 }
 
-export const MOBILE_CHANNEL_COLUMN_WIDTH = 180
+export const channelsMetrics = columnsOrder.map((column) => ({
+    id: column,
+    visibility: true,
+}))
+export const ChannelsTableViews: TableSetting<ChannelsTableColumns> = {
+    active_view: ChannelsTableViewIdentifier.ChannelsReport,
+    views: [],
+}
+
 const CHANNEL_COLUMN_WIDTH = 200
+export const MOBILE_CHANNEL_COLUMN_WIDTH = 180
 
 export const getColumnWidth = (column: ChannelsTableColumns) => {
     if (isMediumOrSmallScreen()) {
@@ -149,4 +164,10 @@ export const getColumnWidth = (column: ChannelsTableColumns) => {
             : MOBILE_METRIC_COLUMN_WIDTH
     }
     return column === LeadColumn ? CHANNEL_COLUMN_WIDTH : METRIC_COLUMN_WIDTH
+}
+
+export const channelsReportTableActiveView = {
+    id: ChannelsTableViewIdentifier.ChannelsReport,
+    name: 'Channels report',
+    metrics: channelsMetrics,
 }

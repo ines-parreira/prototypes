@@ -8,7 +8,7 @@ import {
     TableColumnsOrderWithOnlineTime,
     TableLabels,
 } from 'pages/stats/AgentsTableConfig'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('hooks/reporting/useAgentsSortingQuery')
@@ -19,7 +19,7 @@ describe('<AgentsHeaderCellContent>', () => {
     useSortingQueryMock.mockReturnValue({
         sortCallback,
         direction: OrderDirection.Asc,
-        field: TableColumn.AgentName,
+        field: AgentsTableColumn.AgentName,
     })
 
     it.each(TableColumnsOrderWithOnlineTime)(
@@ -32,7 +32,7 @@ describe('<AgentsHeaderCellContent>', () => {
     )
 
     it('should render trigger sorting action on click', () => {
-        const sortableColumn = TableColumn.MedianFirstResponseTime
+        const sortableColumn = AgentsTableColumn.MedianFirstResponseTime
 
         render(<AgentsHeaderCellContent column={sortableColumn} />)
         const cell = screen.getByRole('cell')
@@ -44,7 +44,7 @@ describe('<AgentsHeaderCellContent>', () => {
     })
 
     it('should render sorting icon on the column currently not sorted', () => {
-        const sortableColumn = TableColumn.AgentName
+        const sortableColumn = AgentsTableColumn.AgentName
 
         render(<AgentsHeaderCellContent column={sortableColumn} />)
         const sortingIcon = screen.getByText('arrow_upward')
@@ -53,7 +53,7 @@ describe('<AgentsHeaderCellContent>', () => {
     })
 
     it('should not render sorting icon on the column currently not sorted', () => {
-        const column = TableColumn.MedianFirstResponseTime
+        const column = AgentsTableColumn.MedianFirstResponseTime
 
         render(<AgentsHeaderCellContent column={column} />)
         const sortingIcon = screen.queryByText('arrow_upward')

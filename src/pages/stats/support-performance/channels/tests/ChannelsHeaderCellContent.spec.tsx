@@ -4,8 +4,8 @@ import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useCh
 import {OrderDirection} from 'models/api/types'
 import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
 import {
-    ChannelColumnConfig,
     ChannelsTableColumns,
+    ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {assumeMock, renderWithStore} from 'utils/testing'
 
@@ -30,7 +30,7 @@ describe('ChannelsHeaderCellContent', () => {
         )
 
         expect(
-            screen.getByText(ChannelColumnConfig[column].label)
+            screen.getByText(ChannelsTableLabels[column])
         ).toBeInTheDocument()
         expect(screen.getByText('arrow_downward')).toBeInTheDocument()
     })
@@ -49,7 +49,7 @@ describe('ChannelsHeaderCellContent', () => {
         )
 
         expect(
-            screen.getByText(ChannelColumnConfig[column].label)
+            screen.getByText(ChannelsTableLabels[column])
         ).toBeInTheDocument()
         expect(screen.getByText('arrow_upward')).toBeInTheDocument()
     })

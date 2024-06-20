@@ -11,7 +11,7 @@ import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessa
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
 import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
 import {StatsFilters} from 'models/stat/types'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
 import {NOT_AVAILABLE_PLACEHOLDER, formatMetricValue} from './common/utils'
@@ -46,28 +46,28 @@ export const agentsShoutoutsConfig: ShoutoutConfig[] = [
     {
         useQuery: useCustomerSatisfactionMetricPerAgent,
         queryOrder: OrderDirection.Desc,
-        metricName: TableLabels[TableColumn.CustomerSatisfaction],
+        metricName: TableLabels[AgentsTableColumn.CustomerSatisfaction],
         formatValue: formatDecimals,
         measure: TicketSatisfactionSurveyMeasure.AvgSurveyScore,
     },
     {
         useQuery: useMedianFirstResponseTimeMetricPerAgent,
         queryOrder: OrderDirection.Asc,
-        metricName: TableLabels[TableColumn.MedianFirstResponseTime],
+        metricName: TableLabels[AgentsTableColumn.MedianFirstResponseTime],
         formatValue: formatDuration,
         measure: TicketMessagesMeasure.MedianFirstResponseTime,
     },
     {
         useQuery: useMedianResolutionTimeMetricPerAgent,
         queryOrder: OrderDirection.Asc,
-        metricName: TableLabels[TableColumn.MedianResolutionTime],
+        metricName: TableLabels[AgentsTableColumn.MedianResolutionTime],
         formatValue: formatDuration,
         measure: TicketMessagesMeasure.MedianResolutionTime,
     },
     {
         useQuery: useClosedTicketsMetricPerAgent,
         queryOrder: OrderDirection.Desc,
-        metricName: TableLabels[TableColumn.ClosedTickets],
+        metricName: TableLabels[AgentsTableColumn.ClosedTickets],
         formatValue: formatDecimals,
         measure: TicketMeasure.TicketCount,
     },

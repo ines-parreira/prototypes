@@ -5,7 +5,7 @@ import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigS
 
 import {agents} from 'fixtures/agents'
 import {logEvent, SegmentEvent} from 'common/segment'
-import {TableColumn} from 'state/ui/stats/types'
+import {AgentsTableColumn} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {saveReport} from 'services/reporting/agentsPerformanceReportingService'
 import {DownloadAgentsPerformanceDataButton} from 'pages/stats/DownloadAgentsPerformanceDataButton'
@@ -24,7 +24,7 @@ jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 describe('DownloadAgentsPerformanceDataButton', () => {
-    const columnsOrder = Object.values(TableColumn)
+    const columnsOrder = Object.values(AgentsTableColumn)
     const metricReturnValue = {
         isFetching: false,
         isError: false,
