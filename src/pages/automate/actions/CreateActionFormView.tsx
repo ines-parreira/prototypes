@@ -68,6 +68,8 @@ export default function CreateActionFormView() {
         shopName: string
     }>()
 
+    const isTemplateAction = templateConfiguration && newActionConfiguration
+
     return (
         <AutomateView
             className={css.actionsFormContainer}
@@ -81,12 +83,16 @@ export default function CreateActionFormView() {
                             {ACTIONS}
                         </Link>
                     </BreadcrumbItem>
-                    <BreadcrumbItem active>New Action</BreadcrumbItem>
+                    <BreadcrumbItem active>
+                        {isTemplateAction && templateConfiguration?.name
+                            ? templateConfiguration.name
+                            : 'New Action'}
+                    </BreadcrumbItem>
                 </Breadcrumb>
             }
             action={<div id={AUTOMATE_VIEW_ACTION_PORTAL_ID}></div>}
         >
-            {templateConfiguration && newActionConfiguration ? (
+            {isTemplateAction ? (
                 <TemplateActionsForm
                     initialConfigurationData={newActionConfiguration}
                     templateConfiguration={templateConfiguration}
