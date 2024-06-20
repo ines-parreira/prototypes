@@ -778,9 +778,6 @@ export function SettingsRoutes() {
     const isHelpCenterCreationWizardEnabled: boolean =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
-    const isSLAPoliciesEnabled: boolean =
-        useFlags()[FeatureFlagKey.SLAPolicies] || false
-
     const hasNotifications: boolean =
         useFlags()[FeatureFlagKey.Notifications] || false
 
@@ -989,9 +986,7 @@ export function SettingsRoutes() {
                     <App content={AutoMergeSettings} navbar={SettingsNavbar} />
                 )}
             />
-            {isSLAPoliciesEnabled && (
-                <Route path={`${path}/sla`} render={SLARoutes} />
-            )}
+            <Route path={`${path}/sla`} render={SLARoutes} />
         </Switch>
     )
 }

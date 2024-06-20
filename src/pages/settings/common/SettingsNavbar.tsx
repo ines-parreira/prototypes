@@ -131,7 +131,6 @@ const CATEGORIES: Category[] = [
                 requiredRole: AGENT_ROLE,
                 to: 'sla',
                 text: 'SLAs',
-                requiredFeatureFlags: [FeatureFlagKey.SLAPolicies],
                 extra: (
                     <Badge type={ColorType.Blue} className={css.badge}>
                         NEW

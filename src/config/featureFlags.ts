@@ -103,7 +103,6 @@ export enum FeatureFlagKey {
     SearchWithHighlights = 'search-with-highlights',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',
-    SLAPolicies = 'sla-policies',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketNavigationArrows = 'ticket-navigation-arrows',
