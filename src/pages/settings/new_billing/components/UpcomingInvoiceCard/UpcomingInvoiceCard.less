@@ -1,0 +1,42 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        border-radius: 4px;
+        padding: @layout-spacing-s;
+        border: 1px solid var(--neutral-grey-3, #ddd);
+        background: var(--neutral-grey-1, #f9f9f9);
+    }
+
+    .title {
+        .heading-page-semibold();
+        color: var(--neutral-grey-6);
+    }
+
+    .amount {
+        .heading-section-semibold();
+    }
+
+    .subtotal {
+        color: var(--neutral-grey-4);
+        .heading-section-semibold();
+        text-decoration: line-through;
+    }
+
+    .total {
+        .heading-section-semibold();
+    }
+
+    .coupon {
+        color: var(--neutral-grey-5);
+        font-weight: @body-semibold-font-weight;
+    }
+
+    .caption {
+        color: var(--neutral-grey-4);
+        .body-regular();
+    }
+}

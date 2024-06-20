@@ -407,7 +407,11 @@ const BillingStartView = () => {
                 {isUsageFetched ? (
                     <Switch>
                         <Route exact path={BILLING_INTERNAL_PATH}>
-                            <BillingInternalView />
+                            {window.USER_IMPERSONATED && isInternalUIEnabled ? (
+                                <BillingInternalView />
+                            ) : (
+                                <div>You cannot access this page</div>
+                            )}
                         </Route>
                         <Route exact path={BILLING_BASE_PATH}>
                             <UsageAndPlansView

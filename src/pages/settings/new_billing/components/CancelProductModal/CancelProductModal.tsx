@@ -1,4 +1,5 @@
 import React, {useReducer, useState} from 'react'
+import _capitalize from 'lodash/capitalize'
 import Modal from 'pages/common/components/modal/Modal'
 import {ProductType} from 'models/billing/types'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
@@ -253,10 +254,7 @@ const CancelProductModal = ({
         <>
             <Modal isOpen={isOpen} onClose={handleOnClose} size="medium">
                 <ModalHeader
-                    title={`Cancel ${
-                        productType.charAt(0).toUpperCase() +
-                        productType.slice(1)
-                    } auto-renewal`}
+                    title={`Cancel ${_capitalize(productType)} auto-renewal`}
                 />
                 {renderStep()}
             </Modal>

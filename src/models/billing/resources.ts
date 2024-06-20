@@ -1,8 +1,11 @@
 import client from 'models/api/resources'
 import {
+    BillingState,
+    CouponForSales,
     ChurnMitigationOfferDecisionEvent,
     SubscriptionCycle,
 } from 'models/billing/types'
+import {ApiListResponseCursorPagination} from '../api/types'
 
 export const fetchSubscription = async () => {
     const res = await client.get<SubscriptionCycle>('/api/billing/subscription')
@@ -17,3 +20,29 @@ export const trackBillingEvent = async (
         name: eventName,
         data: event,
     })
+
+export async function getBillingState(): Promise<BillingState> {
+    const res = await client.get<BillingState>('/billing/state')
+    return res.data
+}
+
+export async function getCouponsForSales() {
+    const res = await client.get<
+        ApiListResponseCursorPagination<CouponForSales>
+    >('/billing/coupons-for-sales')
+    return res.data
+}
+
+export async function applySalesCoupon({
+    coupon_name,
+    reason,
+}: {
+    coupon_name: string
+    reason: string
+}) {
+    const res = await client.put(`/billing/coupon`, {
+        coupon_name: coupon_name,
+        reason: reason,
+    })
+    return res
+}

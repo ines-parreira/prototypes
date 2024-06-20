@@ -129,3 +129,59 @@ export type ChurnMitigationOfferDecisionEvent = {
     other_reason: string | null
     accepted: boolean
 }
+
+export type CouponSummary = {
+    name: string
+    duration: string
+    duration_in_months: number | null
+    amount_off_in_cents: number | null
+    amount_off_decimal: string | null
+    percent_off: number | null
+}
+
+type ProductUsage = {
+    num_tickets: number
+    num_extra_tickets: number
+    extra_tickets_cost_in_cents: number
+}
+
+export type ProductUsages = {
+    helpdesk: ProductUsage
+    automation: ProductUsage | null
+    sms: ProductUsage | null
+    voice: ProductUsage | null
+    convert: ProductUsage | null
+}
+
+export type UpcomingInvoiceSummary = {
+    coupon: CouponSummary | null
+    // subtotal : coupon is NOT taken into account
+    subtotal_in_cents: number
+    subtotal_decimal: string
+    // total : coupon is taken into account
+    total_in_cents: number
+    total_decimal: string
+    usages: ProductUsages
+}
+
+type SubscriptionSummary = {
+    status: string
+    cadence: PlanInterval
+    is_trialing: boolean
+    trial_start_datetime: string | null
+    trial_end_datetime: string | null
+    has_schedule: boolean
+    downgrade_scheduled: boolean
+    // downgrades: list[ScheduledPriceChange]
+    scheduled_to_cancel_at: string | null
+    current_billing_cycle_start_datetime: string
+    current_billing_cycle_end_datetime: string
+    coupon: CouponSummary | null
+}
+
+export type BillingState = {
+    upcoming_invoice: UpcomingInvoiceSummary | null
+    subscription: SubscriptionSummary | null
+}
+
+export type CouponForSales = string[]

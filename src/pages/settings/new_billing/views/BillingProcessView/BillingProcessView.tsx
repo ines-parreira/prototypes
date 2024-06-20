@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import {dismissNotification} from 'reapop'
 
+import _capitalize from 'lodash/capitalize'
 import {
     AutomatePlan,
     ConvertPlan,
@@ -186,7 +187,7 @@ const BillingProcessView = ({
         // Get selected plans' details
         Object.values(ProductType).map((key) => {
             const productType = key as ProductType
-            const productName = key.charAt(0).toUpperCase() + key.slice(1)
+            const productName = _capitalize(key)
             const selectedPlan = selectedPlans[productType].plan
 
             if (selectedPlans[productType]?.isSelected) {

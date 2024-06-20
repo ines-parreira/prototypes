@@ -1,3 +1,4 @@
+import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
 import {ColorType} from 'pages/common/components/Badge/Badge'
@@ -10,6 +11,10 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
+import {
+    formatAmount,
+    formatNumTickets,
+} from '../../pages/settings/new_billing/utils/formatAmount'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
     Basic: ColorType.Classic,
@@ -104,4 +109,67 @@ export function getProductLabel(plan: Plan): string | undefined {
     if (isLegacyAutomate(plan)) {
         return 'Legacy'
     }
+}
+
+/**
+ * @description
+ *    Returns a string such as "$360/month"
+ *
+ * @param plan Plan
+ * @returns string
+ */
+function getPlanPricePerCadence(plan: Plan): string {
+    const planPrice = plan.amount / 100
+    const planPricePerCadence: string = `${formatAmount(planPrice)}/${
+        plan.cadence
+    }`
+    return planPricePerCadence
+}
+
+/**
+ * @description
+ *    Returns a string such as
+ *    "2,000 tickets/month" for a Helpdesk plan
+ *    "150 automated interactions/month" for an Automate plan
+ *    "25 tickets/month" for a Voice or Sms plan
+ *    "25 clicks/month" for a Convert plan
+ *
+ * @param plan Plan
+ * @returns string
+ */
+function getPlanUnitsPerCadence(plan: Plan): string {
+    if (isLegacyAutomate(plan)) {
+        return `${plan.extra_ticket_cost} extra for helpdesk tickets overages`
+    }
+    const amount = formatNumTickets(plan.num_quota_tickets ?? 0)
+
+    switch (plan.product) {
+        case ProductType.Automation:
+            return `${amount} automated interactions/${plan.cadence}`
+        case ProductType.Convert:
+            return `${amount} clicks/${plan.cadence}`
+        default:
+            return `${amount} tickets/${plan.cadence}`
+    }
+}
+
+/**
+ * @description
+ *    Returns a string such as
+ *    "Pro, $360/month, 2,000 tickets/month" for a Helpdesk plan
+ *    "$143/month, 150 automated interactions/month" for an Automate plan
+ *    "$20/month, 25 tickets/month" for a Voice or Sms plan
+ *    "$20/month, 25 clicks/month" for a Convert plan
+ *
+ * @param plan Plan
+ * @returns string
+ */
+export function getPlanDescription(plan: Plan): string {
+    const planName =
+        plan.product === ProductType.Helpdesk ? `${plan.name}, ` : ''
+
+    const amountPerCadence = getPlanPricePerCadence(plan)
+    const unitsPerCadence = getPlanUnitsPerCadence(plan)
+
+    return `${_capitalize(planName)}${amountPerCadence}, ${unitsPerCadence}`
 }

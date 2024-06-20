@@ -1,0 +1,35 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        flex-direction: column;
+        border-radius: 4px;
+        padding: @layout-spacing-s;
+        border: 1px solid var(--neutral-grey-3, #ddd);
+        background: var(--neutral-grey-1, #f9f9f9);
+        gap: @layout-spacing-xs;
+    }
+
+    .inactiveProduct {
+        display: flex;
+        flex-direction: column;
+        color: var(--neutral-grey-4);
+        gap: @layout-spacing-xs;
+    }
+
+    .title {
+        .heading-page-semibold();
+    }
+
+    .bold {
+        font-weight: bold;
+    }
+
+    .verticallyAligned {
+        display: flex;
+        align-items: center;
+        line-height: 1em;
+    }
+}

@@ -1,0 +1,15 @@
+@import '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .subtitle {
+        display: flex;
+        gap: 4px;
+        .heading-subsection-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .red {
+        color: var(--feedback-error);
+    }
+}
