@@ -97,7 +97,9 @@ export default function DiscountCodeResults({
     })
 
     const handleCloseModal = useCallback(() => {
-        discountModal.closeModal(DISCOUNT_MODAL_NAME)
+        setTimeout(() => {
+            discountModal.closeModal(DISCOUNT_MODAL_NAME)
+        }, 100)
     }, [discountModal])
 
     const handleOpenModal = useCallback(() => {
@@ -252,7 +254,7 @@ export default function DiscountCodeResults({
                 toggle={handleCloseModal}
                 autoFocus={true}
                 backdrop="static"
-                size="lg"
+                className={css.discountCodeModal}
                 // it has to be above popover which is currently set to 1560
                 zIndex={1561}
                 container={appNode ?? undefined}

@@ -2,10 +2,8 @@ import React, {FormEvent, memo, useCallback, useState} from 'react'
 import {
     Form as ReactStrapForm,
     FormGroup,
-    FormText,
     Input,
     InputGroup,
-    Label,
     ModalBody,
     ModalHeader,
 } from 'reactstrap'
@@ -13,10 +11,16 @@ import moment from 'moment-timezone'
 import axios, {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
-import {DISCOUNT_TYPE, DISCOUNT_CHOICES} from 'models/discountCodes/constants'
+import {
+    DISCOUNT_TYPE,
+    DISCOUNT_CHOICES,
+    DISCOUNT_USE_TYPE,
+    DISCOUNT_USE_CHOICES,
+} from 'models/discountCodes/constants'
+import Label from 'pages/common/forms/Label/Label'
+
 import Button from 'pages/common/components/button/Button'
 import Errors from 'pages/common/forms/Errors'
-import CheckBox from 'pages/common/forms/CheckBox'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -24,7 +28,13 @@ import client from 'models/api/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {DiscountCode} from 'models/discountCodes/types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {PreviewRadioButton} from '../PreviewRadioButton'
+import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import useAppSelector from 'hooks/useAppSelector'
+import {getTicketState} from 'state/ticket/selectors'
+import getShopifyMoneySymbol from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {testIds} from './utils'
+import css from './DiscountCodeCreateModal.less'
 
 type Props = {
     integration: Map<string, string>
@@ -33,10 +43,21 @@ type Props = {
 }
 
 function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
+    const ticket = useAppSelector(getTicketState)
+
     const [discountType, setDiscountType] = useState(DISCOUNT_TYPE.PERCENTAGE)
     const [discountCode, setDiscountCode] = useState<string>()
     const [discountValue, setDiscountValue] = useState<number>(0)
-    const [isOneTime, setIsOneTime] = useState(true)
+    const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
+    const [discountUseType, setDiscountUseType] = useState(
+        ticket?.get('id')
+            ? DISCOUNT_USE_TYPE.ONE_PER_USER
+            : DISCOUNT_USE_TYPE.NO_LIMIT
+    )
+    const [minRequirementsPurchase, setMinRequirementsPurchase] =
+        useState(false)
+    const [minRequirementsPurchaseAmount, setMinRequirementsPurchaseAmount] =
+        useState<number>(0)
 
     const [formErrors, setFormErrors] = useState({
         code: null,
@@ -54,8 +75,14 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                 title: null,
                 code: discountCode,
                 discount_value: discountValue,
-                once_per_customer: isOneTime,
-                usage_limit: isOneTime ? 1 : null,
+                once_per_customer:
+                    discountUseType !== DISCOUNT_USE_TYPE.NO_LIMIT,
+                usage_limit:
+                    discountUseType === DISCOUNT_USE_TYPE.ONE_USE ? 1 : null,
+                minimum_purchase_amount: minRequirementsPurchase
+                    ? minRequirementsPurchaseAmount
+                    : null,
+                segment_ids: selectedSegment ? [selectedSegment] : [],
             }
 
             client
@@ -77,13 +104,16 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                 })
         },
         [
-            discountCode,
             discountType,
+            discountCode,
             discountValue,
-            dispatch,
+            discountUseType,
+            minRequirementsPurchase,
+            minRequirementsPurchaseAmount,
+            selectedSegment,
             integration,
-            isOneTime,
             onSubmit,
+            dispatch,
         ]
     )
 
@@ -104,38 +134,71 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
         )
     }
 
-    const handleChangeDiscountValue = (value?: number | undefined) => {
-        value && setDiscountValue(value / 100)
-    }
-
-    const handleChangeDiscountType = (value: string) => {
-        setDiscountType(value)
-        setDiscountValue(0)
-    }
-
     return (
         <>
             <ModalHeader toggle={onClose}>Create discount code</ModalHeader>
             <ReactStrapForm onSubmit={handleSubmit}>
                 <ModalBody>
                     <FormGroup>
-                        <Label for="title">Select discount type</Label>
-                        <div style={{display: 'flex', gap: '20px'}}>
-                            {DISCOUNT_CHOICES.map((item, index) => (
-                                <PreviewRadioButton
-                                    label={item.label}
-                                    key={index}
-                                    onClick={() =>
-                                        handleChangeDiscountType(item.value)
-                                    }
-                                    isSelected={discountType === item.value}
-                                    value={item.value}
+                        <Label htmlFor="discountType" className={css.label}>
+                            Discount
+                        </Label>
+                        <InputGroup className={css.inputGroup}>
+                            <div className={css.inputChild}>
+                                <SelectField
+                                    showSelectedOption
+                                    fullWidth
+                                    value={discountType}
+                                    id={testIds.discountTypeSelect}
+                                    options={DISCOUNT_CHOICES}
+                                    onChange={(value) => {
+                                        setDiscountType(value as string)
+                                        setDiscountValue(0)
+                                    }}
                                 />
-                            ))}
-                        </div>
+                            </div>
+                            {discountType === DISCOUNT_TYPE.FIXED && (
+                                <div className={css.inputChild}>
+                                    <NumberInput
+                                        data-testid={testIds.discountValueInput}
+                                        name="discountType"
+                                        value={Number(discountValue)}
+                                        onChange={(value) =>
+                                            setDiscountValue(value ?? 0)
+                                        }
+                                        hasControls={false}
+                                        min={1}
+                                        suffix={getShopifyMoneySymbol(
+                                            integration.getIn([
+                                                'meta',
+                                                'currency',
+                                            ])
+                                        )}
+                                    />
+                                </div>
+                            )}
+                            {discountType === DISCOUNT_TYPE.PERCENTAGE && (
+                                <div className={css.inputChild}>
+                                    <NumberInput
+                                        data-testid={testIds.discountValueInput}
+                                        name="discountType"
+                                        value={Number(discountValue * 100)}
+                                        onChange={(value) =>
+                                            setDiscountValue((value ?? 0) / 100)
+                                        }
+                                        hasControls={false}
+                                        min={1}
+                                        max={100}
+                                        suffix={'%'}
+                                    />
+                                </div>
+                            )}
+                        </InputGroup>
                     </FormGroup>
                     <FormGroup>
-                        <Label for="code">Discount code</Label>
+                        <Label className={css.label} htmlFor="code">
+                            Discount code
+                        </Label>
                         <InputGroup>
                             <Input
                                 value={discountCode}
@@ -145,60 +208,118 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                 }
                                 required={true}
                                 invalid={!!formErrors?.code}
+                                data-testid={testIds.codeInput}
                             />
-                            <Button onClick={handleGenerate} className="ml-3">
+                            <Button
+                                onClick={handleGenerate}
+                                className="ml-3"
+                                intent="secondary"
+                            >
                                 Generate
                             </Button>
                             <Errors>{formErrors?.code}</Errors>
                         </InputGroup>
                     </FormGroup>
-                    {discountType === DISCOUNT_TYPE.PERCENTAGE && (
-                        <FormGroup>
-                            <Label for="discount_value">Percentage value</Label>
-                            <InputGroup>
-                                <NumberInput
-                                    name="discount_value"
-                                    value={discountValue && discountValue * 100}
-                                    onChange={handleChangeDiscountValue}
-                                    min={1}
-                                    max={100}
-                                    step={0.01}
-                                    prefix="%"
+                    <FormGroup>
+                        <Label className={css.label} htmlFor="minimumPurchase">
+                            Minimum purchase requirements
+                        </Label>
+                        <InputGroup className={css.options}>
+                            <label className={css.purchaseRadio}>
+                                <input
+                                    type="radio"
+                                    data-testid={testIds.noMinRequirementsRadio}
+                                    checked={!minRequirementsPurchase}
+                                    onChange={() => {
+                                        setMinRequirementsPurchase(false)
+                                        setMinRequirementsPurchaseAmount(0)
+                                    }}
                                 />
-                            </InputGroup>
-                            <FormText color="muted">
-                                The percentage value of the discount.
-                            </FormText>
-                        </FormGroup>
-                    )}
-                    {discountType === DISCOUNT_TYPE.FIXED && (
-                        <FormGroup>
-                            <Label for="discount_value">Fixed amount</Label>
-                            <InputGroup>
-                                <NumberInput
-                                    name="discount_value"
-                                    value={discountValue}
-                                    onChange={(value) =>
-                                        setDiscountValue(value || 0)
-                                    }
-                                    min={0}
-                                    step={0.01}
-                                    prefix={integration.get('currency')}
-                                />
-                            </InputGroup>
-                            <FormText color="muted">
-                                Customers must enter this code at checkout.
-                            </FormText>
-                        </FormGroup>
-                    )}
-                    <FormGroup inline check>
-                        <CheckBox
-                            className="mb-3"
-                            isChecked={isOneTime}
-                            onChange={setIsOneTime}
+                                No minimum requirements
+                            </label>
+                            <div>
+                                <label className={css.purchaseRadio}>
+                                    <input
+                                        type="radio"
+                                        data-testid={
+                                            testIds.minRequirementsRadio
+                                        }
+                                        className={css.radioButton}
+                                        checked={minRequirementsPurchase}
+                                        onChange={() =>
+                                            setMinRequirementsPurchase(true)
+                                        }
+                                    />
+                                    Minimum purchase amount
+                                </label>
+                                {minRequirementsPurchase && (
+                                    <NumberInput
+                                        name="minAmount"
+                                        data-testid={
+                                            testIds.minPurchaseAmountInput
+                                        }
+                                        value={minRequirementsPurchaseAmount}
+                                        onChange={(value) =>
+                                            setMinRequirementsPurchaseAmount(
+                                                value ?? 0
+                                            )
+                                        }
+                                        min={0}
+                                        prefix={getShopifyMoneySymbol(
+                                            integration.getIn([
+                                                'meta',
+                                                'currency',
+                                            ])
+                                        )}
+                                    />
+                                )}
+                            </div>
+                        </InputGroup>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label
+                            className={css.label}
+                            htmlFor="customerEligibility"
                         >
-                            Limit to one use, for only one customer
-                        </CheckBox>
+                            Customer eligibility
+                        </Label>
+                        <InputGroup className={css.inputGroup}>
+                            <div className={css.customerSegmentWrapper}>
+                                <CustomerSegmentSelector
+                                    value={selectedSegment}
+                                    integrationId={
+                                        integration.get(
+                                            'id'
+                                        ) as unknown as number
+                                    }
+                                    onChange={(value) =>
+                                        setSelectedSegment(value)
+                                    }
+                                />
+                            </div>
+                        </InputGroup>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label className={css.label} htmlFor="minimumUses">
+                            Maximum discount uses
+                        </Label>
+                        <InputGroup className={css.options}>
+                            {DISCOUNT_USE_CHOICES.map((item) => (
+                                <label
+                                    className={css.purchaseRadio}
+                                    key={item.value}
+                                >
+                                    <input
+                                        type="radio"
+                                        checked={discountUseType === item.value}
+                                        onChange={() => {
+                                            setDiscountUseType(item.value)
+                                        }}
+                                    />
+                                    {item.label}
+                                </label>
+                            ))}
+                        </InputGroup>
                     </FormGroup>
                 </ModalBody>
                 <ModalActionsFooter>
@@ -209,7 +330,11 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     >
                         Cancel
                     </Button>
-                    <Button color="primary" type="submit">
+                    <Button
+                        color="primary"
+                        type="submit"
+                        data-testid={testIds.saveBtn}
+                    >
                         Save
                     </Button>
                 </ModalActionsFooter>
