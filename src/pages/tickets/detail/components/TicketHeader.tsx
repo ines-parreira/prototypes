@@ -342,6 +342,7 @@ const TicketHeader = ({
                         removeTag={(tag) => dispatch(removeTag(tag))}
                         transparent
                         shouldBindKeys
+                        dropdownContainer={appNode ?? undefined}
                     />
                 </div>
                 <TicketAssignee
