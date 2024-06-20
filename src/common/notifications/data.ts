@@ -1,5 +1,3 @@
-import React from 'react'
-
 import type {Channel, Event, NotificationType} from './types'
 
 export const channels: Channel[] = [
@@ -21,14 +19,9 @@ export const events: Event[] = [
         label: 'I am mentioned in an internal note',
     },
     {
-        enabled: false,
+        enabled: true,
         type: 'ticket.snooze-expired',
-        label: (
-            <>
-                A conversation <strong>snooze expires</strong> in a{' '}
-                <strong>ticket I'm assigned to</strong>
-            </>
-        ),
+        label: "A conversation snooze expires in a ticket I'm assigned to",
     },
 ]
 
