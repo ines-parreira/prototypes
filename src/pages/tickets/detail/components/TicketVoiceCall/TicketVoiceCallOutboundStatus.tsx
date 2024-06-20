@@ -45,7 +45,8 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
                 <div className={css.errorStatus}>
                     <strong>Failed: </strong>Our provider's carriers could not
                     connect the call. Possible causes include dialing a number
-                    is no longer in service or inputting a number incorrectly.
+                    that is no longer in service, inputting a number incorrectly
+                    or dialing a number with poor reputation.
                 </div>
             )
         case VoiceCallDisplayStatus.Missed:
