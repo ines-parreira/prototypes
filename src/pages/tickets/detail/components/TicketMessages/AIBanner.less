@@ -9,13 +9,20 @@
         border: 1px solid var(--accessory-magenta-3);
         border-radius: @layout-spacing-xxs;
         background-color: var(--neutral-grey-0);
-    }
 
-    .icon {
-        font-size: 20px !important;
-        color: var(--accessory-magenta-3);
-    }
+        .icon {
+            font-size: 20px !important;
+            color: var(--accessory-magenta-3);
+        }
 
+        &.hasError {
+            border: 1px solid var(--feedback-error);
+
+            .icon {
+                color: var(--feedback-error);
+            }
+        }
+    }
     .content {
         flex: 1;
         display: flex;

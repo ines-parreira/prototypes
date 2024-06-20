@@ -5,13 +5,19 @@ import css from './AIBanner.less'
 
 type Props = {
     className?: string
+    hasError?: boolean
 }
 
-const AIBanner: React.FC<Props> = ({children, className}) => {
+const AIBanner: React.FC<Props> = ({children, className, hasError}) => {
     return (
-        <div className={classNames(css.container, className)}>
+        <div
+            data-testid="ai-banner"
+            className={classNames(css.container, className, {
+                [css.hasError]: hasError,
+            })}
+        >
             <i className={classNames('material-icons', css.icon)}>
-                auto_awesome
+                {hasError ? 'error' : 'auto_awesome'}
             </i>
             <div className={css.content}>{children}</div>
         </div>

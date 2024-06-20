@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classNames from 'classnames'
 // import {useFlags} from 'launchdarkly-react-client-sdk'
 
@@ -36,17 +36,41 @@ const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
 
     const allowsFeedback = messageFeedback?.allowsFeedback || isMessagePublic
 
+    const {messageSummaryContainer, messageSummaryHasError} = useMemo(() => {
+        const messageSummaryElement = document.createElement('div')
+        messageSummaryElement.innerHTML = messageFeedback?.summary || ''
+
+        const messageSummaryHasError =
+            messageSummaryElement.querySelector(
+                '[data-error-summary="true"]'
+            ) !== null
+
+        const messageSummaryContainer = messageFeedback?.summary ? (
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: messageFeedback?.summary,
+                }}
+            />
+        ) : null
+
+        return {
+            messageSummaryContainer,
+            messageSummaryHasError,
+        }
+    }, [messageFeedback?.summary])
+
     const messageToDisplay = isMessagePublic
-        ? messageFeedback?.summary
-        : messageFeedback?.summary || <Body message={message} />
+        ? messageSummaryContainer
+        : messageSummaryContainer || <Body message={message} />
 
     if (!messageToDisplay) {
         return null
     }
 
     return (
-        <AIBanner className={className}>
+        <AIBanner className={className} hasError={messageSummaryHasError}>
             <div
+                data-testid="ai-agent-banner-message"
                 className={classNames({
                     [css.boldMessage]: isMessagePublic,
                 })}

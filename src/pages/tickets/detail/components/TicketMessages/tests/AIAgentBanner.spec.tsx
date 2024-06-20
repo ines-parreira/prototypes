@@ -80,7 +80,7 @@ describe('AIAgentBanner', () => {
         expect(container).toBeEmptyDOMElement()
     })
 
-    it.skip('should not render feedback when not allowed', () => {
+    it('should not render feedback when not allowed', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
@@ -104,9 +104,42 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {queryByTestId} = render(<AIAgentBanner message={mockMessage} />)
+        const {queryByTestId} = render(
+            <AIAgentBanner message={{...mockMessage, public: false}} />
+        )
 
         expect(queryByTestId('feedback')).not.toBeInTheDocument()
+    })
+
+    it('should render feedback when not allowed but message is public', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: 'summary',
+                            feedbackOnResource: [
+                                {resourceId: 1, feedback: 'thumbs_up'},
+                                {resourceId: 2, feedback: 'thumbs_up'},
+                                {resourceId: 3, feedback: 'thumbs_down'},
+                            ],
+                            allowsFeedback: false,
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const {queryByTestId} = render(
+            <AIAgentBanner message={{...mockMessage, public: true}} />
+        )
+
+        expect(queryByTestId('feedback')).toBeInTheDocument()
     })
 
     it('should render feedback when allowed', () => {
@@ -161,9 +194,9 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {getByText} = render(<AIAgentBanner message={mockMessage} />)
+        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
 
-        const message = getByText('summary')
+        const message = getByTestId('ai-agent-banner-message')
 
         expect(message).toBeInTheDocument()
         expect(message).toHaveClass('boldMessage')
@@ -232,5 +265,55 @@ describe('AIAgentBanner', () => {
         const bodyHtml = queryByText('body_html123')
 
         expect(bodyHtml).toBeInTheDocument()
+    })
+
+    it('should render error message', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: '<div data-error-summary="true">bye</div>',
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
+
+        const banner = getByTestId('ai-banner')
+
+        expect(banner).toHaveClass('hasError')
+    })
+
+    it('should render error message', () => {
+        useGetAiAgentFeedbackMock.mockReturnValue({
+            data: {
+                data: {
+                    messages: [
+                        {
+                            messageId: mockMessage.id,
+                            summary: '<div data-error-summary="true">bye</div>',
+                        },
+                    ],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
+            },
+            isLoading: false,
+            isError: false,
+        } as any)
+
+        const {getByTestId} = render(<AIAgentBanner message={mockMessage} />)
+
+        const banner = getByTestId('ai-banner')
+
+        expect(banner).toHaveClass('hasError')
     })
 })
