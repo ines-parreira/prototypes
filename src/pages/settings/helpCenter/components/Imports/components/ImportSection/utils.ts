@@ -1,10 +1,14 @@
+import axios from 'axios'
 import {Notification, NotificationButton} from 'state/notifications/types'
 import {MigrationFailuresSection} from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
 import {QuickSummaryEntry} from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
 import {
+    DetailMessage,
+    ErrorResponse,
     MigrationSession,
     MigrationSessionCreate,
     MigrationSessionStatus,
+    UnprocessableContent,
 } from './types'
 
 const sessionKeys: (keyof MigrationSession)[] = [
@@ -21,6 +25,14 @@ export const responseIsSession = (
     responseData: any
 ): responseData is MigrationSession =>
     sessionKeys.every((key) => key in responseData)
+/**
+ * The response typings from some of the generated OpenAPI endpoints are something like `Components.Schemas.SessionLong | Components.Schemas.Detail` (.Detail is in case of error)
+ *
+ * We type guard the response for this reason
+ */
+export const responseIsSessionsList = (
+    responsesData: any[]
+): responsesData is MigrationSession[] => responsesData.every(responseIsSession)
 
 export const sessionHasProgressStatus = (
     session: Pick<MigrationSession, 'status'> | null
@@ -112,17 +124,31 @@ export const parseSessionStats = (
             {
                 title: 'Articles',
                 items:
-                    articles?.errors_details?.map(
-                        (item) => item.instance_title as string
-                    ) || [],
+                    articles?.errors_details?.map((item) => ({
+                        title: item.instance_title as string,
+                        message: item.error_message,
+                    })) || [],
             },
             {
                 title: 'Categories',
                 items:
-                    categories?.errors_details?.map(
-                        (item) => item.instance_title as string
-                    ) || [],
+                    categories?.errors_details?.map((item) => ({
+                        title: item.instance_title as string,
+                        message: item.error_message,
+                    })) || [],
             },
         ],
     }
+}
+
+export const getErrorMessage = (error: unknown): string | undefined => {
+    if (!axios.isAxiosError<ErrorResponse>(error)) return
+    if (!error.response) return
+
+    const errorData = error.response.data
+
+    return (
+        (errorData as UnprocessableContent)[0]?.msg ||
+        (errorData as DetailMessage).message
+    )
 }

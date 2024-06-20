@@ -1,5 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`utils getErrorMessage should match snapshots 1`] = `"something bad happened"`;
+
+exports[`utils getErrorMessage should match snapshots 2`] = `"something else bad happened"`;
+
 exports[`utils parseSessionStats should match snapshots 1`] = `
 {
   "failuresSections": [
@@ -71,20 +75,47 @@ exports[`utils parseSessionStats should match snapshots 3`] = `
   "failuresSections": [
     {
       "items": [
-        "Untitled article",
-        "Untitled article",
-        "Untitled article",
-        "Untitled article",
-        "Untitled article",
+        {
+          "message": "sample exception",
+          "title": "Untitled article",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled article",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled article",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled article",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled article",
+        },
       ],
       "title": "Articles",
     },
     {
       "items": [
-        "Untitled collection",
-        "Untitled collection",
-        "Untitled collection",
-        "Untitled collection",
+        {
+          "message": "sample exception",
+          "title": "Untitled collection",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled collection",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled collection",
+        },
+        {
+          "message": "sample exception",
+          "title": "Untitled collection",
+        },
       ],
       "title": "Categories",
     },

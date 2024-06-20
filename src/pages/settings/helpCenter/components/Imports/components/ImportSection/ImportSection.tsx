@@ -38,11 +38,13 @@ import {
     MigrationStatus,
 } from './types'
 import {
+    getErrorMessage,
     getSessionCreateData,
     longNotificationOptions,
     notificationRefreshButton,
     parseSessionStats,
     responseIsSession,
+    responseIsSessionsList,
     sessionHasProgressStatus,
 } from './utils'
 
@@ -156,14 +158,17 @@ export const ImportSection: React.FC<Props> = ({
                         type: selectedProviderType,
                         ...data.toJS(),
                     })
-                } catch (e) {
+                } catch (error) {
+                    let message = "Couldn't connect to provider"
+                    if (selectedProvider?.title) {
+                        message += ' ' + selectedProvider.title
+                    }
+
+                    const errorMessage = getErrorMessage(error)
+                    if (errorMessage) message += ': ' + errorMessage
+
                     void dispatch(
-                        notify({
-                            message: `Couldn't connect to provider: ${
-                                selectedProvider?.title || ''
-                            }`,
-                            status: NotificationStatus.Error,
-                        })
+                        notify({message, status: NotificationStatus.Error})
                     )
                 }
             },
@@ -193,12 +198,14 @@ export const ImportSection: React.FC<Props> = ({
                     data: createdSession,
                     isFirstTimeLoading: false,
                 })
-            } catch (e) {
+            } catch (error) {
+                let message = 'Failed to start migration'
+
+                const errorMessage = getErrorMessage(error)
+                if (errorMessage) message += ': ' + errorMessage
+
                 void dispatch(
-                    notify({
-                        message: `Failed to start migration`,
-                        status: NotificationStatus.Error,
-                    })
+                    notify({message, status: NotificationStatus.Error})
                 )
             }
         }, [migrationClient, migrationStartPayload])
@@ -219,13 +226,13 @@ export const ImportSection: React.FC<Props> = ({
                 data: resultingRevertSession,
                 isFirstTimeLoading: false,
             })
-        } catch (e) {
-            void dispatch(
-                notify({
-                    message: `Failed to revert migration`,
-                    status: NotificationStatus.Error,
-                })
-            )
+        } catch (error) {
+            let message = 'Failed to revert migration'
+
+            const errorMessage = getErrorMessage(error)
+            if (errorMessage) message += ': ' + errorMessage
+
+            void dispatch(notify({message, status: NotificationStatus.Error}))
         }
     }, [migrationClient, migrationStartPayload, currentMigrationSession])
 
@@ -245,13 +252,13 @@ export const ImportSection: React.FC<Props> = ({
                 data: resultingSession,
                 isFirstTimeLoading: false,
             })
-        } catch (e) {
-            void dispatch(
-                notify({
-                    message: `Failed to retry migration`,
-                    status: NotificationStatus.Error,
-                })
-            )
+        } catch (error) {
+            let message = 'Failed to retry migration'
+
+            const errorMessage = getErrorMessage(error)
+            if (errorMessage) message += ': ' + errorMessage
+
+            void dispatch(notify({message, status: NotificationStatus.Error}))
         }
     }, [migrationClient, migrationStartPayload, currentMigrationSession])
 
@@ -283,6 +290,7 @@ export const ImportSection: React.FC<Props> = ({
                     },
                 ])
                 if (!(sessions instanceof Array)) return
+                if (!responseIsSessionsList(sessions)) return
 
                 const activeSession = sessions.find((session) =>
                     sessionHasProgressStatus(session)
@@ -305,15 +313,20 @@ export const ImportSection: React.FC<Props> = ({
                         data: null,
                     })
                 }
-            } catch (e) {
+            } catch (error) {
+                let message =
+                    "We're facing some problems retrieving active migrations"
+
+                const errorMessage = getErrorMessage(error)
+                if (errorMessage) message += ': ' + errorMessage
+
                 setCurrentMigrationSession({
                     isFirstTimeLoading: false,
                     data: null,
                 })
                 void dispatch(
                     notify({
-                        message:
-                            "We're facing some problems retrieving active migrations",
+                        message: message,
                         status: NotificationStatus.Error,
                         ...longNotificationOptions,
                     })
@@ -540,7 +553,13 @@ export const ImportSection: React.FC<Props> = ({
                     })
                     setIsMigrationAvailable(false)
                 }
-            } catch (e) {
+            } catch (error) {
+                let message =
+                    "We're facing some issues with migration providers, please contact support"
+
+                const errorMessage = getErrorMessage(error)
+                if (errorMessage) message += ': ' + errorMessage
+
                 setFetchedProviders({
                     data: null,
                     isLoading: false,
@@ -548,8 +567,7 @@ export const ImportSection: React.FC<Props> = ({
                 })
                 void dispatch(
                     notify({
-                        message:
-                            "We're facing some issues with migration providers, please contact support",
+                        message: message,
                         status: NotificationStatus.Error,
                         ...longNotificationOptions,
                     })

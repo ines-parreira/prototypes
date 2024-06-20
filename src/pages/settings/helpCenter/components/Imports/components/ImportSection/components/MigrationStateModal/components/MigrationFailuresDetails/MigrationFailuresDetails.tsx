@@ -13,7 +13,12 @@ type Props = {
 
 export interface MigrationFailuresSection {
     title: string
-    items: string[]
+    items: MigrationFailuresSectionItem[]
+}
+
+export interface MigrationFailuresSectionItem {
+    title: string
+    message: string
 }
 
 const MigrationFailuresDetails: React.FC<Props> = ({title, sections}) => {
@@ -68,21 +73,27 @@ const MigrationFailuresDetails: React.FC<Props> = ({title, sections}) => {
                     {visibleSections.map((section, idx) => (
                         <Fragment key={idx}>
                             <hr className={css.separator} />
-                            <div className={css.section}>
-                                <div className={css.sectionTitle}>
+                            <table className={css.section}>
+                                <caption className={css.sectionTitle}>
                                     {section.title}
-                                </div>
-                                <ul className={css.sectionList}>
+                                </caption>
+                                <thead>
+                                    <tr>
+                                        <th>Row</th>
+                                        <th>Error message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     {section.items.map((item, idx) => (
-                                        <li
-                                            className={css.sectionListItem}
-                                            key={idx}
-                                        >
-                                            {item}
-                                        </li>
+                                        <tr key={idx}>
+                                            <td>{item.title}</td>
+                                            <td className={css.sectionMessage}>
+                                                {item.message}
+                                            </td>
+                                        </tr>
                                     ))}
-                                </ul>
-                            </div>
+                                </tbody>
+                            </table>
                         </Fragment>
                     ))}
                 </div>

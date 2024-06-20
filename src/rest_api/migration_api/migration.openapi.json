@@ -98,11 +98,19 @@
                         "$ref": "#/components/schemas/Columns"
                     },
                     "file_url": {
-                        "format": "uri",
-                        "maxLength": 65536,
-                        "minLength": 1,
-                        "title": "File Url",
-                        "type": "string"
+                        "anyOf": [
+                            {
+                                "format": "uri",
+                                "maxLength": 65536,
+                                "minLength": 1,
+                                "type": "string"
+                            },
+                            {
+                                "format": "path",
+                                "type": "string"
+                            }
+                        ],
+                        "title": "File Url"
                     },
                     "type": {
                         "default": "CSV",
@@ -837,6 +845,42 @@
                 "title": "Stats",
                 "type": "object"
             },
+            "ValidationErrorListModel": {
+                "items": {
+                    "$ref": "#/components/schemas/ValidationErrorModel"
+                },
+                "title": "ValidationErrorListModel",
+                "type": "array"
+            },
+            "ValidationErrorModel": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "title": "Loc",
+                        "type": "array"
+                    },
+                    "msg": {
+                        "title": "Msg",
+                        "type": "string"
+                    },
+                    "type": {
+                        "title": "Type",
+                        "type": "string"
+                    }
+                },
+                "required": ["loc", "msg", "type"],
+                "title": "ValidationErrorModel",
+                "type": "object"
+            },
             "ZendeskHelpCenterProvider": {
                 "description": "Base class for HelpCenter providers",
                 "properties": {
@@ -1031,8 +1075,18 @@
                         },
                         "description": "Unauthorized"
                     },
+                    "404": {
+                        "description": "Not Found"
+                    },
                     "422": {
-                        "description": "Validation Error"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorListModel"
+                                }
+                            }
+                        },
+                        "description": "Unprocessable Entity"
                     }
                 },
                 "summary": "provider_validate <POST>",
@@ -1094,7 +1148,14 @@
                         "description": "Unauthorized"
                     },
                     "422": {
-                        "description": "Validation Error"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorListModel"
+                                }
+                            }
+                        },
+                        "description": "Unprocessable Entity"
                     }
                 },
                 "summary": "session_list <GET>",
@@ -1156,7 +1217,14 @@
                         "description": "Unauthorized"
                     },
                     "422": {
-                        "description": "Validation Error"
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ValidationErrorListModel"
+                                }
+                            }
+                        },
+                        "description": "Unprocessable Entity"
                     }
                 },
                 "summary": "session_create <POST>",
@@ -1198,6 +1266,9 @@
                         },
                         "description": "Unauthorized"
                     },
+                    "404": {
+                        "description": "Not Found"
+                    },
                     "422": {
                         "description": "Validation Error"
                     }
@@ -1221,7 +1292,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1229,7 +1300,7 @@
                                 }
                             }
                         },
-                        "description": "OK"
+                        "description": "Created"
                     },
                     "401": {
                         "content": {
@@ -1240,6 +1311,9 @@
                             }
                         },
                         "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     },
                     "422": {
                         "description": "Validation Error"
@@ -1264,7 +1338,7 @@
                     }
                 ],
                 "responses": {
-                    "200": {
+                    "201": {
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1272,7 +1346,7 @@
                                 }
                             }
                         },
-                        "description": "OK"
+                        "description": "Created"
                     },
                     "401": {
                         "content": {
@@ -1283,6 +1357,9 @@
                             }
                         },
                         "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
                     },
                     "422": {
                         "description": "Validation Error"

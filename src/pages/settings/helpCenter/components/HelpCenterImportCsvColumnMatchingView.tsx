@@ -21,7 +21,10 @@ import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnM
 import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
 import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
 import {mapCSVLocalValuesToAPIPayload} from './Imports/components/CsvColumnMatching/utils'
-import {responseIsSession} from './Imports/components/ImportSection/utils'
+import {
+    getErrorMessage,
+    responseIsSession,
+} from './Imports/components/ImportSection/utils'
 import {AutoOpenSessionLocationState} from './Imports/components/ImportSection/types'
 
 const urlToArticles = (
@@ -174,14 +177,13 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                 `${HELP_CENTER_BASE_PATH}/${helpCenter.id}/articles`,
                 locationState
             )
-        } catch (e) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'There was an error importing your CSV file. Please review it and try again.',
-                })
-            )
+        } catch (error) {
+            let message = 'There was an error importing your CSV file'
+
+            const errorMessage = getErrorMessage(error)
+            if (errorMessage) message += ': ' + errorMessage
+
+            void dispatch(notify({status: NotificationStatus.Error, message}))
         } finally {
             setImportInProgress(false)
         }

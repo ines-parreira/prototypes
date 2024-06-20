@@ -190,155 +190,291 @@ exports[`<MigrationStateModal /> snapshots Completely failed 1`] = `
                 <hr
                   class="separator"
                 />
-                <div
+                <table
                   class="section"
                 >
-                  <div
+                  <caption
                     class="sectionTitle"
                   >
                     Articles
-                  </div>
-                  <ul
-                    class="sectionList"
-                  >
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                  </ul>
-                </div>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>
+                        Row
+                      </th>
+                      <th>
+                        Error message
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
                 <hr
                   class="separator"
                 />
-                <div
+                <table
                   class="section"
                 >
-                  <div
+                  <caption
                     class="sectionTitle"
                   >
                     Categories
-                  </div>
-                  <ul
-                    class="sectionList"
-                  >
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                  </ul>
-                </div>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>
+                        Row
+                      </th>
+                      <th>
+                        Error message
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -702,80 +838,141 @@ exports[`<MigrationStateModal /> snapshots In progress with failures 1`] = `
                 <hr
                   class="separator"
                 />
-                <div
+                <table
                   class="section"
                 >
-                  <div
+                  <caption
                     class="sectionTitle"
                   >
                     Articles
-                  </div>
-                  <ul
-                    class="sectionList"
-                  >
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                  </ul>
-                </div>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>
+                        Row
+                      </th>
+                      <th>
+                        Error message
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
                 <hr
                   class="separator"
                 />
-                <div
+                <table
                   class="section"
                 >
-                  <div
+                  <caption
                     class="sectionTitle"
                   >
                     Categories
-                  </div>
-                  <ul
-                    class="sectionList"
-                  >
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                  </ul>
-                </div>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>
+                        Row
+                      </th>
+                      <th>
+                        Error message
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -1431,55 +1628,91 @@ exports[`<MigrationStateModal /> snapshots Partially succeeded 1`] = `
                 <hr
                   class="separator"
                 />
-                <div
+                <table
                   class="section"
                 >
-                  <div
+                  <caption
                     class="sectionTitle"
                   >
                     Articles
-                  </div>
-                  <ul
-                    class="sectionList"
-                  >
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled article
-                    </li>
-                  </ul>
-                </div>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>
+                        Row
+                      </th>
+                      <th>
+                        Error message
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled article
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
                 <hr
                   class="separator"
                 />
-                <div
+                <table
                   class="section"
                 >
-                  <div
+                  <caption
                     class="sectionTitle"
                   >
                     Categories
-                  </div>
-                  <ul
-                    class="sectionList"
-                  >
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                    <li
-                      class="sectionListItem"
-                    >
-                      Untitled collection
-                    </li>
-                  </ul>
-                </div>
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th>
+                        Row
+                      </th>
+                      <th>
+                        Error message
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        Untitled collection
+                      </td>
+                      <td
+                        class="sectionMessage"
+                      >
+                        sample exception
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>

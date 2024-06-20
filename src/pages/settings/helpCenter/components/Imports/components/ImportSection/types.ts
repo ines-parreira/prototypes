@@ -108,6 +108,10 @@ export type MigrationSession = Components.Schemas.SessionShort &
 
 export type MigrationSessionCreate = Paths.SessionCreate.RequestBody
 
+export type DetailMessage = Components.Schemas.Detail
+export type UnprocessableContent = Components.Schemas.ValidationErrorListModel
+export type ErrorResponse = DetailMessage | UnprocessableContent
+
 export interface HelpCenterMigrationConfig {
     providers: MigrationProviderType[]
 }

@@ -76,7 +76,7 @@ declare namespace Components {
             /**
              * File Url
              */
-            file_url: string // uri
+            file_url: string /* uri */ | string /* path */
             /**
              * Type
              */
@@ -719,6 +719,27 @@ declare namespace Components {
             }
         }
         /**
+         * ValidationErrorListModel
+         */
+        export type ValidationErrorListModel = ValidationErrorModel[]
+        /**
+         * ValidationErrorModel
+         */
+        export interface ValidationErrorModel {
+            /**
+             * Loc
+             */
+            loc: (number | string)[]
+            /**
+             * Msg
+             */
+            msg: string
+            /**
+             * Type
+             */
+            type: string
+        }
+        /**
          * ZendeskHelpCenterProvider
          * Base class for HelpCenter providers
          */
@@ -779,6 +800,7 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Schemas.Detail
             export type $401 = Components.Schemas.Detail
+            export type $422 = Components.Schemas.ValidationErrorListModel
         }
     }
     namespace SessionCreate {
@@ -796,6 +818,7 @@ declare namespace Paths {
             export type $200 = Components.Schemas.Detail
             export type $201 = Components.Schemas.SessionShort
             export type $401 = Components.Schemas.Detail
+            export type $422 = Components.Schemas.ValidationErrorListModel
         }
     }
     namespace SessionList {
@@ -821,6 +844,7 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = Components.Schemas.SessionShortList
             export type $401 = Components.Schemas.Detail
+            export type $422 = Components.Schemas.ValidationErrorListModel
         }
     }
     namespace SessionRetrieve {
@@ -843,7 +867,7 @@ declare namespace Paths {
             uuid: Parameters.Uuid
         }
         namespace Responses {
-            export type $200 = Components.Schemas.SessionLong
+            export type $201 = Components.Schemas.SessionLong
             export type $401 = Components.Schemas.Detail
         }
     }
@@ -855,7 +879,7 @@ declare namespace Paths {
             uuid: Parameters.Uuid
         }
         namespace Responses {
-            export type $200 = Components.Schemas.SessionLong
+            export type $201 = Components.Schemas.SessionLong
             export type $401 = Components.Schemas.Detail
         }
     }
@@ -904,6 +928,7 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.ProviderValidate.Responses.$200
         | Paths.ProviderValidate.Responses.$401
+        | Paths.ProviderValidate.Responses.$422
     >
     /**
      * sessionList - session_list <GET>
@@ -913,7 +938,9 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.SessionList.Responses.$200 | Paths.SessionList.Responses.$401
+        | Paths.SessionList.Responses.$200
+        | Paths.SessionList.Responses.$401
+        | Paths.SessionList.Responses.$422
     >
     /**
      * sessionCreate - session_create <POST>
@@ -926,6 +953,7 @@ export interface OperationMethods {
         | Paths.SessionCreate.Responses.$200
         | Paths.SessionCreate.Responses.$201
         | Paths.SessionCreate.Responses.$401
+        | Paths.SessionCreate.Responses.$422
     >
     /**
      * sessionRetrieve - session_retrieve <GET>
@@ -946,7 +974,7 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        Paths.SessionRetry.Responses.$200 | Paths.SessionRetry.Responses.$401
+        Paths.SessionRetry.Responses.$201 | Paths.SessionRetry.Responses.$401
     >
     /**
      * sessionRollback - session_rollback <POST>
@@ -956,7 +984,7 @@ export interface OperationMethods {
         data?: any,
         config?: AxiosRequestConfig
     ): OperationResponse<
-        | Paths.SessionRollback.Responses.$200
+        | Paths.SessionRollback.Responses.$201
         | Paths.SessionRollback.Responses.$401
     >
     /**
@@ -1041,6 +1069,7 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.ProviderValidate.Responses.$200
             | Paths.ProviderValidate.Responses.$401
+            | Paths.ProviderValidate.Responses.$422
         >
     }
     ['/api/sessions']: {
@@ -1052,7 +1081,9 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<
-            Paths.SessionList.Responses.$200 | Paths.SessionList.Responses.$401
+            | Paths.SessionList.Responses.$200
+            | Paths.SessionList.Responses.$401
+            | Paths.SessionList.Responses.$422
         >
         /**
          * sessionCreate - session_create <POST>
@@ -1065,6 +1096,7 @@ export interface PathsDictionary {
             | Paths.SessionCreate.Responses.$200
             | Paths.SessionCreate.Responses.$201
             | Paths.SessionCreate.Responses.$401
+            | Paths.SessionCreate.Responses.$422
         >
     }
     ['/api/sessions/{uuid}']: {
@@ -1089,7 +1121,7 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<
-            | Paths.SessionRetry.Responses.$200
+            | Paths.SessionRetry.Responses.$201
             | Paths.SessionRetry.Responses.$401
         >
     }
@@ -1102,7 +1134,7 @@ export interface PathsDictionary {
             data?: any,
             config?: AxiosRequestConfig
         ): OperationResponse<
-            | Paths.SessionRollback.Responses.$200
+            | Paths.SessionRollback.Responses.$201
             | Paths.SessionRollback.Responses.$401
         >
     }
