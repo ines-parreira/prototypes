@@ -434,7 +434,7 @@ export function fetchViewItems(
 
         const isTicketSearch =
             activeView.get('search') != null &&
-            activeView.get('type') === ViewType.TicketList
+            activeViewType === ViewType.TicketList
         const isCustomerSearch =
             activeView.get('search') != null &&
             activeViewType === ViewType.CustomerList
@@ -470,7 +470,7 @@ export function fetchViewItems(
                     undefined,
                 cancelToken,
             })
-        } else if (isDirty) {
+        } else if (isDirty && activeViewType === ViewType.TicketList) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
             const cursorParam: string =
