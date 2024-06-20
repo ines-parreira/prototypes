@@ -1,0 +1,42 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .header {
+        display: flex;
+        gap: @layout-spacing-xs;
+        .body-semibold();
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .body {
+        display: flex;
+        gap: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xxs;
+        align-items: center;
+    }
+
+    .tagHeader {
+        width: 200px;
+        display: flex;
+        align-items: center;
+    }
+
+    .tag {
+        width: 200px;
+    }
+
+    .description {
+        flex-grow: 1;
+    }
+
+    input {
+        height: 100%;
+    }
+
+    .deleteIcon {
+        font-size: 24px;
+        color: var(--feedback-error);
+        cursor: pointer;
+    }
+}

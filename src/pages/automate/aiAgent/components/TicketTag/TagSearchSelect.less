@@ -1,0 +1,22 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .dropdownSelection {
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+    }
+
+    .dropdownPlaceholder {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        color: var(--neutral-grey-4);
+        cursor: pointer;
+    }
+
+    .dropdownItem {
+        padding: @layout-spacing-s;
+        border: none;
+    }
+}
