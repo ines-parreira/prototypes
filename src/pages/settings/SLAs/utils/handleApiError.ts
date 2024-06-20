@@ -1,17 +1,14 @@
 import {isGorgiasApiError} from 'models/api/types'
 
 export default function handleApiError(error: Error) {
-    if (
-        isGorgiasApiError<{
-            metrics?: Record<string, string>
-            target_channels?: string[]
-        }>(error) &&
-        error.response.status === 400
-    ) {
+    if (isGorgiasApiError(error) && error.response.status === 400) {
         if (error.response.data.error?.msg) {
             if (error.response.data.error.data) {
-                const {metrics, target_channels} =
-                    error.response.data.error.data
+                const {metrics, target_channels} = error.response.data.error
+                    .data as {
+                    metrics?: Record<string, string>
+                    target_channels?: string[]
+                }
                 const metricsErrorMessage =
                     metrics &&
                     Object.values(metrics).reduce((acc, value) => {

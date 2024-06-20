@@ -89,19 +89,19 @@ export type GorgiasApiResponseDataError<T = unknown> = {
 }
 
 const isGorgiasApiResponseDataError = (
-    data: Record<string, unknown>
+    data: Record<string, unknown> | undefined
 ): data is GorgiasApiResponseDataError => {
-    const {error} = data
+    const {error} = data || {}
     if (typeof error !== 'object' || !error || Array.isArray(error)) {
         return false
     }
-    const {msg, data: errorData} = error as {msg: unknown; data: unknown}
-    return msg !== undefined && errorData !== undefined
+    const {msg} = error as {msg: unknown}
+    return typeof msg === 'string'
 }
 
-export const isGorgiasApiError = <T>(
+export const isGorgiasApiError = (
     error: unknown
-): error is GorgiasApiError<T> => {
+): error is GorgiasApiError<unknown> => {
     return (
         axios.isAxiosError(error) &&
         isGorgiasApiResponseDataError(error.response?.data)

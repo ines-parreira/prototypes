@@ -31,12 +31,25 @@ describe('types', () => {
                     },
                 },
             ],
+            [
+                'error with error object containing a message that is not a string',
+                {
+                    isAxiosError: true,
+                    response: {
+                        data: {
+                            error: {
+                                msg: [],
+                            },
+                        },
+                    },
+                },
+            ],
         ])('should return false for %s', (_, error) => {
             expect(isGorgiasApiError(error)).toBe(false)
         })
 
         it('should return true for gorgias error', () => {
-            const error = {
+            const errorWithMessageAndData = {
                 isAxiosError: true,
                 response: {
                     data: {
@@ -48,7 +61,20 @@ describe('types', () => {
                 },
             }
 
-            expect(isGorgiasApiError(error)).toBe(true)
+            expect(isGorgiasApiError(errorWithMessageAndData)).toBe(true)
+
+            const errorWithOnlyMessage = {
+                isAxiosError: true,
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Failed to create.',
+                        },
+                    },
+                },
+            }
+
+            expect(isGorgiasApiError(errorWithOnlyMessage)).toBe(true)
         })
     })
 })
