@@ -10,9 +10,11 @@ export interface GorgiasFieldsMappings {
     ArticleContent?: ColumnDescription
     ArticleSlug?: ColumnDescription
     ArticleExcerpt?: ColumnDescription
+    ArticleID?: ColumnDescription
     CategoryName?: ColumnDescription
     CategoryDescription?: ColumnDescription
     CategorySlug?: ColumnDescription
+    CategoryID?: ColumnDescription
 }
 
 export type GorgiasFields = keyof GorgiasFieldsMappings

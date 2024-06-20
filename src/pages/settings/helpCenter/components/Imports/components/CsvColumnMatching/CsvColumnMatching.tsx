@@ -82,15 +82,6 @@ const localeFieldRows: {
                             title or you can select the right column in your CSV
                             file if you already have it.
                         </p>
-
-                        <p style={{color: '#FD9B5A'}}>
-                            <span role="img" aria-label="warning">
-                                ⚠️
-                            </span>{' '}
-                            We will update all available fields of your existing
-                            Gorgias articles if their slug match with the one
-                            you import in the CSV.
-                        </p>
                     </div>
                 </UncontrolledTooltip>
             </span>
@@ -122,6 +113,30 @@ const localeFieldRows: {
         ),
     },
     {
+        field: 'ArticleID',
+        isRequired: false,
+        isAutoGeneratable: false,
+        fieldName: (
+            <span>
+                <span className={css['tooltip-target']} id="articleIDTooltip">
+                    Article ID
+                </span>
+                <UncontrolledTooltip
+                    innerClassName={css['csv-tooltip-inner']}
+                    fade={false}
+                    target="articleIDTooltip"
+                >
+                    <p>
+                        You can easily update existing articles by importing a
+                        new article with the same Article ID. If you don’t want
+                        to replace any existing articles, leave the Article ID
+                        empty.
+                    </p>
+                </UncontrolledTooltip>
+            </span>
+        ),
+    },
+    {
         field: 'CategoryName',
         isRequired: false,
         isAutoGeneratable: false,
@@ -138,6 +153,30 @@ const localeFieldRows: {
         isRequired: false,
         isAutoGeneratable: true,
         fieldName: 'Category Slug',
+    },
+    {
+        field: 'CategoryID',
+        isRequired: false,
+        isAutoGeneratable: false,
+        fieldName: (
+            <span>
+                <span className={css['tooltip-target']} id="categoryIDTooltip">
+                    Category ID
+                </span>
+                <UncontrolledTooltip
+                    innerClassName={css['csv-tooltip-inner']}
+                    fade={false}
+                    target="categoryIDTooltip"
+                >
+                    <p>
+                        You can easily update existing categories by importing a
+                        new category with the same Category ID. If you don’t
+                        want to replace any existing categories, leave the
+                        Category ID empty.
+                    </p>
+                </UncontrolledTooltip>
+            </span>
+        ),
     },
 ]
 

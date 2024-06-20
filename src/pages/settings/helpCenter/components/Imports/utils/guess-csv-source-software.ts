@@ -40,8 +40,21 @@ const EXPECTED_GORGIAS_TEMPLATE_COLUMNS = [
     'category_description',
 ]
 
+const EXPECTED_EXPORTED_CSV_COLUMNS = [
+    'article_title',
+    'article_excerpt',
+    'article_body',
+    'article_slug',
+    'article_id',
+    'category_title',
+    'category_slug',
+    'category_description',
+    'category_id',
+]
+
 const SOURCE_SOFTWARE_COLUMNS: [CsvSourceSoftware, string[]][] = [
     [CsvSourceSoftware.Helpdocs, EXPECTED_HELPDOCS_COLUMNS],
+    [CsvSourceSoftware.ExportedCSV, EXPECTED_EXPORTED_CSV_COLUMNS],
     [CsvSourceSoftware.GorgiasTemplate, EXPECTED_GORGIAS_TEMPLATE_COLUMNS],
 ]
 

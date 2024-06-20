@@ -192,6 +192,70 @@ const initialMappingsForGorgiasTemplate = (
     },
 ]
 
+const initialMappingsForExportedCSV = (
+    defaultLocale: LocaleCode
+): GorgiasFieldsMappingsLocalized => [
+    {
+        localeCode: defaultLocale,
+        mappings: {
+            ArticleTitle: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'article_title',
+                },
+            },
+            ArticleContent: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'article_body',
+                },
+            },
+            ArticleSlug: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'article_slug',
+                },
+            },
+            ArticleExcerpt: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'article_excerpt',
+                },
+            },
+            ArticleID: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'article_id',
+                },
+            },
+            CategoryName: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'category_title',
+                },
+            },
+            CategorySlug: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'category_slug',
+                },
+            },
+            CategoryDescription: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'category_description',
+                },
+            },
+            CategoryID: {
+                source: {
+                    kind: 'CSV_COLUMN',
+                    csv_column: 'category_id',
+                },
+            },
+        },
+    },
+]
+
 const initialMappingsForHelpdocs = (
     defaultLocale: LocaleCode
 ): GorgiasFieldsMappingsLocalized => [
@@ -246,6 +310,8 @@ export const initialMappings = (
             return initialMappingsForHelpdocs(defaultLocale)
         case CsvSourceSoftware.GorgiasTemplate:
             return initialMappingsForGorgiasTemplate(defaultLocale)
+        case CsvSourceSoftware.ExportedCSV:
+            return initialMappingsForExportedCSV(defaultLocale)
         case CsvSourceSoftware.Unknown:
             return [
                 {
@@ -309,6 +375,7 @@ export const mapCSVLocalValuesToAPIPayload = (
             content: mappings.ArticleContent,
             slug: mappings.ArticleSlug,
             excerpt: mappings.ArticleExcerpt,
+            id: mappings.ArticleID,
         }
 
         // category mappings are optional
@@ -317,6 +384,7 @@ export const mapCSVLocalValuesToAPIPayload = (
                 name: mappings.CategoryName,
                 description: mappings.CategoryDescription,
                 slug: mappings.CategorySlug,
+                id: mappings.CategoryID,
             }
         }
     })

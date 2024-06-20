@@ -77,6 +77,31 @@ describe('guess-csv-source-software', () => {
         )
     })
 
+    it('guesses thas CSV is exported', () => {
+        const csvColumns = [
+            'article_title',
+            'article_excerpt',
+            'article_body',
+            'article_slug',
+            'article_id',
+            'category_title',
+            'category_slug',
+            'category_description',
+            'category_id',
+            'article_title_fr',
+            'article_excerpt_fr',
+            'article_body_fr',
+            'article_slug_fr',
+            'category_title_fr',
+            'category_slug_fr',
+            'category_description_fr',
+        ]
+
+        expect(guessCsvSourceSoftware(csvColumns)).toEqual(
+            CsvSourceSoftware.ExportedCSV
+        )
+    })
+
     it('returns unknown source if there is no match with any source software', () => {
         const csvColumns = ['faq_id', 'faq_content', 'faq_title', 'url']
 

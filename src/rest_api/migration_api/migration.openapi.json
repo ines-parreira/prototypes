@@ -77,6 +77,9 @@
                     "excerpt": {
                         "$ref": "#/components/schemas/ColumnDescription"
                     },
+                    "id": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
                     "slug": {
                         "$ref": "#/components/schemas/ColumnDescription"
                     },
@@ -126,6 +129,9 @@
             "CategoryColumnLocale": {
                 "properties": {
                     "description": {
+                        "$ref": "#/components/schemas/ColumnDescription"
+                    },
+                    "id": {
                         "$ref": "#/components/schemas/ColumnDescription"
                     },
                     "name": {
@@ -1296,7 +1302,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SessionLong"
+                                    "$ref": "#/components/schemas/SessionShort"
                                 }
                             }
                         },
@@ -1342,7 +1348,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/SessionLong"
+                                    "$ref": "#/components/schemas/SessionShort"
                                 }
                             }
                         },

@@ -63,6 +63,7 @@ declare namespace Components {
         export interface ArticleColumnLocale {
             content: ColumnDescription
             excerpt?: ColumnDescription
+            id?: ColumnDescription
             slug: ColumnDescription
             title: ColumnDescription
         }
@@ -87,6 +88,7 @@ declare namespace Components {
          */
         export interface CategoryColumnLocale {
             description?: ColumnDescription
+            id?: ColumnDescription
             name: ColumnDescription
             slug: ColumnDescription
         }
@@ -867,7 +869,7 @@ declare namespace Paths {
             uuid: Parameters.Uuid
         }
         namespace Responses {
-            export type $201 = Components.Schemas.SessionLong
+            export type $201 = Components.Schemas.SessionShort
             export type $401 = Components.Schemas.Detail
         }
     }
@@ -879,7 +881,7 @@ declare namespace Paths {
             uuid: Parameters.Uuid
         }
         namespace Responses {
-            export type $201 = Components.Schemas.SessionLong
+            export type $201 = Components.Schemas.SessionShort
             export type $401 = Components.Schemas.Detail
         }
     }
