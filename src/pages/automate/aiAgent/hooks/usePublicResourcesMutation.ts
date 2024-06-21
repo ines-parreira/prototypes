@@ -1,7 +1,7 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {
-    helpCenterStatsKeys,
+    helpCenterKeys,
     useDeleteArticleIngestionLog,
     useStartArticleIngestion,
 } from 'models/helpCenter/queries'
@@ -17,8 +17,7 @@ export const usePublicResourceMutation = ({
     const {mutateAsync: startArticleIngestionAsync} = useStartArticleIngestion({
         onSuccess: async () => {
             await queryClient.invalidateQueries({
-                queryKey:
-                    helpCenterStatsKeys.articleIngestionLogs(helpCenterId),
+                queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
             })
         },
     })
@@ -48,8 +47,7 @@ export const usePublicResourceMutation = ({
         useDeleteArticleIngestionLog({
             onSuccess: async () => {
                 await queryClient.invalidateQueries({
-                    queryKey:
-                        helpCenterStatsKeys.articleIngestionLogs(helpCenterId),
+                    queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
                 })
             },
         })

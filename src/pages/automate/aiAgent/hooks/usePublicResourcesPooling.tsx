@@ -2,7 +2,7 @@ import {useQueryClient} from '@tanstack/react-query'
 import {useEffect, useMemo} from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    helpCenterStatsKeys,
+    helpCenterKeys,
     useGetArticleIngestionLogs,
 } from 'models/helpCenter/queries'
 import history from 'pages/history'
@@ -87,7 +87,7 @@ export const usePublicResourcesPooling = ({
         if (finishedArticleIngestionIds.length === 0) return
 
         queryClient.setQueryData(
-            helpCenterStatsKeys.articleIngestionLogs(helpCenterId),
+            helpCenterKeys.articleIngestionLogs(helpCenterId),
             (
                 previous:
                     | Awaited<ReturnType<typeof getArticleIngestionLogs>>
@@ -107,7 +107,7 @@ export const usePublicResourcesPooling = ({
         // Remove cache for finished article ingestion logs
         const ids = processingArticleIngestions.map((log) => log.id)
         queryClient.removeQueries([
-            helpCenterStatsKeys.articleIngestionLogs(helpCenterId, {ids}),
+            helpCenterKeys.articleIngestionLogs(helpCenterId, {ids}),
         ])
 
         // Don't send notification if not all URL processed

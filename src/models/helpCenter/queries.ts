@@ -25,31 +25,31 @@ import {
 
 const STALE_TIME = 10 * 60 * 1000
 
-export const helpCenterStatsKeys = {
+export const helpCenterKeys = {
     all: () => ['help-centers'] as const,
     details: () => ['help-center'] as const,
     detail: (helpCenterId: number) =>
-        [...helpCenterStatsKeys.details(), helpCenterId] as const,
+        [...helpCenterKeys.details(), helpCenterId] as const,
     list: (queryParams: Paths.ListHelpCenters.QueryParameters) =>
-        [...helpCenterStatsKeys.all(), queryParams] as const,
+        [...helpCenterKeys.all(), queryParams] as const,
     articles: (
         helpCenterId: number,
         queryParams?: Paths.ListArticles.QueryParameters
     ) =>
         [
-            ...helpCenterStatsKeys.detail(helpCenterId),
+            ...helpCenterKeys.detail(helpCenterId),
             'articles',
             queryParams,
         ].filter(Boolean), // remove undefined queryParams
     article: (helpCenterId: number, articleId: number) =>
-        [...helpCenterStatsKeys.articles(helpCenterId), articleId] as const,
+        [...helpCenterKeys.articles(helpCenterId), articleId] as const,
     getCategoryTree: (
         helpCenterId: number,
         parentCategoryId: number,
         queryParams: Paths.GetCategoryTree.QueryParameters
     ) =>
         [
-            ...helpCenterStatsKeys.detail(helpCenterId),
+            ...helpCenterKeys.detail(helpCenterId),
             'get-category-tree',
             parentCategoryId,
             queryParams,
@@ -59,7 +59,7 @@ export const helpCenterStatsKeys = {
         queryParams?: Paths.GetArticleIngestionLogs.QueryParameters
     ) =>
         [
-            ...helpCenterStatsKeys.detail(helpCenterId),
+            ...helpCenterKeys.detail(helpCenterId),
             'article-ingestion-logs',
             queryParams,
         ].filter(Boolean),
@@ -69,7 +69,7 @@ export const helpCenterArticleKeys = (
     helpCenterId: number,
     articleId: number,
     locale: string
-) => [...helpCenterStatsKeys.article(helpCenterId, articleId), locale]
+) => [...helpCenterKeys.article(helpCenterId, articleId), locale]
 
 export const useGetHelpCenterArticleList = (
     helpCenterId: Paths.ListArticles.Parameters.HelpCenterId,
@@ -81,7 +81,7 @@ export const useGetHelpCenterArticleList = (
     const {client} = useHelpCenterApi()
 
     return useQuery({
-        queryKey: helpCenterStatsKeys.articles(helpCenterId, queryParams),
+        queryKey: helpCenterKeys.articles(helpCenterId, queryParams),
         queryFn: async () =>
             getHelpCenterArticles(
                 client,
@@ -102,7 +102,7 @@ export const useGetHelpCenterCategoryTree = (
     const {client} = useHelpCenterApi()
 
     return useQuery({
-        queryKey: helpCenterStatsKeys.getCategoryTree(
+        queryKey: helpCenterKeys.getCategoryTree(
             helpCenterId,
             parentCategoryId,
             queryParams
@@ -305,7 +305,7 @@ export const useGetHelpCenterList = (
     const {client: helpCenterClient} = useHelpCenterApi()
     return useQuery({
         queryFn: async () => getHelpCenterList(helpCenterClient, queryParams),
-        queryKey: helpCenterStatsKeys.list(queryParams),
+        queryKey: helpCenterKeys.list(queryParams),
         ...overrides,
         enabled:
             !!helpCenterClient &&
@@ -324,7 +324,7 @@ export const useGetArticleIngestionLogs = (
     return useQuery({
         queryFn: async () =>
             getArticleIngestionLogs(helpCenterClient, pathParams),
-        queryKey: helpCenterStatsKeys.articleIngestionLogs(
+        queryKey: helpCenterKeys.articleIngestionLogs(
             pathParams.help_center_id,
             pathParams.ids ? {ids: pathParams.ids} : undefined
         ),

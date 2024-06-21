@@ -14,7 +14,7 @@ import {notify} from 'state/notifications/actions'
 import {
     useUpdateArticleTranslation,
     helpCenterArticleKeys,
-    helpCenterStatsKeys,
+    helpCenterKeys,
 } from 'models/helpCenter/queries'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 
@@ -90,9 +90,7 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
                 ),
             })
             void queryClient.invalidateQueries({
-                queryKey: helpCenterStatsKeys.detail(
-                    articleData.help_center_id
-                ),
+                queryKey: helpCenterKeys.detail(articleData.help_center_id),
             })
         },
         [

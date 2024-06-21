@@ -3,7 +3,7 @@ import {useCallback} from 'react'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {
     useCreateArticle,
-    helpCenterStatsKeys,
+    helpCenterKeys,
     useDeleteArticle,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
@@ -27,7 +27,7 @@ export const useGuidanceArticleMutation = ({
     } = useCreateArticle({
         onSuccess: async () => {
             await queryClient.invalidateQueries({
-                queryKey: helpCenterStatsKeys.articles(guidanceHelpCenterId),
+                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
             })
         },
     })
@@ -38,7 +38,7 @@ export const useGuidanceArticleMutation = ({
     } = useDeleteArticle({
         onSuccess: async () => {
             await queryClient.invalidateQueries({
-                queryKey: helpCenterStatsKeys.articles(guidanceHelpCenterId),
+                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
             })
         },
     })
@@ -49,7 +49,7 @@ export const useGuidanceArticleMutation = ({
     } = useUpdateArticleTranslation({
         onSuccess: async () => {
             await queryClient.invalidateQueries({
-                queryKey: helpCenterStatsKeys.articles(guidanceHelpCenterId),
+                queryKey: helpCenterKeys.articles(guidanceHelpCenterId),
             })
         },
     })

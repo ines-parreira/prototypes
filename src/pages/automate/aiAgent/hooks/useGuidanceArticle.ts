@@ -1,7 +1,7 @@
 import {useQueryClient} from '@tanstack/react-query'
 import {useMemo} from 'react'
 import {
-    helpCenterStatsKeys,
+    helpCenterKeys,
     useGetHelpCenterArticle,
 } from 'models/helpCenter/queries'
 import {
@@ -28,7 +28,7 @@ export const useGuidanceArticle = ({
         {
             initialData: () => {
                 const articlesCache = queryClient.getQueryData(
-                    helpCenterStatsKeys.articles(
+                    helpCenterKeys.articles(
                         guidanceHelpCenterId,
                         GUIDANCE_ARTICLES_QUERY_PARAMS
                     )
