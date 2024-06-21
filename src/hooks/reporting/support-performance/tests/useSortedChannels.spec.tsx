@@ -111,7 +111,18 @@ describe('useSortedChannels', () => {
             ),
         })
 
-        channelSorting.forEach((channelSlug, index) => {
+        const channelsWithoutSortingPosition = mockChannels
+            .map((channel) => channel.slug)
+            .filter((channelSlug) => !channelSorting.includes(channelSlug))
+
+        const expectedSort = [
+            ...channelSorting,
+            ...channelsWithoutSortingPosition,
+        ]
+        expect(result.current.sortedChannels.map((ch) => ch.slug)).toEqual(
+            expectedSort
+        )
+        expectedSort.forEach((channelSlug, index) => {
             expect(result.current.sortedChannels[index].slug).toEqual(
                 channelSlug
             )

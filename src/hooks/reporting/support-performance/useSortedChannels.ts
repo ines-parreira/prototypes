@@ -21,6 +21,9 @@ const sortBySlugCustomOrderedWithEmptyLast =
         if (aIndex < 0) {
             return 1
         }
+        if (bIndex < 0) {
+            return -1
+        }
         return aIndex - bIndex
     }
 
@@ -28,18 +31,19 @@ export const sortChannels = (
     channels: Channel[],
     sorting: ChannelsSlice['sorting']
 ) => {
+    const sortedChannels = [...channels]
     if (sorting.field === ChannelsTableColumns.Channel) {
         return sorting.direction === OrderDirection.Asc
-            ? channels
-            : [...channels].reverse()
+            ? sortedChannels
+            : sortedChannels.reverse()
     }
 
     if (sorting.lastSortingMetric !== null) {
-        return channels.sort(
+        return sortedChannels.sort(
             sortBySlugCustomOrderedWithEmptyLast(sorting.lastSortingMetric)
         )
     }
-    return channels
+    return sortedChannels
 }
 
 export const useSortedChannels = () => {

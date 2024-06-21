@@ -1,7 +1,7 @@
 import {useEffect} from 'react'
 import {useDispatch} from 'react-redux'
-import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import useAppSelector from 'hooks/useAppSelector'
 import {opposite, OrderDirection} from 'models/api/types'
