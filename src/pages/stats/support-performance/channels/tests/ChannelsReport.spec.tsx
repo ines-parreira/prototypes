@@ -19,6 +19,12 @@ jest.mock('pages/stats/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
 jest.mock(
+    'pages/stats/support-performance/channels/ChannelsDownloadDataButton',
+    () => ({
+        ChannelsDownloadDataButton: () => <div />,
+    })
+)
+jest.mock(
     'pages/stats/support-performance/channels/ChannelsHeaderCellContent.tsx',
     () => ({
         ChannelsHeaderCellContent: () => <div />,

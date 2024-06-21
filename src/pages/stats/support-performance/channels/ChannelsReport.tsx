@@ -1,4 +1,5 @@
 import React from 'react'
+import {ChannelsDownloadDataButton} from 'pages/stats/support-performance/channels/ChannelsDownloadDataButton'
 import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
 import DashboardSection from 'pages/stats/DashboardSection'
 import {useGridSize} from 'hooks/useGridSize'
@@ -24,6 +25,7 @@ export default function ChannelsReport() {
                 titleExtra={
                     <>
                         <SupportPerformanceFilters />
+                        <ChannelsDownloadDataButton />
                     </>
                 }
             >
