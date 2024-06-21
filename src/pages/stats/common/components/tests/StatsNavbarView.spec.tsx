@@ -204,7 +204,7 @@ describe('StatsNavbarView', () => {
             </Provider>
         )
         const newChannelsReportLink = container.querySelector(
-            'a[href="/app/stats/new-channels"]'
+            'a[href="/app/stats/channels"]'
         )
         expect(newChannelsReportLink).toBeInTheDocument()
     })

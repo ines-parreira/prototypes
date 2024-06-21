@@ -584,16 +584,22 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                <Route
-                    exact
-                    path={`${path}/channels`}
-                    render={() => (
-                        <App
-                            content={SupportPerformanceChannels}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
-                />
+                {newChannelsReport !== undefined && (
+                    <Route
+                        exact
+                        path={`${path}/channels`}
+                        render={() => (
+                            <App
+                                content={
+                                    newChannelsReport
+                                        ? ChannelsReport
+                                        : SupportPerformanceChannels
+                                }
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
                 {!!isSLAsEnabled && (
                     <Route
                         exact
@@ -601,18 +607,6 @@ export function StatsRoutes() {
                         render={() => (
                             <App
                                 content={ServiceLevelAgreements}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                )}
-                {!!newChannelsReport && (
-                    <Route
-                        exact
-                        path={`${path}/new-channels`}
-                        render={() => (
-                            <App
-                                content={ChannelsReport}
                                 navbar={StatsNavbarContainer}
                             />
                         )}
