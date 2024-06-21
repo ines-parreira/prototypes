@@ -3,6 +3,7 @@ import {render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
 import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
@@ -45,12 +46,15 @@ const BreachedTicketsRateTrendCardMock = assumeMock(
 )
 jest.mock('pages/stats/sla/components/SLAPolicySelect')
 const SLAPolicySelectMock = assumeMock(SLAPolicySelect)
+jest.mock('pages/stats/sla/components/DownloadSLAsData')
+const DownloadSLAsDataMock = assumeMock(DownloadSLAsData)
 
 describe('ServiceLevelAgreements', () => {
     beforeEach(() => {
         AchievedAndBreachedTicketsChartMock.mockImplementation(() => <div />)
         AchievementRateTrendCardMock.mockImplementation(() => <div />)
         BreachedTicketsRateTrendCardMock.mockImplementation(() => <div />)
+        DownloadSLAsDataMock.mockImplementation(() => <div />)
     })
 
     beforeEach(() => {

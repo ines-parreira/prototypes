@@ -1,4 +1,5 @@
 import React from 'react'
+import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
 import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
@@ -27,6 +28,7 @@ export default function ServiceLevelAgreements() {
                     titleExtra={
                         <>
                             <SupportPerformanceFilters />
+                            <DownloadSLAsData />
                         </>
                     }
                 >

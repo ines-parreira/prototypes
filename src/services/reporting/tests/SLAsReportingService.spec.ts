@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {ReportingGranularity} from 'models/reporting/types'
 import {Period} from 'models/stat/types'
 import * as files from 'utils/file'
 import {DATE_TIME_FORMAT} from 'services/reporting/constants'
@@ -16,6 +17,7 @@ type TrendReportData = {
 }
 const YESTERDAY = moment().subtract(1, 'day').toISOString()
 const TODAY = moment().toISOString()
+const granularity = ReportingGranularity.Day
 
 const trendReportData: TrendReportData = {
     prevValue: 1,
@@ -27,28 +29,34 @@ const timeSeriesData = {
     label: TicketSLAStatus.Breached,
 }
 
-const buildQuery = <T>(isFetching: boolean, data?: T) => ({
+const buildQueryResponse = <T>(isFetching: boolean, data: T) => ({
     isFetching,
     data,
     isError: false,
 })
 
 const data: SLAsReportData = {
-    slaAchievementRateTrend: buildQuery(false, trendReportData),
-    slaBreachedTickets: buildQuery(false, trendReportData),
-    slaSatisfiedTickets: buildQuery(false, trendReportData),
-    slaPendingTickets: buildQuery(false, trendReportData),
+    slaAchievementRateTrend: buildQueryResponse(false, trendReportData),
+    slaBreachedTickets: buildQueryResponse(false, trendReportData),
+    slaSatisfiedTickets: buildQueryResponse(false, trendReportData),
     achievedOrBreachedSLAsTicketsTimeSeries: {
         data: {
-            [TicketSLAStatus.Breached]: [
-                [buildQuery(false, timeSeriesData).data!],
-            ],
-            [TicketSLAStatus.Pending]: [
-                [buildQuery(false, timeSeriesData).data!],
-            ],
-            [TicketSLAStatus.Satisfied]: [
-                [buildQuery(false, timeSeriesData).data!],
-            ],
+            [TicketSLAStatus.Breached]: [[timeSeriesData]],
+            [TicketSLAStatus.Pending]: [[timeSeriesData]],
+            [TicketSLAStatus.Satisfied]: [[timeSeriesData]],
+        },
+    },
+}
+
+const emptyData: SLAsReportData = {
+    slaAchievementRateTrend: buildQueryResponse(false, undefined),
+    slaBreachedTickets: buildQueryResponse(false, undefined),
+    slaSatisfiedTickets: buildQueryResponse(false, undefined),
+    achievedOrBreachedSLAsTicketsTimeSeries: {
+        data: {
+            [TicketSLAStatus.Breached]: [[]],
+            [TicketSLAStatus.Pending]: [[]],
+            [TicketSLAStatus.Satisfied]: [[]],
         },
     },
 }
@@ -65,19 +73,19 @@ const timeSeriesDateTimeOverriddenByYesterdayDate = [
 const timeSeriesDataOverrides = {
     achievedOrBreachedSLAsTicketsTimeSeries: {
         data: {
-            [TicketSLAStatus.Breached]: buildQuery(
+            [TicketSLAStatus.Breached]: buildQueryResponse(
                 false,
                 timeSeriesDateTimeOverriddenByYesterdayDate
-            ).data!,
-            [TicketSLAStatus.Pending]: buildQuery(
+            ).data,
+            [TicketSLAStatus.Pending]: buildQueryResponse(
                 false,
                 timeSeriesDateTimeOverriddenByYesterdayDate
-            ).data!,
+            ).data,
 
-            [TicketSLAStatus.Satisfied]: buildQuery(
+            [TicketSLAStatus.Satisfied]: buildQueryResponse(
                 false,
                 timeSeriesDateTimeOverriddenByYesterdayDate
-            ).data!,
+            ).data,
         },
     },
 }
@@ -97,6 +105,7 @@ const testDataFactory = (
 }
 
 const testData = [
+    testDataFactory(emptyData, undefined, period, 'Empty data'),
     testDataFactory(data, undefined, period, 'Default report data'),
     testDataFactory(
         data,
@@ -114,7 +123,7 @@ describe('reporting', () => {
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
             const zipperMock = jest.spyOn(files, 'saveZippedFiles')
 
-            await saveReport(data, period)
+            await saveReport(data, period, granularity)
 
             expect(zipperMock).toHaveBeenCalledWith(
                 {

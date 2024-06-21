@@ -6,7 +6,6 @@ import {DownloadSLAsDataButton} from 'pages/stats/sla/components/DownloadSLAsDat
 import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
 import {
     useBreachedSlaTicketsTrend,
-    usePendingSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import {saveReport} from 'services/reporting/SLAsReportingService'
@@ -20,7 +19,6 @@ export const DownloadSLAsData = () => {
     const slaAchievementRateTrend = useTicketSlaAchievementRateTrend()
     const slaBreachedTickets = useBreachedSlaTicketsTrend()
     const slaSatisfiedTickets = useSatisfiedSlaTicketsTrend()
-    const slaPendingTickets = usePendingSlaTicketsTrend()
 
     const achievedOrBreachedSLAsTicketsTimeSeries =
         useSatisfiedOrBreachedTicketsTimeSeries(
@@ -34,14 +32,12 @@ export const DownloadSLAsData = () => {
             slaAchievementRateTrend,
             slaBreachedTickets,
             slaSatisfiedTickets,
-            slaPendingTickets,
             achievedOrBreachedSLAsTicketsTimeSeries,
         }
     }, [
         slaAchievementRateTrend,
         slaBreachedTickets,
         slaSatisfiedTickets,
-        slaPendingTickets,
         achievedOrBreachedSLAsTicketsTimeSeries,
     ])
 
@@ -57,7 +53,11 @@ export const DownloadSLAsData = () => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
-                await saveReport(exportableData, cleanStatsFilters.period)
+                await saveReport(
+                    exportableData,
+                    cleanStatsFilters.period,
+                    granularity
+                )
             }}
             disabled={loading}
         />
