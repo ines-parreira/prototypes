@@ -6,11 +6,17 @@
         flex-direction: column;
     }
 
-    .pageHeaderContainer {
+    .pageHeaderContainer,
+    .listingPageSectionContainer {
         position: sticky;
         top: 0;
         z-index: 10;
         background-color: var(--neutral-grey-0);
+    }
+
+    .listingPageSectionContainer {
+        z-index: 1;
+        top: 57px;
     }
 
     .headerContainer {

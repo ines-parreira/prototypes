@@ -60,6 +60,10 @@ exports[`<TicketFields/> should render active ticket fields 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="listingPageSectionContainer"
+  >
     <div
       data-candu-id="ticket-fields-listing-educational-material"
     />
@@ -154,6 +158,10 @@ exports[`<TicketFields/> should render archived ticket fields 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="listingPageSectionContainer"
+  >
     <div
       data-candu-id="ticket-fields-listing-educational-material"
     />
@@ -209,8 +217,8 @@ exports[`<TicketFields/> should render get started 1`] = `
         />
       </div>
     </div>
-    
   </div>
+  
   <div
     class="emptyViewContainer"
   >
@@ -304,6 +312,10 @@ exports[`<TicketFields/> should render no active ticket fields 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="listingPageSectionContainer"
+  >
     <div
       data-candu-id="ticket-fields-listing-educational-material"
     />
@@ -404,6 +416,10 @@ exports[`<TicketFields/> should render no archived ticket fields 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="listingPageSectionContainer"
+  >
     <div
       data-candu-id="ticket-fields-listing-educational-material"
     />
@@ -504,6 +520,10 @@ exports[`<TicketFields/> should render no results found 1`] = `
         </div>
       </div>
     </div>
+  </div>
+  <div
+    class="listingPageSectionContainer"
+  >
     <div
       data-candu-id="ticket-fields-listing-educational-material"
     />

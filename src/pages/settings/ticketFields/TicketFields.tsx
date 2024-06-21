@@ -113,30 +113,26 @@ export default function TicketFields() {
                         )}
                     </div>
                 </PageHeader>
-                {shouldDisplayListingPage && (
-                    <>
-                        <div
-                            ref={setListingNode}
-                            data-candu-id="ticket-fields-listing-educational-material"
-                        />
-                        <SecondaryNavbar>
-                            <NavLink
-                                to="/app/settings/ticket-fields/active"
-                                exact
-                            >
-                                Active
-                            </NavLink>
-                            <NavLink
-                                to="/app/settings/ticket-fields/archived"
-                                exact
-                            >
-                                Archived
-                            </NavLink>
-                        </SecondaryNavbar>
-                    </>
-                )}
             </div>
-
+            {shouldDisplayListingPage && (
+                <div className={css.listingPageSectionContainer}>
+                    <div
+                        ref={setListingNode}
+                        data-candu-id="ticket-fields-listing-educational-material"
+                    />
+                    <SecondaryNavbar>
+                        <NavLink to="/app/settings/ticket-fields/active" exact>
+                            Active
+                        </NavLink>
+                        <NavLink
+                            to="/app/settings/ticket-fields/archived"
+                            exact
+                        >
+                            Archived
+                        </NavLink>
+                    </SecondaryNavbar>
+                </div>
+            )}
             {isLoading ? (
                 <Loader minHeight="60px" />
             ) : (
