@@ -10,7 +10,10 @@ import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabe
 
 import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
 import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
-import {defaultAutoMergeSettings} from 'pages/settings/autoMerge/constants'
+import {
+    defaultAutoMergeSettings,
+    MAX_MERGING_WINDOW_DAYS,
+} from 'pages/settings/autoMerge/constants'
 
 import css from 'pages/settings/settings.less'
 import autoMergeSettingsCss from 'pages/settings/autoMerge/AutoMergeSettings.less'
@@ -98,6 +101,7 @@ export default function AutoMergeSettings() {
                         >
                             <NumberInput
                                 min={1}
+                                max={MAX_MERGING_WINDOW_DAYS}
                                 step={1}
                                 hasControls
                                 isDisabled={!autoMergeSettings.enabled}
@@ -105,8 +109,11 @@ export default function AutoMergeSettings() {
                                 value={autoMergeSettings.merging_window_days}
                                 onChange={(merging_window_days) => {
                                     autoMergeSettings.onChangeMergingWindowDays(
-                                        merging_window_days ||
-                                            defaultAutoMergeSettings.merging_window_days
+                                        Math.min(
+                                            merging_window_days ||
+                                                defaultAutoMergeSettings.merging_window_days,
+                                            MAX_MERGING_WINDOW_DAYS
+                                        )
                                     )
                                 }}
                                 onFocus={handleOnClick}
