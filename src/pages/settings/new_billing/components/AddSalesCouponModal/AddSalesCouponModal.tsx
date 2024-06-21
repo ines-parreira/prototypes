@@ -2,8 +2,8 @@ import React, {useState} from 'react'
 import {useMutation, useQueryClient} from '@tanstack/react-query'
 import {isGorgiasApiError} from 'models/api/types'
 import Modal from 'pages/common/components/modal/Modal'
+import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
@@ -159,46 +159,51 @@ export default function AddSalesCouponModal({
                         maxLength={255}
                     />
                 </ModalBody>
-                <ModalActionsFooter>
-                    {alreadyAppliedCoupon && (
+                <ModalFooter className={css.footer}>
+                    <div>
+                        {alreadyAppliedCoupon && (
+                            <Button
+                                fillStyle="ghost"
+                                intent="destructive"
+                                onClick={() => {
+                                    deleteCouponMutation.mutate()
+                                }}
+                                isDisabled={applyCouponMutation.isLoading}
+                                isLoading={deleteCouponMutation.isLoading}
+                            >
+                                Delete Coupon
+                            </Button>
+                        )}
+                    </div>
+                    <div className={css.footerRight}>
                         <Button
-                            intent="destructive"
-                            onClick={() => {
-                                deleteCouponMutation.mutate()
-                            }}
-                            isDisabled={applyCouponMutation.isLoading}
-                            isLoading={deleteCouponMutation.isLoading}
+                            intent="secondary"
+                            onClick={handleCloseModalAndResetState}
+                            isDisabled={
+                                applyCouponMutation.isLoading ||
+                                deleteCouponMutation.isLoading
+                            }
                         >
-                            Delete Coupon
+                            Cancel
                         </Button>
-                    )}
-                    <Button
-                        intent="secondary"
-                        onClick={handleCloseModalAndResetState}
-                        isDisabled={
-                            applyCouponMutation.isLoading ||
-                            deleteCouponMutation.isLoading
-                        }
-                    >
-                        Cancel
-                    </Button>
-                    <Button
-                        isDisabled={
-                            selectedCoupon.length === 0 ||
-                            reason.length === 0 ||
-                            deleteCouponMutation.isLoading
-                        }
-                        onClick={() => {
-                            applyCouponMutation.mutate({
-                                coupon_name: selectedCoupon,
-                                reason,
-                            })
-                        }}
-                        isLoading={applyCouponMutation.isLoading}
-                    >
-                        Apply Coupon
-                    </Button>
-                </ModalActionsFooter>
+                        <Button
+                            isDisabled={
+                                selectedCoupon.length === 0 ||
+                                reason.length === 0 ||
+                                deleteCouponMutation.isLoading
+                            }
+                            onClick={() => {
+                                applyCouponMutation.mutate({
+                                    coupon_name: selectedCoupon,
+                                    reason,
+                                })
+                            }}
+                            isLoading={applyCouponMutation.isLoading}
+                        >
+                            Apply Coupon
+                        </Button>
+                    </div>
+                </ModalFooter>
             </Modal>
         </>
     )

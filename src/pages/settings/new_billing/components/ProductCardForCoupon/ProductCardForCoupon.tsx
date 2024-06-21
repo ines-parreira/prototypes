@@ -35,16 +35,15 @@ export default function ProductCardForCoupon({
                 <div className={css.inactiveProduct}>
                     <div className={css.title}>{productName}</div>
                     <div>
-                        <span className={css.bold}>Status: </span>&nbsp;&nbsp;
+                        <span className={css.bold}>Status: </span>
                         <span>Inactive</span>
                     </div>
                     <div>
                         <span className={css.bold}>Billing frequency: </span>
-                        &nbsp;&nbsp;
                         <span>-</span>
                     </div>
                     <div>
-                        <span className={css.bold}>Plan: </span>&nbsp;&nbsp;
+                        <span className={css.bold}>Plan: </span>
                         <span>-</span>
                     </div>
                 </div>
@@ -94,21 +93,19 @@ export default function ProductCardForCoupon({
         <div className={css.container}>
             <div className={css.title}>{productName}</div>
             <div>
-                <span className={css.bold}>Status: </span>&nbsp;&nbsp;
+                <span className={css.bold}>Status: </span>
                 {status}
             </div>
             <div>
                 <span className={css.bold}>Billing frequency: </span>
-                &nbsp;&nbsp;
                 <span>{_capitalize(plan.cadence)}ly</span>
             </div>
             <div>
-                <span className={css.bold}>Plan: </span>&nbsp;&nbsp;
+                <span className={css.bold}>Plan: </span>
                 <span>{getPlanDescription(plan)}</span>
             </div>
             <div className={css.verticallyAligned}>
-                <span className={css.bold}>Discount coupon: </span>&nbsp;&nbsp;
-                &nbsp;
+                <span className={css.bold}>Discount coupon: </span>
                 {currentCoupon ? (
                     <>
                         <span>{currentCoupon.name}</span>
