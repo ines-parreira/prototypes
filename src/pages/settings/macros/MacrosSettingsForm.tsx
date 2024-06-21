@@ -12,6 +12,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
+import {useAppNode} from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -56,6 +57,7 @@ export function MacrosSettingsFormContainer({
     macros,
     notify,
 }: ConnectedProps<typeof connector>) {
+    const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
     const {macroId} = useParams<{macroId?: string}>()
 
@@ -264,6 +266,7 @@ export function MacrosSettingsFormContainer({
                                 !isActionDisabled &&
                                 setMacroForm({...macroForm, language})
                             }
+                            container={appNode ?? undefined}
                         />
                         <FormGroup className="mt-5">
                             <Button
