@@ -1,5 +1,6 @@
 import {FeedItem, FeedItem as KnockFeedItem} from '@knocklabs/client'
 import {
+    NotificationFeedHeaderProps,
     NotificationFeedPopover,
     RenderItemProps,
     useKnockFeed,
@@ -16,6 +17,7 @@ import useCount from '../hooks/useCount'
 import transformKnockNotification from '../utils/transformKnockNotification'
 import {RawNotification} from '../types'
 
+import FeedHeader from './FeedHeader'
 import FeedItemComponent from './FeedItem'
 import css from './Button.less'
 import './Feed.less'
@@ -82,6 +84,16 @@ export default function NotificationsButton() {
         [handleClickNotification, handleToggleRead]
     )
 
+    const renderHeader = useCallback(
+        (renderHeaderProps: NotificationFeedHeaderProps) => (
+            <FeedHeader
+                {...renderHeaderProps}
+                toggleVisibility={() => setIsVisible(false)}
+            />
+        ),
+        []
+    )
+
     return (
         <>
             <Button
@@ -109,6 +121,7 @@ export default function NotificationsButton() {
                 placement="right-start"
                 renderItem={renderItem}
                 onClose={handleClose}
+                renderHeader={renderHeader}
             />
         </>
     )
