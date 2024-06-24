@@ -11,7 +11,7 @@ import {
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {NotificationsSettings as NewNotificationsSettings} from 'common/notifications'
+import {NotificationsSettings} from 'common/notifications'
 import {logPageChange} from 'common/segment'
 import {assetsUrl} from 'utils'
 import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
@@ -54,7 +54,6 @@ import CustomerDetailContainer from 'pages/customers/detail/CustomerDetailContai
 import CustomerSourceContainer from 'pages/customers/detail/CustomerSourceContainer'
 import CustomerInfobarContainer from 'pages/customers/detail/CustomerInfobarContainer'
 
-import NotificationSettings from 'pages/settings/notifications/NotificationSettings'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import YourProfileContainer from 'pages/settings/yourProfile/YourProfileContainer'
 import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
@@ -772,9 +771,6 @@ export function SettingsRoutes() {
     const isHelpCenterCreationWizardEnabled: boolean =
         useFlags()[FeatureFlagKey.HelpCenterCreationWizard] || false
 
-    const hasNotifications: boolean =
-        useFlags()[FeatureFlagKey.Notifications] || false
-
     return (
         <Switch>
             <Route
@@ -836,11 +832,7 @@ export function SettingsRoutes() {
                 exact
                 render={() => (
                     <App
-                        content={
-                            hasNotifications
-                                ? NewNotificationsSettings
-                                : NotificationSettings
-                        }
+                        content={NotificationsSettings}
                         navbar={SettingsNavbar}
                     />
                 )}

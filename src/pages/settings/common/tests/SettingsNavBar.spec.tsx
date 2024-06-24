@@ -19,6 +19,11 @@ import SettingsNavbar from '../SettingsNavbar'
 
 const mockStore = configureMockStore([thunk])
 
+jest.mock('common/notifications/components/Button', () => ({
+    __esModule: true,
+    default: () => <div>NotificationsButton</div>,
+}))
+
 describe('<SettingsNavbar />', () => {
     const defaultState: Partial<RootState> = {
         currentAccount: fromJS(account),

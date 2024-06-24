@@ -88,7 +88,6 @@ export enum FeatureFlagKey {
     NewPhoneNumberCustomerSidebar = 'new-phone-number-customer-sidebar',
     NewSenderSelect = 'new-sender-select',
     NewTicketSnoozeAndTicketDate = 'new-ticket-snooze-and-ticket-date',
-    Notifications = 'notifications',
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityAutomateAnalyticsv2 = 'observability-automate-analytics-v2',

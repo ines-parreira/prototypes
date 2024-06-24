@@ -372,7 +372,6 @@ export class Navbar extends Component<Props, State> {
             currentHelpdeskProduct?.name.toLowerCase().includes(priceType)
         )
 
-        const hasNotifications = !!flags?.[FeatureFlagKey.Notifications]
         const hasOfficeHours = !!flags?.[FeatureFlagKey.OfficeHours]
 
         return (
@@ -469,7 +468,7 @@ export class Navbar extends Component<Props, State> {
                         <div data-candu-id="navbar-home-spacer" />
 
                         <SpotlightButton />
-                        {hasNotifications && <NotificationsButton />}
+                        <NotificationsButton />
                         {this.state.title === 'Tickets' ? (
                             <>
                                 <CreateTicketNavbarButton

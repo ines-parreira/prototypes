@@ -20,10 +20,6 @@ jest.mock('pages/stats/DefaultStatsFilters', () => () => (
     <div>Default stats filters</div>
 ))
 
-jest.mock('../settings/notifications/NotificationSettings', () => () => (
-    <div>Notification Settings</div>
-))
-
 const mockHistory = createBrowserHistory()
 const mockStore = configureMockStore()
 

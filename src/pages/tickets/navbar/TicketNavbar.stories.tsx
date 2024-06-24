@@ -7,14 +7,15 @@ import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import {NotificationsProvider} from 'common/notifications'
+import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {newViews} from 'models/view/mocks'
-import {account} from 'fixtures/account'
 import {TicketNavbarContainer} from 'pages/tickets/navbar/TicketNavbar'
 import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
 import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
 import {AccountSettingType} from 'state/currentAccount/types'
-import {Theme} from 'theme'
 
 const currentUser = Map({
     id: Math.random() * 1000,
@@ -69,9 +70,11 @@ const storyConfig: Meta = {
                 <SplitTicketViewProvider>
                     <DndProvider backend={HTML5Backend}>
                         <MemoryRouter>
-                            <div>
-                                <Component />
-                            </div>
+                            <NotificationsProvider>
+                                <div>
+                                    <Component />
+                                </div>
+                            </NotificationsProvider>
                         </MemoryRouter>
                     </DndProvider>
                 </SplitTicketViewProvider>
@@ -103,34 +106,5 @@ export const Default = {
         primary: true,
     },
 }
-export const WithLightAppTheme: Meta = {
-    ...Default,
-    decorators: [
-        (Component) => (
-            <div className={Theme.Light}>
-                <Component />
-            </div>
-        ),
-    ],
-}
-export const WithDarkAppTheme: Meta = {
-    ...Default,
-    decorators: [
-        (Component) => (
-            <div className={Theme.Dark}>
-                <Component />
-            </div>
-        ),
-    ],
-}
-export const WithModernAppTheme: Meta = {
-    ...Default,
-    decorators: [
-        (Component) => (
-            <div className={Theme.Modern}>
-                <Component />
-            </div>
-        ),
-    ],
-}
+
 export default storyConfig

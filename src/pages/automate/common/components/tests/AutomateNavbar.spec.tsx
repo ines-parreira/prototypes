@@ -36,6 +36,11 @@ useParamsMock.mockReturnValue({})
 
 const mockStore = configureMockStore()
 
+jest.mock('common/notifications/components/Button', () => ({
+    __esModule: true,
+    default: () => <div>NotificationsButton</div>,
+}))
+
 describe('<AutomateNavbar />', () => {
     const defaultState: Partial<RootState> = {
         currentUser: fromJS(user),

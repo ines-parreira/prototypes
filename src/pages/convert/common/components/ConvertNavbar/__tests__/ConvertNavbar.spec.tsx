@@ -23,6 +23,12 @@ jest.mock('react-router')
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 
 jest.mock('pages/convert/channelConnections/hooks/useGetOnboardingStatusMap')
+
+jest.mock('common/notifications/components/Button', () => ({
+    __esModule: true,
+    default: () => <div>NotificationsButton</div>,
+}))
+
 const useGetOnboardingStatusMapSpy = assumeMock(useGetOnboardingStatusMap)
 
 const isConvertSubscriberMock = useIsConvertSubscriber as jest.Mock

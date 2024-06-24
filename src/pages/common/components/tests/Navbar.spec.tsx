@@ -26,6 +26,10 @@ jest.mock('common/segment')
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/components/CreateTicket/CreateTicketNavbarButton')
 jest.mock('pages/common/components/PlaceCallNavbarButton')
+jest.mock('common/notifications/components/Button', () => ({
+    __esModule: true,
+    default: () => <div>NotificationsButton</div>,
+}))
 const MockedCreateTicketNavbarButton = CreateTicketNavbarButton as jest.Mock
 const MockedPlaceCallNavbarButton = PlaceCallNavbarButton as jest.Mock
 

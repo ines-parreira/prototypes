@@ -158,6 +158,9 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </span>
           Search
         </button>
+        <div>
+          NotificationsButton
+        </div>
       </div>
       <div
         class="navbar-content"
@@ -624,6 +627,9 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </span>
           Search
         </button>
+        <div>
+          NotificationsButton
+        </div>
       </div>
       <div
         class="navbar-content"
@@ -987,6 +993,9 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
           </span>
           Search
         </button>
+        <div>
+          NotificationsButton
+        </div>
       </div>
       <div
         class="navbar-content"
@@ -1181,6 +1190,9 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </span>
           Search
         </button>
+        <div>
+          NotificationsButton
+        </div>
       </div>
       <div
         class="navbar-content"
@@ -1634,6 +1646,9 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </span>
           Search
         </button>
+        <div>
+          NotificationsButton
+        </div>
       </div>
       <div
         class="navbar-content"
@@ -1984,6 +1999,9 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
           </span>
           Search
         </button>
+        <div>
+          NotificationsButton
+        </div>
       </div>
       <div
         class="navbar-content"

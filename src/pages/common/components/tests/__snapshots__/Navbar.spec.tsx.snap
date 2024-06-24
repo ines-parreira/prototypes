@@ -156,6 +156,9 @@ exports[`<Navbar /> should render the navbar 1`] = `
         </span>
         Search
       </button>
+      <div>
+        NotificationsButton
+      </div>
     </div>
     <div
       class="navbar-content"
@@ -360,6 +363,9 @@ exports[`<Navbar /> should render the opened panel 1`] = `
         </span>
         Search
       </button>
+      <div>
+        NotificationsButton
+      </div>
     </div>
     <div
       class="navbar-content"
@@ -567,6 +573,9 @@ exports[`<Navbar /> should render the split ticket view toggle 1`] = `
         </span>
         Search
       </button>
+      <div>
+        NotificationsButton
+      </div>
     </div>
     <div
       class="navbar-content"
@@ -771,6 +780,9 @@ exports[`<Navbar /> should render the user as unavailable 1`] = `
         </span>
         Search
       </button>
+      <div>
+        NotificationsButton
+      </div>
     </div>
     <div
       class="navbar-content"
