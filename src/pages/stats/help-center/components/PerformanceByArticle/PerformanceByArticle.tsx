@@ -31,7 +31,7 @@ const columns = [
         type: TableCellType.String,
         name: '👍 | 👎',
         tooltip: {
-            title: 'Number of positive reactions compared to negative',
+            title: 'Number of positive reactions compared to negative reactions',
         },
     },
     {
