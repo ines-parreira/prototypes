@@ -1,0 +1,18 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        max-width: 680px;
+        width: 100%;
+        max-height: 230px;
+        padding: @layout-spacing-m;
+        border-radius: 4px;
+        background-position: center;
+    }
+
+    .title {
+        .heading-section-semibold();
+        margin-bottom: @layout-spacing-xxs;
+    }
+}

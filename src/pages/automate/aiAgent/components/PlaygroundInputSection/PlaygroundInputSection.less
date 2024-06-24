@@ -1,0 +1,34 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        border: 1px solid var(--neutral-grey-3);
+        width: 100%;
+        border-radius: 4px;
+    }
+
+    .section {
+        padding: @layout-spacing-xs @layout-spacing-s;
+    }
+
+    .noPaddings {
+        padding: 0;
+    }
+
+    .section:not(:last-child) {
+        border-bottom: 1px solid var(--neutral-grey-3);
+    }
+
+    .subjectInput {
+        border: none !important;
+        padding: 0;
+        outline: none;
+        box-shadow: none !important;
+    }
+
+    .footer {
+        display: flex;
+        gap: @layout-spacing-s;
+        background-color: var(--neutral-grey-1);
+    }
+}

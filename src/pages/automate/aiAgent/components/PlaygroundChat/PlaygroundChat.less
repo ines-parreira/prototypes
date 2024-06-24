@@ -1,0 +1,26 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        max-width: 680px;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    .outputSection {
+        flex: 1;
+    }
+
+    .emptyState {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+    }
+}
