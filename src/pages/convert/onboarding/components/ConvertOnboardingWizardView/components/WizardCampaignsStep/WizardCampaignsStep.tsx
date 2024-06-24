@@ -57,7 +57,7 @@ const WizardCampaignsStep = ({integration}: Props) => {
                     <ConvertOnboardingCampaignTemplate
                         key={template.slug}
                         template={template}
-                        integrationId={integration.get('id')}
+                        integration={integration}
                         selected={isSelected(template, campaigns)}
                     />
                 ))}

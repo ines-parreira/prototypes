@@ -1,4 +1,5 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
+import {Map} from 'immutable'
 
 import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
@@ -10,12 +11,16 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
 import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+
+import {useIsConvertSimplifiedEditorEnabled} from 'pages/convert/common/hooks/useIsConvertSimplifiedEditorEnabled'
+import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
+
 import css from './ConvertOnboardingCampaignTemplate.less'
 
 type Props = {
     template: CampaignTemplate
-    integrationId: number
     selected: boolean
+    integration: Map<any, any>
 }
 
 const campaignLabelStyles: Record<
@@ -38,10 +43,21 @@ const campaignLabelStyles: Record<
 
 const ConvertOnboardingCampaignTemplate = ({
     template,
-    integrationId,
+    integration,
     selected,
 }: Props) => {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
+    const isSimplifiedEditorEnabled = useIsConvertSimplifiedEditorEnabled()
+
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+    const onClose = () => {
+        setIsModalOpen(false)
+    }
+
+    const openModal = () => {
+        setIsModalOpen(true)
+    }
 
     const estimatedRevenue = useMemo(() => {
         const planName =
@@ -89,15 +105,36 @@ const ConvertOnboardingCampaignTemplate = ({
                 </div>
 
                 <div className={css.button}>
-                    <Link
-                        to={`/app/convert/${integrationId}/setup/wizard/${template.slug}`}
-                    >
-                        <Button intent="primary" fillStyle="ghost">
+                    {!isSimplifiedEditorEnabled ? (
+                        <Link
+                            to={`/app/convert/${integration.get(
+                                'id'
+                            )}/setup/wizard/${template.slug}`}
+                        >
+                            <Button intent="primary" fillStyle="ghost">
+                                Customize
+                            </Button>
+                        </Link>
+                    ) : (
+                        <Button
+                            intent="primary"
+                            fillStyle="ghost"
+                            onClick={openModal}
+                        >
                             Customize
                         </Button>
-                    </Link>
+                    )}
                 </div>
             </div>
+            {isSimplifiedEditorEnabled && (
+                <ConvertSimplifiedEditorModal
+                    estimatedRevenue={estimatedRevenue}
+                    template={template}
+                    integration={integration}
+                    isOpen={isModalOpen}
+                    onClose={onClose}
+                />
+            )}
         </div>
     )
 }

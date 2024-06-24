@@ -1,0 +1,30 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .triggersList {
+        display: inline-flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .triggerItem {
+        .caption-semibold();
+
+        border-radius: 4px;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+        margin-right: @layout-spacing-xs;
+        margin-bottom: @layout-spacing-xs;
+
+        background-color: var(--neutral-grey-3);
+        color: var(--neutral-grey-6);
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

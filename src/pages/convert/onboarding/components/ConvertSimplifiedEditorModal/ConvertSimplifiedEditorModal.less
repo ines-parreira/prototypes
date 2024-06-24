@@ -1,0 +1,80 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography';
+
+:local {
+    .modalBody {
+        padding: 0;
+    }
+
+    .modalContainer {
+        display: flex;
+    }
+
+    .leftSide,
+    .rightSide {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .leftSide {
+        flex: 1;
+        padding: @layout-spacing-s;
+    }
+
+    .rightSide {
+        width: 432px;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--neutral-grey-1);
+    }
+
+    .footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 12px @layout-spacing-s;
+        flex: 1;
+    }
+
+    .forceLeft {
+        margin-right: auto;
+    }
+
+    .marginRight {
+        margin-right: @layout-spacing-s;
+    }
+
+    .section {
+        margin-top: @layout-spacing-m;
+    }
+
+    .sectionHeader {
+        margin-bottom: @layout-spacing-xs;
+        span {
+            .body-semibold;
+        }
+    }
+
+    .labelContainer {
+        display: flex;
+        flex: 1;
+        margin-bottom: @layout-spacing-s;
+    }
+
+    .estimationLabel {
+        margin-left: 10px;
+    }
+
+    .templateTitle {
+        .heading-section-semibold;
+    }
+
+    .templateDescription {
+        .body-regular;
+    }
+
+    .disclaimer {
+        color: var(--natural-grey-5);
+
+        .caption-regular;
+    }
+}

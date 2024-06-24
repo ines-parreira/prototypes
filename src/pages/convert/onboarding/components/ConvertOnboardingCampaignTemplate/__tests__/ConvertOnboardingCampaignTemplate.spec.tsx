@@ -18,6 +18,14 @@ const defaultState: Partial<RootState> = {
     billing: fromJS(billingState),
 }
 
+const integration = fromJS({
+    id: '1',
+    meta: {
+        languages: [{language: 'en-US', primary: true}],
+        shop_type: 'shopify',
+    },
+})
+
 describe('ConvertOnboardingCampaignTemplate', () => {
     const template = {
         slug: 'test-slug',
@@ -38,7 +46,7 @@ describe('ConvertOnboardingCampaignTemplate', () => {
             <Provider store={mockStore(defaultState)}>
                 <ConvertOnboardingCampaignTemplate
                     template={template as CampaignTemplate}
-                    integrationId={1}
+                    integration={integration}
                     selected={true}
                 />
             </Provider>
