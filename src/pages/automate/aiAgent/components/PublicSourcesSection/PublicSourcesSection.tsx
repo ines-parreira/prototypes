@@ -127,8 +127,11 @@ export const PublicSourcesSection = ({
             <div>
                 <h3 className={css.title}>Public URL sources</h3>
                 <div>
-                    AI Agent will fetch the text from up to {SOURCES_LIMIT}{' '}
-                    URLs. Images and video content will not be used.
+                    Add URLs to specific web pages that AI Agent should
+                    reference to answer shopper questions, for example
+                    "https://yourstore.com/faqs" and
+                    "https://yourstore.com/return-policy". Image and video
+                    content is ignored.
                 </div>
             </div>
 
