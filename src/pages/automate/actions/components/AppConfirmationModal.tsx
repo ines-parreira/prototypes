@@ -71,7 +71,7 @@ export default function AppKeyConfirmationModal({
     )
 
     const modalTitle =
-        step === 'details' ? 'Action Details' : 'Connect 3rd party app'
+        step === 'details' ? 'Action details' : 'Connect 3rd party app'
 
     const appName = appData?.name || integrationTypeConfig?.title
 
