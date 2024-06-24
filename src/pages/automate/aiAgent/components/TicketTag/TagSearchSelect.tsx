@@ -1,8 +1,16 @@
-import React, {useRef, useState} from 'react'
+import React, {useCallback, useEffect, useRef, useState} from 'react'
+import {DropdownItem as BareDropdownItem} from 'reactstrap'
+import {CancelToken} from 'axios'
+import _debounce from 'lodash/debounce'
+import {fromJS, List, Map} from 'immutable'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import {reportError} from 'utils/errors'
+import useCancellableRequest from 'hooks/useCancellableRequest'
+import {fieldEnumSearch} from 'state/views/actions'
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import css from './TagSearchSelect.less'
 
 type Props = {
@@ -10,46 +18,56 @@ type Props = {
     defaultTag: string | undefined
 }
 
+const LIMIT_TAGS_SEARCH = 15
+
 const TagSearchSelect = ({onSelect, defaultTag}: Props) => {
     const dropdownAnchor = useRef<HTMLDivElement>(null)
     const dropdownRef = useRef<HTMLDivElement>(null)
     const [isOpen, setIsOpen] = useState(false)
+    const [loading, setIsLoading] = useState(false)
+    const [firstToggle, setFirstToggle] = useState(true)
+    const [tagsResults, setTagsResults] = useState<List<any>>(fromJS([]))
+    const [search, setSearch] = useState('')
     const [selectedTag, setSelectedTag] = useState<string | undefined>(
         defaultTag
     )
-    // Mock data, this will be replaced by an actual fetch in the next iteration
-    const tags = [
-        {
-            id: 13,
-            decoration: {
-                color: '#b070b2',
-            },
-            name: 'ai_snooze',
-            usage: 0,
-            uri: '/api/tags/13/',
-            created_datetime: '2024-05-24T16:28:35.038429+00:00',
-        },
-        {
-            id: 12,
-            decoration: {
-                color: '#3ca67e',
-            },
-            name: 'ai_processing',
-            usage: 3,
-            uri: '/api/tags/12/',
-            created_datetime: '2024-05-14T14:05:44.564076+00:00',
-        },
-        {
-            id: 11,
-            decoration: {
-                color: '#55b073',
-            },
-            name: 'ai_ignore',
-            usage: 0,
-            uri: '/api/tags/11/',
-            created_datetime: '2024-04-17T12:29:11.917767+00:00',
-        },
-    ]
+
+    const [fieldEnumSearchCancellable] = useCancellableRequest(
+        (cancelToken: CancelToken) => (field: Map<any, any>, search: string) =>
+            fieldEnumSearch(field, search, cancelToken)()
+    )
+
+    const queryResults = async (search: string) => {
+        setIsLoading(true)
+
+        const field = fromJS({
+            filter: {type: 'tag', size: LIMIT_TAGS_SEARCH},
+        })
+
+        try {
+            const data = await fieldEnumSearchCancellable(field, search)
+            if (!data) return
+
+            setTagsResults(data)
+        } catch (error) {
+            reportError(error, {
+                tags: {team: AI_AGENT_SENTRY_TEAM},
+                extra: {
+                    context: 'Error trying to load account tags',
+                },
+            })
+        }
+        setIsLoading(false)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const queryResultsOnSearch = useCallback(_debounce(queryResults, 1000), [])
+
+    const handleSearch = (search: string) => {
+        setIsLoading(true)
+        setSearch(search)
+        void queryResultsOnSearch(search)
+    }
 
     const handleTagSelection = (tagName: string) => {
         setSelectedTag(tagName)
@@ -62,6 +80,15 @@ const TagSearchSelect = ({onSelect, defaultTag}: Props) => {
             setIsOpen(false)
         }
     })
+
+    useEffect(() => {
+        // Search for tags on the first toggle of the dropdown
+        if (firstToggle && isOpen) {
+            setIsLoading(true)
+            void queryResultsOnSearch(search)
+            setFirstToggle(false)
+        }
+    }, [firstToggle, isOpen, search, queryResultsOnSearch])
 
     return (
         <div>
@@ -84,29 +111,40 @@ const TagSearchSelect = ({onSelect, defaultTag}: Props) => {
                 )}
             </div>
             <Dropdown
+                placement="right"
                 ref={dropdownRef}
                 isOpen={isOpen}
-                onToggle={() => {}}
+                onToggle={() => setIsOpen(!isOpen)}
                 target={dropdownAnchor}
             >
                 <DropdownSearch
+                    onChange={(value) => handleSearch(value)}
                     className={css.dropdownSearch}
                     placeholder="Search"
                 />
-                {tags.map(
-                    (t) =>
-                        t.name && (
+                {loading ? (
+                    <BareDropdownItem disabled>
+                        <i className="material-icons md-spin mr-2">refresh</i>
+                        Loading...
+                    </BareDropdownItem>
+                ) : null}
+                <div className={css.dropdownItemsContainer}>
+                    {tagsResults.map((t: Map<any, any>) => {
+                        const id = t.get('id') as string
+                        const name = t.get('name') as string
+                        return (
                             <DropdownItem
-                                key={t.id}
+                                key={id}
                                 className={css.dropdownItem}
-                                onClick={() => handleTagSelection(t.name)}
+                                onClick={() => handleTagSelection(name)}
                                 option={{
-                                    label: t.name,
-                                    value: t.name,
+                                    label: name,
+                                    value: name,
                                 }}
                             />
                         )
-                )}
+                    })}
+                </div>
             </Dropdown>
         </div>
     )

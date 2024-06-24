@@ -3,47 +3,53 @@ import {Tag} from 'models/aiAgent/types'
 import InputField from 'pages/common/forms/input/InputField'
 import IconTooltip from 'pages/common/forms/Label/IconTooltip'
 import IconButton from 'pages/common/components/button/IconButton'
+import Button from 'pages/common/components/button/Button'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TagSearchSelect from './TagSearchSelect'
 import css from './TagList.less'
 
 type Props = {
     tags: Tag[]
-    setTags: (tags: Tag[]) => void
+    onTagsUpdate: (tags: Tag[]) => void
 }
 
-const TagList = ({tags, setTags}: Props) => {
+const TagList = ({tags, onTagsUpdate}: Props) => {
     const handleTagSelect = (name: string, index: number) => {
         const updatedTags = tags.map((tag, i) =>
             i === index ? {...tag, name} : tag
         )
-        setTags(updatedTags)
+        onTagsUpdate(updatedTags)
     }
 
     const handleDescriptionChange = (index: number, newDescription: string) => {
         const updatedTags = tags.map((tag, i) =>
             i === index ? {...tag, description: newDescription} : tag
         )
-        setTags(updatedTags)
+        onTagsUpdate(updatedTags)
     }
 
     return (
         <div>
-            <div className={css.header}>
-                <div className={css.tagHeader}>
-                    Tag
-                    <IconTooltip className={css.icon}>
-                        Choose from current tags or create new ones.
-                    </IconTooltip>
+            {tags.length > 0 && (
+                <div className={css.header}>
+                    <div className={css.tagHeader}>
+                        Tag
+                        <IconTooltip className={css.icon}>
+                            Choose from current tags or create new ones.
+                        </IconTooltip>
+                    </div>
+                    <div className={css.description}>
+                        Apply to tickets containing the following topics
+                    </div>
                 </div>
-                <div className={css.description}>
-                    Apply to tickets containing the following topics
-                </div>
-            </div>
+            )}
             {tags.map((t, index) => (
-                <div key={t.name} className={css.body}>
+                <div key={index} className={css.body}>
                     <div className={css.tag}>
                         <TagSearchSelect
-                            onSelect={() => handleTagSelect(t.name, index)}
+                            onSelect={(name: string) =>
+                                handleTagSelect(name, index)
+                            }
                             defaultTag={t.name}
                         />
                     </div>
@@ -58,7 +64,7 @@ const TagList = ({tags, setTags}: Props) => {
                         fillStyle="ghost"
                         intent="destructive"
                         onClick={() =>
-                            setTags(tags.filter((_, i) => i !== index))
+                            onTagsUpdate(tags.filter((_, i) => i !== index))
                         }
                         size="medium"
                     >
@@ -66,6 +72,16 @@ const TagList = ({tags, setTags}: Props) => {
                     </IconButton>
                 </div>
             ))}
+            <Button
+                className={css.addButton}
+                data-testid="add-button"
+                intent="secondary"
+                onClick={() =>
+                    onTagsUpdate([...tags, {name: '', description: ''}])
+                }
+            >
+                <ButtonIconLabel icon="add">Add Tag</ButtonIconLabel>
+            </Button>
         </div>
     )
 }

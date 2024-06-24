@@ -31,7 +31,7 @@ const WrapperComponent = () => {
             description: '',
         },
     ])
-    return <TagList tags={tags} setTags={setTags} />
+    return <TagList tags={tags} onTagsUpdate={setTags} />
 }
 
 export const Default: Story = {

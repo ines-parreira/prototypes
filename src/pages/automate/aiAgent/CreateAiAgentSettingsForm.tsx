@@ -70,6 +70,7 @@ import {
     validateConfigurationFormValues,
 } from './hooks/useConfigurationForm'
 import {usePublicResources} from './hooks/usePublicResources'
+import TagList from './components/TicketTag/TagList'
 
 const INITIAL_FORM_VALUES = {
     deactivatedDatetime: new Date().toISOString(),
@@ -139,6 +140,9 @@ export const CreateAiAgentSettingsForm = ({
 
     const isWebsiteKnowledgeEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
+
+    const isNewTicketTaggingEnabled: boolean =
+        useFlags()[FeatureFlagKey.AiAgentSettingsTicketTaggingRevamp] ?? false
 
     /**
      * Global state retrieval
@@ -645,16 +649,21 @@ export const CreateAiAgentSettingsForm = ({
                         Define when AI Agent should tag incoming tickets.
                     </div>
 
-                    <AutoTagList
-                        tags={
-                            formValues.tags !== null
-                                ? formValues.tags
-                                : INITIAL_FORM_VALUES.tags
-                        }
-                        onTagUpdate={(tags: Tag[]) => {
-                            updateValue('tags', tags)
-                        }}
-                    />
+                    {isNewTicketTaggingEnabled ? (
+                        <TagList
+                            tags={formValues.tags ?? []}
+                            onTagsUpdate={(tags: Tag[]) => {
+                                updateValue('tags', tags)
+                            }}
+                        />
+                    ) : (
+                        <AutoTagList
+                            tags={formValues.tags ?? []}
+                            onTagUpdate={(tags: Tag[]) => {
+                                updateValue('tags', tags)
+                            }}
+                        />
+                    )}
                 </section>
 
                 <section>
