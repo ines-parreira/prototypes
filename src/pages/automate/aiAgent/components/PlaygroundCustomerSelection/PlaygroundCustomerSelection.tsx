@@ -25,6 +25,7 @@ const senderSelectOptions = [
 type Props = {
     onCustomerEmailChange: (value: string) => void
     customerEmail: string
+    isDisabled?: boolean
 }
 
 type Control = {
@@ -34,6 +35,7 @@ type Control = {
 export const PlaygroundCustomerSelection = ({
     onCustomerEmailChange,
     customerEmail,
+    isDisabled,
 }: Props) => {
     const childControlRef = React.createRef<Control>()
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
@@ -61,12 +63,14 @@ export const PlaygroundCustomerSelection = ({
                 onChange={handleSenderSelectChange}
                 options={senderSelectOptions}
                 className={css.senderSelect}
+                disabled={isDisabled}
             />
             {senderSelectedOption === SenderTypeValues.EXISTING_CUSTOMER && (
                 <CustomerSearchDropdownSelectView
                     className={css.customerSearch}
                     baseSearchTerm={customerEmail}
                     onSelect={onCustomerEmailChange}
+                    isDisabled={isDisabled}
                     ref={childControlRef}
                 />
             )}

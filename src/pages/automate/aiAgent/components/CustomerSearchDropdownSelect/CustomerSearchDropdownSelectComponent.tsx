@@ -18,6 +18,7 @@ type Props = {
     focusedIndex: number
     setFocusedIndex: (value: number) => void
     className?: string
+    isDisabled?: boolean
 }
 
 export const CustomerSearchDropdownSelectComponent = ({
@@ -31,6 +32,7 @@ export const CustomerSearchDropdownSelectComponent = ({
     focusedIndex,
     setFocusedIndex,
     className,
+    isDisabled,
 }: Props) => {
     const handleKeyDown = useCallback(
         (event: KeyboardEvent) => {
@@ -87,6 +89,7 @@ export const CustomerSearchDropdownSelectComponent = ({
                     prefix={<IconInput icon="search" />}
                     value={searchTerm}
                     placeholder="Search"
+                    isDisabled={isDisabled}
                 />
             </div>
             {isDropdownVisible && (

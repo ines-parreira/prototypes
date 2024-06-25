@@ -15,10 +15,11 @@ type Props = {
     onSelect: (value: string) => void
     className?: string
     baseSearchTerm?: string
+    isDisabled?: boolean
 }
 
 export const CustomerSearchDropdownSelectView = forwardRef(
-    ({className, onSelect, baseSearchTerm}: Props, ref) => {
+    ({className, onSelect, baseSearchTerm, isDisabled}: Props, ref) => {
         const [searchTerm, setSearchTerm] = useState(baseSearchTerm ?? '')
         const [isSelected, setIsSelected] = useState(baseSearchTerm ?? false)
         const [isTyping, setIsTyping] = useState(false)
@@ -109,6 +110,7 @@ export const CustomerSearchDropdownSelectView = forwardRef(
                 focusedIndex={focusedIndex}
                 setFocusedIndex={setFocusedIndex}
                 className={className}
+                isDisabled={isDisabled}
             />
         )
     }

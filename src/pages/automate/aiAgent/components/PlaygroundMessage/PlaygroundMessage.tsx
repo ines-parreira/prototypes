@@ -16,11 +16,16 @@ import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
 
+type Props = {
+    withAnimation?: boolean
+}
+
 const PlaygroundMessage = ({
     sender,
     type = MessageType.MESSAGE,
     message,
-}: PlaygroundMessageType) => {
+    withAnimation = false,
+}: PlaygroundMessageType & Props) => {
     const isAiAgentSender = sender === AI_AGENT_SENDER
     const [processingStatus, setProcessingStatus] = useState(
         ProcessingStatus.CHECKING_PERMISSIONS
@@ -62,6 +67,7 @@ const PlaygroundMessage = ({
         <div
             className={classnames(css.messageContainer, {
                 [css.internalNoteContainer]: type === MessageType.INTERNAL_NOTE,
+                [css.messageAnimation]: withAnimation,
             })}
         >
             <div>

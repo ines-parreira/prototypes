@@ -1,6 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import {Link, Redirect, useLocation, useParams} from 'react-router-dom'
 import {isAxiosError} from 'axios'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,6 +27,7 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
+import {FeatureFlagKey} from 'config/featureFlags'
 import css from './AiAgentPlaygroundView.less'
 import {PlaygroundInputStep} from './components/PlaygroundInputStep/PlaygroundInputStep'
 import {
@@ -35,6 +37,7 @@ import {
 import {PlaygroundOutputStep} from './components/PlaygroundOutputStep/PlaygroundOutputStep'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 import {CustomerHttpIntegrationDataMock} from './constants'
+import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
 
 enum PlaygroundStep {
     INPUT = 'input',
@@ -88,6 +91,8 @@ export const AiAgentPlaygroundView = () => {
     ] = useState(false)
 
     const messagesRef = useRef<PlaygroundMessage[]>([])
+    const isPlaygroundSupportActionsEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentPlaygroundSupportActions]
 
     const {
         error: storeFetchError,
@@ -242,6 +247,10 @@ export const AiAgentPlaygroundView = () => {
             },
         })
         return <Redirect to={routes.automation} />
+    }
+
+    if (isPlaygroundSupportActionsEnabled && storeData) {
+        return <PlaygroundChat storeData={storeData.data.storeConfiguration} />
     }
 
     return (
