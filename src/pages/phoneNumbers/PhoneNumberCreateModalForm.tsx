@@ -6,7 +6,6 @@ import {
     PhoneNumberMeta,
     AddressInformation,
     AddressType,
-    PhoneCountry,
     PhoneType,
     NewPhoneNumber,
 } from 'models/phoneNumber/types'
@@ -25,11 +24,11 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 
+import Alert from 'pages/common/components/Alert/Alert'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
-import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
-import {shouldValidateAddress} from './utils'
+import {getAddressValidationAlertMessage, shouldValidateAddress} from './utils'
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 
 type Props = {
@@ -121,6 +120,11 @@ export default function PhoneNumberCreateModalForm({
         return null
     }, [country, step])
 
+    const validationAlertMessage = getAddressValidationAlertMessage(
+        country,
+        type
+    )
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalHeader title="Create Phone Number" />
@@ -134,9 +138,11 @@ export default function PhoneNumberCreateModalForm({
                                     type={type}
                                 />
                             )}
-                            <PhoneNumberAddressValidationAlert
-                                country={country}
-                            />
+                            {validationAlertMessage && (
+                                <Alert icon className="mt-3 mb-4">
+                                    {validationAlertMessage}
+                                </Alert>
+                            )}
                             {step === Step.PhoneInformation && (
                                 <>
                                     <FormGroup>
@@ -172,6 +178,7 @@ export default function PhoneNumberCreateModalForm({
                             <>
                                 {step === Step.PhoneInformation && (
                                     <Button
+                                        isDisabled={!!validationAlertMessage}
                                         onClick={() =>
                                             setStep(Step.AddressVerfication)
                                         }
@@ -192,7 +199,7 @@ export default function PhoneNumberCreateModalForm({
                                         </Button>
                                         <Button
                                             isDisabled={
-                                                country === PhoneCountry.FR
+                                                !!validationAlertMessage
                                             }
                                             isLoading={isLoading}
                                             onClick={onSubmit}
@@ -205,7 +212,7 @@ export default function PhoneNumberCreateModalForm({
                         )}
                         {(!country || !shouldValidateAddress(country)) && (
                             <Button
-                                isDisabled={country === PhoneCountry.FR}
+                                isDisabled={!!validationAlertMessage}
                                 isLoading={isLoading}
                                 onClick={onSubmit}
                             >

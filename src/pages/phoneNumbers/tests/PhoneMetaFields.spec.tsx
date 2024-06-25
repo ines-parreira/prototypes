@@ -11,22 +11,14 @@ describe('<PhoneMetaFields />', () => {
         (value: Partial<PhoneNumberMeta>) => void
     > = jest.fn()
 
-    it('should render', () => {
-        const {container} = render(
-            <PhoneMetaFields onChange={onChange} value={{}} />
-        )
-
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it('should render when a country and a state are selected', () => {
-        const {container, queryByText} = render(
+        const {queryByText} = render(
             <PhoneMetaFields
                 onChange={onChange}
                 value={{
                     country: PhoneCountry.US,
                     type: PhoneType.Local,
-                    state: 'AB',
+                    state: 'AL',
                 }}
             />
         )
@@ -34,11 +26,10 @@ describe('<PhoneMetaFields />', () => {
         expect(queryByText('United States')).not.toBe(null)
         expect(queryByText('Local')).not.toBe(null)
         expect(queryByText('Alabama')).not.toBe(null)
-        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render when a country and a state are selected', () => {
-        const {container, queryByText} = render(
+        const {queryByText} = render(
             <PhoneMetaFields
                 onChange={onChange}
                 value={{
@@ -51,6 +42,5 @@ describe('<PhoneMetaFields />', () => {
         expect(queryByText('Canada')).not.toBe(null)
         expect(queryByText('Toll-free')).not.toBe(null)
         expect(queryByText('State')).toBe(null)
-        expect(container.firstChild).toMatchSnapshot()
     })
 })

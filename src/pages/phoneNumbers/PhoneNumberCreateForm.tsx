@@ -8,7 +8,6 @@ import {
     PhoneNumberMeta,
     AddressInformation,
     AddressType,
-    PhoneCountry,
     PhoneType,
 } from 'models/phoneNumber/types'
 import {
@@ -23,11 +22,11 @@ import Button from 'pages/common/components/button/Button'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import history from 'pages/history'
+import Alert from 'pages/common/components/Alert/Alert'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
-import PhoneNumberAddressValidationAlert from './PhoneNumberAddressValidationAlert'
-import {shouldValidateAddress} from './utils'
+import {getAddressValidationAlertMessage, shouldValidateAddress} from './utils'
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import css from './PhoneNumberCreateForm.less'
 
@@ -94,6 +93,11 @@ export default function PhoneNumberCreateForm(): JSX.Element {
         }))
     }, [country])
 
+    const validationAlertMessage = getAddressValidationAlertMessage(
+        country,
+        type
+    )
+
     return (
         <>
             <Row>
@@ -122,7 +126,11 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                             type={type}
                         />
                     )}
-                    <PhoneNumberAddressValidationAlert country={country} />
+                    {validationAlertMessage && (
+                        <Alert icon className="mt-3 mb-4">
+                            {validationAlertMessage}
+                        </Alert>
+                    )}
                     <Form onSubmit={onSubmit}>
                         <FormGroup>
                             {country && shouldValidateAddress(country) && (
@@ -139,7 +147,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                         <PhoneMetaFields value={meta} onChange={setMeta} />
                         {validationAddress &&
                             country &&
-                            shouldValidateAddress(country) && (
+                            shouldValidateAddress(country, type) && (
                                 <div className={css.addressWrapper}>
                                     <h4 className="mb-3">
                                         Address verification
@@ -153,10 +161,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                         <Button
                             type="submit"
                             isLoading={isLoading}
-                            isDisabled={
-                                country === PhoneCountry.FR ||
-                                country === PhoneCountry.GB
-                            }
+                            isDisabled={!!validationAlertMessage}
                             className={classnames('mt-4', 'mb-4')}
                         >
                             Add phone number

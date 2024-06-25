@@ -26,6 +26,8 @@ type LocalAreaCodes = {
     [PhoneCountry.AU]: SelectableOption[]
     [PhoneCountry.GB]: SelectableOption[]
     [PhoneCountry.FR]: SelectableOption[]
+    [PhoneCountry.DE]: SelectableOption[]
+    [PhoneCountry.NZ]: SelectableOption[]
 }
 
 const LOCAL_AREA_CODES: LocalAreaCodes = {
@@ -34,6 +36,8 @@ const LOCAL_AREA_CODES: LocalAreaCodes = {
     [PhoneCountry.AU]: rawAuAreaCodeOptions,
     [PhoneCountry.GB]: [],
     [PhoneCountry.FR]: [],
+    [PhoneCountry.DE]: [],
+    [PhoneCountry.NZ]: [],
 }
 
 const TOLL_FREE_AREA_CODE_OPTIONS: SelectableOption[] =
@@ -43,8 +47,10 @@ const COUNTRY_PHONE_TYPES: Record<PhoneCountry, PhoneType[]> = {
     [PhoneCountry.US]: [PhoneType.Local, PhoneType.TollFree],
     [PhoneCountry.CA]: [PhoneType.Local, PhoneType.TollFree],
     [PhoneCountry.GB]: [],
-    [PhoneCountry.AU]: [PhoneType.Local],
+    [PhoneCountry.AU]: [PhoneType.Local, PhoneType.Mobile],
     [PhoneCountry.FR]: [],
+    [PhoneCountry.DE]: [],
+    [PhoneCountry.NZ]: [],
 }
 
 const PHONE_TYPE_LABELS = {
@@ -170,13 +176,11 @@ export default function PhoneDetailsFields({
 
     const shouldShowState =
         type === PhoneType.Local && country === PhoneCountry.US
-    const shouldShowType =
-        country &&
-        ![PhoneCountry.AU, PhoneCountry.FR, PhoneCountry.GB].includes(country)
+    const shouldShowType = country && COUNTRY_PHONE_TYPES[country].length > 1
     const shouldShowAreaCodes =
         (type === PhoneType.Local || type === PhoneType.TollFree) &&
-        country !== PhoneCountry.FR &&
-        country !== PhoneCountry.GB
+        !!country &&
+        !!areaCodeOptions.length
 
     const selectedAreaCode =
         (area_code &&

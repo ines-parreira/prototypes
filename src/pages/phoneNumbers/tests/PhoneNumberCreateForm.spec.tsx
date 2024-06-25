@@ -1,5 +1,5 @@
 import React from 'react'
-import {act, fireEvent, render} from '@testing-library/react'
+import {act, cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -14,6 +14,7 @@ import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
 
 import {FeatureFlagKey} from 'config/featureFlags'
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
+import * as phoneNumberUtils from '../utils'
 
 const QueryClientProvider = mockQueryClientProvider()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -31,7 +32,21 @@ const createPhoneNumberSpy = jest.spyOn(apiCalls, 'createPhoneNumber')
 
 const notify = jest.spyOn(notificationActions, 'notify')
 
+const getAddressValidationAlertMessageSpy = jest.spyOn(
+    phoneNumberUtils,
+    'getAddressValidationAlertMessage'
+)
+
 describe('<PhoneNumberCreateForm/>', () => {
+    const renderComponent = () =>
+        render(
+            <Provider store={store}>
+                <QueryClientProvider>
+                    <PhoneNumberCreateForm />
+                </QueryClientProvider>
+            </Provider>
+        )
+
     beforeEach(() => {
         jest.resetAllMocks()
         assumeMock(fetchPhoneCapabilities).mockResolvedValue(capabilities)
@@ -41,27 +56,33 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
     })
 
+    afterEach(cleanup)
+
+    it('should render Alert message when there is one', () => {
+        getAddressValidationAlertMessageSpy.mockReturnValue(
+            'test message' as any
+        )
+
+        renderComponent()
+        expect(screen.getByText('test message')).toBeVisible()
+        expect(
+            screen.getByRole('button', {name: /Add phone number/})
+        ).toHaveAttribute('aria-disabled', 'true')
+    })
+
+    it('should not render Alert message when there is none', () => {
+        getAddressValidationAlertMessageSpy.mockReturnValue(null as any)
+
+        renderComponent()
+        expect(screen.queryByText('test message')).toBeNull()
+        expect(
+            screen.getByRole('button', {name: /Add phone number/})
+        ).not.toHaveAttribute('aria-disabled', 'true')
+    })
+
     describe('render()', () => {
-        it('should render', () => {
-            const {container} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
-
-            expect(container.firstChild).toMatchSnapshot()
-        })
-
         it('should render when a country and a state are selected', () => {
-            const {container, getByText} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
+            const {container, getByText} = renderComponent()
 
             fireEvent.click(getByText('United States'))
             fireEvent.click(getByText('Local'))
@@ -71,13 +92,7 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should render when type "Toll-free" is selected', () => {
-            const {container, getByText} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
+            const {container, getByText} = renderComponent()
 
             fireEvent.click(getByText('Canada'))
             fireEvent.click(getByText('Toll-free'))
@@ -86,13 +101,7 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should render address validation form for Australia', () => {
-            const {getByText, queryByText} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
+            const {getByText, queryByText} = renderComponent()
 
             fireEvent.click(getByText('United States'))
             expect(queryByText('Address verification')).toBe(null)
@@ -108,13 +117,7 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should pass the address if a phone of a country with address verification is created', async () => {
-            const {getByText, getByRole, findByText} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
+            const {getByText, getByRole, findByText} = renderComponent()
 
             await act(async () => {
                 fireEvent.change(
@@ -181,13 +184,7 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should call createPhoneNumber with the correct payload after switching from country with address verification', async () => {
-            const {getByText, getByRole, findByText} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
+            const {getByText, getByRole, findByText} = renderComponent()
 
             await act(async () => {
                 fireEvent.change(
@@ -239,13 +236,7 @@ describe('<PhoneNumberCreateForm/>', () => {
                 })
             )
 
-            const {getByText, getByRole, findByText} = render(
-                <Provider store={store}>
-                    <QueryClientProvider>
-                        <PhoneNumberCreateForm />
-                    </QueryClientProvider>
-                </Provider>
-            )
+            const {getByText, getByRole, findByText} = renderComponent()
 
             await act(async () => {
                 fireEvent.change(

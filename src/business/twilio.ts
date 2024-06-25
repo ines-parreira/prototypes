@@ -25,6 +25,8 @@ export enum PhoneCountry {
     GB = 'GB',
     AU = 'AU',
     FR = 'FR',
+    DE = 'DE',
+    NZ = 'NZ',
 }
 
 export enum PhoneFunction {

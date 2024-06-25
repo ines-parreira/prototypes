@@ -16,11 +16,13 @@ import {
     PhoneConnection,
     TwilioPhoneConnection,
     WhatsAppPhoneConnection,
+    PhoneType,
 } from 'models/phoneNumber/types'
 
 import {IntegrationType} from 'models/integration/types'
 import rawCountries from 'pages/phoneNumbers/options/countries.json'
 import {State, states} from 'config/states'
+import {validationAlertMessages} from './constants'
 
 const CAPABILITY_KEY: Record<
     IntegrationType.Sms | IntegrationType.Phone | IntegrationType.WhatsApp,
@@ -83,8 +85,11 @@ const AVAILABLE_STATES: Record<string, string[]> = {
     ],
 }
 
-export function shouldValidateAddress(country: PhoneCountry): boolean {
-    return country === PhoneCountry.AU
+export function shouldValidateAddress(
+    country: PhoneCountry,
+    type?: PhoneType
+): boolean {
+    return country === PhoneCountry.AU && type !== PhoneType.Mobile
 }
 
 export function getAvailableStates(country: string): State[] {
@@ -237,4 +242,20 @@ export function normalizeNumber(number: string): string {
         return `+${cleanedNumber}`
     }
     return cleanedNumber
+}
+
+export const getAddressValidationAlertMessage = (
+    country?: PhoneCountry,
+    type?: PhoneType
+): React.JSX.Element | null => {
+    const isAustralianLocalType =
+        country === PhoneCountry.AU && type !== PhoneType.Mobile
+
+    const alertMessage = country ? validationAlertMessages[country] : null
+
+    if (!alertMessage || isAustralianLocalType) {
+        return null
+    }
+
+    return alertMessage
 }

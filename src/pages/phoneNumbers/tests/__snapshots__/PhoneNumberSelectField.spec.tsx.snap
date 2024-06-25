@@ -456,67 +456,26 @@ exports[`<PhoneNumberSelectField/> render() should open a modal form when select
                                 France
                               </span>
                             </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      class="form-group"
-                    >
-                      <label
-                        class="control-label"
-                        for="area-code"
-                      >
-                        Area code
-                      </label>
-                      <div>
-                        <div
-                          class="dropdown"
-                        >
-                          <div
-                            aria-expanded="false"
-                            aria-haspopup="true"
-                            class=""
-                            data-toggle="dropdown"
-                          >
-                            <div
-                              class="select dropdown-toggle selectFullWidth"
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
                             >
-                              <span
-                                class="label placeholder"
-                                data-testid="selected-area-code"
-                                style="min-width: 10px; opacity: 1;"
-                              >
-                                Select an option
+                              <span>
+                                Germany
                               </span>
-                              <input
-                                autocomplete="chrome-off"
-                                class="input"
-                                id="area-code"
-                                required=""
-                                style="min-width: 10px;"
-                                type="text"
-                                value=""
-                              />
-                              <i
-                                class="material-icons dropdownIcon"
-                              >
-                                arrow_drop_down
-                              </i>
-                            </div>
-                          </div>
-                          <div
-                            aria-hidden="true"
-                            class="options optionsFullWidth dropdown-menu"
-                            role="menu"
-                            tabindex="-1"
-                          >
-                            <h6
-                              class="dropdown-header"
-                              tabindex="-1"
+                            </button>
+                            <button
+                              class="option dropdown-item"
+                              role="menuitem"
+                              tabindex="0"
+                              type="button"
                             >
-                              No result
-                            </h6>
+                              <span>
+                                New Zealand
+                              </span>
+                            </button>
                           </div>
                         </div>
                       </div>

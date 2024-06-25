@@ -22,7 +22,9 @@ import {
     formatPhoneNumberInternational,
     shouldValidateAddress,
     getAvailableStates,
+    getAddressValidationAlertMessage,
 } from '../utils'
+import {validationAlertMessages} from '../constants'
 
 describe('isNewPhoneNumber()', () => {
     it('returns true if the number is of the new structure', () => {
@@ -272,17 +274,24 @@ describe('getCountryFromPhoneNumber()', () => {
 })
 
 describe('shouldValidateAddress()', () => {
-    it.each([
-        PhoneCountry.US,
-        PhoneCountry.CA,
-        PhoneCountry.FR,
-        PhoneCountry.GB,
-    ])('should not validate address', (country) =>
-        expect(shouldValidateAddress(country)).toBe(false)
+    const countries = [
+        {country: PhoneCountry.US},
+        {country: PhoneCountry.CA},
+        {country: PhoneCountry.FR},
+        {country: PhoneCountry.GB},
+        {country: PhoneCountry.DE},
+        {country: PhoneCountry.NZ},
+        {country: PhoneCountry.AU, type: PhoneType.Mobile},
+    ]
+
+    it.each(countries)('should not validate address', ({country, type}) =>
+        expect(shouldValidateAddress(country, type)).toBe(false)
     )
 
-    it.each([PhoneCountry.AU])('should validate address', (country) =>
-        expect(shouldValidateAddress(country)).toBe(true)
+    it.each([{country: PhoneCountry.AU, type: PhoneType.Local}])(
+        'should validate address',
+        ({country, type}) =>
+            expect(shouldValidateAddress(country, type)).toBe(true)
     )
 })
 
@@ -301,4 +310,34 @@ describe('getAvailableStates()', () => {
     it('should only include US states', () => {
         expect(getAvailableStates('CA')).toEqual([])
     })
+})
+
+describe('getAddressValidationAlertMessage', () => {
+    it('should not return anything when country is not selected', () => {
+        expect(getAddressValidationAlertMessage()).toBeNull()
+    })
+
+    it('should not return anything when country is AU and type is not mobile', () => {
+        expect(getAddressValidationAlertMessage(PhoneCountry.AU)).toBeNull()
+    })
+
+    it('should return a message when country is AU and type is mobile', () => {
+        expect(
+            getAddressValidationAlertMessage(PhoneCountry.AU, PhoneType.Mobile)
+        ).toEqual(validationAlertMessages[PhoneCountry.AU])
+    })
+
+    it.each([
+        PhoneCountry.GB,
+        PhoneCountry.FR,
+        PhoneCountry.DE,
+        PhoneCountry.NZ,
+    ])(
+        'should return alert message for selected country',
+        (country: PhoneCountry) => {
+            expect(getAddressValidationAlertMessage(country)).toEqual(
+                validationAlertMessages[country]
+            )
+        }
+    )
 })
