@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-
+import _ from 'lodash'
 import {useParams} from 'react-router-dom'
 import {
     CustomCardLink,
@@ -26,9 +26,19 @@ export default function ActionsTemplatesCards({
         shopName: string
     }>()
 
+    const sortedTemplateConfigurations = _.chain(templateConfigurations)
+        .groupBy('apps[0].type')
+        .map((value, key) => ({
+            type: key,
+            items: _.orderBy(value, ['name'], ['asc']),
+        }))
+        .orderBy([(group) => group.type !== 'shopify', 'type'], ['asc', 'asc'])
+        .flatMap('items')
+        .value() as TemplateConfiguration[]
+
     return (
         <div className={css.container}>
-            {templateConfigurations.map(({id, name, apps}) => {
+            {sortedTemplateConfigurations.map(({id, name, apps}) => {
                 if (!apps?.length) {
                     return null
                 }
@@ -46,6 +56,7 @@ export default function ActionsTemplatesCards({
             })}
             {showCustomAction && (
                 <CustomCardLink
+                    className={css.templateCardLink}
                     to={`/app/automation/${shopType}/${shopName}/actions/new`}
                     icon={<i className="material-icons">add_circle</i>}
                     title="Create custom Action"
@@ -95,6 +106,7 @@ function TemplateCardWrapper({
             <TemplateCard
                 description=""
                 title={templateName}
+                className={css.templateCardLink}
                 icon={
                     <>
                         {!appImageUrl ? (

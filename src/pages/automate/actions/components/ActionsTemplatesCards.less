@@ -21,4 +21,30 @@
             height: 32px;
         }
     }
+
+    .templateCardLink {
+        gap: @layout-spacing-s;
+
+        & > div:nth-child(1) {
+            margin: unset;
+        }
+
+        & > div:nth-child(2) {
+            justify-content: normal;
+
+            > div:nth-child(1) {
+                -webkit-line-clamp: 2;
+                margin: unset;
+                font-size: @heading-sub-section-semibold-font-size;
+            }
+
+            > div:nth-child(2) {
+                display: none;
+            }
+        }
+
+        i {
+            margin: unset;
+        }
+    }
 }
