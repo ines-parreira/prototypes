@@ -146,6 +146,20 @@ describe('connectDevice', () => {
         })
     })
 
+    it('should set error when getting the token fails', async () => {
+        jest.spyOn(api, 'getToken').mockReturnValue(Promise.reject())
+
+        void connectDevice(dispatch, 0, actions)
+        jest.advanceTimersToNextTimer()
+
+        await waitFor(() => {
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(true)
+            expect(actions.incrementReconnectAttempts).toHaveBeenCalled()
+            expect(actions.setError).toHaveBeenCalledTimes(1)
+            expect(actions.setIsConnecting).toHaveBeenCalledWith(false)
+        })
+    })
+
     it('should implement an exponential backoff for connections', () => {
         const sleep = jest.spyOn(utils, 'sleep')
 

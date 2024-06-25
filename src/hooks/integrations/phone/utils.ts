@@ -73,20 +73,28 @@ export async function connectDevice(
         return
     }
 
-    const token = await getToken()
-    if (!token) {
-        const error = new VoiceAppError(VoiceAppErrorCode.MissingOrInvalidToken)
-        actions.setError(error)
-        actions.setIsConnecting(false)
-        reportError(error)
-        return
-    }
+    try {
+        const token = await getToken()
 
-    const device = utils.createDevice(token)
-    await utils.registerDevice(device, dispatch, actions)
-    actions.setDevice(device)
-    actions.resetReconnectAttempts()
-    actions.setIsConnecting(false)
+        if (!token) {
+            const error = new VoiceAppError(
+                VoiceAppErrorCode.MissingOrInvalidToken
+            )
+            actions.setError(error)
+            actions.setIsConnecting(false)
+            reportError(error)
+            return
+        }
+
+        const device = utils.createDevice(token)
+        await utils.registerDevice(device, dispatch, actions)
+        actions.setDevice(device)
+        actions.resetReconnectAttempts()
+        actions.setIsConnecting(false)
+    } catch (error) {
+        actions.setError(error as Error)
+        actions.setIsConnecting(false)
+    }
 }
 
 export const createDevice = (token: string): Device => {
