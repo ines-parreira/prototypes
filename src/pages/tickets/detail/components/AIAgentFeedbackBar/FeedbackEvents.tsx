@@ -43,8 +43,7 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
             <div className={css.subtitle}>Ticket events</div>
             {filteredEvents.map((event, index) => (
                 <React.Fragment key={index}>
-                    {event.tags.filter((tag) => tag.name.indexOf('ai_') !== 0)
-                        .length > 0 && (
+                    {event.tags.length > 0 && (
                         <div className={css.eventTypeContainer}>
                             <TicketEvent
                                 eventType={TicketEventEnum.TAGGED}
@@ -54,19 +53,15 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopType, shopName}) => {
                                     event.action === null
                                 }
                             >
-                                {event.tags
-                                    .filter(
-                                        (tag) => tag.name.indexOf('ai_') !== 0
-                                    )
-                                    .map((tag) => (
-                                        <TicketTag
-                                            key={tag.id}
-                                            decoration={fromJS(tag.decoration)}
-                                            className={css.tag}
-                                        >
-                                            {tag.name}
-                                        </TicketTag>
-                                    ))}
+                                {event.tags.map((tag) => (
+                                    <TicketTag
+                                        key={tag.id}
+                                        decoration={fromJS(tag.decoration)}
+                                        className={css.tag}
+                                    >
+                                        {tag.name}
+                                    </TicketTag>
+                                ))}
                             </TicketEvent>
                         </div>
                     )}

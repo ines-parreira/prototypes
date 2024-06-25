@@ -29,7 +29,7 @@ const FeedbackCreateResource: React.FC<Props> = ({
 
     return (
         <div className={css.container}>
-            <Label>No relevant resources</Label>
+            <Label>No relevant resources?</Label>
             <div className={css.info}>
                 Create Actions, Guidance or knowledge to help AI Agent respond
                 to messages like this

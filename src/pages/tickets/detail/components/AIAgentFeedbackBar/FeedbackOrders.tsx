@@ -24,7 +24,9 @@ const FeedbackOrders: React.FC<Props> = ({orders}) => {
                     target="_blank"
                     rel="noreferrer noopener"
                     key={order.id}
-                    className={css.order}
+                    className={classNames(css.order, {
+                        [css.noHref]: !order.url,
+                    })}
                     data-testid="ticket-feedback-order"
                 >
                     <div>#{order.id}</div>

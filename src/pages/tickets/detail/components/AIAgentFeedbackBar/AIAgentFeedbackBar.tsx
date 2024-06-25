@@ -45,11 +45,12 @@ const AIAgentFeedbackBar = () => {
                 <div
                     className={css.summary}
                     data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}
-                >
-                    {messageFeedback
-                        ? messageFeedback?.summary
-                        : ticketFeedbackSummary}
-                </div>
+                    dangerouslySetInnerHTML={{
+                        __html: messageFeedback
+                            ? messageFeedback?.summary
+                            : ticketFeedbackSummary,
+                    }}
+                />
             </div>
             {messageFeedback ? (
                 <AIAgentMessageFeedback messageFeedback={messageFeedback} />

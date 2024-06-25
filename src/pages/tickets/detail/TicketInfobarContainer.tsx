@@ -69,7 +69,6 @@ export const TicketInfobarContainer = ({
         sources.getIn(['ticket', 'customer']) || (fromJS({}) as Map<any, any>)
 
     const aiMessages = useAppSelector(getAIAgentMessages)
-    const publicAiMessages = aiMessages.filter((message) => message.public)
 
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
         if (activeTab === tab) {
@@ -82,8 +81,8 @@ export const TicketInfobarContainer = ({
             dispatch(
                 changeTicketMessage({
                     message:
-                        publicAiMessages.length === 1
-                            ? publicAiMessages[0]
+                        aiMessages.length === 1 && aiMessages[0].public
+                            ? aiMessages[0]
                             : undefined,
                 })
             )
