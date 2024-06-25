@@ -74,7 +74,8 @@ const HelpCenterStatsComponent = ({
 
     const {hasNewArticles: showAIBanner} = useHelpCenterAIArticlesLibrary(
         selectedHelpCenter.id,
-        DEFAULT_LOCALE
+        DEFAULT_LOCALE,
+        selectedHelpCenter.shop_name
     )
 
     const hasAccessToAILibrary = useHasAccessToAILibrary()

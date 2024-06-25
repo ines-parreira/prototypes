@@ -90,6 +90,7 @@ export enum FeatureFlagKey {
     NewSenderSelect = 'new-sender-select',
     NewTicketSnoozeAndTicketDate = 'new-ticket-snooze-and-ticket-date',
     ObservabilityAIArticles = 'observability-ai-articles',
+    ObservabilityAllowAIGeneratedArticlesForMultiStore = 'allow-ai-generated-articles-for-multi-store',
     ObservabilityArticleTemplates = 'observability-article-templates',
     ObservabilityAutomateAnalyticsv2 = 'observability-automate-analytics-v2',
     ObservabilityROICalculator = 'roi-calculator-for-automate',

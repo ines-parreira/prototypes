@@ -8,10 +8,7 @@ import {validLocaleCode} from 'models/helpCenter/utils'
 import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
-import {
-    useGetAIArticlesByHelpCenter,
-    useGetArticleTemplates,
-} from 'pages/settings/helpCenter/queries'
+import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {ArticleTemplate} from 'models/helpCenter/types'
 import {SegmentEvent, logEvent} from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -19,6 +16,8 @@ import {ErrorBoundary} from 'pages/ErrorBoundary'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 import {ImportSection} from '../../../Imports/components/ImportSection'
 import {LanguageSelect} from '../../../LanguageSelect'
@@ -51,11 +50,15 @@ const ArticleLandingPageComponent = ({
 
     const helpCenter = useCurrentHelpCenter()
     const supportedLocales = helpCenter.supported_locales
-
-    const {data: aiArticles, isInitialLoading: isAIArticlesLoading} =
-        useGetAIArticlesByHelpCenter(helpCenter.id, viewLanguage, {
-            refetchOnWindowFocus: false,
-        })
+    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+        helpCenter.shop_name ?? ''
+    )
+    const {fetchedArticles: aiArticles, isLoading: isAIArticlesLoading} =
+        useConditionalGetAIArticles(
+            helpCenter.id,
+            Number(storeIntegration?.id),
+            viewLanguage
+        )
 
     const hasAIArticlesNotReviewed = useMemo(() => {
         return aiArticles?.some((aiArticle) => !aiArticle.review_action)

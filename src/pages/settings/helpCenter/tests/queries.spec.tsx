@@ -15,6 +15,7 @@ import {
     useGetArticleTemplates,
     useGetArticleTemplate,
     useGetAIArticlesByHelpCenter,
+    useGetAIArticlesByHelpCenterAndStore,
 } from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
@@ -361,10 +362,11 @@ describe('useGetArticleTemplate', () => {
     })
 })
 
-describe('useGetAIArticles', () => {
+describe('useGetAIGeneratedArticlesByHelpCenter', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const locale = 'en-US'
     const helpCenterId = 1
+    const isAIArticlesForMultiStoreEnabled = false
 
     mockFlags({
         [FeatureFlagKey.ObservabilityAIArticles]: true,
@@ -386,7 +388,12 @@ describe('useGetAIArticles', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
+            () =>
+                useGetAIArticlesByHelpCenter(
+                    helpCenterId,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
             {
                 wrapper,
             }
@@ -405,7 +412,85 @@ describe('useGetAIArticles', () => {
         })
 
         const {result, waitFor} = renderHook(
-            () => useGetAIArticlesByHelpCenter(helpCenterId, locale),
+            () =>
+                useGetAIArticlesByHelpCenter(
+                    helpCenterId,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 404]`
+            )
+        })
+    })
+})
+
+describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const locale = 'en-US'
+    const helpCenterId = 1
+    const storeIntegrationId = 2
+    const isAIArticlesForMultiStoreEnabled = true
+
+    mockFlags({
+        [FeatureFlagKey.ObservabilityAIArticles]: true,
+        [FeatureFlagKey.ObservabilityShowAILibraryForMultiBrands]: true,
+    })
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the list of AIArticles', async () => {
+        const mocks = mockResourceServerReplies(sdkMocks.mockedServer, {
+            getAIGeneratedArticlesByHelpCenterAndStore: 'success',
+        })
+
+        const {result, waitFor} = renderHook(
+            () =>
+                useGetAIArticlesByHelpCenterAndStore(
+                    helpCenterId,
+                    storeIntegrationId,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
+            {
+                wrapper,
+            }
+        )
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toEqual(
+            mocks.fixtures.AIArticlesListFixture
+        )
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getAIGeneratedArticlesByHelpCenterAndStore: 'error',
+        })
+
+        const {result, waitFor} = renderHook(
+            () =>
+                useGetAIArticlesByHelpCenterAndStore(
+                    helpCenterId,
+                    storeIntegrationId,
+                    locale,
+                    isAIArticlesForMultiStoreEnabled
+                ),
             {
                 wrapper,
             }

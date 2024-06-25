@@ -1,36 +1,51 @@
 import {renderHook, act} from '@testing-library/react-hooks'
 import {assumeMock} from 'utils/testing'
-import {useGetAIArticlesByHelpCenter} from 'pages/settings/helpCenter/queries'
 import {
     AIArticlesListFixture,
     AILibraryArticleItemsFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
+import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
-jest.mock('pages/settings/helpCenter/queries')
+jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 
-const mockedUseGetAIArticlesByHelpCenter = assumeMock(
-    useGetAIArticlesByHelpCenter
+const mockedUseConditionalGetAIArticles = assumeMock(
+    useConditionalGetAIArticles
+)
+const mockedUseSelfServiceStoreIntegrationsByShopName = assumeMock(
+    useSelfServiceStoreIntegrationByShopName
 )
 
-describe('useGetAIArticlesByHelpCenter', () => {
+describe('useConditionalGetAIArticles', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
+        mockedUseConditionalGetAIArticles.mockImplementation(() => {
             return {
-                data: AIArticlesListFixture,
-                isInitialLoading: false,
-            } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
+                fetchedArticles: AIArticlesListFixture,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useConditionalGetAIArticles>
         })
+        mockedUseSelfServiceStoreIntegrationsByShopName.mockImplementation(
+            () => {
+                return {
+                    id: 1,
+                    name: 'My Shop',
+                } as unknown as ReturnType<
+                    typeof useSelfServiceStoreIntegrationByShopName
+                >
+            }
+        )
     })
 
     it('should return the new AI articles with the correct counters', () => {
         const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US')
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
-        expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalled()
+        expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
 
         expect(result.current.articles).toEqual(
             AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew)
@@ -46,7 +61,7 @@ describe('useGetAIArticlesByHelpCenter', () => {
 
     it("should return that it doesn't have any new articles", () => {
         const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US')
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
         // we have new articles, but we didn't generated at least 5 articles
@@ -55,7 +70,7 @@ describe('useGetAIArticlesByHelpCenter', () => {
 
     it('should select the first article by default', () => {
         const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US')
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
         expect(result.current.selectedArticle).toEqual(
@@ -65,7 +80,7 @@ describe('useGetAIArticlesByHelpCenter', () => {
 
     it('should handle the selection of an article', () => {
         const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US')
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
         act(() => {
@@ -79,7 +94,7 @@ describe('useGetAIArticlesByHelpCenter', () => {
 
     it('should handle the selection of an article type', () => {
         const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US')
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
         act(() => {

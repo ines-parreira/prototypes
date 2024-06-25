@@ -234,7 +234,7 @@ describe('getArticleTemplate', () => {
     })
 })
 
-describe('getAIArticles', () => {
+describe('getAIGeneratedArticlesByHelpCenter', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
     const helpCenterId = 1
 
@@ -270,6 +270,56 @@ describe('getAIArticles', () => {
                 sdkMocks.client,
                 {
                     help_center_id: helpCenterId,
+                }
+            )
+        ).rejects.toMatchInlineSnapshot(
+            `[Error: Request failed with status code 404]`
+        )
+        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
+    })
+})
+
+describe('getAIGeneratedArticlesByHelpCenterAndStore', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const helpCenterId = 1
+    const storeIntegrationId = 2
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+    })
+
+    it('resolves with a list of AI articles on success', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getAIGeneratedArticlesByHelpCenterAndStore: 'success',
+        })
+
+        const data =
+            await helpCenterResourceMethods.getAIGeneratedArticlesByHelpCenterAndStore(
+                sdkMocks.client,
+                {
+                    help_center_id: helpCenterId,
+                    store_integration_id: storeIntegrationId,
+                }
+            )
+        expect(data).toEqual(AIArticlesListFixture)
+        expect(sdkMocks.mockedServer.history).toMatchSnapshot()
+    })
+
+    it('rejects if the server returns an error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            getArticleTemplates: 'error',
+        })
+
+        sdkMocks.mockedServer
+            .onGet(`/api/help-center/ai-articles`)
+            .reply(500, AIArticlesGeneric500ErrorFixture)
+
+        await expect(
+            helpCenterResourceMethods.getAIGeneratedArticlesByHelpCenterAndStore(
+                sdkMocks.client,
+                {
+                    help_center_id: helpCenterId,
+                    store_integration_id: storeIntegrationId,
                 }
             )
         ).rejects.toMatchInlineSnapshot(

@@ -18,6 +18,7 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import {billingState} from 'fixtures/billing'
 import {FontCatalogueModal} from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
@@ -36,10 +37,10 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     }
 })
 
-jest.mock('pages/settings/helpCenter/queries', () => {
+jest.mock('../../hooks/useConditionalGetAIArticles', () => {
     return {
-        useGetAIArticlesByHelpCenter: jest.fn().mockReturnValue({
-            data: Array(5).map((_, i) => ({
+        useConditionalGetAIArticles: jest.fn().mockReturnValue({
+            fetchedArticles: Array(5).map((_, i) => ({
                 id: i,
                 title: `Article ${i}`,
                 content: `Article ${i} content`,
@@ -119,6 +120,12 @@ jest.mock(
 ;(FontCatalogueModal as jest.Mock).mockReturnValue(
     <div id="FontCatalogueModal-mocked"></div>
 )
+
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
+    id: 1,
+    name: 'My Shop',
+})
 
 const route = {
     path: '/app/settings/help-center/:helpCenterId/appearance',

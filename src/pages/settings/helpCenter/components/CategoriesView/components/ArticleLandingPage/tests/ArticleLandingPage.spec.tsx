@@ -13,6 +13,7 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import ArticleLandingPage from '../ArticleLandingPage'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -28,6 +29,12 @@ jest.mock('../../../../Imports/components/ImportSection', () => ({
         return <div>Import Content</div>
     },
 }))
+
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
+    id: 1,
+    name: 'My Shop',
+})
 
 const queryClient = mockQueryClient()
 

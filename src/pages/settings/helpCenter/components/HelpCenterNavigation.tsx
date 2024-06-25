@@ -15,8 +15,9 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {LocaleCode} from 'models/helpCenter/types'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import {useGetAIArticlesByHelpCenter} from 'pages/settings/helpCenter/queries'
 
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {useConditionalGetAIArticles} from '../hooks/useConditionalGetAIArticles'
 import css from './HelpCenterNavigation.less'
 import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import {MINIMUM_AI_ARTICLES} from './CategoriesView/components/ArticleTemplateCard/constants'
@@ -48,12 +49,13 @@ export const HelpCenterNavigation: React.FC<Props> = ({
 
     const hasAccessToAILibrary = useHasAccessToAILibrary()
 
-    const {data: aiArticles} = useGetAIArticlesByHelpCenter(
+    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+        helpCenterShopName ?? ''
+    )
+    const {fetchedArticles: aiArticles} = useConditionalGetAIArticles(
         Number(helpCenterId),
-        locale,
-        {
-            refetchOnWindowFocus: false,
-        }
+        Number(storeIntegration?.id),
+        locale
     )
 
     const showAILibraryTab =

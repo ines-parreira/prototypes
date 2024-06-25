@@ -102,7 +102,7 @@ exports[`createPageEmbedment resolves with a created page embedment on success 1
 }
 `;
 
-exports[`getAIArticles rejects if the server returns an error 2`] = `
+exports[`getAIGeneratedArticlesByHelpCenter rejects if the server returns an error 2`] = `
 {
   "delete": [],
   "get": [
@@ -152,7 +152,7 @@ exports[`getAIArticles rejects if the server returns an error 2`] = `
 }
 `;
 
-exports[`getAIArticles resolves with a list of AI articles on success 1`] = `
+exports[`getAIGeneratedArticlesByHelpCenter resolves with a list of AI articles on success 1`] = `
 {
   "delete": [],
   "get": [
@@ -186,6 +186,106 @@ exports[`getAIArticles resolves with a list of AI articles on success 1`] = `
         "silentJSONParsing": true,
       },
       "url": "/api/help-center/help-centers/1/article-templates/ai",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`getAIGeneratedArticlesByHelpCenterAndStore rejects if the server returns an error 2`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {},
+      "paramsSerializer": {
+        "serialize": [Function],
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/help-center/help-centers/1/article-templates/ai/2",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": [],
+  "link": [],
+  "list": [],
+  "options": [],
+  "patch": [],
+  "post": [],
+  "put": [],
+  "unlink": [],
+}
+`;
+
+exports[`getAIGeneratedArticlesByHelpCenterAndStore resolves with a list of AI articles on success 1`] = `
+{
+  "delete": [],
+  "get": [
+    {
+      "baseURL": "http://acme.gorgias.docker:4001",
+      "data": undefined,
+      "env": {
+        "Blob": [Function],
+        "FormData": [Function],
+      },
+      "headers": {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": {},
+      "paramsSerializer": {
+        "serialize": [Function],
+      },
+      "timeout": 0,
+      "transformRequest": [
+        [Function],
+      ],
+      "transformResponse": [
+        [Function],
+      ],
+      "transitional": {
+        "clarifyTimeoutError": false,
+        "forcedJSONParsing": true,
+        "silentJSONParsing": true,
+      },
+      "url": "/api/help-center/help-centers/1/article-templates/ai/2",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",

@@ -5,11 +5,10 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {
-    useGetAIArticlesByHelpCenter,
-    useGetArticleTemplates,
-} from 'pages/settings/helpCenter/queries'
+import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
+import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {
     groupArticlesByCategory,
     mapAIHelpCenterArticleData,
@@ -24,12 +23,18 @@ export type HelpCenterArticlesOutput = {
 }
 export const useGetHelpCenterArticles = (
     helpCenterId: number,
-    locale: LocaleCode
+    locale: LocaleCode,
+    helpCenterShopName: string | null
 ): HelpCenterArticlesOutput => {
-    const {data: aiArticles, isInitialLoading: isGetAIArticlesLoading} =
-        useGetAIArticlesByHelpCenter(helpCenterId, locale, {
-            refetchOnWindowFocus: false,
-        })
+    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+        helpCenterShopName ?? ''
+    )
+    const {fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading} =
+        useConditionalGetAIArticles(
+            helpCenterId,
+            Number(storeIntegration?.id),
+            locale
+        )
 
     const {data: articleTemplates, isLoading: isGetArticleTemplatesLoading} =
         useGetArticleTemplates(locale, {

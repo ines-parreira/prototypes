@@ -15,6 +15,7 @@ import {
     getArticleTemplate,
     reviewArticleTemplate,
     getAIGeneratedArticlesByHelpCenter,
+    getAIGeneratedArticlesByHelpCenterAndStore,
     getAIGeneratedArticles,
 } from './resources'
 
@@ -102,6 +103,11 @@ export const articleTemplateKeys = {
 export const aiArticleKeys = {
     all: () => ['aiArticle'] as const,
     lists: () => [...aiArticleKeys.all(), 'list'],
+    listWithStore: (helpCenterId: number, storeIntegrationId: number) => [
+        ...aiArticleKeys.list(helpCenterId),
+        'store',
+        storeIntegrationId,
+    ],
     list: (helpCenterId: number) => [...aiArticleKeys.lists(), helpCenterId],
     listAll: (locale: string) => [...aiArticleKeys.lists(), 'all', locale],
 }
@@ -238,6 +244,7 @@ export const useGetAIArticlesByHelpCenter = <
 >(
     helpCenterId: Paths.ListAIArticleTemplatesByHelpCenter.Parameters.HelpCenterId,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
+    isAIArticlesForMultiStoreEnabled: boolean,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenter>>,
         unknown,
@@ -253,7 +260,39 @@ export const useGetAIArticlesByHelpCenter = <
                 help_center_id: helpCenterId,
             })
         },
-        enabled: !!client && locale === 'en-US',
+        enabled:
+            !!client && locale === 'en-US' && !isAIArticlesForMultiStoreEnabled,
+        ...overrides,
+    })
+}
+
+export const useGetAIArticlesByHelpCenterAndStore = <
+    TData = Awaited<
+        ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>
+    >
+>(
+    helpCenterId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.HelpCenterId,
+    storeIntegrationId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.StoreIntegrationId,
+    locale: Paths.ListArticleTemplates.Parameters.Locale,
+    isAIArticlesForMultiStoreEnabled: boolean,
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>>,
+        unknown,
+        TData
+    >
+) => {
+    const {client} = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId),
+        queryFn: async () => {
+            return getAIGeneratedArticlesByHelpCenterAndStore(client, {
+                help_center_id: helpCenterId,
+                store_integration_id: storeIntegrationId,
+            })
+        },
+        enabled:
+            !!client && locale === 'en-US' && isAIArticlesForMultiStoreEnabled,
         ...overrides,
     })
 }

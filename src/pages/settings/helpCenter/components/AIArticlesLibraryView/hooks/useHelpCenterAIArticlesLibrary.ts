@@ -6,22 +6,30 @@ import {
     ArticleTemplateReviewAction,
     Locale,
 } from 'models/helpCenter/types'
-import {useGetAIArticlesByHelpCenter} from 'pages/settings/helpCenter/queries'
+import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
 export const useHelpCenterAIArticlesLibrary = (
     helpCenterId: number,
-    locale: Locale['code']
+    locale: Locale['code'],
+    helpCenterShopName: string | null
 ) => {
     const [articles, setArticles] = useState<AIArticle[] | null>(null)
     const [mappedArticleItems, setMappedArticleItems] = useState<
         AILibraryArticleItem[]
     >([])
-    const {data: fetchedArticles, isInitialLoading: isLoading} =
-        useGetAIArticlesByHelpCenter(helpCenterId, locale, {
-            refetchOnWindowFocus: false,
-        })
+
+    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+        helpCenterShopName ?? ''
+    )
+    const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
+        useConditionalGetAIArticles(
+            helpCenterId,
+            Number(storeIntegration?.id),
+            locale
+        )
     const fetchedArticlesCount = fetchedArticles?.length ?? 0
 
     const [selectedArticle, setSelectedArticle] =

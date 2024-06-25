@@ -2649,7 +2649,7 @@ declare namespace Components {
       body_html?: string;
       attachments: WorkflowHandoverMessageAttachmentDto[];
       from_agent: boolean;
-      sent_datetime: string;
+      sent_datetime?: string;
     }
     export interface WorkflowVo {
       /**
@@ -3435,6 +3435,19 @@ declare namespace Paths {
     }
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
+    }
+    namespace Responses {
+      export type $200 = Components.Schemas.AIArticleTemplateDto[];
+    }
+  }
+  namespace ListAIArticleTemplatesByHelpCenterAndStore {
+    namespace Parameters {
+      export type HelpCenterId = number;
+      export type StoreIntegrationId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+      store_integration_id: Parameters.StoreIntegrationId;
     }
     namespace Responses {
       export type $200 = Components.Schemas.AIArticleTemplateDto[];
@@ -4933,6 +4946,14 @@ export interface OperationMethods {
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
   /**
+   * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
+   */
+  'listAIArticleTemplatesByHelpCenterAndStore'(
+    parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
+  /**
    * listAIArticleTemplates - Retrieve AI article templates for account
    */
   'listAIArticleTemplates'(
@@ -6014,6 +6035,16 @@ export interface PathsDictionary {
       data?: any,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenter.Responses.$200>
+  }
+  ['/api/help-center/help-centers/{help_center_id}/article-templates/ai/{store_integration_id}']: {
+    /**
+     * listAIArticleTemplatesByHelpCenterAndStore - Retrieve AI article templates by help center
+     */
+    'get'(
+      parameters?: Parameters<Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.ListAIArticleTemplatesByHelpCenterAndStore.Responses.$200>
   }
   ['/api/help-center/article-templates/ai']: {
     /**

@@ -137,6 +137,25 @@ export const mockResourceServerReplies = (
             .reply(500, AIArticlesGeneric500ErrorFixture)
     }
 
+    if (options.getAIGeneratedArticlesByHelpCenterAndStore === 'success') {
+        mockedServer
+            .onGet('/api/help-center/help-centers/1/article-templates/ai/2')
+            .reply(200, AIArticlesListFixture)
+    }
+    if (
+        options.getAIGeneratedArticlesByHelpCenterAndStore === 'success-empty'
+    ) {
+        mockedServer
+            .onGet('/api/help-center/help-centers/1/article-templates/ai/2')
+            .reply(200, AIArticlesEmptyListFixture)
+    }
+
+    if (options.getAIGeneratedArticlesByHelpCenterAndStore === 'error') {
+        mockedServer
+            .onGet(`/api/help-center/article-templates`)
+            .reply(500, AIArticlesGeneric500ErrorFixture)
+    }
+
     return {
         fixtures: {
             ShopifyPagesListFixture,

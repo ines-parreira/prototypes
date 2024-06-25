@@ -49,7 +49,11 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         articles: fetchedArticles,
         hasAiArticles,
         isLoading: isGettingArticlesLoading,
-    } = useGetHelpCenterArticles(helpCenter.id, helpCenter.default_locale)
+    } = useGetHelpCenterArticles(
+        helpCenter.id,
+        helpCenter.default_locale,
+        helpCenter.shop_name
+    )
 
     const {
         articles,

@@ -32,7 +32,11 @@ const AIArticlesLibraryView = () => {
         setSelectedArticleType,
         showLinkToArticleTemplates,
         markArticleAsReviewed,
-    } = useHelpCenterAIArticlesLibrary(helpCenter.id, locale)
+    } = useHelpCenterAIArticlesLibrary(
+        helpCenter.id,
+        locale,
+        helpCenter.shop_name
+    )
 
     const {
         onEditorClose,

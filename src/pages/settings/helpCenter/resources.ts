@@ -127,6 +127,19 @@ export const getAIGeneratedArticlesByHelpCenter = async (
     return res.data
 }
 
+export const getAIGeneratedArticlesByHelpCenterAndStore = async (
+    client: HelpCenterClient | undefined,
+    pathParameters: Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters
+) => {
+    if (!client) return null
+
+    const res = await client.listAIArticleTemplatesByHelpCenterAndStore(
+        pathParameters
+    )
+
+    return res.data
+}
+
 export const reviewArticleTemplate = async (
     client: HelpCenterClient | undefined,
     pathParameters: Paths.ReviewArticleTemplate.PathParameters,

@@ -3780,6 +3780,42 @@
                 "tags": ["article-templates"]
             }
         },
+        "/api/help-center/help-centers/{help_center_id}/article-templates/ai/{store_integration_id}": {
+            "get": {
+                "operationId": "listAIArticleTemplatesByHelpCenterAndStore",
+                "summary": "Retrieve AI article templates by help center",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    },
+                    {
+                        "name": "store_integration_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AIArticleTemplateDto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["article-templates"]
+            }
+        },
         "/api/help-center/article-templates/ai": {
             "get": {
                 "operationId": "listAIArticleTemplates",
@@ -7900,7 +7936,7 @@
                     "from_agent": {"type": "boolean"},
                     "sent_datetime": {"type": "string"}
                 },
-                "required": ["attachments", "from_agent", "sent_datetime"]
+                "required": ["attachments", "from_agent"]
             },
             "WorkflowHandoverDto": {
                 "type": "object",

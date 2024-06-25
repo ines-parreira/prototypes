@@ -1,10 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {chain} from 'lodash'
 import {assumeMock} from 'utils/testing'
-import {
-    useGetArticleTemplates,
-    useGetAIArticlesByHelpCenter,
-} from 'pages/settings/helpCenter/queries'
+import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {
     ArticleTemplatesGroupedByCategoryFixture,
@@ -15,18 +12,25 @@ import {
     AIArticlesGroupedFixture,
     AIArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
 import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
 
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')
+jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 
 const mockedUseGetArticleTemplates = assumeMock(useGetArticleTemplates)
 const mockedUseGetHelpCenterArticleList = assumeMock(
     useGetHelpCenterArticleList
 )
-const mockedUseGetAIArticlesByHelpCenter = assumeMock(
-    useGetAIArticlesByHelpCenter
+const mockedUseConditionalGetAIArticles = assumeMock(
+    useConditionalGetAIArticles
+)
+const mockedUseSelfServiceStoreIntegration = assumeMock(
+    useSelfServiceStoreIntegrationByShopName
 )
 
 describe('useGetHelpCenterArticles', () => {
@@ -44,20 +48,28 @@ describe('useGetHelpCenterArticles', () => {
                 isLoading: false,
             } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
         })
+        mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
+            return {
+                id: 1,
+                name: 'My Shop',
+            } as unknown as ReturnType<
+                typeof useSelfServiceStoreIntegrationByShopName
+            >
+        })
     })
 
     describe('article templates', () => {
         beforeEach(() => {
-            mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
+            mockedUseConditionalGetAIArticles.mockImplementation(() => {
                 return {
-                    data: [],
+                    fetchedArticles: [],
                     isLoading: false,
-                } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
+                } as unknown as ReturnType<typeof useConditionalGetAIArticles>
             })
         })
         it('should return template articles grouped by category when no articles created', () => {
             const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US')
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
             )
 
             expect(mockedUseGetArticleTemplates).toHaveBeenCalled()
@@ -83,7 +95,7 @@ describe('useGetHelpCenterArticles', () => {
                 } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
             })
             const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US')
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
             )
 
             expect(result.current.articles).toMatchObject({})
@@ -91,7 +103,7 @@ describe('useGetHelpCenterArticles', () => {
 
         it('should select the first template article by default when no articles created', () => {
             const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US')
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
             )
             const resultArray = chain(result.current.articles)
                 .values()
@@ -111,7 +123,7 @@ describe('useGetHelpCenterArticles', () => {
             })
 
             const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US')
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
             )
             const articleByKey = findArticleByKey(
                 result.current.articles,
@@ -156,7 +168,7 @@ describe('useGetHelpCenterArticles', () => {
             })
 
             const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US')
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
             )
 
             expect(result.current.articles).toMatchObject(
@@ -168,20 +180,20 @@ describe('useGetHelpCenterArticles', () => {
 
     describe('ai articles', () => {
         beforeEach(() => {
-            mockedUseGetAIArticlesByHelpCenter.mockImplementation(() => {
+            mockedUseConditionalGetAIArticles.mockImplementation(() => {
                 return {
-                    data: AIArticlesListFixture,
+                    fetchedArticles: AIArticlesListFixture,
                     isLoading: false,
-                } as unknown as ReturnType<typeof useGetAIArticlesByHelpCenter>
+                } as unknown as ReturnType<typeof useConditionalGetAIArticles>
             })
         })
 
         it('should return ai articles', () => {
             const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US')
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
             )
 
-            expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalled()
+            expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
             expect(result.current.articles).toMatchObject(
                 AIArticlesGroupedFixture
             )

@@ -16,6 +16,7 @@ import {
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -50,10 +51,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
         useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
     }
 })
-jest.mock('pages/settings/helpCenter/queries', () => {
+jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles', () => {
     return {
-        useGetAIArticlesByHelpCenter: jest.fn().mockReturnValue({
-            data: Array(5).map((_, i) => ({
+        useConditionalGetAIArticles: jest.fn().mockReturnValue({
+            fetchedArticles: Array(5).map((_, i) => ({
                 id: i,
                 title: `Article ${i}`,
                 content: `Article ${i} content`,
@@ -91,6 +92,12 @@ const store = mockStore(defaultState)
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
+
+jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
+    id: 1,
+    name: 'My Shop',
+})
 
 describe('<HelpCenterPageWrapper />', () => {
     const props: ComponentProps<typeof HelpCenterPageWrapper> = {
