@@ -113,7 +113,7 @@ exports[`actions deleteView() should prevent deletion of last view of same type 
 
 exports[`actions deleteView() should prevent deletion of last view of same type 2`] = `[]`;
 
-exports[`actions deleteView() should redirect to other view of same type when delete succeeds 1`] = `
+exports[`actions deleteView() should update the active view with the same type when deletion succeeds 1`] = `
 {
   "delete": [
     {
@@ -160,7 +160,7 @@ exports[`actions deleteView() should redirect to other view of same type when de
 }
 `;
 
-exports[`actions deleteView() should redirect to other view of same type when delete succeeds 2`] = `
+exports[`actions deleteView() should update the active view with the same type when deletion succeeds 2`] = `
 [
   {
     "type": "ADD_RECENT_VIEW",
@@ -176,7 +176,7 @@ exports[`actions deleteView() should redirect to other view of same type when de
 ]
 `;
 
-exports[`actions deleteViewSuccess() should redirect to other view of same type when view is active 1`] = `
+exports[`actions deleteViewSuccess() should update the active view with the same type if deleted view was active 1`] = `
 [
   {
     "type": "DELETE_VIEW_SUCCESS",

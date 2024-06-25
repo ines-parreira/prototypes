@@ -11,6 +11,8 @@ export type ContextType = {
     previousTicketId: TicketIds['prev']
     nextTicketId: TicketIds['next']
     setPrevNextTicketIds: (ticketIds: TicketIds) => void
+    shouldRedirectToSplitView: boolean
+    setShouldRedirectToSplitView: (value: boolean) => void
 } | null
 
 export default createContext<ContextType>(null)

@@ -13,10 +13,14 @@ import React, {
 } from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {setViewActive} from 'state/views/actions'
+import IconButton from 'pages/common/components/button/IconButton'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {setViewActive, setViewEditMode} from 'state/views/actions'
 import {getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
@@ -72,6 +76,9 @@ export default function TicketListView({
         ticketIds,
         initialLoaded,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
+    const isNewEdition = !!useFlags()[FeatureFlagKey.ViewEditionNewIcon]
+    const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
+        useSplitTicketView()
 
     const initialLoadedRef = useRef(initialLoaded)
 
@@ -113,6 +120,12 @@ export default function TicketListView({
                 : listInfoProps.DEFAULT,
         [areViewFiltersInvalid, isViewNull]
     )
+
+    const goToViewEdition = useCallback(() => {
+        dispatch(setViewEditMode())
+        setSplitTicketView(false)
+        setShouldRedirectToSplitView(true)
+    }, [dispatch, setShouldRedirectToSplitView, setSplitTicketView])
 
     const virtuosoComponents: Components = useMemo(
         () => ({
@@ -172,6 +185,16 @@ export default function TicketListView({
                 <div className={css.viewName}>
                     <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
+                    {isNewEdition && (
+                        <IconButton
+                            className={css.icon}
+                            fillStyle="ghost"
+                            onClick={goToViewEdition}
+                            size="small"
+                        >
+                            tune
+                        </IconButton>
+                    )}
                 </div>
                 <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>

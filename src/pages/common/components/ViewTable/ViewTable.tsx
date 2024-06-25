@@ -365,11 +365,12 @@ export class ViewTableContainer extends Component<Props> {
                         viewButtons={this.props.viewButtons}
                     />
                 </div>
-                {hasFilters && (
+                {hasFilters && (activeView.get('editMode') || isSearch) && (
                     <FilterTopbar
                         isUpdate={isUpdate}
                         isSearch={isSearch}
                         type={type}
+                        activeView={activeView}
                     />
                 )}
                 <div className={css.table}>{this._renderTable()}</div>

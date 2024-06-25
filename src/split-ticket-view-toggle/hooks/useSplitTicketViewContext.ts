@@ -9,6 +9,8 @@ export default function useSplitTicketViewContext() {
         prev: undefined,
         next: undefined,
     })
+    const [shouldRedirectToSplitView, setShouldRedirectToSplitView] =
+        useState(false)
     const [isEnabled, setIsEnabled] = usePersistedState(
         'split-ticket-view-enabled',
         true
@@ -20,5 +22,7 @@ export default function useSplitTicketViewContext() {
         previousTicketId: prevNextTicketIds.prev,
         nextTicketId: prevNextTicketIds.next,
         setPrevNextTicketIds,
+        shouldRedirectToSplitView,
+        setShouldRedirectToSplitView,
     }
 }

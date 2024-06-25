@@ -914,7 +914,7 @@ describe('actions', () => {
             expect(store.getActions()).toMatchSnapshot()
         })
 
-        it('should redirect to other view of same type when delete succeeds', async () => {
+        it('should update the active view with the same type when deletion succeeds', async () => {
             const views = initialState.set(
                 'items',
                 fromJS([view, view.set('id', 2)])
@@ -934,7 +934,7 @@ describe('actions', () => {
             type: ViewType.TicketList,
         }) as Map<any, any>
 
-        it('should redirect to other view of same type when view is active', () => {
+        it('should update the active view with the same type if deleted view was active', () => {
             const views = initialState
                 .set('items', fromJS([view, view.set('id', 2)]))
                 .set('active', view)

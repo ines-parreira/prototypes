@@ -1,10 +1,11 @@
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 
 import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {view as viewFixture} from 'fixtures/views'
@@ -32,6 +33,7 @@ import {
 import * as viewSelectors from 'state/views/selectors'
 import * as utils from 'utils'
 import {FilterTopbar} from 'pages/common/components/ViewTable/FilterTopbar'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
 
@@ -39,6 +41,9 @@ jest.spyOn(viewsActions, 'activeViewIdSet')
 jest.mock('state/entities/views/actions')
 jest.mock('state/views/actions')
 jest.mock('common/segment')
+
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
+const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
 
 const createViewWithFilters = (filters: string) => ({
     ...viewFixture,
@@ -66,7 +71,7 @@ const defaultState = {
     schemas: fromJS({}),
     teams: fromJS({}),
     views: fromJS({
-        active: createViewWithFilters(ticketChannelEqualsEmailFilter),
+        active: views[0],
         items: views,
         _internal: {
             lastViewId: 3,
@@ -112,6 +117,8 @@ beforeEach(() => {
     )
     fetchViewItemsMock.mockImplementation(() => () => ({}))
     createJobMock.mockImplementation(() => () => Promise.resolve())
+
+    mockUseSplitTicketViewMock.mockReturnValue({isEnabled: false})
 })
 
 afterEach(() => {
@@ -121,12 +128,13 @@ afterEach(() => {
 })
 
 const minProps = {
+    activeView: fromJS(views[0]),
     cancelFetchViewItemsCancellable: jest.fn(),
     fetchViewItemsCancellable: jest.fn(),
     isSearch: false,
     isUpdate: true,
     type: EntityType.Ticket,
-} as unknown as ComponentProps<typeof FilterTopbar>
+}
 
 describe('<FilterTopbar />', () => {
     describe('render', () => {
@@ -140,21 +148,21 @@ describe('<FilterTopbar />', () => {
         })
 
         it('should not render delete button when creating new view', () => {
-            const {container} = render(
+            const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} isUpdate={false} />
                 </Provider>
             )
-            expect(container.firstChild).toMatchSnapshot()
+            expect(queryByText(/delete view/)).not.toBeInTheDocument()
         })
 
         it('should not render footer when in search mode', () => {
-            const {container} = render(
+            const {queryByText} = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} isSearch={true} />
                 </Provider>
             )
-            expect(container.firstChild).toMatchSnapshot()
+            expect(queryByText(/update view/)).not.toBeInTheDocument()
         })
 
         it('should render view sharing and export tickets buttons when is in update mode', () => {
@@ -163,8 +171,8 @@ describe('<FilterTopbar />', () => {
                     <FilterTopbar {...minProps} />
                 </Provider>
             )
-            expect(queryByTitle('Export all view tickets')).toBeTruthy()
-            expect(queryByText('View Sharing Button')).toBeTruthy()
+            expect(queryByTitle('Export all view tickets')).toBeInTheDocument()
+            expect(queryByText('View Sharing Button')).toBeInTheDocument()
         })
 
         it('should not render export tickets buttons where there are no tickets available', () => {
@@ -180,7 +188,9 @@ describe('<FilterTopbar />', () => {
                     <FilterTopbar {...minProps} />
                 </Provider>
             )
-            expect(queryByTitle('Export all view tickets')).toBeNull()
+            expect(
+                queryByTitle('Export all view tickets')
+            ).not.toBeInTheDocument()
         })
 
         it('should not render view sharing and export tickets buttons when is not in update mode', () => {
@@ -189,8 +199,10 @@ describe('<FilterTopbar />', () => {
                     <FilterTopbar {...minProps} isUpdate={false} />
                 </Provider>
             )
-            expect(queryByTitle('Export all view tickets')).toBeNull()
-            expect(queryByText('View Sharing Button')).toBeNull()
+            expect(
+                queryByTitle('Export all view tickets')
+            ).not.toBeInTheDocument()
+            expect(queryByText('View Sharing Button')).not.toBeInTheDocument()
         })
 
         it('not render view sharing and export tickets buttons when is in search mode', () => {
@@ -203,8 +215,10 @@ describe('<FilterTopbar />', () => {
                     />
                 </Provider>
             )
-            expect(queryByText('Export all view tickets')).toBeNull()
-            expect(queryByText('View Sharing Button')).toBeNull()
+            expect(
+                queryByText('Export all view tickets')
+            ).not.toBeInTheDocument()
+            expect(queryByText('View Sharing Button')).not.toBeInTheDocument()
         })
 
         it('should not render export tickets button on a customer view', () => {
@@ -213,7 +227,9 @@ describe('<FilterTopbar />', () => {
                     <FilterTopbar {...minProps} type={EntityType.Customer} />
                 </Provider>
             )
-            expect(queryByTitle('Export all view tickets')).toBeNull()
+            expect(
+                queryByTitle('Export all view tickets')
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -246,12 +262,16 @@ describe('<FilterTopbar />', () => {
     })
 
     describe('on active view change', () => {
-        const activeView = defaultState.views!.get('active') as Map<any, any>
+        const defaultActiveView = defaultState.views!.get('active') as Map<
+            any,
+            any
+        >
         const params = {
-            orderBy: `${activeView.get('order_by') as string}:${
-                activeView.get('order_dir') as string
+            orderBy: `${defaultActiveView.get('order_by') as string}:${
+                defaultActiveView.get('order_dir') as string
             }`,
         }
+        const activeView = fromJS(createViewWithFilters(''))
 
         it('should fetch view items', () => {
             const {rerender} = render(
@@ -259,17 +279,18 @@ describe('<FilterTopbar />', () => {
                     <FilterTopbar {...minProps} />
                 </Provider>
             )
+
             rerender(
                 <Provider
                     store={mockStore({
                         ...defaultState,
-                        views: defaultState.views!.set(
-                            'active',
-                            fromJS(createViewWithFilters(''))
-                        ),
+                        views: fromJS({
+                            ...defaultState.views,
+                            active: activeView,
+                        }),
                     })}
                 >
-                    <FilterTopbar {...minProps} />
+                    <FilterTopbar {...minProps} activeView={activeView} />
                 </Provider>
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
@@ -294,13 +315,13 @@ describe('<FilterTopbar />', () => {
                     <Provider
                         store={mockStore({
                             ...defaultState,
-                            views: defaultState.views!.set(
-                                'active',
-                                fromJS(createViewWithFilters(''))
-                            ),
+                            views: fromJS({
+                                ...defaultState.views,
+                                active: activeView,
+                            }),
                         })}
                     >
-                        <FilterTopbar {...minProps} />
+                        <FilterTopbar {...minProps} activeView={activeView} />
                     </Provider>
                 </SearchRankScenarioContext.Provider>
             )
@@ -511,49 +532,6 @@ describe('<FilterTopbar />', () => {
         ).toBe('true')
     })
 
-    it('should close popover on view change', async () => {
-        const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
-        isDirtyMock.mockReturnValue(true)
-        const {rerender, getByText, queryByText} = render(
-            <Provider store={mockStore(defaultState)}>
-                <FilterTopbar {...minProps} />
-            </Provider>
-        )
-
-        fireEvent.click(getByText(/Update view/i))
-        await waitFor(() => {
-            expect(getByText(/Confirm/i)).toBeTruthy()
-        })
-
-        rerender(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    views: fromJS({
-                        active: fromJS({
-                            ...viewFixture,
-                            editMode: false,
-                            filters: ticketChannelEqualsEmailFilter,
-                            filters_ast: utils.getAST(
-                                ticketChannelEqualsEmailFilter
-                            ),
-                        }),
-                        items: [
-                            createViewWithFilters(
-                                ticketChannelEqualsEmailFilter
-                            ),
-                        ],
-                    }),
-                })}
-            >
-                <FilterTopbar {...minProps} />
-            </Provider>
-        )
-        await waitFor(() => {
-            expect(queryByText(/Confirm/i)).toBeNull()
-        })
-    })
-
     it('should close popover on cancel', async () => {
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
         isDirtyMock.mockReturnValue(true)
@@ -569,11 +547,11 @@ describe('<FilterTopbar />', () => {
 
         fireEvent.click(getByText(/Update view/i))
         await waitFor(() => {
-            expect(getByText(/Confirm/i)).toBeTruthy()
+            expect(getByText(/Confirm/i)).toBeInTheDocument()
         })
         fireEvent.click(getByText(/Cancel/i))
         await waitFor(() => {
-            expect(queryByText(/Confirm/i)).toBeNull()
+            expect(queryByText(/Confirm/i)).not.toBeInTheDocument()
         })
     })
 
@@ -654,6 +632,7 @@ describe('<FilterTopbar />', () => {
             ).toHaveAttribute('aria-disabled', 'false')
         })
     })
+
     it('should send event to segment on export tickets button click', () => {
         const {getByTitle} = render(
             <Provider store={mockStore(defaultState)}>
@@ -672,24 +651,25 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should not render save button when view is system', () => {
+        const systemView = fromJS({
+            ...viewFixture,
+            category: ViewCategory.System,
+            editMode: true,
+        })
         const {queryByText} = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     views: fromJS({
-                        active: fromJS({
-                            ...viewFixture,
-                            category: ViewCategory.System,
-                            editMode: true,
-                        }),
+                        active: systemView,
                     }),
                 })}
             >
-                <FilterTopbar {...minProps} />
+                <FilterTopbar {...minProps} activeView={systemView} />
             </Provider>
         )
 
-        expect(queryByText('Update view')).toBeNull()
+        expect(queryByText('Update view')).not.toBeInTheDocument()
         expect(queryByText('This view cannot be saved')).toBeInTheDocument()
     })
 })

@@ -73,7 +73,7 @@ export const updateView = (view?: Maybe<ViewImmutable>, edit = true) => ({
     edit,
 })
 
-export const setViewEditMode = (view: Maybe<ViewImmutable>) => ({
+export const setViewEditMode = (view?: Maybe<ViewImmutable>) => ({
     type: types.ACTIVATE_VIEW_EDIT_MODE,
     view,
 })
@@ -306,18 +306,11 @@ export function deleteView(view: ViewImmutable) {
 
         return client.delete(`/api/views/${view.get('id') as number}/`).then(
             () => {
-                const viewConfig = viewsConfig.getConfigByType(vType)
                 const destinationView = otherViewsOfType.first() as Map<
                     any,
                     any
                 >
-                const destinationRoute = `/app/${
-                    viewConfig.get('routeList') as string
-                }/${destinationView.get('id') as number}/${
-                    destinationView.get('slug') as string
-                }`
                 dispatch(setViewActive(destinationView))
-                history.push(destinationRoute)
                 return Promise.resolve(destinationView)
             },
             (error) => {
@@ -344,21 +337,11 @@ export const deleteViewSuccess =
         // redirect to first view of the same type if it's the currently active view
         const state = getState().views
         if (state.getIn(['active', 'id']) === viewId) {
-            const viewConfig = viewsConfig.getConfigByType(
-                state.getIn(['active', 'type'])
-            )
             const destinationView = (state.get('items') as List<any>).find(
-                (v: Map<any, any>) => {
-                    return v.get('type') === state.getIn(['active', 'type'])
-                }
+                (v: Map<any, any>) =>
+                    v.get('type') === state.getIn(['active', 'type'])
             ) as Map<any, any>
-            const destinationRoute = `/app/${
-                viewConfig.get('routeList') as string
-            }/${destinationView.get('id') as number}/${
-                destinationView.get('slug') as string
-            }`
             dispatch(setViewActive(destinationView))
-            history.push(destinationRoute)
         }
     }
 

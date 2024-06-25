@@ -1,13 +1,17 @@
-import {render} from '@testing-library/react'
+import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps, ReactElement} from 'react'
 import {Virtuoso} from 'react-virtuoso'
+import LD from 'launchdarkly-react-client-sdk'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
+import useTickets from 'ticket-list-view/hooks/useTickets'
+import {TicketPartial} from 'ticket-list-view/types'
 
-import useTickets from '../../hooks/useTickets'
-import {TicketPartial} from '../../types'
+import {setViewEditMode} from 'state/views/actions'
 import Ticket from '../Ticket'
 import TicketListView, {listInfoProps} from '../TicketListView'
 
@@ -20,6 +24,9 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('react-virtuoso', () => ({Virtuoso: jest.fn()}))
 const VirtuosoMock = Virtuoso as jest.Mock
 
+jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
+const mockUseSplitTicketViewMock = useSplitTicketView as jest.Mock
+
 jest.mock('../../hooks/useTickets')
 const useTicketsMock = useTickets as jest.Mock
 
@@ -31,9 +38,13 @@ jest.mock('../InvalidFiltersAction', () => () => <div>Fix filters</div>)
 describe('<TicketListView />', () => {
     let loadMore: jest.Mock
     let setElement: jest.Mock
+    let setIsEnabled: jest.Mock
+    let setShouldRedirectToSplitView: jest.Mock
+    let dispatch: jest.Mock
 
     beforeEach(() => {
-        useAppDispatchMock.mockReturnValue(jest.fn())
+        dispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(dispatch)
         useAppSelectorMock.mockReturnValue({
             name: 'view name',
         })
@@ -73,6 +84,13 @@ describe('<TicketListView />', () => {
             newTickets: {},
             ticketIds: {current: [152]},
             initialLoaded: true,
+        })
+        setIsEnabled = jest.fn()
+        setShouldRedirectToSplitView = jest.fn()
+        mockUseSplitTicketViewMock.mockReturnValue({
+            isEnabled: false,
+            setIsEnabled,
+            setShouldRedirectToSplitView,
         })
     })
 
@@ -236,5 +254,20 @@ describe('<TicketListView />', () => {
         expect(
             getByText(listInfoProps.INACCESSIBLE.subText)
         ).toBeInTheDocument()
+    })
+
+    it('should redirect to edition view', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.ViewEditionNewIcon]: true,
+        }))
+
+        useAppSelectorMock.mockReturnValue(null)
+
+        const {getByText} = render(<TicketListView viewId={123} />)
+        fireEvent.click(getByText('tune'))
+
+        expect(dispatch).toHaveBeenCalledWith(setViewEditMode())
+        expect(setIsEnabled).toHaveBeenCalledWith(false)
+        expect(setShouldRedirectToSplitView).toHaveBeenCalledWith(true)
     })
 })

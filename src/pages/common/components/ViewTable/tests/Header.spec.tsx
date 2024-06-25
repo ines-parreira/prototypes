@@ -39,7 +39,6 @@ describe('ViewTable::Header', () => {
         activeView: fromJS(viewsFixture),
         lastViewId: 0,
         config: getConfigByName(type),
-        deleteView: jest.fn(),
         removeFieldFilter: jest.fn(),
         updateView: jest.fn(),
         setViewEditMode: jest.fn(),

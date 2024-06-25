@@ -14,7 +14,7 @@ export default function useSplitTicketViewSwitcher() {
     const history = useHistory()
     const {pathname: path} = useLocation()
     const previousPath = usePrevious(path)
-    const {isEnabled} = useSplitTicketView()
+    const {isEnabled, shouldRedirectToSplitView} = useSplitTicketView()
     const activeView = useAppSelector(getActiveView)
     const isMobileResolution = useIsMobileResolution()
     const isSplitTicketViewEnabled = useMemo(
@@ -26,12 +26,12 @@ export default function useSplitTicketViewSwitcher() {
     )
 
     const activeViewId = useMemo(
-        () => activeView.get('id') as number,
+        () => activeView.get('id') as number | undefined,
         [activeView]
     )
 
     const activeViewType = useMemo(
-        () => activeView.get('type') as ViewType,
+        () => activeView.get('type') as ViewType | undefined,
         [activeView]
     )
 
@@ -53,7 +53,7 @@ export default function useSplitTicketViewSwitcher() {
         }
 
         if (!isSplitTicketViewEnabled) {
-            if (ticketId && ticketId !== 'new') {
+            if (!shouldRedirectToSplitView && ticketId && ticketId !== 'new') {
                 history.replace(`/app/ticket/${ticketId}`)
                 return
             }
@@ -83,7 +83,13 @@ export default function useSplitTicketViewSwitcher() {
         }
 
         if (viewId) {
-            history.replace(`/app/views/${viewId}`)
+            history.replace(
+                `/app/views/${
+                    activeViewId && activeViewId.toString() !== viewId
+                        ? activeViewId
+                        : viewId
+                }`
+            )
             return
         }
 
@@ -100,5 +106,6 @@ export default function useSplitTicketViewSwitcher() {
         ticketId,
         viewId,
         previousPath,
+        shouldRedirectToSplitView,
     ])
 }

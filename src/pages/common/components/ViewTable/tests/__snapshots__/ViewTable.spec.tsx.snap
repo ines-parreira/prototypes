@@ -11,9 +11,6 @@ exports[`<ViewTable /> render default view 1`] = `
       Header mock
     </div>
   </div>
-  <div>
-    FilterTopbar mock
-  </div>
   <div
     class="table"
   >
@@ -50,9 +47,6 @@ exports[`<ViewTable /> render should render a warning because the view is deacti
     <div>
       Header mock
     </div>
-  </div>
-  <div>
-    FilterTopbar mock
   </div>
   <div
     class="table"

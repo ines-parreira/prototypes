@@ -16,7 +16,6 @@ import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import history from 'pages/history'
 import {
-    deleteView,
     fetchViewItems,
     removeFieldFilter,
     resetView,
@@ -367,7 +366,6 @@ const connector = connect(
         lastViewId: getLastViewId(state),
     }),
     {
-        deleteView,
         fetchViewItems,
         removeFieldFilter,
         resetView,

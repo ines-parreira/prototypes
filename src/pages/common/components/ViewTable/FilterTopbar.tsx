@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
-
 import {List, Map} from 'immutable'
 import React, {
     MouseEvent,
@@ -21,6 +20,7 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+
 import {logEvent, SegmentEvent} from 'common/segment'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -50,6 +50,7 @@ import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
 import history from 'pages/history'
+import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     viewCreated,
@@ -74,7 +75,6 @@ import {
 } from 'state/views/constants'
 import {
     areFiltersValid as getAreFiltersValid,
-    getActiveView,
     getLastViewId,
     getPristineActiveView,
     getViewIdToDisplay,
@@ -91,6 +91,7 @@ type Props = {
     isSearch: boolean
     isUpdate: boolean
     type: EntityType
+    activeView: Map<any, any>
 } & CancellableRequestInjectedProps<
     'fetchViewItemsCancellable',
     'cancelFetchViewItemsCancellable',
@@ -98,6 +99,7 @@ type Props = {
 >
 
 export const FilterTopbar = ({
+    activeView,
     cancelFetchViewItemsCancellable,
     fetchViewItemsCancellable,
     isSearch,
@@ -111,7 +113,6 @@ export const FilterTopbar = ({
     const timeoutChangeFeedbackRef = useRef<Maybe<number>>(null)
 
     const lastViewId = useAppSelector(getLastViewId)
-    const activeView = useAppSelector(getActiveView)
     const previousActiveView = usePrevious(activeView)
     const areFiltersValid = useAppSelector(getAreFiltersValid)
     const config = getConfigByName(type)
@@ -138,13 +139,26 @@ export const FilterTopbar = ({
                 : undefined,
         [activeView, orderBy]
     ) as FetchViewItemsOptions
+    const {
+        setIsEnabled: setSplitTicketView,
+        shouldRedirectToSplitView,
+        setShouldRedirectToSplitView,
+    } = useSplitTicketView()
 
     useEffect(
         () => () => {
             timeoutChangeFeedbackRef.current &&
                 window.clearTimeout(timeoutChangeFeedbackRef.current)
+            if (shouldRedirectToSplitView) {
+                setSplitTicketView(true)
+                setShouldRedirectToSplitView(false)
+            }
         },
-        []
+        [
+            setShouldRedirectToSplitView,
+            setSplitTicketView,
+            shouldRedirectToSplitView,
+        ]
     )
 
     useUpdateEffect(() => {
@@ -319,10 +333,6 @@ export const FilterTopbar = ({
             })
             await dispatch(createJob(activeView, JobType.ExportTicket, {}))
         }, [dispatch, activeView])
-
-    if (!activeView.get('editMode') && !isSearch) {
-        return null
-    }
 
     const filterableFields = (config.get('fields') as List<any>)
         .filter(
