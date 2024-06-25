@@ -1,4 +1,11 @@
-import React, {forwardRef, useCallback, useMemo, useRef, useState} from 'react'
+import React, {
+    forwardRef,
+    useCallback,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
@@ -6,6 +13,7 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Label from 'pages/common/forms/Label/Label'
+import Caption from 'pages/common/forms/Caption/Caption'
 import {getChannels} from 'services/channels'
 import {Channel} from 'models/channel/types'
 
@@ -14,15 +22,17 @@ import css from './ChannelSelectBox.less'
 type ChannelSelectBoxProps = {
     value: Channel['slug'][] | undefined
     onChange: (value: Channel['slug'][]) => void
+    error?: string
 }
 
-export default forwardRef(function ChannelSelectBox({
-    value,
-    onChange,
-}: ChannelSelectBoxProps) {
+export default forwardRef(function ChannelSelectBox(
+    {value, onChange, error}: ChannelSelectBoxProps,
+    ref
+) {
     const channelSelectId = 'channel-select'
     const floatingRef = useRef<HTMLDivElement>(null)
     const targetRef = useRef<HTMLDivElement>(null)
+    useImperativeHandle(ref, () => targetRef.current!)
     const [isOpen, setIsOpen] = useState(false)
     const channelsMap = getChannels()
         .sort((a, b) => a.name.localeCompare(b.name))
@@ -75,6 +85,7 @@ export default forwardRef(function ChannelSelectBox({
                 ref={targetRef}
                 onToggle={setIsOpen}
                 label={channelsLabel}
+                hasError={!!error}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -101,6 +112,7 @@ export default forwardRef(function ChannelSelectBox({
                     )}
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
+            {!!error && <Caption error={error} />}
         </>
     )
 })

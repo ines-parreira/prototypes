@@ -1,5 +1,5 @@
-import React, {forwardRef, useRef, useState} from 'react'
-import {CreateSlaPolicyBodyMetricsItemUnit} from '@gorgias/api-types'
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import {SLAPolicyMetricUnit} from '@gorgias/api-types'
 
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -10,14 +10,15 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {timeUnits} from 'pages/settings/SLAs/config/time'
 
 type TimeUnitSelectBoxProps = {
-    value: CreateSlaPolicyBodyMetricsItemUnit | undefined
-    onChange: (value: CreateSlaPolicyBodyMetricsItemUnit) => void
+    value: SLAPolicyMetricUnit | undefined
+    onChange: (value: SLAPolicyMetricUnit) => void
 }
 
 export default forwardRef<HTMLDivElement, TimeUnitSelectBoxProps>(
-    function TimeUnitSelectBox({value, onChange}: TimeUnitSelectBoxProps) {
+    function TimeUnitSelectBox({value, onChange}: TimeUnitSelectBoxProps, ref) {
         const floatingRef = useRef<HTMLDivElement>(null)
         const targetRef = useRef<HTMLDivElement>(null)
+        useImperativeHandle(ref, () => targetRef.current!)
         const [isOpen, setIsOpen] = useState(false)
 
         return (

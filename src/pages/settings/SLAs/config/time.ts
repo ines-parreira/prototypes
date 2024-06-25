@@ -1,14 +1,14 @@
-import {CreateSlaPolicyBodyMetricsItemUnit} from '@gorgias/api-types'
+import {SLAPolicyMetricUnit} from '@gorgias/api-types'
 
 export const timeUnits = {
     second: {
         label: 'Seconds',
-        value: CreateSlaPolicyBodyMetricsItemUnit.Second,
+        value: SLAPolicyMetricUnit.Second,
     },
     minute: {
         label: 'Minutes',
-        value: CreateSlaPolicyBodyMetricsItemUnit.Minute,
+        value: SLAPolicyMetricUnit.Minute,
     },
-    hour: {label: 'Hours', value: CreateSlaPolicyBodyMetricsItemUnit.Hour},
-    day: {label: 'Days', value: CreateSlaPolicyBodyMetricsItemUnit.Day},
+    hour: {label: 'Hours', value: SLAPolicyMetricUnit.Hour},
+    day: {label: 'Days', value: SLAPolicyMetricUnit.Day},
 }

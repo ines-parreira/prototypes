@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {CreateSlaPolicyBodyMetricsItemUnit} from '@gorgias/api-types'
+import {SLAPolicyMetricName, SLAPolicyMetricUnit} from '@gorgias/api-types'
 
 import {MappedFormSLAPolicy} from './makeMappedFormSLAPolicy'
 
@@ -14,34 +14,38 @@ export default function useFormValues(
                 ? {
                       name: policy.name,
                       target_channels: policy.target_channels,
-                      metrics: {
-                          FRT: {
+                      metrics: [
+                          {
+                              name: SLAPolicyMetricName.Frt,
                               unit:
                                   policy.metrics.FRT?.unit ||
-                                  CreateSlaPolicyBodyMetricsItemUnit.Second,
+                                  SLAPolicyMetricUnit.Second,
                               threshold: policy.metrics.FRT?.threshold,
                           },
-                          RT: {
+                          {
+                              name: SLAPolicyMetricName.Rt,
                               unit:
                                   policy.metrics.RT?.unit ||
-                                  CreateSlaPolicyBodyMetricsItemUnit.Second,
+                                  SLAPolicyMetricUnit.Second,
                               threshold: policy.metrics.RT?.threshold,
                           },
-                      },
+                      ],
                       active: policy.active,
                   }
                 : {
                       name: '',
-                      metrics: {
-                          FRT: {
-                              unit: CreateSlaPolicyBodyMetricsItemUnit.Second,
+                      metrics: [
+                          {
+                              name: SLAPolicyMetricName.Frt,
+                              unit: SLAPolicyMetricUnit.Second,
                               threshold: undefined,
                           },
-                          RT: {
-                              unit: CreateSlaPolicyBodyMetricsItemUnit.Second,
+                          {
+                              name: SLAPolicyMetricName.Rt,
+                              unit: SLAPolicyMetricUnit.Second,
                               threshold: undefined,
                           },
-                      },
+                      ],
                       active: true,
                       target_channels: [],
                   },

@@ -1,7 +1,5 @@
-import {
-    CreateSlaPolicyBody,
-    CreateSlaPolicyBodyMetricsItemName,
-} from '@gorgias/api-types'
+import {CreateSlaPolicyBody, SLAPolicyMetric} from '@gorgias/api-types'
+import _isNumber from 'lodash/isNumber'
 
 import {SLAFormValues} from './useFormValues'
 
@@ -10,25 +8,11 @@ export default function makeCreateSLAPolicyBody(
 ): CreateSlaPolicyBody {
     return {
         ...formPolicy,
-        metrics: [
-            ...(formPolicy.metrics.FRT?.threshold
-                ? [
-                      {
-                          name: CreateSlaPolicyBodyMetricsItemName.Frt,
-                          threshold: formPolicy.metrics.FRT.threshold,
-                          unit: formPolicy.metrics.FRT.unit,
-                      },
-                  ]
-                : []),
-            ...(formPolicy.metrics.RT?.threshold
-                ? [
-                      {
-                          name: CreateSlaPolicyBodyMetricsItemName.Rt,
-                          threshold: formPolicy.metrics.RT.threshold,
-                          unit: formPolicy.metrics.RT.unit,
-                      },
-                  ]
-                : []),
-        ],
+        metrics: formPolicy.metrics.reduce((acc, metric) => {
+            if (_isNumber(metric.threshold)) {
+                return [...acc, metric as SLAPolicyMetric]
+            }
+            return acc
+        }, [] as SLAPolicyMetric[]),
     }
 }

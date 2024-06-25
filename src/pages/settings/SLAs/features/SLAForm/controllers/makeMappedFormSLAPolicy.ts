@@ -1,8 +1,5 @@
 import {SLAPolicy} from '@gorgias/api-queries'
-import {
-    SLAPolicyMetricsItem,
-    SLAPolicyMetricsItemName,
-} from '@gorgias/api-types'
+import {SLAPolicyMetric} from '@gorgias/api-types'
 
 export type MappedFormSLAPolicy = ReturnType<typeof makeMappedFormSLAPolicy>
 
@@ -22,10 +19,10 @@ export default function makeMappedFormSLAPolicy(policy: SLAPolicy) {
             }),
             {} as Partial<
                 Record<
-                    SLAPolicyMetricsItemName,
+                    SLAPolicyMetric['name'],
                     {
-                        threshold: SLAPolicyMetricsItem['threshold']
-                        unit: SLAPolicyMetricsItem['unit']
+                        threshold: SLAPolicyMetric['threshold']
+                        unit: SLAPolicyMetric['unit']
                     }
                 >
             >
