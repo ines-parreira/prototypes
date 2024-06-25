@@ -3016,10 +3016,10 @@
     ajv-formats "^3.0.1"
     immer "^10.0.4"
 
-"@gorgias/design-tokens@^0.2.8":
-  version "0.2.8"
-  resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.2.8/ed3499b23c0de4cf9708181685b23221e5191440#ed3499b23c0de4cf9708181685b23221e5191440"
-  integrity sha512-g7TrzC3v7oGsKlrjgJMVxuhpAyUI8FVnwZbcZZt+KLZ6Fg0u2GtAw4jZZtMVa+r5bcDZqgK+gYdq+ygGgIXlqw==
+"@gorgias/design-tokens@^0.2.9":
+  version "0.2.9"
+  resolved "https://npm.pkg.github.com/download/@gorgias/design-tokens/0.2.9/dca31d3644846d90d406ae4d6625fe5990acfacf#dca31d3644846d90d406ae4d6625fe5990acfacf"
+  integrity sha512-bh2LW+cyamAnmYEjDuHQOmKoINSAaijoOwW9SkSOzFaeXaMF+HjToXJzPWZnA1moURADuIcYW+hsqqrTrC8AhQ==
   dependencies:
     "@gorgias/javascript-shared-config" "^0.1.0"
     lodash "^4.17.21"
@@ -19665,6 +19665,7 @@ wordwrap@^1.0.0:
   integrity sha512-gvVzJFlPycKc5dZN4yPkP8w7Dc37BtP1yczEneOb4uq34pXZcvrtRTmWV8W+Ume+XCxKgbjM+nevkyFPMybd4Q==
 
 "wrap-ansi-cjs@npm:wrap-ansi@^7.0.0", wrap-ansi@^7.0.0:
+  name wrap-ansi-cjs
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
   integrity sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==
