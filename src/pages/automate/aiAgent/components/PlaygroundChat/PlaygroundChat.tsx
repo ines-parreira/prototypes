@@ -1,35 +1,33 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useRef} from 'react'
 
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {MessageType, PlaygroundMessage} from 'models/aiAgentPlayground/types'
+import {
+    AccountConfigurationWithHttpIntegration,
+    StoreConfiguration,
+} from 'models/aiAgent/types'
+import {MessageType} from 'models/aiAgentPlayground/types'
 import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent from '../PlaygroundMessage/PlaygroundMessage'
 import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
-import {CustomerHttpIntegrationDataMock} from '../../constants'
+import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
+import TicketEvent from '../TicketEvent/TicketEvent'
 import {PlaygroundChatEmptyBanner} from './PlaygroundChatEmptyBanner'
-import {PlaygroundFormValues} from './PlaygroundChat.types'
 
 import css from './PlaygroundChat.less'
 
-const mapFormValuesToMessage = (
-    formValues: PlaygroundFormValues
-): PlaygroundMessage => {
-    return {
-        sender:
-            formValues.customerEmail ?? CustomerHttpIntegrationDataMock.address,
-        type: MessageType.MESSAGE,
-        message: formValues.message,
-    }
-}
-
 type Props = {
     storeData: StoreConfiguration
+    accountData: AccountConfigurationWithHttpIntegration
 }
 
-export const PlaygroundChat = ({storeData}: Props) => {
+export const PlaygroundChat = ({storeData, accountData}: Props) => {
     const messageContainerRef = useRef<HTMLDivElement>(null)
-    // Fake messages for now
-    const [messages, setMessages] = useState<PlaygroundMessage[]>([])
+    const {messages, onMessageSend, onNewConversation, isMessageSending} =
+        usePlaygroundMessages({
+            storeData,
+            httpIntegrationId: accountData.httpIntegration?.id,
+            gorgiasDomain: accountData.gorgiasDomain,
+            accountId: accountData.accountId,
+        })
 
     const {
         formValues,
@@ -37,7 +35,6 @@ export const PlaygroundChat = ({storeData}: Props) => {
         isDisabled,
         disabledMessage,
         isFormValid,
-        clearForm,
     } = usePlaygroundForm({
         helpCenterId: storeData.helpCenterId,
         shopName: storeData.storeName,
@@ -49,14 +46,9 @@ export const PlaygroundChat = ({storeData}: Props) => {
             return
         }
 
-        const newMessage = mapFormValuesToMessage(formValues)
+        void onMessageSend(formValues)
 
-        setMessages((prevMessages) => [...prevMessages, newMessage])
-        clearForm()
-    }
-
-    const onNewConversation = () => {
-        setMessages([])
+        onFormValuesChange('message', '')
     }
 
     useEffect(() => {
@@ -77,15 +69,24 @@ export const PlaygroundChat = ({storeData}: Props) => {
                             <PlaygroundChatEmptyBanner />
                         </div>
                     ) : (
-                        messages.map((message, index) => (
-                            <PlaygroundMessageComponent
-                                sender={message.sender}
-                                type={message.type}
-                                message={message.message}
-                                key={index}
-                                withAnimation
-                            />
-                        ))
+                        messages.map((message, index) =>
+                            message.type === MessageType.TICKET_EVENT &&
+                            message.outcome ? (
+                                <TicketEvent
+                                    key={index}
+                                    type={message.outcome}
+                                />
+                            ) : (
+                                <PlaygroundMessageComponent
+                                    sender={message.sender}
+                                    type={message.type}
+                                    message={message.message}
+                                    createdDatetime={message.createdDatetime}
+                                    key={index}
+                                    withAnimation
+                                />
+                            )
+                        )
                     )}
                 </div>
             </div>
@@ -93,7 +94,7 @@ export const PlaygroundChat = ({storeData}: Props) => {
                 <PlaygroundInputSection
                     formValues={formValues}
                     onFormValuesChange={onFormValuesChange}
-                    isDisabled={isDisabled}
+                    isDisabled={isDisabled || isMessageSending}
                     disabledMessage={disabledMessage}
                     isInitialMessage={messages.length === 0}
                     onSendMessage={onSendMessage}
