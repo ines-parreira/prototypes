@@ -1,13 +1,10 @@
 import axios from 'axios'
 import {createPlayground} from 'models/aiAgentPlayground/resources'
-import {
-    createMockClientPayload,
-    createMockHttpIntegrationPayload,
-} from 'pages/automate/aiAgent/utils/new-customer-playground.util'
+import {createMockHttpIntegrationPayload} from 'pages/automate/aiAgent/utils/new-customer-playground.util'
 import {
     AiAgentInput,
     AiAgentResponse,
-    CreatePlaygroundBody,
+    CreatePlaygroundRequest,
 } from '../../aiAgentPlayground/types'
 import {isProduction, isStaging} from '../../../utils/environment'
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
@@ -32,21 +29,16 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
-export const submitAiAgentTicket = async (
-    body: AiAgentInput,
-    abortController?: AbortController
-) => {
+export const submitAiAgentTicket = async (body: AiAgentInput) => {
     return await apiClient.post<AiAgentResponse>('/', body, {
         params: {
             playground: true,
         },
-        signal: abortController?.signal,
     })
 }
 
 export const createContextAndSubmitPlaygroundTicket = async (
-    body: CreatePlaygroundBody,
-    abortController?: AbortController
+    body: CreatePlaygroundRequest
 ) => {
     let context
 
@@ -56,8 +48,7 @@ export const createContextAndSubmitPlaygroundTicket = async (
                 body_text: body.body_text,
                 subject: body.subject,
                 domain: body.domain,
-                messages: body.messages,
-                created_datetime: body.created_datetime,
+                created_datetime: new Date().toISOString(),
                 integration: {
                     id: body.email_integration_id,
                     address: body.email_integration_address,
@@ -65,9 +56,8 @@ export const createContextAndSubmitPlaygroundTicket = async (
             }),
         }
     } else {
-        const payload = createMockClientPayload(body)
-        context = {data: (await createPlayground(payload)).data}
+        context = {data: (await createPlayground(body)).data}
     }
 
-    return await submitAiAgentTicket(context.data, abortController)
+    return await submitAiAgentTicket(context.data)
 }

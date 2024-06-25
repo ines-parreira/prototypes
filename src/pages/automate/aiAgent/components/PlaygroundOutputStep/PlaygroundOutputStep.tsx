@@ -46,7 +46,6 @@ export const PlaygroundOutputStep = ({
                 sender={message.sender}
                 type={message.type}
                 message={message.message}
-                createdDatetime={message.createdDatetime}
                 key={index}
             />
         )

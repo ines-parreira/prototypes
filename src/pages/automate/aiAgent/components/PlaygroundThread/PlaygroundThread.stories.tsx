@@ -45,12 +45,10 @@ export const AIAgentLoading: Story = {
                     sender={'John Doe'}
                     type={MessageType.MESSAGE}
                     message={'I want a refund, please'}
-                    createdDatetime=""
                 />
                 <PlaygroundMessage
                     sender={'AI Agent'}
                     type={MessageType.MESSAGE}
-                    createdDatetime=""
                 />
             </div>
         ),
@@ -67,19 +65,16 @@ export const WithSubject: Story = {
                     sender={'John Doe'}
                     type={MessageType.MESSAGE}
                     message={'I want a refund, please'}
-                    createdDatetime=""
                 />
                 <PlaygroundMessage
                     sender={'AI Agent'}
                     type={MessageType.MESSAGE}
                     message={AIAgentMessage}
-                    createdDatetime=""
                 />
                 <PlaygroundMessage
                     sender={'AI Agent'}
                     type={MessageType.INTERNAL_NOTE}
                     message={InternalNote}
-                    createdDatetime=""
                 />
                 <TicketEvent type={TicketOutcome.CLOSE} />
             </div>
@@ -103,7 +98,6 @@ export const WithoutSubject: Story = {
                     sender={'John Doe'}
                     type={MessageType.MESSAGE}
                     message={'I want a refund, please'}
-                    createdDatetime=""
                 />
             </div>
         ),

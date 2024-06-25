@@ -1,4 +1,4 @@
-export type CreatePlaygroundBody = {
+export type CreatePlaygroundRequest = {
     use_mock_context: boolean
     domain: string
     customer_email: string
@@ -8,49 +8,6 @@ export type CreatePlaygroundBody = {
     account_id: number
     email_integration_id: number
     email_integration_address: string
-    messages: string[]
-    created_datetime: string
-}
-
-export type MockTicketMessage = {
-    attachments: []
-    body_html: string
-    body_text: string
-    channel: 'email'
-    created_datetime: string
-    from_agent: boolean
-    id: number
-    integration_id: number
-    sender: {
-        firstname: string
-        email: string
-        id: 601409
-        lastname: string
-        meta: {
-            name_set_via: 'shopify'
-        }
-        name: string
-    }
-    source: {
-        bcc: []
-        cc: []
-        from: {
-            address: string
-            name: string
-        }
-        to: [
-            {
-                address: string
-                name: string
-            }
-        ]
-        type: 'email'
-    }
-    subject: string
-}
-
-export type CreatePlaygroundRequest = Omit<CreatePlaygroundBody, 'messages'> & {
-    messages: MockTicketMessage[]
 }
 
 export type SearchCustomerRequest = {
@@ -103,7 +60,6 @@ export type PlaygroundMessage = {
     type: MessageType
     message?: string | React.ReactNode
     outcome?: TicketOutcome
-    createdDatetime: string
 }
 
 export enum TicketOutcome {

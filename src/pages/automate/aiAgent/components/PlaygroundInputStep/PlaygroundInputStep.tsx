@@ -11,7 +11,7 @@ import {
 } from 'models/aiAgent/types'
 import {
     AiAgentResponse,
-    CreatePlaygroundBody,
+    CreatePlaygroundRequest,
     MessageType,
     PlaygroundMessage,
     PlaygroundStep,
@@ -59,7 +59,7 @@ type Props = {
     submitPlaygroundTicket: UseMutateFunction<
         AxiosResponse<AiAgentResponse, any>,
         Record<string, unknown>,
-        [body: CreatePlaygroundBody, abortController?: AbortController],
+        [body: CreatePlaygroundRequest],
         unknown
     >
     accountData: AccountConfigurationWithHttpIntegration
@@ -153,7 +153,6 @@ export const PlaygroundInputStep = ({
         const newMessagesThread: PlaygroundMessage[] = []
         const subject = formValues.subject.trim()
         const message = formValues.message.trim()
-        const createdDatetime = new Date().toISOString()
         let customerName: string = formValues.customerEmail
         let isCustomerFound = false
         let unexpectedError = false
@@ -211,7 +210,6 @@ export const PlaygroundInputStep = ({
                         onClick={() => setStep(PlaygroundStep.INPUT)}
                     />
                 ),
-                createdDatetime,
             })
         } else {
             // Push the customer message
@@ -219,7 +217,6 @@ export const PlaygroundInputStep = ({
                 sender: customerName,
                 type: MessageType.MESSAGE,
                 message,
-                createdDatetime,
             })
 
             if (isCustomerFound === false) {
@@ -227,7 +224,6 @@ export const PlaygroundInputStep = ({
                     sender: AI_AGENT_SENDER,
                     type: MessageType.ERROR,
                     message: 'No customer account was found for that email.',
-                    createdDatetime,
                 })
             } else {
                 submitPlaygroundTicket([
@@ -239,7 +235,6 @@ export const PlaygroundInputStep = ({
                         customer_email: formValues.customerEmail,
                         body_text: message,
                         subject: subject,
-                        created_datetime: createdDatetime,
                         http_integration_id:
                             // HttpIntegration is asserted here as parent component checks for it's existence
                             accountData.httpIntegration.id,
@@ -248,8 +243,6 @@ export const PlaygroundInputStep = ({
                             storeData.monitoredEmailIntegrations[0].id,
                         email_integration_address:
                             storeData.monitoredEmailIntegrations[0].email,
-                        // Temp until we migrate to Playground with multi messages
-                        messages: [message],
                     },
                 ])
 
@@ -257,7 +250,6 @@ export const PlaygroundInputStep = ({
                 newMessagesThread.push({
                     sender: AI_AGENT_SENDER,
                     type: MessageType.MESSAGE,
-                    createdDatetime,
                 })
             }
 
