@@ -76,8 +76,8 @@ const ArticleLandingPageComponent = ({
     const dispatch = useAppDispatch()
 
     const showArticleTemplatesBanner =
-        (isEmptyStateMode && !hasAccessToAILibrary) ||
-        (!showAIBanner && !isAIArticlesLoading)
+        isEmptyStateMode &&
+        (!hasAccessToAILibrary || (!showAIBanner && !isAIArticlesLoading))
 
     const handleOnChangeLocale = (value: React.ReactText) => {
         dispatch(changeViewLanguage(validLocaleCode(value)))
