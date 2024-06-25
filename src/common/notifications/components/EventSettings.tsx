@@ -75,6 +75,12 @@ export default function EventSettings({
                                     onChange={(sound) => {
                                         onChangeSound(event.type, sound)
                                     }}
+                                    disabled={
+                                        !Object.values(
+                                            settings.events[event.type]
+                                                ?.channels || {}
+                                        ).some((value) => !!value)
+                                    }
                                 />
                             </BodyCell>
                             {channels.map((channel) => (
