@@ -19,6 +19,7 @@ import {
     LlmPromptTrigger,
     CustomInput,
     StepHttpRequest,
+    ActionAppsConfiguration,
 } from './types'
 
 export const orderVariables: WorkflowVariable[] = [
@@ -622,4 +623,12 @@ export function generateNewCustomActionConfigurationFormInput(): CustomActionCon
         available_languages: [],
         updated_datetime: new Date().toISOString(),
     }
+}
+
+export function getActionsAppByType<
+    T extends ActionAppsConfiguration[number]['type']
+>(type: T, apps?: ActionAppsConfiguration | null) {
+    return apps?.find(
+        (app): app is Extract<typeof app, {type: T}> => app.type === type
+    )
 }

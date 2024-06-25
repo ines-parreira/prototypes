@@ -13,6 +13,8 @@ const WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY =
 
 const STORE_WORKFLOWS_APP_QUERY_KEY = 'store-workflow-app'
 
+const ACTIONS_APP_QUERY_KEY = 'actions-app'
+
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
     list: (params: {storeName: string; storeType: string}) => [
@@ -36,6 +38,11 @@ export const storeWorkFlowsAppDefinitionKeys = {
         ...storeWorkFlowsAppDefinitionKeys.all(),
         params,
     ],
+}
+
+export const actionsAppDefinitionKeys = {
+    all: () => [ACTIONS_APP_QUERY_KEY] as const,
+    get: (id?: string) => [...actionsAppDefinitionKeys.all(), id],
 }
 
 export const useGetWorkflowConfigurationTemplates = (
@@ -198,6 +205,31 @@ export const useGetStoreApps = ({
             })
             return response.data
         },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+    })
+}
+
+export const useGetActionsApp = (id?: string) => {
+    return useQuery({
+        queryKey: actionsAppDefinitionKeys.get(id),
+        enabled: !!id,
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response = await client.AppController_list(
+                {
+                    ids: [id],
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
+            return response.data
+        },
+        select: (data) => data.find((app) => app.id === id),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
     })

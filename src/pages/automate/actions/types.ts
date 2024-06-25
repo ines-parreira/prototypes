@@ -10,6 +10,8 @@ export type StepHttpRequest = Extract<
     {kind: 'http-request'}
 >
 
+export type ActionAppConnected = Components.Schemas.GetAppResponseDto
+
 export type Trigger =
     Components.Schemas.UpsertStoreWfConfigurationRequestBodyDto['triggers'][number]
 export type Entrypoint =
@@ -47,6 +49,10 @@ export type CustomInput = {
     dataType: LlmPromptTrigger['settings']['custom_inputs'][number]['data_type']
     isTemplateCustomInputs?: boolean
 }
+
+export type CommonActionFormValues =
+    | TemplateActionFormInputValues
+    | CustomActionFormInputValues
 
 export type CustomActionFormInputValues = {
     requiresConfirmation: boolean
@@ -87,6 +93,8 @@ interface HttpRequestFormValues {
     outputsDescription: string
 }
 
-export type ActionApps = NonNullable<
-    Paths.WfConfigurationControllerGet.Responses.$200['apps']
->[number]
+export type ActionAppsConfiguration = NonNullable<
+    Components.Schemas.GetWfConfigurationResponseDto['apps']
+>
+
+export type ActionAppConfiguration = ActionAppsConfiguration[number]

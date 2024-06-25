@@ -1,11 +1,11 @@
-import React, {useEffect, useMemo, useState} from 'react'
-import {createPortal} from 'react-dom'
+import React, {useEffect, useMemo} from 'react'
 import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
 import {useFieldArray, useForm, Controller} from 'react-hook-form'
 import InputField from 'pages/common/forms/input/InputField'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import ToolbarContext, {
     ToolbarContextType,
@@ -16,7 +16,7 @@ import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import {useGetStoreApps} from 'models/workflows/queries'
+import {useGetStoreApps, useGetActionsApp} from 'models/workflows/queries'
 import Button from 'pages/common/components/button/Button'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useUpsertAction from '../hooks/useUpsertAction'
@@ -35,8 +35,8 @@ import {
     generatObjectInputs,
     getConditionsUsedVariables,
     wfConfgurationToTemplateFormValue,
+    getActionsAppByType,
 } from '../utils'
-import {AUTOMATE_VIEW_ACTION_PORTAL_ID} from '../constants'
 import AppConfirmationModal from './AppConfirmationModal'
 import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
 import ActionFormInputConditions from './ActionFormInputConditions'
@@ -47,11 +47,15 @@ import css from './CustomActionsForm.less'
 type Props = {
     initialConfigurationData: TemplateConfigurationFormInput
     templateConfiguration: TemplateConfiguration
+    apiKeyModalIsOpen: boolean
+    setApiKeyModalIsOpen: (isOpen: boolean) => void
 }
 
 export default function CustomActionsForm({
     initialConfigurationData: initialFormValues,
     templateConfiguration,
+    apiKeyModalIsOpen,
+    setApiKeyModalIsOpen,
 }: Props) {
     const {shopName, shopType} = useParams<{
         shopType: string
@@ -66,10 +70,6 @@ export default function CustomActionsForm({
         })
 
     const isNewAction = !initialFormValues.internal_id
-
-    const automateViewActionElement = document.getElementById(
-        AUTOMATE_VIEW_ACTION_PORTAL_ID
-    )
 
     const {
         remove: removeConditions,
@@ -93,7 +93,22 @@ export default function CustomActionsForm({
 
     const actionApp = initialFormValues.apps?.[0]
 
+    const actionAppTypeApp = getActionsAppByType(
+        'app',
+        templateConfiguration.apps
+    )
+
+    const {data: actionAppConnected} = useGetActionsApp(
+        actionAppTypeApp?.app_id
+    )
+
     const isNativeAppIntegration = !!actionApp && actionApp.type !== 'app'
+
+    useEffectOnce(() => {
+        if (isNewAction && !isNativeAppIntegration) {
+            setApiKeyModalIsOpen(true)
+        }
+    })
 
     const actionAppIntegration = useGetActionAppIntegration({
         appType: actionApp?.type,
@@ -112,11 +127,6 @@ export default function CustomActionsForm({
         appType: actionApp?.type,
         integration: actionAppIntegration,
     })
-
-    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(
-        (isNewAction && !isNativeAppIntegration) ||
-            (isNativeAppIntegration && !actionAppIntegration)
-    )
 
     const inputVariables = useMemo(
         () => getInputVariables(customInput),
@@ -244,10 +254,22 @@ export default function CustomActionsForm({
     }
 
     useEffect(() => {
-        if (isActionUpserted || isActionDeleted) {
+        if (
+            isActionUpserted ||
+            isActionDeleted ||
+            (isNativeAppIntegration && !actionAppIntegration)
+        ) {
             history.push(`/app/automation/${shopType}/${shopName}/actions`)
         }
-    }, [history, isActionDeleted, isActionUpserted, shopName, shopType])
+    }, [
+        actionAppIntegration,
+        history,
+        isActionDeleted,
+        isActionUpserted,
+        isNativeAppIntegration,
+        shopName,
+        shopType,
+    ])
 
     return (
         <ToolbarContext.Provider
@@ -270,10 +292,10 @@ export default function CustomActionsForm({
                     <header>
                         {templateConfiguration.apps?.[0] && (
                             <TemplateActionBanner
-                                app={templateConfiguration.apps[0]}
-                                description={
-                                    templateConfiguration.description ?? ''
+                                actionAppConfiguration={
+                                    templateConfiguration.apps[0]
                                 }
+                                description={templateConfiguration.description}
                                 name={templateConfiguration.name}
                             />
                         )}
@@ -529,37 +551,21 @@ export default function CustomActionsForm({
                     }}
                     render={({field: {onChange, value}}) => (
                         <AppConfirmationModal
+                            actionAppConnected={actionAppConnected}
                             isNewAction={isNewAction}
-                            isNativeIntegrationDisabled={
-                                isNativeAppIntegration && !actionAppIntegration
-                            }
                             apiKey={value ?? ''}
                             isOpen={apiKeyModalIsOpen}
                             setOpen={setApiKeyModalIsOpen}
-                            app={actionApp}
+                            actionAppConfiguration={actionApp}
                             onConfirm={onChange}
                             templateName={templateConfiguration.name}
                             templateDescription={
-                                templateConfiguration.description ?? ''
+                                templateConfiguration.description
                             }
                         />
                     )}
                 />
             )}
-            {automateViewActionElement &&
-                !isNativeAppIntegration &&
-                createPortal(
-                    <Button
-                        fillStyle="ghost"
-                        className={css.viewAppAuthButton}
-                        onClick={() => {
-                            setApiKeyModalIsOpen(true)
-                        }}
-                    >
-                        View App Authentication
-                    </Button>,
-                    automateViewActionElement
-                )}
         </ToolbarContext.Provider>
     )
 }

@@ -1,16 +1,20 @@
 import React from 'react'
-import {ActionApps} from '../types'
+import {ActionAppConfiguration} from '../types'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
 import css from './TemplateActionBanner.less'
 
 type Props = {
     name: string
-    description: string
-    app: ActionApps
+    description?: string | null
+    actionAppConfiguration: ActionAppConfiguration
 }
 
-export default function TemplateActionBanner({description, name, app}: Props) {
-    const appImageUrl = useGetAppImageUrl(app)
+export default function TemplateActionBanner({
+    description,
+    name,
+    actionAppConfiguration,
+}: Props) {
+    const appImageUrl = useGetAppImageUrl(actionAppConfiguration)
 
     return (
         <div className={css.container}>
@@ -21,13 +25,16 @@ export default function TemplateActionBanner({description, name, app}: Props) {
                     <img
                         className={css.appIcon}
                         src={appImageUrl}
-                        alt={app.type}
+                        alt={actionAppConfiguration.type}
                     />
                 )}
             </div>
             <div className={css.information}>
                 <h3>{name}</h3>
-                <p>{description}</p>
+                <p>
+                    {description ||
+                        'Customize this Action and its conditions to fit your needs.'}
+                </p>
             </div>
         </div>
     )

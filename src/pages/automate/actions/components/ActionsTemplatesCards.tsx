@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import {useParams} from 'react-router-dom'
 import {
     CustomCardLink,
-    TemplateCardLink,
+    TemplateCard,
 } from 'pages/common/components/TemplateCard'
-import {TemplateConfiguration, ActionApps} from '../types'
+import history from 'pages/history'
+import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
+import {TemplateConfiguration, ActionAppConfiguration} from '../types'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
+import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
 import css from './ActionsTemplatesCards.less'
 
 type Props = {
@@ -31,7 +34,7 @@ export default function ActionsTemplatesCards({
                 }
                 const app = apps[0]
                 return (
-                    <TemplateCard
+                    <TemplateCardWrapper
                         shopType={shopType}
                         shopName={shopName}
                         app={app}
@@ -53,39 +56,67 @@ export default function ActionsTemplatesCards({
     )
 }
 
-function TemplateCard({
+function TemplateCardWrapper({
     app,
     shopName,
     shopType,
     templateId,
     templateName,
 }: {
-    app: ActionApps
+    app: ActionAppConfiguration
     shopType: string
     shopName: string
     templateId: string
     templateName: string
 }) {
+    const [isDisabledAppModalOpen, setIsDisabledAppModalOpen] = useState(false)
     const appImageUrl = useGetAppImageUrl(app)
 
+    const actionAppIntegration = useGetActionAppIntegration({
+        appType: app?.type,
+        shopName,
+    })
+
+    const isNativeAppIntegration = !!app && app.type !== 'app'
+
+    const handleClick = () => {
+        if (isNativeAppIntegration && !actionAppIntegration) {
+            if (isDisabledAppModalOpen) return
+            setIsDisabledAppModalOpen(true)
+            return
+        }
+        history.push(
+            `/app/automation/${shopType}/${shopName}/actions/new?template_id=${templateId}`
+        )
+    }
+
     return (
-        <TemplateCardLink
-            to={`/app/automation/${shopType}/${shopName}/actions/new?template_id=${templateId}`}
-            description=""
-            title={templateName}
-            icon={
-                <>
-                    {!appImageUrl ? (
-                        <div className={css.appIcon}></div>
-                    ) : (
-                        <img
-                            className={css.appIcon}
-                            src={appImageUrl}
-                            alt={app?.type}
-                        />
-                    )}
-                </>
-            }
-        />
+        <div onClick={handleClick}>
+            <TemplateCard
+                description=""
+                title={templateName}
+                icon={
+                    <>
+                        {!appImageUrl ? (
+                            <div className={css.appIcon}></div>
+                        ) : (
+                            <img
+                                className={css.appIcon}
+                                src={appImageUrl}
+                                alt={app?.type}
+                            />
+                        )}
+                    </>
+                }
+            />
+            {isNativeAppIntegration && (
+                <AppIntegrationDisabledModal
+                    templateName={templateName}
+                    actionAppConfiguration={app}
+                    isOpen={isDisabledAppModalOpen}
+                    setOpen={setIsDisabledAppModalOpen}
+                />
+            )}
+        </div>
     )
 }

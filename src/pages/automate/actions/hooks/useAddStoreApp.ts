@@ -6,12 +6,12 @@ import {
 } from 'models/workflows/queries'
 
 import {Integration} from 'models/integration/types'
-import {ActionApps} from '../types'
+import {ActionAppConfiguration} from '../types'
 
 type Props = {
     storeName: string
     storeType: string
-    appType?: ActionApps['type']
+    appType?: ActionAppConfiguration['type']
     integration?: Integration
 }
 

@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Link, useLocation, useParams} from 'react-router-dom'
 import classNames from 'classnames'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -19,6 +19,7 @@ import useDeleteAction from '../hooks/useDeleteAction'
 import useUpsertAction from '../hooks/useUpsertAction'
 
 import {StoreWorkflowsConfiguration} from '../types'
+import AppIntegrationDisabledModal from './AppIntegrationDisabledModal'
 import DeleteActionConfirmation from './DeleteActionConfirmation'
 
 import css from './ActionsRow.less'
@@ -30,12 +31,13 @@ type Props = {
 const getBodyCellElementId = (actionId: string) =>
     `action-body-cell-${actionId}`
 
-export default function WorkflowRow({action}: Props) {
+export default function ActionsRow({action}: Props) {
     const location = useLocation()
     const {shopName, shopType} = useParams<{
         shopType: string
         shopName: string
     }>()
+    const [isDisabledAppModalOpen, setIsDisabledAppModalOpen] = useState(false)
 
     const disabledNativeAppWarningIconId = `disable-native-app-warning-icon-${action.id}`
 
@@ -147,9 +149,23 @@ export default function WorkflowRow({action}: Props) {
         <TableBodyRow
             className={css.container}
             onClick={() => {
+                if (isNativeAppIntegration && !actionAppIntegration) {
+                    if (isDisabledAppModalOpen) return
+                    setIsDisabledAppModalOpen(true)
+                    return
+                }
                 history.push(`${location.pathname}/edit/${action.id}`)
             }}
         >
+            {actionApp && (
+                <AppIntegrationDisabledModal
+                    templateDescription={action.description}
+                    templateName={action.name}
+                    actionAppConfiguration={actionApp}
+                    isOpen={isDisabledAppModalOpen}
+                    setOpen={setIsDisabledAppModalOpen}
+                />
+            )}
             <BodyCell className={css.name}>{action.name}</BodyCell>
             <BodyCell
                 id={getBodyCellElementId(action.id)}

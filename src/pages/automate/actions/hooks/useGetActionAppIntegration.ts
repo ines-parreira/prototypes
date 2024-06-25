@@ -1,11 +1,11 @@
 import {useMemo} from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrations} from 'state/integrations/selectors'
-import {ActionApps} from '../types'
+import {ActionAppConfiguration} from '../types'
 
 type Props = {
     shopName: string
-    appType?: ActionApps['type'] | null
+    appType?: ActionAppConfiguration['type'] | null
 }
 
 export default function useGetActionAppIntegration({appType, shopName}: Props) {

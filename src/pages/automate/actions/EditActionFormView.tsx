@@ -1,8 +1,9 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {useParams, Link, useHistory} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
+import Button from 'pages/common/components/button/Button'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 
 import {handleError} from 'pages/automate/actions/hooks/errorHandler'
@@ -13,7 +14,7 @@ import {
 } from 'models/workflows/queries'
 
 import {ACTIONS} from '../common/components/constants'
-import {AUTOMATE_VIEW_ACTION_PORTAL_ID} from './constants'
+import {getActionsAppByType} from './utils'
 import {
     StoresWorkflowConfiguration,
     CustomActionConfigurationFormInput,
@@ -28,6 +29,7 @@ export default function EditActionFormView() {
     const dispatch = useAppDispatch()
     const history = useHistory()
 
+    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(false)
     const {shopName, shopType, id} = useParams<{
         shopType: string
         shopName: string
@@ -80,6 +82,10 @@ export default function EditActionFormView() {
             ),
         [templateConfigurations, configurationData]
     )
+    const configurationAppTypeApp = getActionsAppByType(
+        'app',
+        configurationData?.apps
+    )
 
     return (
         <AutomateView
@@ -101,7 +107,21 @@ export default function EditActionFormView() {
                     )}
                 </Breadcrumb>
             }
-            action={<div id={AUTOMATE_VIEW_ACTION_PORTAL_ID}></div>}
+            action={
+                <>
+                    {configurationAppTypeApp && (
+                        <Button
+                            fillStyle="ghost"
+                            className={css.viewAppAuthButton}
+                            onClick={() => {
+                                setApiKeyModalIsOpen(true)
+                            }}
+                        >
+                            View App Authentication
+                        </Button>
+                    )}
+                </>
+            }
         >
             {templateConfiguration ? (
                 <TemplateActionsForm
@@ -109,6 +129,8 @@ export default function EditActionFormView() {
                         configurationData as TemplateConfigurationFormInput
                     }
                     templateConfiguration={templateConfiguration}
+                    apiKeyModalIsOpen={apiKeyModalIsOpen}
+                    setApiKeyModalIsOpen={setApiKeyModalIsOpen}
                 />
             ) : (
                 <CustomActionsForm

@@ -1,5 +1,4 @@
 import React, {useState, useMemo, useEffect} from 'react'
-import {Link} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -8,41 +7,37 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import InputField from 'pages/common/forms/input/InputField'
 import {useGetApps} from 'models/integration/queries'
 import {INTEGRATION_TYPE_CONFIG} from 'config'
-import {ActionApps} from '../types'
+import {ActionAppConfiguration, ActionAppConnected} from '../types'
 import TemplateActionBanner from './TemplateActionBanner'
 import css from './AppConfirmationModal.less'
 
 type Props = {
+    actionAppConnected?: ActionAppConnected
     templateName: string
-    templateDescription: string
-    app: ActionApps
+    templateDescription?: string | null
+    actionAppConfiguration: ActionAppConfiguration
     apiKey: string
     onConfirm: (apiKey: string) => void
     setOpen: (isOpen: boolean) => void
     isOpen: boolean
-    isNativeIntegrationDisabled: boolean
     isNewAction: boolean
 }
 
-const appNameToHelpLinkMap: Record<string, string> = {
-    loop: 'https://link.gorgias.com/rpz',
-}
-
-export default function AppKeyConfirmationModal({
+export default function AppConfirmationModal({
+    actionAppConnected,
     onConfirm,
-    app,
+    actionAppConfiguration,
     apiKey,
     templateName,
     templateDescription,
     isOpen,
     setOpen,
-    isNativeIntegrationDisabled,
     isNewAction,
 }: Props) {
     const {data: appsList} = useGetApps()
 
     const [step, stepStep] = useState<'details' | 'input'>(
-        isNativeIntegrationDisabled || isNewAction ? 'details' : 'input'
+        isNewAction ? 'details' : 'input'
     )
 
     const [apiKeyInput, setApiKeyInput] = useState(apiKey)
@@ -50,32 +45,35 @@ export default function AppKeyConfirmationModal({
     const isDirty = apiKeyInput !== apiKey
 
     useEffect(() => {
-        if (!isOpen && app.type === 'app') {
+        if (!isOpen && actionAppConfiguration.type === 'app') {
             setApiKeyInput(apiKey)
         }
-    }, [apiKey, app.type, isOpen])
+    }, [apiKey, actionAppConfiguration.type, isOpen])
 
     const appData = useMemo(
         () =>
             appsList?.find((appItem) =>
-                app.type === 'app'
-                    ? appItem.id === app.app_id
-                    : appItem.name === app.type
+                actionAppConfiguration.type === 'app'
+                    ? appItem.id === actionAppConfiguration.app_id
+                    : appItem.name === actionAppConfiguration.type
             ),
-        [app, appsList]
+        [actionAppConfiguration, appsList]
     )
 
     const integrationTypeConfig = useMemo(
-        () => INTEGRATION_TYPE_CONFIG.find((item) => item.type === app.type),
-        [app.type]
+        () =>
+            INTEGRATION_TYPE_CONFIG.find(
+                (item) => item.type === actionAppConfiguration.type
+            ),
+        [actionAppConfiguration.type]
     )
+
+    const authSettingsUrl = actionAppConnected?.auth_settings.url
 
     const modalTitle =
         step === 'details' ? 'Action details' : 'Connect 3rd party app'
 
     const appName = appData?.name || integrationTypeConfig?.title
-
-    const appHelpLink = appData?.name && appNameToHelpLinkMap[appData.name]
 
     return (
         <Modal isOpen={isOpen} onClose={() => setOpen(false)} size="medium">
@@ -84,33 +82,16 @@ export default function AppKeyConfirmationModal({
                 {step === 'details' ? (
                     <>
                         <TemplateActionBanner
-                            app={app}
+                            actionAppConfiguration={actionAppConfiguration}
                             description={templateDescription}
                             name={templateName}
                         />
+
                         {appName && (
-                            <>
-                                {isNativeIntegrationDisabled ? (
-                                    <span>
-                                        This Action requires an active {appName}{' '}
-                                        integration.{' '}
-                                        <Link
-                                            to={`/app/settings/integrations/${
-                                                integrationTypeConfig?.type ??
-                                                ''
-                                            }`}
-                                        >
-                                            You can configure {appName}{' '}
-                                            integrations in the App Store.
-                                        </Link>
-                                    </span>
-                                ) : (
-                                    <span>
-                                        This Action requires an active {appName}{' '}
-                                        account.
-                                    </span>
-                                )}
-                            </>
+                            <span>
+                                This Action requires an active {appName}{' '}
+                                account.
+                            </span>
                         )}
                     </>
                 ) : (
@@ -120,7 +101,7 @@ export default function AppKeyConfirmationModal({
                                 Enter the API key from your {appName} account.
                             </span>
                         )}
-                        <div>
+                        <div className={css.inputContainer}>
                             <InputField
                                 label="API key"
                                 isRequired
@@ -128,14 +109,16 @@ export default function AppKeyConfirmationModal({
                                 value={apiKeyInput}
                                 onChange={setApiKeyInput}
                             />
-                            {appHelpLink && appName && (
-                                <a
-                                    href={appHelpLink}
-                                    target="_blank"
-                                    rel="noreferrer noopener"
-                                >
-                                    Find your API key in {appName}.
-                                </a>
+                            {authSettingsUrl && appName && (
+                                <div>
+                                    <a
+                                        href={authSettingsUrl}
+                                        target="_blank"
+                                        rel="noreferrer noopener"
+                                    >
+                                        Find your API key in {appName}.
+                                    </a>
+                                </div>
                             )}
                         </div>
                     </>
@@ -144,7 +127,7 @@ export default function AppKeyConfirmationModal({
             <ModalActionsFooter
                 extra={
                     !isNewAction &&
-                    app.type === 'app' &&
+                    actionAppConfiguration.type === 'app' &&
                     step === 'input' && (
                         <Button
                             isDisabled={!isDirty}
@@ -162,7 +145,6 @@ export default function AppKeyConfirmationModal({
                 </Button>
                 {step === 'details' ? (
                     <Button
-                        isDisabled={isNativeIntegrationDisabled}
                         intent="primary"
                         onClick={() => {
                             stepStep('input')

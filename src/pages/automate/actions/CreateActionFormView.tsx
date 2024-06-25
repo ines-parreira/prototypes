@@ -1,15 +1,16 @@
-import React, {useMemo} from 'react'
+import React, {useMemo, useState} from 'react'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {useParams, Link, useLocation} from 'react-router-dom'
+import Button from 'pages/common/components/button/Button'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
 import {ACTIONS} from '../common/components/constants'
 import CustomActionsForm from './components/CustomActionsForm'
 import TemplateActionsForm from './components/TemplateActionsForm'
-import {AUTOMATE_VIEW_ACTION_PORTAL_ID} from './constants'
 import {TemplateConfigurationFormInput} from './types'
 import {
     generateNewCustomActionConfigurationFormInput,
+    getActionsAppByType,
     getTriggerstByKind,
 } from './utils'
 import css from './ActionsView.less'
@@ -17,6 +18,7 @@ import css from './ActionsView.less'
 export default function CreateActionFormView() {
     const {search} = useLocation()
     const params = useMemo(() => new URLSearchParams(search), [search])
+    const [apiKeyModalIsOpen, setApiKeyModalIsOpen] = useState(false)
     const templateConfigurationId = params.get('template_id')
 
     const {
@@ -70,6 +72,11 @@ export default function CreateActionFormView() {
 
     const isTemplateAction = templateConfiguration && newActionConfiguration
 
+    const configurationAppTypeApp = getActionsAppByType(
+        'app',
+        newActionConfiguration?.apps
+    )
+
     return (
         <AutomateView
             className={css.actionsFormContainer}
@@ -90,12 +97,28 @@ export default function CreateActionFormView() {
                     </BreadcrumbItem>
                 </Breadcrumb>
             }
-            action={<div id={AUTOMATE_VIEW_ACTION_PORTAL_ID}></div>}
+            action={
+                <>
+                    {configurationAppTypeApp && (
+                        <Button
+                            fillStyle="ghost"
+                            className={css.viewAppAuthButton}
+                            onClick={() => {
+                                setApiKeyModalIsOpen(true)
+                            }}
+                        >
+                            View App Authentication
+                        </Button>
+                    )}
+                </>
+            }
         >
             {isTemplateAction ? (
                 <TemplateActionsForm
                     initialConfigurationData={newActionConfiguration}
                     templateConfiguration={templateConfiguration}
+                    apiKeyModalIsOpen={apiKeyModalIsOpen}
+                    setApiKeyModalIsOpen={setApiKeyModalIsOpen}
                 />
             ) : (
                 <CustomActionsForm
