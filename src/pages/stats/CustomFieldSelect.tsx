@@ -3,7 +3,7 @@ import React, {useEffect, useRef, useState} from 'react'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

@@ -1,12 +1,12 @@
 import React from 'react'
+import {Label} from '@gorgias/ui-kit'
+
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconButton from 'pages/common/components/button/IconButton'
-
 import Tooltip from 'pages/common/components/Tooltip'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Label from 'pages/common/forms/Label/Label'
 import {CustomInput} from '../types'
 import css from './ActionFormInputVariable.less'
 

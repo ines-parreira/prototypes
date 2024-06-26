@@ -104,7 +104,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 class="mb-2"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="tweets_replies_enabled"
                 >
                   <input
@@ -121,7 +121,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 class="mb-2"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="mentions_enabled"
                 >
                   <input
@@ -138,7 +138,7 @@ exports[`<TwitterIntegrationDetail/> render() should render 1`] = `
                 class="mb-2"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="direct_messages_enabled"
                 >
                   <input

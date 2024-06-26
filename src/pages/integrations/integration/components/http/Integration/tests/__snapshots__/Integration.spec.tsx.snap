@@ -85,7 +85,7 @@ exports[`Integration should display data about the integration 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-created"
           >
             <input
@@ -102,7 +102,7 @@ exports[`Integration should display data about the integration 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-updated"
           >
             <input
@@ -118,7 +118,7 @@ exports[`Integration should display data about the integration 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-self-unsnoozed"
           >
             <input
@@ -134,7 +134,7 @@ exports[`Integration should display data about the integration 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-message-created"
           >
             <input
@@ -701,7 +701,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-created"
           >
             <input
@@ -718,7 +718,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-updated"
           >
             <input
@@ -734,7 +734,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-self-unsnoozed"
           >
             <input
@@ -750,7 +750,7 @@ exports[`Integration should display data with url-encoded format 1`] = `
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-message-created"
           >
             <input
@@ -1353,7 +1353,7 @@ exports[`Integration should display default values because there is no integrati
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-created"
           >
             <input
@@ -1370,7 +1370,7 @@ exports[`Integration should display default values because there is no integrati
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-updated"
           >
             <input
@@ -1387,7 +1387,7 @@ exports[`Integration should display default values because there is no integrati
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-self-unsnoozed"
           >
             <input
@@ -1404,7 +1404,7 @@ exports[`Integration should display default values because there is no integrati
           class="mb-2"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="http.triggers.ticket-message-created"
           >
             <input

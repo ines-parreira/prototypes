@@ -87,7 +87,7 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="month"
                 >
                   <input
@@ -110,7 +110,7 @@ exports[`UsageAndPlansView should render 1`] = `
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="year"
                 >
                   <input

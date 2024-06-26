@@ -3,6 +3,8 @@ import {ulid} from 'ulidx'
 import _ from 'lodash'
 import {useParams, useHistory} from 'react-router-dom'
 import {useFieldArray, useWatch, useForm, Controller} from 'react-hook-form'
+import {Label} from '@gorgias/ui-kit'
+
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -23,7 +25,7 @@ import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpR
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
-import Label from 'pages/common/forms/Label/Label'
+
 import TextArea from 'pages/common/forms/TextArea'
 import CheckBox from 'pages/common/forms/CheckBox'
 import useUpsertAction from '../hooks/useUpsertAction'

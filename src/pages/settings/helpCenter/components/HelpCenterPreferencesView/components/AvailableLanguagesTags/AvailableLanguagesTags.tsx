@@ -1,6 +1,5 @@
 import React from 'react'
-
-import Label from 'pages/common/forms/Label/Label'
+import {Label} from '@gorgias/ui-kit'
 
 import {Locale} from 'models/helpCenter/types'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'

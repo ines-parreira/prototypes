@@ -43,13 +43,13 @@ exports[`<AddTicketField/> should render 1`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="input-text-1"
           >
             Name
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -80,7 +80,7 @@ exports[`<AddTicketField/> should render 1`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="textarea-3"
           >
             Description
@@ -104,7 +104,7 @@ exports[`<AddTicketField/> should render 1`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="checkbox-4"
           >
             <input
@@ -125,13 +125,13 @@ exports[`<AddTicketField/> should render 1`] = `
           class="formRow"
         >
           <label
-            class="label formLabel"
+            class="Label--label--QAnfT formLabel"
             for="type"
           >
             Type
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -170,13 +170,13 @@ exports[`<AddTicketField/> should render 1`] = `
             class="formLabelWithTooltip"
           >
             <label
-              class="label"
+              class="Label--label--QAnfT"
               for="settings.choices"
             >
               Dropdown values
               <abbr
                 aria-label="required"
-                class="abbr"
+                class="Label--abbr--Zx_yi"
                 title="required"
               >
                 *

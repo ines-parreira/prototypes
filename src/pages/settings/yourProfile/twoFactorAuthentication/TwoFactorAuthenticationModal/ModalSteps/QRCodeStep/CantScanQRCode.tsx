@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Clipboard from 'clipboard'
-import Label from 'pages/common/forms/Label/Label'
+import {Label} from '@gorgias/ui-kit'
+
 import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import Button from 'pages/common/components/button/Button'

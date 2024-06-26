@@ -1,6 +1,6 @@
 import React, {useCallback, useMemo} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
-import Label from 'pages/common/forms/Label/Label'
 import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'

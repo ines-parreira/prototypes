@@ -368,7 +368,7 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial state 1`] = `
                 class="isDisabled"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="checkbox-1"
                 >
                   <input
@@ -432,7 +432,7 @@ exports[`EntireOrderRefundOrderModal snapshot renders the initial state 1`] = `
                 class="isDisabled"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="checkbox-2"
                 >
                   <input

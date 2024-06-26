@@ -4,10 +4,10 @@ import React, {
     forwardRef,
     ReactNode,
 } from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
-import Label from 'pages/common/forms/Label/Label'
 
 import TextInput from './TextInput'
 

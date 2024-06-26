@@ -1,8 +1,8 @@
 import React, {useMemo, useRef, useState} from 'react'
 import {Route, Switch, useParams} from 'react-router-dom'
+import {Label} from '@gorgias/ui-kit'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import Label from 'pages/common/forms/Label/Label'
 import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'

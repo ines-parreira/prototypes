@@ -1,7 +1,8 @@
 import React, {useMemo, useCallback, useEffect, useState} from 'react'
 import _debounce from 'lodash/debounce'
+import {Label} from '@gorgias/ui-kit'
+
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import Label from 'pages/common/forms/Label/Label'
 import {getNameValidationError} from 'pages/settings/helpCenter/utils/validations'
 import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
 import InputField from 'pages/common/forms/input/InputField'

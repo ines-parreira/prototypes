@@ -80,7 +80,7 @@ exports[`TextArea should render the textarea with label 1`] = `
   class="class-for-wrapper"
 >
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
     for="textarea-42"
   >
     Label of textarea

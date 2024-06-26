@@ -367,7 +367,7 @@ exports[`<BigCommerce/> Integration should render 1`] = `
         </div>
         <form>
           <label
-            class="label isDisabled mb-2"
+            class="Label--label--QAnfT Label--isDisabled--cM4ye mb-2"
             for="disabled-store-field"
           >
             Store domain

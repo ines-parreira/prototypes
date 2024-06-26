@@ -1,4 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {formatValue} from 'pages/settings/billing/automate/ROICalculator/utils'
@@ -15,7 +16,6 @@ import {
     AccountSettingType,
 } from 'state/currentAccount/types'
 
-import Label from 'pages/common/forms/Label/Label'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'

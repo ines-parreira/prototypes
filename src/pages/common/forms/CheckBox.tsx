@@ -8,11 +8,11 @@ import React, {
     useRef,
 } from 'react'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
-import Label from './Label/Label'
 import css from './CheckBox.less'
 
 export type Props = {

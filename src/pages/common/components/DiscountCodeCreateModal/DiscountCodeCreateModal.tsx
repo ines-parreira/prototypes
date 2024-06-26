@@ -10,6 +10,7 @@ import {
 import moment from 'moment-timezone'
 import axios, {AxiosError} from 'axios'
 import {Map} from 'immutable'
+import {Label} from '@gorgias/ui-kit'
 
 import {
     DISCOUNT_TYPE,
@@ -17,7 +18,6 @@ import {
     DISCOUNT_USE_TYPE,
     DISCOUNT_USE_CHOICES,
 } from 'models/discountCodes/constants'
-import Label from 'pages/common/forms/Label/Label'
 
 import Button from 'pages/common/components/button/Button'
 import Errors from 'pages/common/forms/Errors'

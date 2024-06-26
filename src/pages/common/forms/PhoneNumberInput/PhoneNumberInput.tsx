@@ -18,6 +18,7 @@ import {
     isValidPhoneNumber,
 } from 'libphonenumber-js'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import {countries} from 'config/countries'
 import Button from 'pages/common/components/button/Button'
@@ -26,7 +27,6 @@ import InputGroup, {
 } from 'pages/common/forms/input/InputGroup'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
-import Label from 'pages/common/forms/Label/Label'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'

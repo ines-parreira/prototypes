@@ -1,6 +1,7 @@
+import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
-import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -25,7 +26,6 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
-import Label from 'pages/common/forms/Label/Label'
 import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
 import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'

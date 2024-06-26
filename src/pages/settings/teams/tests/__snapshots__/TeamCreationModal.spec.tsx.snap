@@ -45,13 +45,13 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
               id="modal-2-desc"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="name"
               >
                 Team name
                 <abbr
                   aria-label="required"
-                  class="abbr"
+                  class="Label--abbr--Zx_yi"
                   title="required"
                 >
                   *
@@ -87,7 +87,7 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                 class="inputGroup"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="description"
                 >
                   Description
@@ -106,12 +106,12 @@ exports[`<TeamCreationModal /> should render the opened modal 1`] = `
                 </div>
               </div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
               >
                 Team members
                 <abbr
                   aria-label="required"
-                  class="abbr"
+                  class="Label--abbr--Zx_yi"
                   title="required"
                 >
                   *

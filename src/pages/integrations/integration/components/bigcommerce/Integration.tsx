@@ -1,6 +1,7 @@
 import React, {FormEvent, useCallback} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -11,7 +12,6 @@ import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Loader from 'pages/common/components/Loader/Loader'
-import Label from 'pages/common/forms/Label/Label'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'

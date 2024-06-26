@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react'
+import {Label} from '@gorgias/ui-kit'
+
 import InputField from 'pages/common/forms/input/InputField'
 import {Country, countriesRequiringState} from 'config/countries'
-import Label from 'pages/common/forms/Label/Label'
 import {BillingContact} from 'state/billing/types'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import CountriesDropdown from '../../components/CountriesDropdown/CountriesDropdown'

@@ -14,7 +14,7 @@ import {
     TableViewColumn,
 } from 'state/ui/stats/types'
 import Button from 'pages/common/components/button/Button'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {EditColumnsItem} from 'pages/stats/common/components/Table/EditColumnsItem'
 
 import css from 'pages/stats/common/components/Table/EditColumns.less'

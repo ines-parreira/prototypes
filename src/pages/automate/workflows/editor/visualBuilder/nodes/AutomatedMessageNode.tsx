@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import React, {memo, useMemo} from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
+import {Label} from '@gorgias/ui-kit'
 
-import Label from 'pages/common/forms/Label/Label'
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {

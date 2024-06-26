@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, Position, NodeProps} from 'reactflow'
+import {Label} from '@gorgias/ui-kit'
+
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Label from 'pages/common/forms/Label/Label'
 import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,

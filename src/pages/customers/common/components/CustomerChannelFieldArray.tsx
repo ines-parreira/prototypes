@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import _clone from 'lodash/clone'
 import {FormGroup, Row, Col} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import InputField from 'pages/common/forms/input/InputField'
-import Label from 'pages/common/forms/Label/Label'
 
 import css from './CustomerChannelFieldArray.less'
 

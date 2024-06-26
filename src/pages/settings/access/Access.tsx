@@ -2,8 +2,9 @@ import React, {FormEvent, useCallback, useState} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {Button, Container, Form} from 'reactstrap'
-
+import {Label} from '@gorgias/ui-kit'
 import {List} from 'immutable'
+
 import googleLogo from 'assets/img/integrations/google.svg'
 import microsoftLogo from 'assets/img/integrations/microsoft.svg'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -22,7 +23,6 @@ import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorA
 import useAppSelector from 'hooks/useAppSelector'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import Label from 'pages/common/forms/Label/Label'
 import css from '../settings.less'
 import SsoToggleButton from './SsoToggleButton'
 

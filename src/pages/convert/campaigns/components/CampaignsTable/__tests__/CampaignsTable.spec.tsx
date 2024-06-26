@@ -157,9 +157,15 @@ describe('<CampaignsTable />', () => {
             <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
         )
 
-        const toggles = container.querySelectorAll(
-            'label[class*="label"]:not(.isDisabled)'
+        const toggles = Array.from(
+            container.querySelectorAll('label[class*="label"]')
+        ).filter(
+            (el) =>
+                !Array.from(el.classList).some((cn) =>
+                    cn.includes('isDisabled')
+                )
         )
+
         expect(toggles.length).toEqual(ACTIVE_CAMPAIGNS_COUNT)
 
         const inputId = toggles[0].getAttribute('for') || ''

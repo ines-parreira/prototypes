@@ -54,7 +54,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="checkbox"
       >
         <label
-          class="label label quickSelectionOption"
+          class="Label--label--QAnfT label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -84,7 +84,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-2"
         >
           <input
@@ -110,7 +110,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-4"
         >
           <input
@@ -136,7 +136,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-6"
         >
           <input
@@ -161,7 +161,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-8"
         >
           <input
@@ -186,7 +186,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-10"
         >
           <input
@@ -211,7 +211,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-12"
         >
           <input
@@ -236,7 +236,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-14"
         >
           <input
@@ -261,7 +261,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-16"
         >
           <input
@@ -286,7 +286,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-18"
         >
           <input
@@ -311,7 +311,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-20"
         >
           <input
@@ -336,7 +336,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-22"
         >
           <input
@@ -361,7 +361,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-24"
         >
           <input
@@ -385,7 +385,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-26"
         >
           <input
@@ -410,7 +410,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-28"
         >
           <input

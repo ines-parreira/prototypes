@@ -2,10 +2,10 @@ import React from 'react'
 import {CreateSlaPolicyBody} from '@gorgias/api-types'
 import {useController, useFieldArray} from 'react-hook-form'
 import classNames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import settingsCss from 'pages/settings/settings.less'
-import Label from 'pages/common/forms/Label/Label'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import FormField from './FormField'

@@ -1,4 +1,5 @@
 import React, {useCallback, useRef, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import Tag from 'pages/common/components/Tag/Tag'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -6,7 +7,6 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import Label from 'pages/common/forms/Label/Label'
 
 import {
     ReportIssueLabels,

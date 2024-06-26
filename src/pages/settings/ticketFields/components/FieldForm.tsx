@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {set, pick} from 'lodash'
 import {Location} from 'history'
+import {Label} from '@gorgias/ui-kit'
 
 import history from 'pages/history'
 
@@ -12,7 +13,6 @@ import {
 import {useUpdateCustomFieldArchiveStatus} from 'hooks/customField/useUpdateCustomFieldArchiveStatus'
 import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
-import Label from 'pages/common/forms/Label/Label'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
 import Tooltip from 'pages/common/components/Tooltip'

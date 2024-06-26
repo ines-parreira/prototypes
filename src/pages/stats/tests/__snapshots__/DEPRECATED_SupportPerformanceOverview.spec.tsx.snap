@@ -115,7 +115,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="checkbox"
                   >
                     <label
-                      class="label label quickSelectionOption"
+                      class="Label--label--QAnfT label quickSelectionOption"
                       for="checkbox-1"
                     >
                       <input
@@ -144,7 +144,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-2"
                     >
                       <input
@@ -169,7 +169,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-4"
                     >
                       <input
@@ -194,7 +194,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-6"
                     >
                       <input
@@ -219,7 +219,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-8"
                     >
                       <input
@@ -244,7 +244,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-10"
                     >
                       <input
@@ -269,7 +269,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-12"
                     >
                       <input
@@ -294,7 +294,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-14"
                     >
                       <input
@@ -319,7 +319,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-16"
                     >
                       <input
@@ -344,7 +344,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-18"
                     >
                       <input
@@ -369,7 +369,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-20"
                     >
                       <input
@@ -432,7 +432,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="checkbox"
                   >
                     <label
-                      class="label label quickSelectionOption"
+                      class="Label--label--QAnfT label quickSelectionOption"
                       for="checkbox-22"
                     >
                       <input
@@ -499,7 +499,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="checkbox"
                   >
                     <label
-                      class="label label quickSelectionOption"
+                      class="Label--label--QAnfT label quickSelectionOption"
                       for="checkbox-23"
                     >
                       <input
@@ -536,7 +536,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       class="wrapperItem"
                     >
                       <label
-                        class="label label labelItem"
+                        class="Label--label--QAnfT label labelItem"
                         for="checkbox-24"
                       >
                         <input
@@ -556,7 +556,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       class="wrapperItem"
                     >
                       <label
-                        class="label label labelItem"
+                        class="Label--label--QAnfT label labelItem"
                         for="checkbox-26"
                       >
                         <input
@@ -576,7 +576,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       class="wrapperItem"
                     >
                       <label
-                        class="label label labelItem"
+                        class="Label--label--QAnfT label labelItem"
                         for="checkbox-28"
                       >
                         <input
@@ -596,7 +596,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                       class="wrapperItem"
                     >
                       <label
-                        class="label label labelItem"
+                        class="Label--label--QAnfT label labelItem"
                         for="checkbox-30"
                       >
                         <input
@@ -627,7 +627,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-32"
                     >
                       <input
@@ -648,7 +648,7 @@ exports[`DEPRECATED_SupportPerformanceOverview should render the filters and sta
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-34"
                     >
                       <input

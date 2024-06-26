@@ -21,7 +21,7 @@ exports[`<RuleRow /> should render a row with a managed rule tab 1`] = `
     <div>
       <label
         aria-checked="true"
-        class="label label"
+        class="Label--label--QAnfT label"
         for="toggle-button-5"
         role="switch"
       >
@@ -127,7 +127,7 @@ exports[`<RuleRow /> should render a row with a rule 1`] = `
     <div>
       <label
         aria-checked="true"
-        class="label label"
+        class="Label--label--QAnfT label"
         for="toggle-button-2"
         role="switch"
       >
@@ -233,7 +233,7 @@ exports[`<RuleRow /> should render a row with an error 1`] = `
     <div>
       <label
         aria-checked="true"
-        class="label label"
+        class="Label--label--QAnfT label"
         for="toggle-button-8"
         role="switch"
       >

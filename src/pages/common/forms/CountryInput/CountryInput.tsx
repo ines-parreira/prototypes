@@ -7,11 +7,11 @@ import React, {
     useEffect,
 } from 'react'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 import {countries} from 'config/countries'
 import TextInput from 'pages/common/forms/input/TextInput'
-import Label from 'pages/common/forms/Label/Label'
 
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'

@@ -9,6 +9,7 @@ import React, {
 } from 'react'
 import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
 import {Map} from 'immutable'
+import {Label} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -42,7 +43,6 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
-import Label from 'pages/common/forms/Label/Label'
 import {getHumanAgents} from 'state/agents/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'

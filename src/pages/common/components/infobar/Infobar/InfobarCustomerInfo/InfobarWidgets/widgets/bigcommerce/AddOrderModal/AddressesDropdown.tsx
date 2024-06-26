@@ -1,7 +1,8 @@
 import React, {useRef, useState} from 'react'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
+
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Label from 'pages/common/forms/Label/Label'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import SelectInputBox, {

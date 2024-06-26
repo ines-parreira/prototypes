@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
-import Label from 'pages/common/forms/Label/Label'
 import useId from 'hooks/useId'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import Tooltip from 'pages/common/components/Tooltip'

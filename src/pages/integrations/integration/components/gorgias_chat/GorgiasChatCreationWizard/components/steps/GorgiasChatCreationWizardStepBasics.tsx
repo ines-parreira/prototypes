@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -40,7 +41,6 @@ import {
     DEPRECATED_getIntegrationsByTypes,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
-import Label from 'pages/common/forms/Label/Label'
 import Button from 'pages/common/components/button/Button'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import InputField from 'pages/common/forms/input/InputField'

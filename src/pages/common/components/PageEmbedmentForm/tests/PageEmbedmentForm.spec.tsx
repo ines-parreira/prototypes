@@ -142,7 +142,12 @@ describe('<PageEmbedmentForm />', () => {
 
         // navigate to existing page mode
         const existingCtaMode = screen.getByText(/Embed to existing page/i)
-        expect(existingCtaMode).not.toHaveClass('isDisabled')
+
+        expect(
+            Array.from(existingCtaMode.classList).some((cn) =>
+                cn.includes('isDisabled')
+            )
+        ).toBe(false)
 
         userEvent.click(existingCtaMode)
         expect(dispatch).toHaveBeenCalledTimes(1)
@@ -169,6 +174,10 @@ describe('<PageEmbedmentForm />', () => {
         screen.getByText(/Slug/i)
 
         // verify that the cta is disabled
-        expect(existingCtaMode).toHaveClass('isDisabled')
+        expect(
+            Array.from(existingCtaMode.classList).some((cn) =>
+                cn.includes('isDisabled')
+            )
+        ).toBe(true)
     })
 })

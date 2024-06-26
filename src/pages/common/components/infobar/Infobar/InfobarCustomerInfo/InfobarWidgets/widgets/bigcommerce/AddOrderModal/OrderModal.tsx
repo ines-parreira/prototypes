@@ -6,16 +6,15 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-
 import classnames from 'classnames'
 import {Row} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
 import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import Label from 'pages/common/forms/Label/Label'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import {

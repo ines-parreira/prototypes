@@ -1,4 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {
     HelpCenter,
@@ -18,8 +19,7 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import InputField from 'pages/common/forms/input/InputField'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
-import Label from 'pages/common/forms/Label/Label'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import {
     Language,

@@ -20,7 +20,7 @@ exports[`<Create/> should render a create view 1`] = `
           class="mb-4"
         >
           <label
-            class="label mb-2"
+            class="Label--label--QAnfT mb-2"
             for="store-field"
           >
             Store name

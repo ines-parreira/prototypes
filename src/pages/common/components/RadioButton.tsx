@@ -5,9 +5,9 @@ import React, {
     useImperativeHandle,
     useRef,
 } from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import Caption from '../forms/Caption/Caption'
-import Label from '../forms/Label/Label'
 import {RadioFieldOption} from '../forms/RadioFieldSet'
 
 import css from './RadioButton.less'

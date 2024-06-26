@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
+import {Label} from '@gorgias/ui-kit'
+
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {ContactFormIntegration} from 'models/contactForm/types'

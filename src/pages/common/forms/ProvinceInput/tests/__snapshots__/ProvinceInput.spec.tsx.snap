@@ -5,7 +5,7 @@ exports[`<ProvinceInput/> should render with dropdown 1`] = `
   class="wrapper"
 >
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
   >
     State or province
   </label>
@@ -40,7 +40,7 @@ exports[`<ProvinceInput/> should render with text input 1`] = `
     class="mb-2"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-3"
     >
       State or province

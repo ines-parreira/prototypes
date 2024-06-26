@@ -1,5 +1,6 @@
 import React, {FormEvent, useState} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
 import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
 import * as utils from 'utils'
@@ -8,7 +9,6 @@ import css from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import InputGroup from 'pages/common/forms/input/InputGroup'
-import Label from 'pages/common/forms/Label/Label'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import Caption from 'pages/common/forms/Caption/Caption'
 

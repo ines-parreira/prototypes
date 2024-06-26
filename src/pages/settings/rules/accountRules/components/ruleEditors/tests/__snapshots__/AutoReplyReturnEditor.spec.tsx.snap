@@ -12,13 +12,13 @@ exports[`<AutoReplyReturnEditor/> should render component 1`] = `
   >
     <div>
       <label
-        class="label label"
+        class="Label--label--QAnfT label"
         for="input-text-1"
       >
         Return portal URL
         <abbr
           aria-label="required"
-          class="abbr"
+          class="Label--abbr--Zx_yi"
           title="required"
         >
           *

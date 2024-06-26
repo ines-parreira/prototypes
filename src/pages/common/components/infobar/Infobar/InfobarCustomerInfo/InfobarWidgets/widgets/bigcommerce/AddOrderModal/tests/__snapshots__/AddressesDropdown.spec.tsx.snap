@@ -3,12 +3,12 @@
 exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippingAddresses = [] & snapshot should render \`Select from address book...\` 1`] = `
 <div>
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
   >
     Shipping address
     <abbr
       aria-label="required"
-      class="abbr"
+      class="Label--abbr--Zx_yi"
       title="required"
     >
       *
@@ -61,12 +61,12 @@ exports[`<ShippingAddressesDropdown/> should display \`No results\` when shippin
 exports[`<ShippingAddressesDropdown/> snapshot renders the selected shipping address instead of \`Select from address book...\` 1`] = `
 <div>
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
   >
     Shipping address
     <abbr
       aria-label="required"
-      class="abbr"
+      class="Label--abbr--Zx_yi"
       title="required"
     >
       *

@@ -7,7 +7,7 @@ exports[`<SsoToggleButton/> should render properly 1`] = `
   >
     <label
       aria-checked="false"
-      class="label label"
+      class="Label--label--QAnfT label"
       for="toggle-button-1"
       role="switch"
     >

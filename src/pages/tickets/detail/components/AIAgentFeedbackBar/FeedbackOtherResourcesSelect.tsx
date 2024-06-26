@@ -1,5 +1,6 @@
 import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
-import Label from 'pages/common/forms/Label/Label'
+import {Label} from '@gorgias/ui-kit'
+
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import Tag from 'pages/common/components/Tag/Tag'

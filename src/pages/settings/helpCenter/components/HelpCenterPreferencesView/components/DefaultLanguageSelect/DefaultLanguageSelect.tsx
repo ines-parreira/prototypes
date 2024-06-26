@@ -1,14 +1,12 @@
 import React from 'react'
 import {Col, Row} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
+import {validLocaleCode} from 'models/helpCenter/utils'
 import Caption from 'pages/common/forms/Caption/Caption'
-import Label from 'pages/common/forms/Label/Label'
+import type {Value} from 'pages/common/forms/SelectField/types'
 
-import {validLocaleCode} from '../../../../../../../models/helpCenter/utils'
-
-import type {Value} from '../../../../../../common/forms/SelectField/types'
 import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
-
 import {LanguageSelect} from '../../../LanguageSelect/LanguageSelect'
 import css from './DefaultLanguageSelect.less'
 

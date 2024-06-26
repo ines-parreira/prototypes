@@ -93,7 +93,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
         </div>
         <form>
           <label
-            class="label isDisabled mb-2"
+            class="Label--label--QAnfT Label--isDisabled--cM4ye mb-2"
             for="disabled-store-field"
           >
             Store name
@@ -125,7 +125,7 @@ exports[`<ShopifyIntegration/> render() should render an integration with a dele
             <div>
               <label
                 aria-checked="true"
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="sync_customer_notes"
                 role="switch"
               >

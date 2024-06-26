@@ -43,7 +43,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
     </div>
     <div>
       <label
-        class="label control-label mb-2"
+        class="Label--label--QAnfT control-label mb-2"
         for="authenticatorField0"
       >
         Secret key
@@ -88,7 +88,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
     </div>
     <div>
       <label
-        class="label control-label mb-2"
+        class="Label--label--QAnfT control-label mb-2"
         for="authenticatorField1"
       >
         Account name
@@ -133,7 +133,7 @@ exports[`<CantScanQRCode /> render() should render the component with extra show
     </div>
     <div>
       <label
-        class="label control-label mb-2"
+        class="Label--label--QAnfT control-label mb-2"
         for="authenticatorField2"
       >
         URL

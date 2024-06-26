@@ -156,7 +156,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
           >
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="auto_assign_to_teams"
               >
                 <input
@@ -189,7 +189,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             class="mb32 form-group"
           >
             <label
-              class="label body-semibold limitsHeader"
+              class="Label--label--QAnfT body-semibold limitsHeader"
             >
               Auto-assignment limits
               <i
@@ -324,7 +324,7 @@ exports[`<TicketAssignment/> should render the "Save changes" button loading and
             </h3>
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="unassign_on_reply"
               >
                 <input
@@ -518,7 +518,7 @@ exports[`<TicketAssignment/> should render the create team cta when no team exis
             </h3>
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="unassign_on_reply"
               >
                 <input
@@ -644,7 +644,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
           >
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="auto_assign_to_teams"
               >
                 <input
@@ -677,7 +677,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
             class="mb32 form-group"
           >
             <label
-              class="label body-semibold limitsHeader"
+              class="Label--label--QAnfT body-semibold limitsHeader"
             >
               Auto-assignment limits
               <i
@@ -812,7 +812,7 @@ exports[`<TicketAssignment/> should render the store data 1`] = `
             </h3>
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="unassign_on_reply"
               >
                 <input

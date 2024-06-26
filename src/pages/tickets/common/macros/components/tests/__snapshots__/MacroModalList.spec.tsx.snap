@@ -97,7 +97,7 @@ exports[`<MacroModalList /> should render MacroModalList 1`] = `
             class="checkbox"
           >
             <label
-              class="label label quickSelectionOption"
+              class="Label--label--QAnfT label quickSelectionOption"
               for="checkbox-2"
             >
               <input

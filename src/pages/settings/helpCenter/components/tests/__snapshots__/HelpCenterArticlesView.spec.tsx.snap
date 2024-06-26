@@ -678,7 +678,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </div>
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="checkbox-1"
               >
                 <input
@@ -724,7 +724,7 @@ exports[`<HelpCenterArticlesView /> should render the component 1`] = `
             </div>
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="checkbox-2"
               >
                 <input

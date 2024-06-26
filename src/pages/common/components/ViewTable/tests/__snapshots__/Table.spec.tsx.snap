@@ -16,7 +16,7 @@ exports[`<Table /> should display a default view 1`] = `
             class="checkBox"
           >
             <label
-              class="label label checkBoxLabel"
+              class="Label--label--QAnfT label checkBoxLabel"
               for="checkbox-2"
             >
               <input
@@ -140,7 +140,7 @@ exports[`<Table /> should display a view with no fields 1`] = `
             class="checkBox"
           >
             <label
-              class="label label checkBoxLabel"
+              class="Label--label--QAnfT label checkBoxLabel"
               for="checkbox-1"
             >
               <input

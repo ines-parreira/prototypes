@@ -19,7 +19,7 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
     >
       <div>
         <label
-          class="label label"
+          class="Label--label--QAnfT label"
           for="option-0"
         >
           <input
@@ -46,7 +46,7 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
     >
       <div>
         <label
-          class="label label"
+          class="Label--label--QAnfT label"
           for="option-1"
         >
           <input
@@ -80,7 +80,7 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
     >
       <div>
         <label
-          class="label label"
+          class="Label--label--QAnfT label"
           for="option-2"
         >
           <input

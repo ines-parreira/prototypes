@@ -1,8 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react'
-
 import classNames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
-import Label from 'pages/common/forms/Label/Label'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'

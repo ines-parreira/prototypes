@@ -164,13 +164,13 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="mb16"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-1"
               >
                 Brand name
                 <abbr
                   aria-label="required"
-                  class="abbr"
+                  class="Label--abbr--Zx_yi"
                   title="required"
                 >
                   *
@@ -460,7 +460,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 </div>
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="light"
                   >
                     <input
@@ -493,7 +493,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
                 </div>
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="dark"
                   >
                     <input
@@ -861,7 +861,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
           >
             <label
               aria-checked="false"
-              class="label label"
+              class="Label--label--QAnfT label"
               for="toggle-button-5"
               role="switch"
             >
@@ -888,7 +888,7 @@ exports[`<HelpCenterAppearanceView /> should render the component 1`] = `
               class="mb16"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-6"
               >
                 Title

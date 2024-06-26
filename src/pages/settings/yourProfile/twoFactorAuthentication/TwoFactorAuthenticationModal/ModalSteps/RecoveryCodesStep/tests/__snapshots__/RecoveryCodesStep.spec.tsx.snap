@@ -183,7 +183,7 @@ abcdefgh16"
   <div>
     <div>
       <label
-        class="label label checkBox"
+        class="Label--label--QAnfT label checkBox"
         for="isRecoveryCodesSaved"
       >
         <input
@@ -370,7 +370,7 @@ abcdefgh16"
   <div>
     <div>
       <label
-        class="label label checkBox"
+        class="Label--label--QAnfT label checkBox"
         for="isRecoveryCodesSaved"
       >
         <input

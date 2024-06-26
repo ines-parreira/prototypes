@@ -1,8 +1,8 @@
 import React, {useRef} from 'react'
 import classNames from 'classnames'
 import _noop from 'lodash/noop'
+import {Label} from '@gorgias/ui-kit'
 
-import Label from 'pages/common/forms/Label/Label'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'

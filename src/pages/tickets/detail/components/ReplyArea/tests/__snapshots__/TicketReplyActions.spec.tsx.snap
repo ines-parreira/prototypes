@@ -825,7 +825,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               class="input"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="checkbox-7"
               >
                 <input
@@ -842,7 +842,7 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               class="input"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="checkbox-8"
               >
                 <input

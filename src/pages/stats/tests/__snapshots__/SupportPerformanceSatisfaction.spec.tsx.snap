@@ -77,7 +77,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="Label--label--QAnfT label quickSelectionOption"
                     for="checkbox-1"
                   >
                     <input
@@ -146,7 +146,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="Label--label--QAnfT label quickSelectionOption"
                     for="checkbox-2"
                   >
                     <input
@@ -176,7 +176,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-3"
                   >
                     <input
@@ -196,7 +196,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-5"
                   >
                     <input
@@ -216,7 +216,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-7"
                   >
                     <input
@@ -236,7 +236,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-9"
                   >
                     <input
@@ -257,7 +257,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-11"
                   >
                     <input
@@ -315,7 +315,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="checkbox"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="Label--label--QAnfT label quickSelectionOption"
                     for="checkbox-13"
                   >
                     <input
@@ -352,7 +352,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-14"
                     >
                       <input
@@ -372,7 +372,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-16"
                     >
                       <input
@@ -392,7 +392,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-18"
                     >
                       <input
@@ -412,7 +412,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                     class="wrapperItem"
                   >
                     <label
-                      class="label label labelItem"
+                      class="Label--label--QAnfT label labelItem"
                       for="checkbox-20"
                     >
                       <input
@@ -443,7 +443,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-22"
                   >
                     <input
@@ -464,7 +464,7 @@ exports[`SupportPerformanceSatisfaction should render the filters and stats when
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-24"
                   >
                     <input

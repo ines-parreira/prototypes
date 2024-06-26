@@ -51,7 +51,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="Entire order"
                 >
                   <input
@@ -75,7 +75,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="Manual amount"
                 >
                   <input
@@ -122,7 +122,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               Other
             </p>
             <label
-              class="label label"
+              class="Label--label--QAnfT label"
               for="refundReason"
             >
               Reason for refund
@@ -147,7 +147,7 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
               </div>
             </div>
             <label
-              class="label label smallSpacingMarginTop"
+              class="Label--label--QAnfT label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status
@@ -328,7 +328,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="Entire order"
                 >
                   <input
@@ -352,7 +352,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="Manual amount"
                 >
                   <input
@@ -690,7 +690,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                         class="isDisabled"
                       >
                         <label
-                          class="label label"
+                          class="Label--label--QAnfT label"
                           for="checkbox-3"
                         >
                           <input
@@ -754,7 +754,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                         class="isDisabled"
                       >
                         <label
-                          class="label label"
+                          class="Label--label--QAnfT label"
                           for="checkbox-4"
                         >
                           <input
@@ -869,7 +869,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               Other
             </p>
             <label
-              class="label label"
+              class="Label--label--QAnfT label"
               for="refundReason"
             >
               Reason for refund
@@ -894,7 +894,7 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
               </div>
             </div>
             <label
-              class="label label smallSpacingMarginTop"
+              class="Label--label--QAnfT label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status
@@ -1075,7 +1075,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="Entire order"
                 >
                   <input
@@ -1099,7 +1099,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
             >
               <div>
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="Manual amount"
                 >
                   <input
@@ -1146,7 +1146,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               Other
             </p>
             <label
-              class="label label"
+              class="Label--label--QAnfT label"
               for="refundReason"
             >
               Reason for refund
@@ -1171,7 +1171,7 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
               </div>
             </div>
             <label
-              class="label label smallSpacingMarginTop"
+              class="Label--label--QAnfT label smallSpacingMarginTop"
               for="newOrderStatus"
             >
               New status

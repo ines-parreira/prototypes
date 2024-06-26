@@ -1,9 +1,9 @@
 import React, {useCallback, useState} from 'react'
 import Immutable from 'immutable'
+import {Label} from '@gorgias/ui-kit'
 
 import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import Label from 'pages/common/forms/Label/Label'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 import {getHumanAgents} from 'state/agents/selectors'

@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {TooltipData} from 'pages/stats/types'
 import {DOCUMENTATION_LINK_TEXT} from 'services/reporting/constants'
 import css from 'pages/stats/common/HintTooltip.less'

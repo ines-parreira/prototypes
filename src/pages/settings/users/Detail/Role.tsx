@@ -1,10 +1,10 @@
 import React from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {UserRole} from 'config/types/user'
 import {ORDERED_ROLES_META_BY_USER_ROLE} from 'config/user'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 import Tooltip from 'pages/common/components/Tooltip'
-import Label from 'pages/common/forms/Label/Label'
 
 import css from './Detail.less'
 import {AgentState} from './types'

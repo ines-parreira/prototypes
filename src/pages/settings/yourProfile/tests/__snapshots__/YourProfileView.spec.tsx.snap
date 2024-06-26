@@ -98,13 +98,13 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               class="inputField"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-1"
               >
                 Your name
                 <abbr
                   aria-label="required"
-                  class="abbr"
+                  class="Label--abbr--Zx_yi"
                   title="required"
                 >
                   *
@@ -128,13 +128,13 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               class="inputField"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-3"
               >
                 Your email
                 <abbr
                   aria-label="required"
-                  class="abbr"
+                  class="Label--abbr--Zx_yi"
                   title="required"
                 >
                   *
@@ -158,7 +158,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               class="inputField"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-5"
               >
                 Your bio
@@ -272,7 +272,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   class="option"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="en_GB"
                   >
                     <input
@@ -293,7 +293,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   class="option"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="en_US"
                   >
                     <input
@@ -324,7 +324,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   class="option"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="24-hour"
                   >
                     <input
@@ -340,7 +340,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                   class="option"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="AM/PM"
                   >
                     <input
@@ -456,7 +456,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               >
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="system"
                   >
                     <input
@@ -488,7 +488,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               >
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="dark"
                   >
                     <input
@@ -521,7 +521,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               >
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="light"
                   >
                     <input
@@ -553,7 +553,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               >
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="modern light"
                   >
                     <input
@@ -594,7 +594,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               >
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="prefill_best_macro"
                     role="switch"
                   >
@@ -636,7 +636,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show_macros_suggestions"
                     role="switch"
                   >
@@ -678,7 +678,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
               >
                 <div>
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show_macros"
                     role="switch"
                   >
@@ -729,7 +729,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="forward_calls"
                 role="switch"
               >

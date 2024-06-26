@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import copy from 'copy-to-clipboard'
 import classNames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
@@ -14,7 +15,6 @@ import {
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
-import Label from 'pages/common/forms/Label/Label'
 import TextArea from 'pages/common/forms/TextArea'
 import settingsCss from 'pages/settings/settings.less'
 import useAppSelector from 'hooks/useAppSelector'

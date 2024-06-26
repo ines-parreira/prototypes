@@ -1,7 +1,8 @@
 import React, {Dispatch, useRef, useState} from 'react'
 import classNames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
+
 import TextArea from 'pages/common/forms/TextArea'
-import Label from 'pages/common/forms/Label/Label'
 import {OrderStatusList} from 'models/integration/types'
 import SelectInputBox, {
     SelectInputBoxContext,

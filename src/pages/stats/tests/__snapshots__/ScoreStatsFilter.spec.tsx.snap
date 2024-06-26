@@ -40,7 +40,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
         class="checkbox"
       >
         <label
-          class="label label quickSelectionOption"
+          class="Label--label--QAnfT label quickSelectionOption"
           for="checkbox-1"
         >
           <input
@@ -70,7 +70,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-2"
         >
           <input
@@ -90,7 +90,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-4"
         >
           <input
@@ -111,7 +111,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-6"
         >
           <input
@@ -131,7 +131,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-8"
         >
           <input
@@ -152,7 +152,7 @@ exports[`ScoreStatsFilter should render score stats filter 1`] = `
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-10"
         >
           <input
@@ -213,7 +213,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
         class="checkbox"
       >
         <label
-          class="label label quickSelectionOption"
+          class="Label--label--QAnfT label quickSelectionOption"
           for="checkbox-12"
         >
           <input
@@ -243,7 +243,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-13"
         >
           <input
@@ -264,7 +264,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-15"
         >
           <input
@@ -284,7 +284,7 @@ exports[`ScoreStatsFilter should render score stats filter in descending order 1
         class="wrapperItem"
       >
         <label
-          class="label label labelItem"
+          class="Label--label--QAnfT label labelItem"
           for="checkbox-17"
         >
           <input

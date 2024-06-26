@@ -6,6 +6,8 @@ import React, {
     useState,
 } from 'react'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
+
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -13,7 +15,6 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import {states} from 'fixtures/states'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectInputBox, {SelectInputBoxContext} from '../input/SelectInputBox'
-import Label from '../Label/Label'
 import css from '../ProvinceInput/ProvinceInput.less'
 import TextInput from '../input/TextInput'
 

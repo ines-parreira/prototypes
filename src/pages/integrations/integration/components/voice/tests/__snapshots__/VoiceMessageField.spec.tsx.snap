@@ -5,7 +5,7 @@ exports[`<VoiceMessageField /> should render 1`] = `
   class="radioButtonOption"
 >
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
     for="voice_recording"
   >
     <input

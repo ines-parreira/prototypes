@@ -12,7 +12,7 @@ import {SegmentEvent, logEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {StatsFilters} from 'models/stat/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import {
     AutomatedInteractionsMetric,

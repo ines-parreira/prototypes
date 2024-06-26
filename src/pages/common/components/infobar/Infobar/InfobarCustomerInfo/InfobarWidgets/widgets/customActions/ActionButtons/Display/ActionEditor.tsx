@@ -1,5 +1,6 @@
 import React, {FormEvent, useCallback} from 'react'
 import {get as _get} from 'lodash'
+import {Label} from '@gorgias/ui-kit'
 
 import InputField from 'pages/common/forms/input/InputField'
 import {
@@ -12,7 +13,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Label from 'pages/common/forms/Label/Label'
 import {SegmentEvent, logEvent} from 'common/segment'
 
 import {GroupPositionContext} from 'pages/common/components/layout/Group'

@@ -59,7 +59,7 @@ exports[`<EditTicketField/> should render 2`] = `
           class="formRow"
         >
           <label
-            class="label formLabel"
+            class="Label--label--QAnfT formLabel"
           >
             Status
           </label>
@@ -73,13 +73,13 @@ exports[`<EditTicketField/> should render 2`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="input-text-1"
           >
             Name
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -110,7 +110,7 @@ exports[`<EditTicketField/> should render 2`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="textarea-3"
           >
             Description
@@ -136,7 +136,7 @@ exports[`<EditTicketField/> should render 2`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="checkbox-4"
           >
             <input
@@ -157,13 +157,13 @@ exports[`<EditTicketField/> should render 2`] = `
           class="formRow"
         >
           <label
-            class="label formLabel"
+            class="Label--label--QAnfT formLabel"
             for="type"
           >
             Type
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -199,7 +199,7 @@ exports[`<EditTicketField/> should render 2`] = `
           class="formRow"
         >
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="input-text-5"
           >
             Placeholder

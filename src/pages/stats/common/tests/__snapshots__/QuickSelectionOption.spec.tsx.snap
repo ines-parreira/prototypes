@@ -10,7 +10,7 @@ exports[`QuickSelectionOption should display label to deselect all content 1`] =
     class="checkbox"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-3"
     >
       <input
@@ -41,7 +41,7 @@ exports[`QuickSelectionOption should display label to deselect one item 1`] = `
     class="checkbox"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-2"
     >
       <input
@@ -72,7 +72,7 @@ exports[`QuickSelectionOption should display label to select content 1`] = `
     class="checkbox"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-1"
     >
       <input

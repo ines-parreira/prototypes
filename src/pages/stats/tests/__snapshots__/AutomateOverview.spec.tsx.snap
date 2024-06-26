@@ -568,7 +568,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                             class="legendCheckbox"
                           >
                             <label
-                              class="label label"
+                              class="Label--label--QAnfT label"
                               for="checkbox-abc"
                             >
                               <input
@@ -1241,7 +1241,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                           class="legendCheckbox"
                         >
                           <label
-                            class="label label"
+                            class="Label--label--QAnfT label"
                             for="checkbox-abc"
                           >
                             <input
@@ -1893,7 +1893,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                             class="legendCheckbox"
                           >
                             <label
-                              class="label label"
+                              class="Label--label--QAnfT label"
                               for="checkbox-abc"
                             >
                               <input
@@ -2566,7 +2566,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                           class="legendCheckbox"
                         >
                           <label
-                            class="label label"
+                            class="Label--label--QAnfT label"
                             for="checkbox-abc"
                           >
                             <input
@@ -3218,7 +3218,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                             class="legendCheckbox"
                           >
                             <label
-                              class="label label"
+                              class="Label--label--QAnfT label"
                               for="checkbox-abc"
                             >
                               <input
@@ -3891,7 +3891,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                           class="legendCheckbox"
                         >
                           <label
-                            class="label label"
+                            class="Label--label--QAnfT label"
                             for="checkbox-abc"
                           >
                             <input
@@ -4539,7 +4539,7 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
                       class="legendCheckbox"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="checkbox-abc"
                       >
                         <input
@@ -5134,7 +5134,7 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
                       class="legendCheckbox"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="checkbox-abc"
                       >
                         <input

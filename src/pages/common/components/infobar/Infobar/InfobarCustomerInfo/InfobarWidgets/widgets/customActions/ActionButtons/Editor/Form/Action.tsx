@@ -1,4 +1,5 @@
 import React from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {AVAILABLE_HTTP_METHODS} from 'config'
 import InputField from 'pages/common/forms/input/InputField'
@@ -10,8 +11,6 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-
-import Label from 'pages/common/forms/Label/Label'
 
 import css from './Actions.less'
 import Parameters from './Parameters'

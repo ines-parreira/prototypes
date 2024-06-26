@@ -405,12 +405,16 @@ describe('<QuickResponsesView />', () => {
             </Provider>
         )
 
+        const mySwitch = within(
+            screen.getByDisplayValue(quickResponse5.title).parentElement!
+                .parentElement!.parentElement!
+        ).getByRole('switch')
+
         expect(
-            within(
-                screen.getByDisplayValue(quickResponse5.title).parentElement!
-                    .parentElement!.parentElement!
-            ).getByRole('switch')
-        ).toHaveClass('isDisabled')
+            Array.from(mySwitch.classList).some((cn) =>
+                cn.includes('isDisabled')
+            )
+        ).toBe(true)
     })
 
     it('should expand a quick response by id from url', () => {

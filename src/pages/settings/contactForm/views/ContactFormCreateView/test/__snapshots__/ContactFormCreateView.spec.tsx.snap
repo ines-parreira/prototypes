@@ -43,13 +43,13 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
           class="mbS"
         >
           <label
-            class="label mbXs"
+            class="Label--label--QAnfT mbXs"
             for="name"
           >
             Contact form name
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -74,13 +74,13 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
         </section>
         <section>
           <label
-            class="label mbXs"
+            class="Label--label--QAnfT mbXs"
             for="locale-select"
           >
             Select default language
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -237,7 +237,7 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
             class="mb40"
           >
             <label
-              class="label mbXxs"
+              class="Label--label--QAnfT mbXxs"
               for="store-select"
             >
               Connect a store

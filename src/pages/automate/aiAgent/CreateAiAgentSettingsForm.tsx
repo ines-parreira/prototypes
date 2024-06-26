@@ -7,13 +7,14 @@ import React, {
 } from 'react'
 import {List} from 'immutable'
 import {isAxiosError} from 'axios'
+import {Label} from '@gorgias/ui-kit'
 
 import _get from 'lodash/get'
 
 import {useQueryClient} from '@tanstack/react-query'
 import {Link} from 'react-router-dom'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 import ToggleInput from '../../common/forms/ToggleInput'
@@ -26,7 +27,6 @@ import {
 } from '../../../models/aiAgent/types'
 import Button from '../../common/components/button/Button'
 import {getHelpCenterFAQList} from '../../../state/entities/helpCenter/helpCenters'
-import Label from '../../common/forms/Label/Label'
 import {getIntegrationsByTypes} from '../../../state/integrations/selectors'
 import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
 import {EmailIntegration} from '../../../models/integration/types'

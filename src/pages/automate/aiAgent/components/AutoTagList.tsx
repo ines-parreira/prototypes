@@ -1,9 +1,10 @@
 import React from 'react'
 import {Button} from 'reactstrap'
 import {cloneDeep} from 'lodash'
+import {Label} from '@gorgias/ui-kit'
+
 import {Tag} from 'models/aiAgent/types'
-import IconTooltip from 'pages/common/forms/Label/IconTooltip'
-import Label from '../../../common/forms/Label/Label'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {AutoTagItem} from './AutoTagInput'
 import css from './AutoTagList.less'
 

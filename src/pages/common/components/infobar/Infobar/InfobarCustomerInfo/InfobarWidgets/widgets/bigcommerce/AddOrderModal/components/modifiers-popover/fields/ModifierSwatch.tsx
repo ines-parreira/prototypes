@@ -1,9 +1,9 @@
 import React, {PropsWithChildren, useRef, useState} from 'react'
-
+import {Label} from '@gorgias/ui-kit'
 import classnames from 'classnames'
+
 import {BigCommerceProductSwatchModifier} from 'models/integration/types'
 
-import Label from 'pages/common/forms/Label/Label'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'

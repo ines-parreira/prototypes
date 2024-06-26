@@ -236,7 +236,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="toggle-button-1"
                 role="switch"
               >
@@ -305,7 +305,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="toggle-button-2"
                 role="switch"
               >
@@ -343,7 +343,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="true"
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="toggle-button-3"
                 role="switch"
               >
@@ -533,7 +533,7 @@ exports[`<HelpCenterCustomizationView /> should render the component 1`] = `
             >
               <label
                 aria-checked="false"
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="toggle-button-4"
                 role="switch"
               >

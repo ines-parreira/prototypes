@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import {ReactCountryFlag} from 'react-country-flag'
+import {Label} from '@gorgias/ui-kit'
 import {Card} from '@gorgias/analytics-ui-kit'
+
 import IconButton from 'pages/common/components/button/IconButton'
 import {Drawer} from 'pages/common/components/Drawer'
-import Label from 'pages/common/forms/Label/Label'
 import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'
 

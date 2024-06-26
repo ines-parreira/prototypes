@@ -337,7 +337,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               class="inputField mb-3"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-1"
               >
                 Login email
@@ -359,7 +359,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
               class="inputField mb-4"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="input-text-3"
               >
                 <span>

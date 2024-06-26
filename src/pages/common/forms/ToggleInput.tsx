@@ -6,12 +6,12 @@ import React, {
     useCallback,
 } from 'react'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import Spinner from 'pages/common/components/Spinner'
 
 import Caption from './Caption/Caption'
-import Label from './Label/Label'
 import css from './ToggleInput.less'
 
 type Props = {

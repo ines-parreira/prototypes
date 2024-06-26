@@ -95,7 +95,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="checkbox"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="Label--label--QAnfT label quickSelectionOption"
                     for="checkbox-10"
                   >
                     <input
@@ -125,7 +125,7 @@ exports[`<SelfServiceStatsPage /> should render the filters and stats when stats
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-11"
                   >
                     <input
@@ -1540,7 +1540,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                   class="checkbox"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="Label--label--QAnfT label quickSelectionOption"
                     for="checkbox-16"
                   >
                     <input
@@ -1570,7 +1570,7 @@ exports[`<SelfServiceStatsPage /> should render the stats with the feature previ
                   class="wrapperItem"
                 >
                   <label
-                    class="label label labelItem"
+                    class="Label--label--QAnfT label labelItem"
                     for="checkbox-17"
                   >
                     <input

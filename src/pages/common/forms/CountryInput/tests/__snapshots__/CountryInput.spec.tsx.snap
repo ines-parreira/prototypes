@@ -5,7 +5,7 @@ exports[`<CountryInput/> should render 1`] = `
   class="wrapper"
 >
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
   >
     Country
   </label>

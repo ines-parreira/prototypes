@@ -6,13 +6,13 @@ exports[`<DropdownInput/> should render correctly 1`] = `
     class="formLabelWithTooltip"
   >
     <label
-      class="label"
+      class="Label--label--QAnfT"
       for="settings.choices"
     >
       Dropdown values
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -422,13 +422,13 @@ exports[`<DropdownInput/> should show an error for duplicate values 1`] = `
     class="formLabelWithTooltip"
   >
     <label
-      class="label"
+      class="Label--label--QAnfT"
       for="settings.choices"
     >
       Dropdown values
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -680,13 +680,13 @@ exports[`<DropdownInput/> should show an error for too much nesting 1`] = `
     class="formLabelWithTooltip"
   >
     <label
-      class="label"
+      class="Label--label--QAnfT"
       for="settings.choices"
     >
       Dropdown values
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *

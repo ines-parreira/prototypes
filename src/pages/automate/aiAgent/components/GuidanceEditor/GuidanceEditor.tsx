@@ -1,7 +1,9 @@
 import React from 'react'
+import {Label} from '@gorgias/ui-kit'
+
 import {FROALA_KEY} from 'config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js'
-import Label from 'pages/common/forms/Label/Label'
+
 import css from './GuidanceEditor.less'
 
 const ALLOWED_HTML_TAGS = [

@@ -739,7 +739,7 @@ exports[`<ManagedRuleEditor/> auto-reply-faq-questions editor should render corr
         <div>
           <label
             aria-checked="true"
-            class="label label"
+            class="Label--label--QAnfT label"
             for="toggle-button-31"
             role="switch"
           >
@@ -1218,13 +1218,13 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
       >
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="input-text-59"
           >
             Return portal URL
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -1953,7 +1953,7 @@ exports[`<ManagedRuleEditor/> auto-reply-return-request editor should render cor
         <div>
           <label
             aria-checked="true"
-            class="label label"
+            class="Label--label--QAnfT label"
             for="toggle-button-61"
             role="switch"
           >
@@ -3081,7 +3081,7 @@ exports[`<ManagedRuleEditor/> auto-reply-wismo editor should render correctly 1`
         <div>
           <label
             aria-checked="true"
-            class="label label"
+            class="Label--label--QAnfT label"
             for="toggle-button-3"
             role="switch"
           >
@@ -3715,7 +3715,7 @@ exports[`<ManagedRuleEditor/> non-support-related-emails editor should render co
         <div>
           <label
             aria-checked="true"
-            class="label label"
+            class="Label--label--QAnfT label"
             for="toggle-button-1"
             role="switch"
           >

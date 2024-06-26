@@ -1,7 +1,8 @@
 import React from 'react'
-
 import {useDispatch} from 'react-redux'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Label} from '@gorgias/ui-kit'
+
 import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 import {
@@ -14,7 +15,6 @@ import {
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
-import Label from 'pages/common/forms/Label/Label'
 
 import ColorField from 'pages/common/forms/ColorField'
 import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'

@@ -1,8 +1,8 @@
 import React from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import Label from 'pages/common/forms/Label/Label'
 import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 

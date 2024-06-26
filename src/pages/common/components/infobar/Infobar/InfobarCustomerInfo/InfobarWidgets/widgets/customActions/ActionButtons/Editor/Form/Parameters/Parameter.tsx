@@ -1,9 +1,9 @@
 import React, {memo} from 'react'
 import classnames from 'classnames'
+import {Label} from '@gorgias/ui-kit'
 
 import {MAX_HEADER_LENGTH} from 'config'
 import InputField from 'pages/common/forms/input/InputField'
-import Label from 'pages/common/forms/Label/Label'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
 import CheckBox from 'pages/common/forms/CheckBox'

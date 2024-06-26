@@ -201,7 +201,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
               class="mb8"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="send_survey_on_email"
               >
                 <input
@@ -215,7 +215,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
             </div>
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="send_survey_on_chat"
               >
                 <input

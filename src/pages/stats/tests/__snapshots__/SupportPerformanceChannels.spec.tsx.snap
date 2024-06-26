@@ -77,7 +77,7 @@ exports[`SupportPerformanceChannels should render the filters and stats when sta
                   class="checkbox"
                 >
                   <label
-                    class="label label quickSelectionOption"
+                    class="Label--label--QAnfT label quickSelectionOption"
                     for="checkbox-1"
                   >
                     <input

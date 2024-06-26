@@ -1,7 +1,7 @@
 import React from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import InputField from 'pages/common/forms/input/InputField'
-import Label from 'pages/common/forms/Label/Label'
 import {
     ReportIssueCaseReason,
     SelfServiceReportIssueCase,

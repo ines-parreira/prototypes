@@ -34,7 +34,7 @@ exports[`<AutomateAmount /> should render formatted amount number without discou
       class="checkbox"
     >
       <label
-        class="label label"
+        class="Label--label--QAnfT label"
         for="5"
       >
         <input
@@ -85,7 +85,7 @@ exports[`<AutomateAmount /> should render formatted numbers as amount 1`] = `
       class="checkbox"
     >
       <label
-        class="label label"
+        class="Label--label--QAnfT label"
         for="2"
       >
         <input
@@ -201,7 +201,7 @@ exports[`<AutomateAmount /> should render with abbreviated plan interval 1`] = `
       class="checkbox"
     >
       <label
-        class="label label"
+        class="Label--label--QAnfT label"
         for="8"
       >
         <input

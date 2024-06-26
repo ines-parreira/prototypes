@@ -8,12 +8,12 @@ exports[`<CurrencyPickerDropdown/> should display the selected currency 1`] = `
     Billing
   </p>
   <label
-    class="label label"
+    class="Label--label--QAnfT label"
   >
     Currency
     <abbr
       aria-label="required"
-      class="abbr"
+      class="Label--abbr--Zx_yi"
       title="required"
     >
       *

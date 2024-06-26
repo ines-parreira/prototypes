@@ -1,5 +1,7 @@
 import React, {useCallback, useState} from 'react'
 import moment from 'moment-timezone'
+import {Label} from '@gorgias/ui-kit'
+
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -10,7 +12,6 @@ import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAu
 import {TWO_FA_REQUIRED_AFTER_DAYS} from 'state/currentUser/constants'
 import {DatePicker} from 'pages/common/forms/DatePicker'
 import TextInput from 'pages/common/forms/input/TextInput'
-import Label from 'pages/common/forms/Label/Label'
 
 /**
  * Generate a moment datetime based on a string and timezone.

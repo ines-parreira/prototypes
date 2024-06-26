@@ -387,13 +387,13 @@ exports[`<Magento2/> Integration should render 1`] = `
           class=""
         >
           <label
-            class="label mb-2"
+            class="Label--label--QAnfT mb-2"
             for="store-field"
           >
             Store admin URL
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *
@@ -623,12 +623,12 @@ exports[`<Magento2/> New should render 1`] = `
           Step 2
         </h2>
         <label
-          class="label"
+          class="Label--label--QAnfT"
         >
           How do you want to connect this app?
           <abbr
             aria-label="required"
-            class="abbr"
+            class="Label--abbr--Zx_yi"
             title="required"
           >
             *
@@ -646,7 +646,7 @@ exports[`<Magento2/> New should render 1`] = `
           >
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="oneStepConnect"
               >
                 <input
@@ -670,7 +670,7 @@ exports[`<Magento2/> New should render 1`] = `
           >
             <div>
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="manualConnect"
               >
                 <input
@@ -688,13 +688,13 @@ exports[`<Magento2/> New should render 1`] = `
           class=""
         >
           <label
-            class="label mb-2"
+            class="Label--label--QAnfT mb-2"
             for="store-field"
           >
             Store admin URL
             <abbr
               aria-label="required"
-              class="abbr"
+              class="Label--abbr--Zx_yi"
               title="required"
             >
               *

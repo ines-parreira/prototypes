@@ -1,8 +1,8 @@
 import React, {useCallback, useMemo} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {Drawer} from 'pages/common/components/Drawer'
 import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import Label from 'pages/common/forms/Label/Label'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
 import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
 import {AutomatedMessageNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'

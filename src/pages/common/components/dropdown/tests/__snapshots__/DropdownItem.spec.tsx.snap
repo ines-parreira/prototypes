@@ -37,7 +37,7 @@ exports[`<DropdownItem /> should render when selected and multiple selection is 
     class="checkbox"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-2"
     >
       <input
@@ -74,7 +74,7 @@ exports[`<DropdownItem /> should render with checkbox when multiple selection is
     class="checkbox"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-1"
     >
       <input

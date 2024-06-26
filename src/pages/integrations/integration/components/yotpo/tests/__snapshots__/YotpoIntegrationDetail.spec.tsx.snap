@@ -73,7 +73,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentDidMount() should set the i
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -203,7 +203,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -331,7 +331,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should n
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -461,7 +461,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -591,7 +591,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -721,7 +721,7 @@ exports[`<YotpoIntegrationDetailComponent/> componentWillReceiveProps() should s
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -849,7 +849,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -993,7 +993,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -1121,7 +1121,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -1249,7 +1249,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input
@@ -1379,7 +1379,7 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
         </div>
         <div>
           <label
-            class="label label"
+            class="Label--label--QAnfT label"
             for="enable_yotpo_tickets"
           >
             <input

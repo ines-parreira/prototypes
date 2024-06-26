@@ -21,6 +21,7 @@ import {
     Form,
     Label as ReactStrapLabel,
 } from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
 import {SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -73,7 +74,6 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import Label from 'pages/common/forms/Label/Label'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'

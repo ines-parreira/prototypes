@@ -44,12 +44,12 @@ exports[`<HelpCenterNewView /> should render the component 1`] = `
         >
           <div>
             <label
-              class="label label"
+              class="Label--label--QAnfT label"
             >
               Help center name
               <abbr
                 aria-label="required"
-                class="abbr"
+                class="Label--abbr--Zx_yi"
                 title="required"
               >
                 *

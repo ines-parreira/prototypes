@@ -203,7 +203,7 @@ exports[`<ChangePlanModal /> should render 1`] = `
                       class="checkbox"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="1"
                       >
                         <input
@@ -414,7 +414,7 @@ exports[`<ChangePlanModal /> should render a discount when discounted prices 1`]
                       class="checkbox"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="13"
                       >
                         <input
@@ -632,7 +632,7 @@ exports[`<ChangePlanModal /> should render the Automate plan features for the cu
                       class="checkbox"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="5"
                       >
                         <input

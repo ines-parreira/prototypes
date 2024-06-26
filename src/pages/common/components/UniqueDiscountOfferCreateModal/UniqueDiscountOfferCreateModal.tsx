@@ -6,6 +6,7 @@ import React, {
     useMemo,
 } from 'react'
 import {Map} from 'immutable'
+import {Label} from '@gorgias/ui-kit'
 import {
     FormGroup,
     InputGroup,
@@ -16,6 +17,7 @@ import {
 } from 'reactstrap'
 import {isEqual} from 'lodash'
 import {AxiosError} from 'axios'
+
 import {useAppNode} from 'appNode'
 import {
     UniqueDiscountOffer,
@@ -29,7 +31,6 @@ import {useCreateDiscountOffer} from 'pages/convert/discountOffer/hooks/useCreat
 import {useModalManager} from 'hooks/useModalManager'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
-import Label from 'pages/common/forms/Label/Label'
 import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector/CustomerSegmentSelector'
 import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'

@@ -1,6 +1,7 @@
 import React, {ChangeEvent} from 'react'
 import {Col, Container, FormGroup, FormText, Input, Row} from 'reactstrap'
 import {Map} from 'immutable'
+import {Label} from '@gorgias/ui-kit'
 
 import {
     getRefundAmount,
@@ -9,7 +10,6 @@ import {
     getTransactionToRefund,
 } from 'business/shopify/refund'
 import CheckBox from 'pages/common/forms/CheckBox'
-import Label from 'pages/common/forms/Label/Label'
 import {ShopifyActionType} from '../../../types'
 import AmountInput from '../../../shared/AmountInput/AmountInput'
 

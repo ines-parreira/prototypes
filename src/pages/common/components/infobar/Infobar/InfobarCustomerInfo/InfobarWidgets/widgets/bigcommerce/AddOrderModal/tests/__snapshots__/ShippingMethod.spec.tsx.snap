@@ -70,7 +70,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
               class="option"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="available-shipping-option-1"
               >
                 <input
@@ -99,7 +99,7 @@ exports[`ShippingMethod create/update consignment and change shipping method: dr
               class="option"
             >
               <label
-                class="label label"
+                class="Label--label--QAnfT label"
                 for="available-shipping-option-2"
               >
                 <input

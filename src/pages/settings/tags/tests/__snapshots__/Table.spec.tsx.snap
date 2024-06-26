@@ -13,7 +13,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="checkBox"
         >
           <label
-            class="label label checkBoxLabel"
+            class="Label--label--QAnfT label checkBoxLabel"
             for="select-all"
           >
             <input
@@ -121,7 +121,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="checkBox"
         >
           <label
-            class="label label checkBoxLabel"
+            class="Label--label--QAnfT label checkBoxLabel"
             for="checkbox-4"
           >
             <input
@@ -199,7 +199,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="checkBox"
         >
           <label
-            class="label label checkBoxLabel"
+            class="Label--label--QAnfT label checkBoxLabel"
             for="checkbox-6"
           >
             <input
@@ -277,7 +277,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="checkBox"
         >
           <label
-            class="label label checkBoxLabel"
+            class="Label--label--QAnfT label checkBoxLabel"
             for="checkbox-8"
           >
             <input
@@ -355,7 +355,7 @@ exports[`ManageTags Table component should display the same number of rows as th
           class="checkBox"
         >
           <label
-            class="label label checkBoxLabel"
+            class="Label--label--QAnfT label checkBoxLabel"
             for="checkbox-10"
           >
             <input

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
-import Label from 'pages/common/forms/Label/Label'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {Drawer} from 'pages/common/components/Drawer'
 import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'

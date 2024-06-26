@@ -375,7 +375,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="checkbox-3"
                 >
                   <input
@@ -396,7 +396,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="mb-3"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="notify-customer"
                 >
                   <input
@@ -421,7 +421,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="form-group"
               >
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                   for="amount"
                 >
                   Refund with: Manual
@@ -484,7 +484,7 @@ exports[`<RefundOrderModal /> should render with a populated order table when da
                 class="form-group"
               >
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                   for="reason"
                 >
                   Reason for refund
@@ -672,7 +672,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="mb-3"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="checkbox-1"
                 >
                   <input
@@ -693,7 +693,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="mb-3"
               >
                 <label
-                  class="label label"
+                  class="Label--label--QAnfT label"
                   for="notify-customer"
                 >
                   <input
@@ -718,7 +718,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="form-group"
               >
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                   for="amount"
                 >
                   Refund with: Manual
@@ -781,7 +781,7 @@ exports[`<RefundOrderModal /> should render with an empty order table when data 
                 class="form-group"
               >
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                   for="reason"
                 >
                   Reason for refund

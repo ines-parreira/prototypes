@@ -1,6 +1,7 @@
 import React, {FormEvent, useCallback, useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
+import {Label} from '@gorgias/ui-kit'
 
 import {
     deleteIntegration,
@@ -12,7 +13,6 @@ import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
-import Label from 'pages/common/forms/Label/Label'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'

@@ -67,7 +67,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <div>
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="ecommerce-platforms"
                       >
                         <input
@@ -95,7 +95,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   >
                     <div>
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="any-other-website"
                       >
                         <input
@@ -115,12 +115,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   </div>
                 </div>
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                 >
                   Connect a store
                   <abbr
                     aria-label="required"
-                    class="abbr"
+                    class="Label--abbr--Zx_yi"
                     title="required"
                   >
                     *
@@ -461,7 +461,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -698,7 +698,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -1697,7 +1697,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -2003,7 +2003,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -2020,7 +2020,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -2036,7 +2036,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -2052,7 +2052,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -2078,7 +2078,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -2095,7 +2095,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -2111,7 +2111,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -2149,7 +2149,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -3168,7 +3168,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -3474,7 +3474,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -3491,7 +3491,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -3507,7 +3507,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -3523,7 +3523,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -3549,7 +3549,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -3566,7 +3566,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -3582,7 +3582,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -3620,7 +3620,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -4610,7 +4610,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -4916,7 +4916,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -4933,7 +4933,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -4949,7 +4949,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -4965,7 +4965,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -4991,7 +4991,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -5008,7 +5008,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -5024,7 +5024,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -5062,7 +5062,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -6052,7 +6052,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -6358,7 +6358,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -6375,7 +6375,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -6391,7 +6391,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -6407,7 +6407,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -6433,7 +6433,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -6450,7 +6450,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -6466,7 +6466,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -6504,7 +6504,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -7494,7 +7494,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -7800,7 +7800,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -7817,7 +7817,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -7833,7 +7833,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -7849,7 +7849,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -7875,7 +7875,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -7892,7 +7892,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -7908,7 +7908,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -7946,7 +7946,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -8658,7 +8658,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   >
                     <div>
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="ecommerce-platforms"
                       >
                         <input
@@ -8686,7 +8686,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   >
                     <div>
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="any-other-website"
                       >
                         <input
@@ -8706,12 +8706,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   </div>
                 </div>
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                 >
                   Connect a store
                   <abbr
                     aria-label="required"
-                    class="abbr"
+                    class="Label--abbr--Zx_yi"
                     title="required"
                   >
                     *
@@ -9032,7 +9032,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -9269,7 +9269,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -10504,7 +10504,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -10521,7 +10521,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -10537,7 +10537,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -10553,7 +10553,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -10579,7 +10579,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -10596,7 +10596,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -10612,7 +10612,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for a
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -12002,7 +12002,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -12019,7 +12019,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -12035,7 +12035,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -12051,7 +12051,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -12077,7 +12077,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -12094,7 +12094,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -12110,7 +12110,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should render inputs for h
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="company-logo"
                       >
                         <input
@@ -12794,7 +12794,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <div>
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="ecommerce-platforms"
                       >
                         <input
@@ -12822,7 +12822,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   >
                     <div>
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="any-other-website"
                       >
                         <input
@@ -12842,12 +12842,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   </div>
                 </div>
                 <label
-                  class="label"
+                  class="Label--label--QAnfT"
                 >
                   Connect a store
                   <abbr
                     aria-label="required"
-                    class="abbr"
+                    class="Label--abbr--Zx_yi"
                     title="required"
                   >
                     *
@@ -13218,7 +13218,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -13455,7 +13455,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >
@@ -14454,7 +14454,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                   class="mainColorOutsideBusinessHoursCheckbox"
                 >
                   <label
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="checkbox-42"
                   >
                     <input
@@ -14760,7 +14760,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-name"
                       >
                         <input
@@ -14777,7 +14777,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-first-last-name-initial"
                       >
                         <input
@@ -14793,7 +14793,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-fullname"
                       >
                         <input
@@ -14809,7 +14809,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="chat-title"
                       >
                         <input
@@ -14835,7 +14835,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-picture"
                       >
                         <input
@@ -14852,7 +14852,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label label"
+                        class="Label--label--QAnfT label"
                         for="agent-initials"
                       >
                         <input
@@ -14868,7 +14868,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                       class="option"
                     >
                       <label
-                        class="label isDisabled label"
+                        class="Label--label--QAnfT Label--isDisabled--cM4ye label"
                         for="company-logo"
                       >
                         <input
@@ -14906,7 +14906,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                 <div>
                   <label
                     aria-checked="true"
-                    class="label label"
+                    class="Label--label--QAnfT label"
                     for="show-bot-toggle"
                     role="switch"
                   >

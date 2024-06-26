@@ -9,10 +9,10 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 import {Route, Switch} from 'react-router-dom'
+import {Label} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Label from 'pages/common/forms/Label/Label'
 import useClipboard from 'pages/common/hooks/useClipboard'
 import ContactFormManualEmbedCard from 'pages/settings/contactForm/components/ContactFormManualEmbedCard'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'

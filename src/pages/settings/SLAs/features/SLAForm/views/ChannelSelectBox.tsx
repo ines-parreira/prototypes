@@ -6,13 +6,14 @@ import React, {
     useRef,
     useState,
 } from 'react'
+import {Label} from '@gorgias/ui-kit'
+
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import Label from 'pages/common/forms/Label/Label'
 import Caption from 'pages/common/forms/Caption/Caption'
 import {getChannels} from 'services/channels'
 import {Channel} from 'models/channel/types'

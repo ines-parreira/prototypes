@@ -1,4 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import {Label} from '@gorgias/ui-kit'
 
 import {AIArticle} from 'models/helpCenter/types'
 import Modal from 'pages/common/components/modal/Modal'
@@ -7,7 +8,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Label from 'pages/common/forms/Label/Label'
 import TextArea from 'pages/common/forms/TextArea'
 
 import css from './AIArticleArchiveModal.less'

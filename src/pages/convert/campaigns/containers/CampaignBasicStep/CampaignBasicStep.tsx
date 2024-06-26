@@ -1,11 +1,10 @@
 import React, {useMemo} from 'react'
-
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Label} from '@gorgias/ui-kit'
 import {fromJS} from 'immutable'
-import InputField from 'pages/common/forms/input/InputField'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import Label from 'pages/common/forms/Label/Label'
+import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     getGorgiasChatLanguageByCode,

@@ -6,7 +6,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
     >
       Status
     </label>
@@ -20,13 +20,13 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-1"
     >
       Name
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -57,7 +57,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="textarea-3"
     >
       Description
@@ -83,7 +83,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-4"
     >
       <input
@@ -104,13 +104,13 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -146,7 +146,7 @@ exports[`<FieldForm/> should render correctly 1`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-5"
     >
       Placeholder
@@ -213,7 +213,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
     >
       Status
     </label>
@@ -227,13 +227,13 @@ exports[`<FieldForm/> should render correctly 2`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-7"
     >
       Name
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -264,7 +264,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="textarea-9"
     >
       Description
@@ -290,7 +290,7 @@ exports[`<FieldForm/> should render correctly 2`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-10"
     >
       <input
@@ -311,13 +311,13 @@ exports[`<FieldForm/> should render correctly 2`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -356,13 +356,13 @@ exports[`<FieldForm/> should render correctly 2`] = `
       class="formLabelWithTooltip"
     >
       <label
-        class="label"
+        class="Label--label--QAnfT"
         for="settings.choices"
       >
         Dropdown values
         <abbr
           aria-label="required"
-          class="abbr"
+          class="Label--abbr--Zx_yi"
           title="required"
         >
           *
@@ -604,7 +604,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
     >
       Status
     </label>
@@ -618,13 +618,13 @@ exports[`<FieldForm/> should render correctly 3`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-20"
     >
       Name
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -655,7 +655,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="textarea-22"
     >
       Description
@@ -681,7 +681,7 @@ exports[`<FieldForm/> should render correctly 3`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-23"
     >
       <input
@@ -702,13 +702,13 @@ exports[`<FieldForm/> should render correctly 3`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -790,7 +790,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
     >
       Status
     </label>
@@ -804,13 +804,13 @@ exports[`<FieldForm/> should render correctly 4`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-24"
     >
       Name
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -841,7 +841,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="textarea-26"
     >
       Description
@@ -867,7 +867,7 @@ exports[`<FieldForm/> should render correctly 4`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-27"
     >
       <input
@@ -888,13 +888,13 @@ exports[`<FieldForm/> should render correctly 4`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -976,7 +976,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
     >
       Status
     </label>
@@ -990,13 +990,13 @@ exports[`<FieldForm/> should render correctly 5`] = `
     class="formRow"
   >
     <label
-      class="label isDisabled label"
+      class="Label--label--QAnfT Label--isDisabled--cM4ye label"
       for="input-text-28"
     >
       Name
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -1028,7 +1028,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="textarea-30"
     >
       Description
@@ -1054,7 +1054,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="checkbox-31"
     >
       <input
@@ -1075,13 +1075,13 @@ exports[`<FieldForm/> should render correctly 5`] = `
     class="formRow"
   >
     <label
-      class="label formLabel"
+      class="Label--label--QAnfT formLabel"
       for="type"
     >
       Type
       <abbr
         aria-label="required"
-        class="abbr"
+        class="Label--abbr--Zx_yi"
         title="required"
       >
         *
@@ -1117,7 +1117,7 @@ exports[`<FieldForm/> should render correctly 5`] = `
     class="formRow"
   >
     <label
-      class="label label"
+      class="Label--label--QAnfT label"
       for="input-text-32"
     >
       Placeholder
