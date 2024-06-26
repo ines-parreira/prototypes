@@ -5,13 +5,14 @@ import {useParams, useHistory} from 'react-router-dom'
 import {useFieldArray, useWatch, useForm, Controller} from 'react-hook-form'
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import useEffectOnce from 'hooks/useEffectOnce'
 import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
 import ToolbarContext, {
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
-
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import BodyContentTypeSelect from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect'
 import FormUrlencoded from 'pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/FormUrlencoded'
 import {validateJSONWithVariables} from 'pages/automate/workflows/models/variables.model'
@@ -41,6 +42,7 @@ import {
     getHttpStepUsedVariables,
     getConditionsUsedVariables,
 } from '../utils'
+import BackToActionButton from './BackToActionButton'
 import ActionFormInputName from './ActionFormInputName'
 import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
 import ActionFormInputConditions from './ActionFormInputConditions'
@@ -58,7 +60,7 @@ export default function CustomActionsForm({
         shopType: string
         shopName: string
     }>()
-    const {setValue, control, reset, watch, getValues, formState} =
+    const {setValue, control, reset, watch, getValues, formState, trigger} =
         useForm<CustomActionFormInputValues>({
             defaultValues:
                 storeWorkflowsConfgurationToFormValue(initialFormValues),
@@ -93,6 +95,8 @@ export default function CustomActionsForm({
         keyName: '_id',
     })
 
+    const {routes} = useAiAgentNavigation({shopName})
+
     const httpBody = useWatch({
         control,
         name: 'httpBody',
@@ -121,6 +125,8 @@ export default function CustomActionsForm({
     } = useDeleteAction(initialFormValues.name, shopName, shopType)
 
     function handleSave() {
+        if (!formState.isValid) return
+
         const data = getValues()
         const formValuesCopy = _.cloneDeep(initialFormValues)
 
@@ -236,11 +242,22 @@ export default function CustomActionsForm({
         ])
     }
 
+    useEffectOnce(() => {
+        void trigger()
+    })
+
     useEffect(() => {
         if (isActionUpserted || isActionDeleted) {
-            history.push(`/app/automation/${shopType}/${shopName}/actions`)
+            history.push(routes.actions)
         }
-    }, [history, isActionDeleted, isActionUpserted, shopName, shopType])
+    }, [
+        history,
+        isActionDeleted,
+        isActionUpserted,
+        routes.actions,
+        shopName,
+        shopType,
+    ])
 
     const isHttpJsonBodyValid = useMemo(() => {
         return validateJSONWithVariables(httpBody ?? '', inputVariables)
@@ -265,7 +282,7 @@ export default function CustomActionsForm({
                 />
                 <section>
                     <header data-candu-id="custom-action-form-header">
-                        <h1>Define the Action</h1>
+                        <BackToActionButton />
                     </header>
                     <div className={css.formSessionContainer}>
                         <Controller

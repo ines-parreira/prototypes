@@ -1,10 +1,14 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
+import {ACTIONS} from 'pages/automate/common/components/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
+
+    const showAutomateActions: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateActions]
 
     const routes = useMemo(
         () => ({
@@ -18,6 +22,12 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
             guidanceTemplates: `/app/automation/shopify/${shopName}/ai-agent/guidance/templates`,
             newGuidanceTemplateArticle: (templateId: string) =>
                 `/app/automation/shopify/${shopName}/ai-agent/guidance/templates/${templateId}`,
+            actions: `/app/automation/shopify/${shopName}/ai-agent/actions`,
+            newAction: (templateId?: string) =>
+                `/app/automation/shopify/${shopName}/ai-agent/actions/new${
+                    templateId ? `?template_id=${templateId}` : ''
+                }`,
+            actionsTemplates: `/app/automation/shopify/${shopName}/ai-agent/actions/templates`,
         }),
         [shopName]
     )
@@ -33,6 +43,15 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                       },
                   ]
                 : []),
+            ...(showAutomateActions
+                ? [
+                      {
+                          route: routes.actions,
+                          title: ACTIONS,
+                          exact: false,
+                      },
+                  ]
+                : []),
             {
                 route: routes.configuration,
                 title: 'Configuration',
@@ -43,7 +62,7 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                 title: 'Test',
             },
         ],
-        [routes, showGuidance]
+        [routes, showGuidance, showAutomateActions]
     )
 
     return {headerNavbarItems, routes}

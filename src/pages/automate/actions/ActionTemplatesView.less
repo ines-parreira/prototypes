@@ -8,9 +8,16 @@
         padding: @layout-spacing-m;
         gap: @layout-spacing-s;
 
-        & > p {
-            .heading-section-semibold;
-            margin: 0;
+        .templateHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: @layout-spacing-xxs;
+
+            & > p {
+                .heading-section-semibold;
+                margin: 0;
+            }
         }
 
         .requestBannerContainer {

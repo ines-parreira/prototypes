@@ -1,14 +1,13 @@
 import React, {useEffect} from 'react'
 import {useParams} from 'react-router-dom'
-import AutomateView from 'pages/automate/common/components/AutomateView'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import emptyState from 'assets/img/actions/empty-state.png'
 import useAppDispatch from 'hooks/useAppDispatch'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
-import {ACTIONS} from 'pages/automate/common/components/constants'
 
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
@@ -56,41 +55,49 @@ export default function ActionView() {
         (storeConfigurations && storeConfigurations.length > 0) ?? false
 
     return (
-        <AutomateView
-            title={ACTIONS}
+        <AiAgentLayout
+            shopName={shopName}
             isLoading={
                 isStoreConfigurationsInitialLoading ||
                 istemplateConfigurationsInitialLoading
             }
             className={css.container}
-            action={
-                <div className={css.actionButtons}>
-                    <CreateCustomActionButton />
-                    <BrowseAllActionsButton />
-                </div>
-            }
         >
-            <AutomateViewEmptyStateBanner
-                title="Set up Actions for AI Agent to automate requests involving your 3rd party apps"
-                description={ACTIONS_DESCRIPTION}
-                image={emptyState}
-            />
             {hasActions && storeConfigurations ? (
                 <div
                     data-candu-id="custom-action-view-header"
                     className={css.actionsListContainer}
                 >
+                    <div className={css.actionListDescription}>
+                        <p>{ACTIONS_DESCRIPTION}</p>
+                        <div className={css.actionButtons}>
+                            <CreateCustomActionButton />
+                            <BrowseAllActionsButton />
+                        </div>
+                    </div>
                     <ActionsList actions={storeConfigurations} />
                 </div>
             ) : (
                 <>
+                    <AutomateViewEmptyStateBanner
+                        title="Set up Actions for AI Agent to automate requests involving your 3rd party apps"
+                        description={ACTIONS_DESCRIPTION}
+                        image={emptyState}
+                    />
                     {templateConfigurations &&
                         templateConfigurations?.length > 0 && (
                             <div className={css.templateCards}>
-                                <p>
-                                    Choose an Action and customize it to fit
-                                    your needs
-                                </p>
+                                <div className={css.templateHeader}>
+                                    <p>
+                                        Choose an Action and customize it to fit
+                                        your needs
+                                    </p>
+                                    <div className={css.actionButtons}>
+                                        <CreateCustomActionButton />
+                                        <BrowseAllActionsButton />
+                                    </div>
+                                </div>
+
                                 <ActionsTemplatesCards
                                     templateConfigurations={
                                         templateConfigurations
@@ -100,6 +107,6 @@ export default function ActionView() {
                         )}
                 </>
             )}
-        </AutomateView>
+        </AiAgentLayout>
     )
 }

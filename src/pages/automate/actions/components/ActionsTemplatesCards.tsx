@@ -6,6 +6,7 @@ import {
     CustomCardLink,
     TemplateCard,
 } from 'pages/common/components/TemplateCard'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import history from 'pages/history'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
@@ -23,10 +24,11 @@ export default function ActionsTemplatesCards({
     showCustomAction = false,
     templateConfigurations,
 }: Props) {
-    const {shopName, shopType} = useParams<{
+    const {shopName} = useParams<{
         shopType: string
         shopName: string
     }>()
+    const {routes} = useAiAgentNavigation({shopName})
     const enabledTemplates: string[] | Record<never, never> | undefined =
         useFlags()[FeatureFlagKey.ActionTemplates]
     const sortedTemplateConfigurations = _.chain<TemplateConfiguration>(
@@ -55,7 +57,6 @@ export default function ActionsTemplatesCards({
                 const app = apps[0]
                 return (
                     <TemplateCardWrapper
-                        shopType={shopType}
                         shopName={shopName}
                         app={app}
                         templateName={name}
@@ -67,7 +68,7 @@ export default function ActionsTemplatesCards({
             {showCustomAction && (
                 <CustomCardLink
                     className={css.templateCardLink}
-                    to={`/app/automation/${shopType}/${shopName}/actions/new`}
+                    to={routes.newAction()}
                     icon={<i className="material-icons">add_circle</i>}
                     title="Create custom Action"
                     description=""
@@ -80,18 +81,17 @@ export default function ActionsTemplatesCards({
 function TemplateCardWrapper({
     app,
     shopName,
-    shopType,
     templateId,
     templateName,
 }: {
     app: ActionAppConfiguration
-    shopType: string
     shopName: string
     templateId: string
     templateName: string
 }) {
     const [isDisabledAppModalOpen, setIsDisabledAppModalOpen] = useState(false)
     const appImageUrl = useGetAppImageUrl(app)
+    const {routes} = useAiAgentNavigation({shopName})
 
     const actionAppIntegration = useGetActionAppIntegration({
         appType: app?.type,
@@ -106,9 +106,7 @@ function TemplateCardWrapper({
             setIsDisabledAppModalOpen(true)
             return
         }
-        history.push(
-            `/app/automation/${shopType}/${shopName}/actions/new?template_id=${templateId}`
-        )
+        history.push(routes.newAction(templateId))
     }
 
     return (

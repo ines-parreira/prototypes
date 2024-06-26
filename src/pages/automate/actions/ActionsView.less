@@ -12,11 +12,18 @@
         display: flex;
         flex-direction: column;
         flex: 1;
-    }
 
-    .actionButtons {
-        display: flex;
-        gap: @layout-spacing-xs;
+        .actionListDescription {
+            display: flex;
+            justify-content: space-between;
+            padding: @layout-spacing-m;
+            gap: @layout-spacing-xxs;
+
+            & > p {
+                .body-regular;
+                margin: 0;
+            }
+        }
     }
 
     .templateCards {
@@ -25,13 +32,26 @@
         padding: @layout-spacing-m;
         gap: @layout-spacing-s;
 
-        & > p {
-            .heading-section-semibold;
-            margin: 0;
+        .templateHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: @layout-spacing-xxs;
+
+            & > p {
+                .heading-section-semibold;
+                margin: 0;
+            }
         }
     }
 
+    .actionButtons {
+        display: flex;
+        gap: @layout-spacing-xs;
+    }
+
     .actionsFormContainer {
+        position: relative;
         padding: @layout-spacing-m;
         grid-template-columns: minmax(480px, 680px) 1fr;
     }

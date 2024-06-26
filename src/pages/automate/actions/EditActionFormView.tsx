@@ -1,20 +1,16 @@
 import React, {useMemo, useState} from 'react'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {useParams, Link, useHistory} from 'react-router-dom'
+import {useParams, useHistory} from 'react-router-dom'
 import {useQueryClient} from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Button from 'pages/common/components/button/Button'
-import AutomateView from 'pages/automate/common/components/AutomateView'
-
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {handleError} from 'pages/automate/actions/hooks/errorHandler'
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {
     useGetWorkflowConfiguration,
     storeWorkflowsConfigurationDefinitionKeys,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
 
-import {ACTIONS} from '../common/components/constants'
-import {getActionsAppByType} from './utils'
 import {
     StoresWorkflowConfiguration,
     CustomActionConfigurationFormInput,
@@ -35,6 +31,7 @@ export default function EditActionFormView() {
         shopName: string
         id: string
     }>()
+    const {routes} = useAiAgentNavigation({shopName})
 
     const storeConfigurationQueryKey =
         storeWorkflowsConfigurationDefinitionKeys.list({
@@ -55,9 +52,7 @@ export default function EditActionFormView() {
                     ?.find((action) => action.id === id),
                 onError: (error) => {
                     handleError(error, 'Failed to fetch action', dispatch)
-                    history.push(
-                        `/app/automation/${shopType}/${shopName}/actions`
-                    )
+                    history.push(routes.actions)
                 },
                 initialDataUpdatedAt: () =>
                     queryClient.getQueryState<StoresWorkflowConfiguration>(
@@ -82,46 +77,12 @@ export default function EditActionFormView() {
             ),
         [templateConfigurations, configurationData]
     )
-    const configurationAppTypeApp = getActionsAppByType(
-        'app',
-        configurationData?.apps
-    )
 
     return (
-        <AutomateView
-            className={css.actionsFormContainer}
+        <AiAgentLayout
             isLoading={isInitialLoading || isTemplateConfigurationsLoading}
-            title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/${shopType}/${shopName}/actions`}
-                        >
-                            {ACTIONS}
-                        </Link>
-                    </BreadcrumbItem>
-                    {configurationData && (
-                        <BreadcrumbItem active>
-                            {configurationData.name}
-                        </BreadcrumbItem>
-                    )}
-                </Breadcrumb>
-            }
-            action={
-                <>
-                    {configurationAppTypeApp && (
-                        <Button
-                            fillStyle="ghost"
-                            className={css.viewAppAuthButton}
-                            onClick={() => {
-                                setApiKeyModalIsOpen(true)
-                            }}
-                        >
-                            View App Authentication
-                        </Button>
-                    )}
-                </>
-            }
+            shopName={shopName}
+            className={css.actionsFormContainer}
         >
             {templateConfiguration ? (
                 <TemplateActionsForm
@@ -139,6 +100,6 @@ export default function EditActionFormView() {
                     }
                 />
             )}
-        </AutomateView>
+        </AiAgentLayout>
     )
 }

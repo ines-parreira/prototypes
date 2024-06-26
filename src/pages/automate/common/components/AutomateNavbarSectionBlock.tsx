@@ -23,7 +23,6 @@ import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
     TRAIN_MY_AI,
-    ACTIONS,
 } from './constants'
 
 type Props = {
@@ -42,9 +41,6 @@ const AutomateNavbarSectionBlock = ({
     ...props
 }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
-
-    const showAutomateActions: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateActions]
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
@@ -90,32 +86,6 @@ const AutomateNavbarSectionBlock = ({
                                 <span className={cssNavbar['item-name']}>
                                     {AI_AGENT}
                                 </span>
-                                <Badge
-                                    type={ColorType.Blue}
-                                    className={cssNavbar.badge}
-                                >
-                                    BETA
-                                </Badge>
-                            </NavbarLink>
-                        </div>
-                    )}
-                    {!!showAutomateActions && shopType === 'shopify' && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                        >
-                            <NavbarLink
-                                to={{
-                                    pathname: `/app/automation/shopify/${shopName}/actions`,
-                                    state: {from: FROM_LOCATION},
-                                }}
-                            >
-                                <span className={cssNavbar['item-name']}>
-                                    {ACTIONS}
-                                </span>
-
                                 <Badge
                                     type={ColorType.Blue}
                                     className={cssNavbar.badge}

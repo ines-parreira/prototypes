@@ -1,16 +1,12 @@
 import React, {useMemo, useState} from 'react'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import {useParams, Link, useLocation} from 'react-router-dom'
-import Button from 'pages/common/components/button/Button'
-import AutomateView from 'pages/automate/common/components/AutomateView'
+import {useParams, useLocation} from 'react-router-dom'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {ACTIONS} from '../common/components/constants'
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import CustomActionsForm from './components/CustomActionsForm'
 import TemplateActionsForm from './components/TemplateActionsForm'
 import {TemplateConfigurationFormInput} from './types'
 import {
     generateNewCustomActionConfigurationFormInput,
-    getActionsAppByType,
     getTriggerstByKind,
 } from './utils'
 import css from './ActionsView.less'
@@ -65,53 +61,18 @@ export default function CreateActionFormView() {
         return [template, newActionConfigurationFormInput]
     }, [templateConfigurations, templateConfigurationId])
 
-    const {shopName, shopType} = useParams<{
+    const {shopName} = useParams<{
         shopType: string
         shopName: string
     }>()
 
     const isTemplateAction = templateConfiguration && newActionConfiguration
 
-    const configurationAppTypeApp = getActionsAppByType(
-        'app',
-        newActionConfiguration?.apps
-    )
-
     return (
-        <AutomateView
+        <AiAgentLayout
+            shopName={shopName}
             className={css.actionsFormContainer}
             isLoading={isTemplateConfigurationsLoading}
-            title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/${shopType}/${shopName}/actions`}
-                        >
-                            {ACTIONS}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {isTemplateAction && templateConfiguration?.name
-                            ? templateConfiguration.name
-                            : 'New Action'}
-                    </BreadcrumbItem>
-                </Breadcrumb>
-            }
-            action={
-                <>
-                    {configurationAppTypeApp && (
-                        <Button
-                            fillStyle="ghost"
-                            className={css.viewAppAuthButton}
-                            onClick={() => {
-                                setApiKeyModalIsOpen(true)
-                            }}
-                        >
-                            View App Authentication
-                        </Button>
-                    )}
-                </>
-            }
         >
             {isTemplateAction ? (
                 <TemplateActionsForm
@@ -125,6 +86,6 @@ export default function CreateActionFormView() {
                     initialConfigurationData={generateNewCustomActionConfigurationFormInput()}
                 />
             )}
-        </AutomateView>
+        </AiAgentLayout>
     )
 }

@@ -1390,6 +1390,9 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const showAiAgentGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
 
+    const showAutomateActions: boolean | undefined =
+        useFlags()[FeatureFlagKey.AutomateActions]
+
     const {shopType} = useParams<{
         shopType: string
     }>()
@@ -1420,6 +1423,30 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
                             component={AiAgentPlaygroundContainer}
                         />
                     </AiAgentErrorBoundary>
+                    {!!showAutomateActions && (
+                        <Switch>
+                            <Route
+                                path={`${path}/actions`}
+                                exact
+                                component={ActionsViewContainer}
+                            />
+                            <Route
+                                path={`${path}/actions/new`}
+                                exact
+                                component={CreateActionFormView}
+                            />
+                            <Route
+                                path={`${path}/actions/edit/:id`}
+                                exact
+                                component={EditActionFormView}
+                            />
+                            <Route
+                                path={`${path}/actions/templates`}
+                                exact
+                                component={ActionsTemplatesViewContainer}
+                            />
+                        </Switch>
+                    )}
                     {showAiAgentGuidance !== false && (
                         <AiAgentErrorBoundary section="ai-agent-guidance">
                             <Route
@@ -1738,38 +1765,6 @@ function AutomationContent() {
                 }}
             />
 
-            <Route
-                path={`${path}/:shopType/:shopName/actions`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    ActionsViewContainer,
-                    AGENT_ROLE
-                )}
-            />
-            <Route
-                path={`${path}/:shopType/:shopName/actions/new`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    CreateActionFormView,
-                    AGENT_ROLE
-                )}
-            />
-            <Route
-                path={`${path}/:shopType/:shopName/actions/edit/:id`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    EditActionFormView,
-                    AGENT_ROLE
-                )}
-            />
-            <Route
-                path={`${path}/:shopType/:shopName/actions/templates`}
-                exact
-                component={memoizedWithUserRoleRequired(
-                    ActionsTemplatesViewContainer,
-                    AGENT_ROLE
-                )}
-            />
             <Route path={`${path}/:shopType/:shopName/connected-channels`}>
                 <SelfServiceHelpCentersProvider>
                     <SelfServiceContactFormsProvider>

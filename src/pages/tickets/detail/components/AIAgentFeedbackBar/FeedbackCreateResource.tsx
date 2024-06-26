@@ -23,7 +23,7 @@ const FeedbackCreateResource: React.FC<Props> = ({
 }) => {
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
 
-    const actionLink = `/app/automation/${shopType}/${shopName}/actions/new`
+    const actionLink = `/app/automation/${shopType}/${shopName}/ai-agent/actions/new`
     const guidanceLink = `/app/automation/${shopType}/${shopName}/ai-agent/guidance/templates`
     const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`
 

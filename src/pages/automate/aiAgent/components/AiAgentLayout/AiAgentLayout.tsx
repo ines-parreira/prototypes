@@ -10,6 +10,7 @@ type Props = {
     shopName: string
     className?: string
     title?: ReactNode
+    isLoading?: boolean
 }
 
 export const AiAgentLayout = ({
@@ -17,11 +18,13 @@ export const AiAgentLayout = ({
     className,
     children,
     title,
+    isLoading,
 }: Props) => {
     const {headerNavbarItems} = useAiAgentNavigation({shopName})
 
     return (
         <AutomateView
+            isLoading={isLoading}
             title={title ?? AI_AGENT}
             headerNavbarItems={headerNavbarItems}
             className={classnames(css.container, className)}

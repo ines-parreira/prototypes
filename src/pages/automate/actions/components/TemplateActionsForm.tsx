@@ -16,6 +16,7 @@ import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
+import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {useGetStoreApps, useGetActionsApp} from 'models/workflows/queries'
 import Button from 'pages/common/components/button/Button'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
@@ -37,6 +38,7 @@ import {
     wfConfgurationToTemplateFormValue,
     getActionsAppByType,
 } from '../utils'
+import BackToActionButton from './BackToActionButton'
 import AppConfirmationModal from './AppConfirmationModal'
 import ActionFormInputAiInstruction from './ActionFormInputAiInstruction'
 import ActionFormInputConditions from './ActionFormInputConditions'
@@ -61,7 +63,7 @@ export default function CustomActionsForm({
         shopType: string
         shopName: string
     }>()
-    const {setValue, control, reset, watch, getValues, formState} =
+    const {setValue, control, reset, watch, getValues, formState, trigger} =
         useForm<TemplateActionFormInputValues>({
             defaultValues: wfConfgurationToTemplateFormValue(
                 initialFormValues,
@@ -91,6 +93,8 @@ export default function CustomActionsForm({
         keyName: '_id',
     })
 
+    const {routes} = useAiAgentNavigation({shopName})
+
     const actionApp = initialFormValues.apps?.[0]
 
     const actionAppTypeApp = getActionsAppByType(
@@ -105,6 +109,7 @@ export default function CustomActionsForm({
     const isNativeAppIntegration = !!actionApp && actionApp.type !== 'app'
 
     useEffectOnce(() => {
+        void trigger()
         if (isNewAction && !isNativeAppIntegration) {
             setApiKeyModalIsOpen(true)
         }
@@ -166,6 +171,8 @@ export default function CustomActionsForm({
     )
 
     async function handleSave() {
+        if (!formState.isValid) return
+
         const data = getValues()
         const formValuesCopy = _.cloneDeep(
             initialFormValues as StoreWorkflowsConfiguration
@@ -259,7 +266,7 @@ export default function CustomActionsForm({
             isActionDeleted ||
             (isNativeAppIntegration && !actionAppIntegration)
         ) {
-            history.push(`/app/automation/${shopType}/${shopName}/actions`)
+            history.push(routes.actions)
         }
     }, [
         actionAppIntegration,
@@ -267,6 +274,7 @@ export default function CustomActionsForm({
         isActionDeleted,
         isActionUpserted,
         isNativeAppIntegration,
+        routes.actions,
         shopName,
         shopType,
     ])
@@ -290,6 +298,52 @@ export default function CustomActionsForm({
                 />
                 <section>
                     <header>
+                        <div>
+                            <BackToActionButton />
+                            {!isNativeAppIntegration && actionApp && (
+                                <>
+                                    <Button
+                                        fillStyle="ghost"
+                                        className={css.viewAppAuthButton}
+                                        onClick={() => {
+                                            setApiKeyModalIsOpen(true)
+                                        }}
+                                    >
+                                        View App Authentication
+                                    </Button>
+                                    <Controller
+                                        control={control}
+                                        name="appApiKey"
+                                        rules={{
+                                            required: !isNativeAppIntegration,
+                                        }}
+                                        render={({
+                                            field: {onChange, value},
+                                        }) => (
+                                            <AppConfirmationModal
+                                                actionAppConnected={
+                                                    actionAppConnected
+                                                }
+                                                isNewAction={isNewAction}
+                                                apiKey={value ?? ''}
+                                                isOpen={apiKeyModalIsOpen}
+                                                setOpen={setApiKeyModalIsOpen}
+                                                actionAppConfiguration={
+                                                    actionApp
+                                                }
+                                                onConfirm={onChange}
+                                                templateName={
+                                                    templateConfiguration.name
+                                                }
+                                                templateDescription={
+                                                    templateConfiguration.description
+                                                }
+                                            />
+                                        )}
+                                    />
+                                </>
+                            )}
+                        </div>
                         {templateConfiguration.apps?.[0] && (
                             <TemplateActionBanner
                                 actionAppConfiguration={
@@ -542,30 +596,6 @@ export default function CustomActionsForm({
                     </div>
                 </section>
             </div>
-            {actionApp && (
-                <Controller
-                    control={control}
-                    name="appApiKey"
-                    rules={{
-                        required: !isNativeAppIntegration,
-                    }}
-                    render={({field: {onChange, value}}) => (
-                        <AppConfirmationModal
-                            actionAppConnected={actionAppConnected}
-                            isNewAction={isNewAction}
-                            apiKey={value ?? ''}
-                            isOpen={apiKeyModalIsOpen}
-                            setOpen={setApiKeyModalIsOpen}
-                            actionAppConfiguration={actionApp}
-                            onConfirm={onChange}
-                            templateName={templateConfiguration.name}
-                            templateDescription={
-                                templateConfiguration.description
-                            }
-                        />
-                    )}
-                />
-            )}
         </ToolbarContext.Provider>
     )
 }

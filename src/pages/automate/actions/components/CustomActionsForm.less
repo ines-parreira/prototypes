@@ -10,8 +10,9 @@
         section {
             header {
                 display: flex;
+                flex-direction: column;
                 align-items: baseline;
-                gap: @layout-spacing-xs;
+                gap: @layout-spacing-s;
                 padding-bottom: @layout-spacing-m;
                 h1 {
                     .heading-section-semibold();
@@ -23,6 +24,11 @@
                 display: flex;
                 flex-direction: column;
                 gap: @layout-spacing-l;
+            }
+
+            .viewAppAuthButton {
+                position: absolute;
+                right: @layout-spacing-m;
             }
         }
 

@@ -1,17 +1,16 @@
 import React from 'react'
-import {useParams, Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-import AutomateView from 'pages/automate/common/components/AutomateView'
+import {useParams} from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
+import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {ACTIONS} from '../common/components/constants'
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
+import BackToActionButton from './components/BackToActionButton'
 import css from './ActionTemplatesView.less'
 
 export default function ActionTemplatesView() {
-    const {shopName, shopType} = useParams<{
+    const {shopName} = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -20,26 +19,20 @@ export default function ActionTemplatesView() {
         useGetWorkflowConfigurationTemplates(['llm-prompt'])
 
     return (
-        <AutomateView
+        <AiAgentLayout
+            shopName={shopName}
             isLoading={isInitialLoading}
-            title={
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link
-                            to={`/app/automation/${shopType}/${shopName}/actions`}
-                        >
-                            {ACTIONS}
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>All Actions</BreadcrumbItem>
-                </Breadcrumb>
-            }
             className={css.container}
-            action={<CreateCustomActionButton />}
         >
             {templateConfigurations && templateConfigurations.length > 0 && (
                 <>
-                    <p>Choose an Action and customize it to fit your needs</p>
+                    <BackToActionButton />
+                    <div className={css.templateHeader}>
+                        <p>
+                            Choose an Action and customize it to fit your needs
+                        </p>
+                        <CreateCustomActionButton />
+                    </div>
                     <ActionsTemplatesCards
                         showCustomAction
                         templateConfigurations={templateConfigurations}
@@ -60,6 +53,6 @@ export default function ActionTemplatesView() {
                     </div>
                 </>
             )}
-        </AutomateView>
+        </AiAgentLayout>
     )
 }
