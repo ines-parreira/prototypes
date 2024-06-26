@@ -129,6 +129,7 @@ export const AiAgentPlaygroundView = () => {
                             onClick={() => setStep(PlaygroundStep.INPUT)}
                         />
                     ),
+                    createdDatetime: new Date().toISOString(),
                 })
 
                 setMessages(updatedMessages)
@@ -151,6 +152,7 @@ export const AiAgentPlaygroundView = () => {
                             aiAgentResponse.data.postProcessing.htmlReply ??
                             aiAgentResponse.data.generate.output
                                 .generated_message,
+                        createdDatetime: new Date().toISOString(),
                     })
                 }
 
@@ -158,6 +160,7 @@ export const AiAgentPlaygroundView = () => {
                     sender: AI_AGENT_SENDER,
                     type: MessageType.INTERNAL_NOTE,
                     message: aiAgentResponse.data.postProcessing.internalNote,
+                    createdDatetime: new Date().toISOString(),
                 })
 
                 // Add a ticket event message if outcome is also validated
@@ -169,6 +172,7 @@ export const AiAgentPlaygroundView = () => {
                         sender: AI_AGENT_SENDER,
                         type: MessageType.TICKET_EVENT,
                         outcome: aiAgentResponse.data.generate.output.outcome,
+                        createdDatetime: new Date().toISOString(),
                     })
                 }
 
@@ -249,8 +253,16 @@ export const AiAgentPlaygroundView = () => {
         return <Redirect to={routes.automation} />
     }
 
-    if (isPlaygroundSupportActionsEnabled && storeData) {
-        return <PlaygroundChat storeData={storeData.data.storeConfiguration} />
+    if (isPlaygroundSupportActionsEnabled && storeData && accountData) {
+        return (
+            <PlaygroundChat
+                storeData={storeData.data.storeConfiguration}
+                accountData={
+                    accountData.data
+                        .accountConfiguration as AccountConfigurationWithHttpIntegration
+                }
+            />
+        )
     }
 
     return (
