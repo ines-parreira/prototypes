@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
 import _ from 'lodash'
 import {useParams} from 'react-router-dom'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     CustomCardLink,
     TemplateCard,
 } from 'pages/common/components/TemplateCard'
 import history from 'pages/history'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import {TemplateConfiguration, ActionAppConfiguration} from '../types'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
@@ -25,16 +27,24 @@ export default function ActionsTemplatesCards({
         shopType: string
         shopName: string
     }>()
-
-    const sortedTemplateConfigurations = _.chain(templateConfigurations)
+    const enabledTemplates: string[] | Record<never, never> | undefined =
+        useFlags()[FeatureFlagKey.ActionTemplates]
+    const sortedTemplateConfigurations = _.chain<TemplateConfiguration>(
+        templateConfigurations
+    )
+        .filter(
+            (value) =>
+                !Array.isArray(enabledTemplates) ||
+                !!enabledTemplates.includes(value.internal_id)
+        )
         .groupBy('apps[0].type')
         .map((value, key) => ({
             type: key,
             items: _.orderBy(value, ['name'], ['asc']),
         }))
         .orderBy([(group) => group.type !== 'shopify', 'type'], ['asc', 'asc'])
-        .flatMap('items')
-        .value() as TemplateConfiguration[]
+        .flatMap<TemplateConfiguration>('items')
+        .value()
 
     return (
         <div className={css.container}>
