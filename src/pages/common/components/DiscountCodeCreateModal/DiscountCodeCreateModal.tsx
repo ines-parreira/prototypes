@@ -168,6 +168,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                         }
                                         hasControls={false}
                                         min={1}
+                                        step={0.01}
                                         suffix={getShopifyMoneySymbol(
                                             integration.getIn([
                                                 'meta',
@@ -189,6 +190,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                         hasControls={false}
                                         min={1}
                                         max={100}
+                                        step={0.01}
                                         suffix={'%'}
                                     />
                                 </div>
