@@ -5,7 +5,7 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import CampaignsStatsFilter from 'pages/stats/CampaignsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {getStatsFilters, getStatsStoreIntegrations} from 'state/stats/selectors'
 

@@ -13,6 +13,7 @@ import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {StatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
 
+import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 import {
     findChannelNameKey,
     formatDuration,
@@ -36,6 +37,7 @@ import {
     last365DaysStartingFromToday,
     lastWeekDateRange,
     StartDayOfWeek,
+    getDateRangePickerLabel,
 } from '../utils'
 
 const mockStore = configureMockStore([thunk])
@@ -525,6 +527,54 @@ describe('stats components utils', () => {
                     dateInPastFromStartOfToday(daysFromToday).format(
                         formatOfDate
                     )
+                ).toBe(expectedResult)
+            }
+        )
+    })
+
+    describe('getDateRangePickerLabel', () => {
+        it.each([
+            {
+                period: {
+                    startDate: moment('2023-05-16T15:21:16.000Z').subtract(
+                        7,
+                        'days'
+                    ),
+                    endDate: moment('2023-05-16T15:21:16.000Z'),
+                },
+                expectedResult: 'May 9, 2023 - May 16, 2023',
+            },
+            {
+                period: {
+                    startDate: moment('2023-05-16T15:21:16.000Z').subtract(
+                        7,
+                        'days'
+                    ),
+                    endDate: moment('2023-05-16T15:21:16.000Z'),
+                },
+                format: DateTimeFormatMapper[
+                    DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_GB
+                ],
+                expectedResult: '9 May, 2023 - 16 May, 2023',
+            },
+            {
+                period: {
+                    startDate: moment('2023-05-16T15:21:16.000Z'),
+                    endDate: moment('2023-05-16T15:21:16.000Z'),
+                },
+                expectedResult: 'May 16, 2023',
+            },
+        ])(
+            'should return $expectedResult for $period.startDate and $period.endDate',
+            ({period, format, expectedResult}) => {
+                const {startDate, endDate} = period
+                const dateFormat =
+                    format ??
+                    DateTimeFormatMapper[
+                        DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
+                    ]
+                expect(
+                    getDateRangePickerLabel(startDate, endDate, dateFormat)
                 ).toBe(expectedResult)
             }
         )

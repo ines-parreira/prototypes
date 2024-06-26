@@ -6,7 +6,7 @@ import {Meta, StoryFn} from '@storybook/react'
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 const defaultState = {}

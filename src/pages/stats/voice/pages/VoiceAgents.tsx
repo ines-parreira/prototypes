@@ -11,7 +11,7 @@ import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {

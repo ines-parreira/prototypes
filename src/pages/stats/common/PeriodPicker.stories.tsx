@@ -7,7 +7,7 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import {getNewSetOfRanges} from 'pages/stats/PeriodStatsFilter'
+import {getNewSetOfRanges} from 'pages/stats/constants'
 
 const defaultState = {}
 

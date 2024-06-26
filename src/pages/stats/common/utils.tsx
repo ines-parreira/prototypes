@@ -19,6 +19,8 @@ import {
 import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
 import {RootState} from 'state/types'
 import {ViewFilter} from 'state/views/types'
+import {formatDatetime} from 'utils'
+import {DateTimeResultFormatType} from 'constants/datetime'
 import StatsFiltersContext from '../StatsFiltersContext'
 
 export const DEFAULT_LOCALE = 'en-US'
@@ -379,6 +381,21 @@ export const periodPickerMaxSpanDays = (
     }
 
     return NOT_AVAILABLE_PLACEHOLDER
+}
+
+export const getDateRangePickerLabel = (
+    startDate: Moment,
+    endDate: Moment,
+    labelDateFormat: DateTimeResultFormatType
+) => {
+    const start = formatDatetime(startDate, labelDateFormat).toString()
+    const end = formatDatetime(endDate, labelDateFormat).toString()
+
+    if (start === end) {
+        return start
+    }
+
+    return `${start} - ${end}`
 }
 
 export const startOfToday = () => moment().startOf('day')

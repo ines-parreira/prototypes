@@ -8,7 +8,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
 

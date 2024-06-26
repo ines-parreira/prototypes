@@ -16,7 +16,7 @@ import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {
     useWorkflowEditorContext,
     withWorkflowEditorContext,

@@ -1,4 +1,4 @@
-import moment, {Moment} from 'moment-timezone'
+import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
 import {Options as InitialSettings} from 'daterangepicker'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -10,27 +10,8 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {StatsFilters} from 'models/stat/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {
-    endOfLastMonth,
-    endOfToday,
-    lastWeekDateRange,
-    StartDayOfWeek,
-    startOfLastMonth,
-    startOfMonth,
-    dateInPastFromStartOfToday,
-    startOfToday,
-    last365DaysStartingFromToday,
-} from 'pages/stats/common/utils'
-import PeriodPicker, {
-    getDefaultSetOfRanges,
-} from 'pages/stats/common/PeriodPicker'
-import {
-    PAST_7_DAYS,
-    PAST_30_DAYS,
-    PAST_60_DAYS,
-    PAST_90_DAYS,
-    TODAY,
-} from 'pages/stats/constants'
+import PeriodPicker from 'pages/stats/common/PeriodPicker'
+import {getNewSetOfRanges} from 'pages/stats/constants'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 
@@ -42,33 +23,7 @@ type Props = {
     variant?: 'fill' | 'ghost'
 }
 
-export const getNewSetOfRanges = (): {[key: string]: [Moment, Moment]} => {
-    const defaultSetOfRanges = getDefaultSetOfRanges()
-    return {
-        [TODAY]: defaultSetOfRanges[TODAY],
-        Yesterday: [
-            dateInPastFromStartOfToday(2),
-            startOfToday().subtract(1, 'seconds'),
-        ],
-        'Month to date': [startOfMonth(), endOfToday()],
-        'Last week (start on Sun)': [
-            lastWeekDateRange(StartDayOfWeek.Sunday).start,
-            lastWeekDateRange(StartDayOfWeek.Sunday).end,
-        ],
-        'Last week (start on Mon)': [
-            lastWeekDateRange(StartDayOfWeek.Monday).start,
-            lastWeekDateRange(StartDayOfWeek.Monday).end,
-        ],
-        'Last month': [startOfLastMonth(), endOfLastMonth()],
-        [PAST_7_DAYS]: defaultSetOfRanges[PAST_7_DAYS],
-        [PAST_30_DAYS]: defaultSetOfRanges[PAST_30_DAYS],
-        [PAST_60_DAYS]: defaultSetOfRanges[PAST_60_DAYS],
-        [PAST_90_DAYS]: defaultSetOfRanges[PAST_90_DAYS],
-        'Past year': [last365DaysStartingFromToday(), endOfToday()],
-    }
-}
-
-export default function PeriodStatsFilter({
+export default function DEPRECATED_PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,
     variant = 'fill',

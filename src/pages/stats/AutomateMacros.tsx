@@ -13,7 +13,7 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import ChannelsStatsFilter from './ChannelsStatsFilter'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
-import PeriodStatsFilter from './PeriodStatsFilter'
+import PeriodStatsFilter from './common/filters/DEPRECATED_PeriodStatsFilter'
 import StatsPage from './StatsPage'
 import StatWrapper from './StatWrapper'
 

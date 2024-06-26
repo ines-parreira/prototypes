@@ -2,20 +2,16 @@ import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
-import {fireEvent, render} from '@testing-library/react'
+import {fireEvent, render, screen} from '@testing-library/react'
 import moment from 'moment-timezone'
-import LD from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {formatDatetime} from 'utils'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
-import {FeatureFlagKey} from 'config/featureFlags'
-import PeriodStatsFilter, {
-    getNewSetOfRanges,
-} from 'pages/stats/PeriodStatsFilter'
-import {getDefaultSetOfRanges} from 'pages/stats/common/PeriodPicker'
+import PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
 import {RootState} from 'state/types'
+import {getNewSetOfRanges} from 'pages/stats/constants'
 
 const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
@@ -32,35 +28,47 @@ describe('PeriodStatsFilter', () => {
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
-
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
     })
 
     afterEach(() => {
         dateNowSpy.mockRestore()
     })
 
-    it('should render period stats filter', () => {
-        const {container} = render(
+    it('should render period filter', () => {
+        const startDateTime = '2021-05-02T19:22:43.000Z'
+        const endDateTime = '2021-05-03T19:22:43.000Z'
+        const formattedStartDate = moment(startDateTime).format(
+            DateTimeFormatMapper[
+                DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
+            ] as string
+        )
+        const formattedEndDate = moment(endDateTime).format(
+            DateTimeFormatMapper[
+                DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
+            ] as string
+        )
+
+        render(
             <Provider store={mockStore(defaultState)}>
-                <PeriodStatsFilter
+                <PeriodFilter
                     value={{
-                        start_datetime: '2021-05-02T19:22:43.000Z',
-                        end_datetime: '2021-05-03T19:22:43.000Z',
+                        start_datetime: startDateTime,
+                        end_datetime: endDateTime,
                     }}
                 />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(screen.getByText('Date')).toBeInTheDocument()
+        expect(
+            screen.getByText(`${formattedStartDate} - ${formattedEndDate}`)
+        ).toBeInTheDocument()
     })
 
     it('should merge stats filters on period change', () => {
         const store = mockStore(defaultState)
         const {getByText} = render(
             <Provider store={store}>
-                <PeriodStatsFilter
+                <PeriodFilter
                     value={{
                         start_datetime: '2021-05-02T19:22:43.000Z',
                         end_datetime: '2021-05-03T19:22:43.000Z',
@@ -89,7 +97,7 @@ describe('PeriodStatsFilter', () => {
         }
         const {getByText} = render(
             <Provider store={store}>
-                <PeriodStatsFilter value={value} />
+                <PeriodFilter value={value} />
             </Provider>
         )
 
@@ -125,7 +133,7 @@ describe('PeriodStatsFilter', () => {
         }
         render(
             <Provider store={store}>
-                <PeriodStatsFilter value={value} />
+                <PeriodFilter value={value} />
             </Provider>
         )
 
@@ -139,31 +147,7 @@ describe('PeriodStatsFilter', () => {
         )
     })
 
-    it('should render with default set of ranges', () => {
-        const store = mockStore(defaultState)
-        const value = {
-            start_datetime: '2020-05-02T19:22:43.000Z',
-            end_datetime: '2021-05-03T19:22:43.000Z',
-        }
-
-        render(
-            <Provider store={store}>
-                <PeriodStatsFilter value={value} />
-            </Provider>
-        )
-
-        const defaultRangesKeys = Object.keys(getDefaultSetOfRanges())
-        const allRangesRenderedAttributes = Array.from(
-            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
-        ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
-
-        expect(allRangesRenderedAttributes).toEqual(defaultRangesKeys)
-    })
-
     it('should render with custom set of ranges', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: true,
-        }))
         const store = mockStore(defaultState)
         const value = {
             start_datetime: '2020-05-02T19:22:43.000Z',
@@ -172,7 +156,7 @@ describe('PeriodStatsFilter', () => {
 
         render(
             <Provider store={store}>
-                <PeriodStatsFilter value={value} />
+                <PeriodFilter value={value} />
             </Provider>
         )
 

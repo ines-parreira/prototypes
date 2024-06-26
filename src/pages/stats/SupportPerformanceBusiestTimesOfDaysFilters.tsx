@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
 import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
     getStatsFilters,

@@ -20,36 +20,17 @@ import {
     DateTimeResultFormatType,
 } from 'constants/datetime'
 import Button from 'pages/common/components/button/Button'
-import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getTimezone} from 'state/currentUser/selectors'
 import {RootState} from 'state/types'
 import {useTheme} from 'theme'
-import {formatDatetime} from 'utils'
 
 import {
-    endOfToday,
     periodPickerMaxSpanDays,
-    startOfToday,
-    dateInPastFromStartOfToday,
+    getDateRangePickerLabel,
 } from 'pages/stats/common/utils'
 import css from 'pages/stats/common/PeriodPicker.less'
-import {
-    PAST_30_DAYS,
-    PAST_60_DAYS,
-    PAST_7_DAYS,
-    PAST_90_DAYS,
-    TODAY,
-} from 'pages/stats/constants'
-
-export const getDefaultSetOfRanges = (): {
-    [key: string]: [Moment, Moment]
-} => ({
-    [TODAY]: [startOfToday(), endOfToday()],
-    [PAST_7_DAYS]: [dateInPastFromStartOfToday(7), endOfToday()],
-    [PAST_30_DAYS]: [dateInPastFromStartOfToday(30), endOfToday()],
-    [PAST_60_DAYS]: [dateInPastFromStartOfToday(60), endOfToday()],
-    [PAST_90_DAYS]: [dateInPastFromStartOfToday(90), endOfToday()],
-})
+import {getDefaultSetOfRanges} from 'pages/stats/constants'
+import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
 export type Props = {
     endDatetime: Moment
@@ -77,6 +58,8 @@ export type Props = {
     changeButtonColorsToV2?: boolean
     rangeDatesInFooter?: boolean
     shouldShowMonthAndYearDropdowns?: boolean
+    isV2Filter?: boolean
+    children?: React.ReactNode
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -102,6 +85,8 @@ export const PeriodPickerContainer = ({
     changeButtonColorsToV2 = false,
     rangeDatesInFooter = false,
     shouldShowMonthAndYearDropdowns = false,
+    isV2Filter = false,
+    children,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -144,16 +129,10 @@ export const PeriodPickerContainer = ({
         return getDefaultSetOfRanges()
     }, [dateRanges])
 
-    const label = useMemo(() => {
-        const start = formatDatetime(startDate, labelDateFormat).toString()
-        const end = formatDatetime(endDate, labelDateFormat).toString()
-
-        if (start === end) {
-            return start
-        }
-
-        return `${start} - ${end}`
-    }, [endDate, labelDateFormat, startDate])
+    const label = useMemo(
+        () => getDateRangePickerLabel(startDate, endDate, labelDateFormat),
+        [endDate, labelDateFormat, startDate]
+    )
 
     useEffect(() => {
         setStartDate(startDatetime)
@@ -222,6 +201,21 @@ export const PeriodPickerContainer = ({
             .forEach((element: Element) => {
                 element.removeEventListener('mouseleave', hideTooltip)
             })
+    }
+
+    const dateRangePickerChildren = () => {
+        if (children) {
+            return children
+        }
+        return (
+            <Button intent="secondary" isDisabled={isDisabled} {...toggleProps}>
+                <ButtonIconLabel icon={CALENDAR_ICON}>
+                    <ButtonIconLabel icon="arrow_drop_down" position="right">
+                        {label}
+                    </ButtonIconLabel>
+                </ButtonIconLabel>
+            </Button>
+        )
     }
 
     return (
@@ -303,6 +297,12 @@ export const PeriodPickerContainer = ({
                                 }
                             }
 
+                            if (isV2Filter) {
+                                dateRangerPickerElement.current.classList.add(
+                                    'v2-filter'
+                                )
+                            }
+
                             const cancelBtn = target.container
                                 .get(0)
                                 .querySelector('.cancelBtn')
@@ -341,22 +341,7 @@ export const PeriodPickerContainer = ({
                             )
                         }}
                     >
-                        <div>
-                            <Button
-                                intent="secondary"
-                                isDisabled={isDisabled}
-                                {...toggleProps}
-                            >
-                                <ButtonIconLabel icon={CALENDAR_ICON}>
-                                    <ButtonIconLabel
-                                        icon="arrow_drop_down"
-                                        position="right"
-                                    >
-                                        {label}
-                                    </ButtonIconLabel>
-                                </ButtonIconLabel>
-                            </Button>
-                        </div>
+                        <div>{dateRangePickerChildren()}</div>
                     </DateRangePicker>
                     {tooltipTarget && (
                         <Tooltip

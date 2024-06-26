@@ -1,6 +1,6 @@
 import React from 'react'
 
-import PeriodStatsFilter from 'pages/stats/PeriodStatsFilter'
+import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 
 import {useCampaignStatsFilters} from '../../hooks/useCampaignStatsFilters'
 
