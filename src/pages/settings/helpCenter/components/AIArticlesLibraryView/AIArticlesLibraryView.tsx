@@ -80,6 +80,7 @@ const AIArticlesLibraryView = () => {
                                     showLinkToArticleTemplates
                                 }
                                 helpCenterId={helpCenter.id}
+                                helpCenterShopName={helpCenter.shop_name}
                             />
                             <AIArticlesLibraryPreview
                                 onArchive={onStartArchive}

@@ -1,4 +1,5 @@
 @import '~@gorgias/design-tokens/dist/css/layout';
+@import '~css/typography';
 
 :local {
     .container {
@@ -71,8 +72,15 @@
     }
 
     .message {
-        font-weight: 600;
+        .body-semibold();
         color: var(--neutral-grey-5);
+        text-align: center;
+        padding-bottom: @layout-spacing-xxs;
+    }
+
+    .linkDescription {
+        .body-regular();
+        text-align: center;
     }
 
     .hooray {

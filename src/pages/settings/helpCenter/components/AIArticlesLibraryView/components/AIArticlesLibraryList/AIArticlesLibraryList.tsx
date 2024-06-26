@@ -1,24 +1,34 @@
 import React, {Dispatch, SetStateAction, useMemo, useRef} from 'react'
-import {Link} from 'react-router-dom'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
 
+import * as integrationsSelectors from 'state/integrations/selectors'
 import Button from 'pages/common/components/button/Button'
 import useKey from 'hooks/useKey'
 import useEffectOnce from 'hooks/useEffectOnce'
-import AIArticleRow from '../AIArticleRow/AIArticleRow'
-import AIArticlesToggleButton from '../AIArticlesToggleButton'
-import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
+import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
+import {FeatureFlagKey} from 'config/featureFlags'
 
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
+import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {useListStoreMappings} from 'models/storeMapping/queries'
+import {StoreMapping} from 'models/storeMapping/types'
+import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
 import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
 
 import css from './AIArticlesLibraryList.less'
+import AIArticleLibraryRedirect from './AIArticleLibraryRedirect'
+import AIArticleList from './AIArticleList'
 
 type AIArticlesLibraryListProps = {
     helpCenterId: number
+    helpCenterShopName: string | null
     articles?: AILibraryArticleItem[] | null
     counters: {
         [AIArticleToggleOptionValue.New]: number
@@ -36,6 +46,7 @@ type AIArticlesLibraryListProps = {
 
 const AIArticlesLibraryList = ({
     helpCenterId,
+    helpCenterShopName,
     articles,
     counters,
     selectedArticle,
@@ -45,6 +56,42 @@ const AIArticlesLibraryList = ({
     showLinkToArticleTemplates,
 }: AIArticlesLibraryListProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
+    const isAIArticlesForMultiStoreEnabled: boolean | undefined =
+        useFlags()[
+            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
+        ]
+
+    const shopifyIntegrations = useShopifyIntegrations()
+    const hasMultiBrands = shopifyIntegrations.length > 1
+
+    const integrations = useAppSelector(
+        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+    )
+    const emailIntegrations = integrations.filter(isGenericEmailIntegration)
+    const emailIntegrationIds = emailIntegrations.map(
+        (emailIntegration) => emailIntegration.id
+    )
+    const {data: storeMapping} = useListStoreMappings(emailIntegrationIds, {
+        refetchOnWindowFocus: false,
+    })
+    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+        helpCenterShopName ?? ''
+    )
+    const hasEmailToStoreConnection = storeMapping?.some(
+        (mapping: StoreMapping) => mapping.store_id === storeIntegration?.id
+    )
+
+    const showLinkToConnectEmailToStore = useMemo(
+        () =>
+            isAIArticlesForMultiStoreEnabled &&
+            hasMultiBrands &&
+            !hasEmailToStoreConnection,
+        [
+            isAIArticlesForMultiStoreEnabled,
+            hasMultiBrands,
+            hasEmailToStoreConnection,
+        ]
+    )
 
     const showArticlesList = useMemo(
         () =>
@@ -121,64 +168,33 @@ const AIArticlesLibraryList = ({
                     How articles are generated with AI
                 </Button>
             </a>
-            {showLinkToArticleTemplates ? (
-                <div className={css.centeredMessage}>
-                    <div className={css.messageContainer}>
-                        <div className={css.message}>
-                            We don't have any recommended articles for your Help
-                            Center yet.
-                        </div>
-                        <Link
-                            to={`/app/settings/help-center/${helpCenterId}/articles`}
-                        >
-                            Get started with an article template
-                        </Link>
-                    </div>
-                </div>
+            {showLinkToConnectEmailToStore ? (
+                <AIArticleLibraryRedirect
+                    message="To generate articles with AI, connect your email and
+                            store integrations. This helps the AI know which
+                            customer questions correspond with this Help Center."
+                    linkAddress={`/app/settings/channels/email`}
+                    linkDescription="Connect store"
+                    openNewTab
+                />
+            ) : showLinkToArticleTemplates ? (
+                <AIArticleLibraryRedirect
+                    message="We don't have any recommended articles for your Help
+                            Center yet. Check back next Monday to review newly
+                            generated articles."
+                    linkAddress={`/app/settings/help-center/${helpCenterId}/articles`}
+                    linkDescription="Get started with an article template"
+                />
             ) : showArticlesList ? (
-                <>
-                    {counters &&
-                        counters[AIArticleToggleOptionValue.Old] > 0 && (
-                            <AIArticlesToggleButton
-                                selectedOption={selectedArticleType}
-                                setSelectedOption={setSelectedArticleType}
-                                options={toggleOptions}
-                            />
-                        )}
-                    <div className={css.listHeader}>
-                        <div>Generated Article</div>
-                        <div># of ticket inquiries</div>
-                    </div>
-                    {!articles || articles.length === 0 ? (
-                        <div className={css.centeredMessage}>
-                            <div className={css.messageContainer}>
-                                <div className={css.message}>
-                                    {selectedArticleType ===
-                                    AIArticleToggleOptionValue.New
-                                        ? "You've reviewed all new article suggestions."
-                                        : "You've reviewed all past article suggestions."}
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className={css.articlesList}>
-                            {articles?.map((article) => (
-                                <AIArticleRow
-                                    key={article.key}
-                                    article={article}
-                                    isSelected={
-                                        article.key === selectedArticle?.key
-                                    }
-                                    onSelect={setSelectedArticle}
-                                    showNewTag={
-                                        selectedArticleType ===
-                                        AIArticleToggleOptionValue.All
-                                    }
-                                />
-                            ))}
-                        </div>
-                    )}
-                </>
+                <AIArticleList
+                    articles={articles}
+                    counters={counters}
+                    selectedArticle={selectedArticle}
+                    setSelectedArticle={setSelectedArticle}
+                    selectedArticleType={selectedArticleType}
+                    setSelectedArticleType={setSelectedArticleType}
+                    toggleOptions={toggleOptions}
+                />
             ) : (
                 <AIArticlesLibraryListReviewedState />
             )}
