@@ -69,5 +69,11 @@ export const createContextAndSubmitPlaygroundTicket = async (
         context = {data: (await createPlayground(payload)).data}
     }
 
-    return await submitAiAgentTicket(context.data, abortController)
+    return await submitAiAgentTicket(
+        {
+            ...context.data,
+            _action_serialized_state: body._action_serialized_state,
+        },
+        abortController
+    )
 }

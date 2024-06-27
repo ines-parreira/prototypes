@@ -16,6 +16,8 @@ export type CreatePlaygroundBody = {
     email_integration_address: string
     messages: CreatePlaygroundMessage[]
     created_datetime: string
+    // Property for AI Agent to identify actions
+    _action_serialized_state?: unknown
 }
 
 export type MockTicketMessage = {
@@ -63,6 +65,8 @@ export type SearchCustomerRequest = {
 
 // All ids are strings here as the jinja templating system is transforming from a dict to a json string
 export type AiAgentInput = {
+    // Property for AI Agent to identify actions
+    _action_serialized_state?: unknown
     ticket: {
         id: string
         tags: string
@@ -133,6 +137,7 @@ export type AiAgentResponse = {
         internalNote: string
         htmlReply: string | null
     }
+    _action_serialized_state: unknown
 }
 
 export type CustomerSearchResponse = {

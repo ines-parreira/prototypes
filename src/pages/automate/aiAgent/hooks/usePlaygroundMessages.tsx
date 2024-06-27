@@ -56,6 +56,8 @@ export const usePlaygroundMessages = ({
     httpIntegrationId: number
 }) => {
     const [messages, setMessages] = useState<PlaygroundMessage[]>([])
+    // We don't care what is in this object we just want to resend it to the AI Agent
+    const actionSerializedStateRef = useRef<unknown>()
     const abortControllerRef = useRef<AbortController>()
 
     const {mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting} =
@@ -118,9 +120,13 @@ export const usePlaygroundMessages = ({
                             storeData.monitoredEmailIntegrations[0].id,
                         email_integration_address:
                             storeData.monitoredEmailIntegrations[0].email,
+                        _action_serialized_state:
+                            actionSerializedStateRef.current,
                     },
                     abortController,
                 ])
+                actionSerializedStateRef.current =
+                    aiAgentResponse._action_serialized_state
                 const updatedMessages = newMessages
 
                 if (
