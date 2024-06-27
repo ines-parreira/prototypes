@@ -1,7 +1,11 @@
 import React from 'react'
+import {Provider} from 'react-redux'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {act, renderHook} from '@testing-library/react-hooks'
+import configureMockStore from 'redux-mock-store'
 
+import {RootState, StoreDispatch} from 'state/types'
+import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     useGetAiAgentFeedback,
@@ -23,14 +27,25 @@ jest.mock('../resources', () => ({
 }))
 
 const queryClient = mockQueryClient()
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const store = mockStore({
+    ui: {
+        ticketAIAgentFeedback: {
+            activeTab: TicketAIAgentFeedbackTab.AIAgent,
+        },
+    },
+} as RootState)
 
 const wrapper = ({children}: any) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
+            {children}
+        </QueryClientProvider>
+    </Provider>
 )
 
 describe('useGetAiAgentFeedback', () => {
-    it('should call getAIAgentTicketMessagesFeedback with the correct ticketId', async () => {
-        const ticketId = 123
+    it('should call getAIAgentTicketMessagesFeedback with the correct messageIds', async () => {
         const mockFeedback = [
             {messageId: 1, feedback: 1},
             {messageId: 2, feedback: -1},
@@ -40,7 +55,7 @@ describe('useGetAiAgentFeedback', () => {
         )
 
         const {result, waitForNextUpdate} = renderHook(
-            () => useGetAiAgentFeedback(ticketId),
+            () => useGetAiAgentFeedback(),
             {wrapper}
         )
 
@@ -50,13 +65,12 @@ describe('useGetAiAgentFeedback', () => {
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.data).toBe(mockFeedback)
-        expect(getAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(ticketId)
+        expect(getAIAgentTicketMessagesFeedback).toHaveBeenCalled()
     })
 })
 
 describe('useSubmitAIAgentTicketMessagesFeedback', () => {
     it('should call submitAIAgentTicketMessagesFeedback with the correct ticketId and messageId', async () => {
-        const ticketId = 123
         const messageId = 456
         const feedback: SubmitMessageFeedback = {
             feedbackOnResource: [
@@ -81,11 +95,10 @@ describe('useSubmitAIAgentTicketMessagesFeedback', () => {
             {wrapper}
         )
 
-        act(() => result.current.mutate([ticketId, messageId, feedback]))
+        act(() => result.current.mutate([messageId, feedback]))
 
         await waitFor(() => {
             expect(submitAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(
-                ticketId,
                 messageId,
                 feedback
             )
@@ -95,7 +108,6 @@ describe('useSubmitAIAgentTicketMessagesFeedback', () => {
 
 describe('useDeleteAIAgentTicketMessagesFeedback', () => {
     it('should call deleteAIAgentTicketMessagesFeedback with the correct ticketId and messageId', async () => {
-        const ticketId = 123
         const messageId = 456
         const feedback: DeleteMessageFeedback = {
             feedbackOnResource: [],
@@ -115,11 +127,10 @@ describe('useDeleteAIAgentTicketMessagesFeedback', () => {
             {wrapper}
         )
 
-        act(() => result.current.mutate([ticketId, messageId, feedback]))
+        act(() => result.current.mutate([messageId, feedback]))
 
         await waitFor(() => {
             expect(deleteAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(
-                ticketId,
                 messageId,
                 feedback
             )

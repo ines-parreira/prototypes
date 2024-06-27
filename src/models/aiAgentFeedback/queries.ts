@@ -1,5 +1,7 @@
 import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 import {MutationOverrides} from 'types/query'
+import useAppSelector from 'hooks/useAppSelector'
+import {getAIAgentMessages} from 'state/ticket/selectors'
 import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
@@ -9,19 +11,20 @@ import {
 export const aiAgentFeedbackKeys = {
     all: () => ['aiAgentFeedback'] as const,
     details: () => [...aiAgentFeedbackKeys.all(), 'detail'] as const,
-    detail: (ticketId: number) =>
-        [...aiAgentFeedbackKeys.details(), ticketId] as const,
+    detail: (messageIds: number[]) =>
+        [...aiAgentFeedbackKeys.details(), messageIds.join(',')] as const,
 }
 
 export const useGetAiAgentFeedback = (
-    ticketId: number,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIAgentTicketMessagesFeedback>>
     >
 ) => {
+    const aiMessages = useAppSelector(getAIAgentMessages)
+    const messageIds = aiMessages.map((message) => message.id) as number[]
     return useQuery({
-        queryKey: aiAgentFeedbackKeys.detail(ticketId),
-        queryFn: () => getAIAgentTicketMessagesFeedback(ticketId),
+        queryKey: aiAgentFeedbackKeys.detail(messageIds),
+        queryFn: () => getAIAgentTicketMessagesFeedback(messageIds),
         ...overrides,
     })
 }

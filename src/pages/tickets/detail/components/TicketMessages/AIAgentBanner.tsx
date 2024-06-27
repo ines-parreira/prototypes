@@ -17,12 +17,8 @@ export type AIAgentBannerProps = {
 }
 
 const AIAgentBanner = ({message, className}: AIAgentBannerProps) => {
-    // const isFeedbackToAiAgentV3Enabled =
-    //     useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3]
-
-    const {data} = useGetAiAgentFeedback(message.ticket_id!, {
+    const {data} = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
-        enabled: message.ticket_id !== undefined,
     })
 
     const ticketFeedback = data?.data

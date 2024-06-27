@@ -18,7 +18,7 @@ describe('AI Agent Feedback resources', () => {
     })
 
     it.skip('should resolve with the ticket messages feedback on success', async () => {
-        const ticketId = 123
+        const messageIds = [1, 2]
         const expectedFeedback = {
             shopName: 'sf-bicycle',
             shopType: 'shopify',
@@ -26,26 +26,25 @@ describe('AI Agent Feedback resources', () => {
         }
 
         mockedServer
-            .onGet(`/feedback/ticket/${ticketId}`)
+            .onGet(`/feedback/messages?ids=${messageIds.join(',')}`)
             .reply(200, expectedFeedback)
 
-        const feedback = await getAIAgentTicketMessagesFeedback(ticketId)
+        const feedback = await getAIAgentTicketMessagesFeedback(messageIds)
         expect(feedback.data).toEqual(expectedFeedback)
     })
 
     it.skip('should reject an error on fail', () => {
-        const ticketId = 123
+        const messageIds = [1, 2]
         mockedServer
-            .onGet(`/feedback/ticket/${ticketId}`)
+            .onGet(`/feedback/messages?ids=${messageIds.join(',')}`)
             .reply(503, {message: 'error'})
 
         return expect(
-            getAIAgentTicketMessagesFeedback(ticketId)
+            getAIAgentTicketMessagesFeedback(messageIds)
         ).rejects.toEqual(new Error('Request failed with status code 503'))
     })
 
     it.skip('should resolve with the feedback on success', async () => {
-        const ticketId = 123
         const messageId = 456
         const feedbackToSubmit: SubmitMessageFeedback = {
             feedbackOnResource: [
@@ -63,11 +62,10 @@ describe('AI Agent Feedback resources', () => {
         }
 
         mockedServer
-            .onPost(`feedback/ticket/${ticketId}/message/${messageId}`)
+            .onPost(`feedback/messages/${messageId}`)
             .reply(200, feedbackToSubmit)
 
         const feedback = await submitAIAgentTicketMessagesFeedback(
-            ticketId,
             messageId,
             feedbackToSubmit
         )
@@ -75,7 +73,6 @@ describe('AI Agent Feedback resources', () => {
     })
 
     it.skip('should delete the feedback on success', async () => {
-        const ticketId = 123
         const messageId = 456
         const feedbackToDelete: DeleteMessageFeedback = {
             feedbackOnResource: [],
@@ -89,11 +86,10 @@ describe('AI Agent Feedback resources', () => {
         }
 
         mockedServer
-            .onDelete(`feedback/ticket/${ticketId}/message/${messageId}`)
+            .onDelete(`feedback/messages/${messageId}`)
             .reply(200, feedbackToDelete)
 
         const feedback = await deleteAIAgentTicketMessagesFeedback(
-            ticketId,
             messageId,
             feedbackToDelete
         )

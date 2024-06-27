@@ -2,7 +2,6 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {getTicketState} from 'state/ticket/selectors'
 import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
 
 import css from './AIAgentFeedbackBar.less'
@@ -17,13 +16,9 @@ export const ticketFeedbackSummary =
 
 const AIAgentFeedbackBar = () => {
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
-    const ticket = useAppSelector(getTicketState)
 
-    const ticketId = ticket.get('id') as number | undefined
-
-    const {data} = useGetAiAgentFeedback(ticketId!, {
+    const {data} = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
-        enabled: !!ticketId,
     })
 
     const ticketFeedback = data?.data
