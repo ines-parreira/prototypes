@@ -1,19 +1,19 @@
 import React, {useCallback} from 'react'
 
-import {isArray, isFunction, isString} from 'lodash'
+import isString from 'lodash/isString'
 import {
     ChannelIdentifier,
     Channel,
     getChannels,
     toChannel,
-    toChannels,
 } from 'services/channels'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {StatsFilters} from 'models/stat/types'
 
-import SelectFilter from './common/SelectFilter'
-import SelectStatsFilter from './common/SelectStatsFilter'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
+import {filterChannels} from 'pages/stats/common/filters/helpers'
 
 type Props = {
     value: StatsFilters['channels']
@@ -26,7 +26,7 @@ export const channelsStatsFilterLabels = {
     singular: 'channel',
 }
 
-export default function ChannelsStatsFilter({
+export default function DEPRECATED_ChannelsStatsFilter({
     value = [],
     channelsFilter,
     variant = 'fill',
@@ -67,19 +67,4 @@ export default function ChannelsStatsFilter({
             })}
         </Component>
     )
-}
-
-function filterChannels(
-    channels: Channel[],
-    filter?: ChannelIdentifier[] | ((channel: Channel) => boolean)
-): Channel[] {
-    if (isArray(filter)) {
-        return toChannels(filter)
-    }
-
-    if (isFunction(filter)) {
-        return channels.filter(filter)
-    }
-
-    return channels
 }

@@ -1,4 +1,4 @@
-import React, {useMemo, useRef, useState} from 'react'
+import React, {useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
 import flatMap from 'lodash/flatMap'
 
@@ -32,6 +32,7 @@ type Props = {
     onSelectAll: () => void
     onRemoveAll: () => void
     onChangeLogicalOperator: (operator: LogicalOperatorEnum) => void
+    onDropdownClosed?: () => void
 }
 
 const Filter = ({
@@ -50,6 +51,7 @@ const Filter = ({
     onSelectAll,
     onRemoveAll,
     onChangeLogicalOperator,
+    onDropdownClosed = () => {},
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -71,6 +73,12 @@ const Filter = ({
         })
         return {selectedValues: values, selectedLabels: labels}
     }, [selectedOptions])
+
+    useEffect(() => {
+        if (!isDropdownOpen) {
+            onDropdownClosed()
+        }
+    }, [isDropdownOpen, onDropdownClosed])
 
     return (
         <div className={classNames(css.container, className)}>

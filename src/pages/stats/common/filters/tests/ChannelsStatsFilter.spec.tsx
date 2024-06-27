@@ -13,7 +13,7 @@ import {channels as mockChannels} from 'fixtures/channels'
 import {Channel} from 'services/channels'
 import {TicketChannel} from 'business/types/ticket'
 
-import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
+import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({
@@ -23,7 +23,7 @@ jest.mock('api/queryClient', () => ({
 
 const mockStore = configureMockStore([thunk])
 
-describe('ChannelsStatsFilter', () => {
+describe('DEPRECATED_ChannelsStatsFilter', () => {
     const defaultState = {
         stats: initialState,
     } as RootState
@@ -33,7 +33,7 @@ describe('ChannelsStatsFilter', () => {
     it('should render channels stats filter', () => {
         const {container} = render(
             <Provider store={defaultStore}>
-                <ChannelsStatsFilter value={[]} />
+                <DEPRECATED_ChannelsStatsFilter value={[]} />
             </Provider>
         )
 
@@ -43,7 +43,7 @@ describe('ChannelsStatsFilter', () => {
     it('should render all available chanels by default', () => {
         const {queryByText} = render(
             <Provider store={defaultStore}>
-                <ChannelsStatsFilter value={[]} />
+                <DEPRECATED_ChannelsStatsFilter value={[]} />
             </Provider>
         )
 
@@ -58,7 +58,7 @@ describe('ChannelsStatsFilter', () => {
         it('should allow restricting the channels that get displayed', () => {
             const {queryByText} = render(
                 <Provider store={defaultStore}>
-                    <ChannelsStatsFilter
+                    <DEPRECATED_ChannelsStatsFilter
                         value={[]}
                         channelsFilter={[TicketChannel.Email]}
                     />
@@ -71,7 +71,7 @@ describe('ChannelsStatsFilter', () => {
         it('should not display a passed value that is not included in the filter', () => {
             const {queryByText} = render(
                 <Provider store={defaultStore}>
-                    <ChannelsStatsFilter
+                    <DEPRECATED_ChannelsStatsFilter
                         value={[TicketChannel.Sms]}
                         channelsFilter={[TicketChannel.Email]}
                     />
@@ -84,7 +84,7 @@ describe('ChannelsStatsFilter', () => {
         it('should allow passing a predicate function to filter channels', () => {
             const {queryByText} = render(
                 <Provider store={defaultStore}>
-                    <ChannelsStatsFilter
+                    <DEPRECATED_ChannelsStatsFilter
                         value={[]}
                         channelsFilter={(channel) =>
                             channel.logo_url?.endsWith('email.svg') ?? false
@@ -102,7 +102,7 @@ describe('ChannelsStatsFilter', () => {
             const store = mockStore(defaultState)
             const {getByLabelText} = render(
                 <Provider store={store}>
-                    <ChannelsStatsFilter value={undefined} />
+                    <DEPRECATED_ChannelsStatsFilter value={undefined} />
                 </Provider>
             )
 
@@ -118,7 +118,9 @@ describe('ChannelsStatsFilter', () => {
         it('should show which channels are selected (1 selected)', () => {
             const {queryByText} = render(
                 <Provider store={defaultStore}>
-                    <ChannelsStatsFilter value={[TicketChannel.Email]} />
+                    <DEPRECATED_ChannelsStatsFilter
+                        value={[TicketChannel.Email]}
+                    />
                 </Provider>
             )
 
@@ -130,7 +132,7 @@ describe('ChannelsStatsFilter', () => {
         it('should show which channels are selected (2 selected)', () => {
             const {queryByText} = render(
                 <Provider store={defaultStore}>
-                    <ChannelsStatsFilter
+                    <DEPRECATED_ChannelsStatsFilter
                         value={[TicketChannel.Email, TicketChannel.Sms]}
                     />
                 </Provider>

@@ -31,9 +31,10 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 }))
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
-jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
-    <div>ChannelsStatsFilter</div>
-))
+jest.mock(
+    'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
+    () => () => <div>ChannelsStatsFilter</div>
+)
 
 describe('<SupportPerformanceBusiestTimesOfDays />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([

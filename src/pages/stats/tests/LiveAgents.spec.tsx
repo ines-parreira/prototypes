@@ -40,9 +40,10 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
-jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
-    <div>ChannelsStatsFilter</div>
-))
+jest.mock(
+    'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
+    () => () => <div>ChannelsStatsFilter</div>
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<

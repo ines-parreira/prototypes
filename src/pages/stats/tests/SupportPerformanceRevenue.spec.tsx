@@ -60,9 +60,10 @@ jest.mock(
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
-jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
-    <div>ChannelsStatsFilter</div>
-))
+jest.mock(
+    'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
+    () => () => <div>ChannelsStatsFilter</div>
+)
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')

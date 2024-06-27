@@ -9,7 +9,7 @@ import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
 
-import ChannelsStatsFilter from 'pages/stats/ChannelsStatsFilter'
+import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 
 const mockStore = configureMockStore([thunk])
 
@@ -24,7 +24,9 @@ describe('ChannelsStatsFilter', () => {
     it('should render channels stats filter', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <ChannelsStatsFilter value={[allChannels[0]?.slug]} />
+                <DEPRECATED_ChannelsStatsFilter
+                    value={[allChannels[0]?.slug]}
+                />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -34,7 +36,7 @@ describe('ChannelsStatsFilter', () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <ChannelsStatsFilter value={[]} />
+                <DEPRECATED_ChannelsStatsFilter value={[]} />
             </Provider>
         )
 

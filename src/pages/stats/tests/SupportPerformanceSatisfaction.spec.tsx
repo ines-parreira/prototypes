@@ -43,9 +43,10 @@ jest.mock(
             return <div>Paywall for {feature}</div>
         }
 )
-jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
-    <div>ChannelsStatsFilter</div>
-))
+jest.mock(
+    'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
+    () => () => <div>ChannelsStatsFilter</div>
+)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<

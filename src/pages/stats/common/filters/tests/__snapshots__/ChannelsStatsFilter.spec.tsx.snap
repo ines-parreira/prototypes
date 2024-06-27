@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChannelsStatsFilter should render channels stats filter 1`] = `
+exports[`DEPRECATED_ChannelsStatsFilter should render channels stats filter 1`] = `
 <div
   class="dropdown"
 >

@@ -59,9 +59,10 @@ jest.mock(
         ({value}: ComponentProps<typeof TagsStatsFilter>) =>
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
 )
-jest.mock('pages/stats/ChannelsStatsFilter', () => () => (
-    <div>ChannelsStatsFilter</div>
-))
+jest.mock(
+    'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
+    () => () => <div>ChannelsStatsFilter</div>
+)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),

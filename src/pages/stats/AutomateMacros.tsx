@@ -10,7 +10,7 @@ import {
 } from 'state/stats/selectors'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import ChannelsStatsFilter from './ChannelsStatsFilter'
+import ChannelsStatsFilter from './common/filters/DEPRECATED_ChannelsStatsFilter'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import IntegrationsStatsFilter from './IntegrationsStatsFilter'
 import PeriodStatsFilter from './common/filters/DEPRECATED_PeriodStatsFilter'
