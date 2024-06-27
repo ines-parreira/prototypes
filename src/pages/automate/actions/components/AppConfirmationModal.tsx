@@ -1,4 +1,5 @@
 import React, {useState, useMemo, useEffect} from 'react'
+
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -7,12 +8,16 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import InputField from 'pages/common/forms/input/InputField'
 import {useGetApps} from 'models/integration/queries'
 import {INTEGRATION_TYPE_CONFIG} from 'config'
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import {ActionAppConfiguration, ActionAppConnected} from '../types'
 import TemplateActionBanner from './TemplateActionBanner'
+
 import css from './AppConfirmationModal.less'
 
 type Props = {
     actionAppConnected?: ActionAppConnected
+    templateId: string
     templateName: string
     templateDescription?: string | null
     actionAppConfiguration: ActionAppConfiguration
@@ -28,6 +33,7 @@ export default function AppConfirmationModal({
     onConfirm,
     actionAppConfiguration,
     apiKey,
+    templateId,
     templateName,
     templateDescription,
     isOpen,
@@ -36,7 +42,7 @@ export default function AppConfirmationModal({
 }: Props) {
     const {data: appsList} = useGetApps()
 
-    const [step, stepStep] = useState<'details' | 'input'>(
+    const [step, setStep] = useState<'details' | 'input'>(
         isNewAction ? 'details' : 'input'
     )
 
@@ -73,7 +79,19 @@ export default function AppConfirmationModal({
     const modalTitle =
         step === 'details' ? 'Action details' : 'Connect 3rd party app'
 
+    const appId = appData?.id || integrationTypeConfig?.type
     const appName = appData?.name || integrationTypeConfig?.title
+
+    useEffect(() => {
+        if (step === 'input' && appId && appName) {
+            logEvent(SegmentEvent.AutomateActionsAppAuthenticationModalOpened, {
+                template_id: templateId,
+                template_name: templateName,
+                app_id: appId,
+                app_name: appName,
+            })
+        }
+    }, [step, templateId, templateName, appId, appName])
 
     return (
         <Modal isOpen={isOpen} onClose={() => setOpen(false)} size="medium">
@@ -147,7 +165,7 @@ export default function AppConfirmationModal({
                     <Button
                         intent="primary"
                         onClick={() => {
-                            stepStep('input')
+                            setStep('input')
                         }}
                     >
                         Use Action

@@ -4,6 +4,9 @@ import {useParams} from 'react-router-dom'
 import Button from 'pages/common/components/button/Button'
 import {AiAgentLayout} from 'pages/automate/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import ActionsTemplatesCards from './components/ActionsTemplatesCards'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 import BackToActionButton from './components/BackToActionButton'
@@ -17,6 +20,10 @@ export default function ActionTemplatesView() {
 
     const {data: templateConfigurations, isInitialLoading} =
         useGetWorkflowConfigurationTemplates(['llm-prompt'])
+
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.AutomateActionsTemplatesVisited)
+    })
 
     return (
         <AiAgentLayout

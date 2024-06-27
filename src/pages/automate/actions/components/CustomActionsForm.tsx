@@ -25,9 +25,10 @@ import Headers from 'pages/automate/workflows/editor/visualBuilder/editors/HttpR
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
-
 import TextArea from 'pages/common/forms/TextArea'
 import CheckBox from 'pages/common/forms/CheckBox'
+import {logEvent, SegmentEvent} from 'common/segment'
+
 import useUpsertAction from '../hooks/useUpsertAction'
 import useDeleteAction from '../hooks/useDeleteAction'
 import {
@@ -113,6 +114,12 @@ export default function CustomActionsForm({
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
     const isNewAction = !initialFormValues.internal_id
+
+    useEffectOnce(() => {
+        if (isNewAction) {
+            logEvent(SegmentEvent.AutomateActionsCreateCustomActionVisited)
+        }
+    })
 
     const {
         mutate: upsertAction,

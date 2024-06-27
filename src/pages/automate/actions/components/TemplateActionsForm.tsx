@@ -12,13 +12,13 @@ import ToolbarContext, {
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {VarSchema} from 'pages/automate/workflows/models/conditions.types'
-
+import {SegmentEvent, logEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
 import {useAiAgentNavigation} from 'pages/automate/aiAgent/hooks/useAiAgentNavigation'
 import {useGetStoreApps, useGetActionsApp} from 'models/workflows/queries'
 import Button from 'pages/common/components/button/Button'
+
 import useGetActionAppIntegration from '../hooks/useGetActionAppIntegration'
 import useUpsertAction from '../hooks/useUpsertAction'
 import useAddStoreApp from '../hooks/useAddStoreApp'
@@ -53,7 +53,7 @@ type Props = {
     setApiKeyModalIsOpen: (isOpen: boolean) => void
 }
 
-export default function CustomActionsForm({
+export default function TemplateActionsForm({
     initialConfigurationData: initialFormValues,
     templateConfiguration,
     apiKeyModalIsOpen,
@@ -72,6 +72,15 @@ export default function CustomActionsForm({
         })
 
     const isNewAction = !initialFormValues.internal_id
+
+    useEffectOnce(() => {
+        if (isNewAction) {
+            logEvent(SegmentEvent.AutomateActionsCreateTemplateActionVisited, {
+                template_id: templateConfiguration.id,
+                template_name: templateConfiguration.name,
+            })
+        }
+    })
 
     const {
         remove: removeConditions,
@@ -120,7 +129,7 @@ export default function CustomActionsForm({
         shopName,
     })
 
-    const {data: storeApps, isInitialLoading: storeAppsisInitialLoading} =
+    const {data: storeApps, isInitialLoading: storeAppsIsInitialLoading} =
         useGetStoreApps({
             storeName: shopName,
             storeType: shopType,
@@ -156,10 +165,12 @@ export default function CustomActionsForm({
     const connectedStoreApp = useMemo(
         () =>
             storeApps?.find((app) => {
-                app.store_name === shopName &&
+                return (
+                    app.store_name === shopName &&
                     app.store_type === shopType &&
                     app.integration_id === actionAppIntegration?.id &&
                     app.type === actionApp?.type
+                )
             }),
         [
             actionApp?.type,
@@ -332,6 +343,9 @@ export default function CustomActionsForm({
                                                     actionApp
                                                 }
                                                 onConfirm={onChange}
+                                                templateId={
+                                                    templateConfiguration.id
+                                                }
                                                 templateName={
                                                     templateConfiguration.name
                                                 }
@@ -516,14 +530,14 @@ export default function CustomActionsForm({
                             <Button
                                 isLoading={
                                     isActionUpserting ||
-                                    storeAppsisInitialLoading
+                                    storeAppsIsInitialLoading
                                 }
                                 isDisabled={
                                     (!isNewAction && !formState.isDirty) ||
                                     isActionUpserted ||
                                     isDeletingAction ||
                                     !formState.isValid ||
-                                    storeAppsisInitialLoading
+                                    storeAppsIsInitialLoading
                                 }
                                 onClick={handleSave}
                             >

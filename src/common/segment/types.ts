@@ -1,6 +1,10 @@
 export enum SegmentEvent {
     AnalyticsStatsDatepickerOpen = 'analytics/stats/datepicker-open',
     AutoMergeSettingsUpdated = 'auto-merge-settings-updated',
+    AutomateActionsTemplatesVisited = 'automate/actions/templates-visited',
+    AutomateActionsCreateCustomActionVisited = 'automate/actions/create-custom-action-visited',
+    AutomateActionsCreateTemplateActionVisited = 'automate/actions/create-template-action-visited',
+    AutomateActionsAppAuthenticationModalOpened = 'automate/actions/app-authentication-modal-opened',
     AutomateArticleRecommendationVisited = 'automate/article-recommendation-visited',
     AutomateChannelsVisited = 'automate/channels-visited',
     AutomateChannelUpdateFromFlows = 'automate/channel-update-from-flows',

@@ -32,10 +32,10 @@ export const workflowsConfigurationTemplateDefinitionKeys = {
     all: () => [WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY] as const,
 }
 
-export const storeWorkFlowsAppDefinitionKeys = {
+export const storeWorkflowsAppDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_APP_QUERY_KEY] as const,
     list: (params: {storeName: string; storeType: string}) => [
-        ...storeWorkFlowsAppDefinitionKeys.all(),
+        ...storeWorkflowsAppDefinitionKeys.all(),
         params,
     ],
 }
@@ -190,7 +190,7 @@ export const useGetStoreApps = ({
     storeType: string
 }) => {
     return useQuery({
-        queryKey: storeWorkFlowsAppDefinitionKeys.list({
+        queryKey: storeWorkflowsAppDefinitionKeys.list({
             storeName,
             storeType,
         }),
