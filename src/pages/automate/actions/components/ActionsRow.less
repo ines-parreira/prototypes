@@ -6,36 +6,58 @@
         cursor: pointer;
     }
 
-    .name {
-        .body-semibold();
-    }
-
     .innerActionCell {
         display: inline;
     }
 
-    .actionCell {
-        max-width: 34ch;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+    .actionNameTogleGroup {
+        display: inline-block;
+        padding-block: @layout-spacing-s;
 
-        .appImageFiller,
-        img {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
+        & > div {
+            display: inline-flex;
         }
 
-        span {
-            padding-left: @layout-spacing-xs;
+        .toggleInput {
+            vertical-align: text-top;
+        }
+
+        i {
             vertical-align: middle;
-            margin: 0;
         }
     }
 
+    .ellipsis {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    .nameCell {
+        max-width: 280px;
+    }
+
+    .appImageFiller {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+    }
+
+    .actionTypeText {
+        padding-left: @layout-spacing-xs;
+        vertical-align: middle;
+        margin: 0;
+    }
+    .actionNameText {
+        .body-semibold;
+        vertical-align: text-top;
+        margin: 0;
+    }
+
     .warningIcon {
+        padding-right: @layout-spacing-xs;
         color: var(--feedback-error);
         font-size: @layout-spacing-m;
+        vertical-align: bottom;
     }
 }

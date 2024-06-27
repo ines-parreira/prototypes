@@ -1,5 +1,6 @@
 @import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography.less';
+@import '~css/new/mixins';
 
 :local {
     .container {
@@ -16,12 +17,19 @@
         .actionListDescription {
             display: flex;
             justify-content: space-between;
+            flex-direction: column;
             padding: @layout-spacing-m;
-            gap: @layout-spacing-xxs;
+            gap: @layout-spacing-s;
+
+            @media @desktops {
+                flex-direction: row;
+            }
 
             & > p {
                 .body-regular;
                 margin: 0;
+                min-width: 328px;
+                max-width: 768px;
             }
         }
     }
@@ -51,7 +59,6 @@
     }
 
     .actionsFormContainer {
-        position: relative;
         padding: @layout-spacing-m;
         grid-template-columns: minmax(480px, 680px) 1fr;
     }

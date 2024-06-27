@@ -40,10 +40,6 @@ export default function ActionsList({actions}: Props) {
                 <HeaderCellProperty title="NAME" />
                 <HeaderCellProperty justifyContent="left" title="ACTION" />
                 <HeaderCellProperty
-                    justifyContent="center"
-                    title="AVAILABLE FOR AI AGENT"
-                />
-                <HeaderCellProperty
                     justifyContent="right"
                     title="LAST UPDATED"
                     direction={orderDirection}

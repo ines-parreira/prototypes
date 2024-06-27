@@ -309,7 +309,7 @@ export default function TemplateActionsForm({
                 />
                 <section>
                     <header>
-                        <div>
+                        <div className={css.authButtonGroup}>
                             <BackToActionButton />
                             {!isNativeAppIntegration && actionApp && (
                                 <>

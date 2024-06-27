@@ -28,21 +28,24 @@ type Props = {
     action: StoreWorkflowsConfiguration
 }
 
-const getBodyCellElementId = (actionId: string) =>
-    `action-body-cell-${actionId}`
-
 export default function ActionsRow({action}: Props) {
     const location = useLocation()
     const {shopName, shopType} = useParams<{
         shopType: string
         shopName: string
     }>()
+
+    const getActionNameTypeBodyCellElementId = `action-name-type-body-cell-${action.id}`
+    const getActionNameBodyCellElementId = `action-name-body-cell-${action.id}`
+
     const [isDisabledAppModalOpen, setIsDisabledAppModalOpen] = useState(false)
 
     const disabledNativeAppWarningIconId = `disable-native-app-warning-icon-${action.id}`
 
-    const [actionCellRef, actionCellRefDimension] = useDimensions()
-    const [actionNameRef, actionNameRefDimension] = useDimensions()
+    const [actionTypeCellRef, actionTypeCellRefDimension] = useDimensions()
+    const [actionTypeTextRef, actionTypeTextRefDimension] = useDimensions()
+    const [actionNameCellRef, actionNameCellRefDimension] = useDimensions()
+    const [actionNameTextRef, actionNameTextRefDimension] = useDimensions()
 
     const {mutate: deleteAction, isLoading: isDeletingAction} = useDeleteAction(
         action.name,
@@ -113,20 +116,6 @@ export default function ActionsRow({action}: Props) {
         [action.entrypoints]
     )
 
-    const isActionNameOverflow = useMemo(() => {
-        if (!actionCellRefDimension || !actionNameRefDimension) {
-            return false
-        }
-        const imageOffset = 40
-        if (
-            actionCellRefDimension.width <
-            actionNameRefDimension.width + imageOffset
-        ) {
-            return true
-        }
-        return false
-    }, [actionCellRefDimension, actionNameRefDimension])
-
     const actionDisplayName = useMemo(() => {
         if (isCustomAction) {
             return 'Custom'
@@ -145,11 +134,46 @@ export default function ActionsRow({action}: Props) {
 
     const appImageUrl = useGetAppImageUrl(actionApp)
 
+    const isNativeAppIntegrationDisabled =
+        isNativeAppIntegration && !actionAppIntegration
+
+    const isActionTypeTextOverflow = useMemo(() => {
+        if (!actionTypeCellRefDimension || !actionTypeTextRefDimension) {
+            return false
+        }
+        const imageOffset = 40
+        if (
+            actionTypeCellRefDimension.width <
+            actionTypeTextRefDimension.width + imageOffset
+        ) {
+            return true
+        }
+        return false
+    }, [actionTypeCellRefDimension, actionTypeTextRefDimension])
+
+    const isActionNameTextOverflow = useMemo(() => {
+        if (!actionNameCellRefDimension || !actionNameTextRefDimension) {
+            return false
+        }
+        const toogleIconOffset = 84 + (isNativeAppIntegrationDisabled ? 32 : 0)
+        if (
+            actionNameCellRefDimension.width <
+            actionNameTextRefDimension.width + toogleIconOffset
+        ) {
+            return true
+        }
+        return false
+    }, [
+        actionNameCellRefDimension,
+        actionNameTextRefDimension,
+        isNativeAppIntegrationDisabled,
+    ])
+
     return (
         <TableBodyRow
             className={css.container}
             onClick={() => {
-                if (isNativeAppIntegration && !actionAppIntegration) {
+                if (isNativeAppIntegrationDisabled) {
                     if (isDisabledAppModalOpen) return
                     setIsDisabledAppModalOpen(true)
                     return
@@ -166,14 +190,78 @@ export default function ActionsRow({action}: Props) {
                     setOpen={setIsDisabledAppModalOpen}
                 />
             )}
-            <BodyCell className={css.name}>{action.name}</BodyCell>
             <BodyCell
-                id={getBodyCellElementId(action.id)}
+                ref={actionNameCellRef}
+                onClick={(event) => {
+                    if (isActionUpdating) event.stopPropagation()
+                }}
                 innerClassName={css.innerActionCell}
-                className={css.actionCell}
+                className={classNames(css.ellipsis, css.nameCell)}
+            >
+                <div className={css.actionNameTogleGroup}>
+                    <ToggleInput
+                        className={css.toggleInput}
+                        isLoading={isActionUpdating}
+                        isDisabled={isNativeAppIntegrationDisabled}
+                        onClick={handleToggleAction}
+                        isToggled={
+                            !isNativeAppIntegrationDisabled &&
+                            llmConversationEntryPoint?.deactivated_datetime ===
+                                null
+                        }
+                    />
+                    {isNativeAppIntegrationDisabled && (
+                        <>
+                            <i
+                                id={disabledNativeAppWarningIconId}
+                                className={classNames(
+                                    'material-icons-round',
+                                    css.warningIcon
+                                )}
+                            >
+                                warning
+                            </i>
+                            <Tooltip
+                                placement="top-end"
+                                target={disabledNativeAppWarningIconId}
+                                autohide={false}
+                            >
+                                The integration associated with this Action has
+                                been disconnected. Reconfigure this integration
+                                in{' '}
+                                <Link
+                                    to="/app/settings/integrations"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
+                                    the App Store.
+                                </Link>
+                            </Tooltip>
+                        </>
+                    )}
+                </div>
+                <span
+                    id={getActionNameBodyCellElementId}
+                    className={css.actionNameText}
+                    ref={actionNameTextRef}
+                >
+                    {action.name}
+                </span>
+                {isActionNameTextOverflow && (
+                    <Tooltip
+                        placement="top-end"
+                        target={getActionNameBodyCellElementId}
+                    >
+                        {action.name}
+                    </Tooltip>
+                )}
+            </BodyCell>
+            <BodyCell
+                id={getActionNameTypeBodyCellElementId}
+                innerClassName={css.innerActionCell}
+                className={css.ellipsis}
                 size="small"
                 justifyContent="left"
-                ref={actionCellRef}
+                ref={actionTypeCellRef}
             >
                 {isCustomAction ? (
                     <img src={webhooksIcon} alt={'webhooks'} />
@@ -181,6 +269,7 @@ export default function ActionsRow({action}: Props) {
                     <>
                         {appImageUrl ? (
                             <img
+                                className={css.appImageFiller}
                                 src={appImageUrl}
                                 alt={action?.apps?.[0].type}
                             />
@@ -189,59 +278,19 @@ export default function ActionsRow({action}: Props) {
                         )}
                     </>
                 )}
-                <span ref={actionNameRef}>{actionDisplayName}</span>
-                {isActionNameOverflow && (
+                <span className={css.actionTypeText} ref={actionTypeTextRef}>
+                    {actionDisplayName}
+                </span>
+                {isActionTypeTextOverflow && (
                     <Tooltip
                         placement="top-end"
-                        target={getBodyCellElementId(action.id)}
+                        target={getActionNameTypeBodyCellElementId}
                     >
                         {actionDisplayName}
                     </Tooltip>
                 )}
             </BodyCell>
-            <BodyCell
-                onClick={(event) => {
-                    if (isActionUpdating) event.stopPropagation()
-                }}
-                justifyContent="left"
-                size="smallest"
-            >
-                <ToggleInput
-                    isLoading={isActionUpdating}
-                    onClick={handleToggleAction}
-                    isToggled={
-                        llmConversationEntryPoint?.deactivated_datetime === null
-                    }
-                />
-                {isNativeAppIntegration && !actionAppIntegration && (
-                    <>
-                        <i
-                            id={disabledNativeAppWarningIconId}
-                            className={classNames(
-                                'material-icons-round',
-                                css.warningIcon
-                            )}
-                        >
-                            warning
-                        </i>
-                        <Tooltip
-                            placement="top-end"
-                            target={disabledNativeAppWarningIconId}
-                            autohide={false}
-                        >
-                            The integration associated with this Action has been
-                            disconnected. Reconfigure this integration in{' '}
-                            <Link
-                                to="/app/settings/integrations"
-                                onClick={(e) => e.stopPropagation()}
-                            >
-                                the App Store.
-                            </Link>
-                        </Tooltip>
-                    </>
-                )}
-            </BodyCell>
-            <BodyCell size="smallest" justifyContent="left">
+            <BodyCell size="smallest" justifyContent="right">
                 {action.updated_datetime &&
                     formatDatetime(action.updated_datetime, datetimeFormat)}
             </BodyCell>
