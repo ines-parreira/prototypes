@@ -111,6 +111,18 @@ export function getProductLabel(plan: Plan): string | undefined {
     }
 }
 
+const productNames: Record<ProductType, string> = {
+    [ProductType.Automation]: 'Automate',
+    [ProductType.Helpdesk]: 'Helpdesk',
+    [ProductType.SMS]: 'SMS',
+    [ProductType.Voice]: 'Voice',
+    [ProductType.Convert]: 'Convert',
+}
+
+export function getProductName(product: ProductType): string {
+    return productNames[product]
+}
+
 /**
  * @description
  *    Returns a string such as "$360/month"
@@ -137,7 +149,7 @@ function getPlanPricePerCadence(plan: Plan): string {
  * @param plan Plan
  * @returns string
  */
-function getPlanUnitsPerCadence(plan: Plan): string {
+export function getPlanUnitsPerCadence(plan: Plan): string {
     if (isLegacyAutomate(plan)) {
         return `${plan.extra_ticket_cost} extra for helpdesk tickets overages`
     }

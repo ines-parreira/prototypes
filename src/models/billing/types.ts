@@ -103,6 +103,10 @@ export type AutomatePlan = BasePlan & {
     num_quota_tickets: number | null
 }
 
+export type MeteredAutomatePlan = BasePlan & {
+    features: AutomatePriceFeatures
+}
+
 export type SMSOrVoicePlan = BasePlan & {
     num_quota_tickets: number
 }

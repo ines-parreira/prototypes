@@ -2,47 +2,39 @@ import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {fetchSubscription} from 'models/billing/resources'
-import {Plan, Product} from 'models/billing/types'
-import {
-    getAvailablePlansMap,
-    getAvailablePlansByProduct,
-} from 'state/billing/selectors'
+import {Plan} from 'models/billing/types'
+import {getAvailablePlansMap} from 'state/billing/selectors'
 
 interface ScheduledDowngrade {
     datetime: string
-    from: Plan
-    product: Product
-    to: Plan | null
+    currentPlan: Plan
+    targetPlan: Plan | null
 }
 
 export default function useScheduledDowngrades() {
-    const availablePlansByProduct = useAppSelector(getAvailablePlansByProduct)
-    const availablePlansMap = useAppSelector(getAvailablePlansMap)
+    const plansMap = useAppSelector(getAvailablePlansMap)
 
     const [state, doFetch] = useAsyncFn(async () => {
         const sub = await fetchSubscription()
 
         const downgrades: ScheduledDowngrade[] = (sub.downgrades || [])
             .filter((downgrade) => {
-                const fromPrice = availablePlansMap[downgrade.current_price_id]
-                return !!fromPrice
+                const currentPlan = plansMap[downgrade.current_price_id]
+                return !!currentPlan
             })
             .map((downgrade) => {
-                const fromPrice = availablePlansMap[downgrade.current_price_id]
+                const currentPlan = plansMap[downgrade.current_price_id]
                 return {
                     datetime: sub.current_billing_cycle_end_datetime,
-                    from: fromPrice,
-                    product: availablePlansByProduct.find(
-                        (product) => product.id === fromPrice.product_id
-                    ) as Product,
-                    to: downgrade.scheduled_price_id
-                        ? availablePlansMap[downgrade.scheduled_price_id]
+                    currentPlan: currentPlan,
+                    targetPlan: downgrade.scheduled_price_id
+                        ? plansMap[downgrade.scheduled_price_id]
                         : null,
                 }
             })
 
         return downgrades
-    }, [availablePlansMap, availablePlansByProduct])
+    }, [plansMap])
 
     useEffectOnce(() => {
         void doFetch()

@@ -5,6 +5,7 @@ import {
     ConvertPlan,
     HelpdeskPlan,
     HelpdeskPriceFeatures,
+    MeteredAutomatePlan,
     Plan,
     PlanInterval,
     Product,
@@ -567,6 +568,22 @@ export const advancedYearlyAutomationPrice: AutomatePlan = {
     price_id: 'price_1LJBjgI9qXomtXqSBZoBcg7G',
 }
 
+export const automate05YearlyMeteredPlan: MeteredAutomatePlan = {
+    name: 'Automation 05 yearly usd-5',
+    amount: 15000_00,
+    num_quota_tickets: 24_000,
+    currency: 'usd',
+    interval: PlanInterval.Year,
+    cadence: PlanInterval.Year,
+    extra_ticket_cost: 1.25,
+    public: true,
+    custom: false,
+    internal_id: 'aut-flat-05-yearly-usd-5',
+    features: automationPriceFeatures,
+    product: ProductType.Automation,
+    product_id: 'prod_LsHD5xmSqoFBBs',
+    price_id: 'price_1NDljoI9qXomtXqSABPGJ8si',
+}
 export const legacyBasicHelpdeskPrice: HelpdeskPlan = {
     custom: false,
     addons: ['price_1LJBlbI9qXomtXqSvvtgyZ1z'],

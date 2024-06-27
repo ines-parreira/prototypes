@@ -1,8 +1,18 @@
 import {render} from '@testing-library/react'
 import React from 'react'
 
-import {ProductType} from 'models/billing/types'
-
+import {
+    advancedMonthlyAutomationPrice,
+    advancedMonthlyHelpdeskPrice,
+    automate05YearlyMeteredPlan,
+    basicMonthlyAutomationPrice,
+    basicMonthlyHelpdeskPrice,
+    basicYearlyAutomationPrice,
+    convertPrice1,
+    proMonthlyAutomationPrice,
+    smsPrice1,
+    voicePrice1,
+} from 'fixtures/productPrices'
 import useScheduledDowngrades from '../hooks/useScheduledDowngrades'
 import BillingScheduledDowngrades from '../BillingScheduledDowngrades'
 
@@ -11,9 +21,6 @@ jest.mock('../hooks/useScheduledDowngrades')
 const mockUseScheduledDowngrades = useScheduledDowngrades as jest.Mock
 
 describe('BillingScheduledDowngrades', () => {
-    const price1 = {name: 'Price 1', price_id: 'price1', interval: 'month'}
-    const price2 = {name: 'Price 2', price_id: 'price2', interval: 'month'}
-
     beforeEach(() => {
         mockUseScheduledDowngrades.mockReturnValue({loading: true})
     })
@@ -48,9 +55,8 @@ describe('BillingScheduledDowngrades', () => {
             value: [
                 {
                     datetime: '2023-03-31T00:00:00Z',
-                    from: price1,
-                    product: {id: 'helpdesk', type: ProductType.Helpdesk},
-                    to: price2,
+                    currentPlan: advancedMonthlyHelpdeskPrice,
+                    targetPlan: basicMonthlyHelpdeskPrice,
                 },
             ],
         })
@@ -60,25 +66,62 @@ describe('BillingScheduledDowngrades', () => {
         expect(getByText(type)).toBeInTheDocument()
         const date = 'March 31st 2023'
         expect(getByText(date)).toBeInTheDocument()
-        const counter = '0 tickets/month'
+        const counter = '300 tickets/month'
         expect(getByText(counter)).toBeInTheDocument()
     })
 
-    it('should render a downgrade message for plans that will no longer have a plan after the downgrade', () => {
+    it.each([
+        [
+            basicMonthlyHelpdeskPrice,
+            'Your subscription to Helpdesk will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            advancedMonthlyHelpdeskPrice,
+            'Your subscription to Helpdesk will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            basicMonthlyAutomationPrice,
+            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            basicYearlyAutomationPrice,
+            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            proMonthlyAutomationPrice,
+            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            advancedMonthlyAutomationPrice,
+            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            automate05YearlyMeteredPlan,
+            'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            voicePrice1,
+            'Your subscription to Voice will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            smsPrice1,
+            'Your subscription to SMS will end at the end of your billing cycle on March 31st 2023.',
+        ],
+        [
+            convertPrice1,
+            'Your subscription to Convert will end at the end of your billing cycle on March 31st 2023.',
+        ],
+    ])("should render a specific message for unsubscruptions'", (plan, msg) => {
         mockUseScheduledDowngrades.mockReturnValue({
             loading: false,
             value: [
                 {
                     datetime: '2023-03-31T00:00:00Z',
-                    from: price1,
-                    product: {id: 'helpdesk', type: ProductType.Helpdesk},
+                    currentPlan: plan,
                 },
             ],
         })
-
         const {getByText} = render(<BillingScheduledDowngrades />)
-        const msg =
-            'Your subscription to Helpdesk Price 1 will end at the end of your billing cycle on March 31st 2023.'
         expect(getByText(msg)).toBeInTheDocument()
     })
 })

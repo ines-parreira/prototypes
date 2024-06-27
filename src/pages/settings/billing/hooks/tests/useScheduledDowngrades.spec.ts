@@ -3,6 +3,10 @@ import {act, renderHook} from '@testing-library/react-hooks'
 import useAppSelector from 'hooks/useAppSelector'
 import {fetchSubscription} from 'models/billing/resources'
 
+import {
+    advancedMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPrice,
+} from 'fixtures/productPrices'
 import useScheduledDowngrades from '../useScheduledDowngrades'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -26,10 +30,10 @@ describe('useScheduledDowngrades', () => {
         downgrades: [],
     }
 
-    const price1 = {price_id: 'price1'}
-    const price2 = {price_id: 'price2'}
-
-    const pricesMap = {price1, price2}
+    const pricesMap = {
+        [basicMonthlyHelpdeskPrice.price_id]: basicMonthlyHelpdeskPrice,
+        [advancedMonthlyHelpdeskPrice.price_id]: advancedMonthlyHelpdeskPrice,
+    }
 
     beforeEach(() => {
         promise = new Promise((internalResolve, internalReject) => {
@@ -37,9 +41,7 @@ describe('useScheduledDowngrades', () => {
             reject = internalReject
         })
         mockFetchSubscription.mockReturnValue(promise)
-        mockUseAppSelector
-            .mockReturnValueOnce([{prices: [price1, price2], type: 'helpdesk'}])
-            .mockReturnValueOnce(pricesMap)
+        mockUseAppSelector.mockReturnValueOnce(pricesMap)
     })
 
     it('should return a default state', () => {
@@ -76,8 +78,8 @@ describe('useScheduledDowngrades', () => {
                 ...defaultSub,
                 downgrades: [
                     {
-                        current_price_id: 'price1',
-                        scheduled_price_id: 'price2',
+                        current_price_id: advancedMonthlyHelpdeskPrice.price_id,
+                        scheduled_price_id: basicMonthlyHelpdeskPrice.price_id,
                     },
                 ],
             })
@@ -88,9 +90,8 @@ describe('useScheduledDowngrades', () => {
             value: [
                 {
                     datetime: defaultSub.current_billing_cycle_end_datetime,
-                    from: {price_id: 'price1'},
-                    product: expect.objectContaining({type: 'helpdesk'}),
-                    to: {price_id: 'price2'},
+                    currentPlan: advancedMonthlyHelpdeskPrice,
+                    targetPlan: basicMonthlyHelpdeskPrice,
                 },
             ],
         })
@@ -104,7 +105,7 @@ describe('useScheduledDowngrades', () => {
                 ...defaultSub,
                 downgrades: [
                     {
-                        current_price_id: 'price1',
+                        current_price_id: advancedMonthlyHelpdeskPrice.price_id,
                         scheduled_price_id: null,
                     },
                 ],
@@ -116,9 +117,8 @@ describe('useScheduledDowngrades', () => {
             value: [
                 {
                     datetime: defaultSub.current_billing_cycle_end_datetime,
-                    from: {price_id: 'price1'},
-                    product: expect.objectContaining({type: 'helpdesk'}),
-                    to: null,
+                    currentPlan: advancedMonthlyHelpdeskPrice,
+                    targetPlan: null,
                 },
             ],
         })
