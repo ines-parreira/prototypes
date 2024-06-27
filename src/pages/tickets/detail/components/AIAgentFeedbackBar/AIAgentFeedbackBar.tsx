@@ -41,7 +41,11 @@ const AIAgentFeedbackBar = () => {
             data-testid={FEEDBACK_MESSAGE_CONTAINER_TEST_ID}
         >
             <div className={css.summaryContainer}>
-                <div className={css.title}>Improve AI Agent responses</div>
+                <div className={css.title}>
+                    {messageFeedback
+                        ? 'Feedback'
+                        : 'Improve AI Agent responses'}
+                </div>
                 <div
                     className={css.summary}
                     data-testid={FEEDBACK_TICKET_SUMMARY_TEST_ID}

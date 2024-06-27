@@ -123,8 +123,7 @@ const FeedbackOtherResourcesSelect = ({
         }
 
         setValues(initialFormattedValues)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isOtherResourceListLoading])
+    }, [isOtherResourceListLoading, initialFormattedValues])
 
     const onToggle = useCallback(() => {
         setIsOpen(true)

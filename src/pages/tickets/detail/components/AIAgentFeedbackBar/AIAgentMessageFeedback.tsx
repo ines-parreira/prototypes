@@ -192,6 +192,8 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
             messageFeedback.feedbackOnMessage.length > 0
         ) {
             setReportIssues(issues.map((resource) => resource.feedback))
+        } else {
+            setReportIssues([])
         }
     }, [messageFeedback, issues])
 
