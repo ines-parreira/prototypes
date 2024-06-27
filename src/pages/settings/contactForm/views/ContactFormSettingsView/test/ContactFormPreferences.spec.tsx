@@ -8,6 +8,10 @@ import {createMemoryHistory} from 'history'
 import userEvent from '@testing-library/user-event'
 import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
 import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import {
+    AUTOMATION_PRODUCT_ID,
+    basicMonthlyAutomationPlan,
+} from 'fixtures/productPrices'
 import ContactFormPreferences from '../ContactFormPreferences'
 import {renderWithRouter} from '../../../../../../utils/testing'
 import {RootState, StoreDispatch} from '../../../../../../state/types'
@@ -19,10 +23,6 @@ import {CONTACT_FORM_PREFERENCES_PATH} from '../../../constants'
 import {billingState} from '../../../../../../fixtures/billing'
 import {useSupportedLocales} from '../../../../helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
-import {
-    AUTOMATION_PRODUCT_ID,
-    basicMonthlyAutomationPrice,
-} from '../../../../../../fixtures/productPrices'
 import {ContactForm} from '../../../../../../models/contactForm/types'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -39,7 +39,7 @@ const defaultState: Partial<RootState> = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
+                [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.price_id,
             },
         },
     }),

@@ -10,10 +10,10 @@ import {IntegrationType} from 'models/integration/types'
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
-    proMonthlyHelpdeskPrice,
+    proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import Magento2 from '../Magento2'
 
@@ -23,7 +23,7 @@ const store = mockStore({
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPrice.price_id,
+                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPlan.price_id,
             },
         },
     }),
@@ -142,7 +142,7 @@ describe('<Magento2/>', () => {
 
     describe('Not in price', () => {
         const productsWithMagentoDisabled = _cloneDeep(products)
-        const basicPriceWithMagentoDisabled = basicMonthlyHelpdeskPrice
+        const basicPriceWithMagentoDisabled = basicMonthlyHelpdeskPlan
         basicPriceWithMagentoDisabled.features.magento_integration.enabled =
             false
         productsWithMagentoDisabled[0].prices[0] = basicPriceWithMagentoDisabled

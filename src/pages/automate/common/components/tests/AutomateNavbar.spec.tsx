@@ -19,8 +19,8 @@ import {billingState} from 'fixtures/billing'
 import {getLDClient} from 'utils/launchDarkly'
 import {integrationsState} from 'fixtures/integrations'
 import {
-    legacyBasicAutomationPrice,
-    legacyBasicHelpdeskPrice,
+    legacyBasicAutomatePlan,
+    legacyBasicHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {ThemeProvider} from 'theme'
 
@@ -115,14 +115,14 @@ describe('<AutomateNavbar />', () => {
                                     ...billingState.products[0],
                                     prices: [
                                         ...billingState.products[0].prices,
-                                        legacyBasicHelpdeskPrice,
+                                        legacyBasicHelpdeskPlan,
                                     ],
                                 },
                                 {
                                     ...billingState.products[1],
                                     prices: [
                                         ...billingState.products[1].prices,
-                                        legacyBasicAutomationPrice,
+                                        legacyBasicAutomatePlan,
                                     ],
                                 },
                             ],
@@ -213,14 +213,14 @@ describe('<AutomateNavbar />', () => {
                                     ...billingState.products[0],
                                     prices: [
                                         ...billingState.products[0].prices,
-                                        legacyBasicHelpdeskPrice,
+                                        legacyBasicHelpdeskPlan,
                                     ],
                                 },
                                 {
                                     ...billingState.products[1],
                                     prices: [
                                         ...billingState.products[1].prices,
-                                        legacyBasicAutomationPrice,
+                                        legacyBasicAutomatePlan,
                                     ],
                                 },
                             ],

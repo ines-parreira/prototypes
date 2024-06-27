@@ -5,9 +5,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {ProductType} from 'models/billing/types'
 import {
-    basicMonthlyHelpdeskPrice,
-    convertPrice1,
-    convertPrice5,
+    basicMonthlyHelpdeskPlan,
+    convertPlan1,
+    convertPlan5,
     convertProduct,
 } from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
@@ -25,7 +25,7 @@ describe('AutoUpgradeToggle', () => {
 
     const selectedPlans = {
         helpdesk: {
-            plan: basicMonthlyHelpdeskPrice,
+            plan: basicMonthlyHelpdeskPlan,
             isSelected: true,
         },
         automation: {
@@ -38,7 +38,7 @@ describe('AutoUpgradeToggle', () => {
             isSelected: false,
         },
         convert: {
-            plan: convertPrice1,
+            plan: convertPlan1,
             isSelected: true,
         },
     }
@@ -83,7 +83,7 @@ describe('AutoUpgradeToggle', () => {
                     selectedPlans={{
                         ...props.selectedPlans,
                         [ProductType.Convert]: {
-                            plan: convertPrice5,
+                            plan: convertPlan5,
                             isSelected: true,
                         },
                     }}

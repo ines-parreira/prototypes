@@ -9,7 +9,7 @@ import client from 'models/api/resources'
 import * as actions from 'state/notifications/actions'
 import {
     HELPDESK_PRODUCT_ID,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import ContactSupportModal from '../ContactSupportModal'
@@ -29,7 +29,7 @@ const store = mockedStore({
         currentAccount: fromJS({
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
             },
         }),

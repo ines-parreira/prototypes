@@ -7,7 +7,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
     products,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import SummaryFooter, {SummaryFooterProps} from '../SummaryFooter'
 import {BILLING_BASE_PATH} from '../../../constants'
@@ -19,7 +19,7 @@ const store = mockedStore({
         currentAccount: fromJS({
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
             },
         }),

@@ -10,9 +10,9 @@ import {RootState} from 'state/types'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
-    convertPrice0,
+    convertPlan0,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import CampaignPreview from '../CampaignPreview'
@@ -42,8 +42,8 @@ const defaultState: Partial<RootState> = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-                [CONVERT_PRODUCT_ID]: convertPrice0.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+                [CONVERT_PRODUCT_ID]: convertPlan0.price_id,
             },
         },
     }),

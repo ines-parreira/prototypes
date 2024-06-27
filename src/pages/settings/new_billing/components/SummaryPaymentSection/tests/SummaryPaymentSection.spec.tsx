@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {
     HELPDESK_PRODUCT_ID,
     products,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {RootState, StoreDispatch} from 'state/types'
 import SummaryPaymentSection from '../SummaryPaymentSection'
@@ -30,7 +30,7 @@ describe('SummaryPaymentSection', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
+                                basicMonthlyHelpdeskPlan.price_id,
                         },
                     },
                 }),
@@ -59,7 +59,7 @@ describe('SummaryPaymentSection', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
+                                basicMonthlyHelpdeskPlan.price_id,
                         },
                     },
                 }),
@@ -83,7 +83,7 @@ describe('SummaryPaymentSection', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
+                                basicMonthlyHelpdeskPlan.price_id,
                         },
                     },
                 }),
@@ -112,7 +112,7 @@ describe('SummaryPaymentSection', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
+                                basicMonthlyHelpdeskPlan.price_id,
                         },
                     },
                 }),
@@ -140,7 +140,7 @@ describe('SummaryPaymentSection', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
+                                basicMonthlyHelpdeskPlan.price_id,
                         },
                     },
                 }),
@@ -169,7 +169,7 @@ describe('SummaryPaymentSection', () => {
                     current_subscription: {
                         products: {
                             [HELPDESK_PRODUCT_ID]:
-                                basicMonthlyHelpdeskPrice.price_id,
+                                basicMonthlyHelpdeskPlan.price_id,
                         },
                     },
                 }),

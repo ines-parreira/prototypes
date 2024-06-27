@@ -1,8 +1,8 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {
-    basicMonthlyAutomationPrice,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import {PlanInterval} from 'models/billing/types'
@@ -11,11 +11,11 @@ import SummaryTotal from '../SummaryTotal'
 const selectedPlans: SelectedPlans = {
     helpdesk: {
         isSelected: true,
-        plan: basicMonthlyHelpdeskPrice,
+        plan: basicMonthlyHelpdeskPlan,
     },
     automation: {
         isSelected: true,
-        plan: basicMonthlyAutomationPrice,
+        plan: basicMonthlyAutomationPlan,
     },
     voice: {
         isSelected: false,
@@ -28,7 +28,7 @@ const selectedPlans: SelectedPlans = {
     },
 }
 const totalProductAmount =
-    basicMonthlyHelpdeskPrice.amount + basicMonthlyAutomationPrice.amount
+    basicMonthlyHelpdeskPlan.amount + basicMonthlyAutomationPlan.amount
 const totalProductAmountDifferent = totalProductAmount + 10000
 const interval = PlanInterval.Month
 const currency = 'USD'

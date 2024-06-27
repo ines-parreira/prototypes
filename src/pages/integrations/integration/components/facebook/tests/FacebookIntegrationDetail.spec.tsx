@@ -14,7 +14,7 @@ import {
     FacebookIntegration,
 } from 'models/integration/types'
 import {IntegrationType} from 'models/integration/constants'
-import {basicMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {AccountFeature} from 'state/currentAccount/types'
 
 import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
@@ -48,7 +48,7 @@ const minProps: ComponentProps<typeof FacebookIntegrationDetail> = {
     currentAccount: fromJS({
         domain: 'acme',
     }),
-    currentHelpdeskProduct: basicMonthlyHelpdeskPrice,
+    currentHelpdeskProduct: basicMonthlyHelpdeskPlan,
     updateOrCreateIntegration: jest.fn(),
     deleteIntegration: jest.fn(),
     hasInstagramDMFeature: true,
@@ -661,9 +661,9 @@ describe('<FacebookIntegrationDetail/>', () => {
             })
 
             const currentHelpdeskProduct = {
-                ...basicMonthlyHelpdeskPrice,
+                ...basicMonthlyHelpdeskPlan,
                 features: {
-                    ...basicMonthlyHelpdeskPrice.features,
+                    ...basicMonthlyHelpdeskPlan.features,
                     [AccountFeature.InstagramDirectMessage]: {
                         enabled: priceHasInstagramDmFeature,
                     },

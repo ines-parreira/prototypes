@@ -11,8 +11,8 @@ import {account} from 'fixtures/account'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
-    basicMonthlyAutomationPrice,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
@@ -79,7 +79,7 @@ const store = mockedStore({
         ...account,
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
             },
         },
     }),
@@ -130,7 +130,7 @@ describe('PaymentMethodView', () => {
     beforeEach(() => {
         const selectedPlans = {
             helpdesk: {
-                plan: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPlan,
                 isSelected: true,
             },
             automation: {
@@ -220,9 +220,9 @@ describe('PaymentMethodView', () => {
                 current_subscription: {
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPrice.price_id,
+                            basicMonthlyHelpdeskPlan.price_id,
                         [AUTOMATION_PRODUCT_ID]:
-                            basicMonthlyAutomationPrice.price_id,
+                            basicMonthlyAutomationPlan.price_id,
                     },
                     status: 'trialing',
                 },

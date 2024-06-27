@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {render, fireEvent} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
 
-import {starterHelpdeskPrice} from 'fixtures/productPrices'
+import {starterHelpdeskPlan} from 'fixtures/productPrices'
 
 import {PlanInterval} from 'models/billing/types'
 import AutomateAmount from '../AutomateAmount'
@@ -95,8 +95,8 @@ describe('<AutomateAmount />', () => {
             <AutomateAmount
                 {...minProps}
                 addOnAmount={undefined}
-                interval={starterHelpdeskPrice.interval}
-                currency={starterHelpdeskPrice.currency}
+                interval={starterHelpdeskPlan.interval}
+                currency={starterHelpdeskPlan.currency}
                 editable={false}
             />
         )

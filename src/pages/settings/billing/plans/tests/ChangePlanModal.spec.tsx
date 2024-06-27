@@ -9,8 +9,8 @@ import {Provider} from 'react-redux'
 import {
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
-    legacyBasicAutomationPrice,
-    legacyBasicHelpdeskPrice,
+    legacyBasicAutomatePlan,
+    legacyBasicHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {RootState, StoreDispatch} from 'state/types'
 import {account, automationSubscriptionProductPrices} from 'fixtures/account'
@@ -166,19 +166,19 @@ describe('<ChangePlanModal />', () => {
                     billing: defaultState.billing
                         ?.mergeIn(
                             ['products', 0, 'prices'],
-                            fromJS([legacyBasicHelpdeskPrice])
+                            fromJS([legacyBasicHelpdeskPlan])
                         )
                         ?.mergeIn(
                             ['products', 1, 'prices'],
-                            fromJS([legacyBasicAutomationPrice])
+                            fromJS([legacyBasicAutomatePlan])
                         ),
                     currentAccount: defaultState.billing?.setIn(
                         ['current_subscription', 'products'],
                         fromJS({
                             [HELPDESK_PRODUCT_ID]:
-                                legacyBasicHelpdeskPrice.price_id,
+                                legacyBasicHelpdeskPlan.price_id,
                             [AUTOMATION_PRODUCT_ID]:
-                                legacyBasicAutomationPrice.price_id,
+                                legacyBasicAutomatePlan.price_id,
                         })
                     ),
                 })}

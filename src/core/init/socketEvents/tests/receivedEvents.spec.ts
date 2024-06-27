@@ -7,9 +7,9 @@ import {EnhancedStore} from '@reduxjs/toolkit'
 import {TicketChannel} from 'business/types/ticket'
 import browserNotification from 'services/browserNotification'
 import {
-    advancedMonthlyHelpdeskPrice,
+    advancedMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-    proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice,
+    proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import * as currentUserActions from 'state/currentUser/actions'
 import {HelpdeskPlan, PriceId} from 'models/billing/types'
@@ -95,7 +95,7 @@ jest.mock('common/store', () => {
 
     const mockStore = configureMockStore([thunk])
     const store = mockStore({
-        billing: fromJS({products: [mockedProMonthlyHelpdeskPrice]}),
+        billing: fromJS({products: [mockedProMonthlyHelpdeskPlan]}),
         currentUser: fromJS({id: 1}),
         chats: fromJS({
             tickets: Array(MAX_RECENT_CHATS - 1).fill({
@@ -161,18 +161,18 @@ describe('receivedEvents', () => {
         const accountUpdatedHandler = _find(receivedEvents, {
             name: SocketEventType.AccountUpdated,
         })
-        const getPricesMapSpy = jest.spyOn(
+        const getAvailablePlansMapSpy = jest.spyOn(
             billingSelectors,
             'getAvailablePlansMap'
         )
 
         beforeEach(() => {
             jest.useFakeTimers()
-            getPricesMapSpy.mockImplementation(
+            getAvailablePlansMapSpy.mockImplementation(
                 () =>
                     ({
-                        [mockedProMonthlyHelpdeskPrice.price_id]:
-                            mockedProMonthlyHelpdeskPrice,
+                        [mockedProMonthlyHelpdeskPlan.price_id]:
+                            mockedProMonthlyHelpdeskPlan,
                     } as Record<PriceId, HelpdeskPlan>)
             )
         })
@@ -355,7 +355,7 @@ describe('receivedEvents', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    mockedProMonthlyHelpdeskPrice.price_id,
+                                    mockedProMonthlyHelpdeskPlan.price_id,
                             },
                         },
                     },
@@ -384,7 +384,7 @@ describe('receivedEvents', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    advancedMonthlyHelpdeskPrice.price_id,
+                                    advancedMonthlyHelpdeskPlan.price_id,
                             },
                         },
                     },

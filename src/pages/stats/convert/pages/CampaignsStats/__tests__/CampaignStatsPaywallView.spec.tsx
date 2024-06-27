@@ -3,7 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
-import {getStateWithPrice} from 'utils/paywallTesting'
+import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
 import CampaignStatsPaywallView from '../CampaignStatsPaywallView'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
@@ -25,7 +25,7 @@ describe('CampaignStatsPaywallView', () => {
         )
 
     it('has custom CTA and modal', () => {
-        const mockedState = getStateWithPrice()
+        const mockedState = getStateWithHelpdeskPlan()
 
         const {getByText, queryByTestId} = renderWithStore(mockedState)
 

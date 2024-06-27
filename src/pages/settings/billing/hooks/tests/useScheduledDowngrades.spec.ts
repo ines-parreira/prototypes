@@ -4,8 +4,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {fetchSubscription} from 'models/billing/resources'
 
 import {
-    advancedMonthlyHelpdeskPrice,
-    basicMonthlyHelpdeskPrice,
+    advancedMonthlyHelpdeskPlan,
+    basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import useScheduledDowngrades from '../useScheduledDowngrades'
 
@@ -31,8 +31,8 @@ describe('useScheduledDowngrades', () => {
     }
 
     const pricesMap = {
-        [basicMonthlyHelpdeskPrice.price_id]: basicMonthlyHelpdeskPrice,
-        [advancedMonthlyHelpdeskPrice.price_id]: advancedMonthlyHelpdeskPrice,
+        [basicMonthlyHelpdeskPlan.price_id]: basicMonthlyHelpdeskPlan,
+        [advancedMonthlyHelpdeskPlan.price_id]: advancedMonthlyHelpdeskPlan,
     }
 
     beforeEach(() => {
@@ -78,8 +78,8 @@ describe('useScheduledDowngrades', () => {
                 ...defaultSub,
                 downgrades: [
                     {
-                        current_price_id: advancedMonthlyHelpdeskPrice.price_id,
-                        scheduled_price_id: basicMonthlyHelpdeskPrice.price_id,
+                        current_price_id: advancedMonthlyHelpdeskPlan.price_id,
+                        scheduled_price_id: basicMonthlyHelpdeskPlan.price_id,
                     },
                 ],
             })
@@ -90,8 +90,8 @@ describe('useScheduledDowngrades', () => {
             value: [
                 {
                     datetime: defaultSub.current_billing_cycle_end_datetime,
-                    currentPlan: advancedMonthlyHelpdeskPrice,
-                    targetPlan: basicMonthlyHelpdeskPrice,
+                    currentPlan: advancedMonthlyHelpdeskPlan,
+                    targetPlan: basicMonthlyHelpdeskPlan,
                 },
             ],
         })
@@ -105,7 +105,7 @@ describe('useScheduledDowngrades', () => {
                 ...defaultSub,
                 downgrades: [
                     {
-                        current_price_id: advancedMonthlyHelpdeskPrice.price_id,
+                        current_price_id: advancedMonthlyHelpdeskPlan.price_id,
                         scheduled_price_id: null,
                     },
                 ],
@@ -117,7 +117,7 @@ describe('useScheduledDowngrades', () => {
             value: [
                 {
                     datetime: defaultSub.current_billing_cycle_end_datetime,
-                    currentPlan: advancedMonthlyHelpdeskPrice,
+                    currentPlan: advancedMonthlyHelpdeskPlan,
                     targetPlan: null,
                 },
             ],

@@ -5,11 +5,11 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-    proMonthlyAutomationPrice,
-    proMonthlyHelpdeskPrice,
-    voicePrice0,
+    proMonthlyAutomationPlan,
+    proMonthlyHelpdeskPlan,
+    voicePlan0,
 } from 'fixtures/productPrices'
 import {assumeMock, getLastMockCall} from 'utils/testing'
 import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
@@ -42,7 +42,7 @@ const store = mockStore({
         ...account,
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
             },
         },
     }),
@@ -135,10 +135,10 @@ beforeEach(() => {
 
 // constants
 const subscriptionProducts = {
-    [ProductType.Helpdesk]: proMonthlyHelpdeskPrice,
-    [ProductType.Automation]: proMonthlyAutomationPrice,
+    [ProductType.Helpdesk]: proMonthlyHelpdeskPlan,
+    [ProductType.Automation]: proMonthlyAutomationPlan,
     [ProductType.SMS]: null,
-    [ProductType.Voice]: voicePrice0,
+    [ProductType.Voice]: voicePlan0,
     [ProductType.Convert]: null,
 }
 const productType = ProductType.Helpdesk

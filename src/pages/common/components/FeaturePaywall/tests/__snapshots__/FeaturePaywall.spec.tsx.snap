@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feature 1`] = `
+exports[`<FeaturePaywall /> should ask to upgrade custom plan when missing feature 1`] = `
 <div
   class="full-width pageWrapper"
 >
@@ -182,7 +182,7 @@ exports[`<FeaturePaywall /> should ask to upgrade custom price when missing feat
 </div>
 `;
 
-exports[`<FeaturePaywall /> should ask to upgrade legacy price into new price 1`] = `
+exports[`<FeaturePaywall /> should ask to upgrade legacy plan into new plan 1`] = `
 <div
   class="full-width pageWrapper"
 >

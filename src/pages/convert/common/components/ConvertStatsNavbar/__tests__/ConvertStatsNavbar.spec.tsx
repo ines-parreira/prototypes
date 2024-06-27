@@ -10,10 +10,10 @@ import {NavbarLinkProps} from 'pages/common/components/navbar/NavbarLink'
 import {AccountFeature} from 'state/currentAccount/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
-    proMonthlyHelpdeskPrice,
+    proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -53,7 +53,7 @@ describe('ConvertStatsNavbar', () => {
         } as RootState
     }
 
-    const defaultState = getState(basicMonthlyHelpdeskPrice)
+    const defaultState = getState(basicMonthlyHelpdeskPlan)
 
     const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
         exact: true,
@@ -67,7 +67,7 @@ describe('ConvertStatsNavbar', () => {
     })
 
     it('should render regular links for Convert subscriber and Pro plan', () => {
-        const mockedState = getState(proMonthlyHelpdeskPrice, true)
+        const mockedState = getState(proMonthlyHelpdeskPlan, true)
 
         jest.spyOn(
             convertSubscriberHook,

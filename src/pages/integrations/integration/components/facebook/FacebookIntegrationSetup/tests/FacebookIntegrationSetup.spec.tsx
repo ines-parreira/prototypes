@@ -2,7 +2,7 @@ import React, {ComponentProps} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {basicMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {AccountFeature} from 'state/currentAccount/types'
 import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
 import {
@@ -58,7 +58,7 @@ describe('FacebookIntegrationSetup', () => {
         currentAccount: fromJS({
             domain: 'acme',
         }),
-        currentHelpdeskProduct: basicMonthlyHelpdeskPrice,
+        currentHelpdeskProduct: basicMonthlyHelpdeskPlan,
         fetchFacebookOnboardingIntegrations: jest.fn(() => Promise.resolve()),
         activateOnboardingIntegrations: jest.fn(() => Promise.resolve()),
         fetchIntegrations: jest.fn(() => Promise.resolve()),
@@ -422,9 +422,9 @@ describe('FacebookIntegrationSetup', () => {
             })
 
             const currentHelpdeskProduct = {
-                ...basicMonthlyHelpdeskPrice,
+                ...basicMonthlyHelpdeskPlan,
                 features: {
-                    ...basicMonthlyHelpdeskPrice.features,
+                    ...basicMonthlyHelpdeskPlan.features,
                     [AccountFeature.InstagramDirectMessage]: {
                         enabled: priceHasInstagramDmFeature,
                     },

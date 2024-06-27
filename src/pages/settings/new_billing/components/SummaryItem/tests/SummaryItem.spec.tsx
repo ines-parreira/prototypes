@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {PlanInterval, ProductType} from 'models/billing/types'
-import {basicMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import SummaryItem, {SummaryItemProps} from '../SummaryItem'
 
 describe('SummaryItem', () => {
@@ -10,7 +10,7 @@ describe('SummaryItem', () => {
         selectedPlans: {
             helpdesk: {
                 isSelected: true,
-                plan: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPlan,
             },
             automation: {
                 isSelected: false,
@@ -26,11 +26,11 @@ describe('SummaryItem', () => {
             },
         },
         interval: PlanInterval.Month,
-        currentPlan: basicMonthlyHelpdeskPrice,
+        currentPlan: basicMonthlyHelpdeskPlan,
         availablePlans: [
-            basicMonthlyHelpdeskPrice,
+            basicMonthlyHelpdeskPlan,
             {
-                ...basicMonthlyHelpdeskPrice,
+                ...basicMonthlyHelpdeskPlan,
                 price_id: 'different_price_id',
                 amount: 90000,
             },
@@ -62,7 +62,7 @@ describe('SummaryItem', () => {
 
     it('does not display old plan when product.price_id matches selected plan', () => {
         const {queryByTestId} = render(
-            <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPrice} />
+            <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPlan} />
         )
         expect(queryByTestId('oldPrice')).toBeNull()
     })
@@ -72,7 +72,7 @@ describe('SummaryItem', () => {
             <SummaryItem
                 {...props}
                 currentPlan={{
-                    ...basicMonthlyHelpdeskPrice,
+                    ...basicMonthlyHelpdeskPlan,
                     price_id: 'different_price_id',
                 }}
             />

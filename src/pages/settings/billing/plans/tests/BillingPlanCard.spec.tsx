@@ -10,15 +10,15 @@ import {account} from 'fixtures/account'
 import {RootState, StoreDispatch} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {
-    advancedMonthlyHelpdeskPrice,
-    basicMonthlyHelpdeskPrice,
-    customAutomationPrice,
-    customHelpdeskPrice,
+    advancedMonthlyHelpdeskPlan,
+    basicMonthlyHelpdeskPlan,
+    customAutomatePlan,
+    customHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-    legacyBasicAutomationPrice,
-    legacyBasicHelpdeskPrice,
+    legacyBasicAutomatePlan,
+    legacyBasicHelpdeskPlan,
     products,
-    proMonthlyHelpdeskPrice,
+    proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {HelpdeskPlan} from 'models/billing/types'
 import {getFormattedAmount} from 'models/billing/utils'
@@ -30,11 +30,8 @@ jest.mock('lodash/uniqueId', () => () => '42')
 
 describe('<BillingPlanCard />', () => {
     const productPrices = _cloneDeep(products)
-    productPrices[0].prices.push(legacyBasicHelpdeskPrice, customHelpdeskPrice)
-    productPrices[1].prices.push(
-        legacyBasicAutomationPrice,
-        customAutomationPrice
-    )
+    productPrices[0].prices.push(legacyBasicHelpdeskPlan, customHelpdeskPlan)
+    productPrices[1].prices.push(legacyBasicAutomatePlan, customAutomatePlan)
 
     const defaultState: Partial<RootState> = {
         billing: fromJS({
@@ -45,25 +42,25 @@ describe('<BillingPlanCard />', () => {
     }
 
     const minProps: ComponentProps<typeof BillingPlanCard> = {
-        amount: getFormattedAmount(basicMonthlyHelpdeskPrice.amount),
-        currency: basicMonthlyHelpdeskPrice.currency,
-        interval: basicMonthlyHelpdeskPrice.interval,
+        amount: getFormattedAmount(basicMonthlyHelpdeskPlan.amount),
+        currency: basicMonthlyHelpdeskPlan.currency,
+        interval: basicMonthlyHelpdeskPlan.interval,
         features: getPlanCardFeaturesForPrices(
-            [basicMonthlyHelpdeskPrice],
+            [basicMonthlyHelpdeskPlan],
             false
         ),
         isCurrentPrice: false,
-        name: basicMonthlyHelpdeskPrice.name,
+        name: basicMonthlyHelpdeskPlan.name,
         footer: <span>Foo footer</span>,
         className: 'fooClass',
     }
 
     it.each<[string, HelpdeskPlan]>([
-        ['Basic price', basicMonthlyHelpdeskPrice],
-        ['Advanced price', advancedMonthlyHelpdeskPrice],
-        ['Pro price', proMonthlyHelpdeskPrice],
-        ['Custom price', customHelpdeskPrice],
-        ['Legacy price', legacyBasicHelpdeskPrice],
+        ['Basic price', basicMonthlyHelpdeskPlan],
+        ['Advanced price', advancedMonthlyHelpdeskPlan],
+        ['Pro price', proMonthlyHelpdeskPlan],
+        ['Custom price', customHelpdeskPlan],
+        ['Legacy price', legacyBasicHelpdeskPlan],
     ])('should render plan card for the %s', (testName, price) => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
@@ -89,7 +86,7 @@ describe('<BillingPlanCard />', () => {
                 <BillingPlanCard
                     {...minProps}
                     features={getPlanCardFeaturesForPrices(
-                        [proMonthlyHelpdeskPrice],
+                        [proMonthlyHelpdeskPlan],
                         false
                     )}
                 />
@@ -109,18 +106,18 @@ describe('<BillingPlanCard />', () => {
                             'products',
                             HELPDESK_PRODUCT_ID,
                         ],
-                        legacyBasicHelpdeskPrice.price_id
+                        legacyBasicHelpdeskPlan.price_id
                     ),
                 })}
             >
                 <BillingPlanCard
                     {...minProps}
-                    amount={getFormattedAmount(legacyBasicHelpdeskPrice.amount)}
-                    currency={legacyBasicHelpdeskPrice.currency}
-                    interval={legacyBasicHelpdeskPrice.interval}
-                    name={legacyBasicHelpdeskPrice.name}
+                    amount={getFormattedAmount(legacyBasicHelpdeskPlan.amount)}
+                    currency={legacyBasicHelpdeskPlan.currency}
+                    interval={legacyBasicHelpdeskPlan.interval}
+                    name={legacyBasicHelpdeskPlan.name}
                     features={getPlanCardFeaturesForPrices(
-                        [legacyBasicHelpdeskPrice],
+                        [legacyBasicHelpdeskPlan],
                         true
                     )}
                     isCurrentPrice

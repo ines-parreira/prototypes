@@ -5,7 +5,7 @@ import axios from 'axios'
 import {fromJS, List} from 'immutable'
 
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {
@@ -196,7 +196,7 @@ describe('services', () => {
                 const expectedSubscription = {
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPrice.price_id,
+                            basicMonthlyHelpdeskPlan.price_id,
                     },
                     status: 'active',
                 }

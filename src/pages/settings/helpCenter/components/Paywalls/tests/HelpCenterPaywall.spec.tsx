@@ -9,7 +9,7 @@ import _cloneDeep from 'lodash/cloneDeep'
 import {billingState} from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPrice,
+    legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import {PlanName} from 'utils/paywalls'
@@ -32,7 +32,7 @@ jest.mock('../../../../../../utils', () => {
 const createProductPricesWithLegacyPrice = (name: PlanName) => {
     const productsWithLegacyPrice = _cloneDeep(products)
     productsWithLegacyPrice[0].prices.push({
-        ...legacyBasicHelpdeskPrice,
+        ...legacyBasicHelpdeskPlan,
         price_id: 'legacyPlan',
         name,
     })
@@ -62,14 +62,13 @@ describe('HelpCenterPaywall', () => {
 
     it('should render the component correctly for "Basic" legacy plan', () => {
         const productsWithLegacyPrice = _cloneDeep(products)
-        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPlan)
 
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            legacyBasicHelpdeskPrice.price_id,
+                        [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
                     },
                 },
             }),

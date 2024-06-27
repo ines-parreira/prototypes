@@ -23,7 +23,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {VOICE_LEARN_MORE_URL} from 'pages/stats/voice/constants/voiceOverview'
 
-import {VOICE_PRODUCT_ID, voicePrice1} from 'fixtures/productPrices'
+import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -52,7 +52,7 @@ describe('VoiceAgents', () => {
                     products: {
                         ...account.current_subscription.products,
                         ...(featureEnabled && {
-                            [VOICE_PRODUCT_ID]: voicePrice1.price_id,
+                            [VOICE_PRODUCT_ID]: voicePlan1.price_id,
                         }),
                     },
                 },

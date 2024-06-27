@@ -8,13 +8,13 @@ import LD from 'launchdarkly-react-client-sdk'
 import {MemoryRouter, Route} from 'react-router-dom'
 import {RootState, StoreDispatch} from 'state/types'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {getStateWithPrice} from 'utils/paywallTesting'
+import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
 import ClickTrackingPaywallView from '../../ClickTrackingPaywallView'
 import ClickTrackingSettingsView from '../ClickTrackingSettingsView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const store = mockStore(getStateWithPrice())
+const store = mockStore(getStateWithHelpdeskPlan())
 
 const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
     <Provider store={store}>{children}</Provider>

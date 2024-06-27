@@ -8,8 +8,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {ProductType} from 'models/billing/types'
 import {
     HELPDESK_PRODUCT_ID,
-    basicMonthlyHelpdeskPrice,
-    basicYearlyAutomationPrice,
+    basicMonthlyHelpdeskPlan,
+    basicYearlyAutomationPlan,
     products,
 } from 'fixtures/productPrices'
 import ProductCard from '../ProductCard'
@@ -21,7 +21,7 @@ const store = mockedStore({
         currentAccount: fromJS({
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
             },
         }),
@@ -35,7 +35,7 @@ describe('ProductCard', () => {
             <Provider store={store}>
                 <ProductCard
                     type={ProductType.Helpdesk}
-                    plan={basicMonthlyHelpdeskPrice}
+                    plan={basicMonthlyHelpdeskPlan}
                     isDisabled={false}
                 />
             </Provider>
@@ -48,7 +48,7 @@ describe('ProductCard', () => {
             <Provider store={store}>
                 <ProductCard
                     type={ProductType.Automation}
-                    plan={basicYearlyAutomationPrice}
+                    plan={basicYearlyAutomationPlan}
                     isDisabled={false}
                 />
             </Provider>

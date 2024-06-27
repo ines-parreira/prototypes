@@ -1,11 +1,11 @@
 import React from 'react'
 import {render} from '@testing-library/react'
 import {
-    convertPrice0,
-    proYearlyAutomationPrice,
-    proYearlyHelpdeskPrice,
-    smsPrice0,
-    voicePrice0,
+    convertPlan0,
+    proYearlyAutomationPlan,
+    proYearlyHelpdeskPlan,
+    smsPlan0,
+    voicePlan0,
 } from 'fixtures/productPrices'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
@@ -28,35 +28,35 @@ describe('CancellationSummary', () => {
 
     const subscriptionProducts = {
         [ProductType.Helpdesk]: {
-            ...proYearlyHelpdeskPrice,
+            ...proYearlyHelpdeskPlan,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
             interval: PlanInterval.Year,
         },
         [ProductType.Automation]: {
-            ...proYearlyAutomationPrice,
+            ...proYearlyAutomationPlan,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
             interval: PlanInterval.Year,
         },
         [ProductType.SMS]: {
-            ...smsPrice0,
+            ...smsPlan0,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
             interval: PlanInterval.Year,
         },
         [ProductType.Voice]: {
-            ...voicePrice0,
+            ...voicePlan0,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',
             interval: PlanInterval.Year,
         },
         [ProductType.Convert]: {
-            ...convertPrice0,
+            ...convertPlan0,
             num_quota_tickets: 100,
             amount: 100000,
             currency: 'USD',

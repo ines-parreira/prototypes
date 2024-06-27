@@ -7,7 +7,7 @@ import {fromJS} from 'immutable'
 import {RootState} from 'state/types'
 import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {getStateWithPrice} from 'utils/paywallTesting'
+import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
 import {convertStatusOk} from 'fixtures/convert'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
@@ -76,7 +76,7 @@ describe('CampaignsStats', () => {
             </Provider>,
             {history}
         )
-    const mockedState = getStateWithPrice()
+    const mockedState = getStateWithHelpdeskPlan()
 
     beforeEach(() => {
         jest.spyOn(

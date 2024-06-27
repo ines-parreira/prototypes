@@ -1,6 +1,6 @@
 import {
-    basicMonthlyAutomationPrice,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {PlanInterval} from 'models/billing/types'
 import {setHelpdeskNotification, setAutomationNotification} from '../utils'
@@ -9,9 +9,9 @@ describe('setHelpdeskNotification', () => {
     const onClick = jest.fn()
 
     it('renders upgrade message when new product amount is greater', () => {
-        const oldPlan = basicMonthlyHelpdeskPrice // amount is 6000
+        const oldPlan = basicMonthlyHelpdeskPlan // amount is 6000
         const newPlan = {
-            ...basicMonthlyHelpdeskPrice,
+            ...basicMonthlyHelpdeskPlan,
             amount: 10000,
             name: 'New Helpdesk Plan',
         }
@@ -32,9 +32,9 @@ describe('setHelpdeskNotification', () => {
     })
 
     it('renders downgrade message when new product amount is smaller', () => {
-        const oldPlan = basicMonthlyHelpdeskPrice // amount is 6000
+        const oldPlan = basicMonthlyHelpdeskPlan // amount is 6000
         const newPlan = {
-            ...basicMonthlyHelpdeskPrice,
+            ...basicMonthlyHelpdeskPlan,
             amount: 300,
             name: 'New Helpdesk Plan',
         }
@@ -60,7 +60,7 @@ describe('setAutomationNotification', () => {
 
     it('renders new Automate subscription message', () => {
         const oldPlan = undefined
-        const newPlan = basicMonthlyAutomationPrice
+        const newPlan = basicMonthlyAutomationPlan
 
         const periodEnd = '2023-06-30'
         const interval = PlanInterval.Month
@@ -81,9 +81,9 @@ describe('setAutomationNotification', () => {
     })
 
     it('renders upgrade message when new product amount is greater', () => {
-        const oldPlan = basicMonthlyAutomationPrice // amount is 3000
+        const oldPlan = basicMonthlyAutomationPlan // amount is 3000
         const newPlan = {
-            ...basicMonthlyAutomationPrice,
+            ...basicMonthlyAutomationPlan,
             amount: 20000,
             num_quota_tickets: 350,
             name: 'New Automate Plan',
@@ -107,9 +107,9 @@ describe('setAutomationNotification', () => {
     })
 
     it('renders downgrade message when new product amount is less', () => {
-        const oldPlan = basicMonthlyAutomationPrice // amount is 3000
+        const oldPlan = basicMonthlyAutomationPlan // amount is 3000
         const newPlan = {
-            ...basicMonthlyAutomationPrice,
+            ...basicMonthlyAutomationPlan,
             amount: 1000,
             num_quota_tickets: 350,
             name: 'New Automate Plan',

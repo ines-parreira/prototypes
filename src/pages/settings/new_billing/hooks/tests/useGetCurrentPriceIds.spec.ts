@@ -9,7 +9,7 @@ describe('useGetCurrentPriceIds', () => {
     const currentProducts = {
         helpdesk: {price_id: 'helpdeskPrice'},
         automation: {price_id: 'automationPrice'},
-        convert: {price_id: 'convertPrice'},
+        convert: {price_id: 'convertPlan'},
     }
 
     it('should return the current price ids', () => {
@@ -20,7 +20,7 @@ describe('useGetCurrentPriceIds', () => {
         expect(result.current).toEqual([
             'helpdeskPrice',
             'automationPrice',
-            'convertPrice',
+            'convertPlan',
         ])
     })
 
@@ -32,7 +32,7 @@ describe('useGetCurrentPriceIds', () => {
 
         const {result} = renderHook(() => useCurrentPriceIds())
 
-        expect(result.current).toEqual(['helpdeskPrice', 'convertPrice'])
+        expect(result.current).toEqual(['helpdeskPrice', 'convertPlan'])
     })
 
     it('should return the empty price id list', () => {

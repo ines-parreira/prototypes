@@ -10,9 +10,9 @@ import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {AccountFeature} from 'state/currentAccount/types'
 import {billingState} from 'fixtures/billing'
 import {
-    customHelpdeskPrice,
+    customHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPrice,
+    legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import {account} from 'fixtures/account'
@@ -126,9 +126,9 @@ describe('<FeaturePaywall />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should ask to upgrade legacy price into new price', () => {
-        const productsWithLegacyPrice = _cloneDeep(products)
-        productsWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+    it('should ask to upgrade legacy plan into new plan', () => {
+        const availablePlansWithLegacyPlans = _cloneDeep(products)
+        availablePlansWithLegacyPlans[0].prices.push(legacyBasicHelpdeskPlan)
 
         const {container} = render(
             <Provider
@@ -138,13 +138,13 @@ describe('<FeaturePaywall />', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    legacyBasicHelpdeskPrice.price_id,
+                                    legacyBasicHelpdeskPlan.price_id,
                             },
                         },
                     }),
                     billing: fromJS({
                         ...billingState,
-                        products: productsWithLegacyPrice,
+                        products: availablePlansWithLegacyPlans,
                     }),
                 } as Partial<RootState>)}
             >
@@ -161,9 +161,9 @@ describe('<FeaturePaywall />', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should ask to upgrade custom price when missing feature', () => {
-        const productsWithCustomPrice = _cloneDeep(products)
-        productsWithCustomPrice[0].prices.push(customHelpdeskPrice)
+    it('should ask to upgrade custom plan when missing feature', () => {
+        const availablePlanWithCustomPlan = _cloneDeep(products)
+        availablePlanWithCustomPlan[0].prices.push(customHelpdeskPlan)
 
         const {container} = render(
             <Provider
@@ -173,13 +173,13 @@ describe('<FeaturePaywall />', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    customHelpdeskPrice.price_id,
+                                    customHelpdeskPlan.price_id,
                             },
                         },
                     }),
                     billing: fromJS({
                         ...billingState,
-                        products: productsWithCustomPrice,
+                        products: availablePlanWithCustomPlan,
                     }),
                 } as Partial<RootState>)}
             >

@@ -1,11 +1,11 @@
 import {
-    advancedMonthlyHelpdeskPrice,
-    basicMonthlyHelpdeskPrice,
-    customHelpdeskPrice,
-    legacyBasicHelpdeskPrice,
-    proMonthlyAutomationPrice,
-    proMonthlyHelpdeskPrice,
-    starterHelpdeskPrice,
+    advancedMonthlyHelpdeskPlan,
+    basicMonthlyHelpdeskPlan,
+    customHelpdeskPlan,
+    legacyBasicHelpdeskPlan,
+    proMonthlyAutomationPlan,
+    proMonthlyHelpdeskPlan,
+    starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {HelpdeskPlan} from 'models/billing/types'
 import {
@@ -18,8 +18,8 @@ describe('billingPlanFeatures', () => {
         it('should return the features for prices', () => {
             expect(
                 getPlanCardFeaturesForPrices([
-                    proMonthlyHelpdeskPrice,
-                    proMonthlyAutomationPrice,
+                    proMonthlyHelpdeskPlan,
+                    proMonthlyAutomationPlan,
                 ])
             ).toMatchSnapshot()
         })
@@ -27,18 +27,18 @@ describe('billingPlanFeatures', () => {
         it('should return the features for prices with hardcoded features', () => {
             expect(
                 getPlanCardFeaturesForPrices(
-                    [proMonthlyHelpdeskPrice, proMonthlyAutomationPrice],
+                    [proMonthlyHelpdeskPlan, proMonthlyAutomationPlan],
                     true
                 )
             ).toMatchSnapshot()
         })
 
         it.each<[string, HelpdeskPlan]>([
-            ['Starter price', starterHelpdeskPrice],
-            ['Basic price', basicMonthlyHelpdeskPrice],
-            ['Pro price', proMonthlyHelpdeskPrice],
-            ['Advanced price', advancedMonthlyHelpdeskPrice],
-            ['Custom price', customHelpdeskPrice],
+            ['Starter price', starterHelpdeskPlan],
+            ['Basic price', basicMonthlyHelpdeskPlan],
+            ['Pro price', proMonthlyHelpdeskPlan],
+            ['Advanced price', advancedMonthlyHelpdeskPlan],
+            ['Custom price', customHelpdeskPlan],
         ])('should return plan card features for %s', (suiteName, price) => {
             expect(
                 getPlanCardFeaturesForPrices([price], true)
@@ -47,13 +47,13 @@ describe('billingPlanFeatures', () => {
 
         it(`should return plan card features for legacy price`, () => {
             expect(
-                getPlanCardFeaturesForPrices([legacyBasicHelpdeskPrice], false)
+                getPlanCardFeaturesForPrices([legacyBasicHelpdeskPlan], false)
             ).toMatchSnapshot()
         })
 
         it(`should return plan card features with disabled help center`, () => {
             expect(
-                getPlanCardFeaturesForPrices([basicMonthlyHelpdeskPrice], false)
+                getPlanCardFeaturesForPrices([basicMonthlyHelpdeskPlan], false)
             ).toMatchSnapshot()
         })
     })

@@ -2,16 +2,16 @@ import {render} from '@testing-library/react'
 import React from 'react'
 
 import {
-    advancedMonthlyAutomationPrice,
-    advancedMonthlyHelpdeskPrice,
+    advancedMonthlyAutomatePlan,
+    advancedMonthlyHelpdeskPlan,
     automate05YearlyMeteredPlan,
-    basicMonthlyAutomationPrice,
-    basicMonthlyHelpdeskPrice,
-    basicYearlyAutomationPrice,
-    convertPrice1,
-    proMonthlyAutomationPrice,
-    smsPrice1,
-    voicePrice1,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
+    basicYearlyAutomationPlan,
+    convertPlan1,
+    proMonthlyAutomationPlan,
+    smsPlan1,
+    voicePlan1,
 } from 'fixtures/productPrices'
 import useScheduledDowngrades from '../hooks/useScheduledDowngrades'
 import BillingScheduledDowngrades from '../BillingScheduledDowngrades'
@@ -55,8 +55,8 @@ describe('BillingScheduledDowngrades', () => {
             value: [
                 {
                     datetime: '2023-03-31T00:00:00Z',
-                    currentPlan: advancedMonthlyHelpdeskPrice,
-                    targetPlan: basicMonthlyHelpdeskPrice,
+                    currentPlan: advancedMonthlyHelpdeskPlan,
+                    targetPlan: basicMonthlyHelpdeskPlan,
                 },
             ],
         })
@@ -72,27 +72,27 @@ describe('BillingScheduledDowngrades', () => {
 
     it.each([
         [
-            basicMonthlyHelpdeskPrice,
+            basicMonthlyHelpdeskPlan,
             'Your subscription to Helpdesk will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            advancedMonthlyHelpdeskPrice,
+            advancedMonthlyHelpdeskPlan,
             'Your subscription to Helpdesk will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            basicMonthlyAutomationPrice,
+            basicMonthlyAutomationPlan,
             'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            basicYearlyAutomationPrice,
+            basicYearlyAutomationPlan,
             'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            proMonthlyAutomationPrice,
+            proMonthlyAutomationPlan,
             'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            advancedMonthlyAutomationPrice,
+            advancedMonthlyAutomatePlan,
             'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
@@ -100,15 +100,15 @@ describe('BillingScheduledDowngrades', () => {
             'Your subscription to Automate will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            voicePrice1,
+            voicePlan1,
             'Your subscription to Voice will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            smsPrice1,
+            smsPlan1,
             'Your subscription to SMS will end at the end of your billing cycle on March 31st 2023.',
         ],
         [
-            convertPrice1,
+            convertPlan1,
             'Your subscription to Convert will end at the end of your billing cycle on March 31st 2023.',
         ],
     ])("should render a specific message for unsubscruptions'", (plan, msg) => {

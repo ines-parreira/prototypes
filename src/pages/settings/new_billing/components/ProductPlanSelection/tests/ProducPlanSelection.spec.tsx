@@ -5,9 +5,9 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {
-    basicMonthlyAutomationPrice,
-    basicMonthlyHelpdeskPrice,
-    convertPrice1,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
+    convertPlan1,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import {billingState} from 'fixtures/billing'
@@ -25,7 +25,7 @@ const store = mockStore({
     currentAccount: fromJS({
         current_subscription: {
             products: {
-                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
             },
         },
     }),
@@ -59,7 +59,7 @@ describe('ProductPlanSelection', () => {
 
     const selectedPlans = {
         helpdesk: {
-            plan: basicMonthlyHelpdeskPrice,
+            plan: basicMonthlyHelpdeskPlan,
             isSelected: true,
         },
         automation: {
@@ -79,17 +79,17 @@ describe('ProductPlanSelection', () => {
     const props: ProductPlanSelectionProps = {
         type: ProductType.Helpdesk,
         interval: PlanInterval.Month,
-        product: basicMonthlyHelpdeskPrice,
+        product: basicMonthlyHelpdeskPlan,
         prices: [
-            basicMonthlyHelpdeskPrice,
+            basicMonthlyHelpdeskPlan,
             {
-                ...basicMonthlyHelpdeskPrice,
+                ...basicMonthlyHelpdeskPlan,
                 price_id: 'price_123',
                 name: 'Product 1',
                 num_quota_tickets: 100,
             },
             {
-                ...basicMonthlyHelpdeskPrice,
+                ...basicMonthlyHelpdeskPlan,
                 price_id: 'price_456',
                 name: 'Product 2',
                 num_quota_tickets: 200,
@@ -162,7 +162,7 @@ describe('ProductPlanSelection', () => {
             isOpen: false,
             productType: ProductType.Helpdesk,
             subscriptionProducts: {
-                [ProductType.Helpdesk]: basicMonthlyHelpdeskPrice,
+                [ProductType.Helpdesk]: basicMonthlyHelpdeskPlan,
                 [ProductType.Automation]: null,
                 [ProductType.Voice]: null,
                 [ProductType.SMS]: null,
@@ -193,7 +193,7 @@ describe('ProductPlanSelection', () => {
             SegmentEvent.SubscriptionCancellationAutoRenewalClicked,
             {
                 productType: ProductType.Helpdesk,
-                productPlan: basicMonthlyHelpdeskPrice.name,
+                productPlan: basicMonthlyHelpdeskPlan.name,
             }
         )
     })
@@ -266,13 +266,13 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={convertPrice1}
+                    product={convertPlan1}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Convert]: {
                             isSelected: true,
                             autoUpgrade: true,
-                            plan: convertPrice1,
+                            plan: convertPlan1,
                         },
                     }}
                     type={ProductType.Convert}
@@ -287,13 +287,13 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={convertPrice1}
+                    product={convertPlan1}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Convert]: {
                             isSelected: false,
                             autoUpgrade: false,
-                            plan: convertPrice1,
+                            plan: convertPlan1,
                         },
                     }}
                     type={ProductType.Convert}
@@ -313,13 +313,13 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={convertPrice1}
+                    product={convertPlan1}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Convert]: {
                             isSelected: false,
                             autoUpgrade: false,
-                            plan: convertPrice1,
+                            plan: convertPlan1,
                         },
                     }}
                     type={ProductType.Convert}
@@ -337,17 +337,17 @@ describe('ProductPlanSelection', () => {
     it.each([
         [
             ProductType.Convert,
-            {isSelected: true, autoUpgrade: true, plan: convertPrice1},
+            {isSelected: true, autoUpgrade: true, plan: convertPlan1},
             'Remove product',
         ],
         [
             ProductType.Automation,
-            {isSelected: true, plan: basicMonthlyAutomationPrice},
+            {isSelected: true, plan: basicMonthlyAutomationPlan},
             'Remove product',
         ],
         [
             ProductType.Helpdesk,
-            {isSelected: true, plan: basicMonthlyHelpdeskPrice},
+            {isSelected: true, plan: basicMonthlyHelpdeskPlan},
             'Cancel auto-renewal',
         ],
     ])(
@@ -357,7 +357,7 @@ describe('ProductPlanSelection', () => {
                 <Provider store={store}>
                     <ProductPlanSelection
                         {...props}
-                        product={convertPrice1}
+                        product={convertPlan1}
                         selectedPlans={{
                             ...selectedPlans,
                             [productType]: {

@@ -3,7 +3,7 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import {RootState} from 'state/types'
 import {mockStore} from 'utils/testing'
-import {getStateWithPrice} from 'utils/paywallTesting'
+import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
 import {ConvertFeatures} from '../constants'
 import ConvertPaywallView from '../ConvertPaywallView'
 
@@ -28,7 +28,7 @@ describe('ConvertPaywallView', () => {
         )
 
     it('renders correctly', () => {
-        const mockedState = getStateWithPrice()
+        const mockedState = getStateWithHelpdeskPlan()
 
         const {getByText} = renderWithStore(mockedState)
 
@@ -43,7 +43,7 @@ describe('ConvertPaywallView', () => {
     })
 
     it('always has custom CTA and modal', () => {
-        const mockedState = getStateWithPrice()
+        const mockedState = getStateWithHelpdeskPlan()
 
         const {getByText, queryByTestId} = renderWithStore(mockedState)
 

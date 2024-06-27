@@ -9,17 +9,17 @@ import * as Tooltip from 'pages/common/components/Tooltip'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AUTOMATION_PRODUCT_ID,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     CONVERT_PRODUCT_ID,
-    convertPrice1,
+    convertPlan1,
     currentProductsUsage,
     HELPDESK_PRODUCT_ID,
     helpdeskProduct,
-    legacyBasicAutomationPrice,
+    legacyBasicAutomatePlan,
     products,
     SMS_PRODUCT_ID,
-    smsPrice1,
-    starterHelpdeskPrice,
+    smsPlan1,
+    starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {account} from 'fixtures/account'
@@ -60,8 +60,8 @@ const mockedAccount = {
     current_subscription: {
         ...account.current_subscription,
         products: {
-            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-            [CONVERT_PRODUCT_ID]: convertPrice1.price_id,
+            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+            [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
         },
         status: 'active',
     },
@@ -101,7 +101,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                plan: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPlan,
                 usage: mockedUsage[ProductType.Helpdesk],
                 banner: helpdeskBanner,
                 isDisabled: false,
@@ -142,7 +142,7 @@ describe('UsageAndPlansView', () => {
             5,
             {
                 type: ProductType.Convert,
-                plan: convertPrice1,
+                plan: convertPlan1,
                 usage: mockedUsage[ProductType.Convert],
                 banner: convertBanner,
                 isDisabled: false,
@@ -184,7 +184,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                plan: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPlan,
                 usage: mockedUsage[ProductType.Helpdesk],
                 isDisabled: false,
             },
@@ -221,7 +221,7 @@ describe('UsageAndPlansView', () => {
             5,
             {
                 type: ProductType.Convert,
-                plan: convertPrice1,
+                plan: convertPlan1,
                 usage: mockedUsage[ProductType.Convert],
                 isDisabled: false,
                 autoUpgradeEnabled: false,
@@ -279,8 +279,8 @@ describe('UsageAndPlansView', () => {
                     ...mockedAccount.current_subscription,
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPrice.price_id,
-                        [SMS_PRODUCT_ID]: smsPrice1.price_id,
+                            basicMonthlyHelpdeskPlan.price_id,
+                        [SMS_PRODUCT_ID]: smsPlan1.price_id,
                     },
                 },
             }),
@@ -304,7 +304,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                plan: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPlan,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
@@ -337,7 +337,7 @@ describe('UsageAndPlansView', () => {
             4,
             {
                 type: ProductType.SMS,
-                plan: smsPrice1,
+                plan: smsPlan1,
                 usage: alteredBilling.currentProductsUsage[ProductType.SMS],
                 isDisabled: false,
                 banner: smsBanner,
@@ -380,7 +380,7 @@ describe('UsageAndPlansView', () => {
                 {
                     id: HELPDESK_PRODUCT_ID,
                     type: ProductType.Helpdesk,
-                    prices: [starterHelpdeskPrice],
+                    prices: [starterHelpdeskPlan],
                 },
                 ...products.slice(1),
             ],
@@ -400,7 +400,7 @@ describe('UsageAndPlansView', () => {
                 current_subscription: {
                     ...mockedAccount.current_subscription,
                     products: {
-                        [HELPDESK_PRODUCT_ID]: starterHelpdeskPrice.price_id,
+                        [HELPDESK_PRODUCT_ID]: starterHelpdeskPlan.price_id,
                     },
                 },
             }),
@@ -422,7 +422,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                plan: starterHelpdeskPrice,
+                plan: starterHelpdeskPlan,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
@@ -456,7 +456,7 @@ describe('UsageAndPlansView', () => {
                 {
                     id: AUTOMATION_PRODUCT_ID,
                     type: ProductType.Automation,
-                    prices: [legacyBasicAutomationPrice],
+                    prices: [legacyBasicAutomatePlan],
                 },
                 ...products.slice(2),
             ],
@@ -488,9 +488,9 @@ describe('UsageAndPlansView', () => {
                     ...mockedAccount.current_subscription,
                     products: {
                         [HELPDESK_PRODUCT_ID]:
-                            basicMonthlyHelpdeskPrice.price_id,
+                            basicMonthlyHelpdeskPlan.price_id,
                         [AUTOMATION_PRODUCT_ID]:
-                            legacyBasicAutomationPrice.price_id,
+                            legacyBasicAutomatePlan.price_id,
                     },
                 },
             }),
@@ -512,7 +512,7 @@ describe('UsageAndPlansView', () => {
             1,
             {
                 type: ProductType.Helpdesk,
-                plan: basicMonthlyHelpdeskPrice,
+                plan: basicMonthlyHelpdeskPlan,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
@@ -524,7 +524,7 @@ describe('UsageAndPlansView', () => {
             2,
             {
                 type: ProductType.Automation,
-                plan: legacyBasicAutomationPrice,
+                plan: legacyBasicAutomatePlan,
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Automation
                 ],

@@ -4,8 +4,8 @@ import {Link} from 'react-router-dom'
 
 import {agents} from 'fixtures/agents'
 import {
-    basicMonthlyHelpdeskPrice as mockedBasicMonthlyHelpdeskPrice,
-    starterHelpdeskPrice,
+    basicMonthlyHelpdeskPlan as mockedBasicMonthlyHelpdeskPlan,
+    starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {usePaginatedQuery} from 'hooks/usePaginatedQuery'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -33,7 +33,7 @@ jest.mock('hooks/useAppSelector', () => jest.fn((fn: () => unknown) => fn()))
 jest.mock('state/currentAccount/selectors')
 const mockedGetAccountOwnerId = assumeMock(getAccountOwnerId)
 jest.mock('state/billing/selectors', () => ({
-    getCurrentHelpdeskPlan: jest.fn(() => mockedBasicMonthlyHelpdeskPrice),
+    getCurrentHelpdeskPlan: jest.fn(() => mockedBasicMonthlyHelpdeskPlan),
 }))
 const mockedGetCurrentHelpdeskProduct = assumeMock(getCurrentHelpdeskPlan)
 
@@ -65,7 +65,7 @@ describe('<List />', () => {
         expect(screen.getByText(/as many users/)).toBeInTheDocument()
 
         mockedGetCurrentHelpdeskProduct.mockImplementationOnce(
-            () => starterHelpdeskPrice
+            () => starterHelpdeskPlan
         )
         rerender(<UserList />)
         expect(screen.getByText(/up to 3 users/)).toBeInTheDocument()

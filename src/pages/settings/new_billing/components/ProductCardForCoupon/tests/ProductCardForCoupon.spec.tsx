@@ -1,6 +1,6 @@
 import React from 'react'
 import {fireEvent, render, screen} from '@testing-library/react'
-import {advancedMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {advancedMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import {CouponSummary} from 'models/billing/types'
 import {getPlanDescription} from 'models/billing/utils'
 import {assumeMock} from 'utils/testing'
@@ -22,13 +22,13 @@ describe('ProductCardForCoupon', () => {
                 isTrialing={true}
                 endOfTrialDatetime={endOfTrialDatetime}
                 currentCoupon={null}
-                plan={advancedMonthlyHelpdeskPrice}
+                plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
             />
         )
         expect(
-            screen.getByText(getPlanDescription(advancedMonthlyHelpdeskPrice))
+            screen.getByText(getPlanDescription(advancedMonthlyHelpdeskPlan))
         ).toBeInTheDocument()
     })
 
@@ -39,7 +39,7 @@ describe('ProductCardForCoupon', () => {
                 isTrialing={true}
                 endOfTrialDatetime={endOfTrialDatetime}
                 currentCoupon={null}
-                plan={advancedMonthlyHelpdeskPrice}
+                plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
             />
@@ -55,7 +55,7 @@ describe('ProductCardForCoupon', () => {
                 isTrialing={true}
                 endOfTrialDatetime={endOfTrialDatetime}
                 currentCoupon={null}
-                plan={advancedMonthlyHelpdeskPrice}
+                plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={true}
                 availableCoupons={availableCoupons}
             />
@@ -72,7 +72,7 @@ describe('ProductCardForCoupon', () => {
                 isTrialing={true}
                 endOfTrialDatetime={endOfTrialDatetime}
                 currentCoupon={null}
-                plan={advancedMonthlyHelpdeskPrice}
+                plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={true}
                 availableCoupons={availableCoupons}
             />
@@ -100,7 +100,7 @@ describe('ProductCardForCoupon', () => {
                 isTrialing={true}
                 endOfTrialDatetime={endOfTrialDatetime}
                 currentCoupon={null}
-                plan={advancedMonthlyHelpdeskPrice}
+                plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
             />
@@ -125,7 +125,7 @@ describe('ProductCardForCoupon', () => {
                 isTrialing={true}
                 endOfTrialDatetime={endOfTrialDatetime}
                 currentCoupon={coupon}
-                plan={advancedMonthlyHelpdeskPrice}
+                plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
             />

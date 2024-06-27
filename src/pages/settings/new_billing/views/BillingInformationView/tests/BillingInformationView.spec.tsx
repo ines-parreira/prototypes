@@ -8,7 +8,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import * as billingActions from 'state/billing/actions'
 import {
     HELPDESK_PRODUCT_ID,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import BillingInformationView from '../BillingInformationView'
@@ -40,7 +40,7 @@ const store = mockedStore({
         currentAccount: fromJS({
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
             },
         }),

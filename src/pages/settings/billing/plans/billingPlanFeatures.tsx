@@ -5,9 +5,9 @@ import magentoIcon from 'assets/img/integrations/magento2-mono.svg'
 
 import {
     AutomatePlan,
-    AutomatePriceFeatures,
+    AutomatePlanFeatures,
     HelpdeskPlan,
-    HelpdeskPriceFeatures,
+    HelpdeskPlanFeatures,
 } from 'models/billing/types'
 import {isHelpdesk, isAutomate} from 'models/billing/utils'
 import {isFeatureEnabled} from '../../../../utils/account'
@@ -193,7 +193,7 @@ export const getPlanCardFeaturesForPrices = (
         : helpdeskPlan.extra_ticket_cost
 
     const planFeatures = plans.reduce(
-        (acc: Partial<HelpdeskPriceFeatures & AutomatePriceFeatures>, plan) => {
+        (acc: Partial<HelpdeskPlanFeatures & AutomatePlanFeatures>, plan) => {
             return {...acc, ...plan.features}
         },
         {}

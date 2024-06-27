@@ -59,7 +59,7 @@ type BasePlan = {
     public: boolean
 }
 
-export type HelpdeskPriceFeatures = Record<
+export type HelpdeskPlanFeatures = Record<
     AccountFeature,
     AccountFeatureMetadata
 >
@@ -71,8 +71,8 @@ export type HelpdeskPlan = BasePlan & {
     is_legacy: boolean
     legacy_id: string
     order?: number
-    features: HelpdeskPriceFeatures
-    legacy_automation_addon_features?: AutomatePriceFeatures
+    features: HelpdeskPlanFeatures
+    legacy_automation_addon_features?: AutomatePlanFeatures
     limits: {
         messages: PlanLimits
         tickets: PlanLimits
@@ -83,7 +83,7 @@ export type HelpdeskPlan = BasePlan & {
     trial_period_days: number
 }
 
-export type AutomatePriceFeatures = Record<
+export type AutomatePlanFeatures = Record<
     | AccountFeature.AutomationTrackOrderFlow
     | AccountFeature.AutomationReportIssueFlow
     | AccountFeature.AutomationCancellationsFlow
@@ -97,14 +97,14 @@ export type AutomatePlan = BasePlan & {
     automation_addon_discount: number
     automation_addon_included?: boolean
     base_price_id: string
-    features: AutomatePriceFeatures
+    features: AutomatePlanFeatures
     legacy_id: string
     order: number
     num_quota_tickets: number | null
 }
 
 export type MeteredAutomatePlan = BasePlan & {
-    features: AutomatePriceFeatures
+    features: AutomatePlanFeatures
 }
 
 export type SMSOrVoicePlan = BasePlan & {

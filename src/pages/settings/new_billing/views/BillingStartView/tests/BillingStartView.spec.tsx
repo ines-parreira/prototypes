@@ -6,9 +6,9 @@ import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     CONVERT_PRODUCT_ID,
-    convertPrice1,
+    convertPlan1,
     HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPrice,
+    legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import {assumeMock, renderWithRouter} from 'utils/testing'
@@ -30,8 +30,8 @@ const store = mockedStore({
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPrice.price_id,
-                [CONVERT_PRODUCT_ID]: convertPrice1.price_id,
+                [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
+                [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
             },
         },
     }),

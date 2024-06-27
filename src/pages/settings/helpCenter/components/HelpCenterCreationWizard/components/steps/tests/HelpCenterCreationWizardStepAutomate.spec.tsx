@@ -15,7 +15,7 @@ import {StoreState} from 'state/types'
 import {chatIntegrationFixtures} from 'fixtures/chat'
 import {shopifyIntegration} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
-import {proMonthlyHelpdeskPrice as mockedProMonthlyHelpdeskPrice} from 'fixtures/productPrices'
+import {proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan} from 'fixtures/productPrices'
 import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -108,7 +108,7 @@ const renderComponent = (
         helpCenter = helpCenterFixture,
     } = fixtures ?? {}
     const defaultStore = {
-        billing: fromJS({products: [mockedProMonthlyHelpdeskPrice]}),
+        billing: fromJS({products: [mockedProMonthlyHelpdeskPlan]}),
         integrations: fromJS({integrations}),
         entities: {
             contactForm: {

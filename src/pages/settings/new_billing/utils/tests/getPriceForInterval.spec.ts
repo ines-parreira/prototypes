@@ -1,6 +1,6 @@
 import {
-    basicMonthlyHelpdeskPrice,
-    basicYearlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
+    basicYearlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {HelpdeskPlan, PlanInterval} from 'models/billing/types'
 import {
@@ -10,11 +10,11 @@ import {
 
 describe('getPriceForInterval', () => {
     const mockPrices: HelpdeskPlan[] = [
-        basicMonthlyHelpdeskPrice,
-        basicYearlyHelpdeskPrice,
+        basicMonthlyHelpdeskPlan,
+        basicYearlyHelpdeskPlan,
     ]
 
-    const mockCurrentPrice: HelpdeskPlan = basicYearlyHelpdeskPrice
+    const mockCurrentPrice: HelpdeskPlan = basicYearlyHelpdeskPlan
 
     const setup = (
         props: Partial<PriceForIntervalProps<HelpdeskPlan>> = {}
@@ -31,7 +31,7 @@ describe('getPriceForInterval', () => {
 
     it('should return the price for the given interval if it exists', () => {
         const result = setup()
-        expect(result).toBe(basicMonthlyHelpdeskPrice)
+        expect(result).toBe(basicMonthlyHelpdeskPlan)
     })
 
     it('should return the currentPrice if the price for the given interval does not exist', () => {

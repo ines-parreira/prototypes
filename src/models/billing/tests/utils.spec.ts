@@ -1,12 +1,12 @@
 import {
-    basicMonthlyHelpdeskPrice,
-    basicMonthlyAutomationPrice,
+    basicMonthlyHelpdeskPlan,
+    basicMonthlyAutomationPlan,
     smsProduct,
-    starterHelpdeskPrice,
-    basicYearlyHelpdeskPrice,
-    convertPrice0,
-    voicePrice0,
-    legacyBasicAutomationPrice,
+    starterHelpdeskPlan,
+    basicYearlyHelpdeskPlan,
+    convertPlan0,
+    voicePlan0,
+    legacyBasicAutomatePlan,
 } from 'fixtures/productPrices'
 
 import {
@@ -39,8 +39,8 @@ describe('getFullPrice', () => {
 
 describe('isHelpdesk', () => {
     it.each([
-        [basicMonthlyHelpdeskPrice, true],
-        [basicMonthlyAutomationPrice, false],
+        [basicMonthlyHelpdeskPlan, true],
+        [basicMonthlyAutomationPlan, false],
     ])(
         'should validate if the price is of helpdesk price',
         (price, expectedResult) => {
@@ -51,8 +51,8 @@ describe('isHelpdesk', () => {
 
 describe('isAutomate', () => {
     it.each([
-        [basicMonthlyHelpdeskPrice, false],
-        [basicMonthlyAutomationPrice, true],
+        [basicMonthlyHelpdeskPlan, false],
+        [basicMonthlyAutomationPlan, true],
     ])(
         'should validate if the price is of Automate price',
         (plan, expectedResult) => {
@@ -63,9 +63,9 @@ describe('isAutomate', () => {
 
 describe('isStarterTierPrice', () => {
     it.each([
-        [basicMonthlyHelpdeskPrice, false],
-        [basicYearlyHelpdeskPrice, false],
-        [starterHelpdeskPrice, true],
+        [basicMonthlyHelpdeskPlan, false],
+        [basicYearlyHelpdeskPlan, false],
+        [starterHelpdeskPlan, true],
     ])(
         'should validate if the price is of Starter tier',
         (price, expectedResult) => {
@@ -90,10 +90,10 @@ describe('getCheapestPrice', () => {
 
 describe('getProductLabel', () => {
     it.each([
-        [basicMonthlyHelpdeskPrice, undefined],
-        [voicePrice0, 'Trial'],
-        [legacyBasicAutomationPrice, 'Legacy'],
-        [convertPrice0, 'Pay as you go'],
+        [basicMonthlyHelpdeskPlan, undefined],
+        [voicePlan0, 'Trial'],
+        [legacyBasicAutomatePlan, 'Legacy'],
+        [convertPlan0, 'Pay as you go'],
     ])(
         'should return the product label for the given price and type',
         (plan, expectedResult) => {

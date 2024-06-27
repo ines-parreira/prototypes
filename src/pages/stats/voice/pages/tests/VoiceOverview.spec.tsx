@@ -35,7 +35,7 @@ import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountT
 import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
 import {assumeMock} from 'utils/testing'
 import {user} from 'fixtures/users'
-import {VOICE_PRODUCT_ID, voicePrice1} from 'fixtures/productPrices'
+import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
@@ -87,7 +87,7 @@ describe('VoiceOverview', () => {
                     products: {
                         ...account.current_subscription.products,
                         ...(featureEnabled && {
-                            [VOICE_PRODUCT_ID]: voicePrice1.price_id,
+                            [VOICE_PRODUCT_ID]: voicePlan1.price_id,
                         }),
                     },
                 },

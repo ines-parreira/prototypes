@@ -6,7 +6,7 @@ import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/Cha
 
 import {billingState} from 'fixtures/billing'
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
@@ -116,7 +116,7 @@ describe('current account actions', () => {
 
     describe('update subscription', () => {
         it('update subscription', () => {
-            const subscription = {prices: [basicMonthlyHelpdeskPrice.price_id]}
+            const subscription = {prices: [basicMonthlyHelpdeskPlan.price_id]}
 
             mockServer
                 .onPut('/api/billing/subscription/')
@@ -132,7 +132,7 @@ describe('current account actions', () => {
         it('should return a Redux action to set the current subscription.', () => {
             const subscription = {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
                 status: 'active',
             }
@@ -169,7 +169,7 @@ describe('current account actions', () => {
     describe('cancel Helpdesk auto-renewal', () => {
         it('should successfully cancel', () => {
             const subscription = {
-                prices: [basicMonthlyHelpdeskPrice.price_id],
+                prices: [basicMonthlyHelpdeskPlan.price_id],
                 scheduled_to_cancel_at: '2024-04-09T00:43:06+00:00',
             }
 

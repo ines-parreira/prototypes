@@ -1,10 +1,10 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
-    advancedMonthlyHelpdeskPrice,
-    basicMonthlyHelpdeskPrice,
-    proMonthlyHelpdeskPrice,
-    starterHelpdeskPrice,
+    advancedMonthlyHelpdeskPlan,
+    basicMonthlyHelpdeskPlan,
+    proMonthlyHelpdeskPlan,
+    starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {assumeMock} from '../../../../../utils/testing'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
@@ -27,7 +27,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
     it('returns true for pro tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(
-                proMonthlyHelpdeskPrice
+                proMonthlyHelpdeskPlan
             )
         )
 
@@ -37,7 +37,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
     it('returns true for basic tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(
-                basicMonthlyHelpdeskPrice
+                basicMonthlyHelpdeskPlan
             )
         )
 
@@ -46,7 +46,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
 
     it('returns true for starter tier plan', () => {
         const {result} = renderHook(() =>
-            useAutomatedHelpdeskCancellationFlowAvailable(starterHelpdeskPrice)
+            useAutomatedHelpdeskCancellationFlowAvailable(starterHelpdeskPlan)
         )
 
         expect(result.current).toBe(true)
@@ -55,7 +55,7 @@ describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
     it('returns false for unsupported tier plan', () => {
         const {result} = renderHook(() =>
             useAutomatedHelpdeskCancellationFlowAvailable(
-                advancedMonthlyHelpdeskPrice
+                advancedMonthlyHelpdeskPlan
             )
         )
 

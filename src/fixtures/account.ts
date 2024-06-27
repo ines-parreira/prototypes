@@ -1,11 +1,11 @@
 import {
-    basicMonthlyAutomationPrice,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyAutomationPlan,
+    basicMonthlyHelpdeskPlan,
     AUTOMATION_PRODUCT_ID,
     HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPrice,
-    legacyBasicAutomationPrice,
-    basicDiscountedAutomationPrice,
+    legacyBasicHelpdeskPlan,
+    legacyBasicAutomatePlan,
+    basicDiscountedAutomatePlan,
 } from 'fixtures/productPrices'
 import {
     Account,
@@ -22,7 +22,7 @@ export const account: Account = {
         status: 'trialing',
         start_datetime: '2017-08-23T01:38:53+00:00',
         products: {
-            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+            [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
         },
         scheduled_to_cancel_at: null,
     },
@@ -86,20 +86,20 @@ export const account: Account = {
 }
 
 export const automationSubscriptionProductPrices = {
-    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPrice.price_id,
+    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+    [AUTOMATION_PRODUCT_ID]: basicMonthlyAutomationPlan.price_id,
 }
 
 export const discountedAutomateProductPrices = {
-    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
-    [AUTOMATION_PRODUCT_ID]: basicDiscountedAutomationPrice.price_id,
+    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
+    [AUTOMATION_PRODUCT_ID]: basicDiscountedAutomatePlan.price_id,
 }
 
 export const legacyWithAutomateProductPrices = {
-    [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPrice.price_id,
-    [AUTOMATION_PRODUCT_ID]: legacyBasicAutomationPrice.price_id,
+    [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
+    [AUTOMATION_PRODUCT_ID]: legacyBasicAutomatePlan.price_id,
 }
 
 export const legacyWithoutAutomateProductPrices = {
-    [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPrice.price_id,
+    [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
 }

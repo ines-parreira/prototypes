@@ -7,7 +7,7 @@ import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     products,
     currentProductsUsage,
 } from 'fixtures/productPrices'
@@ -25,7 +25,7 @@ const store = mockedStore({
         currentAccount: fromJS({
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
             },
         }),

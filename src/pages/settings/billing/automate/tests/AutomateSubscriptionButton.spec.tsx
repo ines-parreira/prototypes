@@ -14,7 +14,7 @@ import {account} from 'fixtures/account'
 import {
     HELPDESK_PRODUCT_ID,
     products,
-    starterHelpdeskPrice,
+    starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 
@@ -56,8 +56,8 @@ describe('AutomateSubscriptionButton', () => {
     })
 
     it('should pass label "Upgrade" and undefined onClick and the state with Automate checked and basic plan modal opened to the upgrade button for the starter plan', () => {
-        const productsWithStarterPrice = _cloneDeep(products)
-        products[0].prices.push(starterHelpdeskPrice)
+        const availablePlansWithStarterPlan = _cloneDeep(products)
+        products[0].prices.push(starterHelpdeskPlan)
 
         render(
             <Provider
@@ -66,13 +66,13 @@ describe('AutomateSubscriptionButton', () => {
                         current_subscription: {
                             products: {
                                 [HELPDESK_PRODUCT_ID]:
-                                    starterHelpdeskPrice.price_id,
+                                    starterHelpdeskPlan.price_id,
                             },
                         },
                     }),
                     billing: fromJS({
                         ...billingState,
-                        products: productsWithStarterPrice,
+                        products: availablePlansWithStarterPlan,
                     }),
                 })}
             >

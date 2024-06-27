@@ -13,7 +13,7 @@ import {FeatureFlagKey} from 'config/featureFlags'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
 import {
     HELPDESK_PRODUCT_ID,
-    proMonthlyHelpdeskPrice,
+    proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import {AccountSettingType} from 'state/currentAccount/types'
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
@@ -26,7 +26,7 @@ const store = {
         current_subscription: {
             ...account.current_subscription,
             products: {
-                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPrice.price_id,
+                [HELPDESK_PRODUCT_ID]: proMonthlyHelpdeskPlan.price_id,
             },
         },
     }),

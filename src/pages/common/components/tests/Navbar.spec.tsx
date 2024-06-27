@@ -10,8 +10,8 @@ import {DEFAULT_PREFERENCES} from 'config'
 import {user} from 'fixtures/users'
 import {getLDClient} from 'utils/launchDarkly'
 import {
-    advancedMonthlyHelpdeskPrice,
-    proMonthlyHelpdeskPrice,
+    advancedMonthlyHelpdeskPlan,
+    proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import * as utils from 'utils'
 import {AcceptedThemes, Theme} from 'theme'
@@ -46,7 +46,7 @@ describe('<Navbar />', () => {
         available: true,
         children: null,
         closePanels: jest.fn(),
-        currentHelpdeskProduct: advancedMonthlyHelpdeskPrice,
+        currentHelpdeskProduct: advancedMonthlyHelpdeskPlan,
         currentUser: fromJS(user),
         currentUserPreferences: fromJS({
             type: 'preferences',
@@ -137,7 +137,7 @@ describe('<Navbar />', () => {
         const {getByText} = render(
             <Navbar
                 {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
                 flags={{
                     [FeatureFlagKey.OfficeHours]: true,
                 }}
@@ -152,7 +152,7 @@ describe('<Navbar />', () => {
         const {getByText, queryByText} = render(
             <Navbar
                 {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
                 flags={{
                     [FeatureFlagKey.OfficeHours]: false,
                 }}
@@ -167,7 +167,7 @@ describe('<Navbar />', () => {
         const {queryByText, getByText} = render(
             <Navbar
                 {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
                 isTrialing={true}
             />
         )
@@ -180,7 +180,7 @@ describe('<Navbar />', () => {
         const {getByText} = render(
             <Navbar
                 {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
                 flags={{
                     [FeatureFlagKey.OfficeHours]: true,
                 }}
@@ -209,7 +209,7 @@ describe('<Navbar />', () => {
         const {getAllByRole} = render(
             <Navbar
                 {...minProps}
-                currentHelpdeskProduct={proMonthlyHelpdeskPrice}
+                currentHelpdeskProduct={proMonthlyHelpdeskPlan}
                 isTrialing={true}
                 currentUser={fromJS({
                     ...user,

@@ -10,9 +10,9 @@ import {RootState, StoreDispatch} from 'state/types'
 import BillingPlanCard from 'pages/settings/billing/plans/BillingPlanCard'
 import {billingState} from 'fixtures/billing'
 import {
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
-    legacyBasicHelpdeskPrice,
+    legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import {automationSubscriptionProductPrices} from 'fixtures/account'
@@ -60,20 +60,19 @@ jest.mock(
 describe('HelpCenterChangePlanModal', () => {
     const props = {
         isOpen: true,
-        helpdeskPrice: legacyBasicHelpdeskPrice,
+        helpdeskPrice: legacyBasicHelpdeskPlan,
         onClose: jest.fn(),
     }
 
     it('should upgrade plan when clicking on the "Upgrade" button', async () => {
         const productWithLegacyPrice = _cloneDeep(products)
-        productWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPrice)
+        productWithLegacyPrice[0].prices.push(legacyBasicHelpdeskPlan)
 
         const state: Partial<RootState> = {
             currentAccount: fromJS({
                 current_subscription: {
                     products: {
-                        [HELPDESK_PRODUCT_ID]:
-                            legacyBasicHelpdeskPrice.price_id,
+                        [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
                     },
                 },
             }),
@@ -95,7 +94,7 @@ describe('HelpCenterChangePlanModal', () => {
         fireEvent.click(upgradeButton)
 
         expect(mockedHandleSubscriptionUpdate).toHaveBeenCalledWith([
-            legacyBasicHelpdeskPrice.price_id,
+            legacyBasicHelpdeskPlan.price_id,
         ])
     })
 
@@ -112,7 +111,7 @@ describe('HelpCenterChangePlanModal', () => {
             <Provider store={mockStore(state)}>
                 <HelpCenterChangePlanModal
                     {...props}
-                    helpdeskPrice={basicMonthlyHelpdeskPrice}
+                    helpdeskPrice={basicMonthlyHelpdeskPlan}
                 />
             </Provider>
         )

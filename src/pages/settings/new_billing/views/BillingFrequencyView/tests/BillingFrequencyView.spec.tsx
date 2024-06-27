@@ -7,7 +7,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     HELPDESK_PRODUCT_ID,
-    basicMonthlyHelpdeskPrice,
+    basicMonthlyHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
 import {renderWithRouter} from 'utils/testing'
@@ -35,7 +35,7 @@ const store = mockedStore({
         currentAccount: fromJS({
             current_subscription: {
                 products: {
-                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPrice.price_id,
+                    [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.price_id,
                 },
             },
         }),
