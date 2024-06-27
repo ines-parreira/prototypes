@@ -99,7 +99,10 @@ export default function FeedHeader({
                 >
                     Mark all as read
                 </Button>
-                <Link to="/app/settings/notifications">
+                <Link
+                    to="/app/settings/notifications"
+                    className={css.settingsLink}
+                >
                     <IconButton
                         size="small"
                         fillStyle="ghost"
