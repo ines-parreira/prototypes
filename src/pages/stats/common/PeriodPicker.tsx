@@ -122,12 +122,13 @@ export const PeriodPickerContainer = ({
         datePickerRef.current?.$picker?.trigger('click')
     }
 
-    const ranges: {[label: string]: [Moment, Moment]} = useMemo(() => {
-        if (dateRanges !== undefined) {
-            return dateRanges
-        }
-        return getDefaultSetOfRanges()
-    }, [dateRanges])
+    const ranges: {[label: string]: [Moment, Moment]} | undefined =
+        useMemo(() => {
+            if (dateRanges !== undefined) {
+                return dateRanges
+            }
+            return getDefaultSetOfRanges()
+        }, [dateRanges])
 
     const label = useMemo(
         () => getDateRangePickerLabel(startDate, endDate, labelDateFormat),

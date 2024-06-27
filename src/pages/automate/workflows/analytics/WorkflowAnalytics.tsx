@@ -1,6 +1,7 @@
 import React from 'react'
 import {Container} from 'reactstrap'
 
+import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
 import TextInput from 'pages/common/forms/input/TextInput'
 import {withSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
@@ -26,6 +27,7 @@ import useWorkflowChannelSupport, {
 } from '../hooks/useWorkflowChannelSupport'
 
 import {WorkflowToggle} from '../models/workflowConfiguration.types'
+import useWorkflowsAnalyticsDateRange from '../hooks/useWorkflowAnalyticsDateRange'
 import css from './WorkflowAnalytics.less'
 import {WorkflowAnalyticsActionButtons} from './WorkflowAnalyticsActionButtons'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
@@ -60,6 +62,15 @@ function WorkflowAnalyticsWrapped({
         shopType,
         shopName
     )
+
+    /* TODO: Add data once available in CubeJS
+    mention: data types might be different (metric instead of number, etc.) */
+    const workflowAnalyticsDateRange = useWorkflowsAnalyticsDateRange({
+        start_datetime: '2024-06-01',
+        end_datetime: '2024-06-23',
+        flow_update_datetime:
+            workflowEditorContext.configuration.updated_datetime,
+    })
 
     const isDirty = workflowEditorContext.isDirty
 
@@ -148,6 +159,12 @@ function WorkflowAnalyticsWrapped({
                             <PeriodStatsFilter
                                 initialSettings={{
                                     maxSpan: 365,
+                                    minDate: moment(
+                                        workflowAnalyticsDateRange.start_datetime
+                                    ),
+                                    maxDate: moment(
+                                        workflowAnalyticsDateRange.end_datetime
+                                    ),
                                 }}
                                 value={last28DaysStatsFilters().period}
                                 variant="ghost"
