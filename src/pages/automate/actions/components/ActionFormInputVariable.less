@@ -26,6 +26,22 @@
                     min-width: 140px;
                 }
             }
+
+            .disabled {
+                input,
+                span {
+                    cursor: not-allowed !important;
+                    color: var(--neutral-grey-5) !important;
+                }
+                i {
+                    cursor: not-allowed !important;
+                }
+
+                button:hover,
+                button:active {
+                    background-color: unset !important;
+                }
+            }
         }
 
         .formInputFooterInfo {

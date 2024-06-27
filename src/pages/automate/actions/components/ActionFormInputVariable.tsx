@@ -1,6 +1,8 @@
 import React from 'react'
 import {Label} from '@gorgias/ui-kit'
 
+import _ from 'lodash'
+import classNames from 'classnames'
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconButton from 'pages/common/components/button/IconButton'
 import Tooltip from 'pages/common/components/Tooltip'
@@ -16,10 +18,8 @@ type Props = {
     onDeleteInput: (index: number) => void
     onAddInput: () => void
     onChange: (customInputs: CustomInput, index: number) => void
+    actionAppType?: string
 }
-
-const llmPromptTriggerInputElementId = (id: number) =>
-    `llm-prompt-trigger-input-${id}`
 
 export default function ActionFormInputVariable({
     customInputs,
@@ -27,6 +27,7 @@ export default function ActionFormInputVariable({
     onChange,
     onAddInput,
     onDeleteInput,
+    actionAppType,
 }: Props) {
     return (
         <div className={css.inputVariables}>
@@ -37,55 +38,67 @@ export default function ActionFormInputVariable({
             </p>
             <div className={css.customInputsContainer}>
                 {customInputs.map((input, index) => {
+                    const isInputDisabled =
+                        isDisabled || !!input.isTemplateCustomInputs
+
+                    const inputElementId = (name: string) =>
+                        `input-variable-field-${index}-${name}` as const
+
+                    const inputElemenstIdMap = {
+                        dataType: inputElementId('dataType'),
+                        name: inputElementId('name'),
+                        instructions: inputElementId('instructions'),
+                        delete: inputElementId('delete'),
+                    }
                     return (
                         <div
                             key={index}
-                            className={css.customInputItem}
-                            id={llmPromptTriggerInputElementId(index)}
+                            className={classNames(css.customInputItem, {
+                                [css.disabled]: isInputDisabled,
+                            })}
                         >
-                            <SelectField
-                                disabled={
-                                    isDisabled || input?.isTemplateCustomInputs
-                                }
-                                showSelectedOption
-                                value={input.dataType}
-                                onChange={(newDataType) =>
-                                    onChange(
+                            <div id={inputElemenstIdMap['dataType']}>
+                                <SelectField
+                                    disabled={isInputDisabled}
+                                    showSelectedOption
+                                    value={input.dataType}
+                                    onChange={(newDataType) =>
+                                        onChange(
+                                            {
+                                                ...input,
+                                                dataType: newDataType as
+                                                    | 'string'
+                                                    | 'number'
+                                                    | 'boolean'
+                                                    | 'date',
+                                            },
+                                            index
+                                        )
+                                    }
+                                    options={[
                                         {
-                                            ...input,
-                                            dataType: newDataType as
-                                                | 'string'
-                                                | 'number'
-                                                | 'boolean'
-                                                | 'date',
+                                            label: 'String',
+                                            value: 'string',
                                         },
-                                        index
-                                    )
-                                }
-                                options={[
-                                    {
-                                        label: 'String',
-                                        value: 'string',
-                                    },
-                                    {
-                                        label: 'Number',
-                                        value: 'number',
-                                    },
-                                    {
-                                        label: 'Boolean',
-                                        value: 'boolean',
-                                    },
-                                    {
-                                        label: 'Date',
-                                        value: 'date',
-                                    },
-                                ]}
-                            />
+                                        {
+                                            label: 'Number',
+                                            value: 'number',
+                                        },
+                                        {
+                                            label: 'Boolean',
+                                            value: 'boolean',
+                                        },
+                                        {
+                                            label: 'Date',
+                                            value: 'date',
+                                        },
+                                    ]}
+                                />
+                            </div>
                             <TextInput
+                                id={inputElemenstIdMap['name']}
                                 value={input.name}
-                                isDisabled={
-                                    isDisabled || input?.isTemplateCustomInputs
-                                }
+                                isDisabled={isInputDisabled}
                                 placeholder="e.g. Address"
                                 onChange={(newName) =>
                                     onChange(
@@ -98,9 +111,8 @@ export default function ActionFormInputVariable({
                                 }
                             />
                             <TextInput
-                                isDisabled={
-                                    isDisabled || input.isTemplateCustomInputs
-                                }
+                                id={inputElemenstIdMap['instructions']}
+                                isDisabled={isInputDisabled}
                                 value={input.instructions}
                                 placeholder="e.g. Ask for customer’s shipping address"
                                 onChange={(newInstruction) =>
@@ -113,27 +125,33 @@ export default function ActionFormInputVariable({
                                     )
                                 }
                             />
-                            {input.isTemplateCustomInputs && (
-                                <Tooltip
-                                    target={llmPromptTriggerInputElementId(
-                                        index
-                                    )}
-                                    placement="top-end"
-                                >
-                                    This input is required by the 3rd party app
-                                    to perform this Action.
-                                </Tooltip>
-                            )}
 
-                            {!input.isTemplateCustomInputs && (
-                                <IconButton
-                                    intent="destructive"
-                                    isDisabled={isDisabled}
-                                    fillStyle="ghost"
-                                    onClick={() => onDeleteInput(index)}
-                                >
-                                    close
-                                </IconButton>
+                            <IconButton
+                                id={inputElemenstIdMap['delete']}
+                                intent="destructive"
+                                isDisabled={isInputDisabled}
+                                fillStyle="ghost"
+                                onClick={() => onDeleteInput(index)}
+                            >
+                                close
+                            </IconButton>
+
+                            {input.isTemplateCustomInputs && actionAppType && (
+                                <>
+                                    {Object.values(inputElemenstIdMap).map(
+                                        (id) => (
+                                            <Tooltip
+                                                key={id}
+                                                target={id}
+                                                placement="top-end"
+                                            >
+                                                This input is required by{' '}
+                                                {_.upperFirst(actionAppType)} to
+                                                perform this Action.
+                                            </Tooltip>
+                                        )
+                                    )}
+                                </>
                             )}
                         </div>
                     )

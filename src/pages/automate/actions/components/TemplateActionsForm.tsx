@@ -417,6 +417,11 @@ export default function TemplateActionsForm({
                             }}
                             render={({field: {value}}) => (
                                 <ActionFormInputVariable
+                                    actionAppType={
+                                        isNativeAppIntegration
+                                            ? actionApp.type
+                                            : undefined
+                                    }
                                     customInputs={value}
                                     isDisabled={isActionUpserting}
                                     onAddInput={() =>
