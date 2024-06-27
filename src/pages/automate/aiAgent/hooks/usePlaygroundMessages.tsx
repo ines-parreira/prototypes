@@ -124,6 +124,7 @@ export const usePlaygroundMessages = ({
                         created_datetime: newMessage.createdDatetime,
                         // TODO: move this logic to the helper
                         messages: newMessages
+                            .slice(1) // remove initial message
                             .filter((m) => m.type === MessageType.MESSAGE)
                             .map((m) => ({
                                 bodyText:
