@@ -40,6 +40,7 @@ type Props = {
     attachments: List<any>
     html: string
     isConvertSubscriber?: boolean
+    showAgentSelector?: boolean
     text: string
     selectedAgent: string
     showContentWarning?: boolean
@@ -55,6 +56,7 @@ export const CampaignMessage = memo(
         attachments,
         html,
         isConvertSubscriber = false,
+        showAgentSelector = true,
         text,
         selectedAgent,
         showContentWarning,
@@ -211,18 +213,20 @@ export const CampaignMessage = memo(
 
         return (
             <div>
-                <div
-                    data-testid="campaign-agent-section"
-                    className={classnames('mb-2', css.authorWrapper)}
-                >
-                    <span>From: </span>
-                    <SelectField
-                        className={css.authorInput}
-                        value={selectedAgent}
-                        options={options}
-                        onChange={onSelectAgent}
-                    />
-                </div>
+                {showAgentSelector && (
+                    <div
+                        data-testid="campaign-agent-section"
+                        className={classnames('mb-2', css.authorWrapper)}
+                    >
+                        <span>From: </span>
+                        <SelectField
+                            className={css.authorInput}
+                            value={selectedAgent}
+                            options={options}
+                            onChange={onSelectAgent}
+                        />
+                    </div>
+                )}
 
                 {isConvertSubscriber && showContentWarning && (
                     <div className="mb-4 mt-4">

@@ -39,13 +39,12 @@ import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {Language} from 'constants/languages'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 
+import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
+
 import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
-import {replaceUrlsWithUtmUrl} from '../../utils/attachUtmParams'
-import {transformProductToAttachment} from '../../utils/transformProductToAttachment'
 
 import {usePristineSteps} from '../../hooks/usePristineSteps'
 import {useManageTriggers} from '../../hooks/useManageTriggers'
@@ -66,9 +65,7 @@ import {CampaignStepsKeys} from '../../types/CampaignSteps'
 import {CampaignProduct} from '../../types/CampaignProduct'
 
 import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
-import {createTriggerRule} from '../../utils/createTriggerRule'
 
-import {transformDiscountOfferToAttachment} from '../../utils/transformDiscountOfferToAttachment'
 import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
 import {CampaignDiscountOffer} from '../../types/CampaignDiscountOffer'
 import {transformAttachmentsToDiscountOffers} from '../../utils/transformAttachmentsToDiscountOffers'
@@ -341,64 +338,16 @@ export const CampaignDetailsForm = ({
         setActionInProgress(isEditMode ? 'edit' : 'create')
 
         try {
-            const payload: Campaign = produce(campaignData, (draft) => {
-                const trimmedCampaignName = _trim(draft.name)
-
-                draft.name = trimmedCampaignName
-                draft.message_html = replaceUrlsWithUtmUrl(
-                    campaignData.message_html || '',
-                    trimmedCampaignName,
-                    isConvertSubscriber
-                )
-                draft.triggers = Object.values(triggers).filter((trigger) => {
-                    return trigger.type !== CampaignTriggerType.SingleInView
-                })
-                draft.trigger_rule = createTriggerRule(draft.triggers)
-
-                if (!chatMultiLanguagesEnabled) {
-                    delete draft.language
-                }
-
-                draft.attachments = []
-
-                if (shopifyProducts.length > 0) {
-                    const productAttachments = shopifyProducts.map(
-                        (product) => {
-                            return transformProductToAttachment(
-                                product,
-                                {
-                                    campaignName: trimmedCampaignName,
-                                    currency: shopifyIntegration.getIn([
-                                        'meta',
-                                        'currency',
-                                    ]),
-                                },
-                                isConvertSubscriber
-                            )
-                        }
-                    )
-                    draft.attachments = [
-                        ...draft.attachments,
-                        ...productAttachments,
-                    ]
-                }
-                if (discountOffers.length > 0) {
-                    const discountOfferAttachment =
-                        transformDiscountOfferToAttachment(discountOffers[0])
-
-                    draft.attachments = [
-                        ...draft.attachments,
-                        discountOfferAttachment,
-                    ]
-                }
-
-                if (!isEditMode) {
-                    if (!activate) {
-                        draft.status = CampaignStatus.Inactive
-                    } else {
-                        draft.status = CampaignStatus.Active
-                    }
-                }
+            const payload = createCampaignPayload({
+                campaignData: campaignData,
+                triggers: Object.values(triggers),
+                isConvertSubscriber: isConvertSubscriber,
+                chatMultiLanguagesEnabled: chatMultiLanguagesEnabled,
+                shopifyIntegration: integration,
+                shopifyProducts: shopifyProducts,
+                discountOffers: discountOffers,
+                isEditMode: isEditMode,
+                isActive: activate,
             })
 
             if (isEditMode) {
