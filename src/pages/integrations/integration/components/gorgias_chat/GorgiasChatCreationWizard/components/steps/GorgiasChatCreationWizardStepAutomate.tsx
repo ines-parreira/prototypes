@@ -346,17 +346,16 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
             if (hasQuickResponsesWithoutResponse) {
                 quickResponseNotConfiguredModalRef.current?.open()
-                return Promise.reject()
-                //eslint-disable-next-line no-else-return
-            } else {
-                const hasQuickResponsesDisabled = quickResponses.some(
-                    ({deactivated_datetime}) => deactivated_datetime
-                )
+                return Promise.reject('at least one quick response is empty')
+            }
 
-                if (hasQuickResponsesDisabled) {
-                    quickResponseNotEnabledModalRef.current?.open()
-                    return Promise.reject()
-                }
+            const hasQuickResponsesDisabled = quickResponses.some(
+                ({deactivated_datetime}) => deactivated_datetime
+            )
+
+            if (hasQuickResponsesDisabled) {
+                quickResponseNotEnabledModalRef.current?.open()
+                return Promise.reject('at least one quick response is disabled')
             }
         }
 
