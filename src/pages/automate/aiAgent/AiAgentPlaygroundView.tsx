@@ -28,6 +28,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {getCurrentUser} from 'state/currentUser/selectors'
 import css from './AiAgentPlaygroundView.less'
 import {PlaygroundInputStep} from './components/PlaygroundInputStep/PlaygroundInputStep'
 import {
@@ -81,6 +82,9 @@ export const AiAgentPlaygroundView = () => {
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
+
+    const currentUser = useAppSelector(getCurrentUser)
+    const currentUserFirstName = currentUser?.get('firstname')
 
     const [step, setStep] = useState(PlaygroundStep.INPUT)
     const [messages, setMessages] = useState<PlaygroundMessage[]>([])
@@ -261,6 +265,7 @@ export const AiAgentPlaygroundView = () => {
                     accountData.data
                         .accountConfiguration as AccountConfigurationWithHttpIntegration
                 }
+                currentUserFirstName={currentUserFirstName}
             />
         )
     }

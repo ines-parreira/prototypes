@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, {useCallback, useMemo, useRef, useState} from 'react'
 import axios from 'axios'
 import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
 import {reportError} from 'utils/errors'
@@ -49,15 +49,34 @@ export const usePlaygroundMessages = ({
     gorgiasDomain,
     accountId,
     httpIntegrationId,
+    currentUserFirstName,
 }: {
     storeData: StoreConfiguration
     gorgiasDomain: string
     accountId: number
     httpIntegrationId: number
+    currentUserFirstName?: string
 }) => {
-    const [messages, setMessages] = useState<PlaygroundMessage[]>([])
+    const initialMessages: PlaygroundMessage[] = useMemo(
+        () => [
+            {
+                sender: AI_AGENT_SENDER,
+                type: MessageType.MESSAGE,
+                message: `Hey${
+                    currentUserFirstName ? ` ${currentUserFirstName}` : ''
+                }!<br/><br/>Welcome to your new AI Agent playground. <b>You can send messages just like your customers do</b> to see how AI Agent responds! Get started by selecting a customer email below and writing your first message.`,
+                createdDatetime: new Date().toISOString(),
+            },
+        ],
+        [currentUserFirstName]
+    )
+
+    const [messages, setMessages] =
+        useState<PlaygroundMessage[]>(initialMessages)
+
     // We don't care what is in this object we just want to resend it to the AI Agent
     const actionSerializedStateRef = useRef<unknown>()
+
     const abortControllerRef = useRef<AbortController>()
 
     const {mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting} =
@@ -68,8 +87,9 @@ export const usePlaygroundMessages = ({
             abortControllerRef.current.abort()
         }
 
-        setMessages([])
-    }, [])
+        actionSerializedStateRef.current = undefined
+        setMessages(initialMessages)
+    }, [initialMessages])
 
     const onMessageSend = useCallback(
         async (formValues: PlaygroundFormValues) => {
