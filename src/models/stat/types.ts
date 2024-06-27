@@ -20,6 +20,11 @@ export type StatsFilters = {
     slaPolicies?: string[]
 }
 
+export type WorkflowStatsFilters = {
+    period: Period
+    workflowId: string
+}
+
 export enum StatType {
     ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',
     Boolean = 'bool',
