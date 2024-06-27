@@ -53,7 +53,7 @@ describe('AIAgentFeedbackBar', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
                 data: {
-                    messages: [messageFeedback],
+                    messages: [messageFeedback, mockMessage],
                     shopName: 'shopName',
                     shopType: 'shopify',
                 },

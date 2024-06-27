@@ -11,6 +11,7 @@ import {TicketFeedback} from 'models/aiAgentFeedback/types'
 import css from './AIAgentFeedbackBar.less'
 import FeedbackOrders from './FeedbackOrders'
 import FeedbackEvents from './FeedbackEvents'
+import {QA_FAILED_MESSAGE} from './constants'
 
 type Props = {
     ticketFeedback?: TicketFeedback
@@ -56,9 +57,13 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
 
     const {shopType, shopName} = ticketFeedback.messages[0]
 
+    const isOnlyDraftMessage =
+        aiMessages.length === 1 &&
+        ticketFeedback.messages[0].summary.includes(QA_FAILED_MESSAGE)
+
     return (
         <>
-            {publicMessageCount ? (
+            {publicMessageCount && !isOnlyDraftMessage ? (
                 <div className={css.sectionContainer}>
                     <div className={css.subtitle}>AI Agent sent</div>
                     <div
@@ -72,7 +77,7 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
                     </div>
                 </div>
             ) : null}
-            {usedResourceCount ? (
+            {usedResourceCount && !isOnlyDraftMessage ? (
                 <div className={css.sectionContainer}>
                     <div className={css.subtitle}>Using</div>
                     {guidanceCount ? (
@@ -134,11 +139,13 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
                 </div>
             ) : null}
             <FeedbackOrders orders={orders} />
-            <FeedbackEvents
-                messages={aiMessages}
-                shopType={shopType}
-                shopName={shopName}
-            />
+            {!isOnlyDraftMessage && (
+                <FeedbackEvents
+                    messages={aiMessages}
+                    shopType={shopType}
+                    shopName={shopName}
+                />
+            )}
             <div className={css.executionId}>
                 {ticketFeedback.messages.map((messageFeedback) => (
                     <div key={messageFeedback.executionId}>

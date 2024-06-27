@@ -37,9 +37,7 @@ const AIAgentFeedbackBar = () => {
         >
             <div className={css.summaryContainer}>
                 <div className={css.title}>
-                    {messageFeedback
-                        ? 'Feedback'
-                        : 'Improve AI Agent responses'}
+                    {messageFeedback ? 'Feedback' : 'Overview'}
                 </div>
                 <div
                     className={css.summary}
@@ -47,6 +45,8 @@ const AIAgentFeedbackBar = () => {
                     dangerouslySetInnerHTML={{
                         __html: messageFeedback
                             ? messageFeedback?.summary
+                            : ticketFeedback?.messages.length === 1
+                            ? ticketFeedback.messages[0].summary
                             : ticketFeedbackSummary,
                     }}
                 />

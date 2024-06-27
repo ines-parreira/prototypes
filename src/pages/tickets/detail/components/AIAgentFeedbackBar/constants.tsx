@@ -15,3 +15,6 @@ export const RESOURCE_LABELS: Record<string, string> = {
     external_snippet: 'Knowledge::External websites::',
     macro: 'Knowledge::Macros::',
 }
+
+export const QA_FAILED_MESSAGE =
+    "didn't respond to this message because it wasn't confident in the response it generated"
