@@ -112,19 +112,19 @@ const BillingProcessView = ({
     const {
         selectedPlans,
         setSelectedPlans,
-        helpdeskProduct,
-        helpdeskPrices,
-        automationProduct,
-        automationPrices,
+        currentHelpdeskPlan,
+        helpdeskAvailablePlans,
+        currentAutomatePlan,
+        automateAvailablePlans,
         automationInitialIndex,
-        smsProduct,
-        smsPrices,
+        currentSmsPlan,
+        smsAvailablePlans,
         smsInitialIndex,
-        convertProduct,
-        convertPrices,
+        currentConvertPlan,
+        convertAvailablePlans,
         convertInitialIndex,
-        voiceProduct,
-        voicePrices,
+        currentVoicePlan,
+        voiceAvailablePlans,
         voiceInitialIndex,
         isEnterpriseHelpdeskPlanSelected,
         anyDowngradedPlanSelected,
@@ -157,10 +157,10 @@ const BillingProcessView = ({
 
     const voiceOrSMSChanged =
         (selectedPlans[ProductType.Voice].isSelected &&
-            voiceProduct?.price_id !==
+            currentVoicePlan?.price_id !==
                 selectedPlans[ProductType.Voice].plan?.price_id) ||
         (selectedPlans[ProductType.SMS].isSelected &&
-            smsProduct?.price_id !==
+            currentSmsPlan?.price_id !==
                 selectedPlans[ProductType.SMS].plan?.price_id)
 
     // fetch card
@@ -272,45 +272,45 @@ const BillingProcessView = ({
                         <div>PRICE</div>
                     </div>
                     <SummaryItem
-                        type={ProductType.Helpdesk}
+                        productType={ProductType.Helpdesk}
                         interval={interval}
-                        product={helpdeskProduct}
-                        prices={helpdeskPrices}
+                        currentPlan={currentHelpdeskPlan}
+                        availablePlans={helpdeskAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
-                        type={ProductType.Automation}
+                        productType={ProductType.Automation}
                         interval={interval}
-                        product={automationProduct}
-                        prices={automationPrices}
+                        currentPlan={currentAutomatePlan}
+                        availablePlans={automateAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
-                        type={ProductType.Voice}
+                        productType={ProductType.Voice}
                         interval={interval}
-                        product={voiceProduct}
-                        prices={voicePrices}
+                        currentPlan={currentVoicePlan}
+                        availablePlans={voiceAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
-                        type={ProductType.SMS}
+                        productType={ProductType.SMS}
                         interval={interval}
-                        product={smsProduct}
-                        prices={smsPrices}
+                        currentPlan={currentSmsPlan}
+                        availablePlans={smsAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryItem
-                        type={ProductType.Convert}
+                        productType={ProductType.Convert}
                         interval={interval}
-                        product={convertProduct}
-                        prices={convertPrices}
+                        currentPlan={currentConvertPlan}
+                        availablePlans={convertAvailablePlans}
                         selectedPlans={selectedPlans}
                     />
                     <SummaryTotal
                         selectedPlans={selectedPlans}
                         totalProductAmount={totalProductAmount}
                         interval={interval}
-                        currency={helpdeskPrices?.[0].currency}
+                        currency={helpdeskAvailablePlans?.[0].currency}
                     />
                 </div>
                 {!isTrialing && !isCurrentSubscriptionCanceled && (
@@ -365,8 +365,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Helpdesk}
                             interval={interval}
-                            product={helpdeskProduct}
-                            prices={helpdeskPrices}
+                            product={currentHelpdeskPlan}
+                            prices={helpdeskAvailablePlans}
                             selectedPlans={selectedPlans}
                             periodEnd={periodEnd}
                             isTrialing={isTrialing}
@@ -379,8 +379,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Automation}
                             interval={interval}
-                            product={automationProduct}
-                            prices={automationPrices}
+                            product={currentAutomatePlan}
+                            prices={automateAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             initialIndex={automationInitialIndex}
@@ -394,8 +394,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Voice}
                             interval={interval}
-                            product={voiceProduct}
-                            prices={voicePrices}
+                            product={currentVoicePlan}
+                            prices={voiceAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
@@ -408,8 +408,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.SMS}
                             interval={interval}
-                            product={smsProduct}
-                            prices={smsPrices}
+                            product={currentSmsPlan}
+                            prices={smsAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
@@ -422,8 +422,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Convert}
                             interval={interval}
-                            product={convertProduct}
-                            prices={convertPrices}
+                            product={currentConvertPlan}
+                            prices={convertAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}

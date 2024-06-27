@@ -9,8 +9,8 @@ describe('setHelpdeskNotification', () => {
     const onClick = jest.fn()
 
     it('renders upgrade message when new product amount is greater', () => {
-        const oldProduct = basicMonthlyHelpdeskPrice // amount is 6000
-        const newProduct = {
+        const oldPlan = basicMonthlyHelpdeskPrice // amount is 6000
+        const newPlan = {
             ...basicMonthlyHelpdeskPrice,
             amount: 10000,
             name: 'New Helpdesk Plan',
@@ -18,8 +18,8 @@ describe('setHelpdeskNotification', () => {
         const periodEnd = '2023-06-30'
 
         const notification = setHelpdeskNotification({
-            oldProduct,
-            newProduct,
+            oldPlan: oldPlan,
+            newPlan: newPlan,
             periodEnd,
             onClick,
             isFreeTrial: false,
@@ -32,8 +32,8 @@ describe('setHelpdeskNotification', () => {
     })
 
     it('renders downgrade message when new product amount is smaller', () => {
-        const oldProduct = basicMonthlyHelpdeskPrice // amount is 6000
-        const newProduct = {
+        const oldPlan = basicMonthlyHelpdeskPrice // amount is 6000
+        const newPlan = {
             ...basicMonthlyHelpdeskPrice,
             amount: 300,
             name: 'New Helpdesk Plan',
@@ -41,8 +41,8 @@ describe('setHelpdeskNotification', () => {
         const periodEnd = '2023-06-30'
 
         const notification = setHelpdeskNotification({
-            oldProduct,
-            newProduct,
+            oldPlan: oldPlan,
+            newPlan: newPlan,
             periodEnd,
             onClick,
             isFreeTrial: false,
@@ -59,15 +59,15 @@ describe('setAutomationNotification', () => {
     const onClick = jest.fn()
 
     it('renders new Automate subscription message', () => {
-        const oldProduct = undefined
-        const newProduct = basicMonthlyAutomationPrice
+        const oldPlan = undefined
+        const newPlan = basicMonthlyAutomationPrice
 
         const periodEnd = '2023-06-30'
         const interval = PlanInterval.Month
 
         const notification = setAutomationNotification({
-            oldProduct,
-            newProduct,
+            oldPlan: oldPlan,
+            newPlan: newPlan,
             periodEnd,
             interval,
             onClick,
@@ -81,8 +81,8 @@ describe('setAutomationNotification', () => {
     })
 
     it('renders upgrade message when new product amount is greater', () => {
-        const oldProduct = basicMonthlyAutomationPrice // amount is 3000
-        const newProduct = {
+        const oldPlan = basicMonthlyAutomationPrice // amount is 3000
+        const newPlan = {
             ...basicMonthlyAutomationPrice,
             amount: 20000,
             num_quota_tickets: 350,
@@ -92,8 +92,8 @@ describe('setAutomationNotification', () => {
         const interval = PlanInterval.Month
 
         const notification = setAutomationNotification({
-            oldProduct,
-            newProduct,
+            oldPlan: oldPlan,
+            newPlan: newPlan,
             interval,
             periodEnd,
             onClick,
@@ -101,14 +101,14 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Success! You now have <strong>${newProduct.num_quota_tickets} automated interactions per month</strong>`
+            `Success! You now have <strong>${newPlan.num_quota_tickets} automated interactions per month</strong>`
         )
         expect(notification?.buttons?.[0].name).toBe('Automate Settings')
     })
 
     it('renders downgrade message when new product amount is less', () => {
-        const oldProduct = basicMonthlyAutomationPrice // amount is 3000
-        const newProduct = {
+        const oldPlan = basicMonthlyAutomationPrice // amount is 3000
+        const newPlan = {
             ...basicMonthlyAutomationPrice,
             amount: 1000,
             num_quota_tickets: 350,
@@ -118,8 +118,8 @@ describe('setAutomationNotification', () => {
         const interval = PlanInterval.Month
 
         const notification = setAutomationNotification({
-            oldProduct,
-            newProduct,
+            oldPlan: oldPlan,
+            newPlan: newPlan,
             periodEnd,
             interval,
             onClick,
@@ -127,7 +127,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Your Automate subscription will change to <strong>${newProduct.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`
+            `Your Automate subscription will change to <strong>${newPlan.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`
         )
         expect(notification?.buttons?.length).toBe(0)
     })

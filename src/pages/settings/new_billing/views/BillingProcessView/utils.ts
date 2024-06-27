@@ -7,8 +7,8 @@ import {
 import {PRODUCT_INFO} from '../../constants'
 
 export type setNotificationProps = {
-    oldProduct?: Plan
-    newProduct?: Plan
+    oldPlan?: Plan
+    newPlan?: Plan
     periodEnd: string
     interval?: PlanInterval
     onClick: () => void
@@ -16,8 +16,8 @@ export type setNotificationProps = {
 }
 
 export const setHelpdeskNotification = ({
-    oldProduct,
-    newProduct,
+    oldPlan,
+    newPlan,
     periodEnd,
     onClick,
     isFreeTrial,
@@ -27,15 +27,15 @@ export const setHelpdeskNotification = ({
     // Set the notification message
     let message = ''
     let buttonLabel = ''
-    if ((oldProduct?.amount || 0) > (newProduct?.amount || 0)) {
+    if ((oldPlan?.amount || 0) > (newPlan?.amount || 0)) {
         // Downgrade Helpdesk subscription
         message = `Your subscription will change to <strong>${
-            newProduct?.name ?? ''
+            newPlan?.name ?? ''
         }</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade Helpdesk subscription
         message = `Success! Helpdesk was upgraded to <strong>${
-            newProduct?.name ?? ''
+            newPlan?.name ?? ''
         }</strong>`
         buttonLabel = 'Helpdesk Settings'
     }
@@ -62,8 +62,8 @@ export const setHelpdeskNotification = ({
 }
 
 export const setAutomationNotification = ({
-    oldProduct,
-    newProduct,
+    oldPlan,
+    newPlan,
     periodEnd,
     interval = PlanInterval.Month,
     onClick,
@@ -75,23 +75,23 @@ export const setAutomationNotification = ({
     let message = ''
     let buttonLabel = ''
 
-    if (!oldProduct) {
+    if (!oldPlan) {
         // New Automate subscription
         message = 'Woohoo! You now have access to <strong>Automate!</strong>'
         buttonLabel = 'Set Up Automate'
     } else if (
         // Downgrade Automate subscription
-        oldProduct.amount > (newProduct?.amount ?? 0)
+        oldPlan.amount > (newPlan?.amount ?? 0)
     ) {
         message = `Your Automate subscription will change to <strong>${
-            newProduct?.num_quota_tickets ?? 0
+            newPlan?.num_quota_tickets ?? 0
         } ${
             PRODUCT_INFO.automation.counter
         }/${interval}</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade Automate subscription
         message = `Success! You now have <strong>${
-            newProduct?.num_quota_tickets ?? ''
+            newPlan?.num_quota_tickets ?? ''
         } ${PRODUCT_INFO.automation.counter} per ${interval}</strong>`
         buttonLabel = 'Automate Settings'
     }
@@ -118,8 +118,8 @@ export const setAutomationNotification = ({
 }
 
 export const setConvertNotification = ({
-    oldProduct,
-    newProduct,
+    oldPlan,
+    newPlan,
     periodEnd,
     interval = PlanInterval.Month,
     onClick,
@@ -131,23 +131,23 @@ export const setConvertNotification = ({
     let message = ''
     let buttonLabel = ''
 
-    if (!oldProduct) {
+    if (!oldPlan) {
         // New Convert subscription
         message = 'Woohoo! You now have access to <strong>Convert!</strong>'
         buttonLabel = 'Set Up Convert'
     } else if (
         // Downgrade Revenue subscription
-        oldProduct.amount > (newProduct?.amount ?? 0)
+        oldPlan.amount > (newPlan?.amount ?? 0)
     ) {
         message = `Your Convert subscription will change to <strong>${
-            newProduct?.num_quota_tickets ?? 0
+            newPlan?.num_quota_tickets ?? 0
         } ${
             PRODUCT_INFO.convert.counter
         }/${interval}</strong> on <strong>${periodEnd}</strong>.`
     } else {
         // Upgrade Convert subscription
         message = `Success! You now have <strong>${
-            newProduct?.num_quota_tickets ?? ''
+            newPlan?.num_quota_tickets ?? ''
         } ${PRODUCT_INFO.convert.counter} per ${interval}</strong>`
         buttonLabel = 'Convert Settings'
     }

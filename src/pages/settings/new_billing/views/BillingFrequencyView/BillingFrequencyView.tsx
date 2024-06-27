@@ -40,16 +40,16 @@ const BillingFrequencyView = ({
     const history = useHistory()
 
     const {
-        helpdeskProduct,
-        automationProduct,
-        voiceProduct,
-        smsProduct,
-        convertProduct,
-        helpdeskPrices,
-        automationPrices,
-        voicePrices,
-        smsPrices,
-        convertPrices,
+        currentHelpdeskPlan,
+        currentAutomatePlan,
+        currentVoicePlan,
+        currentSmsPlan,
+        currentConvertPlan,
+        helpdeskAvailablePlans,
+        automateAvailablePlans,
+        voiceAvailablePlans,
+        smsAvailablePlans,
+        convertAvailablePlans,
         interval,
         selectedPlans,
         setSelectedPlans,
@@ -81,58 +81,58 @@ const BillingFrequencyView = ({
                 [ProductType.Helpdesk]: {
                     ...prev[ProductType.Helpdesk],
                     plan: getPriceForInterval({
-                        prices: helpdeskPrices,
+                        prices: helpdeskAvailablePlans,
                         interval,
-                        currentPrice: helpdeskProduct,
+                        currentPrice: currentHelpdeskPlan,
                     }),
                 },
                 [ProductType.Automation]: {
                     ...prev[ProductType.Automation],
                     plan: getPriceForInterval({
-                        prices: automationPrices,
+                        prices: automateAvailablePlans,
                         interval,
-                        currentPrice: automationProduct,
+                        currentPrice: currentAutomatePlan,
                     }),
                 },
                 [ProductType.Voice]: {
                     ...prev[ProductType.Voice],
                     plan: getPriceForInterval({
-                        prices: voicePrices ?? [],
+                        prices: voiceAvailablePlans ?? [],
                         interval,
-                        currentPrice: voiceProduct,
+                        currentPrice: currentVoicePlan,
                     }),
                 },
                 [ProductType.SMS]: {
                     ...prev[ProductType.SMS],
                     plan: getPriceForInterval({
-                        prices: smsPrices ?? [],
+                        prices: smsAvailablePlans ?? [],
                         interval,
-                        currentPrice: smsProduct,
+                        currentPrice: currentSmsPlan,
                     }),
                 },
                 [ProductType.Convert]: {
                     ...prev[ProductType.Convert],
                     plan: getPriceForInterval({
-                        prices: convertPrices ?? [],
+                        prices: convertAvailablePlans ?? [],
                         interval,
-                        currentPrice: convertProduct,
+                        currentPrice: currentConvertPlan,
                     }),
                 },
             }))
         },
         [
-            automationPrices,
-            automationProduct,
-            helpdeskPrices,
-            helpdeskProduct,
+            automateAvailablePlans,
+            currentAutomatePlan,
+            helpdeskAvailablePlans,
+            currentHelpdeskPlan,
             setSelectedInterval,
             setSelectedPlans,
-            smsPrices,
-            smsProduct,
-            convertPrices,
-            convertProduct,
-            voicePrices,
-            voiceProduct,
+            smsAvailablePlans,
+            currentSmsPlan,
+            convertAvailablePlans,
+            currentConvertPlan,
+            voiceAvailablePlans,
+            currentVoicePlan,
         ]
     )
 
@@ -184,42 +184,42 @@ const BillingFrequencyView = ({
                             <div>PRICE</div>
                         </div>
                         <SummaryItem
-                            type={ProductType.Helpdesk}
+                            productType={ProductType.Helpdesk}
                             interval={selectedInterval}
-                            product={helpdeskProduct}
-                            prices={helpdeskPrices}
+                            currentPlan={currentHelpdeskPlan}
+                            availablePlans={helpdeskAvailablePlans}
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />
                         <SummaryItem
-                            type={ProductType.Automation}
+                            productType={ProductType.Automation}
                             interval={selectedInterval}
-                            product={automationProduct}
-                            prices={automationPrices}
+                            currentPlan={currentAutomatePlan}
+                            availablePlans={automateAvailablePlans}
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />
                         <SummaryItem
-                            type={ProductType.Voice}
+                            productType={ProductType.Voice}
                             interval={selectedInterval}
-                            product={voiceProduct}
-                            prices={voicePrices}
+                            currentPlan={currentVoicePlan}
+                            availablePlans={voiceAvailablePlans}
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />
                         <SummaryItem
-                            type={ProductType.SMS}
+                            productType={ProductType.SMS}
                             interval={selectedInterval}
-                            product={smsProduct}
-                            prices={smsPrices}
+                            currentPlan={currentSmsPlan}
+                            availablePlans={smsAvailablePlans}
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />
                         <SummaryItem
-                            type={ProductType.Convert}
+                            productType={ProductType.Convert}
                             interval={selectedInterval}
-                            product={convertProduct}
-                            prices={convertPrices}
+                            currentPlan={currentConvertPlan}
+                            availablePlans={convertAvailablePlans}
                             selectedPlans={selectedPlans}
                             isFrequencyChanged={true}
                         />
@@ -227,7 +227,7 @@ const BillingFrequencyView = ({
                             selectedPlans={selectedPlans}
                             totalProductAmount={totalProductAmount}
                             interval={selectedInterval}
-                            currency={helpdeskPrices?.[0].currency}
+                            currency={helpdeskAvailablePlans?.[0].currency}
                             isFrequencyChanged={true}
                         />
                     </div>

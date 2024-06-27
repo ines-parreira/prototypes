@@ -6,7 +6,7 @@ import SummaryItem, {SummaryItemProps} from '../SummaryItem'
 
 describe('SummaryItem', () => {
     const props: SummaryItemProps = {
-        type: ProductType.Helpdesk,
+        productType: ProductType.Helpdesk,
         selectedPlans: {
             helpdesk: {
                 isSelected: true,
@@ -26,8 +26,8 @@ describe('SummaryItem', () => {
             },
         },
         interval: PlanInterval.Month,
-        product: basicMonthlyHelpdeskPrice,
-        prices: [
+        currentPlan: basicMonthlyHelpdeskPrice,
+        availablePlans: [
             basicMonthlyHelpdeskPrice,
             {
                 ...basicMonthlyHelpdeskPrice,
@@ -48,7 +48,7 @@ describe('SummaryItem', () => {
                     sms: {isSelected: false},
                     convert: {isSelected: false},
                 }}
-                product={undefined}
+                currentPlan={undefined}
             />
         )
         expect(container.firstChild).toBeNull()
@@ -60,18 +60,18 @@ describe('SummaryItem', () => {
         expect(getByText('Basic - 300 tickets/month')).toBeInTheDocument()
     })
 
-    it('does not display old price when product.price_id matches selected plan', () => {
+    it('does not display old plan when product.price_id matches selected plan', () => {
         const {queryByTestId} = render(
-            <SummaryItem {...props} product={basicMonthlyHelpdeskPrice} />
+            <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPrice} />
         )
         expect(queryByTestId('oldPrice')).toBeNull()
     })
 
-    it('displays old price when product.price_id does not match selected plan', () => {
+    it('displays old plan when currentPlan.price_id does not match selected plan', () => {
         const {queryByTestId} = render(
             <SummaryItem
                 {...props}
-                product={{
+                currentPlan={{
                     ...basicMonthlyHelpdeskPrice,
                     price_id: 'different_price_id',
                 }}

@@ -480,8 +480,8 @@ export const useBillingPlans = ({
         if (isNewHelpdeskPlan && !isPlanCadenceChanged) {
             // Set the notification
             const notification = setHelpdeskNotification({
-                oldProduct: currentHelpdeskPlan,
-                newProduct: selectedPlans[ProductType.Helpdesk].plan,
+                oldPlan: currentHelpdeskPlan,
+                newPlan: selectedPlans[ProductType.Helpdesk].plan,
                 periodEnd,
                 onClick: () => {
                     history.push('/app/home')
@@ -493,10 +493,10 @@ export const useBillingPlans = ({
             !!notification && notifications.push(notification)
         }
 
-        if (selectedPlans[ProductType.Helpdesk]?.plan?.product_id) {
+        if (selectedPlans[ProductType.Helpdesk]?.plan?.product) {
             const plan = selectedPlans[ProductType.Helpdesk]?.plan
             if (plan) {
-                plansToBeUpdated[plan.product_id] = plan?.price_id ?? ''
+                plansToBeUpdated[plan.product] = plan?.price_id ?? ''
             }
         }
 
@@ -504,8 +504,8 @@ export const useBillingPlans = ({
         if (selectedPlans[ProductType.Automation].isSelected) {
             if (isNewAutomationPlan && !isPlanCadenceChanged) {
                 const notification = setAutomationNotification({
-                    oldProduct: currentAutomatePlan,
-                    newProduct: selectedPlans[ProductType.Automation].plan,
+                    oldPlan: currentAutomatePlan,
+                    newPlan: selectedPlans[ProductType.Automation].plan,
                     periodEnd,
                     onClick: () => {
                         history.push('/app/automation')
@@ -518,11 +518,11 @@ export const useBillingPlans = ({
                 !!notification && notifications.push(notification)
             }
 
-            if (selectedPlans[ProductType.Automation]?.plan?.product_id) {
+            if (selectedPlans[ProductType.Automation]?.plan?.product) {
                 const plan = selectedPlans[ProductType.Automation]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product_id] = plan?.price_id ?? ''
+                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
                 }
             }
         }
@@ -531,8 +531,8 @@ export const useBillingPlans = ({
         if (selectedPlans[ProductType.Convert].isSelected) {
             if (hasConvertPlanChanged && !isPlanCadenceChanged) {
                 const notification = setConvertNotification({
-                    oldProduct: currentConvertPlan,
-                    newProduct: selectedPlans[ProductType.Convert].plan,
+                    oldPlan: currentConvertPlan,
+                    newPlan: selectedPlans[ProductType.Convert].plan,
                     periodEnd,
                     onClick: () => {
                         history.push('/app/convert')
@@ -553,11 +553,11 @@ export const useBillingPlans = ({
                 )
             }
 
-            if (selectedPlans[ProductType.Convert]?.plan?.product_id) {
+            if (selectedPlans[ProductType.Convert]?.plan?.product) {
                 const plan = selectedPlans[ProductType.Convert]?.plan
 
                 if (plan) {
-                    plansToBeUpdated[plan.product_id] = plan?.price_id ?? ''
+                    plansToBeUpdated[plan.product] = plan?.price_id ?? ''
                 }
             }
         }
@@ -684,19 +684,19 @@ export const useBillingPlans = ({
         anyDowngradedPlanSelected,
         anyNewProductSelected,
         totalProductAmount,
-        helpdeskProduct: currentHelpdeskPlan,
-        helpdeskPrices: helpdeskAvailablePlans,
-        automationProduct: currentAutomatePlan,
-        automationPrices: automateAvailablePlans,
+        currentHelpdeskPlan,
+        helpdeskAvailablePlans,
+        currentAutomatePlan,
+        automateAvailablePlans,
         automationInitialIndex,
-        voiceProduct: currentVoicePlan,
-        voicePrices: voiceAvailablePlans,
+        currentVoicePlan,
+        voiceAvailablePlans,
         voiceInitialIndex,
-        smsProduct: currentSmsPlan,
-        smsPrices: smsAvailablePlans,
+        currentSmsPlan,
+        smsAvailablePlans,
         smsInitialIndex,
-        convertProduct: currentConvertPlan,
-        convertPrices: convertAvailablePlans,
+        currentConvertPlan,
+        convertAvailablePlans,
         convertInitialIndex,
         selectedPlans,
         setSelectedPlans,

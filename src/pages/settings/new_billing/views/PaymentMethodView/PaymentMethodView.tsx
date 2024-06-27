@@ -55,16 +55,16 @@ const PaymentMethodView = ({
     } = useCreditCard({contactBilling, dispatchBillingError})
 
     const {
-        helpdeskProduct,
-        helpdeskPrices,
-        automationProduct,
-        automationPrices,
-        smsProduct,
-        smsPrices,
-        convertProduct,
-        convertPrices,
-        voiceProduct,
-        voicePrices,
+        currentHelpdeskPlan,
+        helpdeskAvailablePlans,
+        currentAutomatePlan,
+        automateAvailablePlans,
+        currentSmsPlan,
+        smsAvailablePlans,
+        currentConvertPlan,
+        convertAvailablePlans,
+        currentVoicePlan,
+        voiceAvailablePlans,
         anyDowngradedPlanSelected,
         totalProductAmount,
         interval,
@@ -229,45 +229,45 @@ const PaymentMethodView = ({
                                 <div>PRICE</div>
                             </div>
                             <SummaryItem
-                                type={ProductType.Helpdesk}
+                                productType={ProductType.Helpdesk}
                                 interval={interval}
-                                product={helpdeskProduct}
-                                prices={helpdeskPrices}
+                                currentPlan={currentHelpdeskPlan}
+                                availablePlans={helpdeskAvailablePlans}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryItem
-                                type={ProductType.Automation}
+                                productType={ProductType.Automation}
                                 interval={interval}
-                                product={automationProduct}
-                                prices={automationPrices}
+                                currentPlan={currentAutomatePlan}
+                                availablePlans={automateAvailablePlans}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryItem
-                                type={ProductType.Voice}
+                                productType={ProductType.Voice}
                                 interval={interval}
-                                product={voiceProduct}
-                                prices={voicePrices}
+                                currentPlan={currentVoicePlan}
+                                availablePlans={voiceAvailablePlans}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryItem
-                                type={ProductType.SMS}
+                                productType={ProductType.SMS}
                                 interval={interval}
-                                product={smsProduct}
-                                prices={smsPrices}
+                                currentPlan={currentSmsPlan}
+                                availablePlans={smsAvailablePlans}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryItem
-                                type={ProductType.Convert}
+                                productType={ProductType.Convert}
                                 interval={interval}
-                                product={convertProduct}
-                                prices={convertPrices}
+                                currentPlan={currentConvertPlan}
+                                availablePlans={convertAvailablePlans}
                                 selectedPlans={selectedPlans}
                             />
                             <SummaryTotal
                                 selectedPlans={selectedPlans}
                                 totalProductAmount={totalProductAmount}
                                 interval={interval}
-                                currency={helpdeskPrices?.[0].currency}
+                                currency={helpdeskAvailablePlans?.[0].currency}
                             />
                         </div>
                         <h2 className={css.startSubscriptionTitle}>

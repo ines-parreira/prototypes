@@ -13,34 +13,34 @@ import {getNextTier} from '../../utils/getNextTier'
 import css from './SummaryItem.less'
 
 export type SummaryItemProps = {
-    type: ProductType
+    productType: ProductType
     interval?: PlanInterval
-    product?: Plan
-    prices?: Plan[]
+    currentPlan?: Plan
+    availablePlans?: Plan[]
     selectedPlans: SelectedPlans
     isFrequencyChanged?: boolean
 }
 
 const SummaryItem = ({
-    type,
+    productType,
     interval = PlanInterval.Month,
-    product,
-    prices = [],
+    currentPlan,
+    availablePlans = [],
     selectedPlans,
     isFrequencyChanged = false,
 }: SummaryItemProps) => {
-    const selectedPlan = selectedPlans[type]
+    const selectedPlan = selectedPlans[productType]
 
     const {price, currency, name, tickets} = useMemo(() => {
-        const priceObject = prices.find(
-            (price) => price.price_id === selectedPlan.plan?.price_id
+        const priceObject = availablePlans.find(
+            (plan) => plan.price_id === selectedPlan.plan?.price_id
         )
         if (!selectedPlan.isSelected || !priceObject) {
             return {
-                price: (product?.amount ?? 0) / 100,
+                price: (currentPlan?.amount ?? 0) / 100,
                 currency: null,
                 name: null,
-                tickets: product?.num_quota_tickets ?? 0,
+                tickets: currentPlan?.num_quota_tickets ?? 0,
             }
         }
         return {
@@ -49,20 +49,23 @@ const SummaryItem = ({
             name: priceObject.name,
             tickets: priceObject.num_quota_tickets ?? 0,
         }
-    }, [prices, selectedPlan, product])
+    }, [availablePlans, selectedPlan, currentPlan])
 
     const oldPrice = useMemo(() => {
-        if (!product || product.price_id === selectedPlan.plan?.price_id) {
+        if (
+            !currentPlan ||
+            currentPlan.price_id === selectedPlan.plan?.price_id
+        ) {
             return null
         }
-        const priceObject = prices.find(
-            (price) => price.price_id === product.price_id
+        const priceObject = availablePlans.find(
+            (plan) => plan.price_id === currentPlan.price_id
         )
         if (!priceObject) {
             return null
         }
         return priceObject.amount / 100
-    }, [prices, product, selectedPlan])
+    }, [availablePlans, currentPlan, selectedPlan])
 
     const description = useMemo(() => {
         if (selectedPlan.plan) {
@@ -74,12 +77,12 @@ const SummaryItem = ({
 
         return (
             <>
-                {tickets} {PRODUCT_INFO[type].counter}/{interval}
+                {tickets} {PRODUCT_INFO[productType].counter}/{interval}
             </>
         )
-    }, [interval, selectedPlan.plan, tickets, type])
+    }, [interval, selectedPlan.plan, tickets, productType])
 
-    if (!selectedPlan.isSelected && !product) {
+    if (!selectedPlan.isSelected && !currentPlan) {
         return null
     }
 
@@ -90,9 +93,13 @@ const SummaryItem = ({
                     [css.strikeThrough]: !selectedPlan.isSelected,
                 })}
             >
-                <div className={css.title}>{PRODUCT_INFO[type].title}</div>
+                <div className={css.title}>
+                    {PRODUCT_INFO[productType].title}
+                </div>
                 <div className={css.description}>
-                    {type === ProductType.Helpdesk && name ? `${name} - ` : ''}
+                    {productType === ProductType.Helpdesk && name
+                        ? `${name} - `
+                        : ''}
                     {description}
                 </div>
             </div>
@@ -114,7 +121,7 @@ const SummaryItem = ({
                                 2
                             )}
                         </b>{' '}
-                        {PRODUCT_INFO[type].perTicket}
+                        {PRODUCT_INFO[productType].perTicket}
                     </>
                 ) : (
                     <>
@@ -122,9 +129,9 @@ const SummaryItem = ({
                     </>
                 )}
                 {selectedPlan.isSelected &&
-                    type === ProductType.Convert &&
+                    productType === ProductType.Convert &&
                     selectedPlan.plan?.price_id !== ENTERPRISE_PRICE_ID &&
-                    getNextTier(prices, selectedPlan.plan) && (
+                    getNextTier(availablePlans, selectedPlan.plan) && (
                         <div>
                             {selectedPlan.autoUpgrade ? (
                                 <>Auto-upgrade enabled</>
@@ -133,11 +140,11 @@ const SummaryItem = ({
                                     <img
                                         src={warningIcon}
                                         alt="warning icon"
-                                        id={`summary-auto-upgrade-disabled-${type}`}
+                                        id={`summary-auto-upgrade-disabled-${productType}`}
                                         className={`material-icons ${css.autoUpgradeWarningIcon} mr-1`}
                                     />
                                     <Tooltip
-                                        target={`summary-auto-upgrade-disabled-${type}`}
+                                        target={`summary-auto-upgrade-disabled-${productType}`}
                                         placement="bottom-end"
                                     >
                                         Without auto-upgrade, campaigns will
