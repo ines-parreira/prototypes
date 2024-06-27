@@ -2,6 +2,7 @@ import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 import {MutationOverrides} from 'types/query'
 import useAppSelector from 'hooks/useAppSelector'
 import {getAIAgentMessages} from 'state/ticket/selectors'
+import {DATE_FEATURE_AVAILABLE} from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
@@ -21,10 +22,17 @@ export const useGetAiAgentFeedback = (
     >
 ) => {
     const aiMessages = useAppSelector(getAIAgentMessages)
-    const messageIds = aiMessages.map((message) => message.id) as number[]
+    const messageIds = aiMessages
+        .filter(
+            (message) =>
+                new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
+        )
+        .map((message) => message.id) as number[]
+
     return useQuery({
         queryKey: aiAgentFeedbackKeys.detail(messageIds),
         queryFn: () => getAIAgentTicketMessagesFeedback(messageIds),
+        enabled: messageIds.length > 0,
         ...overrides,
     })
 }

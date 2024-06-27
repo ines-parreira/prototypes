@@ -4,9 +4,11 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {act, renderHook} from '@testing-library/react-hooks'
 import configureMockStore from 'redux-mock-store'
 
+import {fromJS} from 'immutable'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
@@ -34,6 +36,26 @@ const store = mockStore({
             activeTab: TicketAIAgentFeedbackTab.AIAgent,
         },
     },
+    ticket: fromJS({
+        messages: [
+            {
+                id: 1,
+                created_datetime: '2024-06-26T05:37:16+00:00',
+                sender: {
+                    email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+                },
+                from_agent: true,
+            },
+            {
+                id: 2,
+                created_datetime: '2024-06-26T05:37:16+00:00',
+                sender: {
+                    email: AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS,
+                },
+                from_agent: true,
+            },
+        ],
+    }),
 } as RootState)
 
 const wrapper = ({children}: any) => (
