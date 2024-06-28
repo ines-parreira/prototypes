@@ -1,4 +1,3 @@
-import {OrderDirection} from 'models/api/types'
 import {Cubes} from 'models/reporting/cubes'
 import {
     usePostReporting,
@@ -19,8 +18,7 @@ export type MetricTrend = {
 export type MetricTrendHook = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection,
-    agentAssigneeId?: string
+    enabled?: boolean
 ) => MetricTrend
 
 export type QueryReturnType<Measure extends Cubes['measures']> = [

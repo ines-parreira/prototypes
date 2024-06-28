@@ -1,4 +1,7 @@
-import React from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect, useState} from 'react'
+import IconButton from 'pages/common/components/button/IconButton'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -9,18 +12,46 @@ import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/SupportPerformanceOverviewConfig'
 
 export const WorkloadPerChannelChart = () => {
+    const isDeferredLoadingEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
+
+    const [enabled, setEnabled] = useState(
+        isDeferredLoadingEnabled === undefined
+            ? false
+            : !isDeferredLoadingEnabled
+    )
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
     const workloadPerChannel = useWorkloadPerChannelDistribution(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
+        enabled
     )
+
+    useEffect(() => {
+        if (workloadPerChannel.data) {
+            setEnabled(true)
+        }
+    }, [workloadPerChannel.data])
 
     return (
         <ChartCard
             title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
             hint={WORKLOAD_BY_CHANNEL_HINT}
+            titleExtra={
+                !enabled && (
+                    <IconButton
+                        className="mr-1"
+                        fillStyle="ghost"
+                        intent="secondary"
+                        onClick={() => setEnabled(true)}
+                        title="Reload"
+                    >
+                        refresh
+                    </IconButton>
+                )
+            }
         >
             {workloadPerChannel.data ? (
                 <GaugeChart data={workloadPerChannel.data} />

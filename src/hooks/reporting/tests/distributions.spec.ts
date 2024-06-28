@@ -57,6 +57,27 @@ describe('distributions', () => {
                 expect(select({data: {data: []}} as any)).toEqual([])
             }
         })
+
+        it('should pass the enabled query flag', () => {
+            const enabled = false
+            renderHook(() =>
+                useWorkloadPerChannelDistribution(
+                    statsFilters,
+                    timezone,
+                    enabled
+                )
+            )
+
+            expect(usePostReportingMock).toHaveBeenCalledWith(
+                [
+                    workloadPerChannelDistributionQueryFactory(
+                        statsFilters,
+                        timezone
+                    ),
+                ],
+                {select: expect.any(Function), enabled}
+            )
+        })
     })
 
     describe('useWorkloadPerChannelDistributionForPreviousPeriod', () => {
@@ -85,6 +106,30 @@ describe('distributions', () => {
             if (select) {
                 expect(select({data: {data: []}} as any)).toEqual([])
             }
+        })
+
+        it('should pass the enabled query flag', () => {
+            const enabled = true
+            renderHook(() =>
+                useWorkloadPerChannelDistributionForPreviousPeriod(
+                    statsFilters,
+                    timezone,
+                    enabled
+                )
+            )
+
+            expect(usePostReportingMock).toHaveBeenCalledWith(
+                [
+                    workloadPerChannelDistributionQueryFactory(
+                        {
+                            ...statsFilters,
+                            period: getPreviousPeriod(statsFilters.period),
+                        },
+                        timezone
+                    ),
+                ],
+                {select: expect.any(Function), enabled}
+            )
         })
     })
 

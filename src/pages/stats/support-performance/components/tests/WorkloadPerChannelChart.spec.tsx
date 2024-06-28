@@ -1,8 +1,11 @@
-import {render} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -28,6 +31,9 @@ const useWorkloadPerChannelDistributionMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<WorkloadPerChannelChart />', () => {
+    jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+        [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
+    }))
     const defaultStatsFilters: StatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
@@ -66,6 +72,9 @@ describe('<WorkloadPerChannelChart />', () => {
             workloadDistribution
         )
         gaugeChartMock.mockImplementation(() => <div />)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
+        }))
     })
 
     it('should fetch data and render the chart', () => {
@@ -87,11 +96,61 @@ describe('<WorkloadPerChannelChart />', () => {
         useWorkloadPerChannelDistributionMock.mockReturnValue({
             data: undefined,
         } as any)
+
         render(
             <Provider store={mockStore(defaultState)}>
                 <WorkloadPerChannelChart />
             </Provider>
         )
+
         expect(document.querySelector('.skeleton')).toBeInTheDocument()
+    })
+
+    it('should defer loading with a feature flag', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: true,
+        }))
+        useWorkloadPerChannelDistributionMock.mockReturnValue({
+            data: undefined,
+        } as any)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <WorkloadPerChannelChart />
+            </Provider>
+        )
+
+        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            false
+        )
+        expect(screen.getByText('refresh')).toBeInTheDocument()
+    })
+
+    it('should allow loading after clicking the refresh icon', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: undefined,
+        }))
+        useWorkloadPerChannelDistributionMock.mockReturnValue({
+            data: undefined,
+        } as any)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <WorkloadPerChannelChart />
+            </Provider>
+        )
+
+        const refreshIcon = screen.getByText('refresh')
+        userEvent.click(refreshIcon)
+
+        expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            true
+        )
+        expect(screen.queryByText('refresh')).not.toBeInTheDocument()
     })
 })

@@ -1,8 +1,10 @@
 import {fireEvent, render} from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {
     useWorkloadPerChannelDistribution,
@@ -239,6 +241,9 @@ describe('DownloadOverviewData', () => {
             workloadDistribution
         )
         useCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: false,
+        }))
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {

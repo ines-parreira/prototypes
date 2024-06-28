@@ -1,4 +1,6 @@
-import React, {useMemo} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, {useEffect, useMemo, useState} from 'react'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
@@ -31,6 +33,15 @@ import {getPageStatsFilters, getStatsFilters} from 'state/stats/selectors'
 import {periodToReportingGranularity} from 'utils/reporting'
 
 export const DownloadOverviewData = () => {
+    const isDeferredLoadingEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsDeferredLoadingExperiment]
+
+    const [fetchingEnabled, setFetchingEnable] = useState(
+        isDeferredLoadingEnabled === undefined
+            ? false
+            : !isDeferredLoadingEnabled
+    )
+
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
@@ -99,12 +110,14 @@ export const DownloadOverviewData = () => {
 
     const workloadPerChannel = useWorkloadPerChannelDistribution(
         requestStatsFilters,
-        userTimezone
+        userTimezone,
+        fetchingEnabled
     )
     const workloadPerChannelPrevious =
         useWorkloadPerChannelDistributionForPreviousPeriod(
             requestStatsFilters,
-            userTimezone
+            userTimezone,
+            fetchingEnabled
         )
     const exportableData = useMemo(() => {
         return {
@@ -146,13 +159,23 @@ export const DownloadOverviewData = () => {
         return Object.values(exportableData).some((metric) => metric.isFetching)
     }, [exportableData])
 
+    useEffect(() => {
+        const saveReportAsync = async () => {
+            await saveReport(exportableData, statsFilters.period)
+        }
+        if (fetchingEnabled && !loading) {
+            void saveReportAsync()
+            setFetchingEnable(false)
+        }
+    }, [fetchingEnabled, loading, exportableData, statsFilters.period])
+
     return (
         <DownloadOverviewDataButton
-            onClick={async () => {
+            onClick={() => {
                 logEvent(SegmentEvent.StatDownloadClicked, {
                     name: 'all-metrics',
                 })
-                await saveReport(exportableData, statsFilters.period)
+                setFetchingEnable(true)
             }}
             disabled={loading}
         />

@@ -16,7 +16,8 @@ const TICKET_COUNT_MEASURE = TicketMeasure.TicketCount
 
 export const useWorkloadPerChannelDistribution = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
+    enabled?: boolean
 ) => {
     const query = workloadPerChannelDistributionQueryFactory(filters, timezone)
 
@@ -30,12 +31,14 @@ export const useWorkloadPerChannelDistribution = (
     >([query], {
         select: (data) =>
             selectPerChannel(data, CHANNEL_DIMENSION, TICKET_COUNT_MEASURE),
+        enabled,
     })
 }
 
 export const useWorkloadPerChannelDistributionForPreviousPeriod = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
+    enabled?: boolean
 ) => {
     const query = workloadPerChannelDistributionQueryFactory(
         {
@@ -54,6 +57,7 @@ export const useWorkloadPerChannelDistributionForPreviousPeriod = (
     >([query], {
         select: (data) =>
             selectPerChannel(data, CHANNEL_DIMENSION, TICKET_COUNT_MEASURE),
+        enabled,
     })
 }
 
