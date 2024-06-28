@@ -32,8 +32,9 @@ export const GuidanceHeader = ({
         <>
             <div className={css.container}>
                 <p>
-                    Provide guidance to your AI Agent so it knows how to act in
-                    specific situations.
+                    Guidance is internal-facing knowledge that allows you to
+                    customize AI Agent's behavior and fine-tune how it handles
+                    customer requests.
                 </p>
 
                 <div className={css.btnGroup}>
