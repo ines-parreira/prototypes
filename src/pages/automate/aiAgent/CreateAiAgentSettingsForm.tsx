@@ -54,7 +54,6 @@ import {
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
 } from './constants'
 import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
-import {AutoTagList} from './components/AutoTagList'
 import {FormValues, ValidFormValues} from './types'
 import {filterNonNull, isAiAgentEnabled, isHandoffEnabled} from './util'
 import {
@@ -140,9 +139,6 @@ export const CreateAiAgentSettingsForm = ({
 
     const isWebsiteKnowledgeEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
-
-    const isNewTicketTaggingEnabled: boolean =
-        useFlags()[FeatureFlagKey.AiAgentSettingsTicketTaggingRevamp] ?? false
 
     /**
      * Global state retrieval
@@ -649,21 +645,12 @@ export const CreateAiAgentSettingsForm = ({
                         Define when AI Agent should tag incoming tickets.
                     </div>
 
-                    {isNewTicketTaggingEnabled ? (
-                        <TagList
-                            tags={formValues.tags ?? []}
-                            onTagsUpdate={(tags: Tag[]) => {
-                                updateValue('tags', tags)
-                            }}
-                        />
-                    ) : (
-                        <AutoTagList
-                            tags={formValues.tags ?? []}
-                            onTagUpdate={(tags: Tag[]) => {
-                                updateValue('tags', tags)
-                            }}
-                        />
-                    )}
+                    <TagList
+                        tags={formValues.tags ?? []}
+                        onTagsUpdate={(tags: Tag[]) => {
+                            updateValue('tags', tags)
+                        }}
+                    />
                 </section>
 
                 <section>

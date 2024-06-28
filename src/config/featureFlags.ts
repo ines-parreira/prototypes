@@ -5,7 +5,6 @@ export enum FeatureFlagKey {
     AgentActivityTracking = 'agent-activity-tracking',
     AiAgentGuidance = 'ai-agent-guidance',
     AiAgentGuidanceToggle = 'ai-agent-guidance-toggle',
-    AiAgentSettingsTicketTaggingRevamp = 'ai-agent-settings-ticket-tagging-revamp',
     AiAgentRuleTemplate = 'ai-agent-rule-template',
     AiAgentSettings = 'ai-agent-settings',
     AiAgentWebsiteKnowledge = 'ai-agent-website-knowledge',

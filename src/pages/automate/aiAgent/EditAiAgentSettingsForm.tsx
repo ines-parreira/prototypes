@@ -60,7 +60,6 @@ import {
 } from './hooks/useConfigurationForm'
 import {usePublicResources} from './hooks/usePublicResources'
 import TagList from './components/TicketTag/TagList'
-import {AutoTagList} from './components/AutoTagList'
 
 const createStoreConfigurationFromFormValues = (
     storeConfig: StoreConfiguration,
@@ -114,9 +113,6 @@ export const EditAiAgentSettingsForm = ({
 
     const isWebsiteKnowledgeEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
-
-    const isNewTicketTaggingEnabled: boolean =
-        useFlags()[FeatureFlagKey.AiAgentSettingsTicketTaggingRevamp] ?? false
 
     const isSkipSampleRateEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSkipSampleRate]
@@ -696,29 +692,16 @@ export const EditAiAgentSettingsForm = ({
                         Define when AI Agent should tag incoming tickets.
                     </div>
 
-                    {isNewTicketTaggingEnabled ? (
-                        <TagList
-                            tags={
-                                formValues.tags !== null
-                                    ? formValues.tags
-                                    : storeConfiguration.tags
-                            }
-                            onTagsUpdate={(tags: Tag[]) => {
-                                updateValue('tags', tags)
-                            }}
-                        />
-                    ) : (
-                        <AutoTagList
-                            tags={
-                                formValues.tags !== null
-                                    ? formValues.tags
-                                    : storeConfiguration.tags
-                            }
-                            onTagUpdate={(tags: Tag[]) => {
-                                updateValue('tags', tags)
-                            }}
-                        />
-                    )}
+                    <TagList
+                        tags={
+                            formValues.tags !== null
+                                ? formValues.tags
+                                : storeConfiguration.tags
+                        }
+                        onTagsUpdate={(tags: Tag[]) => {
+                            updateValue('tags', tags)
+                        }}
+                    />
                 </section>
 
                 <section>
