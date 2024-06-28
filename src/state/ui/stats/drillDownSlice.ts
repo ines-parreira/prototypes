@@ -9,18 +9,23 @@ import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTime
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ReportingQuery} from 'models/reporting/types'
-import {TableLabels} from 'pages/stats/AgentsTableConfig'
+import {AgentsColumnConfig, TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
+import {
+    ChannelColumnConfig,
+    ChannelsTableColumns,
+    ChannelsTableLabels,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
+    AgentsTableColumn,
     OverviewMetric,
     SlaMetric,
-    AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 
@@ -63,6 +68,22 @@ export type AgentsMetrics = {
     perAgentId: number
 } & CommonMetrics
 
+export type ChannelMetricColumn =
+    | ChannelsTableColumns.TicketsCreated
+    | ChannelsTableColumns.CreatedTicketsPercentage
+    | ChannelsTableColumns.ClosedTickets
+    | ChannelsTableColumns.TicketHandleTime
+    | ChannelsTableColumns.FirstResponseTime
+    | ChannelsTableColumns.MedianResolutionTime
+    | ChannelsTableColumns.TicketsReplied
+    | ChannelsTableColumns.MessagesSent
+    | ChannelsTableColumns.CustomerSatisfaction
+
+export type ChannelsMetrics = {
+    metricName: ChannelMetricColumn
+    perChannel: string
+} & CommonMetrics
+
 export type TicketFieldsMetrics = {
     metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount
     customFieldId: number | null
@@ -79,6 +100,7 @@ export type SlaMetrics = {
 
 export type DrillDownMetric =
     | AgentsMetrics
+    | ChannelsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
     | SlaMetrics
@@ -108,6 +130,10 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.OneTouchTickets,
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
+    ChannelsTableColumns.TicketsCreated,
+    ChannelsTableColumns.CreatedTicketsPercentage,
+    ChannelsTableColumns.ClosedTickets,
+    ChannelsTableColumns.TicketsReplied,
 ]
 
 export const initialState: DrillDownState = {
@@ -210,34 +236,6 @@ export const getDrillDownMetric = (state: RootState) => {
     }
 }
 
-const getMetricValueFormat = (
-    metricName: DrillDownMetric['metricName']
-): MetricValueFormat | typeof SLA_FORMAT => {
-    if (
-        metricName === SlaMetric.AchievementRate ||
-        metricName === SlaMetric.BreachedTicketsRate
-    ) {
-        return SLA_FORMAT
-    }
-
-    if (
-        metricName === AgentsTableColumn.MedianFirstResponseTime ||
-        metricName === AgentsTableColumn.MedianResolutionTime ||
-        metricName === AgentsTableColumn.TicketHandleTime ||
-        metricName === OverviewMetric.MedianFirstResponseTime ||
-        metricName === OverviewMetric.MedianResolutionTime ||
-        metricName === OverviewMetric.TicketHandleTime
-    ) {
-        return 'duration'
-    }
-
-    if (metricName === AgentsTableColumn.OneTouchTickets) {
-        return 'percent'
-    }
-
-    return 'decimal'
-}
-
 export const getDrillDownMetricColumn = (
     state: RootState
 ): {
@@ -247,6 +245,7 @@ export const getDrillDownMetricColumn = (
 } => {
     const metricData = state.ui[drillDownSlice.name].metricData
     let metricTitle = ''
+    let metricValueFormat: MetricValueFormat | typeof SLA_FORMAT = 'decimal'
 
     if (!metricData) {
         return {
@@ -258,20 +257,28 @@ export const getDrillDownMetricColumn = (
 
     if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
+        metricValueFormat = AgentsColumnConfig[metricData.metricName].format
     } else if ('customFieldValue' in metricData) {
         metricTitle = ''
+        metricValueFormat = 'decimal'
+    } else if ('perChannel' in metricData) {
+        metricTitle = ChannelsTableLabels[metricData.metricName]
+        metricValueFormat = ChannelColumnConfig[metricData.metricName].format
     } else if (
         metricData.metricName === SlaMetric.AchievementRate ||
         metricData.metricName === SlaMetric.BreachedTicketsRate
     ) {
         metricTitle = SLA_STATUS_COLUMN_LABEL
+        metricValueFormat = SLA_FORMAT
     } else {
         metricTitle = OverviewMetricConfig[metricData.metricName].title
+        metricValueFormat =
+            OverviewMetricConfig[metricData.metricName].metricFormat
     }
 
     return {
         metricTitle,
-        metricValueFormat: getMetricValueFormat(metricData.metricName),
+        metricValueFormat,
         showMetric: !hiddenMetrics.includes(metricData.metricName),
     }
 }

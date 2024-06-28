@@ -20,15 +20,19 @@ import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporti
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {
+    ChannelColumnConfig,
+    ChannelsTableColumns,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
+    AgentsTableColumn,
     OverviewMetric,
     SlaMetric,
-    AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
 
-type QueryFactory = (
+export type DrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -39,13 +43,24 @@ type QueryFactory = (
 >
 
 const queryBuilderWithAgentFilter =
-    (agentId: number, queryBuilder: QueryFactory): QueryFactory =>
+    (
+        agentId: number,
+        queryBuilder: DrillDownQueryFactory
+    ): DrillDownQueryFactory =>
     (statsFilters: StatsFilters, timezone: string, sorting?: OrderDirection) =>
         queryBuilder({...statsFilters, agents: [agentId]}, timezone, sorting)
 
+const queryBuilderWithChannelFilter =
+    (
+        channel: string,
+        queryBuilder: DrillDownQueryFactory
+    ): DrillDownQueryFactory =>
+    (statsFilters: StatsFilters, timezone: string, sorting?: OrderDirection) =>
+        queryBuilder({...statsFilters, channels: [channel]}, timezone, sorting)
+
 export const getDrillDownQuery = (
     metricName: DrillDownMetric
-): QueryFactory => {
+): DrillDownQueryFactory => {
     switch (metricName.metricName) {
         case OverviewMetric.CustomerSatisfaction:
             return customerSatisfactionMetricDrillDownQueryFactory
@@ -74,7 +89,6 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 customerSatisfactionMetricDrillDownQueryFactory
             )
-
         case AgentsTableColumn.MedianFirstResponseTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
@@ -85,13 +99,11 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 resolutionTimeMetricPerTicketDrillDownQueryFactory
             )
-
         case AgentsTableColumn.MessagesSent:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 messagesSentMetricPerTicketDrillDownQueryFactory
             )
-
         case AgentsTableColumn.PercentageOfClosedTickets:
         case AgentsTableColumn.ClosedTicketsPerHour:
         case AgentsTableColumn.ClosedTickets:
@@ -119,6 +131,19 @@ export const getDrillDownQuery = (
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:
             return breachedTicketsDrillDownQueryFactory
+        case ChannelsTableColumns.TicketHandleTime:
+        case ChannelsTableColumns.ClosedTickets:
+        case ChannelsTableColumns.TicketsCreated:
+        case ChannelsTableColumns.CreatedTicketsPercentage:
+        case ChannelsTableColumns.FirstResponseTime:
+        case ChannelsTableColumns.MedianResolutionTime:
+        case ChannelsTableColumns.TicketsReplied:
+        case ChannelsTableColumns.MessagesSent:
+        case ChannelsTableColumns.CustomerSatisfaction:
+            return queryBuilderWithChannelFilter(
+                metricName.perChannel,
+                ChannelColumnConfig[metricName.metricName].drillDownQuery
+            )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,

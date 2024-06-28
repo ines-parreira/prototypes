@@ -1,6 +1,11 @@
 import {act} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {
+    ChannelColumnConfig,
+    ChannelsTableColumns,
+    ChannelsTableLabels,
+} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
 import {appQueryClient} from 'api/queryClient'
 import {createJob} from 'models/job/resources'
@@ -166,110 +171,97 @@ describe('drillDownSlice', () => {
             })
         })
 
-        it('getDrillDownMetricColumn', () => {
+        it.each([
+            {
+                metricData: {
+                    metricName: AgentsTableColumn.OneTouchTickets,
+                    perAgentId: 1,
+                },
+                expectedValues: {
+                    metricTitle: TableLabels[AgentsTableColumn.OneTouchTickets],
+                    showMetric: false,
+                    metricValueFormat: 'percent',
+                },
+            },
+            {
+                metricData: {
+                    metricName: AgentsTableColumn.ClosedTickets,
+                    perAgentId: 1,
+                },
+                expectedValues: {
+                    metricTitle: TableLabels[AgentsTableColumn.ClosedTickets],
+                    showMetric: false,
+                    metricValueFormat: 'integer',
+                },
+            },
+            {
+                metricData: {
+                    metricName: OverviewMetric.MedianResolutionTime,
+                },
+                expectedValues: {
+                    metricTitle: MEDIAN_RESOLUTION_TIME_LABEL,
+                    showMetric: true,
+                    metricValueFormat: 'duration',
+                },
+            },
+            {
+                metricData: null,
+                expectedValues: {
+                    metricTitle: '',
+                    showMetric: false,
+                    metricValueFormat: 'decimal',
+                },
+            },
+            {
+                metricData: {
+                    metricName:
+                        TicketFieldsMetric.TicketCustomFieldsTicketCount,
+                    customFieldValue: 'customFieldValue',
+                },
+                expectedValues: {
+                    metricTitle: '',
+                    showMetric: false,
+                    metricValueFormat: 'decimal',
+                },
+            },
+            {
+                metricData: {
+                    metricName: SlaMetric.AchievementRate,
+                },
+                expectedValues: {
+                    metricTitle: SLA_STATUS_COLUMN_LABEL,
+                    showMetric: true,
+                    metricValueFormat: SLA_FORMAT,
+                },
+            },
+            {
+                metricData: {
+                    metricName: ChannelsTableColumns.TicketHandleTime,
+                    perChannel: 'some-channel',
+                },
+                expectedValues: {
+                    metricTitle:
+                        ChannelsTableLabels[
+                            ChannelsTableColumns.TicketHandleTime
+                        ],
+                    showMetric: true,
+                    metricValueFormat:
+                        ChannelColumnConfig[
+                            ChannelsTableColumns.TicketHandleTime
+                        ].format,
+                },
+            },
+        ])('getDrillDownMetricColumn', ({metricData, expectedValues}) => {
             expect(
                 getDrillDownMetricColumn({
                     ...state,
                     ui: {
                         [drillDownSlice.name]: {
-                            metricData: {
-                                metricName: AgentsTableColumn.OneTouchTickets,
-                                perAgentId: 1,
-                            },
+                            metricData,
                         },
                     },
                 } as unknown as RootState)
-            ).toEqual({
-                metricTitle: TableLabels[AgentsTableColumn.OneTouchTickets],
-                showMetric: false,
-                metricValueFormat: 'percent',
-            })
-
-            expect(
-                getDrillDownMetricColumn({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: {
-                                metricName: AgentsTableColumn.ClosedTickets,
-                                perAgentId: 1,
-                            },
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricTitle: TableLabels[AgentsTableColumn.ClosedTickets],
-                showMetric: false,
-                metricValueFormat: 'decimal',
-            })
-
-            expect(
-                getDrillDownMetricColumn({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: {
-                                metricName: OverviewMetric.MedianResolutionTime,
-                            },
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricTitle: MEDIAN_RESOLUTION_TIME_LABEL,
-                showMetric: true,
-                metricValueFormat: 'duration',
-            })
-
-            expect(
-                getDrillDownMetricColumn({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: null,
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricTitle: '',
-                showMetric: false,
-                metricValueFormat: 'decimal',
-            })
-
-            expect(
-                getDrillDownMetricColumn({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: {
-                                metricName:
-                                    TicketFieldsMetric.TicketCustomFieldsTicketCount,
-                                customFieldValue: 'customFieldValue',
-                            },
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricTitle: '',
-                showMetric: false,
-                metricValueFormat: 'decimal',
-            })
-
-            expect(
-                getDrillDownMetricColumn({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: {
-                                metricName: SlaMetric.AchievementRate,
-                            },
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricTitle: SLA_STATUS_COLUMN_LABEL,
-                showMetric: true,
-                metricValueFormat: SLA_FORMAT,
-            })
+            ).toEqual(expectedValues)
         })
 
         it('getDrillDownModalState', () => {

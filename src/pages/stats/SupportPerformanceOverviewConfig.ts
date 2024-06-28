@@ -43,7 +43,7 @@ export const OverviewMetricConfig: Record<
         title: string
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
-        metricFormat?: MetricTrendFormat
+        metricFormat: MetricTrendFormat
     }
 > = {
     [OverviewMetric.CustomerSatisfaction]: {
@@ -53,6 +53,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/3ol',
         },
         interpretAs: 'more-is-better',
+        metricFormat: 'decimal',
         useTrend: useCustomerSatisfactionTrend,
     },
     [OverviewMetric.MedianFirstResponseTime]: {
@@ -82,6 +83,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/fhq',
         },
         interpretAs: 'less-is-better',
+        metricFormat: 'decimal',
         useTrend: useMessagesPerTicketTrend,
     },
     [OverviewMetric.OpenTickets]: {
@@ -91,6 +93,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/78k',
         },
         interpretAs: 'neutral',
+        metricFormat: 'decimal',
         useTrend: useOpenTicketsTrend,
     },
     [OverviewMetric.TicketsClosed]: {
@@ -100,6 +103,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/126',
         },
         interpretAs: 'neutral',
+        metricFormat: 'decimal',
         useTrend: useClosedTicketsTrend,
     },
     [OverviewMetric.TicketsCreated]: {
@@ -109,6 +113,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/bji',
         },
         interpretAs: 'neutral',
+        metricFormat: 'decimal',
         useTrend: useTicketsCreatedTrend,
     },
     [OverviewMetric.TicketsReplied]: {
@@ -118,6 +123,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/27b',
         },
         interpretAs: 'neutral',
+        metricFormat: 'decimal',
         useTrend: useTicketsRepliedTrend,
     },
     [OverviewMetric.MessagesSent]: {
@@ -127,6 +133,7 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/jo0',
         },
         interpretAs: 'neutral',
+        metricFormat: 'decimal',
         useTrend: useMessagesSentTrend,
     },
     [OverviewMetric.OneTouchTickets]: {
@@ -136,8 +143,8 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/dk7',
         },
         interpretAs: 'more-is-better',
-        useTrend: useOneTouchTicketsPercentageMetricTrend,
         metricFormat: 'percent',
+        useTrend: useOneTouchTicketsPercentageMetricTrend,
     },
     [OverviewMetric.TicketHandleTime]: {
         title: TICKET_HANDLE_TIME_LABEL,
@@ -146,8 +153,8 @@ export const OverviewMetricConfig: Record<
             link: 'https://link.gorgias.com/eq6',
         },
         interpretAs: 'less-is-better',
-        useTrend: useTicketHandleTimeTrend,
         metricFormat: 'duration',
+        useTrend: useTicketHandleTimeTrend,
     },
 }
 

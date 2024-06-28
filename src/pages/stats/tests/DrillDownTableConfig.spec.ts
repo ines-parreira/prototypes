@@ -2,11 +2,18 @@ import moment from 'moment/moment'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {StatsFilters} from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
-import {AgentsMetrics, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import {
+    AgentsMetrics,
+    ChannelsMetrics,
+    DrillDownMetric,
+    SlaMetrics,
+} from 'state/ui/stats/drillDownSlice'
 import {
     OverviewMetric,
     AgentsTableColumn,
     TicketFieldsMetric,
+    SlaMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 
@@ -34,6 +41,31 @@ describe('getDrillDownQuery', () => {
         {metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123},
         {metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123},
     ]
+    const channelMetrics: ChannelsMetrics[] = [
+        {
+            metricName: ChannelsTableColumns.CustomerSatisfaction,
+            perChannel: 'email',
+        },
+        {
+            metricName: ChannelsTableColumns.FirstResponseTime,
+            perChannel: 'email',
+        },
+        {
+            metricName: ChannelsTableColumns.MedianResolutionTime,
+            perChannel: 'email',
+        },
+        {metricName: ChannelsTableColumns.MessagesSent, perChannel: 'email'},
+        {
+            metricName: ChannelsTableColumns.CreatedTicketsPercentage,
+            perChannel: 'email',
+        },
+        {metricName: ChannelsTableColumns.ClosedTickets, perChannel: 'email'},
+        {metricName: ChannelsTableColumns.TicketsReplied, perChannel: 'email'},
+        {
+            metricName: ChannelsTableColumns.TicketHandleTime,
+            perChannel: 'email',
+        },
+    ]
     const supportedMetrics: DrillDownMetric[] = [
         {
             metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
@@ -51,16 +83,28 @@ describe('getDrillDownQuery', () => {
         {metricName: OverviewMetric.CustomerSatisfaction},
         {metricName: OverviewMetric.OneTouchTickets},
         {metricName: OverviewMetric.TicketHandleTime},
+        {metricName: OverviewMetric.TicketHandleTime},
+    ]
+    const slaMetrics: SlaMetrics[] = [
+        {
+            metricName: SlaMetric.AchievementRate,
+        },
+        {metricName: SlaMetric.BreachedTicketsRate},
     ]
 
-    it.each([...supportedMetrics, ...agentsMetrics])(
+    it.each([
+        ...supportedMetrics,
+        ...agentsMetrics,
+        ...channelMetrics,
+        ...slaMetrics,
+    ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
             expect(getDrillDownQuery(metricName)).toEqual(expect.any(Function))
         }
     )
 
-    it('should be populated with agentId filter ($metricName_', () => {
+    it('should be populated with agentId filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
         const statsFilters: StatsFilters = {
@@ -70,12 +114,39 @@ describe('getDrillDownQuery', () => {
             },
         }
         const timezone = 'someTimeZone'
-        const drillDownMetric = agentsMetrics[0]
+        const drillDownMetric: DrillDownMetric = {
+            metricName: AgentsTableColumn.CustomerSatisfaction,
+            perAgentId: 123,
+        }
 
         getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
         expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
             expect.objectContaining({agents: [drillDownMetric.perAgentId]}),
+            timezone,
+            undefined
+        )
+    })
+
+    it('should be populated with channel filter', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: ChannelsTableColumns.CustomerSatisfaction,
+            perChannel: 'email',
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({channels: [drillDownMetric.perChannel]}),
             timezone,
             undefined
         )

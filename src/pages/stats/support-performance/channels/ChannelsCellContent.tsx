@@ -1,5 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import {METRIC_COLUMN_WIDTH} from 'pages/stats/AgentsTableConfig'
 import {MetricPerChannelQueryHook} from 'hooks/reporting/metricsPerChannel'
@@ -75,6 +76,16 @@ export const ChannelsCellContent = ({
         >
             {isFetching || isLoading ? (
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
+            ) : column !== LeadColumn ? (
+                <DrillDownModalTrigger
+                    enabled={!!data?.value}
+                    metricData={{
+                        metricName: column,
+                        perChannel: channel.slug,
+                    }}
+                >
+                    {cellContent}
+                </DrillDownModalTrigger>
             ) : (
                 cellContent
             )}

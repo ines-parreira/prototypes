@@ -10,12 +10,21 @@ import {
     useTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/metricsPerChannel'
 import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/usePercentageOfCreatedTicketsMetricPerChannel'
+import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
+import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import {firstResponseTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import {resolutionTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import {messagesSentMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
 import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
 } from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
+import {DrillDownQueryFactory} from 'pages/stats/DrillDownTableConfig'
 import {OverviewMetricConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
 import {TooltipData} from 'pages/stats/types'
 import {
@@ -81,6 +90,7 @@ export const ChannelColumnConfig: Record<
         format: MetricValueFormat
         hint: TooltipData | null
         useMetric: MetricPerChannelQueryHook
+        drillDownQuery: DrillDownQueryFactory
     }
 > = {
     [ChannelsTableColumns.Channel]: {
@@ -95,11 +105,13 @@ export const ChannelColumnConfig: Record<
                 allData: [],
             },
         }),
+        drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory, //TODO: clean up
     },
     [ChannelsTableColumns.TicketsCreated]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsCreated].hint,
         useMetric: useCreatedTicketsMetricPerChannel,
+        drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.CreatedTicketsPercentage]: {
         format: 'percent',
@@ -107,41 +119,49 @@ export const ChannelColumnConfig: Record<
             title: 'Proportion of tickets created in the given channel.',
         },
         useMetric: usePercentageOfCreatedTicketsMetricPerChannel,
+        drillDownQuery: ticketsCreatedPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.ClosedTickets]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsClosed].hint,
         useMetric: useClosedTicketsMetricPerChannel,
+        drillDownQuery: closedTicketsPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.TicketHandleTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.TicketHandleTime].hint,
         useMetric: useTicketAverageHandleTimePerChannel,
+        drillDownQuery: ticketHandleTimePerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.FirstResponseTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianFirstResponseTime].hint,
         useMetric: useMedianFirstResponseTimeMetricPerChannel,
+        drillDownQuery: firstResponseTimeMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.MedianResolutionTime]: {
         format: 'duration',
         hint: OverviewMetricConfig[OverviewMetric.MedianResolutionTime].hint,
         useMetric: useMedianResolutionTimeMetricPerChannel,
+        drillDownQuery: resolutionTimeMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.TicketsReplied]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.TicketsReplied].hint,
         useMetric: useTicketsRepliedMetricPerChannel,
+        drillDownQuery: ticketsRepliedMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.MessagesSent]: {
         format: 'integer',
         hint: OverviewMetricConfig[OverviewMetric.MessagesSent].hint,
         useMetric: useMessagesSentMetricPerChannel,
+        drillDownQuery: messagesSentMetricPerTicketDrillDownQueryFactory,
     },
     [ChannelsTableColumns.CustomerSatisfaction]: {
         format: 'decimal',
         hint: OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].hint,
         useMetric: useCustomerSatisfactionMetricPerChannel,
+        drillDownQuery: customerSatisfactionMetricDrillDownQueryFactory,
     },
 }
 
