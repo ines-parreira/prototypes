@@ -24,6 +24,7 @@ type Props = {
     darkenCaption?: boolean
     name?: string
     onClick?: (nextValue: boolean, event: MouseEvent<HTMLLabelElement>) => void
+    dataCanduId?: string
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'checked' | 'disabled' | 'name' | 'type' | 'onClick'
@@ -40,6 +41,7 @@ const ToggleInput = ({
     darkenCaption = false,
     name,
     onClick,
+    dataCanduId,
     ...props
 }: Props) => {
     const randomId = useId()
@@ -73,6 +75,7 @@ const ToggleInput = ({
                     className={css.input}
                     checked={isToggled}
                     disabled
+                    {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
                     {...props}
                 />
                 <div className={css.slider} />

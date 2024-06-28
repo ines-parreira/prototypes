@@ -15,6 +15,7 @@ type Props = {
     addLabel?: string
     disabled?: boolean
     placeholder?: string
+    dataCanduId?: string
 }
 
 export default class ListField extends Component<Props> {
@@ -50,6 +51,7 @@ export default class ListField extends Component<Props> {
             maxLength,
             maxItems,
             placeholder,
+            dataCanduId,
         } = this.props
 
         return (
@@ -98,6 +100,7 @@ export default class ListField extends Component<Props> {
                     size="sm"
                     disabled={disabled === true || items.size === maxItems}
                     onClick={this.addRow}
+                    {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
                 >
                     <i className="material-icons md-2">add</i>
                     {addLabel !== undefined ? (

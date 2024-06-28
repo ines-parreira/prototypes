@@ -341,6 +341,7 @@ export const CreateAiAgentSettingsForm = ({
                             }}
                             caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
                             name={toggleAiAgentId}
+                            dataCanduId="ai-agent-configuration-toggle"
                         >
                             Enable AI Agent for email
                         </ToggleInput>
@@ -409,23 +410,25 @@ export const CreateAiAgentSettingsForm = ({
                                 </ul>
                             </IconTooltip>
                         </Label>
-                        <SelectField
-                            fullWidth
-                            showSelectedOption
-                            value={
-                                formValues.toneOfVoice !== null
-                                    ? formValues.toneOfVoice
-                                    : INITIAL_FORM_VALUES.toneOfVoice
-                            }
-                            onChange={handleToneOfVoiceChange}
-                            options={Object.values(ToneOfVoice).map(
-                                (toneOfVoice) => ({
-                                    label: toneOfVoice,
-                                    value: toneOfVoice,
-                                })
-                            )}
-                            dropdownMenuClassName={css.longDropdown}
-                        />
+                        <div data-candu-id="ai-agent-configuration-tone-of-voice">
+                            <SelectField
+                                fullWidth
+                                showSelectedOption
+                                value={
+                                    formValues.toneOfVoice !== null
+                                        ? formValues.toneOfVoice
+                                        : INITIAL_FORM_VALUES.toneOfVoice
+                                }
+                                onChange={handleToneOfVoiceChange}
+                                options={Object.values(ToneOfVoice).map(
+                                    (toneOfVoice) => ({
+                                        label: toneOfVoice,
+                                        value: toneOfVoice,
+                                    })
+                                )}
+                                dropdownMenuClassName={css.longDropdown}
+                            />
+                        </div>
                         <div className={css.formInputFooterInfo}>
                             Select a tone of voice for AI Agent to use with
                             customers.
@@ -489,7 +492,12 @@ export const CreateAiAgentSettingsForm = ({
                 )}
 
                 <section>
-                    <h2 className={css.sectionHeader}>Email settings</h2>
+                    <h2
+                        className={css.sectionHeader}
+                        data-candu-id="ai-agent-configuration-email-settings"
+                    >
+                        Email settings
+                    </h2>
                     <div className={css.formGroup}>
                         <Label isRequired={true} className={css.label}>
                             AI Agent responds to tickets sent to the following
@@ -613,6 +621,7 @@ export const CreateAiAgentSettingsForm = ({
                             maxLength={EXCLUDED_TOPIC_MAX_LENGTH}
                             maxItems={MAX_EXCLUDED_TOPICS}
                             addLabel="Add Topic"
+                            dataCanduId="ai-agent-configuration-handover-topics"
                         />
                     </div>
                     <div className={css.formGroup}>

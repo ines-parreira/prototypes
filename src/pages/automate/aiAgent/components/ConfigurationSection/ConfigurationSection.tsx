@@ -16,7 +16,10 @@ export const ConfigurationSection = ({
 }: Props) => {
     return (
         <section>
-            <h2 className={css.title}>
+            <h2
+                className={css.title}
+                data-candu-id="ai-agent-configuration-knowledge"
+            >
                 {title}{' '}
                 {isRequired && (
                     <abbr

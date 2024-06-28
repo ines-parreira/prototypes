@@ -17,6 +17,7 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent',
                 title: 'Configuration',
+                dataCanduId: 'ai-agent-navbar-configuration',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',
@@ -42,6 +43,7 @@ describe('useAiAgentNavigation', () => {
             {
                 route: '/app/automation/shopify/test/ai-agent',
                 title: 'Configuration',
+                dataCanduId: 'ai-agent-navbar-configuration',
             },
             {
                 route: '/app/automation/shopify/test/ai-agent/test',

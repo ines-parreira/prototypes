@@ -49,12 +49,14 @@ export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
                           route: routes.actions,
                           title: ACTIONS,
                           exact: false,
+                          dataCanduId: 'ai-agent-navbar-actions',
                       },
                   ]
                 : []),
             {
                 route: routes.configuration,
                 title: 'Configuration',
+                dataCanduId: 'ai-agent-navbar-configuration',
             },
 
             {

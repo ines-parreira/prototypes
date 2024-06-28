@@ -11,6 +11,7 @@ type NavbarItem = {
     route: string
     title: string
     exact?: boolean
+    dataCanduId?: string
 }
 
 type Props = {
@@ -37,11 +38,20 @@ const AutomateView = ({
             {title && <PageHeader title={title}>{action}</PageHeader>}
             {headerNavbarItems && (
                 <SecondaryNavbar>
-                    {headerNavbarItems.map(({route, title, exact}) => (
-                        <NavLink key={route} to={route} exact={exact ?? true}>
-                            {title}
-                        </NavLink>
-                    ))}
+                    {headerNavbarItems.map(
+                        ({route, title, exact, dataCanduId}) => (
+                            <NavLink
+                                key={route}
+                                to={route}
+                                exact={exact ?? true}
+                                {...(dataCanduId
+                                    ? {'data-candu-id': dataCanduId}
+                                    : {})}
+                            >
+                                {title}
+                            </NavLink>
+                        )
+                    )}
                 </SecondaryNavbar>
             )}{' '}
             <Container
