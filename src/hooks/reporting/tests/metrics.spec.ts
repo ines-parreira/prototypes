@@ -53,11 +53,6 @@ describe('metrics', () => {
 
     describe.each([
         [
-            'useTicketsCreatedMetric',
-            useTicketsCreatedMetric,
-            ticketsCreatedQueryFactory,
-        ],
-        [
             'useClosedTicketsMetric',
             useClosedTicketsMetric,
             closedTicketsQueryFactory,
@@ -107,7 +102,7 @@ describe('metrics', () => {
                 timezone: string
             ) => ReportingQuery
         ) => {
-            it('should create reporting metric', () => {
+            it('should create reporting metric with assigned tickets only', () => {
                 const {result} = renderHook(() =>
                     useTrendFn(statsFilters, timezone)
                 )
@@ -125,6 +120,11 @@ describe('metrics', () => {
 
     describe.each([
         ['useOnlineTimeMetric', useOnlineTimeMetric, onlineTimeQueryFactory],
+        [
+            'useTicketsCreatedMetric',
+            useTicketsCreatedMetric,
+            ticketsCreatedQueryFactory,
+        ],
     ])(
         '%s',
         (
@@ -135,7 +135,7 @@ describe('metrics', () => {
                 timezone: string
             ) => ReportingQuery
         ) => {
-            it('should create reporting metric', () => {
+            it('should create reporting metric with all tickets', () => {
                 const {result} = renderHook(() =>
                     useTrendFn(statsFilters, timezone)
                 )

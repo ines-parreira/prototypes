@@ -32,13 +32,7 @@ export const ignoreNotAssignedTicketsFilter: ReportingFilter = {
 export const useTicketsCreatedMetric = (
     statsFilters: StatsFilters,
     timezone: string
-): Metric =>
-    useMetric(
-        withFilter(
-            ticketsCreatedQueryFactory(statsFilters, timezone),
-            ignoreNotAssignedTicketsFilter
-        )
-    )
+): Metric => useMetric(ticketsCreatedQueryFactory(statsFilters, timezone))
 
 export const useClosedTicketsMetric = (
     statsFilters: StatsFilters,

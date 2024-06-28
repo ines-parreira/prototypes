@@ -10,7 +10,7 @@ export const usePercentageOfCreatedTicketsMetricPerChannel = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    channel?: string
 ): MetricWithDecile => {
     const ticketCountField = TicketMeasure.TicketCount
 
@@ -18,7 +18,7 @@ export const usePercentageOfCreatedTicketsMetricPerChannel = (
         statsFilters,
         timezone,
         sorting,
-        agentAssigneeId
+        channel
     )
     const allCreatedTickets = useTicketsCreatedMetric(statsFilters, timezone)
 
