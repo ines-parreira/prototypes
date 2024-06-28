@@ -1,7 +1,7 @@
 import {act, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
+import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
 import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {channels as mockChannels} from 'fixtures/channels'
 import {assumeMock, renderWithStore, triggerWidthResize} from 'utils/testing'
 import {
@@ -11,8 +11,8 @@ import {
 import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
 import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
 
-jest.mock('hooks/reporting/support-performance/useSortedChannels')
-const UseSortedChannelsMock = assumeMock(useSortedChannels)
+jest.mock('hooks/reporting/support-performance/useSortedChannelsWithData')
+const useSortedChannelsWithDataMock = assumeMock(useSortedChannelsWithData)
 
 jest.mock('pages/stats/support-performance/channels/ChannelsCellContent')
 const ChannelsCellContentMock = assumeMock(ChannelsCellContent)
@@ -24,8 +24,8 @@ describe('<ChannelsTable />', () => {
     beforeEach(() => {
         ChannelsCellContentMock.mockImplementation(() => <div />)
         ChannelsHeaderCellContentMock.mockImplementation(() => <div />)
-        UseSortedChannelsMock.mockReturnValue({
-            sortedChannels: mockChannels,
+        useSortedChannelsWithDataMock.mockReturnValue({
+            channels: mockChannels,
             isLoading: false,
         })
     })

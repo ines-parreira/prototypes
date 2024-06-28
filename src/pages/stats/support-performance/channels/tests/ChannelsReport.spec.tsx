@@ -25,11 +25,14 @@ jest.mock(
     })
 )
 jest.mock(
-    'pages/stats/support-performance/channels/ChannelsHeaderCellContent.tsx',
+    'pages/stats/support-performance/channels/ChannelsHeaderCellContent',
     () => ({
         ChannelsHeaderCellContent: () => <div />,
     })
 )
+jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
+    ChannelsTable: () => <div />,
+}))
 
 describe('ChannelsReport', () => {
     const defaultState = {

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React, {UIEventHandler, useState} from 'react'
+import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
 import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
 import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
 import useMeasure from 'hooks/useMeasure'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -25,7 +25,7 @@ export const ChannelsTable = () => {
         }
     }
     const [ref, {width}] = useMeasure<HTMLDivElement>()
-    const {sortedChannels, isLoading} = useSortedChannels()
+    const {channels, isLoading} = useSortedChannelsWithData()
     const {columnsOrder} = useChannelsTableSetting()
 
     return (
@@ -49,9 +49,9 @@ export const ChannelsTable = () => {
                     ))}
                 </TableHead>
                 <TableBody>
-                    {sortedChannels.map((channel) => (
+                    {channels.map((channel) => (
                         <TableBodyRow key={channel.slug}>
-                            {columnsOrder.map((column) => (
+                            {columnsOrder.map((column, index) => (
                                 <ChannelsCellContent
                                     key={`${channel.slug}-${column}`}
                                     isLoading={isLoading}
@@ -61,6 +61,10 @@ export const ChannelsTable = () => {
                                         ChannelColumnConfig[column].useMetric
                                     }
                                     width={getColumnWidth(column)}
+                                    className={classNames(css.BodyCell, {
+                                        [css.withShadow]:
+                                            index === 0 && isTableScrolled,
+                                    })}
                                 />
                             ))}
                         </TableBodyRow>
