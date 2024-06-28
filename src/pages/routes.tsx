@@ -167,7 +167,7 @@ import ActionsViewContainer from 'pages/automate/actions/ActionsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/automate/actions/ActionsTemplatesViewContainer'
 import CreateActionFormView from 'pages/automate/actions/CreateActionFormView'
 import EditActionFormView from 'pages/automate/actions/EditActionFormView'
-import AutomateRoute from 'pages/automate/common/components/AutomateRoute'
+import AutomateLandingPageContainer from 'pages/automate/common/components/AutomateLandingPageContainer'
 import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import ConvertOnboardingView from 'pages/convert/onboarding/components/ConvertOnboardingView'
@@ -1790,7 +1790,7 @@ function AutomationContent() {
                 <Redirect to={'/app/settings/rules/library'} />
             </Route>
             <Route path={`${path}`} exact>
-                <AutomateRoute />
+                <AutomateLandingPageContainer />
             </Route>
             <Route>
                 <Redirect to={`${path}`} />

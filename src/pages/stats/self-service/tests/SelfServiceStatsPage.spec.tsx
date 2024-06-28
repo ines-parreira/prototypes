@@ -14,24 +14,18 @@ import {AccountFeature} from 'state/currentAccount/types'
 import {integrationsState} from 'fixtures/integrations'
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
-    SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
-    SELF_SERVICE_VOLUME_PER_FLOW,
 } from 'config/stats'
 import {
     selfServiceArticleRecommendationPerformance,
     selfServiceArticleRecommendationPerformanceNoData,
-    selfServiceOverview,
-    selfServiceOverviewNoData,
     selfServiceProductsWithMostIssuesAndReturnRequests,
     selfServiceProductsWithMostIssuesAndReturnRequestsNoData,
     selfServiceQuickResponsePerformance,
     selfServiceQuickResponsePerformanceNoData,
     selfServiceTopReportedIssues,
     selfServiceTopReportedIssuesNoData,
-    selfServiceVolumePerFlow,
-    selfServiceVolumePerFlowNoData,
 } from 'fixtures/stats'
 import {StatsFilters} from 'models/stat/types'
 
@@ -136,13 +130,7 @@ describe('<SelfServiceStatsPage />', () => {
 
     it('should render the filters and stats when stats filters are defined', async () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_OVERVIEW) {
-                return [selfServiceOverview, false, _noop]
-            } else if (resourceName === SELF_SERVICE_VOLUME_PER_FLOW) {
-                return [selfServiceVolumePerFlow, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-            ) {
+            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
                 return [selfServiceQuickResponsePerformance, false, _noop]
             } else if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
@@ -162,7 +150,7 @@ describe('<SelfServiceStatsPage />', () => {
             ]
         })
 
-        const {container, getByText} = renderWithRouter(
+        const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SelfServiceStatsPage />
             </Provider>
@@ -170,19 +158,12 @@ describe('<SelfServiceStatsPage />', () => {
 
         await flushPromises()
 
-        expect(getByText(/Volume per flow/)).toBeTruthy()
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the stats with the feature preview when there is no data and the features are disabled', async () => {
         useStatResourceMock.mockImplementation(({resourceName}) => {
-            if (resourceName === SELF_SERVICE_OVERVIEW) {
-                return [selfServiceOverviewNoData, false, _noop]
-            } else if (resourceName === SELF_SERVICE_VOLUME_PER_FLOW) {
-                return [selfServiceVolumePerFlowNoData, false, _noop]
-            } else if (
-                resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE
-            ) {
+            if (resourceName === SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE) {
                 return [selfServiceQuickResponsePerformanceNoData, false, _noop]
             } else if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE

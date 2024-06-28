@@ -1,5 +1,4 @@
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useCallback, useEffect, useMemo, useState} from 'react'
 import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
@@ -10,13 +9,10 @@ import {
     paywallConfigs as defaultPaywallConfigs,
 } from 'config/paywalls'
 import {
-    AUTOMATE_PERFORMANCE_BY_FEATURE,
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
-    SELF_SERVICE_OVERVIEW,
     SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
     SELF_SERVICE_QUICK_RESPONSE_PERFORMANCE,
     SELF_SERVICE_TOP_REPORTED_ISSUES,
-    SELF_SERVICE_VOLUME_PER_FLOW,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
     stats as statsConfig,
 } from 'config/stats'
@@ -27,13 +23,7 @@ import useAsyncFn from 'hooks/useAsyncFn'
 
 import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {
-    AnyStatAxisValue,
-    DataStatLine,
-    OneDimensionalUnionChart,
-    StatsFilters,
-    TwoDimensionalChart,
-} from 'models/stat/types'
+import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
@@ -58,12 +48,9 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assetsUrl} from 'utils'
-import KeyMetricStat from '../common/components/charts/KeyMetricStat'
 
-import NormalizedLineStat from '../common/components/charts/NormalizedLineStat'
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import {DEFAULT_LOCALE} from '../common/utils'
-import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
 import AIBanner from '../help-center/components/AIBanner'
@@ -79,8 +66,6 @@ import css from './SelfServiceStatsPage.less'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
-    const isNewAutomateFeatureEnabled =
-        useFlags()[FeatureFlagKey.NewAutomationAddon]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const [workflowConfigurations, setWorkflowConfigurations] = useState<
@@ -196,34 +181,8 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         .filter((config) => config.article_recommendation_help_center_id)
         .map((config) => config.article_recommendation_help_center_id)
 
-    const [overview, isFetchingOverview] =
-        useStatResource<OneDimensionalUnionChart>({
-            statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-            resourceName: SELF_SERVICE_OVERVIEW,
-            statsFilters: pageStatsFilters,
-        })
-    const immutableOverview = useMemo(() => {
-        return fromJS(overview || {}) as Map<any, any>
-    }, [overview])
-    const overviewNoData =
-        overview?.data.data.every((data) => data.value === 0) || false
-
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
-
-    const [volumePerFlow, isFetchingVolumePerFlow] = useStatResource<
-        TwoDimensionalChart<AnyStatAxisValue, DataStatLine>
-    >({
-        statName: AUTOMATION_SELF_SERVICE_STAT_NAME,
-        resourceName: SELF_SERVICE_VOLUME_PER_FLOW,
-        statsFilters: pageStatsFilters,
-    })
-
-    // Check that every datapoint in every line is 0
-    const volumePerFlowNoData =
-        volumePerFlow?.data.data.lines.every((line) =>
-            line.data.every((data) => data === 0)
-        ) || false
 
     const [workflowsPerformance, isFetchingWorkflowsPerformance] =
         useStatResource<TwoDimensionalChart>({
@@ -330,8 +289,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     )
 
     const allSectionsNoData =
-        overviewNoData &&
-        volumePerFlowNoData &&
         workflowsPerformanceNoData &&
         quickResponsePerformanceNoData &&
         articleRecommendationPerformanceNoData &&
@@ -351,18 +308,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         >
             {pageStatsFilters && (
                 <>
-                    {!isNewAutomateFeatureEnabled && (
-                        <KeyMetricStatWrapper>
-                            <KeyMetricStat
-                                data={immutableOverview.getIn(['data', 'data'])}
-                                meta={immutableOverview.get('meta')}
-                                loading={isFetchingOverview}
-                                config={statsConfig.get(
-                                    AUTOMATE_PERFORMANCE_BY_FEATURE
-                                )}
-                            />
-                        </KeyMetricStatWrapper>
-                    )}
                     {allSectionsNoData && !noActivityAlertDismissed && (
                         <Alert
                             type={AlertType.Error}
@@ -375,29 +320,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                             There is no activity for these features. Your chat
                             or help center may not be properly installed.
                         </Alert>
-                    )}
-                    {!isNewAutomateFeatureEnabled && (
-                        <StatWrapper
-                            stat={volumePerFlow}
-                            statDataLabelOverride="Volume per flow"
-                            isFetchingStat={isFetchingVolumePerFlow}
-                            resourceName={SELF_SERVICE_VOLUME_PER_FLOW}
-                            statsFilters={pageStatsFilters}
-                            isDownloadable
-                        >
-                            {(stat) => (
-                                <NormalizedLineStat
-                                    data={stat.getIn(['data', 'data'])}
-                                    legend={stat.getIn(
-                                        ['data', 'legend'],
-                                        null
-                                    )}
-                                    config={statsConfig.get(
-                                        SELF_SERVICE_VOLUME_PER_FLOW
-                                    )}
-                                />
-                            )}
-                        </StatWrapper>
                     )}
                     <StatWrapper
                         stat={workflowsPerformance}

@@ -19,20 +19,18 @@ const AutomateNavbarPaywallNavbarLink = ({
     ...props
 }: Props) => {
     return (
-        <>
-            <div
-                className={classnames(cssNavbar['link-wrapper'], {
-                    [cssNavbar.isNested]: isNested,
-                })}
-            >
-                <NavbarLink className={css.item} {...props}>
-                    <div className={css.name}>{children}</div>
-                    <i className={classnames('material-icons md-2', css.icon)}>
-                        arrow_circle_up
-                    </i>
-                </NavbarLink>
-            </div>
-        </>
+        <div
+            className={classnames(cssNavbar['link-wrapper'], {
+                [cssNavbar.isNested]: isNested,
+            })}
+        >
+            <NavbarLink className={css.item} {...props}>
+                <div className={css.name}>{children}</div>
+                <i className={classnames('material-icons md-2', css.icon)}>
+                    arrow_circle_up
+                </i>
+            </NavbarLink>
+        </div>
     )
 }
 

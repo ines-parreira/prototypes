@@ -1,16 +1,14 @@
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
-import _kebabCase from 'lodash/kebabCase'
+import React from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import cssNavbar from 'assets/css/navbar.less'
 import useAppSelector from 'hooks/useAppSelector'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getHasAutomate} from 'state/billing/selectors'
+
 import {
     ROUTE_AUTOMATE_OVERVIEW,
     PAGE_TITLE_OVERVIEW,
@@ -27,62 +25,40 @@ const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_
 
 export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const isNewAutomateEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.NewAutomationAddon]
-    const automateRoutes: {
-        label: ReactNode
-        to: string
-        text: string
-    }[] = [
-        {
-            label: isNewAutomateEnabled
-                ? PAGE_TITLE_PERFORMANCE_BY_FEATURES
-                : PAGE_TITLE_OVERVIEW,
-            to: PERFORMANCE_BY_FEATURE_PATH,
-            text: isNewAutomateEnabled
-                ? PAGE_TITLE_PERFORMANCE_BY_FEATURES
-                : PAGE_TITLE_OVERVIEW,
-        },
-    ]
-    isNewAutomateEnabled &&
-        automateRoutes.unshift({
-            label: PAGE_TITLE_OVERVIEW,
-            to: OVERVIEW_PATH,
-            text: PAGE_TITLE_OVERVIEW,
-        })
+
     return (
         <div className={cssNavbar.menu}>
             {!hasAutomate ? (
-                <>
-                    <AutomateNavbarPaywallNavbarLink
-                        to={OVERVIEW_PATH}
-                        key={ROUTE_AUTOMATE_OVERVIEW}
-                        isNested
-                    >
-                        {PAGE_TITLE_OVERVIEW}
-                    </AutomateNavbarPaywallNavbarLink>
-                </>
+                <AutomateNavbarPaywallNavbarLink to={OVERVIEW_PATH} isNested>
+                    {PAGE_TITLE_OVERVIEW}
+                </AutomateNavbarPaywallNavbarLink>
             ) : (
                 <>
-                    {automateRoutes.map((automateRoute) => (
-                        <div
-                            key={automateRoute.to}
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                            data-candu-id={`statistics-automate-link-${_kebabCase(
-                                automateRoute.text
-                            )}`}
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                        data-candu-id="statistics-automate-link-overview"
+                    >
+                        <NavbarLink {...commonNavLinkProps} to={OVERVIEW_PATH}>
+                            {PAGE_TITLE_OVERVIEW}
+                        </NavbarLink>
+                    </div>
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                        data-candu-id="statistics-automate-performance-by-feature"
+                    >
+                        <NavbarLink
+                            {...commonNavLinkProps}
+                            to={PERFORMANCE_BY_FEATURE_PATH}
                         >
-                            <NavbarLink
-                                {...commonNavLinkProps}
-                                to={automateRoute.to}
-                            >
-                                {automateRoute.label}
-                            </NavbarLink>
-                        </div>
-                    ))}
+                            {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
+                        </NavbarLink>
+                    </div>
                 </>
             )}
         </div>

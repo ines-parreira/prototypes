@@ -166,6 +166,28 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
         class="navbar-content"
       >
         <div
+          class="link-wrapper automate"
+          data-candu-id="automate-link-my-automate"
+        >
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation"
+          >
+            <span
+              class="item-name"
+            >
+              <i
+                class="material-icons icon"
+              >
+                bolt
+              </i>
+               
+              My Automate
+            </span>
+          </a>
+        </div>
+        <div
           class="category"
         >
           <div
@@ -634,6 +656,28 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
       <div
         class="navbar-content"
       >
+        <div
+          class="link-wrapper automate"
+          data-candu-id="automate-link-my-automate"
+        >
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation"
+          >
+            <span
+              class="item-name"
+            >
+              <i
+                class="material-icons icon"
+              >
+                bolt
+              </i>
+               
+              My Automate
+            </span>
+          </a>
+        </div>
         <div
           class="category"
         >
@@ -1198,6 +1242,28 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
         class="navbar-content"
       >
         <div
+          class="link-wrapper automate"
+          data-candu-id="automate-link-my-automate"
+        >
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation"
+          >
+            <span
+              class="item-name"
+            >
+              <i
+                class="material-icons icon"
+              >
+                bolt
+              </i>
+               
+              My Automate
+            </span>
+          </a>
+        </div>
+        <div
           class="category"
         >
           <div
@@ -1653,6 +1719,28 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
       <div
         class="navbar-content"
       >
+        <div
+          class="link-wrapper automate"
+          data-candu-id="automate-link-my-automate"
+        >
+          <a
+            class="link"
+            data-active-class-name="active"
+            href="/app/automation"
+          >
+            <span
+              class="item-name"
+            >
+              <i
+                class="material-icons icon"
+              >
+                bolt
+              </i>
+               
+              My Automate
+            </span>
+          </a>
+        </div>
         <div
           class="category"
         >

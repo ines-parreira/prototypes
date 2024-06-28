@@ -20,8 +20,6 @@ const AutomateNavbar = () => {
     const hasLegacyAutomateFeatures = useAppSelector(
         getHasLegacyAutomateFeatures
     )
-    const isNewLandingPageVisible: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateLandingPage]
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
 
@@ -29,33 +27,31 @@ const AutomateNavbar = () => {
         <Navbar activeContent="automate">
             {(hasAutomate || hasLegacyAutomateFeatures) && (
                 <>
-                    {isNewLandingPageVisible && (
-                        <div
-                            className={classNames(
-                                navbarCss['link-wrapper'],
-                                css.automate
+                    <div
+                        className={classNames(
+                            navbarCss['link-wrapper'],
+                            css.automate
+                        )}
+                        data-candu-id="automate-link-my-automate"
+                    >
+                        <NavbarLink to="/app/automation" exact>
+                            {isImprovedNavigationEnabled ? (
+                                <span>Overview</span>
+                            ) : (
+                                <span className={navbarCss['item-name']}>
+                                    <i
+                                        className={classNames(
+                                            'material-icons',
+                                            navbarCss.icon
+                                        )}
+                                    >
+                                        bolt
+                                    </i>{' '}
+                                    My Automate
+                                </span>
                             )}
-                            data-candu-id="automate-link-my-automate"
-                        >
-                            <NavbarLink to="/app/automation" exact>
-                                {isImprovedNavigationEnabled ? (
-                                    <span>Overview</span>
-                                ) : (
-                                    <span className={navbarCss['item-name']}>
-                                        <i
-                                            className={classNames(
-                                                'material-icons',
-                                                navbarCss.icon
-                                            )}
-                                        >
-                                            bolt
-                                        </i>{' '}
-                                        My Automate
-                                    </span>
-                                )}
-                            </NavbarLink>
-                        </div>
-                    )}
+                        </NavbarLink>
+                    </div>
                     <AutomateNavbarView />
                 </>
             )}
