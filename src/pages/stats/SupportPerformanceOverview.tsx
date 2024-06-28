@@ -1,6 +1,7 @@
 import moment from 'moment/moment'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
+import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
@@ -40,12 +41,6 @@ export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
 export const LEARN_MORE_URL =
     'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
 
-export const BANNER_TEXT_DEPRECATED = (
-    <>
-        Welcome to the new Statistics Overview! Learn more about it{' '}
-        <a href={LEARN_MORE_URL}>here</a>.
-    </>
-)
 export const BANNER_TEXT =
     'Starting in July 2024, only this version of the report will be available.The legacy version will be deprecated.'
 
@@ -53,10 +48,12 @@ export default function SupportPerformanceOverview() {
     const accountCreatedDatetime = useAppSelector(
         getCurrentAccountCreatedDatetime
     )
-    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(() =>
-        moment(accountCreatedDatetime).isBefore(
-            moment(AGENTS_REPORT_RELEASE_DATE)
-        )
+    const isLegacyOverviewDeprecated = useIsLegacyOverviewDeprecated()
+    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(
+        () =>
+            moment(accountCreatedDatetime).isBefore(
+                moment(AGENTS_REPORT_RELEASE_DATE)
+            ) && !isLegacyOverviewDeprecated
     )
 
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(

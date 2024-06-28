@@ -185,6 +185,9 @@ describe('<SupportPerformanceOverview />', () => {
 
     describe('Switching to old version banner', () => {
         it('should render a banner that allows switching to the old version if user is registered before agents report release date', () => {
+            const date = '2024-06-02T00:00:00.000-07:00'
+            Date.now = () => new Date(date).valueOf()
+
             const {getByText} = render(
                 <Provider store={mockStore(stateWithOldAccount)}>
                     <SupportPerformanceOverview />
@@ -196,6 +199,23 @@ describe('<SupportPerformanceOverview />', () => {
                     exact: false,
                 })
             ).toBeInTheDocument()
+        })
+
+        it('should not render a banner after deprecation date', () => {
+            const date = '2024-07-02T00:00:00.000-07:00'
+            Date.now = () => new Date(date).valueOf()
+
+            const {queryByText} = render(
+                <Provider store={mockStore(stateWithOldAccount)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(
+                queryByText(BANNER_TEXT, {
+                    exact: false,
+                })
+            ).not.toBeInTheDocument()
         })
 
         it('should NOT render the switching to the old version banner if user is registered after agents report release date', () => {

@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
 
 import {NotificationsSettings} from 'common/notifications'
 import {logPageChange} from 'common/segment'
@@ -474,6 +475,8 @@ export function StatsRoutes() {
     const location = useLocation()
     const {path} = useRouteMatch()
 
+    const isLegacyOverviewDeprecated = useIsLegacyOverviewDeprecated()
+
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
@@ -548,7 +551,11 @@ export function StatsRoutes() {
                             navbar={StatsNavbarContainer}
                         />
                     )}
-                />
+                >
+                    {isLegacyOverviewDeprecated && (
+                        <Redirect to={`${path}/support-performance-overview`} />
+                    )}
+                </Route>
                 <Route
                     exact
                     path={`${path}/busiest-times-of-days`}
