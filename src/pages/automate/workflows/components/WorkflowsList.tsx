@@ -7,8 +7,10 @@ import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellPr
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {LanguageCode} from '../models/workflowConfiguration.types'
-import {ListWfConfigurationsResponseDto} from '../types'
+import {
+    LanguageCode,
+    WorkflowConfigurationShallow,
+} from '../models/workflowConfiguration.types'
 import WorkflowRow from './WorkflowRow'
 
 export type Workflow = {
@@ -20,7 +22,7 @@ export type Workflow = {
 
 type Props = {
     storeIntegrationId: number
-    workflows: ListWfConfigurationsResponseDto
+    workflows: WorkflowConfigurationShallow[]
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (

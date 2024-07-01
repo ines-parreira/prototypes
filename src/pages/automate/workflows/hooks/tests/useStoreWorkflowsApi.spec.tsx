@@ -10,13 +10,9 @@ import {RootState, StoreDispatch} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
 import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import useWorkflowApi from '../useWorkflowApi'
 import {useStoreWorkflowsApi} from '../useStoreWorkflowsApi'
-import {
-    getIntegration,
-    mockWorkflowConfigurationShallow,
-} from './fixtures/utils'
+import {getIntegration} from './fixtures/utils'
 import {
     mockSelfServiceConfigurationUpdate,
     mockWorkflowApi,
@@ -25,9 +21,7 @@ import {
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfigurationUpdate')
 jest.mock('state/entities/selfServiceConfigurations/selectors')
-jest.mock('models/workflows/queries', () => ({
-    useGetWorkflowConfigurations: jest.fn(),
-}))
+
 const defaultState = {
     integrations: fromJS({
         integrations: [
@@ -78,17 +72,10 @@ const useWorkflowApiMock = useWorkflowApi as jest.MockedFn<
     typeof useWorkflowApi
 >
 
-const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
-)
 describe('useStoreWorkflowsApi', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         jest.spyOn(LD, 'useFlags').mockReturnValue({})
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: [],
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
         useSelfServiceConfigurationUpdateMockSetter({})
         ;(
             getSelfServiceConfigurations as jest.MockedFn<
@@ -132,12 +119,9 @@ describe('useStoreWorkflowsApi', () => {
         const duplicateWorkflowConfigurationMock = jest
             .fn()
             .mockResolvedValue({id: 4})
-
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: [],
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
-
+        const fetchWorkflowsMock = jest
+            .fn()
+            .mockResolvedValue(mockWorkflowApi.fetchWorkflowConfigurations?.())
         const handleUpdateMock = jest.fn()
 
         useSelfServiceConfigurationUpdateMockSetter({
@@ -146,12 +130,15 @@ describe('useStoreWorkflowsApi', () => {
         useWorkflowApiMock.mockReturnValue({
             ...(mockWorkflowApi as any),
             duplicateWorkflowConfiguration: duplicateWorkflowConfigurationMock,
+            fetchWorkflowConfigurations: fetchWorkflowsMock,
         })
 
-        const {result} = renderHook(
+        const {waitForNextUpdate, result} = renderHook(
             () => useStoreWorkflowsApi(() => null),
             renderHookOptions
         )
+
+        await waitForNextUpdate()
 
         await act(async () => {
             const duplicatedWorkflow = await result.current.duplicateWorkflow(
@@ -163,7 +150,7 @@ describe('useStoreWorkflowsApi', () => {
                 'workflow_id',
                 14
             )
-            expect(mockedUseWorkflowConfigurations).toHaveBeenCalled()
+            expect(fetchWorkflowsMock).toHaveBeenCalled()
             expect(handleUpdateMock).toHaveBeenCalled()
             expect(duplicatedWorkflow.id).toEqual(4)
         })
@@ -172,20 +159,14 @@ describe('useStoreWorkflowsApi', () => {
         const deleteWorkflowConfigurationMock = jest
             .fn()
             .mockResolvedValue({id: 4})
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: [
-                mockWorkflowConfigurationShallow('a'),
-                mockWorkflowConfigurationShallow('b'),
-                mockWorkflowConfigurationShallow('c'),
-            ],
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        jest.mocked(useGetWorkflowConfigurations)
+        const fetchWorkflowsMock = jest
+            .fn()
+            .mockResolvedValue(mockWorkflowApi.fetchWorkflowConfigurations?.())
 
         useWorkflowApiMock.mockReturnValue({
             ...(mockWorkflowApi as any),
-
+            fetchWorkflowConfigurations: fetchWorkflowsMock,
             deleteWorkflowConfiguration: deleteWorkflowConfigurationMock,
         })
 
@@ -193,11 +174,12 @@ describe('useStoreWorkflowsApi', () => {
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const {result, waitForNextUpdate} = renderHook(
             () => useStoreWorkflowsApi(() => null),
             renderHookOptions
         )
 
+        await waitForNextUpdate()
         act(() => {
             result.current.removeWorkflowFromStore('a', 14).catch(() => null)
         })
@@ -214,26 +196,28 @@ describe('useStoreWorkflowsApi', () => {
     })
 
     it('should invoke `appendWorkflowInStore`', async () => {
-        const mockedUseWorkflowConfigurations = jest.mocked(
-            useGetWorkflowConfigurations
-        )
+        const fetchWorkflowsMock = jest
+            .fn()
+            .mockResolvedValue(mockWorkflowApi.fetchWorkflowConfigurations?.())
 
         useWorkflowApiMock.mockReturnValue({
             ...(mockWorkflowApi as any),
+            fetchWorkflowConfigurations: fetchWorkflowsMock,
         })
 
         useSelfServiceConfigurationUpdateMockSetter({
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const {result, waitForNextUpdate} = renderHook(
             () => useStoreWorkflowsApi(() => null),
             renderHookOptions
         )
 
+        await waitForNextUpdate()
         await act(async () => {
             await result.current.appendWorkflowInStore('a', 14)
-            expect(mockedUseWorkflowConfigurations).toHaveBeenCalled()
+            expect(fetchWorkflowsMock).toHaveBeenCalled()
         })
     })
 })

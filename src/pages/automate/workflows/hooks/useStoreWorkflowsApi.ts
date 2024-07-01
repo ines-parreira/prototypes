@@ -3,9 +3,7 @@ import {useCallback, useEffect, useReducer, useState} from 'react'
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {NotificationStatus} from 'state/notifications/types'
 
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
-import {WfConfigurationResponseDto} from '../types'
 import useWorkflowApi from './useWorkflowApi'
 
 type UseStoreWorkflowsState = {
@@ -57,26 +55,28 @@ export const useStoreWorkflowsApi = (
     const {
         isUpdatePending: isWorkflowApiUpdatePending,
         isFetchPending: isWorkflowApiFetchPending,
+        fetchWorkflowConfigurations,
         deleteWorkflowConfiguration,
         duplicateWorkflowConfiguration,
     } = useWorkflowApi()
 
-    const {data: configurations = []} = useGetWorkflowConfigurations(true)
     const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
-        Record<string, WfConfigurationResponseDto>
+        Record<string, WorkflowConfigurationShallow>
     >({})
 
-    const loadWorkflowsConfigurations = useCallback(() => {
+    const loadWorkflowsConfigurations = useCallback(async () => {
+        const configurations = await fetchWorkflowConfigurations(true)
+
         setWorkflowConfigurationById(
             configurations.reduce(
                 (acc, conf) => ({
                     ...acc,
                     [conf.id]: conf,
                 }),
-                {}
+                {} as Record<string, WorkflowConfigurationShallow>
             )
         )
-    }, [configurations])
+    }, [fetchWorkflowConfigurations])
 
     useEffect(() => {
         void loadWorkflowsConfigurations()
@@ -105,7 +105,7 @@ export const useStoreWorkflowsApi = (
                 storeIntegrationId
             )
 
-            loadWorkflowsConfigurations()
+            await loadWorkflowsConfigurations()
             await handleSelfServiceConfigurationUpdate(
                 (draft) => {
                     draft.workflows_entrypoints ??= []

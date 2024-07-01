@@ -36,7 +36,6 @@ import {IntegrationType} from 'models/integration/constants'
 import useStatResource from 'hooks/reporting/useStatResource'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
@@ -59,16 +58,12 @@ jest.mock('pages/settings/helpCenter/queries', () => ({
         isLoading: false,
     })),
 }))
-jest.mock('models/workflows/queries', () => ({
-    useGetWorkflowConfigurations: jest.fn(),
-}))
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
-const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
-)
+
 describe('<SelfServiceStatsPage />', () => {
     function getIntegration(id: number, type: IntegrationType) {
         return {
@@ -122,10 +117,6 @@ describe('<SelfServiceStatsPage />', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.NewDatePickerVariant]: false,
         }))
-        mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: [],
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
     })
 
     it('should display the loader on loading', () => {

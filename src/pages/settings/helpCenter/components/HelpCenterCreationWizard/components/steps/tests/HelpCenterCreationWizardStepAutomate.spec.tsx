@@ -16,6 +16,7 @@ import {chatIntegrationFixtures} from 'fixtures/chat'
 import {shopifyIntegration} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
 import {proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan} from 'fixtures/productPrices'
+import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
@@ -30,13 +31,12 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
 import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
 
-jest.mock('models/workflows/queries', () => ({
-    useGetWorkflowConfigurations: jest.fn(),
-}))
+jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
+    jest.fn()
+)
 jest.mock('pages/automate/common/hooks/useHelpCenterAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('models/helpCenter/queries')
@@ -87,9 +87,7 @@ const defaultUseSelfServiceConfiguration = {
 }
 
 const mockStore = configureMockStore([thunk])
-const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
-)
+const mockedUseWorkflowConfigurations = jest.mocked(useWorkflowConfigurations)
 const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
 const mockUseHelpCenterAutomationSettings = jest.mocked(
     useHelpCenterAutomationSettings
@@ -160,9 +158,9 @@ const renderComponent = (
 describe('<HelpCenterCreationWizardStepAutomate />', () => {
     beforeEach(() => {
         mockedUseWorkflowConfigurations.mockReturnValue({
-            isLoading: false,
-            data: [],
-        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
+            isFetchPending: false,
+            workflowConfigurations: [],
+        })
         mockUseHelpCenterCreationWizard.mockReturnValue(
             mockedUseHelpCenterWizardHook
         )
@@ -379,9 +377,9 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
         it('should not render flows section when no workflow available', () => {
             mockedUseWorkflowConfigurations.mockReturnValue({
-                isLoading: false,
-                data: [],
-            } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
+                isFetchPending: false,
+                workflowConfigurations: [],
+            })
 
             renderComponent(
                 {},
@@ -405,9 +403,9 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 createWorkflowConfigurationShallow('1'),
             ]
             mockedUseWorkflowConfigurations.mockReturnValue({
-                isLoading: false,
-                data: workflowConfigurations,
-            } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
+                isFetchPending: false,
+                workflowConfigurations,
+            })
             mockedUseSelfServiceConfiguration.mockReturnValue({
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {

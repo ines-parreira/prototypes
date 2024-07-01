@@ -97,27 +97,6 @@ export const useGetWorkflowConfiguration = (
     })
 }
 
-export const useGetWorkflowConfigurations = (
-    includeDrafts: boolean = false,
-    overrides?: UseQueryOptions<
-        Awaited<Paths.WfConfigurationControllerList.Responses.$200>
-    >
-) => {
-    return useQuery({
-        queryKey: workflowsConfigurationDefinitionKeys.all(),
-        queryFn: async () => {
-            const client = await getGorgiasWfApiClient()
-            const response = await client.WfConfigurationController_list(
-                includeDrafts ? {is_draft: [0, 1]} : {}
-            )
-            return response.data
-        },
-        staleTime: STALE_TIME_MS,
-        cacheTime: CACHE_TIME_MS,
-        ...overrides,
-    })
-}
-
 export const useGetStoreWorkflowsConfigurations = ({
     storeName,
     storeType,

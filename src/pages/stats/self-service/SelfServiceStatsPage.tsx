@@ -31,6 +31,8 @@ import {
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
+import useWorkflowApi from 'pages/automate/workflows/hooks/useWorkflowApi'
+import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -46,7 +48,6 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assetsUrl} from 'utils'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 import TableStat from '../common/components/charts/TableStat/TableStat'
 import {DEFAULT_LOCALE} from '../common/utils'
@@ -67,7 +68,9 @@ import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallC
 export const SelfServiceStatsPage = (): JSX.Element => {
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
-
+    const [workflowConfigurations, setWorkflowConfigurations] = useState<
+        WorkflowConfigurationShallow[]
+    >([])
     const dispatch = useAppDispatch()
     const integrations = useAppSelector(getIntegrations)
     const {cleanStatsFilters: statsFilters} = useAppSelector(
@@ -80,12 +83,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             integrations,
         }
     }, [statsFilters])
-
-    const {
-        isLoading: isWorkflowsFetchPending,
-        data: workflowConfigurations = [],
-        isError: isWorkflowConfigurationsFetchError,
-    } = useGetWorkflowConfigurations()
+    const {fetchWorkflowConfigurations} = useWorkflowApi()
     const storeIntegrations = useStoreIntegrations()
 
     const [
@@ -105,26 +103,33 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             )
         }
     }, [])
-
-    useEffect(() => {
-        if (isWorkflowConfigurationsFetchError) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message: 'Could not fetch Flows, please try again later.',
-                })
-            )
-        }
-    }, [dispatch, isWorkflowConfigurationsFetchError])
+    const [{loading: isWorkflowsFetchPending}, retrieveWorkflowConfigurations] =
+        useAsyncFn(async () => {
+            try {
+                const res = await fetchWorkflowConfigurations()
+                setWorkflowConfigurations(res)
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Could not fetch Flows, please try again later.',
+                    })
+                )
+            }
+        }, [])
 
     useEffect(() => {
         void retrieveSelfServiceConfigurations()
     }, [retrieveSelfServiceConfigurations])
+    useEffect(() => {
+        void retrieveWorkflowConfigurations()
+    }, [retrieveWorkflowConfigurations])
 
     const refineDownloadedWorkflows = useCallback(
         (csvData: string): string => {
             try {
-                if (!workflowConfigurations.length || !csvData) return csvData
+                if (!workflowConfigurations?.length || !csvData) return csvData
                 const flows = parse(csvData, {columns: true}) as {
                     Flow: string
                     [key: string]: any

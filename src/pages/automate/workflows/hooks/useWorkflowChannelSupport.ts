@@ -5,8 +5,8 @@ import {TicketChannel} from 'business/types/ticket'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 
+import {WorkflowStep} from '../models/workflowConfiguration.types'
 import {VisualBuilderNode} from '../models/visualBuilderGraph.types'
-import {WfConfigurationResponseDto} from '../types'
 import {
     useWorkflowsIdsEnabledInChat,
     useWorkflowsIdsEnabledInContactForm,
@@ -29,13 +29,13 @@ export const optionalNodeTypes: NonNullable<VisualBuilderNode['type']>[] = [
     'order_line_item_selection',
 ]
 
-type WorkflowSteps = WfConfigurationResponseDto['steps'][number]
 type Workflow = {
-    id: WfConfigurationResponseDto['id']
+    id: string
     steps: Array<{
-        kind: WorkflowSteps['kind']
+        kind: WorkflowStep['kind']
     }>
 }
+
 type WorkflowChannelSupportContext = {
     isStepUnsupportedInAllChannels: (
         nodeType: NonNullable<VisualBuilderNode['type']>
