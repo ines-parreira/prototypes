@@ -58,8 +58,15 @@ export const HelpCenterNavigation: React.FC<Props> = ({
         locale
     )
 
+    const isAIArticlesForMultiStoreEnabled =
+        useFlags()[
+            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
+        ]
+
     const showAILibraryTab =
-        hasAccessToAILibrary && (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES
+        hasAccessToAILibrary &&
+        (isAIArticlesForMultiStoreEnabled ||
+            (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES)
 
     const logHelpCenterEvent = (version: string) => {
         if (!changeAutomateSettingButtomPosition) return
