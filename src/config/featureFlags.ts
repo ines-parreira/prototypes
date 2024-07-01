@@ -107,7 +107,6 @@ export enum FeatureFlagKey {
     TicketDemoSuggestion = 'ticket-demo-suggestion',
     TicketNavigationArrows = 'ticket-navigation-arrows',
     ViewEditionNewIcon = 'view-edition-new-icon',
-    VoiceConferenceInboundRoundRobin = 'voice-conference-inbound-round-robin',
     WhatsAppMessageTemplates = 'enable-whatsapp-templates',
     WhatsAppMigrationsDebug = 'whatsapp-migration-debug',
 }

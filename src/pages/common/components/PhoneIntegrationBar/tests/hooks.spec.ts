@@ -1,7 +1,5 @@
 import {Call} from '@twilio/voice-sdk'
 
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     mockIncomingCall,
     mockOutgoingCall,
@@ -9,14 +7,7 @@ import {
 import {useConnectionParameters} from '../hooks'
 
 describe('useConnectionParameters()', () => {
-    beforeEach(() => {
-        mockFlags({})
-    })
-
-    afterEach(resetLDMocks)
-
     it('should return parameters for an incoming call', () => {
-        mockFlags({[FeatureFlagKey.VoiceConferenceInboundRoundRobin]: true})
         const call = mockIncomingCall() as Call
         const parameters = useConnectionParameters(call)
 
@@ -27,14 +18,6 @@ describe('useConnectionParameters()', () => {
             ticketId: 2,
             transferFromAgentId: null,
         })
-    })
-
-    it('should return correct customer phone number when conference FF is disabled', () => {
-        mockFlags({[FeatureFlagKey.VoiceConferenceInboundRoundRobin]: false})
-        const call = mockIncomingCall() as Call
-        const parameters = useConnectionParameters(call)
-
-        expect(parameters.customerPhoneNumber).toEqual('+14158880101')
     })
 
     it('should return parameters for an outgoing call', () => {
