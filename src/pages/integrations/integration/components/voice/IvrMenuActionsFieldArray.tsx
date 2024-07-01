@@ -1,7 +1,6 @@
 import React from 'react'
 import {produce} from 'immer'
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import Button from 'pages/common/components/button/Button'
 import {
@@ -9,7 +8,6 @@ import {
     IvrMenuActionType,
     IvrForwardCallMenuAction,
 } from 'models/integration/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import IvrMenuActionField from './IvrMenuActionField'
 import css from './VoiceIntegrationIvr.less'
@@ -21,7 +19,6 @@ type Props = {
 
 const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
     const {value, onChange} = props
-    const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
 
     const addAction = () => {
         const digit = (value.length + 1).toString()
@@ -57,19 +54,12 @@ const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
 
     return (
         <div>
-            {deflectToSMSEnabled ? (
-                <>
-                    <h4 className={classnames(css.header, css.inner)}>
-                        Menu options
-                    </h4>
-                    <p>
-                        Options are triggered by Dialpad and route calls to team
-                        members, SMS or external phone number
-                    </p>
-                </>
-            ) : (
-                <h4 className="mb-3">Menu options</h4>
-            )}
+            <h4 className={classnames(css.header, css.inner)}>Menu options</h4>
+            <p>
+                Options are triggered by Dialpad and route calls to team
+                members, SMS or external phone number
+            </p>
+
             {value.map((action: IvrMenuAction, index: number) => {
                 return (
                     <div key={index}>

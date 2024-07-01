@@ -1,9 +1,6 @@
 import React, {useState} from 'react'
 import {Row, Col} from 'reactstrap'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     VoiceMessage,
     IvrMenuAction,
@@ -40,8 +37,6 @@ const IvrMenuActionField = ({
     const smsIntegrations = useAppSelector(getSmsIntegrations)
     const hasSmsIntegrations = !!smsIntegrations.length
 
-    const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
-
     return (
         <Row className={css.row}>
             <Col className={classNames(css.smallColumn, 'pr-0')}>
@@ -51,7 +46,6 @@ const IvrMenuActionField = ({
                 <IvrMenuActionSelect
                     onChange={onChange}
                     value={value}
-                    deflectToSMSEnabled={deflectToSMSEnabled}
                     hasSmsIntegrations={hasSmsIntegrations}
                 />
             </Col>
@@ -161,21 +155,20 @@ const IvrMenuActionField = ({
                         }}
                     />
                 )}
-                {deflectToSMSEnabled &&
-                    value.action === IvrMenuActionType.SendToSms && (
-                        <IvrMenuActionSendToSMSField
-                            settings={value.sms_deflection}
-                            onChange={(smsDeflection) => {
-                                onChange({
-                                    ...value,
-                                    sms_deflection: smsDeflection,
-                                })
-                            }}
-                            isDrawerOpen={isDrawerOpen}
-                            setDrawerOpen={setDrawerOpen}
-                            smsIntegrations={smsIntegrations}
-                        />
-                    )}
+                {value.action === IvrMenuActionType.SendToSms && (
+                    <IvrMenuActionSendToSMSField
+                        settings={value.sms_deflection}
+                        onChange={(smsDeflection) => {
+                            onChange({
+                                ...value,
+                                sms_deflection: smsDeflection,
+                            })
+                        }}
+                        isDrawerOpen={isDrawerOpen}
+                        setDrawerOpen={setDrawerOpen}
+                        smsIntegrations={smsIntegrations}
+                    />
+                )}
             </Col>
             <Col className={classNames(css.smallColumn, 'pl-0')}>
                 <IconButton

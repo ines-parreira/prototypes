@@ -31,14 +31,12 @@ describe('<IvrMenuActionSelect />', () => {
     } as IvrMenuAction
     const renderComponent = (
         value: IvrMenuAction,
-        deflectToSms = true,
         hasSmsIntegrations = true
     ) => {
         return render(
             <IvrMenuActionSelect
                 value={value}
                 onChange={mockOnChange}
-                deflectToSMSEnabled={deflectToSms}
                 hasSmsIntegrations={hasSmsIntegrations}
             />
         )
@@ -56,24 +54,12 @@ describe('<IvrMenuActionSelect />', () => {
     })
 
     it('should render disabled option if no integrations', () => {
-        const {getByText} = renderComponent(forwardCallAction, true, false)
+        const {getByText} = renderComponent(forwardCallAction, false)
 
         expect(getByText('Forward call to external number')).toBeInTheDocument()
 
         userEvent.click(getByText('arrow_drop_down'))
         expect(getByText('Send call to SMS')).toHaveClass('disabled')
-    })
-
-    it('should not render deflect to SMS option if FF is off', () => {
-        const {getByText, queryByText} = renderComponent(
-            forwardCallAction,
-            false
-        )
-
-        expect(getByText('Forward call to external number')).toBeInTheDocument()
-
-        userEvent.click(getByText('arrow_drop_down'))
-        expect(queryByText('Send call to SMS')).toBeNull()
     })
 
     it('should select option forward options', () => {

@@ -3,11 +3,9 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import userEvent from '@testing-library/user-event'
 import {Router} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     IntegrationType,
     IvrMenuActionType,
@@ -75,14 +73,9 @@ describe('<VoiceIntegrationIvr />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        resetLDMocks()
     })
 
     it('renders component', () => {
-        mockFlags({
-            [FeatureFlagKey.DeflectToSMS]: true,
-        })
-
         const {getByText, getByLabelText, getByRole} = renderComponent()
 
         expect(getByText('Set greeting message')).toBeInTheDocument()
@@ -108,10 +101,6 @@ describe('<VoiceIntegrationIvr />', () => {
     })
 
     it('enables save button when there are changes', () => {
-        mockFlags({
-            [FeatureFlagKey.DeflectToSMS]: true,
-        })
-
         const {getByText, getByLabelText, getByRole} = renderComponent()
 
         userEvent.click(getByLabelText('None'))
@@ -125,29 +114,6 @@ describe('<VoiceIntegrationIvr />', () => {
         expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
             'aria-disabled',
             'true'
-        )
-    })
-
-    it('renders component with FF off', () => {
-        mockFlags({
-            [FeatureFlagKey.DeflectToSMS]: false,
-        })
-
-        const {getByText, getByLabelText, getByRole} = renderComponent()
-
-        expect(getByText('Greeting message')).toBeInTheDocument()
-        expect(getByLabelText('Text To Speech')).toBeChecked()
-        expect(
-            getByText(
-                'Hello, thanks for calling. 1 for message 2 for forward 3 for message'
-            )
-        ).toBeInTheDocument()
-
-        expect(getByText('test actions')).toBeInTheDocument()
-        expect(getByText('Save changes')).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Save changes'})).toHaveAttribute(
-            'aria-disabled',
-            'false'
         )
     })
 })

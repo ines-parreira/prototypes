@@ -2,8 +2,6 @@ import React, {useCallback, useState, useEffect} from 'react'
 import {Col, Container, Form, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
@@ -43,13 +41,10 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
         }
     }, [integration, payload, setPayload])
 
-    const deflectToSMSEnabled = useFlags()[FeatureFlagKey.DeflectToSMS]
-    const isSubmittable =
-        !deflectToSMSEnabled ||
-        !_isEqual(
-            cleanUpIvrPayload(payload),
-            cleanUpIvrPayload(initialSettings)
-        )
+    const isSubmittable = !_isEqual(
+        cleanUpIvrPayload(payload),
+        cleanUpIvrPayload(initialSettings)
+    )
 
     const onSubmit = useCallback(
         async (event?: React.FormEvent) => {
@@ -77,17 +72,13 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
 
     return (
         <Container fluid className={settingsCss.pageContainer}>
-            {deflectToSMSEnabled ? (
-                <>
-                    <h4 className={css.header}>Set greeting message</h4>
-                    <p>
-                        Callers will be informed of all IVR options through this
-                        message, which must be updated if options change.
-                    </p>
-                </>
-            ) : (
-                <h4 className="mb-3">Greeting message</h4>
-            )}
+            <div className={css.greetingMessageInfo}>
+                <h4 className={css.header}>Set greeting message</h4>
+                <p>
+                    Callers will be informed of all IVR options through this
+                    message, which must be updated if options change.
+                </p>
+            </div>
 
             <Row>
                 <Col lg={8} xl={8}>
@@ -106,7 +97,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                                     }))
                                 }
                                 allowNone
-                                horizontal={deflectToSMSEnabled}
+                                horizontal={true}
                             />
                         </div>
 
@@ -130,19 +121,18 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                         >
                             Save changes
                         </Button>
-                        {deflectToSMSEnabled && (
-                            <Button
-                                onClick={() => setPayload(initialSettings)}
-                                className="ml-2"
-                                intent="secondary"
-                            >
-                                Cancel
-                            </Button>
-                        )}
+
+                        <Button
+                            onClick={() => setPayload(initialSettings)}
+                            className="ml-2"
+                            intent="secondary"
+                        >
+                            Cancel
+                        </Button>
                     </Form>
                 </Col>
             </Row>
-            {deflectToSMSEnabled && isSubmittable && (
+            {isSubmittable && (
                 <UnsavedChangesPrompt
                     onSave={() => onSubmit()}
                     when={isSubmittable}

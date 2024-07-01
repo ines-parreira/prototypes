@@ -5,10 +5,8 @@ import {fireEvent, render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 
 import userEvent from '@testing-library/user-event'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     IvrMenuAction,
     IvrMenuActionType,
@@ -36,10 +34,6 @@ describe('<IvrMenuActionsFieldArray />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.DeflectToSMS]: true,
-        })
     })
 
     const renderComponent = (
@@ -129,28 +123,5 @@ describe('<IvrMenuActionsFieldArray />', () => {
         const {getByText} = renderComponent(options)
 
         expect(getByText('Send call to SMS')).toBeInTheDocument()
-    })
-
-    it('should not display the deflect to sms action when FF is off', () => {
-        mockFlags({
-            [FeatureFlagKey.DeflectToSMS]: false,
-        })
-
-        const options: IvrMenuAction[] = [
-            {
-                action: IvrMenuActionType.SendToSms,
-                digit: '1',
-                sms_deflection: {
-                    confirmation_message: {
-                        voice_message_type: VoiceMessageType.TextToSpeech,
-                        text_to_speech_content: 'test',
-                    },
-                },
-            },
-        ]
-
-        const {queryByText} = renderComponent(options)
-
-        expect(queryByText('Send to SMS')).toBeNull()
     })
 })

@@ -25,38 +25,30 @@ const ACTION_NAMES: Record<IvrMenuActionType, string> = {
 type IvrMenuActionSelectProps = {
     onChange: (value: IvrMenuAction) => void
     value: IvrMenuAction
-    deflectToSMSEnabled: boolean
     hasSmsIntegrations: boolean
 }
 
 const IvrMenuActionSelect = ({
     onChange,
     value,
-    deflectToSMSEnabled,
     hasSmsIntegrations,
 }: IvrMenuActionSelectProps): JSX.Element => {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
 
-    const actionOptions = Object.entries(ACTION_NAMES)
-        .map(([action, name]) => {
-            const isOptionDisabled =
-                action === IvrMenuActionType.SendToSms && !hasSmsIntegrations
-            return {
-                value: action,
-                label: name,
-                isDisabled: isOptionDisabled,
-                tooltipText: isOptionDisabled
-                    ? 'Create integration to send calls to SMS.'
-                    : undefined,
-            }
-        })
-        .filter(
-            (option) =>
-                deflectToSMSEnabled ||
-                option.value !== IvrMenuActionType.SendToSms
-        )
+    const actionOptions = Object.entries(ACTION_NAMES).map(([action, name]) => {
+        const isOptionDisabled =
+            action === IvrMenuActionType.SendToSms && !hasSmsIntegrations
+        return {
+            value: action,
+            label: name,
+            isDisabled: isOptionDisabled,
+            tooltipText: isOptionDisabled
+                ? 'Create integration to send calls to SMS.'
+                : undefined,
+        }
+    })
 
     const handleActionTypeChange = useCallback(
         (action) => {
@@ -83,20 +75,19 @@ const IvrMenuActionSelect = ({
                 }
 
                 case IvrMenuActionType.SendToSms: {
-                    deflectToSMSEnabled &&
-                        onChange({
-                            ...value,
-                            action,
-                            sms_deflection: {
-                                confirmation_message:
-                                    DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
-                            },
-                        })
+                    onChange({
+                        ...value,
+                        action,
+                        sms_deflection: {
+                            confirmation_message:
+                                DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
+                        },
+                    })
                     break
                 }
             }
         },
-        [deflectToSMSEnabled, value, onChange]
+        [value, onChange]
     )
 
     return (
