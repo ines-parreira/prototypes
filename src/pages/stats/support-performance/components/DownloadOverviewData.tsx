@@ -41,6 +41,15 @@ export const DownloadOverviewData = () => {
             ? false
             : !isDeferredLoadingEnabled
     )
+    useEffect(() => {
+        setFetchingEnable(
+            isDeferredLoadingEnabled === undefined
+                ? false
+                : !isDeferredLoadingEnabled
+        )
+    }, [isDeferredLoadingEnabled])
+
+    const [waitForTheReportData, setwaitForTheReportData] = useState(false)
 
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
@@ -163,11 +172,18 @@ export const DownloadOverviewData = () => {
         const saveReportAsync = async () => {
             await saveReport(exportableData, statsFilters.period)
         }
-        if (fetchingEnabled && !loading) {
+        if (fetchingEnabled && !loading && waitForTheReportData) {
             void saveReportAsync()
             setFetchingEnable(false)
+            setwaitForTheReportData(false)
         }
-    }, [fetchingEnabled, loading, exportableData, statsFilters.period])
+    }, [
+        fetchingEnabled,
+        loading,
+        exportableData,
+        statsFilters.period,
+        waitForTheReportData,
+    ])
 
     return (
         <DownloadOverviewDataButton
@@ -176,6 +192,7 @@ export const DownloadOverviewData = () => {
                     name: 'all-metrics',
                 })
                 setFetchingEnable(true)
+                setwaitForTheReportData(true)
             }}
             disabled={loading}
         />

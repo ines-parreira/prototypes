@@ -129,9 +129,32 @@ describe('<WorkloadPerChannelChart />', () => {
         expect(screen.getByText('refresh')).toBeInTheDocument()
     })
 
-    it('should allow loading after clicking the refresh icon', () => {
+    it('should defer loading until feature flag is loading but hold on with showing the refresh button', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: undefined,
+        }))
+        useWorkloadPerChannelDistributionMock.mockReturnValue({
+            data: undefined,
+        } as any)
+
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <WorkloadPerChannelChart />
+            </Provider>
+        )
+
+        expect(document.querySelector('.skeleton')).toBeInTheDocument()
+        expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            false
+        )
+        expect(screen.queryByText('refresh')).not.toBeInTheDocument()
+    })
+
+    it('should allow loading after clicking the refresh icon', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsDeferredLoadingExperiment]: true,
         }))
         useWorkloadPerChannelDistributionMock.mockReturnValue({
             data: undefined,

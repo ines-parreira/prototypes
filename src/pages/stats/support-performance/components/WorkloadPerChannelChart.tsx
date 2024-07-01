@@ -20,6 +20,14 @@ export const WorkloadPerChannelChart = () => {
             ? false
             : !isDeferredLoadingEnabled
     )
+    useEffect(() => {
+        setEnabled(
+            isDeferredLoadingEnabled === undefined
+                ? false
+                : !isDeferredLoadingEnabled
+        )
+    }, [isDeferredLoadingEnabled])
+
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -40,6 +48,7 @@ export const WorkloadPerChannelChart = () => {
             title={TOTAL_WORKLOAD_BY_CHANNEL_LABEL}
             hint={WORKLOAD_BY_CHANNEL_HINT}
             titleExtra={
+                isDeferredLoadingEnabled &&
                 !enabled && (
                     <IconButton
                         className="mr-1"
