@@ -12,7 +12,7 @@ import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {CustomerSearchDropdownSelectComponent} from './CustomerSearchDropdownSelectComponent'
 
 type Props = {
-    onSelect: (value: string) => void
+    onSelect: (email: string, name?: string) => void
     className?: string
     baseSearchTerm?: string
     isDisabled?: boolean
@@ -69,11 +69,16 @@ export const CustomerSearchDropdownSelectView = forwardRef(
 
         const handleCustomerSelect = useCallback(
             (value: string) => {
+                const customerData = data?.data.data.find(
+                    (customer) => customer.address === value
+                )
                 setIsSelected(true)
-                onSelect(value)
+                if (customerData) {
+                    onSelect(value, `${customerData.customer.name}`)
+                }
                 setSearchTerm(value)
             },
-            [onSelect]
+            [data?.data.data, onSelect]
         )
 
         useEffect(() => {

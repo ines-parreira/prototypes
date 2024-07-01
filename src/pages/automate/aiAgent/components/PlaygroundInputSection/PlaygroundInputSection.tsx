@@ -39,8 +39,12 @@ export const PlaygroundInputSection = ({
         onFormValuesChange('subject', subject)
     }
 
-    const handleCustomerEmailChange = (customerEmail: string) => {
+    const handleCustomerEmailChange = (
+        customerEmail: string,
+        customerName?: string
+    ) => {
         onFormValuesChange('customerEmail', customerEmail)
+        onFormValuesChange('customerName', customerName)
     }
 
     return (

@@ -22,7 +22,9 @@ const mapFormValuesToMessage = (
 ): PlaygroundMessage => {
     return {
         sender:
-            formValues.customerEmail ?? CustomerHttpIntegrationDataMock.address,
+            formValues.customerName ??
+            formValues.customerEmail ?? // email as fallback
+            CustomerHttpIntegrationDataMock.name,
         type: MessageType.MESSAGE,
         message: formValues.message,
         createdDatetime: new Date().toISOString(),

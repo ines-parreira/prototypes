@@ -23,7 +23,7 @@ const senderSelectOptions = [
 ]
 
 type Props = {
-    onCustomerEmailChange: (value: string) => void
+    onCustomerEmailChange: (email: string, name?: string) => void
     customerEmail: string
     isDisabled?: boolean
 }
@@ -48,9 +48,12 @@ export const PlaygroundCustomerSelection = ({
         }
         setSenderSelectedOption(value)
         if (value === SenderTypeValues.NEW_CUSTOMER) {
-            onCustomerEmailChange(CustomerHttpIntegrationDataMock.address)
+            onCustomerEmailChange(
+                CustomerHttpIntegrationDataMock.address,
+                CustomerHttpIntegrationDataMock.name
+            )
         } else {
-            onCustomerEmailChange('')
+            onCustomerEmailChange('', '')
         }
     }
 
