@@ -2,10 +2,13 @@ import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServ
 import {NotificationStatus} from 'state/notifications/types'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 
-import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
+import {
+    ListWfConfigurationsResponseDto,
+    WfConfigurationResponseDto,
+} from '../types'
 
 export type UseWorkflowsEntrypointsReturnType = {
-    workflows: WorkflowConfigurationShallow[]
+    workflows: ListWfConfigurationsResponseDto
     storeIntegrationId?: number
     isFetchPending: boolean
 }
@@ -14,7 +17,7 @@ type Props = {
     shopType: string
     shopName: string
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
-    configurationsMap: Record<string, WorkflowConfigurationShallow>
+    configurationsMap: Record<string, WfConfigurationResponseDto>
 }
 
 export default function useStoreWorkflows({

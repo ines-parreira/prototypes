@@ -1,10 +1,4 @@
-import React, {
-    ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react'
+import React, {ReactNode, useCallback, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import _intersection from 'lodash/intersection'
 import _difference from 'lodash/difference'
@@ -14,8 +8,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
 import {ChannelLanguage} from 'pages/automate/common/types'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
-import useWorkflowApi from './useWorkflowApi'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 function getChannelLanguageLabel(l: ChannelLanguage): string {
     switch (l) {
@@ -84,13 +77,7 @@ export default function useLanguagesMismatchWarnings(
             : [TicketChannel.Chat, TicketChannel.ContactForm]
     }, [hasChatMultiLanguagesFeatureFlag])
 
-    const {fetchWorkflowConfigurations} = useWorkflowApi()
-    const [workflows, setWorkflows] = useState<WorkflowConfigurationShallow[]>(
-        []
-    )
-    useEffect(() => {
-        void fetchWorkflowConfigurations().then(setWorkflows)
-    }, [fetchWorkflowConfigurations])
+    const {data: workflows = []} = useGetWorkflowConfigurations()
 
     const getLanguagesMismatchWarning = useCallback<
         (

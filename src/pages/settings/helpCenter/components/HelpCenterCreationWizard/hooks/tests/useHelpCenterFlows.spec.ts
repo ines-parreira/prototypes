@@ -2,18 +2,18 @@ import {renderHook} from '@testing-library/react-hooks'
 import Promise from 'promise-polyfill'
 import {IntegrationType} from 'models/integration/constants'
 import {ChannelLanguage} from 'pages/automate/common/types'
-import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import {Components} from 'rest_api/help_center_api/client.generated'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
 import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import {useHelpCenterFlows} from '../useHelpCenterFlows'
 
-jest.mock('pages/automate/common/hooks/useWorkflowConfigurations', () =>
-    jest.fn()
-)
+jest.mock('models/workflows/queries', () => ({
+    useGetWorkflowConfigurations: jest.fn(),
+}))
 jest.mock('pages/automate/common/hooks/useHelpCenterAutomationSettings', () =>
     jest.fn()
 )
@@ -29,7 +29,9 @@ const automationSettings: Components.Schemas.AutomationSettingsDto = {
     order_management: {enabled: false},
 }
 
-const mockedUseWorkflowConfigurations = jest.mocked(useWorkflowConfigurations)
+const mockedUseWorkflowConfigurations = jest.mocked(
+    useGetWorkflowConfigurations
+)
 const mockedUseHelpCentersAutomationSettings = jest.mocked(
     useHelpCentersAutomationSettings
 )
@@ -40,9 +42,9 @@ const mockedUseSelfServiceConfiguration = jest.mocked(
 describe('useHelpCenterFlows', () => {
     beforeEach(() => {
         mockedUseWorkflowConfigurations.mockReturnValue({
-            isFetchPending: false,
-            workflowConfigurations: [],
-        })
+            isLoading: false,
+            data: [],
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
         mockedUseHelpCentersAutomationSettings.mockReturnValue({
             automationSettings,
             handleHelpCenterAutomationSettingsFetch: () =>
@@ -93,9 +95,9 @@ describe('useHelpCenterFlows', () => {
             }),
         ]
         mockedUseWorkflowConfigurations.mockReturnValue({
-            isFetchPending: false,
-            workflowConfigurations,
-        })
+            isLoading: false,
+            data: workflowConfigurations,
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
         const {result} = renderHook(() =>
             useHelpCenterFlows({
@@ -121,9 +123,9 @@ describe('useHelpCenterFlows', () => {
             }),
         ]
         mockedUseWorkflowConfigurations.mockReturnValue({
-            isFetchPending: false,
-            workflowConfigurations,
-        })
+            isLoading: false,
+            data: workflowConfigurations,
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
         mockedUseSelfServiceConfiguration.mockReturnValue({
             handleSelfServiceConfigurationUpdate: () =>
@@ -149,7 +151,7 @@ describe('useHelpCenterFlows', () => {
 
         expect(result.current.workflowConfigurations).toHaveLength(1)
         expect(result.current.entrypoints).toHaveLength(1)
-        expect(result.current.workflowConfigurations[0]).toEqual(
+        expect(result.current.workflowConfigurations?.[0]).toEqual(
             expect.objectContaining({
                 id: '2',
             })

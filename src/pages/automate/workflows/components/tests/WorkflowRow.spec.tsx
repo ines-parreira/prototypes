@@ -8,8 +8,8 @@ import {renderWithRouterAndDnD} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
 import {StoreIntegration} from 'models/integration/types'
 
-import {WorkflowConfigurationShallow} from '../../models/workflowConfiguration.types'
 import WorkflowRow, {getLink} from '../WorkflowRow'
+import {WfConfigurationResponseDto} from '../../types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -48,7 +48,7 @@ describe('<WorkflowsRow />', () => {
                         available_languages: ['en-US'],
                         updated_datetime: '2023-12-22T09:57:21.303Z',
                         is_draft: false,
-                    } as WorkflowConfigurationShallow
+                    } as WfConfigurationResponseDto
                 }
                 isUpdatePending={false}
                 storeIntegrations={sortedIntegrations}
@@ -85,7 +85,7 @@ describe('<WorkflowsRow />', () => {
                             available_languages: ['en-US'],
                             updated_datetime: '2023-12-22T09:57:21.303Z',
                             is_draft: true,
-                        } as WorkflowConfigurationShallow
+                        } as WfConfigurationResponseDto
                     }
                     isUpdatePending={false}
                     storeIntegrations={sortedIntegrations}

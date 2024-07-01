@@ -14,12 +14,12 @@ import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useAp
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSearch from 'hooks/useSearch'
-import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import useEffectOnce from 'hooks/useEffectOnce'
 
 import {SegmentEvent, logEvent} from 'common/segment'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../workflows/hooks/useWorkflowChannelSupport'
@@ -50,8 +50,11 @@ const ConnectedChannelsView = () => {
     const channels = useSelfServiceChannels(shopType, shopName)
     const {selfServiceConfiguration, storeIntegration} =
         useSelfServiceConfiguration(shopType, shopName)
-    const {isFetchPending: isWorkflowsFetchPending, workflowConfigurations} =
-        useWorkflowConfigurations()
+
+    const {
+        isLoading: isWorkflowsFetchPending,
+        data: workflowConfigurations = [],
+    } = useGetWorkflowConfigurations()
     const workflowChannelSupportContext = useWorkflowChannelSupport(
         shopType,
         shopName

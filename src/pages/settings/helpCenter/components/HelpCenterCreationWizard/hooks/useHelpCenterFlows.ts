@@ -1,8 +1,8 @@
 import {useMemo} from 'react'
-import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {ChannelLanguage} from 'pages/automate/common/types'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 export const useHelpCenterFlows = ({
     shopType,
@@ -15,8 +15,10 @@ export const useHelpCenterFlows = ({
     supportedLocales: ChannelLanguage[]
     flows: Entrypoint[]
 }) => {
-    const {isFetchPending: isWorkflowsFetchPending, workflowConfigurations} =
-        useWorkflowConfigurations()
+    const {
+        isLoading: isWorkflowsFetchPending,
+        data: workflowConfigurations = [],
+    } = useGetWorkflowConfigurations()
 
     const {
         isFetchPending: isSelfServiceConfigurationPending,

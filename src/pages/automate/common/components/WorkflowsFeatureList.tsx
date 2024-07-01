@@ -10,6 +10,7 @@ import Button from 'pages/common/components/button/Button'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {ListWfConfigurationsResponseDto} from 'pages/automate/workflows/types'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
@@ -18,7 +19,6 @@ import {SelfServiceChannelType} from '../hooks/useSelfServiceChannels'
 import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
 import {ChannelLanguage} from '../types'
 
-import {WorkflowConfigurationShallow} from '../../workflows/models/workflowConfiguration.types'
 import WorkflowItem from './WorkflowItem'
 
 import css from './WorkflowsFeatureList.less'
@@ -38,7 +38,7 @@ type Props = {
     maxActiveWorkflows: number
     onChange: (nextEntrypoints: Entrypoint[]) => void
     workflowsUrl?: string
-    configurations: WorkflowConfigurationShallow[]
+    configurations: ListWfConfigurationsResponseDto
     allEntrypoints: {workflow_id: string}[]
     withLabel?: boolean
     itemLimit?: number
@@ -202,7 +202,7 @@ const WorkflowsFeatureList = ({
                         onMove={handleMove}
                         onDrop={handleDrop}
                         onCancel={handleCancel}
-                        name={configurationsById[entrypoint.workflow_id].name}
+                        name={configurationsById[entrypoint.workflow_id]?.name}
                         isEnabled={entrypoint.enabled}
                         isToggleable={
                             entrypoint.enabled ||

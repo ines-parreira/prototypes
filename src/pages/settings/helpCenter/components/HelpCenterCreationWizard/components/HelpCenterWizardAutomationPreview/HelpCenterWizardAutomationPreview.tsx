@@ -34,7 +34,7 @@ const HelpCenterWizardAutomationPreview = ({
         .map((flow) => ({
             id: flow.workflow_id,
             name:
-                workflowConfigurations.find(
+                workflowConfigurations?.find(
                     (wfConfiguration) => wfConfiguration.id === flow.workflow_id
                 )?.name ?? '',
         }))

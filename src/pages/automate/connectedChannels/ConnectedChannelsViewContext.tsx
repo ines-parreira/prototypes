@@ -1,14 +1,13 @@
 import {createContext, useContext} from 'react'
 
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-
-import {WorkflowConfigurationShallow} from '../workflows/models/workflowConfiguration.types'
+import {ListWfConfigurationsResponseDto} from '../workflows/types'
 
 export type ConnectedChannelsViewContextType = {
     articleRecommendationHelpCenterId: Maybe<number>
     isHelpCenterEmpty: boolean
     isOrderManagementAvailable: boolean
-    workflowConfigurations: WorkflowConfigurationShallow[]
+    workflowConfigurations: ListWfConfigurationsResponseDto
     workflowsEntrypoints: NonNullable<
         SelfServiceConfiguration['workflows_entrypoints']
     >
