@@ -20,7 +20,6 @@ import {
     PlaygroundMessage,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -29,6 +28,7 @@ import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {getCurrentUser} from 'state/currentUser/selectors'
+import Button from 'pages/common/components/button/Button'
 import css from './AiAgentPlaygroundView.less'
 import {PlaygroundInputStep} from './components/PlaygroundInputStep/PlaygroundInputStep'
 import {
@@ -273,29 +273,21 @@ export const AiAgentPlaygroundView = () => {
     return (
         <div className={css.container}>
             <div>
-                <h1 className="heading-section-semibold">Test your AI Agent</h1>
+                <h1 className="heading-section-semibold">
+                    Test your AI Agent as a customer
+                </h1>
                 <p className="mb-0">
-                    Here you can test how your AI Agent would reply to inquiries
-                    from real customers. You can choose one of your customer’s
-                    email addresses to check how the AI Agent would reply to
-                    each person.
+                    Once AI Agent is set up, you can test how it will respond to
+                    your customers here.
                 </p>
             </div>
 
             {step === PlaygroundStep.INPUT ? (
                 <div>
                     {storeConfigurationNotInitialized ? (
-                        <Alert
-                            icon
-                            type={AlertType.Warning}
-                            className={css.formError}
-                        >
-                            Please configure your{' '}
-                            <Link to={routes.configuration}>
-                                AI Agent settings{' '}
-                            </Link>
-                            first.
-                        </Alert>
+                        <Link to={routes.configuration}>
+                            <Button>Configure AI Agent</Button>
+                        </Link>
                     ) : (
                         accountData &&
                         storeData && (
