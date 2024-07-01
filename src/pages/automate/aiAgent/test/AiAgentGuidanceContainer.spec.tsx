@@ -81,8 +81,8 @@ describe('<AiAgentGuidanceContainer />', () => {
     it('should render empty state component', () => {
         renderComponent()
 
-        expect(screen.getByText('Create Guidance')).toBeInTheDocument()
-        expect(screen.getByText('Start with a template')).toBeInTheDocument()
+        expect(screen.getByText('Create Custom Guidance')).toBeInTheDocument()
+        expect(screen.getByText('Create From Template')).toBeInTheDocument()
     })
 
     describe("when there's guidance articles", () => {

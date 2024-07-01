@@ -48,16 +48,15 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                 AI Powered
                             </Badge>
                         </div>
-                        <p className={css.title}>Guide your AI agent</p>
-                        <p className={css.subtitle}>
-                            Add guidance to help your AI agent provide the right
-                            answers in the right way.
+                        <p className={css.title}>
+                            Create Guidance to ensure AI Agent handles requests
+                            according to your support policies
                         </p>
-                        <div>
-                            <Button onClick={onNewClick}>
-                                Create Guidance
-                            </Button>
-                        </div>
+                        <p className={css.subtitle}>
+                            Guidance is internal-facing knowledge that allows
+                            you to customize AI Agent's behavior and fine-tune
+                            how it handles customer requests.
+                        </p>
                     </div>
                     <div className={css.imageWrapper}>
                         <img
@@ -71,9 +70,21 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
 
             {guidanceTemplates.length > 0 && (
                 <div className={css.templatesContainer}>
-                    <h3 className={css.templatesTitle}>
-                        Start with a template
-                    </h3>
+                    <div className={css.templatesContainerHeader}>
+                        <h3 className={css.templatesTitle}>
+                            Choose a template and customize it to fit your needs
+                        </h3>
+                        <div
+                            className={css.templatesContainerHeaderButtonGroup}
+                        >
+                            <Button intent="secondary" onClick={onNewClick}>
+                                Create Custom Guidance
+                            </Button>
+                            <Link to={routes.guidanceTemplates}>
+                                <Button>Create From Template</Button>
+                            </Link>
+                        </div>
+                    </div>
                     <ul className={css.templatesList}>
                         {guidanceTemplates
                             .slice(0, SHOW_TEMPLATES_COUNT)
