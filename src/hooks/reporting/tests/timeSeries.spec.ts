@@ -1,19 +1,13 @@
 import {renderHook} from '@testing-library/react-hooks'
 
 import {TicketChannel} from 'business/types/ticket'
-import {
-    AutomationBillingEventMeasure,
-    AutomationBillingEventMember,
-} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+
 import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
 import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {
-    ReportingFilterOperator,
-    ReportingGranularity,
-} from 'models/reporting/types'
+import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 
@@ -23,11 +17,8 @@ import {
     interactionsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
 import {
-    useAutomatedInteractionByEventTypesTimeSeries,
-    useAutomatedInteractionTimeSeries,
     useAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetTimeSeries,
-    useAutomationRateTimeSeries,
     useBillableTicketDatasetTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
     useMessagesSentTimeSeries,
@@ -179,72 +170,6 @@ describe('time series', () => {
                     customFieldId
                 )
             )
-        })
-    })
-
-    describe('Automate', () => {
-        const aaoTimeSeriesIterator = describe.each([
-            [
-                'useAutomationRateTimeSeries',
-                [AutomationBillingEventMeasure.AutomationRate],
-                useAutomationRateTimeSeries,
-            ],
-            [
-                'useAutomatedInteractionTimeSeries',
-                [AutomationBillingEventMeasure.AutomatedInteractions],
-                useAutomatedInteractionTimeSeries,
-            ],
-            [
-                'useAutomatedInteractionByFeatures',
-                [
-                    AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder,
-                    AutomationBillingEventMeasure.AutomatedInteractionsByLoopReturns,
-                    AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
-                    AutomationBillingEventMeasure.AutomatedInteractionsByArticleRecommendation,
-                    AutomationBillingEventMeasure.AutomatedInteractionsByAutomatedResponse,
-                    AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponseFlows,
-                    AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders,
-                ],
-                useAutomatedInteractionByEventTypesTimeSeries,
-            ],
-        ])
-        aaoTimeSeriesIterator('%s', (_testName, measures, useTimeSeries) => {
-            it('should render expected query', () => {
-                renderHook(
-                    ({statsFilters, timezone}) =>
-                        useTimeSeries(statsFilters, timezone, granularity),
-                    {initialProps: {statsFilters, timezone, granularity}}
-                )
-
-                expect(useTimeSeriesMock.mock.calls[0]).toEqual([
-                    {
-                        measures,
-                        dimensions: [],
-                        filters: [
-                            {
-                                member: AutomationBillingEventMember.PeriodStart,
-                                operator: ReportingFilterOperator.AfterOrOnDate,
-                                values: [periodStart],
-                            },
-                            {
-                                member: AutomationBillingEventMember.PeriodEnd,
-                                operator:
-                                    ReportingFilterOperator.BeforeOrOnDate,
-                                values: [periodEnd],
-                            },
-                        ],
-                        timeDimensions: [
-                            {
-                                dimension:
-                                    AutomationBillingEventMember.CreatedDate,
-                                granularity: ReportingGranularity.Day,
-                                dateRange: [periodStart, periodEnd],
-                            },
-                        ],
-                        timezone,
-                    },
-                ])
-            })
         })
     })
 

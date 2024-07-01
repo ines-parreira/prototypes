@@ -1,5 +1,4 @@
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -12,16 +11,7 @@ import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/suppor
 import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
-import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
 import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
-
-import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
-import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
-import {
-    automationDatasetQueryFactory,
-    billableTicketDatasetQueryFactory,
-} from 'models/reporting/queryFactories/automate_v2/metrics'
 
 export const useCustomerSatisfactionTrend = (
     filters: StatsFilters,
@@ -165,89 +155,6 @@ export const useTicketHandleTimeTrend = (
     useMetricTrend(
         ticketAverageHandleTimeQueryFactory(filters, timezone),
         ticketAverageHandleTimeQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-
-export const useFirstResponseTimeWithAutomationTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        firstResponseTimeWithAutomateFeaturesQueryFactory(filters, timezone),
-        firstResponseTimeWithAutomateFeaturesQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-
-export const useResolutionTimeWithAutomationTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        resolutionTimeWithAutomateFeaturesQueryFactory(filters, timezone),
-        resolutionTimeWithAutomateFeaturesQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-
-export const useDecreaseInResolutionTimeWithAutomationTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        decreaseInResolutionTimeQueryFactory(filters, timezone),
-        decreaseInResolutionTimeQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-
-export const useAutomationRateTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        automationRateQueryFactory(filters, timezone),
-        automationRateQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-
-export const useAutomatedInteractionsTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        automatedInteractionsQueryFactory(filters, timezone),
-        automatedInteractionsQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-export const useAutomationDatasetTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        automationDatasetQueryFactory(filters, timezone),
-        automationDatasetQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
-    )
-
-export const useBillableTicketDatasetTrend = (
-    filters: StatsFilters,
-    timezone: string
-) =>
-    useMetricTrend(
-        billableTicketDatasetQueryFactory(filters, timezone),
-        billableTicketDatasetQueryFactory(
             {...filters, period: getPreviousPeriod(filters.period)},
             timezone
         )

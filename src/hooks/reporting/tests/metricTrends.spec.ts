@@ -1,10 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
-import {automatedInteractionsQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
-import {automationRateQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
-import {decreaseInResolutionTimeQueryFactory} from 'models/reporting/queryFactories/automate/decreaseInResolutionTime'
-import {firstResponseTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/firstResponseTimeWithAutomateFeaturesQueryFactory'
-import {resolutionTimeWithAutomateFeaturesQueryFactory} from 'models/reporting/queryFactories/automate/resolutionTimeWithAutomateFeatures'
 import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
 import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -21,29 +16,19 @@ import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
+
 import {
-    automationDatasetQueryFactory,
-    billableTicketDatasetQueryFactory,
-} from 'models/reporting/queryFactories/automate_v2/metrics'
-import {
-    useAutomatedInteractionsTrend,
-    useAutomationRateTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
-    useFirstResponseTimeWithAutomationTrend,
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
-    useDecreaseInResolutionTimeWithAutomationTrend,
     useMedianResolutionTimeTrend,
-    useResolutionTimeWithAutomationTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
     useOneTouchTicketsTrend,
     useTicketHandleTimeTrend,
-    useAutomationDatasetTrend,
-    useBillableTicketDatasetTrend,
 } from '../metricTrends'
 
 jest.mock('../useMetricTrend')
@@ -130,81 +115,6 @@ describe('metric trends', () => {
                     timezone
                 )
             )
-        })
-    })
-
-    describe('Automate', () => {
-        describe.each([
-            [
-                'useFirstResponseTimeWithAutomationTrend',
-                useFirstResponseTimeWithAutomationTrend,
-                firstResponseTimeWithAutomateFeaturesQueryFactory,
-            ],
-            [
-                'useResolutionTimeWithAutomationTrend',
-                useResolutionTimeWithAutomationTrend,
-                resolutionTimeWithAutomateFeaturesQueryFactory,
-            ],
-            [
-                'useDecreaseInResolutionTimeWithAutomationTrend',
-                useDecreaseInResolutionTimeWithAutomationTrend,
-                decreaseInResolutionTimeQueryFactory,
-            ],
-            [
-                'useAutomationRateTrend',
-                useAutomationRateTrend,
-                automationRateQueryFactory,
-            ],
-            [
-                'useAutomatedInteractionTrend',
-                useAutomatedInteractionsTrend,
-                automatedInteractionsQueryFactory,
-            ],
-        ])('%s', (_testName, useTrendFn, queryFactory) => {
-            it('should create reporting filters', () => {
-                renderHook(() => useTrendFn(statsFilters, timezone))
-
-                expect(useMetricTrendMock).toHaveBeenCalledWith(
-                    queryFactory(statsFilters, timezone),
-                    queryFactory(
-                        {
-                            ...statsFilters,
-                            period: getPreviousPeriod(statsFilters.period),
-                        },
-                        timezone
-                    )
-                )
-            })
-        })
-    })
-
-    describe('Automate V2', () => {
-        describe.each([
-            [
-                'useAutomationDatasetTrend',
-                useAutomationDatasetTrend,
-                automationDatasetQueryFactory,
-            ],
-            [
-                'useBillableTicketDatasetTrend',
-                useBillableTicketDatasetTrend,
-                billableTicketDatasetQueryFactory,
-            ],
-        ])('%s', (_testName, useTrendFn, queryFactory) => {
-            it('should create reporting filters', () => {
-                renderHook(() => useTrendFn(statsFilters, timezone))
-
-                expect(useMetricTrendMock).toHaveBeenCalledWith(
-                    queryFactory(statsFilters, timezone),
-                    queryFactory(
-                        {
-                            ...statsFilters,
-                            period: getPreviousPeriod(statsFilters.period),
-                        },
-                        timezone
-                    )
-                )
-            })
         })
     })
 })

@@ -8,9 +8,6 @@ import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactor
 import {ReportingGranularity} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
 
-import {automatedInteractionsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractions'
-import {automatedInteractionsByEventTypeQueryFactory} from 'models/reporting/queryFactories/automate/automatedInteractionsByEventType'
-import {automationRateTimeSeriesQueryFactory} from 'models/reporting/queryFactories/automate/automationRate'
 import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
@@ -75,45 +72,6 @@ export const useCustomFieldsTicketCountTimeSeries = (
             granularity,
             customFieldId,
             sorting
-        )
-    )
-}
-
-// Automate
-export function useAutomationRateTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        automationRateTimeSeriesQueryFactory(filters, timezone, granularity)
-    )
-}
-
-export function useAutomatedInteractionTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        automatedInteractionsTimeSeriesQueryFactory(
-            filters,
-            timezone,
-            granularity
-        )
-    )
-}
-
-export function useAutomatedInteractionByEventTypesTimeSeries(
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity
-) {
-    return useTimeSeries(
-        automatedInteractionsByEventTypeQueryFactory(
-            filters,
-            timezone,
-            granularity
         )
     )
 }
