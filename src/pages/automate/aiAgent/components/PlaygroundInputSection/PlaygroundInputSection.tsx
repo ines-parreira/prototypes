@@ -21,7 +21,6 @@ type Props = {
     onSendMessage: () => void
     onNewConversation: () => void
 }
-
 export const PlaygroundInputSection = ({
     formValues,
     onFormValuesChange,
@@ -41,10 +40,12 @@ export const PlaygroundInputSection = ({
 
     const handleCustomerEmailChange = (
         customerEmail: string,
-        customerName?: string
+        customerName?: string | null
     ) => {
         onFormValuesChange('customerEmail', customerEmail)
-        onFormValuesChange('customerName', customerName)
+        if (customerName) {
+            onFormValuesChange('customerName', customerName)
+        }
     }
 
     return (

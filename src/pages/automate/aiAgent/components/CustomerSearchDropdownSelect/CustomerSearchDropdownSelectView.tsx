@@ -74,7 +74,7 @@ export const CustomerSearchDropdownSelectView = forwardRef(
                 )
                 setIsSelected(true)
                 if (customerData) {
-                    onSelect(value, `${customerData.customer.name}`)
+                    onSelect(value, customerData.customer.name)
                 }
                 setSearchTerm(value)
             },
