@@ -1,20 +1,28 @@
-import {useState, useEffect} from 'react'
-
-interface WorkflowAnalyticsDisplayBanner {
-    displayMultipleVersionsBanner: boolean
-    displayNoDataAvailableBanner: boolean
-    displayLegacyDataBanner: boolean
-}
+import moment from 'moment-timezone'
+import {useState, useEffect, useMemo} from 'react'
 
 interface UseWorkflowAnalyticsDisplayBannerProps {
     flowUpdateDatetime: string
-    startDatetime: string
+    startDatetime: string | null
     hasDataAvailable: boolean
     previousRoute: string
 }
 
-export const PERFORMANCE_BY_FEATURE_ROUTE = 'app/stats/performance-by-features'
-export const FLOWS_EDITOR_ROUTE = '/flows/edit/'
+export const PERFORMANCE_BY_FEATURE_ROUTE =
+    'stats-automate-performance-by-features'
+
+export interface WorkflowAnalyticsDisplayBanner {
+    displayMultipleVersionsBanner: boolean
+    displayNoDataAvailableBanner: boolean
+    displayLegacyDataBanner: boolean
+    onClose: () => void
+}
+
+const initialBannerState = {
+    displayNoDataAvailableBanner: false,
+    displayMultipleVersionsBanner: false,
+    displayLegacyDataBanner: false,
+}
 
 const useWorkflowAnalyticsDisplayBanner = ({
     flowUpdateDatetime,
@@ -22,69 +30,42 @@ const useWorkflowAnalyticsDisplayBanner = ({
     hasDataAvailable,
     previousRoute,
 }: UseWorkflowAnalyticsDisplayBannerProps): WorkflowAnalyticsDisplayBanner => {
-    const [displayMultipleVersionsBanner, setDisplayMultipleVersionsBanner] =
-        useState<boolean>(false)
-    const [displayNoDataAvailableBanner, setDisplayNoDataAvailableBanner] =
-        useState<boolean>(false)
-    const [displayLegacyDataBanner, setDisplayLegacyDataBanner] =
-        useState<boolean>(false)
+    const [banners, setBanners] =
+        useState<Omit<WorkflowAnalyticsDisplayBanner, 'onClose'>>(
+            initialBannerState
+        )
 
-    const updateBanners = (banners: {
-        noData: boolean
-        multipleVersions: boolean
-        legacyData: boolean
-    }) => {
-        setDisplayNoDataAvailableBanner(banners.noData)
-        setDisplayMultipleVersionsBanner(banners.multipleVersions)
-        setDisplayLegacyDataBanner(banners.legacyData)
+    const onClose = () => {
+        setBanners(initialBannerState)
     }
 
     useEffect(() => {
-        const flowUpdateDate = new Date(flowUpdateDatetime)
-        const startDate = new Date(startDatetime)
+        const flowUpdateDate = moment(flowUpdateDatetime)
+        const startDate = moment(startDatetime)
 
         if (!hasDataAvailable) {
-            updateBanners({
-                noData: true,
-                multipleVersions: false,
-                legacyData: false,
+            setBanners({
+                ...initialBannerState,
+                displayNoDataAvailableBanner: true,
             })
         } else if (previousRoute.includes(PERFORMANCE_BY_FEATURE_ROUTE)) {
-            if (flowUpdateDate > startDate) {
-                updateBanners({
-                    noData: false,
-                    multipleVersions: false,
-                    legacyData: true,
+            if (flowUpdateDate.isAfter(startDate)) {
+                setBanners({
+                    ...initialBannerState,
+                    displayMultipleVersionsBanner: true,
                 })
             } else {
-                updateBanners({
-                    noData: false,
-                    multipleVersions: true,
-                    legacyData: false,
+                setBanners({
+                    ...initialBannerState,
+                    displayLegacyDataBanner: true,
                 })
             }
         } else {
-            if (flowUpdateDate > startDate) {
-                updateBanners({
-                    noData: false,
-                    multipleVersions: false,
-                    legacyData: false,
-                })
-            } else {
-                updateBanners({
-                    noData: false,
-                    multipleVersions: true,
-                    legacyData: false,
-                })
-            }
+            setBanners(initialBannerState)
         }
     }, [flowUpdateDatetime, startDatetime, hasDataAvailable, previousRoute])
 
-    return {
-        displayMultipleVersionsBanner,
-        displayNoDataAvailableBanner,
-        displayLegacyDataBanner,
-    }
+    return useMemo(() => ({...banners, onClose}), [banners])
 }
 
 export default useWorkflowAnalyticsDisplayBanner

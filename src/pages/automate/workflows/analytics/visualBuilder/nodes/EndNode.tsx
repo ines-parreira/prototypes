@@ -14,8 +14,13 @@ import {
 } from 'pages/automate/workflows/constants'
 
 import Tooltip from 'pages/common/components/Tooltip'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {toPercentage} from 'pages/automate/automate-metrics/utils'
+import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
+import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
 import EdgeBlock from '../components/EdgeBlock'
 
+import {displayMetric, extractUniqueRates, isValidNumber} from '../utils'
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
@@ -24,6 +29,15 @@ type Props = VisualBuilderNodeProps & {
 }
 
 const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
+    const {workflowStepMetrics} = useWorkflowEditorContext()
+    const metricByNodeId = workflowStepMetrics && workflowStepMetrics[nodeId]
+    const dropOffRates = extractUniqueRates(workflowStepMetrics ?? {})
+    const metricTiers = useWorkflowDropoffMetricTiers({dropOffRates})
+    const dropOffTierByNodeId = getDropoffColor(
+        metricByNodeId?.dropoffRate ?? 0,
+        metricTiers
+    )
+
     return (
         <div>
             <EdgeBlock {...edgeProps} />
@@ -50,7 +64,11 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         id={`end-node-${nodeId}-metric-automated`}
                     >
                         <span className={css.metricLabel}>Automated</span>
-                        <span className={css.metricValue}>0</span>
+                        <span className={css.metricValue}>
+                            {displayMetric(
+                                metricByNodeId?.automatedInteractions
+                            )}
+                        </span>
                     </div>
                     {action !== 'end' && (
                         <div
@@ -59,12 +77,18 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         >
                             <span className={css.metricLabel}>Drop off</span>
                             <span
-                                className={classNames(
-                                    css.metricValue,
-                                    css.nodeMetricDropOff
-                                )}
+                                className={css.metricValue}
+                                style={{
+                                    color: dropOffTierByNodeId?.color,
+                                    backgroundColor:
+                                        dropOffTierByNodeId?.background,
+                                }}
                             >
-                                10%
+                                {isValidNumber(metricByNodeId?.dropoffRate)
+                                    ? toPercentage(
+                                          metricByNodeId?.dropoffRate ?? 0
+                                      )
+                                    : '-'}
                             </span>
                         </div>
                     )}
@@ -73,44 +97,54 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         id={`end-node-${nodeId}-metric-ticket`}
                     >
                         <span className={css.metricLabel}>Ticket</span>
-                        <span className={css.metricValue}>3</span>
+                        <span className={css.metricValue}>
+                            {displayMetric(metricByNodeId?.ticketsCreated)}
+                        </span>
                     </div>
-                    <Tooltip
-                        target={`end-node-${nodeId}-metric-automated`}
-                        placement="bottom"
-                    >
-                        {/* TODO: display metric when connected to cubeJS */}
-                        0%
-                        <br />
-                        <br />
-                        Finished flow and did not <br /> contact Support within
-                        72
-                    </Tooltip>
-
-                    {action !== 'end' && (
+                    {isValidNumber(
+                        metricByNodeId?.automatedInteractionsRate
+                    ) && (
                         <Tooltip
-                            target={`end-node-${nodeId}-metric-dropoff`}
+                            target={`end-node-${nodeId}-metric-automated`}
                             placement="bottom"
                         >
-                            {/* TODO: display metric when connected to cubeJS */}
-                            2 viewers
+                            {toPercentage(
+                                metricByNodeId?.automatedInteractionsRate ?? 0
+                            )}
                             <br />
                             <br />
-                            Requested Support but left <br /> before a ticket
-                            was created
+                            Finished flow and did not <br /> contact Support
+                            within 72
                         </Tooltip>
                     )}
 
-                    <Tooltip
-                        target={`end-node-${nodeId}-metric-ticket`}
-                        placement="bottom"
-                    >
-                        {/* TODO: display metric when connected to cubeJS */}
-                        50%
-                        <br />
-                        <br />
-                        Helped by an agent <br /> (ticket created)
-                    </Tooltip>
+                    {action !== 'end' &&
+                        isValidNumber(metricByNodeId?.dropoff) && (
+                            <Tooltip
+                                target={`end-node-${nodeId}-metric-dropoff`}
+                                placement="bottom"
+                            >
+                                {metricByNodeId?.dropoff} viewers
+                                <br />
+                                <br />
+                                Requested Support but left <br /> before a
+                                ticket was created
+                            </Tooltip>
+                        )}
+
+                    {isValidNumber(metricByNodeId?.ticketsCreatedRate) && (
+                        <Tooltip
+                            target={`end-node-${nodeId}-metric-ticket`}
+                            placement="bottom"
+                        >
+                            {toPercentage(
+                                metricByNodeId?.ticketsCreatedRate ?? 0
+                            )}
+                            <br />
+                            <br />
+                            Helped by an agent <br /> (ticket created)
+                        </Tooltip>
+                    )}
                 </div>
                 <Handle
                     type="target"

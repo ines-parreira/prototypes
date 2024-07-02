@@ -7,7 +7,7 @@ import {assumeMock} from 'utils/testing'
 import {WorkflowStatsFilters} from 'models/stat/types'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
-    useWorkflowDatasetTrend,
+    useWorkflowDataset,
     useWorkflowStepDatasetTrend,
 } from 'hooks/reporting/automate/useWorkflowDataset'
 
@@ -137,6 +137,13 @@ const workflowCountEventsMock = [
     },
 ]
 
+const steps = [
+    {id: '01J0TNP9PYAF1K20MHTPJJ9TDK', kind: 'message', settings: {}},
+    {id: '01J0TNPZA42S2YMV18WW2X00JZ', kind: 'message', settings: {}},
+    {id: '01J0TNPZA4XSKK0DG5TDKR02FK', kind: 'end', settings: {}},
+    {id: '01J0TNP9PYPAVEYD4Z19EKH9GW', kind: 'handover', settings: {}},
+]
+
 describe('useWorkflowDataset', () => {
     it('useWorkflowDatasetTrend', () => {
         useMetricPerDimensionMock.mockReturnValueOnce({
@@ -154,9 +161,28 @@ describe('useWorkflowDataset', () => {
             isError: false,
         })
 
+        useMetricPerDimensionMock.mockReturnValue({
+            data: {
+                allData: workflowStepCountEventsMock,
+                decile: null,
+                value: null,
+            },
+            isFetching: true,
+            isError: false,
+        })
+        useMetricPerDimensionMock.mockReturnValue({
+            data: {
+                allData: workflowStepDropoffMock,
+                decile: null,
+                value: null,
+            },
+            isFetching: true,
+            isError: false,
+        })
+
         jest.spyOn(queryClient, 'invalidateQueries')
         const {result} = renderHook(
-            () => useWorkflowDatasetTrend(filters, timezone),
+            () => useWorkflowDataset(filters, timezone, steps as any),
             {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
@@ -167,30 +193,32 @@ describe('useWorkflowDataset', () => {
         )
 
         expect(result.current).toMatchObject({
-            workflowAutomatedInteractions: {
-                data: {prevValue: null, value: 10},
-                isError: false,
-                isFetching: true,
-            },
-            workflowAutomationRate: {
-                data: {prevValue: 0, value: 1},
-                isError: false,
-                isFetching: true,
-            },
-            workflowDropoff: {
-                data: {prevValue: null, value: 0},
-                isError: false,
-                isFetching: true,
-            },
-            workflowTicketCreated: {
-                data: {prevValue: null, value: 0},
-                isError: false,
-                isFetching: true,
-            },
-            workflowTotalViews: {
-                data: {prevValue: null, value: 9},
-                isError: false,
-                isFetching: true,
+            workflowMetrics: {
+                workflowAutomatedInteractions: {
+                    data: {prevValue: null, value: 9},
+                    isError: false,
+                    isFetching: true,
+                },
+                workflowAutomationRate: {
+                    data: {prevValue: 0, value: 1},
+                    isError: false,
+                    isFetching: true,
+                },
+                workflowDropoff: {
+                    data: {prevValue: null, value: 0},
+                    isError: false,
+                    isFetching: true,
+                },
+                workflowTicketCreated: {
+                    data: {prevValue: null, value: 0},
+                    isError: false,
+                    isFetching: true,
+                },
+                workflowTotalViews: {
+                    data: {prevValue: null, value: 9},
+                    isError: false,
+                    isFetching: true,
+                },
             },
         })
     })
@@ -217,7 +245,7 @@ describe('useWorkflowDataset', () => {
 
         jest.spyOn(queryClient, 'invalidateQueries')
         const {result} = renderHook(
-            () => useWorkflowStepDatasetTrend(filters, timezone),
+            () => useWorkflowStepDatasetTrend(filters, timezone, steps as any),
             {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>

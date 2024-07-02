@@ -12,6 +12,7 @@ import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import {saveFileAsDownloaded} from 'utils/file'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import useThrottledValue from 'hooks/useThrottledValue'
+import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -120,6 +121,8 @@ export type WorkflowEditorContext = {
     setFlowPublishingInChannels: (flag: boolean) => void
     zoom: number
     setZoom: (zoom: number) => void
+    workflowStepMetrics?: WorkflowStepMetricsMap | null
+    setWorkflowStepMetrics?: (metrics: WorkflowStepMetricsMap | null) => void
 }
 
 export const WorkflowEditorContext = createContext<
@@ -196,6 +199,8 @@ export function useWorkflowEditor(
         workflowConfigurationFactory(currentAccountId, workflowId)
     )
     const [zoom, setZoom] = useState(1)
+    const [workflowStepMetrics, setWorkflowStepMetrics] =
+        useState<WorkflowStepMetricsMap | null>(null)
 
     const handleSetVisualBuilderNodeIdEditing = useCallback(
         (visualBuilderNodeIdEditing: VisualBuilderNode['id'] | null) => {
@@ -741,6 +746,8 @@ export function useWorkflowEditor(
         setFlowPublishingInChannels,
         zoom,
         setZoom,
+        workflowStepMetrics,
+        setWorkflowStepMetrics,
     }
 }
 

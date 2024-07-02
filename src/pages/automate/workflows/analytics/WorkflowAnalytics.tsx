@@ -1,10 +1,10 @@
-import React from 'react'
+import React, {useEffect, useMemo, useRef} from 'react'
 import {Container} from 'reactstrap'
 
+import {isEqual} from 'lodash'
 import moment from 'moment'
 import PageHeader from 'pages/common/components/PageHeader'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {withSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
@@ -16,26 +16,24 @@ import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {
-    useWorkflowEditorContext,
-    withWorkflowEditorContext,
-} from '../hooks/useWorkflowEditor'
+import {useWorkflowDataset} from 'hooks/reporting/automate/useWorkflowDataset'
+import {WorkflowStatsFilters} from 'models/stat/types'
+import {getStatsFilters} from 'state/stats/selectors'
+import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
+import {useWorkflowEditorContext} from '../hooks/useWorkflowEditor'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
 
 import {WorkflowToggle} from '../models/workflowConfiguration.types'
-import useWorkflowsAnalyticsDateRange from '../hooks/useWorkflowAnalyticsDateRange'
 import css from './WorkflowAnalytics.less'
 import {WorkflowAnalyticsActionButtons} from './WorkflowAnalyticsActionButtons'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 import {WorkflowOverviewMetrics} from './WorkflowOverviewMetrics'
+import WorkflowAnalyticsBanner from './WorkflowAnalyticsBanner'
 
 type WorkflowAnalyticsProps = {
-    currentAccountId: number
-    isNewWorkflow: boolean
     shopType: string
     shopName: string
     workflowId: string
@@ -43,7 +41,8 @@ type WorkflowAnalyticsProps = {
     goToWorkflowEditorPage: () => void
 }
 
-function WorkflowAnalyticsWrapped({
+export default function WorkflowAnalytics({
+    workflowId,
     shopName,
     shopType,
     notifyMerchant,
@@ -54,7 +53,6 @@ function WorkflowAnalyticsWrapped({
     const userTimezone = useAppSelector(
         (state) => getTimezone(state) || DEFAULT_TIMEZONE
     )
-
     const datetimeFormat = useGetDateAndTimeFormat(
         DateAndTimeFormatting.ShortMonthDayWithTime
     )
@@ -63,14 +61,15 @@ function WorkflowAnalyticsWrapped({
         shopName
     )
 
-    /* TODO: Add data once available in CubeJS
-    mention: data types might be different (metric instead of number, etc.) */
-    const workflowAnalyticsDateRange = useWorkflowsAnalyticsDateRange({
-        start_datetime: '2024-06-01',
-        end_datetime: '2024-06-23',
-        flow_update_datetime:
-            workflowEditorContext.configuration.updated_datetime,
-    })
+    const statsFilters = useAppSelector(getStatsFilters)
+    useCleanStatsFilters(statsFilters)
+
+    const filters = useMemo<WorkflowStatsFilters>(() => {
+        return {
+            workflowId,
+            period: statsFilters.period,
+        }
+    }, [workflowId, statsFilters.period])
 
     const isDirty = workflowEditorContext.isDirty
 
@@ -103,6 +102,27 @@ function WorkflowAnalyticsWrapped({
             goToWorkflowEditorPage()
         }
     }
+
+    const data = useWorkflowDataset(
+        filters,
+        userTimezone,
+        workflowEditorContext.configuration.steps
+    )
+
+    const workflowMetrics = data.workflowMetrics
+    const workflowStepMetrics = data.workflowStepMetrics
+    const prevWorkflowStepMetricsRef = useRef()
+
+    useEffect(() => {
+        if (!isEqual(prevWorkflowStepMetricsRef.current, workflowStepMetrics)) {
+            prevWorkflowStepMetricsRef.current = workflowStepMetrics as any
+            if (workflowEditorContext.setWorkflowStepMetrics) {
+                workflowEditorContext.setWorkflowStepMetrics(
+                    workflowStepMetrics
+                )
+            }
+        }
+    }, [workflowEditorContext, workflowStepMetrics])
 
     return (
         <WorkflowChannelSupportContext.Provider
@@ -158,21 +178,31 @@ function WorkflowAnalyticsWrapped({
                             )}
                             <PeriodStatsFilter
                                 initialSettings={{
-                                    maxSpan: 365,
+                                    ranges: undefined,
                                     minDate: moment(
-                                        workflowAnalyticsDateRange.start_datetime
-                                    ),
-                                    maxDate: moment(
-                                        workflowAnalyticsDateRange.end_datetime
+                                        workflowEditorContext.configuration
+                                            .updated_datetime
                                     ),
                                 }}
-                                value={last28DaysStatsFilters().period}
+                                value={statsFilters.period}
                                 variant="ghost"
                             />
                         </div>
                     </div>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
+                    <WorkflowAnalyticsBanner
+                        workflowUpdatedDatetime={
+                            workflowEditorContext.configuration
+                                .updated_datetime!
+                        }
+                        hasDataAvailable={
+                            !!(
+                                data.workflowStepMetrics &&
+                                Object.keys(data.workflowStepMetrics).length > 0
+                            )
+                        }
+                    />
                     <ToggleButton.Wrapper
                         className={css.workflowToggle}
                         type={ToggleButton.Type.Label}
@@ -186,31 +216,10 @@ function WorkflowAnalyticsWrapped({
                             Analysis
                         </ToggleButton.Option>
                     </ToggleButton.Wrapper>
-
-                    {/* TODO: Add data once available in CubeJS
-                    mention: data types might be different (metric instead of number, etc.) */}
-                    <WorkflowOverviewMetrics
-                        views={0}
-                        automationRate={0}
-                        trendAutomationRate={{
-                            data: {
-                                value: 10,
-                                prevValue: 5,
-                            },
-                            isFetching: false,
-                            isError: false,
-                        }}
-                        automated={0}
-                        dropOff={0}
-                        ticketCreated={0}
-                    />
+                    <WorkflowOverviewMetrics metrics={workflowMetrics} />
                     <WorkflowVisualBuilder />
                 </Container>
             </div>
         </WorkflowChannelSupportContext.Provider>
     )
 }
-
-export default withWorkflowEditorContext(
-    withSelfServiceStoreIntegrationContext(WorkflowAnalyticsWrapped)
-)

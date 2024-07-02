@@ -66,6 +66,8 @@ import css from './SelfServiceStatsPage.less'
 import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
+    const isFlowsBuilderAnalyticsEnabled =
+        useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
         useState(false)
     const [workflowConfigurations, setWorkflowConfigurations] = useState<
@@ -343,6 +345,10 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                     selfServiceConfigurations
                                 }
                                 workflowConfigurations={workflowConfigurations}
+                                isFlowsBuilderAnalyticsEnabled={
+                                    isFlowsBuilderAnalyticsEnabled
+                                }
+                                statsFilters={pageStatsFilters}
                             />
                         )}
                     </StatWrapper>

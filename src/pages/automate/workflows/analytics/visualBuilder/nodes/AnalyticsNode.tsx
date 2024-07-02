@@ -8,8 +8,11 @@ import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
 import Tooltip from 'pages/common/components/Tooltip'
+import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import {toPercentage} from 'pages/automate/automate-metrics/utils'
+import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
+import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
 import {
     AutomatedMessageNodeType,
     ConditionsNodeType,
@@ -24,6 +27,7 @@ import {
 } from '../../../models/visualBuilderGraph.types'
 import EdgeBlock from '../components/EdgeBlock'
 
+import {displayMetric, extractUniqueRates, isValidNumber} from '../utils'
 import css from './Node.less'
 
 type NodeType =
@@ -52,6 +56,16 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
     type,
     edgeProps,
 }: Props) {
+    const {workflowStepMetrics} = useWorkflowEditorContext()
+    const metricByNodeId = workflowStepMetrics && workflowStepMetrics[nodeId]
+    const dropOffRates = extractUniqueRates(workflowStepMetrics ?? {})
+    const metricTiers = useWorkflowDropoffMetricTiers({dropOffRates})
+
+    const dropOffTierByNodeId = getDropoffColor(
+        metricByNodeId?.dropoffRate ?? 0,
+        metricTiers
+    )
+
     return (
         <div>
             <EdgeBlock {...edgeProps} />
@@ -68,14 +82,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                             className={css.nodeTitle}
                             id={`node-${nodeId}-title`}
                         >
-                            {contentText.length > 0 ? (
-                                contentText.replace(
-                                    workflowVariableRegex,
-                                    '{...}'
-                                )
-                            ) : (
-                                <span className={css.clickToAdd}>Message</span>
-                            )}
+                            {contentText}
                         </Label>
                     </div>
                     <div className={css.nodeDelimiter} />
@@ -85,7 +92,9 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                             id={`node-${nodeId}-metric-view`}
                         >
                             <span className={css.metricLabel}>Views</span>
-                            <span className={css.metricValue}>0</span>
+                            <span className={css.metricValue}>
+                                {displayMetric(metricByNodeId?.views)}
+                            </span>
                         </div>
                         <div
                             className={css.nodeMetric}
@@ -93,12 +102,18 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                         >
                             <span className={css.metricLabel}>Drop off</span>
                             <span
-                                className={classNames(
-                                    css.metricValue,
-                                    css.nodeMetricDropOff
-                                )}
+                                className={css.metricValue}
+                                style={{
+                                    color: dropOffTierByNodeId?.color,
+                                    backgroundColor:
+                                        dropOffTierByNodeId?.background,
+                                }}
                             >
-                                10%
+                                {isValidNumber(metricByNodeId?.dropoffRate)
+                                    ? toPercentage(
+                                          metricByNodeId?.dropoffRate ?? 0
+                                      )
+                                    : '-'}
                             </span>
                         </div>
                     </div>
@@ -106,21 +121,22 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                         {contentText}
                     </Tooltip>
 
-                    <Tooltip
-                        target={`node-${nodeId}-metric-view`}
-                        placement="bottom"
-                    >
-                        {/* TODO: display metric when connected to cubeJS */}
-                        0%
-                    </Tooltip>
-
-                    <Tooltip
-                        target={`node-${nodeId}-metric-dropoff`}
-                        placement="bottom"
-                    >
-                        {/* TODO: display metric when connected to cubeJS */}3
-                        viewers
-                    </Tooltip>
+                    {isValidNumber(metricByNodeId?.viewRate) && (
+                        <Tooltip
+                            target={`node-${nodeId}-metric-view`}
+                            placement="bottom"
+                        >
+                            {toPercentage(metricByNodeId?.viewRate ?? 0)}
+                        </Tooltip>
+                    )}
+                    {isValidNumber(metricByNodeId?.dropoff) && (
+                        <Tooltip
+                            target={`node-${nodeId}-metric-dropoff`}
+                            placement="bottom"
+                        >
+                            {metricByNodeId?.dropoff} viewers
+                        </Tooltip>
+                    )}
                 </div>
                 <Handle
                     type="source"

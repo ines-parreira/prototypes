@@ -30,27 +30,23 @@ import {
 } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
 import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
 import {
-    FLOW_ENDED_WITHOUT_ACTION,
+    DEFAULT_WORKFLOW_ANALYTICS_DATA,
     FLOW_ENDED_WITH_TICKET_HANDOVER,
     FLOW_HANDOVER_TICKET_CREATED,
     FLOW_PROMPT_NOT_HELPFUL,
-    FLOW_PROMPT_STARTED,
     FLOW_STARTED,
     FLOW_STEP_STARTED,
     GreyArea,
+    WorkflowTrendMetrics,
 } from 'hooks/reporting/automate/types'
 import {
+    calculateRate,
     workflowAutomatedInteractions,
-    workflowAutomationRate,
-    workflowDropoff,
-    workflowEndSteTicketsCreatedRate,
     workflowEndStepAutomatedInteractions,
     workflowEndStepDropoff,
-    workflowEndStepDropoffRate,
-    workflowStepDropoffRate,
-    workflowStepViewRate,
-    workflowTicketCreated,
 } from 'hooks/reporting/automate/automateStatsFormulae'
+import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {MetricTrend} from '../useMetricTrend'
 
 export type WorkflowMetrics = {
     workflowStarted: number
@@ -65,12 +61,15 @@ export type WorkflowStepMetrics = {
     viewRate: number
     dropoff: number
     dropoffRate: number
-    endStepAutomatedInteractions: number
-    endStepAutomatedInteractionsRate: number
-    endStepDropoff: number
-    endStepDropoffRate: number
-    endStepTicketsCreated: number
-    endStepTicketsCreatedRate: number
+    automatedInteractions: number
+    automatedInteractionsRate: number
+    ticketsCreated: number
+    ticketsCreatedRate: number
+}
+
+export type WorkflowStats = {
+    workflowMetrics: Record<WorkflowTrendMetrics, MetricTrend>
+    workflowStepMetrics: WorkflowStepMetricsMap
 }
 
 export type WorkflowStepMetricsMap = {
@@ -358,72 +357,50 @@ export function getCountEventsByEventType(
 }
 
 export function computeWorkflowMetrics(
-    data: QueryReturnType<Cubes> | undefined
+    data: QueryReturnType<Cubes> | undefined,
+    dropoff: number
 ): WorkflowMetrics {
     const workflowStarted = getCountEventsByEventType(data, FLOW_STARTED)
-    const workflowPromptStarted = getCountEventsByEventType(
-        data,
-        FLOW_PROMPT_STARTED
-    )
-    const workflowEndedWithoutAction = getCountEventsByEventType(
-        data,
-        FLOW_ENDED_WITHOUT_ACTION
-    )
-    const workflowWithTicketHandover = getCountEventsByEventType(
-        data,
-        FLOW_ENDED_WITH_TICKET_HANDOVER
-    )
     const workflowTicketsCreated = getCountEventsByEventType(
         data,
         FLOW_HANDOVER_TICKET_CREATED
     )
 
     const automatedInteractions = workflowAutomatedInteractions(
-        workflowPromptStarted,
-        workflowEndedWithoutAction
-    )
-    const dropoff = workflowDropoff(
         workflowStarted,
-        workflowPromptStarted,
-        workflowEndedWithoutAction,
-        workflowWithTicketHandover
-    )
-
-    const ticketsCreated = workflowTicketCreated(
-        workflowWithTicketHandover,
+        dropoff,
         workflowTicketsCreated
     )
 
-    const automationRate = workflowAutomationRate(
-        automatedInteractions,
-        dropoff,
-        ticketsCreated
-    )
+    const automationRate = calculateRate(automatedInteractions, workflowStarted)
 
     return {
         workflowStarted,
         automatedInteractions,
         automationRate,
         dropoff,
-        ticketsCreated,
+        ticketsCreated: workflowTicketsCreated,
     }
 }
 
 export function computeWorkflowStepsMetrics(
     eventsData: QueryReturnType<Cubes> | undefined,
-    dropoffData: QueryReturnType<Cubes> | undefined
+    dropoffData: QueryReturnType<Cubes> | undefined,
+    steps: WorkflowStep[]
 ): WorkflowStepMetricsMap {
     const eventsGrouped = groupBy(
         eventsData,
         WorkflowDatasetDimension.FlowStepId
     )
     const dropoffMap = keyBy(dropoffData, WorkflowDatasetDimension.FlowStepId)
-
+    const stepsMap = keyBy(steps, 'id')
     const workflowStarted = getCountEventsByEventType(eventsData, FLOW_STARTED)
 
     const groupedDataByWorkflowsStep = mapValues(
         eventsGrouped,
         (events, flowStepId) => {
+            const workflowAnalyticsData = {...DEFAULT_WORKFLOW_ANALYTICS_DATA}
+
             const workflowStepStarted = getCountEventsByEventType(
                 events,
                 FLOW_STEP_STARTED
@@ -436,66 +413,74 @@ export function computeWorkflowStepsMetrics(
                 events,
                 FLOW_HANDOVER_TICKET_CREATED
             )
-
-            const dropoff =
-                Number(
-                    dropoffMap[flowStepId]?.[
-                        WorkflowDatasetMeasure.FlowStepDropoff
-                    ]
-                ) || 0
-
-            const dropoffRate = workflowStepDropoffRate(
-                workflowStepStarted,
-                dropoff
+            const workflowStepWithTicketHandover = getCountEventsByEventType(
+                events,
+                FLOW_ENDED_WITH_TICKET_HANDOVER
             )
 
-            const stepViewRate = workflowStepViewRate(
-                workflowStarted,
+            switch (stepsMap[flowStepId].kind) {
+                case 'end':
+                    workflowAnalyticsData.automatedInteractions =
+                        workflowStepStarted
+                    workflowAnalyticsData.dropoff = 0
+                    break
+                case 'handover':
+                    workflowAnalyticsData.automatedInteractions = 0
+                    workflowAnalyticsData.dropoff =
+                        workflowStepWithTicketHandover -
+                        workflowStepTicktesCreated
+                    break
+                case 'helpful-prompt': {
+                    const dropoff = Number(
+                        dropoffMap[flowStepId]?.[
+                            WorkflowDatasetMeasure.FlowStepDropoff
+                        ]
+                    )
+                    workflowAnalyticsData.dropoff = workflowEndStepDropoff(
+                        dropoff,
+                        workflowStepPromptNotHelpful,
+                        workflowStepTicktesCreated
+                    )
+                    workflowAnalyticsData.automatedInteractions =
+                        workflowEndStepAutomatedInteractions(
+                            workflowStepStarted,
+                            workflowAnalyticsData.dropoff,
+                            workflowStepTicktesCreated
+                        )
+                    break
+                }
+                default:
+                    workflowAnalyticsData.dropoff = Number(
+                        dropoffMap[flowStepId]?.[
+                            WorkflowDatasetMeasure.FlowStepDropoff
+                        ]
+                    )
+                    break
+            }
+
+            workflowAnalyticsData.views = workflowStepStarted
+            workflowAnalyticsData.viewRate = calculateRate(
+                workflowStepStarted,
+                workflowStarted
+            )
+
+            workflowAnalyticsData.dropoffRate = calculateRate(
+                workflowAnalyticsData.dropoff,
                 workflowStepStarted
             )
 
-            const endStepDropoff = workflowEndStepDropoff(
-                workflowStepPromptNotHelpful,
-                workflowStepTicktesCreated
+            workflowAnalyticsData.automatedInteractionsRate = calculateRate(
+                workflowAnalyticsData.automatedInteractions,
+                workflowStepStarted
             )
 
-            const endStepAutomatedInteractions =
-                workflowEndStepAutomatedInteractions(
-                    workflowStepStarted,
-                    endStepDropoff,
-                    workflowStepTicktesCreated
-                )
-
-            const endStepAutomatedInteractionsRate = workflowAutomationRate(
-                endStepAutomatedInteractions,
-                endStepDropoff,
-                workflowStepTicktesCreated
+            workflowAnalyticsData.ticketsCreated = workflowStepTicktesCreated
+            workflowAnalyticsData.ticketsCreatedRate = calculateRate(
+                workflowStepTicktesCreated,
+                workflowStepStarted
             )
 
-            const endStepDropoffRate = workflowEndStepDropoffRate(
-                endStepAutomatedInteractions,
-                endStepDropoff,
-                workflowStepTicktesCreated
-            )
-
-            const endStepTicketsCreatedRate = workflowEndSteTicketsCreatedRate(
-                endStepAutomatedInteractions,
-                endStepDropoff,
-                workflowStepTicktesCreated
-            )
-
-            return {
-                views: workflowStepStarted,
-                viewRate: stepViewRate,
-                dropoff,
-                dropoffRate: dropoffRate,
-                endStepAutomatedInteractions,
-                endStepAutomatedInteractionsRate,
-                endStepDropoff,
-                endStepDropoffRate,
-                endStepTicketsCreated: workflowStepTicktesCreated,
-                endStepTicketsCreatedRate,
-            }
+            return workflowAnalyticsData
         }
     )
 

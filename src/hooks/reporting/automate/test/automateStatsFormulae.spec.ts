@@ -3,16 +3,9 @@ import {
     decreaseInFirstResponseTime,
     averageResolutionTimeWithAutomation,
     decreaseInResolutionTime,
-    workflowAutomatedInteractions,
-    workflowDropoff,
-    workflowTicketCreated,
-    workflowAutomationRate,
-    workflowStepViewRate,
-    workflowStepDropoffRate,
     workflowEndStepDropoff,
-    workflowEndStepDropoffRate,
     workflowEndStepAutomatedInteractions,
-    workflowEndSteTicketsCreatedRate,
+    calculateRate,
 } from '../automateStatsFormulae'
 
 describe('Metrics Calculation Functions', () => {
@@ -109,90 +102,24 @@ describe('Metrics Calculation Functions', () => {
     })
 
     describe('worflow Functions', () => {
-        it('workflowAutomatedInteractions should correctly calculate total interactions', () => {
-            expect(workflowAutomatedInteractions(10, 5)).toBe(15)
-            expect(workflowAutomatedInteractions(20, 30)).toBe(50)
+        it('calculateRate should correctly calculate step view rate', () => {
+            expect(calculateRate(800, 1000)).toBeCloseTo(0.8, 1)
+            expect(calculateRate(250, 500)).toBeCloseTo(0.5, 1)
         })
 
-        it('workflowAutomatedInteractions should return sum even if parameters are 0', () => {
-            expect(workflowAutomatedInteractions(0, 0)).toBe(0)
-        })
-
-        it('workflowDropoff should correctly calculate dropoff', () => {
-            expect(workflowDropoff(100, 50, 25, 10)).toBe(15)
-            expect(workflowDropoff(80, 30, 20, 5)).toBe(25)
-        })
-
-        it('workflowDropoff should return 0 if any parameter is null', () => {
-            expect(workflowDropoff(null, 10, 5, 5)).toBe(0)
-            expect(workflowDropoff(10, null, 5, 5)).toBe(0)
-            expect(workflowDropoff(10, 20, null, 5)).toBe(0)
-            expect(workflowDropoff(10, 20, 5, null)).toBe(0)
-        })
-
-        it('workflowTicketCreated should correctly calculate tickets created after handover', () => {
-            expect(workflowTicketCreated(50, 20)).toBe(30)
-            expect(workflowTicketCreated(40, 10)).toBe(30)
-        })
-
-        it('workflowTicketCreated should return 0 if any parameter is null', () => {
-            expect(workflowTicketCreated(null, 10)).toBe(0)
-            expect(workflowTicketCreated(10, null)).toBe(0)
-        })
-
-        it('workflowAutomationRate should correctly calculate automation rate', () => {
-            expect(workflowAutomationRate(100, 50, 25)).toBeCloseTo(0.5714, 4)
-            expect(workflowAutomationRate(80, 10, 10)).toBeCloseTo(0.8, 1)
-        })
-
-        it('workflowAutomationRate should return 0 if any parameter is null', () => {
-            expect(workflowAutomationRate(null, 10, 5)).toBe(0)
-            expect(workflowAutomationRate(10, null, 5)).toBe(0)
-            expect(workflowAutomationRate(10, 20, null)).toBe(0)
-        })
-
-        it('workflowStepViewRate should correctly calculate step view rate', () => {
-            expect(workflowStepViewRate(1000, 800)).toBeCloseTo(0.8, 1)
-            expect(workflowStepViewRate(500, 250)).toBeCloseTo(0.5, 1)
-        })
-
-        it('workflowStepViewRate should return 0 if any parameter is null', () => {
-            expect(workflowStepViewRate(null, 10)).toBe(0)
-            expect(workflowStepViewRate(10, null)).toBe(0)
-        })
-
-        it('workflowStepDropoffRate should correctly calculate step dropoff rate', () => {
-            expect(workflowStepDropoffRate(800, 200)).toBeCloseTo(0.25, 2)
-            expect(workflowStepDropoffRate(600, 150)).toBeCloseTo(0.25, 2)
-        })
-
-        it('workflowStepDropoffRate should return 0 if any parameter is null', () => {
-            expect(workflowStepDropoffRate(null, 10)).toBe(0)
-            expect(workflowStepDropoffRate(10, null)).toBe(0)
+        it('calculateRate should return 0 if any parameter is null', () => {
+            expect(calculateRate(10, null)).toBe(0)
+            expect(calculateRate(null, 10)).toBe(0)
         })
 
         it('workflowEndStepDropoff should correctly calculate end step dropoff', () => {
-            expect(workflowEndStepDropoff(100, 50)).toBe(50)
-            expect(workflowEndStepDropoff(75, 25)).toBe(50)
+            expect(workflowEndStepDropoff(0, 100, 50)).toBe(50)
+            expect(workflowEndStepDropoff(0, 75, 25)).toBe(50)
         })
 
         it('workflowEndStepDropoff should return 0 if any parameter is null', () => {
-            expect(workflowEndStepDropoff(null, 10)).toBe(0)
-            expect(workflowEndStepDropoff(10, null)).toBe(0)
-        })
-
-        it('workflowEndStepDropoffRate should correctly calculate end step dropoff rate', () => {
-            expect(workflowEndStepDropoffRate(100, 50, 25)).toBeCloseTo(
-                0.2857,
-                4
-            )
-            expect(workflowEndStepDropoffRate(80, 20, 10)).toBeCloseTo(0.2, 1)
-        })
-
-        it('workflowEndStepDropoffRate should return 0 if any parameter is null', () => {
-            expect(workflowEndStepDropoffRate(null, 10, 5)).toBe(0)
-            expect(workflowEndStepDropoffRate(10, null, 5)).toBe(0)
-            expect(workflowEndStepDropoffRate(10, 20, null)).toBe(0)
+            expect(workflowEndStepDropoff(0, null, 10)).toBe(0)
+            expect(workflowEndStepDropoff(0, 10, null)).toBe(0)
         })
 
         it('workflowEndStepAutomatedInteractions should correctly calculate end step automated interactions', () => {
@@ -204,23 +131,6 @@ describe('Metrics Calculation Functions', () => {
             expect(workflowEndStepAutomatedInteractions(null, 10, 5)).toBe(0)
             expect(workflowEndStepAutomatedInteractions(10, null, 5)).toBe(0)
             expect(workflowEndStepAutomatedInteractions(10, 20, null)).toBe(0)
-        })
-
-        it('workflowEndSteTicketsCreatedRate should correctly calculate end step tickets created rate', () => {
-            expect(workflowEndSteTicketsCreatedRate(100, 50, 25)).toBeCloseTo(
-                0.1429,
-                4
-            )
-            expect(workflowEndSteTicketsCreatedRate(80, 10, 10)).toBeCloseTo(
-                0.1,
-                1
-            )
-        })
-
-        it('workflowEndSteTicketsCreatedRate should return 0 if any parameter is null', () => {
-            expect(workflowEndSteTicketsCreatedRate(null, 10, 5)).toBe(0)
-            expect(workflowEndSteTicketsCreatedRate(10, null, 5)).toBe(0)
-            expect(workflowEndSteTicketsCreatedRate(10, 20, null)).toBe(0)
         })
     })
 })

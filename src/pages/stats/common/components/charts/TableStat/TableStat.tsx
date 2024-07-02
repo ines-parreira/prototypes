@@ -45,6 +45,7 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ProductCell from 'pages/stats/common/components/charts/TableStat/cells/ProductCell'
 import css from 'pages/stats/common/components/charts/TableStat/TableStat.less'
 import TicketDetailsStat from 'pages/stats/common/components/charts/TableStat/TicketDetailsStat'
+import {StatsFilters} from 'models/stat/types'
 
 type OwnProps = {
     data: Map<any, any>
@@ -57,6 +58,8 @@ type OwnProps = {
     integrations?: Integration[]
     selfServiceConfigurations?: SelfServiceConfiguration[]
     workflowConfigurations?: WorkflowConfigurationShallow[]
+    isFlowsBuilderAnalyticsEnabled?: boolean
+    statsFilters?: StatsFilters
 }
 
 type State = {
@@ -436,12 +439,19 @@ export class TableStat extends Component<
                     return `${value}%`
                 }
 
+                const workflowMode = this.props.isFlowsBuilderAnalyticsEnabled
+                    ? 'analytics'
+                    : 'edit'
+
+                const period = this.props.statsFilters?.period
+
                 return (
                     <div className={css.flexAlignCenter}>
                         <span className={css.percentageValue}>{value}%</span>
                         <Link
                             to={{
-                                pathname: `/app/automation/${shopType}/${shopName}/flows/edit/${configurationId}`,
+                                pathname: `/app/automation/${shopType}/${shopName}/flows/${workflowMode}/${configurationId}`,
+                                search: `?start_datetime=${period?.start_datetime}&end_datetime=${period?.end_datetime}`,
                                 state: {
                                     from: 'stats-automate-performance-by-features',
                                 },

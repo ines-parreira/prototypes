@@ -370,6 +370,9 @@ function WorkflowEditorViewWrapped({
         }
     }
 
+    const showWorkflowAnalyticsToggle =
+        isFlowsBuilderAnalyticsEnabled && !isNewWorkflow && !isDraft
+
     return (
         <WorkflowChannelSupportContext.Provider
             value={workflowChannelSupportContext}
@@ -483,7 +486,7 @@ function WorkflowEditorViewWrapped({
                     </>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
-                    {isFlowsBuilderAnalyticsEnabled && (
+                    {showWorkflowAnalyticsToggle && (
                         <ToggleButton.Wrapper
                             className={css.workflowToggle}
                             type={ToggleButton.Type.Label}

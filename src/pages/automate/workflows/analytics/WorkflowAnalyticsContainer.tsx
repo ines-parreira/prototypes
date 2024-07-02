@@ -1,5 +1,6 @@
 import React, {useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {ErrorBoundary} from 'pages/ErrorBoundary'
 import {notify} from 'state/notifications/actions'
@@ -8,6 +9,7 @@ import {Notification} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'
 import WorkflowAnalytics from './WorkflowAnalytics'
 
 export default function WorkflowAnalyticsContainer() {
@@ -37,15 +39,23 @@ export default function WorkflowAnalyticsContainer() {
 
     return (
         <ErrorBoundary sentryTags={{section: 'workflows'}}>
-            <WorkflowAnalytics
+            <WorkflowAnalyticsFilters
+                notReadyFallback={<Skeleton />}
                 currentAccountId={currentAccountId}
                 isNewWorkflow={false}
                 workflowId={editWorkflowId}
                 shopName={shopName}
                 shopType={shopType}
                 notifyMerchant={notifyMerchant}
-                goToWorkflowEditorPage={goToWorkflowEditorPage}
-            />
+            >
+                <WorkflowAnalytics
+                    workflowId={editWorkflowId}
+                    shopName={shopName}
+                    shopType={shopType}
+                    notifyMerchant={notifyMerchant}
+                    goToWorkflowEditorPage={goToWorkflowEditorPage}
+                />
+            </WorkflowAnalyticsFilters>
         </ErrorBoundary>
     )
 }

@@ -38,6 +38,8 @@ export const withSelfServiceStoreIntegrationContext =
         WrappedProps extends JSX.IntrinsicAttributes & {
             shopType: string
             shopName: string
+            children?: React.ReactNode
+            notReadyFallback?: React.ReactNode
         }
     >(
         Component: React.FC<WrappedProps>

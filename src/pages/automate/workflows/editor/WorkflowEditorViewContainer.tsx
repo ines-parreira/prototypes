@@ -86,9 +86,10 @@ export default function WorkflowEditorViewContainer() {
             history.push({
                 pathname: `/app/automation/${shopType}/${shopName}/flows/analytics/${editWorkflowId}`,
                 search: params.toString(),
+                state: {from: 'workflow-editor'},
             })
         },
-        [history, shopName, shopType, editWorkflowId]
+        [history, shopType, shopName, editWorkflowId]
     )
 
     if (!hasAutomate) {

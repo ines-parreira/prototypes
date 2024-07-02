@@ -50,3 +50,14 @@ export const FLOW_ENDED_WITH_TICKET_HANDOVER = 'flow_ended_with_ticket_handover'
 export const FLOW_HANDOVER_TICKET_CREATED = 'flow_handover_ticket_created'
 export const FLOW_STEP_STARTED = 'flow_step_started'
 export const FLOW_STEP_ENDED = 'flow_step_ended'
+
+export const DEFAULT_WORKFLOW_ANALYTICS_DATA = {
+    views: 0,
+    viewRate: 0,
+    dropoff: 0,
+    dropoffRate: 0,
+    automatedInteractions: 0,
+    automatedInteractionsRate: 0,
+    ticketsCreated: 0,
+    ticketsCreatedRate: 0,
+}

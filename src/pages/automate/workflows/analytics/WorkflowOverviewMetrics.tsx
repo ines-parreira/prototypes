@@ -1,42 +1,57 @@
 import React from 'react'
 import classNames from 'classnames'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {getTrendProps} from 'pages/automate/automate-metrics/utils'
+import {
+    getTrendProps,
+    toPercentage,
+} from 'pages/automate/automate-metrics/utils'
 import TrendBadge from 'pages/stats/TrendBadge'
+import {WorkflowTrendMetrics} from 'hooks/reporting/automate/types'
 import css from './WorkflowOverviewMetrics.less'
+import {displayMetric} from './visualBuilder/utils'
 
 interface Props {
-    views: number
-    automationRate: number
-    trendAutomationRate: MetricTrend
-    automated: number
-    dropOff: number
-    ticketCreated: number
+    metrics: Record<WorkflowTrendMetrics, MetricTrend>
 }
 
-export const WorkflowOverviewMetrics = ({
-    views,
-    automationRate,
-    trendAutomationRate,
-    automated,
-    dropOff,
-    ticketCreated,
-}: Props) => {
+export const WorkflowOverviewMetrics = ({metrics}: Props) => {
+    const {
+        workflowTotalViews,
+        workflowAutomatedInteractions,
+        workflowAutomationRate,
+        workflowDropoff,
+        workflowTicketCreated,
+    } = metrics
+
+    const hasWorkflowAutomationRate =
+        workflowAutomationRate.data?.value !== 0 &&
+        workflowAutomationRate.data?.prevValue !== 0
+
     return (
         <div className={css.metricsContainer}>
             <div className={css.firstMetrics}>
                 <div className={css.nodeMetric}>
                     <span className={css.metricLabel}>Total views</span>
-                    <span className={css.metricValue}>{views}</span>
+                    <span className={css.metricValue}>
+                        {displayMetric(workflowTotalViews.data?.value)}
+                    </span>
                 </div>
 
                 <div className={css.nodeMetric}>
                     <span className={css.metricLabel}>Automation rate</span>
                     <div className={css.metricTrend}>
                         <span className={css.metricValue}>
-                            {automationRate}%
+                            {workflowAutomationRate.data?.value === 0
+                                ? '-'
+                                : toPercentage(
+                                      workflowAutomationRate.data?.value ?? 0
+                                  )}
                         </span>
-                        <TrendBadge {...getTrendProps(trendAutomationRate)} />
+                        {hasWorkflowAutomationRate && (
+                            <TrendBadge
+                                {...getTrendProps(workflowAutomationRate)}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -50,7 +65,11 @@ export const WorkflowOverviewMetrics = ({
                     >
                         Automated
                     </span>
-                    <span className={css.metricValue}>{automated}</span>
+                    <span className={css.metricValue}>
+                        {displayMetric(
+                            workflowAutomatedInteractions.data?.value
+                        )}
+                    </span>
                 </div>
                 <div className={css.nodeMetric}>
                     <span
@@ -61,7 +80,9 @@ export const WorkflowOverviewMetrics = ({
                     >
                         Drop off
                     </span>
-                    <span className={css.metricValue}>{dropOff}</span>
+                    <span className={css.metricValue}>
+                        {displayMetric(workflowDropoff.data?.value)}
+                    </span>
                 </div>
                 <div className={css.nodeMetric}>
                     <span
@@ -72,7 +93,9 @@ export const WorkflowOverviewMetrics = ({
                     >
                         Ticket created
                     </span>
-                    <span className={css.metricValue}>{ticketCreated}</span>
+                    <span className={css.metricValue}>
+                        {displayMetric(workflowTicketCreated.data?.value)}
+                    </span>
                 </div>
             </div>
         </div>

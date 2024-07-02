@@ -1,3 +1,5 @@
+import {WorkflowStepMetricsMap} from './utils'
+
 const infinityNanToZero = (value: number) => {
     return isNaN(value) || value === Infinity ? 0 : value
 }
@@ -118,117 +120,34 @@ export const decreaseInResolutionTime = (
 }
 
 export const workflowAutomatedInteractions = (
-    workflowPromptStarted: number | null,
-    workflowEndedWithoutAction: number | null
-): number => {
-    if (workflowPromptStarted == null || workflowEndedWithoutAction == null)
-        return 0
-
-    return workflowPromptStarted + workflowEndedWithoutAction
-}
-
-export const workflowDropoff = (
     workflowStarted: number | null,
-    workflowPromptStarted: number | null,
-    workflowEndedWithoutAction: number | null,
-    workflowWithTicketHandover: number | null
+    dropoff: number | null,
+    workflowTicketsCreated: number | null
 ): number => {
     if (
         workflowStarted == null ||
-        workflowPromptStarted == null ||
-        workflowEndedWithoutAction == null ||
-        workflowWithTicketHandover == null
+        dropoff == null ||
+        workflowTicketsCreated == null
     )
         return 0
 
-    return nonNegative(
-        workflowStarted -
-            workflowPromptStarted -
-            workflowEndedWithoutAction -
-            workflowWithTicketHandover
-    )
-}
-
-export const workflowTicketCreated = (
-    workflowWithTicketHandover: number | null,
-    workflowTicketsCreated: number | null
-): number => {
-    if (workflowWithTicketHandover == null || workflowTicketsCreated == null)
-        return 0
-
-    return nonNegative(workflowWithTicketHandover - workflowTicketsCreated)
-}
-
-export const workflowAutomationRate = (
-    workflowAutomatedInteractions: number | null,
-    workflowDropoff: number | null,
-    workflowTicketCreated: number | null
-): number => {
-    if (
-        workflowAutomatedInteractions == null ||
-        workflowDropoff == null ||
-        workflowTicketCreated == null
-    )
-        return 0
-
-    return infinityNanToZero(
-        workflowAutomatedInteractions /
-            (workflowAutomatedInteractions +
-                workflowDropoff +
-                workflowTicketCreated)
-    )
-}
-
-export const workflowStepViewRate = (
-    workflowStarted: number | null,
-    workflowStepStarted: number | null
-): number => {
-    if (workflowStarted == null || workflowStepStarted == null) return 0
-
-    return infinityNanToZero(workflowStepStarted / workflowStarted)
-}
-
-export const workflowStepDropoffRate = (
-    workflowStepStarted: number | null,
-    workflowStepDropoff: number | null
-): number => {
-    if (workflowStepStarted == null || workflowStepDropoff == null) return 0
-
-    return infinityNanToZero(workflowStepDropoff / workflowStepStarted)
+    return nonNegative(workflowStarted - dropoff - workflowTicketsCreated)
 }
 
 export const workflowEndStepDropoff = (
+    dropoff: number | null,
     workflowStepPromptNotHelpful: number | null,
     workflowStepTicketsCreated: number | null
 ): number => {
     if (
+        dropoff == null ||
         workflowStepPromptNotHelpful == null ||
         workflowStepTicketsCreated == null
     )
         return 0
 
     return nonNegative(
-        workflowStepPromptNotHelpful - workflowStepTicketsCreated
-    )
-}
-
-export const workflowEndStepDropoffRate = (
-    workflowStepAutomatedInteractions: number | null,
-    workflowStepDropoff: number | null,
-    workflowStepTicketCreated: number | null
-): number => {
-    if (
-        workflowStepAutomatedInteractions == null ||
-        workflowStepDropoff == null ||
-        workflowStepTicketCreated == null
-    )
-        return 0
-
-    return infinityNanToZero(
-        workflowStepDropoff /
-            (workflowStepAutomatedInteractions +
-                workflowStepDropoff +
-                workflowStepTicketCreated)
+        dropoff + workflowStepPromptNotHelpful - workflowStepTicketsCreated
     )
 }
 
@@ -251,22 +170,20 @@ export const workflowEndStepAutomatedInteractions = (
     )
 }
 
-export const workflowEndSteTicketsCreatedRate = (
-    workflowStepAutomatedInteractions: number | null,
-    workflowStepDropoff: number | null,
-    workflowStepTicketCreated: number | null
+export const calculateRate = (
+    numerator: number | null,
+    denominator: number | null
 ): number => {
-    if (
-        workflowStepAutomatedInteractions == null ||
-        workflowStepDropoff == null ||
-        workflowStepTicketCreated == null
-    )
-        return 0
+    if (numerator == null || denominator == null) return 0
 
-    return infinityNanToZero(
-        workflowStepTicketCreated /
-            (workflowStepAutomatedInteractions +
-                workflowStepDropoff +
-                workflowStepTicketCreated)
-    )
+    return infinityNanToZero(numerator / denominator)
+}
+
+export const calculateSumOfDropoff = (data: WorkflowStepMetricsMap) => {
+    return Object.values(data).reduce((sum, item) => {
+        const dropoff = item.dropoff
+        return (
+            sum + (typeof dropoff === 'number' && !isNaN(dropoff) ? dropoff : 0)
+        )
+    }, 0)
 }

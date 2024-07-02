@@ -3,9 +3,9 @@ import {WorkflowDropoffMetricTiers} from '../hooks/useWorkflowDropoffMetricTiers
 export const getDropoffColor = (
     dropOffRate: number,
     tiers: WorkflowDropoffMetricTiers[]
-): string | null => {
+): WorkflowDropoffMetricTiers | undefined => {
     const matchingTier = tiers.find(
         (tier) => dropOffRate >= tier.range[0] && dropOffRate <= tier.range[1]
     )
-    return matchingTier ? matchingTier.color : null
+    return matchingTier
 }
