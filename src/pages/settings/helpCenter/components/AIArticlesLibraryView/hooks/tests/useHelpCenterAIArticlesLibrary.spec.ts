@@ -7,10 +7,14 @@ import {
 import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {useListStoreMappings} from 'models/storeMapping/queries'
+import useAppSelector from 'hooks/useAppSelector'
 import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
 jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+jest.mock('models/storeMapping/queries')
+jest.mock('hooks/useAppSelector')
 
 const mockedUseConditionalGetAIArticles = assumeMock(
     useConditionalGetAIArticles
@@ -18,8 +22,10 @@ const mockedUseConditionalGetAIArticles = assumeMock(
 const mockedUseSelfServiceStoreIntegrationsByShopName = assumeMock(
     useSelfServiceStoreIntegrationByShopName
 )
+const mockedUseListStoreMappings = assumeMock(useListStoreMappings)
+const mockedUseAppSelector = assumeMock(useAppSelector)
 
-describe('useConditionalGetAIArticles', () => {
+describe('useHelpCenterAIArticlesLibrary', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedUseConditionalGetAIArticles.mockImplementation(() => {
@@ -38,6 +44,16 @@ describe('useConditionalGetAIArticles', () => {
                 >
             }
         )
+        mockedUseListStoreMappings.mockImplementation(
+            () =>
+                ({
+                    data: [{store_id: 1}, {store_id: 2}],
+                } as unknown as ReturnType<typeof useListStoreMappings>)
+        )
+        mockedUseAppSelector.mockImplementation(() => [
+            {id: 3, type: 'email'},
+            {id: 4, type: 'email'},
+        ])
     })
 
     it('should return the new AI articles with the correct counters', () => {
@@ -110,5 +126,26 @@ describe('useConditionalGetAIArticles', () => {
         expect(result.current.articles).toEqual(
             AILibraryArticleItemsFixture.filter((aiArticle) => !aiArticle.isNew)
         )
+    })
+
+    it('should return true when there is email-to-store connection', () => {
+        const {result} = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        )
+
+        expect(result.current.hasEmailToStoreConnection).toBe(true)
+    })
+    it('should return false when there is no email-to-store connection', () => {
+        mockedUseListStoreMappings.mockImplementation(
+            () =>
+                ({
+                    data: [{store_id: 3}],
+                } as unknown as ReturnType<typeof useListStoreMappings>)
+        )
+        const {result} = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        )
+
+        expect(result.current.hasEmailToStoreConnection).toBe(false)
     })
 })

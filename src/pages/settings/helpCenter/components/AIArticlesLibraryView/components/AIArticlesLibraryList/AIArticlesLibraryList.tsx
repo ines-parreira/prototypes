@@ -6,19 +6,12 @@ import {
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
 
-import * as integrationsSelectors from 'state/integrations/selectors'
 import Button from 'pages/common/components/button/Button'
 import useKey from 'hooks/useKey'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
-import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {useListStoreMappings} from 'models/storeMapping/queries'
-import {StoreMapping} from 'models/storeMapping/types'
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
 import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
 
@@ -28,7 +21,6 @@ import AIArticleList from './AIArticleList'
 
 type AIArticlesLibraryListProps = {
     helpCenterId: number
-    helpCenterShopName: string | null
     articles?: AILibraryArticleItem[] | null
     counters: {
         [AIArticleToggleOptionValue.New]: number
@@ -42,11 +34,11 @@ type AIArticlesLibraryListProps = {
     selectedArticleType: AIArticleToggleOptionValue
     setSelectedArticleType: Dispatch<SetStateAction<AIArticleToggleOptionValue>>
     showLinkToArticleTemplates: boolean
+    hasEmailToStoreConnection: boolean
 }
 
 const AIArticlesLibraryList = ({
     helpCenterId,
-    helpCenterShopName,
     articles,
     counters,
     selectedArticle,
@@ -54,6 +46,7 @@ const AIArticlesLibraryList = ({
     selectedArticleType,
     setSelectedArticleType,
     showLinkToArticleTemplates,
+    hasEmailToStoreConnection,
 }: AIArticlesLibraryListProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const isAIArticlesForMultiStoreEnabled: boolean | undefined =
@@ -63,23 +56,6 @@ const AIArticlesLibraryList = ({
 
     const shopifyIntegrations = useShopifyIntegrations()
     const hasMultiBrands = shopifyIntegrations.length > 1
-
-    const integrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
-    )
-    const emailIntegrations = integrations.filter(isGenericEmailIntegration)
-    const emailIntegrationIds = emailIntegrations.map(
-        (emailIntegration) => emailIntegration.id
-    )
-    const {data: storeMapping} = useListStoreMappings(emailIntegrationIds, {
-        refetchOnWindowFocus: false,
-    })
-    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
-        helpCenterShopName ?? ''
-    )
-    const hasEmailToStoreConnection = storeMapping?.some(
-        (mapping: StoreMapping) => mapping.store_id === storeIntegration?.id
-    )
 
     const showLinkToConnectEmailToStore = useMemo(
         () =>

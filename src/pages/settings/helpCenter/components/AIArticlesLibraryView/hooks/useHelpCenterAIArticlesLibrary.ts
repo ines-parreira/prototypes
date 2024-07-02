@@ -8,6 +8,12 @@ import {
 } from 'models/helpCenter/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useAppSelector from 'hooks/useAppSelector'
+import {useListStoreMappings} from 'models/storeMapping/queries'
+import {StoreMapping} from 'models/storeMapping/types'
+import * as integrationsSelectors from 'state/integrations/selectors'
+import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -21,9 +27,35 @@ export const useHelpCenterAIArticlesLibrary = (
         AILibraryArticleItem[]
     >([])
 
+    const integrations = useAppSelector(
+        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+    )
+
+    const emailIntegrations = useMemo(
+        () => integrations.filter(isGenericEmailIntegration),
+        [integrations]
+    )
+    const emailIntegrationIds = useMemo(
+        () => emailIntegrations.map((emailIntegration) => emailIntegration.id),
+        [emailIntegrations]
+    )
+    const {data: storeMapping} = useListStoreMappings(emailIntegrationIds, {
+        refetchOnWindowFocus: false,
+    })
+
     const storeIntegration = useSelfServiceStoreIntegrationByShopName(
         helpCenterShopName ?? ''
     )
+
+    const hasEmailToStoreConnection = useMemo(
+        () =>
+            storeMapping?.some(
+                (mapping: StoreMapping) =>
+                    mapping.store_id === storeIntegration?.id
+            ),
+        [storeIntegration?.id, storeMapping]
+    )
+
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
         useConditionalGetAIArticles(
             helpCenterId,
@@ -99,6 +131,7 @@ export const useHelpCenterAIArticlesLibrary = (
             newArticles.length > 0 &&
             fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
         showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
+        hasEmailToStoreConnection,
         markArticleAsReviewed: (
             templateKey: string,
             reviewAction: ArticleTemplateReviewAction
