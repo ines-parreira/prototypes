@@ -4,7 +4,7 @@ import {
     CreateArticleDto,
     UpdateArticleTranslationDto,
 } from 'models/helpCenter/types'
-import {slugify} from 'utils'
+import {slugify} from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {
     CreateGuidanceArticle,
     GuidanceArticle,
