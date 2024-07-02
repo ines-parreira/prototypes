@@ -1,9 +1,11 @@
 import React, {ReactNode} from 'react'
 
 import classnames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 import Tooltip from 'pages/common/components/Tooltip'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
 import {PlaygroundFormValues} from '../PlaygroundChat/PlaygroundChat.types'
 import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
@@ -20,6 +22,7 @@ type Props = {
     disabledMessage?: ReactNode
     onSendMessage: () => void
     onNewConversation: () => void
+    isMessageSending: boolean
 }
 export const PlaygroundInputSection = ({
     formValues,
@@ -29,7 +32,11 @@ export const PlaygroundInputSection = ({
     isInitialMessage,
     onSendMessage,
     onNewConversation,
+    isMessageSending,
 }: Props) => {
+    const isPlaygroundPredefinedMessages: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentPlaygroundPredefinedMessages]
+
     const handleMessageChange = (message: string) => {
         onFormValuesChange('message', message)
     }
@@ -79,6 +86,9 @@ export const PlaygroundInputSection = ({
                 <PlaygroundEditor
                     value={formValues.message}
                     onChange={handleMessageChange}
+                    enablePredefinedMessages={
+                        isPlaygroundPredefinedMessages && !isMessageSending
+                    }
                 />
             </div>
             <div className={classnames(css.section, css.footer)}>
@@ -93,7 +103,11 @@ export const PlaygroundInputSection = ({
                 >
                     Send
                 </Button>
-                <Button intent="secondary" onClick={onNewConversation}>
+                <Button
+                    intent="secondary"
+                    onClick={onNewConversation}
+                    isDisabled={isInitialMessage}
+                >
                     New Conversation
                 </Button>
             </div>

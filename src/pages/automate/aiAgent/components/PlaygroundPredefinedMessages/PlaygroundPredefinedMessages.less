@@ -1,0 +1,21 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+
+:local {
+    .container {
+        padding: 0 @layout-spacing-s;
+    }
+
+    .list {
+        list-style: none;
+        padding-left: 0;
+        display: flex;
+        gap: @layout-spacing-xxs;
+        margin-bottom: 0;
+        flex-wrap: wrap;
+    }
+
+    .title {
+        color: var(--neutral-grey-5);
+        padding-bottom: @layout-spacing-xxs;
+    }
+}

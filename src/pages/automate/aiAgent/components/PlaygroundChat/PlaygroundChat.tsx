@@ -99,6 +99,7 @@ export const PlaygroundChat = ({
                         messages.filter((m) => m.sender !== AI_AGENT_SENDER)
                             .length === 0
                     }
+                    isMessageSending={isMessageSending}
                     onSendMessage={onSendMessage}
                     onNewConversation={onNewConversation}
                 />
