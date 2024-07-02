@@ -46,8 +46,6 @@ export const VoiceCallTable = ({
     userTimezone,
     filterOption,
 }: VoiceCallTableProps) => {
-    const displayVoiceAnalyticsNiceToHave: boolean =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave] || false
     const displayVoiceAnalyticsV1: boolean =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1] || false
 
@@ -88,12 +86,8 @@ export const VoiceCallTable = ({
                     ['date', 154],
                     ['state', 74],
                     ...(displayVoiceAnalyticsV1 ? [['recording', 84]] : []),
-                    ...(displayVoiceAnalyticsNiceToHave
-                        ? [
-                              ['duration', 74],
-                              ['wait time', 84],
-                          ]
-                        : [['duration', 74]]),
+                    ['duration', 74],
+                    ['wait time', 84],
                     ['ticket', 82],
                 ].map(([key, width]) => (
                     <BodyCell
@@ -113,11 +107,7 @@ export const VoiceCallTable = ({
                 ))}
             </TableBodyRow>
         ))
-    }, [
-        isTableScrolled,
-        displayVoiceAnalyticsNiceToHave,
-        displayVoiceAnalyticsV1,
-    ])
+    }, [isTableScrolled, displayVoiceAnalyticsV1])
 
     if (!isFetching && data?.length === 0) {
         return (
@@ -176,38 +166,24 @@ export const VoiceCallTable = ({
                                 }
                             />
                         )}
-                        {displayVoiceAnalyticsNiceToHave ? (
-                            <>
-                                <HeaderCellProperty
-                                    title={'Length'}
-                                    justifyContent={'right'}
-                                    wrapContent={true}
-                                    className={css.tinyCell}
-                                    tooltip={
-                                        'Total duration from the moment the agent accepts the call.'
-                                    }
-                                />
-                                <HeaderCellProperty
-                                    title={'Wait time'}
-                                    justifyContent={'right'}
-                                    wrapContent={true}
-                                    className={css.smallCell}
-                                    tooltip={
-                                        'Time a customer spent waiting to be connected to an agent or sent to voicemail.'
-                                    }
-                                />
-                            </>
-                        ) : (
-                            <HeaderCellProperty
-                                title={'Duration'}
-                                justifyContent={'right'}
-                                wrapContent={true}
-                                className={css.smallCell}
-                                tooltip={
-                                    'Total duration from the moment the call is started.'
-                                }
-                            />
-                        )}
+                        <HeaderCellProperty
+                            title={'Length'}
+                            justifyContent={'right'}
+                            wrapContent={true}
+                            className={css.tinyCell}
+                            tooltip={
+                                'Total duration from the moment the agent accepts the call.'
+                            }
+                        />
+                        <HeaderCellProperty
+                            title={'Wait time'}
+                            justifyContent={'right'}
+                            wrapContent={true}
+                            className={css.smallCell}
+                            tooltip={
+                                'Time a customer spent waiting to be connected to an agent or sent to voicemail.'
+                            }
+                        />
                         <HeaderCellProperty
                             title={'Ticket'}
                             className={css.ticketCell}
@@ -280,41 +256,26 @@ export const VoiceCallTable = ({
                                               />
                                           </BodyCell>
                                       )}
-                                      {displayVoiceAnalyticsNiceToHave ? (
-                                          <>
-                                              <BodyCell
-                                                  className={css.tinyCell}
-                                                  justifyContent={'right'}
-                                              >
-                                                  {!!item.talkTime
-                                                      ? getFormattedDurationEndedCall(
-                                                            item.talkTime
-                                                        )
-                                                      : '-'}
-                                              </BodyCell>
-                                              <BodyCell
-                                                  className={css.smallCell}
-                                                  justifyContent={'right'}
-                                              >
-                                                  {!!item.waitTime
-                                                      ? getFormattedDurationEndedCall(
-                                                            item.waitTime
-                                                        )
-                                                      : '-'}
-                                              </BodyCell>
-                                          </>
-                                      ) : (
-                                          <BodyCell
-                                              className={css.smallCell}
-                                              justifyContent={'right'}
-                                          >
-                                              {!!item.duration
-                                                  ? getFormattedDurationEndedCall(
-                                                        item.duration
-                                                    )
-                                                  : '-'}
-                                          </BodyCell>
-                                      )}
+                                      <BodyCell
+                                          className={css.tinyCell}
+                                          justifyContent={'right'}
+                                      >
+                                          {!!item.talkTime
+                                              ? getFormattedDurationEndedCall(
+                                                    item.talkTime
+                                                )
+                                              : '-'}
+                                      </BodyCell>
+                                      <BodyCell
+                                          className={css.smallCell}
+                                          justifyContent={'right'}
+                                      >
+                                          {!!item.waitTime
+                                              ? getFormattedDurationEndedCall(
+                                                    item.waitTime
+                                                )
+                                              : '-'}
+                                      </BodyCell>
                                       <BodyCell className={css.ticketCell}>
                                           {item.ticketId ? (
                                               <Link

@@ -68,7 +68,6 @@ describe('VoiceCallTable', () => {
     beforeEach(() => {
         resetLDMocks()
         mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave]: true,
             [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
         })
     })

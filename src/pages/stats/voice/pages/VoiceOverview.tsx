@@ -56,8 +56,6 @@ import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPayw
 import {ProductType} from 'models/billing/types'
 
 function VoiceOverview() {
-    const displayVoiceAnalyticsNiceToHave: boolean =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsNiceToHave] || false
     const displayVoiceAnalyticsV1: boolean | undefined =
         useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1] || false
     const [tableFilterOption, setTableFilterOption] = useState(
@@ -140,12 +138,10 @@ function VoiceOverview() {
                             variant={'ghost'}
                         />
                     )}
-                    {displayVoiceAnalyticsNiceToHave && (
-                        <AgentsStatsFilter
-                            value={pageStatsFilters.agents}
-                            variant={'ghost'}
-                        />
-                    )}
+                    <AgentsStatsFilter
+                        value={pageStatsFilters.agents}
+                        variant={'ghost'}
+                    />
                     <PeriodStatsFilter
                         initialSettings={{
                             minDate: moment(
@@ -157,43 +153,39 @@ function VoiceOverview() {
                         value={pageStatsFilters.period}
                         variant={'ghost'}
                     />
-                    {displayVoiceAnalyticsNiceToHave && (
-                        <VoiceOverviewDownloadDataButton
-                            onClick={async () => {
-                                logEvent(SegmentEvent.StatDownloadClicked, {
-                                    name: 'all-metrics',
-                                })
-                                await saveReport(
-                                    exportableData,
-                                    pageStatsFilters.period
-                                )
-                            }}
-                            disabled={loadingDownload}
-                        />
-                    )}
+                    <VoiceOverviewDownloadDataButton
+                        onClick={async () => {
+                            logEvent(SegmentEvent.StatDownloadClicked, {
+                                name: 'all-metrics',
+                            })
+                            await saveReport(
+                                exportableData,
+                                pageStatsFilters.period
+                            )
+                        }}
+                        disabled={loadingDownload}
+                    />
                 </>
             }
         >
-            {displayVoiceAnalyticsNiceToHave && (
-                <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
-                    <DashboardGridCell size={6}>
-                        <VoiceCallCallerExperienceMetric
-                            title={AVERAGE_WAIT_TIME_METRIC_TITLE}
-                            hint={AVERAGE_WAIT_TIME_METRIC_HINT}
-                            statsFilters={cleanStatsFilters}
-                            metricTrend={averageWaitTimeTrend}
-                        />
-                    </DashboardGridCell>
-                    <DashboardGridCell size={6}>
-                        <VoiceCallCallerExperienceMetric
-                            title={AVERAGE_TALK_TIME_METRIC_TITLE}
-                            hint={AVERAGE_TALK_TIME_METRIC_HINT}
-                            statsFilters={cleanStatsFilters}
-                            metricTrend={averageTalkTimeTrend}
-                        />
-                    </DashboardGridCell>
-                </DashboardSection>
-            )}
+            <DashboardSection title={CALLER_EXPERIENCE_METRICS_TITLE}>
+                <DashboardGridCell size={6}>
+                    <VoiceCallCallerExperienceMetric
+                        title={AVERAGE_WAIT_TIME_METRIC_TITLE}
+                        hint={AVERAGE_WAIT_TIME_METRIC_HINT}
+                        statsFilters={cleanStatsFilters}
+                        metricTrend={averageWaitTimeTrend}
+                    />
+                </DashboardGridCell>
+                <DashboardGridCell size={6}>
+                    <VoiceCallCallerExperienceMetric
+                        title={AVERAGE_TALK_TIME_METRIC_TITLE}
+                        hint={AVERAGE_TALK_TIME_METRIC_HINT}
+                        statsFilters={cleanStatsFilters}
+                        metricTrend={averageTalkTimeTrend}
+                    />
+                </DashboardGridCell>
+            </DashboardSection>
             <DashboardSection title={CALL_VOLUME_METRICS_TITLE}>
                 <DashboardGridCell size={3}>
                     <VoiceCallVolumeMetric
@@ -235,13 +227,11 @@ function VoiceOverview() {
                         title={CALL_LIST_TITLE}
                         noPadding
                         titleExtra={
-                            displayVoiceAnalyticsNiceToHave && (
-                                <VoiceCallDirectionFilter
-                                    onFilterSelect={(
-                                        option: VoiceCallFilterOptions
-                                    ) => setTableFilterOption(option)}
-                                />
-                            )
+                            <VoiceCallDirectionFilter
+                                onFilterSelect={(
+                                    option: VoiceCallFilterOptions
+                                ) => setTableFilterOption(option)}
+                            />
                         }
                     >
                         <VoiceCallTable
