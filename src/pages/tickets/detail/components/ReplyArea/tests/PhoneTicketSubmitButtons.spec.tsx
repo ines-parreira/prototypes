@@ -4,13 +4,16 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import {Device} from '@twilio/voice-sdk'
 import {resetLDMocks} from 'jest-launchdarkly-mock'
+import {isDeviceReady} from 'utils/device'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {mockDevice} from 'tests/twilioMocks'
-import {initialState} from 'state/twilio/voiceDevice'
+import {assumeMock} from 'utils/testing'
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
+
+jest.mock('utils/device')
+
+const isDeviceReadyMock = assumeMock(isDeviceReady)
 
 describe('<PhoneTicketSubmitButtons/>', () => {
     let store: MockStoreEnhanced
@@ -40,15 +43,8 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         }
     }
 
-    function getState(
-        device: Device | null = mockDevice() as Device,
-        source: any = getSource()
-    ) {
+    function getState(source: any = getSource()) {
         return {
-            twilio: {
-                ...initialState,
-                device,
-            },
             newMessage: fromJS({
                 newMessage: {
                     source,
@@ -58,6 +54,7 @@ describe('<PhoneTicketSubmitButtons/>', () => {
     }
 
     beforeEach(() => {
+        isDeviceReadyMock.mockReturnValue(true)
         jest.resetAllMocks()
         resetLDMocks()
     })
@@ -76,10 +73,9 @@ describe('<PhoneTicketSubmitButtons/>', () => {
     })
 
     const invalidStates = [
-        getState(null, getSource()), // Missing device
-        getState(null, getSource(null)), // Missing integration ID
-        getState(null, getSource(integrationId, null)), // Missing from address
-        getState(null, getSource(integrationId, validFromAddress, null)), // Missing to address
+        getState(getSource(null)), // Missing integration ID
+        getState(getSource(integrationId, null)), // Missing from address
+        getState(getSource(integrationId, validFromAddress, null)), // Missing to address
     ]
 
     it.each(invalidStates)(
@@ -99,4 +95,21 @@ describe('<PhoneTicketSubmitButtons/>', () => {
             )
         }
     )
+
+    it('should render as disabled because the device is not ready', () => {
+        store = mockStore(getState())
+
+        isDeviceReadyMock.mockReturnValue(false)
+
+        const {getByRole} = render(
+            <Provider store={store}>
+                <PhoneTicketSubmitButtons />
+            </Provider>
+        )
+
+        expect(getByRole('button', {name: 'Call'})).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        )
+    })
 })

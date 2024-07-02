@@ -1,7 +1,7 @@
 import React from 'react'
 import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import {mockFlags} from 'jest-launchdarkly-mock'
-import {isDesktopDevice} from 'utils/device'
+import {isDesktopDevice, isDeviceReady} from 'utils/device'
 import {assumeMock} from 'utils/testing'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
@@ -21,6 +21,7 @@ const isDesktopDeviceMock = assumeMock(isDesktopDevice)
 const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 const useHasPhoneMock = assumeMock(useHasPhone)
 const PhoneDeviceMock = assumeMock(PhoneDevice)
+const isDeviceReadyMock = assumeMock(isDeviceReady)
 
 describe('<PlaceCallNavbarButton />', () => {
     const renderComponent = () => render(<PlaceCallNavbarButton />)
@@ -32,6 +33,7 @@ describe('<PlaceCallNavbarButton />', () => {
             [FeatureFlagKey.OutboundDialer]: true,
         })
         useVoiceDeviceMock.mockReturnValue({device: {}} as any)
+        isDeviceReadyMock.mockReturnValue(true)
 
         PhoneDeviceMock.mockImplementation(({isOpen}: {isOpen: boolean}) => (
             <div data-testid="phone-device">
@@ -87,8 +89,8 @@ describe('<PlaceCallNavbarButton />', () => {
         expect(screen.getByTestId('phone-device')).toHaveTextContent('hidden')
     })
 
-    it('should render DeactivatedViewIcon and disable button when device is not available', () => {
-        useVoiceDeviceMock.mockReturnValue({device: null} as any)
+    it('should render DeactivatedViewIcon and disable button when device is not ready', () => {
+        isDeviceReadyMock.mockReturnValue(false)
         renderComponent()
 
         expect(screen.getByTestId('deactivated-view-icon')).toBeInTheDocument()

@@ -121,7 +121,7 @@ describe('VoiceDeviceProvider', () => {
         expect(connectDeviceMock.mock.calls.length).toBe(connectDeviceCalls)
     })
 
-    it('should disconnect device if it is unregistered or destroyed', async () => {
+    it(`should disconnect device only when it's in "destroyed" state`, async () => {
         useHasPhoneMock.mockReturnValue(true)
         isDesktopDeviceMock.mockReturnValue(true)
 
@@ -143,21 +143,12 @@ describe('VoiceDeviceProvider', () => {
             result.current.actions.setDevice({
                 state: Device.State.Registered,
             } as any)
-        })
-        expect(disconnectDeviceMock.mock.calls.length).toBe(
-            disconnectDeviceCalls
-        )
-
-        act(() => {
             result.current.actions.setDevice({
                 state: Device.State.Unregistered,
             } as any)
         })
-
-        await waitFor(() =>
-            expect(disconnectDeviceMock.mock.calls.length).toBe(
-                disconnectDeviceCalls + 1
-            )
+        expect(disconnectDeviceMock.mock.calls.length).toBe(
+            disconnectDeviceCalls
         )
 
         act(() => {
@@ -168,31 +159,8 @@ describe('VoiceDeviceProvider', () => {
 
         await waitFor(() =>
             expect(disconnectDeviceMock.mock.calls.length).toBe(
-                disconnectDeviceCalls + 2
+                disconnectDeviceCalls + 1
             )
         )
-    })
-
-    it('should not disconnect device if state is not unregistered or destroyed', () => {
-        useHasPhoneMock.mockReturnValue(true)
-        isDesktopDeviceMock.mockReturnValue(true)
-
-        let result: {current: VoiceDeviceContextState}
-
-        act(() => {
-            const hookResult = renderHook(useVoiceDevice, {
-                wrapper,
-            })
-
-            result = hookResult.result
-        })
-
-        act(() => {
-            result.current.actions.setDevice({
-                state: 'Test State',
-            } as any)
-        })
-
-        expect(disconnectDeviceMock.mock.calls.length).toBe(0)
     })
 })

@@ -17,6 +17,7 @@ import {DEPRECATED_getTicket} from 'state/ticket/selectors'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
+import {isDeviceReady} from 'utils/device'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -31,7 +32,7 @@ function PhoneTicketSubmitButtons() {
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
 
     const {isValid, onSubmit} = useSubmit(source, ticketId, agentId)
-    const isDisabled = !device || !!call || !isValid
+    const isDisabled = !isDeviceReady(device) || !!call || !isValid
 
     const handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()

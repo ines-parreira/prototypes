@@ -1,4 +1,5 @@
 import {UAParser} from 'ua-parser-js'
+import {Device} from '@twilio/voice-sdk'
 import * as utils from './device'
 
 type UADeviceType =
@@ -32,4 +33,8 @@ export const getDeviceType = (): UADeviceType | 'desktop' => {
 
 export const isDesktopDevice = (): boolean => {
     return utils.getDeviceType() === 'desktop'
+}
+
+export const isDeviceReady = (device?: Device | null): boolean => {
+    return device?.state === Device.State.Registered
 }

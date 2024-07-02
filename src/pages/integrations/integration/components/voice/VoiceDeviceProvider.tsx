@@ -58,9 +58,9 @@ export default function VoiceDeviceProvider({
         switch (state.device.state) {
             case Device.State.Registered:
             case Device.State.Registering:
+            case Device.State.Unregistered:
                 break
 
-            case Device.State.Unregistered:
             case Device.State.Destroyed:
                 void disconnectDevice(state.device, actions)
                 break

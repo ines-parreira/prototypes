@@ -1,4 +1,5 @@
 import UAParser from 'ua-parser-js'
+import {Device} from '@twilio/voice-sdk'
 import {isDesktopDevice} from 'utils/device'
 
 import * as utils from '../device'
@@ -47,6 +48,33 @@ describe('device utils', () => {
             const result = isDesktopDevice()
 
             expect(result).toBe(false)
+        })
+    })
+
+    describe('isDeviceReady', () => {
+        it('should return true if the device is registered', () => {
+            const device = {
+                state: Device.State.Registered,
+            } as Device
+
+            expect(utils.isDeviceReady(device)).toBe(true)
+        })
+
+        it.each([
+            Device.State.Unregistered,
+            Device.State.Registering,
+            Device.State.Destroyed,
+            Device.State.Unregistered,
+        ])('should return false if the device is not registered', (state) => {
+            const device = {
+                state: state,
+            } as Device
+
+            expect(utils.isDeviceReady(device)).toBe(false)
+        })
+
+        it('should return false if the device is null', () => {
+            expect(utils.isDeviceReady(null)).toBe(false)
         })
     })
 })
