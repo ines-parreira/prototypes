@@ -27,10 +27,6 @@ import {ReportingGranularity} from 'models/reporting/types'
 
 const rafControl = mockRequestAnimationFrame()
 
-jest.mock('@gorgias/ui-kit', () => ({
-    Tooltip: () => <div />,
-}))
-
 jest.mock('state/ui/stats/ticketInsightsSlice')
 jest.mock(
     'state/ui/stats/agentPerformanceSlice',

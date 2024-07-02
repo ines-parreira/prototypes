@@ -9,7 +9,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
 import {OverviewMetric} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {DrillDownModalTrigger} from '../DrillDownModalTrigger'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)

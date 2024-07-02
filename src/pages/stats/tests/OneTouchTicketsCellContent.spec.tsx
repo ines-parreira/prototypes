@@ -24,11 +24,6 @@ jest.mock('hooks/reporting/useOneTouchTicketsPercentageMetricPerAgent')
 const useOneTouchTicketsPercentageMetricPerAgentMock = assumeMock(
     useOneTouchTicketsPercentageMetricPerAgent
 )
-
-jest.mock('@gorgias/ui-kit', () => ({
-    Tooltip: () => <div />,
-}))
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<PercentageOfClosedTicketsCellContent>', () => {

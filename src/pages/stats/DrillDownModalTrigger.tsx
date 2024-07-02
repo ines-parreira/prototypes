@@ -1,14 +1,9 @@
 import React, {PropsWithChildren} from 'react'
-import Tooltip from 'pages/common/components/Tooltip'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
-import css from 'pages/stats/DrillDownModalTrigger.less'
-import {hintTooltipDelay} from 'pages/stats/common/constants'
-import {getSerializedIdFromMetricData} from 'pages/stats/utils'
-
-export const TRIGGER_ID = 'drill-down'
+import css from './DrillDownModalTrigger.less'
 
 type Props = {
     metricData: DrillDownMetric
@@ -27,15 +22,10 @@ export const DrillDownModalTrigger = ({
         logEvent(SegmentEvent.StatClicked, {metric: metricData.metricName})
     }
 
-    const targetId = getSerializedIdFromMetricData(metricData, TRIGGER_ID)
-
     return (
         <>
             {enabled ? (
-                <span id={targetId} className={css.text} onClick={handleClick}>
-                    <Tooltip delay={hintTooltipDelay} target={targetId}>
-                        Click to view tickets
-                    </Tooltip>
+                <span className={css.text} onClick={handleClick}>
                     {children}
                 </span>
             ) : (

@@ -28,11 +28,6 @@ jest.mock('hooks/reporting/metricsPerAgent')
 const useTicketsRepliedMetricPerAgentMock = assumeMock(
     useTicketsRepliedMetricPerAgent
 )
-
-jest.mock('@gorgias/ui-kit', () => ({
-    Tooltip: () => <div />,
-}))
-
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<TicketsRepliedCellContent>', () => {
