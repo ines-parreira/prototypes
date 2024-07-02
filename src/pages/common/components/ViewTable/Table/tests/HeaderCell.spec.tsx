@@ -3,13 +3,15 @@ import {Provider} from 'react-redux'
 import {fireEvent, render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Map, List} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 
 import {views} from 'config/views'
 import {OrderDirection} from 'models/api/types'
-import {ViewField} from 'models/view/types'
+import {EntityType, ViewField} from 'models/view/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {fetchViewItems, setOrderDirection} from 'state/views/actions'
 import {assumeMock} from 'utils/testing'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import HeaderCell from '../HeaderCell'
 
@@ -45,9 +47,15 @@ describe('ViewTable::Table::HeaderCell', () => {
         type: viewConfig.get('name'),
     }
 
+    beforeEach(() => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AdvancedSearchSorting]: false,
+        }))
+    })
+
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
-    it('diplays the default cell', () => {
+    it('displays the default cell', () => {
         const {container} = render(
             <Provider store={mockStore({})}>
                 <HeaderCell {...minProps} />
@@ -113,5 +121,58 @@ describe('ViewTable::Table::HeaderCell', () => {
             field.get('path'),
             OrderDirection.Desc
         )
+    })
+
+    it('should show the ShowMoreFieldsDropdown when not in search mode', () => {
+        const {getByText} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} isLast />
+            </Provider>
+        )
+
+        expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
+    })
+
+    it('should hide the ShowMoreFieldsDropdown when in search mode', () => {
+        const {queryByText} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} isLast isSearch />
+            </Provider>
+        )
+
+        expect(queryByText('ShowMoreFieldsDropdown')).not.toBeInTheDocument()
+    })
+
+    it('should show the ShowMoreFieldsDropdown when in search mode and AdvancedSearchSorting feature flag is enabled', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AdvancedSearchSorting]: true,
+        }))
+
+        const {getByText} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell {...minProps} isLast isSearch />
+            </Provider>
+        )
+
+        expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
+    })
+
+    it('should hide the ShowMoreFieldsDropdown when not on ticket search view', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AdvancedSearchSorting]: true,
+        }))
+
+        const {queryByText} = render(
+            <Provider store={mockStore()}>
+                <HeaderCell
+                    {...minProps}
+                    isLast
+                    isSearch
+                    type={EntityType.Customer}
+                />
+            </Provider>
+        )
+
+        expect(queryByText('ShowMoreFieldsDropdown')).not.toBeInTheDocument()
     })
 })

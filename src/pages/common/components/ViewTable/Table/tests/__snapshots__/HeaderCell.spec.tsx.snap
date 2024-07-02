@@ -1,19 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewTable::Table::HeaderCell diplays the default cell 1`] = `
-<td>
-  <div>
-    <div
-      class="cell-wrapper"
-    >
-      <div>
-        ACTIONS
-      </div>
-    </div>
-  </div>
-</td>
-`;
-
 exports[`ViewTable::Table::HeaderCell displays More fields dropdown after the last cell 1`] = `
 <td>
   <div>
@@ -45,6 +31,20 @@ exports[`ViewTable::Table::HeaderCell displays sortable field cell 1`] = `
         >
           Created
         </span>
+      </div>
+    </div>
+  </div>
+</td>
+`;
+
+exports[`ViewTable::Table::HeaderCell displays the default cell 1`] = `
+<td>
+  <div>
+    <div
+      class="cell-wrapper"
+    >
+      <div>
+        ACTIONS
       </div>
     </div>
   </div>

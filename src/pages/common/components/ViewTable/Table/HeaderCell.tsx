@@ -1,12 +1,13 @@
 import React, {ComponentType, useCallback, useMemo} from 'react'
 import {fromJS, Map, List} from 'immutable'
 import classnames from 'classnames'
-import {TicketSearchSortableProperties} from 'models/search/types'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 
+import {TicketSearchSortableProperties} from 'models/search/types'
 import {getConfigByName} from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
+import {FeatureFlagKey} from 'config/featureFlags'
 import {OrderDirection} from 'models/api/types'
 import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
 import {fetchViewItems, setOrderDirection} from 'state/views/actions'
@@ -17,6 +18,7 @@ import {
     getSelectedItemsIds,
 } from 'state/views/selectors'
 import {fieldPath as getFieldPath} from 'utils'
+import {EntityType} from 'models/view/types'
 
 type Props = {
     ActionsComponent: Maybe<ComponentType<any>>
@@ -44,6 +46,8 @@ const HeaderCell = ({
     ) as TicketSearchSortableProperties
     const orderDirection = useAppSelector(getActiveViewOrderDirection)
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
+    const isAdvancedSearchSortingEnabled =
+        useFlags()[FeatureFlagKey.AdvancedSearchSorting]
 
     const fieldPath = useMemo(
         () => getFieldPath(field),
@@ -121,7 +125,12 @@ const HeaderCell = ({
                         </div>
                     )}
                 </div>
-                {isLast && !isSearch ? (
+                {isLast &&
+                ((isAdvancedSearchSortingEnabled &&
+                    isSearch &&
+                    (type === EntityType.Ticket ||
+                        type === EntityType.TicketWithHighlight)) ||
+                    !isSearch) ? (
                     <ShowMoreFieldsDropdown
                         config={config}
                         fields={config.get('fields', fromJS([]))}
