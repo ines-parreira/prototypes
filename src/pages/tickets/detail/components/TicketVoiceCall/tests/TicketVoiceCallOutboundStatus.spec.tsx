@@ -1,7 +1,5 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
 import TicketVoiceCallOutboundStatus from '../TicketVoiceCallOutboundStatus'
 
@@ -28,11 +26,6 @@ const renderComponent = (voiceCall: any) => {
 }
 
 describe('TicketVoiceCallOutboundStatus', () => {
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({[FeatureFlagKey.CallTransfer]: true})
-    })
-
     it.each([
         [VoiceCallStatus.Canceled, 'Call missed by'],
         [VoiceCallStatus.NoAnswer, 'Call missed by'],

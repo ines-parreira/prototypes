@@ -4,7 +4,6 @@ import {connect, ConnectedProps} from 'react-redux'
 import {AxiosError} from 'axios'
 import classNames from 'classnames'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
 import {TwilioSocketEventType} from 'business/twilio'
 import {
@@ -33,7 +32,6 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {notify as notifyAction} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
@@ -60,8 +58,6 @@ export function OngoingPhoneCall({
     const [isTransferring, setIsTransferring] = useState(false)
     const [transferringTo, setTransferringTo] = useState<number | null>(null)
     const [isRecording, setIsRecording] = useState(false)
-    const isCallHoldEnabled = useFlags()[FeatureFlagKey.CallOnHold]
-    const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
 
     const {mutate: changeHoldState} = usePutCallParticipantOnHold({
         mutation: {
@@ -173,33 +169,29 @@ export function OngoingPhoneCall({
                     />
                 )}
                 <InCallDialPad className={css.dialPad} call={call} />
-                {isCallTransferEnabled && (
-                    <>
-                        <IconButtonTooltip
-                            intent="secondary"
-                            data-testid="transfer-call-button"
-                            onClick={() =>
-                                setIsTransferDropdownOpen((isOpen) => !isOpen)
-                            }
-                            icon="phone_forwarded"
-                            ref={transferButtonRef}
-                            isDisabled={isTransferring}
-                        >
-                            Transfer
-                        </IconButtonTooltip>
-                        <CallTransferDropdown
-                            target={transferButtonRef}
-                            isOpen={isTransferDropdownOpen}
-                            setIsOpen={setIsTransferDropdownOpen}
-                            onTransferInitiated={(transferTarget) => {
-                                setIsTransferring(true)
-                                setIsOnHold(true)
-                                setTransferringTo(transferTarget)
-                            }}
-                            call={call}
-                        />
-                    </>
-                )}
+                <IconButtonTooltip
+                    intent="secondary"
+                    data-testid="transfer-call-button"
+                    onClick={() =>
+                        setIsTransferDropdownOpen((isOpen) => !isOpen)
+                    }
+                    icon="phone_forwarded"
+                    ref={transferButtonRef}
+                    isDisabled={isTransferring}
+                >
+                    Transfer
+                </IconButtonTooltip>
+                <CallTransferDropdown
+                    target={transferButtonRef}
+                    isOpen={isTransferDropdownOpen}
+                    setIsOpen={setIsTransferDropdownOpen}
+                    onTransferInitiated={(transferTarget) => {
+                        setIsTransferring(true)
+                        setIsOnHold(true)
+                        setTransferringTo(transferTarget)
+                    }}
+                    call={call}
+                />
                 <IconButtonTooltip
                     intent="secondary"
                     data-testid="mute-call-button"
@@ -208,24 +200,22 @@ export function OngoingPhoneCall({
                 >
                     {isMuted ? 'Unmute' : 'Mute'}
                 </IconButtonTooltip>
-                {isCallHoldEnabled && (
-                    <IconButtonTooltip
-                        intent="secondary"
-                        data-testid="hold-call-button"
-                        onClick={() =>
-                            changeHoldState({
-                                data: {
-                                    participant_call_sid: getCallSid(call),
-                                    hold_state: !isOnHold,
-                                },
-                            })
-                        }
-                        icon={isOnHold ? 'pause_circle_outline' : 'pause'}
-                        isDisabled={isTransferring}
-                    >
-                        {isOnHold ? 'Take off hold' : 'Hold'}
-                    </IconButtonTooltip>
-                )}
+                <IconButtonTooltip
+                    intent="secondary"
+                    data-testid="hold-call-button"
+                    onClick={() =>
+                        changeHoldState({
+                            data: {
+                                participant_call_sid: getCallSid(call),
+                                hold_state: !isOnHold,
+                            },
+                        })
+                    }
+                    icon={isOnHold ? 'pause_circle_outline' : 'pause'}
+                    isDisabled={isTransferring}
+                >
+                    {isOnHold ? 'Take off hold' : 'Hold'}
+                </IconButtonTooltip>
                 <IconButtonTooltip
                     data-testid="record-call-button"
                     intent="secondary"

@@ -1,7 +1,4 @@
 import React from 'react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     getDisplayOutboundVoiceCallStatus,
     VoiceCall,
@@ -18,7 +15,6 @@ type Props = {
 }
 
 export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
-    const isCallTransferEnabled = useFlags()[FeatureFlagKey.CallTransfer]
     const answeredStatus = (
         <div className={css.statusWrapper}>
             <div>Answered by</div>
@@ -61,13 +57,12 @@ export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
             )
         case VoiceCallDisplayStatus.InProgress:
         case VoiceCallDisplayStatus.Answered:
-            return isCallTransferEnabled ? (
+            return (
                 <CollapsibleDetails title={answeredStatus}>
                     <TicketVoiceCallEvents callId={voiceCall.id} />
                 </CollapsibleDetails>
-            ) : (
-                answeredStatus
             )
+
         default:
             return null
     }
