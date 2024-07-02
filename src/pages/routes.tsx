@@ -192,6 +192,7 @@ import {AiAgentErrorBoundary} from 'pages/automate/aiAgent/providers/AiAgentErro
 import QuickResponsesViewContainer from 'pages/automate/quickResponses/QuickResponsesViewContainer'
 import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTemplatesViewContainer'
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
@@ -1393,9 +1394,7 @@ function AiAgentRoutes({match: {path}}: RouteComponentProps) {
     const showAiAgentGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
 
-    const showAutomateActions: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateActions]
-
+    const showAutomateActions = useShowAutomateActions()
     const {shopType} = useParams<{
         shopType: string
     }>()

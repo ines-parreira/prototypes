@@ -2,13 +2,13 @@ import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useMemo} from 'react'
 import {ACTIONS} from 'pages/automate/common/components/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
+import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 
 export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
     const showGuidance: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentGuidance]
 
-    const showAutomateActions: boolean | undefined =
-        useFlags()[FeatureFlagKey.AutomateActions]
+    const showAutomateActions = useShowAutomateActions()
 
     const routes = useMemo(
         () => ({
