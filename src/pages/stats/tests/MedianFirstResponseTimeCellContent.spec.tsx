@@ -18,6 +18,10 @@ import {assumeMock} from 'utils/testing'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 import {User} from 'config/types/user'
 
+jest.mock('@gorgias/ui-kit', () => ({
+    Tooltip: () => <div />,
+}))
+
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
 jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (

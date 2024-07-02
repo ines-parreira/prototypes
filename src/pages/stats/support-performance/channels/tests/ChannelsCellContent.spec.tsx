@@ -15,6 +15,10 @@ import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {renderWithStore} from 'utils/testing'
 
+jest.mock('@gorgias/ui-kit', () => ({
+    Tooltip: () => <div />,
+}))
+
 describe('<ChannelsCellContent />', () => {
     const defaultState = {
         [statsSlice.name]: statsInitialState,

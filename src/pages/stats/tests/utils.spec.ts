@@ -19,7 +19,9 @@ import {
     getUtcPeriodFromDateAndGranularity,
     getIconNameBySign,
     highlightString,
+    getSerializedIdFromMetricData,
 } from 'pages/stats/utils'
+import {OverviewMetric, TicketFieldsMetric} from 'state/ui/stats/types'
 
 describe('getGradient', () => {
     it('should return color if canvasArea or canvasContext is not defined', () => {
@@ -282,5 +284,40 @@ describe('highlightString', () => {
 
     it('should return the same string if highlight is empty', () => {
         expect(highlightString('test', '')).toEqual('test')
+    })
+})
+
+describe('getSerializedIdFromMetricData', () => {
+    it('should serialize metric data with prefix', () => {
+        const metricData = {
+            metricName: OverviewMetric.OpenTickets,
+        }
+        const prefix = 'prefix'
+        expect(getSerializedIdFromMetricData(metricData, prefix)).toEqual(
+            'prefix-open_tickets'
+        )
+    })
+
+    it('should serialize metric data with multiple fields', () => {
+        const metricData = {
+            metricName: TicketFieldsMetric.TicketCustomFieldsTicketCount,
+            customFieldId: 123,
+            customFieldValue: ['some::customField'],
+        }
+        const prefix = 'prefix'
+        expect(getSerializedIdFromMetricData(metricData, prefix)).toEqual(
+            'prefix-ticket_custom_fields_ticket_count-123-some::customField'
+        )
+    })
+
+    it('should ignore title field', () => {
+        const metricData = {
+            metricName: OverviewMetric.OpenTickets,
+            title: 'Open Tickets',
+        }
+        const prefix = 'prefix'
+        expect(getSerializedIdFromMetricData(metricData, prefix)).toEqual(
+            'prefix-open_tickets'
+        )
     })
 })

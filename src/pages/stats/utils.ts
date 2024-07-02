@@ -5,7 +5,7 @@ import {StatsFilters} from 'models/stat/types'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import {comparedPeriodString, getFormat} from 'pages/stats/common/utils'
 
-import {toRGBA} from 'utils'
+import {objKeys, toRGBA} from 'utils'
 import {
     MONTH_AND_YEAR_SHORT,
     SHORT_DATE_FORMAT_US,
@@ -14,6 +14,7 @@ import {
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
 } from 'utils/date'
 import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 
 export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -151,4 +152,15 @@ export const highlightString = (text: string, highlight: string) => {
 
     const regex = new RegExp(`(${highlight})`, 'gi')
     return text.replace(regex, '<b>$1</b>')
+}
+
+export const getSerializedIdFromMetricData = (
+    metricData: DrillDownMetric,
+    prefix: string
+) => {
+    const serializedMetric = objKeys(metricData)
+        .filter((key) => key !== 'title')
+        .map((key) => `${metricData[key]}`)
+        .join('-')
+    return `${prefix}-${serializedMetric}`
 }
