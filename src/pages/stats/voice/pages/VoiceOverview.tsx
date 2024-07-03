@@ -32,7 +32,7 @@ import {getPageStatsFilters} from 'state/stats/selectors'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
@@ -122,7 +122,7 @@ function VoiceOverview() {
             title={VOICE_OVERVIEW_PAGE_TITLE}
             titleExtra={
                 <>
-                    <IntegrationsStatsFilter
+                    <DEPRECATED_IntegrationsStatsFilter
                         value={pageStatsFilters.integrations}
                         integrations={phoneIntegrations}
                         isMultiple

@@ -12,7 +12,7 @@ import {
 import useStatResource from 'hooks/reporting/useStatResource'
 import ChannelsStatsFilter from './common/filters/DEPRECATED_ChannelsStatsFilter'
 import TableStat from './common/components/charts/TableStat/TableStat'
-import IntegrationsStatsFilter from './IntegrationsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from './common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from './common/filters/DEPRECATED_PeriodStatsFilter'
 import StatsPage from './StatsPage'
 import StatWrapper from './StatWrapper'
@@ -54,7 +54,7 @@ export default function AutomateMacros() {
             titleExtra={
                 pageStatsFilters && (
                     <>
-                        <IntegrationsStatsFilter
+                        <DEPRECATED_IntegrationsStatsFilter
                             value={integrationsStatsFilter}
                             integrations={messagingIntegrations}
                             isMultiple

@@ -10,14 +10,14 @@ import {Integration} from 'models/integration/types'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 
-import IntegrationsStatsFilter, {
+import DEPRECATED_IntegrationsStatsFilter, {
     FONT_ICONS,
     IMAGE_ICONS,
-} from 'pages/stats/IntegrationsStatsFilter'
+} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 
 const mockStore = configureMockStore([thunk])
 
-describe('IntegrationsStatsFilter', () => {
+describe('DEPRECATED_IntegrationsStatsFilter', () => {
     const defaultState = {
         stats: initialState,
     } as RootState
@@ -25,7 +25,7 @@ describe('IntegrationsStatsFilter', () => {
     it('should not render missing integrations', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <IntegrationsStatsFilter
+                <DEPRECATED_IntegrationsStatsFilter
                     value={[
                         integrationsState.integrations[0].id,
                         999999,
@@ -55,7 +55,7 @@ describe('IntegrationsStatsFilter', () => {
 
             const {getByText} = render(
                 <Provider store={mockStore(defaultState)}>
-                    <IntegrationsStatsFilter
+                    <DEPRECATED_IntegrationsStatsFilter
                         value={[]}
                         integrations={[integration]}
                     />
@@ -72,7 +72,7 @@ describe('IntegrationsStatsFilter', () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <IntegrationsStatsFilter
+                <DEPRECATED_IntegrationsStatsFilter
                     value={[]}
                     integrations={
                         integrationsState.integrations as Integration[]
@@ -90,7 +90,7 @@ describe('IntegrationsStatsFilter', () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <IntegrationsStatsFilter
+                <DEPRECATED_IntegrationsStatsFilter
                     value={[integrationsState.integrations[0].id]}
                     isMultiple={false}
                     integrations={
@@ -109,7 +109,7 @@ describe('IntegrationsStatsFilter', () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <IntegrationsStatsFilter
+                <DEPRECATED_IntegrationsStatsFilter
                     value={[integrationsState.integrations[0].id]}
                     integrations={
                         integrationsState.integrations as Integration[]

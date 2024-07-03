@@ -8,7 +8,7 @@ import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import {ScoreStatsFilter} from 'pages/stats/ScoreStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
@@ -29,7 +29,7 @@ export const SupportPerformanceSatisfactionFilters = () => {
     )
     return (
         <>
-            <IntegrationsStatsFilter
+            <DEPRECATED_IntegrationsStatsFilter
                 value={integrationsStatsFilter}
                 integrations={messagingIntegrations}
                 isMultiple

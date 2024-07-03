@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import CampaignsStatsFilter from 'pages/stats/CampaignsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {getStatsFilters, getStatsStoreIntegrations} from 'state/stats/selectors'
@@ -17,7 +17,7 @@ export const SupportPerformanceRevenueFilters = () => {
 
     return (
         <>
-            <IntegrationsStatsFilter
+            <DEPRECATED_IntegrationsStatsFilter
                 value={statsFilters.integrations}
                 integrations={storeIntegrations}
                 isRequired

@@ -16,9 +16,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {AppIntegration, Integration} from 'models/integration/types'
 import {StatsFilters} from 'models/stat/types'
 
-import SelectFilter from './common/SelectFilter'
-import SelectStatsFilter from './common/SelectStatsFilter'
-import css from './IntegrationsStatsFilter.less'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
+import css from 'pages/stats/common/filters/IntegrationsStatsFilter.less'
 
 export const IMAGE_ICONS = {
     [IntegrationType.Aircall]: aircallIcon,
@@ -80,7 +80,7 @@ const getIntegrationIcon = (integration: Integration) => {
     )
 }
 
-export default function IntegrationsStatsFilter({
+export default function DEPRECATED_IntegrationsStatsFilter({
     value = [],
     integrations,
     isMultiple = false,

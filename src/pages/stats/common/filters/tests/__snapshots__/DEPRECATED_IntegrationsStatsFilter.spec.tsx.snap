@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`IntegrationsStatsFilter should merge stats filters on item select 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should merge stats filters on item select 1`] = `
 [
   {
     "payload": {
@@ -14,7 +14,7 @@ exports[`IntegrationsStatsFilter should merge stats filters on item select 1`] =
 ]
 `;
 
-exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should not render missing integrations 1`] = `
 <div
   class="dropdown"
 >
@@ -436,7 +436,7 @@ exports[`IntegrationsStatsFilter should not render missing integrations 1`] = `
 </div>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for aircall integration 1`] = `
 <span
   id="label-tooltip-31"
 >
@@ -444,7 +444,7 @@ exports[`IntegrationsStatsFilter should render icon for aircall integration 1`] 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for email integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for email integration 1`] = `
 <span
   id="label-tooltip-43"
 >
@@ -452,7 +452,7 @@ exports[`IntegrationsStatsFilter should render icon for email integration 1`] = 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for facebook integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for facebook integration 1`] = `
 <span
   id="label-tooltip-45"
 >
@@ -460,7 +460,7 @@ exports[`IntegrationsStatsFilter should render icon for facebook integration 1`]
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for gmail integration 1`] = `
 <span
   id="label-tooltip-33"
 >
@@ -468,7 +468,7 @@ exports[`IntegrationsStatsFilter should render icon for gmail integration 1`] = 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for gorgias_chat integration 1`] = `
 <span
   id="label-tooltip-53"
 >
@@ -476,7 +476,7 @@ exports[`IntegrationsStatsFilter should render icon for gorgias_chat integration
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for http integration 1`] = `
 <span
   id="label-tooltip-47"
 >
@@ -484,7 +484,7 @@ exports[`IntegrationsStatsFilter should render icon for http integration 1`] = `
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for outlook integration 1`] = `
 <span
   id="label-tooltip-35"
 >
@@ -492,7 +492,7 @@ exports[`IntegrationsStatsFilter should render icon for outlook integration 1`] 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for phone integration 1`] = `
 <span
   id="label-tooltip-49"
 >
@@ -500,7 +500,7 @@ exports[`IntegrationsStatsFilter should render icon for phone integration 1`] = 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for shopify integration 1`] = `
 <span
   id="label-tooltip-37"
 >
@@ -508,7 +508,7 @@ exports[`IntegrationsStatsFilter should render icon for shopify integration 1`] 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for sms integration 1`] = `
 <span
   id="label-tooltip-51"
 >
@@ -516,7 +516,7 @@ exports[`IntegrationsStatsFilter should render icon for sms integration 1`] = `
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for whatsapp integration 1`] = `
 <span
   id="label-tooltip-41"
 >
@@ -524,7 +524,7 @@ exports[`IntegrationsStatsFilter should render icon for whatsapp integration 1`]
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should render icon for zendesk integration 1`] = `
 <span
   id="label-tooltip-39"
 >
@@ -532,7 +532,7 @@ exports[`IntegrationsStatsFilter should render icon for zendesk integration 1`] 
 </span>
 `;
 
-exports[`IntegrationsStatsFilter should replace the item when isMultiple is set to false 1`] = `
+exports[`DEPRECATED_IntegrationsStatsFilter should replace the item when isMultiple is set to false 1`] = `
 [
   {
     "payload": {

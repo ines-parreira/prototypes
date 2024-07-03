@@ -20,7 +20,7 @@ import {
 } from 'pages/stats/voice/constants/voiceAgents'
 import {VoiceAgentsTable} from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
@@ -36,7 +36,7 @@ function VoiceAgents() {
             title={VOICE_AGENTS_PAGE_TITLE}
             titleExtra={
                 <>
-                    <IntegrationsStatsFilter
+                    <DEPRECATED_IntegrationsStatsFilter
                         value={pageStatsFilters.integrations}
                         integrations={phoneIntegrations}
                         isMultiple

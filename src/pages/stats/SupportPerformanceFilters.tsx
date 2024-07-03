@@ -3,7 +3,7 @@ import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
 import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
-import IntegrationsStatsFilter from 'pages/stats/IntegrationsStatsFilter'
+import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
@@ -20,7 +20,7 @@ export const SupportPerformanceFilters = () => {
 
     return (
         <>
-            <IntegrationsStatsFilter
+            <DEPRECATED_IntegrationsStatsFilter
                 value={pageStatsFilters.integrations}
                 integrations={messagingIntegrations}
                 isMultiple
