@@ -17,6 +17,7 @@ import {
     StoreAdminNewUrlInput,
     STORE_ADMIN_URL_INPUT_ID,
 } from './StoreAdminNewUrlInput'
+import {split_url} from './utils'
 
 type Props = {
     integration: Map<string, any>
@@ -73,11 +74,9 @@ const OneClickIntegrationForm = ({
     }
 
     const handleCreate = () => {
-        const splitAdminUrl = storeURL.split('/')
-        const url = splitAdminUrl[0]
-        const adminUrlSuffix = splitAdminUrl[1]
+        const [url, suffix] = split_url(storeURL)
         window.location.href = redirectUri.concat(
-            `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`
+            `?store_url=${url}&admin_url_suffix=${suffix}`
         )
     }
 
