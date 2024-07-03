@@ -49,6 +49,10 @@ export enum SlaMetric {
     BreachedTicketsRate = 'sla-breached-tickets-rate',
 }
 
+export enum ConvertMetric {
+    CampaignSalesCount = 'campaign_sales_count',
+}
+
 export enum AgentsTableViewIdentifier {
     AgentPerformanceMetrics = 'agent_performance_metrics',
 }

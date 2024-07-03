@@ -2,6 +2,7 @@ import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTime
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {ReportingQuery} from 'models/reporting/types'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
 export enum JobStatus {
     CancelRequested = 'cancel_requested',
@@ -27,6 +28,7 @@ export enum JobType {
     ImportMacro = 'importMacro',
     UpdateTicket = 'updateTicket',
     ExportTicketDrilldown = 'exportTicketDrilldown',
+    ExportConvertCampaignSalesDrilldown = 'exportConvertCampaignSalesDrilldown',
 }
 
 type JobInfo = {
@@ -50,6 +52,7 @@ export type ReportingQueryJobParams = {
         | HelpdeskMessageCubeWithJoins
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
+        | ConvertOrderConversionCube
     >
 }
 

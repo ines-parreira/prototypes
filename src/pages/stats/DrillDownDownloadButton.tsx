@@ -10,7 +10,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Tooltip from 'pages/common/components/Tooltip'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
-    createExportTicketDrillDownJob,
+    createExportDrillDownJob,
     DrillDownMetric,
     getDrillDownExport,
 } from 'state/ui/stats/drillDownSlice'
@@ -19,7 +19,7 @@ import {hasRole} from 'utils'
 import css from 'pages/stats/DrillDownDownloadButton.less'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
-export const TOTAL_TICKETS_COUNT_PLACEHOLDER = 'All'
+export const TOTAL_OBJECTS_COUNT_PLACEHOLDER = 'All'
 export const DOWNLOAD_LOADING_LABEL = 'Loading'
 const NO_PERMISSIONS_CONTENT =
     'You don’t have enough permissions to download this content.'
@@ -29,8 +29,10 @@ const tooltipTargetID = 'download-drill-down-tooltip'
 
 export const DrillDownDownloadButton = ({
     metricData,
+    objectType,
 }: {
     metricData: DrillDownMetric
+    objectType: string
 }) => {
     const dispatch = useAppDispatch()
     const {isLoading, isError, isRequested} = useAppSelector(getDrillDownExport)
@@ -44,7 +46,7 @@ export const DrillDownDownloadButton = ({
     const query = useDrillDownQueryWithoutLimit(metricData)
 
     const clickHandler = () => {
-        void dispatch(createExportTicketDrillDownJob(query))
+        void dispatch(createExportDrillDownJob(query))
     }
 
     return (
@@ -57,7 +59,7 @@ export const DrillDownDownloadButton = ({
                     onClick: clickHandler,
                 })}
             >
-                {getButtonVariant(isRequested, isLoading, isError)}
+                {getButtonVariant(objectType, isRequested, isLoading, isError)}
             </Button>
             <Tooltip
                 disabled={!isDisabled}
@@ -73,6 +75,7 @@ export const DrillDownDownloadButton = ({
 }
 
 export const getButtonVariant = (
+    objectType: string,
     isRequested: boolean,
     exportRequestLoading: boolean,
     isError: boolean
@@ -99,7 +102,7 @@ export const getButtonVariant = (
 
     return (
         <ButtonIconLabel icon="download" position="left">
-            {`Download ${TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets`}
+            {`Download ${TOTAL_OBJECTS_COUNT_PLACEHOLDER} ${objectType}`}
         </ButtonIconLabel>
     )
 }

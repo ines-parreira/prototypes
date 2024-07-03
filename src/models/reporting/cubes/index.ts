@@ -9,12 +9,14 @@ import {AutomationDatasetCube} from 'models/reporting/cubes/automate_v2/Automati
 import {BillableTicketDatasetCube} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 import {WorkflowDatasetCube} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
 export type Cubes =
     | AgentTimeTrackingCube
     | AutomationBillingEventCubeWithJoins
     | AutomationDatasetCube
     | BillableTicketDatasetCube
+    | ConvertOrderConversionCube
     | HandleTimeCubeWithJoins
     | HelpCenterTrackingEventCube
     | HelpdeskMessageCubeWithJoins

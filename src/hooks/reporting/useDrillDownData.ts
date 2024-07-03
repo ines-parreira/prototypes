@@ -1,8 +1,9 @@
-import {useMemo, useState} from 'react'
+import {useMemo} from 'react'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {User} from 'config/types/user'
-import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
+import {
+    useMetricPerDimension,
+    useMetricPerDimensionWithEnrichment,
+} from 'hooks/reporting/useMetricPerDimension'
 import {IDRecord, MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
@@ -16,44 +17,35 @@ import {
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import {
+    DrillDownMetric,
+    getDrillDownCurrentPage,
+    setCurrentPage,
+} from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
     OverviewMetric,
     SlaMetric,
     AgentsTableColumn,
 } from 'state/ui/stats/types'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {
+    BaseDrillDownRowData,
+    ConvertDrillDownRowData,
+    getDrillDownFormatter,
+    getEnrichedDrillDownFormatter,
+    TicketDrillDownRowData,
+} from 'pages/stats/DrillDownFormatters'
+import useAppDispatch from 'hooks/useAppDispatch'
 
-export interface TicketDetails {
-    id: number | string
-    subject: string | null
-    description: string | null
-    channel: TicketChannel | null
-    isRead: boolean
-    created: string | null
-    contactReason: string | null
-    status: TicketStatus | null
-}
-
-export interface DrillDownRowData {
-    ticket: TicketDetails
-    metricValue: number
-    assignee:
-        | ({
-              id: number
-          } & Partial<User>)
-        | null
-    rowData?: MergedRecord<any, any>
-}
-
-interface DrillDownData {
+interface DrillDownData<T extends BaseDrillDownRowData> {
     isFetching: boolean
     perPage: number
     pagesCount: number
     currentPage: number
     totalResults: number
     onPageChange: (page: number) => void
-    data: DrillDownRowData[]
+    data: T[]
 }
 
 export const DRILL_DOWN_PER_PAGE = 20
@@ -68,35 +60,6 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
     EnrichmentFields.ContactReason,
     EnrichmentFields.IsUnread,
 ]
-
-export const formatDrillDownRowData = (
-    row: MergedRecord<any, any>,
-    agents: User[],
-    metricField: string,
-    ticketIdField: string
-): DrillDownRowData => ({
-    ticket: {
-        id: row[ticketIdField] || null,
-        subject: row[EnrichmentFields.TicketName] || null,
-        description: row[EnrichmentFields.Description] || null,
-        channel: row[EnrichmentFields.Channel] || null,
-        isRead: !(row[EnrichmentFields.IsUnread] ?? true),
-        created: row[EnrichmentFields.CreatedDatetime] || null,
-        contactReason: row[EnrichmentFields.ContactReason] || null,
-        status: row[EnrichmentFields.Status] || null,
-    },
-    metricValue: row[metricField],
-    assignee: row[EnrichmentFields.AssigneeId]
-        ? {
-              id: row[EnrichmentFields.AssigneeId],
-              name:
-                  agents.find(
-                      (agent) => agent.id === row[EnrichmentFields.AssigneeId]
-                  )?.name || '',
-          }
-        : null,
-    ...(row?.['slas'] ? {rowData: row['slas']} : {}),
-})
 
 export const getDrillDownMetricOrder = (
     metricName: DrillDownMetric['metricName']
@@ -134,16 +97,19 @@ export const useDrillDownQueryWithoutLimit = (
     | HelpdeskMessageCubeWithJoins
     | HandleTimeCubeWithJoins
     | TicketSLACubeWithJoins
+    | ConvertOrderConversionCube
 > => {
     const query = useDrillDownQuery(metricData)
 
     return withoutLimit(query)
 }
 
-export const useDrillDownData = (
+export const useEnrichedDrillDownData = (
     metricData: DrillDownMetric
-): DrillDownData => {
-    const [currentPage, setCurrentPage] = useState(1)
+): DrillDownData<TicketDrillDownRowData> => {
+    const dispatch = useAppDispatch()
+    const currentPage = useAppSelector(getDrillDownCurrentPage)
+    const formatter = getEnrichedDrillDownFormatter(metricData)
     const query = useDrillDownQuery(metricData)
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
@@ -164,17 +130,64 @@ export const useDrillDownData = (
         totalResults,
         pagesCount: Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
         onPageChange: (page: number) =>
-            setCurrentPage(
-                Math.min(page, Math.ceil(totalResults / DRILL_DOWN_PER_PAGE))
+            dispatch(
+                setCurrentPage(
+                    Math.min(
+                        page,
+                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE)
+                    )
+                )
             ),
         data: rowData
             .map((row) =>
-                formatDrillDownRowData(
+                formatter(
                     row,
                     agents,
                     query.dimensions[1] ?? query.measures[0],
                     query.dimensions[0]
                 )
+            )
+            .slice(
+                Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
+                Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
+            ),
+    }
+}
+
+export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
+    metricData: DrillDownMetric
+) => DrillDownData<T>
+
+export const useDrillDownData = (
+    metricData: DrillDownMetric
+): DrillDownData<ConvertDrillDownRowData> => {
+    const dispatch = useAppDispatch()
+    const currentPage = useAppSelector(getDrillDownCurrentPage)
+    const formatter = getDrillDownFormatter(metricData)
+    const query = useDrillDownQuery(metricData)
+    const {data: someData, isFetching} = useMetricPerDimension(query)
+
+    const rowData = useMemo(() => someData?.allData || [], [someData])
+    const totalResults = rowData.length
+
+    return {
+        isFetching,
+        perPage: DRILL_DOWN_PER_PAGE,
+        currentPage,
+        totalResults,
+        pagesCount: Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
+        onPageChange: (page: number) =>
+            dispatch(
+                setCurrentPage(
+                    Math.min(
+                        page,
+                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE)
+                    )
+                )
+            ),
+        data: rowData
+            .map((row) =>
+                formatter(row, query.dimensions[1] ?? query.measures[0])
             )
             .slice(
                 Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),

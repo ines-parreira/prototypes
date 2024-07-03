@@ -26,7 +26,9 @@ import {
     OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
+    ConvertMetric,
 } from 'state/ui/stats/types'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
 export const SLA_FORMAT = 'sla'
 
@@ -97,15 +99,22 @@ export type SlaMetrics = {
     metricName: SlaMetric
 } & CommonMetrics
 
+export type ConvertMetrics = {
+    metricName: ConvertMetric
+    shopName: string
+} & CommonMetrics
+
 export type DrillDownMetric =
     | AgentsMetrics
     | ChannelsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
     | SlaMetrics
+    | ConvertMetrics
 
 export type DrillDownState = {
     isOpen: boolean
+    currentPage: number
     metricData: DrillDownMetric | null
     export: {
         isLoading: boolean
@@ -133,10 +142,12 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     ChannelsTableColumns.CreatedTicketsPercentage,
     ChannelsTableColumns.ClosedTickets,
     ChannelsTableColumns.TicketsReplied,
+    ConvertMetric.CampaignSalesCount,
 ]
 
 export const initialState: DrillDownState = {
     isOpen: false,
+    currentPage: 1,
     metricData: null,
     export: {
         isLoading: false,
@@ -145,32 +156,53 @@ export const initialState: DrillDownState = {
     },
 }
 
-export const EXPORT_TICKET_DRILL_DOWN_JOB_ACTION = 'exportTicketDrillDownJob'
+export const EXPORT_DRILL_DOWN_JOB_ACTION = 'exportDrillDownJob'
 
-export const createExportTicketDrillDownJob = createAsyncThunk<
+const getDrillDownJobType = (
+    metricData: DrillDownMetric
+):
+    | JobType.ExportConvertCampaignSalesDrilldown
+    | JobType.ExportTicketDrilldown => {
+    switch (metricData.metricName) {
+        case ConvertMetric.CampaignSalesCount:
+            return JobType.ExportConvertCampaignSalesDrilldown
+        default:
+            return JobType.ExportTicketDrilldown
+    }
+}
+
+export const createExportDrillDownJob = createAsyncThunk<
     Job,
     ReportingQuery<
         | HelpdeskMessageCubeWithJoins
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
+        | ConvertOrderConversionCube
     >,
     {dispatch: StoreDispatch; state: RootState}
 >(
-    EXPORT_TICKET_DRILL_DOWN_JOB_ACTION,
+    EXPORT_DRILL_DOWN_JOB_ACTION,
     async (
         query: ReportingQuery<
             | HelpdeskMessageCubeWithJoins
             | HandleTimeCubeWithJoins
             | TicketSLACubeWithJoins
+            | ConvertOrderConversionCube
         >,
         {dispatch, getState, rejectWithValue}
     ) => {
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
+        const metricData = getDrillDownMetric(getState())
+
+        if (!metricData) {
+            return rejectWithValue('No metric data')
+        }
+        const jobType = getDrillDownJobType(metricData)
 
         try {
             const response = await createJob({
-                type: JobType.ExportTicketDrilldown,
+                type: jobType,
                 params: {reporting_query: query},
             })
             void dispatch(notifyAboutExportSuccess(currentUserEmail))
@@ -194,31 +226,39 @@ export const drillDownSlice = createSlice({
             state.metricData = action.payload
             state.isOpen = true
         },
+        setCurrentPage(state, action: PayloadAction<number>) {
+            state.currentPage = action.payload
+        },
         closeDrillDownModal(state) {
             state.isOpen = false
             state.export = initialState.export
+            state.currentPage = initialState.currentPage
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(createExportTicketDrillDownJob.pending, (state) => {
+        builder.addCase(createExportDrillDownJob.pending, (state) => {
             state.export.isLoading = true
             state.export.isRequested = true
         })
-        builder.addCase(createExportTicketDrillDownJob.fulfilled, (state) => {
+        builder.addCase(createExportDrillDownJob.fulfilled, (state) => {
             state.export.isLoading = false
             state.export.isError = false
         })
-        builder.addCase(createExportTicketDrillDownJob.rejected, (state) => {
+        builder.addCase(createExportDrillDownJob.rejected, (state) => {
             state.export.isLoading = false
             state.export.isError = true
         })
     },
 })
 
-export const {closeDrillDownModal, setMetricData} = drillDownSlice.actions
+export const {closeDrillDownModal, setMetricData, setCurrentPage} =
+    drillDownSlice.actions
 
 export const getDrillDownModalState = (state: RootState) =>
     state.ui[drillDownSlice.name].isOpen
+
+export const getDrillDownCurrentPage = (state: RootState) =>
+    state.ui[drillDownSlice.name].currentPage
 
 export const getDrillDownExport = (state: RootState) =>
     state.ui[drillDownSlice.name].export
@@ -260,6 +300,8 @@ export const getDrillDownMetricColumn = (
     ) {
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
+    } else if (metricData.metricName === ConvertMetric.CampaignSalesCount) {
+        metricTitle = ''
     } else {
         metricTitle = OverviewMetricConfig[metricData.metricName].title
         metricValueFormat =

@@ -22,6 +22,7 @@ import {
 import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
 type Requested = {
     isFetching: boolean
@@ -158,6 +159,7 @@ export function useMetricPerDimensionWithEnrichment(
         | HelpdeskMessageCubeWithJoins
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
+        | ConvertOrderConversionCube
     >,
     enrichmentFields: EnrichmentFields[]
 ): MetricWithEnrichment<

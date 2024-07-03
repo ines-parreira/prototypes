@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {FunctionComponent} from 'react'
 
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -10,9 +10,27 @@ import {
     getDrillDownModalState,
     getDrillDownMetric,
     closeDrillDownModal,
+    DrillDownMetric,
 } from 'state/ui/stats/drillDownSlice'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
+import {ConvertMetric} from 'state/ui/stats/types'
+import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
+import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
 import {DrillDownTable} from './DrillDownTable'
+
+const getTableContent = (
+    metricData: DrillDownMetric
+): FunctionComponent<{
+    metricData: DrillDownMetric
+}> => {
+    switch (metricData.metricName) {
+        case ConvertMetric.CampaignSalesCount:
+            return CampaignSalesDrillDownTableContent
+        default:
+            return TicketDrillDownTableContent
+    }
+}
 
 export const DrillDownModal = () => {
     const isOpen = useAppSelector(getDrillDownModalState)
@@ -31,8 +49,15 @@ export const DrillDownModal = () => {
             <ModalBody className="p-0">
                 {metricData !== null && (
                     <>
-                        <DrillDownInfoBar metricData={metricData} />
-                        <DrillDownTable metricData={metricData} />
+                        <DrillDownInfoBar
+                            metricData={metricData}
+                            useDataHook={getDrillDownHook(metricData)}
+                        />
+                        <DrillDownTable
+                            metricData={metricData}
+                            useDataHook={getDrillDownHook(metricData)}
+                            TableContent={getTableContent(metricData)}
+                        />
                     </>
                 )}
             </ModalBody>

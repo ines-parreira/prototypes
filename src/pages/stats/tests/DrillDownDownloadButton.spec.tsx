@@ -12,7 +12,7 @@ import {
     DrillDownDownloadButton,
     DOWNLOAD_REQUESTED_LABEL,
     DOWNLOAD_LOADING_LABEL,
-    TOTAL_TICKETS_COUNT_PLACEHOLDER,
+    TOTAL_OBJECTS_COUNT_PLACEHOLDER,
 } from 'pages/stats/DrillDownDownloadButton'
 import {RootState} from 'state/types'
 import {agents} from 'fixtures/agents'
@@ -20,7 +20,7 @@ import {UserRole} from 'config/types/user'
 import {
     AgentsMetrics,
     drillDownSlice,
-    EXPORT_TICKET_DRILL_DOWN_JOB_ACTION,
+    EXPORT_DRILL_DOWN_JOB_ACTION,
     initialState,
 } from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
@@ -38,6 +38,7 @@ jest.mock('hooks/jobs/useRunningJobs')
 const mockUseRunningJobs = assumeMock(useRunningJobs)
 
 describe('<DrillDownDownloadButton />', () => {
+    const objectType = 'tickets'
     const cleanStatsFilters = {
         period: {
             start_datetime: '1970-01-01T00:00:00+00:00',
@@ -72,7 +73,10 @@ describe('<DrillDownDownloadButton />', () => {
     it('should render button', () => {
         render(
             <Provider store={mockStore(defaultState)}>
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
 
@@ -92,7 +96,10 @@ describe('<DrillDownDownloadButton />', () => {
                     },
                 } as unknown as RootState)}
             >
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
 
@@ -117,7 +124,10 @@ describe('<DrillDownDownloadButton />', () => {
                     },
                 } as unknown as RootState)}
             >
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
 
@@ -128,7 +138,10 @@ describe('<DrillDownDownloadButton />', () => {
         const store = mockStore(defaultState)
         render(
             <Provider store={store}>
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
 
@@ -136,7 +149,7 @@ describe('<DrillDownDownloadButton />', () => {
 
         expect(store.getActions()).toContainEqual(
             expect.objectContaining({
-                type: `${EXPORT_TICKET_DRILL_DOWN_JOB_ACTION}/pending`,
+                type: `${EXPORT_DRILL_DOWN_JOB_ACTION}/pending`,
             })
         )
     })
@@ -158,7 +171,10 @@ describe('<DrillDownDownloadButton />', () => {
 
         render(
             <Provider store={store}>
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
         fireEvent.click(screen.getByRole('button'))
@@ -183,7 +199,10 @@ describe('<DrillDownDownloadButton />', () => {
 
         render(
             <Provider store={store}>
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
 
@@ -207,13 +226,16 @@ describe('<DrillDownDownloadButton />', () => {
 
         render(
             <Provider store={store}>
-                <DrillDownDownloadButton metricData={metricData} />
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
             </Provider>
         )
 
         expect(
             screen.getByText(
-                `Download ${TOTAL_TICKETS_COUNT_PLACEHOLDER} tickets`
+                `Download ${TOTAL_OBJECTS_COUNT_PLACEHOLDER} tickets`
             )
         ).toBeInTheDocument()
     })

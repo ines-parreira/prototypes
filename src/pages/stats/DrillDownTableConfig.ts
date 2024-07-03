@@ -30,7 +30,10 @@ import {
     OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
+    ConvertMetric,
 } from 'state/ui/stats/types'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 
 export type DrillDownQueryFactory = (
     statsFilters: StatsFilters,
@@ -40,6 +43,7 @@ export type DrillDownQueryFactory = (
     | HelpdeskMessageCubeWithJoins
     | HandleTimeCubeWithJoins
     | TicketSLACubeWithJoins
+    | ConvertOrderConversionCube
 >
 
 const queryBuilderWithAgentFilter =
@@ -156,6 +160,18 @@ export const getDrillDownQuery = (
                     String(metricName.customFieldId),
                     metricName.customFieldValue,
                     metricName.dateRange || statsFilters.period,
+                    sorting
+                )
+        case ConvertMetric.CampaignSalesCount:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection
+            ) =>
+                campaignSalesDrillDownQueryFactory(
+                    metricName.shopName,
+                    statsFilters,
+                    timezone,
                     sorting
                 )
     }

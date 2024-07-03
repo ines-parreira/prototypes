@@ -9,6 +9,8 @@ import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
 import {RootState, StoreDispatch} from 'state/types'
 import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {assumeMock} from 'utils/testing'
+import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
+import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
 import {DrillDownModal} from '../DrillDownModal'
 
 jest.mock('pages/stats/DrillDownTable')
@@ -55,8 +57,21 @@ describe('<DrillDownModal />', () => {
             </Provider>
         )
 
-        expect(DrillDownTableMock).toHaveBeenCalledWith({metricData}, {})
-        expect(DrillDownInfobarMock).toHaveBeenCalledWith({metricData}, {})
+        expect(DrillDownTableMock).toHaveBeenCalledWith(
+            {
+                metricData,
+                useDataHook: useEnrichedDrillDownData,
+                TableContent: TicketDrillDownTableContent,
+            },
+            {}
+        )
+        expect(DrillDownInfobarMock).toHaveBeenCalledWith(
+            {
+                metricData,
+                useDataHook: useEnrichedDrillDownData,
+            },
+            {}
+        )
         expect(screen.getByText(title)).toBeInTheDocument()
     })
 

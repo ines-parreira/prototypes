@@ -16,8 +16,13 @@ import {
     OrderConversionMeasure,
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
-import {ReportingGranularity, ReportingParams} from 'models/reporting/types'
+import {
+    ReportingGranularity,
+    ReportingParams,
+    ReportingQuery,
+} from 'models/reporting/types'
 import {getDateRange} from 'pages/stats/convert/clients/utils'
+import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
 const _getDefaultFilters = ({
     startDate,
@@ -70,6 +75,14 @@ const _campaignEqualsFilter = (
         member: `${cubeName}.${SharedDimension.campaignId}`,
         operator: FilterOperator.equals,
         values: campaignIds,
+    }
+}
+
+const _campaignNotEqualsFilter = (cubeName: string): CubeFilter => {
+    return {
+        member: `${cubeName}.${SharedDimension.campaignId}`,
+        operator: FilterOperator.notEquals,
+        values: [''],
     }
 }
 
@@ -130,6 +143,45 @@ export const getCampaignOrderPerformanceData = ({
             }),
         },
     ]
+}
+
+export const getCampaignOrderPerformanceDrillDownData = ({
+    startDate,
+    endDate,
+    shopName,
+    campaignIds,
+    timezone,
+    sorting,
+}: CubeFilterParams): ReportingQuery<ConvertOrderConversionCube> => {
+    return {
+        dimensions: [
+            OrderConversionDimension.orderId,
+            OrderConversionDimension.orderAmount,
+            OrderConversionDimension.orderCurrency,
+            OrderConversionDimension.orderProductIds,
+            OrderConversionDimension.customerId,
+            OrderConversionDimension.campaignId,
+            OrderConversionDimension.createdDatatime,
+        ],
+        measures: [],
+        timezone: timezone,
+        filters: [
+            ..._getDefaultFilters({
+                startDate,
+                endDate,
+                cubeName: Cube.orderConversion,
+                campaignIds,
+                shopName,
+            }),
+            _campaignNotEqualsFilter(Cube.orderConversion),
+        ],
+        order: [
+            [
+                OrderConversionDimension.createdDatatime,
+                sorting || OrderDirection.Desc,
+            ],
+        ],
+    }
 }
 
 export const getCampaignEventsOrdersPerformanceData = ({

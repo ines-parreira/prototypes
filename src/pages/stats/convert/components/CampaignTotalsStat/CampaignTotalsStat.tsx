@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import MetricCard from 'pages/stats/MetricCard'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
@@ -12,6 +11,10 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {ConvertMetric} from 'state/ui/stats/types'
+import {useIsConvertViewOrdersDrilldownEnabled} from 'pages/convert/common/hooks/useIsConvertViewOrdersDrilldownEnabled'
+import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import css from './CampaignTotalsStat.less'
 
 const FIRST_ROW_SIZE = 6
@@ -53,6 +56,7 @@ export const CampaignTotalsStat = () => {
     const {campaigns, selectedIntegrations, selectedCampaigns, selectedPeriod} =
         useCampaignStatsFilters()
     const currency = useGetCurrencyForStore(selectedIntegrations)
+    const isViewDrillDownEnabled = useIsConvertViewOrdersDrilldownEnabled()
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
     const userTimezone = useAppSelector(
@@ -133,9 +137,25 @@ export const CampaignTotalsStat = () => {
                     title={METRICS.campaignSalesCount.title}
                     hint={{title: METRICS.campaignSalesCount.hint}}
                 >
-                    <BigNumberMetric isLoading={isLoading}>
-                        {data?.campaignSalesCount}
-                    </BigNumberMetric>
+                    {isViewDrillDownEnabled && (
+                        <DrillDownModalTrigger
+                            enabled={!!data?.campaignSalesCount}
+                            metricData={{
+                                title: METRICS.campaignSalesCount.title,
+                                metricName: ConvertMetric.CampaignSalesCount,
+                                shopName: namespacedShopName,
+                            }}
+                        >
+                            <BigNumberMetric isLoading={isLoading}>
+                                {data?.campaignSalesCount}
+                            </BigNumberMetric>
+                        </DrillDownModalTrigger>
+                    )}
+                    {!isViewDrillDownEnabled && (
+                        <BigNumberMetric isLoading={isLoading}>
+                            {data?.campaignSalesCount}
+                        </BigNumberMetric>
+                    )}
                 </MetricCard>
             </DashboardGridCell>
         </React.Fragment>

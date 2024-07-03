@@ -6,6 +6,7 @@ export enum Cube {
 
 export enum FilterOperator {
     equals = 'equals',
+    notEquals = 'notEquals',
     inDateRange = 'inDateRange',
 }
 
@@ -36,6 +37,11 @@ export enum EventsSegment {
 
 // Order conversions constants
 export enum OrderConversionDimension {
+    orderId = `OrderConversion.orderId`,
+    orderAmount = `OrderConversion.orderAmount`,
+    orderCurrency = `OrderConversion.orderCurrency`,
+    orderProductIds = `OrderConversion.orderProductIds`,
+    customerId = `OrderConversion.customerId`,
     campaignId = `OrderConversion.campaignId`,
     createdDatatime = `OrderConversion.createdDatetime`,
 }

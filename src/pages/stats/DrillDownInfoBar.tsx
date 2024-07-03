@@ -2,35 +2,54 @@ import React from 'react'
 import Loader from 'pages/common/components/Loader/Loader'
 import {DrillDownDownloadButton} from 'pages/stats/DrillDownDownloadButton'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
 import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
 
+import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
+import {
+    ConvertDrillDownRowData,
+    TicketDrillDownRowData,
+} from 'pages/stats/DrillDownFormatters'
+import {ConvertMetric} from 'state/ui/stats/types'
 import css from './DrillDownInfobar.less'
 
-const getTheInfoLabel = (totalResults: number) => {
+const getObjectType = (metricData: DrillDownMetric) => {
+    switch (metricData.metricName) {
+        case ConvertMetric.CampaignSalesCount:
+            return 'orders'
+        default:
+            return 'tickets'
+    }
+}
+
+const getTheInfoLabel = (totalResults: number, objectType: string) => {
     if (totalResults < DRILLDOWN_QUERY_LIMIT) {
         return (
             <>
-                <strong>{totalResults}</strong> tickets are displayed.
+                <strong>{totalResults}</strong> {objectType} are displayed.
             </>
         )
     }
     return (
         <>
-            Displaying (first) <strong>{DRILLDOWN_QUERY_LIMIT}</strong> tickets
+            Displaying (first) <strong>{DRILLDOWN_QUERY_LIMIT}</strong>{' '}
+            {objectType}
             used to compute the metric.
         </>
     )
 }
 
-export const TOTAL_RESULTS_PLACEHOLDER = 'Fetching tickets...'
-
 export const DrillDownInfoBar = ({
     metricData,
+    useDataHook,
 }: {
     metricData: DrillDownMetric
+    useDataHook: DrillDownDataHook<
+        TicketDrillDownRowData | ConvertDrillDownRowData
+    >
 }) => {
-    const {isFetching, totalResults} = useDrillDownData(metricData)
+    const {isFetching, totalResults} = useDataHook(metricData)
+    const objectType = getObjectType(metricData)
+    const resultsPlaceholder = `Fetching ${objectType}...`
 
     return (
         <div className={css.wrapper}>
@@ -43,10 +62,13 @@ export const DrillDownInfoBar = ({
             </div>
             <div className={css.text}>
                 {isFetching
-                    ? TOTAL_RESULTS_PLACEHOLDER
-                    : getTheInfoLabel(totalResults)}
+                    ? resultsPlaceholder
+                    : getTheInfoLabel(totalResults, objectType)}
             </div>
-            <DrillDownDownloadButton metricData={metricData} />
+            <DrillDownDownloadButton
+                metricData={metricData}
+                objectType={objectType}
+            />
         </div>
     )
 }

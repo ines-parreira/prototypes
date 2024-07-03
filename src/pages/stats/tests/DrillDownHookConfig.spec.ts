@@ -1,7 +1,3 @@
-import moment from 'moment/moment'
-import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {StatsFilters} from 'models/stat/types'
-import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     AgentsMetrics,
@@ -16,15 +12,9 @@ import {
     SlaMetric,
     ConvertMetric,
 } from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
 
-jest.mock(
-    'models/reporting/queryFactories/support-performance/customerSatisfaction'
-)
-const customerSatisfactionQueryFactoryMock = assumeMock(
-    customerSatisfactionMetricDrillDownQueryFactory
-)
-describe('getDrillDownQuery', () => {
+describe('getDrillDownHook', () => {
     const agentsMetrics: AgentsMetrics[] = [
         {metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123},
         {
@@ -95,7 +85,7 @@ describe('getDrillDownQuery', () => {
     const convertMetrics: DrillDownMetric[] = [
         {
             metricName: ConvertMetric.CampaignSalesCount,
-            shopName: 'shopify:someShop',
+            shopName: 'shopify:shopName',
         },
     ]
 
@@ -106,57 +96,9 @@ describe('getDrillDownQuery', () => {
         ...slaMetrics,
         ...convertMetrics,
     ])(
-        'should return a query for every DrillDown metric: $metricName',
+        'should return a hook for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
-            expect(getDrillDownQuery(metricName)).toEqual(expect.any(Function))
+            expect(getDrillDownHook(metricName)).toEqual(expect.any(Function))
         }
     )
-
-    it('should be populated with agentId filter', () => {
-        const periodStart = moment()
-        const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: StatsFilters = {
-            period: {
-                end_datetime: periodEnd.toISOString(),
-                start_datetime: periodStart.toISOString(),
-            },
-        }
-        const timezone = 'someTimeZone'
-        const drillDownMetric: DrillDownMetric = {
-            metricName: AgentsTableColumn.CustomerSatisfaction,
-            perAgentId: 123,
-        }
-
-        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
-
-        expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
-            expect.objectContaining({agents: [drillDownMetric.perAgentId]}),
-            timezone,
-            undefined
-        )
-    })
-
-    it('should be populated with channel filter', () => {
-        const periodStart = moment()
-        const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: StatsFilters = {
-            period: {
-                end_datetime: periodEnd.toISOString(),
-                start_datetime: periodStart.toISOString(),
-            },
-        }
-        const timezone = 'someTimeZone'
-        const drillDownMetric: DrillDownMetric = {
-            metricName: ChannelsTableColumns.CustomerSatisfaction,
-            perChannel: 'email',
-        }
-
-        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
-
-        expect(customerSatisfactionQueryFactoryMock).toHaveBeenCalledWith(
-            expect.objectContaining({channels: [drillDownMetric.perChannel]}),
-            timezone,
-            undefined
-        )
-    })
 })

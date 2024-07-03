@@ -1,5 +1,6 @@
 import {TicketChannel} from 'business/types/ticket'
 import {ReportingGranularity} from 'models/reporting/types'
+import {OrderDirection} from 'models/api/types'
 
 export type CubeFilter = {
     member: any
@@ -29,6 +30,7 @@ export type FilterParams = {
     limit?: number
     offset?: number
     timezone?: string
+    sorting?: OrderDirection
 } & RequiredFilterParams
 
 export type CubeFilterParams = FilterParams

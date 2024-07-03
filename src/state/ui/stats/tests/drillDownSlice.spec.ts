@@ -26,9 +26,11 @@ import {
     getDrillDownMetricColumn,
     getDrillDownModalState,
     buildAgentMetric,
-    createExportTicketDrillDownJob,
+    createExportDrillDownJob,
     closeDrillDownModal,
     SLA_FORMAT,
+    setCurrentPage,
+    getDrillDownCurrentPage,
 } from 'state/ui/stats/drillDownSlice'
 import {User} from 'config/types/user'
 import {TableLabels} from 'pages/stats/AgentsTableConfig'
@@ -91,15 +93,24 @@ describe('drillDownSlice', () => {
         it('should set export loading state', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
-                createExportTicketDrillDownJob.pending
+                createExportDrillDownJob.pending
             )
 
             expect(newState.export.isLoading).toEqual(true)
         })
 
+        it('should set current page state', () => {
+            const newState = drillDownSlice.reducer(
+                initialState,
+                setCurrentPage(5)
+            )
+
+            expect(newState.currentPage).toEqual(5)
+        })
+
         it.each([
-            createExportTicketDrillDownJob.fulfilled,
-            createExportTicketDrillDownJob.rejected,
+            createExportDrillDownJob.fulfilled,
+            createExportDrillDownJob.rejected,
         ])(`should set loading state to false on %s`, (action) => {
             const newState = drillDownSlice.reducer(
                 {
@@ -115,6 +126,7 @@ describe('drillDownSlice', () => {
 
     describe('selectors', () => {
         const isOpen = false
+        const currentPage = 3
         const metricData = {
             metricName: 'someName',
         }
@@ -123,6 +135,7 @@ describe('drillDownSlice', () => {
             ui: {
                 [drillDownSlice.name]: {
                     isOpen,
+                    currentPage,
                     metricData,
                 },
             },
@@ -228,9 +241,13 @@ describe('drillDownSlice', () => {
         it('getDrillDownModalState', () => {
             expect(getDrillDownModalState(state)).toEqual(isOpen)
         })
+
+        it('getDrillDownCurrentPage', () => {
+            expect(getDrillDownCurrentPage(state)).toEqual(currentPage)
+        })
     })
 
-    describe('createExportTicketDrillDownJob', () => {
+    describe('createExportDrillDownJob', () => {
         const exampleQuery = closedTicketsQueryFactory(
             {
                 period: {
@@ -242,8 +259,17 @@ describe('drillDownSlice', () => {
         )
         createJobMock.mockResolvedValue({id: 123} as unknown as Job)
 
+        beforeEach(() => {
+            store.getState().ui[drillDownSlice.name] = {
+                ...store.getState().ui[drillDownSlice.name],
+                metricData: {
+                    metricName: OverviewMetric.OpenTickets,
+                },
+            }
+        })
+
         it('should fire request with export Job', async () => {
-            await store.dispatch(createExportTicketDrillDownJob(exampleQuery))
+            await store.dispatch(createExportDrillDownJob(exampleQuery))
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportTicketDrilldown,
@@ -258,12 +284,21 @@ describe('drillDownSlice', () => {
             )
 
             await act(async () => {
-                await store.dispatch(
-                    createExportTicketDrillDownJob(exampleQuery)
-                )
+                await store.dispatch(createExportDrillDownJob(exampleQuery))
             })
 
             expect(invalidateQueryMock).toHaveBeenCalled()
+        })
+
+        it('should reject if there is no metric data', async () => {
+            store.getState().ui[drillDownSlice.name] = initialState
+
+            const result = await store.dispatch(
+                createExportDrillDownJob(exampleQuery)
+            )
+
+            expect(createJobMock).not.toHaveBeenCalled()
+            expect(result.payload).toBe('No metric data')
         })
     })
 
