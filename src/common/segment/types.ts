@@ -90,6 +90,8 @@ export enum SegmentEvent {
     DraftTicket = 'draft-ticket',
     ExternalLinkClicked = 'external-link-clicked',
     FallbackWorkerStarted = 'fallback-worker-started',
+    FlowBuilderViewed = 'flow-builder-viewed',
+    FlowBuilderSaved = 'flow-builder-saved',
     GlobalSearchAdvancedButtonClick = 'search-advanced-button-click',
     GlobalSearchAdvancedShortcut = 'search-advanced-shortcut',
     GlobalSearchCustomerTabClick = 'customer-tab-click',

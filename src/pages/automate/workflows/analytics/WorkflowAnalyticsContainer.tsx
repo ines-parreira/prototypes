@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import {ErrorBoundary} from 'pages/ErrorBoundary'
@@ -9,8 +9,12 @@ import {Notification} from 'state/notifications/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import useEffectOnce from 'hooks/useEffectOnce'
+import {SegmentEvent, logEvent} from 'common/segment'
 import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'
 import WorkflowAnalytics from './WorkflowAnalytics'
+
+const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 
 export default function WorkflowAnalyticsContainer() {
     const currentAccountId: number = useAppSelector(getCurrentAccountState).get(
@@ -23,6 +27,8 @@ export default function WorkflowAnalyticsContainer() {
     }>()
     const dispatch = useAppDispatch()
     const history = useHistory()
+    const location = useLocation<{from?: string}>()
+    const {from} = location.state || {}
 
     const notifyMerchant = useCallback(
         (message: Notification) => {
@@ -37,8 +43,21 @@ export default function WorkflowAnalyticsContainer() {
         )
     }, [history, shopName, shopType, editWorkflowId])
 
+    useEffectOnce(() => {
+        logEvent(SegmentEvent.FlowBuilderViewed, {
+            type: 'analytics',
+            source:
+                from === PERFORMANCE_BY_FEATURE_ROUTE ? 'analytics' : 'builder',
+        })
+    })
+
     return (
-        <ErrorBoundary sentryTags={{section: 'workflows'}}>
+        <ErrorBoundary
+            sentryTags={{
+                section: 'workflow-analytics',
+                team: 'automate-obs',
+            }}
+        >
             <WorkflowAnalyticsFilters
                 notReadyFallback={<Skeleton />}
                 currentAccountId={currentAccountId}

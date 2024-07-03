@@ -65,6 +65,7 @@ type WorkflowEditorViewProps = {
     onPublish: (isFirstTime: boolean) => void
     notifyMerchant: (message: Notification) => void
     goToWorkflowAnalyticsPage: (zoom: number) => void
+    logActionOnFlowBuilder: (action: string) => void
 }
 
 function WorkflowEditorViewWrapped({
@@ -79,6 +80,7 @@ function WorkflowEditorViewWrapped({
     shopName,
     shopType,
     goToWorkflowAnalyticsPage,
+    logActionOnFlowBuilder,
 }: WorkflowEditorViewProps) {
     const {template: templateSlug, from: fromView} =
         useSearch<{template: string | undefined; from: string | undefined}>()
@@ -304,6 +306,8 @@ function WorkflowEditorViewWrapped({
             onSave?.()
             if (isNewWorkflow) {
                 onNewWorkflowCreated(isDraft)
+            } else {
+                logActionOnFlowBuilder('update')
             }
         }
 
