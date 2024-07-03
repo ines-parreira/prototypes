@@ -13,9 +13,7 @@ import React, {
 } from 'react'
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -76,7 +74,6 @@ export default function TicketListView({
         ticketIds,
         initialLoaded,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
-    const isNewEdition = !!useFlags()[FeatureFlagKey.ViewEditionNewIcon]
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
         useSplitTicketView()
 
@@ -185,16 +182,14 @@ export default function TicketListView({
                 <div className={css.viewName}>
                     <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
-                    {isNewEdition && (
-                        <IconButton
-                            className={css.icon}
-                            fillStyle="ghost"
-                            onClick={goToViewEdition}
-                            size="small"
-                        >
-                            tune
-                        </IconButton>
-                    )}
+                    <IconButton
+                        className={css.icon}
+                        fillStyle="ghost"
+                        onClick={goToViewEdition}
+                        size="small"
+                    >
+                        tune
+                    </IconButton>
                 </div>
                 <SortOrderDropdown onChange={setSortOrder} value={sortOrder} />
             </div>

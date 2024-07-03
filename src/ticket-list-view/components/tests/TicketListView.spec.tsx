@@ -1,17 +1,15 @@
 import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps, ReactElement} from 'react'
 import {Virtuoso} from 'react-virtuoso'
-import LD from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
+import {setViewEditMode} from 'state/views/actions'
 import useTickets from 'ticket-list-view/hooks/useTickets'
 import {TicketPartial} from 'ticket-list-view/types'
 
-import {setViewEditMode} from 'state/views/actions'
 import Ticket from '../Ticket'
 import TicketListView, {listInfoProps} from '../TicketListView'
 
@@ -257,10 +255,6 @@ describe('<TicketListView />', () => {
     })
 
     it('should redirect to edition view', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.ViewEditionNewIcon]: true,
-        }))
-
         useAppSelectorMock.mockReturnValue(null)
 
         const {getByText} = render(<TicketListView viewId={123} />)

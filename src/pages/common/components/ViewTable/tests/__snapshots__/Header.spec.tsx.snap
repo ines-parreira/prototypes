@@ -11,15 +11,15 @@ exports[`ViewTable::Header should display an empty view 1`] = `
       class="flex-grow mr-2 titleWrapper"
     >
       <div
-        class="title editable"
+        class="title"
       >
         <span>
           
         </span>
         <i
-          class="material-icons"
+          class="material-icons editIcon"
         >
-          keyboard_arrow_down
+          tune
         </i>
       </div>
     </div>

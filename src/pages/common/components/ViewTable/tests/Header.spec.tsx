@@ -3,7 +3,6 @@ import {fromJS, Map} from 'immutable'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {view as viewsFixture} from 'fixtures/views'
 import {EntityType} from 'models/view/types'
@@ -310,36 +309,5 @@ describe('ViewTable::Header', () => {
                 ]
             )
         ).toBeInTheDocument()
-    })
-
-    it('should display default UI', () => {
-        const {getByText, queryByText} = render(
-            <HeaderContainer {...minProps} />
-        )
-
-        fireEvent.click(getByText(viewsFixture.name))
-        expect(minProps.setViewEditMode).toHaveBeenCalled()
-        expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
-        expect(queryByText('tune')).not.toBeInTheDocument()
-    })
-
-    it('should display different UI for new edition mode', () => {
-        const {getByText, queryByText} = render(
-            <HeaderContainer
-                {...minProps}
-                flags={{
-                    [FeatureFlagKey.ViewEditionNewIcon]: true,
-                }}
-            />
-        )
-
-        fireEvent.click(getByText(viewsFixture.name))
-
-        expect(minProps.setViewEditMode).not.toHaveBeenCalled()
-        expect(queryByText('keyboard_arrow_down')).not.toBeInTheDocument()
-        expect(getByText('tune')).toBeInTheDocument()
-
-        fireEvent.click(getByText('tune'))
-        expect(minProps.setViewEditMode).toHaveBeenCalled()
     })
 })

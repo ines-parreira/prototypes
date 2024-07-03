@@ -138,17 +138,8 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            activeView,
-            config,
-            flags,
-            isUpdate,
-            isSearch,
-            viewButtons,
-            type,
-        } = this.props
-
-        const isNewEdition = flags?.[FeatureFlagKey.ViewEditionNewIcon]
+        const {activeView, config, isUpdate, isSearch, viewButtons, type} =
+            this.props
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
@@ -247,19 +238,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     )
                                 })()
                             ) : (
-                                <div
-                                    className={classnames(css.title, {
-                                        [css.editable]:
-                                            !isNewEdition && isEditable,
-                                    })}
-                                    onClick={() =>
-                                        !isNewEdition && isEditable
-                                            ? this.props.setViewEditMode(
-                                                  activeView
-                                              )
-                                            : undefined
-                                    }
-                                >
+                                <div className={css.title}>
                                     {shouldDisplaySystemIcon && (
                                         <i
                                             className={classnames(
@@ -281,22 +260,17 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         <i
                                             className={classnames(
                                                 'material-icons',
-                                                {
-                                                    [css.editIcon]:
-                                                        isNewEdition,
-                                                }
+                                                css.editIcon
                                             )}
                                             onClick={() =>
-                                                isNewEdition && isEditable
+                                                isEditable
                                                     ? this.props.setViewEditMode(
                                                           activeView
                                                       )
                                                     : undefined
                                             }
                                         >
-                                            {isNewEdition
-                                                ? 'tune'
-                                                : 'keyboard_arrow_down'}
+                                            tune
                                         </i>
                                     )}
                                 </div>
