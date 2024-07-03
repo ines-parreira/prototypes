@@ -40,6 +40,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import {getLDClient, LDContext} from 'utils/launchDarkly'
 import {searchTickets} from 'models/ticket/resources'
 import {searchCustomers} from 'models/customer/resources'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -426,6 +427,9 @@ export function fetchViewItems(
             (isTicketSearch || isCustomerSearch || isDirty)
 
         if (isTicketSearch) {
+            const isAdvancedSearchSortingEnabled = launchDarklyClient.variation(
+                FeatureFlagKey.AdvancedSearchSorting
+            )
             const nextCursor: Maybe<string> = navigation.get('next_cursor')
             const prevCursor: Maybe<string> = navigation.get('prev_cursor')
             promise = searchTickets({
@@ -437,6 +441,7 @@ export function fetchViewItems(
                     (direction === ViewNavDirection.NextView && nextCursor) ||
                     (direction === ViewNavDirection.PrevView && prevCursor) ||
                     undefined,
+                ...(isAdvancedSearchSortingEnabled && params),
                 cancelToken,
             })
         } else if (isCustomerSearch) {

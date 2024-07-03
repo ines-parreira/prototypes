@@ -23,6 +23,9 @@ import {SocketEventType} from 'services/socketManager/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {getAST} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
+import {OrderDirection} from 'models/api/types'
+import {TicketSearchSortableProperties} from 'models/search/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {FETCH_LIST_VIEW_START} from '../constants'
 import * as actions from '../actions'
@@ -825,6 +828,33 @@ describe('actions', () => {
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
+                    withHighlights: false,
+                })
+            })
+
+            it('should include search params when AdvancedSearchSorting feature flag is enabled', async () => {
+                variationMock.mockImplementation(
+                    (name: FeatureFlagKey) =>
+                        name === FeatureFlagKey.AdvancedSearchSorting
+                )
+                const store = mockStore({
+                    views: fromJS({
+                        active: ticketSearchView,
+                    }),
+                })
+                const orderByParam = `${TicketSearchSortableProperties.CreatedDatetime}:${OrderDirection.Desc}`
+
+                await store.dispatch(
+                    actions.fetchViewItems(null, undefined, null, null, {
+                        orderBy: orderByParam,
+                    })
+                )
+
+                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                    search: ticketSearchView.search,
+                    filters: ticketSearchView.filters,
+                    cursor: undefined,
+                    orderBy: orderByParam,
                     withHighlights: false,
                 })
             })

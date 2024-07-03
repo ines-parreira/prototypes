@@ -47,6 +47,10 @@ describe('ViewTable::Table::HeaderCell', () => {
         type: viewConfig.get('name'),
     }
 
+    const createdViewField = viewConfigFields.find(
+        (field: Map<any, any>) => field.get('name') === ViewField.Created
+    ) as Map<any, any>
+
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AdvancedSearchSorting]: false,
@@ -73,65 +77,129 @@ describe('ViewTable::Table::HeaderCell', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('displays sortable field cell', () => {
+    it.each([
+        ['when not in search mode', false, false],
+        [
+            'when in search mode and AdvancedSearchSorting feature flag is enabled',
+            true,
+            true,
+        ],
+    ])(
+        'displays sortable field cell when %s',
+        (_, isSearch, isAdvancedSearchSortingEnabled) => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AdvancedSearchSorting]:
+                    isAdvancedSearchSortingEnabled,
+            }))
+
+            const {container} = render(
+                <Provider store={mockStore()}>
+                    <HeaderCell
+                        {...minProps}
+                        field={createdViewField}
+                        isSearch={isSearch}
+                    />
+                </Provider>
+            )
+
+            expect(container.getElementsByClassName('clickable')).toHaveLength(
+                1
+            )
+        }
+    )
+
+    it('should not display sortable field cell when in search mode', () => {
         const {container} = render(
             <Provider store={mockStore()}>
-                <HeaderCell
-                    {...minProps}
-                    field={viewConfigFields.find(
-                        (field: Map<any, any>) =>
-                            field.get('name') === ViewField.Created
-                    )}
-                />
+                <HeaderCell {...minProps} field={createdViewField} isSearch />
             </Provider>
         )
-        expect(container.firstChild).toMatchSnapshot()
+
+        expect(container.getElementsByClassName('clickable')).toHaveLength(0)
     })
 
-    it('displays More fields dropdown after the last cell', () => {
-        const {container} = render(
-            <Provider store={mockStore()}>
-                <HeaderCell {...minProps} isLast />
-            </Provider>
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
+    it.each([
+        ['when not in search mode', false, false],
+        [
+            'when in search mode and AdvancedSearchSorting feature flag is enabled',
+            true,
+            true,
+        ],
+    ])(
+        'sorts by the field value on click %s',
+        (_, isSearch, isAdvancedSearchSortingEnabled) => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AdvancedSearchSorting]:
+                    isAdvancedSearchSortingEnabled,
+            }))
 
-    it('sorts by the field value on click', () => {
-        const field = viewConfigFields.find(
-            (field: Map<any, any>) => field.get('name') === ViewField.Created
-        ) as Map<any, any>
+            const {getByText} = render(
+                <Provider store={mockStore()}>
+                    <HeaderCell
+                        {...minProps}
+                        field={createdViewField}
+                        isSearch={isSearch}
+                    />
+                </Provider>
+            )
 
+            fireEvent.click(getByText(createdViewField.get('title')))
+
+            expect(fetchViewItemsMock).toHaveBeenCalledWith(
+                undefined,
+                undefined,
+                undefined,
+                undefined,
+                {
+                    orderBy: `${createdViewField.get('path') as string}:${
+                        OrderDirection.Desc
+                    }`,
+                }
+            )
+            expect(setOrderDirectionMock).toHaveBeenCalledWith(
+                createdViewField.get('path'),
+                OrderDirection.Desc
+            )
+        }
+    )
+
+    it('should not sort by field value on click when in search mode', () => {
         const {getByText} = render(
             <Provider store={mockStore()}>
-                <HeaderCell {...minProps} field={field} />
+                <HeaderCell {...minProps} field={createdViewField} isSearch />
             </Provider>
         )
 
-        fireEvent.click(getByText(field.get('title')))
+        fireEvent.click(getByText(createdViewField.get('title')))
 
-        expect(fetchViewItemsMock).toHaveBeenCalledWith(
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            {orderBy: `${field.get('path') as string}:${OrderDirection.Desc}`}
-        )
-        expect(setOrderDirectionMock).toHaveBeenCalledWith(
-            field.get('path'),
-            OrderDirection.Desc
-        )
+        expect(fetchViewItemsMock).not.toHaveBeenCalled()
+        expect(setOrderDirectionMock).not.toHaveBeenCalled()
     })
 
-    it('should show the ShowMoreFieldsDropdown when not in search mode', () => {
-        const {getByText} = render(
-            <Provider store={mockStore()}>
-                <HeaderCell {...minProps} isLast />
-            </Provider>
-        )
+    it.each([
+        ['when not in search mode', false, false],
+        [
+            'when in search mode and AdvancedSearchSorting feature flag is enabled',
+            true,
+            true,
+        ],
+    ])(
+        'should show the ShowMoreFieldsDropdown %s',
+        (_, isSearch, isAdvancedSearchSortingEnabled) => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AdvancedSearchSorting]:
+                    isAdvancedSearchSortingEnabled,
+            }))
 
-        expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
-    })
+            const {getByText} = render(
+                <Provider store={mockStore()}>
+                    <HeaderCell {...minProps} isLast isSearch={isSearch} />
+                </Provider>
+            )
+
+            expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
+        }
+    )
 
     it('should hide the ShowMoreFieldsDropdown when in search mode', () => {
         const {queryByText} = render(
@@ -141,20 +209,6 @@ describe('ViewTable::Table::HeaderCell', () => {
         )
 
         expect(queryByText('ShowMoreFieldsDropdown')).not.toBeInTheDocument()
-    })
-
-    it('should show the ShowMoreFieldsDropdown when in search mode and AdvancedSearchSorting feature flag is enabled', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AdvancedSearchSorting]: true,
-        }))
-
-        const {getByText} = render(
-            <Provider store={mockStore()}>
-                <HeaderCell {...minProps} isLast isSearch />
-            </Provider>
-        )
-
-        expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
     })
 
     it('should hide the ShowMoreFieldsDropdown when not on ticket search view', () => {

@@ -46,7 +46,7 @@ const HeaderCell = ({
     ) as TicketSearchSortableProperties
     const orderDirection = useAppSelector(getActiveViewOrderDirection)
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
-    const isAdvancedSearchSortingEnabled =
+    const isAdvancedSearchSortingEnabled: boolean =
         useFlags()[FeatureFlagKey.AdvancedSearchSorting]
 
     const fieldPath = useMemo(
@@ -54,14 +54,23 @@ const HeaderCell = ({
         [field]
     ) as TicketSearchSortableProperties
 
+    const isSearchSortingEnabled = useMemo(
+        () =>
+            isAdvancedSearchSortingEnabled &&
+            isSearch &&
+            (type === EntityType.Ticket ||
+                type === EntityType.TicketWithHighlight),
+        [isAdvancedSearchSortingEnabled, isSearch, type]
+    )
+
     const action = useMemo(
         () =>
-            field.get('filter') && !isSearch
+            field.get('filter') && (isSearchSortingEnabled || !isSearch)
                 ? field.getIn(['filter', 'sort'])
                     ? 'sort'
                     : 'filter'
                 : '',
-        [field, isSearch]
+        [field, isSearch, isSearchSortingEnabled]
     )
 
     const renderOrderIcon = useCallback(
@@ -83,7 +92,11 @@ const HeaderCell = ({
 
     const onClick = useCallback(() => {
         // if currently searching, can't do anything (no edition)
-        if (field.get('filter') && !isSearch && action === 'sort') {
+        if (
+            field.get('filter') &&
+            (isSearchSortingEnabled || !isSearch) &&
+            action === 'sort'
+        ) {
             const newDirection =
                 orderDirection === OrderDirection.Desc
                     ? OrderDirection.Asc
@@ -95,7 +108,15 @@ const HeaderCell = ({
                 })
             )
         }
-    }, [action, dispatch, field, fieldPath, isSearch, orderDirection])
+    }, [
+        action,
+        dispatch,
+        field,
+        fieldPath,
+        isSearch,
+        isSearchSortingEnabled,
+        orderDirection,
+    ])
 
     const isMainField = config.get('mainField') === field.get('name')
 
@@ -125,12 +146,7 @@ const HeaderCell = ({
                         </div>
                     )}
                 </div>
-                {isLast &&
-                ((isAdvancedSearchSortingEnabled &&
-                    isSearch &&
-                    (type === EntityType.Ticket ||
-                        type === EntityType.TicketWithHighlight)) ||
-                    !isSearch) ? (
+                {isLast && (isSearchSortingEnabled || !isSearch) ? (
                     <ShowMoreFieldsDropdown
                         config={config}
                         fields={config.get('fields', fromJS([]))}

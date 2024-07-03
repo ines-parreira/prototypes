@@ -576,7 +576,7 @@ const defaultTicketView = {
                 ViewField.Created,
             ],
             type: ViewType.TicketList,
-            order_by: 'created_datetime',
+            order_by: null,
             [WITH_HIGHLIGHTS_OPTION_KEY]: false,
         })
 
@@ -651,7 +651,7 @@ const ticketWithHighlightView = {
                 ViewField.Created,
             ],
             type: ViewType.TicketList,
-            order_by: 'created_datetime',
+            order_by: null,
             [WITH_HIGHLIGHTS_OPTION_KEY]: true,
         })
 
