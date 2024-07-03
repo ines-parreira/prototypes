@@ -78,7 +78,7 @@ const TicketList = () => {
     useTitle(title)
 
     const isAdvancedSearchWithHighlights: boolean | undefined =
-        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights]
+        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights] !== false
     const type =
         isAdvancedSearchWithHighlights && isSearch
             ? EntityType.TicketWithHighlight

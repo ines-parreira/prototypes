@@ -19,7 +19,6 @@ import ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
 import CustomerListActions from 'pages/customers/list/components/CustomerListActions'
@@ -41,7 +40,7 @@ export default function CustomerListContainer() {
         !isCreationUrl(location.pathname, 'users') &&
         !isCreationUrl(location.pathname, 'customers')
     const isAdvancedSearchWithHighlights: boolean | undefined =
-        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights]
+        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights] !== false
     const type = isAdvancedSearchWithHighlights
         ? EntityType.CustomerWithHighlight
         : EntityType.Customer
@@ -65,9 +64,7 @@ export default function CustomerListContainer() {
 
     useTitle(title)
 
-    return isAdvancedSearchWithHighlights === undefined ? (
-        <Skeleton />
-    ) : (
+    return (
         <div
             className="d-flex flex-column"
             style={{

@@ -84,7 +84,7 @@ describe('Spotlight', () => {
         expect(setIsOpen).toHaveBeenCalledWith(false)
     })
 
-    it('should not render until the Feature Flag is loaded', () => {
+    it('should render even if the Feature Flag is not loaded', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.SearchWithHighlights]: undefined,
         }))
@@ -99,6 +99,6 @@ describe('Spotlight', () => {
             providerProps,
         })
 
-        expect(container).toBeEmptyDOMElement()
+        expect(container).not.toBeEmptyDOMElement()
     })
 })

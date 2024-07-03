@@ -10,7 +10,7 @@ import SpotlightModal from './SpotlightModal'
 
 const Spotlight = () => {
     const isSearchWithHighlights =
-        useFlags()[FeatureFlagKey.SearchWithHighlights]
+        useFlags()[FeatureFlagKey.SearchWithHighlights] !== false
     const {isOpen, setIsOpen} = useContext(SpotlightContext)
 
     useEffect(() => {
@@ -28,7 +28,7 @@ const Spotlight = () => {
         }
     }, [setIsOpen])
 
-    return isSearchWithHighlights === undefined ? null : (
+    return (
         <SpotlightModal
             isOpen={isOpen}
             onCloseModal={() => {

@@ -293,7 +293,8 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     _isAdvancedSearchWithHighlights = () =>
-        !!this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights]
+        this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights] !==
+        false
 
     _renderTable = () => {
         const {

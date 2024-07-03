@@ -4,7 +4,6 @@ import _chunk from 'lodash/chunk'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import {isEmpty} from 'lodash'
 import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import {JOBS_PATH} from 'models/job/resources'
 
@@ -25,6 +24,7 @@ import {
     isCurrentlyOnTicket,
     isCurrentlyOnView,
 } from 'utils'
+import {reportError} from 'utils/errors'
 import {buildJobMessage} from 'utils/notificationUtils'
 import {getMoment} from 'utils/date'
 import {StoreDispatch, RootState} from 'state/types'
@@ -37,7 +37,7 @@ import {
 } from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
-import {getLDClient, LDContext} from 'utils/launchDarkly'
+import {getLDClient} from 'utils/launchDarkly'
 import {searchTickets} from 'models/ticket/resources'
 import {searchCustomers} from 'models/customer/resources'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -393,11 +393,9 @@ export function fetchViewItems(
         }
 
         try {
-            await launchDarklyClient.waitForInitialization()
+            await launchDarklyClient.waitForInitialization(3)
         } catch (error) {
-            if (!isEmpty(LDContext)) {
-                throw error
-            }
+            reportError(error)
         }
 
         const filtersHash = getHashOfObj(

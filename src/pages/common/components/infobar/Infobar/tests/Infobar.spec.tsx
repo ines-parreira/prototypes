@@ -1,8 +1,10 @@
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useState as mockUseState} from 'react'
 import {fireEvent, waitFor, screen, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import {agents} from 'fixtures/agents'
 import {assumeMock, renderWithRouter} from 'utils/testing'
@@ -152,6 +154,10 @@ describe('<Infobar/>', () => {
                 </div>
             )
         )
+
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.InfobarSearchWithHighlights]: false,
+        }))
     })
 
     afterEach(() => {

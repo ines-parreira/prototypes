@@ -20,7 +20,7 @@ import * as infobarActions from 'state/infobar/actions'
 
 export const useCustomerSearch = () => {
     const isSearchWithHighlights =
-        !!useFlags()[FeatureFlagKey.InfobarSearchWithHighlights]
+        useFlags()[FeatureFlagKey.InfobarSearchWithHighlights] !== false
     const dispatch = useAppDispatch()
     const searchRank = useSearchRankScenario(SearchRankSource.CustomerProfile)
     const [isSearching, setIsSearching] = useState(false)

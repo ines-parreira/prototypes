@@ -27,10 +27,10 @@ const TabNavigator = ({
     className,
 }: TabNavigatorProps) => {
     const tabNavigatorRef = useRef<HTMLDivElement>(null)
-    const activeTabIndex = useMemo(
-        () => tabs.findIndex((t) => t.value === activeTab),
-        [activeTab, tabs]
-    )
+    const activeTabIndex = useMemo(() => {
+        const tabIndex = tabs.findIndex((t) => t.value === activeTab)
+        return tabIndex === -1 ? 0 : tabIndex
+    }, [activeTab, tabs])
 
     const [tabDimensions, setTabDimensions] = useState<TabDimension[] | null>(
         null

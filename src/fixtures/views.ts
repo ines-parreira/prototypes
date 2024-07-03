@@ -12,7 +12,7 @@ export const view: View = {
     decoration: null,
     created_datetime: '2017-07-31T21:43:10.610368+00:00',
     group_by: null,
-    with_highlights: false,
+    with_highlights: true,
     fields: [
         ViewField.Details,
         ViewField.Tags,

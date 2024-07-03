@@ -75,7 +75,8 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     _isAdvancedSearchWithHighlights = () =>
-        !!this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights]
+        this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights] !==
+        false
 
     handleKeyDown = (event: KeyboardEvent) => {
         const {updateView, activeView, isSearch} = this.props
