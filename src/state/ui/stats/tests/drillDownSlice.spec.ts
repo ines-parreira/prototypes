@@ -18,7 +18,6 @@ import {
     AgentsTableColumn,
     TicketFieldsMetric,
 } from 'state/ui/stats/types'
-import {OrderDirection} from 'models/api/types'
 import {
     initialState,
     setMetricData,
@@ -130,45 +129,7 @@ describe('drillDownSlice', () => {
         } as unknown as RootState
 
         it('getDrillDownMetric', () => {
-            expect(getDrillDownMetric(state)).toEqual({
-                metricData,
-                metricOrder: OrderDirection.Desc,
-            })
-            expect(
-                getDrillDownMetric({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: {
-                                metricName:
-                                    AgentsTableColumn.CustomerSatisfaction,
-                            },
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricData: {
-                    metricName: AgentsTableColumn.CustomerSatisfaction,
-                },
-                metricOrder: OrderDirection.Asc,
-            })
-            expect(
-                getDrillDownMetric({
-                    ...state,
-                    ui: {
-                        [drillDownSlice.name]: {
-                            metricData: {
-                                metricName: AgentsTableColumn.ClosedTickets,
-                            },
-                        },
-                    },
-                } as unknown as RootState)
-            ).toEqual({
-                metricData: {
-                    metricName: AgentsTableColumn.ClosedTickets,
-                },
-                metricOrder: OrderDirection.Desc,
-            })
+            expect(getDrillDownMetric(state)).toEqual(metricData)
         })
 
         it.each([

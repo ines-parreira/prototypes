@@ -174,7 +174,7 @@ export const ChannelsTableViews: TableSetting<ChannelsTableColumns> = {
     views: [],
 }
 
-const CHANNEL_COLUMN_WIDTH = 200
+const CHANNEL_COLUMN_WIDTH = 240
 export const MOBILE_CHANNEL_COLUMN_WIDTH = 180
 
 export const getColumnWidth = (column: ChannelsTableColumns) => {

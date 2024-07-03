@@ -69,7 +69,8 @@ export const ChannelsCellContent = ({
                 isHeatmapMode &&
                     !isFetching &&
                     heatmapCss[`p${String(data?.decile)}`],
-                css.cellContent
+                css.cellContent,
+                cellContent === NOT_AVAILABLE_PLACEHOLDER && css.emptyValue
             )}
             justifyContent={column === LeadColumn ? 'left' : 'right'}
             size={'small'}
@@ -78,7 +79,10 @@ export const ChannelsCellContent = ({
                 <Skeleton inline width={METRIC_COLUMN_WIDTH} />
             ) : column !== LeadColumn ? (
                 <DrillDownModalTrigger
-                    enabled={!!data?.value}
+                    enabled={
+                        !!data?.value &&
+                        column !== ChannelsTableColumns.CreatedTicketsPercentage
+                    }
                     metricData={{
                         metricName: column,
                         perChannel: channel.slug,

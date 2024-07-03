@@ -104,7 +104,7 @@ export const messagesSentMetricPerTicketDrillDownQueryFactory = (
         limit: DRILLDOWN_QUERY_LIMIT,
         ...(sorting
             ? {
-                  order: [[TicketDimension.CreatedDatetime, sorting]],
+                  order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
               }
             : {}),
     }

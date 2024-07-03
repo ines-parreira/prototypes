@@ -1,4 +1,5 @@
 import {useMemo, useState} from 'react'
+import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {User} from 'config/types/user'
 import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
@@ -101,7 +102,8 @@ export const getDrillDownMetricOrder = (
     metricName: DrillDownMetric['metricName']
 ) => {
     return metricName === OverviewMetric.CustomerSatisfaction ||
-        metricName === AgentsTableColumn.CustomerSatisfaction
+        metricName === AgentsTableColumn.CustomerSatisfaction ||
+        metricName === ChannelsTableColumns.CustomerSatisfaction
         ? OrderDirection.Asc
         : OrderDirection.Desc
 }

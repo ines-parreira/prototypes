@@ -238,7 +238,7 @@ describe('messagesSentMetricPerTicketQueryFactory', () => {
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
-            order: [[TicketDimension.CreatedDatetime, sorting]],
+            order: [[HelpdeskMessageMeasure.MessageCount, sorting]],
         })
     })
 })

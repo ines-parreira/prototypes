@@ -2,7 +2,6 @@ import {queryKeys} from '@gorgias/api-queries'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {appQueryClient} from 'api/queryClient'
 import {User} from 'config/types/user'
-import {OrderDirection} from 'models/api/types'
 import {createJob} from 'models/job/resources'
 import {Job, JobType} from 'models/job/types'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
@@ -224,17 +223,8 @@ export const getDrillDownModalState = (state: RootState) =>
 export const getDrillDownExport = (state: RootState) =>
     state.ui[drillDownSlice.name].export
 
-export const getDrillDownMetric = (state: RootState) => {
-    const metricData = state.ui[drillDownSlice.name].metricData
-    return {
-        metricData,
-        metricOrder:
-            metricData?.metricName === OverviewMetric.CustomerSatisfaction ||
-            metricData?.metricName === AgentsTableColumn.CustomerSatisfaction
-                ? OrderDirection.Asc
-                : OrderDirection.Desc,
-    }
-}
+export const getDrillDownMetric = (state: RootState) =>
+    state.ui[drillDownSlice.name].metricData
 
 export const getDrillDownMetricColumn = (
     state: RootState

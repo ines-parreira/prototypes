@@ -16,7 +16,7 @@ import {DrillDownTable} from './DrillDownTable'
 
 export const DrillDownModal = () => {
     const isOpen = useAppSelector(getDrillDownModalState)
-    const {metricData} = useAppSelector(getDrillDownMetric)
+    const metricData = useAppSelector(getDrillDownMetric)
     const dispatch = useAppDispatch()
 
     return isOpen ? (
