@@ -3,6 +3,7 @@ import {fromJS, Map} from 'immutable'
 import {fireEvent, render, waitFor} from '@testing-library/react'
 import {screen} from '@testing-library/dom'
 
+import {FeatureFlagKey} from 'config/featureFlags'
 import {getConfigByName} from 'config/views'
 import {view as viewsFixture} from 'fixtures/views'
 import {EntityType} from 'models/view/types'
@@ -136,6 +137,34 @@ describe('ViewTable::Header', () => {
         })
 
         expect(fetchViewItems).not.toHaveBeenCalled()
+    })
+
+    it('should remove ordering preferences when advanced search sorting feature flag is enabled', async () => {
+        render(
+            <HeaderContainer
+                {...minProps}
+                isSearch
+                flags={{
+                    [FeatureFlagKey.AdvancedSearchSorting]: true,
+                }}
+            />
+        )
+        const searchTerm = 'term1'
+        const searchInput = screen.getByPlaceholderText(/Search/i)
+        fireEvent.change(searchInput, {target: {value: searchTerm}})
+
+        await waitFor(() => {
+            expect(screen.getByDisplayValue(searchTerm)).toBeInTheDocument()
+            fireEvent.keyDown(searchInput, {key: 'Enter'})
+            expect(minProps.updateView).toHaveBeenLastCalledWith(
+                (fromJS({...viewsFixture}) as Map<any, any>).merge({
+                    search: searchTerm,
+                    order_by: null,
+                    order_dir: null,
+                }),
+                false
+            )
+        })
     })
 
     it('update view name', () => {

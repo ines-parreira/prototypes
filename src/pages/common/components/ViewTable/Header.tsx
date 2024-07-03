@@ -91,6 +91,12 @@ export class HeaderContainer extends React.Component<Props, State> {
                     search: searchTerm,
                     [WITH_HIGHLIGHTS_OPTION_KEY]:
                         this._isAdvancedSearchWithHighlights(),
+                    ...(!!this.props.flags?.[
+                        FeatureFlagKey.AdvancedSearchSorting
+                    ] && {
+                        order_by: null,
+                        order_dir: null,
+                    }),
                 }),
                 false
             )
