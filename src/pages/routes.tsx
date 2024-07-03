@@ -481,8 +481,6 @@ export function StatsRoutes() {
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
 
-    const displayVoiceAnalyticsV1: boolean | undefined =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
     const isSLAsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAnalyticsNewBusiestTime: boolean | undefined =
@@ -741,18 +739,16 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                {displayVoiceAnalyticsV1 && (
-                    <Route
-                        exact
-                        path={`${path}/voice-agents`}
-                        render={() => (
-                            <App
-                                content={VoiceAgents}
-                                navbar={StatsNavbarContainer}
-                            />
-                        )}
-                    />
-                )}
+                <Route
+                    exact
+                    path={`${path}/voice-agents`}
+                    render={() => (
+                        <App
+                            content={VoiceAgents}
+                            navbar={StatsNavbarContainer}
+                        />
+                    )}
+                />
             </Switch>
         </DefaultStatsFilters>
     )

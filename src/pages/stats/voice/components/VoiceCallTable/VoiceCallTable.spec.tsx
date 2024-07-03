@@ -2,11 +2,9 @@ import React from 'react'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import moment from 'moment/moment'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {act, fireEvent, render, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {UseQueryResult} from '@tanstack/react-query'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {assumeMock} from 'utils/testing'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {StatsFilters} from 'models/stat/types'
@@ -64,13 +62,6 @@ describe('VoiceCallTable', () => {
             start_datetime: formatReportingQueryDate(moment()),
         },
     }
-
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
-        })
-    })
 
     const renderComponent = (filterOption = VoiceCallFilterOptions.All) => {
         return render(

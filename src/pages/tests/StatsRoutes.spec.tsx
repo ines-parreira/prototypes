@@ -1,6 +1,5 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {Route, Switch} from 'react-router-dom'
@@ -10,7 +9,6 @@ import {createBrowserHistory} from 'history'
 
 import {user} from 'fixtures/users'
 import {RootState} from 'state/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {renderWithRouter} from 'utils/testing'
 import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
 import {StatsRoutes} from 'pages/routes'
@@ -50,7 +48,6 @@ describe('<StatsRoutes/>', () => {
 
     beforeEach(() => {
         mockHistory.replace('/app')
-        resetLDMocks()
     })
 
     const renderStatsRoutes = () => {
@@ -69,9 +66,6 @@ describe('<StatsRoutes/>', () => {
     }
 
     it('should make Voice analytics route available', async () => {
-        mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: false,
-        })
         const {findByText} = renderStatsRoutes()
 
         act(() => mockHistory.push('/stats/voice-overview'))
@@ -80,24 +74,10 @@ describe('<StatsRoutes/>', () => {
     })
 
     it('should make Voice agents route available', async () => {
-        mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
-        })
         const {findByText} = renderStatsRoutes()
 
         act(() => mockHistory.push('/stats/voice-agents'))
 
         expect(await findByText('Voice Agents')).toBeInTheDocument()
-    })
-
-    it('should not make Voice agents route available (FF off)', () => {
-        mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: false,
-        })
-        const {queryByText} = renderStatsRoutes()
-
-        act(() => mockHistory.push('/stats/voice-agents'))
-
-        expect(queryByText('Voice Agents')).toBeNull()
     })
 })

@@ -1,9 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import moment from 'moment/moment'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import StatsPage from 'pages/stats/StatsPage'
@@ -56,8 +54,6 @@ import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPayw
 import {ProductType} from 'models/billing/types'
 
 function VoiceOverview() {
-    const displayVoiceAnalyticsV1: boolean | undefined =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1] || false
     const [tableFilterOption, setTableFilterOption] = useState(
         VoiceCallFilterOptions.All
     )
@@ -132,12 +128,10 @@ function VoiceOverview() {
                         isMultiple
                         variant={'ghost'}
                     />
-                    {displayVoiceAnalyticsV1 && (
-                        <TagsStatsFilter
-                            value={pageStatsFilters.tags}
-                            variant={'ghost'}
-                        />
-                    )}
+                    <TagsStatsFilter
+                        value={pageStatsFilters.tags}
+                        variant={'ghost'}
+                    />
                     <AgentsStatsFilter
                         value={pageStatsFilters.agents}
                         variant={'ghost'}

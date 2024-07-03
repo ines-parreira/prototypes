@@ -51,7 +51,6 @@ export enum FeatureFlagKey {
     ConvertSimplifiedEditor = 'convert-simplified-editor',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
-    DisplayVoiceAnalyticsV1 = 'display-voice-analytics-v-1',
     EarlyAdopter = 'early-adopter',
     EnableEmailToStoreMapping = 'enable-email-to-store-mapping',
     EnableNewLanguages = 'enable-new-languages',

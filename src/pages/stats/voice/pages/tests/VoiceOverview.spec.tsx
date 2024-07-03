@@ -64,7 +64,6 @@ describe('VoiceOverview', () => {
     beforeEach(() => {
         resetLDMocks()
         mockFlags({
-            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
             [FeatureFlagKey.NewDatePickerVariant]: false,
         })
     })

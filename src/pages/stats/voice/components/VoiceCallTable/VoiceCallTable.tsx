@@ -1,8 +1,6 @@
 import React, {UIEventHandler, useMemo, useState} from 'react'
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Link} from 'react-router-dom'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useMeasure from 'hooks/useMeasure'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -46,9 +44,6 @@ export const VoiceCallTable = ({
     userTimezone,
     filterOption,
 }: VoiceCallTableProps) => {
-    const displayVoiceAnalyticsV1: boolean =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1] || false
-
     const [currentPage, setCurrentPage] = useState(1)
     const [ref, {width}] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
@@ -85,7 +80,7 @@ export const VoiceCallTable = ({
                     ['integration', 174],
                     ['date', 154],
                     ['state', 74],
-                    ...(displayVoiceAnalyticsV1 ? [['recording', 84]] : []),
+                    ['recording', 84],
                     ['duration', 74],
                     ['wait time', 84],
                     ['ticket', 82],
@@ -107,7 +102,7 @@ export const VoiceCallTable = ({
                 ))}
             </TableBodyRow>
         ))
-    }, [isTableScrolled, displayVoiceAnalyticsV1])
+    }, [isTableScrolled])
 
     if (!isFetching && data?.length === 0) {
         return (
@@ -157,15 +152,14 @@ export const VoiceCallTable = ({
                                 </>
                             }
                         />
-                        {displayVoiceAnalyticsV1 && (
-                            <HeaderCellProperty
-                                title={'Recording'}
-                                className={css.smallCell}
-                                tooltip={
-                                    'Call recording or voicemail left by customer.'
-                                }
-                            />
-                        )}
+                        <HeaderCellProperty
+                            title={'Recording'}
+                            className={css.smallCell}
+                            tooltip={
+                                'Call recording or voicemail left by customer.'
+                            }
+                        />
+
                         <HeaderCellProperty
                             title={'Length'}
                             justifyContent={'right'}
@@ -249,13 +243,11 @@ export const VoiceCallTable = ({
                                               }
                                           />
                                       </BodyCell>
-                                      {displayVoiceAnalyticsV1 && (
-                                          <BodyCell className={css.smallCell}>
-                                              <VoiceCallRecording
-                                                  voiceCall={item}
-                                              />
-                                          </BodyCell>
-                                      )}
+                                      <BodyCell className={css.smallCell}>
+                                          <VoiceCallRecording
+                                              voiceCall={item}
+                                          />
+                                      </BodyCell>
                                       <BodyCell
                                           className={css.tinyCell}
                                           justifyContent={'right'}

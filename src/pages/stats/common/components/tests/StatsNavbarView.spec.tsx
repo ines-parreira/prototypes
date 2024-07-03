@@ -159,10 +159,7 @@ describe('StatsNavbarView', () => {
         expect(screen.getByText('Help Center')).toBeInTheDocument()
     })
 
-    it('should render the link to the Voice Overview (FF on)', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.DisplayVoiceAnalyticsV1]: true,
-        }))
+    it('should render the link to the Voice Overview', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>

@@ -23,8 +23,6 @@ export const NEW_NAV_LABEL = 'NEW'
 export default function StatsNavbarView() {
     const isHelpCenterAnalyticsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
-    const displayVoiceAnalyticsV1: boolean | undefined =
-        useFlags()[FeatureFlagKey.DisplayVoiceAnalyticsV1]
     const isSLAsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAnalyticsNewBusiestTime: boolean | undefined =
@@ -290,13 +288,11 @@ export default function StatsNavbarView() {
                     title={'Overview'}
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
-                {displayVoiceAnalyticsV1 && (
-                    <VoiceStatsNavbarItem
-                        to={'/app/stats/voice-agents'}
-                        title={'Agents'}
-                        commonNavLinkProps={COMMON_NAV_LINK_PROPS}
-                    />
-                )}
+                <VoiceStatsNavbarItem
+                    to={'/app/stats/voice-agents'}
+                    title={'Agents'}
+                    commonNavLinkProps={COMMON_NAV_LINK_PROPS}
+                />
             </NavbarBlock>
         </>
     )
