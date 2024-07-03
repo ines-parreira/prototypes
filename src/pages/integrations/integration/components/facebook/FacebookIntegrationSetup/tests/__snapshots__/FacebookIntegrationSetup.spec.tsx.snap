@@ -68,11 +68,7 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
         <div
           className="mb-2"
         >
-          <Loader
-            inline={false}
-            minHeight="500px"
-            size="40px"
-          />
+          <Loader />
         </div>
         <Pagination
           currentPage={1}

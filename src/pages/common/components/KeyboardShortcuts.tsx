@@ -1,28 +1,13 @@
-import {Component} from 'react'
-
-import shortcutManager, {
-    KeymapActions,
-} from '../../../services/shortcutManager/shortcutManager'
+import useShortcuts from 'hooks/useShortcuts'
+import {KeymapActions} from 'services/shortcutManager/shortcutManager'
 
 type Props = {
     name: string
     keymap: KeymapActions
 }
 
-// TODO(@ghinda): replace direct use of shortcutManager with this component
-export default class KeyboardShortcuts extends Component<Props> {
-    static defaultProps: Pick<Props, 'name' | 'keymap'> = {
-        name: '',
-        keymap: {},
-    }
-
-    componentDidMount() {
-        shortcutManager.bind(this.props.name, this.props.keymap)
-    }
-
-    componentWillUnmount() {
-        shortcutManager.unbind(this.props.name)
-    }
-
-    render = () => null
+// this component should not be used, use `useShortcuts` in a component directly
+export default function KeyboardShortcuts({keymap = {}, name = ''}: Props) {
+    useShortcuts(name, keymap)
+    return null
 }

@@ -1,40 +1,39 @@
-import React, {ReactNode, Component} from 'react'
+import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 import {RouteComponentProps} from 'react-router-dom'
 import {Container, Row, Col} from 'reactstrap'
 
 import withRouter from 'pages/common/utils/withRouter'
-import appCss from '../../App.less'
+import appCss from 'pages/App.less'
 
 import css from './FullPage.less'
 
 type OwnProps = {
-    noContainerWidthLimit?: boolean
     children: ReactNode
+    noContainerWidthLimit?: boolean
 }
 
-class FullPage extends Component<OwnProps & RouteComponentProps> {
-    render() {
-        const {noContainerWidthLimit} = this.props
-        return (
-            <Container
-                fluid
-                className={classnames(
-                    'container-padding',
-                    appCss['main-content'],
-                    css.container
-                )}
+type Props = OwnProps & RouteComponentProps
+
+function FullPage({children, noContainerWidthLimit}: Props) {
+    return (
+        <Container
+            fluid
+            className={classnames(
+                'container-padding',
+                appCss['main-content'],
+                css.container
+            )}
+        >
+            <Row
+                className={classnames(css.row, {
+                    [css['no-limit']]: noContainerWidthLimit,
+                })}
             >
-                <Row
-                    className={classnames(css.row, {
-                        [css['no-limit']]: noContainerWidthLimit,
-                    })}
-                >
-                    <Col className={css.col}>{this.props.children}</Col>
-                </Row>
-            </Container>
-        )
-    }
+                <Col className={css.col}>{children}</Col>
+            </Row>
+        </Container>
+    )
 }
 
 export default withRouter(FullPage)

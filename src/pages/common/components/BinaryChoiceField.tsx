@@ -22,75 +22,72 @@ type Props = {
  * Only one value can be picked from each source
  * ex: used in merge customers feature for merging names
  */
-export default class BinaryChoiceField extends React.Component<Props> {
-    static defaultProps: Pick<Props, 'onChange'> = {
-        onChange: _noop,
+export default function BinaryChoiceField({
+    label,
+    options,
+    tooltip,
+    value,
+    onChange = _noop,
+}: Props) {
+    const firstValue =
+        typeof options[0] === 'object' ? options[0].value : options[0]
+    const firstIsDisabled = !firstValue
+    const firstOption = {
+        label:
+            options[0] && typeof options[0] === 'object'
+                ? options[0].label
+                : options[0],
+        value: firstValue,
+        className: classNames('option', {
+            active: _isEqual(value, firstValue),
+            disabled: firstIsDisabled,
+        }),
     }
 
-    render() {
-        const {value, options, label, tooltip, onChange} = this.props
+    const secondValue =
+        options[1] && typeof options[1] === 'object'
+            ? options[1].value
+            : options[1]
+    const secondIsDisabled = !secondValue
+    const secondOption = {
+        label: typeof options[1] === 'object' ? options[1].label : options[1],
+        value: secondValue,
+        className: classNames('option', {
+            active: _isEqual(value, secondValue),
+            disabled: secondIsDisabled,
+        }),
+    }
 
-        const firstValue =
-            typeof options[0] === 'object' ? options[0].value : options[0]
-        const firstIsDisabled = !firstValue
-        const firstOption = {
-            label:
-                options[0] && typeof options[0] === 'object'
-                    ? options[0].label
-                    : options[0],
-            value: firstValue,
-            className: classNames('option', {
-                active: _isEqual(value, firstValue),
-                disabled: firstIsDisabled,
-            }),
-        }
-
-        const secondValue =
-            options[1] && typeof options[1] === 'object'
-                ? options[1].value
-                : options[1]
-        const secondIsDisabled = !secondValue
-        const secondOption = {
-            label:
-                typeof options[1] === 'object' ? options[1].label : options[1],
-            value: secondValue,
-            className: classNames('option', {
-                active: _isEqual(value, secondValue),
-                disabled: secondIsDisabled,
-            }),
-        }
-
-        return (
-            <FormGroup className="binary-choice">
-                {label && (
-                    <div className="label">
-                        {label}
-                        {tooltip}
-                    </div>
-                )}
-                <div className="options">
-                    <div
-                        className={firstOption.className}
-                        onClick={
-                            !firstIsDisabled
-                                ? () => onChange(firstOption.value)
-                                : undefined
-                        }
-                    >
-                        {firstOption.label || '(no value)'}
-                    </div>
-                    <div
-                        className={secondOption.className}
-                        onClick={
-                            !secondIsDisabled
-                                ? () => onChange(secondOption.value)
-                                : undefined
-                        }
-                    >
-                        {secondOption.label || '(no value)'}
-                    </div>
+    return (
+        <FormGroup className="binary-choice">
+            {label && (
+                <div className="label">
+                    {label}
+                    {tooltip}
                 </div>
-            </FormGroup>
-        )
-    }
+            )}
+            <div className="options">
+                <div
+                    className={firstOption.className}
+                    onClick={
+                        !firstIsDisabled
+                            ? () => onChange(firstOption.value)
+                            : undefined
+                    }
+                >
+                    {firstOption.label || '(no value)'}
+                </div>
+                <div
+                    className={secondOption.className}
+                    onClick={
+                        !secondIsDisabled
+                            ? () => onChange(secondOption.value)
+                            : undefined
+                    }
+                >
+                    {secondOption.label || '(no value)'}
+                </div>
+            </div>
+        </FormGroup>
+    )
 }

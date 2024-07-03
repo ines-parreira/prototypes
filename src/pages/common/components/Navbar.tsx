@@ -78,27 +78,25 @@ type NavLinkProps = {
 } & ComponentProps<typeof Link>
 
 // A <Link /> with some default styles
-class NavLink extends Component<NavLinkProps> {
-    render() {
-        const {className, to} = this.props
+function NavLink(props: NavLinkProps) {
+    const {className, to} = props
 
-        let url = to || ''
+    let url = to || ''
 
-        // if the url ends with an "s", then we also count the urls without an "s"
-        // ex: we highlight "Tickets" when we are on /app/tickets/something or /app/ticket/something
-        if (url.endsWith('s')) {
-            url = url.slice(0, -1)
-        }
-
-        return (
-            <Link
-                {...this.props}
-                className={classnames(className, css['menu-item'], {
-                    current: window.location.pathname.includes(url),
-                })}
-            />
-        )
+    // if the url ends with an "s", then we also count the urls without an "s"
+    // ex: we highlight "Tickets" when we are on /app/tickets/something or /app/ticket/something
+    if (url.endsWith('s')) {
+        url = url.slice(0, -1)
     }
+
+    return (
+        <Link
+            {...props}
+            className={classnames(className, css['menu-item'], {
+                current: window.location.pathname.includes(url),
+            })}
+        />
+    )
 }
 
 type MenuItem = {
