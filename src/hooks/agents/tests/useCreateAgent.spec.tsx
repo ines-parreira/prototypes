@@ -1,8 +1,6 @@
-import React from 'react'
 import {renderHook} from '@testing-library/react-hooks'
-import {QueryClientProvider} from '@tanstack/react-query'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
@@ -17,38 +15,36 @@ import {assumeMock} from 'utils/testing'
 import {handleError} from '../errorHandler'
 import {useCreateAgent} from '../useCreateAgent'
 
-const queryClient = mockQueryClient()
-
+jest.mock('@tanstack/react-query')
 jest.mock('models/agents/queries')
 const usePureCreateAgentMock = assumeMock(usePureCreateAgent)
-
 jest.mock('../errorHandler')
-
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
+const useQueryClientMock = assumeMock(useQueryClient)
 
 describe('useCreateAgent', () => {
+    const invalidateQueriesMock = jest.fn()
     beforeEach(() => {
-        usePureCreateAgentMock.mockClear()
+        useQueryClientMock.mockImplementation(
+            () =>
+                ({
+                    invalidateQueries: invalidateQueriesMock,
+                } as unknown as QueryClient)
+        )
     })
 
     it('should dispatch success notification on success and invalidate lists queries', () => {
-        const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        renderHook(() => useCreateAgent(), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        renderHook(() => useCreateAgent())
+
         usePureCreateAgentMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(agents[0]),
             [agents[0]],
             undefined
         )
 
-        expect(invalidateQueryMock).toHaveBeenLastCalledWith({
+        expect(useQueryClient().invalidateQueries).toHaveBeenLastCalledWith({
             queryKey: agentsKeys.all(),
         })
 
@@ -66,13 +62,7 @@ describe('useCreateAgent', () => {
     })
 
     it('should call handleError on error', () => {
-        renderHook(() => useCreateAgent(), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        renderHook(() => useCreateAgent())
         const myError = {}
         usePureCreateAgentMock.mock.calls[0][0]?.onError!(
             myError,

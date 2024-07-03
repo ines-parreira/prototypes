@@ -46,3 +46,8 @@ export async function applySalesCoupon({
     })
     return res
 }
+
+export async function extendTrial() {
+    const res = await client.post(`/billing/extend-trial`)
+    return res
+}

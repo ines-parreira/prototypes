@@ -24,25 +24,27 @@ export function BillingInternalView() {
     const {data: billingState, ...billingStateQuery} = useBillingState()
     const {data: coupons, ...salesCouponsQuery} = useSalesCoupons()
 
-    if (
-        billingStateQuery.isLoading ||
-        salesCouponsQuery.isLoading ||
-        !billingState ||
-        !coupons
-    )
+    if (billingStateQuery.isLoading || salesCouponsQuery.isLoading)
         return <div>Loading...</div>
 
-    if (billingStateQuery.error)
+    if (billingStateQuery.error) {
         return (
-            <div>
-                An error has occurred: ' + billingStateQuery.error.toString()
-            </div>
+            <div>An error has occurred: could not fetch the billing state</div>
         )
+    }
 
     if (salesCouponsQuery.error)
         return (
             <div>
-                An error has occurred: ' + billingStateQuery.error.toString()
+                An error has occurred: could not fetch the sales coupons list
+            </div>
+        )
+
+    if (!billingState || !coupons)
+        return (
+            <div>
+                An error has occurred: cannot proceed further, missing
+                information
             </div>
         )
 
@@ -79,6 +81,7 @@ export function BillingInternalView() {
                     isHelpdeskAndAutomateCoupon ? currentCoupon : null
                 }
                 upcomingInvoice={billingState.upcoming_invoice}
+                hasExtendedTrial={billingState.subscription.trial_extended}
             />
             <div className={css.productCards}>
                 <ProductCardForCoupon

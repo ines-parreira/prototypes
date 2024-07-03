@@ -181,6 +181,7 @@ type SubscriptionSummary = {
     current_billing_cycle_start_datetime: string
     current_billing_cycle_end_datetime: string
     coupon: CouponSummary | null
+    trial_extended: boolean
 }
 
 export type BillingState = {

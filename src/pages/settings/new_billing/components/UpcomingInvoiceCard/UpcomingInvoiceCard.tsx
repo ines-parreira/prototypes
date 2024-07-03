@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
 import moment from 'moment/moment'
+import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import Button from 'pages/common/components/button/Button'
 import {CouponSummary, UpcomingInvoiceSummary} from 'models/billing/types'
+import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import AddSalesCouponModal from '../AddSalesCouponModal'
 import {DATE_FORMAT} from '../../constants'
 import css from './UpcomingInvoiceCard.less'
@@ -13,6 +15,7 @@ interface UpcomingInvoiceCardProps {
     availableCoupons: string[]
     currentHelpdeskAndAutomateCoupon: CouponSummary | null
     upcomingInvoice: UpcomingInvoiceSummary | null
+    hasExtendedTrial: boolean
 }
 
 export default function UpcomingInvoiceCard({
@@ -22,18 +25,11 @@ export default function UpcomingInvoiceCard({
     availableCoupons,
     currentHelpdeskAndAutomateCoupon,
     upcomingInvoice,
+    hasExtendedTrial,
 }: UpcomingInvoiceCardProps) {
     const [isModalOpen, setIsModalOpen] = useState(false)
 
-    const dueOn = isTrialing ? (
-        <span className={css.caption}>
-            Due on {moment(endOfTrialDatetime).format(DATE_FORMAT)}
-        </span>
-    ) : (
-        <span className={css.caption}>
-            Due on {moment(endOfCurrentCycleDatetime).format(DATE_FORMAT)}
-        </span>
-    )
+    const extendTrial = useExtendTrialWithSideEffects()
 
     if (!upcomingInvoice) {
         return <div>No upcoming invoice for now</div>
@@ -67,6 +63,44 @@ export default function UpcomingInvoiceCard({
             Apply coupon
         </Button>
     ) : null
+
+    const sevenDaysAfterEndOfTrialDatetime = moment(endOfTrialDatetime).add(
+        7,
+        'days'
+    )
+    const extendTrialButton = (
+        <ConfirmationPopover
+            title={<b>Confirm trial extension</b>}
+            content={
+                <p>
+                    Do you want to extend trial until{' '}
+                    <b>
+                        {sevenDaysAfterEndOfTrialDatetime.format(DATE_FORMAT)}
+                    </b>
+                    ? Note, that once confirmed, the extension cannot be undone.
+                </p>
+            }
+            onConfirm={() => {
+                extendTrial.mutate([])
+            }}
+            confirmLabel="Confirm"
+            cancelButtonProps={{intent: 'secondary'}}
+            showCancelButton
+        >
+            {({uid, onDisplayConfirmation, elementRef}) => (
+                <Button
+                    id={uid}
+                    ref={elementRef}
+                    fillStyle="ghost"
+                    intent="primary"
+                    size="small"
+                    onClick={onDisplayConfirmation}
+                >
+                    Extend trial
+                </Button>
+            )}
+        </ConfirmationPopover>
+    )
 
     return (
         <div className={css.container}>
@@ -106,7 +140,25 @@ export default function UpcomingInvoiceCard({
                     </>
                 )}
             </div>
-            <div>{dueOn}</div>
+            <div className={css.verticallyAligned}>
+                {isTrialing ? (
+                    <span className={css.caption}>
+                        Due on {moment(endOfTrialDatetime).format(DATE_FORMAT)}
+                    </span>
+                ) : (
+                    <span className={css.caption}>
+                        Due on{' '}
+                        {moment(endOfCurrentCycleDatetime).format(DATE_FORMAT)}
+                    </span>
+                )}{' '}
+                {isTrialing ? (
+                    hasExtendedTrial ? (
+                        <span className={css.caption}>with extended trial</span>
+                    ) : (
+                        extendTrialButton
+                    )
+                ) : null}
+            </div>
             <AddSalesCouponModal
                 title={'Apply Helpdesk and Automate coupon'}
                 onCloseModal={() => {

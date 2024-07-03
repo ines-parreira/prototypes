@@ -1,11 +1,13 @@
 import React from 'react'
-import {fireEvent, render, screen} from '@testing-library/react'
+import {render, screen} from '@testing-library/react'
+import user from '@testing-library/user-event'
 import {
     CouponSummary,
     ProductUsages,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
+import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import UpcomingInvoiceCard from '../UpcomingInvoiceCard'
 
@@ -15,7 +17,6 @@ jest.mock('../../AddSalesCouponModal/AddSalesCouponModal', () =>
 const AddSalesCouponModalMock = assumeMock(AddSalesCouponModal)
 
 const endOfCurrentCycleDatetime = '2024-06-25T09:27:00+00:00'
-const endOfTrialDatetime = '2024-06-25T09:27:00+00:00'
 const availableCoupons = [
     'sales-hd+ao-year-05%-once',
     'sales-hd+ao-year-10%-once',
@@ -57,15 +58,31 @@ const upcomingInvoiceWithCouponApplied: UpcomingInvoiceSummary = {
     total_decimal: '85',
     usages: usages,
 }
+
+const upcomingInvoiceCardParams = {
+    isTrialing: false,
+    endOfTrialDatetime: null,
+    endOfCurrentCycleDatetime: endOfCurrentCycleDatetime,
+    availableCoupons: availableCoupons,
+    currentHelpdeskAndAutomateCoupon: null,
+    upcomingInvoice: upcomingInvoice,
+    hasExtendedTrial: false,
+}
+
+const useExtendTrialMutateMock = jest.fn()
+jest.mock('pages/settings/new_billing/hooks/useExtendTrialWithSideEffects')
+const useExtendTrialMock = assumeMock(useExtendTrialWithSideEffects)
+useExtendTrialMock.mockImplementation(() => {
+    return {
+        mutate: useExtendTrialMutateMock,
+    } as unknown as ReturnType<typeof useExtendTrialWithSideEffects>
+})
+
 describe('UpcomingInvoiceCard', () => {
     it('should show a specific message when there is no upcoming invoice', () => {
         render(
             <UpcomingInvoiceCard
-                isTrialing={false}
-                endOfTrialDatetime={null}
-                endOfCurrentCycleDatetime={endOfCurrentCycleDatetime}
-                availableCoupons={availableCoupons}
-                currentHelpdeskAndAutomateCoupon={null}
+                {...upcomingInvoiceCardParams}
                 upcomingInvoice={null}
             />
         )
@@ -74,63 +91,76 @@ describe('UpcomingInvoiceCard', () => {
         ).toBeInTheDocument()
     })
     it('should show the total amount of the upcoming invoice', () => {
-        render(
-            <UpcomingInvoiceCard
-                isTrialing={false}
-                endOfTrialDatetime={null}
-                endOfCurrentCycleDatetime={endOfCurrentCycleDatetime}
-                availableCoupons={availableCoupons}
-                currentHelpdeskAndAutomateCoupon={null}
-                upcomingInvoice={upcomingInvoice}
-            />
-        )
+        render(<UpcomingInvoiceCard {...upcomingInvoiceCardParams} />)
         expect(screen.getByText('$99')).toBeInTheDocument()
     })
 
-    it('should show "Apply Coupon" button if canApplyProductCoupon is true', () => {
+    it('should show "Apply Coupon" button and "Extend trial" button only if in trial', () => {
         render(
             <UpcomingInvoiceCard
+                {...upcomingInvoiceCardParams}
+                isTrialing={false}
+            />
+        )
+        expect(
+            screen.queryByRole('button', {name: /Apply coupon/i})
+        ).not.toBeInTheDocument()
+
+        expect(
+            screen.queryByRole('button', {name: /Extend trial/i})
+        ).not.toBeInTheDocument()
+
+        render(
+            <UpcomingInvoiceCard
+                {...upcomingInvoiceCardParams}
                 isTrialing={true}
-                endOfTrialDatetime={endOfTrialDatetime}
-                endOfCurrentCycleDatetime={endOfCurrentCycleDatetime}
-                availableCoupons={availableCoupons}
-                currentHelpdeskAndAutomateCoupon={null}
-                upcomingInvoice={upcomingInvoice}
             />
         )
         expect(
             screen.getByRole('button', {name: /Apply coupon/i})
         ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', {name: /Extend trial/i})
+        ).toBeInTheDocument()
     })
 
-    it('should NOT show "Apply Coupon" button if canApplyProductCoupon is true', () => {
+    it('should call the correct endpoint when clicking on Confirm when extending trial', async () => {
         render(
             <UpcomingInvoiceCard
-                isTrialing={false}
-                endOfTrialDatetime={endOfTrialDatetime}
-                endOfCurrentCycleDatetime={endOfCurrentCycleDatetime}
-                availableCoupons={availableCoupons}
-                currentHelpdeskAndAutomateCoupon={null}
-                upcomingInvoice={upcomingInvoice}
+                {...upcomingInvoiceCardParams}
+                isTrialing={true}
+            />
+        )
+        user.click(screen.getByRole('button', {name: /Extend trial/i}))
+        const confirmButton = await screen.findByRole('button', {
+            name: /Confirm/i,
+        })
+        user.click(confirmButton)
+
+        expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
+    })
+
+    it('should NOT show "Extend trial" button if in trial but trial has already been extended', () => {
+        render(
+            <UpcomingInvoiceCard
+                {...upcomingInvoiceCardParams}
+                isTrialing={true}
+                hasExtendedTrial={true}
             />
         )
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', {name: /Extend trial/i})
         ).not.toBeInTheDocument()
     })
 
     it('should show the Modal when "Apply Coupon" button is clicked', () => {
         render(
             <UpcomingInvoiceCard
+                {...upcomingInvoiceCardParams}
                 isTrialing={true}
-                endOfTrialDatetime={endOfTrialDatetime}
-                endOfCurrentCycleDatetime={endOfCurrentCycleDatetime}
-                availableCoupons={availableCoupons}
-                currentHelpdeskAndAutomateCoupon={null}
-                upcomingInvoice={upcomingInvoice}
             />
         )
-        fireEvent.click(screen.getByRole('button', {name: /Apply coupon/i}))
+        user.click(screen.getByRole('button', {name: /Apply coupon/i}))
 
         expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
             {
@@ -147,10 +177,8 @@ describe('UpcomingInvoiceCard', () => {
     it('should show coupon name and "Edit Coupon" button if a coupon has been applied', () => {
         render(
             <UpcomingInvoiceCard
+                {...upcomingInvoiceCardParams}
                 isTrialing={true}
-                endOfTrialDatetime={endOfTrialDatetime}
-                endOfCurrentCycleDatetime={endOfCurrentCycleDatetime}
-                availableCoupons={availableCoupons}
                 currentHelpdeskAndAutomateCoupon={coupon}
                 upcomingInvoice={upcomingInvoiceWithCouponApplied}
             />
@@ -163,7 +191,7 @@ describe('UpcomingInvoiceCard', () => {
 
         expect(editCouponButton).toBeInTheDocument()
 
-        fireEvent.click(editCouponButton)
+        user.click(editCouponButton)
 
         expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
             {
