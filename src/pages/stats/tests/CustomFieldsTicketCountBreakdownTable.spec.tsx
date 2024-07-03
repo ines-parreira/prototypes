@@ -46,6 +46,11 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 )
 jest.mock('pages/stats/NoDataAvailable')
 const NoDataAvailableMock = assumeMock(NoDataAvailable)
+
+jest.mock('@gorgias/ui-kit', () => ({
+    Tooltip: () => <div />,
+}))
+
 const componentMock = () => <div />
 
 describe('<CustomFieldsTicketCountBreakdownTable />', () => {

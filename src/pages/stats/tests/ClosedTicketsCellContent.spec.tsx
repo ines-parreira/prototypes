@@ -27,6 +27,11 @@ jest.mock('hooks/reporting/metricsPerAgent')
 const useClosedTicketsMetricPerAgentMock = assumeMock(
     useClosedTicketsMetricPerAgent
 )
+
+jest.mock('@gorgias/ui-kit', () => ({
+    Tooltip: () => <div />,
+}))
+
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<ClosedTicketsCellContent>', () => {
