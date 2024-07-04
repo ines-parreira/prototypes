@@ -86,6 +86,7 @@ export enum FeatureFlagKey {
     ObservabilityAIArticles = 'observability-ai-articles',
     ObservabilityAllowAIGeneratedArticlesForMultiStore = 'allow-ai-generated-articles-for-multi-store',
     ObservabilityArticleTemplates = 'observability-article-templates',
+    ObservabilityAutomateTopQuestions = 'observability-automate-top-questions',
     ObservabilityROICalculator = 'roi-calculator-for-automate',
     ObservabilityShowAILibraryForMultiBrands = 'show-ai-library-for-multi-brands',
     ObservabilityTicketTimeToHandle = 'observability-ticket-time-to-handle',
