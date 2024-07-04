@@ -42,7 +42,7 @@ describe('ViewTable::Table::HeaderCell', () => {
         ActionsComponent,
         field: viewConfigFields.first(),
         fields: viewConfigFields.take(3) as List<any>,
-        isLast: false,
+        shouldRenderShowMoreDropdown: false,
         isSearch: false,
         type: viewConfig.get('name'),
     }
@@ -193,7 +193,11 @@ describe('ViewTable::Table::HeaderCell', () => {
 
             const {getByText} = render(
                 <Provider store={mockStore()}>
-                    <HeaderCell {...minProps} isLast isSearch={isSearch} />
+                    <HeaderCell
+                        {...minProps}
+                        shouldRenderShowMoreDropdown
+                        isSearch={isSearch}
+                    />
                 </Provider>
             )
 
@@ -204,7 +208,11 @@ describe('ViewTable::Table::HeaderCell', () => {
     it('should hide the ShowMoreFieldsDropdown when in search mode', () => {
         const {queryByText} = render(
             <Provider store={mockStore()}>
-                <HeaderCell {...minProps} isLast isSearch />
+                <HeaderCell
+                    {...minProps}
+                    shouldRenderShowMoreDropdown
+                    isSearch
+                />
             </Provider>
         )
 
@@ -220,7 +228,7 @@ describe('ViewTable::Table::HeaderCell', () => {
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
-                    isLast
+                    shouldRenderShowMoreDropdown
                     isSearch
                     type={EntityType.Customer}
                 />

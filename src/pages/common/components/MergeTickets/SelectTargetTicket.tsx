@@ -120,6 +120,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
                         onItemClick={updateTargetTicket}
                         fetchViewItems={this._onPageChange}
                         navigation={navigation}
+                        shouldRenderShowMoreDropdown={false}
                     />
                 </div>
             </div>

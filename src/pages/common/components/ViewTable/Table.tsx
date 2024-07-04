@@ -51,6 +51,7 @@ type OwnProps = {
         ...args: Parameters<typeof fetchViewItems>
     ) => Promise<unknown> | void
     onItemClick?: (item: Map<any, any>) => void
+    shouldRenderShowMoreDropdown?: boolean
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -76,6 +77,7 @@ const TableContainer = ({
     updatePageSelection,
     view,
     viewSelected,
+    shouldRenderShowMoreDropdown = true,
 }: Props) => {
     const hasNextItems =
         !!navigation.get('next_items') || !!navigation.get('next_cursor')
@@ -294,8 +296,9 @@ const TableContainer = ({
                                     field={field}
                                     fields={fields}
                                     type={type}
-                                    isLast={
-                                        fields.size === (index as number) + 1
+                                    shouldRenderShowMoreDropdown={
+                                        fields.size === (index as number) + 1 &&
+                                        shouldRenderShowMoreDropdown
                                     }
                                     isSearch={isSearch}
                                     ActionsComponent={ActionsComponent}

@@ -24,7 +24,7 @@ type Props = {
     ActionsComponent: Maybe<ComponentType<any>>
     field: Map<any, any>
     fields: List<any>
-    isLast: boolean
+    shouldRenderShowMoreDropdown: boolean
     isSearch: boolean
     type: string
 }
@@ -33,7 +33,7 @@ const HeaderCell = ({
     ActionsComponent,
     field,
     fields,
-    isLast,
+    shouldRenderShowMoreDropdown,
     isSearch,
     type,
 }: Props) => {
@@ -146,7 +146,8 @@ const HeaderCell = ({
                         </div>
                     )}
                 </div>
-                {isLast && (isSearchSortingEnabled || !isSearch) ? (
+                {shouldRenderShowMoreDropdown &&
+                (isSearchSortingEnabled || !isSearch) ? (
                     <ShowMoreFieldsDropdown
                         config={config}
                         fields={config.get('fields', fromJS([]))}

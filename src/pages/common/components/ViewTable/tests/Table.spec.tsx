@@ -50,7 +50,21 @@ jest.mock(
                 </tr>
             )
 )
-jest.mock('../Table/HeaderCell', () => () => <td>HeaderCell</td>)
+jest.mock(
+    '../Table/HeaderCell',
+    () =>
+        ({
+            shouldRenderShowMoreDropdown,
+        }: {
+            shouldRenderShowMoreDropdown: boolean
+        }) =>
+            (
+                <td>
+                    HeaderCell - shouldRenderShowMoreDropdown :{' '}
+                    {String(shouldRenderShowMoreDropdown)}
+                </td>
+            )
+)
 jest.mock(
     '../../BlankState/BlankState',
     () =>
@@ -121,6 +135,19 @@ describe('<Table />', () => {
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
+    })
+
+    it('should pass shouldRenderShowMoreDropdown to HeaderCell', () => {
+        const {getAllByText} = render(
+            <Provider store={mockStore(defaultState)}>
+                <Table {...minProps} shouldRenderShowMoreDropdown={false} />
+            </Provider>
+        )
+        expect(
+            getAllByText('HeaderCell - shouldRenderShowMoreDropdown : false')[
+                minProps.fields.size - 1
+            ]
+        ).toBeInTheDocument()
     })
 
     it('should display a modified view with no items, should reset the view and fetch first items ', () => {
