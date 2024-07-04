@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import classNames from 'classnames'
 
 import IconButton from 'pages/common/components/button/IconButton'
@@ -97,6 +97,15 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
             ))
     const hasNegativeFeedback = feedbackOnMessage?.feedback === 'thumbs_down'
 
+    const showThumbsUp = useMemo(() => {
+        return !!(
+            !isMessagePublic ||
+            messageFeedback?.actions.length ||
+            messageFeedback?.guidance.length ||
+            messageFeedback?.knowledge.length
+        )
+    }, [isMessagePublic, messageFeedback])
+
     const handleImproveResponse = () => {
         dispatch(
             changeActiveTab({
@@ -179,18 +188,20 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                 {isMessagePublic ? CORRECT_RESPONSE : ACCURATE_RESPONSE}
             </div>
             <div className={css.feedbackButtons}>
-                <FeedbackIconButton
-                    hasFeedback={hasPositiveFeedback}
-                    iconType="thumb_up"
-                    onClick={() => {
-                        if (hasPositiveFeedback) {
-                            return
-                        }
+                {showThumbsUp && (
+                    <FeedbackIconButton
+                        hasFeedback={hasPositiveFeedback}
+                        iconType="thumb_up"
+                        onClick={() => {
+                            if (hasPositiveFeedback) {
+                                return
+                            }
 
-                        handleSubmitFeedback('thumbs_up')
-                    }}
-                    isMessagePublic={isMessagePublic}
-                />
+                            handleSubmitFeedback('thumbs_up')
+                        }}
+                        isMessagePublic={isMessagePublic}
+                    />
+                )}
 
                 {isMessagePublic ? (
                     <Button
