@@ -8,6 +8,7 @@ type FormFieldProps<P> = {
     label?: string
     className?: string
     isRequired?: boolean
+    isDisabled?: boolean
     field?: ComponentType<P>
 } & Omit<P, Extract<keyof ControllerRenderProps, keyof P>>
 
@@ -16,6 +17,7 @@ export default function FormField<P>({
     label,
     className,
     isRequired,
+    isDisabled,
     field,
     ...fieldProps
 }: FormFieldProps<P>) {
@@ -29,6 +31,7 @@ export default function FormField<P>({
             ...formFieldProps,
             label,
             className,
+            isDisabled,
             error: fieldState.error?.message,
         })
     ) : (
@@ -37,6 +40,7 @@ export default function FormField<P>({
             label={label}
             className={className}
             isRequired={isRequired}
+            isDisabled={isDisabled}
             error={fieldState.error?.message}
         />
     )

@@ -5,14 +5,15 @@ import Caption from 'pages/common/forms/Caption/Caption'
 
 type NumberInputFieldProps = ComponentProps<typeof NumberInput> & {
     error?: string
+    wrapperClassName?: string
 }
 
 export default forwardRef(function NumberInputField(
-    {error, ...numberInputProps}: NumberInputFieldProps,
+    {error, wrapperClassName, ...numberInputProps}: NumberInputFieldProps,
     ref: ForwardedRef<HTMLInputElement>
 ) {
     return (
-        <div>
+        <div className={wrapperClassName}>
             <NumberInput {...numberInputProps} ref={ref} hasError={!!error} />
             {!!error && <Caption error={error} />}
         </div>

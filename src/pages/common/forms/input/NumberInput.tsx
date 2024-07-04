@@ -38,6 +38,7 @@ type Props = {
     value?: number
     step?: number
     nameRef?: string
+    allowEmptyString?: boolean
 } & Omit<
     InputHTMLAttributes<HTMLInputElement>,
     | 'disabled'
@@ -71,6 +72,7 @@ function NumberInput(
         value,
         step = 1,
         nameRef,
+        allowEmptyString,
         ...other
     }: Props,
     ref: ForwardedRef<HTMLInputElement>
@@ -131,11 +133,19 @@ function NumberInput(
     const formatFactor = Math.round(Math.pow(10, decimalPlaces))
 
     const displayValue = useMemo(() => {
-        if (value === undefined || isNaN(value)) {
+        if (
+            value === undefined ||
+            isNaN(value) ||
+            // Empty string is a regular state of a number input:
+            // https://html.spec.whatwg.org/multipage/input.html#number-state-(type=number)
+            // We should figure out how to make NumberInput comply with this standard
+            // without type casting
+            (allowEmptyString && (value as unknown as string) === '')
+        ) {
             return ''
         }
         return isFocused ? value : value.toFixed(decimalPlaces)
-    }, [value, isFocused, decimalPlaces])
+    }, [value, isFocused, decimalPlaces, allowEmptyString])
 
     useEffect(() => {
         if (!isFocused) {

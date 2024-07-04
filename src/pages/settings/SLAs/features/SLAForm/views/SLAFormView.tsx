@@ -17,7 +17,7 @@ import FormField from './FormField'
 import FormSection from './FormSection'
 import ChannelSelectBox from './ChannelSelectBox'
 import ToggleInputFormField from './ToggleInputFormField'
-import FieldArray from './FieldArray'
+import MetricsFieldArray from './MetricsFieldArray'
 import css from './SLAFormView.less'
 
 type SLAFormViewProps = {
@@ -79,7 +79,7 @@ export default function SLAFormView({
                                 team(s). Clear out the time value to deactivate
                                 the metric."
                         >
-                            <FieldArray />
+                            <MetricsFieldArray />
                             <FormField
                                 fieldName="active"
                                 field={ToggleInputFormField}

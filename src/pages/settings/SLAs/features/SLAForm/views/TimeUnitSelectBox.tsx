@@ -12,10 +12,15 @@ import {timeUnits} from 'pages/settings/SLAs/config/time'
 type TimeUnitSelectBoxProps = {
     value: SLAPolicyMetricUnit | undefined
     onChange: (value: SLAPolicyMetricUnit) => void
+    isDisabled?: boolean
+    className?: string
 }
 
 export default forwardRef<HTMLDivElement, TimeUnitSelectBoxProps>(
-    function TimeUnitSelectBox({value, onChange}: TimeUnitSelectBoxProps, ref) {
+    function TimeUnitSelectBox(
+        {value, onChange, isDisabled, className}: TimeUnitSelectBoxProps,
+        ref
+    ) {
         const floatingRef = useRef<HTMLDivElement>(null)
         const targetRef = useRef<HTMLDivElement>(null)
         useImperativeHandle(ref, () => targetRef.current!)
@@ -28,6 +33,8 @@ export default forwardRef<HTMLDivElement, TimeUnitSelectBoxProps>(
                 onToggle={setIsOpen}
                 label={value && timeUnits[value].label}
                 placeholder="Select time unit"
+                className={className}
+                isDisabled={isDisabled}
             >
                 <SelectInputBoxContext.Consumer>
                     {(context) => (

@@ -1,17 +1,16 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import {CreateSlaPolicyBody} from '@gorgias/api-types'
-import {useController, useFieldArray} from 'react-hook-form'
+import {useController, useFieldArray, useFormContext} from 'react-hook-form'
 import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
 
 import settingsCss from 'pages/settings/settings.less'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import Caption from 'pages/common/forms/Caption/Caption'
+import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import FormField from './FormField'
 import TimeUnitSelectBox from './TimeUnitSelectBox'
 import NumberInputField from './NumberInputField'
-import css from './SLAFormView.less'
+import css from './MetricsFieldArray.less'
 
 const fieldTexts = {
     FRT: {
@@ -26,7 +25,7 @@ const fieldTexts = {
     },
 }
 
-export default function FieldArray() {
+export default function MetricsFieldArray() {
     const {fields} = useFieldArray<CreateSlaPolicyBody>({
         name: 'metrics',
     })
@@ -37,17 +36,41 @@ export default function FieldArray() {
         name: 'metrics',
     })
 
+    const {resetField} = useFormContext()
+
+    const [toggleState, setToggleState] = useState<boolean[]>([])
+
+    useEffect(() => {
+        setToggleState(fields.map((field) => !!field.threshold))
+    }, [fields])
+
+    const handleToggle = (nextValue: boolean, index: number) => {
+        setToggleState((prev) => {
+            const next = [...prev]
+            next[index] = nextValue
+            return next
+        })
+
+        if (!nextValue) {
+            resetField(`metrics.${index}.threshold`, {defaultValue: ''})
+        }
+    }
+
     return (
         <div className={settingsCss.mb48}>
-            <div className={classNames(css.policiesRow)}>
+            <div>
                 {fields.map((field, index) => (
-                    <div className={css.policyRow} key={index}>
-                        <Label className={settingsCss.mb8}>
-                            <span>{fieldTexts[field.name].label}</span>
-                            <IconTooltip className={css.labelIcon}>
-                                {fieldTexts[field.name].tooltip}
-                            </IconTooltip>
-                        </Label>
+                    <div className={classNames(settingsCss.mb24)} key={index}>
+                        <ToggleInput
+                            caption={fieldTexts[field.name].tooltip}
+                            isToggled={toggleState[index]}
+                            onClick={(nextValue) => {
+                                handleToggle(nextValue, index)
+                            }}
+                            className={settingsCss.mb16}
+                        >
+                            {fieldTexts[field.name].label}
+                        </ToggleInput>
                         <div className={css.inputGroup}>
                             <FormField
                                 fieldName={`metrics.${index}.threshold`}
@@ -56,10 +79,15 @@ export default function FieldArray() {
                                 hasControls={false}
                                 placeholder={'0'}
                                 min={1}
+                                wrapperClassName={css.input}
+                                allowEmptyString
+                                isDisabled={!toggleState[index]}
                             />
                             <FormField
                                 fieldName={`metrics.${index}.unit`}
                                 field={TimeUnitSelectBox}
+                                className={css.input}
+                                isDisabled={!toggleState[index]}
                             />
                         </div>
                     </div>
