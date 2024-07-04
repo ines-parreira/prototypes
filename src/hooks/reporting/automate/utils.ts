@@ -19,7 +19,7 @@ import {
     AutomatedInteractionByFeatures,
     TwoDimensionalDataItem,
 } from 'pages/stats/types'
-import {StatsFilters} from 'models/stat/types'
+import {Period, StatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {SHORT_FORMAT} from 'pages/stats/common/utils'
@@ -70,6 +70,9 @@ export type WorkflowStepMetrics = {
 export type WorkflowStats = {
     workflowMetrics: Record<WorkflowTrendMetrics, MetricTrend>
     workflowStepMetrics: WorkflowStepMetricsMap
+    previousPeriod: Period
+    isFetching: boolean
+    isError: boolean
 }
 
 export type WorkflowStepMetricsMap = {

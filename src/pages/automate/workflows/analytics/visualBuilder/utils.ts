@@ -62,3 +62,29 @@ export const getWorkflowAnalyticsDateRange = (
 
     return period
 }
+
+export const getWorkflowAnalyticsPreviousDateRange = (
+    params: WorkflowAnalyticsDateRangeProps
+): Period | null => {
+    const {flowUpdateDatetime, startDatetime, endDatetime} = params
+
+    const flowUpdateDate = moment(preprocessDateString(flowUpdateDatetime))
+    const startDate = moment(preprocessDateString(startDatetime!))
+    const endDate = moment(preprocessDateString(endDatetime!))
+
+    const period = {
+        start_datetime: startDate.format(),
+        end_datetime: endDate.format(),
+    }
+
+    if (flowUpdateDate.isAfter(startDate) && flowUpdateDate.isBefore(endDate)) {
+        period.start_datetime = flowUpdateDate.format()
+    } else if (flowUpdateDate.isAfter(endDate)) {
+        return null
+    }
+
+    return period
+}
+
+export const getViewerLabel = (dropoff: number) =>
+    `${dropoff} viewer${dropoff > 1 ? 's' : ''}`

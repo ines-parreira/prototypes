@@ -27,7 +27,12 @@ import {
 } from '../../../models/visualBuilderGraph.types'
 import EdgeBlock from '../components/EdgeBlock'
 
-import {displayMetric, extractUniqueRates, isValidNumber} from '../utils'
+import {
+    displayMetric,
+    extractUniqueRates,
+    getViewerLabel,
+    isValidNumber,
+} from '../utils'
 import css from './Node.less'
 
 type NodeType =
@@ -134,7 +139,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                             target={`node-${nodeId}-metric-dropoff`}
                             placement="bottom"
                         >
-                            {metricByNodeId?.dropoff} viewers
+                            {getViewerLabel(metricByNodeId?.dropoff ?? 0)}
                         </Tooltip>
                     )}
                 </div>

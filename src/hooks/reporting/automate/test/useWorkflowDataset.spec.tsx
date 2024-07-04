@@ -182,7 +182,13 @@ describe('useWorkflowDataset', () => {
 
         jest.spyOn(queryClient, 'invalidateQueries')
         const {result} = renderHook(
-            () => useWorkflowDataset(filters, timezone, steps as any),
+            () =>
+                useWorkflowDataset(
+                    filters,
+                    timezone,
+                    steps as any,
+                    '2024-01-01'
+                ),
             {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>
@@ -255,9 +261,9 @@ describe('useWorkflowDataset', () => {
             }
         )
 
-        expect(result.current).toHaveProperty('01J0TNP9PYAF1K20MHTPJJ9TDK')
-        expect(result.current).toHaveProperty('01J0TNP9PYPAVEYD4Z19EKH9GW')
-        expect(result.current).toHaveProperty('01J0TNPZA4XSKK0DG5TDKR02FK')
-        expect(result.current).toHaveProperty('01J0TNPZA42S2YMV18WW2X00JZ')
+        expect(result.current.data).toHaveProperty('01J0TNP9PYAF1K20MHTPJJ9TDK')
+        expect(result.current.data).toHaveProperty('01J0TNP9PYPAVEYD4Z19EKH9GW')
+        expect(result.current.data).toHaveProperty('01J0TNPZA4XSKK0DG5TDKR02FK')
+        expect(result.current.data).toHaveProperty('01J0TNPZA42S2YMV18WW2X00JZ')
     })
 })

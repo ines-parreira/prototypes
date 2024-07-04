@@ -7,6 +7,12 @@ export const getTrendProps = (metricTrend: MetricTrend) => ({
     interpretAs: 'more-is-better' as const,
 })
 
+export const getTrendPropsToPercent = (metricTrend: MetricTrend) => ({
+    value: (metricTrend.data?.value || 0) * 100,
+    prevValue: (metricTrend.data?.prevValue || 0) * 100,
+    interpretAs: 'more-is-better' as const,
+})
+
 export const toPercentage = (value: number) =>
     `${parseFloat((value * 100).toFixed(2))}%`
 

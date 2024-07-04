@@ -14,19 +14,29 @@ import {
     computeWorkflowStepsMetrics,
 } from 'hooks/reporting/automate/utils'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import {getWorkflowAnalyticsPreviousDateRange} from 'pages/automate/workflows/analytics/visualBuilder/utils'
 import {calculateSumOfDropoff} from './automateStatsFormulae'
 
 export const useWorkflowDataset = (
     filters: WorkflowStatsFilters,
     timezone: string,
-    steps: WorkflowStep[]
+    steps: WorkflowStep[],
+    flowUpdateDatetime: string
 ): WorkflowStats => {
+    const previousPeriod = getPreviousPeriod(filters.period)
+    const adjustedPreviousPeriod =
+        getWorkflowAnalyticsPreviousDateRange({
+            startDatetime: previousPeriod.start_datetime,
+            endDatetime: previousPeriod.end_datetime,
+            flowUpdateDatetime,
+        }) ?? filters.period
+
     const workflowCountByEventType = useMetricPerDimension(
         workflowDatasetCountQueryFactory(filters, timezone)
     )
     const previousWorkflowCountByEventType = useMetricPerDimension(
         workflowDatasetCountQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
+            {...filters, period: adjustedPreviousPeriod},
             timezone
         )
     )
@@ -38,28 +48,32 @@ export const useWorkflowDataset = (
     )
 
     const previousWorkflowStepMetrics = useWorkflowStepDatasetTrend(
-        {...filters, period: getPreviousPeriod(filters.period)},
+        {...filters, period: adjustedPreviousPeriod},
         timezone,
         steps
     )
 
     const workflowMetrics = computeWorkflowMetrics(
         workflowCountByEventType.data?.allData,
-        calculateSumOfDropoff(workflowStepMetrics)
+        calculateSumOfDropoff(workflowStepMetrics.data)
     )
 
     const previousWorkflowMetrics = computeWorkflowMetrics(
         previousWorkflowCountByEventType.data?.allData,
-        calculateSumOfDropoff(previousWorkflowStepMetrics)
+        calculateSumOfDropoff(previousWorkflowStepMetrics.data)
     )
 
     const isFetching =
         workflowCountByEventType.isFetching ||
-        previousWorkflowCountByEventType.isFetching
+        previousWorkflowCountByEventType.isFetching ||
+        workflowStepMetrics.isFetching ||
+        previousWorkflowStepMetrics.isFetching
 
     const isError =
         workflowCountByEventType.isError ||
-        previousWorkflowCountByEventType.isError
+        previousWorkflowCountByEventType.isError ||
+        workflowStepMetrics.isError ||
+        previousWorkflowStepMetrics.isError
 
     return {
         workflowMetrics: {
@@ -101,7 +115,10 @@ export const useWorkflowDataset = (
                 },
             },
         },
-        workflowStepMetrics: {...workflowStepMetrics},
+        workflowStepMetrics: workflowStepMetrics.data,
+        previousPeriod: adjustedPreviousPeriod,
+        isFetching,
+        isError,
     }
 }
 
@@ -109,7 +126,11 @@ export const useWorkflowStepDatasetTrend = (
     filters: WorkflowStatsFilters,
     timezone: string,
     steps: WorkflowStep[]
-): WorkflowStepMetricsMap => {
+): {
+    data: WorkflowStepMetricsMap
+    isFetching: boolean
+    isError: boolean
+} => {
     const workflowStepCountEvents = useMetricPerDimension(
         workflowDatasetStepCountQueryFactory(filters, timezone)
     )
@@ -123,5 +144,14 @@ export const useWorkflowStepDatasetTrend = (
         steps
     )
 
-    return workflowStepMetrics
+    const isFetching =
+        workflowStepCountEvents.isFetching || workflowStepDropoff.isFetching
+    const isError =
+        workflowStepCountEvents.isError || workflowStepDropoff.isError
+
+    return {
+        data: workflowStepMetrics,
+        isFetching,
+        isError,
+    }
 }

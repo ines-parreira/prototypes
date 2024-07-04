@@ -16,14 +16,6 @@ export enum WorkflowTrendMetrics {
     WorkflowTicketCreated = 'workflowTicketCreated',
 }
 
-export enum WorkflowStepTrendMetrics {
-    workflowStepViews = 'workflowTotalViews',
-    workflowAutomatedInteractions = 'workflowAutomatedInteractions',
-    workflowAutomationRate = 'workflowAutomationRate',
-    workflowDropoff = 'workflowDropoff',
-    workflowTicketCreated = 'workflowTicketCreated',
-}
-
 export type TrendData = {
     value: number | null
     prevValue: number | null

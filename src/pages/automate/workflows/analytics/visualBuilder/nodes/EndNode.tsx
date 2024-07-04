@@ -20,7 +20,12 @@ import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWor
 import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
 import EdgeBlock from '../components/EdgeBlock'
 
-import {displayMetric, extractUniqueRates, isValidNumber} from '../utils'
+import {
+    displayMetric,
+    extractUniqueRates,
+    getViewerLabel,
+    isValidNumber,
+} from '../utils'
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
@@ -114,7 +119,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                             <br />
                             <br />
                             Finished flow and did not <br /> contact Support
-                            within 72
+                            within 72h
                         </Tooltip>
                     )}
 
@@ -124,7 +129,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                                 target={`end-node-${nodeId}-metric-dropoff`}
                                 placement="bottom"
                             >
-                                {metricByNodeId?.dropoff} viewers
+                                {getViewerLabel(metricByNodeId?.dropoff ?? 0)}
                                 <br />
                                 <br />
                                 Requested Support but left <br /> before a

@@ -1,20 +1,24 @@
 import React from 'react'
 import classNames from 'classnames'
+import moment from 'moment'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import {
-    getTrendProps,
+    getTrendPropsToPercent,
     toPercentage,
 } from 'pages/automate/automate-metrics/utils'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {WorkflowTrendMetrics} from 'hooks/reporting/automate/types'
+import {Period} from 'models/stat/types'
+import {comparedPeriodString} from 'pages/stats/common/utils'
 import css from './WorkflowOverviewMetrics.less'
 import {displayMetric} from './visualBuilder/utils'
 
 interface Props {
     metrics: Record<WorkflowTrendMetrics, MetricTrend>
+    previousPeriod: Period
 }
 
-export const WorkflowOverviewMetrics = ({metrics}: Props) => {
+export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
     const {
         workflowTotalViews,
         workflowAutomatedInteractions,
@@ -49,7 +53,25 @@ export const WorkflowOverviewMetrics = ({metrics}: Props) => {
                         </span>
                         {hasWorkflowAutomationRate && (
                             <TrendBadge
-                                {...getTrendProps(workflowAutomationRate)}
+                                {...getTrendPropsToPercent(
+                                    workflowAutomationRate
+                                )}
+                                tooltipData={
+                                    workflowAutomationRate.data?.value !==
+                                    workflowAutomationRate.data?.prevValue
+                                        ? {
+                                              period: comparedPeriodString(
+                                                  moment(
+                                                      previousPeriod.start_datetime
+                                                  ),
+                                                  moment(
+                                                      previousPeriod.end_datetime
+                                                  )
+                                              ),
+                                          }
+                                        : undefined
+                                }
+                                metricFormat="percent"
                             />
                         )}
                     </div>

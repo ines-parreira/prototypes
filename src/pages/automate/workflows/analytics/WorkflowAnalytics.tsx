@@ -32,6 +32,7 @@ import {WorkflowAnalyticsActionButtons} from './WorkflowAnalyticsActionButtons'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
 import {WorkflowOverviewMetrics} from './WorkflowOverviewMetrics'
 import WorkflowAnalyticsBanner from './WorkflowAnalyticsBanner'
+import {getWorkflowAnalyticsDateRange} from './visualBuilder/utils'
 
 type WorkflowAnalyticsProps = {
     shopType: string
@@ -65,10 +66,17 @@ export default function WorkflowAnalytics({
     useCleanStatsFilters(statsFilters)
 
     const filters = useMemo<WorkflowStatsFilters>(() => {
+        const period = getWorkflowAnalyticsDateRange({
+            startDatetime: statsFilters.period.start_datetime,
+            endDatetime: statsFilters.period.end_datetime,
+            flowUpdateDatetime:
+                workflowEditorContext.configuration.updated_datetime!,
+        })
         return {
             workflowId,
-            period: statsFilters.period,
+            period,
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [workflowId, statsFilters.period])
 
     const isDirty = workflowEditorContext.isDirty
@@ -106,11 +114,13 @@ export default function WorkflowAnalytics({
     const data = useWorkflowDataset(
         filters,
         userTimezone,
-        workflowEditorContext.configuration.steps
+        workflowEditorContext.configuration.steps,
+        workflowEditorContext.configuration.updated_datetime!
     )
 
-    const workflowMetrics = data.workflowMetrics
-    const workflowStepMetrics = data.workflowStepMetrics
+    const {isFetching, workflowMetrics, workflowStepMetrics, previousPeriod} =
+        data
+
     const prevWorkflowStepMetricsRef = useRef()
 
     useEffect(() => {
@@ -191,18 +201,21 @@ export default function WorkflowAnalytics({
                     </div>
                 </PageHeader>
                 <Container className={css.pageContainer} fluid>
-                    <WorkflowAnalyticsBanner
-                        workflowUpdatedDatetime={
-                            workflowEditorContext.configuration
-                                .updated_datetime!
-                        }
-                        hasDataAvailable={
-                            !!(
-                                data.workflowStepMetrics &&
-                                Object.keys(data.workflowStepMetrics).length > 0
-                            )
-                        }
-                    />
+                    {!isFetching && (
+                        <WorkflowAnalyticsBanner
+                            workflowUpdatedDatetime={
+                                workflowEditorContext.configuration
+                                    .updated_datetime!
+                            }
+                            hasDataAvailable={
+                                !!(
+                                    data.workflowStepMetrics &&
+                                    Object.keys(data.workflowStepMetrics)
+                                        .length > 0
+                                )
+                            }
+                        />
+                    )}
                     <ToggleButton.Wrapper
                         className={css.workflowToggle}
                         type={ToggleButton.Type.Label}
@@ -216,7 +229,10 @@ export default function WorkflowAnalytics({
                             Analysis
                         </ToggleButton.Option>
                     </ToggleButton.Wrapper>
-                    <WorkflowOverviewMetrics metrics={workflowMetrics} />
+                    <WorkflowOverviewMetrics
+                        metrics={workflowMetrics}
+                        previousPeriod={previousPeriod}
+                    />
                     <WorkflowVisualBuilder />
                 </Container>
             </div>
