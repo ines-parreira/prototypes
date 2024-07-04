@@ -264,8 +264,7 @@ Publish Chromatic:
   needs: [Install dependencies]
   allow_failure: true
   script:
-    - apt-get update && apt-get install -y zip
-    - yarn chromatic --zip --project-token=${CHROMATIC_PROJECT_TOKEN}
+    - yarn chromatic --zip --exit-once-uploaded --project-token=${CHROMATIC_PROJECT_TOKEN}
   cache:
     - <<: *node_modules-cache
 
