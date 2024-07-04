@@ -53,28 +53,22 @@ describe('useConfigurationForm', () => {
     describe('validateConfigurationFormValues', () => {
         it('should throw error when signature is empty', () => {
             expect(() =>
-                validateConfigurationFormValues(
-                    {
-                        ...INITIAL_FORM_VALUES,
-                        signature: '',
-                        monitoredEmailIntegrations: [],
-                    },
-                    true
-                )
+                validateConfigurationFormValues({
+                    ...INITIAL_FORM_VALUES,
+                    signature: '',
+                    monitoredEmailIntegrations: [],
+                })
             ).toThrow('Signature can not be empty')
         })
 
         it('should throw error when no help center and public links', () => {
             expect(() =>
-                validateConfigurationFormValues(
-                    {
-                        ...INITIAL_FORM_VALUES,
-                        monitoredEmailIntegrations: [],
-                        publicURLs: [],
-                        helpCenterId: null,
-                    },
-                    true
-                )
+                validateConfigurationFormValues({
+                    ...INITIAL_FORM_VALUES,
+                    monitoredEmailIntegrations: [],
+                    publicURLs: [],
+                    helpCenterId: null,
+                })
             ).toThrow('Select a Help Center or add at least one public URL')
         })
     })

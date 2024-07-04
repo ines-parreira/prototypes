@@ -52,8 +52,7 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
 }
 
 export const validateConfigurationFormValues = (
-    formValues: FormValues,
-    isKnowledgeBaseEnabled: boolean
+    formValues: FormValues
 ): ValidFormValues => {
     if (formValues.signature !== null) {
         if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
@@ -127,9 +126,7 @@ export const validateConfigurationFormValues = (
         formValues.helpCenterId === null &&
         (formValues.publicURLs === null || formValues.publicURLs.length === 0)
     ) {
-        throw isKnowledgeBaseEnabled
-            ? new Error('Select a Help Center or add at least one public URL')
-            : new Error('Select a Help Center')
+        throw new Error('Select a Help Center or add at least one public URL')
     }
 
     return {

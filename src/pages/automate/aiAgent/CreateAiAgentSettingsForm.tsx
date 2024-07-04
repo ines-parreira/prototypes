@@ -137,9 +137,6 @@ export const CreateAiAgentSettingsForm = ({
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const isWebsiteKnowledgeEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentWebsiteKnowledge]
-
     /**
      * Global state retrieval
      */
@@ -177,10 +174,7 @@ export const CreateAiAgentSettingsForm = ({
     const handleOnSave = async () => {
         let validFormValues: ValidFormValues
         try {
-            validFormValues = validateConfigurationFormValues(
-                formValues,
-                isWebsiteKnowledgeEnabled ?? false
-            )
+            validFormValues = validateConfigurationFormValues(formValues)
         } catch (error) {
             if (error instanceof Error) {
                 void dispatch(
@@ -361,22 +355,6 @@ export const CreateAiAgentSettingsForm = ({
                         />
                     )}
 
-                    {!isWebsiteKnowledgeEnabled || !snippetHelpCenter ? (
-                        <div className={css.formGroup}>
-                            <Label isRequired={true} className={css.label}>
-                                Help Center
-                            </Label>
-                            <HelpCenterSelect
-                                helpCenter={selectedHelpCenter}
-                                setHelpCenterId={setHelpCenterId}
-                                helpCenters={faqHelpCenters}
-                            />
-                            <div className={css.formInputFooterInfo}>
-                                Select a Help Center to connect to AI Agent.
-                            </div>
-                        </div>
-                    ) : null}
-
                     <div className={css.formGroup}>
                         <Label
                             className={css.label}
@@ -461,35 +439,33 @@ export const CreateAiAgentSettingsForm = ({
                     </div>
                 </section>
 
-                {isWebsiteKnowledgeEnabled && (
-                    <ConfigurationSection
-                        title="Knowledge"
-                        subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
-                    >
-                        <div className={css.formGroup}>
-                            <Label isRequired={true} className={css.label}>
-                                Help Center
-                            </Label>
-                            <HelpCenterSelect
-                                helpCenter={selectedHelpCenter}
-                                setHelpCenterId={setHelpCenterId}
-                                helpCenters={faqHelpCenters}
-                                withEmptyItemSelection
-                            />
-                            <div className={css.formInputFooterInfo}>
-                                Select a Help Center to connect to AI Agent.
-                            </div>
+                <ConfigurationSection
+                    title="Knowledge"
+                    subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
+                >
+                    <div className={css.formGroup}>
+                        <Label isRequired={true} className={css.label}>
+                            Help Center
+                        </Label>
+                        <HelpCenterSelect
+                            helpCenter={selectedHelpCenter}
+                            setHelpCenterId={setHelpCenterId}
+                            helpCenters={faqHelpCenters}
+                            withEmptyItemSelection
+                        />
+                        <div className={css.formInputFooterInfo}>
+                            Select a Help Center to connect to AI Agent.
                         </div>
+                    </div>
 
-                        {snippetHelpCenter ? (
-                            <CreatePublicSourcesSection
-                                helpCenterId={snippetHelpCenter.id}
-                                onPublicURLsChanged={handlePublicURLsChange}
-                                shopName={shopName}
-                            />
-                        ) : null}
-                    </ConfigurationSection>
-                )}
+                    {snippetHelpCenter ? (
+                        <CreatePublicSourcesSection
+                            helpCenterId={snippetHelpCenter.id}
+                            onPublicURLsChanged={handlePublicURLsChange}
+                            shopName={shopName}
+                        />
+                    ) : null}
+                </ConfigurationSection>
 
                 <section>
                     <h2
