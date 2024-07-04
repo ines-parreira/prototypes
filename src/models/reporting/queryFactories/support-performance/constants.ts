@@ -1,3 +1,3 @@
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
 
-export const CHANNEL_DIMENSION = TicketMessagesDimension.FirstMessageChannel
+export const CHANNEL_DIMENSION = TicketDimension.Channel
