@@ -6,6 +6,8 @@ import {
 } from 'models/aiAgentPlayground/types'
 import {CustomerHttpIntegrationDataMock} from '../constants'
 
+const PLAYGROUND_TICKET_ID = '123'
+
 export type NewCustomerData = {
     body_text: string
     subject: string
@@ -134,7 +136,7 @@ export const createMockHttpIntegrationPayload = ({
             lastname: CustomerHttpIntegrationDataMock.lastname,
             name: CustomerHttpIntegrationDataMock.name,
         },
-        id: '179772',
+        id: PLAYGROUND_TICKET_ID,
         messages: JSON.stringify(
             messages.map((message) =>
                 createMockTicketMessage({
