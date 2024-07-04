@@ -48,6 +48,7 @@ export enum VoiceCallFilterOptions {
     All = 'all',
     Inbound = 'inbound',
     Outbound = 'outbound',
+    Missed = 'missed',
 }
 
 export enum VoiceCallAverageTimeMetric {
@@ -68,5 +69,7 @@ export const getVoiceSegmentFromFilter = (
             return VoiceCallSegment.inboundCalls
         case VoiceCallFilterOptions.Outbound:
             return VoiceCallSegment.outboundCalls
+        case VoiceCallFilterOptions.Missed:
+            return VoiceCallSegment.missedCalls
     }
 }

@@ -5,6 +5,7 @@ import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
 import {
     ALL_CALLS_FILTER_LABEL,
     INBOUND_CALLS_FILTER_LABEL,
+    MISSED_CALLS_FILTER_LABEL,
     OUTBOUND_CALLS_FILTER_LABEL,
 } from 'pages/stats/voice/constants/voiceOverview'
 
@@ -22,12 +23,16 @@ function VoiceCallDirectionFilter({
     const options: Option[] = [
         {label: ALL_CALLS_FILTER_LABEL, value: VoiceCallFilterOptions.All},
         {
+            label: OUTBOUND_CALLS_FILTER_LABEL,
+            value: VoiceCallFilterOptions.Outbound,
+        },
+        {
             label: INBOUND_CALLS_FILTER_LABEL,
             value: VoiceCallFilterOptions.Inbound,
         },
         {
-            label: OUTBOUND_CALLS_FILTER_LABEL,
-            value: VoiceCallFilterOptions.Outbound,
+            label: MISSED_CALLS_FILTER_LABEL,
+            value: VoiceCallFilterOptions.Missed,
         },
     ]
 
