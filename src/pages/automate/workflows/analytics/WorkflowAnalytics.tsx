@@ -196,6 +196,7 @@ export default function WorkflowAnalytics({
                                 }}
                                 value={statsFilters.period}
                                 variant="ghost"
+                                tooltipMessageForPreviousPeriod="You can't select a date before the most recent version of this Flow."
                             />
                         </div>
                     </div>

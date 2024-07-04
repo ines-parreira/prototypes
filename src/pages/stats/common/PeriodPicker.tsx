@@ -60,6 +60,7 @@ export type Props = {
     shouldShowMonthAndYearDropdowns?: boolean
     isV2Filter?: boolean
     children?: React.ReactNode
+    tooltipMessageForPreviousPeriod?: string
 }
 
 export const CALENDAR_ICON = 'calendar_today'
@@ -87,6 +88,7 @@ export const PeriodPickerContainer = ({
     shouldShowMonthAndYearDropdowns = false,
     isV2Filter = false,
     children,
+    tooltipMessageForPreviousPeriod,
 }: Props & Partial<DateRangeProps>) => {
     const [startDate, setStartDate] = useState(startDatetime)
     const [endDate, setEndDate] = useState(endDatetime)
@@ -355,7 +357,8 @@ export const PeriodPickerContainer = ({
                         >
                             {tooltipTarget?.classList.contains('future-date')
                                 ? 'There is no data available on this date yet.'
-                                : `You can't select a period longer than ${maxSpanDays} days.`}
+                                : tooltipMessageForPreviousPeriod ??
+                                  `You can't select a period longer than ${maxSpanDays} days.`}
                         </Tooltip>
                     )}
                 </>

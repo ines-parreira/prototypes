@@ -22,11 +22,13 @@ const MAX_SPAN = 90
 type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
     value: StatsFilters['period']
+    tooltipMessageForPreviousPeriod?: string
 }
 
 export default function PeriodFilter({
     initialSettings: initialSettingsProp,
     value,
+    tooltipMessageForPreviousPeriod,
 }: Props) {
     const dispatch = useAppDispatch()
     const compactDateBasedOnUserPreferences = useGetDateAndTimeFormat(
@@ -128,6 +130,9 @@ export default function PeriodFilter({
                 {...pickerV2Props}
                 labelDateFormat={shortDateBasedOnUserPreferences}
                 isV2Filter
+                tooltipMessageForPreviousPeriod={
+                    tooltipMessageForPreviousPeriod
+                }
             >
                 <FilterValue
                     optionsLabels={[filterLabel]}

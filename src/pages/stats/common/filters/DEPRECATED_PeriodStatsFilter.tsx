@@ -21,12 +21,14 @@ type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
     value: StatsFilters['period']
     variant?: 'fill' | 'ghost'
+    tooltipMessageForPreviousPeriod?: string
 }
 
 export default function DEPRECATED_PeriodStatsFilter({
     initialSettings: initialSettingsProp,
     value,
     variant = 'fill',
+    tooltipMessageForPreviousPeriod,
 }: Props) {
     const dispatch = useAppDispatch()
     const compactDateBasedOnUserPreferences = useGetDateAndTimeFormat(
@@ -130,6 +132,7 @@ export default function DEPRECATED_PeriodStatsFilter({
             isDisabled={isNewDatePickerVariant === undefined}
             {...pickerV2Props}
             labelDateFormat={shortDateBasedOnUserPreferences}
+            tooltipMessageForPreviousPeriod={tooltipMessageForPreviousPeriod}
         />
     )
 }
