@@ -10,7 +10,6 @@ export enum FeatureFlagKey {
     AiAgentSettings = 'ai-agent-settings',
     AiAgentWebsiteKnowledge = 'ai-agent-website-knowledge',
     AiAgentSkipSampleRate = 'ai-agent-skip-sample-rate',
-    AiAgentPlaygroundSupportActions = 'ai-agent-playground-support-actions',
     AiAgentPlaygroundPredefinedMessages = 'ai-agent-playground-predefined-messages',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AnalyticsNewBusiestTime = 'analytics-new-busiest-time',

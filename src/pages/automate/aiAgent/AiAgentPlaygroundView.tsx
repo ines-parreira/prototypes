@@ -1,81 +1,32 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {Link, Redirect, useLocation, useParams} from 'react-router-dom'
+import React, {useEffect, useState} from 'react'
+import {Link, Redirect, useParams} from 'react-router-dom'
 import {isAxiosError} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
-    useSubmitPlaygroundTicket,
 } from 'models/aiAgent/queries'
-import {
-    AccountConfigurationWithHttpIntegration,
-    StoreConfiguration,
-} from 'models/aiAgent/types'
-import {
-    AiAgentResponse,
-    MessageType,
-    PlaygroundMessage,
-    TicketOutcome,
-} from 'models/aiAgentPlayground/types'
+import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {reportError} from 'utils/errors'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import Button from 'pages/common/components/button/Button'
 import css from './AiAgentPlaygroundView.less'
-import {PlaygroundInputStep} from './components/PlaygroundInputStep/PlaygroundInputStep'
-import {
-    AI_AGENT_SENDER,
-    PlaygroundGenericErrorMessage,
-} from './components/PlaygroundMessage/PlaygroundMessage'
-import {PlaygroundOutputStep} from './components/PlaygroundOutputStep/PlaygroundOutputStep'
 import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {CustomerHttpIntegrationDataMock} from './constants'
 import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
-
-enum PlaygroundStep {
-    INPUT = 'input',
-    OUTPUT = 'output',
-}
 
 type UrlParams = {
     shopName: string
 }
 
-const shouldAiAgentResponseDisplay = (
-    aiAgentResponse: AiAgentResponse,
-    storeData: StoreConfiguration
-) => {
-    const isHandover =
-        aiAgentResponse.generate.output.outcome === TicketOutcome.HANDOVER
-    const isSilentHandover = storeData.silentHandover
-    const hasHtmlReply = aiAgentResponse.postProcessing.htmlReply
-
-    return (
-        aiAgentResponse.qa.output.validate_generated_message &&
-        ((isHandover && !isSilentHandover) || (!isHandover && hasHtmlReply))
-    )
-}
-
 export const AiAgentPlaygroundView = () => {
     const {shopName} = useParams<UrlParams>()
-    const {search} = useLocation()
-    const params = useMemo(() => new URLSearchParams(search), [search])
-
-    const initialInputValues = {
-        subject: params.get('subject') ?? '',
-        message: params.get('message') ?? '',
-        customerEmail:
-            params.get('customer_email') ??
-            CustomerHttpIntegrationDataMock.address,
-    }
 
     const dispatch = useAppDispatch()
     const {routes} = useAiAgentNavigation({shopName})
@@ -86,17 +37,10 @@ export const AiAgentPlaygroundView = () => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserFirstName = currentUser?.get('firstname')
 
-    const [step, setStep] = useState(PlaygroundStep.INPUT)
-    const [messages, setMessages] = useState<PlaygroundMessage[]>([])
-    const [subject, setSubject] = useState<string | null>(null)
     const [
         storeConfigurationNotInitialized,
         setStoreConfigurationNotInitialized,
     ] = useState(false)
-
-    const messagesRef = useRef<PlaygroundMessage[]>([])
-    const isPlaygroundSupportActionsEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentPlaygroundSupportActions]
 
     const {
         error: storeFetchError,
@@ -118,75 +62,6 @@ export const AiAgentPlaygroundView = () => {
         retry: 1,
         refetchOnWindowFocus: false,
     })
-
-    const {mutate: submitPlaygroundTicket, isLoading: isSubmitting} =
-        useSubmitPlaygroundTicket({
-            onError: () => {
-                const messages = messagesRef.current
-                const updatedMessages = [messages[0]]
-
-                updatedMessages.push({
-                    sender: AI_AGENT_SENDER,
-                    type: MessageType.ERROR,
-                    message: (
-                        <PlaygroundGenericErrorMessage
-                            onClick={() => setStep(PlaygroundStep.INPUT)}
-                        />
-                    ),
-                    createdDatetime: new Date().toISOString(),
-                })
-
-                setMessages(updatedMessages)
-            },
-            onSuccess: (aiAgentResponse) => {
-                const currentMessages = messagesRef.current // Use ref to access current messages
-                const updatedMessages = [...currentMessages.slice(0, -1)]
-
-                if (
-                    storeData &&
-                    shouldAiAgentResponseDisplay(
-                        aiAgentResponse.data,
-                        storeData.data.storeConfiguration
-                    )
-                ) {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.MESSAGE,
-                        message:
-                            aiAgentResponse.data.postProcessing.htmlReply ??
-                            aiAgentResponse.data.generate.output
-                                .generated_message,
-                        createdDatetime: new Date().toISOString(),
-                    })
-                }
-
-                updatedMessages.push({
-                    sender: AI_AGENT_SENDER,
-                    type: MessageType.INTERNAL_NOTE,
-                    message: aiAgentResponse.data.postProcessing.internalNote,
-                    createdDatetime: new Date().toISOString(),
-                })
-
-                // Add a ticket event message if outcome is also validated
-                if (
-                    aiAgentResponse.data.generate.output.outcome &&
-                    aiAgentResponse.data.qa.output.validate_outcome
-                ) {
-                    updatedMessages.push({
-                        sender: AI_AGENT_SENDER,
-                        type: MessageType.TICKET_EVENT,
-                        outcome: aiAgentResponse.data.generate.output.outcome,
-                        createdDatetime: new Date().toISOString(),
-                    })
-                }
-
-                setMessages(updatedMessages)
-            },
-        })
-
-    useEffect(() => {
-        messagesRef.current = messages
-    }, [messages])
 
     useEffect(() => {
         if (storeFetchError) {
@@ -257,20 +132,7 @@ export const AiAgentPlaygroundView = () => {
         return <Redirect to={routes.automation} />
     }
 
-    if (isPlaygroundSupportActionsEnabled && storeData && accountData) {
-        return (
-            <PlaygroundChat
-                storeData={storeData.data.storeConfiguration}
-                accountData={
-                    accountData.data
-                        .accountConfiguration as AccountConfigurationWithHttpIntegration
-                }
-                currentUserFirstName={currentUserFirstName}
-            />
-        )
-    }
-
-    return (
+    return storeConfigurationNotInitialized || !accountData || !storeData ? (
         <div className={css.container}>
             <div>
                 <h1 className="heading-section-semibold">
@@ -280,43 +142,19 @@ export const AiAgentPlaygroundView = () => {
                     Once AI Agent is set up, you can test how it will respond to
                     your customers here.
                 </p>
+                <Link to={routes.configuration}>
+                    <Button>Configure AI Agent</Button>
+                </Link>
             </div>
-
-            {step === PlaygroundStep.INPUT ? (
-                <div>
-                    {storeConfigurationNotInitialized ? (
-                        <Link to={routes.configuration}>
-                            <Button>Configure AI Agent</Button>
-                        </Link>
-                    ) : (
-                        accountData &&
-                        storeData && (
-                            <PlaygroundInputStep
-                                isDisabled={storeConfigurationNotInitialized}
-                                setSubject={setSubject}
-                                setMessages={setMessages}
-                                setStep={setStep}
-                                submitPlaygroundTicket={submitPlaygroundTicket}
-                                accountData={
-                                    accountData.data
-                                        .accountConfiguration as AccountConfigurationWithHttpIntegration
-                                }
-                                storeData={storeData.data.storeConfiguration}
-                                initialValues={initialInputValues}
-                            />
-                        )
-                    )}
-                </div>
-            ) : (
-                <div>
-                    <PlaygroundOutputStep
-                        messages={messages}
-                        subject={subject}
-                        setStep={setStep}
-                        isProcessing={isSubmitting}
-                    />
-                </div>
-            )}
         </div>
+    ) : (
+        <PlaygroundChat
+            storeData={storeData.data.storeConfiguration}
+            accountData={
+                accountData.data
+                    .accountConfiguration as AccountConfigurationWithHttpIntegration
+            }
+            currentUserFirstName={currentUserFirstName}
+        />
     )
 }
