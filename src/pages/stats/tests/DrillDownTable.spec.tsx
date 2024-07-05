@@ -33,6 +33,8 @@ import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {campaign, campaignId} from 'fixtures/campaign'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -47,6 +49,9 @@ const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
 jest.mock('hooks/reporting/useDrillDownData')
 const useDrillDownDataMock = assumeMock(useDrillDownData)
 const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)
+
+jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
+const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -303,12 +308,15 @@ describe('<DrillDownTable />', () => {
                     currency: 'USD',
                     productIds: ['prodId1', 'prodId4'],
                     customerId: 123456,
-                    campaignId: '2eba4fee-5c6a-42ef-b0dd-d53b9faeb8af',
+                    campaignId: campaignId,
                     createdDatetime: '23/12/2023',
                 },
                 metricValue: 16.23,
             },
         ]
+        useCampaignStatsFiltersMock.mockReturnValue({
+            allCampaigns: [campaign],
+        } as unknown as any)
 
         const renderTableForCampaignSales = (metricData: DrillDownMetric) => {
             return renderTable(metricData, CampaignSalesDrillDownTableContent)
@@ -339,6 +347,19 @@ describe('<DrillDownTable />', () => {
             renderTableForCampaignSales(metricData)
 
             expect(screen.getByText(metricTitle)).toBeInTheDocument()
+        })
+
+        it('should render with enriched data', () => {
+            const metricTitle = 'Order'
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: true,
+                metricTitle,
+                metricValueFormat: 'decimal',
+            })
+
+            const {getByText} = renderTableForCampaignSales(metricData)
+
+            expect(getByText(campaign.name)).toBeInTheDocument()
         })
 
         it('should render the table with skeletons on loading', () => {

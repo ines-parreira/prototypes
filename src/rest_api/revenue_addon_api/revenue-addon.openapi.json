@@ -214,6 +214,18 @@
                             "title": "Channel Connection External Ids"
                         },
                         "description": "Channel connection external ID"
+                    },
+                    {
+                        "name": "deleted",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "description": "Include deleted campaigns",
+                            "default": false,
+                            "title": "Deleted"
+                        },
+                        "description": "Include deleted campaigns"
                     }
                 ],
                 "responses": {
@@ -773,15 +785,26 @@
                 "tags": ["evaluations"],
                 "summary": "Evaluate Campaign Rules",
                 "operationId": "evaluate_campaign_rules",
+                "parameters": [
+                    {
+                        "name": "cf-ipcountry",
+                        "in": "header",
+                        "required": false,
+                        "schema": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "title": "Cf-Ipcountry"
+                        }
+                    }
+                ],
                 "requestBody": {
+                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/EvaluationRequestSchema"
                             }
                         }
-                    },
-                    "required": true
+                    }
                 },
                 "responses": {
                     "200": {
@@ -829,6 +852,84 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/RevealDiscountCodeResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/pr": {
+            "post": {
+                "tags": ["product-recommendations"],
+                "summary": "Product Recommendations",
+                "operationId": "product_recommendations",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductRecommendationRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductRecommendationResponseSchema"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/assistant/product-recommendations": {
+            "post": {
+                "tags": ["product-recommendations"],
+                "summary": "Product Recommendations",
+                "operationId": "product_recommendations",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductRecommendationRequestSchema"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductRecommendationResponseSchema"
                                 }
                             }
                         }
@@ -1874,7 +1975,14 @@
             "ABTestPatchRequestSchema": {
                 "properties": {
                     "state": {
-                        "anyOf": [{"const": "inactive"}, {"type": "null"}],
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "enum": ["inactive"],
+                                "const": "inactive"
+                            },
+                            {"type": "null"}
+                        ],
                         "title": "State"
                     },
                     "report_link": {
@@ -2290,6 +2398,7 @@
                         "anyOf": [{"type": "object"}, {"type": "null"}],
                         "title": "Meta"
                     },
+                    "id": {"type": "string", "title": "Id"},
                     "triggers": {
                         "items": {
                             "$ref": "#/components/schemas/CampaignTriggerSchema"
@@ -2297,7 +2406,6 @@
                         "type": "array",
                         "title": "Triggers"
                     },
-                    "id": {"type": "string", "title": "Id"},
                     "is_light": {"type": "boolean", "title": "Is Light"},
                     "created_datetime": {
                         "type": "string",
@@ -2330,8 +2438,8 @@
                     "message_text",
                     "status",
                     "trigger_rule",
-                    "triggers",
                     "id",
+                    "triggers",
                     "is_light",
                     "created_datetime",
                     "updated_datetime"
@@ -2516,6 +2624,7 @@
             },
             "ChannelType": {
                 "type": "string",
+                "enum": ["widget"],
                 "const": "widget",
                 "title": "ChannelType"
             },
@@ -2743,10 +2852,14 @@
                         },
                         "type": "array",
                         "title": "Campaigns"
+                    },
+                    "visitor_identified": {
+                        "type": "boolean",
+                        "title": "Visitor Identified"
                     }
                 },
                 "type": "object",
-                "required": ["campaigns"],
+                "required": ["campaigns", "visitor_identified"],
                 "title": "EvaluationResponseSchema"
             },
             "HTTPValidationError": {
@@ -2827,6 +2940,48 @@
                 "type": "string",
                 "enum": ["theme_app", "one_click", "manual"],
                 "title": "MethodEnum"
+            },
+            "ProductRecommendationRequestSchema": {
+                "properties": {
+                    "scenario": {"$ref": "#/components/schemas/Scenario"},
+                    "shop_name": {"type": "string", "title": "Shop Name"},
+                    "guest_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Guest Id"
+                    },
+                    "session_id": {
+                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "title": "Session Id"
+                    },
+                    "customer_id": {
+                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "title": "Customer Id"
+                    },
+                    "context_items": {
+                        "anyOf": [
+                            {"items": {"type": "string"}, "type": "array"},
+                            {"type": "null"}
+                        ],
+                        "title": "Context Items"
+                    }
+                },
+                "type": "object",
+                "required": ["scenario", "shop_name"],
+                "title": "ProductRecommendationRequestSchema"
+            },
+            "ProductRecommendationResponseSchema": {
+                "properties": {
+                    "items": {
+                        "items": {
+                            "$ref": "#/components/schemas/RecommendationItemSchema"
+                        },
+                        "type": "array",
+                        "title": "Items"
+                    }
+                },
+                "type": "object",
+                "required": ["items"],
+                "title": "ProductRecommendationResponseSchema"
             },
             "PublicCampaignResponseSchema": {
                 "properties": {
@@ -2923,6 +3078,15 @@
                 "title": "PublicCampaignResponseSchema",
                 "description": "Contains only fields allowed to be seen by the public, e.g. no channel_connection_id."
             },
+            "RecommendationItemSchema": {
+                "properties": {
+                    "item_id": {"type": "string", "title": "Item Id"},
+                    "handle": {"type": "string", "title": "Handle"}
+                },
+                "type": "object",
+                "required": ["item_id", "handle"],
+                "title": "RecommendationItemSchema"
+            },
             "RevealDiscountCodeRequestSchema": {
                 "properties": {
                     "account_id": {"type": "integer", "title": "Account Id"},
@@ -2982,6 +3146,20 @@
                     "country_code"
                 ],
                 "title": "RuleType"
+            },
+            "Scenario": {
+                "type": "string",
+                "enum": [
+                    "most_popular_for_you_user",
+                    "most_popular_for_you_session",
+                    "recommended_for_you_user",
+                    "recommended_for_you_user_cart",
+                    "recommended_for_you_session",
+                    "recommended_for_you_session_cart",
+                    "complementary_products_user",
+                    "complementary_products_session"
+                ],
+                "title": "Scenario"
             },
             "StatusEnum": {
                 "type": "string",

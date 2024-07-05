@@ -14,6 +14,8 @@ import {
 } from 'pages/stats/common/utils'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import {useGetCampaignSalesDrillDownData} from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
 
 // should add up to table width from CSS
 const COLUMN_WIDTHS = {
@@ -39,6 +41,10 @@ export const CampaignSalesDrillDownTableContent = ({
     metricData: DrillDownMetric
 }) => {
     const {data, isFetching} = useDrillDownData(metricData)
+
+    const {allCampaigns} = useCampaignStatsFilters()
+
+    const enrichedData = useGetCampaignSalesDrillDownData(data, allCampaigns)
 
     return (
         <>
@@ -80,43 +86,43 @@ export const CampaignSalesDrillDownTableContent = ({
                         columnWidths={COLUMN_WIDTHS_ORDERED}
                     />
                 ) : (
-                    data.map((item) => (
-                        <TableBodyRow key={item.data.id}>
+                    enrichedData.map((item) => (
+                        <TableBodyRow key={item.id}>
                             <BodyCell width={COLUMN_WIDTHS.orderId}>
-                                {item.data.id
-                                    ? `#${item.data.id}`
+                                {item.id
+                                    ? `#${item.id}`
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.date}>
-                                {item.data.createdDatetime ? (
+                                {item.createdDatetime ? (
                                     <DatetimeLabel
-                                        dateTime={item.data.createdDatetime}
+                                        dateTime={item.createdDatetime}
                                     />
                                 ) : (
                                     NOT_AVAILABLE_PLACEHOLDER
                                 )}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.campaign}>
-                                {item.data.campaignId
-                                    ? item.data.campaignId
+                                {item.campaignName
+                                    ? item.campaignName
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.customer}>
-                                {item.data.customerId
-                                    ? item.data.customerId
+                                {item.customerId
+                                    ? item.customerId
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.amount}>
-                                {item.data.amount && item.data.currency
+                                {item.amount && item.currency
                                     ? formatCurrency(
-                                          parseFloat(item.data.amount),
-                                          item.data.currency
+                                          parseFloat(item.amount),
+                                          item.currency
                                       )
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.items}>
-                                {item.data.productIds
-                                    ? item.data.productIds.length
+                                {item.productIds
+                                    ? item.productIds.length
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                         </TableBodyRow>

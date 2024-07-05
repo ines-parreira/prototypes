@@ -259,6 +259,8 @@ declare namespace Components {
         /**
          * CampaignPatchRequestSchema
          * Defines the fields that can be patched and accepts any subset of the fields.
+         * Validates `triggers` and `trigger_rule` fields as required together - it has to be done this way
+         * as long as the IDs are generated on the frontend.
          * Skips advanced validation, it will be handled in PATCH endpoint:
          *     see https://fastapi.tiangolo.com/tutorial/body-updates/#partial-updates-with-patch
          */
@@ -347,13 +349,13 @@ declare namespace Components {
              */
             meta?: any | null
             /**
-             * Triggers
-             */
-            triggers: CampaignTriggerSchema[]
-            /**
              * Id
              */
             id: string
+            /**
+             * Triggers
+             */
+            triggers: CampaignTriggerSchema[]
             /**
              * Is Light
              */
@@ -713,6 +715,10 @@ declare namespace Components {
              * Campaigns
              */
             campaigns: EvaluatedCampaignSchema[]
+            /**
+             * Visitor Identified
+             */
+            visitor_identified: boolean
         }
         /**
          * HTTPValidationError
@@ -789,6 +795,41 @@ declare namespace Components {
          */
         export type MethodEnum = 'theme_app' | 'one_click' | 'manual'
         /**
+         * ProductRecommendationRequestSchema
+         */
+        export interface ProductRecommendationRequestSchema {
+            scenario: Scenario
+            /**
+             * Shop Name
+             */
+            shop_name: string
+            /**
+             * Guest Id
+             */
+            guest_id?: string | null
+            /**
+             * Session Id
+             */
+            session_id?: string | null
+            /**
+             * Customer Id
+             */
+            customer_id?: number | null
+            /**
+             * Context Items
+             */
+            context_items?: string[] | null
+        }
+        /**
+         * ProductRecommendationResponseSchema
+         */
+        export interface ProductRecommendationResponseSchema {
+            /**
+             * Items
+             */
+            items: RecommendationItemSchema[]
+        }
+        /**
          * PublicCampaignResponseSchema
          * Contains only fields allowed to be seen by the public, e.g. no channel_connection_id.
          */
@@ -850,6 +891,19 @@ declare namespace Components {
              * Deleted Datetime
              */
             deleted_datetime?: string /* date-time */ | null
+        }
+        /**
+         * RecommendationItemSchema
+         */
+        export interface RecommendationItemSchema {
+            /**
+             * Item Id
+             */
+            item_id: string
+            /**
+             * Handle
+             */
+            handle: string
         }
         /**
          * RevealDiscountCodeRequestSchema
@@ -914,6 +968,18 @@ declare namespace Components {
             | 'ordered_products'
             | 'customer_tags'
             | 'country_code'
+        /**
+         * Scenario
+         */
+        export type Scenario =
+            | 'most_popular_for_you_user'
+            | 'most_popular_for_you_session'
+            | 'recommended_for_you_user'
+            | 'recommended_for_you_user_cart'
+            | 'recommended_for_you_session'
+            | 'recommended_for_you_session_cart'
+            | 'complementary_products_user'
+            | 'complementary_products_session'
         /**
          * StatusEnum
          */
@@ -1274,6 +1340,15 @@ declare namespace Paths {
         }
     }
     namespace EvaluateCampaignRules {
+        export interface HeaderParameters {
+            'cf-ipcountry'?: Parameters.CfIpcountry
+        }
+        namespace Parameters {
+            /**
+             * Cf-Ipcountry
+             */
+            export type CfIpcountry = string | null
+        }
         export type RequestBody = Components.Schemas.EvaluationRequestSchema
         namespace Responses {
             export type $200 = Components.Schemas.EvaluationResponseSchema
@@ -1362,10 +1437,16 @@ declare namespace Paths {
              * Channel connection ID to which campaigns belong
              */
             export type ChannelConnectionId = string | null
+            /**
+             * Deleted
+             * Include deleted campaigns
+             */
+            export type Deleted = boolean
         }
         export interface QueryParameters {
             channel_connection_id?: Parameters.ChannelConnectionId
             channel_connection_external_ids?: Parameters.ChannelConnectionExternalIds
+            deleted?: Parameters.Deleted
         }
         namespace Responses {
             /**
@@ -1629,6 +1710,15 @@ declare namespace Paths {
             Components.Schemas.DiscountOfferPatchRequestSchema
         namespace Responses {
             export type $200 = Components.Schemas.DiscountOfferResponseSchema
+            export type $422 = Components.Schemas.HTTPValidationError
+        }
+    }
+    namespace ProductRecommendations {
+        export type RequestBody =
+            Components.Schemas.ProductRecommendationRequestSchema
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.ProductRecommendationResponseSchema
             export type $422 = Components.Schemas.HTTPValidationError
         }
     }
@@ -1925,7 +2015,7 @@ export interface OperationMethods {
      * evaluate_campaign_rules - Evaluate Campaign Rules
      */
     'evaluate_campaign_rules'(
-        parameters?: Parameters<UnknownParamsObject> | null,
+        parameters?: Parameters<Paths.EvaluateCampaignRules.HeaderParameters> | null,
         data?: Paths.EvaluateCampaignRules.RequestBody,
         config?: AxiosRequestConfig
     ): OperationResponse<
@@ -1942,6 +2032,28 @@ export interface OperationMethods {
     ): OperationResponse<
         | Paths.RevealDiscountCode.Responses.$200
         | Paths.RevealDiscountCode.Responses.$422
+    >
+    /**
+     * product_recommendations - Product Recommendations
+     */
+    'product_recommendations'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.ProductRecommendations.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.ProductRecommendations.Responses.$200
+        | Paths.ProductRecommendations.Responses.$422
+    >
+    /**
+     * product_recommendations - Product Recommendations
+     */
+    'product_recommendations'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.ProductRecommendations.RequestBody,
+        config?: AxiosRequestConfig
+    ): OperationResponse<
+        | Paths.ProductRecommendations.Responses.$200
+        | Paths.ProductRecommendations.Responses.$422
     >
     /**
      * get_discount_offers - Get Discount Offers
@@ -2444,7 +2556,7 @@ export interface PathsDictionary {
          * evaluate_campaign_rules - Evaluate Campaign Rules
          */
         'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
+            parameters?: Parameters<Paths.EvaluateCampaignRules.HeaderParameters> | null,
             data?: Paths.EvaluateCampaignRules.RequestBody,
             config?: AxiosRequestConfig
         ): OperationResponse<
@@ -2463,6 +2575,32 @@ export interface PathsDictionary {
         ): OperationResponse<
             | Paths.RevealDiscountCode.Responses.$200
             | Paths.RevealDiscountCode.Responses.$422
+        >
+    }
+    ['/assistant/pr']: {
+        /**
+         * product_recommendations - Product Recommendations
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.ProductRecommendations.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.ProductRecommendations.Responses.$200
+            | Paths.ProductRecommendations.Responses.$422
+        >
+    }
+    ['/assistant/product-recommendations']: {
+        /**
+         * product_recommendations - Product Recommendations
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.ProductRecommendations.RequestBody,
+            config?: AxiosRequestConfig
+        ): OperationResponse<
+            | Paths.ProductRecommendations.Responses.$200
+            | Paths.ProductRecommendations.Responses.$422
         >
     }
     ['/discount-offers']: {

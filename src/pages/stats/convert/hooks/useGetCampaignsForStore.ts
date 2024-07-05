@@ -10,7 +10,8 @@ import {useListCampaigns} from 'models/convert/campaign/queries'
 
 export function useGetCampaignsForStore(
     selectedIntegrations: number[],
-    chatAppId?: string
+    chatAppId?: string,
+    includeDeleted = false
 ) {
     const getChatIntegrations = useMemo(
         () =>
@@ -38,8 +39,9 @@ export function useGetCampaignsForStore(
 
         return {
             channelConnectionExternalIds: chatAppIds,
+            deleted: includeDeleted,
         } as CampaignListOptionsParams
-    }, [chatAppId, chatIntegrations, selectedIntegrations])
+    }, [chatAppId, includeDeleted, chatIntegrations, selectedIntegrations])
 
     const {data: convertCampaigns} = useListCampaigns(campaignListOptions, {
         enabled:
