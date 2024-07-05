@@ -36,7 +36,7 @@ export default function MetricsFieldArray() {
         name: 'metrics',
     })
 
-    const {resetField} = useFormContext()
+    const {setValue} = useFormContext()
 
     const [toggleState, setToggleState] = useState<boolean[]>([])
 
@@ -52,7 +52,7 @@ export default function MetricsFieldArray() {
         })
 
         if (!nextValue) {
-            resetField(`metrics.${index}.threshold`, {defaultValue: ''})
+            setValue(`metrics.${index}.threshold`, '', {shouldDirty: true})
         }
     }
 
