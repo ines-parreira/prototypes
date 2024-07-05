@@ -1,11 +1,11 @@
 import React, {useContext} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import Tooltip from 'pages/common/components/Tooltip'
 import {SpotlightContext} from 'providers/ui/SpotlightContext'
 import navbarCss from 'assets/css/navbar.less'
 import {isMacOs} from 'utils/platform'

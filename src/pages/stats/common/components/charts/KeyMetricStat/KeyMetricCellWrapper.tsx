@@ -1,9 +1,8 @@
 import React, {ReactNode} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import StatsHelpIcon from '../../StatsHelpIcon'
-import Tooltip from '../../../../../common/components/Tooltip'
-
 import css from './KeyMetricCellWrapper.less'
 
 type Props = {

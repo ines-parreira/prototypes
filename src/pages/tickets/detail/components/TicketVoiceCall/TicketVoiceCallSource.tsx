@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
-import Tooltip from 'pages/common/components/Tooltip'
+import {Tooltip} from '@gorgias/ui-kit'
 import {TicketChannel} from 'business/types/ticket'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DateAndTimeFormatting} from 'constants/datetime'

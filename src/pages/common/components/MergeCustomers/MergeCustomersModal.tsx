@@ -4,6 +4,7 @@ import {Form} from 'reactstrap'
 import _clone from 'lodash/clone'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
@@ -18,7 +19,6 @@ import {
 } from 'pages/common/components/infobar/utils'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
-import Tooltip from 'pages/common/components/Tooltip'
 import {JSONTree} from 'pages/common/components/JSONTree'
 import BinaryChoiceField from 'pages/common/components/BinaryChoiceField'
 import MultiSelectBinaryChoiceField from 'pages/common/components/MultiSelectBinaryChoiceField'

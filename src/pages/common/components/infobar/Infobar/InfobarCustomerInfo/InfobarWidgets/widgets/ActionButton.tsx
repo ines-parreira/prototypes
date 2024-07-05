@@ -11,6 +11,7 @@ import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
 import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {WithAppNodeProps, withAppNode} from 'appNode'
 import {
@@ -30,7 +31,6 @@ import {executeAction} from 'state/infobar/actions'
 import {getPendingActionCallbacks} from 'state/infobar/selectors'
 import {actionButtonHashForData} from 'state/infobar/utils'
 import {RootState} from 'state/types'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './ActionButtons.less'
 import {InfobarModalProps, Option, Parameter} from './types'

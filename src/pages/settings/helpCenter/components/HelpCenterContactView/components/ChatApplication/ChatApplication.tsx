@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import {Map, List} from 'immutable'
 import {Link} from 'react-router-dom'
 import {Label} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -23,7 +24,6 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import TextArea from 'pages/common/forms/TextArea'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import ContactCard from '../ContactCard'
 import {MAX_DESCRIPTION_LENGTH} from '../../constants'

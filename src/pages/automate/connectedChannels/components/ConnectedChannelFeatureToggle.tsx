@@ -1,8 +1,8 @@
 import React, {ReactNode} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './ConnectedChannelFeatureToggle.less'
 

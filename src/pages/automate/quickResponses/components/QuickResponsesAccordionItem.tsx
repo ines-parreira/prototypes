@@ -1,4 +1,5 @@
 import React, {MouseEvent} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
@@ -6,7 +7,6 @@ import ToggleInput from 'pages/common/forms/ToggleInput'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useAccordionItemContext} from 'pages/common/components/accordion/AccordionItemContext'
 import EmptyResponseMessageContentError from 'pages/automate/common/components/EmptyResponseMessageContentError'
 

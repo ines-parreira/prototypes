@@ -1,7 +1,7 @@
 import React, {useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {ChannelIdentifier} from 'services/channels'
-import Tooltip from 'pages/common/components/Tooltip'
 import history from 'pages/history'
 import IconButton from 'pages/common/components/button/IconButton'
 

@@ -1,7 +1,7 @@
 import React, {ReactNode, useMemo} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {getChannelName} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import {
     SelfServiceChannel,

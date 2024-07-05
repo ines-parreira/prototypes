@@ -1,4 +1,5 @@
 import React, {ComponentProps, useCallback, useEffect} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
@@ -10,7 +11,6 @@ import {
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-import Tooltip from 'pages/common/components/Tooltip'
 import Label from 'pages/tickets/detail/components/TicketFields/components/Label'
 import {getTicket} from 'state/ticket/selectors'
 import {isCustomFieldValueEmpty} from 'utils/customFields'

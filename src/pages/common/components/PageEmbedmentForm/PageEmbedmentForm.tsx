@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -16,7 +16,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {slugify} from 'utils/slugifyForShopify'
 import {SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from './constants'
 import {EmbedMode, PageEmbedmentPosition, EmbeddablePage} from './types'

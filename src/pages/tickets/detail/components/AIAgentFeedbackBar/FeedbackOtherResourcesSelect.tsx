@@ -1,10 +1,9 @@
 import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
 import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
 import Tag from 'pages/common/components/Tag/Tag'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,

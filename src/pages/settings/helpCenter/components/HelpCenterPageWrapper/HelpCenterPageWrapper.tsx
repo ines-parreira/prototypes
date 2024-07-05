@@ -4,6 +4,7 @@ import {Container} from 'reactstrap'
 import {Link, useHistory} from 'react-router-dom'
 
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Tooltip} from '@gorgias/ui-kit'
 import {HelpCenter} from 'models/helpCenter/types'
 import PageHeader from 'pages/common/components/PageHeader'
 
@@ -20,7 +21,6 @@ import AutomateSubscriptionButton from 'pages/settings/billing/automate/Automate
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {TicketChannel} from 'business/types/ticket'
-import Tooltip from 'pages/common/components/Tooltip'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
 import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'

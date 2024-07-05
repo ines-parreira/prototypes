@@ -1,7 +1,7 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {Locale} from '../../../../models/helpCenter/types'
-import Tooltip from '../Tooltip'
 
 import {FlagLanguageItem} from './FlagLanguageItem'
 import {LanguageBullet} from './LanguageBullet'

@@ -1,11 +1,10 @@
 import classnames from 'classnames'
 import React, {HTMLProps, ReactNode, useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
 
 import {OrderDirection} from 'models/api/types'
-
-import Tooltip from 'pages/common/components/Tooltip'
 
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'

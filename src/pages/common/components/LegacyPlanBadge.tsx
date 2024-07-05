@@ -1,7 +1,7 @@
 import React, {useCallback, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Badge, {ColorType} from './Badge/Badge'
-import Tooltip from './Tooltip'
 import css from './LegacyPlanBadge.less'
 
 export default function LegacyPlanBadge() {

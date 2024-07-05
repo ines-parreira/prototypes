@@ -7,8 +7,8 @@ import React, {
     useState,
 } from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     FILTER_VALUE_MAX_WIDTH,
     FILTER_VALUE_PLACEHOLDER,

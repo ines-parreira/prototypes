@@ -13,7 +13,12 @@ import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 
 jest.mock('models/macro/resources')
-jest.mock('pages/common/components/Tooltip', () => () => <div>Tooltip</div>) //Tooltip is mocked to avoid errors with target
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: () => <div>Tooltip</div>,
+    } as Record<string, unknown>
+})
 jest.mock('pages/history')
 
 jest.mock('reactstrap', () => {

@@ -1,9 +1,9 @@
 import React from 'react'
 import {Map, List} from 'immutable'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {RuleItemActions} from '../../../../settings/rules/types'
 import {RuleOperation} from '../../../../../state/rules/types'
-import Tooltip from '../../Tooltip'
 
 type Props = {
     rule: Map<any, any>

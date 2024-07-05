@@ -1,14 +1,13 @@
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, Position, NodeProps, useNodeId} from 'reactflow'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import VisualBuilderActionIconCondensed from 'pages/automate/workflows/components/VisualBuilderActionIconCondensed'
 import {
     VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {toPercentage} from 'pages/automate/automate-metrics/utils'
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'

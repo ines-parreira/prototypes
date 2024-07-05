@@ -1,7 +1,7 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
-import Tooltip from 'pages/common/components/Tooltip'
 import {HELP_CENTER_MAX_ARTICLES} from 'pages/settings/helpCenter/constants'
 
 import css from './HelpCenterLabel.less'

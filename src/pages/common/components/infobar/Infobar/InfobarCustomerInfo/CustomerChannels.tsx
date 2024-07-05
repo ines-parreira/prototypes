@@ -2,12 +2,12 @@ import React, {Component, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {RootState} from 'state/types'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
 import SourceIcon from '../../../SourceIcon'
-import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
 import {getLocalTime} from '../../utils'
 import {

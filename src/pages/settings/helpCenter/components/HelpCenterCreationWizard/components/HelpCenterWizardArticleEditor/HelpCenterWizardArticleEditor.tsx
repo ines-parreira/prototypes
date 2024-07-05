@@ -1,4 +1,5 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {
     DRAWER_TRANSITION_DURATION_MS,
@@ -6,7 +7,6 @@ import {
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import IconButton from 'pages/common/components/button/IconButton'
 import {HelpCenterArticleItem, LocaleCode} from 'models/helpCenter/types'
 import {logEvent, SegmentEvent} from 'common/segment'

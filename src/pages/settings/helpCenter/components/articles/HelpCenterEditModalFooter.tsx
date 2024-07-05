@@ -5,6 +5,7 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import star from 'assets/img/icons/rating-star.svg'
@@ -16,7 +17,6 @@ import Group from 'pages/common/components/layout/Group'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import {Rating} from 'models/helpCenter/types'
-import Tooltip from '../../../../common/components/Tooltip'
 import {articleRequiredFields} from '../../utils/helpCenter.utils'
 import {ConfirmationModal} from '../ConfirmationModal'
 import {useRatingScore} from '../../hooks/useRatingScore'

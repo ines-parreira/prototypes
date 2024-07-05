@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
-import Tooltip from '../Tooltip'
 
 import css from './CodeEditor.less'
 import ReactACE from './WithACEEditor/ReactACE'

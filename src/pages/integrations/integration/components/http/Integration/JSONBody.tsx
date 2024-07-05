@@ -2,10 +2,10 @@ import React, {ComponentProps} from 'react'
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
 import {FormGroup, FormText, Label} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {HTTPForm} from 'models/integration/types'
 import Select from 'pages/common/components/ast/widget/ReactSelect'
-import Tooltip from 'pages/common/components/Tooltip'
 import JsonField from 'pages/common/forms/JsonField'
 import {SelectableOption} from 'pages/common/forms/SelectField/types'
 

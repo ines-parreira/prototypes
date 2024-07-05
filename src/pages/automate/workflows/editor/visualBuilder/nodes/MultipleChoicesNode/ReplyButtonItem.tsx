@@ -1,10 +1,10 @@
 import React, {RefObject, useEffect, useState} from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 

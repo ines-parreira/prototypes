@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import _uniq from 'lodash/uniq'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -15,7 +15,6 @@ import {Drawer} from 'pages/common/components/Drawer'
 import Button from 'pages/common/components/button/Button'
 import useIsHttpRequestNodeErrored from 'pages/automate/workflows/hooks/useIsHttpRequestNodeErrored'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'

@@ -1,8 +1,7 @@
 import React, {ReactNode, useState} from 'react'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import classnames from 'classnames'
-
-import Tooltip from '../../../../../common/components/Tooltip'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {Messages} from './constants'
 
@@ -65,7 +64,7 @@ export const IntentsFeedbackDropdown = ({
                 <Tooltip
                     className={css.headerTooltip}
                     target={`intent-info-${messageId}`}
-                    appNode={tooltipContainer}
+                    container={tooltipContainer}
                     innerProps={{
                         fade: false,
                     }}

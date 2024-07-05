@@ -1,11 +1,10 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react'
 import moment from 'moment'
 import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTimezone} from 'state/currentUser/selectors'
 import {DEFAULT_TIMEZONE} from 'pages/stats/constants'

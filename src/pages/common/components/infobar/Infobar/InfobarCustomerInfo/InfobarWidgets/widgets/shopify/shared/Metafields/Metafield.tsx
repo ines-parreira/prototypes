@@ -8,6 +8,7 @@ import {
     VolumeShopifyMetafieldData,
     WeightShopifyMetafieldData,
 } from '@gorgias/api-queries'
+import {Tooltip} from '@gorgias/ui-kit'
 import {ShopifyMetafieldType} from '@gorgias/api-types'
 import StaticField from 'Infobar/features/Field/display/StaticField'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
@@ -15,7 +16,6 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {Badge} from 'gorgias-design-system/Badge/Badge'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import Tooltip from 'pages/common/components/Tooltip'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {extractGid, prepareGidUrl, shortenUrl} from '../helpers'
 import css from './Metafield.less'

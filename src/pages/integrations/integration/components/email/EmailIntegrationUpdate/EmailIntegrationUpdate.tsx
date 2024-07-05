@@ -15,6 +15,7 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 import copy from 'copy-to-clipboard'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {UploadType} from 'common/types'
@@ -48,7 +49,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
 
 import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
-import Tooltip from 'pages/common/components/Tooltip'
 import EmailIntegrationConnectStore from '../EmailToStoreMapping/EmailIntegrationConnectStore'
 import css from './EmailIntegrationUpdate.less'
 import EmailIntegrationDeliverabilitySettings from './EmailIntegrationDeliverabilitySettings'

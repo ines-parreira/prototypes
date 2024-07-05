@@ -1,16 +1,18 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import SubscriptionAmount from '../SubscriptionAmount'
 import {PlanInterval} from '../../../../models/billing/types'
-import Tooltip from '../../../common/components/Tooltip'
 
-jest.mock(
-    '../../../common/components/Tooltip',
-    () =>
-        ({children}: ComponentProps<typeof Tooltip>) =>
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: ({children}: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
-)
+        ),
+    } as Record<string, unknown>
+})
 
 describe('<SubscriptionAmount />', () => {
     const minProps: ComponentProps<typeof SubscriptionAmount> = {

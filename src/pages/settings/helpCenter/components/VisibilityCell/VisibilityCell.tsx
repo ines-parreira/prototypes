@@ -1,8 +1,8 @@
 import React, {useRef} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {VisibilityStatus} from 'models/helpCenter/types'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './VisibilityCell.less'
 

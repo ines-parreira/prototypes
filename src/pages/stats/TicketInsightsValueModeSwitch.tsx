@@ -1,8 +1,8 @@
 import React, {useRef} from 'react'
 import {useDispatch} from 'react-redux'
+import {Tooltip} from '@gorgias/ui-kit'
 import useAppSelector from 'hooks/useAppSelector'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     getValueMode,
     toggleValueMode,

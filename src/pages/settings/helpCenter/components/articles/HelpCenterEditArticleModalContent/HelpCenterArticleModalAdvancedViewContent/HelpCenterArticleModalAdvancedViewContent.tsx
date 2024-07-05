@@ -1,4 +1,5 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import {
@@ -14,7 +15,6 @@ import {
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
-import Tooltip from 'pages/common/components/Tooltip'
 import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'

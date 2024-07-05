@@ -1,4 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {CustomFieldState} from 'models/customField/types'
@@ -12,7 +13,6 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {useUpdateOrDeleteTicketFieldValue} from 'hooks/customField/useUpdateOrDeleteTicketFieldValue'
 import {getTicket} from 'state/ticket/selectors'
-import Tooltip from 'pages/common/components/Tooltip'
 import {isCustomFieldValueEmpty} from 'utils/customFields'
 import StealthInput from '../StealthInput'
 import Label from '../Label'

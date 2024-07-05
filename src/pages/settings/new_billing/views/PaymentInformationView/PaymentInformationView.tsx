@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchContact, fetchCreditCard} from 'state/billing/actions'
@@ -18,7 +19,6 @@ import {
 import {BillingContact, TicketPurpose} from 'state/billing/types'
 import {countries} from 'config/countries'
 import Loader from 'pages/common/components/Loader/Loader'
-import Tooltip from 'pages/common/components/Tooltip'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 import {isLegacyAutomate} from 'models/billing/utils'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'

@@ -1,8 +1,8 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {isTicketNavigationAvailable} from 'state/ticket/actions'
-import Tooltip from 'pages/common/components/Tooltip'
 import {ArrowPagination} from 'pages/common/components/Paginations'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {useSplitTicketView} from 'split-ticket-view-toggle'

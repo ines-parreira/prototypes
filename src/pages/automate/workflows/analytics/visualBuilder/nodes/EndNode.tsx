@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import React, {memo} from 'react'
 import {Handle, NodeProps, Position, useNodeId} from 'reactflow'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
@@ -13,7 +14,6 @@ import {
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {toPercentage} from 'pages/automate/automate-metrics/utils'
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'

@@ -5,6 +5,7 @@ import {ContentState, EditorState} from 'draft-js'
 import createSingleLinePlugin from 'draft-js-single-line-plugin'
 import Editor from 'draft-js-plugins-editor'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import {contentStateFromTextOrHTML} from 'utils/editor'
@@ -14,7 +15,6 @@ import InputGroup, {
     InputGroupContext,
 } from 'pages/common/forms/input/InputGroup'
 import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     WorkflowVariable,
     WorkflowVariableList,

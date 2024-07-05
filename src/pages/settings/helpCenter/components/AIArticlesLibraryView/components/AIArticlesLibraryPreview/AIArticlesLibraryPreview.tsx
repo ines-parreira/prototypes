@@ -1,10 +1,10 @@
 import React from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import {SegmentEvent, logEvent} from 'common/segment'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'

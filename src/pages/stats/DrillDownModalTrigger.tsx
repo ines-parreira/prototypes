@@ -1,5 +1,5 @@
 import React, {PropsWithChildren} from 'react'
-import Tooltip from 'pages/common/components/Tooltip'
+import {Tooltip} from '@gorgias/ui-kit'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import useAppDispatch from 'hooks/useAppDispatch'

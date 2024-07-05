@@ -1,7 +1,7 @@
 import React, {ReactNode, useCallback, useMemo} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {PlanInterval} from 'models/billing/types'
 import useId from 'hooks/useId'
 

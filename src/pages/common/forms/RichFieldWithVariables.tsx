@@ -8,6 +8,7 @@ import {
 } from 'reactstrap'
 import {EditorState} from 'draft-js'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {insertText} from 'utils'
 import Button from 'pages/common/components/button/Button'
@@ -15,7 +16,6 @@ import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {getVariables} from 'tickets/common/utils'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import RichField from './RichField/RichField'
 import TicketRichField from './RichField/TicketRichField'
 import css from './RichFieldWithVariables.less'

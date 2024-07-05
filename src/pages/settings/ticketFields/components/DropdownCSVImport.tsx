@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import {CsvError, parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -19,7 +20,6 @@ import {getText, saveFileAsDownloaded} from 'utils/file'
 import Loader from 'pages/common/components/Loader/Loader'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
-import Tooltip from 'pages/common/components/Tooltip'
 import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
 
 import {DropdownCSVImportDropZone} from './DropdownCSVImportDropZone'
@@ -164,7 +164,7 @@ export const DropdownCSVImport = ({
                                 </span>
                                 <Tooltip
                                     target={tooltipId}
-                                    appNode=".modal-body"
+                                    container=".modal-body"
                                     placement="top"
                                     innerProps={{
                                         innerClassName: css.tooltip,

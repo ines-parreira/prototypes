@@ -1,7 +1,7 @@
 import React, {ComponentProps, ReactNode, Ref, forwardRef} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import useId from 'hooks/useId'
 
 import IconButton from '../../button/IconButton'

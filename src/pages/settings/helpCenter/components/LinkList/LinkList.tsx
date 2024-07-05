@@ -1,8 +1,7 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
-
-import Tooltip from '../../../../common/components/Tooltip'
 
 import {LinkItem, LinkEntity, LinkItemEventHandlers} from './LinkItem'
 

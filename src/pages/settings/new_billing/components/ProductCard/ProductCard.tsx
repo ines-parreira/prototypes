@@ -1,10 +1,10 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import {useHistory} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 import {Plan, ProductType} from 'models/billing/types'
 
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCheapestProductPrices,

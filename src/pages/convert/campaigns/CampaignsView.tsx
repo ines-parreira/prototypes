@@ -3,6 +3,7 @@ import {Link, useParams} from 'react-router-dom'
 
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -26,7 +27,6 @@ import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
 import ConvertUpsellBanner from 'pages/convert/campaigns/components/ConvertUpsellBanner/ConvertUpsellBanner'
 import {CONVERT_ROUTE_PARAM_NAME} from '../common/constants'

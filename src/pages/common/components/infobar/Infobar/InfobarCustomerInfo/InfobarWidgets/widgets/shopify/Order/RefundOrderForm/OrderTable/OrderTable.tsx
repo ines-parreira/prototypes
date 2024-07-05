@@ -2,9 +2,9 @@ import React, {memo, useCallback} from 'react'
 import {Table} from 'reactstrap'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {FulfillmentStatus} from 'constants/integrations/types/shopify'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import OrderLineItemRow from './OrderLineItemRow'
 import css from './OrderTable.less'

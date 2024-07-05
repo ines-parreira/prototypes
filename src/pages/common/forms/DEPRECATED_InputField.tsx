@@ -5,9 +5,9 @@ import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import {FormGroup, FormText, Input as BootstrapInput, Label} from 'reactstrap'
 import {InputProps} from 'reactstrap/lib/Input'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {defined} from 'utils'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import Errors from 'pages/common/forms/Errors'
 import css from 'pages/common/forms/DEPRECATED_InputField.less'

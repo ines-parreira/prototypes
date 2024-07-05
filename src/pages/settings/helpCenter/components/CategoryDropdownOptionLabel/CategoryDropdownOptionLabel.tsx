@@ -1,10 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {Category} from 'models/helpCenter/types'
 import {getCategoriesById} from 'state/entities/helpCenter/categories'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './CategoryDropdownOptionLabel.less'
 

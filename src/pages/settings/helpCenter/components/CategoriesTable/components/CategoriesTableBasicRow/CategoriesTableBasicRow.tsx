@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import {Badge, Spinner} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {Article} from 'models/helpCenter/types'
@@ -14,7 +15,6 @@ import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
 import {getRootCategory} from 'state/entities/helpCenter/categories'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
 import {ARTICLES_PER_PAGE} from 'pages/settings/helpCenter/constants'
 

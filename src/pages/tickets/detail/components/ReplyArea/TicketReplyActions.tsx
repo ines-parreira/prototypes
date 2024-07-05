@@ -2,10 +2,10 @@ import React, {useState} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {Collapse} from 'reactstrap'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {MacroActionName} from 'models/macroAction/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Tooltip from 'pages/common/components/Tooltip'
 import {getActionTemplate} from 'utils'
 
 import {ActionTemplateExecution} from 'config'

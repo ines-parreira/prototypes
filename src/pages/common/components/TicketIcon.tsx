@@ -1,10 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import useId from 'hooks/useId'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from 'pages/common/components/TicketIcon.less'
 

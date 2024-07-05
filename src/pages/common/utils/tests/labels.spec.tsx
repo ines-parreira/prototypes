@@ -26,7 +26,12 @@ const integrationMap = fromJS(integrationJsObject)
 
 const mockStore = configureMockStore()
 
-jest.mock('pages/common/components/Tooltip', () => () => 'TooltipMock')
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: () => 'TooltipMock',
+    } as Record<string, unknown>
+})
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationChannel: () => () => mockChannels[0],
 }))

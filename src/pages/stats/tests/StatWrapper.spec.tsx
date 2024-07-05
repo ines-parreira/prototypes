@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent} from 'common/segment'
 import {firstResponseTime} from 'fixtures/stats'
@@ -15,7 +16,6 @@ import {downloadStat} from 'models/stat/resources'
 import {RootState} from 'state/types'
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import StatWrapper from '../StatWrapper'
 
@@ -23,10 +23,13 @@ jest.mock('utils/file')
 jest.mock('state/notifications/actions')
 jest.mock('models/stat/resources')
 jest.mock('common/segment')
-jest.mock(
-    'pages/common/components/Tooltip',
-    () =>
-        ({children, ...otherProps}: ComponentProps<typeof Tooltip>) => {
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: ({
+            children,
+            ...otherProps
+        }: ComponentProps<typeof Tooltip>) => {
             return (
                 <div aria-label="tooltip mock">
                     <div aria-label="children">{children}</div>
@@ -35,8 +38,9 @@ jest.mock(
                     </div>
                 </div>
             )
-        }
-)
+        },
+    } as Record<string, unknown>
+})
 
 const mockStore = configureMockStore([thunk])
 const saveFileAsDownloadedMock = saveFileAsDownloaded as jest.MockedFunction<

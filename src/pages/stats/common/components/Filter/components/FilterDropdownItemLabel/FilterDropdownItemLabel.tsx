@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import css from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.less'
 import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
 import {highlightString} from 'pages/stats/utils'
-import Tooltip from 'pages/common/components/Tooltip'
 import {LABEL_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
 
 type Props = {

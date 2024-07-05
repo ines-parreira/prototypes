@@ -1,10 +1,10 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
-import Tooltip from 'pages/common/components/Tooltip'
 
 type Props = {
     setQuickStatus: (status: string) => void

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import useLocalStorage from 'hooks/useLocalStorage'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import {ShopifyIntegration} from 'models/integration/types'
 import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'

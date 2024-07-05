@@ -1,9 +1,9 @@
 import React, {ReactNode, RefObject} from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import Tooltip from 'pages/common/components/Tooltip'
 import useId from 'hooks/useId'
 
 import css from './WorkflowItem.less'

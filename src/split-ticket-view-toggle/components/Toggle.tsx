@@ -1,7 +1,7 @@
 import cn from 'classnames'
 import React, {useCallback} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useId from 'hooks/useId'
 

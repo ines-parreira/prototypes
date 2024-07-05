@@ -1,4 +1,5 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import {useRunningJobs} from 'hooks/jobs/useRunningJobs'
 import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
 import {UserRole} from 'config/types/user'
@@ -7,7 +8,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {
     createExportDrillDownJob,

@@ -8,6 +8,7 @@ import React, {
 import classnames from 'classnames'
 import {Popover, PopoverBody} from 'reactstrap'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 
@@ -46,7 +47,6 @@ import useAsyncFn from 'hooks/useAsyncFn'
 import {DateAndTimeFormatting} from 'constants/datetime'
 
 import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import Tooltip from 'pages/common/components/Tooltip'
 import css from './RuleRow.less'
 import {getRuleActions} from './ruleEditors/utils'
 

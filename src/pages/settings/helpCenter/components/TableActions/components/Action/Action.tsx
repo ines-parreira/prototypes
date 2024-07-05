@@ -1,7 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
-
-import Tooltip from '../../../../../../common/components/Tooltip'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import css from '../../TableActions.less'
 

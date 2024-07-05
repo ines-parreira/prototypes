@@ -3,9 +3,9 @@ import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
+import * as uiKit from '@gorgias/ui-kit'
 
 import {QueryClientProvider} from '@tanstack/react-query'
-import * as Tooltip from 'pages/common/components/Tooltip'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AUTOMATION_PRODUCT_ID,
@@ -29,6 +29,14 @@ import {AlertType} from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCard/ProductCard'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
+
+// Mock ui-kit as an ES module to enable spying
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        __esModule: true,
+        ...jest.requireActual('@gorgias/ui-kit'),
+    } as Record<string, unknown>
+})
 
 jest.mock('pages/settings/new_billing/components/ProductCard', () =>
     jest.fn((props: ProductCardProps) => {
@@ -72,7 +80,7 @@ const store = mockedStore({
 })
 
 describe('UsageAndPlansView', () => {
-    const MockTooltip = jest.spyOn(Tooltip as {default: any}, 'default')
+    const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
     it('should render with active subscription containing Helpdesk and Convert products', () => {
         const helpdeskBanner = {
             description: 'Helpdesk banner',

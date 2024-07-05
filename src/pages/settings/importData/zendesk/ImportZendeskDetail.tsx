@@ -11,6 +11,7 @@ import {
     PopoverBody,
     Table,
 } from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import {
@@ -22,7 +23,6 @@ import {RootState, StoreDispatch} from 'state/types'
 import {ZENDESK_INTEGRATION_TYPE} from 'constants/integration'
 import PageHeader from 'pages/common/components/PageHeader'
 import Loader from 'pages/common/components/Loader/Loader'
-import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

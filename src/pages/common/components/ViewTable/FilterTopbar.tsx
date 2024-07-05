@@ -20,6 +20,7 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {getConfigByName} from 'config/views'
@@ -44,7 +45,6 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import Tooltip from 'pages/common/components/Tooltip'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,

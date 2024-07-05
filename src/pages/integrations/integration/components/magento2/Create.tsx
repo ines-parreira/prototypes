@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
 import {Map} from 'immutable'
 import {Col, Container, Row} from 'reactstrap'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import Tooltip from 'pages/common/components/Tooltip'
 import settingsCss from 'pages/settings/settings.less'
 
 import css from './Create.less'

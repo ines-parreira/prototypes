@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import classNames from 'classnames'
 import {produce, Draft} from 'immer'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {noop} from 'lodash'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -29,7 +30,6 @@ import {
     getChannelName,
     optionalNodeTypes,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import Tooltip from 'pages/common/components/Tooltip'
 import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection.svg'
@@ -548,7 +548,7 @@ export default function EdgeBlock({
                                             <Tooltip
                                                 placement="top-start"
                                                 target={`dropdown-item-${type}`}
-                                                appNode={
+                                                container={
                                                     floatingRef.parentElement
                                                 }
                                             >

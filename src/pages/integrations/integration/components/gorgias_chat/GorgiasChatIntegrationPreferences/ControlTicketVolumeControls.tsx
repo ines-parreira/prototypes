@@ -1,12 +1,12 @@
 import React, {useRef} from 'react'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {Map} from 'immutable'
 
 import classnames from 'classnames'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'

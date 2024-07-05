@@ -4,12 +4,12 @@ import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 import _truncate from 'lodash/truncate'
 import _omit from 'lodash/omit'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {Link} from 'react-router-dom'
 import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
 import TicketTag from 'pages/common/components/TicketTag'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import Tooltip from 'pages/common/components/Tooltip'
 import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
 import {

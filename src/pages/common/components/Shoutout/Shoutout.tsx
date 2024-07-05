@@ -1,10 +1,10 @@
 import React, {ReactNode, useMemo, useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import isNil from 'lodash/isNil'
 
 import classNames from 'classnames'
 import Avatar from '../Avatar/Avatar'
-import Tooltip from '../Tooltip'
 import css from './Shoutout.less'
 
 type Props = {

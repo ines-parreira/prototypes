@@ -10,6 +10,7 @@ import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import pluralize from 'pluralize'
 import {
@@ -19,7 +20,6 @@ import {
 } from 'models/discountCodes/constants'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import {useModalManager} from 'hooks/useModalManager'
 import Loader from 'pages/common/components/Loader/Loader'

@@ -3,10 +3,10 @@ import React, {ReactNode} from 'react'
 import {Map, List, fromJS} from 'immutable'
 import classnames from 'classnames'
 import _isObject from 'lodash/isObject'
+import {Tooltip} from '@gorgias/ui-kit'
 import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
 
 import {StatType} from 'models/stat/types'
-import Tooltip from 'pages/common/components/Tooltip'
 import Loader from 'pages/common/components/Loader/Loader'
 import {StatConfigMetric} from 'config/stats'
 

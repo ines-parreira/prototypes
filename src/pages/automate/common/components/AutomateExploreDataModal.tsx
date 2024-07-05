@@ -1,5 +1,5 @@
 import React, {forwardRef, useImperativeHandle, useState} from 'react'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import {formatMetricValue} from 'pages/stats/common/utils'
 import {formatValue} from 'pages/settings/billing/automate/ROICalculator/utils'
@@ -21,7 +21,6 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
 import {HintTooltip} from 'pages/stats/common/HintTooltip'

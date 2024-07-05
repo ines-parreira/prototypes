@@ -1,10 +1,10 @@
 import classnames from 'classnames'
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import useId from 'hooks/useId'
 
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     formatMetricTrend,
     formatMetricValue,

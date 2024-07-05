@@ -1,5 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
+import {Tooltip} from '@gorgias/ui-kit'
 import {
     EcommerceIntegrationMeta,
     Integration,
@@ -13,7 +14,6 @@ import css from 'pages/integrations/integration/components/app/IntegrationRow.le
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import {deleteIntegration} from 'state/integrations/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import Tooltip from 'pages/common/components/Tooltip'
 import {getIntegrationsLoading} from 'state/integrations/selectors'
 import IconButton from 'pages/common/components/button/IconButton'
 import {getReconnectUrl} from './helpers'

@@ -1,10 +1,10 @@
 import _capitalize from 'lodash/capitalize'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 import {EmailProvider, IntegrationType} from 'models/integration/constants'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import {GmailIntegration, OutlookIntegration} from 'models/integration/types'
-import Tooltip from 'pages/common/components/Tooltip'
 import {canEnableEmailingViaInternalProvider} from '../helpers'
 
 export enum DeliverabilityProviderSetting {

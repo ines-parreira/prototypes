@@ -5,6 +5,7 @@ import {
     DropdownToggle,
     UncontrolledDropdown,
 } from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {
     DRAWER_TRANSITION_DURATION_MS,
@@ -14,7 +15,6 @@ import {
 } from 'pages/settings/helpCenter/constants'
 import Group from 'pages/common/components/layout/Group'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import IconButton from 'pages/common/components/button/IconButton'
 import {AILibraryArticleItem, LocaleCode} from 'models/helpCenter/types'
 import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'

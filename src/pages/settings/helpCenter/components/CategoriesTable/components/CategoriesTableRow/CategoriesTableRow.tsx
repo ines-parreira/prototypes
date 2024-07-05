@@ -10,6 +10,7 @@ import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import {Badge, Spinner} from 'reactstrap'
 import _noop from 'lodash/noop'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useModalManager} from 'hooks/useModalManager'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -22,7 +23,6 @@ import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     ARTICLES_PER_PAGE,
     CategoryRowActionTypes,

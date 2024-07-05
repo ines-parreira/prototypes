@@ -1,6 +1,6 @@
 import React, {useRef, useState} from 'react'
 import classnames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -9,7 +9,6 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import {BigCommerceCustomerAddress} from 'models/integration/types'
-import Tooltip from 'pages/common/components/Tooltip'
 import {buildAddressComponent, getOneLineAddress} from './utils'
 
 import css from './AddressesDropdown.less'

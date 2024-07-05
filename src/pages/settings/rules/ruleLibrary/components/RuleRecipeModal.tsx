@@ -3,6 +3,7 @@ import {Badge, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
 import classnames from 'classnames'
 import pluralize from 'pluralize'
 import _flatten from 'lodash/flatten'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import {logEvent, SegmentEvent} from 'common/segment'
@@ -22,7 +23,6 @@ import {
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {getRulesLimitStatus} from 'state/entities/rules/selectors'
 import {RuleItemActions} from '../../types'
 

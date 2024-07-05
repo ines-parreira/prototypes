@@ -3,6 +3,7 @@ import {Label} from 'reactstrap'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {List, Map} from 'immutable'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {formatPrice} from 'business/shopify/number'
 import {
@@ -11,7 +12,6 @@ import {
     getTotalCartDiscountAmount,
     getTotalTax,
 } from 'business/shopify/refund'
-import Tooltip from 'pages/common/components/Tooltip'
 import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput/AmountInput'
 

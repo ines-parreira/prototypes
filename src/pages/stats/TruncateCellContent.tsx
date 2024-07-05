@@ -1,8 +1,8 @@
 import React, {useRef, useLayoutEffect, useState} from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
-import Tooltip from 'pages/common/components/Tooltip'
 import css from './TruncateCellContent.less'
 
 type Props = {

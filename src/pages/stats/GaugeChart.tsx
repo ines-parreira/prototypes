@@ -1,7 +1,7 @@
 import React, {useMemo, useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import Tooltip from 'pages/common/components/Tooltip'
 import css from './GaugeChart.less'
 import {OneDimensionalDataItem} from './types'
 import Legend from './Legend'

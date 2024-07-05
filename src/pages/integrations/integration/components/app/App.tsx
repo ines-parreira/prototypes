@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Link, NavLink, useParams} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 import {isEmpty} from 'lodash'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import useTitle from 'hooks/useTitle'
@@ -36,7 +37,6 @@ import ConnectLink from 'pages/integrations/components/ConnectLink'
 import {getApplicationById} from 'services/applications'
 import {fetchIntegrations} from 'state/integrations/actions'
 import useEffectOnce from 'hooks/useEffectOnce'
-import Tooltip from 'pages/common/components/Tooltip'
 import IntegrationsList from './IntegrationsList'
 
 export enum Tab {

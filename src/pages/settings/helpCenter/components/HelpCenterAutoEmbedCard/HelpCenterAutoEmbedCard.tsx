@@ -2,11 +2,11 @@ import React from 'react'
 import classnames from 'classnames'
 import {Link, useHistory} from 'react-router-dom'
 import _noop from 'lodash/noop'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {SegmentEvent, logEvent} from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Tooltip from 'pages/common/components/Tooltip'
 import {linkToShopifyIntegration} from 'pages/settings/contactForm/utils/navigation'
 
 import {HelpCenterPageEmbedment} from 'models/helpCenter/types'

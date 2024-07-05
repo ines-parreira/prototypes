@@ -7,7 +7,7 @@ import _debounce from 'lodash/debounce'
 import {connect, ConnectedProps} from 'react-redux'
 import {Link, useHistory, useLocation} from 'react-router-dom'
 import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
 
@@ -29,7 +29,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import Tooltip from 'pages/common/components/Tooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
     isBaseEmailIntegration,

@@ -22,6 +22,7 @@ import useSharedLogic from '../hooks/useSharedLogic'
 import useHasPhone from '../hooks/useHasPhone'
 import useStatusPageManager from '../hooks/useStatusPageManager'
 import useUsageBanner from '../hooks/useUsageBanner'
+import UIKitRootNodeProvider from './UIKitRootNodeProvider'
 
 type Props = {
     children: ReactNode
@@ -41,19 +42,21 @@ export default function App({children}: Props) {
 
     return (
         <AppNode className={theme}>
-            <SessionChangeDetection />
-            <NotificationsToasts />
-            <BannerNotifications />
-            <EmailMigrationBanner />
-            <EmailDisconnectedBanner />
-            <EmailDomainVerificationBanner />
-            <ScriptTagMigrationBanner />
-            <ScriptTagMigrationModal />
-            <Spotlight />
-            {children}
-            <KeyboardHelp />
-            <AlertNotifications />
-            {hasPhone && <PhoneIntegrationBar />}
+            <UIKitRootNodeProvider>
+                <SessionChangeDetection />
+                <NotificationsToasts />
+                <BannerNotifications />
+                <EmailMigrationBanner />
+                <EmailDisconnectedBanner />
+                <EmailDomainVerificationBanner />
+                <ScriptTagMigrationBanner />
+                <ScriptTagMigrationModal />
+                <Spotlight />
+                {children}
+                <KeyboardHelp />
+                <AlertNotifications />
+                {hasPhone && <PhoneIntegrationBar />}
+            </UIKitRootNodeProvider>
         </AppNode>
     )
 }

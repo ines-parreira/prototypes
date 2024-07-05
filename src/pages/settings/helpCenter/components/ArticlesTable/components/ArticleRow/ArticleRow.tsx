@@ -1,12 +1,12 @@
 import React, {useMemo} from 'react'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import up from 'assets/img/icons/rating-up-white.svg'
 import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {useRatingScore} from 'pages/settings/helpCenter/hooks/useRatingScore'
 import {Article} from 'models/helpCenter/types'
 import {LanguageList} from 'pages/common/components/LanguageBulletList'

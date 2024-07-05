@@ -1,9 +1,9 @@
 import React, {useMemo, useState} from 'react'
 import {Link, useLocation, useParams} from 'react-router-dom'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import Tooltip from 'pages/common/components/Tooltip'
 import history from 'pages/history'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 

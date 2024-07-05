@@ -1,10 +1,10 @@
 import {ModalFooter} from 'reactstrap'
 import React, {useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentUser} from 'state/currentUser/selectors'
 import {isAdmin} from 'utils'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import css from './SubscriptionModalFooter.less'
 

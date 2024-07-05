@@ -1,11 +1,10 @@
 import React from 'react'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import _ from 'lodash'
 import classNames from 'classnames'
 import TextInput from 'pages/common/forms/input/TextInput'
 import IconButton from 'pages/common/components/button/IconButton'
-import Tooltip from 'pages/common/components/Tooltip'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

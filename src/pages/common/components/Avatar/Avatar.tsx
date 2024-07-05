@@ -1,8 +1,8 @@
 import React, {Component, CSSProperties} from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from '../Tooltip'
 import {getInitials, getAvatar, getAvatarFromCache} from './utils'
 import css from './Avatar.less'
 

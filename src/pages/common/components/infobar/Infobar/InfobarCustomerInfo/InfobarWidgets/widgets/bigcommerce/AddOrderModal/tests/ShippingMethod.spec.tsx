@@ -3,6 +3,7 @@ import {render, screen, waitFor} from '@testing-library/react'
 import {renderHook, act} from '@testing-library/react-hooks'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {
     bigCommerceCartFixture,
@@ -10,16 +11,17 @@ import {
     bigCommerceLineItemFixture,
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
-import Tooltip from 'pages/common/components/Tooltip'
 import {ShippingMethod, useShippingMethods} from '../ShippingMethod'
 
 // Mocking to check what text is provided to `Tooltip`
-jest.mock(
-    'pages/common/components/Tooltip',
-    () =>
-        ({children}: ComponentProps<typeof Tooltip>) =>
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: ({children}: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
-)
+        ),
+    } as Record<string, unknown>
+})
 
 describe('ShippingMethod', () => {
     let apiMock: MockAdapter

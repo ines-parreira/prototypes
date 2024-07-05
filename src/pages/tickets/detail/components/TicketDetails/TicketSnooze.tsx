@@ -1,7 +1,7 @@
 import React, {useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import Tooltip from 'pages/common/components/Tooltip'
 import {formatDatetime} from 'utils'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'

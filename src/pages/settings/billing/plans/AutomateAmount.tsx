@@ -1,9 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 import {PlanInterval} from 'models/billing/types'
-import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import SubscriptionAmount from 'pages/settings/common/SubscriptionAmount'
 

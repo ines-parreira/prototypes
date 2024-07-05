@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import {PlanInterval, Plan, ProductType} from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {
@@ -12,7 +13,6 @@ import {
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
 import {Value} from 'pages/common/forms/SelectField/types'
-import Tooltip from 'pages/common/components/Tooltip'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
 import SummaryPaymentSection from 'pages/settings/new_billing/components/SummaryPaymentSection/SummaryPaymentSection'
@@ -193,7 +193,7 @@ const PlanSubscriptionDescription = ({
                                 placement="top-start"
                                 target="priceSelectInfo"
                                 className={css.tooltip}
-                                appNode={ref}
+                                container={ref}
                             >
                                 {productInfo.tooltip}
                             </Tooltip>

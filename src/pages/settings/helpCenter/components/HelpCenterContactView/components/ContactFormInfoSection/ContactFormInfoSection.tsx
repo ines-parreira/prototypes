@@ -1,6 +1,7 @@
 import React, {useCallback, useState} from 'react'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import settingsCss from 'pages/settings/settings.less'
 
 import * as integrationsSelectors from 'state/integrations/selectors'
@@ -16,7 +17,6 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     isBaseEmailAddress,
     isGenericEmailIntegration,

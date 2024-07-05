@@ -1,6 +1,7 @@
 import React, {useMemo} from 'react'
 
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import {Plan, PlanInterval, ProductType} from 'models/billing/types'
 import {getProductLabel, isTrial} from 'models/billing/utils'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
@@ -8,7 +9,6 @@ import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
 import {formatAmount} from '../../utils/formatAmount'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
-import Tooltip from '../../../../common/components/Tooltip'
 import {getNextTier} from '../../utils/getNextTier'
 import css from './SummaryItem.less'
 

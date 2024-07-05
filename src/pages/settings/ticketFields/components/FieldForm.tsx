@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react'
 import {set, pick} from 'lodash'
 import {Location} from 'history'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import history from 'pages/history'
 
@@ -15,7 +15,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import CheckBox from 'pages/common/forms/CheckBox'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextArea from 'pages/common/forms/TextArea'

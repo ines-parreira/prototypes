@@ -6,12 +6,12 @@ import React, {
     useRef,
     useState,
 } from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {Article, LocaleCode, VisibilityStatus} from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCategories} from 'state/entities/helpCenter/categories'
-import Tooltip from 'pages/common/components/Tooltip'
 import EditingState from '../EditingState/EditingState'
 
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'

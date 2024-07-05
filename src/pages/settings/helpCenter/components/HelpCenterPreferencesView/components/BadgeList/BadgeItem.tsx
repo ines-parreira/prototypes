@@ -1,10 +1,9 @@
 import React from 'react'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {LocaleCode} from '../../../../../../../models/helpCenter/types'
-
-import Tooltip from '../../../../../../common/components/Tooltip'
 
 import css from './BadgeItem.less'
 

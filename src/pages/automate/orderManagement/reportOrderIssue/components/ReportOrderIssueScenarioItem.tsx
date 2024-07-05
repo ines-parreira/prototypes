@@ -1,10 +1,10 @@
 import React, {RefObject} from 'react'
 import classnames from 'classnames'
 import {useHistory, useLocation} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
 import {DragItemRequired, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import useId from 'hooks/useId'
 import css from './ReportOrderIssueScenarioItem.less'

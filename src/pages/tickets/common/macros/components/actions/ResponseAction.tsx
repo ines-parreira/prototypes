@@ -9,6 +9,7 @@ import {List, Map} from 'immutable'
 import {EditorState} from 'draft-js'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {UploadType} from 'common/types'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -24,7 +25,6 @@ import * as integrationsSelectors from 'state/integrations/selectors'
 import {MacroActionName} from 'models/macroAction/types'
 import useAppSelector from 'hooks/useAppSelector'
 import {getVariables} from 'tickets/common/utils'
-import Tooltip from 'pages/common/components/Tooltip'
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,
 } from '../MacroMessageActionsHeader'

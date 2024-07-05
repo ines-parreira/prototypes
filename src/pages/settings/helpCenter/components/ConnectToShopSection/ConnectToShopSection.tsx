@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
 import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import classNames from 'classnames'
 import {useTheme} from 'theme'
@@ -9,7 +10,6 @@ import Button from 'pages/common/components/button/Button'
 import {getHasAutomate} from 'state/billing/selectors'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import Tooltip from 'pages/common/components/Tooltip'
 import useAppSelector from 'hooks/useAppSelector'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 

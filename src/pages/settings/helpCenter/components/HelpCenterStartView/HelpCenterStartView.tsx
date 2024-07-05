@@ -1,5 +1,6 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {Link, NavLink, Route, Switch, useHistory} from 'react-router-dom'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -14,7 +15,6 @@ import Detail from 'pages/common/components/ProductDetail'
 import {withFeaturePaywall} from 'pages/common/utils/withFeaturePaywall'
 import {AccountFeature} from 'state/currentAccount/types'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
 import {
     HELP_CENTER_MAX_CREATION,

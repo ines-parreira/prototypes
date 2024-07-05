@@ -1,5 +1,6 @@
 import cn from 'classnames'
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -7,7 +8,6 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import {SoundValue} from 'services/NotificationSounds'
 

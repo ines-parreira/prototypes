@@ -7,6 +7,7 @@ import _truncate from 'lodash/truncate'
 import {Table} from 'reactstrap'
 import {Link, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
@@ -24,7 +25,6 @@ import {
     formatDuration,
 } from 'pages/stats/common/utils'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,

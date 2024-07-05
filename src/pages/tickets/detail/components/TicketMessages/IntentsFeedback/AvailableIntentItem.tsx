@@ -1,9 +1,8 @@
 import _noop from 'lodash/noop'
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import type {Option} from '../../../../../common/components/RichDropdown/types'
-
-import Tooltip from '../../../../../common/components/Tooltip'
 
 import {Messages} from './constants'
 import {DropdownOptionItem} from './DropdownOptionItem'
@@ -38,7 +37,7 @@ export const AvailableIntentItem = ({
                     <Tooltip
                         target={buttonId}
                         disabled={!isDisabled}
-                        appNode={tooltipContainer}
+                        container={tooltipContainer}
                     >
                         {Messages.TOOLTIP_DISABLED_ADD_INFO}
                     </Tooltip>

@@ -1,7 +1,7 @@
 import classNames from 'classnames'
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import {DateAndTimeFormatting} from 'constants/datetime'
 import {formatDatetime} from 'utils'

@@ -1,9 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {useAppNode} from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
-import Tooltip from 'pages/common/components/Tooltip'
 import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
 import {
     getPhoneIntegrations,

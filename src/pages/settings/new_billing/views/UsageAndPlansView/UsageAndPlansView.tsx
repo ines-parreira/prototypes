@@ -2,7 +2,7 @@ import React, {useEffect, useMemo} from 'react'
 import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
-import Tooltip from 'pages/common/components/Tooltip'
+import {Tooltip} from '@gorgias/ui-kit'
 import {
     getCurrentSubscription,
     hasCreditCard as getHasCreditCard,

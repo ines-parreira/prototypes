@@ -21,7 +21,7 @@ import {
     Form,
     Label as ReactStrapLabel,
 } from 'reactstrap'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import {SegmentEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
@@ -67,7 +67,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
 
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import Tooltip from 'pages/common/components/Tooltip'
 import ColorField from 'pages/common/forms/ColorField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import {User} from 'config/types/user'
-import Tooltip from 'pages/common/components/Tooltip'
 import css from './AgentAvatar.less'
 
 export const AgentAvatar = ({

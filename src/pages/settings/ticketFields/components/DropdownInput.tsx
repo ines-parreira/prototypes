@@ -1,11 +1,10 @@
 import React, {memo, useCallback, useState} from 'react'
 import uniqueId from 'lodash/uniqueId'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import Caption from 'pages/common/forms/Caption/Caption'
 import {DROPDOWN_NESTING_DELIMITER} from 'models/customField/constants'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import {
     CustomField,
     CustomFieldInput,

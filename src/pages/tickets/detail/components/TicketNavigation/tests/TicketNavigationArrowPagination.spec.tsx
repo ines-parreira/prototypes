@@ -1,9 +1,9 @@
 import React, {ComponentProps} from 'react'
 import {render, screen, fireEvent} from '@testing-library/react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
-import Tooltip from 'pages/common/components/Tooltip'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import TicketNavigationArrowPagination from '../TicketNavigationArrowPagination'
 import useGoToNextTicket from '../hooks/useGoToNextTicket'
@@ -11,13 +11,14 @@ import useGoToPreviousTicket from '../hooks/useGoToPreviousTicket'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
-// Mock Tooltip component
-jest.mock(
-    'pages/common/components/Tooltip',
-    () =>
-        ({children}: ComponentProps<typeof Tooltip>) =>
-            <div>{children}</div>
-)
+jest.mock('@gorgias/ui-kit', () => {
+    return {
+        ...jest.requireActual('@gorgias/ui-kit'),
+        Tooltip: ({children}: ComponentProps<typeof Tooltip>) => {
+            return <div aria-label="tooltip mock">{children}</div>
+        },
+    } as Record<string, unknown>
+})
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
 const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 

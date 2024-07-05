@@ -3,6 +3,7 @@ import {NavLink, Link} from 'react-router-dom'
 import {List, Map, fromJS} from 'immutable'
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
@@ -24,7 +25,6 @@ import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
 import {Language} from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
-import Tooltip from '../../../../common/components/Tooltip'
 import history from '../../../../history'
 import {
     GorgiasChatCreationWizardStatus,

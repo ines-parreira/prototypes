@@ -1,7 +1,7 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import useId from 'hooks/useId'
 
 export type ActionButtonVariant = 'danger' | 'neutral'

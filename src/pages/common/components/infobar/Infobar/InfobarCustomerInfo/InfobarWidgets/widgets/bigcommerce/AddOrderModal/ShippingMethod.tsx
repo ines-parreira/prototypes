@@ -1,8 +1,8 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 import Button from 'pages/common/components/button/Button'
-import Tooltip from 'pages/common/components/Tooltip'
 import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'

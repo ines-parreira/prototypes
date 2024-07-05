@@ -1,7 +1,7 @@
 import React from 'react'
 import classNames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
 import css from './Legend.less'
 

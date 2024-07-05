@@ -1,8 +1,8 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import useId from 'hooks/useId'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import {AppOAuthPermission} from 'config/oauthPermissions'
 import css from './AppPermission.less'
 

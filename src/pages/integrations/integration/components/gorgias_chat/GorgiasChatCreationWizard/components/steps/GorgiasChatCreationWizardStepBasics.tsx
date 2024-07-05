@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
-import {Label} from '@gorgias/ui-kit'
+import {Label, Tooltip} from '@gorgias/ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -53,7 +53,6 @@ import {
     Language,
 } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {FeatureFlagKey} from 'config/featureFlags'
-import Tooltip from 'pages/common/components/Tooltip'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ModalBody from 'pages/common/components/modal/ModalBody'

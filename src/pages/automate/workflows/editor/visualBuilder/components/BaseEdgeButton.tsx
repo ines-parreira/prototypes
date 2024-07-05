@@ -6,8 +6,8 @@ import React, {
     useCallback,
 } from 'react'
 import classnames from 'classnames'
+import {Tooltip} from '@gorgias/ui-kit'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import useId from 'hooks/useId'
 
 import css from './BaseEdgeButton.less'

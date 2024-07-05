@@ -1,10 +1,10 @@
 import React, {PropsWithRef, useMemo} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import Tooltip from 'pages/common/components/Tooltip'
 import {getChannelBySlug} from 'services/channels'
 
 import {UISLAPolicy} from '../types'

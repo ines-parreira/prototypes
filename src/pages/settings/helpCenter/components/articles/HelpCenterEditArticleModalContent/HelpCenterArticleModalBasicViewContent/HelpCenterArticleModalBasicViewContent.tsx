@@ -1,4 +1,5 @@
 import React, {useCallback, useMemo} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {
     Article,
@@ -22,7 +23,6 @@ import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionMana
 import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
 import IconButton from 'pages/common/components/button/IconButton'
 import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
-import Tooltip from 'pages/common/components/Tooltip'
 import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'

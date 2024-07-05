@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-import Tooltip from '../../../../common/components/Tooltip'
+import {Tooltip} from '@gorgias/ui-kit'
 
 type Props = {
     className?: string

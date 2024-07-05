@@ -1,8 +1,8 @@
 import React, {ComponentProps, useRef} from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 
 import {formatPercentage} from 'pages/common/utils/numbers'
 
-import Tooltip from 'pages/common/components/Tooltip'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 

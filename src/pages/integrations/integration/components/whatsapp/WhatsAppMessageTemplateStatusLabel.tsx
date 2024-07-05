@@ -1,8 +1,8 @@
 import React from 'react'
+import {Tooltip} from '@gorgias/ui-kit'
 import useId from 'hooks/useId'
 
 import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
-import Tooltip from 'pages/common/components/Tooltip'
 
 import Status, {StatusIntent} from './WhatsAppMessageTemplateStatus'
 import {templateAlertContent} from './constants'
