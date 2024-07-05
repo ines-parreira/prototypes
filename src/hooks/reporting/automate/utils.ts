@@ -421,7 +421,7 @@ export function computeWorkflowStepsMetrics(
                 FLOW_ENDED_WITH_TICKET_HANDOVER
             )
 
-            switch (stepsMap[flowStepId].kind) {
+            switch (stepsMap[flowStepId]?.kind) {
                 case 'end':
                     workflowAnalyticsData.automatedInteractions =
                         workflowStepStarted

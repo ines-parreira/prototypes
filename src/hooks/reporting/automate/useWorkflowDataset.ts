@@ -14,29 +14,20 @@ import {
     computeWorkflowStepsMetrics,
 } from 'hooks/reporting/automate/utils'
 import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {getWorkflowAnalyticsPreviousDateRange} from 'pages/automate/workflows/analytics/visualBuilder/utils'
 import {calculateSumOfDropoff} from './automateStatsFormulae'
 
 export const useWorkflowDataset = (
     filters: WorkflowStatsFilters,
     timezone: string,
-    steps: WorkflowStep[],
-    flowUpdateDatetime: string
+    steps: WorkflowStep[]
 ): WorkflowStats => {
     const previousPeriod = getPreviousPeriod(filters.period)
-    const adjustedPreviousPeriod =
-        getWorkflowAnalyticsPreviousDateRange({
-            startDatetime: previousPeriod.start_datetime,
-            endDatetime: previousPeriod.end_datetime,
-            flowUpdateDatetime,
-        }) ?? filters.period
-
     const workflowCountByEventType = useMetricPerDimension(
         workflowDatasetCountQueryFactory(filters, timezone)
     )
     const previousWorkflowCountByEventType = useMetricPerDimension(
         workflowDatasetCountQueryFactory(
-            {...filters, period: adjustedPreviousPeriod},
+            {...filters, period: previousPeriod},
             timezone
         )
     )
@@ -48,7 +39,7 @@ export const useWorkflowDataset = (
     )
 
     const previousWorkflowStepMetrics = useWorkflowStepDatasetTrend(
-        {...filters, period: adjustedPreviousPeriod},
+        {...filters, period: previousPeriod},
         timezone,
         steps
     )
@@ -116,7 +107,7 @@ export const useWorkflowDataset = (
             },
         },
         workflowStepMetrics: workflowStepMetrics.data,
-        previousPeriod: adjustedPreviousPeriod,
+        previousPeriod,
         isFetching,
         isError,
     }

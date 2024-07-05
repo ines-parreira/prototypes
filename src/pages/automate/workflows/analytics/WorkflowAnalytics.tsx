@@ -114,8 +114,7 @@ export default function WorkflowAnalytics({
     const data = useWorkflowDataset(
         filters,
         userTimezone,
-        workflowEditorContext.configuration.steps,
-        workflowEditorContext.configuration.updated_datetime!
+        workflowEditorContext.configuration.steps
     )
 
     const {isFetching, workflowMetrics, workflowStepMetrics, previousPeriod} =
@@ -233,6 +232,10 @@ export default function WorkflowAnalytics({
                     <WorkflowOverviewMetrics
                         metrics={workflowMetrics}
                         previousPeriod={previousPeriod}
+                        workflowUpdateDatetime={
+                            workflowEditorContext.configuration
+                                .updated_datetime!
+                        }
                     />
                     <WorkflowVisualBuilder />
                 </Container>

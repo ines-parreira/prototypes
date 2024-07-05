@@ -6,6 +6,7 @@ import {
 } from 'hooks/reporting/automate/utils'
 import {last7DaysStatsFilters} from 'pages/automate/common/utils/last7DaysStatsFilters'
 import {Period} from 'models/stat/types'
+import {toPercentage} from 'pages/automate/automate-metrics/utils'
 
 interface WorkflowAnalyticsDateRangeProps {
     startDatetime: string | null
@@ -17,8 +18,16 @@ export const isValidNumber = (value: number | null | undefined) => {
     return value !== 0 && value != null && !isNaN(value)
 }
 
-export const displayMetric = (value: number | null | undefined) =>
-    isValidNumber(value) ? value : '-'
+export const displayMetric = (
+    value: number | null | undefined,
+    shouldDisplayZero: boolean
+) => (isValidNumber(value) ? value : shouldDisplayZero ? '0' : '-')
+
+export const displayPercentMetric = (
+    value: number | null | undefined,
+    shouldDisplayZero: boolean
+) =>
+    isValidNumber(value) ? toPercentage(value!) : shouldDisplayZero ? '0' : '-'
 
 export const extractUniqueRates = (data: WorkflowStepMetricsMap): number[] => {
     const rates = flatMap(data, (step: WorkflowStepMetrics) => [

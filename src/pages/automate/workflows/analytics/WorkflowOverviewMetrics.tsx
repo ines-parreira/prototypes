@@ -2,23 +2,29 @@ import React from 'react'
 import classNames from 'classnames'
 import moment from 'moment'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {
-    getTrendPropsToPercent,
-    toPercentage,
-} from 'pages/automate/automate-metrics/utils'
+import {getTrendPropsToPercent} from 'pages/automate/automate-metrics/utils'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {WorkflowTrendMetrics} from 'hooks/reporting/automate/types'
 import {Period} from 'models/stat/types'
 import {comparedPeriodString} from 'pages/stats/common/utils'
 import css from './WorkflowOverviewMetrics.less'
-import {displayMetric} from './visualBuilder/utils'
+import {
+    displayMetric,
+    displayPercentMetric,
+    isValidNumber,
+} from './visualBuilder/utils'
 
 interface Props {
     metrics: Record<WorkflowTrendMetrics, MetricTrend>
     previousPeriod: Period
+    workflowUpdateDatetime: string
 }
 
-export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
+export const WorkflowOverviewMetrics = ({
+    metrics,
+    previousPeriod,
+    workflowUpdateDatetime,
+}: Props) => {
     const {
         workflowTotalViews,
         workflowAutomatedInteractions,
@@ -28,8 +34,12 @@ export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
     } = metrics
 
     const hasWorkflowAutomationRate =
-        workflowAutomationRate.data?.value !== 0 &&
-        workflowAutomationRate.data?.prevValue !== 0
+        workflowAutomationRate.data?.prevValue !== 0 ||
+        moment(workflowUpdateDatetime).isBefore(
+            moment(previousPeriod.start_datetime)
+        )
+
+    const shouldDisplayZero = isValidNumber(workflowTotalViews.data?.value)
 
     return (
         <div className={css.metricsContainer}>
@@ -37,7 +47,10 @@ export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
                 <div className={css.nodeMetric}>
                     <span className={css.metricLabel}>Total views</span>
                     <span className={css.metricValue}>
-                        {displayMetric(workflowTotalViews.data?.value)}
+                        {displayMetric(
+                            workflowTotalViews.data?.value,
+                            shouldDisplayZero
+                        )}
                     </span>
                 </div>
 
@@ -45,11 +58,10 @@ export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
                     <span className={css.metricLabel}>Automation rate</span>
                     <div className={css.metricTrend}>
                         <span className={css.metricValue}>
-                            {workflowAutomationRate.data?.value === 0
-                                ? '-'
-                                : toPercentage(
-                                      workflowAutomationRate.data?.value ?? 0
-                                  )}
+                            {displayPercentMetric(
+                                workflowAutomationRate.data?.value,
+                                shouldDisplayZero
+                            )}
                         </span>
                         {hasWorkflowAutomationRate && (
                             <TrendBadge
@@ -89,7 +101,8 @@ export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
                     </span>
                     <span className={css.metricValue}>
                         {displayMetric(
-                            workflowAutomatedInteractions.data?.value
+                            workflowAutomatedInteractions.data?.value,
+                            shouldDisplayZero
                         )}
                     </span>
                 </div>
@@ -103,7 +116,10 @@ export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
                         Drop off
                     </span>
                     <span className={css.metricValue}>
-                        {displayMetric(workflowDropoff.data?.value)}
+                        {displayMetric(
+                            workflowDropoff.data?.value,
+                            shouldDisplayZero
+                        )}
                     </span>
                 </div>
                 <div className={css.nodeMetric}>
@@ -116,7 +132,10 @@ export const WorkflowOverviewMetrics = ({metrics, previousPeriod}: Props) => {
                         Ticket created
                     </span>
                     <span className={css.metricValue}>
-                        {displayMetric(workflowTicketCreated.data?.value)}
+                        {displayMetric(
+                            workflowTicketCreated.data?.value,
+                            shouldDisplayZero
+                        )}
                     </span>
                 </div>
             </div>

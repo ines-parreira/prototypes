@@ -182,13 +182,7 @@ describe('useWorkflowDataset', () => {
 
         jest.spyOn(queryClient, 'invalidateQueries')
         const {result} = renderHook(
-            () =>
-                useWorkflowDataset(
-                    filters,
-                    timezone,
-                    steps as any,
-                    '2024-01-01'
-                ),
+            () => useWorkflowDataset(filters, timezone, steps as any),
             {
                 wrapper: ({children}) => (
                     <QueryClientProvider client={queryClient}>

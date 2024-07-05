@@ -22,6 +22,7 @@ import EdgeBlock from '../components/EdgeBlock'
 
 import {
     displayMetric,
+    displayPercentMetric,
     extractUniqueRates,
     getViewerLabel,
     isValidNumber,
@@ -42,6 +43,8 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
         metricByNodeId?.dropoffRate ?? 0,
         metricTiers
     )
+
+    const shouldDisplayZero = isValidNumber(metricByNodeId?.views)
 
     return (
         <div>
@@ -71,7 +74,8 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         <span className={css.metricLabel}>Automated</span>
                         <span className={css.metricValue}>
                             {displayMetric(
-                                metricByNodeId?.automatedInteractions
+                                metricByNodeId?.automatedInteractions,
+                                shouldDisplayZero
                             )}
                         </span>
                     </div>
@@ -89,11 +93,10 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                                         dropOffTierByNodeId?.background,
                                 }}
                             >
-                                {isValidNumber(metricByNodeId?.dropoffRate)
-                                    ? toPercentage(
-                                          metricByNodeId?.dropoffRate ?? 0
-                                      )
-                                    : '-'}
+                                {displayPercentMetric(
+                                    metricByNodeId?.dropoffRate,
+                                    shouldDisplayZero
+                                )}
                             </span>
                         </div>
                     )}
@@ -103,7 +106,10 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                     >
                         <span className={css.metricLabel}>Ticket</span>
                         <span className={css.metricValue}>
-                            {displayMetric(metricByNodeId?.ticketsCreated)}
+                            {displayMetric(
+                                metricByNodeId?.ticketsCreated,
+                                shouldDisplayZero
+                            )}
                         </span>
                     </div>
                     {isValidNumber(

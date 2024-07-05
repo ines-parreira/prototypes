@@ -28,6 +28,7 @@ import EdgeBlock from '../components/EdgeBlock'
 
 import {
     displayMetric,
+    displayPercentMetric,
     extractUniqueRates,
     getViewerLabel,
     isValidNumber,
@@ -70,6 +71,8 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
         metricTiers
     )
 
+    const shouldDisplayZero = isValidNumber(metricByNodeId?.views)
+
     return (
         <div>
             <EdgeBlock {...edgeProps} />
@@ -97,7 +100,10 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                         >
                             <span className={css.metricLabel}>Views</span>
                             <span className={css.metricValue}>
-                                {displayMetric(metricByNodeId?.views)}
+                                {displayMetric(
+                                    metricByNodeId?.views,
+                                    shouldDisplayZero
+                                )}
                             </span>
                         </div>
                         <div
@@ -113,18 +119,17 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                                         dropOffTierByNodeId?.background,
                                 }}
                             >
-                                {isValidNumber(metricByNodeId?.dropoffRate)
-                                    ? toPercentage(
-                                          metricByNodeId?.dropoffRate ?? 0
-                                      )
-                                    : '-'}
+                                {displayPercentMetric(
+                                    metricByNodeId?.dropoffRate,
+                                    shouldDisplayZero
+                                )}
                             </span>
                         </div>
                     </div>
+
                     <Tooltip target={`node-${nodeId}-title`} placement="top">
                         {contentText}
                     </Tooltip>
-
                     {isValidNumber(metricByNodeId?.viewRate) && (
                         <Tooltip
                             target={`node-${nodeId}-metric-view`}
