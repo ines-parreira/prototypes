@@ -160,7 +160,7 @@ export type GorgiasAction = {
     snooze_datetime?: string
     actionIndex?: number
     dirty?: boolean
-    state?: Map<any, any>
+    state?: Map<any, any> | boolean
     messagesDifference?: boolean
     customer?: Customer
     cursor?: string
@@ -204,6 +204,7 @@ export type GorgiasAction = {
     shopperAddress?: ShopperAddress
     shopperOrder?: ShopperOrder
     withHighlight?: boolean
+    shouldStoreFieldConfig?: boolean
 }
 
 export type CurrentUser = Map<any, any>

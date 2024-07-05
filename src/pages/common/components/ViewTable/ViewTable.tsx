@@ -6,6 +6,8 @@ import classnames from 'classnames'
 import {parse, stringify} from 'qs'
 import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
+import _isArray from 'lodash/isArray'
+
 import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import {FeatureFlagKey} from 'config/featureFlags'
 
@@ -32,6 +34,8 @@ import {
     makeIsLoading,
 } from 'state/views/selectors'
 import withRouter from 'pages/common/utils/withRouter'
+import {tryLocalStorage} from 'services/common/utils'
+import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from 'state/views/constants'
 
 import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
 import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
@@ -94,13 +98,34 @@ export class ViewTableContainer extends Component<Props> {
             updateView,
             activeViewIdSet,
             match: {params},
+            flags,
         } = this.props
 
         if (isSearch) {
+            let fieldConfig: string[] | null = null
+            if (flags[FeatureFlagKey.AdvancedSearchSorting] !== false) {
+                tryLocalStorage(() => {
+                    const storedFieldConfig = localStorage.getItem(
+                        SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY
+                    )
+
+                    try {
+                        const parsedFieldConfig = JSON.parse(
+                            storedFieldConfig as string
+                        )
+
+                        if (_isArray(parsedFieldConfig)) {
+                            fieldConfig = parsedFieldConfig
+                        }
+                    } catch {}
+                })
+            }
+
             updateView(
                 urlSearchView.merge({
                     [WITH_HIGHLIGHTS_OPTION_KEY]:
                         this._isAdvancedSearchWithHighlights(),
+                    ...(!!fieldConfig ? {fields: fieldConfig} : {}),
                 }),
                 false
             )

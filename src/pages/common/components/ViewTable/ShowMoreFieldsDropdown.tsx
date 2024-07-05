@@ -20,6 +20,7 @@ type OwnProps = {
     config: Map<any, any>
     fields: List<any>
     visibleFields: List<any>
+    shouldStoreFieldConfig: boolean
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -33,7 +34,11 @@ class ShowMoreFieldsDropdown extends React.Component<Props> {
             })
         }
 
-        return this.props.setFieldVisibility(name, state)
+        return this.props.setFieldVisibility(
+            name,
+            state,
+            this.props.shouldStoreFieldConfig
+        )
     }
 
     render() {

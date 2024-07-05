@@ -8,6 +8,7 @@ import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
 import * as utils from '../utils'
 import * as selectors from '../selectors'
+import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from '../constants'
 
 describe('reducers', () => {
     describe('views', () => {
@@ -435,6 +436,36 @@ describe('reducers', () => {
                     )
                 ).toBe(true)
             }
+        })
+
+        it('should handle SET_FIELD_VISIBILITY', () => {
+            const localStorageSpy = jest.spyOn(window.localStorage, 'setItem')
+            const field = 'details_with_highlights'
+            const state = fromJS({
+                active: {
+                    fields: [],
+                },
+            })
+
+            expect(
+                reducers(state, {
+                    type: types.SET_FIELD_VISIBILITY,
+                    name: field,
+                    state: true,
+                    shouldStoreFieldConfig: true,
+                })
+            ).toEqual(
+                fromJS({
+                    active: {
+                        fields: [field],
+                    },
+                })
+            )
+
+            expect(localStorageSpy).toHaveBeenCalledWith(
+                SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY,
+                JSON.stringify([field])
+            )
         })
     })
 })

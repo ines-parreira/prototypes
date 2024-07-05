@@ -152,6 +152,7 @@ const HeaderCell = ({
                         config={config}
                         fields={config.get('fields', fromJS([]))}
                         visibleFields={fields}
+                        shouldStoreFieldConfig={isSearchSortingEnabled}
                     />
                 ) : null}
             </div>

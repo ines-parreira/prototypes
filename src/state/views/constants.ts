@@ -86,3 +86,5 @@ export const SYSTEM_VIEWS = [
         category: 'views_bottom',
     },
 ]
+
+export const SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY = 'search-view-field-config'

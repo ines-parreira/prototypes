@@ -180,6 +180,47 @@ describe('<ViewTable />', () => {
             )
         })
 
+        it('should update the active view with stored field config', () => {
+            const mockFields = ['details_with_highlights', 'status']
+            jest.spyOn(window.localStorage, 'getItem').mockReturnValueOnce(
+                JSON.stringify(mockFields)
+            )
+            const searchView = minProps.activeView.set('search', 'foo')
+
+            render(
+                <ViewTableContainer
+                    {...minProps}
+                    isSearch
+                    urlSearchView={searchView}
+                />
+            )
+
+            expect(minProps.updateView).toHaveBeenLastCalledWith(
+                searchView.set('fields', fromJS(mockFields)),
+                false
+            )
+        })
+
+        it('should not update the active view with stored field config when value is not a stringified array', () => {
+            jest.spyOn(window.localStorage, 'getItem').mockReturnValueOnce(
+                'not an array'
+            )
+            const searchView = minProps.activeView.set('search', 'foo')
+
+            render(
+                <ViewTableContainer
+                    {...minProps}
+                    isSearch
+                    urlSearchView={searchView}
+                />
+            )
+
+            expect(minProps.updateView).toHaveBeenLastCalledWith(
+                searchView,
+                false
+            )
+        })
+
         it('should redirect to the app when suggested view id does not match urlViewId', () => {
             render(<ViewTableContainer {...minProps} urlViewId="42" />)
             expect(history.push).toHaveBeenLastCalledWith('/app')

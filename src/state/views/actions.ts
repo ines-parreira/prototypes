@@ -96,11 +96,13 @@ export const setOrderDirection =
     }
 
 export const setFieldVisibility =
-    (name: string, state: boolean) => (dispatch: StoreDispatch) => {
+    (name: string, state: boolean, shouldStoreFieldConfig?: boolean) =>
+    (dispatch: StoreDispatch) => {
         dispatch({
             type: types.SET_FIELD_VISIBILITY,
             name,
             state,
+            shouldStoreFieldConfig,
         })
 
         dispatch(updateView())

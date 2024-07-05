@@ -2,6 +2,8 @@ import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
 
+import {tryLocalStorage} from 'services/common/utils'
+
 import {getCode} from '../../utils'
 import {GorgiasAction, RootState} from '../types'
 import {MAX_RECENT_VIEWS} from '../../config/views'
@@ -126,6 +128,15 @@ export default function reducer(
             const fields = action.state
                 ? visibleFields.push(action.name)
                 : visibleFields.delete(visibleFields.indexOf(action.name))
+
+            if (action.shouldStoreFieldConfig) {
+                tryLocalStorage(() => {
+                    localStorage.setItem(
+                        constants.SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY,
+                        JSON.stringify(fields.toJS())
+                    )
+                })
+            }
 
             activeView = activeView.set('fields', fields)
 
