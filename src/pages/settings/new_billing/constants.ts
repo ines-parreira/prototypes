@@ -31,8 +31,6 @@ export const INTERVAL = {
 }
 
 export const PRICING_DETAILS_URL = 'https://www.gorgias.com/pricing'
-export const BILLING_SALES_TAX_URL =
-    'https://www.gorgias.com/pricing/billing-sales-tax'
 
 export const DATE_FORMAT = 'LL'
 export const PRODUCT_INFO = {

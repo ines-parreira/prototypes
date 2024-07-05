@@ -4,7 +4,6 @@ import {Plan, PlanInterval} from 'models/billing/types'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 
 import {formatAmount} from '../../utils/formatAmount'
-import {BILLING_SALES_TAX_URL} from '../../constants'
 import css from './SummaryTotal.less'
 
 export type SummaryTotalProps = {
@@ -56,16 +55,7 @@ const SummaryTotal = ({
                     /{interval}
                 </div>
             </div>
-            <div className={css.disclaimer}>
-                Prices do not include{' '}
-                <a
-                    href={BILLING_SALES_TAX_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Sales tax
-                </a>
-            </div>
+            <div className={css.disclaimer}>Prices exclusive of sales tax</div>
         </div>
     )
 }

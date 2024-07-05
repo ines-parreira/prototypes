@@ -436,15 +436,7 @@ exports[`UsageAndPlansView should render 1`] = `
               <div
                 class="disclaimer"
               >
-                Prices do not include
-                 
-                <a
-                  href="https://www.gorgias.com/pricing/billing-sales-tax"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  Sales tax
-                </a>
+                Prices exclusive of sales tax
               </div>
             </div>
           </div>
