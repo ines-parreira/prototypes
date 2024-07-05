@@ -29,7 +29,7 @@ const FeedbackOrders: React.FC<Props> = ({orders}) => {
                     })}
                     data-testid="ticket-feedback-order"
                 >
-                    <div>#{order.id}</div>
+                    <div className={css.orderTitle}>#{order.id}</div>
                     <i className={classNames('material-icons', css.openIcon)}>
                         open_in_new
                     </i>

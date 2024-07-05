@@ -76,6 +76,7 @@ const state: Partial<StoreState> = {
 }
 const store = mockStore(state)
 store.dispatch = jest.fn()
+const dateAfterFeatureAvailable = '2025-01-01T00:00:00Z'
 
 describe('<TicketInfobarContainer />', () => {
     const minProps = {
@@ -97,6 +98,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 id: '1',
                 public: true,
+                created_datetime: dateAfterFeatureAvailable,
             } as any,
         ])
     })
@@ -149,6 +151,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 id: '1',
                 public: true,
+                created_datetime: dateAfterFeatureAvailable,
             } as any,
         ])
 
@@ -173,6 +176,7 @@ describe('<TicketInfobarContainer />', () => {
             message: {
                 id: '1',
                 public: true,
+                created_datetime: dateAfterFeatureAvailable,
             },
         })
     })
@@ -182,10 +186,12 @@ describe('<TicketInfobarContainer />', () => {
             {
                 id: '1',
                 public: true,
+                created_datetime: dateAfterFeatureAvailable,
             } as any,
             {
                 id: '2',
                 public: true,
+                created_datetime: dateAfterFeatureAvailable,
             } as any,
         ])
 
