@@ -18,8 +18,8 @@ import {formatDatetime} from 'utils'
 import {
     LanguageCode,
     supportedLanguages,
-    WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
+import {WfConfigurationResponseDto} from '../types'
 import DeleteWorkflowAction from './DeleteWorkflowAction'
 
 import css from './WorkflowsRow.less'
@@ -27,7 +27,7 @@ import {DraftBadge} from './DraftBadge'
 
 type Props = {
     storeIntegrationId: number
-    workflow: WorkflowConfigurationShallow
+    workflow: WfConfigurationResponseDto
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (
         workflowId: string,
@@ -129,7 +129,8 @@ const WorkflowRow = ({
                 />
             </BodyCell>
             <BodyCell size="smallest">
-                {formatDatetime(workflow.updated_datetime, datetimeFormat)}
+                {workflow.updated_datetime &&
+                    formatDatetime(workflow.updated_datetime, datetimeFormat)}
             </BodyCell>
             <BodyCell
                 size="smallest"

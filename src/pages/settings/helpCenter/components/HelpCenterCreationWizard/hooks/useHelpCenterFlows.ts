@@ -1,8 +1,8 @@
 import {useMemo} from 'react'
-import useWorkflowConfigurations from 'pages/automate/common/hooks/useWorkflowConfigurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import {ChannelLanguage} from 'pages/automate/common/types'
 import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 export const useHelpCenterFlows = ({
     shopType,
@@ -15,8 +15,8 @@ export const useHelpCenterFlows = ({
     supportedLocales: ChannelLanguage[]
     flows: Entrypoint[]
 }) => {
-    const {isFetchPending: isWorkflowsFetchPending, workflowConfigurations} =
-        useWorkflowConfigurations()
+    const {isLoading: isWorkflowsFetchPending, data: workflowConfigurations} =
+        useGetWorkflowConfigurations()
 
     const {
         isFetchPending: isSelfServiceConfigurationPending,
@@ -25,7 +25,7 @@ export const useHelpCenterFlows = ({
     } = useSelfServiceConfiguration(shopType, shopName)
 
     // Filter flows not supported by help center
-    const supportedWorkflowConfigurations = workflowConfigurations.filter(
+    const supportedWorkflowConfigurations = workflowConfigurations?.filter(
         (config) =>
             config.available_languages.some((lang) =>
                 supportedLocales.includes(lang)
@@ -37,7 +37,7 @@ export const useHelpCenterFlows = ({
             // Filter entrypoints not supported or filtered
             selfServiceConfiguration?.workflows_entrypoints?.filter(
                 (sspConfig) =>
-                    supportedWorkflowConfigurations.find(
+                    supportedWorkflowConfigurations?.find(
                         (workflowConfig) =>
                             workflowConfig.id === sspConfig.workflow_id
                     )
@@ -81,7 +81,7 @@ export const useHelpCenterFlows = ({
             .map((entrypoint) => entrypoint.workflow_id)
 
         return workflowConfigurations
-            .filter((workflowConfiguration) =>
+            ?.filter((workflowConfiguration) =>
                 enabledWorkflowsIds.includes(workflowConfiguration.id)
             )
             .map((workflowConfiguration) => ({

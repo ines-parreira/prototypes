@@ -4,8 +4,10 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import {IntegrationType} from '@gorgias/api-queries'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {fromJS} from 'immutable'
 import _keyBy from 'lodash/keyBy'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     automationSettingsFixture,
     selfServiceConfigurationFixture,
@@ -18,6 +20,8 @@ import {Components} from 'rest_api/help_center_api/client.generated'
 import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'
 
 const CONTACT_FORM_SHOP_NAME = 'acme'
+
+const queryClient = mockQueryClient()
 
 const mockSelfServiceConfiguration = {
     isFetchPending: false,
@@ -88,12 +92,14 @@ const renderComponent = ({
     })
 
     render(
-        <Provider store={mockedStore}>
-            <ContactFormEntrypointPreview
-                contactForm={contactForm}
-                isFormHidden={isFormHidden}
-            />
-        </Provider>
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockedStore}>
+                <ContactFormEntrypointPreview
+                    contactForm={contactForm}
+                    isFormHidden={isFormHidden}
+                />
+            </Provider>
+        </QueryClientProvider>
     )
 }
 

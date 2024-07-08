@@ -1,12 +1,11 @@
 import {useCallback, useState} from 'react'
 import {ulid} from 'ulidx'
 import axios from 'axios'
+import {useQueryClient} from '@tanstack/react-query'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 import {isProduction, isStaging} from 'utils/environment'
-import {
-    WorkflowConfiguration,
-    WorkflowConfigurationShallow,
-} from '../models/workflowConfiguration.types'
+import {workflowsConfigurationDefinitionKeys} from 'models/workflows/queries'
+import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
 
 const baseURL = isProduction()
     ? `https://api.gorgias.work`
@@ -25,9 +24,7 @@ apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 type WorkflowApi = {
     isFetchPending: boolean
     isUpdatePending: boolean
-    fetchWorkflowConfigurations: (
-        includeDrafts?: boolean
-    ) => Promise<WorkflowConfigurationShallow[]>
+
     fetchWorkflowEntrypoints: (
         ids: WorkflowConfiguration['id'][],
         channelLanguage: string
@@ -71,17 +68,8 @@ type WorkflowApi = {
 export default function useWorkflowApi(): WorkflowApi {
     const [isFetchPending, setIsFetchPending] = useState(false)
     const [isUpdatePending, setIsUpdatePending] = useState(false)
-    const fetchWorkflowConfigurations = useCallback((includeDrafts = false) => {
-        setIsFetchPending(true)
-        return apiClient
-            .get<WorkflowConfigurationShallow[]>('/configurations', {
-                params: includeDrafts ? {is_draft: [0, 1]} : {},
-            })
-            .then((res) => {
-                setIsFetchPending(false)
-                return res.data
-            })
-    }, [])
+    const queryClient = useQueryClient()
+
     const fetchWorkflowEntrypoints: (
         ids: WorkflowConfiguration['id'][],
         channelLanguage: string
@@ -122,10 +110,13 @@ export default function useWorkflowApi(): WorkflowApi {
                 )
                 .then((res) => {
                     setIsUpdatePending(false)
+                    void queryClient.invalidateQueries({
+                        queryKey: workflowsConfigurationDefinitionKeys.all(),
+                    })
                     return res.data
                 })
         },
-        []
+        [queryClient]
     )
     const deleteWorkflowConfiguration = useCallback(
         (configurationInternalId: string) => {
@@ -219,7 +210,6 @@ export default function useWorkflowApi(): WorkflowApi {
         isFetchPending,
         isUpdatePending,
         workflowConfigurationFactory,
-        fetchWorkflowConfigurations,
         fetchWorkflowEntrypoints,
         fetchWorkflowConfiguration,
         upsertWorkflowConfiguration,

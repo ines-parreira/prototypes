@@ -8,12 +8,16 @@ import {renderWithRouterAndDnD} from 'utils/testing'
 
 import {IntegrationType} from 'models/integration/constants'
 import {billingState} from 'fixtures/billing'
+import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import WorkflowsView from '../WorkflowsView'
 import {useWorkflowApiMockSetter} from '../hooks/tests/fixtures/mockBuilders'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
+jest.mock('models/workflows/queries', () => ({
+    useGetWorkflowConfigurations: jest.fn(),
+}))
 jest.mock('../hooks/useStoreWorkflows.ts')
 jest.mock('../hooks/useWorkflowApi')
 jest.mock('state/entities/selfServiceConfigurations/selectors', () => {
@@ -56,10 +60,16 @@ const defaultState = {
 const useStoreWorkflowsMock = useStoreWorkflows as jest.MockedFunction<
     typeof useStoreWorkflows
 >
-
+const mockedUseWorkflowConfigurations = jest.mocked(
+    useGetWorkflowConfigurations
+)
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
         useWorkflowApiMockSetter()
+        mockedUseWorkflowConfigurations.mockReturnValue({
+            isLoading: false,
+            data: [],
+        } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
     })
     it('should display skeleton while workflow entrypoints are being fetched', async () => {
         useStoreWorkflowsMock.mockReturnValue({
@@ -105,6 +115,7 @@ describe('<WorkflowsView />', () => {
                     created_datetime: '2023-12-22T10:41:08.337Z',
                     updated_datetime: '2023-12-22T10:41:08.337Z',
                     deleted_datetime: null,
+                    transitions: [],
                 },
                 {
                     id: 'b',
@@ -119,6 +130,7 @@ describe('<WorkflowsView />', () => {
                     created_datetime: '2023-12-22T10:41:08.337Z',
                     updated_datetime: '2023-12-22T10:41:08.337Z',
                     deleted_datetime: null,
+                    transitions: [],
                 },
             ],
             storeIntegrationId: 1,

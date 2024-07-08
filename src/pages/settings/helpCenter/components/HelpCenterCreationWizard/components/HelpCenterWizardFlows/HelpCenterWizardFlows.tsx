@@ -96,7 +96,7 @@ const HelpCenterWizardFlows = ({
                         ) : (
                             <WorkflowsFeatureList
                                 withLabel={false}
-                                configurations={workflowConfigurations}
+                                configurations={workflowConfigurations ?? []}
                                 allEntrypoints={entrypoints}
                                 channelType={TicketChannel.HelpCenter}
                                 channelId={helpCenterId.toString()}
