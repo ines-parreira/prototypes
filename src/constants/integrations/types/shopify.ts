@@ -46,7 +46,11 @@ export enum CustomerState {
     Declined = 'declined',
 }
 
-enum CustomerMarketingLevel {
+enum MarketingConsentState {
+    Subscribed = 'subscribed',
+}
+
+enum MarketingConsentLevel {
     SingleOptIn = 'single_opt_in',
     ConfirmedOptIn = 'confirmed_opt_in',
     Unknown = 'unknown',
@@ -239,12 +243,19 @@ export type CalculatedEditOrder = {
     has_changes: boolean
 }
 
+export type MarketingConsent = {
+    state: MarketingConsentState
+    opt_in_level: MarketingConsentLevel
+    consent_updated_at: string
+}
+
 export type Customer = {
     id: number
     email: string
-    accepts_marketing: boolean
     created_at: string
     updated_at: string
+    sms_marketing_consent: Maybe<MarketingConsent>
+    email_marketing_consent: Maybe<MarketingConsent>
     first_name: Maybe<string>
     last_name: Maybe<string>
     orders_count: number
@@ -258,8 +269,6 @@ export type Customer = {
     tags: string
     last_order_name: Maybe<string>
     currency: string
-    accepts_marketing_updated_at: string
-    marketing_opt_in_level: CustomerMarketingLevel | null
     admin_graphql_api_id: string
     default_address: Address
 }

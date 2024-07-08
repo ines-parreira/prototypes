@@ -269,7 +269,6 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
               "5": {
                 "__integration_type__": "shopify",
                 "customer": {
-                  "accepts_marketing": false,
                   "addresses": [
                     {
                       "address1": "3 rue des volailles",
@@ -312,6 +311,11 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                     "zip": "75012",
                   },
                   "email": "jeanbon@gorgias.io",
+                  "email_marketing_consent": {
+                    "consent_updated_at": null,
+                    "opt_in_level": "single_opt_in",
+                    "state": "not_subscribed",
+                  },
                   "first_name": "Jean",
                   "id": 4279837195,
                   "last_name": "Bon",
@@ -321,6 +325,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                   "note": "Un grand jambon",
                   "orders_count": 80,
                   "phone": "+14155489999",
+                  "sms_marketing_consent": null,
                   "state": "disabled",
                   "tags": "Active Subscriber",
                   "tax_exempt": false,
@@ -360,7 +365,6 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                     "created_at": "2017-07-12T16:14:09-04:00",
                     "currency": "EUR",
                     "customer": {
-                      "accepts_marketing": false,
                       "created_at": "2017-03-17T21:26:16-04:00",
                       "default_address": {
                         "address1": "12 rue du poisson cru",
@@ -382,6 +386,11 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                         "zip": "75012",
                       },
                       "email": "jeanbon@gorgias.io",
+                      "email_marketing_consent": {
+                        "consent_updated_at": null,
+                        "opt_in_level": "single_opt_in",
+                        "state": "not_subscribed",
+                      },
                       "first_name": "Jean",
                       "id": 4279837195,
                       "last_name": "Bon",
@@ -391,6 +400,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                       "note": "Un grand jambon",
                       "orders_count": 80,
                       "phone": "+14155489999",
+                      "sms_marketing_consent": null,
                       "state": "disabled",
                       "tags": "Active Subscriber",
                       "tax_exempt": false,
@@ -509,7 +519,6 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                     "created_at": "2017-06-16T20:06:10-04:00",
                     "currency": "EUR",
                     "customer": {
-                      "accepts_marketing": false,
                       "created_at": "2017-03-17T21:26:16-04:00",
                       "default_address": {
                         "address1": "12 rue du poisson cru",
@@ -531,6 +540,11 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                         "zip": "75012",
                       },
                       "email": "jeanbon@gorgias.io",
+                      "email_marketing_consent": {
+                        "consent_updated_at": null,
+                        "opt_in_level": "single_opt_in",
+                        "state": "not_subscribed",
+                      },
                       "first_name": "Jean",
                       "id": 4279837195,
                       "last_name": "Bon",
@@ -540,6 +554,7 @@ exports[`actions new message addEmailExtra() should dispatch NEW_MESSAGE_ADD_EMA
                       "note": "Un grand jambon",
                       "orders_count": 80,
                       "phone": "+14155489999",
+                      "sms_marketing_consent": null,
                       "state": "disabled",
                       "tags": "Active Subscriber",
                       "tax_exempt": false,

@@ -19,16 +19,6 @@ export const shopifyWidgetFixture: Widget = {
                 title: '{{first_name}} {{last_name}}',
                 widgets: [
                     {
-                        path: 'accepts_marketing',
-                        type: 'boolean',
-                        title: 'Accepts marketing',
-                    },
-                    {
-                        path: 'accepts_marketing_updated_at',
-                        type: 'text',
-                        title: 'Accepts marketing updated at',
-                    },
-                    {
                         path: 'addresses',
                         type: 'array',
                         title: 'Addresses',
@@ -54,6 +44,11 @@ export const shopifyWidgetFixture: Widget = {
                         title: 'Email',
                     },
                     {
+                        path: 'email_marketing_consent',
+                        type: 'text',
+                        title: 'Email marketing consent',
+                    },
+                    {
                         path: 'first_name',
                         type: 'text',
                         title: 'First name',
@@ -77,11 +72,6 @@ export const shopifyWidgetFixture: Widget = {
                         path: 'last_order_name',
                         type: 'text',
                         title: 'Last order name',
-                    },
-                    {
-                        path: 'marketing_opt_in_level',
-                        type: 'text',
-                        title: 'Marketing opt in level',
                     },
                     {
                         path: 'multipass_identifier',

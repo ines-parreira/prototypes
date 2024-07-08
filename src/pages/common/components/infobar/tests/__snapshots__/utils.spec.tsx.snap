@@ -420,16 +420,6 @@ exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`
               "title": "Customer",
               "widgets": Immutable.List [
                 Immutable.Map {
-                  "type": "boolean",
-                  "title": "Accepts marketing",
-                  "path": "accepts_marketing",
-                },
-                Immutable.Map {
-                  "type": "text",
-                  "title": "Accepts marketing updated at",
-                  "path": "accepts_marketing_updated_at",
-                },
-                Immutable.Map {
                   "type": "text",
                   "title": "Admin graphql api id",
                   "path": "admin_graphql_api_id",
@@ -473,11 +463,6 @@ exports[`widgets infobar utils jsonToWidgets() should convert json to widgets 1`
                   "type": "text",
                   "title": "Last order name",
                   "path": "last_order_name",
-                },
-                Immutable.Map {
-                  "type": "text",
-                  "title": "Marketing opt in level",
-                  "path": "marketing_opt_in_level",
                 },
                 Immutable.Map {
                   "type": "text",
