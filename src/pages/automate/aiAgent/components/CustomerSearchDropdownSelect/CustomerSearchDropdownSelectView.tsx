@@ -1,10 +1,4 @@
-import React, {
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useState,
-} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {useSearchCustomer} from 'models/aiAgent/queries'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {reportError} from 'utils/errors'
@@ -18,109 +12,100 @@ type Props = {
     isDisabled?: boolean
 }
 
-export const CustomerSearchDropdownSelectView = forwardRef(
-    ({className, onSelect, baseSearchTerm, isDisabled}: Props, ref) => {
-        const [searchTerm, setSearchTerm] = useState(baseSearchTerm ?? '')
-        const [isSelected, setIsSelected] = useState(baseSearchTerm ?? false)
-        const [isTyping, setIsTyping] = useState(false)
-        const [focusedIndex, setFocusedIndex] = useState(-1)
+export const CustomerSearchDropdownSelectView = ({
+    className,
+    onSelect,
+    baseSearchTerm,
+    isDisabled,
+}: Props) => {
+    const [searchTerm, setSearchTerm] = useState(baseSearchTerm ?? '')
+    const [isSelected, setIsSelected] = useState(baseSearchTerm ?? false)
+    const [isTyping, setIsTyping] = useState(false)
+    const [focusedIndex, setFocusedIndex] = useState(-1)
 
-        useImperativeHandle(
-            ref,
-            () => ({
-                clear: () => {
-                    setSearchTerm('') // Reset the search term
-                    setIsSelected(false)
-                    setFocusedIndex(-1)
-                },
-            }),
-            []
-        )
-
-        const {
-            isLoading,
-            error,
-            isRefetching,
-            isRefetchError,
-            data,
-            refetch: customerSearchRefetch,
-        } = useSearchCustomer(
-            {
-                email: searchTerm,
-            },
-            {
-                enabled: false,
-            }
-        )
-
-        const isDropdownLoading =
-            (isLoading || isRefetching || isTyping) && searchTerm.length > 0
-
-        const isCustomerListAvailable =
-            (data && !isRefetching && !isTyping) ?? false
-
-        const isDropdownVisible =
-            (isDropdownLoading || isCustomerListAvailable) && !isSelected
-
-        const handleCustomerSearch = (value: Value) => {
-            if (typeof value !== 'string') {
-                return
-            }
-            setIsSelected(false)
-            setIsTyping(true)
-            setSearchTerm(value)
+    const {
+        isLoading,
+        error,
+        isRefetching,
+        isRefetchError,
+        data,
+        refetch: customerSearchRefetch,
+    } = useSearchCustomer(
+        {
+            email: searchTerm,
+        },
+        {
+            enabled: false,
         }
+    )
 
-        const handleCustomerSelect = useCallback(
-            (value: string) => {
-                const customerData = data?.data.data.find(
-                    (customer) => customer.address === value
-                )
-                setIsSelected(true)
-                if (customerData) {
-                    onSelect(value, customerData.customer.name)
-                }
-                setSearchTerm(value)
-            },
-            [data?.data.data, onSelect]
-        )
+    const isDropdownLoading =
+        (isLoading || isRefetching || isTyping) && searchTerm.length > 0
 
-        useEffect(() => {
-            if (searchTerm && !isSelected) {
-                setIsTyping(true)
-                const handler = setTimeout(async () => {
-                    setIsTyping(false)
-                    await customerSearchRefetch()
-                }, 1000)
+    const isCustomerListAvailable =
+        (data && !isRefetching && !isTyping) ?? false
 
-                return () => {
-                    clearTimeout(handler)
-                }
-            }
-        }, [searchTerm, customerSearchRefetch, isSelected])
+    const isDropdownVisible =
+        (isDropdownLoading || isCustomerListAvailable) && !isSelected
 
-        useEffect(() => {
-            if (error || isRefetchError) {
-                reportError(error || isRefetchError, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
-                })
-            }
-        }, [error, isRefetchError])
-
-        return (
-            <CustomerSearchDropdownSelectComponent
-                customerList={data?.data.data ?? []}
-                onSearch={handleCustomerSearch}
-                onSelect={handleCustomerSelect}
-                searchTerm={searchTerm}
-                isDropdownVisible={isDropdownVisible}
-                isDropdownLoading={isDropdownLoading}
-                isCustomerListAvailable={isCustomerListAvailable}
-                focusedIndex={focusedIndex}
-                setFocusedIndex={setFocusedIndex}
-                className={className}
-                isDisabled={isDisabled}
-            />
-        )
+    const handleCustomerSearch = (value: Value) => {
+        if (typeof value !== 'string') {
+            return
+        }
+        setIsSelected(false)
+        setIsTyping(true)
+        setSearchTerm(value)
     }
-)
+
+    const handleCustomerSelect = useCallback(
+        (value: string) => {
+            const customerData = data?.data.data.find(
+                (customer) => customer.address === value
+            )
+            setIsSelected(true)
+            if (customerData) {
+                onSelect(value, customerData.customer.name)
+            }
+            setSearchTerm(value)
+        },
+        [data?.data.data, onSelect]
+    )
+
+    useEffect(() => {
+        if (searchTerm && !isSelected) {
+            setIsTyping(true)
+            const handler = setTimeout(async () => {
+                setIsTyping(false)
+                await customerSearchRefetch()
+            }, 1000)
+
+            return () => {
+                clearTimeout(handler)
+            }
+        }
+    }, [searchTerm, customerSearchRefetch, isSelected])
+
+    useEffect(() => {
+        if (error || isRefetchError) {
+            reportError(error || isRefetchError, {
+                tags: {team: AI_AGENT_SENTRY_TEAM},
+            })
+        }
+    }, [error, isRefetchError])
+
+    return (
+        <CustomerSearchDropdownSelectComponent
+            customerList={data?.data.data ?? []}
+            onSearch={handleCustomerSearch}
+            onSelect={handleCustomerSelect}
+            searchTerm={searchTerm}
+            isDropdownVisible={isDropdownVisible}
+            isDropdownLoading={isDropdownLoading}
+            isCustomerListAvailable={isCustomerListAvailable}
+            focusedIndex={focusedIndex}
+            setFocusedIndex={setFocusedIndex}
+            className={className}
+            isDisabled={isDisabled}
+        />
+    )
+}

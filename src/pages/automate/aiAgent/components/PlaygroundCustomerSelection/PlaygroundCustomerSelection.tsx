@@ -28,16 +28,11 @@ type Props = {
     isDisabled?: boolean
 }
 
-type Control = {
-    clear: () => void
-}
-
 export const PlaygroundCustomerSelection = ({
     onCustomerEmailChange,
     customerEmail,
     isDisabled,
 }: Props) => {
-    const childControlRef = React.createRef<Control>()
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
         SenderTypeValues.NEW_CUSTOMER
     )
@@ -60,9 +55,8 @@ export const PlaygroundCustomerSelection = ({
     useEffect(() => {
         if (customerEmail === '') {
             setSenderSelectedOption(SenderTypeValues.NEW_CUSTOMER)
-            childControlRef.current?.clear()
         }
-    }, [childControlRef, customerEmail])
+    }, [customerEmail])
 
     return (
         <>
@@ -81,7 +75,6 @@ export const PlaygroundCustomerSelection = ({
                     baseSearchTerm={customerEmail}
                     onSelect={onCustomerEmailChange}
                     isDisabled={isDisabled}
-                    ref={childControlRef}
                 />
             )}
         </>
