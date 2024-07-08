@@ -43,11 +43,17 @@ export const PlaygroundChat = ({
         isDisabled,
         disabledMessage,
         isFormValid,
+        clearForm,
     } = usePlaygroundForm({
         helpCenterId: storeData.helpCenterId,
         shopName: storeData.storeName,
         snippetHelpCenterId: storeData.snippetHelpCenterId,
     })
+
+    const handleNewConversation = () => {
+        onNewConversation()
+        clearForm()
+    }
 
     const onSendMessage = () => {
         if (!isFormValid) {
@@ -101,7 +107,7 @@ export const PlaygroundChat = ({
                     }
                     isMessageSending={isMessageSending}
                     onSendMessage={onSendMessage}
-                    onNewConversation={onNewConversation}
+                    onNewConversation={handleNewConversation}
                 />
             </div>
         </div>

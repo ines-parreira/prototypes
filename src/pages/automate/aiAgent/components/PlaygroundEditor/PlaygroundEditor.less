@@ -1,5 +1,9 @@
 :local {
     .editor {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
         :global {
             .fr-wrapper {
                 position: static;
@@ -24,6 +28,9 @@
                     font-size: 14px;
                     font-family: Inter;
                 }
+            }
+            .fr-box {
+                flex: 1;
             }
             .fr-toolbar {
                 border: none !important;

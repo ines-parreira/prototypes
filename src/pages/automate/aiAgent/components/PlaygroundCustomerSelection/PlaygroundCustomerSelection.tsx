@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
 import {CustomerHttpIntegrationDataMock} from '../../constants'
@@ -56,6 +56,13 @@ export const PlaygroundCustomerSelection = ({
             onCustomerEmailChange('', '')
         }
     }
+
+    useEffect(() => {
+        if (customerEmail === '') {
+            setSenderSelectedOption(SenderTypeValues.NEW_CUSTOMER)
+            childControlRef.current?.clear()
+        }
+    }, [childControlRef, customerEmail])
 
     return (
         <>

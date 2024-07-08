@@ -55,3 +55,9 @@ export type GuidanceFormFields = {
     content: string
     isVisible: boolean
 }
+
+export type PlaygroundTemplateMessage = {
+    id: number
+    title: string
+    content: string
+}

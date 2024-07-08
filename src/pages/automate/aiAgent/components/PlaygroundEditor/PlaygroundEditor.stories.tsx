@@ -6,7 +6,12 @@ const meta: Meta<typeof PlaygroundEditor> = {
     title: 'AI Agent/Playground/Editor',
     component: PlaygroundEditor,
     argTypes: {
-        onChange: {
+        onMessageChange: {
+            table: {
+                disabled: true,
+            },
+        },
+        onSubjectChange: {
             table: {
                 disabled: true,
             },

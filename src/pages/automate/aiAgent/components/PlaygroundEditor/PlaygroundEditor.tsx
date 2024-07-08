@@ -3,6 +3,7 @@ import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles
 import {FROALA_KEY} from 'config'
 
 import {PlaygroundPredefinedMessages} from '../PlaygroundPredefinedMessages/PlaygroundPredefinedMessages'
+import {PlaygroundTemplateMessage} from '../../types'
 import css from './PlaygroundEditor.less'
 
 const TOOLBAR_CONTAINER_ID = 'froalaToolbarContainer'
@@ -30,7 +31,8 @@ const config = {
 
 type Props = {
     value: string
-    onChange: (value: string) => void
+    onMessageChange: (value: string) => void
+    onSubjectChange: (value: string) => void
     placeholder?: string
     enablePredefinedMessages?: boolean
 }
@@ -38,9 +40,15 @@ type Props = {
 export const PlaygroundEditor = ({
     value,
     placeholder,
-    onChange,
+    onMessageChange,
+    onSubjectChange,
     enablePredefinedMessages,
 }: Props) => {
+    const onMessageSelect = (message: PlaygroundTemplateMessage) => {
+        onMessageChange(message.content)
+        onSubjectChange(message.title)
+    }
+
     return (
         <div className={css.editor}>
             <FroalaEditorComponent
@@ -50,10 +58,12 @@ export const PlaygroundEditor = ({
                     ...config,
                     placeholderText: placeholder,
                 }}
-                onModelChange={onChange}
+                onModelChange={onMessageChange}
             />
             {!value && enablePredefinedMessages && (
-                <PlaygroundPredefinedMessages onMessageSelect={onChange} />
+                <PlaygroundPredefinedMessages
+                    onMessageSelect={onMessageSelect}
+                />
             )}
             <div id={TOOLBAR_CONTAINER_ID} />
         </div>

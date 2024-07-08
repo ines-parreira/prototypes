@@ -4,21 +4,15 @@ import Button from 'pages/common/components/button/Button'
 import {sanitizeHtmlDefault} from 'utils/html'
 import {useAppNode} from 'appNode'
 
+import {PlaygroundTemplateMessage} from '../../types'
 import css from './PredefinedMessageItem.less'
 
 type Props = {
-    title: string
-    content: string
-    id: number
-    onMessageSelect: (message: string) => void
+    message: PlaygroundTemplateMessage
+    onMessageSelect: (message: PlaygroundTemplateMessage) => void
 }
 
-export const PredefinedMessageItem = ({
-    id,
-    content,
-    title,
-    onMessageSelect,
-}: Props) => {
+export const PredefinedMessageItem = ({onMessageSelect, message}: Props) => {
     const appNode = useAppNode()
     const [isPreviewOpen, setIsPreviewOpen] = useState(false)
 
@@ -26,19 +20,19 @@ export const PredefinedMessageItem = ({
         <>
             <Button
                 intent="secondary"
-                id={`template-button-${id}`}
-                onClick={() => onMessageSelect(content)}
+                id={`template-button-${message.id}`}
+                onClick={() => onMessageSelect(message)}
                 onMouseEnter={() => {
                     setIsPreviewOpen(true)
                 }}
                 onMouseLeave={() => setIsPreviewOpen(false)}
                 size="small"
             >
-                {title}
+                {message.title}
             </Button>
 
             <Popover
-                target={`template-button-${id}`}
+                target={`template-button-${message.id}`}
                 placement="top"
                 container={appNode ?? undefined}
                 trigger="legacy"
@@ -48,7 +42,7 @@ export const PredefinedMessageItem = ({
                 <PopoverBody className={css.PopoverBody}>
                     <span
                         dangerouslySetInnerHTML={{
-                            __html: sanitizeHtmlDefault(content),
+                            __html: sanitizeHtmlDefault(message.content),
                         }}
                     />
                 </PopoverBody>

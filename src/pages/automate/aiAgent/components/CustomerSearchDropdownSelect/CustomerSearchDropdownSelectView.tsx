@@ -25,13 +25,17 @@ export const CustomerSearchDropdownSelectView = forwardRef(
         const [isTyping, setIsTyping] = useState(false)
         const [focusedIndex, setFocusedIndex] = useState(-1)
 
-        useImperativeHandle(ref, () => ({
-            clear: () => {
-                setSearchTerm('') // Reset the search term
-                setIsSelected(false)
-                setFocusedIndex(-1)
-            },
-        }))
+        useImperativeHandle(
+            ref,
+            () => ({
+                clear: () => {
+                    setSearchTerm('') // Reset the search term
+                    setIsSelected(false)
+                    setFocusedIndex(-1)
+                },
+            }),
+            []
+        )
 
         const {
             isLoading,

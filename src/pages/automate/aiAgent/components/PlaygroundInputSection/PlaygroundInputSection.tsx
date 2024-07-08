@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useCallback} from 'react'
 
 import classnames from 'classnames'
 import {useFlags} from 'launchdarkly-react-client-sdk'
@@ -45,15 +45,17 @@ export const PlaygroundInputSection = ({
         onFormValuesChange('subject', subject)
     }
 
-    const handleCustomerEmailChange = (
-        customerEmail: string,
-        customerName?: string | null
-    ) => {
-        onFormValuesChange('customerEmail', customerEmail)
-        if (customerName) {
-            onFormValuesChange('customerName', customerName)
-        }
-    }
+    const handleCustomerEmailChange = useCallback(
+        (customerEmail: string, customerName?: string | null) => {
+            onFormValuesChange('customerEmail', customerEmail)
+            if (customerName) {
+                onFormValuesChange('customerName', customerName)
+            }
+        },
+        [onFormValuesChange]
+    )
+
+    const customerEmail = formValues.customerEmail ?? ''
 
     return (
         <div className={css.container}>
@@ -63,7 +65,7 @@ export const PlaygroundInputSection = ({
                 })}
             >
                 <PlaygroundCustomerSelection
-                    customerEmail={formValues.customerEmail ?? ''}
+                    customerEmail={customerEmail}
                     onCustomerEmailChange={handleCustomerEmailChange}
                     isDisabled={!isInitialMessage}
                 />
@@ -82,10 +84,11 @@ export const PlaygroundInputSection = ({
                     isDisabled={!isInitialMessage}
                 />
             </div>
-            <div className={classnames(css.section, css.noPaddings)}>
+            <div className={classnames(css.section, css.editor)}>
                 <PlaygroundEditor
                     value={formValues.message}
-                    onChange={handleMessageChange}
+                    onMessageChange={handleMessageChange}
+                    onSubjectChange={handleSubjectChange}
                     enablePredefinedMessages={
                         isPlaygroundPredefinedMessages && !isMessageSending
                     }
@@ -103,11 +106,7 @@ export const PlaygroundInputSection = ({
                 >
                     Send
                 </Button>
-                <Button
-                    intent="secondary"
-                    onClick={onNewConversation}
-                    isDisabled={isInitialMessage}
-                >
+                <Button intent="secondary" onClick={onNewConversation}>
                     New Conversation
                 </Button>
             </div>
