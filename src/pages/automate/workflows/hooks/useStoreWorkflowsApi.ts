@@ -61,7 +61,10 @@ export const useStoreWorkflowsApi = (
         duplicateWorkflowConfiguration,
     } = useWorkflowApi()
 
-    const {data: configurations} = useGetWorkflowConfigurations(true, {})
+    const {
+        data: configurations,
+        isLoading: isWorkflowConfigurationsFetchPending,
+    } = useGetWorkflowConfigurations(true, {})
     const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
         Record<string, WfConfigurationResponseDto>
     >({})
@@ -201,7 +204,8 @@ export const useStoreWorkflowsApi = (
         removeWorkflowFromStore,
         appendWorkflowInStore,
         workflowConfigurationById,
-        isFetchPending: isWorkflowApiFetchPending,
+        isFetchPending:
+            isWorkflowApiFetchPending || isWorkflowConfigurationsFetchPending,
         isUpdatePending,
     }
 }
