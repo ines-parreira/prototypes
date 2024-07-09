@@ -4,8 +4,8 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import {ApiListResponsePagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
-import * as infobarActions from 'state/infobar/actions'
-import * as infobarConstants from 'state/infobar/constants'
+import {fetchPreviewCustomer} from 'state/infobar/actions'
+import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
 
 export const useSelectedCustomer = (searchRank: SearchRank) => {
     const dispatch = useAppDispatch()
@@ -18,12 +18,12 @@ export const useSelectedCustomer = (searchRank: SearchRank) => {
         searchRank.registerResultSelection({index, id: customerId})
         setIsFetchingCustomer(true)
         const result = (await dispatch(
-            infobarActions.fetchPreviewCustomer(String(customerId))
+            fetchPreviewCustomer(String(customerId))
         )) as {
             type: string
             resp: ApiListResponsePagination<Customer[]>
         }
-        if (result?.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
+        if (result?.type === FETCH_PREVIEW_CUSTOMER_SUCCESS) {
             setDisplaySelectedCustomer(true)
             setSelectedCustomer(fromJS(result.resp))
         }

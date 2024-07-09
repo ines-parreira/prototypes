@@ -1,26 +1,20 @@
 import {AxiosError, AxiosResponse, CancelToken} from 'axios'
 import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {useState} from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import {ApiListResponseCursorPagination} from 'models/api/types'
-import {Customer} from 'models/customer/types'
 import {
     CustomerWithHighlightsResponse,
     PickedCustomerWithHighlights,
     SearchEngine,
-    SearchResponse,
 } from 'models/search/types'
-import * as infobarActions from 'state/infobar/actions'
+import {searchWithHighlights} from 'state/infobar/actions'
 
 export const useCustomerSearch = () => {
-    const isSearchWithHighlights =
-        useFlags()[FeatureFlagKey.InfobarSearchWithHighlights] !== false
     const dispatch = useAppDispatch()
     const searchRank = useSearchRankScenario(SearchRankSource.CustomerProfile)
     const [isSearching, setIsSearching] = useState(false)
@@ -33,19 +27,12 @@ export const useCustomerSearch = () => {
         PickedCustomerWithHighlights[]
     >([])
 
-    const [cancellableSearch] = useCancellableRequest(
-        (cancelToken: CancelToken) => async (query) =>
-            await dispatch(infobarActions.search(query, cancelToken))
-    )
-
     const [cancellableSearchWithHighlights] = useCancellableRequest(
         (cancelToken: CancelToken) => async (query) =>
-            await dispatch(
-                infobarActions.searchWithHighlights(query, cancelToken)
-            )
+            await dispatch(searchWithHighlights(query, cancelToken))
     )
 
-    const highlightsSearch = async (query: string) => {
+    const search = async (query: string) => {
         const res = await (
             cancellableSearchWithHighlights as (query: string) => Promise<{
                 error?: AxiosError<{error?: {message: string}}>
@@ -61,42 +48,14 @@ export const useCustomerSearch = () => {
 
         return {
             error,
-            data: resp.data.data.map((item) => ({
+            data: resp?.data.data.map((item) => ({
                 ...item.entity,
                 highlights: item.highlights,
             })),
         }
     }
-    const noHighlightsSearch = async (query: string) => {
-        const res = await (
-            cancellableSearch as (query: string) => Promise<
-                | {
-                      resp: SearchResponse<Customer>
-                  }
-                | {
-                      error: AxiosError<{error?: {message: string}}>
-                  }
-                | undefined
-            >
-        )(query)
-
-        if (!res) {
-            return null
-        }
-
-        if ('error' in res) {
-            return {
-                error: res.error,
-            }
-        }
-
-        return {data: res.resp.data}
-    }
 
     const onSearchSubmit = async (query: string) => {
-        const search = isSearchWithHighlights
-            ? highlightsSearch
-            : noHighlightsSearch
         searchRank.endScenario()
 
         searchRank.registerResultsRequest({

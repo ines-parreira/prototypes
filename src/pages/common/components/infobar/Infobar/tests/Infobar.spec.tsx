@@ -1,10 +1,8 @@
-import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useState as mockUseState} from 'react'
 import {fireEvent, waitFor, screen, act} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {agents} from 'fixtures/agents'
 import {assumeMock, renderWithRouter} from 'utils/testing'
@@ -12,11 +10,10 @@ import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
 import {WidgetEnvironment} from 'state/widgets/types'
 import {startEditionMode, stopEditionMode} from 'state/widgets/actions'
 import {
-    search,
     similarCustomer,
     fetchPreviewCustomer,
+    searchWithHighlights,
 } from 'state/infobar/actions'
-import {SearchEngine} from 'models/search/types'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import {mockSearchRank} from 'fixtures/searchRank'
 
@@ -30,7 +27,7 @@ const mockStore = configureMockStore()
 
 jest.mock('state/infobar/actions')
 jest.mock('state/widgets/actions')
-const mockedSearch = assumeMock(search)
+const mockedSearch = assumeMock(searchWithHighlights)
 const mockedSimilarCustomer = assumeMock(similarCustomer)
 const mockedFetchPreviewCustomer = assumeMock(fetchPreviewCustomer)
 const mockedStartEditionMode = assumeMock(startEditionMode)
@@ -40,13 +37,12 @@ const store = mockStore({
     currentUser: fromJS(agents[1]),
 })
 // @ts-ignore
-// eslint-disable-next-line @typescript-eslint/no-duplicate-type-constituents,@typescript-eslint/no-redundant-type-constituents
-store.dispatch = jest.fn((param: () => unknown | unknown) =>
+store.dispatch = jest.fn((param: () => unknown) =>
     typeof param === 'function' ? param() : param
 )
 
 jest.mock(
-    '../../../Search.tsx',
+    'pages/common/components/Search.tsx',
     () =>
         ({onChange, onKeyDown, ...other}: ComponentProps<typeof Search>) => {
             const [value, setValue] = mockUseState('')
@@ -66,7 +62,7 @@ jest.mock(
 )
 
 jest.mock(
-    '../InfobarCustomerInfo/InfobarCustomerInfo.tsx',
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo.tsx',
     () =>
         ({customer}: ComponentProps<typeof InfobarCustomerInfo>) =>
             (
@@ -78,24 +74,22 @@ jest.mock(
 )
 
 jest.mock(
-    '../../InfobarLayout',
+    'pages/common/components/infobar/InfobarLayout',
     () =>
         ({children}: ComponentProps<typeof InfobarLayout>) =>
             <div data-testid="InfobarLayout">{children}</div>
 )
 
-jest.mock('../../../MergeCustomers/MergeCustomersContainer', () => () => (
-    <div>MergeCustomersContainer</div>
-))
-const customerId = 7
+jest.mock(
+    'pages/common/components/MergeCustomers/MergeCustomersContainer',
+    () => () => <div>MergeCustomersContainer</div>
+)
 
-jest.mock('../InfobarSearchResultsList')
+jest.mock('pages/common/components/infobar/Infobar/InfobarSearchResultsList')
 const InfobarSearchResultsListMock = assumeMock(InfobarSearchResultsList)
 
 jest.mock('hooks/useSearchRankScenario')
-;(
-    useSearchRankScenario as jest.MockedFunction<typeof useSearchRankScenario>
-).mockImplementation(() => mockSearchRank)
+const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 
 const commonProps: ComponentProps<typeof Infobar> = {
     context: WidgetEnvironment.Ticket,
@@ -126,13 +120,14 @@ const commonProps: ComponentProps<typeof Infobar> = {
 
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
 const defaultDateNowValue = 1487076708000
+const customerId = 7
 
 describe('<Infobar/>', () => {
     beforeEach(() => {
+        useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)
         dateNowSpy = jest
             .spyOn(Date, 'now')
             .mockImplementation(() => defaultDateNowValue)
-        mockedSearch.mockReset()
         mockedSimilarCustomer.mockReset()
         mockedFetchPreviewCustomer.mockReset()
         InfobarSearchResultsListMock.mockImplementation(
@@ -154,10 +149,6 @@ describe('<Infobar/>', () => {
                 </div>
             )
         )
-
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.InfobarSearchWithHighlights]: false,
-        }))
     })
 
     afterEach(() => {
@@ -194,8 +185,10 @@ describe('<Infobar/>', () => {
             </Provider>
         )
 
-        fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
-        fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+        act(() => {
+            fireEvent.change(getByTestId('Search'), {target: {value: 'query'}})
+            fireEvent.keyDown(getByTestId('Search'), {key: 'Enter'})
+        })
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -237,7 +230,7 @@ describe('<Infobar/>', () => {
         mockedSearch.mockImplementation(
             () => () =>
                 Promise.resolve({
-                    resp: {data: [{id: 7}, {id: 8}, {id: 9}]},
+                    resp: {data: {data: [{id: 7}, {id: 8}, {id: 9}]}},
                 })
         )
         const {container, getByTestId} = renderWithRouter(
@@ -268,7 +261,18 @@ describe('<Infobar/>', () => {
         mockedSearch.mockImplementation(
             () => () =>
                 Promise.resolve({
-                    resp: {data: [{id: 7}, {id: 8}, {id: 9}]},
+                    resp: {
+                        data: {
+                            data: [
+                                {entity: {id: 7}, highlights: {}},
+                                {
+                                    entity: {id: 8},
+                                    highlights: {},
+                                },
+                                {entity: {id: 9}, highlights: {}},
+                            ],
+                        },
+                    },
                 })
         )
         const {container, getByTestId} = renderWithRouter(
@@ -292,7 +296,19 @@ describe('<Infobar/>', () => {
         mockedSearch.mockImplementation(
             () => () =>
                 Promise.resolve({
-                    resp: {data: [{id: 8}, {id: 9}]},
+                    resp: {
+                        data: {
+                            data: [
+                                {entity: {id: 8}, highlights: {}},
+                                {
+                                    entity: {
+                                        id: 9,
+                                    },
+                                    highlights: {},
+                                },
+                            ],
+                        },
+                    },
                 })
         )
         const {container, getByTestId} = renderWithRouter(
@@ -348,7 +364,9 @@ describe('<Infobar/>', () => {
             mockedSearch.mockImplementation(
                 () => () =>
                     Promise.resolve({
-                        resp: {data: [{id: 7}]},
+                        resp: {
+                            data: {data: [{entity: {id: 7}, highlights: {}}]},
+                        },
                     })
             )
 
@@ -384,8 +402,8 @@ describe('<Infobar/>', () => {
                 dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
                 return Promise.resolve({
                     resp: {
-                        data: results,
-                        searchEngine: SearchEngine.ES,
+                        data: {data: results},
+                        // searchEngine: SearchEngine.ES,
                     },
                 })
             })
@@ -470,7 +488,7 @@ describe('<Infobar/>', () => {
     it('should end the search rank scenario when user click Back button', async () => {
         mockedSearch.mockImplementation(() => () => {
             dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
-            return Promise.resolve({resp: {data: [{id: 1}]}})
+            return Promise.resolve({resp: {data: {data: [{id: 1}]}}})
         })
         const {getByPlaceholderText, getByText, getByTestId} = renderWithRouter(
             <Provider store={store}>
@@ -496,7 +514,7 @@ describe('<Infobar/>', () => {
     it('should end the search rank scenario when user performs the second search', async () => {
         mockedSearch.mockImplementation(() => () => {
             dateNowSpy.mockReturnValue(defaultDateNowValue + 11)
-            return Promise.resolve({resp: {data: [{id: 1}]}})
+            return Promise.resolve({resp: {data: {data: [{id: 1}]}}})
         })
 
         const {getByTestId, findByTestId} = renderWithRouter(

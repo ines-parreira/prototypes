@@ -6,46 +6,14 @@ import {notify} from 'state/notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from 'utils'
 import {ActionExecutedEvent} from 'services/socketManager/types'
 import client from 'models/api/resources'
-import {search as apiSearch} from 'models/search/resources'
-import {SearchType} from 'models/search/types'
 import history from 'pages/history'
 import {Customer} from 'models/customer/types'
 import {NotificationStatus} from 'state/notifications/types'
 import {StoreDispatch, RootState} from 'state/types'
 import {onApiError} from 'state/utils'
 
-import * as utils from './utils'
-import * as constants from './constants'
-
-export const search =
-    (query: string, cancelToken?: CancelToken) =>
-    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        dispatch({
-            type: constants.SEARCH_CUSTOMERS_START,
-        })
-        return apiSearch<Customer>({
-            type: SearchType.CustomerProfile,
-            query,
-            cancelToken,
-        }).then(
-            (resp) => {
-                return dispatch({
-                    type: constants.SEARCH_CUSTOMERS_SUCCESS,
-                    resp,
-                })
-            },
-            (error: AxiosError) => {
-                if (axios.isCancel(error)) {
-                    return Promise.resolve()
-                }
-                return dispatch({
-                    type: constants.SEARCH_CUSTOMERS_ERROR,
-                    error,
-                    reason: 'Failed to do the search. Please try again...',
-                }) as unknown as Promise<void>
-            }
-        )
-    }
+import * as utils from 'state/infobar/utils'
+import * as constants from 'state/infobar/constants'
 
 export const searchWithHighlights =
     (query: string, cancelToken?: CancelToken) =>

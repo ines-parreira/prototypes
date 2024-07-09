@@ -7,7 +7,6 @@ import {Customer} from 'models/customer/types'
 import {searchCustomers} from 'models/customer/resources'
 
 import client from 'models/api/resources'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
 import {
     SEARCH_CUSTOMERS_ERROR,
     SEARCH_CUSTOMERS_START,
@@ -60,30 +59,6 @@ describe('infobar actions', () => {
             ticket: fromJS({id: 1}),
         })
         mockServer = new MockAdapter(client)
-    })
-
-    describe('search', () => {
-        it('should dispatch search results on success', () => {
-            mockServer
-                .onPost(SEARCH_ENDPOINT)
-                .reply(200, {data: [{id: 1, name: 'alex'}]})
-
-            return store
-                .dispatch(actions.search('alex'))
-                .then(() => expect(store.getActions()).toMatchSnapshot())
-        })
-
-        it('should not dispatch results when cancelling the search', () => {
-            mockServer
-                .onPost(SEARCH_ENDPOINT)
-                .reply(200, {data: [{id: 1, name: 'alex'}]})
-            const source = axios.CancelToken.source()
-            source.cancel()
-
-            return store
-                .dispatch(actions.search('alex', source.token))
-                .finally(() => expect(store.getActions()).toMatchSnapshot())
-        })
     })
 
     describe('searchWithHighlights', () => {

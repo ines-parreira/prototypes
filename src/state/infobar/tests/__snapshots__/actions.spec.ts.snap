@@ -184,34 +184,6 @@ exports[`infobar actions handle executed action success 1`] = `
 ]
 `;
 
-exports[`infobar actions search should dispatch search results on success 1`] = `
-[
-  {
-    "type": "SEARCH_CUSTOMERS_START",
-  },
-  {
-    "resp": {
-      "data": [
-        {
-          "id": 1,
-          "name": "alex",
-        },
-      ],
-      "searchEngine": undefined,
-    },
-    "type": "SEARCH_CUSTOMERS_SUCCESS",
-  },
-]
-`;
-
-exports[`infobar actions search should not dispatch results when cancelling the search 1`] = `
-[
-  {
-    "type": "SEARCH_CUSTOMERS_START",
-  },
-]
-`;
-
 exports[`infobar actions similarCustomer should reject on any error 1`] = `
 [
   {
