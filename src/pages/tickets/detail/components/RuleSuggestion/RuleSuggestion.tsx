@@ -290,17 +290,10 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
 
     const infoContentForNonAutomate = (
         <span className={css.info}>
-            Wish tickets like this were handled automatically?{' '}
-            <a
-                target="_blank"
-                rel="noreferrer"
-                href={`/app/settings/rules/library?${suggestion.slug}`}
-            >
-                {ruleName}
-            </a>{' '}
-            could have.{' '}
+            Wish you could free up time to focus on higher impact tickets?
+            Repetitive tickets like these can be fully Automated.{' '}
             {canInstall
-                ? 'Book an Automate demo and learn more.'
+                ? 'Book an Automate demo to learn more.'
                 : 'Ask your account admin to book an Automate demo and learn more.'}
         </span>
     )
