@@ -22,10 +22,10 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
 
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
     const isOrderManagementUnavailable =
-        !selfServiceConfiguration?.track_order_policy.enabled &&
-        !selfServiceConfiguration?.report_issue_policy.enabled &&
-        !selfServiceConfiguration?.cancel_order_policy.enabled &&
-        !selfServiceConfiguration?.return_order_policy.enabled &&
+        !selfServiceConfiguration?.trackOrderPolicy.enabled &&
+        !selfServiceConfiguration?.reportIssuePolicy.enabled &&
+        !selfServiceConfiguration?.cancelOrderPolicy.enabled &&
+        !selfServiceConfiguration?.returnOrderPolicy.enabled &&
         workflowsEntrypoints.length === 0
 
     if (isOrderManagementUnavailable) {
@@ -49,17 +49,17 @@ const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
                 id: entrypoint.workflow_id,
             }))}
             orderManagement={[
-                ...(selfServiceConfiguration?.track_order_policy.enabled
-                    ? (['track_order_policy'] as const)
+                ...(selfServiceConfiguration?.trackOrderPolicy.enabled
+                    ? (['trackOrderPolicy'] as const)
                     : []),
-                ...(selfServiceConfiguration?.return_order_policy.enabled
-                    ? (['return_order_policy'] as const)
+                ...(selfServiceConfiguration?.returnOrderPolicy.enabled
+                    ? (['returnOrderPolicy'] as const)
                     : []),
-                ...(selfServiceConfiguration?.cancel_order_policy.enabled
-                    ? (['cancel_order_policy'] as const)
+                ...(selfServiceConfiguration?.cancelOrderPolicy.enabled
+                    ? (['cancelOrderPolicy'] as const)
                     : []),
-                ...(selfServiceConfiguration?.report_issue_policy.enabled
-                    ? (['report_issue_policy'] as const)
+                ...(selfServiceConfiguration?.reportIssuePolicy.enabled
+                    ? (['reportIssuePolicy'] as const)
                     : []),
             ]}
             highlightedOrderManagement={hoveredOrderManagementFlow}

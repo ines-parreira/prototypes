@@ -31,32 +31,34 @@ const useReportOrderIssueFlowScenario = (
         () =>
             scenarios[scenarioIndex] && {
                 ...scenarios[scenarioIndex],
-                reasons: scenarios[scenarioIndex].reasons.map((reason) => {
-                    let action
+                newReasons: scenarios[scenarioIndex].newReasons.map(
+                    (reason) => {
+                        let action
 
-                    if (reason.action) {
-                        const html = convertToHTML(
-                            convertFromHTML(
-                                reason.action.responseMessageContent.html
+                        if (reason.action) {
+                            const html = convertToHTML(
+                                convertFromHTML(
+                                    reason.action.responseMessageContent.html
+                                )
                             )
-                        )
 
-                        action = {
-                            ...reason.action,
-                            responseMessageContent: {
-                                ...reason.action.responseMessageContent,
-                                html: reason.action.responseMessageContent.text
-                                    .length
-                                    ? html
-                                    : trimHTML(html),
-                            },
+                            action = {
+                                ...reason.action,
+                                responseMessageContent: {
+                                    ...reason.action.responseMessageContent,
+                                    html: reason.action.responseMessageContent
+                                        .text.length
+                                        ? html
+                                        : trimHTML(html),
+                                },
+                            }
+                        } else {
+                            action = SCENARIO_REASON_DEFAULT_ACTION
                         }
-                    } else {
-                        action = SCENARIO_REASON_DEFAULT_ACTION
-                    }
 
-                    return {...reason, action}
-                }),
+                        return {...reason, action}
+                    }
+                ),
             },
         [scenarios, scenarioIndex]
     )

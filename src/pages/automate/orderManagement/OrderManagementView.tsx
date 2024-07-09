@@ -119,23 +119,23 @@ const OrderManagementView = () => {
 
     const isResponseMessageEmpty = (flow: PolicyKey) => {
         switch (flow) {
-            case 'track_order_policy':
-                return !selfServiceConfiguration?.track_order_policy
-                    .unfulfilled_message?.text
-            case 'return_order_policy':
+            case 'trackOrderPolicy':
+                return !selfServiceConfiguration?.trackOrderPolicy
+                    .unfulfilledMessage?.text
+            case 'returnOrderPolicy':
                 return (
-                    selfServiceConfiguration?.return_order_policy?.action
+                    selfServiceConfiguration?.returnOrderPolicy?.action
                         ?.type !== ReturnActionType.LoopReturns &&
-                    !selfServiceConfiguration?.return_order_policy?.action
-                        ?.response_message_content?.text
+                    !selfServiceConfiguration?.returnOrderPolicy?.action
+                        ?.responseMessageContent?.text
                 )
-            case 'cancel_order_policy':
-                return !selfServiceConfiguration?.cancel_order_policy?.action
-                    ?.response_message_content?.text
-            case 'report_issue_policy':
-                return selfServiceConfiguration?.report_issue_policy?.cases?.some(
-                    ({reasons}) =>
-                        reasons.some(
+            case 'cancelOrderPolicy':
+                return !selfServiceConfiguration?.cancelOrderPolicy?.action
+                    ?.responseMessageContent?.text
+            case 'reportIssuePolicy':
+                return selfServiceConfiguration?.reportIssuePolicy?.cases?.some(
+                    ({newReasons}) =>
+                        newReasons.some(
                             (reason) =>
                                 !reason.action?.responseMessageContent.text
                         )
@@ -170,22 +170,22 @@ const OrderManagementView = () => {
             >
                 <OrderManagementFlowItem
                     isEnabled={
-                        !!selfServiceConfiguration?.track_order_policy.enabled
+                        !!selfServiceConfiguration?.trackOrderPolicy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Track order"
                     description="Allow customers to view order tracking information."
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
-                            'track_order_policy',
+                            'trackOrderPolicy',
                             isEnabled
                         )
                     }}
                     onMouseEnter={() => {
-                        setHoveredOrderManagementFlow('track_order_policy')
+                        setHoveredOrderManagementFlow('trackOrderPolicy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
-                    alert={getAlert('track_order_policy')}
+                    alert={getAlert('trackOrderPolicy')}
                     {...(!hasAutomate
                         ? {action: <AutomationSubscriptionAction />}
                         : {
@@ -196,66 +196,66 @@ const OrderManagementView = () => {
                 />
                 <OrderManagementFlowItem
                     isEnabled={
-                        !!selfServiceConfiguration?.return_order_policy.enabled
+                        !!selfServiceConfiguration?.returnOrderPolicy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Return order"
                     description="Allow customers to request returns based on custom criteria."
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
-                            'return_order_policy',
+                            'returnOrderPolicy',
                             isEnabled
                         )
                     }}
                     onMouseEnter={() => {
-                        setHoveredOrderManagementFlow('return_order_policy')
+                        setHoveredOrderManagementFlow('returnOrderPolicy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
                     onClick={() => {
                         history.push(`${pathname}/return`)
                     }}
-                    alert={getAlert('return_order_policy')}
+                    alert={getAlert('returnOrderPolicy')}
                 />
                 <OrderManagementFlowItem
                     isEnabled={
-                        !!selfServiceConfiguration?.cancel_order_policy.enabled
+                        !!selfServiceConfiguration?.cancelOrderPolicy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Cancel order"
                     description="Allow customers to request order cancellations based on custom criteria."
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
-                            'cancel_order_policy',
+                            'cancelOrderPolicy',
                             isEnabled
                         )
                     }}
                     onMouseEnter={() => {
-                        setHoveredOrderManagementFlow('cancel_order_policy')
+                        setHoveredOrderManagementFlow('cancelOrderPolicy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
                     onClick={() => {
                         history.push(`${pathname}/cancel`)
                     }}
-                    alert={getAlert('cancel_order_policy')}
+                    alert={getAlert('cancelOrderPolicy')}
                 />
                 <OrderManagementFlowItem
                     isEnabled={
-                        !!selfServiceConfiguration?.report_issue_policy.enabled
+                        !!selfServiceConfiguration?.reportIssuePolicy.enabled
                     }
                     isDisabled={isUpdatePending}
                     title="Report order issue"
                     description="Allow customers to report order issues based on custom scenarios."
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
-                            'report_issue_policy',
+                            'reportIssuePolicy',
                             isEnabled
                         )
                     }}
                     onMouseEnter={() => {
-                        setHoveredOrderManagementFlow('report_issue_policy')
+                        setHoveredOrderManagementFlow('reportIssuePolicy')
                     }}
                     onMouseLeave={handleFlowItemMouseLeave}
-                    alert={getAlert('report_issue_policy')}
+                    alert={getAlert('reportIssuePolicy')}
                     {...(!hasAutomate
                         ? {action: <AutomationSubscriptionAction />}
                         : {

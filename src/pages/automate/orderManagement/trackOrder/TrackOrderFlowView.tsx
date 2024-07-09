@@ -66,7 +66,7 @@ export default function TrackOrderFlowView() {
 
         setDirtyTrackOrderFlow({
             ...dirtyTrackOrderFlow,
-            unfulfilled_message: responseMessageContent,
+            unfulfilledMessage: responseMessageContent,
         })
     }
     const handleSubmit = () => {
@@ -117,7 +117,7 @@ export default function TrackOrderFlowView() {
                     <TrackOrderUnfulfilledMessage
                         setIsFocused={setIsTextAreaFocused}
                         responseMessageContent={
-                            dirtyTrackOrderFlow?.unfulfilled_message ??
+                            dirtyTrackOrderFlow?.unfulfilledMessage ??
                             DEFAULT_UNFULFILLED_MESSAGE
                         }
                         onChange={handleUnfulfilledMessageChange}
@@ -126,9 +126,7 @@ export default function TrackOrderFlowView() {
             </AutomateViewContent>
             <TrackOrderFlowPreview
                 isTextAreaFocused={isTextAreaFocused}
-                responseMessageContent={
-                    dirtyTrackOrderFlow?.unfulfilled_message
-                }
+                responseMessageContent={dirtyTrackOrderFlow?.unfulfilledMessage}
             />
         </AutomateView>
     )

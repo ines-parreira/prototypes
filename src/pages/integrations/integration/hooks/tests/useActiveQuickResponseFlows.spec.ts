@@ -11,50 +11,50 @@ import {useActiveQuickResponseFlows} from '../useActiveQuickResponseFlows'
 const selfServiceConfigurationFixture: SelfServiceConfiguration = {
     id: 1,
     type: 'shopify' as ShopType,
-    shop_name: `shopify_store`,
-    created_datetime: '2021-01-26T00:29:00Z',
-    updated_datetime: '2021-01-26T00:29:30Z',
-    deactivated_datetime: null,
-    report_issue_policy: {
+    shopName: `shopify_store`,
+    createdDatetime: '2021-01-26T00:29:00Z',
+    updatedDatetime: '2021-01-26T00:29:30Z',
+    deactivatedDatetime: null,
+    reportIssuePolicy: {
         enabled: false,
         cases: [],
     },
-    track_order_policy: {
+    trackOrderPolicy: {
         enabled: false,
     },
-    cancel_order_policy: {
-        enabled: false,
-        eligibilities: [],
-        exceptions: [],
-    },
-    return_order_policy: {
+    cancelOrderPolicy: {
         enabled: false,
         eligibilities: [],
         exceptions: [],
     },
-    quick_response_policies: [
+    returnOrderPolicy: {
+        enabled: false,
+        eligibilities: [],
+        exceptions: [],
+    },
+    quickResponsePolicies: [
         {
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             id: 'ded6b39b-a85c-487e-8658-3f380d238528',
             title: 'When do you usually restock?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '<div>Every month</div>',
                 text: 'Every month',
                 attachments: fromJS([]),
             },
         },
         {
-            deactivated_datetime: '2021-01-26T00:30:00Z',
+            deactivatedDatetime: '2021-01-26T00:30:00Z',
             id: 'ded6b39b-a85c-487e-8658-3f380d238529',
             title: 'What is my size?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '<div>The moon</div>',
                 text: 'The moon',
                 attachments: fromJS([]),
             },
         },
     ],
-    article_recommendation_help_center_id: null,
+    articleRecommendationHelpCenterId: null,
 }
 
 describe('useActiveQuickResponseFlows()', () => {
@@ -72,10 +72,10 @@ describe('useActiveQuickResponseFlows()', () => {
         )
 
         expect(result.current[0]).toEqual({
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             id: 'ded6b39b-a85c-487e-8658-3f380d238528',
             title: 'When do you usually restock?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '<div>Every month</div>',
                 text: 'Every month',
                 attachments: fromJS([]),
@@ -87,12 +87,12 @@ describe('useActiveQuickResponseFlows()', () => {
         const {result} = renderHook(() =>
             useActiveQuickResponseFlows({
                 ...selfServiceConfigurationFixture,
-                quick_response_policies: [
+                quickResponsePolicies: [
                     {
-                        deactivated_datetime: '2021-01-26T00:30:00Z',
+                        deactivatedDatetime: '2021-01-26T00:30:00Z',
                         id: 'ded6b39b-a85c-487e-8658-3f380d238529',
                         title: 'What is my size?',
-                        response_message_content: {
+                        responseMessageContent: {
                             html: '<div>The moon</div>',
                             text: 'The moon',
                             attachments: fromJS([]),

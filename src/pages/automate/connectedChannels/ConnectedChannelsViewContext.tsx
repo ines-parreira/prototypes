@@ -9,7 +9,7 @@ export type ConnectedChannelsViewContextType = {
     isOrderManagementAvailable: boolean
     workflowConfigurations: ListWfConfigurationsResponseDto
     workflowsEntrypoints: NonNullable<
-        SelfServiceConfiguration['workflows_entrypoints']
+        SelfServiceConfiguration['workflowsEntrypoints']
     >
     workflowsUrl: string
     articleRecommendationUrl: string

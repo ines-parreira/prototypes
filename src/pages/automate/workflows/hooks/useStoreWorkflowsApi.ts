@@ -109,8 +109,8 @@ export const useStoreWorkflowsApi = (
             loadWorkflowsConfigurations()
             await handleSelfServiceConfigurationUpdate(
                 (draft) => {
-                    draft.workflows_entrypoints ??= []
-                    draft.workflows_entrypoints?.unshift({
+                    draft.workflowsEntrypoints ??= []
+                    draft.workflowsEntrypoints?.unshift({
                         workflow_id: duplicatedWorkflow.id,
                     })
                 },
@@ -139,10 +139,10 @@ export const useStoreWorkflowsApi = (
             await handleSelfServiceConfigurationUpdate(
                 (draft) => {
                     const at =
-                        draft.workflows_entrypoints?.findIndex(
+                        draft.workflowsEntrypoints?.findIndex(
                             (e) => e.workflow_id === workflowId
                         ) ?? -1
-                    if (at >= 0) draft.workflows_entrypoints?.splice(at, 1)
+                    if (at >= 0) draft.workflowsEntrypoints?.splice(at, 1)
                 },
                 {},
                 storeIntegrationId
@@ -169,14 +169,14 @@ export const useStoreWorkflowsApi = (
         async (workflowId: string, storeIntegrationId: number) => {
             await handleSelfServiceConfigurationUpdate(
                 (draft) => {
-                    draft.workflows_entrypoints ??= []
+                    draft.workflowsEntrypoints ??= []
 
-                    const alreadyPresent = draft.workflows_entrypoints.find(
+                    const alreadyPresent = draft.workflowsEntrypoints.find(
                         (e) => e.workflow_id === workflowId
                     )
 
                     if (!alreadyPresent) {
-                        draft.workflows_entrypoints.push({
+                        draft.workflowsEntrypoints.push({
                             workflow_id: workflowId,
                         })
                     }

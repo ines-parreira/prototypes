@@ -49,7 +49,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                 return 'Automated response'
             case ReturnActionType.LoopReturns:
                 return loopReturnsIntegrations.find(
-                    (integration) => integration.id === action.integration_id
+                    (integration) => integration.id === action.integrationId
                 )!.name
         }
     }, [action, loopReturnsIntegrations])
@@ -66,7 +66,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
             case ReturnActionType.AutomatedResponse:
                 return action.type
             case ReturnActionType.LoopReturns:
-                return `${action.type}:${action.integration_id}`
+                return `${action.type}:${action.integrationId}`
         }
     }, [action])
 
@@ -85,7 +85,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
 
         onChange({
             type: ReturnActionType.LoopReturns,
-            integration_id: newIntegration.id,
+            integrationId: newIntegration.id,
         })
         setIsModalOpen(false)
     }
@@ -133,7 +133,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                                         onClick={(value) => {
                                             handleItemClick(value, {
                                                 type: ReturnActionType.LoopReturns,
-                                                integration_id: integration.id,
+                                                integrationId: integration.id,
                                             })
                                         }}
                                         shouldCloseOnSelect
@@ -172,11 +172,11 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
             </SelectInputBox>
             {action.type === ReturnActionType.AutomatedResponse && (
                 <ReturnOrderAutomatedResponseAction
-                    responseMessageContent={action.response_message_content}
+                    responseMessageContent={action.responseMessageContent}
                     onChange={(responseMessageContent) => {
                         onChange({
                             ...action,
-                            response_message_content: responseMessageContent,
+                            responseMessageContent: responseMessageContent,
                         })
                     }}
                 />

@@ -3,39 +3,26 @@ import {screen, waitFor} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouterAndDnD} from 'utils/testing'
 
 import {IntegrationType} from 'models/integration/constants'
 import {billingState} from 'fixtures/billing'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import WorkflowsView from '../WorkflowsView'
 import {useWorkflowApiMockSetter} from '../hooks/tests/fixtures/mockBuilders'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
+const queryClient = mockQueryClient()
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
 }))
 jest.mock('../hooks/useStoreWorkflows.ts')
 jest.mock('../hooks/useWorkflowApi')
-jest.mock('state/entities/selfServiceConfigurations/selectors', () => {
-    return {
-        __esModule: true,
-        getSelfServiceConfigurations: jest.fn(() => [
-            {
-                id: 1,
-                type: 'shopify',
-                shop_name: 'ShopName',
-                created_datetime: '2021-03-31T14:00:00.000Z',
-                updated_datetime: '2021-03-31T14:00:00.000Z',
-                quick_response_policies: [],
-                workflows_entrypoints: [{workflow_id: 'a'}, {workflow_id: 'b'}],
-            },
-        ]),
-    }
-})
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -80,15 +67,17 @@ describe('<WorkflowsView />', () => {
 
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <WorkflowsView
-                    shopName=""
-                    shopType=""
-                    goToEditWorkflowPage={jest.fn()}
-                    goToWorkflowTemplatesPage={jest.fn()}
-                    goToNewWorkflowPage={jest.fn()}
-                    goToNewWorkflowFromTemplatePage={jest.fn()}
-                    notifyMerchant={jest.fn()}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName=""
+                        shopType=""
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
             </Provider>
         )
 
@@ -138,15 +127,17 @@ describe('<WorkflowsView />', () => {
 
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
-                <WorkflowsView
-                    shopName="ShopName"
-                    shopType="shopify"
-                    goToEditWorkflowPage={jest.fn()}
-                    goToWorkflowTemplatesPage={jest.fn()}
-                    goToNewWorkflowPage={jest.fn()}
-                    goToNewWorkflowFromTemplatePage={jest.fn()}
-                    notifyMerchant={jest.fn()}
-                />
+                <QueryClientProvider client={queryClient}>
+                    <WorkflowsView
+                        shopName="ShopName"
+                        shopType="shopify"
+                        goToEditWorkflowPage={jest.fn()}
+                        goToWorkflowTemplatesPage={jest.fn()}
+                        goToNewWorkflowPage={jest.fn()}
+                        goToNewWorkflowFromTemplatePage={jest.fn()}
+                        notifyMerchant={jest.fn()}
+                    />
+                </QueryClientProvider>
             </Provider>
         )
 

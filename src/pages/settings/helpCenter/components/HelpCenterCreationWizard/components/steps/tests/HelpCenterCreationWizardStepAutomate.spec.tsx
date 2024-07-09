@@ -262,7 +262,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
                     ...selfServiceConfiguration1,
-                    article_recommendation_help_center_id: null,
+                    articleRecommendationHelpCenterId: null,
                 },
             })
 
@@ -286,7 +286,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
                     ...selfServiceConfiguration1,
-                    article_recommendation_help_center_id: 999,
+                    articleRecommendationHelpCenterId: 999,
                 },
             })
 
@@ -312,7 +312,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
                     ...selfServiceConfiguration1,
-                    article_recommendation_help_center_id: helpCenterFixture.id,
+                    articleRecommendationHelpCenterId: helpCenterFixture.id,
                 },
             })
 
@@ -352,7 +352,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
                     ...selfServiceConfiguration1,
-                    article_recommendation_help_center_id: 999,
+                    articleRecommendationHelpCenterId: 999,
                 },
             })
 
@@ -412,7 +412,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...defaultUseSelfServiceConfiguration,
                 selfServiceConfiguration: {
                     ...selfServiceConfiguration1,
-                    workflows_entrypoints: workflowConfigurations.map(
+                    workflowsEntrypoints: workflowConfigurations.map(
                         (config) => ({
                             workflow_id: config.id,
                         })
@@ -469,7 +469,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             )[0]
             draftFunction(draft)
             expect(draft).toEqual({
-                article_recommendation_help_center_id: helpCenterFixture.id,
+                articleRecommendationHelpCenterId: helpCenterFixture.id,
             })
         })
 
@@ -517,7 +517,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             )[0]
             draftFunction(draft)
             expect(draft).toEqual({
-                article_recommendation_help_center_id: helpCenterFixture.id,
+                articleRecommendationHelpCenterId: helpCenterFixture.id,
             })
         })
 

@@ -68,7 +68,7 @@ const ArticleRecommendationPreview = ({
                 if (isArticleRecommendationDisabled) {
                     return (
                         <SelfServiceFeatureDisabledOnChannelAlert
-                            shopName={selfServiceConfiguration.shop_name}
+                            shopName={selfServiceConfiguration.shopName}
                             shopType={selfServiceConfiguration.type}
                         />
                     )

@@ -53,7 +53,7 @@ describe('ReportOrderIssueScenarioItem component', () => {
                 },
             ],
         },
-        reasons: [
+        newReasons: [
             {
                 action: {
                     type: 'automated_response',
@@ -103,7 +103,7 @@ describe('ReportOrderIssueScenarioItem component', () => {
     })
     it('should not render warning if all the issue type are configured', () => {
         useLocationSpy.mockReturnValue({key: 'abc'} as any)
-        item.reasons[1].action.responseMessageContent = {
+        item.newReasons[1].action.responseMessageContent = {
             html: 'hello',
             text: 'wold',
         }

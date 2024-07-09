@@ -48,7 +48,7 @@ const ArticleRecommendationView = () => {
     const channels = useSelfServiceChatChannels(shopType, shopName)
 
     const helpCenterId =
-        selfServiceConfiguration?.article_recommendation_help_center_id
+        selfServiceConfiguration?.articleRecommendationHelpCenterId
 
     const [dirtyHelpCenterId, setDirtyHelpCenterId] = useState(helpCenterId)
     const previousHelpCenterId = useRef(helpCenterId)
@@ -70,7 +70,7 @@ const ArticleRecommendationView = () => {
 
     const handleSubmit = () => {
         void handleSelfServiceConfigurationUpdate((draft) => {
-            draft.article_recommendation_help_center_id = dirtyHelpCenterId
+            draft.articleRecommendationHelpCenterId = dirtyHelpCenterId
         })
     }
     const handleCancel = () => {

@@ -88,7 +88,7 @@ const CancelOrderFlowView = () => {
             ...dirtyCancelOrderFlow,
             action: {
                 type: AUTOMATED_RESPONSE,
-                response_message_content: responseMessageContent,
+                responseMessageContent,
             },
         })
     }
@@ -147,7 +147,7 @@ const CancelOrderFlowView = () => {
                         <CancelOrderResponseMessageContent
                             responseMessageContent={
                                 dirtyCancelOrderFlow?.action
-                                    ?.response_message_content ??
+                                    ?.responseMessageContent ??
                                 DEFAULT_RESPONSE_MESSAGE_CONTENT
                             }
                             onChange={handleResponseMessageContentChange}
@@ -157,7 +157,7 @@ const CancelOrderFlowView = () => {
             </AutomateViewContent>
             <CancelOrderFlowPreview
                 responseMessageContent={
-                    dirtyCancelOrderFlow?.action?.response_message_content
+                    dirtyCancelOrderFlow?.action?.responseMessageContent
                 }
             />
         </AutomateView>

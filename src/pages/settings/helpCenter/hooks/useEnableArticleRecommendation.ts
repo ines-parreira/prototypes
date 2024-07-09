@@ -1,15 +1,16 @@
 import {HelpCenter} from 'models/helpCenter/types'
 
-import {
-    fetchSelfServiceConfiguration,
-    updateSelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/resources'
+import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
 import {getHasAutomate} from 'state/billing/selectors'
 import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
 import {getIntegrationsByType} from 'state/integrations/selectors'
+import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import {NotificationStatus} from 'state/notifications/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
 
 export const useEnableArticleRecommendation = () => {
     const helpCenterList = useAppSelector(getHelpCenterList).filter(
@@ -19,6 +20,24 @@ export const useEnableArticleRecommendation = () => {
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
     )
+    const dispatch = useAppDispatch()
+
+    const {handleSelfServiceConfigurationUpdate} =
+        useSelfServiceConfigurationUpdate({
+            handleNotify: (notification) => {
+                if (
+                    notification.status === NotificationStatus.Error &&
+                    notification.message
+                ) {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: notification.message,
+                        })
+                    )
+                }
+            },
+        })
 
     return async (newHelpCenter: HelpCenter) => {
         const hasHelpCenterWithSameStore = helpCenterList.find(
@@ -43,18 +62,22 @@ export const useEnableArticleRecommendation = () => {
         }
 
         try {
-            const res = await fetchSelfServiceConfiguration(
-                shopifyIntegration.id
+            const res = await fetchSelfServiceConfigurationSSP(
+                shopifyIntegration.name,
+                shopifyIntegration.type
             )
 
-            if (res.article_recommendation_help_center_id) {
+            if (res.articleRecommendationHelpCenterId) {
                 return
             }
 
-            return await updateSelfServiceConfiguration({
-                ...res,
-                article_recommendation_help_center_id: newHelpCenter.id,
-            })
+            return await handleSelfServiceConfigurationUpdate(
+                (draft) => {
+                    draft.articleRecommendationHelpCenterId = newHelpCenter.id
+                },
+                {},
+                shopifyIntegration.id
+            )
         } catch (err) {
             console.error(err)
         }

@@ -61,9 +61,9 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
     )
 
     const isArticleRecomAlreadyEnabled =
-        !!selfServiceConfiguration?.article_recommendation_help_center_id &&
+        !!selfServiceConfiguration?.articleRecommendationHelpCenterId &&
         // we have different help center in the self service configuration. This prevents from case when user clicks "Save and customize later"
-        selfServiceConfiguration?.article_recommendation_help_center_id !==
+        selfServiceConfiguration?.articleRecommendationHelpCenterId !==
             helpCenter.id
 
     const chatIntegrations = useAppSelector(
@@ -132,21 +132,21 @@ const HelpCenterCreationWizardStepAutomateComponent: React.FC<Props> = ({
         // These 2 conditions help avoid the case when AR toggle disabled but we have different HC in the selfServiceConfiguration
         if (
             state.articleRecommendationEnabled &&
-            selfServiceConfiguration?.article_recommendation_help_center_id !==
+            selfServiceConfiguration?.articleRecommendationHelpCenterId !==
                 helpCenter.id
         ) {
             await handleSelfServiceConfigurationUpdate((draft) => {
-                draft.article_recommendation_help_center_id = helpCenter.id
+                draft.articleRecommendationHelpCenterId = helpCenter.id
             })
         }
 
         if (
             !state.articleRecommendationEnabled &&
-            selfServiceConfiguration?.article_recommendation_help_center_id ===
+            selfServiceConfiguration?.articleRecommendationHelpCenterId ===
                 helpCenter.id
         ) {
             await handleSelfServiceConfigurationUpdate((draft) => {
-                draft.article_recommendation_help_center_id = undefined
+                draft.articleRecommendationHelpCenterId = undefined
             })
         }
     }

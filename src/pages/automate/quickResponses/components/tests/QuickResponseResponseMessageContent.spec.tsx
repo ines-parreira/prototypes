@@ -61,7 +61,7 @@ describe('<QuickResponseResponseMessageContent />', () => {
                         attachments: fromJS([
                             {
                                 name: productName,
-                                content_type: 'application/productCard',
+                                contentType: 'application/productCard',
                                 url: 'http://gorgias.io/bar',
                                 extra: {
                                     price: 2,

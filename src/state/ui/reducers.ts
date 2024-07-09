@@ -18,8 +18,6 @@ import ticketNavbar from './ticketNavbar/reducer'
 import {TicketNavbarState} from './ticketNavbar/types'
 import views from './views/reducer'
 import {ViewsState} from './views/types'
-import {SelfServiceConfigurationsState} from './selfServiceConfigurations/types'
-import selfServiceConfigurations from './selfServiceConfigurations/reducer'
 import {HelpCenterState} from './helpCenter/types'
 import helpCenter from './helpCenter/reducer'
 import {ContactFormState} from './contactForm/types'
@@ -32,7 +30,6 @@ const uiReducers = combineReducers<{
     stats: StatsState
     ticketNavbar: TicketNavbarState
     views: ViewsState
-    selfServiceConfigurations: SelfServiceConfigurationsState
     helpCenter: HelpCenterState
     contactForm: ContactFormState
     ticketAIAgentFeedback: TicketAIAgentFeedbackState
@@ -45,7 +42,6 @@ const uiReducers = combineReducers<{
     stats,
     ticketNavbar,
     views,
-    selfServiceConfigurations,
     helpCenter,
     contactForm,
     ticketAIAgentFeedback,

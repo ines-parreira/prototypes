@@ -1,14 +1,11 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {fromJS, List} from 'immutable'
 
 import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 
-import {fetchSelfServiceConfigurations} from '../../../../../models/selfServiceConfiguration/resources'
-import useAppSelector from '../../../../../hooks/useAppSelector'
-
-import {getSelfServiceConfigurations} from '../../../../../state/entities/selfServiceConfigurations/selectors'
+import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
-import {selfServiceConfigurationsFetched} from '../../../../../state/entities/selfServiceConfigurations/actions'
+
 import {notify} from '../../../../../state/notifications/actions'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 import Select from './ReactSelect'
@@ -31,39 +28,26 @@ export function SelfServiceFlowSelect({
     flowType,
 }: OwnProps) {
     const dispatch = useAppDispatch()
-    const selfServiceConfigurations = useAppSelector(
-        getSelfServiceConfigurations
-    )
 
-    useEffect(() => {
-        if (selfServiceConfigurations.length === 0) {
-            void (async () => {
-                try {
-                    const configResponse =
-                        await fetchSelfServiceConfigurations()
-                    void dispatch(
-                        selfServiceConfigurationsFetched(configResponse.data)
-                    )
-                } catch (error) {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Error,
-                            message:
-                                'Could not fetch Self-service configurations, please try again later.',
-                        })
-                    )
-                }
-            })()
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    const {data: selfServiceConfigurations = []} =
+        useGetSelfServiceConfigurations({
+            onError: () => {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Could not fetch Self-service configurations, please try again later.',
+                    })
+                )
+            },
+        })
 
     let options = fromJS([]) as List<any>
     const availableFlows = new Set()
 
     if (flowType === 'order-management') {
         selfServiceConfigurations.forEach((config) => {
-            if (config.cancel_order_policy.enabled) {
+            if (config.cancelOrderPolicy.enabled) {
                 if (!availableFlows.has('cancel')) {
                     availableFlows.add('cancel')
                     options = options.push({
@@ -72,7 +56,7 @@ export function SelfServiceFlowSelect({
                     })
                 }
             }
-            if (config.return_order_policy.enabled) {
+            if (config.returnOrderPolicy.enabled) {
                 if (!availableFlows.has('return')) {
                     availableFlows.add('return')
                     options = options.push({
@@ -81,9 +65,9 @@ export function SelfServiceFlowSelect({
                     })
                 }
             }
-            if (config.report_issue_policy.enabled) {
-                config.report_issue_policy.cases.forEach((issue) => {
-                    issue.reasons.forEach((reason) => {
+            if (config.reportIssuePolicy.enabled) {
+                config.reportIssuePolicy.cases.forEach((issue) => {
+                    issue.newReasons.forEach((reason) => {
                         if (!availableFlows.has(reason.reasonKey)) {
                             availableFlows.add(reason.reasonKey)
                             const reasonSpecs =
@@ -113,7 +97,7 @@ export function SelfServiceFlowSelect({
         })
     } else if (flowType === 'quick-response') {
         selfServiceConfigurations.forEach((config) => {
-            config.quick_response_policies.forEach((flow) => {
+            config.quickResponsePolicies.forEach((flow) => {
                 if (!availableFlows.has(flow.title)) {
                     availableFlows.add(flow.title)
                     options = options.push({

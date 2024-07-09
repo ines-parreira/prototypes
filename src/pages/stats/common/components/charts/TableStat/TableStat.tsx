@@ -86,9 +86,9 @@ export class TableStat extends Component<
     ) => {
         const quickReponsePolicies = this.props.selfServiceConfigurations?.find(
             (selfServiceConfiguration) =>
-                selfServiceConfiguration.shop_name === shopName &&
+                selfServiceConfiguration.shopName === shopName &&
                 selfServiceConfiguration.type === shopType
-        )?.quick_response_policies
+        )?.quickResponsePolicies
         const quickReponse = quickReponsePolicies?.find(
             (quickReponsePolicy) => quickReponsePolicy.id === flowId
         )

@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 
 import LD from 'launchdarkly-react-client-sdk'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {flushPromises, renderWithRouter} from 'utils/testing'
@@ -37,18 +38,54 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+
+const mockSelfServiceConfigurations = [
+    {
+        id: 1,
+        type: 'shopify' as const,
+        shopName: `mystore`,
+        createdDatetime: '2021-01-26T00:29:00Z',
+        updatedDatetime: '2021-01-26T00:29:30Z',
+        deactivatedDatetime: null,
+        reportIssuePolicy: {
+            enabled: false,
+            cases: [],
+        },
+        trackOrderPolicy: {
+            enabled: false,
+        },
+        cancelOrderPolicy: {
+            enabled: false,
+            eligibilities: [],
+            exceptions: [],
+        },
+        returnOrderPolicy: {
+            enabled: false,
+            eligibilities: [],
+            exceptions: [],
+        },
+        quickResponsePolicies: [],
+        articleRecommendationHelpCenterId: null,
+    },
+]
 
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
-jest.mock('models/selfServiceConfiguration/resources', () => ({
-    fetchSelfServiceConfigurations: jest.fn(() => Promise.resolve([])),
+jest.mock('models/selfServiceConfiguration/queries', () => ({
+    useGetSelfServiceConfigurations: jest.fn(() => ({
+        data: mockSelfServiceConfigurations,
+        isLoading: false,
+    })),
 }))
+
 jest.mock('pages/automate/workflows/hooks/useWorkflowApi', () => ({
     __esModule: true,
     default: jest.fn(() => ({
         fetchWorkflowConfigurations: jest.fn(() => Promise.resolve([])),
     })),
 }))
+
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
@@ -69,6 +106,9 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 const mockedUseWorkflowConfigurations = jest.mocked(
     useGetWorkflowConfigurations
 )
+
+const mockClient = mockQueryClient()
+
 describe('<SelfServiceStatsPage />', () => {
     function getIntegration(id: number, type: IntegrationType) {
         return {
@@ -130,9 +170,11 @@ describe('<SelfServiceStatsPage />', () => {
 
     it('should display the loader on loading', () => {
         const {container} = render(
-            <Provider store={mockStore(defaultState)}>
-                <SelfServiceStatsPage />
-            </Provider>
+            <QueryClientProvider client={mockClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <SelfServiceStatsPage />
+                </Provider>
+            </QueryClientProvider>
         )
         expect(container).toMatchSnapshot()
     })
@@ -160,9 +202,11 @@ describe('<SelfServiceStatsPage />', () => {
         })
 
         const {container} = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SelfServiceStatsPage />
-            </Provider>
+            <QueryClientProvider client={mockClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <SelfServiceStatsPage />
+                </Provider>
+            </QueryClientProvider>
         )
 
         await flushPromises()
@@ -193,9 +237,11 @@ describe('<SelfServiceStatsPage />', () => {
         })
 
         const {container, getByText} = renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <SelfServiceStatsPage />
-            </Provider>
+            <QueryClientProvider client={mockClient}>
+                <Provider store={mockStore(defaultState)}>
+                    <SelfServiceStatsPage />
+                </Provider>
+            </QueryClientProvider>
         )
 
         await flushPromises()

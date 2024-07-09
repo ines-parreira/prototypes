@@ -1,44 +1,30 @@
-import client from '../api/resources'
+import {getGorgiasSSPApiClient} from 'rest_api/ssp_api/client'
 
-import {
-    ApiListResponse,
-    SelfServiceConfiguration,
-    SelfServiceConfiguration_DEPRECATED,
-} from './types'
-import {selfServiceConfigurationFromDeprecated} from './utils'
+import {SelfServiceConfiguration} from './types'
 
-export const fetchSelfServiceConfigurations = async (): Promise<
-    ApiListResponse<SelfServiceConfiguration[]>
-> => {
-    return client
-        .get<ApiListResponse<SelfServiceConfiguration_DEPRECATED[]>>(
-            `/api/self_service_configurations/`
-        )
-        .then(({data: apiListResponse}) => ({
-            ...apiListResponse,
-            data: apiListResponse.data.map(
-                selfServiceConfigurationFromDeprecated
-            ),
-        }))
-}
-
-export const fetchSelfServiceConfiguration = async (
-    storeIntegrationId: number
+export const fetchSelfServiceConfigurationSSP = async (
+    shopName: string,
+    shopType: string
 ): Promise<SelfServiceConfiguration> => {
-    return client
-        .get<SelfServiceConfiguration_DEPRECATED>(
-            `/api/self_service_configurations/${storeIntegrationId}`
+    const sspClient = await getGorgiasSSPApiClient()
+
+    return sspClient
+        .get<SelfServiceConfiguration>(
+            `/helpdesk/configurations?shop_name=${shopName}&type=${shopType}`
         )
-        .then(({data}) => selfServiceConfigurationFromDeprecated(data))
+
+        .then(({data}) => data)
 }
 
-export const updateSelfServiceConfiguration = async (
+export const updateSelfServiceConfigurationSSP = async (
     configuration: SelfServiceConfiguration
 ): Promise<SelfServiceConfiguration> => {
-    return client
-        .put<SelfServiceConfiguration_DEPRECATED>(
-            `/api/self_service_configurations/${configuration.id}`,
+    const sspClient = await getGorgiasSSPApiClient()
+
+    return sspClient
+        .put<SelfServiceConfiguration>(
+            `/helpdesk/configurations?shop_name=${configuration.shopName}&type=${configuration.type}`,
             configuration
         )
-        .then(({data}) => selfServiceConfigurationFromDeprecated(data))
+        .then(({data}) => data)
 }

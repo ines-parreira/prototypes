@@ -27,7 +27,7 @@ type Props = {
     onDelete: (id: QuickResponsePolicy['id']) => void
     onToggle: (
         id: QuickResponsePolicy['id'],
-        deactivatedDatetime: QuickResponsePolicy['deactivated_datetime']
+        deactivatedDatetime: QuickResponsePolicy['deactivatedDatetime']
     ) => void
 }
 
@@ -58,11 +58,11 @@ const QuickResponsesAccordionItem = ({
         })
     }
     const handleResponseMessageContentChange = (
-        responseMessageContent: QuickResponsePolicy['response_message_content']
+        responseMessageContent: QuickResponsePolicy['responseMessageContent']
     ) => {
         onPreviewChange({
             ...item,
-            response_message_content: responseMessageContent,
+            responseMessageContent: responseMessageContent,
         })
     }
     const handleDelete = () => {
@@ -70,11 +70,11 @@ const QuickResponsesAccordionItem = ({
     }
 
     const isUpdatePendingOrHasError = isUpdatePending || hasError
-    const isDeactivated = Boolean(item.deactivated_datetime)
+    const isDeactivated = Boolean(item.deactivatedDatetime)
     const isEmpty =
-        !item.response_message_content.text &&
-        !item.response_message_content.html &&
-        item.response_message_content.attachments.isEmpty()
+        !item.responseMessageContent.text &&
+        !item.responseMessageContent.html &&
+        item.responseMessageContent.attachments.isEmpty()
 
     return (
         <>
@@ -90,7 +90,7 @@ const QuickResponsesAccordionItem = ({
                             isUpdatePendingOrHasError ||
                             (isLimitReached && isDeactivated)
                         }
-                        isToggled={!item.deactivated_datetime}
+                        isToggled={!item.deactivatedDatetime}
                         onClick={handleToggle}
                     />
                 </div>
@@ -113,7 +113,7 @@ const QuickResponsesAccordionItem = ({
             </SortableAccordionHeader>
             <AccordionBody>
                 <QuickResponseResponseMessageContent
-                    responseMessageContent={item.response_message_content}
+                    responseMessageContent={item.responseMessageContent}
                     onChange={handleResponseMessageContentChange}
                 />
                 <div className={css.deleteButtonContainer}>

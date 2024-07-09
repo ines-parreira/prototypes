@@ -156,7 +156,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
                 </ReportOrderIssueScenarioFormContext.Provider>
             </AutomateViewContent>
             <ReportOrderIssueFlowScenarioPreview
-                reasons={dirtyScenario?.reasons ?? []}
+                reasons={dirtyScenario?.newReasons ?? []}
                 expandedReasonKey={expandedReasonKey}
                 hoveredReasonKey={hoveredReasonKey}
             />

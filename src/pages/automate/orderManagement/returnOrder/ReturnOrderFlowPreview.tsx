@@ -44,11 +44,11 @@ const ReturnOrderFlowPreview = ({returnAction}: Props) => {
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
-                        orderManagementFlow: 'return_order_policy',
+                        orderManagementFlow: 'returnOrderPolicy',
                         automatedResponseMessageContent:
                             returnAction.type ===
                             ReturnActionType.AutomatedResponse
-                                ? returnAction.response_message_content
+                                ? returnAction.responseMessageContent
                                 : undefined,
                     }}
                 >

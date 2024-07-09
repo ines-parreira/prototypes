@@ -50,13 +50,13 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
             </div>
             <div className={css.fulfillmentContainer}>
                 <div className={css.fulfillmentStatus}>
-                    {orderManagementFlow === 'track_order_policy' && (
+                    {orderManagementFlow === 'trackOrderPolicy' && (
                         <Badge className={css.badge} type={ColorType.Success}>
                             {helpCenterTexts['fulfillmentStatus.in_transit']}
                         </Badge>
                     )}
                     <div className={css.actions}>
-                        {orderManagementFlow === 'track_order_policy' && (
+                        {orderManagementFlow === 'trackOrderPolicy' && (
                             <>
                                 <MousePointer
                                     isHovering={
@@ -89,7 +89,7 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
                                 </div>
                             </>
                         )}
-                        {orderManagementFlow === 'report_issue_policy' && (
+                        {orderManagementFlow === 'reportIssuePolicy' && (
                             <>
                                 <div className={css.actionButton}>
                                     {helpCenterTexts.orderFlowTrack}

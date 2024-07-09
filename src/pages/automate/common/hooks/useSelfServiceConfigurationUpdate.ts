@@ -1,14 +1,16 @@
 import {produce, Draft} from 'immer'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import {useQueryClient} from '@tanstack/react-query'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {
-    fetchSelfServiceConfiguration,
-    updateSelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/resources'
+import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
+import {
+    selfServiceConfigurationKeys,
+    useUpdateSelfServiceConfiguration,
+} from 'models/selfServiceConfiguration/queries'
+import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import useStoreIntegrations from './useStoreIntegrations'
 
 export type UseSelfServiceConfigurationUpdateProps = {
     handleNotify: (notification: Notification) => void
@@ -16,8 +18,9 @@ export type UseSelfServiceConfigurationUpdateProps = {
 export const useSelfServiceConfigurationUpdate = ({
     handleNotify,
 }: UseSelfServiceConfigurationUpdateProps) => {
-    const dispatch = useAppDispatch()
-
+    const {mutateAsync} = useUpdateSelfServiceConfiguration()
+    const queryClient = useQueryClient()
+    const storeIntegrations = useStoreIntegrations()
     const [{loading: isUpdatePending}, handleSelfServiceConfigurationUpdate] =
         useAsyncFn(
             async (
@@ -28,15 +31,36 @@ export const useSelfServiceConfigurationUpdate = ({
                 storeIntegrationId: number
             ) => {
                 try {
+                    const integration = storeIntegrations.find(
+                        (storeIntegration) =>
+                            storeIntegration.id === storeIntegrationId
+                    )
+
+                    if (!integration) {
+                        throw new Error('Store integration not found')
+                    }
+
                     const selfServiceConfiguration =
-                        await fetchSelfServiceConfiguration(storeIntegrationId)
-                    const res = await updateSelfServiceConfiguration(
+                        await fetchSelfServiceConfigurationSSP(
+                            getShopNameFromStoreIntegration(integration),
+                            integration.type
+                        )
+
+                    const res = await mutateAsync([
                         produce(
                             selfServiceConfiguration,
                             patchSelfServiceConfiguration
-                        )
+                        ),
+                    ])
+
+                    queryClient.setQueryData(
+                        selfServiceConfigurationKeys.detail(
+                            getShopNameFromStoreIntegration(integration),
+                            integration.type
+                        ),
+                        res
                     )
-                    void dispatch(selfServiceConfigurationUpdated(res))
+
                     handleNotify({
                         message: messages.success ?? 'Successfully updated',
                         status: NotificationStatus.Success,
@@ -48,7 +72,7 @@ export const useSelfServiceConfigurationUpdate = ({
                     })
                 }
             },
-            []
+            [storeIntegrations]
         )
 
     return {

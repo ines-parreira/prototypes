@@ -40,9 +40,9 @@ const SelfServiceChatIntegrationQuickResponsePage = ({integration}: Props) => {
     const ref = useRef<HTMLDivElement>(null)
 
     const hasResponseMessageText =
-        Boolean(quickResponse?.response_message_content.text) ||
-        Boolean(quickResponse?.response_message_content.html) ||
-        !quickResponse?.response_message_content.attachments.isEmpty()
+        Boolean(quickResponse?.responseMessageContent.text) ||
+        Boolean(quickResponse?.responseMessageContent.html) ||
+        !quickResponse?.responseMessageContent.attachments.isEmpty()
 
     const handlePreviewStepAnimation = useCallback((initialDelay = 0) => {
         timeout.current = window.setTimeout(() => {
@@ -100,10 +100,10 @@ const SelfServiceChatIntegrationQuickResponsePage = ({integration}: Props) => {
 
         if (previewStep >= PreviewStep.RESPONSE) {
             agentMessages.push({
-                content: quickResponse.response_message_content.html,
+                content: quickResponse.responseMessageContent.html,
                 isHtml: true,
                 attachments:
-                    toJS(quickResponse.response_message_content.attachments) ||
+                    toJS(quickResponse.responseMessageContent.attachments) ||
                     [],
             })
         }

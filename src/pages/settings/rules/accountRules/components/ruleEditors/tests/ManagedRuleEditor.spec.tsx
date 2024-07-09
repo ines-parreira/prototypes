@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {ManagedRulesSlugs} from 'state/rules/types'
 import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
@@ -13,6 +14,7 @@ import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import ManagedRuleEditor from '../ManagedRuleEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -64,7 +66,9 @@ describe('<ManagedRuleEditor/>', () => {
         (slug) => {
             const {container} = render(
                 <Provider store={store}>
-                    <ManagedRuleEditor {...minProps} slug={slug} />
+                    <QueryClientProvider client={mockQueryClient()}>
+                        <ManagedRuleEditor {...minProps} slug={slug} />
+                    </QueryClientProvider>
                 </Provider>
             )
             expect(container.firstChild).toMatchSnapshot()

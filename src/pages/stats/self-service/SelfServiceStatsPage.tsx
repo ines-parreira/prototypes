@@ -19,9 +19,6 @@ import {
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import useAsyncFn from 'hooks/useAsyncFn'
-
-import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
@@ -39,13 +36,12 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
 import {SelfServiceStatsPageFilters} from 'pages/stats/self-service/SelfServiceStatsPageFilters'
 import {AccountFeature} from 'state/currentAccount/types'
-import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
-import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {getIntegrations} from 'state/integrations/selectors'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus} from 'state/notifications/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {assetsUrl} from 'utils'
+import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 
 import TableStat from '../common/components/charts/TableStat/TableStat'
@@ -90,24 +86,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     } = useGetWorkflowConfigurations()
     const storeIntegrations = useStoreIntegrations()
 
-    const [
-        {loading: isSelfServiceFetchPending},
-        retrieveSelfServiceConfigurations,
-    ] = useAsyncFn(async () => {
-        try {
-            const res = await fetchSelfServiceConfigurations()
-            void dispatch(selfServiceConfigurationsFetched(res.data))
-        } catch (error) {
-            void dispatch(
-                notify({
-                    status: NotificationStatus.Error,
-                    message:
-                        'Could not fetch Self-service configurations, please try again later.',
-                })
-            )
-        }
-    }, [])
-
     useEffect(() => {
         if (isWorkflowConfigurationsFetchError) {
             void dispatch(
@@ -118,10 +96,6 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             )
         }
     }, [dispatch, isWorkflowConfigurationsFetchError])
-
-    useEffect(() => {
-        void retrieveSelfServiceConfigurations()
-    }, [retrieveSelfServiceConfigurations])
 
     const refineDownloadedWorkflows = useCallback(
         (csvData: string): string => {
@@ -152,31 +126,42 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         [workflowConfigurations]
     )
 
-    const selfServiceConfigurations = useAppSelector(
-        getSelfServiceConfigurations
-    )
+    const {
+        data: selfServiceConfigurations = [],
+        isLoading: isSelfServiceFetchPending,
+    } = useGetSelfServiceConfigurations({
+        onError: () => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Error,
+                    message:
+                        'Could not fetch Self-service configurations, please try again later.',
+                })
+            )
+        },
+    })
 
     const quickResponseDisabled = selfServiceConfigurations.every((config) =>
-        config.quick_response_policies.every(
-            (policy) => policy.deactivated_datetime
+        config.quickResponsePolicies.every(
+            (policy) => policy.deactivatedDatetime
         )
     )
 
     const reportIssueDisabled = selfServiceConfigurations.every(
-        (config) => !config.report_issue_policy.enabled
+        (config) => !config.reportIssuePolicy.enabled
     )
 
     const returnOrderDisabled = selfServiceConfigurations.every(
-        (config) => !config.return_order_policy.enabled
+        (config) => !config.returnOrderPolicy.enabled
     )
 
     const articleRecommendationDisabled = selfServiceConfigurations.every(
-        (config) => !config.article_recommendation_help_center_id
+        (config) => !config.articleRecommendationHelpCenterId
     )
 
     const articleRecommendationHelpCenterIds = selfServiceConfigurations
-        .filter((config) => config.article_recommendation_help_center_id)
-        .map((config) => config.article_recommendation_help_center_id)
+        .filter((config) => config.articleRecommendationHelpCenterId)
+        .map((config) => config.articleRecommendationHelpCenterId)
 
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]

@@ -28,7 +28,7 @@ export default function TrackOrderFlowPreview({
 }: Props) {
     const [isTrackOrderPreviewPlaying, setIsTrackOrderPreviewPlaying] =
         useState(true)
-    const [policyKey, setPolicyKey] = useState<PolicyKey>('track_order_policy')
+    const [policyKey, setPolicyKey] = useState<PolicyKey>('trackOrderPolicy')
     const [currentLocation, setCurrentLocation] = useState<
         typeof SELF_SERVICE_PREVIEW_ROUTES[keyof typeof SELF_SERVICE_PREVIEW_ROUTES]
     >(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
@@ -63,12 +63,12 @@ export default function TrackOrderFlowPreview({
         if (
             currentLocation === SELF_SERVICE_PREVIEW_ROUTES.TRACK ||
             (currentLocation === SELF_SERVICE_PREVIEW_ROUTES.ORDERS &&
-                policyKey === 'track_order_policy')
+                policyKey === 'trackOrderPolicy')
         ) {
             if (
                 previousLocation.current === SELF_SERVICE_PREVIEW_ROUTES.TRACK
             ) {
-                setPolicyKey('report_issue_policy')
+                setPolicyKey('reportIssuePolicy')
                 setIsTrackOrderPreviewPlaying(false)
             } else {
                 setIsTrackOrderPreviewPlaying(true)
@@ -92,7 +92,7 @@ export default function TrackOrderFlowPreview({
                 SELF_SERVICE_PREVIEW_ROUTES.TRACK_UNFULFILLED_MESSAGE
             ) {
                 history.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
-                setPolicyKey('report_issue_policy')
+                setPolicyKey('reportIssuePolicy')
             }
         }
     }, [
@@ -105,7 +105,7 @@ export default function TrackOrderFlowPreview({
 
     const handleTrackOrderPreviewClick = () => {
         history.push(SELF_SERVICE_PREVIEW_ROUTES.ORDERS)
-        setPolicyKey('track_order_policy')
+        setPolicyKey('trackOrderPolicy')
     }
 
     const {channels, channel, onChannelChange} =

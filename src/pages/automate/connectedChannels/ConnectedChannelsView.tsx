@@ -77,7 +77,7 @@ const ConnectedChannelsView = () => {
     })
 
     const articleRecommendationHelpCenterId =
-        selfServiceConfiguration?.article_recommendation_help_center_id
+        selfServiceConfiguration?.articleRecommendationHelpCenterId
     const helpCenterArticlesCount = useHelpCenterPublishedArticlesCount(
         articleRecommendationHelpCenterId
     )
@@ -103,15 +103,15 @@ const ConnectedChannelsView = () => {
                     shopType === IntegrationType.Shopify,
                 workflowConfigurations: workflowConfigurations ?? [],
                 workflowsEntrypoints:
-                    selfServiceConfiguration?.workflows_entrypoints ?? [],
+                    selfServiceConfiguration?.workflowsEntrypoints ?? [],
                 workflowsUrl: `/app/automation/${shopType}/${shopName}/flows`,
                 articleRecommendationUrl: `/app/automation/${shopType}/${shopName}/article-recommendation`,
                 quickResponsesUrl: `/app/automation/${shopType}/${shopName}${
                     isImprovedNavigationEnabled ? '/flows' : ''
                 }/quick-responses`,
                 enabledQuickResponsesCount:
-                    selfServiceConfiguration?.quick_response_policies.filter(
-                        (quickResponse) => !quickResponse.deactivated_datetime
+                    selfServiceConfiguration?.quickResponsePolicies.filter(
+                        (quickResponse) => !quickResponse.deactivatedDatetime
                     ).length ?? 0,
             }),
             [
@@ -120,8 +120,8 @@ const ConnectedChannelsView = () => {
                 shopType,
                 isImprovedNavigationEnabled,
                 shopName,
-                selfServiceConfiguration?.workflows_entrypoints,
-                selfServiceConfiguration?.quick_response_policies,
+                selfServiceConfiguration?.workflowsEntrypoints,
+                selfServiceConfiguration?.quickResponsePolicies,
                 workflowConfigurations,
             ]
         )

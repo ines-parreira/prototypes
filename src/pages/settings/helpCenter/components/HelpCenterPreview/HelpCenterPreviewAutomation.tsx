@@ -11,13 +11,13 @@ import css from './HelpCenterPreviewAutomation.less'
 
 const getOrderManagementIcon = (orderManagement: PolicyKey) => {
     switch (orderManagement) {
-        case 'cancel_order_policy':
+        case 'cancelOrderPolicy':
             return cancelIcon
-        case 'report_issue_policy':
+        case 'reportIssuePolicy':
             return reportIssueIcon
-        case 'track_order_policy':
+        case 'trackOrderPolicy':
             return trackIcon
-        case 'return_order_policy':
+        case 'returnOrderPolicy':
             return returnIcon
         default:
             return null
@@ -26,13 +26,13 @@ const getOrderManagementIcon = (orderManagement: PolicyKey) => {
 
 const getOrderManagementLabel = (orderManagement: PolicyKey) => {
     switch (orderManagement) {
-        case 'cancel_order_policy':
+        case 'cancelOrderPolicy':
             return 'Cancel'
-        case 'report_issue_policy':
+        case 'reportIssuePolicy':
             return 'Report Issue'
-        case 'track_order_policy':
+        case 'trackOrderPolicy':
             return 'Track'
-        case 'return_order_policy':
+        case 'returnOrderPolicy':
             return 'Return'
         default:
             return null

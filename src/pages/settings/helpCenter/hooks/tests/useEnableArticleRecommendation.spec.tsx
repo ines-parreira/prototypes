@@ -5,20 +5,22 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {waitFor} from '@testing-library/react'
+import {QueryClientProvider} from '@tanstack/react-query'
 import {HelpCenter} from 'models/helpCenter/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {
-    updateSelfServiceConfiguration,
-    fetchSelfServiceConfiguration,
+    updateSelfServiceConfigurationSSP,
+    fetchSelfServiceConfigurationSSP,
 } from 'models/selfServiceConfiguration/resources'
 
 import {getHasAutomate} from 'state/billing/selectors'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {useEnableArticleRecommendation} from '../useEnableArticleRecommendation'
 
 jest.mock('state/billing/selectors')
 jest.mock('models/selfServiceConfiguration/resources')
-
+const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState: Partial<RootState> = {
     entities: {
@@ -34,11 +36,20 @@ const defaultState: Partial<RootState> = {
     } as any,
     integrations: fromJS({
         integrations: [
-            {type: 'gorgias_chat', meta: {app_id: '1', shop_name: 'test-shop'}},
-            {type: 'gorgias_chat', meta: {app_id: '2', shop_name: 'test-shop'}},
+            {
+                type: 'gorgias_chat',
+                name: 'test-shop',
+                meta: {app_id: '1', shop_name: 'test-shop'},
+            },
+            {
+                type: 'gorgias_chat',
+                name: 'test-shop',
+                meta: {app_id: '2', shop_name: 'test-shop'},
+            },
             {
                 id: 1,
                 type: 'shopify',
+                name: 'test-shop',
                 meta: {shop_name: 'test-shop'},
             },
         ],
@@ -50,7 +61,11 @@ const getDependencyWrapper = (state = defaultState) => {
         children,
     }: {
         children: Element
-    }) => <Provider store={mockStore(state)}>{children}</Provider>
+    }) => (
+        <QueryClientProvider client={queryClient}>
+            <Provider store={mockStore(state)}>{children}</Provider>
+        </QueryClientProvider>
+    )
 
     return dependencyWrapper
 }
@@ -62,8 +77,8 @@ describe('useEnableArticleRecommendation', () => {
 
     it('Should call updateSelfServiceConfiguration', async () => {
         ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
-        ;(fetchSelfServiceConfiguration as jest.Mock).mockResolvedValue({
-            article_recommendation_help_center_id: null,
+        ;(fetchSelfServiceConfigurationSSP as jest.Mock).mockResolvedValue({
+            articleRecommendationHelpCenterId: null,
         })
 
         const {result} = renderHook(() => useEnableArticleRecommendation(), {
@@ -72,11 +87,14 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchSelfServiceConfiguration).toHaveBeenCalledWith(1)
+            expect(fetchSelfServiceConfigurationSSP).toHaveBeenCalledWith(
+                'test-shop',
+                'shopify'
+            )
         })
-        expect(updateSelfServiceConfiguration).toHaveBeenCalledWith(
+        expect(updateSelfServiceConfigurationSSP).toHaveBeenCalledWith(
             expect.objectContaining({
-                article_recommendation_help_center_id: 999,
+                articleRecommendationHelpCenterId: 999,
             })
         )
     })
@@ -102,9 +120,9 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
+            expect(fetchSelfServiceConfigurationSSP).not.toHaveBeenCalled()
         })
-        expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
+        expect(updateSelfServiceConfigurationSSP).not.toHaveBeenCalled()
     })
 
     it('Should not call if Automate is not enabled', async () => {
@@ -116,15 +134,15 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
+            expect(fetchSelfServiceConfigurationSSP).not.toHaveBeenCalled()
         })
-        expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
+        expect(updateSelfServiceConfigurationSSP).not.toHaveBeenCalled()
     })
 
-    it('Should not call if there is already a article_recommendation_help_center_id', async () => {
+    it('Should not call if there is already a articleRecommendationHelpCenterId', async () => {
         ;(getHasAutomate as unknown as jest.Mock).mockReturnValue(true)
-        ;(fetchSelfServiceConfiguration as jest.Mock).mockResolvedValue({
-            article_recommendation_help_center_id: 2,
+        ;(fetchSelfServiceConfigurationSSP as jest.Mock).mockResolvedValue({
+            articleRecommendationHelpCenterId: 2,
         })
 
         const {result} = renderHook(useEnableArticleRecommendation, {
@@ -133,9 +151,12 @@ describe('useEnableArticleRecommendation', () => {
         void result.current({id: 999, shop_name: 'test-shop'} as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchSelfServiceConfiguration).toHaveBeenCalledWith(1)
+            expect(fetchSelfServiceConfigurationSSP).toHaveBeenCalledWith(
+                'test-shop',
+                'shopify'
+            )
         })
-        expect(updateSelfServiceConfiguration).not.toHaveBeenCalled()
+        expect(updateSelfServiceConfigurationSSP).not.toHaveBeenCalled()
     })
 
     it('Should not call if they are not related to the same shop', async () => {
@@ -150,8 +171,8 @@ describe('useEnableArticleRecommendation', () => {
         } as HelpCenter)
 
         await waitFor(() => {
-            expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
+            expect(fetchSelfServiceConfigurationSSP).not.toHaveBeenCalled()
         })
-        expect(fetchSelfServiceConfiguration).not.toHaveBeenCalled()
+        expect(fetchSelfServiceConfigurationSSP).not.toHaveBeenCalled()
     })
 })

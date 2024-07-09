@@ -5,7 +5,7 @@ import {
 
 export const DEFAULT_RETURN_ACTION: AutomatedResponseReturnAction = {
     type: ReturnActionType.AutomatedResponse,
-    response_message_content: {
+    responseMessageContent: {
         html: '',
         text: '',
     },

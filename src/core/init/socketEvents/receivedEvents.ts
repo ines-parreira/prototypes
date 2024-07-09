@@ -92,9 +92,6 @@ import {
     viewUpdated,
 } from 'state/entities/views/actions'
 import history from 'pages/history'
-import {fetchSelfServiceConfigurations} from 'models/selfServiceConfiguration/resources'
-import {selfServiceConfigurationsFetched} from 'state/entities/selfServiceConfigurations/actions'
-import {setLoading} from 'state/ui/selfServiceConfigurations/actions'
 import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
 
 /**
@@ -420,32 +417,6 @@ const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.SidUpdated,
         onReceive: function () {
             ;(this as unknown as SocketManager).send(SocketEventType.SidUpdated)
-        },
-    },
-    {
-        name: SocketEventType.SelfServiceConfigurationsUpdateStarted,
-        onReceive: function () {
-            reduxStore.dispatch(setLoading(true))
-        },
-    },
-    {
-        name: SocketEventType.SelfServiceConfigurationsUpdated,
-        onReceive: async function () {
-            reduxStore.dispatch(setLoading(true))
-            try {
-                const res = await fetchSelfServiceConfigurations()
-                reduxStore.dispatch(selfServiceConfigurationsFetched(res.data))
-            } catch (error) {
-                reduxStore.dispatch(
-                    notificationsActions.notify({
-                        status: NotificationStatus.Error,
-                        message:
-                            'Could not fetch Self-service configurations, please try again later.',
-                    }) as any
-                )
-            } finally {
-                reduxStore.dispatch(setLoading(false))
-            }
         },
     },
     {

@@ -64,9 +64,9 @@ describe('<QuickResponsesView />', () => {
 
     const quickResponse1 = {
         id: 'ded6b39b-a85c-487e-8658-3f380d238528',
-        deactivated_datetime: null,
+        deactivatedDatetime: null,
         title: 'How do I choose the right size?',
-        response_message_content: {
+        responseMessageContent: {
             html: '<div>text</div>',
             text: 'text',
             attachments: fromJS([]),
@@ -119,7 +119,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1],
+                quickResponsePolicies: [quickResponse1],
             },
             quickResponses: [quickResponse1],
             handleQuickResponsesUpdate: jest.fn(),
@@ -149,7 +149,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1],
+                quickResponsePolicies: [quickResponse1],
             },
             quickResponses: [quickResponse1],
             handleQuickResponsesUpdate: handleQuickResponsesUpdateMock,
@@ -195,7 +195,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1],
+                quickResponsePolicies: [quickResponse1],
             },
             quickResponses: [quickResponse1],
             handleQuickResponsesUpdate: jest.fn(),
@@ -236,9 +236,9 @@ describe('<QuickResponsesView />', () => {
     it('should allow to reorder quick response', () => {
         const quickResponse2 = {
             id: '57b4828f-c846-4b70-a7a8-b4186f967795',
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             title: 'What is your shipping policy?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -252,7 +252,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1, quickResponse2],
+                quickResponsePolicies: [quickResponse1, quickResponse2],
             },
             quickResponses: [quickResponse1, quickResponse2],
             handleQuickResponsesUpdate: handleQuickResponsesUpdateMock,
@@ -300,7 +300,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [],
+                quickResponsePolicies: [],
             },
             quickResponses: [],
             handleQuickResponsesUpdate: handleQuickResponsesUpdateMock,
@@ -338,13 +338,13 @@ describe('<QuickResponsesView />', () => {
         expect(handleQuickResponsesUpdateMock).toBeCalledWith([
             expect.objectContaining({
                 title: quickResponse1.title,
-                response_message_content: {
+                responseMessageContent: {
                     html: '',
                     text: '',
                     attachments: fromJS([]),
                 },
                 id: expect.any(String),
-                deactivated_datetime: expect.any(String),
+                deactivatedDatetime: expect.any(String),
             }),
         ])
     })
@@ -356,7 +356,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1],
+                quickResponsePolicies: [quickResponse1],
             },
             quickResponses: [quickResponse1],
             handleQuickResponsesUpdate: jest.fn(),
@@ -390,7 +390,7 @@ describe('<QuickResponsesView />', () => {
         const quickResponse5 = {
             ...quickResponse1,
             title: 'How do I pick the right size?',
-            deactivated_datetime: new Date().toISOString(),
+            deactivatedDatetime: new Date().toISOString(),
             id: '2b111cf9-efb0-4a3a-a787-498c32a2b435',
         }
         const quickResponses = [
@@ -407,7 +407,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: quickResponses,
+                quickResponsePolicies: quickResponses,
             },
             quickResponses,
             handleQuickResponsesUpdate: jest.fn(),
@@ -437,9 +437,9 @@ describe('<QuickResponsesView />', () => {
     it('should expand a quick response by id from url', () => {
         const quickResponse2 = {
             id: '57b4828f-c846-4b70-a7a8-b4186f967795',
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             title: 'What is your shipping policy?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -452,7 +452,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1, quickResponse2],
+                quickResponsePolicies: [quickResponse1, quickResponse2],
             },
             quickResponses: [quickResponse1, quickResponse2],
             handleQuickResponsesUpdate: jest.fn(),
@@ -478,9 +478,9 @@ describe('<QuickResponsesView />', () => {
     it('should change the url when quick response is expanded', () => {
         const quickResponse2 = {
             id: '57b4828f-c846-4b70-a7a8-b4186f967795',
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             title: 'What is your shipping policy?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -493,7 +493,7 @@ describe('<QuickResponsesView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                quick_response_policies: [quickResponse1, quickResponse2],
+                quickResponsePolicies: [quickResponse1, quickResponse2],
             },
             quickResponses: [quickResponse1, quickResponse2],
             handleQuickResponsesUpdate: jest.fn(),

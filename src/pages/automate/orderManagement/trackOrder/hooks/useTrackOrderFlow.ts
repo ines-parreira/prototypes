@@ -15,10 +15,10 @@ export default function useTrackOrderFlow(shopName: string) {
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
 
     const handleTrackOrderFlowUpdate = useCallback(
-        (trackOrderFlow: SelfServiceConfiguration['track_order_policy']) => {
+        (trackOrderFlow: SelfServiceConfiguration['trackOrderPolicy']) => {
             void handleSelfServiceConfigurationUpdate((draft) => {
-                draft.track_order_policy.unfulfilled_message =
-                    trackOrderFlow.unfulfilled_message
+                draft.trackOrderPolicy.unfulfilledMessage =
+                    trackOrderFlow.unfulfilledMessage
             })
         },
         [handleSelfServiceConfigurationUpdate]
@@ -26,13 +26,13 @@ export default function useTrackOrderFlow(shopName: string) {
 
     const trackOrderFlow = useMemo(
         () =>
-            selfServiceConfiguration?.track_order_policy && {
-                ...selfServiceConfiguration.track_order_policy,
-                unfulfilled_message:
-                    selfServiceConfiguration.track_order_policy
-                        .unfulfilled_message ?? DEFAULT_UNFULFILLED_MESSAGE,
+            selfServiceConfiguration?.trackOrderPolicy && {
+                ...selfServiceConfiguration.trackOrderPolicy,
+                unfulfilledMessage:
+                    selfServiceConfiguration.trackOrderPolicy
+                        .unfulfilledMessage ?? DEFAULT_UNFULFILLED_MESSAGE,
             },
-        [selfServiceConfiguration?.track_order_policy]
+        [selfServiceConfiguration?.trackOrderPolicy]
     )
 
     return {

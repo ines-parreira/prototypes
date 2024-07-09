@@ -9,6 +9,7 @@ import {render} from '@testing-library/react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
+import {QueryClientProvider} from '@tanstack/react-query'
 import {entitiesInitialState} from 'fixtures/entities'
 import {integrationsStateWithShopify} from 'fixtures/integrations'
 
@@ -16,6 +17,7 @@ import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
 
 import Wizard from 'pages/common/components/wizard/Wizard'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import GorgiasChatCreationWizardStepAutomate from '../GorgiasChatCreationWizardStepAutomate'
 
 jest.mock(
@@ -28,7 +30,10 @@ const mockStore = configureMockStore([thunk])
 const store = mockStore({
     entities: entitiesInitialState,
     integrations: integrationsStateWithShopify,
+    billing: fromJS({products: []}),
 })
+
+const queryClient = mockQueryClient()
 
 const integration = fromJS({
     id: 1,
@@ -50,17 +55,21 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
     it('renders wizard without store selected', () => {
         const {getByText} = render(
             <DndProvider backend={HTML5Backend}>
-                <MemoryRouter>
-                    <Provider store={store}>
-                        <Wizard
-                            steps={[GorgiasChatCreationWizardSteps.Automate]}
-                        >
-                            <GorgiasChatCreationWizardStepAutomate
-                                {...minProps}
-                            />
-                        </Wizard>
-                    </Provider>
-                </MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <MemoryRouter>
+                        <Provider store={store}>
+                            <Wizard
+                                steps={[
+                                    GorgiasChatCreationWizardSteps.Automate,
+                                ]}
+                            >
+                                <GorgiasChatCreationWizardStepAutomate
+                                    {...minProps}
+                                />
+                            </Wizard>
+                        </Provider>
+                    </MemoryRouter>
+                </QueryClientProvider>
             </DndProvider>
         )
 

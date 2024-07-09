@@ -70,7 +70,7 @@ const QuickResponsesPreview = ({
                 if (areQuickResponsesDisabled) {
                     return (
                         <SelfServiceFeatureDisabledOnChannelAlert
-                            shopName={selfServiceConfiguration.shop_name}
+                            shopName={selfServiceConfiguration.shopName}
                             shopType={selfServiceConfiguration.type}
                         />
                     )
@@ -83,20 +83,20 @@ const QuickResponsesPreview = ({
                                 ...selfServiceConfiguration,
                                 ...(isOrderManagementDisabled
                                     ? {
-                                          track_order_policy: {
-                                              ...selfServiceConfiguration.track_order_policy,
+                                          trackOrderPolicy: {
+                                              ...selfServiceConfiguration.trackOrderPolicy,
                                               enabled: false,
                                           },
-                                          cancel_order_policy: {
-                                              ...selfServiceConfiguration.cancel_order_policy,
+                                          cancelOrderPolicy: {
+                                              ...selfServiceConfiguration.cancelOrderPolicy,
                                               enabled: false,
                                           },
-                                          return_order_policy: {
-                                              ...selfServiceConfiguration.return_order_policy,
+                                          returnOrderPolicy: {
+                                              ...selfServiceConfiguration.returnOrderPolicy,
                                               enabled: false,
                                           },
-                                          report_issue_policy: {
-                                              ...selfServiceConfiguration.report_issue_policy,
+                                          reportIssuePolicy: {
+                                              ...selfServiceConfiguration.reportIssuePolicy,
                                               enabled: false,
                                           },
                                       }

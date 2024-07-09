@@ -40,17 +40,17 @@ const HelpCenterWizardAutomationPreview = ({
         }))
 
     const orderManagement = [
-        ...(selfServiceConfiguration?.track_order_policy.enabled
-            ? (['track_order_policy'] as const)
+        ...(selfServiceConfiguration?.trackOrderPolicy.enabled
+            ? (['trackOrderPolicy'] as const)
             : []),
-        ...(selfServiceConfiguration?.return_order_policy.enabled
-            ? (['return_order_policy'] as const)
+        ...(selfServiceConfiguration?.returnOrderPolicy.enabled
+            ? (['returnOrderPolicy'] as const)
             : []),
-        ...(selfServiceConfiguration?.cancel_order_policy.enabled
-            ? (['cancel_order_policy'] as const)
+        ...(selfServiceConfiguration?.cancelOrderPolicy.enabled
+            ? (['cancelOrderPolicy'] as const)
             : []),
-        ...(selfServiceConfiguration?.report_issue_policy.enabled
-            ? (['report_issue_policy'] as const)
+        ...(selfServiceConfiguration?.reportIssuePolicy.enabled
+            ? (['reportIssuePolicy'] as const)
             : []),
     ]
 

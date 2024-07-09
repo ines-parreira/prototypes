@@ -87,7 +87,7 @@ const OrderManagementPreview = ({
                 if (isOrderManagementDisabled) {
                     return (
                         <SelfServiceFeatureDisabledOnChannelAlert
-                            shopName={selfServiceConfiguration.shop_name}
+                            shopName={selfServiceConfiguration.shopName}
                             shopType={selfServiceConfiguration.type}
                         />
                     )
@@ -98,13 +98,12 @@ const OrderManagementPreview = ({
                         value={{
                             selfServiceConfiguration: {
                                 ...selfServiceConfiguration,
-                                quick_response_policies:
-                                    areQuickResponsesEnabled
-                                        ? selfServiceConfiguration.quick_response_policies
-                                        : [],
+                                quickResponsePolicies: areQuickResponsesEnabled
+                                    ? selfServiceConfiguration.quickResponsePolicies
+                                    : [],
                             },
                             hoveredOrderManagementFlow,
-                            orderManagementFlow: 'track_order_policy',
+                            orderManagementFlow: 'trackOrderPolicy',
                             workflowsEntrypoints,
                         }}
                     >

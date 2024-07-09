@@ -40,10 +40,10 @@ export const AutomationPreview: Story = {
                     },
                 ]}
                 orderManagement={[
-                    'track_order_policy',
-                    'cancel_order_policy',
-                    'report_issue_policy',
-                    'return_order_policy',
+                    'trackOrderPolicy',
+                    'cancelOrderPolicy',
+                    'reportIssuePolicy',
+                    'returnOrderPolicy',
                 ]}
             />
         ),

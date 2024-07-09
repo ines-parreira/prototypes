@@ -9,7 +9,6 @@ import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {billingState} from 'fixtures/billing'
 import {IntegrationType} from 'models/integration/constants'
-import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import useWorkflowApi from '../useWorkflowApi'
 import {useStoreWorkflowsApi} from '../useStoreWorkflowsApi'
@@ -18,12 +17,12 @@ import {
     mockWorkflowConfigurationShallow,
 } from './fixtures/utils'
 import {
-    mockSelfServiceConfigurationUpdate,
     mockWorkflowApi,
     useSelfServiceConfigurationUpdateMockSetter,
 } from './fixtures/mockBuilders'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfigurationUpdate')
+
 jest.mock('state/entities/selfServiceConfigurations/selectors')
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
@@ -45,35 +44,6 @@ const renderHookOptions = {
     )) as ComponentType,
 }
 jest.mock('pages/automate/workflows/hooks/useWorkflowApi.ts')
-jest.mock('state/entities/selfServiceConfigurations/selectors', () => {
-    return {
-        __esModule: true,
-        getSelfServiceConfigurations: jest.fn(() => [
-            {
-                id: 1,
-                type: 'ShopType',
-                shop_name: 'ShopName',
-                created_datetime: '2021-03-31T14:00:00.000Z',
-                updated_datetime: '2021-03-31T14:00:00.000Z',
-                quick_response_policies: [],
-                workflows_entrypoints: [],
-            },
-        ]),
-    }
-})
-
-jest.mock(
-    'pages/automate/common/hooks/useSelfServiceConfigurationUpdate',
-    () => {
-        return {
-            __esModule: true,
-            useSelfServiceConfigurationUpdate: jest.fn(
-                () => mockSelfServiceConfigurationUpdate
-            ),
-        }
-    }
-)
-
 const useWorkflowApiMock = useWorkflowApi as jest.MockedFn<
     typeof useWorkflowApi
 >
@@ -90,21 +60,7 @@ describe('useStoreWorkflowsApi', () => {
             data: [],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
         useSelfServiceConfigurationUpdateMockSetter({})
-        ;(
-            getSelfServiceConfigurations as jest.MockedFn<
-                typeof getSelfServiceConfigurations
-            >
-        ).mockReturnValue([
-            {
-                id: 1,
-                type: 'ShopType' as any,
-                shop_name: 'ShopName',
-                created_datetime: '2021-03-31T14:00:00.000Z',
-                updated_datetime: '2021-03-31T14:00:00.000Z',
-                quick_response_policies: [],
-                workflows_entrypoints: [],
-            },
-        ] as unknown as ReturnType<typeof getSelfServiceConfigurations>)
+
         useWorkflowApiMock.mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,

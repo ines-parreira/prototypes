@@ -7,8 +7,8 @@ export function useActiveQuickResponseFlows(
 ) {
     const quickResponses = useMemo(() => {
         if (configuration) {
-            return configuration.quick_response_policies.filter(
-                (response) => response.deactivated_datetime === null
+            return configuration.quickResponsePolicies.filter(
+                (response) => response.deactivatedDatetime === null
             )
         }
         return []

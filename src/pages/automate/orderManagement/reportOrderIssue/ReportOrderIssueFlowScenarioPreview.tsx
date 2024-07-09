@@ -48,7 +48,7 @@ const ReportOrderIssueFlowScenarioPreview = ({
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
-                        orderManagementFlow: 'report_issue_policy',
+                        orderManagementFlow: 'reportIssuePolicy',
                         reportOrderIssueReasons: reasons.map(
                             (reason) => reason.reasonKey
                         ),

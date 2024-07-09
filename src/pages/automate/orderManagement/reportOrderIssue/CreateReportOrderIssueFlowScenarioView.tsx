@@ -32,6 +32,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     const [errors, setErrors] = useState<Record<string, true>>({})
     const [scenario, setScenario] =
         useState<SelfServiceReportIssueCase>(DEFAULT_SCENARIO)
+
     const [expandedReasonKey, setExpandedReasonKey] = useState<
         ReportIssueCaseReason['reasonKey'] | null
     >(null)
@@ -121,7 +122,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                 </ReportOrderIssueScenarioFormContext.Provider>
             </AutomateViewContent>
             <ReportOrderIssueFlowScenarioPreview
-                reasons={scenario.reasons}
+                reasons={scenario.newReasons}
                 expandedReasonKey={expandedReasonKey}
                 hoveredReasonKey={hoveredReasonKey}
             />

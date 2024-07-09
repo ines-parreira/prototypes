@@ -68,8 +68,6 @@ export enum SocketEventType {
     SidUpdated = 'sid-updated',
     TicketMessageChatCreated = 'ticket-message-chat-created',
     TicketChatUpdated = 'ticket-chat-updated',
-    SelfServiceConfigurationsUpdated = 'self-service-configurations-updated',
-    SelfServiceConfigurationsUpdateStarted = 'self-service-configurations-update-started',
     EmailIntegrationVerified = 'email.integration-verified',
     EmailForwardingActivated = 'email.forwarding-activated',
     MigrationIntegrationInboundVerified = 'email.integration-migration-verified',
@@ -118,20 +116,6 @@ export type CustomerExternalDataUpdatedEvent = {
     }
     external_data: CustomerExternalData
     customer_id: number
-}
-
-export type SelfServiceConfigurationsUpdatedEvent = {
-    event: {
-        type: SocketEventType.SelfServiceConfigurationsUpdated
-    }
-    account: Account
-}
-
-export type SelfServiceConfigurationsUpdateStartedEvent = {
-    event: {
-        type: SocketEventType.SelfServiceConfigurationsUpdateStarted
-    }
-    account: Account
 }
 
 export type UserLocationUpdatedEvent = {
@@ -414,8 +398,6 @@ export type OrderEvent = {
 export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
-    | SelfServiceConfigurationsUpdatedEvent
-    | SelfServiceConfigurationsUpdateStartedEvent
     | UserLocationUpdatedEvent
     | UserTypingStatusUpdatedEvent
     | TicketUpdatedEvent

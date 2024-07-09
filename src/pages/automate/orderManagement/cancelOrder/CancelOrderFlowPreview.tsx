@@ -37,7 +37,7 @@ const CancelOrderFlowPreview = ({responseMessageContent}: Props) => {
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
-                        orderManagementFlow: 'cancel_order_policy',
+                        orderManagementFlow: 'cancelOrderPolicy',
                         automatedResponseMessageContent: responseMessageContent,
                     }}
                 >

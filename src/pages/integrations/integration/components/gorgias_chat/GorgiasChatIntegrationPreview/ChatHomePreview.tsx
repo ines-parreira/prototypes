@@ -50,15 +50,15 @@ const ChatHomePreview: React.FC<Props> = ({
     privacyPolicyDisclaimerText = '',
 }) => {
     const quickResponses =
-        selfServiceConfiguration?.quick_response_policies?.filter(
-            (quickResponse) => !quickResponse.deactivated_datetime
+        selfServiceConfiguration?.quickResponsePolicies?.filter(
+            (quickResponse) => !quickResponse.deactivatedDatetime
         ) ?? []
-    const canTrackOrders = selfServiceConfiguration?.track_order_policy?.enabled
+    const canTrackOrders = selfServiceConfiguration?.trackOrderPolicy?.enabled
     const canManageOrders =
         canTrackOrders ||
-        selfServiceConfiguration?.report_issue_policy?.enabled ||
-        selfServiceConfiguration?.cancel_order_policy?.enabled ||
-        selfServiceConfiguration?.return_order_policy?.enabled
+        selfServiceConfiguration?.reportIssuePolicy?.enabled ||
+        selfServiceConfiguration?.cancelOrderPolicy?.enabled ||
+        selfServiceConfiguration?.returnOrderPolicy?.enabled
 
     const sspTexts =
         GORGIAS_CHAT_SSP_TEXTS[language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT]

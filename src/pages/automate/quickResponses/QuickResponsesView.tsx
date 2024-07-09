@@ -93,10 +93,10 @@ const QuickResponsesView = () => {
         useApplicationsAutomationSettings(chatApplicationIds)
 
     const enabledQuickResponsesCount = quickResponses.filter(
-        (quickResponse) => !quickResponse.deactivated_datetime
+        (quickResponse) => !quickResponse.deactivatedDatetime
     ).length
     const enabledWorkflowsCount = useMemo(() => {
-        const allEntrypoints = selfServiceConfiguration?.workflows_entrypoints
+        const allEntrypoints = selfServiceConfiguration?.workflowsEntrypoints
 
         if (!allEntrypoints) {
             return 0
@@ -126,7 +126,7 @@ const QuickResponsesView = () => {
 
         return enabledWorkflowIds.size
     }, [
-        selfServiceConfiguration?.workflows_entrypoints,
+        selfServiceConfiguration?.workflowsEntrypoints,
         chatApplicationIds,
         applicationsAutomationSettings,
     ])
@@ -168,8 +168,8 @@ const QuickResponsesView = () => {
         const newQuickResponse = {
             id: uuidv4(),
             title: '',
-            deactivated_datetime: new Date().toISOString(),
-            response_message_content: {
+            deactivatedDatetime: new Date().toISOString(),
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -265,7 +265,7 @@ const QuickResponsesView = () => {
                 channels={chatChannels}
                 selfServiceConfiguration={{
                     ...selfServiceConfiguration!,
-                    quick_response_policies: dirtyQuickResponses,
+                    quickResponsePolicies: dirtyQuickResponses,
                 }}
                 expandedQuickResponse={expandedQuickResponse}
                 hoveredQuickResponseId={hoveredQuickResponseId}

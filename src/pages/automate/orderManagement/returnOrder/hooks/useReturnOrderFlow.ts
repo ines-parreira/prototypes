@@ -15,13 +15,12 @@ const useReturnOrderFlow = (shopName: string) => {
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
 
     const handleReturnOrderFlowUpdate = useCallback(
-        (returnOrderFlow: SelfServiceConfiguration['return_order_policy']) => {
+        (returnOrderFlow: SelfServiceConfiguration['returnOrderPolicy']) => {
             void handleSelfServiceConfigurationUpdate((draft) => {
-                draft.return_order_policy.action = returnOrderFlow.action
-                draft.return_order_policy.eligibilities =
+                draft.returnOrderPolicy.action = returnOrderFlow.action
+                draft.returnOrderPolicy.eligibilities =
                     returnOrderFlow.eligibilities
-                draft.return_order_policy.exceptions =
-                    returnOrderFlow.exceptions
+                draft.returnOrderPolicy.exceptions = returnOrderFlow.exceptions
             })
         },
         [handleSelfServiceConfigurationUpdate]
@@ -29,13 +28,13 @@ const useReturnOrderFlow = (shopName: string) => {
 
     const returnOrderFlow = useMemo(
         () =>
-            selfServiceConfiguration?.return_order_policy && {
-                ...selfServiceConfiguration.return_order_policy,
+            selfServiceConfiguration?.returnOrderPolicy && {
+                ...selfServiceConfiguration.returnOrderPolicy,
                 action:
-                    selfServiceConfiguration.return_order_policy.action ??
+                    selfServiceConfiguration.returnOrderPolicy.action ??
                     DEFAULT_RETURN_ACTION,
             },
-        [selfServiceConfiguration?.return_order_policy]
+        [selfServiceConfiguration?.returnOrderPolicy]
     )
 
     return {

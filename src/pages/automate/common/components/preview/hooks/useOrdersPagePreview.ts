@@ -21,7 +21,7 @@ const useOrdersPagePreview = () => {
         switch (previewStep) {
             case PreviewStep.INITIAL:
                 switch (orderManagementFlow) {
-                    case 'track_order_policy':
+                    case 'trackOrderPolicy':
                         timeout.current = window.setTimeout(() => {
                             setPreviewStep(PreviewStep.TRACK_HOVER)
                         }, 800)

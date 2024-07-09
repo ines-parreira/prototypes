@@ -18,13 +18,12 @@ const useCancelOrderFlow = (shopName: string) => {
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
 
     const handleCancelOrderFlowUpdate = useCallback(
-        (cancelOrderFlow: SelfServiceConfiguration['cancel_order_policy']) => {
+        (cancelOrderFlow: SelfServiceConfiguration['cancelOrderPolicy']) => {
             void handleSelfServiceConfigurationUpdate((draft) => {
-                draft.cancel_order_policy.exceptions =
-                    cancelOrderFlow.exceptions
-                draft.cancel_order_policy.eligibilities =
+                draft.cancelOrderPolicy.exceptions = cancelOrderFlow.exceptions
+                draft.cancelOrderPolicy.eligibilities =
                     cancelOrderFlow.eligibilities
-                draft.cancel_order_policy.action = cancelOrderFlow.action
+                draft.cancelOrderPolicy.action = cancelOrderFlow.action
             })
         },
         [handleSelfServiceConfigurationUpdate]
@@ -32,14 +31,14 @@ const useCancelOrderFlow = (shopName: string) => {
 
     const cancelOrderFlow = useMemo(
         () =>
-            selfServiceConfiguration?.cancel_order_policy && {
-                ...selfServiceConfiguration.cancel_order_policy,
-                action: selfServiceConfiguration.cancel_order_policy.action ?? {
+            selfServiceConfiguration?.cancelOrderPolicy && {
+                ...selfServiceConfiguration.cancelOrderPolicy,
+                action: selfServiceConfiguration.cancelOrderPolicy.action ?? {
                     type: AUTOMATED_RESPONSE,
-                    response_message_content: DEFAULT_RESPONSE_MESSAGE_CONTENT,
+                    responseMessageContent: DEFAULT_RESPONSE_MESSAGE_CONTENT,
                 },
             },
-        [selfServiceConfiguration?.cancel_order_policy]
+        [selfServiceConfiguration?.cancelOrderPolicy]
     )
 
     return {

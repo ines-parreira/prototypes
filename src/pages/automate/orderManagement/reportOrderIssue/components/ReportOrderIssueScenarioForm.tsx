@@ -44,7 +44,7 @@ const ReportOrderIssueScenarioForm = ({
         !value.title.length || value.title.length > SCENARIO_NAME_MAX_LENGTH
     const descriptionHasError =
         value.description.length > SCENARIO_DESCRIPTION_MAX_LENGTH
-    const reasonsHasError = !value.reasons.length
+    const reasonsHasError = !value.newReasons.length
 
     usePropagateError('title', titleHasError)
     usePropagateError('description', descriptionHasError)
@@ -64,10 +64,10 @@ const ReportOrderIssueScenarioForm = ({
     const handleReasonsPreviewChange = (
         nextReasons: ReportIssueCaseReason[]
     ) => {
-        onPreviewChange({...value, reasons: nextReasons})
+        onPreviewChange({...value, newReasons: nextReasons})
     }
     const handleReasonsChange = (nextReasons: ReportIssueCaseReason[]) => {
-        onChange({...value, reasons: nextReasons})
+        onChange({...value, newReasons: nextReasons})
     }
 
     return (
@@ -108,7 +108,7 @@ const ReportOrderIssueScenarioForm = ({
             <div className={css.reasonsContainer}>
                 <Label isRequired>Issue options</Label>
                 <ReportOrderIssueScenarioReasons
-                    items={value.reasons}
+                    items={value.newReasons}
                     expandedItem={expandedReason}
                     onExpandedItemChange={onExpandedReasonChange}
                     onHoveredItemChange={onHoveredReasonChange}

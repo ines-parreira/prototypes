@@ -53,8 +53,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                         <div>
                             <div className={css.fulfillmentShipment}>
                                 <p className={css.shipment}>Shipment</p>
-                                {orderManagementFlow ===
-                                    'track_order_policy' && (
+                                {orderManagementFlow === 'trackOrderPolicy' && (
                                     <Badge
                                         label={sspTexts.inTransit}
                                         color="accessoryGreen"
@@ -62,8 +61,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                 )}
                             </div>
                             <div className={css.actions}>
-                                {orderManagementFlow ===
-                                    'track_order_policy' && (
+                                {orderManagementFlow === 'trackOrderPolicy' && (
                                     <>
                                         <MousePointer
                                             isHovering={
@@ -105,7 +103,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                     </>
                                 )}
                                 {orderManagementFlow ===
-                                    'report_issue_policy' && (
+                                    'reportIssuePolicy' && (
                                     <>
                                         <Button
                                             size="small"

@@ -226,7 +226,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -310,7 +310,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -395,7 +395,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -464,7 +464,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -531,7 +531,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -672,7 +672,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -772,7 +772,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -883,7 +883,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -994,7 +994,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -1104,7 +1104,7 @@ describe('<TrainMyAiView />', () => {
             storeIntegration: undefined,
             selfServiceConfiguration: {
                 ...selfServiceConfiguration1,
-                article_recommendation_help_center_id: 1,
+                articleRecommendationHelpCenterId: 1,
             },
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })

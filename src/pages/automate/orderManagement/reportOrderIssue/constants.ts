@@ -20,5 +20,5 @@ export const DEFAULT_SCENARIO: SelfServiceReportIssueCase = {
     title: '',
     description: '',
     conditions: {and: []},
-    reasons: [],
+    newReasons: [],
 }

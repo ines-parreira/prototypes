@@ -36,7 +36,7 @@ const ReportOrderIssueFlowPreview = ({hasHoveredScenario}: Props) => {
             {(channel) => (
                 <SelfServicePreviewContext.Provider
                     value={{
-                        orderManagementFlow: 'report_issue_policy',
+                        orderManagementFlow: 'reportIssuePolicy',
                         hasHoveredReportOrderIssueScenario: hasHoveredScenario,
                     }}
                 >

@@ -3,10 +3,12 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/types'
 
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {IntegrationDetail} from '../Integration'
 import {Tab} from '../types'
 
@@ -132,6 +134,7 @@ jest.mock('../components/magento2/Magento2', () => () => (
 
 jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
 
+const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
 
@@ -201,9 +204,11 @@ describe('<IntegrationDetail />', () => {
         'should render the list or detail page of integrations for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}`,
@@ -215,9 +220,14 @@ describe('<IntegrationDetail />', () => {
 
     it(`should display not available message if ${IntegrationType.Twitter} integration not included in price`, () => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <IntegrationDetail {...minProps} hasTwitterFeature={false} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <IntegrationDetail
+                        {...minProps}
+                        hasTwitterFeature={false}
+                    />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.Twitter}`,
@@ -235,9 +245,11 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Sms],
     ])('should render the creation page for %s', (integrationType) => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <IntegrationDetail {...minProps} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <IntegrationDetail {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${integrationType}/new`,
@@ -250,9 +262,11 @@ describe('<IntegrationDetail />', () => {
         'should render the setup page for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/setup`,
@@ -276,12 +290,18 @@ describe('<IntegrationDetail />', () => {
         'should render the page of a specific integration for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail
-                        {...minProps}
-                        integrations={fromJS({integration: {id: 1}})}
-                    />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail
+                            {...minProps}
+                            integrations={fromJS({
+                                integration: {
+                                    id: 1,
+                                },
+                            })}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1`,
@@ -293,9 +313,13 @@ describe('<IntegrationDetail />', () => {
 
     it('should render the installation tab of a specific integration for %s', () => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <IntegrationDetail {...minProps} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </QueryClientProvider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`,
@@ -313,9 +337,11 @@ describe('<IntegrationDetail />', () => {
         'should render the preferences tab of a specific integrations for %s',
         (integrationType) => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Preferences}`,
@@ -327,9 +353,13 @@ describe('<IntegrationDetail />', () => {
 
     it('should render the list of campaigns of a specific integration for %s', () => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <IntegrationDetail {...minProps} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </QueryClientProvider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}`,
@@ -340,9 +370,13 @@ describe('<IntegrationDetail />', () => {
 
     it('should render the campaign tab of a specific integration for %s', () => {
         const {container} = renderWithRouter(
-            <Provider store={store}>
-                <IntegrationDetail {...minProps} />
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </QueryClientProvider>,
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}/1`,
@@ -354,9 +388,11 @@ describe('<IntegrationDetail />', () => {
     describe(`${IntegrationType.Email}`, () => {
         it('should render the custom creation page', () => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/new/${Tab.EmailCustom}`,
@@ -367,9 +403,11 @@ describe('<IntegrationDetail />', () => {
 
         it('should render the forwarding page for a specific integration', () => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
@@ -380,9 +418,11 @@ describe('<IntegrationDetail />', () => {
 
         it('should render the verification page for a specific integration', () => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
@@ -395,9 +435,11 @@ describe('<IntegrationDetail />', () => {
     describe(`${IntegrationType.Facebook}`, () => {
         it('should render the customer chat tab for a specific integration', () => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
@@ -410,9 +452,11 @@ describe('<IntegrationDetail />', () => {
     describe(`${IntegrationType.Phone}`, () => {
         it('should render the voicemail tab of a specific integration', () => {
             const {container} = renderWithRouter(
-                <Provider store={store}>
-                    <IntegrationDetail {...minProps} />
-                </Provider>,
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <IntegrationDetail {...minProps} />
+                    </Provider>
+                </QueryClientProvider>,
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,

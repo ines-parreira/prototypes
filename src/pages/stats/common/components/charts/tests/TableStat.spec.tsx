@@ -283,12 +283,12 @@ const integrationsData = [
 
 const selfServiceConfigurationsData = [
     {
-        shop_name: 'test-shop',
+        shopName: 'test-shop',
         type: 'shopify',
-        quick_response_policies: [
+        quickResponsePolicies: [
             {
                 id: 'fakeflowId',
-                deactivated_datetime: null,
+                deactivatedDatetime: null,
             },
         ],
     } as SelfServiceConfiguration,

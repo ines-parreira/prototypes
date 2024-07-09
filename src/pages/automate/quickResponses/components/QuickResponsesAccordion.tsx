@@ -68,7 +68,7 @@ const QuickResponsesAccordion = ({
     }
     const handleItemToggle = (
         id: QuickResponsePolicy['id'],
-        deactivatedDatetime: QuickResponsePolicy['deactivated_datetime']
+        deactivatedDatetime: QuickResponsePolicy['deactivatedDatetime']
     ) => {
         const nextItems = [...items]
         const index = nextItems.findIndex((item) => item.id === id)
@@ -76,7 +76,7 @@ const QuickResponsesAccordion = ({
         if (index !== -1) {
             nextItems[index] = {
                 ...nextItems[index],
-                deactivated_datetime: deactivatedDatetime,
+                deactivatedDatetime,
             }
 
             onChange(nextItems)

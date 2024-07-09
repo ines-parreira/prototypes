@@ -34,8 +34,8 @@ export default function WorkflowsPublisher() {
         shopName
     )
     const enabledQuickResponsesCount =
-        selfServiceConfiguration?.quick_response_policies.filter(
-            (quickResponse) => !quickResponse.deactivated_datetime
+        selfServiceConfiguration?.quickResponsePolicies.filter(
+            (quickResponse) => !quickResponse.deactivatedDatetime
         ).length ?? 0
     const helpCentersChannels = useSelfServiceHelpCenterChannels(
         shopType,

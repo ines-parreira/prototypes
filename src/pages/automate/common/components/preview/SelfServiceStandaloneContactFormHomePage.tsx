@@ -37,10 +37,10 @@ const SelfServiceStandaloneContactFormHomePage = ({
     const {selfServiceConfiguration, hoveredOrderManagementFlow} =
         useSelfServicePreviewContext()
     const isOrderManagementEnabled =
-        selfServiceConfiguration?.cancel_order_policy.enabled ||
-        selfServiceConfiguration?.report_issue_policy.enabled ||
-        selfServiceConfiguration?.return_order_policy.enabled ||
-        selfServiceConfiguration?.track_order_policy.enabled
+        selfServiceConfiguration?.cancelOrderPolicy.enabled ||
+        selfServiceConfiguration?.reportIssuePolicy.enabled ||
+        selfServiceConfiguration?.returnOrderPolicy.enabled ||
+        selfServiceConfiguration?.trackOrderPolicy.enabled
     const hasAutomateEnabled =
         isOrderManagementEnabled ||
         (workflowsEntrypoints && workflowsEntrypoints.length > 0)
@@ -87,45 +87,45 @@ const SelfServiceStandaloneContactFormHomePage = ({
                             <WorkflowItem label={entrypoint.label} />
                         </div>
                     ))}
-                    {selfServiceConfiguration?.track_order_policy.enabled && (
+                    {selfServiceConfiguration?.trackOrderPolicy.enabled && (
                         <OrderManagementFlowItemPreview
                             icon={trackIcon}
                             isHighlighted={
                                 hoveredOrderManagementFlow ===
-                                'track_order_policy'
+                                'trackOrderPolicy'
                             }
                         >
                             {helpCenterTexts.manageOrdersLabelTrackOrder}
                         </OrderManagementFlowItemPreview>
                     )}
-                    {selfServiceConfiguration?.return_order_policy.enabled && (
+                    {selfServiceConfiguration?.returnOrderPolicy.enabled && (
                         <OrderManagementFlowItemPreview
                             icon={returnIcon}
                             isHighlighted={
                                 hoveredOrderManagementFlow ===
-                                'return_order_policy'
+                                'returnOrderPolicy'
                             }
                         >
                             {helpCenterTexts.manageOrdersLabelReturnOrder}
                         </OrderManagementFlowItemPreview>
                     )}
-                    {selfServiceConfiguration?.cancel_order_policy.enabled && (
+                    {selfServiceConfiguration?.cancelOrderPolicy.enabled && (
                         <OrderManagementFlowItemPreview
                             icon={cancelIcon}
                             isHighlighted={
                                 hoveredOrderManagementFlow ===
-                                'cancel_order_policy'
+                                'cancelOrderPolicy'
                             }
                         >
                             {helpCenterTexts.manageOrdersLabelCancelOrder}
                         </OrderManagementFlowItemPreview>
                     )}
-                    {selfServiceConfiguration?.report_issue_policy.enabled && (
+                    {selfServiceConfiguration?.reportIssuePolicy.enabled && (
                         <OrderManagementFlowItemPreview
                             icon={reportIssueIcon}
                             isHighlighted={
                                 hoveredOrderManagementFlow ===
-                                'report_issue_policy'
+                                'reportIssuePolicy'
                             }
                         >
                             {helpCenterTexts.manageOrdersLabelReportIssue}

@@ -22,40 +22,40 @@ const createSelfServiceConfigurationFixtures = (
     return Array.from({length}, (_, i) => ({
         id: i + 1,
         type: 'shopify' as ShopType,
-        shop_name: `mystore${i + 1}`,
-        created_datetime: '2021-01-26T00:29:00Z',
-        updated_datetime: '2021-01-26T00:29:30Z',
-        deactivated_datetime: i % 2 === 0 ? null : '2021-01-26T00:30:00Z',
-        report_issue_policy: {
+        shopName: `mystore${i + 1}`,
+        createdDatetime: '2021-01-26T00:29:00Z',
+        updatedDatetime: '2021-01-26T00:29:30Z',
+        deactivatedDatetime: i % 2 === 0 ? null : '2021-01-26T00:30:00Z',
+        reportIssuePolicy: {
             enabled: false,
             cases: [],
         },
-        track_order_policy: {
+        trackOrderPolicy: {
             enabled: false,
         },
-        cancel_order_policy: {
-            enabled: false,
-            eligibilities: [],
-            exceptions: [],
-        },
-        return_order_policy: {
+        cancelOrderPolicy: {
             enabled: false,
             eligibilities: [],
             exceptions: [],
         },
-        quick_response_policies: [
+        returnOrderPolicy: {
+            enabled: false,
+            eligibilities: [],
+            exceptions: [],
+        },
+        quickResponsePolicies: [
             {
-                deactivated_datetime: null,
+                deactivatedDatetime: null,
                 id: 'ded6b39b-a85c-487e-8658-3f380d238528',
                 title: 'When do you usually restock?',
-                response_message_content: {
+                responseMessageContent: {
                     html: '<div>Every month</div>',
                     text: 'Every month',
                     attachments: fromJS([]),
                 },
             },
         ],
-        article_recommendation_help_center_id: null,
+        articleRecommendationHelpCenterId: null,
     }))
 }
 
@@ -99,6 +99,17 @@ describe('<SelfServiceFlowSelect />', () => {
         const selfServiceConfigurations =
             createSelfServiceConfigurationFixtures(3)
 
+        const useGetSelfServiceConfigurationsMock = jest.spyOn(
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            require('models/selfServiceConfiguration/queries'),
+            'useGetSelfServiceConfigurations'
+        )
+
+        useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
+            data: selfServiceConfigurations,
+            isLoading: false,
+        }))
+
         const {container} = render(
             <Provider
                 store={mockStore({
@@ -127,26 +138,19 @@ describe('<SelfServiceFlowSelect />', () => {
     it('should render component with selected item', () => {
         const selfServiceConfigurations =
             createSelfServiceConfigurationFixtures(3)
+        const useGetSelfServiceConfigurationsMock = jest.spyOn(
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            require('models/selfServiceConfiguration/queries'),
+            'useGetSelfServiceConfigurations'
+        )
+
+        useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
+            data: selfServiceConfigurations,
+            isLoading: false,
+        }))
+
         const {container} = render(
-            <Provider
-                store={mockStore({
-                    ...defaultState,
-                    entities: {
-                        ...defaultState.entities,
-                        selfServiceConfigurations:
-                            selfServiceConfigurations.reduce(
-                                (
-                                    configurations: SelfServiceConfigurationsState,
-                                    configuration: SelfServiceConfiguration
-                                ) => ({
-                                    ...configurations,
-                                    [configuration.id]: configuration,
-                                }),
-                                {} as Partial<SelfServiceConfiguration>
-                            ),
-                    },
-                })}
-            >
+            <Provider store={mockStore()}>
                 <SelfServiceFlowSelect
                     {...minProps}
                     value={'reasonIncorrectItems'}

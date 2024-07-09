@@ -20,12 +20,12 @@ export enum ReturnActionType {
 
 export type LoopReturnsReturnAction = {
     type: ReturnActionType.LoopReturns
-    integration_id: number
+    integrationId: number
 }
 
 export type AutomatedResponseReturnAction = {
     type: ReturnActionType.AutomatedResponse
-    response_message_content: ResponseMessageContent
+    responseMessageContent: ResponseMessageContent
 }
 
 export type ReturnAction =
@@ -50,14 +50,14 @@ export type SelfServiceConfigurationReturnOrderPolicy =
 
 export type SelfServiceConfigurationTrackOrderPolicy =
     SelfServiceConfigurationPolicy & {
-        unfulfilled_message?: ResponseMessageContent
+        unfulfilledMessage?: ResponseMessageContent
     }
 
 export type SelfServiceConfigurationCancelOrderPolicy =
     SelfServiceConfigurationFilterPolicy & {
         action?: {
             type: typeof AUTOMATED_RESPONSE
-            response_message_content: ResponseMessageContent
+            responseMessageContent: ResponseMessageContent
         }
     }
 
@@ -104,7 +104,7 @@ export type SelfServiceReportIssueCase = {
     title: string
     description: string
     conditions: ReportIssueRulesLogic | Record<string, never>
-    reasons: ReportIssueCaseReason[]
+    newReasons: ReportIssueCaseReason[]
 }
 
 // GET configuration handler returns the legacy string array reasons fields, and the new newReasons field
@@ -124,8 +124,8 @@ export type SelfServiceConfigurationReportIssuePolicy = {
 
 export type QuickResponsePolicy = {
     title: string
-    deactivated_datetime: string | null
-    response_message_content: {
+    deactivatedDatetime: string | null
+    responseMessageContent: {
         html: string
         text: string
         attachments: List<any>
@@ -136,35 +136,24 @@ export type QuickResponsePolicy = {
 export type SelfServiceConfiguration = {
     id: number
     type: ShopType
-    shop_name: string
-    created_datetime: string
-    updated_datetime: string
-    deactivated_datetime: Maybe<string>
-    report_issue_policy: SelfServiceConfigurationReportIssuePolicy
-    track_order_policy: SelfServiceConfigurationTrackOrderPolicy
-    cancel_order_policy: SelfServiceConfigurationCancelOrderPolicy
-    return_order_policy: SelfServiceConfigurationReturnOrderPolicy
-    quick_response_policies: QuickResponsePolicy[]
-    article_recommendation_help_center_id: Maybe<number>
-    workflows_entrypoints?: Maybe<{workflow_id: string}[]>
-}
-
-// cf. comment on SelfServiceReportIssueCase_DEPRECATED
-export type SelfServiceConfiguration_DEPRECATED = Omit<
-    SelfServiceConfiguration,
-    'report_issue_policy'
-> & {
-    report_issue_policy: {
-        enabled: boolean
-        cases: SelfServiceReportIssueCase_DEPRECATED[]
-    }
+    shopName: string
+    createdDatetime: string
+    updatedDatetime: string
+    deactivatedDatetime: Maybe<string>
+    reportIssuePolicy: SelfServiceConfigurationReportIssuePolicy
+    trackOrderPolicy: SelfServiceConfigurationTrackOrderPolicy
+    cancelOrderPolicy: SelfServiceConfigurationCancelOrderPolicy
+    returnOrderPolicy: SelfServiceConfigurationReturnOrderPolicy
+    quickResponsePolicies: QuickResponsePolicy[]
+    articleRecommendationHelpCenterId: Maybe<number>
+    workflowsEntrypoints?: Maybe<{workflow_id: string}[]>
 }
 
 export type PolicyKey =
-    | 'report_issue_policy'
-    | 'track_order_policy'
-    | 'cancel_order_policy'
-    | 'return_order_policy'
+    | 'trackOrderPolicy'
+    | 'reportIssuePolicy'
+    | 'cancelOrderPolicy'
+    | 'returnOrderPolicy'
 
 export type ApiListResponse<T> = {
     data: T
@@ -173,13 +162,6 @@ export type ShopType =
     | IntegrationType.Shopify
     | IntegrationType.Magento2
     | IntegrationType.BigCommerce
-
-export enum PolicyEnum {
-    TRACK_ORDER_POLICY = 'track_order_policy',
-    REPORT_ISSUE_POLICY = 'report_issue_policy',
-    CANCEL_ORDER_POLICY = 'cancel_order_policy',
-    RETURN_ORDER_POLICY = 'return_order_policy',
-}
 
 export enum FilterKeyEnum {
     GORGIAS_ORDER_STATUS = 'gorgias_order_status',

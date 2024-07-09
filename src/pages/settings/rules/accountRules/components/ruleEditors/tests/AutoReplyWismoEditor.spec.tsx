@@ -5,14 +5,49 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-
+import {QueryClientProvider} from '@tanstack/react-query'
 import {IntegrationType} from 'models/integration/constants'
+import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import {ManagedRulesSlugs} from 'state/rules/types'
+import {RootState, StoreDispatch} from 'state/types'
+import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
+
+const mockSelfServiceConfigurations = [
+    {
+        id: 1,
+        type: IntegrationType.Shopify,
+        shopName: 'test-shop',
+        createdDatetime: '2023-11-15 19:00:00.000000',
+        updatedDatetime: '2023-11-15 19:00:00.000000',
+        deactivatedDatetime: null,
+        reportIssuePolicy: {
+            enabled: true,
+            cases: [],
+        },
+        trackOrderPolicy: {
+            enabled: true,
+            unfulfilledMessage: {
+                text: '',
+                html: '',
+            },
+        },
+        cancelOrderPolicy: {
+            enabled: true,
+            eligibilities: [],
+            exceptions: [],
+        },
+        returnOrderPolicy: {
+            enabled: true,
+            eligibilities: [],
+            exceptions: [],
+        },
+        quickResponsePolicies: [],
+        articleRecommendationHelpCenterId: null,
+    },
+]
 
 describe('<AutoReplyWismoEditor/>', () => {
     const minProps: ComponentProps<typeof AutoReplyWismoEditor> = {
@@ -33,7 +68,6 @@ describe('<AutoReplyWismoEditor/>', () => {
                 emptyRuleRecipeFixture,
         },
         helpCenter: {articles: {}, categories: {}, helpCenters: {}},
-        selfServiceConfigurations: {},
     }
 
     it('should render correctly', () => {
@@ -42,10 +76,13 @@ describe('<AutoReplyWismoEditor/>', () => {
             integrations: fromJS({
                 integrations: [{type: IntegrationType.Shopify, meta: {}}],
             }),
+            billing: fromJS({products: []}),
         } as RootState)
         const {container} = render(
             <Provider store={store}>
-                <AutoReplyWismoEditor {...minProps} />
+                <QueryClientProvider client={mockQueryClient()}>
+                    <AutoReplyWismoEditor {...minProps} />
+                </QueryClientProvider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -56,10 +93,13 @@ describe('<AutoReplyWismoEditor/>', () => {
             integrations: fromJS({
                 integrations: [],
             }),
+            billing: fromJS({products: []}),
         } as RootState)
         const {container} = render(
             <Provider store={store}>
-                <AutoReplyWismoEditor {...minProps} />
+                <QueryClientProvider client={mockQueryClient()}>
+                    <AutoReplyWismoEditor {...minProps} />
+                </QueryClientProvider>
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -68,39 +108,6 @@ describe('<AutoReplyWismoEditor/>', () => {
         const store = mockStore({
             entities: {
                 ...entities,
-                selfServiceConfigurations: {
-                    '0': {
-                        id: 1,
-                        type: IntegrationType.Shopify,
-                        shop_name: 'test-shop',
-                        created_datetime: '2023-11-15 19:00:00.000000',
-                        updated_datetime: '2023-11-15 19:00:00.000000',
-                        deactivated_datetime: null,
-                        report_issue_policy: {
-                            enabled: true,
-                            cases: [],
-                        },
-                        track_order_policy: {
-                            enabled: true,
-                            unfulfilled_message: {
-                                text: '',
-                                html: '',
-                            },
-                        },
-                        cancel_order_policy: {
-                            enabled: true,
-                            eligibilities: [],
-                            exceptions: [],
-                        },
-                        return_order_policy: {
-                            enabled: true,
-                            eligibilities: [],
-                            exceptions: [],
-                        },
-                        quick_response_policies: [],
-                        article_recommendation_help_center_id: null,
-                    },
-                },
             },
             integrations: fromJS({
                 integrations: [
@@ -110,11 +117,25 @@ describe('<AutoReplyWismoEditor/>', () => {
                     },
                 ],
             }),
+            billing: fromJS({products: []}),
         } as unknown as RootState)
+
+        const useGetSelfServiceConfigurationsMock = jest.spyOn(
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            require('models/selfServiceConfiguration/queries'),
+            'useGetSelfServiceConfigurations'
+        )
+
+        useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
+            data: mockSelfServiceConfigurations,
+            isLoading: false,
+        }))
 
         render(
             <Provider store={store}>
-                <AutoReplyWismoEditor {...minProps} />
+                <QueryClientProvider client={mockQueryClient()}>
+                    <AutoReplyWismoEditor {...minProps} />
+                </QueryClientProvider>
             </Provider>
         )
         await screen.findByText(

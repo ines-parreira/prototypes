@@ -12,7 +12,6 @@ import {updateOrCreateIntegration} from 'state/integrations/actions'
 import {getIntegrationsByTypes} from 'state/integrations/selectors'
 import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
 import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
-import {selfServiceConfigurationUpdated} from 'state/entities/selfServiceConfigurations/actions'
 import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatIntegration,
@@ -22,7 +21,6 @@ import {
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
 import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
 import {QuickResponsePolicy} from 'models/selfServiceConfiguration/types'
-import {updateSelfServiceConfiguration} from 'models/selfServiceConfiguration/resources'
 import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import Button from 'pages/common/components/button/Button'
@@ -33,6 +31,10 @@ import SelfServicePreviewContext from 'pages/automate/common/components/preview/
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
 import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
 
+import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
+import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
 import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import useHelpCenterOfShop from '../../../hooks/useHelpCenterOfShop'
@@ -41,7 +43,6 @@ import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPrevie
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 
 import css from './GorgiasChatCreationWizardStepAutomate.less'
-import useSelfServiceConfiguration from './hooks/useSelfServiceConfiguration'
 import GorgiasChatCreationWizardQuickResponses from './components/GorgiasChatCreationWizardQuickResponses'
 import GorgiasChatCreationWizardQuickResponseNotConfiguredModal, {
     GorgiasChatCreationWizardQuickResponseNotConfiguredModalHandle,
@@ -59,8 +60,8 @@ type SubmitForm = {
 const draftQuickResponse: QuickResponsePolicy = {
     id: '',
     title: 'What is your shipping policy?',
-    deactivated_datetime: new Date().toISOString(),
-    response_message_content: {
+    deactivatedDatetime: new Date().toISOString(),
+    responseMessageContent: {
         html: '',
         text: '',
         attachments: fromJS([]),
@@ -165,8 +166,6 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 gorgiasChatIntegration?.meta.shop_integration_id
         )
 
-    const shopIntegrationId = storeIntegration?.id
-
     const isStoreOfShopifyType =
         storeIntegration?.type === IntegrationType.Shopify
 
@@ -175,8 +174,14 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             isStoreOfShopifyType ? storeIntegration : undefined
         )
 
-    const {selfServiceConfiguration, isLoadingSelfServiceConfiguration} =
-        useSelfServiceConfiguration(shopIntegrationId)
+    const shopName = storeIntegration
+        ? getShopNameFromStoreIntegration(storeIntegration)
+        : undefined
+
+    const {
+        data: selfServiceConfiguration,
+        isLoading: isLoadingSelfServiceConfiguration,
+    } = useGetSelfServiceConfiguration(shopName, storeIntegration?.type)
 
     useMemo(() => {
         if (!selfServiceConfiguration) {
@@ -185,13 +190,13 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
         if (initialQuickResponses.length) {
             setQuickResponses(
-                selfServiceConfiguration?.quick_response_policies.filter(
-                    ({id}) => initialQuickResponses.includes(id)
+                selfServiceConfiguration?.quickResponsePolicies.filter(({id}) =>
+                    initialQuickResponses.includes(id)
                 )
             )
         } else {
             const draftPolicy =
-                selfServiceConfiguration?.quick_response_policies.find(
+                selfServiceConfiguration?.quickResponsePolicies.find(
                     ({title}) => title === draftQuickResponse.title
                 )
 
@@ -221,9 +226,9 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const hasActiveQuickResponsePoliciesInitially =
         selfServiceConfiguration &&
-        selfServiceConfiguration.quick_response_policies.some(
+        selfServiceConfiguration.quickResponsePolicies.some(
             (quickResponse) =>
-                !quickResponse.deactivated_datetime &&
+                !quickResponse.deactivatedDatetime &&
                 !initialQuickResponses.includes(quickResponse.id)
         )
 
@@ -256,6 +261,23 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         currentIsOrderManagementEnabled === undefined &&
         currentIsQuickResponsesEnabled === undefined
 
+    const {handleSelfServiceConfigurationUpdate} =
+        useSelfServiceConfigurationUpdate({
+            handleNotify: (notification) => {
+                if (
+                    notification.status === NotificationStatus.Error &&
+                    notification.message
+                ) {
+                    void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: notification.message,
+                        })
+                    )
+                }
+            },
+        })
+
     const updateAutomationSettings = async () => {
         const res = await upsertChatApplicationAutomationSettings(appId!, {
             articleRecommendation: {
@@ -266,7 +288,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 enabled: hasActiveQuickResponsePoliciesInitially
                     ? isQuickResponsesEnabled
                     : quickResponses.filter(
-                          ({deactivated_datetime}) => !deactivated_datetime
+                          ({deactivatedDatetime}) => !deactivatedDatetime
                       ).length > 0,
             },
             workflows: {enabled: !!automationSettings?.workflows?.enabled},
@@ -283,37 +305,38 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         )
 
         const quickResponsePolicies = hasActiveQuickResponsePoliciesInitially
-            ? selfServiceConfiguration.quick_response_policies
+            ? selfServiceConfiguration.quickResponsePolicies
             : [
                   ...quickResponses,
-                  ...selfServiceConfiguration!.quick_response_policies.filter(
+                  ...selfServiceConfiguration!.quickResponsePolicies.filter(
                       ({id}) =>
                           !quickResponseIds.includes(id) &&
                           !removedQuickResponseIds.includes(id)
                   ),
               ]
+        if (!storeIntegration || !selfServiceConfiguration) return
 
-        const res = await updateSelfServiceConfiguration({
-            ...selfServiceConfiguration!,
-            article_recommendation_help_center_id:
-                isArticleRecommendationEnabled
-                    ? selfServiceConfiguration!
-                          .article_recommendation_help_center_id ||
-                      (activeHelpCenters.length > 1
-                          ? helpCenterId
-                          : activeHelpCenters[0].id)
-                    : selfServiceConfiguration!
-                          .article_recommendation_help_center_id,
-            track_order_policy: {
-                enabled:
-                    storeIntegration?.type === IntegrationType.Shopify
-                        ? isOrderManagementEnabled
-                        : selfServiceConfiguration!.track_order_policy.enabled,
+        await handleSelfServiceConfigurationUpdate(
+            (draft) => {
+                draft.articleRecommendationHelpCenterId =
+                    isArticleRecommendationEnabled
+                        ? selfServiceConfiguration.articleRecommendationHelpCenterId ||
+                          (activeHelpCenters.length > 1
+                              ? helpCenterId
+                              : activeHelpCenters[0].id)
+                        : selfServiceConfiguration.articleRecommendationHelpCenterId
+
+                draft.trackOrderPolicy = {
+                    enabled:
+                        storeIntegration?.type === IntegrationType.Shopify
+                            ? isOrderManagementEnabled
+                            : selfServiceConfiguration.trackOrderPolicy.enabled,
+                }
+                draft.quickResponsePolicies = quickResponsePolicies
             },
-            quick_response_policies: quickResponsePolicies,
-        })
-
-        void dispatch(selfServiceConfigurationUpdated(res))
+            {},
+            storeIntegration.id
+        )
     }
 
     const updateAutomation = async () => {
@@ -340,7 +363,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             !bypassQuickResponseErrors
         ) {
             const hasQuickResponsesWithoutResponse = quickResponses.some(
-                ({response_message_content: {text, html, attachments}}) =>
+                ({responseMessageContent: {text, html, attachments}}) =>
                     !text && !html && attachments.isEmpty()
             )
 
@@ -350,7 +373,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             }
 
             const hasQuickResponsesDisabled = quickResponses.some(
-                ({deactivated_datetime}) => deactivated_datetime
+                ({deactivatedDatetime}) => deactivatedDatetime
             )
 
             if (hasQuickResponsesDisabled) {
@@ -434,22 +457,22 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             quickResponse: expandedQuickResponse,
             selfServiceConfiguration: selfServiceConfiguration && {
                 ...selfServiceConfiguration,
-                track_order_policy: {enabled: isOrderManagementEnabled},
-                report_issue_policy: {
-                    ...selfServiceConfiguration.report_issue_policy,
+                trackOrderPolicy: {enabled: isOrderManagementEnabled},
+                reportIssuePolicy: {
+                    ...selfServiceConfiguration.reportIssuePolicy,
                     enabled: false,
                 },
-                cancel_order_policy: {
-                    ...selfServiceConfiguration.cancel_order_policy,
+                cancelOrderPolicy: {
+                    ...selfServiceConfiguration.cancelOrderPolicy,
                     enabled: false,
                 },
-                return_order_policy: {
-                    ...selfServiceConfiguration.return_order_policy,
+                returnOrderPolicy: {
+                    ...selfServiceConfiguration.returnOrderPolicy,
                     enabled: false,
                 },
-                quick_response_policies: hasActiveQuickResponsePoliciesInitially
+                quickResponsePolicies: hasActiveQuickResponsePoliciesInitially
                     ? isQuickResponsesEnabled
-                        ? selfServiceConfiguration.quick_response_policies
+                        ? selfServiceConfiguration.quickResponsePolicies
                         : []
                     : quickResponses,
             },
@@ -614,7 +637,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             {isArticleRecommendationEnabled &&
                                 !isLoadingSelfServiceConfiguration &&
                                 !isLoadingHelpCenters &&
-                                !selfServiceConfiguration?.article_recommendation_help_center_id &&
+                                !selfServiceConfiguration?.articleRecommendationHelpCenterId &&
                                 activeHelpCenters.length > 1 && (
                                     <div className={css.helpCenterSection}>
                                         <Label isRequired>

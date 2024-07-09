@@ -36,7 +36,7 @@ export default function useStoreWorkflows({
         })
 
     const workflows =
-        selfServiceConfiguration?.workflows_entrypoints
+        selfServiceConfiguration?.workflowsEntrypoints
             ?.filter((e) => configurationsMap[e.workflow_id])
             .map((e) => configurationsMap[e.workflow_id]) ?? []
 

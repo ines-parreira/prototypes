@@ -72,7 +72,7 @@ const TrainMyAiView = () => {
         useApplicationsAutomationSettings(chatApplicationsIds)
 
     const helpCenterId =
-        selfServiceConfiguration?.article_recommendation_help_center_id
+        selfServiceConfiguration?.articleRecommendationHelpCenterId
 
     const {
         data: helpCenterData,

@@ -28,32 +28,32 @@ export const automationSettingsFixture = {
 export const selfServiceConfigurationFixture = {
     id: 1,
     type: 'shopify' as ShopType,
-    shop_name: 'acme',
-    created_datetime: '2023-02-21T19:21:06.804Z',
-    updated_datetime: '2023-02-21T19:21:06.804Z',
-    deactivated_datetime: null,
-    report_issue_policy: {
+    shopName: 'acme',
+    createdDatetime: '2023-02-21T19:21:06.804Z',
+    updatedDatetime: '2023-02-21T19:21:06.804Z',
+    deactivatedDatetime: null,
+    reportIssuePolicy: {
         cases: [],
         enabled: true,
     },
-    track_order_policy: {enabled: true},
-    cancel_order_policy: {
+    trackOrderPolicy: {enabled: true},
+    cancelOrderPolicy: {
         eligibilities: [],
         enabled: true,
         exceptions: [],
-        created_datetime: '2023-02-21T19:21:06.804Z',
-        deactivated_datetime: null,
+        createdDatetime: '2023-02-21T19:21:06.804Z',
+        deactivatedDatetime: null,
         id: 1,
     },
-    return_order_policy: {
+    returnOrderPolicy: {
         eligibilities: [],
         enabled: true,
         exceptions: [],
         shop_name: 'acme',
     },
-    quick_response_policies: [],
-    article_recommendation_help_center_id: 22,
-    workflows_entrypoints: [
+    quickResponsePolicies: [],
+    articleRecommendationHelpCenterId: 22,
+    workflowsEntrypoints: [
         {
             workflow_id: 'workflow_id_1',
         },

@@ -34,21 +34,21 @@ const ControlTicketVolumeControls: React.FC<Props> = ({
     const toggleInputRef = useRef(null)
 
     const helpCenterArticlesCount = useHelpCenterPublishedArticlesCount(
-        selfServiceConfiguration?.article_recommendation_help_center_id
+        selfServiceConfiguration?.articleRecommendationHelpCenterId
     )
 
     const isLoading =
         articleRecommendationEnabled === undefined ||
         selfServiceConfiguration === undefined ||
-        (selfServiceConfiguration?.article_recommendation_help_center_id &&
+        (selfServiceConfiguration?.articleRecommendationHelpCenterId &&
             helpCenterArticlesCount === undefined)
 
     const disableTicketControlVolume =
         isLoading ||
         !!(
             articleRecommendationEnabled &&
-            !selfServiceConfiguration?.deactivated_datetime &&
-            selfServiceConfiguration?.article_recommendation_help_center_id &&
+            !selfServiceConfiguration?.deactivatedDatetime &&
+            selfServiceConfiguration?.articleRecommendationHelpCenterId &&
             helpCenterArticlesCount
         )
 

@@ -17,16 +17,17 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
 
     const scenarios = useMemo(
-        () => selfServiceConfiguration?.report_issue_policy?.cases ?? [],
-        [selfServiceConfiguration?.report_issue_policy?.cases]
+        () => selfServiceConfiguration?.reportIssuePolicy?.cases ?? [],
+        [selfServiceConfiguration?.reportIssuePolicy?.cases]
     )
+
     const handleScenariosUpdate = useCallback(
         (
             scenarios: SelfServiceReportIssueCase[],
             messages: {success?: string; error?: string} = {}
         ) => {
             return handleSelfServiceConfigurationUpdate((draft) => {
-                draft.report_issue_policy.cases = scenarios
+                draft.reportIssuePolicy.cases = scenarios
             }, messages)
         },
         [handleSelfServiceConfigurationUpdate]

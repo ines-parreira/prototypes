@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import {EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
 import classnames from 'classnames'
+import {fromJS} from 'immutable'
+import type {List, Map} from 'immutable'
 
 import {UploadType} from 'common/types'
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -13,6 +14,8 @@ import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/compon
 import {trimHTML} from 'utils/html'
 import {IntegrationType} from 'models/integration/constants'
 
+import {toJS} from 'utils'
+import {Attachment} from 'models/ticket/types'
 import {
     usePropagateError,
     useQuickResponsesViewContext,
@@ -25,9 +28,9 @@ import {
 import css from './QuickResponseResponseMessageContent.less'
 
 type Props = {
-    responseMessageContent: QuickResponsePolicy['response_message_content']
+    responseMessageContent: QuickResponsePolicy['responseMessageContent']
     onChange: (
-        responseMessageContent: QuickResponsePolicy['response_message_content']
+        responseMessageContent: QuickResponsePolicy['responseMessageContent']
     ) => void
 }
 
@@ -35,7 +38,18 @@ const QuickResponseResponseMessageContent = ({
     responseMessageContent,
     onChange,
 }: Props) => {
-    const attachments = responseMessageContent.attachments
+    const attachments = useMemo(() => {
+        const attachmentsJS: (Attachment & {contentType: string})[] = toJS(
+            responseMessageContent.attachments
+        )
+
+        return fromJS(
+            attachmentsJS.map(({contentType, ...attachment}) => ({
+                ...attachment,
+                content_type: contentType,
+            }))
+        ) as List<Map<any, any>>
+    }, [responseMessageContent.attachments])
 
     const hasError =
         responseMessageContent.text.length >

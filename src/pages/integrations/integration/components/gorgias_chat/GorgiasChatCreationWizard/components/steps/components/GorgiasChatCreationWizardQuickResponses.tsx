@@ -79,10 +79,10 @@ const GorgiasChatCreationWizardQuickResponses: React.FC<Props> = ({
         () =>
             quickResponses.map((quickResponse) => ({
                 ...quickResponse,
-                response_message_content: {
-                    ...quickResponse.response_message_content,
+                responseMessageContent: {
+                    ...quickResponse.responseMessageContent,
                     attachments: toImmutable<List<any>>(
-                        quickResponse.response_message_content.attachments ?? []
+                        quickResponse.responseMessageContent.attachments ?? []
                     ),
                 },
             })),
@@ -97,8 +97,8 @@ const GorgiasChatCreationWizardQuickResponses: React.FC<Props> = ({
         const newQuickResponse = {
             id: uuidv4(),
             title: '',
-            deactivated_datetime: new Date().toISOString(),
-            response_message_content: {
+            deactivatedDatetime: new Date().toISOString(),
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),

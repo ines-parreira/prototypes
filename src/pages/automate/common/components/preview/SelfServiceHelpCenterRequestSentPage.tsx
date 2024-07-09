@@ -26,11 +26,11 @@ const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
 
     const getTotalAmountLabel = () => {
         switch (orderManagementFlow) {
-            case 'return_order_policy':
+            case 'returnOrderPolicy':
                 return helpCenterTexts.totalReturnedAmountLabel
-            case 'cancel_order_policy':
+            case 'cancelOrderPolicy':
                 return helpCenterTexts.totalCanceledAmountLabel
-            case 'report_issue_policy':
+            case 'reportIssuePolicy':
                 return helpCenterTexts.totalAmountLabel
         }
     }

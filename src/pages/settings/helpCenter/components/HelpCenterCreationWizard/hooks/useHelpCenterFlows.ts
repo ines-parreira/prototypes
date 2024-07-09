@@ -35,7 +35,7 @@ export const useHelpCenterFlows = ({
     const availableWorkflowsEntrypoints = useMemo(
         () =>
             // Filter entrypoints not supported or filtered
-            selfServiceConfiguration?.workflows_entrypoints?.filter(
+            selfServiceConfiguration?.workflowsEntrypoints?.filter(
                 (sspConfig) =>
                     supportedWorkflowConfigurations?.find(
                         (workflowConfig) =>
@@ -43,7 +43,7 @@ export const useHelpCenterFlows = ({
                     )
             ) ?? [],
         [
-            selfServiceConfiguration?.workflows_entrypoints,
+            selfServiceConfiguration?.workflowsEntrypoints,
             supportedWorkflowConfigurations,
         ]
     )

@@ -17,41 +17,37 @@ const useQuickResponses = (shopType: string, shopName: string) => {
     } = useSelfServiceConfiguration(shopType, shopName)
 
     const handleQuickResponsesUpdate = useCallback(
-        (
-            quickResponses: SelfServiceConfiguration['quick_response_policies']
-        ) => {
+        (quickResponses: SelfServiceConfiguration['quickResponsePolicies']) => {
             const trimmedQuickResponses = quickResponses.map(
                 (quickResponse) => {
                     const html = trimHTML(
-                        quickResponse.response_message_content.html
+                        quickResponse.responseMessageContent.html
                     )
 
                     return {
                         ...quickResponse,
-                        response_message_content: {
-                            ...quickResponse.response_message_content,
+                        responseMessageContent: {
+                            ...quickResponse.responseMessageContent,
                             html: html.length
                                 ? convertToHTML(convertFromHTML(html))
                                 : html,
-                            text: quickResponse.response_message_content.text.trim(),
+                            text: quickResponse.responseMessageContent.text.trim(),
                         },
                     }
                 }
             )
 
             void handleSelfServiceConfigurationUpdate((draft) => {
-                draft.quick_response_policies = trimmedQuickResponses
+                draft.quickResponsePolicies = trimmedQuickResponses
             })
         },
         [handleSelfServiceConfigurationUpdate]
     )
     const handleQuickResponsesDelete = useCallback(
-        (
-            quickResponses: SelfServiceConfiguration['quick_response_policies']
-        ) => {
+        (quickResponses: SelfServiceConfiguration['quickResponsePolicies']) => {
             void handleSelfServiceConfigurationUpdate(
                 (draft) => {
-                    draft.quick_response_policies = quickResponses
+                    draft.quickResponsePolicies = quickResponses
                 },
                 {success: 'Successfully deleted', error: 'Failed to delete'}
             )
@@ -60,19 +56,19 @@ const useQuickResponses = (shopType: string, shopName: string) => {
     )
     const quickResponses = useMemo(
         () =>
-            (selfServiceConfiguration?.quick_response_policies ?? []).map(
+            (selfServiceConfiguration?.quickResponsePolicies ?? []).map(
                 (quickResponse) => ({
                     ...quickResponse,
-                    response_message_content: {
-                        ...quickResponse.response_message_content,
+                    responseMessageContent: {
+                        ...quickResponse.responseMessageContent,
                         attachments: toImmutable<List<any>>(
-                            quickResponse.response_message_content
-                                .attachments ?? []
+                            quickResponse.responseMessageContent.attachments ??
+                                []
                         ),
                     },
                 })
             ),
-        [selfServiceConfiguration?.quick_response_policies]
+        [selfServiceConfiguration?.quickResponsePolicies]
     )
 
     return {

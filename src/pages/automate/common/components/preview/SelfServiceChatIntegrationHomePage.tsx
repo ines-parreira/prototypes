@@ -59,15 +59,15 @@ const SelfServiceChatIntegrationHomePage = ({
     const translatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
     const quickResponses =
-        selfServiceConfiguration?.quick_response_policies.filter(
-            (quickResponse) => !quickResponse.deactivated_datetime
+        selfServiceConfiguration?.quickResponsePolicies.filter(
+            (quickResponse) => !quickResponse.deactivatedDatetime
         ) ?? []
-    const canTrackOrders = selfServiceConfiguration?.track_order_policy.enabled
+    const canTrackOrders = selfServiceConfiguration?.trackOrderPolicy.enabled
     const canManageOrders =
         canTrackOrders ||
-        selfServiceConfiguration?.report_issue_policy.enabled ||
-        selfServiceConfiguration?.cancel_order_policy.enabled ||
-        selfServiceConfiguration?.return_order_policy.enabled
+        selfServiceConfiguration?.reportIssuePolicy.enabled ||
+        selfServiceConfiguration?.cancelOrderPolicy.enabled ||
+        selfServiceConfiguration?.returnOrderPolicy.enabled
     const isInitialEntry = history.length === 1
 
     let variant = 'collapsed'

@@ -18,10 +18,10 @@ describe('<HelpCenterPreviewAutomation />', () => {
             },
         ]
         const orderManagement = [
-            'report_issue_policy',
-            'track_order_policy',
-            'cancel_order_policy',
-            'return_order_policy',
+            'reportIssuePolicy',
+            'trackOrderPolicy',
+            'cancelOrderPolicy',
+            'returnOrderPolicy',
         ] as const
 
         renderComponent({flows, orderManagement})

@@ -124,38 +124,38 @@ const ConnectedChannelsPreview = ({
                     value={{
                         selfServiceConfiguration: {
                             ...selfServiceConfiguration,
-                            report_issue_policy: isOrderManagementEnabled
-                                ? selfServiceConfiguration.report_issue_policy
+                            reportIssuePolicy: isOrderManagementEnabled
+                                ? selfServiceConfiguration.reportIssuePolicy
                                 : {
-                                      ...selfServiceConfiguration.report_issue_policy,
+                                      ...selfServiceConfiguration.reportIssuePolicy,
                                       enabled: false,
                                   },
-                            track_order_policy: isOrderManagementEnabled
-                                ? selfServiceConfiguration.track_order_policy
+                            trackOrderPolicy: isOrderManagementEnabled
+                                ? selfServiceConfiguration.trackOrderPolicy
                                 : {
-                                      ...selfServiceConfiguration.track_order_policy,
+                                      ...selfServiceConfiguration.trackOrderPolicy,
                                       enabled: false,
                                   },
-                            cancel_order_policy: isOrderManagementEnabled
-                                ? selfServiceConfiguration.cancel_order_policy
+                            cancelOrderPolicy: isOrderManagementEnabled
+                                ? selfServiceConfiguration.cancelOrderPolicy
                                 : {
-                                      ...selfServiceConfiguration.cancel_order_policy,
+                                      ...selfServiceConfiguration.cancelOrderPolicy,
                                       enabled: false,
                                   },
-                            return_order_policy: isOrderManagementEnabled
-                                ? selfServiceConfiguration.return_order_policy
+                            returnOrderPolicy: isOrderManagementEnabled
+                                ? selfServiceConfiguration.returnOrderPolicy
                                 : {
-                                      ...selfServiceConfiguration.return_order_policy,
+                                      ...selfServiceConfiguration.returnOrderPolicy,
                                       enabled: false,
                                   },
-                            quick_response_policies: areQuickResponsesEnabled
-                                ? selfServiceConfiguration.quick_response_policies
+                            quickResponsePolicies: areQuickResponsesEnabled
+                                ? selfServiceConfiguration.quickResponsePolicies
                                 : [],
                         },
                         isArticleRecommendationEnabled:
                             isArticleRecommendationEnabled &&
                             Boolean(
-                                selfServiceConfiguration.article_recommendation_help_center_id
+                                selfServiceConfiguration.articleRecommendationHelpCenterId
                             ),
                         workflowsEntrypoints,
                     }}

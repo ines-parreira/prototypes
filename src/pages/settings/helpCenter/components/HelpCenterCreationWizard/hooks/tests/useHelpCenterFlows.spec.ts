@@ -133,7 +133,7 @@ describe('useHelpCenterFlows', () => {
             isFetchPending: false,
             isUpdatePending: false,
             selfServiceConfiguration: {
-                workflows_entrypoints: workflowConfigurations.map((config) => ({
+                workflowsEntrypoints: workflowConfigurations.map((config) => ({
                     workflow_id: config.id,
                 })),
             } as unknown as SelfServiceConfiguration,

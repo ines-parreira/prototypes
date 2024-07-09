@@ -49,7 +49,7 @@ const ReportOrderIssueScenarioItem = ({
     const handleClick = () => {
         history.push(`${pathname}/${position}`)
     }
-    const isResponseNotConfiguredForAny = item.reasons.some(
+    const isResponseNotConfiguredForAny = item.newReasons.some(
         (reason) =>
             !reason.action?.responseMessageContent.html &&
             !reason.action?.responseMessageContent.text

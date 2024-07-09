@@ -34,9 +34,9 @@ describe('<QuickResponsesAccordionItem />', () => {
     it('should deactivate the quick response', () => {
         const item = {
             id: 'ded6b39b-a85c-487e-8658-3f380d238528',
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             title: 'How do I choose the right size?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -67,9 +67,9 @@ describe('<QuickResponsesAccordionItem />', () => {
     it('should activate the quick response', () => {
         const item = {
             id: 'ded6b39b-a85c-487e-8658-3f380d238528',
-            deactivated_datetime: '2021-01-15T15:26:02.575404+00:00',
+            deactivatedDatetime: '2021-01-15T15:26:02.575404+00:00',
             title: 'How do I choose the right size?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -100,9 +100,9 @@ describe('<QuickResponsesAccordionItem />', () => {
     it('should delete the quick response', () => {
         const item = {
             id: 'ded6b39b-a85c-487e-8658-3f380d238528',
-            deactivated_datetime: null,
+            deactivatedDatetime: null,
             title: 'How do I choose the right size?',
-            response_message_content: {
+            responseMessageContent: {
                 html: '',
                 text: '',
                 attachments: fromJS([]),
@@ -154,10 +154,10 @@ describe('<QuickResponsesAccordionItem />', () => {
                     <QuickResponsesAccordionItem
                         item={{
                             id: 'ded6b39b-a85c-487e-8658-3f380d238528',
-                            deactivated_datetime:
+                            deactivatedDatetime:
                                 '2021-01-15T15:26:02.575404+00:00',
                             title: 'How do I choose the right size?',
-                            response_message_content: {
+                            responseMessageContent: {
                                 html: '',
                                 text: '',
                                 attachments: fromJS([]),

@@ -1,19 +1,15 @@
-import {useCallback, useEffect, useMemo} from 'react'
+import {useCallback, useEffect} from 'react'
 
 import {Draft} from 'immer'
-import useAppSelector from 'hooks/useAppSelector'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAsyncFn from 'hooks/useAsyncFn'
-import {getSelfServiceConfigurations} from 'state/entities/selfServiceConfigurations/selectors'
+
 import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {
-    fetchSelfServiceConfiguration,
-    updateSelfServiceConfiguration,
-} from 'models/selfServiceConfiguration/resources'
-import {selfServiceConfigurationFetched} from 'state/entities/selfServiceConfigurations/actions'
+
 import {notify} from 'state/notifications/actions'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 
+import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
 
@@ -23,9 +19,9 @@ const useSelfServiceConfiguration = (
     notificationHandler?: (notification: Notification) => void
 ) => {
     const dispatch = useAppDispatch()
-    const selfServiceConfigurations = useAppSelector(
-        getSelfServiceConfigurations
-    )
+    const {data: selfServiceConfiguration, isLoading: isFetchPending} =
+        useGetSelfServiceConfiguration(shopType, shopName)
+
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
     const storeIntegrationId = storeIntegration?.id
     const handleNotify = useCallback(
@@ -38,27 +34,6 @@ const useSelfServiceConfiguration = (
         },
         [notificationHandler, dispatch]
     )
-
-    const [{loading: isFetchPending}, handleSelfServiceConfigurationFetch] =
-        useAsyncFn(async (storeIntegrationId: number) => {
-            try {
-                let res = await fetchSelfServiceConfiguration(
-                    storeIntegrationId
-                )
-                if (res.deactivated_datetime) {
-                    res = await updateSelfServiceConfiguration({
-                        ...res,
-                        deactivated_datetime: null,
-                    })
-                }
-                void dispatch(selfServiceConfigurationFetched(res))
-            } catch (error) {
-                handleNotify({
-                    message: 'Failed to fetch',
-                    status: NotificationStatus.Error,
-                })
-            }
-        }, [])
 
     const {
         isUpdatePending,
@@ -86,14 +61,6 @@ const useSelfServiceConfiguration = (
         [handleConfigurationUpdate, storeIntegrationId]
     )
 
-    const selfServiceConfiguration = useMemo(() => {
-        return selfServiceConfigurations.find(
-            (selfServiceConfiguration) =>
-                selfServiceConfiguration.type === shopType &&
-                selfServiceConfiguration.shop_name === shopName
-        )
-    }, [shopType, shopName, selfServiceConfigurations])
-
     useEffect(() => {
         if (!storeIntegrationId) {
             handleNotify({
@@ -102,16 +69,6 @@ const useSelfServiceConfiguration = (
             })
         }
     }, [storeIntegrationId, handleNotify])
-
-    useEffect(() => {
-        if (!selfServiceConfiguration && storeIntegrationId) {
-            void handleSelfServiceConfigurationFetch(storeIntegrationId)
-        }
-    }, [
-        selfServiceConfiguration,
-        storeIntegrationId,
-        handleSelfServiceConfigurationFetch,
-    ])
 
     return {
         isFetchPending,
