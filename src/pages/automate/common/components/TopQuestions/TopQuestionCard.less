@@ -1,0 +1,90 @@
+@import (reference) '~css/typography';
+@import (reference) '~css/new/mixins';
+
+:local {
+    .container {
+        width: 276.5px;
+        height: 192px;
+
+        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
+
+        padding: 16px;
+
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .header {
+        width: 100%;
+        height: 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .ticketsCount {
+        padding: 4px 8px;
+
+        text-transform: uppercase;
+        font-size: 12px;
+
+        background: #eaf1ff;
+        border-radius: 4px;
+        height: 24px;
+
+        .caption-semibold();
+
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        color: var(--accessory-blue-3);
+    }
+
+    .title {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-6);
+        .line-clamp(3);
+
+        i {
+            font-size: 20px;
+            line-height: 24px;
+        }
+    }
+
+    .createArticle {
+        width: 93px;
+        height: 32px;
+        line-height: 32px;
+        cursor: pointer;
+
+        color: var(--main-primary);
+    }
+
+    .dismiss {
+        display: none;
+        cursor: pointer;
+        height: 24px;
+
+        color: var(--neutral-grey-4);
+
+        i {
+            font-size: 24px;
+        }
+    }
+
+    .container:hover .dismiss {
+        display: block;
+    }
+
+    .loading {
+        width: 100%;
+
+        background: linear-gradient(90deg, #d2d7de 0%, #f4f5f7 100%);
+        border-radius: 2px;
+    }
+}
