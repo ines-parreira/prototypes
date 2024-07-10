@@ -12,7 +12,7 @@ import {notify} from 'state/notifications/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {getBillingStateQuery} from 'models/billing/queries'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {applySalesCoupon} from 'models/billing/resources'
+import {addSalesCoupon, deleteSalesCoupon} from 'models/billing/resources'
 import css from './AddSalesCouponModal.less'
 
 interface AddSalesCouponModalProps {
@@ -46,7 +46,7 @@ export default function AddSalesCouponModal({
 
     const applyCouponMutation = useMutation({
         mutationFn: (params: {coupon_name: string; reason: string}) =>
-            applySalesCoupon(params),
+            addSalesCoupon(params),
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
             handleCloseModalAndResetState()
@@ -81,11 +81,7 @@ export default function AddSalesCouponModal({
     })
 
     const deleteCouponMutation = useMutation({
-        mutationFn: () =>
-            applySalesCoupon({
-                coupon_name: '',
-                reason: '',
-            }),
+        mutationFn: () => deleteSalesCoupon(),
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
             handleCloseModalAndResetState()

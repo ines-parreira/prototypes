@@ -33,7 +33,7 @@ export async function getCouponsForSales() {
     return res.data
 }
 
-export async function applySalesCoupon({
+export async function addSalesCoupon({
     coupon_name,
     reason,
 }: {
@@ -44,6 +44,11 @@ export async function applySalesCoupon({
         coupon_name: coupon_name,
         reason: reason,
     })
+    return res
+}
+
+export async function deleteSalesCoupon() {
+    const res = await client.delete(`/billing/coupon`)
     return res
 }
 
