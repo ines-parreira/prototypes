@@ -76,8 +76,7 @@ export default function SLAFormView({
                             title="Policy"
                             description="Define the first response time and / or
                                 resolution times to be set as goals by your
-                                team(s). Clear out the time value to deactivate
-                                the metric."
+                                team(s)."
                         >
                             <MetricsFieldArray />
                             <FormField
