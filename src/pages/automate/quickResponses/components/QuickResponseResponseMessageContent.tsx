@@ -72,16 +72,24 @@ const QuickResponseResponseMessageContent = ({
             text,
         })
     }
-    const handleAddAttachment = (attachment: ProductCardAttachment) => {
+    const handleAddAttachment = ({
+        content_type,
+        ...attachment
+    }: ProductCardAttachment) => {
         onChange({
             ...responseMessageContent,
-            attachments: attachments.push(fromJS(attachment)),
+            attachments: responseMessageContent.attachments.push(
+                fromJS({
+                    ...attachment,
+                    contentType: content_type,
+                })
+            ),
         })
     }
     const handleDeleteAttachment = (index: number) => {
         onChange({
             ...responseMessageContent,
-            attachments: attachments.delete(index),
+            attachments: responseMessageContent.attachments.delete(index),
         })
     }
 
