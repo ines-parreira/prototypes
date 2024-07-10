@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import css from './TopQuestionCard.less'
 
 type Props = {
@@ -62,7 +63,7 @@ export const TopQuestionCard = ({
 }
 
 const LoadingDiv = ({heightPx}: {heightPx: number}) => (
-    <div className={css.loading} style={{height: `${heightPx}px`}} />
+    <Skeleton height={heightPx} baseColor="#d2d7de" highlightColor="#f4f5f7" />
 )
 
 export const TopQuestionCardLoading = () => {

@@ -1,0 +1,91 @@
+@import (reference) '~css/typography';
+
+:local {
+    .container {
+        width: 100%;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .subheader {
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .subheaderCaption {
+        .body-regular();
+    }
+
+    .topQuestions {
+        display: flex;
+        flex-direction: row;
+        gap: 16px;
+    }
+
+    .headerCaption {
+        .heading-page-semibold();
+    }
+
+    .headerLeft {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .headerNewBadge {
+        height: 18px;
+        align-self: center;
+    }
+
+    .filters {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .shopLabelIcon {
+        height: 16px;
+        width: 16px;
+    }
+
+    .filterLabel {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .filterDropdownMenu {
+        min-width: 272px;
+        right: 0 !important;
+        left: auto !important;
+    }
+
+    .topQuestionsEmpty {
+        width: 100%;
+        background-color: var(--neutral-grey-1);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        height: 232px;
+    }
+
+    .allReviewed {
+        .heading-subsection-semibold();
+    }
+
+    .checkAgainLater {
+        .body-regular();
+        color: var(--neutral-grey-5);
+    }
+}
