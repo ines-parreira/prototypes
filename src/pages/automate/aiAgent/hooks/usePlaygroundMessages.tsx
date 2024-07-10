@@ -66,7 +66,7 @@ export const usePlaygroundMessages = ({
                 type: MessageType.MESSAGE,
                 message: `Hey${
                     currentUserFirstName ? ` ${currentUserFirstName}` : ''
-                }!<br/><br/>Welcome to your new AI Agent playground. <b>You can send messages just like your customers do</b> to see how AI Agent responds! Get started by selecting a customer email below and writing your first message.`,
+                }!<br/><br/>Welcome to your new AI Agent playground. <b>You can send messages just like your customers do to see how AI Agent responds!</b> Get started by selecting a customer email below and writing your first message.`,
                 createdDatetime: new Date().toISOString(),
             },
         ],
