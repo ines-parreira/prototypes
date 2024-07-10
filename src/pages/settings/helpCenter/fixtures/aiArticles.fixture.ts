@@ -38,6 +38,44 @@ export const AIArticlesListFixture: AIArticle[] = [
     },
 ]
 
+export const AIArticlesRecommendationFixture: AIArticle[] = [
+    {
+        key: 'ai_Generated_1',
+        title: 'AI Generated Article 1',
+        html_content: '<h1>AI Generated Article 1</h1>',
+        score: 0,
+        category: 'General',
+        excerpt:
+            'Our standard shipping time within [country/region] is [# of days] business days. Shipping charges, if applicable, will be calculated and displayed at checkout...',
+        batch_datetime: '1709110371702',
+        related_tickets_count: 5,
+        review_action: 'publish',
+    },
+    {
+        key: 'ai_Generated_2',
+        title: 'AI Generated Article 2',
+        html_content: '<h1>AI Generated Article 2</h1>',
+        score: 0,
+        category: 'General',
+        excerpt:
+            'Returns must be initiated within [x days] of receiving your order. Items must be unused and in the original packaging...',
+        batch_datetime: '1709110371702',
+        related_tickets_count: 3,
+        review_action: 'archive',
+    },
+    {
+        key: 'ai_Generated_3',
+        title: 'How to cancel order',
+        html_content: '<h1>How to cancel order</h1>',
+        score: 0,
+        category: 'Ordering',
+        excerpt:
+            'You will have the option to cancel your order within your confirmation email. You may also contact our customer service team at [email/phone #]...',
+        batch_datetime: '1709110371700',
+        related_tickets_count: 8,
+    },
+]
+
 export const AIArticlesGroupedFixture: Record<string, HelpCenterArticleItem[]> =
     {
         ai: [

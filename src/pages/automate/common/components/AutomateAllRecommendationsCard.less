@@ -1,0 +1,27 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .wrapper {
+        padding: @layout-spacing-s;
+        padding-bottom: 0;
+    }
+
+    .titleWrapper {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: @layout-spacing-xs;
+    }
+
+    .title {
+        .heading-subsection-semibold();
+    }
+
+    .noDataWrapper {
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-xxs;
+        padding: @layout-spacing-m;
+    }
+}

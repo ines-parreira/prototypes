@@ -1,0 +1,81 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .loader {
+        width: 100%;
+        height: 100%;
+    }
+
+    .container {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .table {
+        margin-bottom: 0;
+    }
+
+    .headerCellProperty {
+        padding: 20px @layout-spacing-m;
+        cursor: default;
+
+        &:first-of-type {
+            padding-left: @layout-spacing-xs;
+        }
+    }
+
+    .tableBodyRow {
+        &:last-of-type {
+            border-bottom: none;
+        }
+    }
+
+    .bodyCell {
+        &:first-of-type {
+            > div,
+            > a > div {
+                padding-left: @layout-spacing-xs;
+            }
+        }
+    }
+
+    .bodyCellContent {
+        padding: 20px @layout-spacing-m;
+        display: flex;
+        flex-direction: row;
+        column-gap: @layout-spacing-xxs;
+        align-items: center;
+        cursor: default;
+    }
+
+    .textTruncate {
+        .body-semibold();
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .publishedArticle {
+        font-size: @layout-spacing-s;
+        color: var(--neutral-grey-5);
+    }
+
+    .articleStatus {
+        .component-button-small();
+        color: var(--main-primary);
+    }
+
+    .articleStatusWithIcon {
+        .component-button-small();
+        i {
+            font-size: @layout-spacing-s;
+            color: var(--feedback-success);
+        }
+    }
+
+    .pagination {
+        padding: @layout-spacing-m;
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+}
