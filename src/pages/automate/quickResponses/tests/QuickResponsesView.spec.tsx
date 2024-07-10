@@ -6,9 +6,7 @@ import {act, fireEvent, screen, within} from '@testing-library/react'
 import {v4 as uuidv4} from 'uuid'
 import _times from 'lodash/times'
 
-import {QueryClientProvider} from '@tanstack/react-query'
 import routerDom from 'react-router-dom'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {renderWithRouterAndDnD} from 'utils/testing'
 import {getLDClient} from 'utils/launchDarkly'
 import {RootState, StoreDispatch} from 'state/types'
@@ -19,10 +17,10 @@ import {GorgiasChatIntegration} from 'models/integration/types'
 import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
 import {TicketChannel} from 'business/types/ticket'
 
+import {useListWorkflowEntryPoints} from 'models/workflows/queries'
 import useQuickResponses from '../hooks/useQuickResponses'
 import QuickResponsesView from '../QuickResponsesView'
 
-const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
@@ -33,7 +31,10 @@ jest.mock('react-router-dom', () => ({
     ...(jest.requireActual('react-router-dom') as typeof routerDom),
     useHistory: jest.fn(),
 }))
-
+jest.mock('models/workflows/queries', () => ({
+    useListWorkflowEntryPoints: jest.fn(),
+}))
+const mockedUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
 const allFlagsMock = getLDClient().allFlags as jest.MockedFunction<
     ReturnType<typeof getLDClient>['allFlags']
 >
@@ -88,6 +89,10 @@ describe('<QuickResponsesView />', () => {
             },
         ])
         window.HTMLElement.prototype.scrollTo = jest.fn()
+        mockedUseListWorkflowEntryPoints.mockReturnValue({
+            isLoading: false,
+            data: {},
+        } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
     })
 
     it('should not display content if quick responses are fetching', () => {
@@ -127,11 +132,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         expect(
@@ -157,11 +160,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         act(() => {
@@ -203,11 +204,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         act(() => {
@@ -260,11 +259,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         const quickResponseAccordionItem1 = screen.getByDisplayValue(
@@ -308,11 +305,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         const addQuickResponseButton = screen.getByText('Add Quick Response')
@@ -364,11 +359,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         const input = screen.getByDisplayValue(quickResponse1.title)
@@ -415,11 +408,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />
+            </Provider>
         )
 
         const mySwitch = within(
@@ -460,11 +451,9 @@ describe('<QuickResponsesView />', () => {
         })
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />,
-                </Provider>
-            </QueryClientProvider>,
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />,
+            </Provider>,
             {
                 route: '/app/automation/flows/quick-responses?quickResponseId=57b4828f-c846-4b70-a7a8-b4186f967795',
             }
@@ -505,11 +494,9 @@ describe('<QuickResponsesView />', () => {
         } as unknown as ReturnType<typeof useHistoryMock>)
 
         renderWithRouterAndDnD(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <QuickResponsesView />
-                </Provider>
-            </QueryClientProvider>,
+            <Provider store={mockStore(defaultState)}>
+                <QuickResponsesView />,
+            </Provider>,
             {
                 route: '/app/automation/flows/quick-responses',
             }

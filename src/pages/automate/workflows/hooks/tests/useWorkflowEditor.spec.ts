@@ -1,6 +1,7 @@
 import {act, renderHook} from '@testing-library/react-hooks'
 import _noop from 'lodash/noop'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
+import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
 import {useWorkflowEditor} from '../useWorkflowEditor'
 import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
 import useWorkflowApi from '../useWorkflowApi'
@@ -11,6 +12,12 @@ const {workflowConfigurationFactory} = jest.requireActual('../useWorkflowApi')
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('../useWorkflowApi')
+jest.mock('models/workflows/queries', () => ({
+    useDownloadWorkflowConfigurationStepLogs: jest.fn(),
+}))
+const mockedUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
+    useDownloadWorkflowConfigurationStepLogs
+)
 
 function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
     const mockSelfServiceConfiguration: ReturnType<
@@ -43,6 +50,10 @@ function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
         ...mockWorkflowApi,
         ...overrides,
     } as ReturnType<typeof useWorkflowApi>)
+    mockedUseDownloadWorkflowConfigurationStepLogs.mockReturnValue({
+        isLoading: false,
+        data: [],
+    } as unknown as ReturnType<typeof useDownloadWorkflowConfigurationStepLogs>)
 }
 
 describe('useWorkflowEditor', () => {

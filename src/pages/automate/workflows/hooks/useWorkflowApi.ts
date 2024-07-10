@@ -25,10 +25,6 @@ type WorkflowApi = {
     isFetchPending: boolean
     isUpdatePending: boolean
 
-    fetchWorkflowEntrypoints: (
-        ids: WorkflowConfiguration['id'][],
-        channelLanguage: string
-    ) => Promise<Record<WorkflowConfiguration['id'], {label: string}>>
     fetchWorkflowConfiguration: (
         id: string
     ) => Promise<Maybe<WorkflowConfiguration>>
@@ -59,10 +55,6 @@ type WorkflowApi = {
         configurationId: string,
         storeIntegrationId: number
     ) => Promise<WorkflowConfiguration>
-    downloadWorkflowConfigurationStepLogs: (
-        configurationInternalId: string,
-        stepId: string
-    ) => Promise<string>
 }
 
 export default function useWorkflowApi(): WorkflowApi {
@@ -70,27 +62,6 @@ export default function useWorkflowApi(): WorkflowApi {
     const [isUpdatePending, setIsUpdatePending] = useState(false)
     const queryClient = useQueryClient()
 
-    const fetchWorkflowEntrypoints: (
-        ids: WorkflowConfiguration['id'][],
-        channelLanguage: string
-    ) => Promise<Record<WorkflowConfiguration['id'], {label: string}>> =
-        useCallback((ids, channelLanguage) => {
-            setIsFetchPending(true)
-            return apiClient
-                .get<Record<WorkflowConfiguration['id'], {label: string}>>(
-                    `/entrypoints`,
-                    {
-                        params: {
-                            ids,
-                            language: channelLanguage,
-                        },
-                    }
-                )
-                .then((res) => {
-                    setIsFetchPending(false)
-                    return res.data
-                })
-        }, [])
     const fetchWorkflowConfiguration = useCallback((id: string) => {
         setIsFetchPending(true)
         return apiClient
@@ -191,26 +162,11 @@ export default function useWorkflowApi(): WorkflowApi {
         },
         []
     )
-    const downloadWorkflowConfigurationStepLogs = useCallback(
-        (configurationInternalId: string, stepId: string) => {
-            setIsFetchPending(true)
-            return apiClient
-                .get<string>(
-                    `/configurations/${configurationInternalId}/steps/${stepId}/logs/export`,
-                    {timeout: 60_000}
-                )
-                .then((res) => res.data)
-                .finally(() => {
-                    setIsFetchPending(false)
-                })
-        },
-        []
-    )
+
     return {
         isFetchPending,
         isUpdatePending,
         workflowConfigurationFactory,
-        fetchWorkflowEntrypoints,
         fetchWorkflowConfiguration,
         upsertWorkflowConfiguration,
         deleteWorkflowConfiguration,
@@ -218,7 +174,6 @@ export default function useWorkflowApi(): WorkflowApi {
         fetchWorkflowTranslations,
         upsertWorkflowTranslations,
         deleteWorkflowTranslations,
-        downloadWorkflowConfigurationStepLogs,
     }
 }
 

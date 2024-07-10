@@ -6,11 +6,12 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import _keyBy from 'lodash/keyBy'
 import {BrowserRouter} from 'react-router-dom'
-import {QueryClientProvider} from '@tanstack/react-query'
 import {billingState} from 'fixtures/billing'
 import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import {
+    useListWorkflowEntryPoints,
+    useGetWorkflowConfigurations,
+} from 'models/workflows/queries'
 import ConnectedChannelsView from '../ConnectedChannelsView'
 import {IntegrationType} from '../../../../models/integration/constants'
 import {ContactFormFixture} from '../../../settings/contactForm/fixtures/contacForm'
@@ -21,7 +22,6 @@ import {Components} from '../../../../rest_api/help_center_api/client.generated'
 import {ShopType} from '../../../../models/selfServiceConfiguration/types'
 
 const mockHistoryPush = jest.fn()
-const queryClient = mockQueryClient()
 
 const SHOP_NAME = 'test-shop'
 
@@ -56,6 +56,11 @@ jest.mock('react-router-dom', () => ({
         push: mockHistoryPush,
     }),
 }))
+jest.mock('models/workflows/queries', () => ({
+    useListWorkflowEntryPoints: jest.fn(),
+    useGetWorkflowConfigurations: jest.fn(),
+}))
+const mockedUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
 const mockedUseWorkflowConfigurations = jest.mocked(
     useGetWorkflowConfigurations
 )
@@ -113,18 +118,20 @@ const renderComponent = (
         data: [mockSelfServiceConfiguration],
     } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
     render(
-        <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <Provider store={mockedStore}>
-                    <ConnectedChannelsView />
-                </Provider>
-            </BrowserRouter>
-        </QueryClientProvider>
+        <BrowserRouter>
+            <Provider store={mockedStore}>
+                <ConnectedChannelsView />
+            </Provider>
+        </BrowserRouter>
     )
 }
 
 describe('ConnectedChannelsView', () => {
     it('show connected channel when only contact form channels', () => {
+        mockedUseListWorkflowEntryPoints.mockReturnValue({
+            isLoading: false,
+            data: {},
+        } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
         renderComponent({
             ...ContactFormFixture,
             shop_name: SHOP_NAME,

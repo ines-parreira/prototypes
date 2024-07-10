@@ -1,8 +1,6 @@
-import {useEffect, useState} from 'react'
-import _mapValues from 'lodash/mapValues'
+import {useEffect, useMemo, useState} from 'react'
 
-import useWorkflowApi from 'pages/automate/workflows/hooks/useWorkflowApi'
-
+import {useListWorkflowEntryPoints} from 'models/workflows/queries'
 import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
 
 const useWorkflowsEntrypoints: (channelLanguage: string) => {
@@ -11,7 +9,6 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
 }[] = (channelLanguage) => {
     const {workflowsEntrypoints: channelAutomationSettingsEntrypoints} =
         useSelfServicePreviewContext()
-    const {fetchWorkflowEntrypoints} = useWorkflowApi()
 
     const [entrypoints, setEntrypoints] = useState<
         {
@@ -19,30 +16,20 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
             label: string
         }[]
     >([])
-    useEffect(() => {
-        let ignore = false
 
-        async function f() {
-            const enabledWorkflowIdsInChannel =
-                channelAutomationSettingsEntrypoints
-                    ?.filter(({enabled}) => enabled)
-                    .map(({workflow_id}) => workflow_id)
-            if (
-                !enabledWorkflowIdsInChannel ||
-                enabledWorkflowIdsInChannel.length === 0
-            ) {
-                setEntrypoints([])
-                return
-            }
-            const entrypoints = await fetchWorkflowEntrypoints(
-                enabledWorkflowIdsInChannel,
-                channelLanguage
-            )
-            if (ignore) {
-                return
-            }
-            const entrypointLabelByWorkflowId: Record<string, string> =
-                _mapValues(entrypoints, 'label')
+    const enabledWorkflowIdsInChannel = useMemo(() => {
+        return channelAutomationSettingsEntrypoints
+            ?.filter(({enabled}) => enabled)
+            .map(({workflow_id}) => workflow_id)
+    }, [channelAutomationSettingsEntrypoints])
+
+    const {data: entrypointLabelByWorkflowId} = useListWorkflowEntryPoints({
+        ids: enabledWorkflowIdsInChannel || [],
+        language: channelLanguage,
+    })
+    useEffect(() => {
+        enabledWorkflowIdsInChannel &&
+            entrypointLabelByWorkflowId &&
             setEntrypoints(
                 enabledWorkflowIdsInChannel
                     .map((workflow_id) => ({
@@ -52,17 +39,7 @@ const useWorkflowsEntrypoints: (channelLanguage: string) => {
                     // Filter out workflows that do not support the channel language
                     .filter(({label}) => label)
             )
-        }
-        void f()
-
-        return () => {
-            ignore = true
-        }
-    }, [
-        channelAutomationSettingsEntrypoints,
-        channelLanguage,
-        fetchWorkflowEntrypoints,
-    ])
+    }, [enabledWorkflowIdsInChannel, entrypointLabelByWorkflowId])
 
     return entrypoints
 }

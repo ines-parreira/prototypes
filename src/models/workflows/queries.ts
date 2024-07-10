@@ -1,4 +1,5 @@
 import {useQuery, useMutation, UseQueryOptions} from '@tanstack/react-query'
+import _mapValues from 'lodash/mapValues'
 import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
 import {OperationMethods, Paths} from 'rest_api/workflows_api/client.generated'
 import {MutationOverrides} from 'types/query'
@@ -8,6 +9,7 @@ export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
 const STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY = 'store-workflow-configuration'
 const WORKFLOWS_CONFIGURATION_QUERY_KEY = 'workflow-configuration'
+const WORKFLOWS_ENTRYPOINTS_QUERY_KEY = 'workflow-entrypoints'
 const WORKFLOWS_CONFIGURATION_TEMPLATE_QUERY_KEY =
     'workflow-configuration-template'
 
@@ -36,6 +38,14 @@ export const storeWorkflowsAppDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_APP_QUERY_KEY] as const,
     list: (params: {storeName: string; storeType: string}) => [
         ...storeWorkflowsAppDefinitionKeys.all(),
+        params,
+    ],
+}
+
+export const storeWorkflowsEntrypointsDefinitionKeys = {
+    all: () => [WORKFLOWS_ENTRYPOINTS_QUERY_KEY] as const,
+    list: (params: {ids: string[]; language: string}) => [
+        ...storeWorkflowsEntrypointsDefinitionKeys.all(),
         params,
     ],
 }
@@ -253,5 +263,56 @@ export const useGetActionsApp = (id?: string) => {
         select: (data) => data.find((app) => app.id === id),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
+    })
+}
+
+export const useListWorkflowEntryPoints = ({
+    ids,
+    language,
+}: {
+    ids: string[]
+    language: any
+}) => {
+    return useQuery({
+        queryKey: storeWorkflowsEntrypointsDefinitionKeys.list({
+            ids,
+            language,
+        }),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response = await client.WfEntrypointController_list(
+                {
+                    ids,
+                    language,
+                },
+                {},
+                {
+                    paramsSerializer: {
+                        indexes: true,
+                    },
+                }
+            )
+            return response.data
+        },
+        select: (data) => _mapValues(data, 'label'),
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
+        enabled: ids?.length > 0 && !!language,
+    })
+}
+
+export const useDownloadWorkflowConfigurationStepLogs = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationController_exportStepLogs']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationController_exportStepLogs(
+                ...params
+            )
+        },
+        ...overrides,
     })
 }

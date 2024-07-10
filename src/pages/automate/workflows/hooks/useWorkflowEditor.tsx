@@ -13,6 +13,7 @@ import {saveFileAsDownloaded} from 'utils/file'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import useThrottledValue from 'hooks/useThrottledValue'
 import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
+import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -173,7 +174,6 @@ export function useWorkflowEditor(
         fetchWorkflowConfiguration,
         upsertWorkflowConfiguration,
         workflowConfigurationFactory,
-        downloadWorkflowConfigurationStepLogs,
     } = useWorkflowApi()
     const [isFetchPending, setIsFetchPending] = useState(!isNew)
     const [isSavePending, setIsSavePending] = useState(false)
@@ -663,15 +663,20 @@ export function useWorkflowEditor(
         },
         [deleteTranslation, visualBuilderGraphDirty, dispatch]
     )
+    const {mutateAsync} = useDownloadWorkflowConfigurationStepLogs()
     const handleDownloadHttpRequestEventLogs = useCallback(
         async (node: HttpRequestNodeType) => {
             setIsDownloadPending(true)
 
             try {
-                const data = await downloadWorkflowConfigurationStepLogs(
-                    visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
-                    node.id
-                )
+                const {data} = await mutateAsync([
+                    {
+                        internal_id:
+                            visualBuilderGraphDirty.wfConfigurationOriginal
+                                .internal_id,
+                        step_id: node.id,
+                    },
+                ])
 
                 saveFileAsDownloaded(
                     `${
@@ -690,8 +695,8 @@ export function useWorkflowEditor(
             }
         },
         [
+            mutateAsync,
             visualBuilderGraphDirty.wfConfigurationOriginal.internal_id,
-            downloadWorkflowConfigurationStepLogs,
             notifyMerchant,
         ]
     )

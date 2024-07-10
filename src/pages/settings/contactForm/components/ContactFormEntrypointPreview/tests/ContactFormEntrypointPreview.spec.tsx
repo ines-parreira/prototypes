@@ -17,6 +17,7 @@ import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm
 import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
 import {getHasAutomate} from 'state/billing/selectors'
 import {Components} from 'rest_api/help_center_api/client.generated'
+import {useListWorkflowEntryPoints} from 'models/workflows/queries'
 import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'
 
 const CONTACT_FORM_SHOP_NAME = 'acme'
@@ -39,6 +40,10 @@ jest.mock('state/billing/selectors', () => ({
     __esModule: true,
     getHasAutomate: jest.fn(),
 }))
+jest.mock('models/workflows/queries', () => ({
+    useListWorkflowEntryPoints: jest.fn(),
+}))
+const mockedUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
 
 const mockUseSelfServiceConfiguration = jest.mocked(useSelfServiceConfiguration)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
@@ -109,6 +114,10 @@ describe('<ContactFormEntrypointPreview />', () => {
             mockSelfServiceConfiguration
         )
         mockGetHasAutomate.mockReturnValue(true)
+        mockedUseListWorkflowEntryPoints.mockReturnValue({
+            isLoading: false,
+            data: {},
+        } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
     })
     it('should render component with form when Contact Form does not have shop integration', () => {
         renderComponent({})
