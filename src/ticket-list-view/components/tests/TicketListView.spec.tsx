@@ -2,6 +2,7 @@ import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps, ReactElement} from 'react'
 import {Virtuoso} from 'react-virtuoso'
 
+import {useFlag} from 'common/flags'
 import {ticket} from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,6 +13,9 @@ import {TicketPartial} from 'ticket-list-view/types'
 
 import Ticket from '../Ticket'
 import TicketListView, {listInfoProps} from '../TicketListView'
+
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = useFlag as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -41,6 +45,7 @@ describe('<TicketListView />', () => {
     let dispatch: jest.Mock
 
     beforeEach(() => {
+        useFlagMock.mockReturnValue(false)
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         useAppSelectorMock.mockReturnValue({

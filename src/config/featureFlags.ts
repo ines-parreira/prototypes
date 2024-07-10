@@ -17,6 +17,7 @@ export enum FeatureFlagKey {
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
+    BulkActionsDTP = 'bulk-actions-dtp',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',
     ChatBackgroundColorStyle = 'chat-background-color-style',

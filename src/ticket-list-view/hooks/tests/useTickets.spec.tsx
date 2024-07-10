@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks'
 
+import {useFlag} from 'common/flags'
 import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
@@ -8,6 +9,9 @@ import useTickets from '../useTickets'
 import useTicketData from '../useTicketData'
 import useTicketPartials from '../useTicketPartials'
 import useScrollOffset from '../useScrollOffset'
+
+jest.mock('common/flags', () => ({useFlag: jest.fn()}))
+const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../useTicketData', () => jest.fn())
 const useTicketDataMock = useTicketData as jest.Mock
@@ -36,6 +40,7 @@ describe('useTickets', () => {
                 updated_datetime: new Date('28-11-2023T13:36:57').getTime(),
             },
         ]
+        useFlagMock.mockReturnValue(false)
         useTicketDataMock.mockReturnValue({data: {}})
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,

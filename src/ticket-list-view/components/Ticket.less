@@ -1,9 +1,16 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
 @import (reference) '~css/typography';
+@import '~css/new/mixins';
 
 :local {
     .outer {
         position: relative;
         height: 80px;
+    }
+
+    .outerNew {
+        position: relative;
+        height: 108px;
     }
 
     .inner {
@@ -31,6 +38,120 @@
             border-left-color: var(--main-primary);
             color: var(--neutral-grey-5);
         }
+    }
+
+    .innerNew {
+        display: flex;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: @layout-spacing-s;
+        color: var(--neutral-grey-5);
+        transition: background-color 0.2s ease-out;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: transparent;
+            transition: background-color 0.2s ease-out;
+        }
+
+        &:hover {
+            background: var(--neutral-grey-1);
+            color: var(--neutral-grey-5);
+        }
+
+        &.active {
+            background: var(--main-primary-0);
+
+            &::before {
+                background-color: var(--main-primary);
+            }
+        }
+    }
+
+    .viewingIndicatorNew {
+        // little hack to increase specificity without resorting to !important
+        &.viewingIndicatorNew {
+            border-top-width: 22px;
+            border-left-width: 22px;
+
+            i {
+                top: -21px;
+                right: 1px;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .contentNew {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        flex-grow: 1;
+        width: 0;
+    }
+
+    .header {
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        line-height: 16px;
+        white-space: nowrap;
+    }
+
+    .customerChannel {
+        overflow: hidden;
+        flex-grow: 1;
+        flex-shrink: 1;
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+    }
+
+    .customer {
+        .caption-regular();
+
+        overflow: hidden;
+        color: var(--neutral-grey-6);
+        text-overflow: ellipsis;
+    }
+
+    .timeNew {
+        flex-shrink: 0;
+    }
+
+    .unreadIndicator {
+        flex-shrink: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--feedback-error);
+    }
+
+    .subjectNew {
+        .body-regular();
+
+        overflow: hidden;
+        color: var(--neutral-grey-6);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .excerptNew {
+        .caption-regular();
+        .line-clamp(2);
+
+        overflow: hidden;
+        height: 32px;
     }
 
     .icon {
@@ -88,6 +209,14 @@
     .unread {
         .subject {
             font-weight: 600;
+        }
+
+        .customer {
+            .caption-semibold();
+        }
+
+        .subjectNew {
+            .body-semibold();
         }
     }
 

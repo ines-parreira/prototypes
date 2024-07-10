@@ -14,6 +14,8 @@ import React, {
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -22,7 +24,7 @@ import {setViewActive, setViewEditMode} from 'state/views/actions'
 import {getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
-import {TICKET_HEIGHT} from '../constants'
+import {TICKET_HEIGHT, TICKET_HEIGHT_NEW} from '../constants'
 import useSortOrder from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
@@ -74,10 +76,13 @@ export default function TicketListView({
         ticketIds,
         initialLoaded,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
+    const hasBulkActions = useFlag(FeatureFlagKey.BulkActionsDTP, false)
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
         useSplitTicketView()
 
     const initialLoadedRef = useRef(initialLoaded)
+
+    const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
 
     useEffect(() => {
         initialLoadedRef.current = initialLoaded
@@ -178,7 +183,11 @@ export default function TicketListView({
 
     return (
         <div className={css.wrapper}>
-            <div className={css.titleWrapper}>
+            <div
+                className={
+                    hasBulkActions ? css.titleWrapperNew : css.titleWrapper
+                }
+            >
                 <div className={css.viewName}>
                     <ViewDecoration view={view} />
                     <span className={css.title}>{view?.name}</span>
@@ -196,11 +205,11 @@ export default function TicketListView({
             <div className={css.list}>
                 <Virtuoso
                     ref={virtuosoRef}
-                    atBottomThreshold={TICKET_HEIGHT * 2}
+                    atBottomThreshold={ticketHeight * 2}
                     className={css.scroller}
                     data={tickets}
                     endReached={loadMore}
-                    fixedItemHeight={TICKET_HEIGHT}
+                    fixedItemHeight={ticketHeight}
                     itemContent={getItemContent}
                     computeItemKey={(_index, ticket) => ticket.id}
                     scrollerRef={setScrollerRef}

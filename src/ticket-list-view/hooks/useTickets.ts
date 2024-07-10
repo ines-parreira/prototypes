@@ -1,5 +1,7 @@
 import {useEffect, useMemo, useState} from 'react'
 
+import {useFlag} from 'common/flags'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import usePrevious from 'hooks/usePrevious'
@@ -8,7 +10,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import useTicketIds from '../hooks/useTicketIds'
-import {TICKET_HEIGHT} from '../constants'
+import {TICKET_HEIGHT, TICKET_HEIGHT_NEW} from '../constants'
 import {SortField, TicketPartial} from '../types'
 import useScrollOffset from './useScrollOffset'
 import {SortOrder} from './useSortOrder'
@@ -23,6 +25,9 @@ export default function useTickets(
     ticketId?: number,
     registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
 ) {
+    const hasBulkActions = useFlag(FeatureFlagKey.BulkActionsDTP, false)
+    const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
+
     const {hasMore, initialLoaded, loadMore, partials, setLatest} =
         useTicketPartials(viewId, sortOrder)
     const previousPartials = usePrevious(partials)
@@ -48,13 +53,12 @@ export default function useTickets(
     const debouncedOffset = useDebouncedValue(offset, 75)
 
     const startIndex = useMemo(
-        () => Math.floor(debouncedOffset / TICKET_HEIGHT),
-        [debouncedOffset]
+        () => Math.floor(debouncedOffset / ticketHeight),
+        [debouncedOffset, ticketHeight]
     )
     const endIndex = useMemo(
-        () =>
-            Math.ceil((debouncedOffset + debouncedHeight) / TICKET_HEIGHT) - 1,
-        [debouncedHeight, debouncedOffset]
+        () => Math.ceil((debouncedOffset + debouncedHeight) / ticketHeight) - 1,
+        [debouncedHeight, debouncedOffset, ticketHeight]
     )
     const visiblePartials = useMemo(
         () => partials.slice(startIndex, endIndex + 1),

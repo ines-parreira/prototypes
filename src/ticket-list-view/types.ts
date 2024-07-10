@@ -15,6 +15,7 @@ export type TicketSummary = Pick<
     | 'id'
     | 'channel'
     | 'created_datetime'
+    | 'customer'
     | 'excerpt'
     | 'is_unread'
     | 'last_message_datetime'
