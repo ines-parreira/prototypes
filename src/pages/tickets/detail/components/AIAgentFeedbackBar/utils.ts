@@ -25,7 +25,7 @@ export const getActionUrl = (
     shopType: string,
     shopName: string
 ) => {
-    return `/app/automation/${shopType}/${shopName}/ai-agent/actions/${action.id}`
+    return `/app/automation/${shopType}/${shopName}/ai-agent/actions/edit/${action.id}`
 }
 
 export const mapResourceLabelToType = (label: string) => {
