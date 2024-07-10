@@ -1,5 +1,6 @@
+import {IntegrationType} from '@gorgias/api-types'
 import {Map} from 'immutable'
-import {IntegrationType} from 'models/integration/types'
+
 import {PartialTemplate} from 'models/widget/types'
 import {
     CUSTOM_WIDGET_TYPE,
@@ -15,14 +16,14 @@ export enum WidgetEnvironment {
 }
 
 export type WidgetType =
-    | IntegrationType.Shopify
-    | IntegrationType.Recharge
-    | IntegrationType.Smile
-    | IntegrationType.Magento2
-    | IntegrationType.Http
-    | IntegrationType.Yotpo
-    | IntegrationType.BigCommerce
-    | IntegrationType.Klaviyo
+    | typeof IntegrationType.Shopify
+    | typeof IntegrationType.Recharge
+    | typeof IntegrationType.Smile
+    | typeof IntegrationType.Magento2
+    | typeof IntegrationType.Http
+    | typeof IntegrationType.Yotpo
+    | typeof IntegrationType.Bigcommerce
+    | typeof IntegrationType.Klaviyo
     | typeof CUSTOM_WIDGET_TYPE
     | typeof CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
     | typeof STANDALONE_WIDGET_TYPE

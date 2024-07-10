@@ -15,7 +15,9 @@ import {
     ShopifyContext,
     ShopifyContextType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
+import {CustomizationContext} from 'Infobar/features/Template/contexts/CustomizationContext'
+import {CardCustomization} from 'Infobar/features/Card/types'
 import {
     guessFieldValueFromRawData,
     stringifyRawData,
@@ -23,12 +25,12 @@ import {
 import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
 
 import {seekNextValues} from '../helpers/iterator'
-import {getExtensions} from '../helpers/extensions'
+import {getExtensions, seekCardCustomization} from '../helpers/extensions'
 
 type Props = {
-    parentTemplate?: TemplateType
     template: TemplateType | null
     source?: Source
+    parentTemplate?: TemplateType
     isFirstOfList?: boolean
 }
 
@@ -46,11 +48,17 @@ export function Template({
 }: Props) {
     const {isEditing} = useContext(EditionContext)
     const widget = useContext(WidgetContext)
+    const customization = useContext(CustomizationContext)
     const shopifyContextData = useShopifyContextData(source)
 
     if (!template) return null
 
-    const extensions = getExtensions(widget.type, template)
+    let cardCustomization: CardCustomization = {}
+    if (customization) {
+        cardCustomization = seekCardCustomization(customization.card, template)
+    } else {
+        cardCustomization = getExtensions(widget.type, template)
+    }
 
     // DISPLAY
     let component = null
@@ -108,8 +116,8 @@ export function Template({
                     source={source}
                     template={template}
                     parentTemplate={parentTemplate}
-                    extensions={extensions}
-                    editionHiddenFields={extensions.editionHiddenFields}
+                    extensions={cardCustomization}
+                    editionHiddenFields={cardCustomization.editionHiddenFields}
                     isFirstOfList={isFirstOfList}
                 >
                     {template.widgets?.map((childTemplate, index) => (

@@ -9,7 +9,7 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {isSourceRecord, Source, WrapperTemplate} from 'models/widget/types'
 import useAppSelector from 'hooks/useAppSelector'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 

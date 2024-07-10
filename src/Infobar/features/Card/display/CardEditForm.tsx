@@ -11,6 +11,7 @@ import FileField from 'pages/common/forms/FileField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Infobar/config/template'
 
+import {CardEditFormState, HiddenField} from '../types'
 import css from './CardEditForm.less'
 
 export const TITLE_FIELD_LABEL = 'Title'
@@ -22,18 +23,6 @@ export const LIMIT_FIELD_LABEL = 'Limit'
 export const ORDER_FIELD_LABEL = 'Order by'
 export const SUBMIT_BUTTON_TEXT = 'Submit'
 export const CANCEL_BUTTON_TEXT = 'Cancel'
-
-export type CardEditFormState = {
-    title: string
-    link: string
-    pictureUrl: string
-    color: string
-    displayCard: boolean
-    limit: number
-    orderBy: string
-}
-
-export type HiddenField = keyof CardEditFormState
 
 type Props = {
     initialData: CardEditFormState

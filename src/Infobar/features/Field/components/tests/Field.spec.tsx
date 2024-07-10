@@ -15,7 +15,7 @@ import {
 } from 'state/widgets/actions'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import UIField from 'Infobar/features/Field/display'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 import {LEAF_TYPES} from 'models/widget/constants'
 
 import Field, {TYPE_OPTIONS} from '../Field'

@@ -1,9 +1,8 @@
 import React, {ComponentProps, ReactNode, useState} from 'react'
 import classnames from 'classnames'
 
-import CardEditForm, {
-    CardEditFormState,
-} from 'Infobar/features/Card/display/CardEditForm'
+import CardEditForm from 'Infobar/features/Card/display/CardEditForm'
+import {CardEditFormState} from 'Infobar/features/Card/types'
 
 import css from './Card.less'
 import CardHeader from './CardHeader'

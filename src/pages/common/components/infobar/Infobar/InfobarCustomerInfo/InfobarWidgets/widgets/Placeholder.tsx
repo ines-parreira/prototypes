@@ -6,10 +6,10 @@ import {getIntegrationById} from 'state/integrations/selectors'
 import {removeEditedWidget} from 'state/widgets/actions'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {WidgetContext} from '../WidgetContext'
 import css from './Placeholder.less'
 
 const PLACEHOLDER_ACCENT_COLOR = 'var(--neutral-grey-4)'

@@ -9,17 +9,16 @@ import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
-import DraftOrderWidget from '../DraftOrderWidget'
+import {draftOrderCustomization} from '../DraftOrderWidget'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
-const draftOrderWidget = DraftOrderWidget()
 
-const TitleWrapper = draftOrderWidget.TitleWrapper
-const AfterTitle = draftOrderWidget.AfterTitle
+const TitleWrapper = draftOrderCustomization.TitleWrapper!
+const AfterTitle = draftOrderCustomization.AfterTitle!
 
 describe('<TitleWrapper/>', () => {
     const mockStore = configureMockStore()

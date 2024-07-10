@@ -1,14 +1,13 @@
 import React from 'react'
 import {Map} from 'immutable'
 
+import {CardCustomization} from 'Infobar/features/Card/types'
 import StaticField from 'Infobar/features/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {humanizeString} from 'utils'
 
-export default function Fulfillment() {
-    return {
-        BeforeContent,
-    }
+export const fulfillmentCustomization: CardCustomization = {
+    BeforeContent,
 }
 
 type BeforeContentProps = {

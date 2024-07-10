@@ -22,9 +22,9 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {ImmutableSource, Source, Template} from 'models/widget/types'
+import RootWidget from 'Infobar/features/Widget'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
-import {Widget as RootWidget} from './Widget'
 
 const Widget = React.memo(RootWidget)
 

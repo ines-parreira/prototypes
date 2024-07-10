@@ -1,6 +1,7 @@
 import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
+import {CardCustomization} from 'Infobar/features/Card/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
@@ -8,13 +9,6 @@ import {InfobarAction} from '../../types'
 import {ShopifyActionType} from '../types'
 
 import EditOrderShippingAddressModal from './EditOrderShippingAddressModal/EditOrderShippingAddressModal'
-
-export default function ShippingAddress() {
-    return {
-        AfterTitle,
-        editionHiddenFields: ['link'],
-    }
-}
 
 type AfterTitleProps = {
     isEditing: boolean
@@ -60,4 +54,9 @@ export function AfterTitle({source}: AfterTitleProps) {
     }
 
     return <ActionButtonsGroup actions={_getActions()} payload={payload} />
+}
+
+export const shippingAddressCustomization: CardCustomization = {
+    AfterTitle,
+    editionHiddenFields: ['link'],
 }

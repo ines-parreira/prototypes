@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 import {fromJS, Map} from 'immutable'
 
+import {CardCustomization} from 'Infobar/features/Card/types'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import {logEvent, SegmentEvent} from 'common/segment'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -35,16 +36,6 @@ import EditOrderModal from './EditOrderModal/EditOrderModal'
 import OrderStatus from './OrderStatus'
 import css from './OrderWidgets.less'
 import OrderMetafieldsWidget from './OrderMetafieldsWidget'
-
-export default function OrderWidget() {
-    return {
-        AfterTitle,
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-        Wrapper,
-        AfterContent,
-    }
-}
 
 export const OrderContext = createContext<{
     order: Map<string, unknown>
@@ -374,4 +365,12 @@ export function AfterContent({isEditing}: AfterContentProps) {
             integrationId={integrationContext.integrationId as number}
         />
     ) : null
+}
+
+export const orderCustomization: CardCustomization = {
+    AfterTitle,
+    editionHiddenFields: ['link'],
+    TitleWrapper,
+    Wrapper,
+    AfterContent,
 }

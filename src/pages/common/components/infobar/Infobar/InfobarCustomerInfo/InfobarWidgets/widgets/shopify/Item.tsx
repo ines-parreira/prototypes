@@ -6,16 +6,10 @@ import React, {
 } from 'react'
 import {fromJS, List, Map} from 'immutable'
 
+import {CardCustomization} from 'Infobar/features/Card/types'
 import StaticField from 'Infobar/features/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {OrderContext} from './Order/OrderWidget'
-
-export default function Item() {
-    return {
-        BeforeContent,
-        Wrapper,
-    }
-}
 
 const OrderItemContext = createContext<{
     refundedQuantity: number | null
@@ -82,4 +76,9 @@ const Wrapper: FunctionComponent<{source: Map<string, unknown>}> = ({
             {children}
         </OrderItemContext.Provider>
     )
+}
+
+export const itemCustomization: CardCustomization = {
+    BeforeContent,
+    Wrapper,
 }

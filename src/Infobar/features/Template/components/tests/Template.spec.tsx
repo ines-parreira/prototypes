@@ -10,11 +10,12 @@ import {
     WrapperTemplate,
 } from 'models/widget/types'
 import {
-    Extensions,
     getExtensions,
+    seekCardCustomization,
 } from 'Infobar/features/Template/helpers/extensions'
 
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
+import {CardCustomization, HiddenField} from 'Infobar/features/Card/types'
 import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import Card from 'Infobar/features/Card'
 import Field from 'Infobar/features/Field'
@@ -22,6 +23,7 @@ import Wrapper from 'Infobar/features/Wrapper'
 import ListWidget from 'Infobar/features/List'
 
 import Template, {self} from '../Template'
+import {CustomizationContext} from '../../contexts/CustomizationContext'
 
 jest.spyOn(self, 'Template')
 const spiedTemplate = assumeMock(self.Template)
@@ -39,16 +41,17 @@ const fieldMock = assumeMock(Field)
 const wrapperMock = assumeMock(Wrapper)
 const listMock = assumeMock(ListWidget)
 const getExtensionsMock = assumeMock(getExtensions)
+const seekCardCustomizationMock = assumeMock(seekCardCustomization)
 
-const editionHiddenFields = ['bar']
+const editionHiddenFields: HiddenField[] = ['title']
 
-getExtensionsMock.mockImplementation(
-    () =>
-        ({
-            AfterTitle: () => <div>AfterTitle</div>,
-            editionHiddenFields,
-        } as Extensions)
-)
+const cardCustomizationMock: CardCustomization = {
+    AfterTitle: () => <div>AfterTitle</div>,
+    editionHiddenFields,
+}
+
+getExtensionsMock.mockReturnValue(cardCustomizationMock)
+seekCardCustomizationMock.mockReturnValue(cardCustomizationMock)
 
 const leafTemplate = {type: 'text'} as LeafTemplate
 const cardTemplate = {
@@ -129,7 +132,45 @@ describe('Template', () => {
         })
     })
 
-    describe('extensions', () => {
+    describe('card customization', () => {
+        const cardCustomizationObjects = [
+            {
+                matcher: /foo/,
+                customization: cardCustomizationMock,
+            },
+        ]
+        const customization = {card: cardCustomizationObjects}
+        it('should provide correct customization value to seekCardCustomization', () => {
+            render(
+                <CustomizationContext.Provider value={customization}>
+                    <Template {...minProps} />
+                </CustomizationContext.Provider>
+            )
+
+            expect(seekCardCustomizationMock).toHaveBeenCalledWith(
+                cardCustomizationObjects,
+                cardTemplate
+            )
+        })
+
+        it("should provide the correct extensions / props if there's a card customization", () => {
+            render(
+                <CustomizationContext.Provider value={customization}>
+                    <Template {...minProps} />
+                </CustomizationContext.Provider>
+            )
+
+            expect(getLastMockCall(cardMock)[0].extensions).toEqual({
+                AfterTitle: expect.any(Function),
+                editionHiddenFields,
+            })
+
+            expect(getLastMockCall(cardMock)[0].editionHiddenFields).toEqual(
+                editionHiddenFields
+            )
+        })
+
+        /* legacy */
         it('should provide the correct extensions', () => {
             render(
                 <WidgetContext.Provider value={shopifyWidget}>

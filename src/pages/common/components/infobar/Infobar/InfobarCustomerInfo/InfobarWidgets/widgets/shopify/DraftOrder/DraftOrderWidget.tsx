@@ -1,6 +1,7 @@
 import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
 
+import {CardCustomization} from 'Infobar/features/Card/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
@@ -14,14 +15,6 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import css from './DraftOrderWidget.less'
-
-export default function DraftOrderWidget() {
-    return {
-        AfterTitle,
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-    }
-}
 
 type AfterTitleProps = {
     isEditing: boolean
@@ -106,4 +99,10 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
             <div>{invoiceSent ? <InvoiceSentStatus /> : <OpenStatus />}</div>
         </>
     )
+}
+
+export const draftOrderCustomization: CardCustomization = {
+    AfterTitle,
+    editionHiddenFields: ['link'],
+    TitleWrapper,
 }

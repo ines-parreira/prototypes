@@ -16,7 +16,7 @@ import {
 } from 'Infobar/features/Field/display/FieldEditForm'
 import {IntegrationType} from 'models/integration/constants'
 import CopyButton from 'Infobar/features/Field/components/CopyButton'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'

@@ -8,11 +8,11 @@ import thunk from 'redux-thunk'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
 import {IntegrationType} from 'models/integration/constants'
-import Customer from '../Customer'
+import {customerCustomization} from '../Customer'
 
-const AfterTitle = Customer().AfterTitle
+const AfterTitle = customerCustomization.AfterTitle!
 
-describe('<TitleWrapper/>', () => {
+describe('<AfterTitle/>', () => {
     let store: MockStore
     const mockStore = configureMockStore([thunk])
 

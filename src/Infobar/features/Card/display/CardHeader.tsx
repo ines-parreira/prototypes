@@ -5,9 +5,8 @@ import classnames from 'classnames'
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
 import {CardHeaderIcon} from 'Infobar/features/Card/display/CardHeaderIcon'
-import CardEditForm, {
-    CardEditFormState,
-} from 'Infobar/features/Card/display/CardEditForm'
+import CardEditForm from 'Infobar/features/Card/display/CardEditForm'
+import {CardEditFormState} from 'Infobar/features/Card/types'
 import {
     EXPAND_TARGET_MARKER,
     TARGET_CLOSED_MARKER,

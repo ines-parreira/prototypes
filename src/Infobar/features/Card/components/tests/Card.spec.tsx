@@ -14,7 +14,7 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import {CardEditFormState} from 'Infobar/features/Card/display/CardEditForm'
+import {CardEditFormState} from 'Infobar/features/Card/types'
 import UICard from 'Infobar/features/Card/display'
 import * as isDefaultOpenExports from 'Infobar/features/Card/helpers/isDefaultOpen'
 import {renderTemplate} from 'pages/common/utils/template'
@@ -23,7 +23,7 @@ import {canDrop} from 'pages/common/components/infobar/utils'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 
 import {CardTemplate, ListTemplate} from 'models/widget/types'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Infobar/config/template'

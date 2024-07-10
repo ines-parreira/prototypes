@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TitleWrapper/> should match snapshot 1`] = `
+exports[`<AfterTitle/> should match snapshot 1`] = `
 <div>
   <span
     class="container group horizontal"

@@ -23,11 +23,11 @@ import {WidgetEnvironment} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import Template from 'Infobar/features/Template'
+import Widget from 'Infobar/features/Widget'
+import {WidgetContextProvider} from 'Infobar/features/Widget/contexts/WidgetContext'
 
 import InfobarWidgets from '../InfobarWidgets'
-import {Widget} from '../Widget'
 import Placeholder from '../widgets/Placeholder'
-import {WidgetContextProvider} from '../WidgetContext'
 
 jest.mock('Infobar/features/Template')
 const mockedTemplate = assumeMock(Template)
@@ -37,19 +37,20 @@ jest.mock('../widgets/Placeholder')
 const mockedPlaceholder = assumeMock(Placeholder)
 mockedPlaceholder.mockImplementation(() => <div>Placeholder</div>)
 
-jest.mock('../WidgetContext')
+jest.mock('Infobar/features/Widget/contexts/WidgetContext')
 const mockedWidgetContextProvider = assumeMock(WidgetContextProvider)
 mockedWidgetContextProvider.mockImplementation(({children}) => <>{children}</>)
 
 // for some reason, spyOn doesn’t work with this import
-jest.mock('../Widget', () => {
-    const widgetExports =
-        jest.requireActual<Record<string, unknown>>('../Widget')
-    const Widget = widgetExports.Widget as React.FC
+jest.mock('Infobar/features/Widget', () => {
+    const widgetExports = jest.requireActual<Record<string, unknown>>(
+        'Infobar/features/Widget'
+    )
+    const Widget = widgetExports.default as React.FC
     const WidgetMock = jest.fn((props) => <Widget {...props} />)
     return {
         ...widgetExports,
-        Widget: WidgetMock,
+        default: WidgetMock,
     }
 })
 const mockedWidget = assumeMock(Widget)

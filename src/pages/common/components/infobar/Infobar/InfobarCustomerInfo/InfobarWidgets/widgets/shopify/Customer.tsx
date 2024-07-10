@@ -4,6 +4,7 @@ import {fromJS, Map} from 'immutable'
 
 import logo from 'assets/img/infobar/shopify.svg'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {CardCustomization} from 'Infobar/features/Card/types'
 import {RootState} from 'state/types'
 import useAppSelector from 'hooks/useAppSelector'
 import * as integrationsSelectors from 'state/integrations/selectors'
@@ -24,14 +25,6 @@ import MoneyAmount from '../MoneyAmount'
 
 import DraftOrderModal from './shared/DraftOrderModal/DraftOrderModal'
 import {ShopifyActionType} from './types'
-
-export default function Customer() {
-    return {
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-        AfterTitle,
-    }
-}
 
 type AfterTitleProps = {
     source: Map<any, any>
@@ -157,4 +150,10 @@ function TitleWrapper({children, source, isEditing}: TitleWrapperProps) {
             </CardHeaderTitle>
         </>
     )
+}
+
+export const customerCustomization: CardCustomization = {
+    editionHiddenFields: ['link'],
+    TitleWrapper,
+    AfterTitle,
 }

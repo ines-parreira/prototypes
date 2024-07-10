@@ -6,8 +6,8 @@ import useAppSelector from 'hooks/useAppSelector'
 import {assumeMock} from 'utils/testing'
 import {Widget} from 'state/widgets/types'
 import {Template} from 'models/widget/types'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 
-import {WidgetContext} from '../../WidgetContext'
 import Placeholder from '../Placeholder'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())

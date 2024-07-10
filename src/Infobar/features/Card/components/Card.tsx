@@ -24,10 +24,7 @@ import {
 } from 'state/widgets/actions'
 import {getWidgetsState} from 'state/widgets/selectors'
 import StaticField from 'Infobar/features/Field/components/StaticField'
-import {
-    CardEditFormState,
-    HiddenField,
-} from 'Infobar/features/Card/display/CardEditForm'
+import {CardEditFormState, HiddenField} from 'Infobar/features/Card/types'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Infobar/config/template'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
@@ -42,7 +39,7 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 
 export const NO_DATA_TEXT = 'No data'
 

@@ -11,16 +11,14 @@ import {IntegrationType} from 'models/integration/constants'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
 
-import Order, {Wrapper} from '../OrderWidget'
+import {Wrapper, orderCustomization} from '../OrderWidget'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('state/notifications/actions')
 
-const orderWidgets = Order()
-
-const TitleWrapper = orderWidgets.TitleWrapper
-const AfterTitle = orderWidgets.AfterTitle
+const TitleWrapper = orderCustomization.TitleWrapper!
+const AfterTitle = orderCustomization.AfterTitle!
 
 describe('<TitleWrapper/>', () => {
     const mockStore = configureMockStore()

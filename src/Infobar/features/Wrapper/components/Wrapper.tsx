@@ -33,7 +33,7 @@ import WrapperEditActions from 'Infobar/features/Wrapper/display/WrapperEditActi
 import WidgetPanel from 'Infobar/features/WidgetPanel/components/WidgetPanel'
 import {EXPAND_CONTAINER_MARKER} from 'Infobar/config/template'
 import {Source, Template, WrapperTemplate} from 'models/widget/types'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 
 import css from './Wrapper.less'
 

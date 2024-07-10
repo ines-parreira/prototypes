@@ -21,7 +21,7 @@ import {assumeMock, getLastMockCall} from 'utils/testing'
 import WrapperEditActions, {
     FormData,
 } from 'Infobar/features/Wrapper/display/WrapperEditActions'
-import {WidgetContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/WidgetContext'
+import {WidgetContext} from 'Infobar/features/Widget/contexts/WidgetContext'
 
 import Wrapper, {CUSTOMIZABLE_WIDGET_TYPES, useIntegration} from '../Wrapper'
 
