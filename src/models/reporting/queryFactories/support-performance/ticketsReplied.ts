@@ -100,11 +100,7 @@ export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-    const baseQuery = ticketsRepliedMetricPerAgentQueryFactory(
-        filters,
-        timezone,
-        sorting
-    )
+    const baseQuery = ticketsRepliedQueryFactory(filters, timezone, sorting)
     return {
         ...baseQuery,
         measures: [],

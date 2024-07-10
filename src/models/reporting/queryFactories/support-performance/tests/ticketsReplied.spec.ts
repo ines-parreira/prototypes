@@ -328,21 +328,16 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
                 timezone
             )
         ).toEqual({
-            ...ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone),
+            ...ticketsRepliedQueryFactory(statsFilters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
                 TicketDimension.CreatedDatetime,
-                ...ticketsRepliedMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone
-                ).dimensions,
+                ...ticketsRepliedQueryFactory(statsFilters, timezone)
+                    .dimensions,
             ],
             filters: [
-                ...ticketsRepliedMetricPerAgentQueryFactory(
-                    statsFilters,
-                    timezone
-                ).filters,
+                ...ticketsRepliedQueryFactory(statsFilters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
@@ -360,17 +355,15 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
                 sorting
             )
         ).toEqual({
-            ...ticketsRepliedMetricPerAgentQueryFactory(filters, timezone),
+            ...ticketsRepliedQueryFactory(filters, timezone),
             measures: [],
             dimensions: [
                 TicketDimension.TicketId,
                 TicketDimension.CreatedDatetime,
-                ...ticketsRepliedMetricPerAgentQueryFactory(filters, timezone)
-                    .dimensions,
+                ...ticketsRepliedQueryFactory(filters, timezone).dimensions,
             ],
             filters: [
-                ...ticketsRepliedMetricPerAgentQueryFactory(filters, timezone)
-                    .filters,
+                ...ticketsRepliedQueryFactory(filters, timezone).filters,
                 TicketDrillDownFilter,
             ],
             limit: DRILLDOWN_QUERY_LIMIT,
