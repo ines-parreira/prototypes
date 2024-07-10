@@ -36,9 +36,12 @@ export default function MetricsFieldArray() {
         name: 'metrics',
     })
 
-    const {setValue} = useFormContext()
+    const {setValue, getValues} = useFormContext()
 
     const [toggleState, setToggleState] = useState<boolean[]>([])
+    const [tempThresholdValues, setTempThresholdValues] = useState<
+        (number | undefined)[]
+    >([])
 
     useEffect(() => {
         setToggleState(fields.map((field) => !!field.threshold))
@@ -52,7 +55,23 @@ export default function MetricsFieldArray() {
         })
 
         if (!nextValue) {
-            setValue(`metrics.${index}.threshold`, '', {shouldDirty: true})
+            const currentValue = getValues(`metrics.${index}.threshold`)
+            if (currentValue) {
+                setTempThresholdValues((prev) => {
+                    const next = [...prev]
+                    next[index] = currentValue
+                    return next
+                })
+                setValue(`metrics.${index}.threshold`, '', {
+                    shouldDirty: true,
+                })
+            }
+        } else {
+            const previousValue = tempThresholdValues[index]
+            previousValue &&
+                setValue(`metrics.${index}.threshold`, previousValue, {
+                    shouldDirty: true,
+                })
         }
     }
 
@@ -77,7 +96,10 @@ export default function MetricsFieldArray() {
                                 field={NumberInputField}
                                 isRequired
                                 hasControls={false}
-                                placeholder={'0'}
+                                placeholder={
+                                    String(tempThresholdValues[index] || '') ||
+                                    '0'
+                                }
                                 min={1}
                                 wrapperClassName={css.input}
                                 allowEmptyString

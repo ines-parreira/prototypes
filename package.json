@@ -156,7 +156,7 @@
         "react-dom": "16.14.0",
         "react-draggable": "^4.4.4",
         "react-froala-wysiwyg": "4.0.14",
-        "react-hook-form": "^7.51.5",
+        "react-hook-form": "^7.52.1",
         "react-images": "0.5.5",
         "react-immutable-proptypes": "2.1.0",
         "react-json-pretty": "2.2.0",
