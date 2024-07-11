@@ -1,18 +1,18 @@
 import React, {ReactNode, useContext} from 'react'
 import {Map} from 'immutable'
 
-import {CardCustomization} from 'Infobar/features/Card/types'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import {logEvent, SegmentEvent} from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {EditionContext} from 'providers/infobar/EditionContext'
-import StaticField from 'Infobar/features/Field/components/StaticField'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import CopyButton from 'Infobar/features/Field/components/CopyButton'
+import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
 import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
 import css from './DraftOrderWidget.less'
 

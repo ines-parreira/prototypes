@@ -22,7 +22,7 @@ import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 
 import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
 import {ImmutableSource, Source, Template} from 'models/widget/types'
-import RootWidget from 'Infobar/features/Widget'
+import RootWidget from 'Widgets/modules/Widget'
 import css from './InfobarWidgets.less'
 import {InfobarTabs} from './InfobarTabs'
 

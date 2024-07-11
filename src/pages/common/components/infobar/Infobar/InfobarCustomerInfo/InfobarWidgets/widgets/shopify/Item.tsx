@@ -6,8 +6,8 @@ import React, {
 } from 'react'
 import {fromJS, List, Map} from 'immutable'
 
-import {CardCustomization} from 'Infobar/features/Card/types'
-import StaticField from 'Infobar/features/Field/components/StaticField'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {OrderContext} from './Order/OrderWidget'
 

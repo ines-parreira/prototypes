@@ -4,7 +4,7 @@ import {fromJS, List, Map} from 'immutable'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {Source, Template} from 'models/widget/types'
 
-import {WidgetContextProvider} from 'Infobar/features/Widget/contexts/WidgetContext'
+import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
 import css from './Widgets.less'
 import Widget from './Widget'
 

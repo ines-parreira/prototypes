@@ -7,11 +7,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Infobar/features/Field/components/StaticField'
-import {CardHeaderTitle} from 'Infobar/features/Card/display/CardHeaderTitle'
-import {CardHeaderIcon} from 'Infobar/features/Card/display/CardHeaderIcon'
-import ExpandAllButton from 'Infobar/features/Card/display/ExpandAllButton'
-import {CardHeaderSubtitle} from 'Infobar/features/Card/display/CardHeaderSubtitle'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
+import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 
 export default function Customer() {
     return {

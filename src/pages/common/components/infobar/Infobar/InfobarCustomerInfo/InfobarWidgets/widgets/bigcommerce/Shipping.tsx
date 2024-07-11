@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 
 import {getTrackingLink} from 'common/tracking'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Infobar/features/Field/components/StaticField'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 export default function Shipping() {
     return {

@@ -17,43 +17,23 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_KEY,
     CUSTOMER_ECOMMERCE_DATA_KEY,
-    CUSTOM_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {WidgetEnvironment} from 'state/widgets/types'
 import {IntegrationType} from 'models/integration/constants'
 import {EditionContext} from 'providers/infobar/EditionContext'
-import Template from 'Infobar/features/Template'
-import Widget from 'Infobar/features/Widget'
-import {WidgetContextProvider} from 'Infobar/features/Widget/contexts/WidgetContext'
+import Widget from 'Widgets/modules/Widget'
 
 import InfobarWidgets from '../InfobarWidgets'
 import Placeholder from '../widgets/Placeholder'
-
-jest.mock('Infobar/features/Template')
-const mockedTemplate = assumeMock(Template)
-mockedTemplate.mockImplementation(() => <div>Template</div>)
 
 jest.mock('../widgets/Placeholder')
 const mockedPlaceholder = assumeMock(Placeholder)
 mockedPlaceholder.mockImplementation(() => <div>Placeholder</div>)
 
-jest.mock('Infobar/features/Widget/contexts/WidgetContext')
-const mockedWidgetContextProvider = assumeMock(WidgetContextProvider)
-mockedWidgetContextProvider.mockImplementation(({children}) => <>{children}</>)
-
 // for some reason, spyOn doesn’t work with this import
-jest.mock('Infobar/features/Widget', () => {
-    const widgetExports = jest.requireActual<Record<string, unknown>>(
-        'Infobar/features/Widget'
-    )
-    const Widget = widgetExports.default as React.FC
-    const WidgetMock = jest.fn((props) => <Widget {...props} />)
-    return {
-        ...widgetExports,
-        default: WidgetMock,
-    }
-})
+jest.mock('Widgets/modules/Widget')
 const mockedWidget = assumeMock(Widget)
+mockedWidget.mockImplementation(() => <div>Widget</div>)
 
 describe('InfobarWidgets component', () => {
     const httpIntegrationId = 1
@@ -336,22 +316,41 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
 
-        expect(
-            mockedWidgetContextProvider.mock.calls[0][0].value.get('type')
-        ).toEqual(baseWidgets.getIn(['0', 'type']))
-        expect(
-            mockedWidgetContextProvider.mock.calls[1][0].value.get('type')
-        ).toEqual(baseWidgets.getIn(['1', 'type']))
-        expect(
-            mockedWidgetContextProvider.mock.calls[2][0].value.get('type')
-        ).toEqual(baseWidgets.getIn(['2', 'type']))
-        expect(
-            mockedWidgetContextProvider.mock.calls[3][0].value.get('type')
-        ).toEqual(baseWidgets.getIn(['5', 'type']))
-        expect(
-            mockedWidgetContextProvider.mock.calls[4][0].value.get('type')
-        ).toEqual(baseWidgets.getIn(['6', 'type']))
-        expect(mockedTemplate.mock.calls.length).toEqual(5)
+        expect(mockedWidget.mock.calls.length).toEqual(5)
+        expect(mockedWidget).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                source: undefined,
+                absolutePath: '[]',
+                index: 0,
+                widget: baseWidgets.get(0),
+                type: undefined,
+                template: baseWidgets.get(0).get('template'),
+            }),
+            {}
+        )
+        expect(mockedWidget).toHaveBeenNthCalledWith(
+            5,
+            expect.objectContaining({
+                source: baseSource.getIn([
+                    'ticket',
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreUUID,
+                ]),
+                absolutePath: JSON.stringify([
+                    'ticket',
+                    'customer',
+                    CUSTOMER_ECOMMERCE_DATA_KEY,
+                    ecommerceStoreUUID,
+                ]),
+                index: 4,
+                widget: baseWidgets.get(6),
+                type: undefined,
+                template: baseWidgets.get(6).get('template'),
+            }),
+            {}
+        )
     })
 
     it('should display all possible widgets in editing mode', () => {
@@ -367,112 +366,8 @@ describe('InfobarWidgets component', () => {
             </Provider>
         )
         expect(
-            mockedTemplate.mock.calls.length +
-                mockedPlaceholder.mock.calls.length
+            mockedWidget.mock.calls.length + mockedPlaceholder.mock.calls.length
         ).toEqual(baseWidgets.size)
-    })
-
-    it('should add the templatePath key in the passed template that matches the index', () => {
-        render(
-            <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                    />
-                </EditionContext.Provider>
-            </Provider>
-        )
-        expect(mockedTemplate.mock.calls[1][0].template?.templatePath).toEqual(
-            '1.template'
-        )
-    })
-
-    it('should set absolutePath in passed template', () => {
-        render(
-            <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <InfobarWidgets
-                        widgets={baseWidgets}
-                        context={WidgetEnvironment.Ticket}
-                        source={baseSource}
-                    />
-                </EditionContext.Provider>
-            </Provider>
-        )
-        expect(mockedTemplate.mock.calls[1][0].template?.absolutePath).toEqual([
-            'ticket',
-            'customer',
-            'integrations',
-            httpIntegrationId.toString(),
-        ])
-    })
-
-    it('should not break if data source is null with custom actions', () => {
-        const widgets = fromJS([
-            {
-                id: 666,
-                type: CUSTOM_WIDGET_TYPE,
-                context: WidgetEnvironment.Ticket,
-                template: {
-                    type: 'wrapper',
-                    widgets: [
-                        {
-                            meta: {
-                                custom: {
-                                    buttons: [
-                                        {
-                                            label: 'Foo',
-                                            action: {
-                                                url: 'https://foo.com',
-                                                body: {
-                                                    contentType:
-                                                        'application/json',
-                                                    'application/json': [],
-                                                },
-                                                method: 'POST',
-                                                params: [],
-                                                headers: [],
-                                            },
-                                        },
-                                    ],
-                                },
-                            },
-                            path: '',
-                            type: 'card',
-                            title: 'Custom',
-                            widgets: [
-                                {
-                                    path: 'foo',
-                                    type: 'text',
-                                    title: 'Foo',
-                                    order: 1,
-                                },
-                            ],
-                        },
-                    ],
-                },
-            },
-        ])
-
-        const source = fromJS({
-            ticket: {
-                customer: {
-                    data: null,
-                },
-            },
-        })
-
-        render(
-            <Provider store={store}>
-                <InfobarWidgets
-                    widgets={widgets}
-                    context={WidgetEnvironment.Ticket}
-                    source={source}
-                />
-            </Provider>
-        )
     })
 
     // This test here is only to ensure we don't break the memoization set before starting

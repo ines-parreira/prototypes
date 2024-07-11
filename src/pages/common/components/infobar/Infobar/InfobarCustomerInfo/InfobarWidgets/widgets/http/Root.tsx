@@ -3,8 +3,8 @@ import {Map} from 'immutable'
 
 import logo from 'assets/img/integrations/http.png'
 import {renderTemplate} from 'pages/common/utils/template'
-import {CardHeaderTitle} from 'Infobar/features/Card/display/CardHeaderTitle'
-import {CardHeaderIcon} from 'Infobar/features/Card/display/CardHeaderIcon'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import css from './Root.less'
 
 export default function Root() {

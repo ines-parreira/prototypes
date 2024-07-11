@@ -19,7 +19,7 @@ import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
-import StaticField from 'Infobar/features/Field/components/StaticField'
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {renderTemplate} from 'pages/common/utils/template'

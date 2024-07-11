@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {isListTemplate, Source, Template} from 'models/widget/types'
-import {seekNextValues} from 'Infobar/features/Template/helpers/iterator'
+import {seekNextValues} from 'Widgets/modules/Template/helpers/iterator'
 
 import Field from './widgets/Field'
 import List from './widgets/List'

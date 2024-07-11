@@ -1,6 +1,6 @@
 import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
-import {CardHeaderTitle} from 'Infobar/features/Card/display/CardHeaderTitle'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {useStore} from './useStore'
 
 export default function Order() {

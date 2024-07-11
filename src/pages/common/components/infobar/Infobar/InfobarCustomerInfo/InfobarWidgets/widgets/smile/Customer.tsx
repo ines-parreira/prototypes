@@ -4,9 +4,9 @@ import {Map} from 'immutable'
 import logo from 'assets/img/infobar/smile.svg'
 
 import {renderTemplate} from 'pages/common/utils/template'
-import {CardHeaderTitle} from 'Infobar/features/Card/display/CardHeaderTitle'
-import {CardHeaderIcon} from 'Infobar/features/Card/display/CardHeaderIcon'
-import {CardHeaderSubtitle} from 'Infobar/features/Card/display/CardHeaderSubtitle'
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 
 export default function Customer() {
     return {

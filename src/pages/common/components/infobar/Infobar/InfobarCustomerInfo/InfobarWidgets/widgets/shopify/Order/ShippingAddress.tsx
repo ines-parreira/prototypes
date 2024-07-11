@@ -1,7 +1,7 @@
 import React, {useContext, useMemo} from 'react'
 import {Map} from 'immutable'
 
-import {CardCustomization} from 'Infobar/features/Card/types'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
