@@ -8,11 +8,22 @@ import css from 'pages/stats/DrillDownModalTrigger.less'
 import {hintTooltipDelay} from 'pages/stats/common/constants'
 import useId from 'hooks/useId'
 
+import {ConvertMetric} from 'state/ui/stats/types'
+
 export const TRIGGER_ID = 'drill-down'
 
 type Props = {
     metricData: DrillDownMetric
     enabled?: boolean
+}
+
+const getTooltipText = (metricName: string) => {
+    switch (metricName) {
+        case ConvertMetric.CampaignSalesCount:
+            return 'Click to view orders'
+        default:
+            return 'Click to view tickets'
+    }
 }
 
 export const DrillDownModalTrigger = ({
@@ -28,13 +39,14 @@ export const DrillDownModalTrigger = ({
     }
 
     const targetId = `${TRIGGER_ID}-${useId()}`
+    const tooltipText = getTooltipText(metricData.metricName)
 
     return (
         <>
             {enabled ? (
                 <span id={targetId} className={css.text} onClick={handleClick}>
                     <Tooltip delay={hintTooltipDelay} target={targetId}>
-                        Click to view tickets
+                        {tooltipText}
                     </Tooltip>
                     {children}
                 </span>

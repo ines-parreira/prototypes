@@ -139,7 +139,10 @@ export const CampaignTotalsStat = () => {
                 >
                     {isViewDrillDownEnabled && (
                         <DrillDownModalTrigger
-                            enabled={!!data?.campaignSalesCount}
+                            enabled={
+                                !!data?.campaignSalesCount &&
+                                data?.campaignSalesCount !== '0'
+                            }
                             metricData={{
                                 title: METRICS.campaignSalesCount.title,
                                 metricName: ConvertMetric.CampaignSalesCount,

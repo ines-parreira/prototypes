@@ -205,7 +205,7 @@ export const createExportDrillDownJob = createAsyncThunk<
                 type: jobType,
                 params: {reporting_query: query},
             })
-            void dispatch(notifyAboutExportSuccess(currentUserEmail))
+            void dispatch(notifyAboutExportSuccess(jobType, currentUserEmail))
 
             return response
         } catch (error) {
@@ -321,9 +321,24 @@ export const buildAgentMetric = (column: AgentMetricColumn, agent: User) => ({
     perAgentId: agent.id,
 })
 
-export const notifyAboutExportSuccess = (currentUserEmail: string) =>
-    notify({
-        message: `All tickets will be exported. You will receive the download link via email at <strong>${currentUserEmail}</strong> once the export is done.`,
+const getConfirmationText = (jobType: JobType) => {
+    switch (jobType) {
+        case JobType.ExportConvertCampaignSalesDrilldown:
+            return 'All orders will be exported.'
+        default:
+            return 'All tickets will be exported.'
+    }
+}
+
+export const notifyAboutExportSuccess = (
+    jobType: JobType,
+    currentUserEmail: string
+) => {
+    const confirmationText = getConfirmationText(jobType)
+
+    return notify({
+        message: `${confirmationText} You will receive the download link via email at <strong>${currentUserEmail}</strong> once the export is done.`,
         allowHTML: true,
         status: NotificationStatus.Success,
     })
+}
