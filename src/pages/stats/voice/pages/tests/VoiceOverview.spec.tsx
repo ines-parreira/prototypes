@@ -37,6 +37,8 @@ import {assumeMock} from 'utils/testing'
 import {user} from 'fixtures/users'
 import {VOICE_PRODUCT_ID, voicePlan1} from 'fixtures/productPrices'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
+import {VoiceMetric} from 'state/ui/stats/types'
+import * as VoiceCallCallerExperienceMetric from '../../components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -48,6 +50,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('services/reporting/voiceOverviewReportingService')
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
+
 assumeMock(useVoiceCallCountTrend).mockReturnValue({
     data: {prevValue: 10, value: 15},
     isFetching: false,
@@ -59,6 +62,10 @@ assumeMock(useVoiceCallAverageTimeTrend).mockReturnValue({
     isError: false,
 })
 const mockSaveReport = assumeMock(saveReport)
+const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
+    VoiceCallCallerExperienceMetric,
+    'default'
+)
 
 describe('VoiceOverview', () => {
     beforeEach(() => {
@@ -180,6 +187,31 @@ describe('VoiceOverview', () => {
             VOICE_LEARN_MORE_URL,
             '_blank',
             'noopener noreferrer'
+        )
+    })
+
+    it('should pass correct props to VoiceCallCallerExperienceMetric', () => {
+        renderVoiceOverview()
+
+        expect(VoiceCallCallerExperienceMetricSpy).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                metricData: {
+                    metricName: VoiceMetric.AverageWaitTime,
+                    title: AVERAGE_WAIT_TIME_METRIC_TITLE,
+                },
+            }),
+            {}
+        )
+        expect(VoiceCallCallerExperienceMetricSpy).toHaveBeenNthCalledWith(
+            2,
+            expect.objectContaining({
+                metricData: {
+                    metricName: VoiceMetric.AverageTalkTime,
+                    title: AVERAGE_TALK_TIME_METRIC_TITLE,
+                },
+            }),
+            {}
         )
     })
 })

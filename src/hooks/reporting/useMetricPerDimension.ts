@@ -23,6 +23,7 @@ import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
+import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 
 type Requested = {
     isFetching: boolean
@@ -160,6 +161,7 @@ export function useMetricPerDimensionWithEnrichment(
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
         | ConvertOrderConversionCube
+        | VoiceCallCube
     >,
     enrichmentFields: EnrichmentFields[]
 ): MetricWithEnrichment<

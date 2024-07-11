@@ -53,6 +53,11 @@ export enum ConvertMetric {
     CampaignSalesCount = 'campaign_sales_count',
 }
 
+export enum VoiceMetric {
+    AverageWaitTime = 'average_wait_time',
+    AverageTalkTime = 'average_talk_time',
+}
+
 export enum AgentsTableViewIdentifier {
     AgentPerformanceMetrics = 'agent_performance_metrics',
 }

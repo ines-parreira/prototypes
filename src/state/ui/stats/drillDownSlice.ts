@@ -7,6 +7,7 @@ import {Job, JobType} from 'models/job/types'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
+import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {AgentsColumnConfig, TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
@@ -27,6 +28,7 @@ import {
     SlaMetric,
     TicketFieldsMetric,
     ConvertMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
@@ -104,6 +106,10 @@ export type ConvertMetrics = {
     shopName: string
 } & CommonMetrics
 
+export type VoiceMetrics = {
+    metricName: VoiceMetric
+} & CommonMetrics
+
 export type DrillDownMetric =
     | AgentsMetrics
     | ChannelsMetrics
@@ -111,6 +117,7 @@ export type DrillDownMetric =
     | TicketFieldsMetrics
     | SlaMetrics
     | ConvertMetrics
+    | VoiceMetrics
 
 export type DrillDownState = {
     isOpen: boolean
@@ -178,6 +185,7 @@ export const createExportDrillDownJob = createAsyncThunk<
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
         | ConvertOrderConversionCube
+        | VoiceCallCube
     >,
     {dispatch: StoreDispatch; state: RootState}
 >(
@@ -188,6 +196,7 @@ export const createExportDrillDownJob = createAsyncThunk<
             | HandleTimeCubeWithJoins
             | TicketSLACubeWithJoins
             | ConvertOrderConversionCube
+            | VoiceCallCube
         >,
         {dispatch, getState, rejectWithValue}
     ) => {
@@ -300,7 +309,11 @@ export const getDrillDownMetricColumn = (
     ) {
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
-    } else if (metricData.metricName === ConvertMetric.CampaignSalesCount) {
+    } else if (
+        metricData.metricName === ConvertMetric.CampaignSalesCount ||
+        metricData.metricName === VoiceMetric.AverageWaitTime ||
+        metricData.metricName === VoiceMetric.AverageTalkTime
+    ) {
         metricTitle = ''
     } else {
         metricTitle = OverviewMetricConfig[metricData.metricName].title

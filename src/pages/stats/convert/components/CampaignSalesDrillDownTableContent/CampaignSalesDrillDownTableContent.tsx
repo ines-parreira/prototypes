@@ -1,4 +1,5 @@
 import React from 'react'
+import {formatConvertCampaignSalesDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -40,7 +41,10 @@ export const CampaignSalesDrillDownTableContent = ({
 }: {
     metricData: DrillDownMetric
 }) => {
-    const {data, isFetching} = useDrillDownData(metricData)
+    const {data, isFetching} = useDrillDownData(
+        metricData,
+        formatConvertCampaignSalesDrillDownRowData
+    )
 
     const {allCampaigns} = useCampaignStatsFilters()
 

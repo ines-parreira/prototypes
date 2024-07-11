@@ -491,13 +491,20 @@ describe('DrillDownData hooks', () => {
         })
 
         it('should return formatted Data', () => {
-            const {result} = renderHook(() => useDrillDownData(metricData), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(initialState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            const {result} = renderHook(
+                () =>
+                    useDrillDownData(
+                        metricData,
+                        formatConvertCampaignSalesDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             expect(result.current).toEqual({
                 isFetching: false,
@@ -522,13 +529,20 @@ describe('DrillDownData hooks', () => {
                 isError: false,
             })
 
-            const {result} = renderHook(() => useDrillDownData(metricData), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(initialState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            const {result} = renderHook(
+                () =>
+                    useDrillDownData(
+                        metricData,
+                        formatConvertCampaignSalesDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             expect(result.current).toEqual({
                 isFetching: false,
@@ -552,13 +566,20 @@ describe('DrillDownData hooks', () => {
                 isError: false,
             })
 
-            const {result} = renderHook(() => useDrillDownData(metricData), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(initialState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            const {result} = renderHook(
+                () =>
+                    useDrillDownData(
+                        metricData,
+                        formatConvertCampaignSalesDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             act(() => {
                 result.current.onPageChange(2)

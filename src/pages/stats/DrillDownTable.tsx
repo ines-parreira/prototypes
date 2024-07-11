@@ -8,6 +8,7 @@ import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
 import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
+    VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
 
 export const DrillDownTable = ({
@@ -17,8 +18,11 @@ export const DrillDownTable = ({
 }: {
     metricData: DrillDownMetric
     useDataHook: DrillDownDataHook<
-        TicketDrillDownRowData | ConvertDrillDownRowData
+        | TicketDrillDownRowData
+        | ConvertDrillDownRowData
+        | VoiceCallDrillDownRowData
     >
+
     TableContent: FunctionComponent<{
         metricData: DrillDownMetric
     }>

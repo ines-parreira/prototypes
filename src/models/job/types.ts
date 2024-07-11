@@ -1,6 +1,7 @@
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
+import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 import {ReportingQuery} from 'models/reporting/types'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
@@ -53,6 +54,7 @@ export type ReportingQueryJobParams = {
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
         | ConvertOrderConversionCube
+        | VoiceCallCube
     >
 }
 

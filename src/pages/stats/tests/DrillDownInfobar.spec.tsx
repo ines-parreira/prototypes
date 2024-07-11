@@ -2,30 +2,31 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {OverviewMetric} from 'state/ui/stats/types'
+import {ConvertMetric, OverviewMetric, VoiceMetric} from 'state/ui/stats/types'
 import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
-import {
-    DRILL_DOWN_PER_PAGE,
-    useDrillDownData,
-} from 'hooks/reporting/useDrillDownData'
+import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
+import {assumeMock} from 'utils/testing'
+import {DrillDownDownloadButton} from '../DrillDownDownloadButton'
 
-jest.mock('pages/stats/DrillDownDownloadButton', () => ({
-    DrillDownDownloadButton: () => null,
-}))
-jest.mock('hooks/reporting/useDrillDownData')
-const useDrillDownDataMock = assumeMock(useDrillDownData)
+jest.mock('pages/stats/DrillDownDownloadButton')
+const DrillDownDownloadButtonMock = assumeMock(DrillDownDownloadButton)
 
 describe('<DrillDownInfobar />', () => {
     const metricData: DrillDownMetric = {metricName: OverviewMetric.OpenTickets}
     const totalResults = 50
 
-    useDrillDownDataMock.mockReturnValue({
+    const useDrillDownDataMock = jest.fn().mockReturnValue({
         perPage: DRILL_DOWN_PER_PAGE,
         totalResults,
         isFetching: false,
     } as any)
+
+    beforeEach(() => {
+        DrillDownDownloadButtonMock.mockImplementation(() => (
+            <div data-testid="download" />
+        ))
+    })
 
     it('should render the infobar with current number of results', () => {
         render(
@@ -76,5 +77,69 @@ describe('<DrillDownInfobar />', () => {
         expect(
             screen.getByText('Fetching tickets...', {exact: false})
         ).toBeInTheDocument()
+    })
+
+    it('should render the download button when metric data is downloadable', () => {
+        const metricData: DrillDownMetric = {
+            metricName: OverviewMetric.OpenTickets,
+        }
+        useDrillDownDataMock.mockReturnValue({
+            perPage: DRILL_DOWN_PER_PAGE,
+            totalResults,
+            isFetching: false,
+        } as any)
+
+        render(
+            <DrillDownInfoBar
+                metricData={metricData}
+                useDataHook={useDrillDownDataMock}
+            />
+        )
+
+        expect(screen.getByTestId('download')).toBeInTheDocument()
+    })
+
+    it.each([VoiceMetric.AverageTalkTime, VoiceMetric.AverageWaitTime])(
+        `should not render the download button when metric data is not downloadable`,
+        (metric) => {
+            const metricData: DrillDownMetric = {metricName: metric}
+            useDrillDownDataMock.mockReturnValue({
+                perPage: DRILL_DOWN_PER_PAGE,
+                totalResults,
+                isFetching: false,
+            } as any)
+
+            render(
+                <DrillDownInfoBar
+                    metricData={metricData}
+                    useDataHook={useDrillDownDataMock}
+                />
+            )
+
+            expect(screen.queryByTestId('download')).toBeNull()
+        }
+    )
+
+    it.each([
+        [ConvertMetric.CampaignSalesCount, 'orders'],
+        [VoiceMetric.AverageTalkTime, 'voice calls'],
+        [VoiceMetric.AverageWaitTime, 'voice calls'],
+        ['test-metric', 'tickets'],
+    ])('should render the correct object type', (metric, objectType) => {
+        const metricData = {metricName: metric} as DrillDownMetric
+        useDrillDownDataMock.mockReturnValue({
+            perPage: DRILL_DOWN_PER_PAGE,
+            totalResults,
+            isFetching: false,
+        } as any)
+
+        render(
+            <DrillDownInfoBar
+                metricData={metricData}
+                useDataHook={useDrillDownDataMock}
+            />
+        )
+
+        expect(screen.getByText(objectType, {exact: false})).toBeInTheDocument()
     })
 })

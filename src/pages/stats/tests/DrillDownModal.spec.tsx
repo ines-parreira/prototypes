@@ -11,7 +11,9 @@ import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {assumeMock} from 'utils/testing'
 import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {VoiceMetric} from 'state/ui/stats/types'
 import {DrillDownModal} from '../DrillDownModal'
+import VoiceCallDrillDownTableContent from '../voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 
 jest.mock('pages/stats/DrillDownTable')
 const DrillDownTableMock = assumeMock(DrillDownTable)
@@ -74,6 +76,38 @@ describe('<DrillDownModal />', () => {
         )
         expect(screen.getByText(title)).toBeInTheDocument()
     })
+
+    it.each([[VoiceMetric.AverageWaitTime], [VoiceMetric.AverageTalkTime]])(
+        'should render voice calls drill down table content for metric %s',
+        (metric) => {
+            const state = {
+                ui: {
+                    drillDown: {
+                        isOpen: true,
+                        metricData: {
+                            title: 'voice',
+                            metricName: metric,
+                        },
+                    },
+                },
+            } as unknown as RootState
+
+            render(
+                <Provider store={mockStore(state)}>
+                    <DrillDownModal />
+                </Provider>
+            )
+
+            expect(DrillDownTableMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    metricData: state.ui.drillDown.metricData,
+                    TableContent: VoiceCallDrillDownTableContent,
+                }),
+                {}
+            )
+            expect(screen.getByText('voice')).toBeInTheDocument()
+        }
+    )
 
     it('should close the modal', async () => {
         const store = mockStore(defaultState)

@@ -15,15 +15,20 @@ import {
     TicketFieldsMetric,
     SlaMetric,
     ConvertMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
+import {voiceCallListQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction'
 )
+jest.mock('models/reporting/queryFactories/voice/voiceCall')
 const customerSatisfactionQueryFactoryMock = assumeMock(
     customerSatisfactionMetricDrillDownQueryFactory
 )
+const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
+
 describe('getDrillDownQuery', () => {
     const agentsMetrics: AgentsMetrics[] = [
         {metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123},
@@ -98,6 +103,14 @@ describe('getDrillDownQuery', () => {
             shopName: 'shopify:someShop',
         },
     ]
+    const voiceMetrics: DrillDownMetric[] = [
+        {
+            metricName: VoiceMetric.AverageWaitTime,
+        },
+        {
+            metricName: VoiceMetric.AverageTalkTime,
+        },
+    ]
 
     it.each([
         ...supportedMetrics,
@@ -105,10 +118,20 @@ describe('getDrillDownQuery', () => {
         ...channelMetrics,
         ...slaMetrics,
         ...convertMetrics,
+        ...voiceMetrics,
     ])(
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
             expect(getDrillDownQuery(metricName)).toEqual(expect.any(Function))
+        }
+    )
+
+    it.each(voiceMetrics)(
+        `should return the correct query for voice metrics: $metricName`,
+        (metric: DrillDownMetric) => {
+            const query = getDrillDownQuery(metric)
+            query({} as any, {} as any)
+            expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
         }
     )
 

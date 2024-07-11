@@ -8,16 +8,30 @@ import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
 import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
+    VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
-import {ConvertMetric} from 'state/ui/stats/types'
-import css from './DrillDownInfobar.less'
+import {ConvertMetric, VoiceMetric} from 'state/ui/stats/types'
+import css from 'pages/stats/DrillDownInfobar.less'
 
 const getObjectType = (metricData: DrillDownMetric) => {
     switch (metricData.metricName) {
         case ConvertMetric.CampaignSalesCount:
             return 'orders'
+        case VoiceMetric.AverageWaitTime:
+        case VoiceMetric.AverageTalkTime:
+            return 'voice calls'
         default:
             return 'tickets'
+    }
+}
+
+const isMetricDataDownloadable = (metricData: DrillDownMetric): boolean => {
+    switch (metricData.metricName) {
+        case VoiceMetric.AverageWaitTime:
+        case VoiceMetric.AverageTalkTime:
+            return false
+        default:
+            return true
     }
 }
 
@@ -44,12 +58,15 @@ export const DrillDownInfoBar = ({
 }: {
     metricData: DrillDownMetric
     useDataHook: DrillDownDataHook<
-        TicketDrillDownRowData | ConvertDrillDownRowData
+        | TicketDrillDownRowData
+        | ConvertDrillDownRowData
+        | VoiceCallDrillDownRowData
     >
 }) => {
     const {isFetching, totalResults} = useDataHook(metricData)
     const objectType = getObjectType(metricData)
     const resultsPlaceholder = `Fetching ${objectType}...`
+    const shouldDisplayDownloadButton = isMetricDataDownloadable(metricData)
 
     return (
         <div className={css.wrapper}>
@@ -65,10 +82,12 @@ export const DrillDownInfoBar = ({
                     ? resultsPlaceholder
                     : getTheInfoLabel(totalResults, objectType)}
             </div>
-            <DrillDownDownloadButton
-                metricData={metricData}
-                objectType={objectType}
-            />
+            {shouldDisplayDownloadButton && (
+                <DrillDownDownloadButton
+                    metricData={metricData}
+                    objectType={objectType}
+                />
+            )}
         </div>
     )
 }

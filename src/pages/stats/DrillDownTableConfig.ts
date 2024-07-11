@@ -31,9 +31,12 @@ import {
     SlaMetric,
     TicketFieldsMetric,
     ConvertMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import {voiceCallListQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 
 export type DrillDownQueryFactory = (
     statsFilters: StatsFilters,
@@ -44,6 +47,7 @@ export type DrillDownQueryFactory = (
     | HandleTimeCubeWithJoins
     | TicketSLACubeWithJoins
     | ConvertOrderConversionCube
+    | VoiceCallCube
 >
 
 const queryBuilderWithAgentFilter =
@@ -174,5 +178,9 @@ export const getDrillDownQuery = (
                     timezone,
                     sorting
                 )
+        case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.AverageWaitTime:
+            return (statsFilters: StatsFilters, timezone: string) =>
+                voiceCallListQueryFactory(statsFilters, timezone)
     }
 }

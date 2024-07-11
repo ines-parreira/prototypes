@@ -31,14 +31,13 @@ import {
 import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 import {
     BaseDrillDownRowData,
-    ConvertDrillDownRowData,
-    getDrillDownFormatter,
     getEnrichedDrillDownFormatter,
     TicketDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
 import useAppDispatch from 'hooks/useAppDispatch'
+import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 
-interface DrillDownData<T extends BaseDrillDownRowData> {
+interface DrillDownData<T> {
     isFetching: boolean
     perPage: number
     pagesCount: number
@@ -98,6 +97,7 @@ export const useDrillDownQueryWithoutLimit = (
     | HandleTimeCubeWithJoins
     | TicketSLACubeWithJoins
     | ConvertOrderConversionCube
+    | VoiceCallCube
 > => {
     const query = useDrillDownQuery(metricData)
 
@@ -158,17 +158,36 @@ export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
     metricData: DrillDownMetric
 ) => DrillDownData<T>
 
-export const useDrillDownData = (
-    metricData: DrillDownMetric
-): DrillDownData<ConvertDrillDownRowData> => {
+export type DrillDownDataHookWithFormatter = <T>(
+    metricData: DrillDownMetric,
+    getDrillDownFormatter: (
+        row: MergedRecord<any, any>,
+        metricField: string
+    ) => T
+) => DrillDownData<T>
+
+export function useDrillDownData<T>(
+    metricData: DrillDownMetric,
+    getDrillDownFormatter: (
+        row: MergedRecord<any, any>,
+        metricField: string
+    ) => T
+): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
-    const formatter = getDrillDownFormatter(metricData)
     const query = useDrillDownQuery(metricData)
     const {data: someData, isFetching} = useMetricPerDimension(query)
 
     const rowData = useMemo(() => someData?.allData || [], [someData])
     const totalResults = rowData.length
+
+    const formattedRowData = rowData.map((row) =>
+        getDrillDownFormatter(row, query.dimensions[1] ?? query.measures[0])
+    )
+    const slicedRowData = formattedRowData.slice(
+        Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
+        Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
+    )
 
     return {
         isFetching,
@@ -185,14 +204,7 @@ export const useDrillDownData = (
                     )
                 )
             ),
-        data: rowData
-            .map((row) =>
-                formatter(row, query.dimensions[1] ?? query.measures[0])
-            )
-            .slice(
-                Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
-                Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
-            ),
+        data: slicedRowData,
     }
 }
 

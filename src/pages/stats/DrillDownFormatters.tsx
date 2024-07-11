@@ -4,6 +4,8 @@ import {EnrichmentFields} from 'models/reporting/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
+import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
+import {VoiceCallSummary} from 'pages/stats/voice/models/types'
 
 export interface TicketDetails {
     id: number | string
@@ -44,19 +46,14 @@ export interface ConvertDrillDownRowData extends BaseDrillDownRowData {
     data: CampaignSaleDetails
 }
 
+export type VoiceCallDrillDownRowData = VoiceCallSummary & BaseDrillDownRowData
+
 export type TicketDrillDownFormatter = (
     row: MergedRecord<any, any>,
     agents: User[],
     metricField: string,
     ticketIdField: string
 ) => TicketDrillDownRowData
-
-export type ConvertDrillDownFormatter = (
-    row: MergedRecord<any, any>,
-    metricField: string
-) => ConvertDrillDownRowData
-
-export type DrillDownFormatter = ConvertDrillDownFormatter
 
 export type EnrichedDrillDownFormatter = TicketDrillDownFormatter
 
@@ -106,14 +103,29 @@ export const formatConvertCampaignSalesDrillDownRowData = (
     rowData: row,
 })
 
-export const getDrillDownFormatter = (
-    metricName: DrillDownMetric
-): DrillDownFormatter => {
-    switch (metricName.metricName) {
-        default:
-            return formatConvertCampaignSalesDrillDownRowData
-    }
-}
+export const formatVoiceDrillDownRowData = (
+    row: MergedRecord<any, any>,
+    metricField: string
+): VoiceCallDrillDownRowData => ({
+    agentId: row[VoiceCallDimension.AgentId],
+    customerId: row[VoiceCallDimension.CustomerId],
+    direction: row[VoiceCallDimension.Direction],
+    integrationId: row[VoiceCallDimension.IntegrationId],
+    createdAt: row[VoiceCallDimension.CreatedAt],
+    status: row[VoiceCallDimension.Status],
+    duration: row[VoiceCallDimension.Duration],
+    ticketId: row[VoiceCallDimension.TicketId],
+    phoneNumberDestination: row[VoiceCallDimension.PhoneNumberDestination],
+    phoneNumberSource: row[VoiceCallDimension.PhoneNumberSource],
+    talkTime: row[VoiceCallDimension.TalkTime],
+    waitTime: row[VoiceCallDimension.WaitTime],
+    voicemailAvailable: row[VoiceCallDimension.VoicemailAvailable],
+    voicemailUrl: row[VoiceCallDimension.VoicemailUrl],
+    callRecordingAvailable: row[VoiceCallDimension.CallRecordingAvailable],
+    callRecordingUrl: row[VoiceCallDimension.CallRecordingUrl],
+    metricValue: row[metricField],
+    rowData: row,
+})
 
 export const getEnrichedDrillDownFormatter = (
     metricName: DrillDownMetric

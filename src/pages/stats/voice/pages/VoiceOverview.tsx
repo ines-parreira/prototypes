@@ -52,6 +52,7 @@ import {saveReport} from 'services/reporting/voiceOverviewReportingService'
 import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
 import {ProductType} from 'models/billing/types'
+import {VoiceMetric} from 'state/ui/stats/types'
 
 function VoiceOverview() {
     const [tableFilterOption, setTableFilterOption] = useState(
@@ -169,6 +170,10 @@ function VoiceOverview() {
                         hint={AVERAGE_WAIT_TIME_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
                         metricTrend={averageWaitTimeTrend}
+                        metricData={{
+                            metricName: VoiceMetric.AverageWaitTime,
+                            title: AVERAGE_WAIT_TIME_METRIC_TITLE,
+                        }}
                     />
                 </DashboardGridCell>
                 <DashboardGridCell size={6}>
@@ -177,6 +182,10 @@ function VoiceOverview() {
                         hint={AVERAGE_TALK_TIME_METRIC_HINT}
                         statsFilters={cleanStatsFilters}
                         metricTrend={averageTalkTimeTrend}
+                        metricData={{
+                            metricName: VoiceMetric.AverageTalkTime,
+                            title: AVERAGE_TALK_TIME_METRIC_TITLE,
+                        }}
                     />
                 </DashboardGridCell>
             </DashboardSection>
