@@ -215,7 +215,11 @@ export const addAttachments =
     }
 
 export const addProductCardAttachment =
-    (ticket: Map<any, any>, attachment: ProductCardAttachment) =>
+    (
+        ticket: Map<any, any>,
+        attachment: ProductCardAttachment,
+        sortAttachments?: boolean
+    ) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -229,12 +233,18 @@ export const addProductCardAttachment =
         }
 
         dispatch({
-            type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+            type: !!sortAttachments
+                ? constants.NEW_MESSAGE_ADD_SORTED_ATTACHMENT_SUCCESS
+                : constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
             resp: [attachment],
         })
     }
 export const addUniqueDiscountOfferAttachment =
-    (ticket: Map<any, any>, attachment: DiscountOfferAttachment) =>
+    (
+        ticket: Map<any, any>,
+        attachment: DiscountOfferAttachment,
+        sortAttachments?: boolean
+    ) =>
     (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -248,7 +258,9 @@ export const addUniqueDiscountOfferAttachment =
         }
 
         dispatch({
-            type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
+            type: !!sortAttachments
+                ? constants.NEW_MESSAGE_ADD_SORTED_ATTACHMENT_SUCCESS
+                : constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
             resp: [attachment],
         })
     }

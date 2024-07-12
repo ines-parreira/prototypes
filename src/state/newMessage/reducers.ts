@@ -141,6 +141,34 @@ export default function reducer(
             })
         }
 
+        case types.NEW_MESSAGE_ADD_SORTED_ATTACHMENT_SUCCESS: {
+            return state.mergeDeep({
+                newMessage: {
+                    attachments: (
+                        state.getIn(
+                            ['newMessage', 'attachments'],
+                            fromJS([])
+                        ) as List<any>
+                    )
+                        .concat(fromJS(action.resp))
+                        // Sort attachments by content type
+                        .sort((a: Map<any, any>, b: Map<any, any>) =>
+                            String(a.get('content_type')).localeCompare(
+                                String(b.get('content_type'))
+                            )
+                        ),
+                },
+                state: {
+                    dirty: true,
+                },
+                _internal: {
+                    loading: {
+                        addAttachment: false,
+                    },
+                },
+            })
+        }
+
         case types.ADD_ATTACHMENTS: {
             return state.updateIn(
                 ['newMessage', 'attachments'],

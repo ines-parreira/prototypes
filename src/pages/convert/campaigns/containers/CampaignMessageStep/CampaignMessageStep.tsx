@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import {EditorState} from 'draft-js'
-import {List} from 'immutable'
 
 import {User} from 'config/types/user'
 
@@ -18,7 +17,6 @@ import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
 
 type Props = {
     agents: User[]
-    attachments: List<any>
     count?: number
     isPristine?: boolean
     isValid?: boolean
@@ -29,7 +27,6 @@ type Props = {
 
 export const CampaignMessageStep = ({
     agents,
-    attachments = List(),
     count,
     isPristine = true,
     isValid = false,
@@ -63,7 +60,6 @@ export const CampaignMessageStep = ({
                 richAreaRef={(ref) => setRichArea(ref)}
                 showContentWarning={showContentWarning}
                 agents={agents}
-                attachments={attachments}
                 html={campaign.message_html || ''}
                 text={campaign.message_text}
                 isConvertSubscriber={isConvertSubscriber}

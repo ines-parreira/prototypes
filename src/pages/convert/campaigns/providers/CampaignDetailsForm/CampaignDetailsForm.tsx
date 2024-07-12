@@ -543,7 +543,6 @@ export const CampaignDetailsForm = ({
                                         />
                                         <CampaignMessageStep
                                             agents={agents}
-                                            attachments={attachments}
                                             count={3}
                                             key={CampaignStepsKeys.Message}
                                             isPristine={pristine.message}

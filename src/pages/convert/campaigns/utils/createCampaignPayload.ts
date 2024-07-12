@@ -59,6 +59,16 @@ export const createCampaignPayload = ({
 
         draft.attachments = []
 
+        if (discountOffers.length > 0) {
+            const discountOfferAttachment = transformDiscountOfferToAttachment(
+                discountOffers[0]
+            )
+
+            draft.attachments = [
+                ...(draft.attachments || []),
+                discountOfferAttachment,
+            ]
+        }
         if (shopifyProducts.length > 0) {
             const productAttachments = shopifyProducts.map((product) => {
                 return transformProductToAttachment(
@@ -77,16 +87,6 @@ export const createCampaignPayload = ({
             draft.attachments = [
                 ...(draft.attachments || []),
                 ...productAttachments,
-            ]
-        }
-        if (discountOffers.length > 0) {
-            const discountOfferAttachment = transformDiscountOfferToAttachment(
-                discountOffers[0]
-            )
-
-            draft.attachments = [
-                ...(draft.attachments || []),
-                discountOfferAttachment,
             ]
         }
 

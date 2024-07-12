@@ -74,6 +74,39 @@ describe('new message reducer', () => {
         ).toEqualImmutable(expected)
     })
 
+    it('should sort attachments by content type', () => {
+        const populatedInitialState = initialState.mergeDeep({
+            newMessage: {
+                attachments: fromJS([
+                    {content_type: 'image/jpg'},
+                    {content_type: 'image/png'},
+                ]),
+            },
+        })
+
+        const expected = initialState
+            .mergeDeep({
+                newMessage: {
+                    attachments: fromJS([
+                        {content_type: 'image/jpg'},
+                        {content_type: 'image/jpg'},
+                        {content_type: 'image/png'},
+                    ]),
+                },
+                state: {
+                    dirty: true,
+                },
+            })
+            .setIn(['_internal', 'loading', 'addAttachment'], false)
+
+        expect(
+            reducer(populatedInitialState, {
+                type: types.NEW_MESSAGE_ADD_SORTED_ATTACHMENT_SUCCESS,
+                resp: [{content_type: 'image/jpg'}],
+            })
+        ).toEqualImmutable(expected)
+    })
+
     it('should return state with dirty state and delete corect index attachments', () => {
         const fakeAttachments = initialState.mergeDeep({
             newMessage: {

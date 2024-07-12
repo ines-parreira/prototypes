@@ -1,6 +1,5 @@
 import React, {memo, useMemo, useState, useEffect} from 'react'
 import classnames from 'classnames'
-import {List} from 'immutable'
 
 import {EditorState} from 'draft-js'
 
@@ -32,12 +31,12 @@ import {useIsConvertUniqueDiscountCodesEnabled} from 'pages/convert/common/hooks
 import useAppSelector from 'hooks/useAppSelector'
 import {getNewMessageAttachments} from 'state/newMessage/selectors'
 
+import {toJS} from 'utils'
 import css from './CampaignMessage.less'
 
 type Props = {
     richAreaRef: (ref: RichField | null) => void
     agents: User[]
-    attachments: List<any>
     html: string
     isConvertSubscriber?: boolean
     showAgentSelector?: boolean
@@ -53,7 +52,6 @@ export const CampaignMessage = memo(
     ({
         richAreaRef,
         agents,
-        attachments,
         html,
         isConvertSubscriber = false,
         showAgentSelector = true,
@@ -77,7 +75,7 @@ export const CampaignMessage = memo(
         const isConvertUniqueDiscountCodesEnabled =
             useIsConvertUniqueDiscountCodesEnabled()
 
-        const messageAttachments = useAppSelector(getNewMessageAttachments)
+        const attachments = useAppSelector(getNewMessageAttachments)
 
         const [previousFirstProductId, setPreviousFirstProductId] = useState<
             number | null
@@ -130,7 +128,7 @@ export const CampaignMessage = memo(
 
         // Discount offer can be attached if it is convert subscriber and there is no other offer attached
         const anyDiscountOfferAttached = (
-            messageAttachments.toJS() as AttachmentType[]
+            attachments.toJS() as AttachmentType[]
         ).find((att) => attachmentIsDiscountOffer(att))
 
         const supportsUniqueDiscountOffer =
@@ -202,7 +200,10 @@ export const CampaignMessage = memo(
                 actions.push(ActionName.DiscountCodePicker)
             }
 
-            if (attachments.size < 5) {
+            const productAttachments = attachments.filter((att) =>
+                attachmentIsProduct(toJS(att))
+            )
+            if (productAttachments.size < 5) {
                 actions.push(ActionName.ProductPicker)
             }
 
@@ -281,6 +282,7 @@ export const CampaignMessage = memo(
                         }
                         canAddUniqueDiscountOffer={canAddUniqueDiscountOffer}
                         currentShopifyIntegration={shopifyIntegration}
+                        sortAttachments={true}
                     />
                     <TicketAttachments
                         context="campaign-message"

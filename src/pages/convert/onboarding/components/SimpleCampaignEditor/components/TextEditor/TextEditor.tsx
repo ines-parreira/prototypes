@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {EditorState} from 'draft-js'
 import {produce} from 'immer'
 
-import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {deleteAttachment} from 'state/newMessage/actions'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
 import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 
 import RichField from 'pages/common/forms/RichField/RichField'
@@ -25,7 +23,6 @@ const TextEditor: React.FC<Props> = (props) => {
     const [richArea, setRichArea] = useState<RichField | null>(null)
 
     const dispatch = useAppDispatch()
-    const attachments = useAppSelector(getNewMessageAttachments)
 
     const handleChangeMessage = (value: EditorState) => {
         const content = value.getCurrentContent()
@@ -59,7 +56,6 @@ const TextEditor: React.FC<Props> = (props) => {
                 showContentWarning={false}
                 showAgentSelector={false}
                 agents={[]}
-                attachments={attachments}
                 html={campaign.message_html || ''}
                 text={campaign.message_text}
                 isConvertSubscriber={isConvertSubscriber}

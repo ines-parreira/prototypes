@@ -40,6 +40,7 @@ type Props = {
     toolbarTour?: Record<string, TooltipTourConfigurationType>
     supportsUniqueDiscountOffer?: boolean
     canAddUniqueDiscountOffer?: boolean
+    sortAttachments?: boolean
     currentShopifyIntegration?: ShopifyIntegration
 } & RichFieldProps
 
@@ -52,6 +53,7 @@ const TicketRichField = (
         disableOutOfStockProducts,
         supportsUniqueDiscountOffer = false,
         canAddUniqueDiscountOffer = false,
+        sortAttachments = false,
         toolbarTour,
         currentShopifyIntegration,
         ...props
@@ -137,10 +139,22 @@ const TicketRichField = (
             disableOutOfStockProducts: disableOutOfStockProducts ?? false,
             disableVariantSelection: disableVariantSelection ?? false,
             onAddProductCardAttachment: (attachment) => {
-                dispatch(addProductCardAttachment(ticket, attachment))
+                dispatch(
+                    addProductCardAttachment(
+                        ticket,
+                        attachment,
+                        sortAttachments
+                    )
+                )
             },
             onAddUniqueDiscountOfferAttachment: (discount) => {
-                dispatch(addUniqueDiscountOfferAttachment(ticket, discount))
+                dispatch(
+                    addUniqueDiscountOfferAttachment(
+                        ticket,
+                        discount,
+                        sortAttachments
+                    )
+                )
 
                 logEvent(SegmentEvent.InsertUniqueDiscountCodeAdded, {
                     account_domain: currentAccount?.get('domain'),
@@ -179,6 +193,7 @@ const TicketRichField = (
             currentShopifyIntegration,
             supportsUniqueDiscountOffer,
             canAddUniqueDiscountOffer,
+            sortAttachments,
         ]
     )
 

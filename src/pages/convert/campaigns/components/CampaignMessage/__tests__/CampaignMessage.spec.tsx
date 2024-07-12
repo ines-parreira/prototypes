@@ -27,7 +27,7 @@ const defaultState = {
     integrations: fromJS({integrations: []}),
 } as RootState
 
-const attachments = fromJS([
+const attachments = [
     {
         content_type: 'application/productCard',
         name: 'The Out of Stock Snowboard',
@@ -41,7 +41,7 @@ const attachments = fromJS([
             featured_image: 'https://cdn.shopify.com/',
         },
     },
-])
+]
 
 describe('<CampaignMessage>', () => {
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
@@ -62,7 +62,6 @@ describe('<CampaignMessage>', () => {
                         showContentWarning
                         isConvertSubscriber
                         richAreaRef={jest.fn()}
-                        attachments={fromJS([])}
                         agents={[]}
                         html=""
                         text=""
@@ -88,7 +87,6 @@ describe('<CampaignMessage>', () => {
                         showContentWarning
                         isConvertSubscriber={false}
                         richAreaRef={jest.fn()}
-                        attachments={fromJS([])}
                         agents={[]}
                         html=""
                         text=""
@@ -139,12 +137,20 @@ describe('<CampaignMessage>', () => {
             ).mockReturnValue(new Promise((resolve) => resolve([Map(product)])))
 
             const {queryByText} = render(
-                <Provider store={mockStore(defaultState)}>
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        newMessage: fromJS({
+                            newMessage: {
+                                attachments: attachments,
+                            },
+                        }),
+                    })}
+                >
                     <CampaignMessage
                         showContentWarning
                         isConvertSubscriber={true}
                         richAreaRef={jest.fn()}
-                        attachments={attachments}
                         agents={[]}
                         html=""
                         text=""
@@ -179,12 +185,20 @@ describe('<CampaignMessage>', () => {
             ).mockReturnValue(new Promise((resolve) => resolve([Map(product)])))
 
             const {queryByText} = render(
-                <Provider store={mockStore(defaultState)}>
+                <Provider
+                    store={mockStore({
+                        ...defaultState,
+                        newMessage: fromJS({
+                            newMessage: {
+                                attachments: attachments,
+                            },
+                        }),
+                    })}
+                >
                     <CampaignMessage
                         showContentWarning
                         isConvertSubscriber={true}
                         richAreaRef={jest.fn()}
-                        attachments={attachments}
                         agents={[]}
                         html=""
                         text=""

@@ -81,6 +81,14 @@ describe('createCampaignPayload', () => {
 
         expect(payload.attachments).toEqual([
             {
+                contentType: 'application/discountOffer',
+                extra: {
+                    discount_offer_id: '3',
+                    summary: undefined,
+                },
+                name: 'Hello2024',
+            },
+            {
                 contentType: 'application/productCard',
                 name: 'The Out of Stock Snowboard',
                 size: 0,
@@ -94,14 +102,6 @@ describe('createCampaignPayload', () => {
                     position: undefined,
                     variant_name: undefined,
                 },
-            },
-            {
-                contentType: 'application/discountOffer',
-                extra: {
-                    discount_offer_id: '3',
-                    summary: undefined,
-                },
-                name: 'Hello2024',
             },
         ])
     })
