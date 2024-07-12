@@ -137,9 +137,10 @@ export const CampaignTotalsStat = () => {
                     title={METRICS.campaignSalesCount.title}
                     hint={{title: METRICS.campaignSalesCount.hint}}
                 >
-                    {isViewDrillDownEnabled && (
+                    <BigNumberMetric isLoading={isLoading}>
                         <DrillDownModalTrigger
                             enabled={
+                                isViewDrillDownEnabled &&
                                 !!data?.campaignSalesCount &&
                                 data?.campaignSalesCount !== '0'
                             }
@@ -149,16 +150,9 @@ export const CampaignTotalsStat = () => {
                                 shopName: namespacedShopName,
                             }}
                         >
-                            <BigNumberMetric isLoading={isLoading}>
-                                {data?.campaignSalesCount}
-                            </BigNumberMetric>
-                        </DrillDownModalTrigger>
-                    )}
-                    {!isViewDrillDownEnabled && (
-                        <BigNumberMetric isLoading={isLoading}>
                             {data?.campaignSalesCount}
-                        </BigNumberMetric>
-                    )}
+                        </DrillDownModalTrigger>
+                    </BigNumberMetric>
                 </MetricCard>
             </DashboardGridCell>
         </React.Fragment>
