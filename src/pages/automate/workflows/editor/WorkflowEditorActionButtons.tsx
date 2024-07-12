@@ -18,7 +18,7 @@ interface Props {
     onCancel: () => void
     onSave: () => void
     onPublish: () => void
-    onTest: (isTestable: boolean) => void
+    onTest: () => void
     onDiscard: () => void
     onViewChannel: () => void
 }
@@ -48,7 +48,7 @@ export const WorkflowEditorActionButtons = ({
             <>
                 {isPreviewTestButtonVisible && (
                     <Button
-                        onClick={() => onTest(false)}
+                        onClick={() => onTest()}
                         intent="secondary"
                         isDisabled={isTestDisabled}
                         id="test-disabled"
@@ -109,7 +109,7 @@ export const WorkflowEditorActionButtons = ({
         <>
             {isPreviewTestButtonVisible && (
                 <Button
-                    onClick={() => onTest(!isDirty)}
+                    onClick={() => onTest()}
                     intent="secondary"
                     isDisabled={isTestDisabled}
                     id="test-disabled"

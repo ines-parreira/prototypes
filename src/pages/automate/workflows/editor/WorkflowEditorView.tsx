@@ -181,27 +181,22 @@ function WorkflowEditorViewWrapped({
         workflowEditorContext.handleDiscard()
     }
 
-    const handleTest = (isTestable: boolean) => {
-        if (isTestable) {
-            workflowEditorContext.setIsTesting(true)
-        } else {
-            const configurationError =
-                workflowEditorContext.handleValidate(true)
+    const handleTest = () => {
+        const configurationError = workflowEditorContext.handleValidate(true)
 
-            if (configurationError) {
-                workflowEditorContext.setShouldShowErrors(true)
-                notifyMerchant({
-                    message:
-                        'Complete steps and save in order to test this Flow',
-                    status: NotificationStatus.Error,
-                })
-            } else {
-                notifyMerchant({
-                    message:
-                        'Save as draft or publish in order to test this Flow',
-                    status: NotificationStatus.Error,
-                })
-            }
+        if (configurationError) {
+            workflowEditorContext.setShouldShowErrors(true)
+            notifyMerchant({
+                message: 'Complete steps and save in order to test this Flow',
+                status: NotificationStatus.Error,
+            })
+        } else if (isDirty) {
+            notifyMerchant({
+                message: 'Save as draft or publish in order to test this Flow',
+                status: NotificationStatus.Error,
+            })
+        } else {
+            workflowEditorContext.setIsTesting(true)
         }
     }
 
