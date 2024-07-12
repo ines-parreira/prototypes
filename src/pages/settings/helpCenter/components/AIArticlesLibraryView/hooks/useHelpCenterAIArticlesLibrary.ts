@@ -131,6 +131,7 @@ export const useHelpCenterAIArticlesLibrary = (
             newArticles.length > 0 &&
             fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
         showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
+        hasStoreConnection: !!storeIntegration,
         hasEmailToStoreConnection,
         markArticleAsReviewed: (
             templateKey: string,

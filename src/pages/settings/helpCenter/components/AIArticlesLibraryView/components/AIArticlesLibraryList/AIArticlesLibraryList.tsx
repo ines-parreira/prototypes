@@ -34,6 +34,7 @@ type AIArticlesLibraryListProps = {
     selectedArticleType: AIArticleToggleOptionValue
     setSelectedArticleType: Dispatch<SetStateAction<AIArticleToggleOptionValue>>
     showLinkToArticleTemplates: boolean
+    hasStoreConnection: boolean
     hasEmailToStoreConnection: boolean
 }
 
@@ -46,6 +47,7 @@ const AIArticlesLibraryList = ({
     selectedArticleType,
     setSelectedArticleType,
     showLinkToArticleTemplates,
+    hasStoreConnection,
     hasEmailToStoreConnection,
 }: AIArticlesLibraryListProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
@@ -144,13 +146,19 @@ const AIArticlesLibraryList = ({
                     How articles are generated with AI
                 </Button>
             </a>
-            {showLinkToConnectEmailToStore ? (
+            {!hasStoreConnection ? (
+                <AIArticleLibraryRedirect
+                    message="To generate articles with AI, connect your Help Center to a store. This helps the AI know which customer questions correspond with this Help Center."
+                    linkAddress={`/app/settings/help-center/${helpCenterId}/publish-track`}
+                    linkDescription="Connect Help Center to store"
+                />
+            ) : showLinkToConnectEmailToStore ? (
                 <AIArticleLibraryRedirect
                     message="To generate articles with AI, connect your email and
                             store integrations. This helps the AI know which
                             customer questions correspond with this Help Center."
                     linkAddress={`/app/settings/channels/email`}
-                    linkDescription="Connect store"
+                    linkDescription="Connect store to email"
                     openNewTab
                 />
             ) : showLinkToArticleTemplates ? (
