@@ -211,6 +211,14 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
             tabindex="0"
             type="button"
           >
+            Remove tags
+          </button>
+          <button
+            class="dropdown-item"
+            role="menuitem"
+            tabindex="0"
+            type="button"
+          >
             Set status
           </button>
           <button

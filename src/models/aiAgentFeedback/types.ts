@@ -1,3 +1,4 @@
+import {MacroAction} from 'models/macroAction/types'
 import {ReportIssueOption} from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null
@@ -83,6 +84,10 @@ export type MessageFeedback = {
     allowsFeedback: boolean
     feedbackOnResource: FeedbackOnResource[]
     feedbackOnMessage: FeedbackOnMessage[]
+    draftMessage: {
+        content: string | null
+        ticketActions: MacroAction[] | null
+    }
 }
 
 export type TicketFeedback = {

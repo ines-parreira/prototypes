@@ -58,6 +58,7 @@ export enum FeatureFlagKey {
     FeedbackToAIAgentInTicketViews = 'feedback-to-ai-agent-in-ticket-views',
     FlowsBuilderAnalytics = 'flows-builder-analytics',
     FeedbackToAIAgentInTicketViewsV3 = 'feedback-to-ai-agent-in-ticket-views-v3',
+    FeedbackToAIAgentInTicketViewsV4 = 'feedback-to-ai-agent-in-ticket-views-v-4',
     FlowsPreviewTestButton = 'flows-preview-test-button',
     FlowsStepsOrderLineItemSelection = 'flows-steps-order-line-item-selection',
     FlowsStepsOrderSelection = 'flows-steps-order-selection',

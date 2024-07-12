@@ -16,6 +16,7 @@ export enum MacroActionName {
     RechargeCancelLastSubscription = 'rechargeCancelLastSubscription',
     RechargeRefundLastCharge = 'rechargeRefundLastCharge',
     RechargeRefundLastOrder = 'rechargeRefundLastOrder',
+    RemoveTags = 'removeTags',
     SetAssignee = 'setAssignee',
     SetCustomFieldValue = 'setCustomFieldValue',
     SetResponseText = 'setResponseText',

@@ -107,4 +107,8 @@ export const messageFeedback: MessageFeedback = {
         {type: 'issue', feedback: ReportIssueOption.OverPromising},
         {type: 'resource', resourceType: 'article', resourceId: 234},
     ],
+    draftMessage: {
+        content: null,
+        ticketActions: null,
+    },
 }

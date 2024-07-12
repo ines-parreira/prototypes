@@ -299,7 +299,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     )
     return (
         <InTicketSuggestion
-            ticket={ticket}
+            ticketId={ticket.id}
             isCollapsed={isCollapsed}
             text={text?.body_html}
             macroActions={actions}

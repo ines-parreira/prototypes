@@ -740,6 +740,22 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
     },
     {
         execution: ActionTemplateExecution.Back,
+        name: MacroActionName.RemoveTags,
+        title: 'Remove tags',
+        partialUpdateKeys: 'tags',
+        partialUpdateValues: 'tags',
+        icon: 'label_off',
+        arguments: {
+            tags: {
+                default: '',
+                input: {
+                    type: 'tags-select',
+                },
+            },
+        },
+    },
+    {
+        execution: ActionTemplateExecution.Back,
         name: MacroActionName.SetStatus,
         title: 'Set status',
         partialUpdateKeys: 'status',

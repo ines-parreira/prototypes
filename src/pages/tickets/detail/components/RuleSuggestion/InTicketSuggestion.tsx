@@ -3,7 +3,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {setInTicketSuggestionState} from 'state/ticket/actions'
 import Button from 'pages/common/components/button/Button'
-import {Ticket} from 'models/ticket/types'
 import {MacroAction} from 'models/macroAction/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'
@@ -13,23 +12,25 @@ import SuggestionBody from './SuggestionBody'
 import css from './InTicketSuggestion.less'
 
 type Props = {
-    ticket: Ticket
+    ticketId: number
     text?: string
     macroActions?: MacroAction[]
     isCollapsed?: boolean
     actionsContent: React.ReactNode
     infoContent: React.ReactNode
+    isAIAgentDraftMessage?: boolean
 }
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
 
 export default function InTicketSuggestion({
-    ticket,
+    ticketId,
     isCollapsed,
     text,
     macroActions,
     actionsContent,
     infoContent,
+    isAIAgentDraftMessage = false,
 }: Props) {
     const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
@@ -60,7 +61,7 @@ export default function InTicketSuggestion({
     if (!text && !macroActions?.length) return null
 
     return (
-        <InTicketSuggestionContainer>
+        <InTicketSuggestionContainer isAIAgent={isAIAgentDraftMessage}>
             <SuggestionHeader
                 onChevronToggle={() =>
                     setSuggestionState((state) =>
@@ -71,13 +72,14 @@ export default function InTicketSuggestion({
                 innerRef={headerRef}
                 state={suggestionState}
                 actionsContent={actionsContent}
+                isAIAgent={isAIAgentDraftMessage}
             />
 
             <SuggestionBody
                 state={suggestionState}
                 actions={macroActions}
                 __html={text}
-                ticketId={ticket.id}
+                ticketId={ticketId}
                 setSuggestionState={setSuggestionState}
             />
 

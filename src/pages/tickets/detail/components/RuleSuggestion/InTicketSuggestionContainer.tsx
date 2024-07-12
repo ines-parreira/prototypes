@@ -1,18 +1,28 @@
 import React from 'react'
+import classNames from 'classnames'
 import {assetsUrl} from 'utils'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from './InTicketSuggestionContainer.less'
 
 type Props = {
     children?: React.ReactNode
+    isAIAgent?: boolean
 }
 
-export default function InTicketSuggestionContainer({children}: Props) {
+export default function InTicketSuggestionContainer({
+    children,
+    isAIAgent = false,
+}: Props) {
     return (
-        <div className={css.container}>
+        <div
+            className={classNames(css.container, {
+                [css.aiAgentContainer]: isAIAgent,
+            })}
+        >
             <div className={css.avatar}>
                 <Avatar
-                    name="Gorgias Tips"
+                    isAIAgent={isAIAgent}
+                    name={isAIAgent ? 'AI Agent' : 'Gorgias Tips'}
                     size={36}
                     url={assetsUrl('/img/icons/gorgias-icon-logo-white.png')}
                 />

@@ -8,6 +8,7 @@ type Props = {
     onChevronToggle?: () => void
     actionsContent: React.ReactNode
     infoContent: React.ReactNode
+    isAIAgent?: boolean
 }
 
 export default function SuggestionHeader({
@@ -16,6 +17,7 @@ export default function SuggestionHeader({
     onChevronToggle,
     actionsContent,
     infoContent,
+    isAIAgent,
 }: Props) {
     return (
         <header
@@ -25,7 +27,11 @@ export default function SuggestionHeader({
         >
             <div className={css.infoContainer}>
                 <div className={css.title}>
-                    <span>Gorgias Tips</span>
+                    {isAIAgent ? (
+                        <span className={css.aiAgentHeaderName}>AI Agent</span>
+                    ) : (
+                        <span>Gorgias Tips</span>
+                    )}
                     <span>Only visible to you</span>
                 </div>
                 {infoContent}

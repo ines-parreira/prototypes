@@ -16,6 +16,8 @@ import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
 import {FeatureFlagKey} from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
+import {DRAFT_MESSAGE_TAG} from '../AIAgentFeedbackBar/constants'
 import Container from './Container'
 import Message from './Message'
 
@@ -49,6 +51,9 @@ export default function TicketMessages({
     const isFeedbackToAiAgentEnabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViews]
 
+    const isAIAgentDraftMessageEnabled =
+        useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV4]
+
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
 
     const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
@@ -66,6 +71,9 @@ export default function TicketMessages({
         message.sender.email === AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS
 
     const isAIAgentInternalNote = isAIAgentMessage && !message.public
+
+    const isAIAgentDraftMessage =
+        message.body_html?.indexOf(DRAFT_MESSAGE_TAG) !== -1
 
     const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
         lastCustomerMessage.get('sent_datetime')
@@ -96,6 +104,10 @@ export default function TicketMessages({
                   message.id === lastCustomerMessage.get('id')
               )
     )
+
+    if (isAIAgentDraftMessage && isAIAgentDraftMessageEnabled) {
+        return <AIAgentDraftMessage ticketId={ticketId} message={message} />
+    }
 
     return (
         <Container

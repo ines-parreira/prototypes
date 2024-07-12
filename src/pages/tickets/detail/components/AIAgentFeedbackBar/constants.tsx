@@ -24,3 +24,5 @@ export const QA_FAILED_MESSAGE =
 export const DATE_FEATURE_AVAILABLE = new Date(
     '2024-06-12 13:51:15.357000+00:00'
 )
+
+export const DRAFT_MESSAGE_TAG = 'data-ai-agent-draft-message'

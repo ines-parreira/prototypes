@@ -242,6 +242,7 @@ export type Meta = {
     body_text_truncated?: boolean
     body_html_truncated?: boolean
     sms_deflection?: string
+    hidden?: boolean
 }
 
 export type FacebookPrivateReply = {

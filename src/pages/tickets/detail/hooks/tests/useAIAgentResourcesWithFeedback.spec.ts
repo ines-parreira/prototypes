@@ -95,6 +95,10 @@ describe('useAIAgentResourcesWithFeedback', () => {
                     feedback: 'thumbs_down',
                 },
             ],
+            draftMessage: {
+                content: null,
+                ticketActions: null,
+            },
         }
 
         const {result} = renderHook(() =>
