@@ -10,7 +10,10 @@ type Props = {
     isNoReply: boolean
     triggers: CampaignTriggerMap
     onChangeNoReply: (value: boolean) => void
-    onChangeIncognitoVisitor: (triggerId: string, value: boolean) => void
+    onChangeIncognitoVisitor: (
+        triggerId: string,
+        value: boolean | undefined
+    ) => void
 }
 
 export const CampaignPreferences = ({

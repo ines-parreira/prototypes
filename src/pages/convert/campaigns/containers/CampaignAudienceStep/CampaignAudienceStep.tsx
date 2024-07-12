@@ -98,7 +98,7 @@ export const CampaignAudienceStep = ({
     const isConsideredLightCampaign = isLightCampaign && isShopifyStore
 
     const handleChangeIncognitoVisitor = useCallback(
-        (triggerId: string, value: boolean) => {
+        (triggerId: string, value: boolean | undefined) => {
             if (!triggerId && value) {
                 const incognitoVisitorTrigger = createTrigger(
                     CampaignTriggerType.IncognitoVisitor
@@ -107,11 +107,20 @@ export const CampaignAudienceStep = ({
                     CampaignTriggerType.IncognitoVisitor,
                     incognitoVisitorTrigger
                 )
-            } else if (value === false && triggerId) {
-                deleteTrigger(triggerId)
+            } else if (triggerId) {
+                if (value === undefined) {
+                    deleteTrigger(triggerId)
+                } else {
+                    updateTrigger(triggerId, {
+                        id: triggerId,
+                        type: CampaignTriggerType.IncognitoVisitor,
+                        operator: CampaignTriggerOperator.Eq,
+                        value: value.toString(),
+                    })
+                }
             }
         },
-        [addTrigger, deleteTrigger]
+        [addTrigger, updateTrigger, deleteTrigger]
     )
 
     return (

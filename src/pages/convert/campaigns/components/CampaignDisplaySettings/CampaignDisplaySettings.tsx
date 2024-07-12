@@ -19,7 +19,10 @@ type Props = {
     onChangeDelay: (value: number) => void
     onChangeDeviceType: (triggerId: string, value: string) => void
     onChangeNoReply: (value: boolean) => void
-    onChangeIncognitoVisitor: (triggerId: string, value: boolean) => void
+    onChangeIncognitoVisitor: (
+        triggerId: string,
+        value: boolean | undefined
+    ) => void
 }
 
 function getTriggerIdByKey(

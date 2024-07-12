@@ -1,6 +1,9 @@
-import React, {createRef, useState, useEffect, useMemo} from 'react'
+import React, {createRef, useState, useMemo} from 'react'
 import _intersection from 'lodash/intersection'
 import cn from 'classnames'
+
+import useUpdateEffect from 'hooks/useUpdateEffect'
+
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import {CONVERT_SHOPIFY_TRIGGERS} from 'pages/convert/campaigns/constants/triggers'
@@ -11,10 +14,15 @@ import css from './CampaignIncognitoVisitorsSwitch.less'
 
 type Props = {
     triggers: CampaignTriggerMap
-    onChange: (triggerId: string, value: boolean) => void
+    onChange: (triggerId: string, value: boolean | undefined) => void
 }
 
-function getIncognitoVisitorTrigger(triggers: CampaignTriggerMap) {
+const getIncognitoTriggerId = (triggers: CampaignTriggerMap): string => {
+    const trigger = getIncognitoVisitorTrigger(triggers)
+    return !!trigger ? trigger[0] : ''
+}
+
+const getIncognitoVisitorTrigger = (triggers: CampaignTriggerMap) => {
     return Object.entries(triggers).find(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         ([id, trigger]) => trigger.type === CampaignTriggerType.IncognitoVisitor
@@ -68,40 +76,49 @@ const CampaignIncognitoVisitorsSwitch: React.FC<Props> = ({
         return shouldIncognitoTriggerBeDisabled(triggers)
     }, [triggers])
 
-    const hasIncognitoVisitorTrigger = useMemo(() => {
-        return !!getIncognitoVisitorTrigger(triggers)
+    const incognitoVisitorTrigger = useMemo<boolean | undefined>(() => {
+        const trigger = getIncognitoVisitorTrigger(triggers)
+        if (!trigger) {
+            return undefined
+        }
+        return JSON.parse(trigger[1].value as string) as boolean
     }, [triggers])
 
     // set initial values for the states
     const [isEnabled, setIsEnabled] = useState<boolean>(
-        hasIncognitoVisitorTrigger
+        incognitoVisitorTrigger === undefined
+            ? hasShopifyTrigger
+                ? !shouldBeDisabled
+                : false
+            : incognitoVisitorTrigger
     )
-    const [isForcedByUser, setIsForcedByUser] = useState<boolean>(
-        hasIncognitoVisitorTrigger && shouldBeDisabled
-    )
+    const [isForcedByUser, setIsForcedByUser] = useState<boolean>(false)
 
     const handleClickToggle = (nextValue: boolean) => {
         setIsForcedByUser(true)
         setIsEnabled(nextValue)
     }
 
-    useEffect(() => {
+    useUpdateEffect(() => {
         if (isForcedByUser || !hasShopifyTrigger) {
-            // If value was `true` and user deleted shopify triggers, remove incognito trigger
             if (!hasShopifyTrigger) {
+                // Remove incognito trigger if we don't have "shopify" triggers
+                const triggerId = getIncognitoTriggerId(triggers)
+                onChange(triggerId, undefined)
                 setIsEnabled(false)
             }
             return
         }
-
         setIsEnabled(!shouldBeDisabled)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [triggers])
 
-    useEffect(() => {
-        const trigger = getIncognitoVisitorTrigger(triggers)
-        const triggerId = !!trigger ? trigger[0] : ''
+    useUpdateEffect(() => {
+        if (!hasShopifyTrigger) {
+            return
+        }
 
+        const triggerId = getIncognitoTriggerId(triggers)
         onChange(triggerId, isEnabled)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEnabled])
