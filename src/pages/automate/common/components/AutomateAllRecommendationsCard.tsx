@@ -56,7 +56,6 @@ type AutomateAllRecommendationsCardProps = {
     statusFilter: AllRecommendationsStatus
     setStatusFilter: Dispatch<SetStateAction<AllRecommendationsStatus>>
     currentPage: number
-    setCurrentPage: Dispatch<SetStateAction<number>>
     onPageChange: (page: number) => void
 }
 
@@ -67,7 +66,6 @@ const AutomateAllRecommendationsCard = ({
     statusFilter,
     setStatusFilter,
     currentPage,
-    setCurrentPage,
     onPageChange,
 }: AutomateAllRecommendationsCardProps) => {
     const pagesCount = Math.ceil(itemsCount / ITEMS_PER_PAGE)
@@ -81,10 +79,11 @@ const AutomateAllRecommendationsCard = ({
                 <SelectField
                     fixedWidth
                     style={{width: '160px'}}
+                    dropdownMenuClassName={css.dropdownMenu}
                     value={statusFilter}
                     onChange={(value) => {
                         setStatusFilter(value as AllRecommendationsStatus)
-                        setCurrentPage(1)
+                        onPageChange(1)
                     }}
                     options={allRecommendationsStatusOptions}
                     showSelectedOption

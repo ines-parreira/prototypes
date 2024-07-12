@@ -48,7 +48,6 @@ const Template: StoryFn<ComponentProps<typeof AutomateAllRecommendationsCard>> =
                 statusFilter={statusFilter}
                 setStatusFilter={setStatusFilter}
                 currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
                 onPageChange={onPageChange}
             />
         )

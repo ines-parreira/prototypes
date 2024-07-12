@@ -194,6 +194,7 @@ import WorkflowTemplatesViewContainer from 'pages/automate/workflows/WorkflowTem
 import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
 import useShowAutomateActions from 'pages/automate/actions/hooks/useShowAutomateActions'
 import WorkflowAnalyticsContainer from './automate/workflows/analytics/WorkflowAnalyticsContainer'
+import AutomateAllRecommendationsContainer from './automate/common/components/AutomateAllRecommendationsContainer'
 
 const memoizedWithUserRoleRequired = _memoize(withUserRoleRequired)
 
@@ -1514,9 +1515,26 @@ function AutomationContent() {
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
     const isFlowsBuilderAnalyticsEnabled =
         useFlags()[FeatureFlagKey.FlowsBuilderAnalytics]
+    const isAutomateTopQuestionsEnabled =
+        useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
 
     return (
         <Switch>
+            <Route path={`${path}/ai-recommendations`} exact>
+                <SelfServiceHelpCentersProvider>
+                    {isAutomateTopQuestionsEnabled && (
+                        <Route
+                            path={`${path}/ai-recommendations`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                AutomateAllRecommendationsContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    )}
+                </SelfServiceHelpCentersProvider>
+            </Route>
+
             <Route
                 path={`${path}/:shopType/:shopName/ai-agent`}
                 component={memoizedWithUserRoleRequired(

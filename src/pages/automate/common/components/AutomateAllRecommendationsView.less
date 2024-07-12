@@ -1,0 +1,43 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .wrapper {
+        padding: @layout-spacing-m;
+        display: flex;
+        flex-direction: column;
+        row-gap: @layout-spacing-m;
+    }
+
+    .goBackButtonWrapper {
+        padding: 6px 0;
+        display: flex;
+        flex-direction: row;
+        column-gap: @layout-spacing-xxs;
+        align-items: center;
+
+        i {
+            color: var(--neutral-grey-5);
+            font-size: 20px;
+        }
+    }
+
+    .goBackButton {
+        color: var(--neutral-grey-5);
+        font-weight: 500;
+
+        &:hover {
+            color: var(--neutral-grey-5);
+        }
+    }
+
+    .title {
+        align-items: center;
+        display: flex;
+    }
+
+    .titleText {
+        .heading-page-semibold();
+        margin-right: @layout-spacing-xs;
+    }
+}
