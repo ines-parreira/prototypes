@@ -11,6 +11,7 @@ export const RESOURCE_ICONS: Record<string, JSX.Element> = {
 
 export const RESOURCE_LABELS: Record<string, string> = {
     soft_action: 'Actions::Soft action::',
+    action: 'Actions::',
     hard_action: 'Actions::Hard action::',
     guidance: 'Guidance::',
     article: 'Knowledge::Help Center articles::',
