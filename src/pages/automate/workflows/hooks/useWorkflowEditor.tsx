@@ -58,7 +58,7 @@ import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
 import {ConditionSchema} from '../models/conditions.types'
 import {WorkflowVariable, WorkflowVariableList} from '../models/variables.types'
 import {WorkflowConfigurationUpsertDto} from '../types'
-import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
+import {workflowConfigurationFactory} from './utils'
 import {
     VisualBuilderGraphAction,
     useVisualBuilderGraphReducer,
@@ -178,8 +178,6 @@ export function useWorkflowEditor(
     notifyMerchant: (message: Notification) => void
 ): WorkflowEditorContext {
     const queryClient = useQueryClient()
-
-    const {workflowConfigurationFactory} = useWorkflowApi()
 
     const [hookError, setHookError] = useState<string | null>(null)
     const {mutateAsync: upsertWorkflowConfiguration} =
@@ -552,7 +550,6 @@ export function useWorkflowEditor(
         discardTranslations()
     }, [
         remoteConfiguration,
-        workflowConfigurationFactory,
         currentAccountId,
         workflowId,
         dispatch,

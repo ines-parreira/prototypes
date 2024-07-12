@@ -16,7 +16,6 @@ import {
     useDeleteWorkflowConfiguration,
 } from 'models/workflows/queries'
 import WorkflowsView from '../WorkflowsView'
-import {useWorkflowApiMockSetter} from '../hooks/tests/fixtures/mockBuilders'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -28,7 +27,6 @@ jest.mock('models/workflows/queries', () => ({
     useDeleteWorkflowConfiguration: jest.fn(),
 }))
 jest.mock('../hooks/useStoreWorkflows.ts')
-jest.mock('../hooks/useWorkflowApi')
 
 function getIntegration(id: number, type: IntegrationType) {
     return {
@@ -66,7 +64,6 @@ const mockedUseDeleteWorkflowConfiguration = jest.mocked(
 
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
-        useWorkflowApiMockSetter()
         mockedUseWorkflowConfigurations.mockReturnValue({
             isLoading: false,
             data: [],

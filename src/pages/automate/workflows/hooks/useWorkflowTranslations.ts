@@ -17,6 +17,11 @@ import _isArray from 'lodash/isArray'
 import _mapValues from 'lodash/mapValues'
 import _pick from 'lodash/pick'
 
+import {
+    useFetchWorkflowConfigurationTranslations,
+    useDeleteWorkflowConfigurationTranslations,
+    useUpsertWorkflowConfigurationTranslations,
+} from 'models/workflows/queries'
 import {LanguageCode} from '../models/workflowConfiguration.types'
 import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
 import {
@@ -24,7 +29,6 @@ import {
     isPayloadTooLarge,
 } from '../utils/payloadSize'
 import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
-import useWorkflowApi from './useWorkflowApi'
 
 type TranslationsByLang = Record<string, Record<string, string>>
 
@@ -34,11 +38,12 @@ export default function useWorkflowTranslations(
     isNew: boolean,
     isWorkflowLoaded: boolean
 ) {
-    const {
-        fetchWorkflowTranslations,
-        upsertWorkflowTranslations,
-        deleteWorkflowTranslations,
-    } = useWorkflowApi()
+    const {mutateAsync: fetchWorkflowTranslations} =
+        useFetchWorkflowConfigurationTranslations()
+    const {mutateAsync: deleteWorkflowTranslations} =
+        useDeleteWorkflowConfigurationTranslations()
+    const {mutateAsync: upsertWorkflowTranslations} =
+        useUpsertWorkflowConfigurationTranslations()
     const [translationsByLang, setTranslationsByLang] =
         useState<TranslationsByLang>({})
     const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>(
@@ -57,23 +62,24 @@ export default function useWorkflowTranslations(
         )
             return
         async function f() {
-            const langTranslationsPair = await Promise.all(
-                availableLanguages.map(
-                    async (lang) =>
-                        [
-                            lang,
-                            await fetchWorkflowTranslations(
-                                configurationInternalId,
-                                lang
-                            ),
-                        ] as [string, Record<string, string>]
-                )
-            )
             if (!configurationInternalId) return
+            const langTranslationsPair = await Promise.all(
+                availableLanguages.map(async (lang) => {
+                    const translationsResponse =
+                        await fetchWorkflowTranslations([
+                            {
+                                internal_id: configurationInternalId,
+                                lang,
+                            },
+                        ])
+
+                    return {lang, data: translationsResponse.data}
+                })
+            )
             const translationsByLang = langTranslationsPair.reduce(
-                (acc, [lang, translations]) => ({
+                (acc, {lang, data}) => ({
                     ...acc,
-                    [lang]: translations,
+                    [lang]: data,
                 }),
                 {} as TranslationsByLang
             )
@@ -136,20 +142,24 @@ export default function useWorkflowTranslations(
                         translationsByLang[languageCode]
                     )
                 ) {
-                    await upsertWorkflowTranslations(
-                        configurationInternalId,
-                        languageCode,
-                        nextTranslationsByLangDirty[languageCode]
-                    )
+                    await upsertWorkflowTranslations([
+                        {
+                            internal_id: configurationInternalId,
+                            lang: languageCode,
+                        },
+                        nextTranslationsByLangDirty[languageCode],
+                    ])
                 }
             }
             for (const languageCode of Object.keys(translationsByLang).filter(
                 (lang) => !availableLanguages.includes(lang as LanguageCode)
             )) {
-                await deleteWorkflowTranslations(
-                    configurationInternalId,
-                    languageCode
-                )
+                await deleteWorkflowTranslations([
+                    {
+                        internal_id: configurationInternalId,
+                        lang: languageCode as LanguageCode,
+                    },
+                ])
             }
             setTranslationsByLang(nextTranslationsByLangDirty)
             setTranslationsByLangDirty(nextTranslationsByLangDirty)

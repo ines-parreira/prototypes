@@ -12,7 +12,6 @@ import {selfServiceConfigurationKeys} from 'models/selfServiceConfiguration/quer
 import {selfServiceConfigurationFixture} from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
 import useStoreWorkflows from '../useStoreWorkflows'
 import {getIntegration} from './fixtures/utils'
-import {useWorkflowApiMockSetter} from './fixtures/mockBuilders'
 
 const shopName = 'ShopName'
 const shopType = 'shopify'
@@ -45,7 +44,6 @@ const renderHookOptions = {
     )) as ComponentType,
 }
 
-jest.mock('pages/automate/workflows/hooks/useWorkflowApi.ts')
 jest.mock('state/entities/selfServiceConfigurations/selectors')
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient(),
@@ -94,9 +92,6 @@ jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     }),
 }))
 describe('useStoreWorkflows', () => {
-    beforeEach(() => {
-        useWorkflowApiMockSetter()
-    })
     it('should return workflows', () => {
         const {result} = renderHook(
             () =>

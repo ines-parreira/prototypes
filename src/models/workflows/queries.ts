@@ -168,6 +168,54 @@ export const useDuplicateWorkflowConfiguration = (
     })
 }
 
+export const useFetchWorkflowConfigurationTranslations = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationTranslationsController_get']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationTranslationsController_get(
+                ...params
+            )
+        },
+        ...overrides,
+    })
+}
+
+export const useUpsertWorkflowConfigurationTranslations = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationTranslationsController_upsert']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationTranslationsController_upsert(
+                ...params
+            )
+        },
+        ...overrides,
+    })
+}
+
+export const useDeleteWorkflowConfigurationTranslations = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationTranslationsController_delete']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationTranslationsController_delete(
+                ...params
+            )
+        },
+        ...overrides,
+    })
+}
+
 export const useGetWorkflowConfigurations = (
     includeDrafts: boolean = false,
     overrides?: UseQueryOptions<

@@ -9,19 +9,21 @@ import {
     useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
     useFetchWorkflowConfiguration,
+    useFetchWorkflowConfigurationTranslations,
+    useDeleteWorkflowConfigurationTranslations,
+    useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
 import {useWorkflowEditor} from '../useWorkflowEditor'
-import useWorkflowApi from '../useWorkflowApi'
-
-const {workflowConfigurationFactory} = jest.requireActual('../useWorkflowApi')
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
-jest.mock('../useWorkflowApi')
 jest.mock('models/workflows/queries', () => ({
     useDownloadWorkflowConfigurationStepLogs: jest.fn(),
     useGetWorkflowConfiguration: jest.fn(),
     useUpsertWorkflowConfiguration: jest.fn(),
     useFetchWorkflowConfiguration: jest.fn(),
+    useFetchWorkflowConfigurationTranslations: jest.fn(),
+    useDeleteWorkflowConfigurationTranslations: jest.fn(),
+    useUpsertWorkflowConfigurationTranslations: jest.fn(),
     workflowsConfigurationDefinitionKeys: {
         get: () => ['get'],
         lists: () => ['list'],
@@ -41,9 +43,19 @@ const mockedUseUpsertWorkflowConfiguration = jest.mocked(
 const mockUseFetchWorkflowConfiguration = jest.mocked(
     useFetchWorkflowConfiguration
 )
+
+const mockedUseFetchWorkflowConfigurationTranslations = jest.mocked(
+    useFetchWorkflowConfigurationTranslations
+)
+const mockedUseDeleteWorkflowConfigurationTranslations = jest.mocked(
+    useDeleteWorkflowConfigurationTranslations
+)
+const mocedkUseUpsertWorkflowConfigurationTranslations = jest.mocked(
+    useUpsertWorkflowConfigurationTranslations
+)
 const queryClient = mockQueryClient()
 
-function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
+function updateMock() {
     const mockSelfServiceConfiguration: ReturnType<
         typeof useSelfServiceConfiguration
     > = {
@@ -59,15 +71,6 @@ function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
             typeof useSelfServiceConfiguration
         >
     ).mockReturnValue(mockSelfServiceConfiguration)
-    const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
-        workflowConfigurationFactory,
-        fetchWorkflowTranslations: () => Promise.resolve({}),
-        upsertWorkflowTranslations: () => Promise.resolve(),
-    } as const
-    ;(useWorkflowApi as jest.MockedFn<typeof useWorkflowApi>).mockReturnValue({
-        ...mockWorkflowApi,
-        ...overrides,
-    } as ReturnType<typeof useWorkflowApi>)
     mockedUseDownloadWorkflowConfigurationStepLogs.mockReturnValue({
         isLoading: false,
         data: [],
@@ -85,6 +88,19 @@ function updateMock(overrides: Partial<ReturnType<typeof useWorkflowApi>>) {
     mockedUseUpsertWorkflowConfiguration.mockReturnValue({
         mutateAsync: jest.fn(),
     } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
+    mockedUseFetchWorkflowConfigurationTranslations.mockReturnValue({
+        mutateAsync: jest.fn().mockResolvedValue({
+            data: {},
+        }),
+    } as unknown as ReturnType<typeof useFetchWorkflowConfigurationTranslations>)
+    mockedUseDeleteWorkflowConfigurationTranslations.mockReturnValue({
+        mutateAsync: jest.fn(),
+    } as unknown as ReturnType<typeof useDeleteWorkflowConfigurationTranslations>)
+    mocedkUseUpsertWorkflowConfigurationTranslations.mockReturnValue({
+        mutateAsync: jest.fn().mockResolvedValue({
+            data: {},
+        }),
+    } as unknown as ReturnType<typeof useUpsertWorkflowConfigurationTranslations>)
 }
 
 const renderHookOptions = {
@@ -98,7 +114,7 @@ const renderHookOptions = {
 describe('useWorkflowEditor', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        updateMock({})
+        updateMock()
     })
     it('generates an empty workflow configuration when is new', () => {
         const {result} = renderHook(

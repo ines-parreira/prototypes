@@ -79,13 +79,6 @@ jest.mock('models/selfServiceConfiguration/queries', () => ({
     })),
 }))
 
-jest.mock('pages/automate/workflows/hooks/useWorkflowApi', () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        fetchWorkflowConfigurations: jest.fn(() => Promise.resolve([])),
-    })),
-}))
-
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
