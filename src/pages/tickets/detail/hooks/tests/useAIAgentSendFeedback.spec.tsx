@@ -56,7 +56,7 @@ describe('useAIAgentSendFeedback', () => {
             feedbackOnMessage: [],
             feedbackOnResource: [
                 {
-                    resourceType: 'action',
+                    resourceType: 'soft_action',
                     resourceId: 3,
                     type: 'binary',
                     feedback: 'thumbs_up',

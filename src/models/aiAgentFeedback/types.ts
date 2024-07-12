@@ -15,6 +15,7 @@ export type Knowledge = {
 }
 
 export type Action = {
+    type: 'soft_action' | 'hard_action'
     id: number
     name: string
 }
@@ -22,7 +23,8 @@ export type Action = {
 export type FeedbackOnResource = {
     resourceId: number | string
     resourceType:
-        | 'action'
+        | 'soft_action'
+        | 'hard_action'
         | 'guidance'
         | 'article'
         | 'macro'
@@ -44,7 +46,8 @@ export type IssueFeedbackOnMessage = {
 export type ResourceFeedbackOnMessage = {
     type: 'resource'
     resourceType:
-        | 'action'
+        | 'soft_action'
+        | 'hard_action'
         | 'guidance'
         | 'article'
         | 'macro'

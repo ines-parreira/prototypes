@@ -13,9 +13,10 @@ export const messageFeedback: MessageFeedback = {
         'AI Agent sent a response and left the ticket open pending further information from the customer.',
     orders: [{id: 3324, url: 'https://gorgias.com'}],
     actions: [
-        {id: 1, name: 'Snooze'},
-        {id: 2, name: 'Close'},
-        {id: 3, name: 'Cancel'},
+        {type: 'soft_action', id: 1, name: 'Get loyalty points'},
+        {type: 'soft_action', id: 2, name: 'Get shipping address'},
+        {type: 'hard_action', id: 3, name: 'Change shipping address'},
+        {type: 'hard_action', id: 4, name: 'Refund order'},
     ],
     guidance: [
         {id: 1, name: 'Cancelling an order'},
@@ -40,21 +41,27 @@ export const messageFeedback: MessageFeedback = {
     feedbackOnResource: [
         {
             resourceId: 1,
-            resourceType: 'action',
+            resourceType: 'soft_action',
             type: 'binary',
             feedback: 'thumbs_up',
         },
         {
             resourceId: 2,
-            resourceType: 'action',
+            resourceType: 'soft_action',
             type: 'binary',
             feedback: 'thumbs_down',
         },
         {
             resourceId: 3,
-            resourceType: 'action',
+            resourceType: 'hard_action',
             type: 'binary',
-            feedback: null,
+            feedback: 'thumbs_up',
+        },
+        {
+            resourceId: 5,
+            resourceType: 'hard_action',
+            type: 'binary',
+            feedback: 'thumbs_down',
         },
         {
             resourceId: 1,

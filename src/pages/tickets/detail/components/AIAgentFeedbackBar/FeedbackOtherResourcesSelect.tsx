@@ -64,8 +64,15 @@ const FeedbackOtherResourcesSelect = ({
         return initialValues.map((v) => {
             if (v.type === 'resource') {
                 switch (v.resourceType) {
-                    case 'action': {
-                        return `${RESOURCE_LABELS.action}${
+                    case 'soft_action': {
+                        return `${RESOURCE_LABELS.soft_action}${
+                            actionsOptions.find(
+                                (option) => option.value === v.resourceId
+                            )?.label
+                        }`
+                    }
+                    case 'hard_action': {
+                        return `${RESOURCE_LABELS.hard_action}${
                             actionsOptions.find(
                                 (option) => option.value === v.resourceId
                             )?.label

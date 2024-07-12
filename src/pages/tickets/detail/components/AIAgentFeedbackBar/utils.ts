@@ -38,8 +38,10 @@ export const mapResourceLabelToType = (label: string) => {
             return 'external_snippet'
         case 'Macros':
             return 'macro'
+        case 'Hard action':
+            return 'hard_action'
         default:
-        case 'Actions':
-            return 'action'
+        case 'Soft action':
+            return 'soft_action'
     }
 }

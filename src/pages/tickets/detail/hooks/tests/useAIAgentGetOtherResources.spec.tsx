@@ -248,8 +248,15 @@ describe('useAIAgentGetOtherResources', () => {
             expect(getResourcesFromLabels(['Macros::test1'])).toEqual([
                 {type: 'resource', resourceType: 'macro', resourceId: '3'},
             ])
-            expect(getResourcesFromLabels(['Actions::test2'])).toEqual([
-                {type: 'resource', resourceType: 'action', resourceId: 10},
+            expect(
+                getResourcesFromLabels(['Actions::Soft action::test1'])
+            ).toEqual([
+                {type: 'resource', resourceType: 'soft_action', resourceId: 9},
+            ])
+            expect(
+                getResourcesFromLabels(['Actions::Hard action::test2'])
+            ).toEqual([
+                {type: 'resource', resourceType: 'hard_action', resourceId: 10},
             ])
             expect(
                 getResourcesFromLabels(['External websites::test2'])

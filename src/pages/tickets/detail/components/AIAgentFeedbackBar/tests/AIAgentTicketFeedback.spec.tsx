@@ -215,10 +215,12 @@ describe('AIAgentTicketFeedback', () => {
                                     {
                                         id: 1,
                                         name: 'Snooze',
+                                        type: 'soft_action',
                                     },
                                     {
                                         id: 2,
                                         name: 'Close',
+                                        type: 'hard_action',
                                     },
                                 ],
                             },

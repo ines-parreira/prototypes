@@ -33,9 +33,10 @@ describe('useAIAgentResourcesWithFeedback', () => {
                 },
             ],
             actions: [
-                {id: 1, name: 'Snooze'},
-                {id: 2, name: 'Close'},
-                {id: 3, name: 'Cancel'},
+                {type: 'soft_action', id: 1, name: 'Get loyalty points'},
+                {type: 'soft_action', id: 2, name: 'Get shipping address'},
+                {type: 'hard_action', id: 3, name: 'Change shipping address'},
+                {type: 'hard_action', id: 4, name: 'Refund order'},
             ],
             guidance: [
                 {id: 1, name: 'Cancelling an order'},
@@ -59,21 +60,27 @@ describe('useAIAgentResourcesWithFeedback', () => {
             feedbackOnResource: [
                 {
                     resourceId: 1,
-                    resourceType: 'action',
+                    resourceType: 'soft_action',
                     type: 'binary',
                     feedback: 'thumbs_up',
                 },
                 {
                     resourceId: 2,
-                    resourceType: 'action',
+                    resourceType: 'soft_action',
                     type: 'binary',
                     feedback: 'thumbs_down',
                 },
                 {
                     resourceId: 3,
-                    resourceType: 'action',
+                    resourceType: 'hard_action',
                     type: 'binary',
-                    feedback: null,
+                    feedback: 'thumbs_up',
+                },
+                {
+                    resourceId: 4,
+                    resourceType: 'hard_action',
+                    type: 'binary',
+                    feedback: 'thumbs_down',
                 },
                 {
                     resourceId: 1,
@@ -95,9 +102,30 @@ describe('useAIAgentResourcesWithFeedback', () => {
         )
         expect(result.current).toEqual({
             actions: [
-                {id: 1, name: 'Snooze', feedback: 'thumbs_up'},
-                {id: 2, name: 'Close', feedback: 'thumbs_down'},
-                {id: 3, name: 'Cancel', feedback: null},
+                {
+                    id: 1,
+                    name: 'Get loyalty points',
+                    feedback: 'thumbs_up',
+                    type: 'soft_action',
+                },
+                {
+                    id: 2,
+                    name: 'Get shipping address',
+                    feedback: 'thumbs_down',
+                    type: 'soft_action',
+                },
+                {
+                    id: 3,
+                    name: 'Change shipping address',
+                    feedback: 'thumbs_up',
+                    type: 'hard_action',
+                },
+                {
+                    id: 4,
+                    name: 'Refund order',
+                    feedback: 'thumbs_down',
+                    type: 'hard_action',
+                },
             ],
             guidance: [
                 {id: 1, name: 'Cancelling an order', feedback: 'thumbs_up'},

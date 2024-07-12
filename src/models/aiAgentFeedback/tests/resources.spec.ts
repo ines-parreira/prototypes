@@ -50,7 +50,7 @@ describe('AI Agent Feedback resources', () => {
             feedbackOnResource: [
                 {
                     resourceId: 1,
-                    resourceType: 'action',
+                    resourceType: 'soft_action',
                     type: 'binary',
                     feedback: 'thumbs_up',
                 },

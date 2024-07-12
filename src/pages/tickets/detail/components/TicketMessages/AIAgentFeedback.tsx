@@ -129,7 +129,7 @@ const AIAgentFeedback: React.FC<Props> = ({message, messageFeedback}) => {
                     (action) =>
                         ({
                             type: 'binary',
-                            resourceType: 'action',
+                            resourceType: action.type,
                             resourceId: action.id,
                             feedback,
                         } as FeedbackOnResource)

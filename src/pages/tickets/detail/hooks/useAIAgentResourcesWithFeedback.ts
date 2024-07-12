@@ -16,7 +16,8 @@ export const useAIAgentResourcesWithFeedback = (
     const actionsWithFeedback = actions.map((action) => {
         const feedback = feedbackOnResource.find(
             (feedback) =>
-                feedback.resourceType === 'action' &&
+                (feedback.resourceType === 'soft_action' ||
+                    feedback.resourceType === 'hard_action') &&
                 feedback.resourceId === action.id
         )
 

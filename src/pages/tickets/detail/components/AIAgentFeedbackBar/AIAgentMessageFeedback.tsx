@@ -299,7 +299,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                             <FeedbackResourceSection
                                 key={action.id}
                                 resource={action}
-                                resourceType="action"
+                                resourceType={action.type}
                                 handleSubmitFeedback={handleSubmitFeedback}
                                 href={getActionUrl(
                                     action,

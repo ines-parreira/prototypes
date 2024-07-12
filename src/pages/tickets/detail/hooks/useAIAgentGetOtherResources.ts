@@ -131,15 +131,28 @@ export const useAIAgentGetOtherResources = ({
             let resource: ResourceFeedbackOnMessage | undefined
 
             switch (resourceType) {
-                case 'action': {
-                    const action = actionsOptions.find(
+                case 'soft_action': {
+                    const softAction = actionsOptions.find(
                         (option) => option.label === text
                     )
-                    if (action) {
+                    if (softAction) {
                         resource = {
                             type: 'resource',
-                            resourceType: 'action',
-                            resourceId: action.value,
+                            resourceType: 'soft_action',
+                            resourceId: softAction.value,
+                        }
+                    }
+                    break
+                }
+                case 'hard_action': {
+                    const hardAction = actionsOptions.find(
+                        (option) => option.label === text
+                    )
+                    if (hardAction) {
+                        resource = {
+                            type: 'resource',
+                            resourceType: 'hard_action',
+                            resourceId: hardAction.value,
                         }
                     }
                     break
