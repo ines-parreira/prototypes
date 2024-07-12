@@ -10,7 +10,11 @@ import {renderWithRouterAndDnD} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
 import {billingState} from 'fixtures/billing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {
+    useGetWorkflowConfigurations,
+    useDuplicateWorkflowConfiguration,
+    useDeleteWorkflowConfiguration,
+} from 'models/workflows/queries'
 import WorkflowsView from '../WorkflowsView'
 import {useWorkflowApiMockSetter} from '../hooks/tests/fixtures/mockBuilders'
 import useStoreWorkflows from '../hooks/useStoreWorkflows'
@@ -20,6 +24,8 @@ const queryClient = mockQueryClient()
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
+    useDuplicateWorkflowConfiguration: jest.fn(),
+    useDeleteWorkflowConfiguration: jest.fn(),
 }))
 jest.mock('../hooks/useStoreWorkflows.ts')
 jest.mock('../hooks/useWorkflowApi')
@@ -50,6 +56,14 @@ const useStoreWorkflowsMock = useStoreWorkflows as jest.MockedFunction<
 const mockedUseWorkflowConfigurations = jest.mocked(
     useGetWorkflowConfigurations
 )
+
+const mockedUseDuplicateWorkflowConfiguration = jest.mocked(
+    useDuplicateWorkflowConfiguration
+)
+const mockedUseDeleteWorkflowConfiguration = jest.mocked(
+    useDeleteWorkflowConfiguration
+)
+
 describe('<WorkflowsView />', () => {
     beforeEach(() => {
         useWorkflowApiMockSetter()
@@ -57,6 +71,16 @@ describe('<WorkflowsView />', () => {
             isLoading: false,
             data: [],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
+
+        mockedUseDuplicateWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useDuplicateWorkflowConfiguration>)
+
+        mockedUseDeleteWorkflowConfiguration.mockReturnValue({
+            mutateAsync: jest.fn(),
+            isLoading: false,
+        } as unknown as ReturnType<typeof useDeleteWorkflowConfiguration>)
     })
     it('should display skeleton while workflow entrypoints are being fetched', async () => {
         useStoreWorkflowsMock.mockReturnValue({
@@ -104,7 +128,6 @@ describe('<WorkflowsView />', () => {
                     created_datetime: '2023-12-22T10:41:08.337Z',
                     updated_datetime: '2023-12-22T10:41:08.337Z',
                     deleted_datetime: null,
-                    transitions: [],
                 },
                 {
                     id: 'b',
@@ -119,7 +142,6 @@ describe('<WorkflowsView />', () => {
                     created_datetime: '2023-12-22T10:41:08.337Z',
                     updated_datetime: '2023-12-22T10:41:08.337Z',
                     deleted_datetime: null,
-                    transitions: [],
                 },
             ],
             storeIntegrationId: 1,

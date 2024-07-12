@@ -8,12 +8,18 @@ import React, {
     useMemo,
 } from 'react'
 
+import {useQueryClient} from '@tanstack/react-query'
 import {validateHttpHeaderName, validateWebhookURL} from 'utils'
 import {saveFileAsDownloaded} from 'utils/file'
 import {Notification, NotificationStatus} from 'state/notifications/types'
 import useThrottledValue from 'hooks/useThrottledValue'
 import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
-import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
+import {
+    useDownloadWorkflowConfigurationStepLogs,
+    useUpsertWorkflowConfiguration,
+    useFetchWorkflowConfiguration,
+    workflowsConfigurationDefinitionKeys,
+} from 'models/workflows/queries'
 import {
     LanguageCode,
     WorkflowConfiguration,
@@ -51,6 +57,7 @@ import {
 import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
 import {ConditionSchema} from '../models/conditions.types'
 import {WorkflowVariable, WorkflowVariableList} from '../models/variables.types'
+import {WorkflowConfigurationUpsertDto} from '../types'
 import useWorkflowApi, {workflowConfigurationFactory} from './useWorkflowApi'
 import {
     VisualBuilderGraphAction,
@@ -170,12 +177,15 @@ export function useWorkflowEditor(
     isNew: boolean,
     notifyMerchant: (message: Notification) => void
 ): WorkflowEditorContext {
-    const {
-        fetchWorkflowConfiguration,
-        upsertWorkflowConfiguration,
-        workflowConfigurationFactory,
-    } = useWorkflowApi()
-    const [isFetchPending, setIsFetchPending] = useState(!isNew)
+    const queryClient = useQueryClient()
+
+    const {workflowConfigurationFactory} = useWorkflowApi()
+
+    const [hookError, setHookError] = useState<string | null>(null)
+    const {mutateAsync: upsertWorkflowConfiguration} =
+        useUpsertWorkflowConfiguration()
+    const {mutateAsync: fetchWorkflowConfiguration, isLoading: isFetchPending} =
+        useFetchWorkflowConfiguration()
     const [isSavePending, setIsSavePending] = useState(false)
     const [isPublishPending, setIsPublishPending] = useState(false)
     const [isDownloadPending, setIsDownloadPending] = useState(false)
@@ -227,7 +237,6 @@ export function useWorkflowEditor(
             )
         )
     )
-    const [hookError, setHookError] = useState<string | null>(null)
     const {
         areTranslationsDirty,
         translateWithSavedTranslations,
@@ -263,20 +272,18 @@ export function useWorkflowEditor(
     useEffect(() => {
         async function fetch() {
             if (!isNew) {
-                setIsFetchPending(true)
-                const fetched = await fetchWorkflowConfiguration(workflowId)
-                if (!fetched) setHookError('workflow not found')
-                setRemoteConfiguration(fetched)
-                if (fetched) {
+                const {data} = await fetchWorkflowConfiguration([workflowId])
+                if (!data) setHookError('workflow not found')
+                setRemoteConfiguration(data as WorkflowConfiguration)
+                if (data) {
                     dispatch({
                         type: 'RESET_GRAPH',
                         graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
-                            fetched
+                            data as WorkflowConfiguration
                         ),
                     })
                 }
-                setCurrentLanguage(fetched?.available_languages?.[0] ?? 'en-US')
-                setIsFetchPending(false)
+                setCurrentLanguage(data?.available_languages?.[0] ?? 'en-US')
             }
         }
 
@@ -284,9 +291,9 @@ export function useWorkflowEditor(
     }, [
         workflowId,
         isNew,
-        fetchWorkflowConfiguration,
         setCurrentLanguage,
         dispatch,
+        fetchWorkflowConfiguration,
     ])
 
     useEffect(() => {
@@ -426,40 +433,71 @@ export function useWorkflowEditor(
             // why saving order differ depending on isNew?
             // => https://www.notion.so/gorgias/Tech-specs-workflows-translations-FRONTEND-ad28bd8eb55440d788eebc9f896a3ff0?pvs=4#3f73c3969bc8471486a59efeee861511
             if (isNew) {
-                const updatedConfiguration = await upsertWorkflowConfiguration(
-                    emptyTranslatedTexts(configurationDirty)
-                )
+                const updatedConfiguration = (await upsertWorkflowConfiguration(
+                    [
+                        visualBuilderGraphDirty.wfConfigurationOriginal
+                            .internal_id,
+                        emptyTranslatedTexts(
+                            configurationDirty
+                        ) as WorkflowConfigurationUpsertDto,
+                    ]
+                )) as {data: WorkflowConfiguration}
 
                 await saveTranslations(visualBuilderGraphDirty)
-                configuration = updatedConfiguration
+                configuration = updatedConfiguration.data
             } else {
                 await saveTranslations(visualBuilderGraphDirty)
-                const updatedConfiguration = await upsertWorkflowConfiguration(
-                    emptyTranslatedTexts(configurationDirty)
-                )
+                const updatedConfiguration = (await upsertWorkflowConfiguration(
+                    [
+                        visualBuilderGraphDirty.wfConfigurationOriginal
+                            .internal_id,
+                        emptyTranslatedTexts(
+                            configurationDirty
+                        ) as WorkflowConfigurationUpsertDto,
+                    ]
+                )) as {data: WorkflowConfiguration}
 
-                configuration = updatedConfiguration
+                configuration = updatedConfiguration.data
             }
 
-            setRemoteConfiguration({
+            const updatedConfiguration = {
                 ...configurationDirty,
-                updated_datetime: configuration.updated_datetime,
-            })
+                updated_datetime: configuration?.updated_datetime,
+            }
+
+            setRemoteConfiguration(updatedConfiguration)
+
+            queryClient.setQueriesData<WorkflowConfiguration[]>(
+                workflowsConfigurationDefinitionKeys.lists(),
+                (data) => {
+                    if (isNew) {
+                        return data
+                            ? [...data, updatedConfiguration]
+                            : [updatedConfiguration]
+                    }
+                    return data?.map((configuration) =>
+                        configuration.id === updatedConfiguration.id
+                            ? updatedConfiguration
+                            : configuration
+                    )
+                }
+            )
+
             dispatch({
                 type: 'RESET_GRAPH',
                 graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
                     configurationDirty
                 ),
             })
-
             return configuration.id
         },
         [
             isNew,
-            upsertWorkflowConfiguration,
-            saveTranslations,
-            visualBuilderGraphDirty,
+            queryClient,
             dispatch,
+            upsertWorkflowConfiguration,
+            visualBuilderGraphDirty,
+            saveTranslations,
         ]
     )
 

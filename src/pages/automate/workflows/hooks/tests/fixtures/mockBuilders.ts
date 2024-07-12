@@ -11,9 +11,6 @@ export const mockSelfServiceConfigurationUpdate: ReturnType<
 export const mockWorkflowApi: Partial<ReturnType<typeof useWorkflowApi>> = {
     isFetchPending: false,
     isUpdatePending: false,
-
-    duplicateWorkflowConfiguration: jest.fn().mockResolvedValue({id: 4}),
-    deleteWorkflowConfiguration: jest.fn(() => Promise.resolve()),
 } as const
 
 export function useSelfServiceConfigurationUpdateMockSetter(

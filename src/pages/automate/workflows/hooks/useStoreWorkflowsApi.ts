@@ -1,12 +1,19 @@
 import {useCallback, useEffect, useReducer, useState} from 'react'
 
+import {useQueryClient} from '@tanstack/react-query'
 import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {NotificationStatus} from 'state/notifications/types'
 
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
-import {WfConfigurationResponseDto} from '../types'
-import useWorkflowApi from './useWorkflowApi'
+import {
+    useGetWorkflowConfigurations,
+    useDuplicateWorkflowConfiguration,
+    useDeleteWorkflowConfiguration,
+    workflowsConfigurationDefinitionKeys,
+} from 'models/workflows/queries'
+import {
+    WorkflowConfigurationShallow,
+    WorkflowConfiguration,
+} from '../models/workflowConfiguration.types'
 
 type UseStoreWorkflowsState = {
     duplicatePending: boolean
@@ -53,20 +60,25 @@ const reducer = (state: UseStoreWorkflowsState, action: Action) => {
 export const useStoreWorkflowsApi = (
     notifyMerchant: (message: string, kind: 'success' | 'error') => void
 ) => {
+    const queryClient = useQueryClient()
     const [state, dispatch] = useReducer(reducer, initialState)
+
     const {
-        isUpdatePending: isWorkflowApiUpdatePending,
-        isFetchPending: isWorkflowApiFetchPending,
-        deleteWorkflowConfiguration,
-        duplicateWorkflowConfiguration,
-    } = useWorkflowApi()
+        mutateAsync: duplicateWorkflowConfiguration,
+        isLoading: isDuplicateWorkflowConfigurationLoading,
+    } = useDuplicateWorkflowConfiguration()
+    const {
+        mutateAsync: deleteWorkflowConfiguration,
+        isLoading: isDeletingWorkflowConfigurationLoading,
+    } = useDeleteWorkflowConfiguration()
 
     const {
         data: configurations,
-        isLoading: isWorkflowConfigurationsFetchPending,
+        isFetched: isWorkflowConfigurationsFetched,
+        isLoading: isWorkflowConfigurationsLoading,
     } = useGetWorkflowConfigurations(true, {})
     const [workflowConfigurationById, setWorkflowConfigurationById] = useState<
-        Record<string, WfConfigurationResponseDto>
+        Record<string, WorkflowConfigurationShallow>
     >({})
 
     const loadWorkflowsConfigurations = useCallback(() => {
@@ -83,8 +95,10 @@ export const useStoreWorkflowsApi = (
     }, [configurations])
 
     useEffect(() => {
-        void loadWorkflowsConfigurations()
-    }, [loadWorkflowsConfigurations])
+        if (isWorkflowConfigurationsFetched) {
+            void loadWorkflowsConfigurations()
+        }
+    }, [loadWorkflowsConfigurations, isWorkflowConfigurationsFetched])
 
     const {handleSelfServiceConfigurationUpdate} =
         useSelfServiceConfigurationUpdate({
@@ -104,9 +118,17 @@ export const useStoreWorkflowsApi = (
                 type: 'duplicate',
                 isPending: true,
             })
-            const duplicatedWorkflow = await duplicateWorkflowConfiguration(
+            const duplicatedWorkflow = await duplicateWorkflowConfiguration([
                 workflowId,
-                storeIntegrationId
+                {integration_id: storeIntegrationId},
+            ])
+
+            queryClient.setQueriesData<WorkflowConfiguration[]>(
+                workflowsConfigurationDefinitionKeys.lists(),
+                (data) =>
+                    data?.concat(
+                        duplicatedWorkflow.data as WorkflowConfiguration
+                    )
             )
 
             loadWorkflowsConfigurations()
@@ -114,7 +136,7 @@ export const useStoreWorkflowsApi = (
                 (draft) => {
                     draft.workflowsEntrypoints ??= []
                     draft.workflowsEntrypoints?.unshift({
-                        workflow_id: duplicatedWorkflow.id,
+                        workflow_id: duplicatedWorkflow.data.id,
                     })
                 },
                 undefined,
@@ -124,12 +146,13 @@ export const useStoreWorkflowsApi = (
                 type: 'duplicate',
                 isPending: false,
             })
-            return {id: duplicatedWorkflow.id}
+            return {id: duplicatedWorkflow.data.id}
         },
         [
             duplicateWorkflowConfiguration,
             handleSelfServiceConfigurationUpdate,
             loadWorkflowsConfigurations,
+            queryClient,
         ]
     )
 
@@ -153,7 +176,20 @@ export const useStoreWorkflowsApi = (
             const internalId =
                 workflowConfigurationById[workflowId]?.internal_id
 
-            await deleteWorkflowConfiguration(internalId)
+            await deleteWorkflowConfiguration([internalId])
+
+            queryClient.removeQueries(
+                workflowsConfigurationDefinitionKeys.get(workflowId)
+            )
+
+            queryClient.setQueriesData<WorkflowConfiguration[]>(
+                workflowsConfigurationDefinitionKeys.lists(),
+                (data) =>
+                    data?.filter(
+                        (configuration) => configuration.id !== workflowId
+                    )
+            )
+
             dispatch({
                 type: 'delete',
                 isPending: false,
@@ -164,6 +200,7 @@ export const useStoreWorkflowsApi = (
             handleSelfServiceConfigurationUpdate,
             workflowConfigurationById,
             deleteWorkflowConfiguration,
+            queryClient,
             notifyMerchant,
         ]
     )
@@ -193,19 +230,19 @@ export const useStoreWorkflowsApi = (
 
     const {duplicatePending, updatePending, deletePending} = state
 
-    const isUpdatePending =
-        isWorkflowApiUpdatePending ||
-        duplicatePending ||
-        updatePending ||
-        deletePending
+    const isUpdatePending = duplicatePending || updatePending || deletePending
+
+    const isFetchPending =
+        isDuplicateWorkflowConfigurationLoading ||
+        isDeletingWorkflowConfigurationLoading ||
+        isWorkflowConfigurationsLoading
 
     return {
         duplicateWorkflow,
         removeWorkflowFromStore,
         appendWorkflowInStore,
         workflowConfigurationById,
-        isFetchPending:
-            isWorkflowApiFetchPending || isWorkflowConfigurationsFetchPending,
+        isFetchPending,
         isUpdatePending,
     }
 }

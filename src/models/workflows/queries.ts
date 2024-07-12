@@ -27,6 +27,10 @@ export const storeWorkflowsConfigurationDefinitionKeys = {
 
 export const workflowsConfigurationDefinitionKeys = {
     all: () => [WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
+    lists: () =>
+        [...workflowsConfigurationDefinitionKeys.all(), 'list'] as const,
+    list: (params: Paths.WfConfigurationControllerList.QueryParameters) =>
+        [...workflowsConfigurationDefinitionKeys.lists(), params] as const,
     get: (id: string) => [...workflowsConfigurationDefinitionKeys.all(), id],
 }
 
@@ -107,19 +111,75 @@ export const useGetWorkflowConfiguration = (
     })
 }
 
+export const useFetchWorkflowConfiguration = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationController_get']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationController_get(...params)
+        },
+        ...overrides,
+    })
+}
+
+export const useUpsertWorkflowConfiguration = <TContext = unknown>(
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationController_upsert'],
+        false,
+        TContext
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationController_upsert(...params)
+        },
+        ...overrides,
+    })
+}
+export const useDeleteWorkflowConfiguration = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationController_delete']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationController_delete(...params)
+        },
+        ...overrides,
+    })
+}
+
+export const useDuplicateWorkflowConfiguration = (
+    overrides?: MutationOverrides<
+        OperationMethods['WfConfigurationController_duplicate']
+    >
+) => {
+    return useMutation({
+        mutationFn: async (params) => {
+            const client = await getGorgiasWfApiClient()
+            return await client.WfConfigurationController_duplicate(...params)
+        },
+        ...overrides,
+    })
+}
+
 export const useGetWorkflowConfigurations = (
     includeDrafts: boolean = false,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerList.Responses.$200>
     >
 ) => {
+    const params = includeDrafts ? {is_draft: [0, 1]} : {}
     return useQuery({
-        queryKey: workflowsConfigurationDefinitionKeys.all(),
+        queryKey: workflowsConfigurationDefinitionKeys.list(params),
         queryFn: async () => {
             const client = await getGorgiasWfApiClient()
-            const response = await client.WfConfigurationController_list(
-                includeDrafts ? {is_draft: [0, 1]} : {}
-            )
+            const response = await client.WfConfigurationController_list(params)
             return response.data
         },
         staleTime: STALE_TIME_MS,
