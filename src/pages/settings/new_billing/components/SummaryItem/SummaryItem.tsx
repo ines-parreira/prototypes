@@ -32,10 +32,10 @@ const SummaryItem = ({
     const selectedPlan = selectedPlans[productType]
 
     const {price, currency, name, tickets} = useMemo(() => {
-        const priceObject = availablePlans.find(
+        const _selectedPlan = availablePlans.find(
             (plan) => plan.price_id === selectedPlan.plan?.price_id
         )
-        if (!selectedPlan.isSelected || !priceObject) {
+        if (!selectedPlan.isSelected || !_selectedPlan) {
             return {
                 price: (currentPlan?.amount ?? 0) / 100,
                 currency: null,
@@ -44,27 +44,27 @@ const SummaryItem = ({
             }
         }
         return {
-            price: priceObject.amount / 100,
-            currency: priceObject.currency,
-            name: priceObject.name,
-            tickets: priceObject.num_quota_tickets ?? 0,
+            price: _selectedPlan.amount / 100,
+            currency: _selectedPlan.currency,
+            name: _selectedPlan.name,
+            tickets: _selectedPlan.num_quota_tickets ?? 0,
         }
     }, [availablePlans, selectedPlan, currentPlan])
 
-    const oldPrice = useMemo(() => {
+    const oldPlanPrice = useMemo(() => {
         if (
             !currentPlan ||
             currentPlan.price_id === selectedPlan.plan?.price_id
         ) {
             return null
         }
-        const priceObject = availablePlans.find(
+        const oldPlan = availablePlans.find(
             (plan) => plan.price_id === currentPlan.price_id
         )
-        if (!priceObject) {
+        if (!oldPlan) {
             return null
         }
-        return priceObject.amount / 100
+        return oldPlan.amount / 100
     }, [availablePlans, currentPlan, selectedPlan])
 
     const description = useMemo(() => {
@@ -108,11 +108,13 @@ const SummaryItem = ({
                     [css.strikeThrough]: !selectedPlan.isSelected,
                 })}
             >
-                {!!oldPrice && selectedPlan.isSelected && !isFrequencyChanged && (
-                    <div data-testid="oldPrice" className={css.oldPrice}>
-                        {formatAmount(oldPrice, currency)}
-                    </div>
-                )}
+                {!!oldPlanPrice &&
+                    selectedPlan.isSelected &&
+                    !isFrequencyChanged && (
+                        <div data-testid="oldPrice" className={css.oldPrice}>
+                            {formatAmount(oldPlanPrice, currency)}
+                        </div>
+                    )}
                 {selectedPlan.plan && isTrial(selectedPlan.plan) ? (
                     <>
                         <b>

@@ -23,13 +23,13 @@ import css from './SubscriptionModal.less'
 type Props = {
     productType: ProductType
     canduId: string
-    prices: Plan[]
+    availablePlans: Plan[]
     confirmLabel?: string
     confirmEnterpriseLabel?: string
     headerDescription: string
     tagline: string
     currentPage: string
-    defaultPrice: Plan | undefined
+    defaultPlan: Plan | undefined
     isTrialingSubscription: boolean
     isOpen: boolean
     onClose: () => void
@@ -41,13 +41,13 @@ type Props = {
 const SubscriptionModal = ({
     productType,
     canduId,
-    prices,
+    availablePlans,
     confirmLabel = 'Subscribe',
     confirmEnterpriseLabel = 'Contact Us',
     headerDescription,
     tagline,
     currentPage,
-    defaultPrice,
+    defaultPlan,
     isTrialingSubscription,
     isOpen,
     onClose,
@@ -57,7 +57,7 @@ const SubscriptionModal = ({
 }: Props) => {
     const [showContactSupportModal, setShowContactSupportModal] =
         useState(false)
-    const [selectedPrice, setSelectedPrice] = useState(defaultPrice)
+    const [selectedPlan, setSelectedPlan] = useState(defaultPlan)
     const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
 
     const history = useHistory()
@@ -74,21 +74,21 @@ const SubscriptionModal = ({
         useUpdateSubscription()
 
     const isEnterprisePlan = useMemo(
-        () => selectedPrice?.price_id === ENTERPRISE_PRICE_ID,
-        [selectedPrice]
+        () => selectedPlan?.price_id === ENTERPRISE_PRICE_ID,
+        [selectedPlan]
     )
 
     const onConfirm = useCallback(async () => {
-        if (selectedPrice?.price_id) {
+        if (selectedPlan?.price_id) {
             await handleSubscriptionUpdate([
                 ...currentPriceIds,
-                selectedPrice.price_id,
+                selectedPlan.price_id,
             ])
                 .then(() => onSubscribe && onSubscribe())
                 .finally(() => currentPage && history.push(currentPage))
         }
     }, [
-        selectedPrice,
+        selectedPlan,
         handleSubscriptionUpdate,
         currentPriceIds,
         onSubscribe,
@@ -136,11 +136,11 @@ const SubscriptionModal = ({
                         productType={productType}
                         isTrialing={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}
-                        prices={prices}
+                        availablePlans={availablePlans}
                         tagline={tagline}
                         interval={interval}
-                        selectedPrice={selectedPrice}
-                        setSelectedPrice={setSelectedPrice}
+                        selectedPlan={selectedPlan}
+                        setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                     />
                 </ModalBody>

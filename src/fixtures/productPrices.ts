@@ -1021,18 +1021,20 @@ export const smsProduct: Product<SMSOrVoicePlan> = {
     prices: [smsPlan1, smsPlan2, smsPlan0],
 }
 
+export const convertAvailablePlans = [
+    convertPlan0,
+    convertPlan1,
+    convertPlan2,
+    convertPlan3,
+    convertPlan4,
+    convertPlan5,
+    convertPlan6,
+]
+
 export const convertProduct: Product<ConvertPlan> = {
     id: CONVERT_PRODUCT_ID,
     type: ProductType.Convert,
-    prices: [
-        convertPlan0,
-        convertPlan1,
-        convertPlan2,
-        convertPlan3,
-        convertPlan4,
-        convertPlan5,
-        convertPlan6,
-    ],
+    prices: convertAvailablePlans,
 }
 
 export const products: Product<Plan>[] = [

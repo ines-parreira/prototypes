@@ -17,12 +17,12 @@ type Props = {
     handleOnClose: () => void
     hasAutomate: boolean
     header: string
-    automationPrices: AutomatePlan[]
+    automateAvailablePlans: AutomatePlan[]
     isTrialingSubscription: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
-    selectedPrice?: Plan
-    setSelectedPrice: React.Dispatch<React.SetStateAction<Plan | undefined>>
+    selectedPlan?: Plan
+    setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
     image?: string
     handleUnsubscribeClick: () => void
@@ -40,12 +40,12 @@ const AutomateModalStep = ({
     handleOnClose,
     hasAutomate,
     header,
-    automationPrices,
+    automateAvailablePlans,
     isTrialingSubscription,
     isEnterprisePlan,
     interval,
-    selectedPrice,
-    setSelectedPrice,
+    selectedPlan,
+    setSelectedPlan,
     setIsSubscriptionEnabled,
     image,
     handleUnsubscribeClick,
@@ -70,12 +70,12 @@ const AutomateModalStep = ({
         >
             <PlanSubscriptionDescription
                 productType={ProductType.Automation}
-                prices={automationPrices}
+                availablePlans={automateAvailablePlans}
                 isTrialing={isTrialingSubscription}
                 isEnterprisePlan={isEnterprisePlan}
                 interval={interval}
-                selectedPrice={selectedPrice}
-                setSelectedPrice={setSelectedPrice}
+                selectedPlan={selectedPlan}
+                setSelectedPlan={setSelectedPlan}
                 setIsSubscriptionEnabled={setIsSubscriptionEnabled}
             />
             {!!image && (

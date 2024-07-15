@@ -127,7 +127,7 @@ export const ChangePlanModal = ({
                                         interval={currentHelpdeskPlan.interval}
                                         name={formattedName}
                                         features={features}
-                                        isCurrentPrice
+                                        isCurrentPlan
                                         theme={PlanCardTheme.Grey}
                                         renderBody={(features) => (
                                             <SynchronizedScrollTopContainer

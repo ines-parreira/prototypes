@@ -41,11 +41,11 @@ const FeaturePaywall = ({
         isCustomPlan ||
         (isLegacyPlan &&
             !!availablePlans.find(
-                (price) =>
-                    price.name.split(' ')[0] ===
+                (plan) =>
+                    plan.name.split(' ')[0] ===
                         currentHelpdeskPlanName?.split(' ')[0] &&
                     (
-                        price.features as Record<
+                        plan.features as Record<
                             AccountFeature,
                             AccountFeatureMetadata
                         >

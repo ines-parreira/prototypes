@@ -4,8 +4,8 @@ import React from 'react'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 
 import {getPlanUnitsPerCadence, getProductName} from 'models/billing/utils'
-import useScheduledDowngrades from './hooks/useScheduledDowngrades'
-import css from './BillingScheduledDowngrades.less'
+import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
+import css from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades.less'
 
 export default function BillingScheduledDowngrades() {
     const {

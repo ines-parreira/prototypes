@@ -7,7 +7,7 @@ import {
     advancedMonthlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import useScheduledDowngrades from '../useScheduledDowngrades'
+import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 

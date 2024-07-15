@@ -209,7 +209,7 @@ const ROICalculator = () => {
         setNumberOfTickets(numberOfTickets)
 
         const automateSubscriptionPrices = automationPrices.filter(
-            (price) => price.interval === PlanInterval.Month
+            (plan) => plan.interval === PlanInterval.Month
         )
 
         const automateSubscriptionPrice = getAutomateSubscriptionPrice(

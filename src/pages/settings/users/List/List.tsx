@@ -7,7 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {usePaginatedQuery} from 'hooks/usePaginatedQuery/usePaginatedQuery'
 import {AgentsRelationshipsParam} from 'models/agents/types'
-import {isStarterTierPrice} from 'models/billing/utils'
+import {isStarterTier} from 'models/billing/utils'
 import {useListAgent} from 'models/agents/queries'
 import Button from 'pages/common/components/button/Button'
 import Spinner from 'pages/common/components/Spinner'
@@ -53,7 +53,7 @@ const UserList = () => {
     const {data: {data: agents = []} = {}} = paginatedAgents.data ?? {}
 
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
-    const isStarterPlan = isStarterTierPrice(currentHelpdeskPlan)
+    const isStarterPlan = isStarterTier(currentHelpdeskPlan)
 
     return (
         <div className={cs('full-width')}>

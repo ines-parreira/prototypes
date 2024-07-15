@@ -41,7 +41,7 @@ const ProductCard = ({
     isDisabled,
     autoUpgradeEnabled = false,
 }: ProductCardProps) => {
-    const cheapestPrices = useAppSelector(getCheapestProductPrices)
+    const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
     const interval = useAppSelector(getCurrentHelpdeskInterval)
     const history = useHistory()
 
@@ -119,7 +119,8 @@ const ProductCard = ({
                         Starting at{' '}
                         <b>
                             {formatAmount(
-                                (cheapestPrices[type]?.amount ?? 0) / 100,
+                                (cheapestPlanByProduct[type]?.amount ?? 0) /
+                                    100,
                                 currency
                             )}
                         </b>
@@ -138,7 +139,7 @@ const ProductCard = ({
                 </Button>
             </div>
         )
-    }, [cheapestPrices, type, currency, interval, history, isDisabled])
+    }, [cheapestPlanByProduct, type, currency, interval, history, isDisabled])
 
     const updateContainer = useMemo(
         () => (

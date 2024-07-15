@@ -4,7 +4,7 @@ import {Tooltip} from '@gorgias/ui-kit'
 import {Plan, PlanInterval, ProductType} from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {getProductLabel, isStarterTierPrice} from 'models/billing/utils'
+import {getProductLabel, isStarterTier} from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import {CurrentProductsUsages} from 'state/billing/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,8 +26,8 @@ import css from './ProductPlanSelection.less'
 export type ProductPlanSelectionProps = {
     type: ProductType
     interval?: PlanInterval
-    product?: Plan
-    prices?: Plan[]
+    currentPlan?: Plan
+    availablePlans?: Plan[]
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
     isTrialing?: boolean
@@ -39,9 +39,9 @@ export type ProductPlanSelectionProps = {
 
 const ProductPlanSelection = ({
     type,
-    product,
+    currentPlan,
     interval = PlanInterval.Month,
-    prices = [],
+    availablePlans = [],
     selectedPlans,
     setSelectedPlans,
     isTrialing = false,
@@ -53,11 +53,11 @@ const ProductPlanSelection = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const isActive = useMemo(() => {
-        if (!product) return false
+        if (!currentPlan) return false
         if (isTrialing) return false
 
         return true
-    }, [product, isTrialing])
+    }, [currentPlan, isTrialing])
 
     const selectedPlan = selectedPlans[type].plan
 
@@ -65,9 +65,8 @@ const ProductPlanSelection = ({
     const [isCancellationFlowOpen, setIsCancellationFlowOpen] = useState(false)
 
     const isStarterHelpdeskPlanDisabled = useCallback(
-        (price) => {
-            const isStarterPlan = isStarterTierPrice(price)
-            if (isStarterPlan && interval === INTERVAL.Year) {
+        (plan) => {
+            if (isStarterTier(plan) && interval === INTERVAL.Year) {
                 return {
                     isDisabled: true,
                     tooltipText:
@@ -94,33 +93,40 @@ const ProductPlanSelection = ({
 
     const options = useMemo(
         () => [
-            ...prices
-                .filter((price) => {
+            ...availablePlans
+                .filter((plan) => {
                     if (
                         (type === ProductType.Voice ||
                             type === ProductType.SMS) &&
-                        !!product
+                        !!currentPlan
                     ) {
-                        return !!price.num_quota_tickets
+                        return !!plan.num_quota_tickets
                     }
 
                     return true
                 })
-                .map((price) => ({
-                    value: price.price_id ?? '',
-                    label: getLabel(price),
-                    isDisabled: isStarterHelpdeskPlanDisabled(price).isDisabled,
+                .map((plan) => ({
+                    value: plan.price_id ?? '',
+                    label: getLabel(plan),
+                    isDisabled: isStarterHelpdeskPlanDisabled(plan).isDisabled,
                     tooltipText:
-                        isStarterHelpdeskPlanDisabled(price).tooltipText,
+                        isStarterHelpdeskPlanDisabled(plan).tooltipText,
                 })),
             {
                 value: ENTERPRISE_PRICE_ID,
                 label: `${formatNumTickets(
-                    prices[prices.length - 1]?.num_quota_tickets ?? 0
+                    availablePlans[availablePlans.length - 1]
+                        ?.num_quota_tickets ?? 0
                 )}+`,
             },
         ],
-        [getLabel, isStarterHelpdeskPlanDisabled, prices, product, type]
+        [
+            getLabel,
+            isStarterHelpdeskPlanDisabled,
+            availablePlans,
+            currentPlan,
+            type,
+        ]
     )
 
     const handleClose = useCallback(() => {
@@ -161,8 +167,8 @@ const ProductPlanSelection = ({
     const handleOpen = useCallback(() => {
         const initialPlan =
             initialIndex === -1
-                ? prices.find((price) => price.num_quota_tickets)
-                : prices[initialIndex]
+                ? availablePlans.find((plan) => plan.num_quota_tickets)
+                : availablePlans[initialIndex]
 
         setSelectedPlans((prev) => ({
             ...prev,
@@ -171,12 +177,12 @@ const ProductPlanSelection = ({
                 isSelected: true,
             },
         }))
-    }, [prices, setSelectedPlans, type, initialIndex])
+    }, [availablePlans, setSelectedPlans, type, initialIndex])
 
     const handleSelectProductPlan = (price_id: Value) => {
-        const plan = prices.find((price) => price.price_id === price_id)
+        const plan = availablePlans.find((plan) => plan.price_id === price_id)
         const enterprisePlan = {
-            ...prices[prices.length - 1],
+            ...availablePlans[availablePlans.length - 1],
             price_id: ENTERPRISE_PRICE_ID,
             name: 'Enterprise',
         }
@@ -350,9 +356,9 @@ const ProductPlanSelection = ({
                     </div>
                     &nbsp;
                     {isActive &&
-                        product?.price_id !== selectedPlan?.price_id && (
+                        currentPlan?.price_id !== selectedPlan?.price_id && (
                             <div className={css.oldPrice}>
-                                {`${product?.num_quota_tickets || 0} ${
+                                {`${currentPlan?.num_quota_tickets || 0} ${
                                     PRODUCT_INFO[type].counter
                                 }/${interval ?? ''}`}
                             </div>
@@ -366,7 +372,7 @@ const ProductPlanSelection = ({
                         type={type}
                         selectedPlans={selectedPlans}
                         setSelectedPlans={setSelectedPlans}
-                        prices={prices}
+                        availablePlans={availablePlans}
                     />
                 )}
             {!!periodEnd && !!currentUsage && (

@@ -79,8 +79,8 @@ describe('ProductPlanSelection', () => {
     const props: ProductPlanSelectionProps = {
         type: ProductType.Helpdesk,
         interval: PlanInterval.Month,
-        product: basicMonthlyHelpdeskPlan,
-        prices: [
+        currentPlan: basicMonthlyHelpdeskPlan,
+        availablePlans: [
             basicMonthlyHelpdeskPlan,
             {
                 ...basicMonthlyHelpdeskPlan,
@@ -221,7 +221,7 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={undefined}
+                    currentPlan={undefined}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Helpdesk]: {isSelected: false},
@@ -235,7 +235,7 @@ describe('ProductPlanSelection', () => {
     it('calls handleClose when the close button is clicked', () => {
         const {getByText} = render(
             <Provider store={store}>
-                <ProductPlanSelection {...props} product={undefined} />
+                <ProductPlanSelection {...props} currentPlan={undefined} />
             </Provider>
         )
         const closeButton = getByText('close')
@@ -248,7 +248,7 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={undefined}
+                    currentPlan={undefined}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Helpdesk]: {isSelected: false},
@@ -266,7 +266,7 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={convertPlan1}
+                    currentPlan={convertPlan1}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Convert]: {
@@ -287,7 +287,7 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={convertPlan1}
+                    currentPlan={convertPlan1}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Convert]: {
@@ -313,7 +313,7 @@ describe('ProductPlanSelection', () => {
             <Provider store={store}>
                 <ProductPlanSelection
                     {...props}
-                    product={convertPlan1}
+                    currentPlan={convertPlan1}
                     selectedPlans={{
                         ...selectedPlans,
                         [ProductType.Convert]: {
@@ -357,7 +357,7 @@ describe('ProductPlanSelection', () => {
                 <Provider store={store}>
                     <ProductPlanSelection
                         {...props}
-                        product={convertPlan1}
+                        currentPlan={convertPlan1}
                         selectedPlans={{
                             ...selectedPlans,
                             [productType]: {

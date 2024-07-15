@@ -44,6 +44,7 @@ import useGetConvertStatus, {
 } from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
 import {handleConvertProductDowngraded} from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
+import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
@@ -58,7 +59,6 @@ import {
     setHelpdeskNotification,
     setConvertNotification,
 } from '../views/BillingProcessView/utils'
-import {getDefaultConvertPriceIndex} from '../utils/getDefaultConvertPriceIndex'
 
 export type BillingPlansProps = {
     contactBilling: (ticketPurpose: TicketPurpose) => void
@@ -102,15 +102,15 @@ export const useBillingPlans = ({
     const helpdeskAvailablePlans = useAppSelector(
         getAvailableHelpdeskPlans
     ).filter(
-        (price) =>
-            price.num_quota_tickets &&
-            (filterByInterval ? price.interval === interval : true)
+        (plan) =>
+            plan.num_quota_tickets &&
+            (filterByInterval ? plan.interval === interval : true)
     )
     const helpdeskAvailablePlansPriceIds = useMemo(
         () => helpdeskAvailablePlans.map((plan) => plan.price_id),
         [helpdeskAvailablePlans]
     )
-    const helpdeskCurrentPriceIdIndex = useMemo(
+    const helpdeskCurrentPlanIndex = useMemo(
         () =>
             helpdeskAvailablePlansPriceIds.indexOf(
                 currentHelpdeskPlan?.price_id ?? ''
@@ -123,21 +123,21 @@ export const useBillingPlans = ({
     const automateAvailablePlans = useAppSelector(
         getAvailableAutomatePlans
     ).filter((plan) => {
-        const isCurrentPriceLegacy =
+        const isCurrentPlanLegacy =
             currentAutomatePlan && !currentAutomatePlan.num_quota_tickets
         return (
             plan &&
             (filterByInterval ? plan.interval === interval : true) &&
-            (isCurrentPriceLegacy ? true : !!plan.num_quota_tickets)
+            (isCurrentPlanLegacy ? true : !!plan.num_quota_tickets)
         )
     })
-    const automationHasLegacyPrice = useMemo(
-        () => automateAvailablePlans?.some((price) => !price.num_quota_tickets),
+    const isAutomateLegacyPlan = useMemo(
+        () => automateAvailablePlans?.some((plan) => !plan.num_quota_tickets),
         [automateAvailablePlans]
     )
     const automationInitialIndex = Math.min(
         5,
-        helpdeskCurrentPriceIdIndex - (automationHasLegacyPrice ? 0 : 1)
+        helpdeskCurrentPlanIndex - (isAutomateLegacyPlan ? 0 : 1)
     )
 
     // Voice
@@ -147,7 +147,7 @@ export const useBillingPlans = ({
     )
 
     const voiceInitialIndex =
-        voiceAvailablePlans?.findIndex((price) => !!price.amount) ?? 0
+        voiceAvailablePlans?.findIndex((plan) => !!plan.amount) ?? 0
 
     // SMS
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
@@ -156,14 +156,14 @@ export const useBillingPlans = ({
     )
 
     const smsInitialIndex =
-        smsAvailablePlans?.findIndex((price) => !!price.amount) ?? 0
+        smsAvailablePlans?.findIndex((plan) => !!plan.amount) ?? 0
 
     // Convert
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const convertAvailablePlans = useAppSelector(
         getAvailableConvertPlans
     ).filter((plan) => (filterByInterval ? plan.interval === interval : true))
-    const convertInitialIndex = getDefaultConvertPriceIndex(
+    const convertInitialIndex = getDefaultConvertPlanIndex(
         interval,
         convertAvailablePlans,
         currentHelpdeskPlan?.name

@@ -16,7 +16,7 @@ import {
     getProductLabel,
     isAutomate,
     isHelpdesk,
-    isStarterTierPrice,
+    isStarterTier,
 } from '../utils'
 
 describe('getFullPrice', () => {
@@ -69,7 +69,7 @@ describe('isStarterTierPrice', () => {
     ])(
         'should validate if the price is of Starter tier',
         (price, expectedResult) => {
-            expect(isStarterTierPrice(price)).toBe(expectedResult)
+            expect(isStarterTier(price)).toBe(expectedResult)
         }
     )
 })

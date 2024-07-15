@@ -29,22 +29,22 @@ const CancellationSummary = ({
             .map((key) => {
                 const productType = key as ProductType
                 const toBeRemoved = cancellingProducts.includes(productType)
-                const price = subscriptionProducts[productType] as Plan
+                const plan = subscriptionProducts[productType] as Plan
 
                 if (!toBeRemoved) {
-                    total += (price.amount | 0) / 100
+                    total += (plan.amount | 0) / 100
                 }
 
                 return {
                     title: PRODUCT_INFO[productType].title,
                     label:
                         productType === ProductType.Helpdesk
-                            ? `${price.name} - `
+                            ? `${plan.name} - `
                             : null,
-                    interval: price.interval,
-                    quotaAmount: price.num_quota_tickets || 0,
+                    interval: plan.interval,
+                    quotaAmount: plan.num_quota_tickets || 0,
                     counter: PRODUCT_INFO[productType].counter,
-                    amount: formatAmount(price.amount / 100, price.currency),
+                    amount: formatAmount(plan.amount / 100, plan.currency),
                     strickenOut: toBeRemoved,
                 }
             })

@@ -45,7 +45,7 @@ describe('AutoUpgradeToggle', () => {
 
     const props: AutoUpgradeToggleProps = {
         type: ProductType.Convert,
-        prices: convertProduct.prices,
+        availablePlans: convertProduct.prices,
         selectedPlans,
         setSelectedPlans: mockSetSelectedPlans,
     }
@@ -79,7 +79,7 @@ describe('AutoUpgradeToggle', () => {
             <Provider store={store}>
                 <AutoUpgradeToggle
                     type={props.type}
-                    prices={props.prices}
+                    availablePlans={props.availablePlans}
                     selectedPlans={{
                         ...props.selectedPlans,
                         [ProductType.Convert]: {

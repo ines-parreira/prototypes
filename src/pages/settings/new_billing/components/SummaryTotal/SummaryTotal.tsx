@@ -32,7 +32,7 @@ const SummaryTotal = ({
         }, 0)
     }, [selectedPlans])
 
-    const oldPrice = useMemo(() => {
+    const oldPlanPrice = useMemo(() => {
         if (totalProductAmount === amountSelectedPlans) {
             return null
         }
@@ -44,9 +44,9 @@ const SummaryTotal = ({
             <div className={css.total}>
                 <div className={css.totalTitle}>Total</div>
                 <div className={css.totalPrice}>
-                    {!!oldPrice && !isFrequencyChanged && (
+                    {!!oldPlanPrice && !isFrequencyChanged && (
                         <div className={css.oldPrice} data-testid="oldPrice">
-                            {formatAmount(oldPrice / 100, currency)}
+                            {formatAmount(oldPlanPrice / 100, currency)}
                         </div>
                     )}
                     <span data-testid="totalSum">

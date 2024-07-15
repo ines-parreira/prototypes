@@ -25,25 +25,25 @@ import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
-    prices: Plan[]
+    availablePlans: Plan[]
     tagline?: string
     isTrialing: boolean
     isEnterprisePlan: boolean
     interval?: PlanInterval
-    selectedPrice: Plan | undefined
-    setSelectedPrice: React.Dispatch<React.SetStateAction<Plan | undefined>>
+    selectedPlan: Plan | undefined
+    setSelectedPlan: React.Dispatch<React.SetStateAction<Plan | undefined>>
     setIsSubscriptionEnabled: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const PlanSubscriptionDescription = ({
     productType,
-    prices,
+    availablePlans,
     tagline,
     isTrialing,
     isEnterprisePlan,
     interval = PlanInterval.Month,
-    selectedPrice,
-    setSelectedPrice,
+    selectedPlan,
+    setSelectedPlan,
     setIsSubscriptionEnabled,
 }: PlanSubscriptionDescriptionProps) => {
     const dispatch = useAppDispatch()
@@ -51,9 +51,9 @@ const PlanSubscriptionDescription = ({
     const [isCreditCardFetched, setIsCreditCardFetched] = useState(false)
     const [isPaymentEnabled, setIsPaymentEnabled] = useState(false)
     const [isTermsChecked, setIsTermsChecked] = useState(false)
-    const filteredPrices = useMemo(
-        () => prices.filter((price) => price.interval === interval),
-        [prices, interval]
+    const filteredPlans = useMemo(
+        () => availablePlans.filter((plan) => plan.interval === interval),
+        [availablePlans, interval]
     )
 
     const productInfo = useMemo(() => PRODUCT_INFO[productType], [productType])
@@ -73,29 +73,31 @@ const PlanSubscriptionDescription = ({
 
     const options = useMemo(() => {
         return [
-            ...filteredPrices.map((price) => ({
-                value: price.price_id ?? '',
-                label: formatOptionLabel(price),
+            ...filteredPlans.map((plan) => ({
+                value: plan.price_id ?? '',
+                label: formatOptionLabel(plan),
             })),
             {
                 value: ENTERPRISE_PRICE_ID,
                 label: `${formatNumTickets(
-                    filteredPrices[filteredPrices.length - 1]
+                    filteredPlans[filteredPlans.length - 1]
                         ?.num_quota_tickets ?? 0
                 )}+`,
             },
         ]
-    }, [filteredPrices, formatOptionLabel])
+    }, [filteredPlans, formatOptionLabel])
 
     const handleSelectProductPlan = (price_id: Value) => {
-        const plan = filteredPrices.find((price) => price.price_id === price_id)
+        const selectedPlan = filteredPlans.find(
+            (plan) => plan.price_id === price_id
+        )
 
         const enterprisePlan = {
-            ...filteredPrices[filteredPrices.length - 1],
+            ...filteredPlans[filteredPlans.length - 1],
             price_id: ENTERPRISE_PRICE_ID,
             name: 'Enterprise',
         }
-        setSelectedPrice(plan ?? enterprisePlan)
+        setSelectedPlan(selectedPlan ?? enterprisePlan)
     }
 
     // fetch card
@@ -173,7 +175,7 @@ const PlanSubscriptionDescription = ({
                             options={options}
                             id="priceSelect"
                             placeholder="Select a plan"
-                            value={selectedPrice?.price_id}
+                            value={selectedPlan?.price_id}
                             fullWidth
                             onChange={handleSelectProductPlan}
                             showSelectedOption
@@ -181,7 +183,7 @@ const PlanSubscriptionDescription = ({
                         <div className={css.counter} ref={ref}>
                             <div>
                                 <CounterText
-                                    price={selectedPrice}
+                                    price={selectedPlan}
                                     type={productType}
                                     interval={interval}
                                 />
@@ -207,7 +209,7 @@ const PlanSubscriptionDescription = ({
                         ) : (
                             <strong>
                                 {formatAmount(
-                                    (selectedPrice?.amount ?? 0) / 100,
+                                    (selectedPlan?.amount ?? 0) / 100,
                                     null
                                 )}
                                 /{interval}

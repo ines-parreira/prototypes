@@ -49,7 +49,7 @@ describe('<BillingPlanCard />', () => {
             [basicMonthlyHelpdeskPlan],
             false
         ),
-        isCurrentPrice: false,
+        isCurrentPlan: false,
         name: basicMonthlyHelpdeskPlan.name,
         footer: <span>Foo footer</span>,
         className: 'fooClass',
@@ -120,7 +120,7 @@ describe('<BillingPlanCard />', () => {
                         [legacyBasicHelpdeskPlan],
                         true
                     )}
-                    isCurrentPrice
+                    isCurrentPlan
                 />
             </Provider>
         )

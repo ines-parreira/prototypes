@@ -149,10 +149,10 @@ const AutomateSubscriptionModal = ({
         logEvent(SegmentEvent.AutomatePaywallModalUpsellSubscribe, {
             location: history?.location.pathname,
         })
-        selectedPrice?.price_id &&
+        selectedPlan?.price_id &&
             void handleSubscriptionUpdate([
                 ...currentPriceIds,
-                selectedPrice.price_id,
+                selectedPlan.price_id,
             ]).then(() => onSubscribe && onSubscribe())
         history.push(BILLING_BASE_PATH)
     }
@@ -173,7 +173,7 @@ const AutomateSubscriptionModal = ({
     )
 
     const automatePreselectedOption = Math.min(5, helpdeskOptionIndex)
-    const [selectedPrice, setSelectedPrice] = useState<Plan | undefined>(
+    const [selectedPlan, setSelectedPlan] = useState<Plan | undefined>(
         automateAvailablePlans?.[automatePreselectedOption]
     )
 
@@ -182,8 +182,8 @@ const AutomateSubscriptionModal = ({
         useState(false)
 
     const isEnterprisePlan = useMemo(
-        () => selectedPrice?.price_id === ENTERPRISE_PRICE_ID,
-        [selectedPrice]
+        () => selectedPlan?.price_id === ENTERPRISE_PRICE_ID,
+        [selectedPlan]
     )
 
     const [showStep, setShowStep] = useState(false)
@@ -236,14 +236,14 @@ const AutomateSubscriptionModal = ({
                 {!showROICalculatorStep && isOpen && (
                     <AutomateModalStep
                         handleOnClose={handleOnClose}
-                        automationPrices={automateAvailablePlans}
+                        automateAvailablePlans={automateAvailablePlans}
                         hasAutomate={hasAutomate}
                         header={header}
                         isTrialingSubscription={isTrialingSubscription}
                         isEnterprisePlan={isEnterprisePlan}
                         interval={interval}
-                        selectedPrice={selectedPrice}
-                        setSelectedPrice={setSelectedPrice}
+                        selectedPlan={selectedPlan}
+                        setSelectedPlan={setSelectedPlan}
                         setIsSubscriptionEnabled={setIsSubscriptionEnabled}
                         image={image}
                         handleUnsubscribeClick={handleUnsubscribeClick}

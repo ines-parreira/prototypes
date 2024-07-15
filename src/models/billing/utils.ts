@@ -53,10 +53,10 @@ export function isConvert(plan: Plan): plan is ConvertPlan {
     return plan.product === ProductType.Convert
 }
 
-export function isStarterTierPrice(
-    price: HelpdeskPlan | undefined
-): price is HelpdeskPlan {
-    return !!price?.internal_id.startsWith('starter-')
+export function isStarterTier(
+    plan: HelpdeskPlan | undefined
+): plan is HelpdeskPlan {
+    return !!plan?.internal_id.startsWith('starter-')
 }
 
 export function isTrial(plan: Plan | undefined) {

@@ -9,6 +9,7 @@ import {PlanInterval, ProductType} from 'models/billing/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchCreditCard} from 'state/billing/actions'
 import {TicketPurpose} from 'state/billing/types'
+import {getCorrespondingPlanAtInterval} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtInterval'
 import Card from '../../components/Card/Card'
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
@@ -18,7 +19,6 @@ import SummaryPaymentSection from '../../components/SummaryPaymentSection/Summar
 import SummaryFooter from '../../components/SummaryFooter/SummaryFooter'
 import {BILLING_PAYMENT_PATH, PRICING_DETAILS_URL} from '../../constants'
 import {useBillingPlans} from '../../hooks/useBillingPlan'
-import {getPriceForInterval} from '../../utils/getPriceForInterval'
 import css from './BillingFrequencyView.less'
 
 type BillingFrequencyViewProps = {
@@ -80,42 +80,42 @@ const BillingFrequencyView = ({
                 ...prev,
                 [ProductType.Helpdesk]: {
                     ...prev[ProductType.Helpdesk],
-                    plan: getPriceForInterval({
-                        prices: helpdeskAvailablePlans,
+                    plan: getCorrespondingPlanAtInterval({
+                        availablePlans: helpdeskAvailablePlans,
                         interval,
-                        currentPrice: currentHelpdeskPlan,
+                        currentPlan: currentHelpdeskPlan,
                     }),
                 },
                 [ProductType.Automation]: {
                     ...prev[ProductType.Automation],
-                    plan: getPriceForInterval({
-                        prices: automateAvailablePlans,
+                    plan: getCorrespondingPlanAtInterval({
+                        availablePlans: automateAvailablePlans,
                         interval,
-                        currentPrice: currentAutomatePlan,
+                        currentPlan: currentAutomatePlan,
                     }),
                 },
                 [ProductType.Voice]: {
                     ...prev[ProductType.Voice],
-                    plan: getPriceForInterval({
-                        prices: voiceAvailablePlans ?? [],
+                    plan: getCorrespondingPlanAtInterval({
+                        availablePlans: voiceAvailablePlans ?? [],
                         interval,
-                        currentPrice: currentVoicePlan,
+                        currentPlan: currentVoicePlan,
                     }),
                 },
                 [ProductType.SMS]: {
                     ...prev[ProductType.SMS],
-                    plan: getPriceForInterval({
-                        prices: smsAvailablePlans ?? [],
+                    plan: getCorrespondingPlanAtInterval({
+                        availablePlans: smsAvailablePlans ?? [],
                         interval,
-                        currentPrice: currentSmsPlan,
+                        currentPlan: currentSmsPlan,
                     }),
                 },
                 [ProductType.Convert]: {
                     ...prev[ProductType.Convert],
-                    plan: getPriceForInterval({
-                        prices: convertAvailablePlans ?? [],
+                    plan: getCorrespondingPlanAtInterval({
+                        availablePlans: convertAvailablePlans ?? [],
                         interval,
-                        currentPrice: currentConvertPlan,
+                        currentPlan: currentConvertPlan,
                     }),
                 },
             }))

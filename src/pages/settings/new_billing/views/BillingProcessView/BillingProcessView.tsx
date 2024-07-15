@@ -365,8 +365,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Helpdesk}
                             interval={interval}
-                            product={currentHelpdeskPlan}
-                            prices={helpdeskAvailablePlans}
+                            currentPlan={currentHelpdeskPlan}
+                            availablePlans={helpdeskAvailablePlans}
                             selectedPlans={selectedPlans}
                             periodEnd={periodEnd}
                             isTrialing={isTrialing}
@@ -379,8 +379,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Automation}
                             interval={interval}
-                            product={currentAutomatePlan}
-                            prices={automateAvailablePlans}
+                            currentPlan={currentAutomatePlan}
+                            availablePlans={automateAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             initialIndex={automationInitialIndex}
@@ -394,8 +394,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Voice}
                             interval={interval}
-                            product={currentVoicePlan}
-                            prices={voiceAvailablePlans}
+                            currentPlan={currentVoicePlan}
+                            availablePlans={voiceAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
@@ -408,8 +408,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.SMS}
                             interval={interval}
-                            product={currentSmsPlan}
-                            prices={smsAvailablePlans}
+                            currentPlan={currentSmsPlan}
+                            availablePlans={smsAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}
@@ -422,8 +422,8 @@ const BillingProcessView = ({
                         <ProductPlanSelection
                             type={ProductType.Convert}
                             interval={interval}
-                            product={currentConvertPlan}
-                            prices={convertAvailablePlans}
+                            currentPlan={currentConvertPlan}
+                            availablePlans={convertAvailablePlans}
                             selectedPlans={selectedPlans}
                             setSelectedPlans={setSelectedPlans}
                             isTrialing={isTrialing}

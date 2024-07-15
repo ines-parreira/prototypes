@@ -21,14 +21,14 @@ export type AutoUpgradeToggleProps = {
     type: ProductType
     selectedPlans: SelectedPlans
     setSelectedPlans: React.Dispatch<React.SetStateAction<SelectedPlans>>
-    prices?: Plan[]
+    availablePlans?: Plan[]
 }
 
 const AutoUpgradeToggle = ({
     type,
     selectedPlans,
     setSelectedPlans,
-    prices = [],
+    availablePlans = [],
 }: AutoUpgradeToggleProps) => {
     const selectedPlan = selectedPlans[type]
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -37,7 +37,8 @@ const AutoUpgradeToggle = ({
 
     const autoUpgradeValue = Boolean(selectedPlan.autoUpgrade)
 
-    const nextTier = selectedPlan.plan && getNextTier(prices, selectedPlan.plan)
+    const nextTier =
+        selectedPlan.plan && getNextTier(availablePlans, selectedPlan.plan)
 
     const {nextTierAmount, nextTierName} = useMemo(() => {
         if (nextTier) {

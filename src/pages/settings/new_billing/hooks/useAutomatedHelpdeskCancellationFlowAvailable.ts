@@ -1,5 +1,5 @@
 import {HelpdeskPlan} from 'models/billing/types'
-import {isStarterTierPrice} from 'models/billing/utils'
+import {isStarterTier} from 'models/billing/utils'
 
 const useAutomatedHelpdeskCancellationFlowAvailable = (
     helpdeskProduct: HelpdeskPlan | null
@@ -10,7 +10,7 @@ const useAutomatedHelpdeskCancellationFlowAvailable = (
 
     const isProTierPlan = helpdeskProduct.internal_id.includes('pro')
     const isBasicTierPlan = helpdeskProduct.internal_id.includes('basic')
-    const isStarterTierPlan = isStarterTierPrice(helpdeskProduct)
+    const isStarterTierPlan = isStarterTier(helpdeskProduct)
 
     return isProTierPlan || isBasicTierPlan || isStarterTierPlan
 }

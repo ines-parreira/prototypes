@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
 import {ProductType} from 'models/billing/types'
-import {convertProduct} from 'fixtures/productPrices'
+import {convertAvailablePlans} from 'fixtures/productPrices'
 import {mockStore} from 'utils/testing'
 import {UserRole} from 'config/types/user'
 import {RootState} from 'state/types'
@@ -34,12 +34,12 @@ describe('SubscriptionModal', () => {
     const minProps = {
         productType: ProductType.Convert,
         canduId: canduId,
-        prices: convertProduct.prices,
+        availablePlans: convertAvailablePlans,
         tagline: '',
         confirmLabel: confirmLabel,
         headerDescription: headerDescription,
         currentPage: currentPage,
-        defaultPrice: convertProduct.prices[0],
+        defaultPlan: convertAvailablePlans[0],
         isTrialingSubscription: false,
         isOpen: false,
         onClose: jest.fn(),

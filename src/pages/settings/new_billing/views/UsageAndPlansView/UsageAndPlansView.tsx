@@ -24,7 +24,7 @@ import {
     CurrentProductsUsages,
     TicketPurpose,
 } from 'state/billing/types'
-import BillingScheduledDowngrades from 'pages/settings/billing/BillingScheduledDowngrades'
+import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'

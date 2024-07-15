@@ -1,36 +1,37 @@
 import {ConvertPlan, Plan} from 'models/billing/types'
 
 export const getNextTier = (
-    prices?: Plan[],
-    price?: Plan
+    availablePlans?: Plan[],
+    plan?: Plan
 ): Plan | undefined => {
-    if (!price || !prices) {
+    if (!plan || !availablePlans) {
         return undefined
     }
 
-    let minPrice: Plan | undefined = undefined
+    let nextTierPlan: Plan | undefined = undefined
 
-    for (const priceConfig of prices) {
-        if (!priceConfig) {
+    for (const availablePlan of availablePlans) {
+        if (!availablePlan) {
             continue
         }
 
-        const isSameInterval = priceConfig.interval === price.interval
-        const isSameProduct = priceConfig.product === price.product
+        const isSameInterval = availablePlan.interval === plan.interval
+        const isSameProduct = availablePlan.product === plan.product
         const isBigger =
-            priceConfig.num_quota_tickets &&
-            price.num_quota_tickets &&
-            priceConfig.num_quota_tickets > price.num_quota_tickets &&
-            priceConfig.amount >= price.amount
-        const isBetter = !minPrice || minPrice.amount > priceConfig.amount
+            availablePlan.num_quota_tickets &&
+            plan.num_quota_tickets &&
+            availablePlan.num_quota_tickets > plan.num_quota_tickets &&
+            availablePlan.amount >= plan.amount
+        const isBetter =
+            !nextTierPlan || nextTierPlan.amount > availablePlan.amount
 
         // tier property is only available for convert prices at the moment
-        const tier = (price as ConvertPlan)?.tier
+        const tier = (plan as ConvertPlan)?.tier
 
         if (isSameInterval && isSameProduct && isBigger && isBetter && tier) {
-            minPrice = priceConfig
+            nextTierPlan = availablePlan
         }
     }
 
-    return minPrice
+    return nextTierPlan
 }

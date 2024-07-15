@@ -13,10 +13,10 @@ import {
     smsPlan1,
     voicePlan1,
 } from 'fixtures/productPrices'
-import useScheduledDowngrades from '../hooks/useScheduledDowngrades'
-import BillingScheduledDowngrades from '../BillingScheduledDowngrades'
+import useScheduledDowngrades from 'pages/settings/new_billing/hooks/useScheduledDowngrades'
+import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 
-jest.mock('../hooks/useScheduledDowngrades')
+jest.mock('pages/settings/new_billing/hooks/useScheduledDowngrades')
 
 const mockUseScheduledDowngrades = useScheduledDowngrades as jest.Mock
 

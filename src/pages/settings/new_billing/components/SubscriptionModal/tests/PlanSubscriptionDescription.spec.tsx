@@ -15,12 +15,12 @@ describe('PlanSubscriptionDescription', () => {
 
     const props = {
         productType: ProductType.Convert,
-        prices: convertProduct.prices,
+        availablePlans: convertProduct.prices,
         tagline: '',
         isTrialing: false,
         isEnterprisePlan: false,
-        selectedPrice: convertProduct.prices[1],
-        setSelectedPrice: setSelectedPriceMock,
+        selectedPlan: convertProduct.prices[1],
+        setSelectedPlan: setSelectedPriceMock,
         setIsSubscriptionEnabled: setIsSubscriptionEnabledMock,
     } as PlanSubscriptionDescriptionProps
 

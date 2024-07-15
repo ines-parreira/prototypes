@@ -11,7 +11,7 @@ import {
 import {ConvertPlan, ProductType} from 'models/billing/types'
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
 import {isTrialing} from 'state/currentAccount/selectors'
-import {getDefaultConvertPriceIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPriceIndex'
+import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
 import css from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal.less'
 
 type Props = {
@@ -37,8 +37,8 @@ const ConvertSubscriptionModal = ({
     const convertAvailablePlans = useAppSelector(getAvailableConvertPlans)
     const isTrialingSubscription = useAppSelector(isTrialing)
 
-    const defaultPrice = useMemo((): ConvertPlan | undefined => {
-        const convertInitialIndex = getDefaultConvertPriceIndex(
+    const defaultConvertPlan = useMemo((): ConvertPlan | undefined => {
+        const convertInitialIndex = getDefaultConvertPlanIndex(
             currentHelpdeskPlan?.interval,
             convertAvailablePlans,
             currentHelpdeskPlan?.name
@@ -85,11 +85,11 @@ const ConvertSubscriptionModal = ({
         <SubscriptionModal
             productType={ProductType.Convert}
             canduId={canduId}
-            prices={convertAvailablePlans ?? []}
+            availablePlans={convertAvailablePlans ?? []}
             headerDescription={'Subscribe to Convert'}
             tagline={'Ready to boost sales with Convert?'}
             currentPage={currentPath}
-            defaultPrice={defaultPrice}
+            defaultPlan={defaultConvertPlan}
             isTrialingSubscription={isTrialingSubscription}
             isOpen={isOpen}
             onClose={onClose}
