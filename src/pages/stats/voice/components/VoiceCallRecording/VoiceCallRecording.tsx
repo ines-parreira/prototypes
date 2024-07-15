@@ -9,6 +9,7 @@ import css from './VoiceCallRecording.less'
 
 type Props = {
     voiceCall: VoiceCallSummary
+    isDownloadable?: boolean
 }
 
 const getRecordingData = (voiceCall: VoiceCallSummary) => {
@@ -32,7 +33,7 @@ const getRecordingData = (voiceCall: VoiceCallSummary) => {
     }
 }
 
-const VoiceCallRecording = ({voiceCall}: Props) => {
+const VoiceCallRecording = ({voiceCall, isDownloadable = true}: Props) => {
     const {recordingUrl, isAvailable} = getRecordingData(voiceCall)
     const [isOpen, setOpen] = useState(false)
     const {downloadRecording, isRequestPending} =
@@ -40,6 +41,11 @@ const VoiceCallRecording = ({voiceCall}: Props) => {
 
     const togglePopover = () => {
         setOpen((isOpen) => !isOpen)
+    }
+
+    const handlePlayRecordingClick = (event: React.MouseEvent) => {
+        event.stopPropagation()
+        togglePopover()
     }
 
     if (!recordingUrl || !isAvailable) {
@@ -52,19 +58,21 @@ const VoiceCallRecording = ({voiceCall}: Props) => {
                 <IconButton
                     className={css.recordingButton}
                     intent={'secondary'}
-                    onClick={togglePopover}
+                    onClick={handlePlayRecordingClick}
                 >
                     play_arrow
                 </IconButton>
-                <IconButton
-                    className={css.recordingButton}
-                    intent="secondary"
-                    fillStyle="ghost"
-                    onClick={downloadRecording}
-                    disabled={isRequestPending}
-                >
-                    download
-                </IconButton>
+                {isDownloadable && (
+                    <IconButton
+                        className={css.recordingButton}
+                        intent="secondary"
+                        fillStyle="ghost"
+                        onClick={downloadRecording}
+                        disabled={isRequestPending}
+                    >
+                        download
+                    </IconButton>
+                )}
             </div>
 
             {isOpen && <div className={css.backdrop} />}

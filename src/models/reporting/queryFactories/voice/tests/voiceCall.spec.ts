@@ -11,6 +11,7 @@ import {
 } from 'models/reporting/cubes/VoiceCallCube'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 import {
+    connectedCallsListQueryFactory,
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
@@ -18,7 +19,27 @@ import {
     voiceCallCountPerFilteringAgentQueryFactory,
     voiceCallCountQueryFactory,
     voiceCallListQueryFactory,
+    waitingTimeCallsListQueryFactory,
 } from '../voiceCall'
+
+const voiceCallListDimensions = [
+    VoiceCallDimension.AgentId,
+    VoiceCallDimension.CustomerId,
+    VoiceCallDimension.Direction,
+    VoiceCallDimension.IntegrationId,
+    VoiceCallDimension.CreatedAt,
+    VoiceCallDimension.Status,
+    VoiceCallDimension.Duration,
+    VoiceCallDimension.TicketId,
+    VoiceCallDimension.PhoneNumberSource,
+    VoiceCallDimension.PhoneNumberDestination,
+    VoiceCallDimension.TalkTime,
+    VoiceCallDimension.WaitTime,
+    VoiceCallDimension.VoicemailAvailable,
+    VoiceCallDimension.VoicemailUrl,
+    VoiceCallDimension.CallRecordingAvailable,
+    VoiceCallDimension.CallRecordingUrl,
+]
 
 describe('voice queries factories', () => {
     const periodStart = formatReportingQueryDate(moment())
@@ -80,24 +101,7 @@ describe('voice queries factories', () => {
 
             expect(query).toEqual({
                 measures: [VoiceCallMeasure.VoiceCallCount],
-                dimensions: [
-                    VoiceCallDimension.AgentId,
-                    VoiceCallDimension.CustomerId,
-                    VoiceCallDimension.Direction,
-                    VoiceCallDimension.IntegrationId,
-                    VoiceCallDimension.CreatedAt,
-                    VoiceCallDimension.Status,
-                    VoiceCallDimension.Duration,
-                    VoiceCallDimension.TicketId,
-                    VoiceCallDimension.PhoneNumberSource,
-                    VoiceCallDimension.PhoneNumberDestination,
-                    VoiceCallDimension.TalkTime,
-                    VoiceCallDimension.WaitTime,
-                    VoiceCallDimension.VoicemailAvailable,
-                    VoiceCallDimension.VoicemailUrl,
-                    VoiceCallDimension.CallRecordingAvailable,
-                    VoiceCallDimension.CallRecordingUrl,
-                ],
+                dimensions: voiceCallListDimensions,
                 filters: [
                     {
                         member: VoiceCallMember.PeriodStart,
@@ -286,6 +290,67 @@ describe('voice queries factories', () => {
                         values: [periodEnd],
                     },
                 ],
+            })
+        }
+    )
+
+    it('connectedCallsListQueryFactory should create a query', () => {
+        const query = connectedCallsListQueryFactory(statsFilters, timezone)
+
+        expect(query).toEqual({
+            measures: [VoiceCallMeasure.VoiceCallCount],
+            dimensions: voiceCallListDimensions,
+            timezone,
+            filters: [
+                {
+                    member: VoiceCallMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: VoiceCallMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+                {
+                    member: VoiceCallMember.TalkTime,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+            ],
+        })
+    })
+
+    it.each([undefined, VoiceCallSegment.inboundCalls])(
+        'waitingTimeCallsListQueryFactory should create a query',
+        (segment) => {
+            const query = waitingTimeCallsListQueryFactory(
+                statsFilters,
+                timezone,
+                segment
+            )
+            expect(query).toEqual({
+                dimensions: voiceCallListDimensions,
+                measures: [VoiceCallMeasure.VoiceCallCount],
+                timezone,
+                filters: [
+                    {
+                        member: VoiceCallMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [periodStart],
+                    },
+                    {
+                        member: VoiceCallMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [periodEnd],
+                    },
+                    {
+                        member: VoiceCallMember.WaitTime,
+                        operator: ReportingFilterOperator.Set,
+                        values: [],
+                    },
+                ],
+                segments: segment ? [segment] : [],
             })
         }
     )

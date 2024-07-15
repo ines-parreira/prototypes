@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -11,10 +11,12 @@ import VoiceCallRecording from './VoiceCallRecording'
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceCallRecording', () => {
-    const renderComponent = (voiceCall: VoiceCallSummary) => {
+    const renderComponent = (
+        props: ComponentProps<typeof VoiceCallRecording>
+    ) => {
         return render(
             <Provider store={mockStore({})}>
-                <VoiceCallRecording voiceCall={voiceCall} />
+                <VoiceCallRecording {...props} />
             </Provider>
         )
     }
@@ -33,13 +35,25 @@ describe('VoiceCallRecording', () => {
             voicemailAvailable: true,
         } as VoiceCallSummary,
     ])('should render recording buttons', (voiceCall) => {
-        const {getByRole, getByTestId} = renderComponent(voiceCall)
+        const {getByRole, getByTestId} = renderComponent({voiceCall})
 
         expect(getByRole('button', {name: 'play_arrow'})).toBeInTheDocument()
         expect(getByRole('button', {name: 'download'})).toBeInTheDocument()
 
         fireEvent.click(getByRole('button', {name: 'play_arrow'}))
         expect(getByTestId('audio-player')).toBeInTheDocument()
+    })
+
+    it('should not render download button when isDownloadable is false', () => {
+        const {queryByRole} = renderComponent({
+            voiceCall: {
+                callRecordingUrl: 'https://www.google.com',
+                callRecordingAvailable: true,
+            } as VoiceCallSummary,
+            isDownloadable: false,
+        })
+
+        expect(queryByRole('button', {name: 'download'})).toBeNull()
     })
 
     it.each([
@@ -56,7 +70,7 @@ describe('VoiceCallRecording', () => {
             voicemailAvailable: false,
         } as VoiceCallSummary,
     ])('should render deleted recording', (voiceCall) => {
-        const {getByText} = renderComponent(voiceCall)
+        const {getByText} = renderComponent({voiceCall})
 
         expect(getByText('-')).toBeInTheDocument()
     })

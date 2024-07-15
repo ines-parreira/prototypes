@@ -36,6 +36,8 @@ export enum VoiceCallMember {
     IntegrationId = 'VoiceCall.integrationId',
     AgentId = 'VoiceCall.filteringAgentId',
     AssignedAgentId = 'VoiceCall.agentId',
+    TalkTime = 'VoiceCall.talkTimeSeconds',
+    WaitTime = 'VoiceCall.waitTimeSeconds',
 }
 
 export enum VoiceCallSegment {

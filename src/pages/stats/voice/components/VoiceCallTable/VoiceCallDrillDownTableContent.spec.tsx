@@ -6,6 +6,7 @@ import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
 import {formatVoiceDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 import VoiceCallDrillDownTableContent from './VoiceCallDrillDownTableContent'
 import VoiceCallTableContent from './VoiceCallTableContent'
+import {tableColumns} from './constants'
 
 jest.mock('pages/stats/voice/components/VoiceCallTable/VoiceCallTableContent')
 jest.mock('hooks/reporting/useDrillDownData')
@@ -51,6 +52,9 @@ describe('VoiceCallDrillDownTableContent', () => {
             {
                 data,
                 isFetching: true,
+                onRowClick: expect.any(Function),
+                isRecordingDownloadable: false,
+                columns: tableColumns[VoiceMetric.AverageTalkTime],
             },
             {}
         )

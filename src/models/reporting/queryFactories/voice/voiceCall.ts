@@ -6,9 +6,10 @@ import {
     VoiceCallDimension,
     VoiceCallFiltersMembers,
     VoiceCallMeasure,
+    VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {ReportingQuery} from 'models/reporting/types'
+import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
 import {OrderDirection} from 'models/api/types'
 import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
 
@@ -43,6 +44,59 @@ export const voiceCallDefaultFilters = (
     }
     return [...statsFiltersToReportingFilters(VoiceCallFiltersMembers, filters)]
 }
+
+const voiceCallListDimensions = [
+    VoiceCallDimension.AgentId,
+    VoiceCallDimension.CustomerId,
+    VoiceCallDimension.Direction,
+    VoiceCallDimension.IntegrationId,
+    VoiceCallDimension.CreatedAt,
+    VoiceCallDimension.Status,
+    VoiceCallDimension.Duration,
+    VoiceCallDimension.TicketId,
+    VoiceCallDimension.PhoneNumberSource,
+    VoiceCallDimension.PhoneNumberDestination,
+    VoiceCallDimension.TalkTime,
+    VoiceCallDimension.WaitTime,
+    VoiceCallDimension.VoicemailAvailable,
+    VoiceCallDimension.VoicemailUrl,
+    VoiceCallDimension.CallRecordingAvailable,
+    VoiceCallDimension.CallRecordingUrl,
+]
+
+export const connectedCallsFilter = {
+    member: VoiceCallMember.TalkTime,
+    operator: ReportingFilterOperator.Set,
+    values: [],
+}
+
+export const waitTimeSetFilter = {
+    member: VoiceCallMember.WaitTime,
+    operator: ReportingFilterOperator.Set,
+    values: [],
+}
+
+export const connectedCallsListQueryFactory = (
+    filters: StatsFilters,
+    timezone: string
+): ReportingQuery<VoiceCallCube> => ({
+    measures: [VoiceCallMeasure.VoiceCallCount],
+    dimensions: voiceCallListDimensions,
+    timezone,
+    filters: [...voiceCallDefaultFilters(filters), connectedCallsFilter],
+})
+
+export const waitingTimeCallsListQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    segment?: VoiceCallSegment
+): ReportingQuery<VoiceCallCube> => ({
+    measures: [VoiceCallMeasure.VoiceCallCount],
+    dimensions: voiceCallListDimensions,
+    timezone,
+    filters: [...voiceCallDefaultFilters(filters), waitTimeSetFilter],
+    segments: segment ? [segment] : [],
+})
 
 export const voiceCallCountQueryFactory = (
     filters: StatsFilters,
@@ -88,24 +142,7 @@ export const voiceCallListQueryFactory = (
     offset?: number
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
-    dimensions: [
-        VoiceCallDimension.AgentId,
-        VoiceCallDimension.CustomerId,
-        VoiceCallDimension.Direction,
-        VoiceCallDimension.IntegrationId,
-        VoiceCallDimension.CreatedAt,
-        VoiceCallDimension.Status,
-        VoiceCallDimension.Duration,
-        VoiceCallDimension.TicketId,
-        VoiceCallDimension.PhoneNumberSource,
-        VoiceCallDimension.PhoneNumberDestination,
-        VoiceCallDimension.TalkTime,
-        VoiceCallDimension.WaitTime,
-        VoiceCallDimension.VoicemailAvailable,
-        VoiceCallDimension.VoicemailUrl,
-        VoiceCallDimension.CallRecordingAvailable,
-        VoiceCallDimension.CallRecordingUrl,
-    ],
+    dimensions: voiceCallListDimensions,
     timezone,
     segments: segment ? [segment] : [],
     filters: voiceCallDefaultFilters(filters),

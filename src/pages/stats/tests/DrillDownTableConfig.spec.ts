@@ -18,7 +18,11 @@ import {
     VoiceMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
-import {voiceCallListQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import {
+    connectedCallsListQueryFactory,
+    waitingTimeCallsListQueryFactory,
+} from 'models/reporting/queryFactories/voice/voiceCall'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 
 jest.mock(
     'models/reporting/queryFactories/support-performance/customerSatisfaction'
@@ -27,7 +31,21 @@ jest.mock('models/reporting/queryFactories/voice/voiceCall')
 const customerSatisfactionQueryFactoryMock = assumeMock(
     customerSatisfactionMetricDrillDownQueryFactory
 )
-const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
+const connectedCallsListQueryFactoryMock = assumeMock(
+    connectedCallsListQueryFactory
+)
+const waitingTimeCallsListQueryFactoryMock = assumeMock(
+    waitingTimeCallsListQueryFactory
+)
+
+const periodStart = moment()
+const periodEnd = periodStart.add(7, 'days')
+const statsFilters: StatsFilters = {
+    period: {
+        end_datetime: periodEnd.toISOString(),
+        start_datetime: periodStart.toISOString(),
+    },
+}
 
 describe('getDrillDownQuery', () => {
     const agentsMetrics: AgentsMetrics[] = [
@@ -126,15 +144,6 @@ describe('getDrillDownQuery', () => {
         }
     )
 
-    it.each(voiceMetrics)(
-        `should return the correct query for voice metrics: $metricName`,
-        (metric: DrillDownMetric) => {
-            const query = getDrillDownQuery(metric)
-            query({} as any, {} as any)
-            expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
-        }
-    )
-
     it('should be populated with agentId filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -180,6 +189,35 @@ describe('getDrillDownQuery', () => {
             expect.objectContaining({channels: [drillDownMetric.perChannel]}),
             timezone,
             undefined
+        )
+    })
+
+    it('should call connectedCallsListQueryFactory for VoiceMetric.AverageTalkTime', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: VoiceMetric.AverageTalkTime,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(connectedCallsListQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone
+        )
+    })
+
+    it('should call waitingTimeCallsListQueryFactory for VoiceMetric.AverageWaitTime', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: DrillDownMetric = {
+            metricName: VoiceMetric.AverageWaitTime,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(waitingTimeCallsListQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+            VoiceCallSegment.inboundCalls
         )
     })
 })
