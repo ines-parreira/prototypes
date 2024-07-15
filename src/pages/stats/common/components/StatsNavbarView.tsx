@@ -25,6 +25,8 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.HelpCenterAnalytics]
     const isSLAsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
+    const isAutoQAEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const isAnalyticsNewBusiestTime: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
     const newChannelsReport: boolean | undefined =
@@ -202,6 +204,27 @@ export default function StatsNavbarView() {
                                 to="/app/stats/slas"
                             >
                                 SLAs{' '}
+                                <Badge
+                                    type={ColorType.Blue}
+                                    className={cssNavbar.badge}
+                                >
+                                    {NEW_NAV_LABEL}
+                                </Badge>
+                            </NavbarLink>
+                        </div>
+                    )}
+                    {!!isAutoQAEnabled && (
+                        <div
+                            className={classNames(
+                                cssNavbar['link-wrapper'],
+                                cssNavbar.isNested
+                            )}
+                        >
+                            <NavbarLink
+                                {...COMMON_NAV_LINK_PROPS}
+                                to="/app/stats/auto-qa"
+                            >
+                                Auto QA{' '}
                                 <Badge
                                     type={ColorType.Blue}
                                     className={cssNavbar.badge}

@@ -13,6 +13,7 @@ export enum FeatureFlagKey {
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',
     AnalyticsNewBusiestTime = 'analytics-new-busiest-time',
     AnalyticsNewChannelsReport = 'analytics-new-channels-report',
+    AnalyticsAutoQA = 'analytics-auto-qa',
     AnalyticsSLAs = 'analytics-slas-report',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     BigCommerceCreateOrder = 'bigcommerce-create-order',

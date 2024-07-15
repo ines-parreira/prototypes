@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
+import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
 
 import {NotificationsSettings} from 'common/notifications'
@@ -484,6 +485,8 @@ export function StatsRoutes() {
 
     const isSLAsEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
+    const isAutoQAEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.AnalyticsAutoQA]
     const isAnalyticsNewBusiestTime: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
     const newChannelsReport: boolean | undefined =
@@ -612,6 +615,18 @@ export function StatsRoutes() {
                         render={() => (
                             <App
                                 content={ServiceLevelAgreements}
+                                navbar={StatsNavbarContainer}
+                            />
+                        )}
+                    />
+                )}
+                {!!isAutoQAEnabled && (
+                    <Route
+                        exact
+                        path={`${path}/auto-qa`}
+                        render={() => (
+                            <App
+                                content={AutoQA}
                                 navbar={StatsNavbarContainer}
                             />
                         )}

@@ -7,6 +7,7 @@ import {Provider} from 'react-redux'
 import {fromJS} from 'immutable'
 import {HTML5Backend} from 'react-dnd-html5-backend'
 import {DndProvider} from 'react-dnd'
+import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQA'
 
 import {account} from 'fixtures/account'
 import {billingState} from 'fixtures/billing'
@@ -55,9 +56,8 @@ describe('StatsNavbarView', () => {
 
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsAutoQA]: false,
             [FeatureFlagKey.AnalyticsSLAs]: false,
-        }))
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.AnalyticsNewChannelsReport]: false,
         }))
     })
@@ -187,6 +187,21 @@ describe('StatsNavbarView', () => {
         expect(
             screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE)
         ).toBeInTheDocument()
+    })
+
+    it('should render the link to the Service Level Agreements', () => {
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsAutoQA]: true,
+        }))
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <DndProvider backend={HTML5Backend}>
+                    <StatsNavbarView />
+                </DndProvider>
+            </Provider>
+        )
+
+        expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
     })
 
     it('should render the link to the New Channels Reports', () => {
