@@ -28,6 +28,7 @@ export const useAIAgentGetOtherResources = ({
         articleHelpCenterId,
         {
             version_status: 'latest_draft',
+            per_page: 1000,
         },
         {
             refetchOnWindowFocus: false,
