@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import {List} from 'immutable'
 import React, {useCallback, useEffect, useMemo, useRef} from 'react'
-import {Virtuoso, VirtuosoHandle} from 'react-virtuoso'
+import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useSelectedIndex from 'hooks/useSelectedIndex'
@@ -73,7 +73,16 @@ export default function TicketBody({
         (isAtBottom: boolean) => (isAtBottom ? 'smooth' : false),
         []
     )
-    const virtuosoComponents = useMemo(() => ({Footer: TicketFooter}), [])
+    const virtuosoComponents: Components<TicketFooterContext> = useMemo(
+        () => ({
+            Footer: TicketFooter,
+            TopItemList: ({children, style}) => (
+                <div style={{...style, zIndex: 2}}>{children}</div>
+            ),
+        }),
+        []
+    )
+
     const footerContext = useMemo(
         (): TicketFooterContext => ({isShopperTyping, shopperName, submit}),
         [isShopperTyping, shopperName, submit]

@@ -80,7 +80,7 @@ exports[`Event component should display correctly a successful event for a Recha
         </div>
         <button
           aria-disabled="false"
-          class="wrapper wrapper ghost ghost secondary medium"
+          class="wrapper arrow wrapper ghost ghost secondary medium"
           title="More details"
           type="button"
         >
@@ -192,7 +192,7 @@ exports[`Event component should display the correct label for an action 1`] = `
         </div>
         <button
           aria-disabled="false"
-          class="wrapper wrapper ghost ghost secondary medium"
+          class="wrapper arrow wrapper ghost ghost secondary medium"
           title="More details"
           type="button"
         >

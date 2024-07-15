@@ -200,6 +200,7 @@ export class EventContainer extends React.Component<Props, State> {
                         <IconButton
                             fillStyle="ghost"
                             intent="secondary"
+                            className={css.arrow}
                             onClick={() =>
                                 this.setState({
                                     showDetails: !this.state.showDetails,
