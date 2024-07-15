@@ -10,6 +10,7 @@ import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import closeIcon from 'assets/img/icons/close.svg'
 import {getConfigByName} from 'config/views'
 import {EntityType, ViewCategory} from 'models/view/types'
+import IconButton from 'pages/common/components/button/IconButton'
 import EditableTitle from 'pages/common/components/EditableTitle'
 import Search from 'pages/common/components/Search'
 import ViewName from 'pages/common/components/ViewName/ViewName'
@@ -247,12 +248,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                             ) : (
                                 <div className={css.title}>
                                     {shouldDisplaySystemIcon && (
-                                        <i
-                                            className={classnames(
-                                                'material-icons',
-                                                css.systemIcon
-                                            )}
-                                        >
+                                        <i className="material-icons">
                                             {systemViewIcons[slug]}
                                         </i>
                                     )}
@@ -264,11 +260,10 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         ])}
                                     />
                                     {isEditable && (
-                                        <i
-                                            className={classnames(
-                                                'material-icons',
-                                                css.editIcon
-                                            )}
+                                        <IconButton
+                                            className={css.editIcon}
+                                            intent="secondary"
+                                            fillStyle="ghost"
                                             onClick={() =>
                                                 isEditable
                                                     ? this.props.setViewEditMode(
@@ -276,9 +271,10 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                       )
                                                     : undefined
                                             }
+                                            title="Edit view"
                                         >
                                             tune
-                                        </i>
+                                        </IconButton>
                                     )}
                                 </div>
                             )}

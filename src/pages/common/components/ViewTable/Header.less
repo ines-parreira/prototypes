@@ -9,10 +9,11 @@
     }
 
     .title {
-        .heading-section-semibold();
-        padding: 0 2px;
+        .heading-subsection-semibold();
         color: var(--neutral-grey-6);
-        vertical-align: top;
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xs;
 
         &.withEmojiPicker {
             padding-left: 32px;
@@ -74,13 +75,9 @@
         }
     }
 
-    .systemIcon {
-        margin-right: 8px;
-    }
-
     .editIcon {
-        margin-left: @layout-spacing-xs;
-        color: var(--neutral-grey-5);
-        cursor: pointer;
+        font-size: 16px;
+        padding: 4px;
+        height: 24px;
     }
 }

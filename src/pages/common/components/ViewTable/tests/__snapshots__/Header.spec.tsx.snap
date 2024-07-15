@@ -16,11 +16,18 @@ exports[`ViewTable::Header should display an empty view 1`] = `
         <span>
           
         </span>
-        <i
-          class="material-icons editIcon"
+        <button
+          aria-disabled="false"
+          class="wrapper editIcon wrapper ghost ghost secondary medium"
+          title="Edit view"
+          type="button"
         >
-          tune
-        </i>
+          <i
+            class="material-icons icon"
+          >
+            tune
+          </i>
+        </button>
       </div>
     </div>
     <div

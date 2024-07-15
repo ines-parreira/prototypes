@@ -193,9 +193,11 @@ export default function TicketListView({
                     <span className={css.title}>{view?.name}</span>
                     <IconButton
                         className={css.icon}
+                        intent="secondary"
                         fillStyle="ghost"
                         onClick={goToViewEdition}
                         size="small"
+                        title="Edit view"
                     >
                         tune
                     </IconButton>
