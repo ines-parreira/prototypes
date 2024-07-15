@@ -71,7 +71,9 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                         ],
                     },
                 ],
-                segments: [TicketSLASegment.SatisfiedOrBreachedTickets],
+                segments: [
+                    TicketSLASegment.TicketsWithSlaAnchorDatetimeDuringSelectedPeriod,
+                ],
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketSLADimension.TicketId,
@@ -144,7 +146,9 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                         values: [TicketSLAStatus.Breached],
                     },
                 ],
-                segments: [TicketSLASegment.SatisfiedOrBreachedTickets],
+                segments: [
+                    TicketSLASegment.TicketsWithSlaAnchorDatetimeDuringSelectedPeriod,
+                ],
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketSLADimension.TicketId,

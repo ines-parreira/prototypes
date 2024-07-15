@@ -23,7 +23,10 @@ export const satisfiedOrBreachedTicketsQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     ...slaTicketsQueryFactory(filters, timezone, sorting),
-    segments: [TicketSLASegment.SatisfiedOrBreachedTickets],
+    segments: [
+        TicketSLASegment.TicketsWithSlaAnchorDatetimeDuringSelectedPeriod,
+    ],
+    filters: [...slaTicketsQueryFactory(filters, timezone, sorting).filters],
 })
 
 export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (

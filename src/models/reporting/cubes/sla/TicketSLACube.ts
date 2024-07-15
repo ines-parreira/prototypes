@@ -21,6 +21,7 @@ export enum TicketSLADimension {
 export enum TicketSLASegment {
     PendingTickets = 'TicketSLA.pendingTickets',
     SatisfiedOrBreachedTickets = 'TicketSLA.satisfiedOrBreachedTickets',
+    TicketsWithSlaAnchorDatetimeDuringSelectedPeriod = 'TicketSLA.ticketsWithSlaAnchorDatetimeDuringSelectedPeriod',
 }
 
 export enum TicketSLAMember {
