@@ -64,12 +64,11 @@ export default function ActionView() {
             className={css.container}
         >
             {hasActions && storeConfigurations ? (
-                <div
-                    data-candu-id="custom-action-view-header"
-                    className={css.actionsListContainer}
-                >
+                <div className={css.actionsListContainer}>
                     <div className={css.actionListDescription}>
-                        <p>{ACTIONS_DESCRIPTION}</p>
+                        <div data-candu-id="custom-action-view-header">
+                            {ACTIONS_DESCRIPTION}
+                        </div>
                         <div className={css.actionButtons}>
                             <CreateCustomActionButton />
                             <BrowseAllActionsButton />
@@ -83,6 +82,7 @@ export default function ActionView() {
                         title="Set up Actions for AI Agent to automate requests involving your 3rd party apps"
                         description={ACTIONS_DESCRIPTION}
                         image={emptyState}
+                        canduId="actions-empty-state-banner"
                     />
                     {templateConfigurations &&
                         templateConfigurations?.length > 0 && (

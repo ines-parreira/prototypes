@@ -8,6 +8,7 @@ type Props = {
     image: string
     badge?: ReactNode
     action?: ReactNode
+    canduId?: string
 }
 
 const AutomateViewEmptyStateBanner = ({
@@ -16,11 +17,12 @@ const AutomateViewEmptyStateBanner = ({
     image,
     badge,
     action,
+    canduId,
 }: Props) => {
     return (
         <div className={css.container}>
             <div className={css.content}>
-                <div className={css.texts}>
+                <div data-candu-id={canduId} className={css.texts}>
                     {badge}
                     <div className={css.title}>{title}</div>
                     <div className={css.description}>{description}</div>
