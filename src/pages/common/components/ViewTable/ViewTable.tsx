@@ -11,7 +11,7 @@ import _isArray from 'lodash/isArray'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getConfigByName} from 'config/views'
-import {EntityType, ViewVisibility} from 'models/view/types'
+import {EntityType, ViewType, ViewVisibility} from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import {isCreationUrl} from 'pages/common/utils/url'
@@ -99,6 +99,7 @@ export class ViewTableContainer extends Component<Props> {
             match: {params},
             flags,
         } = this.props
+        const viewType = config.get('type') as ViewType
 
         if (isSearch) {
             let fieldConfig: string[] | null = null
@@ -148,10 +149,7 @@ export class ViewTableContainer extends Component<Props> {
                 undefined
             )
         } else if (activeView.isEmpty() || urlViewId) {
-            const suggestedViewId = getViewIdToDisplay(
-                config.get('type'),
-                urlViewId
-            )
+            const suggestedViewId = getViewIdToDisplay(viewType, urlViewId)
 
             const viewMissing =
                 suggestedViewId &&
@@ -160,8 +158,16 @@ export class ViewTableContainer extends Component<Props> {
 
             if (viewMissing) {
                 history.push('/app')
-            } else if (suggestedViewId && !urlViewId) {
-                history.push(`/app/tickets/${suggestedViewId.toString()}`)
+            } else if (
+                suggestedViewId &&
+                !urlViewId &&
+                viewType === ViewType.TicketList
+            ) {
+                history.push(
+                    `/app/${config.get(
+                        'routeList'
+                    )}/${suggestedViewId.toString()}`
+                )
             }
 
             if (suggestedViewId && activeView.get('id') !== suggestedViewId) {
@@ -170,10 +176,7 @@ export class ViewTableContainer extends Component<Props> {
 
             activeViewIdSet(suggestedViewId)
         } else if (!isSearch && activeView.get('search') !== null) {
-            const suggestedViewId = getViewIdToDisplay(
-                config.get('type'),
-                undefined
-            )
+            const suggestedViewId = getViewIdToDisplay(viewType, undefined)
             suggestedViewId &&
                 setViewActive(getView(suggestedViewId.toString()))
             activeViewIdSet(suggestedViewId)

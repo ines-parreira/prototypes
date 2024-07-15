@@ -80,7 +80,7 @@ export const defaultMergeTicketsView = (
     }) as Map<any, any>
 }
 
-const defaultCustomerView = {
+export const defaultCustomerView = {
     name: EntityType.Customer,
     type: ViewType.CustomerList,
     routeItem: 'customer',

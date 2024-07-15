@@ -6,6 +6,7 @@ import {Location} from 'history'
 import _identity from 'lodash/identity'
 import {stringify} from 'qs'
 
+import {defaultTicketView} from 'config/views'
 import {mockSearchRank} from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
 import {view as fixtureView} from 'fixtures/views'
@@ -51,6 +52,7 @@ const minProps = {
     urlViewId: fixtureView.id.toString(),
     activeView: fromJS(fixtureView) as Map<any, any>,
     config: fromJS({
+        ...defaultTicketView,
         fields: fromJS([
             {
                 name: ViewField.Name,
@@ -583,8 +585,8 @@ describe('<ViewTable />', () => {
                         typeof minProps.getViewIdToDisplay
                     >
                 )
-                    .mockReturnValueOnce('1' as any)
-                    .mockReturnValueOnce('2' as any)
+                    .mockReturnValueOnce(1)
+                    .mockReturnValueOnce(2)
                 rerender(<ViewTableContainer {...minProps} />)
 
                 expect(minProps.setViewActive).toHaveBeenCalledTimes(1)
