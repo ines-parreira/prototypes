@@ -6,6 +6,7 @@ import css from './AIAgentFeedbackBar.less'
 type Props = {
     orders?: {
         id: number
+        name: string
         url: string
     }[]
 }
@@ -29,7 +30,7 @@ const FeedbackOrders: React.FC<Props> = ({orders}) => {
                     })}
                     data-testid="ticket-feedback-order"
                 >
-                    <div className={css.orderTitle}>#{order.id}</div>
+                    <div className={css.orderTitle}>{order.name}</div>
                     <i className={classNames('material-icons', css.openIcon)}>
                         open_in_new
                     </i>

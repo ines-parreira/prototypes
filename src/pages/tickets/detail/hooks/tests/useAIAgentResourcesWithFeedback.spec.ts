@@ -15,6 +15,7 @@ describe('useAIAgentResourcesWithFeedback', () => {
 
     it('returns actions, guidance, and knowledge with feedback', () => {
         const messageFeedback: MessageFeedback = {
+            accountId: 1234,
             shopName: 'fast-cars',
             shopType: 'shopify',
             helpCenterId: 1234,
@@ -24,7 +25,7 @@ describe('useAIAgentResourcesWithFeedback', () => {
             executionId: '923665aa-5081-49b3-9cca-2ad6e1823175',
             summary:
                 'AI Agent sent a response and left the ticket open pending further information from the customer.',
-            orders: [{id: 3324, url: 'https://gorgias.com'}],
+            orders: [{id: 3324, name: '#3324', url: 'https://gorgias.com'}],
             allowsFeedback: true,
             feedbackOnMessage: [
                 {

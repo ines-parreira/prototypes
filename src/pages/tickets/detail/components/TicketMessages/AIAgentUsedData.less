@@ -1,0 +1,69 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography.less';
+
+:local {
+    .container {
+        display: flex;
+        padding: @layout-spacing-s;
+        gap: @layout-spacing-s;
+        align-items: center;
+        background-color: var(--neutral-grey-1);
+        border-top: 1px solid var(--neutral-grey-3);
+    }
+
+    .titleIcon {
+        font-size: 20px !important;
+        color: var(--neutral-grey-5);
+    }
+
+    .title {
+        display: flex;
+        gap: @layout-spacing-xs;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--neutral-grey-6);
+        flex-shrink: 0;
+    }
+
+    .resources {
+        display: flex;
+        flex-wrap: wrap;
+        gap: @layout-spacing-xxs;
+        justify-content: flex-end;
+        min-width: 0;
+    }
+
+    .resource {
+        display: flex;
+        align-items: center;
+        gap: @layout-spacing-xxs;
+        border-radius: @layout-spacing-xxs;
+        padding: @layout-spacing-xxs @layout-spacing-xs;
+        background-color: var(--accessory-magenta-1);
+        color: var(--accessory-magenta-3);
+        font-size: 12px;
+        line-height: 16px;
+        font-weight: 600;
+        min-width: 0;
+
+        &:hover {
+            background-color: var(--accessory-magenta-2);
+            color: var(--accessory-magenta-3);
+        }
+
+        span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .resourceIcon {
+        font-size: 16px !important;
+    }
+
+    .openIcon {
+        font-size: 16px !important;
+        color: var(--accessory-magenta-3);
+    }
+}

@@ -66,6 +66,7 @@ export const isIssueFeedbackOnMessage = (
 ): feedback is IssueFeedbackOnMessage => feedback.type === 'issue'
 
 export type MessageFeedback = {
+    accountId: number
     shopName: string
     shopType: string
     helpCenterId: number
@@ -76,6 +77,7 @@ export type MessageFeedback = {
     summary: string
     orders: {
         id: number
+        name: string
         url: string
     }[]
     guidance: Guidance[]

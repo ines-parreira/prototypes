@@ -269,8 +269,16 @@ describe('AIAgentTicketFeedback', () => {
                             {
                                 ...messageFeedback,
                                 orders: [
-                                    {id: 3324, url: 'https://gorgias.com'},
-                                    {id: 3325, url: 'https://gorgias.com'},
+                                    {
+                                        id: 3324,
+                                        name: '#3324',
+                                        url: 'https://gorgias.com',
+                                    },
+                                    {
+                                        id: 3325,
+                                        name: '#3325',
+                                        url: 'https://gorgias.com',
+                                    },
                                 ],
                             },
                         ],

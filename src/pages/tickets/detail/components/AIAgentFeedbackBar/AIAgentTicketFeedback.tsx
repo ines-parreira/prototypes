@@ -47,10 +47,15 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
     const orders = ticketFeedback.messages.reduce<
         {
             id: number
+            name: string
             url: string
         }[]
     >((orders, message) => {
-        return orders.concat(message.orders)
+        return orders.concat(
+            message.orders.filter((order) =>
+                orders.every((o) => o.id !== order.id)
+            )
+        )
     }, [])
 
     const usedResourceCount = guidanceCount + actionCount + knowledgeCount

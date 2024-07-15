@@ -19,6 +19,7 @@ type Props = {
     actionsContent: React.ReactNode
     infoContent: React.ReactNode
     isAIAgentDraftMessage?: boolean
+    messageId?: number
 }
 
 export type SuggestionStates = 'collapse' | 'expand' | 'preview' | null
@@ -31,6 +32,7 @@ export default function InTicketSuggestion({
     actionsContent,
     infoContent,
     isAIAgentDraftMessage = false,
+    messageId,
 }: Props) {
     const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
@@ -81,6 +83,8 @@ export default function InTicketSuggestion({
                 __html={text}
                 ticketId={ticketId}
                 setSuggestionState={setSuggestionState}
+                isAIAgentDraftMessage={isAIAgentDraftMessage}
+                messageId={messageId}
             />
 
             {suggestionState === 'preview' ? (

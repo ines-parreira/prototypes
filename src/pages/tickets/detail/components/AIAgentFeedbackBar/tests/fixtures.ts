@@ -2,6 +2,7 @@ import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
 import {MessageFeedback} from 'models/aiAgentFeedback/types'
 
 export const messageFeedback: MessageFeedback = {
+    accountId: 1234,
     shopType: 'shopify',
     shopName: 'fast-cars',
     helpCenterId: 1234,
@@ -11,7 +12,7 @@ export const messageFeedback: MessageFeedback = {
     executionId: '923665aa-5081-49b3-9cca-2ad6e1823175',
     summary:
         'AI Agent sent a response and left the ticket open pending further information from the customer.',
-    orders: [{id: 3324, url: 'https://gorgias.com'}],
+    orders: [{id: 3324, url: 'https://gorgias.com', name: '#3324'}],
     actions: [
         {type: 'soft_action', id: 1, name: 'Get loyalty points'},
         {type: 'soft_action', id: 2, name: 'Get shipping address'},

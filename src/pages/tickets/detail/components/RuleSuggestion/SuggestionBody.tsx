@@ -2,6 +2,7 @@ import React, {useEffect, CSSProperties} from 'react'
 import {fromJS} from 'immutable'
 import {Collapse} from 'reactstrap'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
+import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
 import {MacroAction} from 'models/macroAction/types'
 import useMeasure from 'hooks/useMeasure'
 import css from './SuggestionBody.less'
@@ -13,6 +14,8 @@ type Props = {
     ticketId: number
     state: SuggestionStates
     setSuggestionState: (state: SuggestionStates) => void
+    isAIAgentDraftMessage?: boolean
+    messageId?: number
 }
 
 const PREVIEW_HEIGHT = 175
@@ -23,6 +26,8 @@ export default function SuggestionBody({
     ticketId,
     state,
     setSuggestionState,
+    isAIAgentDraftMessage = false,
+    messageId,
 }: Props) {
     const [innerRef, {height}] = useMeasure<HTMLDivElement>()
 
@@ -64,6 +69,9 @@ export default function SuggestionBody({
                         '(No reply will be sent)'
                     )}
                 </div>
+                {isAIAgentDraftMessage && !!messageId && (
+                    <AIAgentUsedData messageId={messageId} />
+                )}
 
                 <div>
                     {actions?.map((action, index) => {

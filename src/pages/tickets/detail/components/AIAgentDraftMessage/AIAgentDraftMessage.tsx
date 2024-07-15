@@ -75,6 +75,7 @@ const AIAgentDraftMessage = ({ticketId, message}: Props) => {
         <InTicketSuggestion
             isAIAgentDraftMessage
             ticketId={ticketId}
+            messageId={message.id}
             actionsContent={
                 <Button
                     intent="primary"
