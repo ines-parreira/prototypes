@@ -19,12 +19,11 @@ export type FormValues = {
     toneOfVoice: string | null
     customToneOfVoiceGuidance: string | null
     helpCenterId: number | null
-    publicURLs: string[] | null
 }
 
 export type ValidFormValues = NonNullFields<
     FormValues,
-    'monitoredEmailIntegrations'
+    'monitoredEmailIntegrations' | 'signature'
 >
 
 export type GuidanceArticle = {

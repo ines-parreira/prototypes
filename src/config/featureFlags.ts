@@ -8,6 +8,7 @@ export enum FeatureFlagKey {
     AiAgentGuidanceToggle = 'ai-agent-guidance-toggle',
     AiAgentRuleTemplate = 'ai-agent-rule-template',
     AiAgentSettings = 'ai-agent-settings',
+    AiAgentNewConfigurationPage = 'ai-agent-new-configuration-page',
     AiAgentSkipSampleRate = 'ai-agent-skip-sample-rate',
     AiAgentPlaygroundPredefinedMessages = 'ai-agent-playground-predefined-messages',
     AnalyticsDeferredLoadingExperiment = 'analytics-deferred-loading-experiment',

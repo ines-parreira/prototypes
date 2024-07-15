@@ -9,6 +9,7 @@ import AutomatePaywallView from '../common/components/AutomatePaywallView'
 import {AutomateFeatures} from '../common/types'
 import Loader from '../../common/components/Loader/Loader'
 import {AiAgentStoreView} from './AiAgentStoreView'
+import {AiAgentConfigurationView} from './AiAgentConfigurationView/AiAgentConfigurationView'
 
 const AiAgentViewContainer = () => {
     const {shopName} = useParams<{
@@ -19,12 +20,23 @@ const AiAgentViewContainer = () => {
 
     const showAiAgentSettings: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentSettings]
+    const showAiAgentNewConfiguration: boolean | undefined =
+        useFlags()[FeatureFlagKey.AiAgentNewConfigurationPage]
 
     if (showAiAgentSettings === undefined) {
         return <Loader />
     } else if (!showAiAgentSettings) {
         return (
             <AutomatePaywallView automateFeature={AutomateFeatures.AiAgent} />
+        )
+    }
+
+    if (showAiAgentNewConfiguration) {
+        return (
+            <AiAgentConfigurationView
+                accountDomain={accountDomain}
+                shopName={shopName}
+            />
         )
     }
 

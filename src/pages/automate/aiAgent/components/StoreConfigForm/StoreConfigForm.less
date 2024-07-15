@@ -1,0 +1,77 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .automateView {
+        max-width: 728px; // because 680 + 24 + 24 (paddings)
+
+        section {
+            margin-bottom: 48px;
+        }
+
+        textarea {
+            min-height: 138px;
+            padding: @layout-spacing-s;
+        }
+
+        .label {
+            margin-bottom: @layout-spacing-xs;
+        }
+
+        .icon {
+            i {
+                color: var(--neutral-grey-5);
+            }
+        }
+        .toggleInput {
+            .caption {
+                color: var(--neutral-grey-5) !important;
+            }
+        }
+
+        .subsectionHeader {
+            margin-bottom: @layout-spacing-xxs;
+            margin-top: @layout-spacing-l;
+        }
+
+        .sectionHeader {
+            .heading-section-semibold();
+            margin-bottom: 24px;
+        }
+        .sectionDescription {
+            .body-regular();
+        }
+
+        .formGroup {
+            margin-bottom: @layout-spacing-s;
+            .formGroupDescription {
+                margin-bottom: @layout-spacing-s;
+            }
+        }
+
+        .formInputFooterInfo {
+            .caption-regular();
+            color: var(--neutral-grey-5);
+            margin-top: 4px;
+        }
+        .featureToggle {
+            margin-bottom: @layout-spacing-xxs;
+        }
+    }
+    .aiAgentToggle {
+        margin-top: 500px;
+    }
+
+    .preventAIAgentTriggerDescription {
+        .body-regular();
+    }
+
+    .warningIcon {
+        color: var(--feedback-warning);
+        margin-left: 5px;
+    }
+
+    .customToneOfVoiceGuidance {
+        margin-top: @layout-spacing-xs;
+    }
+}

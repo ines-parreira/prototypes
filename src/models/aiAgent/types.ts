@@ -74,14 +74,3 @@ type EmailIntegration = {
     id: number
     email: string
 }
-
-export type FormValues = {
-    ticketSampleRate: number
-    silentHandover: boolean
-    monitoredEmailIntegrations: {id: number; email: string}[]
-    tags: Tag[]
-    excludedTopics: string[]
-    signature: string
-    toneOfVoice: string
-    helpCenter: {id: number; locale: string; subdomain: string} | null
-}

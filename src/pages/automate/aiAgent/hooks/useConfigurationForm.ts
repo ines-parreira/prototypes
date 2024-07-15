@@ -1,5 +1,5 @@
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import {
     DEFAULT_FORM_VALUES,
     EXCLUDED_TOPIC_MAX_LENGTH,
@@ -19,6 +19,10 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
     )
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
+
+    useEffect(() => {
+        setFormValues(defaultValues)
+    }, [defaultValues])
 
     const resetForm = useCallback(() => {
         setFormValues(defaultValues)
@@ -52,7 +56,8 @@ export const useConfigurationForm = (initValues?: Partial<FormValues>) => {
 }
 
 export const validateConfigurationFormValues = (
-    formValues: FormValues
+    formValues: FormValues,
+    publicUrls: string[] | null
 ): ValidFormValues => {
     if (formValues.signature !== null) {
         if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
@@ -60,10 +65,10 @@ export const validateConfigurationFormValues = (
                 `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`
             )
         }
+    }
 
-        if (formValues.signature.length === 0) {
-            throw new Error('Signature can not be empty')
-        }
+    if (formValues.signature === null || formValues.signature.length === 0) {
+        throw new Error('Signature can not be empty')
     }
 
     if (
@@ -124,13 +129,15 @@ export const validateConfigurationFormValues = (
 
     if (
         formValues.helpCenterId === null &&
-        (formValues.publicURLs === null || formValues.publicURLs.length === 0)
+        (publicUrls === null || publicUrls.length === 0)
     ) {
         throw new Error('Select a Help Center or add at least one public URL')
     }
 
     return {
         ...formValues,
+        // Need to explicitly set these fields to non-null
+        signature: formValues.signature,
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations,
     }
 }

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 import {List} from 'immutable'
 import {isAxiosError} from 'axios'
 import _get from 'lodash/get'
@@ -172,11 +172,12 @@ export const EditAiAgentSettingsForm = ({
     const latestSampleRateRef = useRef(initialSampleRatePercent)
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
+    const [publicUrls, setPublicUrls] = useState<string[]>([])
 
     // Public URLS are not part of the form values, but we need to update the form values when the public URLs change
     useEffect(() => {
         if (publicURLs) {
-            updateValue('publicURLs', publicURLs)
+            setPublicUrls(publicURLs)
         }
     }, [publicURLs, updateValue])
 
@@ -215,7 +216,10 @@ export const EditAiAgentSettingsForm = ({
     const handleOnSave = async () => {
         let validFormValues: FormValues
         try {
-            validFormValues = validateConfigurationFormValues(formValues)
+            validFormValues = validateConfigurationFormValues(
+                formValues,
+                publicUrls
+            )
         } catch (error) {
             if (error instanceof Error) {
                 void dispatch(
@@ -324,7 +328,7 @@ export const EditAiAgentSettingsForm = ({
 
     const handlePublicURLsChange = useCallback(
         (publicURLs: string[]) => {
-            updateValue('publicURLs', publicURLs)
+            setPublicUrls(publicURLs)
 
             // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
             if (
@@ -334,7 +338,7 @@ export const EditAiAgentSettingsForm = ({
                 void deactivateAiAgent()
             }
         },
-        [updateValue, storeConfiguration.helpCenterId, deactivateAiAgent]
+        [storeConfiguration.helpCenterId, deactivateAiAgent]
     )
     const isAIAgentToggled = isAiAgentEnabled(
         formValues.deactivatedDatetime !== undefined

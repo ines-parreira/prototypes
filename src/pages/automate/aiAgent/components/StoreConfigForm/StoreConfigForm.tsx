@@ -3,78 +3,66 @@ import React, {
     useCallback,
     useEffect,
     useMemo,
-    useRef,
     useState,
 } from 'react'
-import {List} from 'immutable'
+import {useId} from '@floating-ui/react'
 import {isAxiosError} from 'axios'
-import {Label} from '@gorgias/ui-kit'
-
-import _get from 'lodash/get'
-
-import {useQueryClient} from '@tanstack/react-query'
 import {Link} from 'react-router-dom'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import _get from 'lodash/get'
+import {List} from 'immutable'
+import {Label} from '@gorgias/ui-kit'
+import {reportError} from 'utils/errors'
+import {StoreConfiguration, Tag} from 'models/aiAgent/types'
 import {Value} from 'pages/common/forms/SelectField/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import ToggleInput from '../../common/forms/ToggleInput'
-import useId from '../../../hooks/useId'
-import useAppSelector from '../../../hooks/useAppSelector'
-import {
-    CreateStoreConfigurationPayload,
-    StoreConfiguration,
-    Tag,
-} from '../../../models/aiAgent/types'
-import Button from '../../common/components/button/Button'
-import {getHelpCenterFAQList} from '../../../state/entities/helpCenter/helpCenters'
-import {getIntegrationsByTypes} from '../../../state/integrations/selectors'
-import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
-import {EmailIntegration} from '../../../models/integration/types'
-import SelectField from '../../common/forms/SelectField/SelectField'
-import ListField from '../../common/forms/ListField'
-import UnsavedChangesPrompt from '../../common/components/UnsavedChangesPrompt'
+import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import {getIntegrationsByTypes} from 'state/integrations/selectors'
+
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
-} from '../common/components/HelpCenterSelect'
-import TextArea from '../../common/forms/TextArea'
-import {
-    storeConfigurationKeys,
-    useCreateStoreConfigurationPure,
-} from '../../../models/aiAgent/queries'
-import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
-import useAppDispatch from '../../../hooks/useAppDispatch'
-import css from './AiAgentStoreView.less'
-import {
-    MAX_EXCLUDED_TOPICS,
-    EXCLUDED_TOPIC_MAX_LENGTH,
-    SIGNATURE_MAX_LENGTH,
-    DEFAULT_AI_AGENT_ENABLED_RATE,
-    ToneOfVoice,
-    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
-} from './constants'
-import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
-import {FormValues, ValidFormValues} from './types'
-import {filterNonNull, isAiAgentEnabled, isHandoffEnabled} from './util'
-import {
-    BEGINNER_COVERAGE_RATE,
-    LevelOfCoverage,
-} from './components/LevelOfCoverage/LevelOfCoverage'
-import {AIAgentIntroduction} from './components/AIAgentIntroduction/AIAgentIntroduction'
-import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
-import {PublicSourcesSection} from './components/PublicSourcesSection/PublicSourcesSection'
-import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
+} from 'pages/automate/common/components/HelpCenterSelect'
+import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
+import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
+import ListField from 'pages/common/forms/ListField'
+import SelectField from 'pages/common/forms/SelectField/SelectField'
+import ToggleInput from 'pages/common/forms/ToggleInput'
+import {NotificationStatus} from 'state/notifications/types'
+import {notify} from 'state/notifications/actions'
+import useAppDispatch from 'hooks/useAppDispatch'
+import Button from 'pages/common/components/button/Button'
+import TextArea from 'pages/common/forms/TextArea'
+import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
-} from './hooks/useConfigurationForm'
-import {usePublicResources} from './hooks/usePublicResources'
-import TagList from './components/TicketTag/TagList'
+} from '../../hooks/useConfigurationForm'
+import {
+    ToneOfVoice,
+    CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
+    SIGNATURE_MAX_LENGTH,
+    EXCLUDED_TOPIC_MAX_LENGTH,
+    MAX_EXCLUDED_TOPICS,
+} from '../../constants'
+import {useAiAgentHelpCenter} from '../../hooks/useAiAgentHelpCenter'
+import {usePublicResources} from '../../hooks/usePublicResources'
+import {FormValues, ValidFormValues} from '../../types'
+import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
+import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
+import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
+import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection'
+import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
+import TagList from '../TicketTag/TagList'
+
+import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
+import css from './StoreConfigForm.less'
+import {
+    getFormValuesFromStoreConfiguration,
+    getStoreConfigurationFromFormValues,
+} from './StoreConfigForm.utils'
 
 const INITIAL_FORM_VALUES = {
     deactivatedDatetime: new Date().toISOString(),
-    ticketSampleRate: BEGINNER_COVERAGE_RATE,
     silentHandover: false,
     monitoredEmailIntegrations: [],
     tags: [],
@@ -85,67 +73,28 @@ const INITIAL_FORM_VALUES = {
         "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
     helpCenter: null,
 }
-const createStoreConfigurationFromFormValues = (
-    storeName: string,
-    formValues: ValidFormValues
-): CreateStoreConfigurationPayload => {
-    const {
-        helpCenterId,
-        ticketSampleRate,
-        deactivatedDatetime,
-        monitoredEmailIntegrations,
-        ...restOfFormValues
-    } = formValues
 
-    const monitoredEmailIntegrationDetails = {
-        monitoredEmailIntegrations,
-    }
-
-    const ticketSampleRateDetails = {
-        ticketSampleRate: ticketSampleRate!,
-    }
-
-    const dirtyFormValues = filterNonNull(restOfFormValues)
-
-    const signature =
-        formValues.signature === null
-            ? INITIAL_FORM_VALUES.signature
-            : formValues.signature
-
-    return {
-        storeName,
-        ...ticketSampleRateDetails,
-        ...monitoredEmailIntegrationDetails,
-        ...dirtyFormValues,
-        deactivatedDatetime: deactivatedDatetime as string | null,
-        customToneOfVoiceGuidance:
-            formValues.toneOfVoice === ToneOfVoice.Custom
-                ? formValues.customToneOfVoiceGuidance
-                : null,
-        signature,
-        helpCenterId,
-    }
-}
-type CreateAiAgentSettingsFormProps = {
+type Props = {
     shopName: string
     accountDomain: string
+    storeConfiguration?: StoreConfiguration
 }
 
-export const CreateAiAgentSettingsForm = ({
+export const StoreConfigForm = ({
     shopName,
     accountDomain,
-}: CreateAiAgentSettingsFormProps) => {
-    const dispatch = useAppDispatch()
-    const queryClient = useQueryClient()
-
-    /**
-     * Global state retrieval
-     */
+    storeConfiguration,
+}: Props) => {
     const faqHelpCenters = useAppSelector(getHelpCenterFAQList)
+    const dispatch = useAppDispatch()
+    const isCreate = storeConfiguration === undefined
 
-    const emailIntegrations = useAppSelector(
-        getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
-    ) as EmailIntegration[]
+    // because this selector is a function which return function we need to memoized it before send to reselect
+    const selector = useMemo(
+        () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
+        []
+    )
+    const emailIntegrations = useAppSelector(selector)
     const emailItems = useMemo(() => {
         return emailIntegrations.map((integration) => ({
             email: integration.meta.address,
@@ -153,32 +102,67 @@ export const CreateAiAgentSettingsForm = ({
         }))
     }, [emailIntegrations])
 
-    const {mutateAsync: createStoreConfiguration, isLoading: isCreateLoading} =
-        useCreateStoreConfigurationPure()
-    /**
-     * Form states and handlers
-     */
+    const defaultFormValues: Partial<FormValues> = useMemo(() => {
+        const initialHelpCenter = faqHelpCenters[0]
+        const initialEmail = emailItems[0]
 
-    const defaultFormValues: Partial<FormValues> = useMemo(
-        () => ({
-            ticketSampleRate: INITIAL_FORM_VALUES.ticketSampleRate,
-        }),
-        []
-    )
+        return storeConfiguration
+            ? getFormValuesFromStoreConfiguration(storeConfiguration)
+            : {
+                  ...INITIAL_FORM_VALUES,
+                  monitoredEmailIntegrations: [initialEmail],
+                  helpCenterId: initialHelpCenter.id,
+              }
+    }, [emailItems, faqHelpCenters, storeConfiguration])
 
     const {formValues, isFormDirty, resetForm, updateValue} =
         useConfigurationForm(defaultFormValues)
-    const [publicURLs, setPublicURLs] = useState<string[]>([])
-    const latestSampleRateRef = useRef(DEFAULT_AI_AGENT_ENABLED_RATE)
+    const [publicUrls, setPublicUrls] = useState<string[]>([])
+    const {isLoading, createStoreConfiguration, upsertStoreConfiguration} =
+        useStoreConfigurationMutation({shopName, accountDomain})
     const toggleAiAgentId = `toggle-ai-agent-${useId()}`
     const toggleHandoffId = `toggle-handoff-${useId()}`
+
+    const deactivateAiAgent = useCallback(async () => {
+        if (isCreate) return
+
+        const deactivatedDatetime = new Date().toISOString()
+        updateValue('deactivatedDatetime', deactivatedDatetime)
+        try {
+            await upsertStoreConfiguration({
+                ...storeConfiguration,
+                deactivatedDatetime,
+            })
+            void dispatch(
+                notify({
+                    message:
+                        'AI Agent has been disabled, because no Knowledge source is connected.',
+                    status: NotificationStatus.Warning,
+                })
+            )
+        } catch (error) {
+            // nothing to notify here for the user as we do silent disable AI Agent
+            reportError(error, {
+                tags: {team: AI_AGENT_SENTRY_TEAM},
+                extra: {
+                    context: 'Error during disabling AI Agent',
+                },
+            })
+        }
+    }, [
+        isCreate,
+        updateValue,
+        upsertStoreConfiguration,
+        storeConfiguration,
+        dispatch,
+    ])
 
     const handleOnSave = async () => {
         let validFormValues: ValidFormValues
         try {
             validFormValues = validateConfigurationFormValues(
                 formValues,
-                publicURLs
+                publicUrls
             )
         } catch (error) {
             if (error instanceof Error) {
@@ -195,47 +179,48 @@ export const CreateAiAgentSettingsForm = ({
             return
         }
 
-        const configurationToSubmit = createStoreConfigurationFromFormValues(
+        const configurationToSubmit = getStoreConfigurationFromFormValues(
             shopName,
             validFormValues
         )
 
-        await createStoreConfiguration([accountDomain, configurationToSubmit], {
-            onSuccess: () => {
-                void queryClient.invalidateQueries({
-                    queryKey: storeConfigurationKeys.detail(shopName),
+        try {
+            if (isCreate) {
+                await createStoreConfiguration(configurationToSubmit)
+            } else {
+                await upsertStoreConfiguration({
+                    ...storeConfiguration,
+                    ...configurationToSubmit,
                 })
-
+            }
+            void dispatch(
+                notify({
+                    message: 'AI Agent configuration saved!',
+                    status: NotificationStatus.Success,
+                })
+            )
+        } catch (error) {
+            if (
+                isAxiosError(error) &&
+                _get(error, 'response.data.message') ===
+                    'Email address already used by AI Agent on a different store.'
+            ) {
                 void dispatch(
                     notify({
-                        message: 'AI Agent configuration saved!',
-                        status: NotificationStatus.Success,
+                        message:
+                            'Email address already used by AI Agent on a different store.',
+                        status: NotificationStatus.Error,
                     })
                 )
-            },
-            onError: (error) => {
-                if (
-                    isAxiosError(error) &&
-                    _get(error, 'response.data.message') ===
-                        'Email address already used by AI Agent on a different store.'
-                ) {
-                    void dispatch(
-                        notify({
-                            message:
-                                'Email address already used by AI Agent on a different store.',
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                } else {
-                    void dispatch(
-                        notify({
-                            message: 'Failed to save AI Agent configuration',
-                            status: NotificationStatus.Error,
-                        })
-                    )
-                }
-            },
-        })
+            } else {
+                void dispatch(
+                    notify({
+                        message: 'Failed to save AI Agent configuration',
+                        status: NotificationStatus.Error,
+                    })
+                )
+            }
+        }
     }
 
     const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
@@ -295,9 +280,6 @@ export const CreateAiAgentSettingsForm = ({
             : INITIAL_FORM_VALUES.silentHandover
     )
 
-    const isSkipSampleRateEnabled: boolean | undefined =
-        useFlags()[FeatureFlagKey.AiAgentSkipSampleRate]
-
     const isCustomToneOfVoiceSelected =
         formValues.toneOfVoice === ToneOfVoice.Custom
 
@@ -306,9 +288,25 @@ export const CreateAiAgentSettingsForm = ({
         helpCenterType: 'snippet',
     })
 
-    const handlePublicURLsChange = useCallback((publicURLs: string[]) => {
-        setPublicURLs(publicURLs)
-    }, [])
+    const handlePublicURLsChange = useCallback(
+        (publicURLs: string[]) => {
+            setPublicUrls(publicURLs)
+
+            // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
+            if (
+                publicURLs.length === 0 &&
+                storeConfiguration &&
+                storeConfiguration.helpCenterId === null
+            ) {
+                void deactivateAiAgent()
+            }
+        },
+        [deactivateAiAgent, storeConfiguration]
+    )
+
+    const onSubmit = () => {
+        void handleOnSave()
+    }
 
     return (
         <>
@@ -319,7 +317,7 @@ export const CreateAiAgentSettingsForm = ({
                 shouldRedirectAfterSave={true}
             />
 
-            <div className={css.automateView}>
+            <form onSubmit={onSubmit} className={css.automateView}>
                 <AIAgentIntroduction />
                 <section>
                     <h2 className={css.sectionHeader}>General settings</h2>
@@ -342,20 +340,6 @@ export const CreateAiAgentSettingsForm = ({
                             Enable AI Agent for email
                         </ToggleInput>
                     </div>
-
-                    {isSkipSampleRateEnabled ? null : (
-                        <LevelOfCoverage
-                            coverageRate={
-                                formValues.ticketSampleRate !== null
-                                    ? formValues.ticketSampleRate
-                                    : BEGINNER_COVERAGE_RATE
-                            }
-                            onCoverageRateChange={(value: number) => {
-                                latestSampleRateRef.current = value
-                                updateValue('ticketSampleRate', value)
-                            }}
-                        />
-                    )}
 
                     <div className={css.formGroup}>
                         <Label
@@ -443,12 +427,11 @@ export const CreateAiAgentSettingsForm = ({
 
                 <ConfigurationSection
                     title="Knowledge"
+                    isRequired
                     subtitle="Select a Help Center or add at least one URL in order to enable AI Agent."
                 >
                     <div className={css.formGroup}>
-                        <Label isRequired={true} className={css.label}>
-                            Help Center
-                        </Label>
+                        <Label className={css.label}>Help Center</Label>
                         <HelpCenterSelect
                             helpCenter={selectedHelpCenter}
                             setHelpCenterId={setHelpCenterId}
@@ -643,13 +626,13 @@ export const CreateAiAgentSettingsForm = ({
                 <section>
                     <Button
                         onClick={handleOnSave}
-                        isDisabled={isCreateLoading || !isFormDirty}
+                        isDisabled={isLoading || (!isFormDirty && !isCreate)}
                         className="mb-3"
                     >
                         Save Changes
                     </Button>
                 </section>
-            </div>
+            </form>
         </>
     )
 }
