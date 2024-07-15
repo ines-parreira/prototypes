@@ -336,13 +336,10 @@ export default function reducer(
         }
 
         case constants.FETCH_LIST_VIEW_SUCCESS: {
-            const payload = action.data
+            const meta = action.fetched?.meta
 
             return state
-                .setIn(
-                    ['_internal', 'navigation'],
-                    fromJS((payload as {meta: Record<string, unknown>}).meta)
-                )
+                .setIn(['_internal', 'navigation'], fromJS(meta))
                 .setIn(['_internal', 'loading', 'fetchList'], false)
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
         }

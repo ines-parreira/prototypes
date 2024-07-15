@@ -2,6 +2,7 @@ import {render, screen} from '@testing-library/react'
 import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
 import {ReactComponentElement} from 'react'
+import {defaultTicketView} from 'config/views'
 import {TicketHighlights} from 'models/search/types'
 
 import {isImmutable} from 'common/utils'
@@ -42,10 +43,7 @@ describe('Config: views', () => {
         const excerpt = 'asd'
         const messages_count = 4
 
-        const withHighlightView: Record<'name' | 'cell', unknown> | undefined =
-            (
-                viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
-            ).find((view) => view.name === EntityType.TicketWithHighlight)
+        const withHighlightView = defaultTicketView
 
         it('should render the ticket details without highlights', () => {
             const ticketWithHighlight = fromJS({
@@ -56,15 +54,11 @@ describe('Config: views', () => {
                 highlight: {},
             })
 
-            if (withHighlightView) {
-                const cell = withHighlightView.cell as (
-                    fieldName: ViewField,
-                    item: Map<any, any>
-                ) => ReactComponentElement<any>
-                render(
-                    cell(ViewField.DetailsWithHighlights, ticketWithHighlight)
-                )
-            }
+            const cell = withHighlightView.cell as (
+                fieldName: ViewField,
+                item: Map<any, any>
+            ) => ReactComponentElement<any>
+            render(cell(ViewField.Details, ticketWithHighlight))
 
             expect(
                 screen.getByText(`(${messages_count}) ${subject}`)
@@ -86,9 +80,7 @@ describe('Config: views', () => {
                     fieldName: ViewField,
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
-                render(
-                    cell(ViewField.DetailsWithHighlights, ticketWithHighlight)
-                )
+                render(cell(ViewField.Details, ticketWithHighlight))
             }
 
             expect(screen.getByText(`${subject}`)).toBeInTheDocument()
@@ -109,7 +101,7 @@ describe('Config: views', () => {
                 messages_count,
                 subject,
                 excerpt,
-                highlights: fromJS(highlights),
+                highlights: highlights,
             })
 
             if (withHighlightView) {
@@ -117,9 +109,7 @@ describe('Config: views', () => {
                     fieldName: ViewField,
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
-                render(
-                    cell(ViewField.DetailsWithHighlights, ticketWithHighlight)
-                )
+                render(cell(ViewField.Details, ticketWithHighlight))
             }
 
             expect(screen.getByText(highlightedSubject)).toBeInTheDocument()
@@ -175,13 +165,11 @@ describe('Config: views', () => {
             const viewConfig = fromJS(config) as Map<any, any>
             const defaultFilters = 'isEmpty(ticket.created_datetime)'
             const fixtures = {
-                [EntityType.Ticket]: ticketFixtures.ticket,
-                [EntityType.TicketWithHighlight]: {
+                [EntityType.Ticket]: {
                     ...ticketFixtures.ticket,
                     highlights: {},
                 },
-                [EntityType.Customer]: customer,
-                [EntityType.CustomerWithHighlight]: {
+                [EntityType.Customer]: {
                     ...customer,
                     highlights: {},
                 },
@@ -233,15 +221,9 @@ describe('Config: views', () => {
 
                 const fieldNameToType = {
                     [EntityType.Ticket]: nonStringTicketFields,
-                    [EntityType.TicketWithHighlight]: nonStringTicketFields,
                     [EntityType.Customer]: {
-                        name: 'string',
-                        email: 'string',
-                        created: 'string',
-                    },
-                    [EntityType.CustomerWithHighlight]: {
-                        name_with_highlight: 'object',
-                        email_with_highlight: 'object',
+                        name: 'object',
+                        email: 'object',
                         created: 'string',
                     },
                 }
@@ -436,19 +418,15 @@ describe('Config: views', () => {
                 | Record<'name' | 'cell', unknown>
                 | undefined = (
                 viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
-            ).find((view) => view.name === EntityType.CustomerWithHighlight)
+            ).find((view) => view.name === EntityType.Customer)
 
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
-                render(
-                    cell(ViewField.NameWithHighlight, customerWithHighlights)
-                )
-                render(
-                    cell(ViewField.EmailWithHighlight, customerWithHighlights)
-                )
+                render(cell(ViewField.Name, customerWithHighlights))
+                render(cell(ViewField.Email, customerWithHighlights))
             }
 
             expect(screen.getByText(name)).toBeInTheDocument()
@@ -470,16 +448,14 @@ describe('Config: views', () => {
                 | Record<'name' | 'cell', unknown>
                 | undefined = (
                 viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
-            ).find((view) => view.name === EntityType.CustomerWithHighlight)
+            ).find((view) => view.name === EntityType.Customer)
 
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
-                render(
-                    cell(ViewField.NameWithHighlight, customerWithHighlights)
-                )
+                render(cell(ViewField.Name, customerWithHighlights))
             }
 
             expect(screen.getByText(`Customer #${id}`)).toBeInTheDocument()
@@ -503,7 +479,7 @@ describe('Config: views', () => {
                 | Record<'name' | 'cell', unknown>
                 | undefined = (
                 viewsConfig.views.toJS() as Record<'name' | 'cell', unknown>[]
-            ).find((view) => view.name === EntityType.CustomerWithHighlight)
+            ).find((view) => view.name === EntityType.Customer)
 
             if (withHighlightView) {
                 customerWithHighlights
@@ -512,12 +488,8 @@ describe('Config: views', () => {
                     fieldName: ViewField,
                     item: Map<any, any>
                 ) => ReactComponentElement<any>
-                render(
-                    cell(ViewField.NameWithHighlight, customerWithHighlights)
-                )
-                render(
-                    cell(ViewField.EmailWithHighlight, customerWithHighlights)
-                )
+                render(cell(ViewField.Name, customerWithHighlights))
+                render(cell(ViewField.Email, customerWithHighlights))
             }
 
             expect(screen.getByText(name)).toBeInTheDocument()

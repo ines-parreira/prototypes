@@ -2,12 +2,13 @@ import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {TicketStatus} from 'business/types/ticket'
-import reducer, {initialState} from '../reducers'
-import * as newMessageTypes from '../../newMessage/constants'
-import * as viewTypes from '../../views/constants'
-import * as ticketTypes from '../../ticket/constants'
-import * as types from '../constants'
-import {GorgiasAction} from '../../types'
+import {ViewType} from 'models/view/types'
+import reducer, {initialState} from 'state/customers/reducers'
+import * as newMessageTypes from 'state/newMessage/constants'
+import * as viewTypes from 'state/views/constants'
+import * as ticketTypes from 'state/ticket/constants'
+import * as types from 'state/customers/constants'
+import {GorgiasAction} from 'state/types'
 
 describe('customers reducers', () => {
     beforeEach(() => {
@@ -21,20 +22,6 @@ describe('customers reducers', () => {
     })
 
     it('fetch list', () => {
-        const resp = {
-            data: [
-                {
-                    name: 'Alex',
-                },
-                {
-                    name: 'Romain',
-                },
-            ],
-            meta: {
-                nb_pages: 2,
-                page: 1,
-            },
-        }
         const respWithHighlight = {
             data: [
                 {
@@ -50,37 +37,26 @@ describe('customers reducers', () => {
                     },
                 },
             ],
-            meta: {
-                nb_pages: 2,
-                page: 1,
-            },
         }
 
         expect(
             reducer(initialState, {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                viewType: 'customer-list',
-                data: resp,
+                viewType: ViewType.CustomerList,
+                fetched: respWithHighlight,
             })
-        ).toMatchSnapshot()
-
-        expect(
-            reducer(initialState, {
-                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                viewType: 'customer-list',
-                data: respWithHighlight,
-                withHighlight: true,
-            })
-        ).toMatchSnapshot()
+        ).toEqualImmutable(
+            initialState.set('items', fromJS(respWithHighlight.data))
+        )
 
         // wrong view type
         expect(
             reducer(initialState, {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                viewType: 'unknown-list',
-                data: resp,
+                viewType: ViewType.TicketList,
+                data: respWithHighlight,
             })
-        ).toMatchSnapshot()
+        ).toEqualImmutable(initialState)
     })
 
     it('fetch customer', () => {
@@ -322,11 +298,47 @@ describe('customers reducers', () => {
                 }),
                 {
                     type: viewTypes.BULK_DELETE_SUCCESS,
-                    viewType: 'customer-list',
+                    viewType: ViewType.CustomerList,
                     ids: [1, 2],
                 }
             )
-        ).toMatchSnapshot()
+        ).toEqualImmutable(
+            initialState.mergeDeep({
+                items: [
+                    {
+                        id: 3,
+                        name: 'Julien',
+                    },
+                ],
+            })
+        )
+    })
+
+    it('should ignore payloads with non ticket viewType on bulk delete', () => {
+        const state = initialState.mergeDeep({
+            items: [
+                {
+                    id: 1,
+                    name: 'Alex',
+                },
+                {
+                    id: 2,
+                    name: 'Romain',
+                },
+                {
+                    id: 3,
+                    name: 'Julien',
+                },
+            ],
+        })
+
+        expect(
+            reducer(state, {
+                type: viewTypes.BULK_DELETE_SUCCESS,
+                viewType: ViewType.TicketList,
+                ids: [1, 2],
+            })
+        ).toEqualImmutable(state)
     })
 
     it('merge customers', () => {

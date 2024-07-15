@@ -18,9 +18,7 @@ export enum ViewType {
 
 export enum EntityType {
     Ticket = 'ticket',
-    TicketWithHighlight = 'ticket-with-highlight',
     Customer = 'customer',
-    CustomerWithHighlight = 'customer-with-highlight',
 }
 
 export enum ViewField {
@@ -30,7 +28,6 @@ export enum ViewField {
     Created = 'created',
     Updated = 'updated',
     Details = 'details',
-    DetailsWithHighlights = 'details_with_highlights',
     Tags = 'tags',
     Customer = 'customer',
     LastMessage = 'last_message',
@@ -44,8 +41,6 @@ export enum ViewField {
     LastReceivedMessage = 'last_received_message',
     Closed = 'closed',
     Snooze = 'snooze',
-    NameWithHighlight = 'name_with_highlight',
-    EmailWithHighlight = 'email_with_highlight',
 }
 
 export enum ViewVisibility {

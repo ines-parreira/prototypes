@@ -27,8 +27,8 @@ import {
 } from 'state/views/selectors'
 import {getPluralObjectName} from 'utils'
 
-import ViewNavbarViewEditor from './ViewNavbarViewEditor'
-import css from './ViewNavbarView.less'
+import ViewNavbarViewEditor from 'pages/common/components/ViewNavbarView/ViewNavbarViewEditor'
+import css from 'pages/common/components/ViewNavbarView/ViewNavbarView.less'
 
 const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
@@ -165,7 +165,7 @@ class ViewNavbarView extends Component<Props, State> {
                         {/*
                         TODO(customers-migration): remove this condition when we finished to migrate views
                         */}
-                        {viewType !== 'customer-list' ? (
+                        {viewType !== ViewType.CustomerList ? (
                             <span
                                 onClick={this._toggleHasEditMode}
                                 className={settingButtonClass}

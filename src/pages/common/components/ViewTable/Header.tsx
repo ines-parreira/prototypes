@@ -5,7 +5,6 @@ import {Map} from 'immutable'
 import classnames from 'classnames'
 import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {Tooltip} from '@gorgias/ui-kit'
-import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import {getConfigByName} from 'config/views'
@@ -29,12 +28,12 @@ import {slugify} from 'utils'
 import {systemViewIcons} from 'utils/views'
 
 import {FeatureFlagKey} from 'config/featureFlags'
-import css from './Header.less'
+import css from 'pages/common/components/ViewTable/Header.less'
 
 type OwnProps = {
     isSearch: boolean
     isUpdate: boolean
-    type: string
+    type: EntityType
     viewButtons?: React.ReactNode
 }
 
@@ -75,10 +74,6 @@ export class HeaderContainer extends React.Component<Props, State> {
         return url
     }
 
-    _isAdvancedSearchWithHighlights = () =>
-        this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights] !==
-        false
-
     handleKeyDown = (event: KeyboardEvent) => {
         const {updateView, activeView, isSearch} = this.props
         const {searchTerm} = this.state
@@ -91,8 +86,6 @@ export class HeaderContainer extends React.Component<Props, State> {
             updateView(
                 activeView.merge({
                     search: searchTerm,
-                    [WITH_HIGHLIGHTS_OPTION_KEY]:
-                        this._isAdvancedSearchWithHighlights(),
                     ...(!!this.props.flags?.[
                         FeatureFlagKey.AdvancedSearchSorting
                     ] && {
@@ -155,10 +148,7 @@ export class HeaderContainer extends React.Component<Props, State> {
         const slug = activeView.get('slug') as keyof typeof systemViewIcons
         const shouldDisplaySystemIcon =
             category === ViewCategory.System && !!systemViewIcons[slug]
-        const isEditable = ![
-            EntityType.Customer,
-            EntityType.CustomerWithHighlight,
-        ].includes(type as EntityType)
+        const isEditable = ![EntityType.Customer].includes(type)
 
         return (
             <div className={css.component}>

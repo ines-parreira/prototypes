@@ -1,8 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
-import {ticket} from 'fixtures/ticket'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
-import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import {ViewType} from 'models/view/types'
 
 import {GorgiasAction} from 'state/types'
 import * as viewTypes from 'state/views/constants'
@@ -21,76 +19,38 @@ describe('tickets reducers', () => {
         )
     })
 
-    it('fetch list', () => {
-        const resp = {
-            data: [
-                {
-                    name: 'A ticket',
-                },
-                {
-                    name: 'Another ticket',
-                },
-            ],
-            meta: {
-                nb_pages: 2,
-                page: 1,
-            },
-        }
-
-        expect(
-            reducer(initialState, {
-                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                viewType: 'ticket-list',
-                data: resp,
-            })
-        ).toMatchSnapshot()
-
-        // wrong view type
-        expect(
-            reducer(initialState, {
-                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                viewType: 'unknown-list',
-                data: resp,
-            })
-        ).toMatchSnapshot()
-    })
-
     it('fetch list with highlights', () => {
         const resp = {
             data: [
                 {
-                    type: 'Ticket' as const,
-                    entity: {
-                        name: 'A ticket',
-                        ...ticket,
-                    } as unknown as PickedTicket,
+                    name: 'A ticket',
                     highlights: {},
                 },
                 {
-                    type: 'Ticket' as const,
-                    entity: {name: 'Another ticket'} as unknown as PickedTicket,
+                    name: 'Another ticket',
                     highlights: {},
                 },
             ],
-            meta: {
-                nb_pages: 2,
-                page: 1,
-            },
         }
 
         expect(
             reducer(initialState, {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                viewType: 'ticket-list',
-                data: resp,
+                viewType: ViewType.TicketList,
+                fetched: resp,
+            })
+        ).toEqualImmutable(initialState.set('items', fromJS(resp.data)))
+    })
+
+    it('should ignore payloads with non ticket viewType on fetch list with highlights', () => {
+        expect(
+            reducer(initialState, {
+                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                viewType: ViewType.CustomerList,
+                data: {},
                 withHighlight: true,
             })
-        ).toEqualImmutable(
-            initialState.set(
-                'items',
-                fromJS(resp.data.map(mergeEntitiesWithHighlights))
-            )
-        )
+        ).toEqualImmutable(initialState)
     })
 
     it('bulk delete', () => {
@@ -112,10 +72,36 @@ describe('tickets reducers', () => {
         expect(
             reducer(initialState.set('items', fromJS(tickets)), {
                 type: viewTypes.BULK_DELETE_SUCCESS,
-                viewType: 'ticket-list',
+                viewType: ViewType.TicketList,
                 ids: [1, 2],
             })
-        ).toMatchSnapshot()
+        ).toEqualImmutable(initialState.set('items', fromJS([tickets[2]])))
+    })
+
+    it('should ignore payloads with non ticket viewType on bulk delete', () => {
+        const tickets = [
+            {
+                id: 1,
+                name: 'A ticket',
+            },
+            {
+                id: 2,
+                name: 'Another ticket',
+            },
+            {
+                id: 3,
+                name: 'Another nice ticket',
+            },
+        ]
+        const state = initialState.set('items', fromJS(tickets))
+
+        expect(
+            reducer(state, {
+                type: viewTypes.BULK_DELETE_SUCCESS,
+                viewType: ViewType.CustomerList,
+                ids: [1, 2],
+            })
+        ).toEqualImmutable(state)
     })
 
     it('fetch ticket', () => {
@@ -129,21 +115,27 @@ describe('tickets reducers', () => {
                 name: 'Another ticket',
             },
         ]
+        const state = initialState.set('items', fromJS(tickets))
 
         expect(
-            reducer(initialState.set('items', fromJS(tickets)), {
+            reducer(state, {
                 type: ticketTypes.FETCH_TICKET_SUCCESS,
                 ticketId: 2,
             })
-        ).toMatchSnapshot()
+        ).toEqualImmutable(
+            initialState.set(
+                'items',
+                fromJS([tickets[0], {...tickets[1], is_unread: false}])
+            )
+        )
 
         // non existent ticket
         expect(
-            reducer(initialState.set('items', fromJS(tickets)), {
+            reducer(state, {
                 type: ticketTypes.FETCH_TICKET_SUCCESS,
                 ticketId: 14,
             })
-        ).toMatchSnapshot()
+        ).toEqualImmutable(state)
     })
 
     it('should update cursor', () => {

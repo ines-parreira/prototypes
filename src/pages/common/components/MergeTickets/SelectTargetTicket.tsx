@@ -112,7 +112,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
                         view={baseView.set('dirty', true)}
                         config={config}
                         isLoading={() => this.state.listIsLoading}
-                        type="ticket"
+                        type={EntityType.Ticket}
                         items={tickets}
                         fields={fields as List<Map<any, any>>}
                         selectable={false}

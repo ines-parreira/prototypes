@@ -1,30 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`customers reducers bulk delete 1`] = `
-Immutable.Map {
-  "active": Immutable.Map {},
-  "items": Immutable.List [
-    Immutable.Map {
-      "id": 3,
-      "name": "Julien",
-    },
-  ],
-  "customerHistory": Immutable.Map {
-    "triedLoading": false,
-    "hasHistory": false,
-    "tickets": Immutable.List [],
-    "events": Immutable.List [],
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "history": false,
-      "active": false,
-      "merge": false,
-    },
-  },
-}
-`;
-
 exports[`customers reducers clear ticket 1`] = `
 {
   "_internal": {
@@ -233,88 +208,6 @@ exports[`customers reducers fetch customer history 4`] = `
     "triedLoading": true,
   },
   "items": [],
-}
-`;
-
-exports[`customers reducers fetch list 1`] = `
-Immutable.Map {
-  "active": Immutable.Map {},
-  "items": Immutable.List [
-    Immutable.Map {
-      "name": "Alex",
-    },
-    Immutable.Map {
-      "name": "Romain",
-    },
-  ],
-  "customerHistory": Immutable.Map {
-    "triedLoading": false,
-    "hasHistory": false,
-    "tickets": Immutable.List [],
-    "events": Immutable.List [],
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "history": false,
-      "active": false,
-      "merge": false,
-    },
-  },
-}
-`;
-
-exports[`customers reducers fetch list 2`] = `
-Immutable.Map {
-  "active": Immutable.Map {},
-  "items": Immutable.List [
-    Immutable.Map {
-      "highlights": Immutable.Map {
-        "id": Immutable.List [
-          "1",
-        ],
-      },
-    },
-    Immutable.Map {
-      "highlights": Immutable.Map {
-        "id": Immutable.List [
-          "2",
-        ],
-      },
-    },
-  ],
-  "customerHistory": Immutable.Map {
-    "triedLoading": false,
-    "hasHistory": false,
-    "tickets": Immutable.List [],
-    "events": Immutable.List [],
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "history": false,
-      "active": false,
-      "merge": false,
-    },
-  },
-}
-`;
-
-exports[`customers reducers fetch list 3`] = `
-Immutable.Map {
-  "active": Immutable.Map {},
-  "items": Immutable.List [],
-  "customerHistory": Immutable.Map {
-    "triedLoading": false,
-    "hasHistory": false,
-    "tickets": Immutable.List [],
-    "events": Immutable.List [],
-  },
-  "_internal": Immutable.Map {
-    "loading": Immutable.Map {
-      "history": false,
-      "active": false,
-      "merge": false,
-    },
-  },
 }
 `;
 

@@ -26,7 +26,7 @@ type Props = {
     fields: List<any>
     shouldRenderShowMoreDropdown: boolean
     isSearch: boolean
-    type: string
+    type: EntityType
 }
 
 const HeaderCell = ({
@@ -58,8 +58,7 @@ const HeaderCell = ({
         () =>
             isAdvancedSearchSortingEnabled &&
             isSearch &&
-            (type === EntityType.Ticket ||
-                type === EntityType.TicketWithHighlight),
+            type === EntityType.Ticket,
         [isAdvancedSearchSortingEnabled, isSearch, type]
     )
 

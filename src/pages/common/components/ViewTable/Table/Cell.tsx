@@ -2,18 +2,18 @@ import React, {Component, ReactNode} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Link} from 'react-router-dom'
+import {EntityType} from 'models/view/types'
 
-import {RenderLabel} from '../../../utils/labels'
+import * as viewsConfig from 'config/views'
 
-import * as viewsConfig from '../../../../../config/views'
-
-import css from '../Table.less'
-import {RootState} from '../../../../../state/types'
+import css from 'pages/common/components/ViewTable/Table.less'
+import {RootState} from 'state/types'
+import {RenderLabel} from 'pages/common/utils/labels'
 
 type OwnProps = {
     field: Map<any, any>
     item: Map<any, any>
-    type: string
+    type: EntityType
     onClick?: (item: Map<any, any>) => void
     itemUrl: Maybe<string>
 }

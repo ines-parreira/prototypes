@@ -2,15 +2,14 @@ import {fromJS, Map, List} from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
 import {Ticket, TicketMessage} from 'models/ticket/types'
+import {ViewType} from 'models/view/types'
 import * as newMessageConstants from 'state/newMessage/constants'
 import * as ticketConstants from 'state/ticket/constants'
 import {GorgiasAction} from 'state/types'
 import * as viewsConstants from 'state/views/constants'
 
-import {Customer} from 'models/customer/types'
 import * as constants from 'state/customers/constants'
 import {CustomersState} from 'state/customers/types'
-import {CustomerHighlights} from 'models/search/types'
 
 export const initialState: CustomersState = fromJS({
     active: {},
@@ -38,30 +37,11 @@ export default function reducer(
 
     switch (action.type) {
         case viewsConstants.FETCH_LIST_VIEW_SUCCESS: {
-            if (action.viewType !== 'customer-list') {
+            if (action.viewType !== ViewType.CustomerList) {
                 return state
             }
 
-            let customerData = action.data as {data: unknown}
-            if (action.withHighlight === true) {
-                customerData = {
-                    data: (
-                        action as {
-                            data: {
-                                data: {
-                                    entity: Customer[]
-                                    highlights: CustomerHighlights
-                                }[]
-                            }
-                        }
-                    ).data.data.map(({entity, highlights}) => ({
-                        ...entity,
-                        highlights,
-                    })),
-                }
-            }
-
-            return state.set('items', fromJS(customerData.data))
+            return state.set('items', fromJS(action.fetched?.data))
         }
 
         case constants.FETCH_CUSTOMER_START: {
@@ -217,7 +197,7 @@ export default function reducer(
         }
 
         case constants.BULK_DELETE_SUCCESS: {
-            if (action.viewType !== 'customer-list') {
+            if (action.viewType !== ViewType.CustomerList) {
                 return state
             }
 

@@ -6,6 +6,7 @@ import {UserSettingType} from 'config/types/user'
 import * as viewsConfig from 'config/views'
 import {OrderDirection} from 'models/api/types'
 import {
+    EntityType,
     View,
     ViewCategory,
     ViewCategoryNavbar,
@@ -366,7 +367,7 @@ export const getViewIdToDisplay =
 /**
  * Return view of asked id, if id is 'new' it generates a new view according to config
  */
-export const getView = (id: string, configName: Maybe<string> = '') =>
+export const getView = (id: string, configName: Maybe<EntityType> = null) =>
     createImmutableSelector(getViews, (views) => {
         if (id === 'new' || !id) {
             if (!configName) {
@@ -393,7 +394,7 @@ export const getView = (id: string, configName: Maybe<string> = '') =>
     })
 
 export const makeGetView =
-    (state: RootState) => (id: string, configName?: Maybe<string>) =>
+    (state: RootState) => (id: string, configName?: Maybe<EntityType>) =>
         getView(id, configName)(state)
 
 /**

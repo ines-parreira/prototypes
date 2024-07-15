@@ -42,7 +42,7 @@ type OwnProps = {
     selectable?: boolean
     navigation: Map<any, any>
     selectedItemsIds?: List<any>
-    type: string
+    type: EntityType
     items: List<any>
     fields: List<any>
     ActionsComponent?: Maybe<React.ComponentType>
@@ -309,8 +309,7 @@ const TableContainer = ({
                     {(!!navigation.get('next_items') ||
                         !!navigation.get('prev_items')) &&
                     areAllSelected &&
-                    (type === EntityType.Ticket ||
-                        type === EntityType.TicketWithHighlight) ? (
+                    type === EntityType.Ticket ? (
                         <ViewSelection
                             colSize={fields.size + 1}
                             selectedCount={items.size}

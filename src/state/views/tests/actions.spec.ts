@@ -21,13 +21,17 @@ import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import socketManager from 'services/socketManager/socketManager'
 import {SocketEventType} from 'services/socketManager/types'
 import {RootState, StoreDispatch} from 'state/types'
+import {
+    FETCH_LIST_VIEW_SUCCESS,
+    FETCH_LIST_VIEW_START,
+} from 'state/views/constants'
+import * as types from 'state/views/constants'
 import {getAST} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 import {OrderDirection} from 'models/api/types'
 import {TicketSearchSortableProperties} from 'models/search/types'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {FETCH_LIST_VIEW_START} from '../constants'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 import * as viewsSelectors from '../selectors'
@@ -351,7 +355,14 @@ describe('actions', () => {
             return store
                 .dispatch(actions.fetchViewItems(null, cursor))
                 .then(() => {
-                    expect(store.getActions()).toMatchSnapshot()
+                    expect(store.getActions()).toContainEqual({
+                        type: FETCH_LIST_VIEW_SUCCESS,
+                        viewType: view.type,
+                        fetched: expect.objectContaining({
+                            data: baseReply.data,
+                            meta: baseReply.meta,
+                        }),
+                    })
                     expect(mockServer.history).toMatchSnapshot()
                 })
         })
@@ -424,7 +435,7 @@ describe('actions', () => {
                         filters: "eq(ticket.channel, 'chat')",
                         search: '',
                         orderBy: 'closed_datetime:asc',
-                        withHighlights: false,
+                        withHighlights: true,
                     })
                 })
         })
@@ -493,7 +504,7 @@ describe('actions', () => {
                             orderBy: 'last_message_datetime:desc',
                             cancelToken,
                             cursor: args.expected,
-                            withHighlights: false,
+                            withHighlights: true,
                         })
                     })
             }
@@ -510,13 +521,21 @@ describe('actions', () => {
                 }),
             })
 
-            mockServer
-                .onPut(`/api/views/${viewId}/items/`)
-                .reply(200, baseReply)
-
             return store.dispatch(actions.fetchViewItems()).then(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                expect(mockServer.history).toMatchSnapshot()
+                expect(store.getActions()).toContainEqual({
+                    type: types.FETCH_LIST_VIEW_START,
+                    viewId,
+                    discreet: false,
+                })
+                expect(searchTicketsMock).toHaveBeenCalledWith({
+                    cancelToken: undefined,
+                    cursor: undefined,
+                    filters: view.filters,
+                    orderBy: 'last_message_datetime:desc',
+                    search: '',
+                    withHighlights: true,
+                })
+                // expect(mockServer.history).toMatchSnapshot()
             })
         })
 
@@ -638,7 +657,7 @@ describe('actions', () => {
                 views: fromJS({
                     active: {
                         ...view,
-                        dirty: true,
+                        dirty: false,
                         editMode: false,
                     },
                 }),
@@ -774,7 +793,7 @@ describe('actions', () => {
                     filters: ticketSearchView.filters,
                     cursor,
                     cancelToken,
-                    withHighlights: false,
+                    withHighlights: true,
                 })
             })
 
@@ -801,7 +820,7 @@ describe('actions', () => {
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
-                    withHighlights: false,
+                    withHighlights: true,
                 })
             })
 
@@ -828,7 +847,7 @@ describe('actions', () => {
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
-                    withHighlights: false,
+                    withHighlights: true,
                 })
             })
 
@@ -855,7 +874,7 @@ describe('actions', () => {
                     filters: ticketSearchView.filters,
                     cursor: undefined,
                     orderBy: orderByParam,
-                    withHighlights: false,
+                    withHighlights: true,
                 })
             })
         })

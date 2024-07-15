@@ -3,6 +3,7 @@ import _isUndefined from 'lodash/isUndefined'
 import {List} from 'immutable'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import {ViewType} from 'models/view/types'
 
 import * as viewsConfig from 'config/views'
 import client from 'models/api/resources'
@@ -159,7 +160,7 @@ export function bulkDeleteCustomer(ids: List<any>) {
             type: types.BULK_DELETE_START,
         })
 
-        const activeViewType = 'customer-list'
+        const activeViewType = ViewType.CustomerList
         const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
         const notification = dispatch(

@@ -2,19 +2,20 @@ import React, {Component} from 'react'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
+import {EntityType} from 'models/view/types'
 
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {scrollToReactNode} from '../../../utils/keyboard'
+import {scrollToReactNode} from 'pages/common/utils/keyboard'
 
-import css from '../Table.less'
+import css from 'pages/common/components/ViewTable/Table.less'
 
-import * as agentSelectors from '../../../../../state/agents/selectors'
-import * as viewsActions from '../../../../../state/views/actions'
+import * as agentSelectors from 'state/agents/selectors'
+import * as viewsActions from 'state/views/actions'
 
-import * as viewsUtils from '../../../../../state/views/utils'
+import * as viewsUtils from 'state/views/utils'
 
-import {RootState} from '../../../../../state/types'
+import {RootState} from 'state/types'
 
 import Cell from './Cell'
 
@@ -26,7 +27,7 @@ type OwnProps = {
     isSelected: boolean
     hasCursor: boolean
     selectable: boolean | null
-    type: string
+    type: EntityType
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>

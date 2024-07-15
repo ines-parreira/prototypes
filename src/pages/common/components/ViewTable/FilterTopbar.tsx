@@ -347,20 +347,18 @@ export const FilterTopbar = ({
             <CardBody className="filter-topbar-content">
                 {isUpdate && !isSearch && (
                     <div className={css.cardActions}>
-                        {!tickets.isEmpty() &&
-                            (type === EntityType.Ticket ||
-                                type === EntityType.TicketWithHighlight) && (
-                                <Button
-                                    intent="secondary"
-                                    onClick={createExportTicketJob}
-                                    isDisabled={isLaunchingJob}
-                                    title="Export all view tickets"
-                                >
-                                    <ButtonIconLabel icon="file_download">
-                                        Export tickets
-                                    </ButtonIconLabel>
-                                </Button>
-                            )}
+                        {!tickets.isEmpty() && type === EntityType.Ticket && (
+                            <Button
+                                intent="secondary"
+                                onClick={createExportTicketJob}
+                                isDisabled={isLaunchingJob}
+                                title="Export all view tickets"
+                            >
+                                <ButtonIconLabel icon="file_download">
+                                    Export tickets
+                                </ButtonIconLabel>
+                            </Button>
+                        )}
                         <ViewSharingButton view={activeView} />
                     </div>
                 )}

@@ -4,7 +4,7 @@ import _chunk from 'lodash/chunk'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
 import {JOBS_PATH} from 'models/job/resources'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
@@ -32,8 +32,10 @@ import client from 'models/api/resources'
 import {fetchViewsPaginated} from 'models/view/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
+    CustomerWithHighlights,
     SearchEngine,
     SearchType,
+    TicketWithHighlights,
 } from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
@@ -42,16 +44,16 @@ import {searchTickets} from 'models/ticket/resources'
 import {searchCustomers} from 'models/customer/resources'
 import {FeatureFlagKey} from 'config/featureFlags'
 
-import {activeViewUrl} from './utils'
-import * as viewsSelectors from './selectors'
-import * as types from './constants'
+import {activeViewUrl} from 'state/views/utils'
+import * as viewsSelectors from 'state/views/selectors'
+import * as types from 'state/views/constants'
 import {
     FetchViewItemsOptions,
     FieldSearchResult,
     ViewFilter,
     ViewImmutable,
     ViewNavDirection,
-} from './types'
+} from 'state/views/types'
 
 export const setViewActive =
     (view: ViewImmutable) =>
@@ -287,12 +289,12 @@ export function deleteView(view: ViewImmutable) {
         dispatch: StoreDispatch,
         getState: () => RootState
     ): Promise<ReturnType<StoreDispatch>> => {
-        const vType = view.get('type', 'ticket-list') as ViewType
+        const vType: ViewType = view.get('type', ViewType.TicketList)
         const otherViewsOfType = (
             getState().views.get('items', fromJS([])) as List<any>
         ).filter(
             (v: Map<any, any>) =>
-                v.get('type', 'ticket-list') === vType &&
+                v.get('type', ViewType.TicketList) === vType &&
                 v.get('id') !== view.get('id')
         ) as List<any>
 
@@ -411,73 +413,77 @@ export function fetchViewItems(
             discreet: isPolling,
         })
 
-        const isSearchWithHighlight: boolean = activeView.get(
-            WITH_HIGHLIGHTS_OPTION_KEY,
-            false
-        )
-
         const isTicketSearch =
             activeView.get('search') != null &&
             activeViewType === ViewType.TicketList
         const isCustomerSearch =
             activeView.get('search') != null &&
             activeViewType === ViewType.CustomerList
-        const expectSearchWithHighlightsResults =
-            isSearchWithHighlight &&
-            (isTicketSearch || isCustomerSearch || isDirty)
+
+        const nextCursor: Maybe<string> = navigation.get('next_cursor')
+        const prevCursor: Maybe<string> = navigation.get('prev_cursor')
+        const cursorParam =
+            cursor ||
+            (direction === ViewNavDirection.NextView && nextCursor) ||
+            (direction === ViewNavDirection.PrevView && prevCursor) ||
+            undefined
 
         if (isTicketSearch) {
             const isAdvancedSearchSortingEnabled = launchDarklyClient.variation(
                 FeatureFlagKey.AdvancedSearchSorting
             )
-            const nextCursor: Maybe<string> = navigation.get('next_cursor')
-            const prevCursor: Maybe<string> = navigation.get('prev_cursor')
             promise = searchTickets({
                 search: activeView.get('search'),
-                withHighlights: isSearchWithHighlight,
                 filters: activeView.get('filters'),
-                cursor:
-                    cursor ||
-                    (direction === ViewNavDirection.NextView && nextCursor) ||
-                    (direction === ViewNavDirection.PrevView && prevCursor) ||
-                    undefined,
+                cursor: cursorParam,
+                withHighlights: true,
+                cancelToken,
                 ...(isAdvancedSearchSortingEnabled && params),
-                cancelToken,
-            })
+            }).then((resp) => ({
+                ...resp,
+                data: {
+                    ...resp.data,
+                    data: (resp.data?.data as TicketWithHighlights[]).map(
+                        mergeEntitiesWithHighlights
+                    ),
+                },
+            }))
         } else if (isCustomerSearch) {
-            const nextCursor = navigation.get('next_cursor') as Maybe<string>
-            const prevCursor = navigation.get('prev_cursor') as Maybe<string>
             promise = searchCustomers({
-                search: activeView.get('search') as string,
-                withHighlights: isSearchWithHighlight,
+                search: activeView.get('search'),
+                cursor: cursorParam,
                 orderBy: CUSTOMER_SEARCH_ORDERING,
-                cursor:
-                    cursor ||
-                    (direction === ViewNavDirection.NextView && nextCursor) ||
-                    (direction === ViewNavDirection.PrevView && prevCursor) ||
-                    undefined,
+                withHighlights: true,
                 cancelToken,
-            })
+            }).then((resp) => ({
+                ...resp,
+                data: {
+                    ...resp.data,
+                    data: (resp.data?.data as CustomerWithHighlights[]).map(
+                        mergeEntitiesWithHighlights
+                    ),
+                },
+            }))
         } else if (isDirty && activeViewType === ViewType.TicketList) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
-            const cursorParam: string =
-                cursor ||
-                (direction === ViewNavDirection.NextView &&
-                    navigation.get('next_cursor')) ||
-                (direction === ViewNavDirection.PrevView &&
-                    navigation.get('prev_cursor')) ||
-                undefined
-
             promise = searchTickets({
-                cursor: cursorParam,
                 search: activeView.get('search') || '',
                 filters: activeView.get('filters'),
-                cancelToken,
+                cursor: cursorParam,
                 orderBy: 'last_message_datetime:desc',
-                withHighlights: isSearchWithHighlight,
+                withHighlights: true,
+                cancelToken,
                 ...params,
-            })
+            }).then((resp) => ({
+                ...resp,
+                data: {
+                    ...resp.data,
+                    data: (resp.data?.data as TicketWithHighlights[]).map(
+                        mergeEntitiesWithHighlights
+                    ),
+                },
+            }))
         } else {
             promise = client.get<ApiListResponsePagination<Ticket[]>>(url, {
                 ...options,
@@ -531,8 +537,7 @@ export function fetchViewItems(
                 dispatch({
                     type: types.FETCH_LIST_VIEW_SUCCESS,
                     viewType: activeViewType,
-                    data: resp.data,
-                    withHighlight: expectSearchWithHighlightsResults,
+                    fetched: resp.data,
                 })
             },
             (error: AxiosError) => {

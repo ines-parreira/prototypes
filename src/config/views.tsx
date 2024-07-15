@@ -6,7 +6,7 @@ import {trimWithEllipsisBeforeTheHighlight} from 'pages/common/components/Spotli
 import {fromAST} from 'common/utils'
 import {getChannels} from 'services/channels'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {BASE_VIEW_ID, WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
+import {BASE_VIEW_ID} from 'constants/view'
 import {OrderDirection} from 'models/api/types'
 import {
     EntityType,
@@ -112,12 +112,7 @@ const defaultCustomerView = {
     ],
     cell: (fieldName: ViewField, item: Map<any, any>) => {
         switch (fieldName) {
-            case ViewField.Name:
-                return (
-                    (item.get('name') as string) ||
-                    `Customer #${item.get('id') as number}`
-                )
-            case ViewField.NameWithHighlight: {
+            case ViewField.Name: {
                 const nameOrNameWithHighlight =
                     (item.getIn(['highlights', 'name', 0]) as string) ??
                     (item.get('name') as string)
@@ -134,7 +129,7 @@ const defaultCustomerView = {
                     />
                 )
             }
-            case ViewField.EmailWithHighlight: {
+            case ViewField.Email: {
                 const emailOrEmailWithHighlight =
                     (item.getIn(['highlights', 'email', 0]) as string) ??
                     (item.get('email') as string)
@@ -171,7 +166,6 @@ const defaultCustomerView = {
             search: query,
             fields: [ViewField.Name, ViewField.Email, ViewField.Created],
             type: ViewType.CustomerList,
-            with_highlights: false,
         })
 
         if (filters) {
@@ -185,65 +179,7 @@ const defaultCustomerView = {
     },
 }
 
-const customerViewWithHighlight = {
-    ...defaultCustomerView,
-    name: EntityType.CustomerWithHighlight,
-    mainField: ViewField.EmailWithHighlight,
-    fields: [
-        {
-            name: ViewField.NameWithHighlight,
-            title: 'Name',
-        },
-        {
-            name: ViewField.EmailWithHighlight,
-            title: 'Email',
-        },
-        {
-            name: ViewField.Created,
-            title: 'Creation date',
-            path: 'created_datetime',
-            filter: {
-                sort: {
-                    created_datetime: 'desc',
-                },
-            },
-        },
-    ],
-    newView: () => {
-        return baseView().merge({
-            fields: [
-                ViewField.NameWithHighlight,
-                ViewField.EmailWithHighlight,
-                ViewField.Created,
-            ],
-            type: ViewType.CustomerList,
-        })
-    },
-    searchView: (query: string, filters?: string) => {
-        const searchView = baseView().merge({
-            name: `Search "${query}"`,
-            search: query,
-            fields: [
-                ViewField.NameWithHighlight,
-                ViewField.EmailWithHighlight,
-                ViewField.Created,
-            ],
-            type: ViewType.CustomerList,
-            [WITH_HIGHLIGHTS_OPTION_KEY]: true,
-        })
-
-        if (filters) {
-            return searchView.merge({
-                filters,
-                filters_ast: fromAST(getAST(filters)),
-            })
-        }
-
-        return searchView
-    },
-}
-
-const defaultTicketView = {
+export const defaultTicketView = {
     name: EntityType.Ticket,
     type: ViewType.TicketList,
     routeItem: 'ticket', // UI route for this object
@@ -423,23 +359,6 @@ const defaultTicketView = {
                 return getLanguageDisplayName(item.get('language')) as string
             }
             case ViewField.Details: {
-                let subject = stripHTML(item.get('subject'))
-
-                const messageCount = item.get('messages_count') as number
-                if (messageCount > 1) {
-                    subject = `(${messageCount}) ${subject || ''}`
-                }
-
-                const body = stripHTML(item.get('excerpt'))
-
-                return (
-                    <div>
-                        <div className="subject">{subject}</div>
-                        {!!body && <div className="description">{body}</div>}
-                    </div>
-                )
-            }
-            case ViewField.DetailsWithHighlights: {
                 const subjectHighlights: string | null = item.getIn(
                     ['highlights', 'subject', 0],
                     null
@@ -577,82 +496,6 @@ const defaultTicketView = {
             ],
             type: ViewType.TicketList,
             order_by: 'created_datetime',
-            [WITH_HIGHLIGHTS_OPTION_KEY]: false,
-        })
-
-        if (filters) {
-            return searchView.merge({
-                filters,
-                filters_ast: fromAST(getAST(filters)),
-            })
-        }
-
-        return searchView
-    },
-}
-
-const ticketWithHighlightView = {
-    ...defaultTicketView,
-    name: EntityType.TicketWithHighlight,
-    mainField: ViewField.DetailsWithHighlights,
-    fields: [
-        {
-            name: ViewField.DetailsWithHighlights,
-            title: 'Details',
-        },
-        ...defaultTicketView.fields.filter(
-            (field) => field.name !== ViewField.Details
-        ),
-    ],
-    newView: (
-        visibility?: ViewVisibility,
-        viewName?: string,
-        filters?: string
-    ) => {
-        let view = baseView().merge({
-            fields: [
-                ViewField.DetailsWithHighlights,
-                ViewField.Channel,
-                ViewField.Assignee,
-                ViewField.Status,
-                ViewField.Customer,
-                ViewField.Created,
-                ViewField.LastMessage,
-            ],
-            type: ViewType.TicketList,
-            order_by: 'last_message_datetime',
-            visibility:
-                visibility === ViewVisibility.Private
-                    ? ViewVisibility.Private
-                    : ViewVisibility.Public,
-        })
-        if (filters) {
-            view = view.merge({
-                filters,
-                filters_ast: fromAST(getAST(filters)),
-            })
-        }
-        if (viewName) {
-            view = view.set('name', viewName)
-        }
-        return view
-    },
-    searchView: (query: string, filters?: string) => {
-        const searchView = baseView().merge({
-            name: `Search "${query}"`,
-            search: query,
-            fields: [
-                ViewField.DetailsWithHighlights,
-                ViewField.Customer,
-                ViewField.Assignee,
-                ViewField.TicketId,
-                ViewField.Status,
-                ViewField.Channel,
-                ViewField.Created,
-            ],
-            type: ViewType.TicketList,
-            order_by: 'created_datetime',
-            [WITH_HIGHLIGHTS_OPTION_KEY]: true,
         })
 
         if (filters) {
@@ -668,12 +511,10 @@ const ticketWithHighlightView = {
 
 export const views = fromAST([
     defaultTicketView,
-    ticketWithHighlightView,
     defaultCustomerView,
-    customerViewWithHighlight,
 ]) as List<any>
 
-export const getConfigByName = (name: string) => {
+export const getConfigByName = (name: EntityType) => {
     const config = views.find(
         (item: Map<any, any>) => item.get('name') === name
     ) as Maybe<Map<any, any>>
@@ -686,7 +527,7 @@ export const getConfigByName = (name: string) => {
     return config
 }
 
-export const getConfigByType = (type: string) => {
+export const getConfigByType = (type: ViewType) => {
     const config = views.find(
         (item: Map<any, any>) => item.get('type') === type
     ) as Maybe<Map<any, any>>

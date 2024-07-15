@@ -8,7 +8,6 @@ import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import {LDFlagSet} from 'launchdarkly-js-client-sdk'
 import _isArray from 'lodash/isArray'
 
-import {WITH_HIGHLIGHTS_OPTION_KEY} from 'constants/view'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {getConfigByName} from 'config/views'
@@ -123,8 +122,6 @@ export class ViewTableContainer extends Component<Props> {
 
             updateView(
                 urlSearchView.merge({
-                    [WITH_HIGHLIGHTS_OPTION_KEY]:
-                        this._isAdvancedSearchWithHighlights(),
                     ...(!!fieldConfig ? {fields: fieldConfig} : {}),
                 }),
                 false
@@ -317,10 +314,6 @@ export class ViewTableContainer extends Component<Props> {
         }`
     }
 
-    _isAdvancedSearchWithHighlights = () =>
-        this.props.flags?.[FeatureFlagKey.AdvancedSearchWithHighlights] !==
-        false
-
     _renderTable = () => {
         const {
             ActionsComponent,
@@ -373,9 +366,7 @@ export class ViewTableContainer extends Component<Props> {
 
     render() {
         const {activeView, isSearch, isUpdate, type, className} = this.props
-        const hasFilters =
-            type === EntityType.Ticket ||
-            type === EntityType.TicketWithHighlight
+        const hasFilters = type === EntityType.Ticket
 
         if (activeView.isEmpty()) {
             return <Loader />

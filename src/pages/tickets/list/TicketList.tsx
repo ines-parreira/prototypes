@@ -1,9 +1,7 @@
 import classnames from 'classnames'
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
 import {useLocation, useParams} from 'react-router-dom'
-import {FeatureFlagKey} from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {SearchRankSource} from 'hooks/useSearchRankScenario'
@@ -77,17 +75,10 @@ const TicketList = () => {
 
     useTitle(title)
 
-    const isAdvancedSearchWithHighlights: boolean | undefined =
-        useFlags()[FeatureFlagKey.AdvancedSearchWithHighlights] !== false
-    const type =
-        isAdvancedSearchWithHighlights && isSearch
-            ? EntityType.TicketWithHighlight
-            : EntityType.Ticket
-
     const viewTable = (
         <ViewTable
             className={css.table}
-            type={type}
+            type={EntityType.Ticket}
             items={tickets}
             isUpdate={isUpdate}
             isSearch={isSearch}

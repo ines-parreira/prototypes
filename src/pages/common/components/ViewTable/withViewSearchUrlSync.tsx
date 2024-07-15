@@ -7,6 +7,7 @@ import {
     decompressFromEncodedURIComponent,
 } from 'lz-string'
 import {stringify} from 'qs'
+import {EntityType} from 'models/view/types'
 
 import {getConfigByName} from 'config/views'
 import useSearch from 'hooks/useSearch'
@@ -25,7 +26,7 @@ export type ViewSearchUrlSyncInjectedProps = InjectedProps &
 
 type Props = {
     isSearch: boolean
-    type: string
+    type: EntityType
 }
 
 export function withViewSearchUrlSyncContainer<P extends Props>(

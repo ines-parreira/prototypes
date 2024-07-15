@@ -1,7 +1,7 @@
-import {TicketWithHighlights} from 'models/search/types'
+import {CustomerWithHighlights, TicketWithHighlights} from 'models/search/types'
 
 export const mergeEntitiesWithHighlights = (
-    searchResult: TicketWithHighlights
+    searchResult: TicketWithHighlights | CustomerWithHighlights
 ) => ({
     ...searchResult.entity,
     highlights: searchResult.highlights,

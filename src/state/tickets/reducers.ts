@@ -1,6 +1,5 @@
 import {fromJS, Map, List} from 'immutable'
-import {TicketWithHighlights} from 'models/search/types'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
+import {ViewType} from 'models/view/types'
 
 import * as ticketTypes from 'state/ticket/constants'
 import * as viewsTypes from 'state/views/constants'
@@ -27,26 +26,15 @@ export default function reducer(
         }
 
         case viewsTypes.FETCH_LIST_VIEW_SUCCESS: {
-            if (action.viewType !== 'ticket-list') {
+            if (action.viewType !== ViewType.TicketList) {
                 return state
             }
 
-            let items = []
-            if (action.withHighlight === true) {
-                items = (
-                    action.data as {
-                        data: TicketWithHighlights[]
-                    }
-                ).data.map(mergeEntitiesWithHighlights)
-            } else {
-                items = (action.data as {data: unknown[]}).data
-            }
-
-            return state.set('items', fromJS(items))
+            return state.set('items', fromJS(action.fetched?.data))
         }
 
         case viewsTypes.BULK_DELETE_SUCCESS: {
-            if (action.viewType !== 'ticket-list') {
+            if (action.viewType !== ViewType.TicketList) {
                 return state
             }
 

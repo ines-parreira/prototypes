@@ -1,6 +1,7 @@
 import {List, Map} from 'immutable'
 import {AnyAction} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
+import {EntityType, ViewType} from 'models/view/types'
 
 import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
 import {
@@ -77,6 +78,7 @@ export type GorgiasAction = {
     resp?: unknown
     roles?: unknown
     id?: string | number
+    fetched?: {data: unknown[]; meta?: Record<string, unknown>}
     data?: unknown
     invoice?: Map<any, any>
     creditCard?: Map<any, any>
@@ -92,7 +94,7 @@ export type GorgiasAction = {
     isUpdate?: boolean
     settingType?: string
     status?: boolean
-    viewType?: string
+    viewType?: ViewType
     customerId?: number
     shouldDisplayHistoryOnNextPage?: boolean
     ids?: number[]
@@ -174,7 +176,7 @@ export type GorgiasAction = {
     direction?: OrderDirection
     filter?: Record<string, unknown>
     operator?: string
-    configName?: string
+    configName?: EntityType
     currentViewId?: string
     discreet?: boolean
     counts?: Record<string, unknown>

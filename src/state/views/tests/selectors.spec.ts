@@ -1,24 +1,31 @@
-import moment from 'moment'
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
-
-import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
+import moment from 'moment'
 import {UserSettingType} from 'config/types/user'
-import {getExpirationTimeForCount} from 'config/views'
+import {defaultTicketView, getExpirationTimeForCount} from 'config/views'
 import {account} from 'fixtures/account'
 import {user} from 'fixtures/users'
 import {newViews} from 'models/view/mocks'
-import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
+import {
+    EntityType,
+    View,
+    ViewCategory,
+    ViewType,
+    ViewVisibility,
+} from 'models/view/types'
 import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
 import {AccountSettingType} from 'state/currentAccount/types'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
 
 import {RootState} from 'state/types'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
 
-import {initialState} from '../reducers'
-import * as selectors from '../selectors'
-import {SYSTEM_VIEWS} from '../constants'
+import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
+import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import {SYSTEM_VIEWS} from 'state/views/constants'
+
+import {initialState} from 'state/views/reducers'
+import * as selectors from 'state/views/selectors'
+import {makeGetView} from 'state/views/selectors'
 
 describe('selectors', () => {
     beforeEach(() => {
@@ -266,19 +273,40 @@ describe('selectors', () => {
         })
     })
 
+    describe('makeGetView', () => {
+        it('should create getView selector that will return new view', () => {
+            const state = {} as RootState
+            const getViewSelector = makeGetView(state)
+
+            expect(getViewSelector('', EntityType.Ticket)).toEqual(
+                defaultTicketView.newView()
+            )
+        })
+
+        it('should create getView selector that will return nothing and console an error', () => {
+            const consoleErrorSpy = jest.spyOn(console, 'error')
+            const state = {} as RootState
+
+            const getViewSelector = makeGetView(state)
+
+            expect(getViewSelector('')).toEqual(fromJS({}))
+            expect(consoleErrorSpy).toHaveBeenCalled()
+        })
+    })
+
     describe('makeGetViewsByType', () => {
         it('should filter views by type and not return hidden', () => {
             const view1 = {
                 id: 1,
-                type: 'ticket-list',
+                type: ViewType.TicketList,
             }
             const view2 = {
                 id: 2,
-                type: 'ticket-list',
+                type: ViewType.TicketList,
             }
             const view3 = {
                 id: 3,
-                type: 'customer-list',
+                type: ViewType.CustomerList,
             }
             const viewSetting1 = {
                 display_order: 1,
@@ -358,22 +386,22 @@ describe('selectors', () => {
         it('should sort views in the expected order', () => {
             const view1 = {
                 id: 1,
-                type: 'ticket-list',
+                type: ViewType.TicketList,
                 visibility: ViewVisibility.Private,
             }
             const view2 = {
                 id: 2,
-                type: 'ticket-list',
+                type: ViewType.TicketList,
                 visibility: ViewVisibility.Public,
             }
             const view3 = {
                 id: 3,
-                type: 'ticket-list',
+                type: ViewType.TicketList,
                 visibility: ViewVisibility.Public,
             }
             const view4 = {
                 id: 4,
-                type: 'ticket-list',
+                type: ViewType.TicketList,
                 visibility: ViewVisibility.Private,
             }
             const viewSetting1 = {

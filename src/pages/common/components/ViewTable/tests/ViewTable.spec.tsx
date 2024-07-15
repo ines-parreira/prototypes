@@ -181,7 +181,7 @@ describe('<ViewTable />', () => {
         })
 
         it('should update the active view with stored field config', () => {
-            const mockFields = ['details_with_highlights', 'status']
+            const mockFields = ['details', 'status']
             jest.spyOn(window.localStorage, 'getItem').mockReturnValueOnce(
                 JSON.stringify(mockFields)
             )

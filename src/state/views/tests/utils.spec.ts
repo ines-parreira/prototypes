@@ -1,11 +1,12 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
+import {ViewType} from 'models/view/types'
 
 import {fromAST} from 'common/utils'
 import {CollectionOperator, EqualityOperator} from 'state/rules/types'
 import {getAST} from 'utils'
 
-import * as utils from '../utils'
+import * as utils from 'state/views/utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -182,7 +183,7 @@ describe('utils', () => {
         it('should return the ticket list url', () => {
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'ticket-list',
+                    type: ViewType.TicketList,
                     id: '1',
                 }),
                 {
@@ -197,7 +198,7 @@ describe('utils', () => {
         it('should return the customer list url', () => {
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'customer-list',
+                    type: ViewType.CustomerList,
                     id: '2',
                 }),
                 {
@@ -212,7 +213,7 @@ describe('utils', () => {
         it('should return the same url when on a different item type', () => {
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'customer-list',
+                    type: ViewType.CustomerList,
                     id: '2',
                 }),
                 {
@@ -227,7 +228,7 @@ describe('utils', () => {
         it('should return the same url when on an unsupported url', () => {
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'customer-list',
+                    type: ViewType.CustomerList,
                     id: '2',
                 }),
                 {
@@ -242,7 +243,7 @@ describe('utils', () => {
         it('should keep the url search query', () => {
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'customer-list',
+                    type: ViewType.CustomerList,
                     id: '2',
                 }),
                 {
@@ -258,7 +259,7 @@ describe('utils', () => {
             const cursor = 'asd8645'
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'ticket-list',
+                    type: ViewType.TicketList,
                     id: '1',
                     search: 'pizza',
                 }),
@@ -275,7 +276,7 @@ describe('utils', () => {
             const cursor = 'asd8645'
             const url = utils.activeViewUrl(
                 fromJS({
-                    type: 'ticket-list',
+                    type: ViewType.TicketList,
                     id: '1',
                 }),
                 {
