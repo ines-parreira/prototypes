@@ -111,7 +111,7 @@ export const StoreConfigForm = ({
             : {
                   ...INITIAL_FORM_VALUES,
                   monitoredEmailIntegrations: [initialEmail],
-                  helpCenterId: initialHelpCenter.id,
+                  helpCenterId: initialHelpCenter?.id ?? null,
               }
     }, [emailItems, faqHelpCenters, storeConfiguration])
 
@@ -295,8 +295,8 @@ export const StoreConfigForm = ({
             // Because it's possible to delete public URLs without saving the form, we should deactivate AI Agent when no knowledge base
             if (
                 publicURLs.length === 0 &&
-                storeConfiguration &&
-                storeConfiguration.helpCenterId === null
+                storeConfiguration?.helpCenterId === null &&
+                storeConfiguration?.deactivatedDatetime === null
             ) {
                 void deactivateAiAgent()
             }
