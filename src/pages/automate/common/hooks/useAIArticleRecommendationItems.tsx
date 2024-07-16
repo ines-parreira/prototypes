@@ -87,7 +87,17 @@ export const useAIArticleRecommendationItems = ({
         return {
             paginatedItems: recommendationsItems.slice(startIndex, endIndex),
             itemsCount: recommendationsItems.length,
+            totalItemsCount: fetchedArticles?.length || 0,
             isLoading,
+            batchDatetime: fetchedArticles
+                ? fetchedArticles[0].batch_datetime
+                : undefined,
         }
-    }, [currentPage, isLoading, itemsPerPage, recommendationsItems])
+    }, [
+        currentPage,
+        fetchedArticles,
+        isLoading,
+        itemsPerPage,
+        recommendationsItems,
+    ])
 }

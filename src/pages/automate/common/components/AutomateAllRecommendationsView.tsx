@@ -1,5 +1,6 @@
-import React, {useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {Link, useHistory, useLocation} from 'react-router-dom'
+import moment from 'moment'
 import StatsPage from 'pages/stats/StatsPage'
 import {useSearchParam} from 'hooks/useSearchParam'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,6 +9,7 @@ import {
     AllRecommendationsStatus,
     useAIArticleRecommendationItems,
 } from '../hooks/useAIArticleRecommendationItems'
+import {useLocalStorageTopQuestions} from '../hooks/useLocalStorageTopQuestions'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
 import css from './AutomateAllRecommendationsView.less'
 
@@ -42,15 +44,46 @@ const AutomateAllRecommendationsView = () => {
         }
     }
 
-    const {paginatedItems, itemsCount, isLoading} =
-        useAIArticleRecommendationItems({
-            storeIntegrationId: Number(storeIntegrationId),
-            helpCenterId: Number(helpCenterId),
-            locale: helpCenter?.default_locale ?? 'en-US',
-            statusFilter,
-            currentPage,
-            itemsPerPage: ITEMS_PER_PAGE,
-        })
+    const {
+        paginatedItems,
+        itemsCount,
+        totalItemsCount,
+        isLoading,
+        batchDatetime,
+    } = useAIArticleRecommendationItems({
+        storeIntegrationId: Number(storeIntegrationId),
+        helpCenterId: Number(helpCenterId),
+        locale: helpCenter?.default_locale ?? 'en-US',
+        statusFilter,
+        currentPage,
+        itemsPerPage: ITEMS_PER_PAGE,
+    })
+
+    const {viewedOnPages, addViewedOnPage} = useLocalStorageTopQuestions(
+        Number(storeIntegrationId),
+        Number(helpCenterId),
+        moment(batchDatetime).toDate()
+    )
+
+    const onLeavePage = useCallback(() => {
+        addViewedOnPage('all-recommendations')
+    }, [addViewedOnPage])
+
+    useEffect(() => {
+        window.addEventListener('beforeunload', onLeavePage)
+
+        return () => {
+            window.removeEventListener('beforeunload', onLeavePage)
+        }
+    }, [onLeavePage])
+
+    useEffect(() => {
+        const unlisten = history.listen(onLeavePage)
+
+        return () => {
+            unlisten()
+        }
+    }, [history, onLeavePage])
 
     return (
         <StatsPage title="Automate">
@@ -69,10 +102,13 @@ const AutomateAllRecommendationsView = () => {
                     paginatedItems={paginatedItems}
                     isLoading={isLoading}
                     itemsCount={itemsCount}
+                    totalItemsCount={totalItemsCount}
                     statusFilter={statusFilter}
                     setStatusFilter={setStatusFilter}
                     currentPage={currentPage}
                     onPageChange={onPageChange}
+                    displayNewBadge={!viewedOnPages.has('all-recommendations')}
+                    helpCenterId={Number(helpCenterId)}
                 />
             </div>
         </StatsPage>

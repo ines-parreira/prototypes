@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
@@ -10,7 +10,10 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import useAppSelector from 'hooks/useAppSelector'
+import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
 import {AIArticleRecommendationItem} from '../hooks/useAIArticleRecommendationItems'
+import {useAIArticlePublishedPreviewUrl} from '../hooks/useAIArticlePublishedPreviewUrl'
 import {AllRecomendationsColumn} from './AutomateAllRecommendationsCard'
 import css from './AutomateAllRecommendationsTable.less'
 
@@ -24,6 +27,7 @@ type AutomateAllRecommendationTableProps = {
     currentPage: number
     pagesCount: number
     onPageChange: (page: number) => void
+    helpCenterId: number
 }
 
 const ArchiveBadge = () => (
@@ -42,20 +46,53 @@ const ArchiveBadge = () => (
     </>
 )
 
-const ArticleTitle = ({
-    title,
-    reviewAction,
-}: Pick<AIArticleRecommendationItem, 'reviewAction' | 'title'>) => (
-    <>
-        <span className={css.textTruncate}>{title}</span>
-        {reviewAction && reviewAction === 'archive' && <ArchiveBadge />}
-        {reviewAction && reviewAction === 'publish' && (
+const PublishedIcon = ({
+    templateKey,
+    helpCenterId,
+}: Pick<AIArticleRecommendationItem, 'templateKey'> & {
+    helpCenterId: number
+}) => {
+    const helpCenters = useAppSelector(getHelpCenterFAQList)
+    const helpCenter = useMemo(() => {
+        return helpCenters.find((helpCenter) => helpCenter.id === helpCenterId)
+    }, [helpCenterId, helpCenters])
+
+    const publishedPreviewUrl = useAIArticlePublishedPreviewUrl(
+        helpCenter,
+        templateKey
+    )
+
+    return (
+        <a href={publishedPreviewUrl} target="_blank" rel="noopener noreferrer">
             <i className={cn('material-icons', css.publishedArticle)}>
                 open_in_new
             </i>
-        )}
-    </>
-)
+        </a>
+    )
+}
+
+const ArticleTitle = ({
+    title,
+    reviewAction,
+    templateKey,
+    helpCenterId,
+}: Pick<
+    AIArticleRecommendationItem,
+    'reviewAction' | 'title' | 'templateKey'
+> & {helpCenterId: number}) => {
+    return (
+        <>
+            <span className={css.textTruncate}>{title}</span>
+            {reviewAction && reviewAction === 'archive' && <ArchiveBadge />}
+            {reviewAction && reviewAction === 'publish' && (
+                <PublishedIcon
+                    templateKey={templateKey}
+                    helpCenterId={helpCenterId}
+                />
+            )}
+        </>
+    )
+}
 
 const ArticleStatus = ({
     reviewAction,
@@ -77,6 +114,7 @@ const AutomateAllRecommendationsTable = ({
     currentPage,
     pagesCount,
     onPageChange,
+    helpCenterId,
 }: AutomateAllRecommendationTableProps) => {
     const tableWidth = columns.map((column) => column.width)
     return (
@@ -148,6 +186,8 @@ const AutomateAllRecommendationsTable = ({
                                               reviewAction={
                                                   article.reviewAction
                                               }
+                                              templateKey={article.templateKey}
+                                              helpCenterId={helpCenterId}
                                           />
                                       </BodyCell>
                                       <BodyCell

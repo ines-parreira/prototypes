@@ -8,7 +8,7 @@
     }
 
     .titleWrapper {
-        align-items: center;
+        align-items: start;
         display: flex;
         justify-content: space-between;
         margin-bottom: @layout-spacing-xs;
@@ -16,6 +16,9 @@
 
     .title {
         .heading-subsection-semibold();
+        display: flex;
+        flex-direction: row;
+        column-gap: @layout-spacing-xs;
     }
 
     .noDataWrapper {
