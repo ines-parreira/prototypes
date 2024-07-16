@@ -32,7 +32,7 @@ import {useModalManager} from 'hooks/useModalManager'
 import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
 import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
 import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector/CustomerSegmentSelector'
-import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Button from 'pages/common/components/button/Button'
@@ -340,7 +340,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                             }
                                             suffix={
                                                 discount.type === 'fixed'
-                                                    ? getShopifyMoneySymbol(
+                                                    ? getMoneySymbol(
                                                           integration.getIn([
                                                               'meta',
                                                               'currency',
@@ -412,7 +412,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<UniqueDiscountOfferCreateM
                                                 }))
                                             }
                                             min={0}
-                                            prefix={getShopifyMoneySymbol(
+                                            prefix={getMoneySymbol(
                                                 integration.getIn([
                                                     'meta',
                                                     'currency',

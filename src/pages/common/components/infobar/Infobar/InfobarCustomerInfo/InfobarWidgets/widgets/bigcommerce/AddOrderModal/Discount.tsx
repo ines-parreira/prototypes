@@ -13,7 +13,7 @@ import {
     BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
 import Spinner from 'pages/common/components/Spinner'
-import getShopifyMoneySymbol from '../../shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 
 import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
@@ -148,9 +148,7 @@ export function Discount({
                         <NumberInput
                             prefix={
                                 <span className={css.amountPrefix}>
-                                    {getShopifyMoneySymbol(
-                                        currencyCode ?? 'USD'
-                                    )}
+                                    {getMoneySymbol(currencyCode ?? 'USD')}
                                 </span>
                             }
                             value={discountAmount}

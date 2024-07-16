@@ -4,7 +4,7 @@ import {getSizedImageUrl} from '@shopify/theme-images'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {IntegrationType} from 'models/integration/constants'
-import {ProductStockQuantity} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/StockQuantity'
+import {ProductStockQuantity} from 'pages/common/components/StockQuantity'
 
 import css from './Result.less'
 

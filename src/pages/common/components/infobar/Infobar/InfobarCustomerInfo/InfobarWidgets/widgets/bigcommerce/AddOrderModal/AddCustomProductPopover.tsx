@@ -3,7 +3,7 @@ import React, {useRef, useState} from 'react'
 import Button from 'pages/common/components/button/Button'
 
 import {BigCommerceCustomProduct} from 'models/integration/types'
-import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
 import css from './AddCustomProductPopover.less'
@@ -154,10 +154,7 @@ export function AddCustomProductPopover({
                                     name="price"
                                     label="Price per item"
                                     isRequired
-                                    prefix={getShopifyMoneySymbol(
-                                        currencyCode,
-                                        true
-                                    )}
+                                    prefix={getMoneySymbol(currencyCode, true)}
                                     min={0}
                                     value={state.productPrice}
                                     onChange={onProductPriceChange}

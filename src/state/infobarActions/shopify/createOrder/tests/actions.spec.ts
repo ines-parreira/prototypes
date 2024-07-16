@@ -20,7 +20,7 @@ import {
     IntegrationDataItemType,
     IntegrationType,
 } from 'models/integration/types'
-import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {executeAction} from 'state/infobar/actions'
 import {RootState, StoreDispatch} from 'state/types'
 

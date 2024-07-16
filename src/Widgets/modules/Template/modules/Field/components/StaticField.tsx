@@ -1,7 +1,8 @@
 import React, {ReactNode, useContext} from 'react'
 
 import {EditionContext} from 'providers/infobar/EditionContext'
-import UIStaticField from 'Widgets/modules/Template/modules/Field/components/views/StaticField'
+
+import UIStaticField from './views/StaticField'
 
 type Props = {
     children: ReactNode

@@ -1,13 +1,14 @@
 import React, {ReactNode} from 'react'
 
 import {IntegrationType} from 'models/integration/types'
-import ColorPanel from 'Widgets/modules/WidgetPanel/components/views/ColorPanel'
 import {WidgetType} from 'state/widgets/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
+
+import ColorPanel from './views/ColorPanel'
 
 export const WIDGET_COLORS: Readonly<Partial<Record<WidgetType, string>>> = {
     [IntegrationType.Shopify]: `var(--shopifyGreen)`,

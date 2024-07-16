@@ -29,12 +29,13 @@ import {
     getWidgetId,
     getWidgetTitle,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import WrapperEditActions from 'Widgets/modules/Template/modules/Wrapper/components/views/WrapperEditActions'
+import {Source, Template, WrapperTemplate} from 'models/widget/types'
+
 import WidgetPanel from 'Widgets/modules/WidgetPanel'
 import {EXPAND_CONTAINER_MARKER} from 'Widgets/modules/Template/config/template'
-import {Source, Template, WrapperTemplate} from 'models/widget/types'
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 
+import WrapperEditActions from './views/WrapperEditActions'
 import css from './Wrapper.less'
 
 export const CUSTOMIZE_WIDGET_BUTTON_TEXT = 'Customize Widget'

@@ -4,14 +4,14 @@ import {render} from '@testing-library/react'
 import * as widgetsFixtures from 'fixtures/widgets'
 import * as ticketFixtures from 'fixtures/ticket'
 import {assumeMock} from 'utils/testing'
-import UIList from 'Widgets/modules/Template/modules/List/components/views/List'
 import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
 
+import UIList from '../views/List'
 import List from '../List'
 
 const CHILDREN_TEST_ID = 'childrennnn'
 
-jest.mock('Widgets/modules/Template/modules/List/components/views/List')
+jest.mock('../views/List')
 const mockedList = assumeMock(UIList)
 mockedList.mockImplementation(
     ({children, listItems = []}: Partial<ComponentProps<typeof UIList>>) => (

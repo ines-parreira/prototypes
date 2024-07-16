@@ -9,23 +9,19 @@ import {
     ListTemplate,
     WrapperTemplate,
 } from 'models/widget/types'
-import {
-    getExtensions,
-    seekCardCustomization,
-} from 'Widgets/modules/Template/helpers/extensions'
 
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-import {
+import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
+import Card, {
     CardCustomization,
     HiddenField,
-} from 'Widgets/modules/Template/modules/Card/types'
-import {CustomizationContext} from 'Widgets/modules/Template/contexts/CustomizationContext'
-import Card from 'Widgets/modules/Template/modules/Card'
+} from 'Widgets/modules/Template/modules/Card'
 import Field from 'Widgets/modules/Template/modules/Field'
 import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 import ListWidget from 'Widgets/modules/Template/modules/List'
-import {ShopifyContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
 
+import {CustomizationContext} from '../../contexts/CustomizationContext'
+import {getExtensions, seekCardCustomization} from '../../helpers/extensions'
 import Template, {self} from '../Template'
 
 jest.spyOn(self, 'Template')
@@ -35,10 +31,8 @@ jest.mock('Widgets/modules/Template/modules/Card')
 jest.mock('Widgets/modules/Template/modules/Field')
 jest.mock('Widgets/modules/Template/modules/Wrapper')
 jest.mock('Widgets/modules/Template/modules/List')
-jest.mock('Widgets/modules/Template/helpers/extensions')
-jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
-)
+jest.mock('../../helpers/extensions')
+jest.mock('Widgets/modules/Shopify/contexts/ShopifyContext')
 const cardMock = assumeMock(Card)
 const fieldMock = assumeMock(Field)
 const wrapperMock = assumeMock(Wrapper)

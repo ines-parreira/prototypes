@@ -4,13 +4,14 @@ import classnames from 'classnames'
 
 import {useAppNode} from 'appNode'
 import useId from 'hooks/useId'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import CardEditForm from 'Widgets/modules/Template/modules/Card/components/views/CardEditForm'
-import {CardEditFormState} from 'Widgets/modules/Template/modules/Card/types'
 import {
     EXPAND_TARGET_MARKER,
     TARGET_CLOSED_MARKER,
 } from 'Widgets/modules/Template/config/template'
+
+import {CardEditFormState} from '../../types'
+import {CardHeaderIcon} from './CardHeaderIcon'
+import CardEditForm from './CardEditForm'
 
 import css from './CardHeader.less'
 

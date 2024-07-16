@@ -1,12 +1,21 @@
 import React, {ComponentProps, useContext} from 'react'
 import {render} from '@testing-library/react'
 
-import Template from 'Widgets/modules/Template'
-import {CustomizationContext} from 'Widgets/modules/Template/contexts/CustomizationContext'
 import {assumeMock} from 'utils/testing'
+
+import Template, {CustomizationContext} from 'Widgets/modules/Template'
+
 import ShopifyWidget, {customization} from '../Shopify'
 
-jest.mock('Widgets/modules/Template')
+jest.mock('Widgets/modules/Template', () => {
+    const templateExports: Record<string, unknown> = jest.requireActual(
+        'Widgets/modules/Template'
+    )
+    return {
+        ...templateExports,
+        default: jest.fn(),
+    }
+})
 const TemplateMock = assumeMock(Template)
 
 describe('ShopifyWidget', () => {

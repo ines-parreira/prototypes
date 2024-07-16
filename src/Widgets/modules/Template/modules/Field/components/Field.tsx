@@ -9,14 +9,13 @@ import {
     updateEditedWidget,
 } from 'state/widgets/actions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import UIField from 'Widgets/modules/Template/modules/Field/components/views'
-import {
-    FormData,
-    TypeOption,
-} from 'Widgets/modules/Template/modules/Field/components/views/FieldEditForm'
 import {IntegrationType} from 'models/integration/constants'
-import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
+
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+
+import {FormData, TypeOption} from './views/FieldEditForm'
+import UIField from './views'
+import CopyButton from './CopyButton'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'

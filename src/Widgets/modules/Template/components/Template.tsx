@@ -7,27 +7,25 @@ import {
     isSourceArray,
 } from 'models/widget/types'
 import {EditionContext} from 'providers/infobar/EditionContext'
-import Card from 'Widgets/modules/Template/modules/Card'
-import Field from 'Widgets/modules/Template/modules/Field'
-import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
-import List from 'Widgets/modules/Template/modules/List'
-import {
-    ShopifyContext,
-    ShopifyContextType,
-} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/ShopifyContext'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-import {CustomizationContext} from 'Widgets/modules/Template/contexts/CustomizationContext'
-import {
-    getExtensions,
-    seekCardCustomization,
-} from 'Widgets/modules/Template/helpers/extensions'
-import {seekNextValues} from 'Widgets/modules/Template/helpers/iterator'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import {
     guessFieldValueFromRawData,
     stringifyRawData,
 } from 'pages/common/components/infobar/utils'
 import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
+
+import {
+    ShopifyContext,
+    ShopifyContextType,
+} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import Card, {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import Field from 'Widgets/modules/Template/modules/Field'
+import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
+import List from 'Widgets/modules/Template/modules/List'
+
+import {CustomizationContext} from '../contexts/CustomizationContext'
+import {getExtensions, seekCardCustomization} from '../helpers/extensions'
+import {seekNextValues} from '../helpers/iterator'
 
 type Props = {
     template: TemplateType | null

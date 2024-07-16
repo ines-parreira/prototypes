@@ -2,15 +2,17 @@ import React, {ComponentProps, ReactNode} from 'react'
 import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 
-import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
-import Widget from 'Widgets/modules/Widget'
-import Template from 'Widgets/modules/Template'
-import {getWidgetByType} from 'Widgets/modules/Widget/helper/getWidgetByType'
 import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
 import {assumeMock} from 'utils/testing'
 
+import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
+import Widget from 'Widgets/modules/Widget'
+import Template from 'Widgets/modules/Template'
+
+import {getWidgetByType} from '../../helpers/getWidgetByType'
+
 jest.mock('Widgets/modules/Template')
-jest.mock('Widgets/modules/Widget/helper/getWidgetByType')
+jest.mock('../../helpers/getWidgetByType')
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
 )

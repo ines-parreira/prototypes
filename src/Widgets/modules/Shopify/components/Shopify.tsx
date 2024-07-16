@@ -1,16 +1,17 @@
 import React from 'react'
 
-import {CustomizationContext} from 'Widgets/modules/Template/contexts/CustomizationContext'
-import {TemplateCustomization} from 'Widgets/modules/Template/types'
-import Template from 'Widgets/modules/Template'
-import {customerCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Customer'
-import {draftOrderCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/DraftOrder/DraftOrderWidget'
-import {orderCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order/OrderWidget'
-import {itemCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Item'
-import {fulfillmentCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Fulfillment'
-import {shippingAddressCustomization} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order/ShippingAddress'
+import Template, {
+    TemplateCustomization,
+    CustomizationContext,
+} from 'Widgets/modules/Template'
+import {WidgetProps} from 'Widgets/modules/Widget'
 
-import {WidgetProps} from '../../Widget/types'
+import {customerCustomization} from './Customer'
+import {draftOrderCustomization} from './DraftOrder'
+import {orderCustomization} from './Order'
+import {itemCustomization} from './Item'
+import {fulfillmentCustomization} from './Fulfillment'
+import {shippingAddressCustomization} from './ShippingAddress'
 
 export const customization: TemplateCustomization = {
     card: [

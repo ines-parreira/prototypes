@@ -1,8 +1,8 @@
 import React, {ComponentProps, ReactNode, useState} from 'react'
 import classnames from 'classnames'
 
-import CardEditForm from 'Widgets/modules/Template/modules/Card/components/views/CardEditForm'
-import {CardEditFormState} from 'Widgets/modules/Template/modules/Card/types'
+import {CardEditFormState} from '../../types'
+import CardEditForm from './CardEditForm'
 
 import css from './Card.less'
 import CardHeader from './CardHeader'

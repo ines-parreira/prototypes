@@ -18,10 +18,10 @@ import {
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import WrapperEditActions, {
-    FormData,
-} from 'Widgets/modules/Template/modules/Wrapper/components/views/WrapperEditActions'
+
 import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+
+import WrapperEditActions, {FormData} from '../views/WrapperEditActions'
 
 import Wrapper, {CUSTOMIZABLE_WIDGET_TYPES, useIntegration} from '../Wrapper'
 
@@ -107,16 +107,14 @@ const woocommerceDataSource = {
 }
 
 const MOCK_EDIT_FORM_COLOR_ID = 'edit-form-color'
-jest.mock(
-    'Widgets/modules/Template/modules/Wrapper/components/views/WrapperEditActions',
-    () =>
-        jest.fn((props: ComponentProps<typeof WrapperEditActions>) => (
-            <div>
-                <span data-testid={MOCK_EDIT_FORM_COLOR_ID}>
-                    {props.initialData?.color}
-                </span>
-            </div>
-        ))
+jest.mock('../views/WrapperEditActions', () =>
+    jest.fn((props: ComponentProps<typeof WrapperEditActions>) => (
+        <div>
+            <span data-testid={MOCK_EDIT_FORM_COLOR_ID}>
+                {props.initialData?.color}
+            </span>
+        </div>
+    ))
 )
 const WrapperEditActionsMock = assumeMock(WrapperEditActions)
 

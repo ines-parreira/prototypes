@@ -5,7 +5,7 @@ import axios, {AxiosResponse} from 'axios'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {ShopifyActionType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 import {
     addCustomLineItem,
     addVariant,

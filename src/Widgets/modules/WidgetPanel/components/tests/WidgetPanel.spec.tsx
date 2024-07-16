@@ -1,8 +1,9 @@
 import React, {ComponentProps} from 'react'
 import {render} from '@testing-library/react'
 
-import ColorPanel from 'Widgets/modules/WidgetPanel/components/views/ColorPanel'
 import {WidgetType} from 'state/widgets/types'
+
+import ColorPanel from '../views/ColorPanel'
 
 import WidgetPanel, {WIDGET_COLORS} from '../WidgetPanel'
 

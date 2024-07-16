@@ -2,35 +2,24 @@ import React, {ComponentProps} from 'react'
 import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import CardEditForm from 'Widgets/modules/Template/modules/Card/components/views/CardEditForm'
+import CardEditForm from '../CardEditForm'
 
 import CardHeader, {DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT} from '../CardHeader'
 
 const CARD_HEADER_ICON_TEST_ID = 'card-header-icon'
-jest.mock(
-    'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon',
-    () => ({
-        CardHeaderIcon: jest.fn(() => {
-            return (
-                <span data-testid={CARD_HEADER_ICON_TEST_ID}>
-                    card header icon
-                </span>
-            )
-        }),
-    })
-)
+jest.mock('../CardHeaderIcon', () => ({
+    CardHeaderIcon: jest.fn(() => {
+        return (
+            <span data-testid={CARD_HEADER_ICON_TEST_ID}>card header icon</span>
+        )
+    }),
+}))
 
 const CARD_EDIT_FORM_TEST_ID = 'card-edit-form'
-jest.mock(
-    'Widgets/modules/Template/modules/Card/components/views/CardEditForm',
-    () =>
-        jest.fn(() => {
-            return (
-                <span data-testid={CARD_EDIT_FORM_TEST_ID}>
-                    field edit form
-                </span>
-            )
-        })
+jest.mock('../CardEditForm', () =>
+    jest.fn(() => {
+        return <span data-testid={CARD_EDIT_FORM_TEST_ID}>field edit form</span>
+    })
 )
 const CardEditFormMock = assumeMock(CardEditForm)
 

@@ -1,14 +1,11 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import UIStaticField from 'Widgets/modules/Template/modules/Field/components/views/StaticField'
 import {EditionContext} from 'providers/infobar/EditionContext'
 
+import UIStaticField from '../views/StaticField'
 import StaticField from '../StaticField'
 
-jest.mock(
-    'Widgets/modules/Template/modules/Field/components/views/StaticField',
-    () => jest.fn(() => <div>field</div>)
-)
+jest.mock('../views/StaticField', () => jest.fn(() => <div>field</div>))
 
 describe('<StaticField/>', () => {
     it('should pass isDisabled props if edition context is set to true', () => {

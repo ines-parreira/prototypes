@@ -4,7 +4,7 @@ import Button from 'pages/common/components/button/Button'
 import {Value} from 'pages/common/forms/SelectField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import InputField from 'pages/common/forms/input/InputField'
-import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 
 import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
 
@@ -53,7 +53,7 @@ export const CartValueTrigger = ({
         })
     }
 
-    const currencySymbol = getShopifyMoneySymbol(
+    const currencySymbol = getMoneySymbol(
         shopifyIntegration?.meta?.currency ?? 'USD',
         true
     )

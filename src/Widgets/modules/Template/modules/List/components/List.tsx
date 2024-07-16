@@ -1,14 +1,14 @@
 import React, {useMemo} from 'react'
 
-import UIList from 'Widgets/modules/Template/modules/List/components/views/List'
 import {
     isCardTemplate,
     ListTemplate,
     Source,
     Template,
 } from 'models/widget/types'
-
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
+
+import UIList from './views/List'
 
 type Props = {
     source: Source[]

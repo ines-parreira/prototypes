@@ -2,17 +2,15 @@ import React, {ComponentProps} from 'react'
 import {act, render, screen} from '@testing-library/react'
 
 import {assumeMock, getLastMockCall} from 'utils/testing'
-import CardHeader from 'Widgets/modules/Template/modules/Card/components/views/CardHeader'
+import CardHeader from '../CardHeader'
 
 import Card from '../Card'
 
 const CARD_HEADER_TEST_ID = 'card-header'
-jest.mock(
-    'Widgets/modules/Template/modules/Card/components/views/CardHeader',
-    () =>
-        jest.fn(() => {
-            return <span data-testid={CARD_HEADER_TEST_ID}>card header</span>
-        })
+jest.mock('../CardHeader', () =>
+    jest.fn(() => {
+        return <span data-testid={CARD_HEADER_TEST_ID}>card header</span>
+    })
 )
 const CardHeaderMock = assumeMock(CardHeader)
 

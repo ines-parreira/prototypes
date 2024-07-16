@@ -32,7 +32,7 @@ import CustomerSegmentSelector from 'pages/convert/discountOffer/components/Cust
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import useAppSelector from 'hooks/useAppSelector'
 import {getTicketState} from 'state/ticket/selectors'
-import getShopifyMoneySymbol from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 import {testIds} from './utils'
 import css from './DiscountCodeCreateModal.less'
 
@@ -169,7 +169,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                         hasControls={false}
                                         min={1}
                                         step={0.01}
-                                        suffix={getShopifyMoneySymbol(
+                                        suffix={getMoneySymbol(
                                             integration.getIn([
                                                 'meta',
                                                 'currency',
@@ -267,7 +267,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                             )
                                         }
                                         min={0}
-                                        prefix={getShopifyMoneySymbol(
+                                        prefix={getMoneySymbol(
                                             integration.getIn([
                                                 'meta',
                                                 'currency',

@@ -14,23 +14,21 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import {CardEditFormState} from 'Widgets/modules/Template/modules/Card/types'
-import UICard from 'Widgets/modules/Template/modules/Card/components/views'
-import Card, {
-    listMetaFields,
-    NO_DATA_TEXT,
-} from 'Widgets/modules/Template/modules/Card/components/Card'
-import * as isDefaultOpenExports from 'Widgets/modules/Template/modules/Card/helpers/isDefaultOpen'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {canDrop} from 'pages/common/components/infobar/utils'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-
 import {CardTemplate, ListTemplate} from 'models/widget/types'
+
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
+
+import * as isDefaultOpenExports from '../../helpers/isDefaultOpen'
+import Card, {listMetaFields, NO_DATA_TEXT} from '../../components/Card'
+import UICard from '../../components/views'
+import {CardEditFormState} from '../../types'
 
 const CHILDREN_TEST_ID = 'childrennnn'
 
@@ -62,7 +60,7 @@ jest.spyOn(isDefaultOpenExports, 'isDefaultOpen')
 const CustomActionsMock = assumeMock(CustomActions)
 
 const UICARD_TEST_ID = 'ui-card'
-jest.mock('Widgets/modules/Template/modules/Card/components/views', () =>
+jest.mock('../../components/views', () =>
     jest.fn(
         ({
             extensions,

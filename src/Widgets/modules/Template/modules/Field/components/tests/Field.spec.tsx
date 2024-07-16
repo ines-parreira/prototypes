@@ -13,21 +13,21 @@ import {
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
-import UIField from 'Widgets/modules/Template/modules/Field/components/views'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import {LEAF_TYPES} from 'models/widget/constants'
+
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+
+import CopyButton from '../CopyButton'
+import UIField from '../views'
 
 import Field, {TYPE_OPTIONS} from '../Field'
 
 const mockStore = configureMockStore()
 
-jest.mock('Widgets/modules/Template/modules/Field/components/CopyButton', () =>
-    jest.fn(() => <span>copy button</span>)
-)
+jest.mock('../CopyButton', () => jest.fn(() => <span>copy button</span>))
 const CopyButtonMock = assumeMock(CopyButton)
 
-jest.mock('Widgets/modules/Template/modules/Field/components/views', () =>
+jest.mock('../views', () =>
     jest.fn(({copyButton}: {copyButton: React.ReactNode}) => {
         return <span>ui field {copyButton}</span>
     })

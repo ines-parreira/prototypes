@@ -1,5 +1,6 @@
 import {Map} from 'immutable'
-import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 import {UniqueDiscountOfferTypeEnum} from 'models/convert/discountOffer/types'
 
 export const testIds = {
@@ -19,7 +20,7 @@ export const computeDiscountOfferSummary = (
     switch (type) {
         case 'fixed': {
             if (!integration || integration.isEmpty()) return ''
-            const currencySymbol = getShopifyMoneySymbol(
+            const currencySymbol = getMoneySymbol(
                 integration.getIn(['meta', 'currency'])
             )
             return value ? `${currencySymbol}${value} off` : ''

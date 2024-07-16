@@ -1,0 +1,286 @@
+import React, {
+    ChangeEvent,
+    FormEvent,
+    ComponentProps,
+    PureComponent,
+    KeyboardEvent,
+    RefObject,
+} from 'react'
+import {ulid} from 'ulidx'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
+import {fromJS, Map} from 'immutable'
+import classnames from 'classnames'
+
+import {logEvent, SegmentEvent} from 'common/segment'
+import CheckBox from 'pages/common/forms/CheckBox'
+import NumberInput from 'pages/common/forms/input/NumberInput'
+import {formatPrice} from 'business/shopify/number'
+import {focusElement} from 'utils/html'
+
+import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+
+import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
+
+import css from './AddCustomItemPopover.less'
+
+type Props = {
+    id: string
+    placement: ComponentProps<typeof Popover>['placement']
+    actionName: ShopifyActionType
+    className: string | null
+    currencyCode: string
+    onSubmit: (record: Map<any, any>) => void
+    container?: RefObject<HTMLDivElement>
+}
+
+type State = {
+    isOpen: boolean
+    title: string
+    price: number
+    quantity: number
+    taxable: boolean
+    requiresShipping: boolean
+}
+
+export default class AddCustomItemPopover extends PureComponent<Props, State> {
+    static defaultProps: Pick<Props, 'placement' | 'className'> = {
+        placement: 'bottom',
+        className: null,
+    }
+
+    _buttonElement: HTMLButtonElement | null = null
+    _inputElement: HTMLInputElement | null = null
+
+    state = {
+        isOpen: false,
+        title: '',
+        price: 0,
+        quantity: 1,
+        taxable: false,
+        requiresShipping: false,
+    }
+
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        const {actionName} = this.props
+        const {isOpen} = this.state
+        const {isOpen: wasOpen} = prevState
+
+        const onOpen = !wasOpen && isOpen
+        const onClose = wasOpen && !isOpen
+
+        if (onOpen) {
+            focusElement(() => this._inputElement as HTMLInputElement)
+            logEvent(
+                actionName === ShopifyActionType.CreateOrder
+                    ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverOpen
+            )
+        } else if (onClose) {
+            focusElement(() => this._buttonElement as HTMLInputElement)
+        }
+    }
+
+    _onKeyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+            this._toggle()
+        }
+    }
+
+    _toggle = () => {
+        const {isOpen} = this.state
+
+        this.setState({
+            isOpen: !isOpen,
+        })
+    }
+
+    _saveButtonRef = (buttonRef: HTMLButtonElement) => {
+        this._buttonElement = buttonRef
+    }
+
+    _saveInputRef = (inputRef: HTMLInputElement) => {
+        this._inputElement = inputRef
+    }
+
+    _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const title = event.target.value
+        this.setState({title})
+    }
+
+    _onPriceChange = (price: number) => {
+        this.setState({price})
+    }
+
+    _onQuantityChange = (value?: number) => {
+        const quantity = value || 1
+        this.setState({quantity})
+    }
+
+    _onTaxableChange = (newValue: boolean) => {
+        this.setState({taxable: newValue})
+    }
+
+    _onShippingChange = (newValue: boolean) => {
+        this.setState({requiresShipping: newValue})
+    }
+
+    _onSubmit = (event: FormEvent) => {
+        const {currencyCode, actionName, onSubmit} = this.props
+        const {title, price, quantity, taxable, requiresShipping} = this.state
+
+        event.preventDefault()
+        this._toggle()
+        this._resetValues()
+
+        onSubmit(
+            fromJS({
+                title,
+                price: formatPrice(price, currencyCode),
+                quantity,
+                taxable,
+                requires_shipping: requiresShipping,
+                product_exists: false,
+                newly_added: true,
+                localId: ulid(),
+            })
+        )
+
+        logEvent(
+            actionName === ShopifyActionType.CreateOrder
+                ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverSave
+                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverSave
+        )
+    }
+
+    _onCancel = () => {
+        const {actionName} = this.props
+
+        this._toggle()
+        this._resetValues()
+
+        logEvent(
+            actionName === ShopifyActionType.CreateOrder
+                ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverCancel
+                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel
+        )
+    }
+
+    _resetValues() {
+        this.setState({
+            title: '',
+            price: 0,
+            quantity: 1,
+        })
+    }
+
+    render() {
+        const {id, placement, className, currencyCode, container} = this.props
+        const {isOpen, title, price, quantity, taxable, requiresShipping} =
+            this.state
+
+        return (
+            <div>
+                <Button
+                    id={id}
+                    className={classnames(className, css.focusable)}
+                    tabIndex={0}
+                    innerRef={this._saveButtonRef}
+                    onClick={this._toggle}
+                >
+                    <i className="icon material-icons mr-2">add</i>
+                    Add custom item
+                </Button>
+                <Popover
+                    placement={placement}
+                    isOpen={isOpen}
+                    target={id}
+                    toggle={this._toggle}
+                    trigger="legacy"
+                    container={container?.current ?? undefined}
+                >
+                    <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
+                        <PopoverBody className="pt-3">
+                            <FormGroup>
+                                <Label for="title">Line item name</Label>
+                                <Input
+                                    type="text"
+                                    id="title"
+                                    autoComplete="off"
+                                    required
+                                    value={title}
+                                    className={css.titleInput}
+                                    innerRef={this._saveInputRef}
+                                    onChange={this._onTitleChange}
+                                />
+                            </FormGroup>
+                            <div className="d-flex">
+                                <FormGroup className="mr-4">
+                                    <Label for="price">Price per item</Label>
+                                    <AmountInput
+                                        id="price"
+                                        required
+                                        value={Number(price)}
+                                        className={css.priceInput}
+                                        currencyCode={currencyCode}
+                                        onChange={this._onPriceChange}
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="quantity">Quantity</Label>
+                                    <NumberInput
+                                        id="quantity"
+                                        min={1}
+                                        value={quantity}
+                                        className={css.quantityInput}
+                                        onChange={this._onQuantityChange}
+                                    />
+                                </FormGroup>
+                            </div>
+                            <CheckBox
+                                className="mt-1 mb-3"
+                                isChecked={taxable}
+                                onChange={this._onTaxableChange}
+                            >
+                                Item is taxable
+                            </CheckBox>
+                            <CheckBox
+                                className="mb-3"
+                                isChecked={requiresShipping}
+                                onChange={this._onShippingChange}
+                            >
+                                Item requires shipping
+                            </CheckBox>
+                        </PopoverBody>
+                        <hr className="m-0" />
+                        <PopoverBody className="d-flex">
+                            <Button
+                                type="button"
+                                tabIndex={0}
+                                className={css.focusable}
+                                onClick={this._onCancel}
+                            >
+                                Cancel
+                            </Button>
+                            <Button
+                                color="primary"
+                                type="submit"
+                                tabIndex={0}
+                                className={classnames('ml-auto', css.focusable)}
+                            >
+                                Save item
+                            </Button>
+                        </PopoverBody>
+                    </Form>
+                </Popover>
+            </div>
+        )
+    }
+}

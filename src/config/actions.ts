@@ -1,4 +1,4 @@
-import {ShopifyActionType} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
+import {ShopifyActionType} from '../Widgets/modules/Shopify/types'
 import {BigCommerceActionType} from '../models/integration/types'
 
 export const INFOBAR_CUSTOM_BUTTON_ACTION_NAME = 'customHttpAction'

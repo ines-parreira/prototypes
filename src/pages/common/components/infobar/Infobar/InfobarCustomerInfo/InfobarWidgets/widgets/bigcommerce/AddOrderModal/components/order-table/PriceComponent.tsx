@@ -4,7 +4,7 @@ import {Label} from '@gorgias/ui-kit'
 
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 import Button from 'pages/common/components/button/Button'
 import {
     BigCommerceCartLineItem,
@@ -114,9 +114,7 @@ export default function PriceComponent({
                             onChange={setDiscountAmount}
                             prefix={
                                 <span className={css.amountPrefix}>
-                                    {getShopifyMoneySymbol(
-                                        currencyCode || 'USD'
-                                    )}
+                                    {getMoneySymbol(currencyCode || 'USD')}
                                 </span>
                             }
                             hasError={hasError}

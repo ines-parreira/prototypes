@@ -1,4 +1,3 @@
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import http from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/http'
 import magento2 from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
 import recharge from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/recharge'
@@ -10,6 +9,8 @@ import {IntegrationType} from 'models/integration/constants'
 import {Template} from 'models/widget/types'
 import {WidgetType} from 'state/widgets/types'
 import {WOOCOMMERCE_WIDGET_TYPE} from 'state/widgets/constants'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+
 import {TemplateCustomization} from '../types'
 
 const customizationSeekerByType: {

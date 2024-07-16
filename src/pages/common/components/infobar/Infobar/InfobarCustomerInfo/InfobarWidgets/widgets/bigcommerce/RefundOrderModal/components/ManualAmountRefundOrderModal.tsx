@@ -6,7 +6,7 @@ import {
     CalculateOrderRefundDataResponse,
     BigCommerceRefundItemsPayload,
 } from 'models/integration/types'
-import getShopifyMoneySymbol from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/helpers'
+import {getMoneySymbol} from 'utils/getMoneySymbol'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
@@ -38,7 +38,7 @@ export function ManualAmountRefundOrderModal({
 
     const availableAmount =
         refundData?.order_level_refund_data?.available_amount || 0
-    const currencySymbol = getShopifyMoneySymbol(currencyCode || 'USD', true)
+    const currencySymbol = getMoneySymbol(currencyCode || 'USD', true)
     const amountToRefundCaption = `Available for refund: ${formatAmount(
         currencyCode,
         availableAmount

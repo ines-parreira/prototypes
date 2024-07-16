@@ -23,15 +23,6 @@ import {
     stopWidgetEdition,
 } from 'state/widgets/actions'
 import {getWidgetsState} from 'state/widgets/selectors'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
-import UICard from 'Widgets/modules/Template/modules/Card/components/views'
-import {isDefaultOpen} from 'Widgets/modules/Template/modules/Card/helpers/isDefaultOpen'
-import {
-    CardEditFormState,
-    HiddenField,
-} from 'Widgets/modules/Template/modules/Card/types'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {
@@ -40,9 +31,16 @@ import {
     isSimpleTemplateWidget,
 } from 'pages/common/components/infobar/utils'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
+
+import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
+
+import {CardEditFormState, HiddenField} from '../types'
+import {isDefaultOpen} from '../helpers/isDefaultOpen'
+import UICard from '../components/views'
 
 export const NO_DATA_TEXT = 'No data'
 
