@@ -10,7 +10,6 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
 
 import {NotificationsSettings} from 'common/notifications'
@@ -100,6 +99,7 @@ import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHe
 import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import {SLAForm, SLAList, SLATemplateList} from 'pages/settings/SLAs'
+import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import SupportPerformanceTags from 'pages/stats/SupportPerformanceTags'
 import ImportPhoneNumber from 'pages/tasks/detail/ImportPhoneNumber'
