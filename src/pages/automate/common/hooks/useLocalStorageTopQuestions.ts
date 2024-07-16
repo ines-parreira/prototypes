@@ -7,9 +7,7 @@ export type PagesWithTopQuestions = 'automate-overview' | 'all-recommendations'
 
 export type TopQuestions = {
     viewedOnPages: Set<PagesWithTopQuestions>
-    dismissedTemplateKeys: Set<string>
     addViewedOnPage: (page: PagesWithTopQuestions) => void
-    addDismissedTemplateKey: (key: string) => void
 }
 
 export const useLocalStorageTopQuestions = (
@@ -38,7 +36,6 @@ export const useLocalStorageTopQuestions = (
 
     return {
         viewedOnPages: new Set(currentBatch.viewedOnPages),
-        dismissedTemplateKeys: new Set(currentBatch.dismissedTemplateKeys),
         addViewedOnPage: (page) => {
             setStoredValues((previousBatches) => {
                 const currentBatch = getNonExpiredBatchOrNew(
@@ -56,26 +53,6 @@ export const useLocalStorageTopQuestions = (
                 }
             })
         },
-        addDismissedTemplateKey: (templateKey) => {
-            setStoredValues((previousBatches) => {
-                const currentBatch = getNonExpiredBatchOrNew(
-                    previousBatches,
-                    key,
-                    batchDatetime
-                )
-
-                return {
-                    ...previousBatches,
-                    [key]: {
-                        ...currentBatch,
-                        dismissedTemplateKeys: [
-                            ...currentBatch.dismissedTemplateKeys,
-                            templateKey,
-                        ],
-                    },
-                }
-            })
-        },
     }
 }
 
@@ -88,7 +65,6 @@ type LocalStorageTopQuestionsBatches = Record<
     {
         latestBatchDatetime: string
         viewedOnPages: PagesWithTopQuestions[]
-        dismissedTemplateKeys: string[]
     }
 >
 
@@ -121,7 +97,6 @@ const getNonExpiredBatchOrNew = (
 
     return {
         viewedOnPages: [],
-        dismissedTemplateKeys: [],
         latestBatchDatetime: batchDatetime.toISOString(),
     }
 }

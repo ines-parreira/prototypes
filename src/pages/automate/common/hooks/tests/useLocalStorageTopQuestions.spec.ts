@@ -1,5 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {act} from 'react-dom/test-utils'
+import {act, renderHook} from '@testing-library/react-hooks'
 import {useLocalStorageTopQuestions} from '../useLocalStorageTopQuestions'
 
 const dateNow = new Date('2024-02-10T08:00:00Z')
@@ -27,9 +26,7 @@ describe('useLocalStorageTopQuestions', () => {
 
         expect(result.current).toEqual({
             viewedOnPages: new Set(),
-            dismissedTemplateKeys: new Set(),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
     })
 
@@ -44,30 +41,19 @@ describe('useLocalStorageTopQuestions', () => {
 
         expect(result.current).toEqual({
             viewedOnPages: new Set(),
-            dismissedTemplateKeys: new Set(),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
 
         act(() => result.current.addViewedOnPage('automate-overview'))
         act(() => result.current.addViewedOnPage('all-recommendations'))
         act(() => result.current.addViewedOnPage('automate-overview'))
-        act(() => result.current.addDismissedTemplateKey('ai_Generated_1'))
-        act(() => result.current.addDismissedTemplateKey('ai_Generated_2'))
-        act(() => result.current.addDismissedTemplateKey('ai_Generated_3'))
 
         expect(result.current).toEqual({
             viewedOnPages: new Set([
                 'automate-overview',
                 'all-recommendations',
             ]),
-            dismissedTemplateKeys: new Set([
-                'ai_Generated_1',
-                'ai_Generated_2',
-                'ai_Generated_3',
-            ]),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
     })
 
@@ -85,13 +71,10 @@ describe('useLocalStorageTopQuestions', () => {
         )
 
         act(() => result.current.addViewedOnPage('automate-overview'))
-        act(() => result.current.addDismissedTemplateKey('ai_Generated_1'))
 
         expect(result.current).toEqual({
             viewedOnPages: new Set(['automate-overview']),
-            dismissedTemplateKeys: new Set(['ai_Generated_1']),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
 
         jest.useFakeTimers().setSystemTime(dateNow)
@@ -106,9 +89,7 @@ describe('useLocalStorageTopQuestions', () => {
 
         expect(result.current).toEqual({
             viewedOnPages: new Set(),
-            dismissedTemplateKeys: new Set(),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
     })
 
@@ -125,13 +106,10 @@ describe('useLocalStorageTopQuestions', () => {
         )
 
         act(() => result.current.addViewedOnPage('automate-overview'))
-        act(() => result.current.addDismissedTemplateKey('ai_Generated_1'))
 
         expect(result.current).toEqual({
             viewedOnPages: new Set(['automate-overview']),
-            dismissedTemplateKeys: new Set(['ai_Generated_1']),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
 
         const {result: newResult} = renderHook(() =>
@@ -144,9 +122,7 @@ describe('useLocalStorageTopQuestions', () => {
 
         expect(newResult.current).toEqual({
             viewedOnPages: new Set(),
-            dismissedTemplateKeys: new Set(),
             addViewedOnPage: expect.any(Function),
-            addDismissedTemplateKey: expect.any(Function),
         })
     })
 })
