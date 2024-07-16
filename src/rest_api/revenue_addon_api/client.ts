@@ -9,11 +9,11 @@ import OpenAPIDoc from './revenue-addon.openapi.json'
 
 function getGorgiasRevenueAddonApiBaseUrl(): string {
     if (isProduction()) {
-        return 'https://gorgias.win'
+        return 'https://gorgias-convert.com'
     }
 
     if (isStaging()) {
-        return 'https://staging.gorgias.win'
+        return 'https://staging.gorgias-convert.com'
     }
 
     return 'http://acme.gorgias.docker:8095'
