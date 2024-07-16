@@ -6,9 +6,16 @@ import {
     EmailMigrationOutboundVerification,
     EmailDomain,
 } from '../types'
+import {EmailProvider} from '../constants'
 
 type StartMigrationResponse = {
     forwarding_email_address: string
+}
+
+export type CreateDomainVerificationPayload = {
+    domainName: string
+    dkimKeySize?: number
+    provider: string | EmailProvider
 }
 
 export const startEmailMigration = async () => {
@@ -47,10 +54,9 @@ export const fetchMigrationDomains = async () => {
 }
 
 export const createDomainVerification = async (
-    domainName: string,
-    dkimKeySize: number,
-    provider?: string
+    payload: CreateDomainVerificationPayload
 ) => {
+    const {domainName, dkimKeySize, provider} = payload
     const response = await client.put<EmailDomain>(
         `/api/integrations/domains/${domainName}`,
         {

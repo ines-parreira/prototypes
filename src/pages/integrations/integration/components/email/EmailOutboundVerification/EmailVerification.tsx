@@ -5,6 +5,7 @@ import Button from 'pages/common/components/button/Button'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import history from 'pages/history'
 import {EmailIntegration} from 'models/integration/types'
+import {EmailProvider} from 'models/integration/constants'
 import Loader from 'pages/common/components/Loader/Loader'
 import {
     getDomainFromEmailAddress,
@@ -12,6 +13,7 @@ import {
     isOutboundDomainVerified,
     isSingleSenderVerified as checkIsSingleSenderVerified,
 } from '../helpers'
+import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
 import VerificationCardFooter from './VerificationCard/VerificationCardFooter'
 import VerificationCard from './VerificationCard/VerificationCard'
 
@@ -33,8 +35,13 @@ export default function EmailVerification({
     const isBaseIntegration = isBaseEmailIntegration(integration)
 
     const domain = getDomainFromEmailAddress(integration.meta.address)
+    const {isLoading, createDomainVerification} = useCreateDomainVerification()
 
-    const handleVerifyDomainClick = () => {
+    const handleVerifyDomainClick = async () => {
+        await createDomainVerification({
+            domainName: domain,
+            provider: EmailProvider.Sendgrid,
+        })
         history.push(`${baseURL}/domain`)
     }
 
@@ -99,6 +106,7 @@ export default function EmailVerification({
                         <Button
                             onClick={handleVerifyDomainClick}
                             isDisabled={isBaseIntegration}
+                            isLoading={isLoading}
                         >
                             Verify domain
                         </Button>

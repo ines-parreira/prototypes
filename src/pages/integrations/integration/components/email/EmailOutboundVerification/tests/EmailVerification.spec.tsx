@@ -1,4 +1,10 @@
-import {cleanup, render, screen, within} from '@testing-library/react'
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    within,
+} from '@testing-library/react'
 import React from 'react'
 import {merge} from 'lodash'
 import {Provider} from 'react-redux'
@@ -13,6 +19,12 @@ import EmailVerification, {Props} from '../EmailVerification'
 const integration = integrationsState.integrations.find(
     (integration) => integration.meta.address === 'sendgrid@gorgias.io'
 ) as unknown as EmailIntegration
+
+const mockCreateDomainVerification = jest.fn()
+jest.mock('../../hooks/useCreateDomainVerification', () => () => ({
+    isLoading: false,
+    createDomainVerification: mockCreateDomainVerification,
+}))
 
 describe('EmailVerification', () => {
     const renderComponent = (props?: Partial<Props>, store = {}) => {
@@ -95,6 +107,26 @@ describe('EmailVerification', () => {
                     name: /verify domain/i,
                 })
             ).toBeTruthy()
+            expect(screen.queryByText('Required')).toBeInTheDocument()
+        })
+
+        it('should trigger a domain verification creation when clicking on Verify Domain', () => {
+            renderComponent({
+                integration: merge(integration, {
+                    is_base_email_integration: false,
+                    meta: {
+                        address: 'sendgridAddress@email.com',
+                        outbound_verification_status: {
+                            domain: OutboundVerificationStatusValue.Unverified,
+                        },
+                    },
+                }),
+            })
+            const verifyButton = screen.getByRole('button', {
+                name: /verify domain/i,
+            })
+            fireEvent.click(verifyButton)
+            expect(mockCreateDomainVerification).toHaveBeenCalled()
             expect(screen.queryByText('Required')).toBeInTheDocument()
         })
 

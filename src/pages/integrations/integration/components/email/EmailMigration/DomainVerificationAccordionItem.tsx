@@ -6,6 +6,7 @@ import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
 } from 'models/integration/types'
+import {EmailProvider} from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
@@ -39,7 +40,11 @@ export default function DomainVerificationAccordionItem({
     }
 
     const handleVerifyDomain = async () => {
-        await createDomainVerification(verification.name, 1024, 'sendgrid')
+        await createDomainVerification({
+            domainName: verification.name,
+            dkimKeySize: 1024,
+            provider: EmailProvider.Sendgrid,
+        })
         refreshMigrationData()
     }
 
