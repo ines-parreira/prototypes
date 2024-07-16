@@ -286,6 +286,12 @@ export const customerVariables: WorkflowVariable[] = [
         nodeType: 'shopper_authentication',
         type: 'string',
     },
+    {
+        name: 'Customer tags',
+        value: 'objects.customer.tags_stringified',
+        nodeType: 'shopper_authentication',
+        type: 'string',
+    },
 ]
 
 export function getStepByKind<

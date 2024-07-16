@@ -426,6 +426,12 @@ export const buildWorkflowVariableFromNode = (
                     nodeType: 'shopper_authentication',
                     type: 'string',
                 },
+                {
+                    name: 'Customer tags',
+                    value: `steps_state.${node.id}.customer.tags_stringified`,
+                    nodeType: 'shopper_authentication',
+                    type: 'string',
+                },
             ],
         }
     } else if (node.type === 'http_request') {
