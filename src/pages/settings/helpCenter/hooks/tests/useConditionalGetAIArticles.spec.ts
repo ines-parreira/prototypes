@@ -44,7 +44,11 @@ describe('useConditionalGetAIArticles', () => {
                 false,
         })
         const {result} = renderHook(() =>
-            useConditionalGetAIArticles(1, 2, 'en-US')
+            useConditionalGetAIArticles({
+                helpCenterId: 1,
+                storeIntegrationId: 2,
+                locale: 'en-US',
+            })
         )
 
         expect(mockedUseGetAIArticlesByHelpCenter).toHaveBeenCalled()
@@ -58,7 +62,11 @@ describe('useConditionalGetAIArticles', () => {
                 true,
         })
         const {result} = renderHook(() =>
-            useConditionalGetAIArticles(1, 2, 'en-US')
+            useConditionalGetAIArticles({
+                helpCenterId: 1,
+                storeIntegrationId: 2,
+                locale: 'en-US',
+            })
         )
 
         expect(mockedUseGetAIArticlesByHelpCenterAndStore).toHaveBeenCalled()

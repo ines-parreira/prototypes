@@ -37,7 +37,7 @@ const filterAIArticleStatusByReviewAction = (
 
 type Props = {
     helpCenterId: number
-    storeIntegrationId: number
+    storeIntegrationId: number | null
     locale: LocaleCode
     statusFilter: AllRecommendationsStatus
     currentPage: number
@@ -56,11 +56,11 @@ export const useAIArticleRecommendationItems = ({
         throw new Error('Current page must be greater than or equal to 1')
     }
 
-    const {fetchedArticles, isLoading} = useConditionalGetAIArticles(
+    const {fetchedArticles, isLoading} = useConditionalGetAIArticles({
         helpCenterId,
         storeIntegrationId,
-        locale
-    )
+        locale,
+    })
 
     const sortedFetchedArticles = useMemo(() => {
         if (!fetchedArticles) return []

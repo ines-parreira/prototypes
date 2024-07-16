@@ -57,11 +57,13 @@ export const useHelpCenterAIArticlesLibrary = (
     )
 
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
-        useConditionalGetAIArticles(
+        useConditionalGetAIArticles({
             helpCenterId,
-            Number(storeIntegration?.id),
-            locale
-        )
+            storeIntegrationId: storeIntegration
+                ? Number(storeIntegration?.id)
+                : null,
+            locale,
+        })
     const fetchedArticlesCount = fetchedArticles?.length ?? 0
 
     const [selectedArticle, setSelectedArticle] =

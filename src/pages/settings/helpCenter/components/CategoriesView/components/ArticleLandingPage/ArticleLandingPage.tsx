@@ -54,11 +54,13 @@ const ArticleLandingPageComponent = ({
         helpCenter.shop_name ?? ''
     )
     const {fetchedArticles: aiArticles, isLoading: isAIArticlesLoading} =
-        useConditionalGetAIArticles(
-            helpCenter.id,
-            Number(storeIntegration?.id),
-            viewLanguage
-        )
+        useConditionalGetAIArticles({
+            helpCenterId: helpCenter.id,
+            storeIntegrationId: storeIntegration
+                ? Number(storeIntegration.id)
+                : null,
+            locale: viewLanguage,
+        })
 
     const hasAIArticlesNotReviewed = useMemo(() => {
         return aiArticles?.some((aiArticle) => !aiArticle.review_action)

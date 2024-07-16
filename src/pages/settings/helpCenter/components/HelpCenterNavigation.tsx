@@ -52,11 +52,13 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     const storeIntegration = useSelfServiceStoreIntegrationByShopName(
         helpCenterShopName ?? ''
     )
-    const {fetchedArticles: aiArticles} = useConditionalGetAIArticles(
-        Number(helpCenterId),
-        Number(storeIntegration?.id),
-        locale
-    )
+    const {fetchedArticles: aiArticles} = useConditionalGetAIArticles({
+        helpCenterId: Number(helpCenterId),
+        storeIntegrationId: storeIntegration
+            ? Number(storeIntegration.id)
+            : null,
+        locale,
+    })
 
     const isAIArticlesForMultiStoreEnabled =
         useFlags()[

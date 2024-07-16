@@ -103,11 +103,10 @@ export const articleTemplateKeys = {
 export const aiArticleKeys = {
     all: () => ['aiArticle'] as const,
     lists: () => [...aiArticleKeys.all(), 'list'],
-    listWithStore: (helpCenterId: number, storeIntegrationId: number) => [
-        ...aiArticleKeys.list(helpCenterId),
-        'store',
-        storeIntegrationId,
-    ],
+    listWithStore: (
+        helpCenterId: number,
+        storeIntegrationId: number | null
+    ) => [...aiArticleKeys.list(helpCenterId), 'store', storeIntegrationId],
     list: (helpCenterId: number) => [...aiArticleKeys.lists(), helpCenterId],
     listAll: (locale: string) => [...aiArticleKeys.lists(), 'all', locale],
 }
@@ -272,7 +271,7 @@ export const useGetAIArticlesByHelpCenterAndStore = <
     >
 >(
     helpCenterId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.HelpCenterId,
-    storeIntegrationId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.StoreIntegrationId,
+    storeIntegrationId: Paths.ListAIArticleTemplatesByHelpCenterAndStore.Parameters.StoreIntegrationId | null,
     locale: Paths.ListArticleTemplates.Parameters.Locale,
     isAIArticlesForMultiStoreEnabled: boolean,
     overrides?: UseQueryOptions<
@@ -286,13 +285,19 @@ export const useGetAIArticlesByHelpCenterAndStore = <
     return useQuery({
         queryKey: aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId),
         queryFn: async () => {
+            if (storeIntegrationId === null) {
+                return Promise.resolve(null)
+            }
             return getAIGeneratedArticlesByHelpCenterAndStore(client, {
                 help_center_id: helpCenterId,
                 store_integration_id: storeIntegrationId,
             })
         },
         enabled:
-            !!client && locale === 'en-US' && isAIArticlesForMultiStoreEnabled,
+            !!client &&
+            locale === 'en-US' &&
+            isAIArticlesForMultiStoreEnabled &&
+            storeIntegrationId !== null,
         ...overrides,
     })
 }

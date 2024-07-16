@@ -30,11 +30,13 @@ export const useGetHelpCenterArticles = (
         helpCenterShopName ?? ''
     )
     const {fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading} =
-        useConditionalGetAIArticles(
+        useConditionalGetAIArticles({
             helpCenterId,
-            Number(storeIntegration?.id),
-            locale
-        )
+            storeIntegrationId: storeIntegration
+                ? Number(storeIntegration.id)
+                : null,
+            locale,
+        })
 
     const {data: articleTemplates, isLoading: isGetArticleTemplatesLoading} =
         useGetArticleTemplates(locale, {

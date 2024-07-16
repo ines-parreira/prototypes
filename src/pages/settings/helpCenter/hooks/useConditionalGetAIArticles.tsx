@@ -23,11 +23,17 @@ type FetchedArticles =
     | AIArticlesByHelpCenterAndStore
     | null
 
-export const useConditionalGetAIArticles = (
-    helpCenterId: number,
-    storeIntegrationId: number,
+type Props = {
+    helpCenterId: number
+    storeIntegrationId: number | null
     locale: LocaleCode
-) => {
+}
+
+export const useConditionalGetAIArticles = ({
+    helpCenterId,
+    storeIntegrationId,
+    locale,
+}: Props) => {
     const [fetchedArticles, setFetchedArticles] =
         useState<FetchedArticles>(null)
     const [isLoading, setIsLoading] = useState(false)

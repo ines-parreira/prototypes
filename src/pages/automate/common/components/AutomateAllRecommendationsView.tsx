@@ -51,7 +51,9 @@ const AutomateAllRecommendationsView = () => {
         isLoading,
         batchDatetime,
     } = useAIArticleRecommendationItems({
-        storeIntegrationId: Number(storeIntegrationId),
+        storeIntegrationId: !isNaN(Number(storeIntegrationId))
+            ? Number(storeIntegrationId)
+            : null,
         helpCenterId: Number(helpCenterId),
         locale: helpCenter?.default_locale ?? 'en-US',
         statusFilter,
