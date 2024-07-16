@@ -123,14 +123,13 @@ describe('Metrics Calculation Functions', () => {
         })
 
         it('workflowEndStepAutomatedInteractions should correctly calculate end step automated interactions', () => {
-            expect(workflowEndStepAutomatedInteractions(150, 50, 25)).toBe(75)
-            expect(workflowEndStepAutomatedInteractions(120, 20, 30)).toBe(70)
+            expect(workflowEndStepAutomatedInteractions(150, 25)).toBe(125)
+            expect(workflowEndStepAutomatedInteractions(120, 30)).toBe(90)
         })
 
         it('workflowEndStepAutomatedInteractions should return 0 if any parameter is null', () => {
-            expect(workflowEndStepAutomatedInteractions(null, 10, 5)).toBe(0)
-            expect(workflowEndStepAutomatedInteractions(10, null, 5)).toBe(0)
-            expect(workflowEndStepAutomatedInteractions(10, 20, null)).toBe(0)
+            expect(workflowEndStepAutomatedInteractions(null, 5)).toBe(0)
+            expect(workflowEndStepAutomatedInteractions(10, null)).toBe(0)
         })
     })
 })

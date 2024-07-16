@@ -45,7 +45,7 @@ export const WorkflowOverviewMetrics = ({
         <div className={css.metricsContainer}>
             <div className={css.firstMetrics}>
                 <div className={css.nodeMetric}>
-                    <span className={css.metricLabel}>Total views</span>
+                    <span className={css.metricLabel}>Total starts</span>
                     <span className={css.metricValue}>
                         {displayMetric(
                             workflowTotalViews.data?.value,

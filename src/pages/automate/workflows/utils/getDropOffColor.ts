@@ -4,8 +4,11 @@ export const getDropoffColor = (
     dropOffRate: number,
     tiers: WorkflowDropoffMetricTiers[]
 ): WorkflowDropoffMetricTiers | undefined => {
+    const roundedDropOffRate = parseFloat(dropOffRate.toFixed(2))
     const matchingTier = tiers.find(
-        (tier) => dropOffRate >= tier.range[0] && dropOffRate <= tier.range[1]
+        (tier) =>
+            roundedDropOffRate >= tier.range[0] &&
+            roundedDropOffRate <= tier.range[1]
     )
     return matchingTier
 }

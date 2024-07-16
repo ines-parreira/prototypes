@@ -152,22 +152,17 @@ export const workflowEndStepDropoff = (
 }
 
 export const workflowEndStepAutomatedInteractions = (
-    workflowEndStepStarted: number | null,
-    workflowEndStepDropoff: number | null,
+    workflowEndStepEnded: number | null,
     workflowStepTicketsCreated: number | null
 ): number => {
     if (
-        workflowEndStepStarted == null ||
+        workflowEndStepEnded == null ||
         workflowEndStepDropoff == null ||
         workflowStepTicketsCreated == null
     )
         return 0
 
-    return nonNegative(
-        workflowEndStepStarted -
-            workflowEndStepDropoff -
-            workflowStepTicketsCreated
-    )
+    return nonNegative(workflowEndStepEnded - workflowStepTicketsCreated)
 }
 
 export const calculateRate = (

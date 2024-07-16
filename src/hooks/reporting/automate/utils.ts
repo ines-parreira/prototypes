@@ -35,6 +35,7 @@ import {
     FLOW_HANDOVER_TICKET_CREATED,
     FLOW_PROMPT_NOT_HELPFUL,
     FLOW_STARTED,
+    FLOW_STEP_ENDED,
     FLOW_STEP_STARTED,
     GreyArea,
     WorkflowTrendMetrics,
@@ -408,6 +409,10 @@ export function computeWorkflowStepsMetrics(
                 events,
                 FLOW_STEP_STARTED
             )
+            const workflowStepEnded = getCountEventsByEventType(
+                events,
+                FLOW_STEP_ENDED
+            )
             const workflowStepPromptNotHelpful = getCountEventsByEventType(
                 events,
                 FLOW_PROMPT_NOT_HELPFUL
@@ -446,8 +451,7 @@ export function computeWorkflowStepsMetrics(
                     )
                     workflowAnalyticsData.automatedInteractions =
                         workflowEndStepAutomatedInteractions(
-                            workflowStepStarted,
-                            workflowAnalyticsData.dropoff,
+                            workflowStepEnded,
                             workflowStepTicktesCreated
                         )
                     break

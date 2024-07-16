@@ -53,7 +53,11 @@ const WorkflowAnalyticsBanner: React.FC<WorkflowAnalyticsBannerProps> = ({
         >
             {message}
             {displayMultipleVersionsBanner && (
-                <a href="" target="_blank" rel="noopener noreferrer">
+                <a
+                    href="https://link.gorgias.com/ma6"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     Learn more
                 </a>
             )}
