@@ -296,7 +296,8 @@ export const TestFlowEditor = ({
                                 [css['hidden']]: !isFlowInterpreterStarted,
                             })}
                             ref={(el) => {
-                                if (!el || !installationSnippet) return
+                                if (!el || !installationSnippet || !label)
+                                    return
                                 if (el.querySelector('#chat-iframe')) return
 
                                 const snippet = new DOMParser().parseFromString(
