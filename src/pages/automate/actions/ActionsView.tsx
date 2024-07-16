@@ -79,10 +79,10 @@ export default function ActionView() {
             ) : (
                 <>
                     <AutomateViewEmptyStateBanner
+                        id="actions"
                         title="Set up Actions for AI Agent to automate requests involving your 3rd party apps"
                         description={ACTIONS_DESCRIPTION}
                         image={emptyState}
-                        canduId="actions-empty-state-banner"
                     />
                     {templateConfigurations &&
                         templateConfigurations?.length > 0 && (

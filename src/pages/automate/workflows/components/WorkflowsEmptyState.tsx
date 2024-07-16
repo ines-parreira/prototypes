@@ -28,6 +28,7 @@ const WorkflowsEmptyState: React.FC<Props> = ({
     return (
         <>
             <AutomateViewEmptyStateBanner
+                id="flows"
                 title={WORKFLOWS_MAIN_TITLE}
                 description={WORKFLOWS_DESCRIPTION}
                 image={templatesImage}
