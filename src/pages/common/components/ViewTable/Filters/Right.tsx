@@ -34,7 +34,6 @@ import DatePicker from 'pages/common/forms/DatePicker'
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from 'pages/common/components/ViewTable/Filters/Right.less'
 
@@ -222,14 +221,6 @@ export class RightContainer extends Component<Props, State> {
                 )
             }
 
-            const v2StylesEnabled =
-                this.props.flags?.[FeatureFlagKey.NewTicketSnoozeAndTicketDate]
-
-            const v2Props = {
-                actionButtonsOnTheBottom: !!v2StylesEnabled,
-                shouldShowMonthAndYearDropdowns: !!v2StylesEnabled,
-            }
-
             const datetime =
                 (displayedValue &&
                     stringToDatetime(displayedValue as string)) ||
@@ -240,19 +231,14 @@ export class RightContainer extends Component<Props, State> {
                     initialSettings={{
                         endDate: datetime,
                         startDate: datetime,
-                        applyButtonClasses:
-                            v2StylesEnabled === true
-                                ? 'btn-primary'
-                                : undefined,
                         timePicker24Hour:
                             this.props.timeSettings ===
                             TimeFormatType.TwentyFourHour,
-                        showDropdowns: !!v2StylesEnabled,
                     }}
                     onSubmit={(date) => {
                         updateFieldFilter(index, date.toISOString())
                     }}
-                    {...v2Props}
+                    additionalPickerClassName="add-calendar-spacing"
                 >
                     <div>
                         <Input

@@ -6,7 +6,6 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 import {agents} from 'fixtures/agents'
@@ -18,7 +17,6 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import SupportPerformanceBusiestTimesOfDays from 'pages/stats/SupportPerformanceBusiestTimesOfDays'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock(
     'pages/stats/TagsStatsFilter',
@@ -71,9 +69,6 @@ describe('<SupportPerformanceBusiestTimesOfDays />', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
     })
 
     it('should render the page', () => {

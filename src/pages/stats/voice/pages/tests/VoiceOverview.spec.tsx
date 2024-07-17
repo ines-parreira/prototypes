@@ -5,8 +5,6 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {render, fireEvent, waitFor} from '@testing-library/react'
 import {QueryClientProvider} from '@tanstack/react-query'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ALL_CALLS_FILTER_LABEL,
     CALL_LIST_TITLE,
@@ -68,13 +66,6 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
 )
 
 describe('VoiceOverview', () => {
-    beforeEach(() => {
-        resetLDMocks()
-        mockFlags({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        })
-    })
-
     const renderVoiceOverview = (featureEnabled = true) => {
         const statsFilters: StatsFilters = {
             period: {

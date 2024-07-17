@@ -9,6 +9,7 @@ import {PeriodPickerContainer, Props} from 'pages/stats/common/PeriodPicker'
 const periodPickerClassListMockSpy = jest.fn()
 const periodPickerRangesClassListMockSpy = jest.fn()
 const periodPickerRangesAttributesListMockSpy = jest.fn()
+const mockDateRangePickerTestId = 'MockDateRangePicker'
 const mockedEventTarget = {
     container: {
         get: () => ({
@@ -35,7 +36,7 @@ jest.mock(
             onApply?.({} as any, initialSettings as any)
             return (
                 <div
-                    data-testid="MockDateRangePicker"
+                    data-testid={mockDateRangePickerTestId}
                     onClick={(e) => {
                         onShow?.(e as any, mockedEventTarget as any)
                     }}
@@ -141,10 +142,22 @@ describe('PeriodPicker', () => {
         })
     })
 
-    it('should render default period picker if no props related to v2 are added', () => {
-        const {getByTestId} = render(<PickerWithDefaultProps />)
+    it('should render default period picker if props related to v1 are provided', () => {
+        const pickerV1Props = {
+            pickerV2Styles: false,
+            rangesOnLeft: false,
+            showRangesLabel: true,
+            actionButtonsOnTheBottom: false,
+            changeButtonColorsToV2: true,
+            rangeDatesInFooter: false,
+            shouldShowMonthAndYearDropdowns: false,
+        }
 
-        getByTestId('MockDateRangePicker').click()
+        const {getByTestId} = render(
+            <PickerWithDefaultProps {...pickerV1Props} />
+        )
+
+        getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenCalledWith(
             theme,
@@ -164,7 +177,7 @@ describe('PeriodPicker', () => {
             <PickerWithDefaultProps pickerV2Styles={true} />
         )
 
-        getByTestId('MockDateRangePicker').click()
+        getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             2,
@@ -178,7 +191,7 @@ describe('PeriodPicker', () => {
             <PickerWithDefaultProps pickerV2Styles={true} rangesOnLeft={true} />
         )
 
-        getByTestId('MockDateRangePicker').click()
+        getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             2,
@@ -198,28 +211,25 @@ describe('PeriodPicker', () => {
             <PickerWithDefaultProps showRangesLabel={false} />
         )
 
-        getByTestId('MockDateRangePicker').click()
+        getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerRangesClassListMockSpy).not.toHaveBeenCalled()
         expect(periodPickerRangesAttributesListMockSpy).not.toHaveBeenCalled()
     })
 
     it('should add class names related to buttons on the bottom', () => {
-        const {getByTestId} = render(
-            <PickerWithDefaultProps actionButtonsOnTheBottom={true} />
-        )
+        const {getByTestId} = render(<PickerWithDefaultProps />)
 
-        getByTestId('MockDateRangePicker').click()
+        getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
-            2,
+            4,
             'picker-v2',
             'action-buttons-on-the-bottom'
         )
     })
 
     it('should add class related to date ranges and check that it is added only when buttons on the bottom is enabled', () => {
-        //Check if neither classNames were added for buttons nor date ranges in the footer
         const {getByTestId, rerender} = render(
             <PickerWithDefaultProps
                 actionButtonsOnTheBottom={false}
@@ -227,31 +237,29 @@ describe('PeriodPicker', () => {
             />
         )
 
-        getByTestId('MockDateRangePicker').click()
+        getByTestId(mockDateRangePickerTestId).click()
 
-        expect(periodPickerClassListMockSpy.mock.calls.length).toEqual(1)
+        expect(
+            periodPickerClassListMockSpy.mock.calls.some((call: string[]) =>
+                call.includes('range-dates-in-footer')
+            )
+        ).toBe(false)
 
         periodPickerClassListMockSpy.mockClear()
 
-        //Check if classNames were added for buttons and date ranges in the footer
-        rerender(
-            <PickerWithDefaultProps
-                actionButtonsOnTheBottom={true}
-                rangeDatesInFooter={true}
-            />
-        )
+        rerender(<PickerWithDefaultProps />)
 
-        getByTestId('MockDateRangePicker').click()
+        getByTestId(mockDateRangePickerTestId).click()
 
-        expect(periodPickerClassListMockSpy.mock.calls.length).toEqual(3)
+        expect(periodPickerClassListMockSpy.mock.calls.length).toEqual(5)
 
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
-            2,
+            4,
             'picker-v2',
             'action-buttons-on-the-bottom'
         )
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
-            3,
+            5,
             'range-dates-in-footer'
         )
     })

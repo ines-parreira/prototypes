@@ -4,7 +4,6 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -18,7 +17,6 @@ import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomateIntents from 'pages/stats/AutomateIntents'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -54,9 +52,6 @@ describe('AutomateIntents', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
     })
 
     it('should render the filters and stats when stats filters are defined', () => {

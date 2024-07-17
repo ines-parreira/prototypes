@@ -5,7 +5,6 @@ import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
-import LD from 'launchdarkly-react-client-sdk'
 import useStatResource from 'hooks/reporting/useStatResource'
 
 import {RootState, StoreDispatch} from 'state/types'
@@ -40,7 +39,6 @@ import {channelConnection} from 'fixtures/channelConnection'
 import {campaign} from 'fixtures/campaign'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
@@ -231,9 +229,6 @@ describe('SupportPerformanceRevenue', () => {
         useListCampaignMock.mockReturnValue({
             data: [campaign],
         } as any)
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
     })
 
     afterEach(() => {

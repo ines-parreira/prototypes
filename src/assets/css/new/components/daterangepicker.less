@@ -42,7 +42,6 @@
 
 .daterangepicker {
     font-family: 'Inter', sans-serif;
-    padding: 24px;
     background-color: var(--neutral-grey-0);
     border: 1px solid var(--neutral-grey-3);
     color: var(--neutral-grey-6);
@@ -126,7 +125,6 @@
         display: grid !important;
         grid-template-columns: repeat(3, auto);
         grid-template-rows: 32px auto;
-        padding: 24px;
 
         @media @mobiles {
             grid-template-columns: repeat(2, auto);
@@ -364,10 +362,6 @@
 
     &.picker-v2 {
         &.apply-v2-styles {
-            &.displayed.show-ranges {
-                padding: 0;
-            }
-
             &.show-ranges.ltr .drp-calendar.right {
                 padding: @layout-spacing-s @layout-spacing-s @layout-spacing-s
                     @layout-spacing-xs;
@@ -440,6 +434,12 @@
                     position: static;
                     bottom: unset;
                     margin: 0;
+                }
+            }
+
+            &.add-calendar-spacing {
+                &:not(.show-ranges) .drp-calendar.left.single {
+                    padding: @layout-spacing-s;
                 }
             }
         }

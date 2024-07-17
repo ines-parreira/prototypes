@@ -5,7 +5,6 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {messagesSentPerMacro} from 'fixtures/stats'
@@ -14,7 +13,6 @@ import {integrationsState} from 'fixtures/integrations'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomateMacros from 'pages/stats/AutomateMacros'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
@@ -48,9 +46,6 @@ describe('AutomateMacros', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
     })
 
     it('should render the filters and stats when stats filters are defined', () => {

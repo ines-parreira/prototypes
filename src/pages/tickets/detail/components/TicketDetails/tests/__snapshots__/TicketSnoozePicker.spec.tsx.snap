@@ -10,12 +10,6 @@ exports[`<TicketSnoozePicker/> rendering should not render the datepicker when c
   toggle: undefined
   rangesLabel: "Remind me in"
   unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
-  pickerV2Styles: false
-  rangesOnLeft: false
-  showRangesLabel: true
-  actionButtonsOnTheBottom: false
-  changeButtonColorsToV2: false
-  shouldShowMonthAndYearDropdowns: false
   children: undefined
 </div>
 `;
@@ -32,12 +26,6 @@ exports[`<TicketSnoozePicker/> rendering should render a DatePicker and log erro
       toggle: undefined
       rangesLabel: "Remind me in"
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
-      pickerV2Styles: false
-      rangesOnLeft: false
-      showRangesLabel: true
-      actionButtonsOnTheBottom: false
-      changeButtonColorsToV2: false
-      shouldShowMonthAndYearDropdowns: false
       children: undefined
     </div>
   </div>
@@ -56,12 +44,6 @@ exports[`<TicketSnoozePicker/> rendering should render the default datetime valu
       toggle: undefined
       rangesLabel: "Remind me in"
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
-      pickerV2Styles: false
-      rangesOnLeft: false
-      showRangesLabel: true
-      actionButtonsOnTheBottom: false
-      changeButtonColorsToV2: false
-      shouldShowMonthAndYearDropdowns: false
       children: undefined
     </div>
   </div>
@@ -80,12 +62,6 @@ exports[`<TicketSnoozePicker/> rendering should render the provided value 1`] = 
       toggle: undefined
       rangesLabel: "Remind me in"
       unavailableDateMessage: "You can’t select a time before current time to snooze a ticket."
-      pickerV2Styles: false
-      rangesOnLeft: false
-      showRangesLabel: true
-      actionButtonsOnTheBottom: false
-      changeButtonColorsToV2: false
-      shouldShowMonthAndYearDropdowns: false
       children: undefined
     </div>
   </div>

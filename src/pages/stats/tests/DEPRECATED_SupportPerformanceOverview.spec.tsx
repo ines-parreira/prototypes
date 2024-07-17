@@ -1,11 +1,9 @@
-import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -95,9 +93,6 @@ describe('DEPRECATED_SupportPerformanceOverview', () => {
             .spyOn(Date, 'now')
             .mockImplementation(() => 1487076708000)
         mathRandomSpy = jest.spyOn(Math, 'random').mockImplementation(() => 42)
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
     })
 
     afterEach(() => {

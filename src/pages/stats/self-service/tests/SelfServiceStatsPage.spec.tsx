@@ -6,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 
-import LD from 'launchdarkly-react-client-sdk'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -36,7 +35,6 @@ import {entitiesInitialState} from 'fixtures/entities'
 import {IntegrationType} from 'models/integration/constants'
 import useStatResource from 'hooks/reporting/useStatResource'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {useGetWorkflowConfigurations} from 'models/workflows/queries'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 
@@ -152,9 +150,6 @@ describe('<SelfServiceStatsPage />', () => {
 
     beforeEach(() => {
         useStatResourceMock.mockReturnValue([null, true, _noop])
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
-        }))
         mockedUseWorkflowConfigurations.mockReturnValue({
             isLoading: false,
             data: [],

@@ -29,7 +29,7 @@ const defaultProps: ComponentProps<typeof DatePicker> = {
     onSubmit: () => undefined,
     initialSettings: {
         alwaysShowCalendars: true,
-        applyButtonClasses: 'btn-success mr-2',
+        applyButtonClasses: 'btn-primary',
         cancelButtonClasses: 'btn-secondary',
         opens: 'left',
         showCustomRangeLabel: false,
@@ -38,6 +38,7 @@ const defaultProps: ComponentProps<typeof DatePicker> = {
         startDate: new Date(DATE),
     },
     isOpen: true,
+    additionalPickerClassName: 'add-calendar-spacing',
 }
 
 export const Default = Template.bind({})

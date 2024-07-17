@@ -30,6 +30,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
                   class="d-flex flex-wrap float-right"
                 >
                   <div>
+                    ChannelsStatsFilter
+                  </div>
+                  <div>
                     <button
                       aria-disabled="false"
                       class="wrapper ghost secondary medium"
@@ -611,6 +614,31 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
             Today
           </li>
           <li
+            data-range-key="Yesterday"
+          >
+            Yesterday
+          </li>
+          <li
+            data-range-key="Month to date"
+          >
+            Month to date
+          </li>
+          <li
+            data-range-key="Last week (start on Sun)"
+          >
+            Last week (start on Sun)
+          </li>
+          <li
+            data-range-key="Last week (start on Mon)"
+          >
+            Last week (start on Mon)
+          </li>
+          <li
+            data-range-key="Last month"
+          >
+            Last month
+          </li>
+          <li
             data-range-key="Past 7 days"
           >
             Past 7 days
@@ -629,6 +657,11 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
             data-range-key="Past 90 days"
           >
             Past 90 days
+          </li>
+          <li
+            data-range-key="Past year"
+          >
+            Past year
           </li>
         </ul>
       </div>
@@ -667,7 +700,7 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
           Cancel
         </button>
         <button
-          class="applyBtn btn btn-sm btn-success mr-2"
+          class="applyBtn btn btn-sm btn-primary"
           disabled="disabled"
           type="button"
         >
@@ -702,6 +735,9 @@ exports[`<AutomateOverview /> Performance Tips light-error should show tips with
               <div
                 class="d-flex flex-wrap float-right"
               >
+                <div>
+                  ChannelsStatsFilter
+                </div>
                 <div>
                   <button
                     aria-disabled="false"
@@ -1355,6 +1391,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
                   class="d-flex flex-wrap float-right"
                 >
                   <div>
+                    ChannelsStatsFilter
+                  </div>
+                  <div>
                     <button
                       aria-disabled="false"
                       class="wrapper ghost secondary medium"
@@ -1936,6 +1975,31 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
             Today
           </li>
           <li
+            data-range-key="Yesterday"
+          >
+            Yesterday
+          </li>
+          <li
+            data-range-key="Month to date"
+          >
+            Month to date
+          </li>
+          <li
+            data-range-key="Last week (start on Sun)"
+          >
+            Last week (start on Sun)
+          </li>
+          <li
+            data-range-key="Last week (start on Mon)"
+          >
+            Last week (start on Mon)
+          </li>
+          <li
+            data-range-key="Last month"
+          >
+            Last month
+          </li>
+          <li
             data-range-key="Past 7 days"
           >
             Past 7 days
@@ -1954,6 +2018,11 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
             data-range-key="Past 90 days"
           >
             Past 90 days
+          </li>
+          <li
+            data-range-key="Past year"
+          >
+            Past year
           </li>
         </ul>
       </div>
@@ -1992,7 +2061,7 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
           Cancel
         </button>
         <button
-          class="applyBtn btn btn-sm btn-success mr-2"
+          class="applyBtn btn btn-sm btn-primary"
           disabled="disabled"
           type="button"
         >
@@ -2027,6 +2096,9 @@ exports[`<AutomateOverview /> Performance Tips light-success should show tips wi
               <div
                 class="d-flex flex-wrap float-right"
               >
+                <div>
+                  ChannelsStatsFilter
+                </div>
                 <div>
                   <button
                     aria-disabled="false"
@@ -2680,6 +2752,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
                   class="d-flex flex-wrap float-right"
                 >
                   <div>
+                    ChannelsStatsFilter
+                  </div>
+                  <div>
                     <button
                       aria-disabled="false"
                       class="wrapper ghost secondary medium"
@@ -3261,6 +3336,31 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
             Today
           </li>
           <li
+            data-range-key="Yesterday"
+          >
+            Yesterday
+          </li>
+          <li
+            data-range-key="Month to date"
+          >
+            Month to date
+          </li>
+          <li
+            data-range-key="Last week (start on Sun)"
+          >
+            Last week (start on Sun)
+          </li>
+          <li
+            data-range-key="Last week (start on Mon)"
+          >
+            Last week (start on Mon)
+          </li>
+          <li
+            data-range-key="Last month"
+          >
+            Last month
+          </li>
+          <li
             data-range-key="Past 7 days"
           >
             Past 7 days
@@ -3279,6 +3379,11 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
             data-range-key="Past 90 days"
           >
             Past 90 days
+          </li>
+          <li
+            data-range-key="Past year"
+          >
+            Past year
           </li>
         </ul>
       </div>
@@ -3317,7 +3422,7 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
           Cancel
         </button>
         <button
-          class="applyBtn btn btn-sm btn-success mr-2"
+          class="applyBtn btn btn-sm btn-primary"
           disabled="disabled"
           type="button"
         >
@@ -3352,6 +3457,9 @@ exports[`<AutomateOverview /> Performance Tips success should show tips with sen
               <div
                 class="d-flex flex-wrap float-right"
               >
+                <div>
+                  ChannelsStatsFilter
+                </div>
                 <div>
                   <button
                     aria-disabled="false"
@@ -4001,6 +4109,9 @@ exports[`<AutomateOverview /> should display AAO 1`] = `
             class="d-flex flex-wrap float-right"
           >
             <div>
+              ChannelsStatsFilter
+            </div>
+            <div>
               <button
                 aria-disabled="false"
                 class="wrapper ghost secondary medium"
@@ -4595,6 +4706,9 @@ exports[`<AutomateOverview /> should display paywall 1`] = `
           <div
             class="d-flex flex-wrap float-right"
           >
+            <div>
+              ChannelsStatsFilter
+            </div>
             <div>
               <button
                 aria-disabled="false"

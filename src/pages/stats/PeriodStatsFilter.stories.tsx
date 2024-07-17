@@ -7,7 +7,6 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 const defaultState = {}
 const DATE = '2023-04-14T12:34:56.000Z'
@@ -39,26 +38,9 @@ const defaultProps: ComponentProps<typeof PeriodStatsFilter> = {
     },
 }
 
-const pickerV2Props: ComponentProps<typeof PeriodStatsFilter> = {
-    ...defaultProps,
-}
-
 export const Default = Template.bind({})
 Default.args = defaultProps
-Default.parameters = {
-    flags: {[FeatureFlagKey.NewDatePickerVariant]: false},
-}
 Default.play = ({canvasElement}) => {
-    const canvas = within(canvasElement)
-    userEvent.click(canvas.getByRole('button'))
-}
-
-export const PickerV2 = Template.bind({})
-PickerV2.args = pickerV2Props
-PickerV2.parameters = {
-    flags: {[FeatureFlagKey.NewDatePickerVariant]: true},
-}
-PickerV2.play = ({canvasElement}) => {
     const canvas = within(canvasElement)
     userEvent.click(canvas.getByRole('button'))
 }

@@ -7,7 +7,6 @@ import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import {ThemeProvider} from 'theme'
 import PeriodFilter from 'pages/stats/common/filters/PeriodFilter'
-import {FeatureFlagKey} from 'config/featureFlags'
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
 
 const defaultState = {}
@@ -56,9 +55,6 @@ const defaultProps: ComponentProps<typeof PeriodFilter> = {
 
 export const Default = Template.bind({})
 Default.args = defaultProps
-Default.parameters = {
-    flags: {[FeatureFlagKey.NewDatePickerVariant]: true},
-}
 Default.play = ({canvasElement}) => {
     const canvas = within(canvasElement)
     userEvent.click(

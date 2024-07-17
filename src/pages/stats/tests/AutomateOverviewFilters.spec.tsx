@@ -43,7 +43,6 @@ describe('<AutomateOverviewFilters />', () => {
 
     beforeEach(() => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.NewDatePickerVariant]: false,
             [FeatureFlagKey.AutomateOverviewChannelsFilter]: true,
         }))
     })

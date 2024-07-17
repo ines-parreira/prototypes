@@ -60,7 +60,11 @@ describe('DatePicker', () => {
 
     it('should display the opened date picker', () => {
         const {getByText} = render(
-            <DatePicker {...minProps} isOpen={true}>
+            <DatePicker
+                {...minProps}
+                isOpen={true}
+                initialSettings={{showDropdowns: false}}
+            >
                 <button>Select a date</button>
             </DatePicker>
         )
@@ -247,6 +251,7 @@ describe('DatePicker', () => {
                 isOpen={true}
                 toggle={jest.fn()}
                 initialSettings={{ranges: ranges}}
+                showRangesLabel={true}
                 rangesLabel="Snooze Ranges"
             >
                 <button>Select a date</button>

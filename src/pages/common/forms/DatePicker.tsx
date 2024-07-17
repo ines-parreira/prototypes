@@ -32,6 +32,7 @@ type Props = {
     changeButtonColorsToV2?: boolean
     rangeDatesInFooter?: boolean
     shouldShowMonthAndYearDropdowns?: boolean
+    additionalPickerClassName?: string
 }
 
 export const DatePicker = ({
@@ -39,7 +40,7 @@ export const DatePicker = ({
     onSubmit,
     initialSettings: {
         alwaysShowCalendars = true,
-        applyButtonClasses = 'btn-success mr-2',
+        applyButtonClasses = 'btn-primary',
         cancelButtonClasses = 'btn-secondary',
         opens = 'left',
         showCustomRangeLabel = false,
@@ -52,12 +53,13 @@ export const DatePicker = ({
     rangesLabel,
     toggle,
     unavailableDateMessage = '',
-    pickerV2Styles = false,
-    rangesOnLeft = false,
-    showRangesLabel = true,
-    actionButtonsOnTheBottom = false,
+    pickerV2Styles = true,
+    rangesOnLeft = true,
+    showRangesLabel = false,
+    actionButtonsOnTheBottom = true,
     rangeDatesInFooter = false,
-    shouldShowMonthAndYearDropdowns = false,
+    shouldShowMonthAndYearDropdowns = true,
+    additionalPickerClassName,
 }: Props & Partial<DateRangeProps>) => {
     const datePickerRef = useRef<DateRangePicker>(null)
     const [isTooltipOpen, setIsTooltipOpen] = useState(false)
@@ -240,6 +242,12 @@ export const DatePicker = ({
                                 'range-dates-in-footer'
                             )
                         }
+                    }
+
+                    if (additionalPickerClassName) {
+                        dateRangerPickerElement.current.classList.add(
+                            additionalPickerClassName
+                        )
                     }
 
                     const cancelBtn =

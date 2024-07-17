@@ -1,14 +1,12 @@
 import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
 import {Options as InitialSettings} from 'daterangepicker'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {StatsFilters} from 'models/stat/types'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
 import {getNewSetOfRanges} from 'pages/stats/constants'
@@ -38,25 +36,11 @@ export default function DEPRECATED_PeriodStatsFilter({
         DateAndTimeFormatting.ShortDateWithYear
     )
 
-    const isNewDatePickerVariant =
-        useFlags()[FeatureFlagKey.NewDatePickerVariant]
-
-    const pickerV2Props = {
-        dateRanges: !!isNewDatePickerVariant ? getNewSetOfRanges() : undefined,
-        pickerV2Styles: !!isNewDatePickerVariant,
-        rangesOnLeft: !!isNewDatePickerVariant,
-        showRangesLabel: !isNewDatePickerVariant,
-        actionButtonsOnTheBottom: !!isNewDatePickerVariant,
-        changeButtonColorsToV2: !!isNewDatePickerVariant,
-        rangeDatesInFooter: !!isNewDatePickerVariant,
-        shouldShowMonthAndYearDropdowns: !!isNewDatePickerVariant,
-    }
-
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
         locale: {format: compactDateBasedOnUserPreferences},
-        showDropdowns: !!isNewDatePickerVariant,
+        showDropdowns: true,
         ...initialSettingsProp,
     }
 
@@ -129,8 +113,7 @@ export default function DEPRECATED_PeriodStatsFilter({
                     endDate: value.end_datetime,
                 })
             }}
-            isDisabled={isNewDatePickerVariant === undefined}
-            {...pickerV2Props}
+            dateRanges={getNewSetOfRanges()}
             labelDateFormat={shortDateBasedOnUserPreferences}
             tooltipMessageForPreviousPeriod={tooltipMessageForPreviousPeriod}
         />
