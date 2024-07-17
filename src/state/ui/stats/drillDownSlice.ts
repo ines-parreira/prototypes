@@ -3,7 +3,7 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {appQueryClient} from 'api/queryClient'
 import {User} from 'config/types/user'
 import {createJob} from 'models/job/resources'
-import {Job, JobType} from 'models/job/types'
+import {ConvertJobContext, Job, JobContext, JobType} from 'models/job/types'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
@@ -104,6 +104,7 @@ export type SlaMetrics = {
 export type ConvertMetrics = {
     metricName: ConvertMetric
     shopName: string
+    context: ConvertJobContext
 } & CommonMetrics
 
 export type VoiceMetrics = {
@@ -165,54 +166,35 @@ export const initialState: DrillDownState = {
 
 export const EXPORT_DRILL_DOWN_JOB_ACTION = 'exportDrillDownJob'
 
-const getDrillDownJobType = (
-    metricData: DrillDownMetric
-):
-    | JobType.ExportConvertCampaignSalesDrilldown
-    | JobType.ExportTicketDrilldown => {
-    switch (metricData.metricName) {
-        case ConvertMetric.CampaignSalesCount:
-            return JobType.ExportConvertCampaignSalesDrilldown
-        default:
-            return JobType.ExportTicketDrilldown
-    }
-}
-
-export const createExportDrillDownJob = createAsyncThunk<
-    Job,
-    ReportingQuery<
+export type CreateExportDrillDownJobParams = {
+    query: ReportingQuery<
         | HelpdeskMessageCubeWithJoins
         | HandleTimeCubeWithJoins
         | TicketSLACubeWithJoins
         | ConvertOrderConversionCube
         | VoiceCallCube
-    >,
+    >
+    jobType: JobType
+    context?: JobContext
+}
+
+export const createExportDrillDownJob = createAsyncThunk<
+    Job,
+    CreateExportDrillDownJobParams,
     {dispatch: StoreDispatch; state: RootState}
 >(
     EXPORT_DRILL_DOWN_JOB_ACTION,
     async (
-        query: ReportingQuery<
-            | HelpdeskMessageCubeWithJoins
-            | HandleTimeCubeWithJoins
-            | TicketSLACubeWithJoins
-            | ConvertOrderConversionCube
-            | VoiceCallCube
-        >,
+        {query, jobType, context},
         {dispatch, getState, rejectWithValue}
     ) => {
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
-        const metricData = getDrillDownMetric(getState())
-
-        if (!metricData) {
-            return rejectWithValue('No metric data')
-        }
-        const jobType = getDrillDownJobType(metricData)
 
         try {
             const response = await createJob({
                 type: jobType,
-                params: {reporting_query: query},
+                params: {reporting_query: query, context: context},
             })
             void dispatch(notifyAboutExportSuccess(jobType, currentUserEmail))
 

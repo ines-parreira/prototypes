@@ -17,6 +17,7 @@ import {
     SlaMetric,
     AgentsTableColumn,
     TicketFieldsMetric,
+    ConvertMetric,
 } from 'state/ui/stats/types'
 import {
     initialState,
@@ -257,6 +258,10 @@ describe('drillDownSlice', () => {
             },
             'someTimeZone'
         )
+        const actionParams = {
+            query: exampleQuery,
+            jobType: JobType.ExportTicketDrilldown,
+        }
         createJobMock.mockResolvedValue({id: 123} as unknown as Job)
 
         beforeEach(() => {
@@ -269,11 +274,38 @@ describe('drillDownSlice', () => {
         })
 
         it('should fire request with export Job', async () => {
-            await store.dispatch(createExportDrillDownJob(exampleQuery))
+            await store.dispatch(createExportDrillDownJob(actionParams))
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportTicketDrilldown,
                 params: {reporting_query: exampleQuery},
+            })
+        })
+
+        it('should fire request with export Job and context in params', async () => {
+            const context = {
+                channel_connection_external_ids: ['3', '5'],
+            }
+            store.getState().ui[drillDownSlice.name] = {
+                ...store.getState().ui[drillDownSlice.name],
+                metricData: {
+                    metricName: ConvertMetric.CampaignSalesCount,
+                    shopName: 'candy-shop',
+                    context: context,
+                },
+            }
+
+            await store.dispatch(
+                createExportDrillDownJob({
+                    ...actionParams,
+                    jobType: JobType.ExportConvertCampaignSalesDrilldown,
+                    context,
+                })
+            )
+
+            expect(createJobMock).toHaveBeenCalledWith({
+                type: JobType.ExportConvertCampaignSalesDrilldown,
+                params: {reporting_query: exampleQuery, context},
             })
         })
 
@@ -284,21 +316,10 @@ describe('drillDownSlice', () => {
             )
 
             await act(async () => {
-                await store.dispatch(createExportDrillDownJob(exampleQuery))
+                await store.dispatch(createExportDrillDownJob(actionParams))
             })
 
             expect(invalidateQueryMock).toHaveBeenCalled()
-        })
-
-        it('should reject if there is no metric data', async () => {
-            store.getState().ui[drillDownSlice.name] = initialState
-
-            const result = await store.dispatch(
-                createExportDrillDownJob(exampleQuery)
-            )
-
-            expect(createJobMock).not.toHaveBeenCalled()
-            expect(result.payload).toBe('No metric data')
         })
     })
 

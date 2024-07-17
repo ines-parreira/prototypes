@@ -53,8 +53,13 @@ const METRICS = {
 }
 
 export const CampaignTotalsStat = () => {
-    const {campaigns, selectedIntegrations, selectedCampaigns, selectedPeriod} =
-        useCampaignStatsFilters()
+    const {
+        campaigns,
+        selectedIntegrations,
+        selectedCampaigns,
+        selectedPeriod,
+        channelConnectionExternalIds,
+    } = useCampaignStatsFilters()
     const currency = useGetCurrencyForStore(selectedIntegrations)
     const isViewDrillDownEnabled = useIsConvertViewOrdersDrilldownEnabled()
     const namespacedShopName =
@@ -148,6 +153,10 @@ export const CampaignTotalsStat = () => {
                                 title: METRICS.campaignSalesCount.title,
                                 metricName: ConvertMetric.CampaignSalesCount,
                                 shopName: namespacedShopName,
+                                context: {
+                                    channel_connection_external_ids:
+                                        channelConnectionExternalIds,
+                                },
                             }}
                         >
                             {data?.campaignSalesCount}

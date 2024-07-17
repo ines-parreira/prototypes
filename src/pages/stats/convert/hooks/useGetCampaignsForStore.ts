@@ -49,9 +49,15 @@ export function useGetCampaignsForStore(
             campaignListOptions.channelConnectionExternalIds?.length > 0,
     })
 
-    return useMemo(() => {
+    const campaigns = useMemo(() => {
         return !!campaignListOptions && !!convertCampaigns
             ? convertCampaigns
             : []
     }, [campaignListOptions, convertCampaigns])
+
+    return {
+        campaigns,
+        channelConnectionExternalIds:
+            campaignListOptions.channelConnectionExternalIds,
+    }
 }

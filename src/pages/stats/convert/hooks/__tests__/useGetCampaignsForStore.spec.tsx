@@ -45,6 +45,7 @@ const defaultState = {
                 type: IntegrationType.GorgiasChat,
                 meta: {
                     shop_integration_id: 2,
+                    app_id: '123',
                     campaigns: [
                         {
                             id: '123',
@@ -87,7 +88,10 @@ describe('useGetCampaignsForStore', () => {
                 hookOptions
             )
 
-            expect(result.current).toEqual([])
+            expect(result.current).toEqual({
+                campaigns: [],
+                channelConnectionExternalIds: [],
+            })
         })
     })
 
@@ -107,7 +111,10 @@ describe('useGetCampaignsForStore', () => {
                 hookOptions
             )
 
-            expect(result.current).toEqual([])
+            expect(result.current).toEqual({
+                campaigns: [],
+                channelConnectionExternalIds: [],
+            })
         })
     })
 
@@ -131,7 +138,10 @@ describe('useGetCampaignsForStore', () => {
                 hookOptions
             )
 
-            expect(result.current).toEqual([campaign])
+            expect(result.current).toEqual({
+                campaigns: [campaign],
+                channelConnectionExternalIds: ['123'],
+            })
         })
     })
 })

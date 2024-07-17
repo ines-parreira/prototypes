@@ -97,6 +97,9 @@ describe('getDrillDownHook', () => {
         {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:shopName',
+            context: {
+                channel_connection_external_ids: [],
+            },
         },
     ]
 

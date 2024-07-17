@@ -36,6 +36,12 @@ type JobInfo = {
     progress_count: number
 }
 
+export type ConvertJobContext = {
+    channel_connection_external_ids: string[]
+}
+
+export type JobContext = ConvertJobContext
+
 export type JobParams =
     | {
           ticket_ids?: number[]
@@ -56,6 +62,7 @@ export type ReportingQueryJobParams = {
         | ConvertOrderConversionCube
         | VoiceCallCube
     >
+    context?: JobContext
 }
 
 export type Job = {

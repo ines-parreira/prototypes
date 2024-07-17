@@ -23,7 +23,7 @@ export default function CampaignsStatsFilter({
 }: Props) {
     const dispatch = useAppDispatch()
 
-    const campaigns = useGetCampaignsForStore(selectedIntegrations || [])
+    const {campaigns} = useGetCampaignsForStore(selectedIntegrations || [])
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(

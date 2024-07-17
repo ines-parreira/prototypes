@@ -45,6 +45,11 @@ describe('CampaignStatsFilters', () => {
         id: deletedCampaignId,
         deleted_datetime: '2021-02-03T00:00:00.000Z',
     }
+    const channelConnectionExternalId = '123'
+    const campaignsForStore = {
+        campaigns: [campaign, deletedCampaign],
+        channelConnectionExternalIds: [channelConnectionExternalId],
+    }
 
     beforeEach(() => {
         useAppSelectorMock.mockImplementation(() => {
@@ -55,10 +60,7 @@ describe('CampaignStatsFilters', () => {
     })
 
     it('should provide the correct value for allCampaigns', () => {
-        useGetCampaignsForStoreMock.mockReturnValue([
-            campaign,
-            deletedCampaign,
-        ] as any)
+        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
         const TestComponent = () => (
             <FiltersContext.Consumer>
@@ -81,10 +83,7 @@ describe('CampaignStatsFilters', () => {
     })
 
     it('should provide the correct value for campaigns', () => {
-        useGetCampaignsForStoreMock.mockReturnValue([
-            campaign,
-            deletedCampaign,
-        ] as any)
+        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
         const TestComponent = () => (
             <FiltersContext.Consumer>
@@ -104,5 +103,25 @@ describe('CampaignStatsFilters', () => {
 
         expect(getByText(campaign.id)).toBeInTheDocument()
         expect(queryByText(deletedCampaignId)).not.toBeInTheDocument()
+    })
+
+    it('should provide the correct value for channelConnectionExternalIds', () => {
+        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
+
+        const TestComponent = () => (
+            <FiltersContext.Consumer>
+                {({channelConnectionExternalIds}) => (
+                    <div>{channelConnectionExternalIds}</div>
+                )}
+            </FiltersContext.Consumer>
+        )
+
+        const {getByText} = render(
+            <CampaignStatsFilters>
+                <TestComponent />
+            </CampaignStatsFilters>
+        )
+
+        expect(getByText(channelConnectionExternalId)).toBeInTheDocument()
     })
 })

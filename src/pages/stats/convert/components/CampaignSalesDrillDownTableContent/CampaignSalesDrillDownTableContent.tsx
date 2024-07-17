@@ -3,7 +3,6 @@ import {formatConvertCampaignSalesDrillDownRowData} from 'pages/stats/DrillDownF
 
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import css from 'pages/stats/DrillDownTable.less'
 import TableBody from 'pages/common/components/table/TableBody'
 import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -17,6 +16,8 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetCampaignSalesDrillDownData} from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
+
+import css from './CampaignSalesDrillDownTableContent.less'
 
 // should add up to table width from CSS
 const COLUMN_WIDTHS = {
@@ -106,7 +107,10 @@ export const CampaignSalesDrillDownTableContent = ({
                                     NOT_AVAILABLE_PLACEHOLDER
                                 )}
                             </BodyCell>
-                            <BodyCell width={COLUMN_WIDTHS.campaign}>
+                            <BodyCell
+                                width={COLUMN_WIDTHS.campaign}
+                                className={css.longCellContent}
+                            >
                                 {item.campaignName
                                     ? item.campaignName
                                     : NOT_AVAILABLE_PLACEHOLDER}

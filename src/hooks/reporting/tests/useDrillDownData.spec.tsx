@@ -480,6 +480,9 @@ describe('DrillDownData hooks', () => {
         const metricData: DrillDownMetric = {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:shopName',
+            context: {
+                channel_connection_external_ids: [],
+            },
         }
 
         beforeEach(() => {

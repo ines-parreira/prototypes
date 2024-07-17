@@ -17,6 +17,8 @@ import {
 import {hasRole} from 'utils'
 
 import css from 'pages/stats/DrillDownDownloadButton.less'
+import {JobContext, JobType} from 'models/job/types'
+import {ConvertMetric} from 'state/ui/stats/types'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
 export const TOTAL_OBJECTS_COUNT_PLACEHOLDER = 'All'
@@ -26,6 +28,30 @@ const NO_PERMISSIONS_CONTENT =
 const OPERATION_IN_PROGRESS_CONTENT =
     'A long-running job (e.g., ticket export, bulk action) is currently in progress on your account. Please wait until it is finished before requesting a new export.'
 const tooltipTargetID = 'download-drill-down-tooltip'
+
+const getDrillDownJobType = (
+    metricData: DrillDownMetric
+):
+    | JobType.ExportConvertCampaignSalesDrilldown
+    | JobType.ExportTicketDrilldown => {
+    switch (metricData.metricName) {
+        case ConvertMetric.CampaignSalesCount:
+            return JobType.ExportConvertCampaignSalesDrilldown
+        default:
+            return JobType.ExportTicketDrilldown
+    }
+}
+
+const getDrillDownJobContext = (
+    metricData: DrillDownMetric
+): JobContext | undefined => {
+    switch (metricData.metricName) {
+        case ConvertMetric.CampaignSalesCount:
+            return metricData.context
+        default:
+            return undefined
+    }
+}
 
 export const DrillDownDownloadButton = ({
     metricData,
@@ -46,7 +72,13 @@ export const DrillDownDownloadButton = ({
     const query = useDrillDownQueryWithoutLimit(metricData)
 
     const clickHandler = () => {
-        void dispatch(createExportDrillDownJob(query))
+        void dispatch(
+            createExportDrillDownJob({
+                query,
+                jobType: getDrillDownJobType(metricData),
+                context: getDrillDownJobContext(metricData),
+            })
+        )
     }
 
     return (

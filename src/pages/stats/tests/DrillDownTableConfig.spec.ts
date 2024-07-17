@@ -119,6 +119,9 @@ describe('getDrillDownQuery', () => {
         {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:someShop',
+            context: {
+                channel_connection_external_ids: [],
+            },
         },
     ]
     const voiceMetrics: DrillDownMetric[] = [

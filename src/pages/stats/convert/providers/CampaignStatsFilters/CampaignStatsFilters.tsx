@@ -53,11 +53,12 @@ export const CampaignStatsFilters = ({children}: Props) => {
         return storeStatsFilter.length ? storeStatsFilter : fallback
     }, [storeIntegrationId, integrations, storeStatsFilter])
 
-    const allCampaigns = useGetCampaignsForStore(
-        selectedIntegrations,
-        chatIntegration.getIn(['meta', 'app_id']),
-        true
-    )
+    const {campaigns: allCampaigns, channelConnectionExternalIds} =
+        useGetCampaignsForStore(
+            selectedIntegrations,
+            chatIntegration.getIn(['meta', 'app_id']),
+            true
+        )
 
     const nonDeletedCampaigns = useMemo(() => {
         return allCampaigns.filter((campaign) => !campaign.deleted_datetime)
@@ -115,6 +116,8 @@ export const CampaignStatsFilters = ({children}: Props) => {
                 selectedCampaigns: selectedCampaigns,
                 selectedIntegrations,
                 selectedPeriod,
+                channelConnectionExternalIds:
+                    channelConnectionExternalIds || [],
                 onChangeCampaigns: handleChangeCampaigns,
                 onChangeIntegration: handleChangeIntegration,
             }}

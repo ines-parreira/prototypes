@@ -15,6 +15,7 @@ interface FilterContextSchema {
         end_datetime: string
         start_datetime: string
     }
+    channelConnectionExternalIds: string[]
     onChangeIntegration: (integrationIds: Value[]) => void
     onChangeCampaigns: (integrationIds: Value[]) => void
 }
@@ -30,6 +31,7 @@ export const FiltersContext = createContext<FilterContextSchema>({
         end_datetime: '',
         start_datetime: '',
     },
+    channelConnectionExternalIds: [],
     onChangeIntegration: () => null,
     onChangeCampaigns: () => null,
 })

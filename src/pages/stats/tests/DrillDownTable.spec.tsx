@@ -286,6 +286,9 @@ describe('<DrillDownTable />', () => {
         const metricData: DrillDownMetric = {
             metricName: ConvertMetric.CampaignSalesCount,
             shopName: 'shopify:shopName',
+            context: {
+                channel_connection_external_ids: [],
+            },
         }
         const exampleRow = {
             data: {

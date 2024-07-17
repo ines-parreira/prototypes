@@ -86,7 +86,10 @@ describe('CampaignsStats', () => {
 
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        useGetCampaignsForStoreMock.mockReturnValue([campaign as Campaign])
+        useGetCampaignsForStoreMock.mockReturnValue({
+            campaigns: [campaign as Campaign],
+            channelConnectionExternalIds: [],
+        })
 
         useFlagsMock.mockReturnValue({
             'any-flag': true,

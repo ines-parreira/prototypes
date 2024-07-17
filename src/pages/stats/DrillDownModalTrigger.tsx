@@ -7,7 +7,6 @@ import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
 import css from 'pages/stats/DrillDownModalTrigger.less'
 import {hintTooltipDelay} from 'pages/stats/common/constants'
 import useId from 'hooks/useId'
-
 import {ConvertMetric} from 'state/ui/stats/types'
 
 export const TRIGGER_ID = 'drill-down'
