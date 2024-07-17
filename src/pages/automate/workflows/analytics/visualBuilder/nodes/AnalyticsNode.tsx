@@ -32,6 +32,7 @@ import {
     extractUniqueRates,
     getViewerLabel,
     isValidNumber,
+    shouldDisplayTooltip,
 } from '../utils'
 import css from './Node.less'
 
@@ -130,7 +131,10 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                     <Tooltip target={`node-${nodeId}-title`} placement="top">
                         {contentText}
                     </Tooltip>
-                    {isValidNumber(metricByNodeId?.viewRate) && (
+                    {shouldDisplayTooltip(
+                        metricByNodeId?.viewRate,
+                        shouldDisplayZero
+                    ) && (
                         <Tooltip
                             target={`node-${nodeId}-metric-view`}
                             placement="bottom"
@@ -138,7 +142,10 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                             {toPercentage(metricByNodeId?.viewRate ?? 0)}
                         </Tooltip>
                     )}
-                    {isValidNumber(metricByNodeId?.dropoff) && (
+                    {shouldDisplayTooltip(
+                        metricByNodeId?.dropoff,
+                        shouldDisplayZero
+                    ) && (
                         <Tooltip
                             target={`node-${nodeId}-metric-dropoff`}
                             placement="bottom"

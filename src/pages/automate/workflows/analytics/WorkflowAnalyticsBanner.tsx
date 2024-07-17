@@ -35,13 +35,13 @@ const WorkflowAnalyticsBanner: React.FC<WorkflowAnalyticsBannerProps> = ({
 
     if (displayNoDataAvailableBanner) {
         message =
-            'Data will appear when at least 1 interaction is made with the latest version of your Flow.'
+            'Data will appear when at least 1 interaction is made with the latest version of your Flow. '
     } else if (displayMultipleVersionsBanner) {
         message =
             'The selected date range includes multiple versions of this Flow. The data here only reflects the most recent version. '
     } else if (displayLegacyDataBanner) {
         message =
-            'You may notice a difference in the numbers below and those in the Performance by Feature report. The numbers below contain the most up-to-date data, while the other report uses a legacy data source.'
+            'You may notice a difference in the numbers below and those in the Performance by Feature report. The numbers below contain the most up-to-date data, while the other report uses a legacy data source. '
     }
 
     return message ? (
@@ -52,15 +52,13 @@ const WorkflowAnalyticsBanner: React.FC<WorkflowAnalyticsBannerProps> = ({
             onClose={!displayNoDataAvailableBanner ? onClose : undefined}
         >
             {message}
-            {displayMultipleVersionsBanner && (
-                <a
-                    href="https://link.gorgias.com/ma6"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn more
-                </a>
-            )}
+            <a
+                href="https://link.gorgias.com/ma6"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                Learn more
+            </a>
         </Alert>
     ) : null
 }

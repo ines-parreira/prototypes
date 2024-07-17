@@ -14,6 +14,13 @@ interface WorkflowAnalyticsDateRangeProps {
     flowUpdateDatetime: string
 }
 
+export const shouldDisplayTooltip = (
+    value: number | null | undefined,
+    shouldDisplayZero: boolean
+) => {
+    return shouldDisplayZero || isValidNumber(value)
+}
+
 export const isValidNumber = (value: number | null | undefined) => {
     return value !== 0 && value != null && !isNaN(value)
 }
@@ -27,7 +34,7 @@ export const displayPercentMetric = (
     value: number | null | undefined,
     shouldDisplayZero: boolean
 ) =>
-    isValidNumber(value) ? toPercentage(value!) : shouldDisplayZero ? '0' : '-'
+    isValidNumber(value) ? toPercentage(value!) : shouldDisplayZero ? '0%' : '-'
 
 export const extractUniqueRates = (data: WorkflowStepMetricsMap): number[] => {
     const rates = flatMap(data, (step: WorkflowStepMetrics) => [
@@ -96,4 +103,4 @@ export const getWorkflowAnalyticsPreviousDateRange = (
 }
 
 export const getViewerLabel = (dropoff: number) =>
-    `${dropoff} viewer${dropoff > 1 ? 's' : ''}`
+    `${dropoff} viewer${dropoff === 1 ? '' : 's'}`

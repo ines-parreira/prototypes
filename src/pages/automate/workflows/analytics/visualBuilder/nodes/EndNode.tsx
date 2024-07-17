@@ -26,6 +26,7 @@ import {
     extractUniqueRates,
     getViewerLabel,
     isValidNumber,
+    shouldDisplayTooltip,
 } from '../utils'
 import css from './Node.less'
 
@@ -112,8 +113,9 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                             )}
                         </span>
                     </div>
-                    {isValidNumber(
-                        metricByNodeId?.automatedInteractionsRate
+                    {shouldDisplayTooltip(
+                        metricByNodeId?.automatedInteractionsRate,
+                        shouldDisplayZero
                     ) && (
                         <Tooltip
                             target={`end-node-${nodeId}-metric-automated`}
@@ -130,7 +132,10 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                     )}
 
                     {action !== 'end' &&
-                        isValidNumber(metricByNodeId?.dropoff) && (
+                        shouldDisplayTooltip(
+                            metricByNodeId?.dropoff,
+                            shouldDisplayZero
+                        ) && (
                             <Tooltip
                                 target={`end-node-${nodeId}-metric-dropoff`}
                                 placement="bottom"
@@ -143,7 +148,10 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                             </Tooltip>
                         )}
 
-                    {isValidNumber(metricByNodeId?.ticketsCreatedRate) && (
+                    {shouldDisplayTooltip(
+                        metricByNodeId?.ticketsCreatedRate,
+                        shouldDisplayZero
+                    ) && (
                         <Tooltip
                             target={`end-node-${nodeId}-metric-ticket`}
                             placement="bottom"
