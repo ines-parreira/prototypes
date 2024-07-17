@@ -2,13 +2,41 @@ import {useMemo} from 'react'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useListChannelConnections} from 'models/convert/channelConnection/queries'
 import {ChannelConnectionChannel} from 'models/convert/channelConnection/types'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {notify} from 'state/notifications/actions'
+import {NotificationStatus} from 'state/notifications/types'
+import {reportError} from 'utils/errors'
 
 export const useGetOnboardingStatusMap = () => {
+    const dispatch = useAppDispatch()
     const isSubscriber = useIsConvertSubscriber()
 
-    const {data: channelConnections, isLoading} = useListChannelConnections({
-        channel: ChannelConnectionChannel.Widget,
-    })
+    const {
+        data: channelConnections,
+        isLoading,
+        isError,
+    } = useListChannelConnections(
+        {
+            channel: ChannelConnectionChannel.Widget,
+        },
+        {
+            onError: (error) => {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Error,
+                        message:
+                            'Something went wrong while fetching your Convert campaigns.',
+                    })
+                )
+                reportError(error, {
+                    tags: {
+                        section: 'convert',
+                        team: 'convert',
+                    },
+                })
+            },
+        }
+    )
 
     const onboardingMap = useMemo(() => {
         const map: {[key: string]: boolean} = {}
@@ -25,5 +53,5 @@ export const useGetOnboardingStatusMap = () => {
         return map
     }, [isSubscriber, channelConnections])
 
-    return {onboardingMap, isLoading}
+    return {onboardingMap, isLoading, isError}
 }

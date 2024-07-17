@@ -54,6 +54,7 @@ describe('ConvertRoute', () => {
         useGetOnboardingStatusMapMock.mockReturnValue({
             onboardingMap: {},
             isLoading: false,
+            isError: false,
         })
 
         useFlagsMock.mockReturnValue({
@@ -87,6 +88,7 @@ describe('ConvertRoute', () => {
         useGetOnboardingStatusMapMock.mockReturnValue({
             onboardingMap: {'2': true},
             isLoading: false,
+            isError: false,
         })
 
         const {getByText} = render(

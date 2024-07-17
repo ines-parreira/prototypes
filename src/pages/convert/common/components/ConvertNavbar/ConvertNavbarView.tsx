@@ -12,7 +12,10 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
 import navbarCss from 'assets/css/navbar.less'
 import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
-import {useGetOnboardingStatusMap} from '../../../channelConnections/hooks/useGetOnboardingStatusMap'
+import Skeleton from 'pages/common/components/Skeleton/Skeleton'
+import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+import css from './ConvertNavbarView.less'
+
 import ConvertNavbarSectionBlock from './ConvertNavbarSectionBlock'
 
 type SectionKey = `${IntegrationType.GorgiasChat}:${string}`
@@ -35,7 +38,7 @@ const ConvertNavbarView = () => {
         ],
         exact: false,
     })
-    const {onboardingMap, isLoading} = useGetOnboardingStatusMap()
+    const {onboardingMap, isLoading, isError} = useGetOnboardingStatusMap()
 
     const sortedIntegrations = useGetSortedIntegrations()
     const initialCollapsedSections = useMemo(
@@ -88,8 +91,26 @@ const ConvertNavbarView = () => {
         setCollapsedSections(newCollapsedSections)
     }
 
-    if (isLoading) {
-        return null
+    if (isLoading || isError) {
+        return (
+            <div className={css.skeleton}>
+                <Skeleton
+                    height={26}
+                    className="mb-2"
+                    baseColor="#444"
+                    highlightColor="#555"
+                />
+                <div className={css.subSkeleton}>
+                    <Skeleton
+                        height={24}
+                        className="mb-2"
+                        count={4}
+                        baseColor="#444"
+                        highlightColor="#555"
+                    />
+                </div>
+            </div>
+        )
     }
 
     return (

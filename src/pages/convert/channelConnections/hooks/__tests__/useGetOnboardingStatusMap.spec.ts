@@ -2,6 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import {assumeMock} from 'utils/testing'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import {useListChannelConnections} from 'models/convert/channelConnection/queries'
+import useAppDispatch from 'hooks/useAppDispatch'
 import {useGetOnboardingStatusMap} from '../useGetOnboardingStatusMap'
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber', () => ({
@@ -14,12 +15,24 @@ jest.mock('models/convert/channelConnection/queries', () => ({
 }))
 const useListChannelConnectionsMock = assumeMock(useListChannelConnections)
 
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+const useAppDispatchMock = assumeMock(useAppDispatch)
+
 const mockChannelConnections = [
     {external_id: '1', is_onboarded: true, is_setup: false},
     {external_id: '2', is_onboarded: false, is_setup: true},
 ]
 
 describe('useGetOnboardingStatusMap', () => {
+    let dispatch: jest.Mock
+
+    beforeEach(() => {
+        jest.restoreAllMocks()
+
+        dispatch = jest.fn()
+        useAppDispatchMock.mockReturnValue(dispatch)
+    })
+
     it.each([
         [false, [], {}],
         [true, mockChannelConnections, {'1': true, '2': false}],
@@ -37,4 +50,16 @@ describe('useGetOnboardingStatusMap', () => {
             expect(result.current.onboardingMap).toEqual(expectedResult)
         }
     )
+    it('should dispatch an error', () => {
+        useIsConvertSubscriberMock.mockReturnValue(true)
+        useListChannelConnectionsMock.mockReturnValue({
+            data: {},
+        } as any)
+
+        renderHook(() => useGetOnboardingStatusMap())
+
+        useListChannelConnectionsMock.mock.calls[0][1]?.onError!(undefined)
+
+        expect(dispatch).toHaveBeenCalled()
+    })
 })

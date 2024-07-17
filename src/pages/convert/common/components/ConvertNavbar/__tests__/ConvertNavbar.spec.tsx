@@ -19,6 +19,8 @@ import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/
 import {IntegrationType} from 'models/integration/types'
 import ConvertNavbar from '../ConvertNavbar'
 
+const MOCK_SKELETON_TEST_ID = 'skeleton'
+
 jest.mock('react-router')
 jest.mock('pages/common/hooks/useIsConvertSubscriber')
 
@@ -28,6 +30,10 @@ jest.mock('common/notifications/components/Button', () => ({
     __esModule: true,
     default: () => <div>NotificationsButton</div>,
 }))
+
+jest.mock('pages/common/components/Skeleton/Skeleton', () => () => (
+    <div data-testid={MOCK_SKELETON_TEST_ID} />
+))
 
 const useGetOnboardingStatusMapSpy = assumeMock(useGetOnboardingStatusMap)
 
@@ -65,6 +71,7 @@ describe('<ConvertNavbar />', () => {
         useGetOnboardingStatusMapSpy.mockReturnValue({
             onboardingMap: {'101': true},
             isLoading: false,
+            isError: false,
         })
     })
 
@@ -196,6 +203,29 @@ describe('<ConvertNavbar />', () => {
             expect(getAllByText('Campaigns').length).toBe(1)
             expect(getAllByText('Click tracking').length).toBe(1)
             expect(getAllByText('Installation').length).toBe(1)
+        })
+
+        it('should render skeleton on loading', () => {
+            useGetOnboardingStatusMapSpy.mockReturnValue({
+                onboardingMap: {},
+                isLoading: true,
+                isError: false,
+            })
+
+            const {queryByText, queryAllByTestId} = render(
+                <Provider store={mockStore(defaultState)}>
+                    <QueryClientProvider client={queryClient}>
+                        <DndProvider backend={HTML5Backend}>
+                            <ThemeProvider>
+                                <ConvertNavbar />
+                            </ThemeProvider>
+                        </DndProvider>
+                    </QueryClientProvider>
+                </Provider>
+            )
+
+            expect(queryByText('forum')).not.toBeInTheDocument()
+            expect(queryAllByTestId(MOCK_SKELETON_TEST_ID).length).toBe(2)
         })
     })
 })
