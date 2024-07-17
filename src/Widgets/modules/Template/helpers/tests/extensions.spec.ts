@@ -1,6 +1,6 @@
 import {IntegrationType} from '@gorgias/api-types'
 import {Template} from 'models/widget/types'
-import bigcommerce from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce'
+import magento2 from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
 import {assumeMock} from 'utils/testing'
 
 import {getExtensions, seekCardCustomization} from '../extensions'
@@ -9,17 +9,17 @@ import {TemplateCustomization} from '../../types'
 const editionHiddenFields = ['bar']
 
 jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce'
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
 )
-const mockBigcommerce = assumeMock(bigcommerce)
-mockBigcommerce.mockImplementation(() => ({
+const mockMagento2 = assumeMock(magento2)
+mockMagento2.mockImplementation(() => ({
     AfterTitle: () => 'ok',
     editionHiddenFields,
 }))
 
 describe('getExtensions', () => {
     it('should return the extensions', () => {
-        const result = getExtensions(IntegrationType.Bigcommerce, {
+        const result = getExtensions(IntegrationType.Magento2, {
             type: 'card',
         } as Template)
         expect(result).toEqual({
@@ -30,34 +30,53 @@ describe('getExtensions', () => {
 })
 
 describe('seekCardCustomization', () => {
-    it("should return the first matched customization if the path matches the matcher's regex", () => {
-        const card = [
-            {
-                matcher: /foo/,
-                customization: {
-                    editionHiddenFields: ['link'],
-                },
+    const cardCustomization = [
+        {
+            dataMatcher: /bar/,
+            templateMatcher: /bar/,
+            customization: {
+                editionHiddenFields: ['title'],
             },
-            {
-                matcher: /bar/,
-                customization: {
-                    editionHiddenFields: ['title'],
-                },
+        },
+        {
+            dataMatcher: /foo/,
+            templateMatcher: /bar/,
+            customization: {
+                editionHiddenFields: ['color'],
             },
-            {
-                matcher: /bar/,
-                customization: {
-                    editionHiddenFields: ['pictureUrl'],
-                },
+        },
+        {
+            dataMatcher: /bar/,
+            customization: {
+                editionHiddenFields: ['title'],
             },
-        ] as TemplateCustomization['card']
+        },
+        {
+            dataMatcher: /bar/,
+            customization: {
+                editionHiddenFields: ['pictureUrl'],
+            },
+        },
+    ] as TemplateCustomization['card']
 
-        const result = seekCardCustomization(card, {
+    it("should return the first matched customization if the absolutePath matches the dataMatcher's regex", () => {
+        const result = seekCardCustomization(cardCustomization, {
             absolutePath: ['bar'],
         } as Template)
 
         expect(result).toEqual({
             editionHiddenFields: ['title'],
+        })
+    })
+
+    it("should return the matched customization if the absolutePath matches the dataMatcher's regex and the templatePath matches the templateMatcher's regex", () => {
+        const result = seekCardCustomization(cardCustomization, {
+            absolutePath: ['foo'],
+            templatePath: 'bar',
+        } as Template)
+
+        expect(result).toEqual({
+            editionHiddenFields: ['color'],
         })
     })
 })

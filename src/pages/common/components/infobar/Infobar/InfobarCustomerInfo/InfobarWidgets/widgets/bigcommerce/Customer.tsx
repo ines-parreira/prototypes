@@ -20,15 +20,14 @@ import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/v
 import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import {InfobarAction} from '../types'
 import OrderModal from './AddOrderModal/OrderModal'
 
-export default function Customer() {
-    return {
-        AfterTitle,
-        TitleWrapper,
-    }
+export const customerCustomization: CardCustomization = {
+    AfterTitle,
+    TitleWrapper,
 }
 
 type AfterTitleProps = {

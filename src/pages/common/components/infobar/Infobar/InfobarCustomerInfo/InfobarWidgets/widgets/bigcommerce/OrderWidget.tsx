@@ -27,17 +27,18 @@ import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCust
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {BigCommerceActionType} from 'models/integration/types/index'
 import {FeatureFlagKey} from 'config/featureFlags'
+
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+
 import css from './OrderWidget.less'
 import {CustomStaticField} from './CustomStaticField'
 import OrderModalRenderWrapper from './AddOrderModal/OrderModal'
 import RefundOrderModalRenderWrapper from './RefundOrderModal/RefundOrderModal'
 import {isOrderFullyRefunded} from './RefundOrderModal/utils'
 
-export default function OrderWidget() {
-    return {
-        AfterTitle,
-        TitleWrapper,
-    }
+export const orderCustomization: CardCustomization = {
+    AfterTitle,
+    TitleWrapper,
 }
 
 type GenerateDraftOrderUrlProps = {

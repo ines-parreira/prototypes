@@ -16,27 +16,27 @@ import {shippingAddressCustomization} from './ShippingAddress'
 export const customization: TemplateCustomization = {
     card: [
         {
-            matcher: /integrations\.\d+\.customer$/,
+            dataMatcher: /integrations\.\d+\.customer$/,
             customization: customerCustomization,
         },
         {
-            matcher: /integrations\.\d+\.draft_orders\.\[]$/,
+            dataMatcher: /integrations\.\d+\.draft_orders\.\[]$/,
             customization: draftOrderCustomization,
         },
         {
-            matcher: /integrations\.\d+\.orders\.\[]$/,
+            dataMatcher: /integrations\.\d+\.orders\.\[]$/,
             customization: orderCustomization,
         },
         {
-            matcher: /integrations\.\d+\.orders\.\[]\.line_items\.\[]$/,
+            dataMatcher: /integrations\.\d+\.orders\.\[]\.line_items\.\[]$/,
             customization: itemCustomization,
         },
         {
-            matcher: /integrations\.\d+\.orders\.\[]\.fulfillments\.\[]$/,
+            dataMatcher: /integrations\.\d+\.orders\.\[]\.fulfillments\.\[]$/,
             customization: fulfillmentCustomization,
         },
         {
-            matcher: /integrations\.\d+\.orders\.\[]\.shipping_address$/,
+            dataMatcher: /integrations\.\d+\.orders\.\[]\.shipping_address$/,
             customization: shippingAddressCustomization,
         },
     ],

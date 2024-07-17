@@ -132,7 +132,7 @@ describe('Template', () => {
     describe('card customization', () => {
         const cardCustomizationObjects = [
             {
-                matcher: /foo/,
+                dataMatcher: /foo/,
                 customization: cardCustomizationMock,
             },
         ]

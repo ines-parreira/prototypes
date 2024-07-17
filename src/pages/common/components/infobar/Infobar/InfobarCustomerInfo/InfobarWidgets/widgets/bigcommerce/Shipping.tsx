@@ -3,12 +3,12 @@ import {Map} from 'immutable'
 
 import {getTrackingLink} from 'common/tracking'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
-export default function Shipping() {
-    return {
-        AfterTitle,
-    }
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+
+export const shippingCustomization: CardCustomization = {
+    AfterTitle,
 }
 
 type AfterTitleProps = {

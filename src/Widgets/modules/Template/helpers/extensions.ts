@@ -3,7 +3,6 @@ import magento2 from 'pages/common/components/infobar/Infobar/InfobarCustomerInf
 import recharge from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/recharge'
 import smile from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/smile'
 import yotpo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo'
-import bigcommerce from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce'
 import woocommerce from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/woocommerce'
 import {IntegrationType} from 'models/integration/constants'
 import {Template} from 'models/widget/types'
@@ -21,7 +20,6 @@ const customizationSeekerByType: {
     [IntegrationType.Magento2]: magento2,
     [IntegrationType.Http]: http,
     [IntegrationType.Yotpo]: yotpo,
-    [IntegrationType.BigCommerce]: bigcommerce,
     [WOOCOMMERCE_WIDGET_TYPE]: woocommerce,
 }
 
@@ -38,12 +36,22 @@ export function seekCardCustomization(
     cardExtensionArray: TemplateCustomization['card'],
     template: Template
 ) {
-    const path = (template.absolutePath || []).join('.')
+    const dataPath = (template.absolutePath || []).join('.')
+    const templatePath = template.templatePath || ''
     let customization: CardCustomization = {}
     if (cardExtensionArray) {
         cardExtensionArray.some(
-            ({matcher, customization: matchedExtensions}) => {
-                if (matcher.test(path)) {
+            ({
+                dataMatcher,
+                templateMatcher,
+                customization: matchedExtensions,
+            }) => {
+                if (
+                    dataMatcher.test(dataPath) &&
+                    (templateMatcher
+                        ? templateMatcher.test(templatePath)
+                        : true)
+                ) {
                     customization = matchedExtensions
                     return true
                 }
