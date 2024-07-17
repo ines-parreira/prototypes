@@ -43,6 +43,7 @@ type Props = {
     className?: string
     transparent?: boolean
     bindKeys?: boolean
+    disabled?: boolean
 }
 
 // TODO(agent-null-names): remove fallbacks in this component when https://github.com/gorgias/gorgias/issues/4413 is fixed
@@ -60,6 +61,7 @@ const TicketAssignee = ({
     setUser,
     setTeam,
     transparent = false,
+    disabled = false,
 }: Props) => {
     const searchRef = useRef<HTMLDivElement>(null)
 
@@ -220,6 +222,7 @@ const TicketAssignee = ({
                     'btn-transparent': transparent,
                 })}
                 caret
+                disabled={disabled}
             >
                 {currentAssigneeUser ? (
                     <AgentLabel

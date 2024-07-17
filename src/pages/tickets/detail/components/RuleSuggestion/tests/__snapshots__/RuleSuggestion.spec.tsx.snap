@@ -162,16 +162,21 @@ exports[`RuleSuggestion should display RuleSuggestion 1`] = `
                           class="tags right"
                         >
                           <div
-                            class="badge tagLabel"
-                            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                            style="order: 0;"
                           >
-                            <span>
-                              auto-close
-                            </span>
+                            <div
+                              class="badge tagLabel"
+                              style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                            >
+                              <span>
+                                auto-close
+                              </span>
+                            </div>
                           </div>
                           <button
                             aria-disabled="false"
                             class="wrapper hidden ghost primary small"
+                            style="order: 20;"
                             type="button"
                           >
                             <span
@@ -382,16 +387,21 @@ exports[`RuleSuggestion should display in preview for large suggestion body 1`] 
                           class="tags right"
                         >
                           <div
-                            class="badge tagLabel"
-                            style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                            style="order: 0;"
                           >
-                            <span>
-                              auto-close
-                            </span>
+                            <div
+                              class="badge tagLabel"
+                              style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+                            >
+                              <span>
+                                auto-close
+                              </span>
+                            </div>
                           </div>
                           <button
                             aria-disabled="false"
                             class="wrapper hidden ghost primary small"
+                            style="order: 20;"
                             type="button"
                           >
                             <span

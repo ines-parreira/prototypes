@@ -53,8 +53,8 @@ exports[`<TicketTags /> should display current tags 1`] = `
             >
               <input
                 class="input"
-                id="input-text-1"
-                name="input-text-1"
+                id="input-text-42"
+                name="input-text-42"
                 placeholder="Search tags..."
                 role="menuitem"
                 type="text"
@@ -69,60 +69,95 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </div>
       </div>
       <div
-        class="badge tagLabel"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="order: 0;"
       >
-        <span>
-          angry
-          <i
-            class="remove material-icons cursor-pointer ml-1"
-          >
-            close
-          </i>
-        </span>
+        <div
+          class="badge tagLabel"
+          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        >
+          <span>
+            angry
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </div>
       </div>
       <div
-        class="badge tagLabel"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="order: 10;"
       >
-        <span>
-          customer
-          <i
-            class="remove material-icons cursor-pointer ml-1"
-          >
-            close
-          </i>
-        </span>
+        <div
+          class="badge tagLabel"
+          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        >
+          <span>
+            customer
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </div>
       </div>
       <div
-        class="badge tagLabel"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="order: 20;"
       >
-        <span>
-          refund
-          <i
-            class="remove material-icons cursor-pointer ml-1"
-          >
-            close
-          </i>
-        </span>
+        <div
+          class="badge tagLabel"
+          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        >
+          <span>
+            refund
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </div>
       </div>
       <div
-        class="badge tagLabel"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="order: 30;"
       >
-        <span>
-          return
-          <i
-            class="remove material-icons cursor-pointer ml-1"
-          >
-            close
-          </i>
+        <div
+          class="badge tagLabel"
+          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        >
+          <span>
+            return
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </div>
+      </div>
+      <div
+        style="order: 5;"
+      >
+        <span
+          class="badge-tag displayMore badge badge-secondary"
+          id="expand-tags-badge-42"
+        >
+          <span>
+            + 
+            2
+            <i
+              class="material-icons material-icons-round icon"
+            >
+              arrow_drop_down
+            </i>
+          </span>
         </span>
       </div>
       <button
         aria-disabled="false"
         class="wrapper hidden ghost primary small"
+        style="order: 50;"
         type="button"
       >
         <span
@@ -137,21 +172,6 @@ exports[`<TicketTags /> should display current tags 1`] = `
         </span>
       </button>
     </div>
-    <span
-      class="badge-tag displayMore badge badge-secondary"
-      id="expand-tags-badge"
-      style="left: -60px;"
-    >
-      <span>
-        + 
-        2
-        <i
-          class="material-icons material-icons-round icon"
-        >
-          arrow_drop_down
-        </i>
-      </span>
-    </span>
   </div>
 </div>
 `;

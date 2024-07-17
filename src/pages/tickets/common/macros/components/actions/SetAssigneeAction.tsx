@@ -11,6 +11,7 @@ type Props = {
     handleUsers?: boolean
     updateActionArgs: (index: number, args: Map<any, any>) => void
     dropdownContainer?: ComponentProps<typeof DropdownMenu>['container']
+    disabled?: boolean
 }
 
 export default class SetAssigneeAction extends Component<Props> {
@@ -34,7 +35,8 @@ export default class SetAssigneeAction extends Component<Props> {
     }
 
     render() {
-        const {action, handleTeams, handleUsers, dropdownContainer} = this.props
+        const {action, handleTeams, handleUsers, dropdownContainer, disabled} =
+            this.props
         return (
             <TicketAssignee
                 currentAssigneeUser={action.getIn([
@@ -50,6 +52,7 @@ export default class SetAssigneeAction extends Component<Props> {
                 setUser={(user) => this.setUserAssignee(user)}
                 setTeam={(team) => this.setTeamAssignee(team)}
                 dropdownContainer={dropdownContainer}
+                disabled={disabled}
             />
         )
     }

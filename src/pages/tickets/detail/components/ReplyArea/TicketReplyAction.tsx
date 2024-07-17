@@ -254,6 +254,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     dropdownContainer={
                                         this.props.appNode ?? undefined
                                     }
+                                    disabled
                                 />
                             )
                         case 'status-select':

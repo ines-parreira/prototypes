@@ -53,8 +53,8 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
             >
               <input
                 class="input"
-                id="input-text-1"
-                name="input-text-1"
+                id="input-text-2"
+                name="input-text-2"
                 placeholder="Search tags..."
                 role="menuitem"
                 type="text"
@@ -69,34 +69,43 @@ exports[`AddTagsAction action component should render the AddTagsAction action c
         </div>
       </div>
       <div
-        class="badge tagLabel"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="order: 0;"
       >
-        <span>
-          tag1
-          <i
-            class="remove material-icons cursor-pointer ml-1"
-          >
-            close
-          </i>
-        </span>
+        <div
+          class="badge tagLabel"
+          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        >
+          <span>
+            tag1
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </div>
       </div>
       <div
-        class="badge tagLabel"
-        style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        style="order: 10;"
       >
-        <span>
-          tag2
-          <i
-            class="remove material-icons cursor-pointer ml-1"
-          >
-            close
-          </i>
-        </span>
+        <div
+          class="badge tagLabel"
+          style="color: rgb(245, 141, 134); background-color: rgb(241, 244, 254);"
+        >
+          <span>
+            tag2
+            <i
+              class="remove material-icons cursor-pointer ml-1"
+            >
+              close
+            </i>
+          </span>
+        </div>
       </div>
       <button
         aria-disabled="false"
         class="wrapper hidden ghost primary small"
+        style="order: 30;"
         type="button"
       >
         <span

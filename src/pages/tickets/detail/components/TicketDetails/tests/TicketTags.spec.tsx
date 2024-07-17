@@ -19,6 +19,8 @@ jest.mock('common/utils/getElementWrapInfo', () => () => ({
     width: 100,
 }))
 
+jest.mock('lodash/uniqueId', () => () => '42')
+
 jest.mock('hooks/useElementSize')
 
 const useElementSizeMock = useElementSize as jest.Mock
