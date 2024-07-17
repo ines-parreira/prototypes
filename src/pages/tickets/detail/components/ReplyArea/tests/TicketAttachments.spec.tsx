@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event'
 import React, {ComponentProps} from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {StyleSheetTestUtils} from 'aphrodite'
 
 import {act, render, screen} from '@testing-library/react'
@@ -178,44 +178,71 @@ describe('TicketAttachments component', () => {
         })
 
         it('should display both an error message and attachments', () => {
-            const {container} = render(
-                <TicketAttachments
-                    {...minProps}
-                    attachments={fromJS([
-                        {
-                            name: 'foo',
-                            content_type: 'image/png',
-                            url: 'https://uploads.gorgi.us/bar',
-                            public: true,
-                        },
-                        {
-                            name: 'bar',
-                            content_type: 'image/png',
-                            url: 'https://uploads.gorgi.us/baz',
-                            public: false,
-                        },
-                        {
-                            name: 'baz',
-                            content_type: 'image/png',
-                            url: 'https://uploads.gorgi.us/foo',
-                            public: true,
-                        },
-                        {
-                            name: 'qux',
-                            content_type: 'application/productCard',
-                            url: 'http://gorgias.io/bar',
-                            extra: {
-                                price: 2,
-                                variant_name: 'quux',
-                                product_link: 'http://gorgias.io/bar',
-                                currency: 'USD',
-                            },
-                        },
-                    ])}
-                />
+            const attachments = fromJS([
+                {
+                    name: 'foo',
+                    content_type: 'image/png',
+                    url: 'https://uploads.gorgi.us/bar',
+                    public: true,
+                },
+                {
+                    name: 'bar',
+                    content_type: 'image/png',
+                    url: 'https://uploads.gorgi.us/baz',
+                    public: false,
+                },
+                {
+                    name: 'baz',
+                    content_type: 'image/png',
+                    url: 'https://uploads.gorgi.us/foo',
+                    public: true,
+                },
+                {
+                    name: 'qux',
+                    content_type: 'application/productCard',
+                    url: 'http://gorgias.io/bar',
+                    extra: {
+                        price: 2,
+                        variant_name: 'quux',
+                        product_link: 'http://gorgias.io/bar',
+                        currency: 'USD',
+                    },
+                },
+            ]) as List<Map<string, string>>
+            const {getByText, queryByText} = render(
+                <TicketAttachments {...minProps} attachments={attachments} />
             )
 
-            expect(container.firstChild).toMatchSnapshot()
+            expect(getByText('warning')).toBeInTheDocument()
+            expect(getByText(/we couldn't download/)).toBeInTheDocument()
+            expect(
+                getByText(attachments.getIn([0, 'name']))
+            ).toBeInTheDocument()
+            expect(
+                queryByText(attachments.getIn([1, 'name']))
+            ).not.toBeInTheDocument()
+            expect(
+                getByText(attachments.getIn([2, 'name']))
+            ).toBeInTheDocument()
+            expect(
+                getByText(attachments.getIn([3, 'name']))
+            ).toBeInTheDocument()
+            expect(getByText('$2.00')).toBeInTheDocument()
+        })
+
+        it('should display Shopify product type attachments with missing extra', () => {
+            const attachments = fromJS([
+                {
+                    name: 'qux',
+                    content_type: 'application/productCard',
+                    url: 'http://gorgias.io/bar',
+                },
+            ]) as List<Map<string, string>>
+            const {getAllByText} = render(
+                <TicketAttachments {...minProps} attachments={attachments} />
+            )
+
+            expect(getAllByText(attachments.getIn([0, 'name']))).toHaveLength(2)
         })
     })
 })

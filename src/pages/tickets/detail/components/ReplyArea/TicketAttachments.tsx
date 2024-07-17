@@ -163,28 +163,21 @@ export default class TicketAttachments extends Component<Props, State> {
                 <div className={css.productDetail}>
                     <p className={css.productName}>{attachment.get('name')}</p>
                     <p className={css.variantName}>
-                        {(attachment.get('extra') as Map<any, any>).get(
-                            'variant_name'
-                        )}
+                        {attachment.getIn(['extra', 'variant_name'])}
                     </p>
                     <div className={css.productPrice}>
                         <MoneyAmount
                             renderIfZero
-                            amount={(
-                                attachment.get('extra') as Map<any, any>
-                            ).get('price')}
-                            currencyCode={(
-                                attachment.get('extra') as Map<any, any>
-                            ).get('currency')}
+                            amount={attachment.getIn(['extra', 'price'])}
+                            currencyCode={attachment.getIn([
+                                'extra',
+                                'currency',
+                            ])}
                         />
                     </div>
                 </div>
                 <a
-                    href={
-                        (attachment.get('extra') as Map<any, any>).get(
-                            'product_link'
-                        ) || '#'
-                    }
+                    href={attachment.get(['extra', 'product_link'], '#')}
                     className={css.productMeta}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -192,9 +185,7 @@ export default class TicketAttachments extends Component<Props, State> {
                     <div className={css.metaName}>
                         {attachment.get('name')}
                         <br />
-                        {(attachment.get('extra') as Map<any, any>).get(
-                            'variant_name'
-                        )}
+                        {attachment.getIn(['extra', 'variant_name'])}
                     </div>
 
                     {this.renderAttachmentIcon(attachment.get('content_type'))}
