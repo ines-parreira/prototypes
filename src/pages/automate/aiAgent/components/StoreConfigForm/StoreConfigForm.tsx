@@ -50,7 +50,7 @@ import {FormValues, ValidFormValues} from '../../types'
 import {isAiAgentEnabled, isHandoffEnabled} from '../../util'
 import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
 import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
-import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection'
+import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection/EmailIntegrationListSelection'
 import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
 

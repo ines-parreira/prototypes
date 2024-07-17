@@ -43,10 +43,6 @@ export const EmailIntegrationListSelection: React.FC<EmailIntegrationListSelecti
         // handle the toggle action on a list item then send the resulting list
         const handleIdToggled = (id: number) => {
             if (selectedIds.includes(id)) {
-                if (selectedIds.length === 1) {
-                    // Note: this mechanism prevent from removing the only item of the list
-                    return
-                }
                 const nextSelectedIds = selectedIds.filter(
                     (selectedId) => selectedId !== id
                 )

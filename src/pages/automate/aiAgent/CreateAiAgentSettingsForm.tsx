@@ -54,7 +54,7 @@ import {
     ToneOfVoice,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
 } from './constants'
-import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection'
+import {EmailIntegrationListSelection} from './components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import {FormValues, ValidFormValues} from './types'
 import {filterNonNull, isAiAgentEnabled, isHandoffEnabled} from './util'
 import {

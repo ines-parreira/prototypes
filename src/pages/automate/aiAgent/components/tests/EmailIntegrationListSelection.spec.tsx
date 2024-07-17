@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection'
+import {EmailIntegrationListSelection} from '../EmailIntegrationListSelection/EmailIntegrationListSelection'
 
 describe('EmailIntegrationListSelection', () => {
     it('renders correctly', () => {

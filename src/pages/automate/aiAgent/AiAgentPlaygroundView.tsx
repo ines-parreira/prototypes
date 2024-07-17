@@ -132,24 +132,49 @@ export const AiAgentPlaygroundView = () => {
         return <Redirect to={routes.automation} />
     }
 
-    return storeConfigurationNotInitialized || !accountData || !storeData ? (
-        <div className={css.container}>
-            <div>
-                <h1 className="heading-section-semibold">
-                    Test your AI Agent as a customer
-                </h1>
-                <p className="mb-0">
-                    Once AI Agent is set up, you can test how it will respond to
-                    your customers here.
-                </p>
-                <Link to={routes.configuration}>
-                    <Button>Configure AI Agent</Button>
-                </Link>
+    if (storeConfigurationNotInitialized || !accountData || !storeData) {
+        return (
+            <div className={css.container}>
+                <div>
+                    <h1 className="heading-section-semibold">
+                        Test your AI Agent as a customer
+                    </h1>
+                    <p className="mb-0">
+                        Once AI Agent is set up, you can test how it will
+                        respond to your customers here.
+                    </p>
+                    <Link to={routes.configuration}>
+                        <Button>Configure AI Agent</Button>
+                    </Link>
+                </div>
             </div>
-        </div>
-    ) : (
+        )
+    }
+
+    const storeConfiguration = storeData.data.storeConfiguration
+
+    if (storeConfiguration.monitoredEmailIntegrations.length === 0) {
+        return (
+            <div className={css.container}>
+                <div>
+                    <h1 className="heading-section-semibold">
+                        Test your AI Agent as a customer
+                    </h1>
+                    <p>
+                        Select at least one email integration to be able to use
+                        test mode.
+                    </p>
+                    <Link to={routes.configuration}>
+                        <Button>Configure AI Agent</Button>
+                    </Link>
+                </div>
+            </div>
+        )
+    }
+
+    return (
         <PlaygroundChat
-            storeData={storeData.data.storeConfiguration}
+            storeData={storeConfiguration}
             accountData={
                 accountData.data
                     .accountConfiguration as AccountConfigurationWithHttpIntegration

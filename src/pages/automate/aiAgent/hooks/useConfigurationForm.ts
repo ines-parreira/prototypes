@@ -117,6 +117,15 @@ export const validateConfigurationFormValues = (
     }
 
     if (
+        formValues.monitoredEmailIntegrations.length === 0 &&
+        formValues.deactivatedDatetime === null
+    ) {
+        throw new Error(
+            'Please select at least 1 email address to for AI Agent to use or disable AI Agent to proceed.'
+        )
+    }
+
+    if (
         (!formValues.toneOfVoice ||
             formValues.toneOfVoice === ToneOfVoice.Custom) &&
         formValues.customToneOfVoiceGuidance &&

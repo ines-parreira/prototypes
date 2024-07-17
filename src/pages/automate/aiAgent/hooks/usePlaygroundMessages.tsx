@@ -117,6 +117,15 @@ export const usePlaygroundMessages = ({
             try {
                 const abortController = new AbortController()
                 abortControllerRef.current = abortController
+                const emailIntegration = storeData.monitoredEmailIntegrations[0]
+
+                // This should not happen because we check email integration in the parent component
+                if (!emailIntegration) {
+                    throw new Error(
+                        'Monitored Email Integration not found in storeConfiguration'
+                    )
+                }
+
                 const {data: aiAgentResponse} = await submitPlaygroundTicket([
                     {
                         use_mock_context: mockContext,
@@ -139,10 +148,8 @@ export const usePlaygroundMessages = ({
                         subject: formValues.subject ?? '',
                         http_integration_id: httpIntegrationId,
                         account_id: accountId,
-                        email_integration_id:
-                            storeData.monitoredEmailIntegrations[0].id,
-                        email_integration_address:
-                            storeData.monitoredEmailIntegrations[0].email,
+                        email_integration_id: emailIntegration.id,
+                        email_integration_address: emailIntegration.email,
                         _action_serialized_state:
                             actionSerializedStateRef.current,
                     },
