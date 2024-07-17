@@ -1,7 +1,11 @@
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {FilterKey} from 'models/stat/types'
 import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
 import {DownloadOverviewData} from 'pages/stats/support-performance/components/DownloadOverviewData'
@@ -48,6 +52,8 @@ export default function SupportPerformanceOverview() {
     const accountCreatedDatetime = useAppSelector(
         getCurrentAccountCreatedDatetime
     )
+    const isAnalyticsNewFilters =
+        !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
     const isLegacyOverviewDeprecated = useIsLegacyOverviewDeprecated()
     const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(
         () =>
@@ -85,6 +91,22 @@ export default function SupportPerformanceOverview() {
                     </>
                 }
             >
+                {isAnalyticsNewFilters && (
+                    <DashboardSection>
+                        <DashboardGridCell
+                            size={getGridCellSize(12)}
+                            className="pb-0"
+                        >
+                            <FiltersPanel
+                                persistentFilters={[FilterKey.Period]}
+                                optionalFilters={[
+                                    FilterKey.Channels,
+                                    FilterKey.Integrations,
+                                ]}
+                            />
+                        </DashboardGridCell>
+                    </DashboardSection>
+                )}
                 <DashboardSection
                     title="Customer experience"
                     titleExtra={

@@ -1,10 +1,13 @@
 import {fromJS} from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
 import moment from 'moment'
+import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
@@ -63,6 +66,9 @@ const ticketsCreatedVsClosedChartCardMock = assumeMock(
 jest.mock('pages/stats/support-performance/components/WorkloadPerChannelChart')
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
+jest.mock('pages/stats/common/filters/FiltersPanel')
+const filtersPanelMock = assumeMock(FiltersPanel)
+
 describe('<SupportPerformanceOverview />', () => {
     const accountCreatedBeforeRelease = {
         created_datetime: moment(AGENTS_REPORT_RELEASE_DATE)
@@ -98,6 +104,10 @@ describe('<SupportPerformanceOverview />', () => {
         workloadPerChannelChartMock.mockImplementation(() => (
             <div>workloadPerChannelChartMock</div>
         ))
+        filtersPanelMock.mockImplementation(() => <div>FiltersHeaderMock</div>)
+        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+            [FeatureFlagKey.AnalyticsNewFilters]: false,
+        }))
     })
 
     it.each([
@@ -230,6 +240,24 @@ describe('<SupportPerformanceOverview />', () => {
                     exact: false,
                 })
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('FiltersHeader', () => {
+        beforeEach(() => {
+            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
+                [FeatureFlagKey.AnalyticsNewFilters]: true,
+            }))
+        })
+
+        it('should show New Filters Panel', () => {
+            render(
+                <Provider store={mockStore(stateWithFreshAccount)}>
+                    <SupportPerformanceOverview />
+                </Provider>
+            )
+
+            expect(filtersPanelMock).toHaveBeenCalled()
         })
     })
 })

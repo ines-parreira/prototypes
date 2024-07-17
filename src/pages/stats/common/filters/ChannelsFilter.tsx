@@ -1,18 +1,22 @@
 import React, {useCallback, useState} from 'react'
 
 import isString from 'lodash/isString'
+import {connect} from 'react-redux'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {
     ChannelIdentifier,
     Channel,
     getChannels,
     toChannel,
 } from 'services/channels'
+import {getPageStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StatsFilters} from 'models/stat/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {filterChannels} from 'pages/stats/common/filters/helpers'
 import {DropdownOption} from 'pages/stats/types'
@@ -23,9 +27,13 @@ export const CHANNELS_FILTER_NAME = 'Channels'
 type Props = {
     value: StatsFilters['channels']
     channelsFilter?: ChannelIdentifier[] | ((channel: Channel) => boolean)
-}
+} & RemovableFilter
 
-export default function ChannelsFilter({value = [], channelsFilter}: Props) {
+export default function ChannelsFilter({
+    value = [],
+    channelsFilter,
+    onRemove,
+}: Props) {
     const dispatch = useAppDispatch()
     const [selectedLogicalOperator, setSelectedLogicalOperator] =
         useState<LogicalOperatorEnum>(LogicalOperatorEnum['ONE_OF'])
@@ -97,6 +105,7 @@ export default function ChannelsFilter({value = [], channelsFilter}: Props) {
             }}
             onRemove={() => {
                 dispatch(mergeStatsFilters({channels: []}))
+                onRemove?.()
             }}
             onChangeLogicalOperator={(operator) =>
                 setSelectedLogicalOperator(operator)
@@ -105,3 +114,7 @@ export default function ChannelsFilter({value = [], channelsFilter}: Props) {
         />
     )
 }
+
+export const ChannelsFilterWithState = connect((state: RootState) => ({
+    value: getPageStatsFilters(state)[FilterKey.Channels],
+}))(ChannelsFilter)

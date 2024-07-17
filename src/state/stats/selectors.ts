@@ -80,7 +80,9 @@ export const getPageStatsFilters = createSelector(
             channels,
             agents,
             period,
-            integrations: integrationsStatsFilter,
+            ...(integrationsStatsFilter.length > 0
+                ? {integrations: integrationsStatsFilter}
+                : {}),
             tags,
             helpCenters,
             localeCodes,

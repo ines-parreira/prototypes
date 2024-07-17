@@ -2,11 +2,14 @@ import moment from 'moment-timezone'
 import React, {ComponentProps, useCallback} from 'react'
 import {Options as InitialSettings} from 'daterangepicker'
 
+import {connect} from 'react-redux'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {getPageStatsFilters} from 'state/stats/selectors'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {StatsFilters} from 'models/stat/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 
 import {getDateRangePickerLabel} from 'pages/stats/common/utils'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
@@ -16,6 +19,7 @@ import {DateAndTimeFormatting} from 'constants/datetime'
 import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
 import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
 import css from 'pages/stats/common/filters/PeriodFilter.less'
+import {RootState} from 'state/types'
 
 const MAX_SPAN = 90
 
@@ -23,7 +27,7 @@ type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
     value: StatsFilters['period']
     tooltipMessageForPreviousPeriod?: string
-}
+} & RemovableFilter
 
 export default function PeriodFilter({
     initialSettings: initialSettingsProp,
@@ -144,3 +148,7 @@ export default function PeriodFilter({
         </div>
     )
 }
+
+export const PeriodFilterWithState = connect((state: RootState) => ({
+    value: getPageStatsFilters(state)[FilterKey.Period],
+}))(PeriodFilter)

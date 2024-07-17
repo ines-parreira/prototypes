@@ -14,6 +14,7 @@ export enum FeatureFlagKey {
     AnalyticsNewBusiestTime = 'analytics-new-busiest-time',
     AnalyticsNewChannelsReport = 'analytics-new-channels-report',
     AnalyticsAutoQA = 'analytics-auto-qa',
+    AnalyticsNewFilters = 'analytics-new-filters',
     AnalyticsSLAs = 'analytics-slas-report',
     AutomateOverviewChannelsFilter = 'automate-overview-channels-filter',
     BigCommerceCreateOrder = 'bigcommerce-create-order',

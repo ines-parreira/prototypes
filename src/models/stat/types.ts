@@ -2,22 +2,35 @@ import {ChannelIdentifier} from 'services/channels'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {CursorMeta} from '../api/types'
 
+export enum FilterKey {
+    Agents = 'agents',
+    Campaigns = 'campaigns',
+    Channels = 'channels',
+    HelpCenters = 'helpCenters',
+    Integrations = 'integrations',
+    LocaleCodes = 'localeCodes',
+    Period = 'period',
+    Score = 'score',
+    SlaPolicies = 'slaPolicies',
+    Tags = 'tags',
+}
+
 export interface Period {
     end_datetime: string
     start_datetime: string
 }
 
 export type StatsFilters = {
-    period: Period
-    integrations?: number[]
-    tags?: number[]
-    agents?: number[]
-    helpCenters?: number[]
-    localeCodes?: string[]
-    channels?: ChannelIdentifier[]
-    campaigns?: string[]
-    score?: string[]
-    slaPolicies?: string[]
+    [FilterKey.Period]: Period
+    [FilterKey.Integrations]?: number[]
+    [FilterKey.Tags]?: number[]
+    [FilterKey.Agents]?: number[]
+    [FilterKey.HelpCenters]?: number[]
+    [FilterKey.LocaleCodes]?: string[]
+    [FilterKey.Channels]?: ChannelIdentifier[]
+    [FilterKey.Campaigns]?: string[]
+    [FilterKey.Score]?: string[]
+    [FilterKey.SlaPolicies]?: string[]
 }
 
 export type WorkflowStatsFilters = {

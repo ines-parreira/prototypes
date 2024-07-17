@@ -1,12 +1,19 @@
 import React, {useCallback, useState} from 'react'
+import {connect} from 'react-redux'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
+import {
+    getPageStatsFilters,
+    getStatsMessagingAndAppIntegrations,
+} from 'state/stats/selectors'
 
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Integration} from 'models/integration/types'
-import {StatsFilters} from 'models/stat/types'
+import {FilterKey, StatsFilters} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {DropdownOption} from 'pages/stats/types'
+import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {integrationFilterLogicalOperators} from 'pages/stats/common/filters/constants'
@@ -16,9 +23,13 @@ export const INTEGRATIONS_FILTER_NAME = 'Integrations'
 type Props = {
     value: StatsFilters['integrations']
     integrations: Integration[]
-}
+} & RemovableFilter
 
-export default function IntegrationsFilter({value, integrations}: Props) {
+export default function IntegrationsFilter({
+    value,
+    integrations,
+    onRemove,
+}: Props) {
     const dispatch = useAppDispatch()
     const [selectedLogicalOperator, setSelectedLogicalOperator] =
         useState<LogicalOperatorEnum>(LogicalOperatorEnum['ONE_OF'])
@@ -93,6 +104,7 @@ export default function IntegrationsFilter({value, integrations}: Props) {
             }}
             onRemove={() => {
                 dispatch(mergeStatsFilters({integrations: []}))
+                onRemove?.()
             }}
             onChangeLogicalOperator={(operator) =>
                 setSelectedLogicalOperator(operator)
@@ -101,3 +113,8 @@ export default function IntegrationsFilter({value, integrations}: Props) {
         />
     )
 }
+
+export const IntegrationsFilterWithState = connect((state: RootState) => ({
+    value: getPageStatsFilters(state)[FilterKey.Integrations],
+    integrations: getStatsMessagingAndAppIntegrations(state),
+}))(IntegrationsFilter)
