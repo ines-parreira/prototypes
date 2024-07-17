@@ -55,6 +55,7 @@ describe('VoiceCallDrillDownTableContent', () => {
                 onRowClick: expect.any(Function),
                 isRecordingDownloadable: false,
                 columns: tableColumns[VoiceMetric.AverageTalkTime],
+                useMeasuredWidth: false,
             },
             {}
         )

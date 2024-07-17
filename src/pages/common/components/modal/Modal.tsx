@@ -109,6 +109,7 @@ const Modal = (
             ) {
                 return
             }
+            event.stopPropagation()
             onClose()
         },
         [isClosable, onClose, mouseDownTarget]

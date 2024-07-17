@@ -116,4 +116,16 @@ describe('<Modal />', () => {
 
         expect(minProps.onClose).not.toHaveBeenCalled()
     })
+
+    it('should close the modal when clicking outside the modal', () => {
+        render(
+            <Modal {...minProps} isOpen={true}>
+                <ModalHeader title="target" />
+            </Modal>
+        )
+
+        fireEvent.click(screen.getByRole('dialog'))
+
+        expect(minProps.onClose).toHaveBeenCalled()
+    })
 })

@@ -24,7 +24,11 @@ import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 import css from './VoiceCallTable.less'
-import {VoiceCallTableColumnName} from './constants'
+import {
+    VoiceCallTableColumnName,
+    skeletonColumnsWidth,
+    tableColumns,
+} from './constants'
 import {Cell, filterAndOrderCells} from './utils'
 
 type VoiceCallTableContentProps = {
@@ -33,6 +37,7 @@ type VoiceCallTableContentProps = {
     columns?: VoiceCallTableColumnName[]
     onRowClick?: (voiceCall: VoiceCallSummary) => void
     isRecordingDownloadable?: boolean
+    useMeasuredWidth?: boolean
 }
 
 export default function VoiceCallTableContent({
@@ -41,9 +46,12 @@ export default function VoiceCallTableContent({
     columns,
     onRowClick,
     isRecordingDownloadable,
+    useMeasuredWidth = true,
 }: VoiceCallTableContentProps) {
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, {width: measuredWidth}] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
+
+    const width = useMeasuredWidth ? measuredWidth : undefined
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {
@@ -54,28 +62,26 @@ export default function VoiceCallTableContent({
     }
 
     const skeletons = useMemo(() => {
+        const skeletonColumns = columns ?? tableColumns.default
+        const orderedSkeletonColumns = skeletonColumns.map((columnName) => [
+            columnName,
+            skeletonColumnsWidth[columnName],
+        ])
         return new Array(CALL_LIST_PAGE_SIZE).fill(null).map((_, rowIndex) => (
             <TableBodyRow key={rowIndex} className={css.tableRow}>
-                {[
-                    ['activity', 364],
-                    ['integration', 174],
-                    ['date', 154],
-                    ['state', 74],
-                    ['recording', 84],
-                    ['duration', 74],
-                    ['wait time', 84],
-                    ['ticket', 82],
-                ].map(([key, width]) => (
+                {orderedSkeletonColumns.map(([key, width]) => (
                     <BodyCell
                         key={key}
                         justifyContent={
-                            key === 'duration' || key === 'wait time'
+                            key === VoiceCallTableColumnName.Length ||
+                            key === VoiceCallTableColumnName.WaitTime
                                 ? 'right'
                                 : 'left'
                         }
                         className={classNames({
                             [css.withShadow]:
-                                isTableScrolled && key === 'activity',
+                                isTableScrolled &&
+                                key === VoiceCallTableColumnName.Activity,
                         })}
                     >
                         <Skeleton inline width={width} />
@@ -83,7 +89,7 @@ export default function VoiceCallTableContent({
                 ))}
             </TableBodyRow>
         ))
-    }, [isTableScrolled])
+    }, [isTableScrolled, columns])
 
     if (!isFetching && data?.length === 0) {
         return (

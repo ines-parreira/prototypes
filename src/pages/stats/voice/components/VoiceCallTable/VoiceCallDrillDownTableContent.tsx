@@ -24,6 +24,7 @@ export default function VoiceCallDrillDownTableContent({metricData}: Props) {
             }}
             isRecordingDownloadable={false}
             columns={tableColumns[metricData.metricName]}
+            useMeasuredWidth={false}
         />
     )
 }

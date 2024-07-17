@@ -39,3 +39,14 @@ export const tableColumns: Record<string, VoiceCallTableColumnName[]> = {
         VoiceCallTableColumnName.Recording,
     ],
 }
+
+export const skeletonColumnsWidth: Record<string, number> = {
+    [VoiceCallTableColumnName.Activity]: 364,
+    [VoiceCallTableColumnName.Integration]: 174,
+    [VoiceCallTableColumnName.Date]: 154,
+    [VoiceCallTableColumnName.State]: 74,
+    [VoiceCallTableColumnName.Recording]: 84,
+    [VoiceCallTableColumnName.Length]: 74,
+    [VoiceCallTableColumnName.WaitTime]: 84,
+    [VoiceCallTableColumnName.Ticket]: 82,
+}
