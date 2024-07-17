@@ -40,9 +40,7 @@ export default function SuggestionHeader({
             {onChevronToggle && (
                 <div className={css.chevron} onClick={onChevronToggle}>
                     <i className="material-icons-round">
-                        {state === 'preview' || state === 'expand'
-                            ? 'expand_less'
-                            : 'expand_more'}
+                        {state === 'expand' ? 'expand_less' : 'expand_more'}
                     </i>
                 </div>
             )}

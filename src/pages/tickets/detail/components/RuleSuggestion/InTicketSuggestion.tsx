@@ -67,7 +67,7 @@ export default function InTicketSuggestion({
             <SuggestionHeader
                 onChevronToggle={() =>
                     setSuggestionState((state) =>
-                        state === 'collapse' ? 'expand' : 'collapse'
+                        state === 'expand' ? 'collapse' : 'expand'
                     )
                 }
                 infoContent={infoContent}
@@ -90,6 +90,7 @@ export default function InTicketSuggestion({
             {suggestionState === 'preview' ? (
                 <FadeLayer
                     onClick={() => setSuggestionState('expand')}
+                    isAIAgentDraftMessage={isAIAgentDraftMessage}
                     gradientStart={headerHeight}
                 />
             ) : null}
@@ -99,9 +100,11 @@ export default function InTicketSuggestion({
 
 function FadeLayer({
     gradientStart,
+    isAIAgentDraftMessage,
     onClick,
 }: {
     gradientStart: number
+    isAIAgentDraftMessage: boolean
     onClick: () => void
 }) {
     return (
@@ -112,7 +115,10 @@ function FadeLayer({
             className={css.fadeLayer}
         >
             <div onClick={onClick} className={css.expandButton}>
-                <Button fillStyle="ghost" intent="secondary">
+                <Button
+                    fillStyle="ghost"
+                    intent={isAIAgentDraftMessage ? `primary` : `secondary`}
+                >
                     Expand
                     <i className="material-icons-round">expand_more</i>
                 </Button>
