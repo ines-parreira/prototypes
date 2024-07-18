@@ -73,7 +73,7 @@ export default function TicketMessages({
     const isAIAgentInternalNote = isAIAgentMessage && !message.public
 
     const isAIAgentDraftMessage =
-        message.body_html?.indexOf(DRAFT_MESSAGE_TAG) !== -1
+        message.body_html && message.body_html.indexOf(DRAFT_MESSAGE_TAG) !== -1
 
     const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
         lastCustomerMessage.get('sent_datetime')
