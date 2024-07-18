@@ -1,11 +1,20 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {Label} from '@gorgias/ui-kit'
 
 import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
 import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
+import {
+    WorkflowVariable,
+    WorkflowVariableGroup,
+} from 'pages/automate/workflows/models/variables.types'
 import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
 
+import {
+    fulfillmentStatus,
+    orderStatus,
+    paymentStatus,
+    shipmentStatus,
+} from '../utils'
 import css from './CustomActionsForm.less'
 
 type Props = {
@@ -27,6 +36,37 @@ export default function ActionFormInputConditions({
     onConditionTypeChange,
     onVariableSelect,
 }: Props) {
+    // Works only for string conditions.
+    // To add more types, refer to /ConditionsBranchBody -> renderInput method.
+    const handleRenderCustomConditionError = useCallback(
+        (
+            _: ConditionSchema,
+            variable: WorkflowVariable
+        ): React.ReactNode | undefined => {
+            const STATUS_ERROR_VARIABLES = [
+                fulfillmentStatus,
+                orderStatus,
+                shipmentStatus,
+                paymentStatus,
+            ]
+
+            if (STATUS_ERROR_VARIABLES.includes(variable)) {
+                return (
+                    <span>
+                        Enter a value.{' '}
+                        <a
+                            href="https://link.gorgias.com/cys"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            See possible values to use.
+                        </a>
+                    </span>
+                )
+            }
+        },
+        []
+    )
     return (
         <div className={css.formItem}>
             <Label>
@@ -49,6 +89,7 @@ export default function ActionFormInputConditions({
                 type={conditionsType}
                 conditions={conditions}
                 onDeleteBranch={() => {}}
+                renderCustomConditionError={handleRenderCustomConditionError}
                 onConditionDelete={onConditionDelete}
                 onVariableSelect={(variable) => {
                     const newCondition = buildConditionSchemaByVariableType(

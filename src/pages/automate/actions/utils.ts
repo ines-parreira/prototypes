@@ -22,6 +22,34 @@ import {
     ActionAppsConfiguration,
 } from './types'
 
+export const shipmentStatus: WorkflowVariable = {
+    name: 'Shipment status',
+    value: 'objects.order.fulfillments.0.external_shipment_status',
+    nodeType: 'order_selection',
+    type: 'string',
+}
+
+export const fulfillmentStatus: WorkflowVariable = {
+    name: 'Fulfillment status',
+    value: 'objects.order.external_fulfillment_status',
+    nodeType: 'order_selection',
+    type: 'string',
+}
+
+export const orderStatus: WorkflowVariable = {
+    name: 'Order status',
+    value: 'objects.order.external_status',
+    nodeType: 'order_selection',
+    type: 'string',
+}
+
+export const paymentStatus: WorkflowVariable = {
+    name: 'Payment status',
+    value: 'objects.order.external_payment_status',
+    nodeType: 'order_selection',
+    type: 'string',
+}
+
 export const orderVariables: WorkflowVariable[] = [
     {
         name: 'Order id',
@@ -66,30 +94,15 @@ export const orderVariables: WorkflowVariable[] = [
         format: 'currency',
         type: 'number',
     },
-    {
-        name: 'Fulfillment status',
-        value: 'objects.order.external_fulfillment_status',
-        nodeType: 'order_selection',
-        type: 'string',
-    },
+    fulfillmentStatus,
     {
         name: 'Fulfillment last updated date',
         value: 'objects.order.fulfillments.0.updated_datetime',
         nodeType: 'order_selection',
         type: 'date',
     },
-    {
-        name: 'Payment status',
-        value: 'objects.order.external_payment_status',
-        nodeType: 'order_selection',
-        type: 'string',
-    },
-    {
-        name: 'Order status',
-        value: 'objects.order.external_status',
-        nodeType: 'order_selection',
-        type: 'string',
-    },
+    paymentStatus,
+    orderStatus,
     {
         name: 'Cancellation date',
         value: 'objects.order.cancelled_datetime',
@@ -198,12 +211,7 @@ export const orderVariables: WorkflowVariable[] = [
         nodeType: 'order_selection',
         type: 'string',
     },
-    {
-        name: 'Shipment status',
-        value: 'objects.order.fulfillments.0.external_shipment_status',
-        nodeType: 'order_selection',
-        type: 'string',
-    },
+    shipmentStatus,
     {
         name: 'Tracking url',
         value: 'objects.order.tracking_url',

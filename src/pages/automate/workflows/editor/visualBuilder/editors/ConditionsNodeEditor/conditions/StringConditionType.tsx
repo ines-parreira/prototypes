@@ -13,10 +13,12 @@ interface Props {
     condition: Exclude<StringSchema, ExistsSchema | DoesNotExistSchema>
     onChange: (condition: ConditionSchema) => void
     shouldShowErrors?: boolean
+    customError?: React.ReactNode
 }
 export const StringConditionType = ({
     condition,
     onChange,
+    customError,
     shouldShowErrors,
 }: Props) => {
     const key = Object.keys(condition)[0] as AllKeys<typeof condition>
@@ -46,7 +48,7 @@ export const StringConditionType = ({
                     })
                 )
             }}
-            error={hasError && 'Enter a value'}
+            error={hasError && (customError ?? 'Enter a value')}
             hasError={hasError}
             value={value}
         />

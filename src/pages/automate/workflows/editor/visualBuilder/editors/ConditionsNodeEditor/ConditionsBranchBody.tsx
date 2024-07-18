@@ -46,6 +46,10 @@ interface Props {
     showNoneOption?: boolean
     hasMultipleChildren: boolean
     maxConditionsTooltipMessage: string
+    renderCustomConditionError?: (
+        condition: ConditionSchema,
+        variable: WorkflowVariable
+    ) => React.ReactNode | undefined
     onConditionTypeChange: (branchId: string, type: 'and' | 'or' | null) => void
     onVariableSelect: (variable: WorkflowVariable) => void
     onConditionChange: (
@@ -71,6 +75,7 @@ export const ConditionsBranchBody = ({
     onVariableSelect,
     onConditionChange,
     onConditionDelete,
+    renderCustomConditionError,
     hasMultipleChildren,
     availableVariables,
     conditions,
@@ -84,7 +89,8 @@ export const ConditionsBranchBody = ({
         (
             type: WorkflowVariableType,
             format: WorkflowVariableFormat | undefined,
-            conditionIndex: number
+            conditionIndex: number,
+            customConditionError: React.ReactNode | undefined
         ) => {
             const condition = conditions[conditionIndex]
 
@@ -120,6 +126,7 @@ export const ConditionsBranchBody = ({
                         <StringConditionType
                             condition={condition}
                             shouldShowErrors={shouldShowErrors}
+                            customError={customConditionError}
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
@@ -308,7 +315,11 @@ export const ConditionsBranchBody = ({
                                         {renderInput(
                                             variable.type,
                                             variable.format,
-                                            index
+                                            index,
+                                            renderCustomConditionError?.(
+                                                condition,
+                                                variable
+                                            )
                                         )}
                                     </Condition>
                                 </div>
