@@ -1,35 +1,13 @@
 import React from 'react'
-import ReactStars from 'react-rating-stars-component'
 import {List, Map} from 'immutable'
 
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {StarRatingColors} from 'pages/common/components/infobar/utils'
+import StarRating from 'pages/common/components/StarRating'
+
+import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 import css from './Reviews.less'
-
-export default function Reviews() {
-    return {
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-        AfterTitle,
-        BeforeContent,
-    }
-}
-
-export function starRatingProps(value: any) {
-    return {
-        activeColor: StarRatingColors.activeColor,
-        value: parseFloat(value),
-        size: 15,
-        edit: false,
-        isHalf: true,
-        color: StarRatingColors.color,
-        emptyIcon: <span className={`material-icons`}>star</span>,
-        halfIcon: <span className={`material-icons`}>star_half</span>,
-        filledIcon: <span className={`material-icons`}>star</span>,
-    }
-}
 
 type ReviewSearchURL = {
     url: string
@@ -75,7 +53,6 @@ type AfterTitleProps = {
 class AfterTitle extends React.Component<AfterTitleProps> {
     render() {
         const {source} = this.props
-        const starRatings = starRatingProps(source.get('score'))
         return (
             <div className={css.afterTitle}>
                 <StaticField label="Created">
@@ -85,7 +62,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     />
                 </StaticField>
                 <StaticField>
-                    <ReactStars {...starRatings} />
+                    <StarRating value={(source.get('score') as number) || 0} />
                 </StaticField>
             </div>
         )
@@ -146,4 +123,11 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
             </>
         )
     }
+}
+
+export const reviewsCustomization: CardCustomization = {
+    editionHiddenFields: ['link'],
+    TitleWrapper,
+    AfterTitle,
+    BeforeContent,
 }

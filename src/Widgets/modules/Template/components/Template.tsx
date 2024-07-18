@@ -8,9 +8,9 @@ import {
 } from 'models/widget/types'
 import {EditionContext} from 'providers/infobar/EditionContext'
 import {
-    guessFieldValueFromRawData,
-    stringifyRawData,
-} from 'pages/common/components/infobar/utils'
+    getStringFromData,
+    getValueFromData,
+} from 'Widgets/modules/Template/helpers/fieldDataMappers'
 import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
 
 import {
@@ -135,13 +135,9 @@ export function Template({
                 <Field
                     isEditing={isEditing}
                     type={template.type}
-                    value={guessFieldValueFromRawData(
-                        source,
-                        template.type,
-                        widget.type
-                    )}
+                    value={getValueFromData(source, template.type, widget.type)}
                     template={template}
-                    copyableValue={stringifyRawData(source, template.type)}
+                    copyableValue={getStringFromData(source, template.type)}
                 />
             )
         }

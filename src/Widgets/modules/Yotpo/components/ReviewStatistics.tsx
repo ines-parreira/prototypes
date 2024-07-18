@@ -1,18 +1,12 @@
 import React from 'react'
 import type {Map} from 'immutable'
 
-import {toJS} from '../../../../../../../../../utils'
+import {toJS} from 'utils'
 
-import {CardHeaderYotpoReviewStatistics} from './custom/CardHeaderYotpoReviewStatistics'
-import {CardContentYotpoReviewTopics} from './custom/CardContentYotpoReviewTopics'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
-export default function ReviewStatistics() {
-    return {
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-        AfterContent,
-    }
-}
+import {CardHeaderYotpoReviewStatistics} from './CardHeaderYotpoReviewStatistics'
+import {CardContentYotpoReviewTopics} from './CardContentYotpoReviewTopics'
 
 type TitleWrapperProps = {
     source: Map<string, any>
@@ -47,4 +41,10 @@ class AfterContent extends React.Component<AfterContentReviewStatisticsProps> {
             </>
         )
     }
+}
+
+export const reviewStatisticsCustomization: CardCustomization = {
+    editionHiddenFields: ['link'],
+    TitleWrapper,
+    AfterContent,
 }

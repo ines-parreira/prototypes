@@ -1,6 +1,7 @@
 import React from 'react'
 
-import {guessFieldValueFromRawData} from 'pages/common/components/infobar/utils'
+import {getValueFromData} from 'Widgets/modules/Template/helpers/fieldDataMappers'
+
 import css from './Field.less'
 
 export default function Field({path, value}: {path: string; value: unknown}) {
@@ -8,7 +9,7 @@ export default function Field({path, value}: {path: string; value: unknown}) {
         <div className={`draggable ${css.sourceWidgetField}`} data-key={path}>
             <span className={css.sourceWidgetFieldLabel}>{path}:</span>
             <span className={css.sourceWidgetFieldValue}>
-                {guessFieldValueFromRawData(value)}
+                {getValueFromData(value)}
             </span>
         </div>
     )

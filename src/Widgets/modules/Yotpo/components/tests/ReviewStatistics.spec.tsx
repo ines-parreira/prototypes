@@ -2,10 +2,10 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import ReviewStatistics from '../ReviewStatistics'
+import {reviewStatisticsCustomization} from '../ReviewStatistics'
 
-const TitleWrapper = ReviewStatistics().TitleWrapper
-const AfterContent = ReviewStatistics().AfterContent
+const TitleWrapper = reviewStatisticsCustomization.TitleWrapper!
+const AfterContent = reviewStatisticsCustomization.AfterContent!
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {

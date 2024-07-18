@@ -2,9 +2,9 @@ import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import React from 'react'
 
-import Loyalty from '../../yotpo/Loyalty'
+import {loyaltyCustomization} from '../Loyalty'
 
-const TitleWrapper = Loyalty().TitleWrapper
+const TitleWrapper = loyaltyCustomization.TitleWrapper!
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {

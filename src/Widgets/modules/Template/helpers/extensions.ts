@@ -2,7 +2,6 @@ import http from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/In
 import magento2 from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
 import recharge from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/recharge'
 import smile from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/smile'
-import yotpo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo'
 import woocommerce from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/woocommerce'
 import {IntegrationType} from 'models/integration/constants'
 import {Template} from 'models/widget/types'
@@ -19,7 +18,6 @@ const customizationSeekerByType: {
     [IntegrationType.Smile]: smile,
     [IntegrationType.Magento2]: magento2,
     [IntegrationType.Http]: http,
-    [IntegrationType.Yotpo]: yotpo,
     [WOOCOMMERCE_WIDGET_TYPE]: woocommerce,
 }
 

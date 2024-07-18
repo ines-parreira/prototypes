@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
-import ReactStars from 'react-rating-stars-component'
 
 import {fetchRule} from 'models/rule/resources'
 import {ruleFetched} from 'state/entities/rules/actions'
@@ -14,7 +13,8 @@ import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {Meta as MetaType, Source} from 'models/ticket/types'
 import {TicketMessageSourceType} from 'business/types/ticket'
-import {starRatingProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
+import StarRating from 'pages/common/components/StarRating'
+
 import MetaLabel from './MetaLabel'
 import MetaRepliedByLabel from './MetaRepliedByLabel'
 import MetaRepliedToLabel from './MetaRepliedToLabel'
@@ -329,10 +329,9 @@ export default function Meta(props: Props) {
     }
 
     if (yotpoReviewScore) {
-        const starRatings = starRatingProps(yotpoReviewScore)
         widgets.push(
             <span key={yotpoReviewScore}>
-                <ReactStars {...starRatings} />
+                <StarRating value={yotpoReviewScore || 0} />
             </span>
         )
     }

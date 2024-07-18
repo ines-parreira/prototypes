@@ -3,10 +3,10 @@ import React from 'react'
 import {render} from '@testing-library/react'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import Customer from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Customer'
+import {customerCustomization} from 'Widgets/modules/Yotpo/components/Customer'
 
-const TitleWrapper = Customer().TitleWrapper
-const BeforeContent = Customer().BeforeContent
+const TitleWrapper = customerCustomization.TitleWrapper!
+const BeforeContent = customerCustomization.BeforeContent!
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {

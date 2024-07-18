@@ -26,7 +26,6 @@ import {getWidgetsState} from 'state/widgets/selectors'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
 import {
-    canDrop,
     hasCustomAction,
     isSimpleTemplateWidget,
 } from 'pages/common/components/infobar/utils'
@@ -40,6 +39,7 @@ import {StaticField} from 'Widgets/modules/Template/modules/Field'
 
 import {CardEditFormState, HiddenField} from '../types'
 import {isDefaultOpen} from '../helpers/isDefaultOpen'
+import {canDrop} from '../helpers/canDrop'
 import UICard from '../components/views'
 
 export const NO_DATA_TEXT = 'No data'

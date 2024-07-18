@@ -1,13 +1,12 @@
 import React, {useState} from 'react'
 import {Container, Collapse, Row, Col} from 'reactstrap'
-import ReactStars from 'react-rating-stars-component'
 
 import {ProductDetails} from 'models/ticket/types'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import StarRating from 'pages/common/components/StarRating'
 import {getIconFromUrl} from 'utils'
 
 import GenericCard from '../GenericCard/GenericCard'
-import {starRatingProps} from '../infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
 
 import css from './ProductEmbeddedCard.less'
 
@@ -18,8 +17,6 @@ type Props = {
 export default function ProductEmbeddedCard(props: Props) {
     const {product} = props
     const [isOpen, setIsOpen] = useState(false)
-
-    const starRatings = starRatingProps(product.average_score)
 
     const toggle = () => setIsOpen(!isOpen)
     return (
@@ -46,7 +43,7 @@ export default function ProductEmbeddedCard(props: Props) {
                         <Row>
                             <div>
                                 <span className={css.starRatingWrapper}>
-                                    <ReactStars {...starRatings} />
+                                    <StarRating value={product.average_score} />
                                 </span>
                                 <span className={css.totalReviews}>
                                     ({product.total_reviews})

@@ -1,14 +1,9 @@
 import React from 'react'
 import type {Map} from 'immutable'
 
-import {CardHeaderYotpoLoyaltyPoints} from './custom/CardHeaderYotpoLoyaltyPoints'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
-export default function Loyalty() {
-    return {
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-    }
-}
+import {CardHeaderYotpoLoyaltyPoints} from './CardHeaderYotpoLoyaltyPoints'
 
 type TitleWrapperProps = {
     source: Map<string, any>
@@ -26,4 +21,9 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
             </>
         )
     }
+}
+
+export const loyaltyCustomization: CardCustomization = {
+    editionHiddenFields: ['link'],
+    TitleWrapper,
 }

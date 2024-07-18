@@ -2,14 +2,14 @@ import React from 'react'
 import {fromJS} from 'immutable'
 
 import {render} from '@testing-library/react'
-import Reviews from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/yotpo/Reviews'
 import {renderWithStore} from 'utils/testing'
+import {reviewsCustomization} from '../Reviews'
 
 jest.mock('react-rating-stars-component', () => () => null)
 
-const TitleWrapper = Reviews().TitleWrapper
-const AfterTitle = Reviews().AfterTitle
-const BeforeContent = Reviews().BeforeContent
+const TitleWrapper = reviewsCustomization.TitleWrapper!
+const AfterTitle = reviewsCustomization.AfterTitle!
+const BeforeContent = reviewsCustomization.BeforeContent!
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {

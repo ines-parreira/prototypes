@@ -3,7 +3,6 @@ import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
-import {guessFieldValueFromRawData} from 'pages/common/components/infobar/utils'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
@@ -12,6 +11,7 @@ import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {getTrackingUrl} from 'utils/delivery'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import {getValueFromData} from 'Widgets/modules/Template/helpers/fieldDataMappers'
 
 import css from './Order.less'
 
@@ -146,13 +146,13 @@ export class Shipments extends Component<{
                 trackComponent = (
                     <div key={trackNumber}>
                         <StaticField label="Carrier code">
-                            {guessFieldValueFromRawData(carrierCode)}
+                            {carrierCode}
                         </StaticField>
                         <StaticField label="Tracking number">
-                            {guessFieldValueFromRawData(trackNumber)}
+                            {trackNumber}
                         </StaticField>
                         <StaticField label="Tracking URL">
-                            {guessFieldValueFromRawData(trackingUrl, 'url')}
+                            {getValueFromData(trackingUrl, 'url')}
                         </StaticField>
                     </div>
                 )

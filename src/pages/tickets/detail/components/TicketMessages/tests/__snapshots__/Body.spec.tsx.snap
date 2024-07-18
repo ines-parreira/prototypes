@@ -405,12 +405,6 @@ exports[`Body should display the Yotpo product card if there's matching metadata
                       class="undefined react-stars"
                       style="overflow: hidden; position: relative;"
                     >
-                      <style>
-                        
-          span.react-stars-half &gt; * {
-          color: #FDAB40;
-      }
-                      </style>
                       <span
                         class=""
                         data-forhalf="0"

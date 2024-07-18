@@ -16,7 +16,6 @@ import {
 } from 'state/widgets/actions'
 import {renderTemplate} from 'pages/common/utils/template'
 import {renderInfobarTemplate} from 'pages/common/utils/infobar'
-import {canDrop} from 'pages/common/components/infobar/utils'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
@@ -26,6 +25,7 @@ import {WidgetContext} from 'Widgets/contexts/WidgetContext'
 import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
 
 import * as isDefaultOpenExports from '../../helpers/isDefaultOpen'
+import {canDrop} from '../../helpers/canDrop'
 import Card, {listMetaFields, NO_DATA_TEXT} from '../../components/Card'
 import UICard from '../../components/views'
 import {CardEditFormState} from '../../types'
@@ -34,12 +34,9 @@ const CHILDREN_TEST_ID = 'childrennnn'
 
 const mockStore = configureMockStore()
 
-jest.mock('pages/common/components/infobar/utils', () => {
-    return {
-        ...jest.requireActual('pages/common/components/infobar/utils'),
-        canDrop: jest.fn(() => true),
-    } as Record<string, unknown>
-})
+jest.mock('../../helpers/canDrop', () => ({
+    canDrop: jest.fn(() => true),
+}))
 
 jest.mock('pages/common/utils/template')
 jest.mock('pages/common/utils/infobar')

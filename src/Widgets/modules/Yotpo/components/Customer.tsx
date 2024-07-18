@@ -3,23 +3,18 @@ import type {Map} from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
+import {
+    CardCustomization,
+    ExpandAllButton,
+} from 'Widgets/modules/Template/modules/Card'
 
-import {CardHeaderStatusLabel} from './custom/CardHeaderStatusLabel'
-import {CardHeaderYotpoBadge} from './custom/CardHeaderYotpoBadge'
-import {CardHeaderYotpoRatingThumbs} from './custom/CardHeaderYotpoRatingThumbs'
-
-export default function Customer() {
-    return {
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-        AfterTitle,
-        BeforeContent,
-    }
-}
+import {CardHeaderStatusLabel} from './CardHeaderStatusLabel'
+import {CardHeaderYotpoBadge} from './CardHeaderYotpoBadge'
+import {CardHeaderYotpoRatingThumbs} from './CardHeaderYotpoRatingThumbs'
 
 type AfterTitleProps = {
     source: Map<string, any>
@@ -102,4 +97,11 @@ class BeforeContent extends React.Component<BeforeContentProps> {
         }
         return null
     }
+}
+
+export const customerCustomization: CardCustomization = {
+    editionHiddenFields: ['link'],
+    TitleWrapper,
+    AfterTitle,
+    BeforeContent,
 }
