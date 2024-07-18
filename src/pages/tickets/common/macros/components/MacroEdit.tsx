@@ -243,6 +243,19 @@ export class MacroEdit extends Component<Props> {
                     ),
                 }
                 break
+            case MacroActionName.RemoveTags:
+                config = {
+                    title: 'Remove tags from ticket',
+                    content: (
+                        <AddTagsAction
+                            index={index}
+                            args={action.get('arguments')}
+                            updateActionArgs={this._updateActionArguments}
+                            dropdownContainer={this.props.container}
+                        />
+                    ),
+                }
+                break
             case MacroActionName.SetResponseText:
                 config = {
                     title: 'Response text',

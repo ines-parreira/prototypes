@@ -13,6 +13,11 @@ import {integrationsState} from 'fixtures/integrations'
 
 import {MacroEdit} from '../MacroEdit'
 
+jest.mock(
+    'pages/tickets/detail/components/TicketDetails/TicketTags',
+    () => () => 'TicketTagsMock'
+)
+
 const mockStore = configureMockStore([thunk])
 
 // To avoid snapshoting all languages
@@ -40,6 +45,16 @@ const forwardByEmailAction = {
         cc: 'test@gorgias.com',
         bcc: 'test@gorgias.com',
         from: 'test@gorgias.com',
+    },
+}
+
+const removeTagAction = {
+    type: 'user',
+    execution: 'back',
+    name: MacroActionName.RemoveTags,
+    title: 'Remove tags',
+    arguments: {
+        tags: 'ai_close',
     },
 }
 
@@ -136,5 +151,23 @@ describe('MacroEdit component', () => {
         )
 
         expect(queryByText('test body')).toBeTruthy()
+    })
+
+    it('should remove tags action', () => {
+        const setActions = jest.fn()
+
+        const {queryByText} = render(
+            <Provider
+                store={mockStore({integrations: fromJS(integrationsState)})}
+            >
+                <MacroEdit
+                    {...defaultProps}
+                    actions={fromJS([removeTagAction])}
+                    setActions={setActions}
+                />
+            </Provider>
+        )
+
+        expect(queryByText('Remove tags from ticket')).toBeTruthy()
     })
 })
