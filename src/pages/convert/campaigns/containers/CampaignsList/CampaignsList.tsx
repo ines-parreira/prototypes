@@ -175,6 +175,11 @@ const CampaignsList = ({
     return (
         <>
             <Container fluid className={css.pageContainer}>
+                <div
+                    className={css.infoLinks}
+                    data-candu-id="convert-links-campaign-list"
+                ></div>
+
                 <div className={css.campaignsToolbar}>
                     <CampaignsSearch
                         value={search}

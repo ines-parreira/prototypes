@@ -112,6 +112,24 @@ describe('<CampaignsList />', () => {
         } as any)
     })
 
+    describe('Campaigns intro Candu links', () => {
+        it('should display', () => {
+            const {container} = render(
+                <Provider store={store}>
+                    <CampaignListOptions>
+                        <CampaignsList {...props} />
+                    </CampaignListOptions>
+                </Provider>
+            )
+
+            expect(
+                container.querySelector(
+                    '[data-candu-id="convert-links-campaign-list"]'
+                )
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('Campaigns search', () => {
         it('should display the found campaigns', () => {
             ;(useCampaignListOptions as jest.Mock).mockImplementation(() => {
