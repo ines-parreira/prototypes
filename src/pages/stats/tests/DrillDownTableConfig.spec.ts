@@ -16,6 +16,7 @@ import {
     SlaMetric,
     ConvertMetric,
     VoiceMetric,
+    AutoQAMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {
@@ -64,6 +65,11 @@ describe('getDrillDownQuery', () => {
         {metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123},
         {metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123},
         {metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123},
+    ]
+    const autoQAMetrics: DrillDownMetric[] = [
+        {
+            metricName: AutoQAMetric.ReviewedClosedTickets,
+        },
     ]
     const channelMetrics: ChannelsMetrics[] = [
         {
@@ -136,6 +142,7 @@ describe('getDrillDownQuery', () => {
     it.each([
         ...supportedMetrics,
         ...agentsMetrics,
+        ...autoQAMetrics,
         ...channelMetrics,
         ...slaMetrics,
         ...convertMetrics,

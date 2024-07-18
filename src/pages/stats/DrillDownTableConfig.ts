@@ -1,8 +1,7 @@
 import {OrderDirection} from 'models/api/types'
-import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
+import {DrillDownReportingQuery} from 'models/job/types'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
@@ -18,8 +17,8 @@ import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryF
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {ReportingQuery} from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
+import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     ChannelColumnConfig,
     ChannelsTableColumns,
@@ -27,34 +26,24 @@ import {
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
+    AutoQAMetric,
+    ConvertMetric,
     OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
-    ConvertMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
-import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     connectedCallsListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {
-    VoiceCallCube,
-    VoiceCallSegment,
-} from 'models/reporting/cubes/VoiceCallCube'
+import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 
 export type DrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
-) => ReportingQuery<
-    | HelpdeskMessageCubeWithJoins
-    | HandleTimeCubeWithJoins
-    | TicketSLACubeWithJoins
-    | ConvertOrderConversionCube
-    | VoiceCallCube
->
+) => DrillDownReportingQuery
 
 const queryBuilderWithAgentFilter =
     (
@@ -141,6 +130,8 @@ export const getDrillDownQuery = (
                 metricName.perAgentId,
                 ticketHandleTimePerTicketDrillDownQueryFactory
             )
+        case AutoQAMetric.ReviewedClosedTickets:
+            return reviewedClosedTicketsDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:

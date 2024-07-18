@@ -9,10 +9,8 @@ import {
     MergedRecord,
     withEnrichment,
 } from 'hooks/reporting/withEnrichment'
+import {DrillDownReportingQuery} from 'models/job/types'
 import {Cubes} from 'models/reporting/cubes'
-import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     useEnrichedPostReporting,
@@ -22,8 +20,6 @@ import {
 import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
-import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 
 type Requested = {
     isFetching: boolean
@@ -156,13 +152,7 @@ export function useMetricPerDimensionWithBreakdown(
 }
 
 export function useMetricPerDimensionWithEnrichment(
-    query: ReportingQuery<
-        | HelpdeskMessageCubeWithJoins
-        | HandleTimeCubeWithJoins
-        | TicketSLACubeWithJoins
-        | ConvertOrderConversionCube
-        | VoiceCallCube
-    >,
+    query: DrillDownReportingQuery,
     enrichmentFields: EnrichmentFields[]
 ): MetricWithEnrichment<
     typeof query['measures'][0],

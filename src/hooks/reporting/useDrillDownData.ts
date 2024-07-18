@@ -1,4 +1,5 @@
 import {useMemo} from 'react'
+import {DrillDownReportingQuery} from 'models/job/types'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     useMetricPerDimension,
@@ -7,13 +8,7 @@ import {
 import {IDRecord, MergedRecord} from 'hooks/reporting/withEnrichment'
 import useAppSelector from 'hooks/useAppSelector'
 import {OrderDirection} from 'models/api/types'
-import {Cubes} from 'models/reporting/cubes'
-import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {
-    TicketSLACubeWithJoins,
-    TicketSLADimension,
-} from 'models/reporting/cubes/sla/TicketSLACube'
+import {TicketSLADimension} from 'models/reporting/cubes/sla/TicketSLACube'
 import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
@@ -28,14 +23,12 @@ import {
     SlaMetric,
     AgentsTableColumn,
 } from 'state/ui/stats/types'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 import {
     BaseDrillDownRowData,
     getEnrichedDrillDownFormatter,
     TicketDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
 
 interface DrillDownData<T> {
     isFetching: boolean
@@ -81,9 +74,7 @@ export const useDrillDownQuery = (metricData: DrillDownMetric) => {
     )
 }
 
-function withoutLimit<Cube extends Cubes>(
-    query: ReportingQuery<Cube>
-): ReportingQuery<Cube> {
+function withoutLimit<T extends ReportingQuery>(query: T): T {
     return {
         ...query,
         limit: undefined,
@@ -92,13 +83,7 @@ function withoutLimit<Cube extends Cubes>(
 
 export const useDrillDownQueryWithoutLimit = (
     metricData: DrillDownMetric
-): ReportingQuery<
-    | HelpdeskMessageCubeWithJoins
-    | HandleTimeCubeWithJoins
-    | TicketSLACubeWithJoins
-    | ConvertOrderConversionCube
-    | VoiceCallCube
-> => {
+): DrillDownReportingQuery => {
     const query = useDrillDownQuery(metricData)
 
     return withoutLimit(query)
@@ -156,14 +141,6 @@ export const useEnrichedDrillDownData = (
 
 export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
     metricData: DrillDownMetric
-) => DrillDownData<T>
-
-export type DrillDownDataHookWithFormatter = <T>(
-    metricData: DrillDownMetric,
-    getDrillDownFormatter: (
-        row: MergedRecord<any, any>,
-        metricField: string
-    ) => T
 ) => DrillDownData<T>
 
 export function useDrillDownData<T>(

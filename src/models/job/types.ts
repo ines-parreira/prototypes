@@ -1,4 +1,5 @@
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import {TicketQAScoreCubeWithJoins} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
 import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
@@ -54,14 +55,17 @@ export type JobParams =
       }
     | ReportingQueryJobParams
 
+export type DrillDownReportingQuery = ReportingQuery<
+    | ConvertOrderConversionCube
+    | HandleTimeCubeWithJoins
+    | HelpdeskMessageCubeWithJoins
+    | TicketQAScoreCubeWithJoins
+    | TicketSLACubeWithJoins
+    | VoiceCallCube
+>
+
 export type ReportingQueryJobParams = {
-    reporting_query: ReportingQuery<
-        | HelpdeskMessageCubeWithJoins
-        | HandleTimeCubeWithJoins
-        | TicketSLACubeWithJoins
-        | ConvertOrderConversionCube
-        | VoiceCallCube
-    >
+    reporting_query: DrillDownReportingQuery
     context?: JobContext
 }
 

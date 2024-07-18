@@ -1,5 +1,6 @@
 import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import {TicketQAScoreCubeWithJoins} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {AutomationBillingEventCubeWithJoins} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
 import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
@@ -20,6 +21,7 @@ export type Cubes =
     | HandleTimeCubeWithJoins
     | HelpCenterTrackingEventCube
     | HelpdeskMessageCubeWithJoins
+    | TicketQAScoreCubeWithJoins
     | TicketSLACubeWithJoins
     | VoiceCallCube
     | VoiceEventsByAgentCube

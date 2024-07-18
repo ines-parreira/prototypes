@@ -29,9 +29,9 @@ import {
     useTicketsRepliedTrend,
     useOneTouchTicketsTrend,
     useTicketHandleTimeTrend,
-} from '../metricTrends'
+} from 'hooks/reporting/metricTrends'
 
-jest.mock('../useMetricTrend')
+jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
 
 describe('metric trends', () => {

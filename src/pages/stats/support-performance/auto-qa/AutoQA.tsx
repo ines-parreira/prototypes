@@ -1,11 +1,17 @@
 import React from 'react'
+import {useGridSize} from 'hooks/useGridSize'
+import DashboardGridCell from 'pages/stats/DashboardGridCell'
+import {NumberOfClosedTicketsReviewedTrendCard} from 'pages/stats/support-performance/auto-qa/NumberOfClosedTicketsReviewedTrendCard'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
+import DashboardSection from 'pages/stats/DashboardSection'
 
 export const AUTO_QA_PAGE_TITLE = 'Auto QA'
 
 export default function AutoQA() {
+    const getGridCellSize = useGridSize()
+
     return (
         <div className="full-width">
             <StatsPage
@@ -16,6 +22,11 @@ export default function AutoQA() {
                     </>
                 }
             >
+                <DashboardSection>
+                    <DashboardGridCell size={getGridCellSize(12)}>
+                        <NumberOfClosedTicketsReviewedTrendCard />
+                    </DashboardGridCell>
+                </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
         </div>

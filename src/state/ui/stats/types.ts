@@ -40,6 +40,10 @@ export enum AgentsTableColumn {
     TicketHandleTime = 'agent_ticket_handle_time',
 }
 
+export enum AutoQAMetric {
+    ReviewedClosedTickets = 'auto_qa_reviewed_closed_tickets',
+}
+
 export enum TicketFieldsMetric {
     TicketCustomFieldsTicketCount = 'ticket_custom_fields_ticket_count',
 }

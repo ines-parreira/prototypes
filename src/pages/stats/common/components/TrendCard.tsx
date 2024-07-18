@@ -13,7 +13,7 @@ import TrendBadge from 'pages/stats/TrendBadge'
 import {TooltipData} from 'pages/stats/types'
 import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {OverviewMetric, SlaMetric} from 'state/ui/stats/types'
+import {AutoQAMetric, OverviewMetric, SlaMetric} from 'state/ui/stats/types'
 
 export const TrendCard = ({
     hint,
@@ -27,7 +27,7 @@ export const TrendCard = ({
     useTrend: MetricTrendHook
     hint: TooltipData
     title: string
-    drillDownMetric?: OverviewMetric | SlaMetric
+    drillDownMetric?: OverviewMetric | SlaMetric | AutoQAMetric
     tip?: ReactNode
     interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
     metricFormat?: MetricTrendFormat

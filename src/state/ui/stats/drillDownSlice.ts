@@ -3,12 +3,13 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {appQueryClient} from 'api/queryClient'
 import {User} from 'config/types/user'
 import {createJob} from 'models/job/resources'
-import {ConvertJobContext, Job, JobContext, JobType} from 'models/job/types'
-import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
-import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
-import {ReportingQuery} from 'models/reporting/types'
+import {
+    ConvertJobContext,
+    DrillDownReportingQuery,
+    Job,
+    JobContext,
+    JobType,
+} from 'models/job/types'
 import {AgentsColumnConfig, TableLabels} from 'pages/stats/AgentsTableConfig'
 import {MetricValueFormat} from 'pages/stats/common/utils'
 import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
@@ -29,8 +30,8 @@ import {
     TicketFieldsMetric,
     ConvertMetric,
     VoiceMetric,
+    AutoQAMetric,
 } from 'state/ui/stats/types'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
 
 export const SLA_FORMAT = 'sla'
 
@@ -69,6 +70,10 @@ export type AgentMetricColumn =
 export type AgentsMetrics = {
     metricName: AgentMetricColumn
     perAgentId: number
+} & CommonMetrics
+
+export type AutoQAMetrics = {
+    metricName: AutoQAMetric
 } & CommonMetrics
 
 export type ChannelMetricColumn =
@@ -113,6 +118,7 @@ export type VoiceMetrics = {
 
 export type DrillDownMetric =
     | AgentsMetrics
+    | AutoQAMetrics
     | ChannelsMetrics
     | PerformanceOverviewMetrics
     | TicketFieldsMetrics
@@ -167,13 +173,7 @@ export const initialState: DrillDownState = {
 export const EXPORT_DRILL_DOWN_JOB_ACTION = 'exportDrillDownJob'
 
 export type CreateExportDrillDownJobParams = {
-    query: ReportingQuery<
-        | HelpdeskMessageCubeWithJoins
-        | HandleTimeCubeWithJoins
-        | TicketSLACubeWithJoins
-        | ConvertOrderConversionCube
-        | VoiceCallCube
-    >
+    query: DrillDownReportingQuery
     jobType: JobType
     context?: JobContext
 }
@@ -292,6 +292,7 @@ export const getDrillDownMetricColumn = (
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
     } else if (
+        metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === ConvertMetric.CampaignSalesCount ||
         metricData.metricName === VoiceMetric.AverageWaitTime ||
         metricData.metricName === VoiceMetric.AverageTalkTime
