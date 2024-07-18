@@ -33,6 +33,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import TextArea from 'pages/common/forms/TextArea'
 import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import {SegmentEvent, logEvent} from 'common/segment'
 import {
     useConfigurationForm,
     validateConfigurationFormValues,
@@ -332,6 +333,12 @@ export const StoreConfigForm = ({
                                         ? new Date().toISOString()
                                         : null
                                 )
+
+                                if (isAIAgentToggled) {
+                                    logEvent(
+                                        SegmentEvent.AiAgentConfigurationDisabled
+                                    )
+                                }
                             }}
                             caption="When enabled, you can find tickets handled by AI Agent in your ticket views."
                             name={toggleAiAgentId}
