@@ -8,9 +8,9 @@ import {getLabelledTeamsJS} from 'state/teams/selectors'
 import {getLabelledHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {StatsFilters} from 'models/stat/types'
 
-import SelectFilter from './common/SelectFilter'
-import SelectStatsFilter from './common/SelectStatsFilter'
-import css from './AgentsStatsFilter.less'
+import SelectFilter from 'pages/stats/common/SelectFilter'
+import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
+import css from 'pages/stats/common/filters/AgentsStatsFilter.less'
 
 type Props = {
     value: StatsFilters['agents']
@@ -22,7 +22,7 @@ export const agentsStatsFilterLabels = {
     singular: 'agent',
 }
 
-export default function AgentsStatsFilter({
+export default function DEPRECATED_AgentsStatsFilter({
     value = [],
     variant = 'fill',
 }: Props) {

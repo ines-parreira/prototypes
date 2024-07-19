@@ -1,7 +1,7 @@
 import React from 'react'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
@@ -30,7 +30,7 @@ export const SupportPerformanceFilters = () => {
                 value={pageStatsFilters.channels}
                 variant="ghost"
             />
-            <AgentsStatsFilter
+            <DEPRECATED_AgentsStatsFilter
                 value={pageStatsFilters.agents}
                 variant="ghost"
             />

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import {getStatsFilters} from 'state/stats/selectors'
 
@@ -12,7 +12,7 @@ export const LiveOverviewFilters = () => {
     return (
         <>
             <ChannelsStatsFilter value={statsFilters.channels} />
-            <AgentsStatsFilter value={statsFilters.agents} />
+            <DEPRECATED_AgentsStatsFilter value={statsFilters.agents} />
         </>
     )
 }

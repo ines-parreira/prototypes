@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AgentsStatsFilter should render agents stats filter 1`] = `
+exports[`DEPRECATED_AgentsStatsFilter should render agents stats filter 1`] = `
 <div
   class="dropdown"
 >

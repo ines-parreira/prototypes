@@ -16,7 +16,7 @@ import {DropdownOption} from 'pages/stats/types'
 import {RootState} from 'state/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {integrationFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import {integrationsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
 
 export const INTEGRATIONS_FILTER_NAME = 'Integrations'
 
@@ -91,7 +91,7 @@ export default function IntegrationsFilter({
             filterName={INTEGRATIONS_FILTER_NAME}
             selectedOptions={getSelectedIntegrations()}
             selectedLogicalOperator={selectedLogicalOperator}
-            logicalOperators={integrationFilterLogicalOperators}
+            logicalOperators={integrationsFilterLogicalOperators}
             filterOptionGroups={integrationOptionGroups()}
             onChangeOption={onOptionChange}
             onSelectAll={() => {

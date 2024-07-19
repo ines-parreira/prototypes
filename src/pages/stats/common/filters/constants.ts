@@ -6,7 +6,12 @@ export const channelsFilterLogicalOperators = [
     LogicalOperatorEnum.NOT_ONE_OF,
 ]
 
-export const integrationFilterLogicalOperators = [
+export const integrationsFilterLogicalOperators = [
+    LogicalOperatorEnum.ONE_OF,
+    LogicalOperatorEnum.NOT_ONE_OF,
+]
+
+export const agentsFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,
     LogicalOperatorEnum.NOT_ONE_OF,
 ]

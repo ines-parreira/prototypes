@@ -12,7 +12,7 @@ import DashboardSection from 'pages/stats/DashboardSection'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import ChartCard from 'pages/stats/ChartCard'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import {
     VOICE_AGENTS_PAGE_TITLE,
@@ -46,7 +46,7 @@ function VoiceAgents() {
                         value={pageStatsFilters.tags}
                         variant={'ghost'}
                     />
-                    <AgentsStatsFilter
+                    <DEPRECATED_AgentsStatsFilter
                         value={pageStatsFilters.agents}
                         variant={'ghost'}
                     />

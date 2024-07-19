@@ -7,13 +7,13 @@ import {Provider} from 'react-redux'
 import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import {agents} from 'fixtures/agents'
 import {teams} from 'fixtures/teams'
 
 const mockStore = configureMockStore([thunk])
 
-describe('AgentsStatsFilter', () => {
+describe('DEPRECATED_AgentsStatsFilter', () => {
     const defaultState = {
         stats: initialState,
         agents: fromJS({
@@ -27,7 +27,9 @@ describe('AgentsStatsFilter', () => {
     it('should render agents stats filter', () => {
         const {container} = render(
             <Provider store={mockStore(defaultState)}>
-                <AgentsStatsFilter value={[agents[0].id, teams[0].id]} />
+                <DEPRECATED_AgentsStatsFilter
+                    value={[agents[0].id, teams[0].id]}
+                />
             </Provider>
         )
         expect(container.firstChild).toMatchSnapshot()
@@ -37,7 +39,7 @@ describe('AgentsStatsFilter', () => {
         const store = mockStore(defaultState)
         const {getByLabelText} = render(
             <Provider store={store}>
-                <AgentsStatsFilter value={[]} />
+                <DEPRECATED_AgentsStatsFilter value={[]} />
             </Provider>
         )
 

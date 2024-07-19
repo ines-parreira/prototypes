@@ -261,7 +261,7 @@ exports[`<TeamList /> should render with data 1`] = `
         <h5
           class="title"
         >
-          test
+          Test
         </h5>
         <p />
         <div

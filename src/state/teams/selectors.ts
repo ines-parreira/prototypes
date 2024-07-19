@@ -19,18 +19,31 @@ export const getTeams = createImmutableSelector(
 )
 
 export const getLabelledTeams = createSelector(getTeams, (teams) =>
-    teams
-        .map((team) => ({
-            label: _capitalize(team!.get('name')),
-            id: team!.get('id'),
-            members: (team!.get('members', fromJS([])) as List<any>)
-                .map((user: Map<any, any>) => user.get('id') as number)
-                .toJS(),
-        }))
-        .toList()
+    teams.map((team) => ({
+        label: _capitalize(team?.get('name')),
+        id: team?.get('id'),
+        members: (team?.get('members', fromJS([])) as List<any>)
+            .map((user: Map<any, any>) => user.get('id') as number)
+            .toJS(),
+    }))
+)
+
+export const getLabelledTeamsWithMembers = createSelector(
+    getLabelledTeams,
+    (teams) =>
+        teams
+            .map((team) => ({
+                ...team,
+                value: `${team?.id}`,
+            }))
+            .toList()
 )
 
 export const getLabelledTeamsJS =
-    makeGetPlainJS<{id: number; label: string; members: string[]}[]>(
+    makeGetPlainJS<{id: number; label: string; members: number[]}[]>(
         getLabelledTeams
     )
+
+export const getFilterTeamsJS = makeGetPlainJS<
+    {value: string; label: string; members: number[]}[]
+>(getLabelledTeamsWithMembers)

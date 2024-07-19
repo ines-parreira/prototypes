@@ -34,7 +34,7 @@ import {getPhoneIntegrations} from 'state/integrations/selectors'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import AgentsStatsFilter from 'pages/stats/AgentsStatsFilter'
+import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
 import ChartCard from 'pages/stats/ChartCard'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -133,7 +133,7 @@ function VoiceOverview() {
                         value={pageStatsFilters.tags}
                         variant={'ghost'}
                     />
-                    <AgentsStatsFilter
+                    <DEPRECATED_AgentsStatsFilter
                         value={pageStatsFilters.agents}
                         variant={'ghost'}
                     />

@@ -1,16 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`teams selectors getLabelledTeams() 1`] = `
-Immutable.List [
-  {
-    "id": 1,
-    "label": "Team 1",
-    "members": [],
-  },
-  {
-    "id": 2,
-    "label": "Team 2",
-    "members": [],
-  },
-]
-`;
+exports[`teams selectors getLabelledTeams() 1`] = `Immutable.Seq […]`;

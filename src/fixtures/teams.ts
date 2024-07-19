@@ -58,7 +58,7 @@ export const teams: Team[] = [
         description: null,
         id: 36,
         members: [],
-        name: 'test',
+        name: 'Test',
         uri: '/api/teams/36/',
     },
 ]

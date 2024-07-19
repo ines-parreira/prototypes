@@ -58,9 +58,21 @@ export const getLabelledHumanAndBotAgents = createSelector(
         })) as List<any>
 )
 
+export const getFilterAgents = createSelector(
+    getLabelledHumanAndBotAgents,
+    (agents) =>
+        agents.map((agent: Record<string, any>) => ({
+            ...agent,
+            value: `${agent.id}`,
+        })) as List<any>
+)
+
 export const getLabelledHumanAndAutomationBotAgentsJS = makeGetPlainJS<
     {id: number; label: string}[]
 >(getLabelledHumanAndBotAgents)
+
+export const getFilterAgentsJS =
+    makeGetPlainJS<{value: string; label: string}[]>(getFilterAgents)
 
 export const getOtherAgents = createSelector(
     getHumanAgents,
