@@ -37,9 +37,6 @@ import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/Chat
 import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
 
-import GorgiasChatIntegrationQuickRepliesSunsetAlert from './GorgiasChatIntegrationQuickRepliesSunsetAlert'
-import GorgiasChatIntegrationQuickRepliesSunsetModal from './GorgiasChatIntegrationQuickRepliesSunsetModal'
-
 type Props = {
     integration: Map<any, any>
 } & ConnectedProps<typeof connector>
@@ -291,10 +288,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                 about quick replies in our Help Center.
                             </p>
 
-                            <GorgiasChatIntegrationQuickRepliesSunsetAlert
-                                integration={integration}
-                            />
-
                             <div
                                 className={classnames(
                                     'd-flex',
@@ -341,9 +334,6 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         </div>
                     </Form>
                 </GorgiasChatIntegrationPreviewContainer>
-                <GorgiasChatIntegrationQuickRepliesSunsetModal
-                    integration={integration}
-                />
             </div>
         )
     }
