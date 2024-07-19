@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useRef, useState} from 'react'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 
+import {useLocation} from 'react-router-dom'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {useLimitations} from 'hooks/helpCenter/useLimitations'
@@ -154,6 +155,8 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const hasDefaultLayout = helpCenter.layout === HELP_CENTER_DEFAULT_LAYOUT
 
+    const location = useLocation()
+
     /**
      * Effects
      */
@@ -180,6 +183,47 @@ export const HelpCenterArticlesView: React.FC = () => {
             setCreateArticleSeachParam(null)
         }
     }, [articleModal, createArticleSeachParam, setCreateArticleSeachParam])
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search)
+        const articleId = params.get('article_id')
+
+        if (articleId && client) {
+            const fetchAndSetArticle = async (articleId: string) => {
+                try {
+                    const {data: fetchedArticle} = await client.getArticle({
+                        id: Number(articleId),
+                        help_center_id: helpCenter.id,
+                        locale: 'en-US',
+                        version_status: 'latest_draft',
+                    })
+                    setSelectedArticle(fetchedArticle)
+                    setEditModal({
+                        isOpened: true,
+                        view: HelpCenterArticleModalView.BASIC,
+                    })
+                } catch (err) {
+                    void dispatch(
+                        notify({
+                            message: 'Failed to fetch article',
+                            status: NotificationStatus.Error,
+                        })
+                    )
+                    reportError(err as Error)
+                }
+            }
+
+            void fetchAndSetArticle(articleId)
+        }
+    }, [
+        client,
+        dispatch,
+        helpCenter.default_locale,
+        helpCenter.id,
+        location.search,
+        setEditModal,
+        setSelectedArticle,
+    ])
 
     useEffect(() => {
         async function updateSelectedArticleTranslations() {

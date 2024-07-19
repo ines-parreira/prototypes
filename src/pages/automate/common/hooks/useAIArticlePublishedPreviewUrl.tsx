@@ -6,12 +6,20 @@ import {
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
 import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
+import {
+    ArticleWithLocalTranslationAndRating,
+    HelpCenter,
+} from 'models/helpCenter/types'
+
+type AIArticlePublishedPreviewResult = {
+    article: ArticleWithLocalTranslationAndRating | undefined
+    url: string | undefined
+}
 
 export const useAIArticlePublishedPreviewUrl = (
     helpCenter: HelpCenter | undefined,
     articleKey: string
-): string | undefined => {
+): AIArticlePublishedPreviewResult => {
     if (!helpCenter) {
         throw new Error(`Selected Help center does not exist`)
     }
@@ -33,7 +41,7 @@ export const useAIArticlePublishedPreviewUrl = (
         )
     }, [articleKey, helpCenterArticles])
 
-    return useMemo(() => {
+    const url = useMemo(() => {
         if (!selectedArticle) {
             return undefined
         }
@@ -63,4 +71,6 @@ export const useAIArticlePublishedPreviewUrl = (
                   isUnlisted,
               })
     }, [helpCenter, selectedArticle])
+
+    return {url, article: selectedArticle}
 }

@@ -2,6 +2,7 @@ import React, {useMemo} from 'react'
 import Skeleton from 'react-loading-skeleton'
 import {Tooltip} from '@gorgias/ui-kit'
 import cn from 'classnames'
+import {Link} from 'react-router-dom'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
@@ -46,10 +47,11 @@ const ArchiveBadge = () => (
     </>
 )
 
-const PublishedIcon = ({
+const OpenCreatedArticleIcon = ({
+    reviewAction,
     templateKey,
     helpCenterId,
-}: Pick<AIArticleRecommendationItem, 'templateKey'> & {
+}: Pick<AIArticleRecommendationItem, 'reviewAction' | 'templateKey'> & {
     helpCenterId: number
 }) => {
     const helpCenters = useAppSelector(getHelpCenterFAQList)
@@ -57,17 +59,38 @@ const PublishedIcon = ({
         return helpCenters.find((helpCenter) => helpCenter.id === helpCenterId)
     }, [helpCenterId, helpCenters])
 
-    const publishedPreviewUrl = useAIArticlePublishedPreviewUrl(
+    const {url: publishedPreviewUrl, article} = useAIArticlePublishedPreviewUrl(
         helpCenter,
         templateKey
     )
 
     return (
-        <a href={publishedPreviewUrl} target="_blank" rel="noopener noreferrer">
-            <i className={cn('material-icons', css.publishedArticle)}>
-                open_in_new
-            </i>
-        </a>
+        <>
+            {reviewAction === 'publish' ? (
+                <a
+                    href={publishedPreviewUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i className={cn('material-icons', css.createdArticleIcon)}>
+                        open_in_new
+                    </i>
+                </a>
+            ) : (
+                <Link
+                    to={{
+                        pathname: `/app/settings/help-center/${helpCenter?.id}/articles`,
+                        search: article ? `?article_id=${article.id}` : '',
+                    }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <i className={cn('material-icons', css.createdArticleIcon)}>
+                        open_in_new
+                    </i>
+                </Link>
+            )}
+        </>
     )
 }
 
@@ -84,8 +107,9 @@ const ArticleTitle = ({
         <>
             <span className={css.textTruncate}>{title}</span>
             {reviewAction && reviewAction === 'archive' && <ArchiveBadge />}
-            {reviewAction && reviewAction === 'publish' && (
-                <PublishedIcon
+            {(reviewAction === 'publish' || reviewAction === 'saveAsDraft') && (
+                <OpenCreatedArticleIcon
+                    reviewAction={reviewAction}
                     templateKey={templateKey}
                     helpCenterId={helpCenterId}
                 />
