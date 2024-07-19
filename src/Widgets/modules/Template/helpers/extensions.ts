@@ -1,12 +1,9 @@
-import http from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/http'
 import magento2 from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
-import recharge from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/recharge'
-import smile from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/smile'
-import woocommerce from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/woocommerce'
+
 import {IntegrationType} from 'models/integration/constants'
 import {Template} from 'models/widget/types'
 import {WidgetType} from 'state/widgets/types'
-import {WOOCOMMERCE_WIDGET_TYPE} from 'state/widgets/constants'
+
 import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 import {TemplateCustomization} from '../types'
@@ -14,11 +11,7 @@ import {TemplateCustomization} from '../types'
 const customizationSeekerByType: {
     [T in WidgetType]?: (args: {template: Template}) => CardCustomization
 } = {
-    [IntegrationType.Recharge]: recharge,
-    [IntegrationType.Smile]: smile,
     [IntegrationType.Magento2]: magento2,
-    [IntegrationType.Http]: http,
-    [WOOCOMMERCE_WIDGET_TYPE]: woocommerce,
 }
 
 export function getExtensions(widgetType: WidgetType, template: Template) {

@@ -7,15 +7,16 @@ import configureMockStore from 'redux-mock-store'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import index, {
+import {
+    chargeCustomization,
     SubscriptionAfterTitle,
     AfterContent,
     AfterTitle,
     TitleWrapperContainer,
 } from '../Charge'
 
-const BeforeContent = index().BeforeContent
-const Wrapper = index().Wrapper
+const BeforeContent = chargeCustomization.BeforeContent!
+const Wrapper = chargeCustomization.Wrapper!
 
 const mockStore = configureMockStore([thunk])
 const integrationContextData = {integration: fromJS({}), integrationId: 1}

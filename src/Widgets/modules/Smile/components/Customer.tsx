@@ -4,15 +4,11 @@ import {Map} from 'immutable'
 import logo from 'assets/img/infobar/smile.svg'
 
 import {renderTemplate} from 'pages/common/utils/template'
+
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-
-export default function Customer() {
-    return {
-        TitleWrapper,
-    }
-}
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 type Props = {
     children: ReactNode
@@ -51,4 +47,8 @@ export class TitleWrapper extends Component<Props> {
             </>
         )
     }
+}
+
+export const customerCustomization: CardCustomization = {
+    TitleWrapper,
 }

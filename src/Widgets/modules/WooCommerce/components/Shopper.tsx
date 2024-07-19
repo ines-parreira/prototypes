@@ -2,15 +2,16 @@ import React, {ReactNode} from 'react'
 
 import {Map} from 'immutable'
 import logo from 'assets/img/infobar/woocommerce.svg'
+
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {useStore} from './useStore'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
-export default function Shopper() {
-    return {
-        TitleWrapper,
-    }
+import {useStore} from '../hooks/useStore'
+
+export const shopperCustomization: CardCustomization = {
+    TitleWrapper,
 }
 
 export function TitleWrapper({

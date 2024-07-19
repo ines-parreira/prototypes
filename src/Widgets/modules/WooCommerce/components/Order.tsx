@@ -1,12 +1,13 @@
 import React, {ReactNode} from 'react'
 import {Map} from 'immutable'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {useStore} from './useStore'
 
-export default function Order() {
-    return {
-        TitleWrapper,
-    }
+import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+
+import {useStore} from '../hooks/useStore'
+
+export const orderCustomization: CardCustomization = {
+    TitleWrapper,
 }
 
 export function TitleWrapper({

@@ -16,13 +16,16 @@ import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import ActionButtonsGroup from '../ActionButtonsGroup'
+
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+
 import css from './Order.less'
 
 const OrderContext = createContext<{
@@ -65,15 +68,6 @@ const makeGetIntegrationData = (state: RootState) => {
 
             return integrationData
         },
-    }
-}
-
-export default function Order() {
-    return {
-        AfterTitle: ConnectedAfterTitle,
-        BeforeContent: ConnectedBeforeContent,
-        TitleWrapper: ConnectedTitleWrapper,
-        Wrapper,
     }
 }
 
@@ -345,4 +339,11 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
             {children}
         </OrderContext.Provider>
     )
+}
+
+export const orderCustomization: CardCustomization = {
+    AfterTitle: ConnectedAfterTitle,
+    BeforeContent: ConnectedBeforeContent,
+    TitleWrapper: ConnectedTitleWrapper,
+    Wrapper,
 }

@@ -1,8 +1,13 @@
 import {IntegrationType} from '@gorgias/api-types'
 import {WidgetType} from 'state/widgets/types'
+import {WOOCOMMERCE_WIDGET_TYPE} from 'state/widgets/constants'
 
-import ShopifyWidget from 'Widgets/modules/Shopify/'
 import BigCommerceWidget from 'Widgets/modules/BigCommerce/'
+import HttpWidget from 'Widgets/modules/Http/'
+import RechargeWidget from 'Widgets/modules/Recharge'
+import ShopifyWidget from 'Widgets/modules/Shopify/'
+import SmileWidget from 'Widgets/modules/Smile'
+import WooCommerce from 'Widgets/modules/WooCommerce'
 import YotpoWidget from 'Widgets/modules/Yotpo'
 
 import {WidgetProps} from '../types'
@@ -10,8 +15,12 @@ import {WidgetProps} from '../types'
 const widgetByType: {
     [T in WidgetType]?: (args: WidgetProps) => React.JSX.Element
 } = {
-    [IntegrationType.Shopify]: ShopifyWidget,
     [IntegrationType.Bigcommerce]: BigCommerceWidget,
+    [IntegrationType.Http]: HttpWidget,
+    [IntegrationType.Recharge]: RechargeWidget,
+    [IntegrationType.Shopify]: ShopifyWidget,
+    [IntegrationType.Smile]: SmileWidget,
+    [WOOCOMMERCE_WIDGET_TYPE]: WooCommerce,
     [IntegrationType.Yotpo]: YotpoWidget,
 }
 

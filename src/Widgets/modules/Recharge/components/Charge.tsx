@@ -11,27 +11,18 @@ import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
 import {LineItem} from 'constants/integrations/types/shopify'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
+import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {renderTemplate} from 'pages/common/utils/template'
+import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
 import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
 import {RootState} from 'state/types'
 import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from 'utils'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import ActionButtonsGroup from '../ActionButtonsGroup'
-
-export default function Charge() {
-    return {
-        AfterTitle,
-        BeforeContent,
-        AfterContent,
-        TitleWrapper,
-        Wrapper,
-    }
-}
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 const ChargeContext = createContext<{
     charge: Map<string, unknown> | null
@@ -336,4 +327,12 @@ const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
             {children}
         </ChargeContext.Provider>
     )
+}
+
+export const chargeCustomization: CardCustomization = {
+    AfterTitle,
+    BeforeContent,
+    AfterContent,
+    TitleWrapper,
+    Wrapper,
 }

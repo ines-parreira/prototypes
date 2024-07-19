@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
 import {EcommerceStore} from 'models/customerEcommerceData/types'
-import Order from '../Order'
+import {orderCustomization} from '../Order'
 
 const ecomStore: EcommerceStore = {
     deleted_datetime: null,
@@ -22,7 +22,7 @@ const ecomStore: EcommerceStore = {
 
 let mockEcomStore: EcommerceStore | undefined = ecomStore
 
-jest.mock('../useStore', () => {
+jest.mock('../../hooks/useStore', () => {
     return {
         useStore: () => {
             return mockEcomStore
@@ -32,8 +32,8 @@ jest.mock('../useStore', () => {
 
 describe('Order card', () => {
     describe('<TitleWrapper/>', () => {
+        const TitleWrapper = orderCustomization.TitleWrapper!
         it('should render the order', () => {
-            const {TitleWrapper} = Order()
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
                     Order
@@ -44,7 +44,6 @@ describe('Order card', () => {
         })
 
         it('should render the order without the external id', () => {
-            const {TitleWrapper} = Order()
             const {container} = render(
                 <TitleWrapper source={fromJS({})}>Order</TitleWrapper>
             )
@@ -54,7 +53,6 @@ describe('Order card', () => {
 
         it('should not render because the store is missing', () => {
             mockEcomStore = undefined
-            const {TitleWrapper} = Order()
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
                     Order

@@ -3,14 +3,15 @@ import {Map} from 'immutable'
 
 import logo from 'assets/img/integrations/http.png'
 import {renderTemplate} from 'pages/common/utils/template'
+
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+
 import css from './Root.less'
 
-export default function Root() {
-    return {
-        TitleWrapper,
-    }
+export const rootCustomization: CardCustomization = {
+    TitleWrapper,
 }
 
 type Props = {

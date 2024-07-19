@@ -7,17 +7,19 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {renderTemplate} from 'pages/common/utils/template'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import {
+    ExpandAllButton,
+    CardCustomization,
+} from 'Widgets/modules/Template/modules/Card'
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
 
-export default function Customer() {
-    return {
-        AfterTitle,
-        TitleWrapper,
-    }
+export const customerCustomization: CardCustomization = {
+    AfterTitle,
+    TitleWrapper,
 }
 
 type AfterTitleProps = {

@@ -3,7 +3,7 @@ import {render} from '@testing-library/react'
 
 import {fromJS} from 'immutable'
 import {EcommerceStore} from 'models/customerEcommerceData/types'
-import Shopper from '../Shopper'
+import {shopperCustomization} from '../Shopper'
 
 const ecomStore: EcommerceStore = {
     deleted_datetime: null,
@@ -22,7 +22,7 @@ const ecomStore: EcommerceStore = {
 
 let mockEcomStore: EcommerceStore | undefined = ecomStore
 
-jest.mock('../useStore', () => {
+jest.mock('../../hooks/useStore', () => {
     return {
         useStore: () => {
             return mockEcomStore
@@ -32,8 +32,8 @@ jest.mock('../useStore', () => {
 
 describe('Shopper card', () => {
     describe('<TitleWrapper/>', () => {
+        const TitleWrapper = shopperCustomization.TitleWrapper!
         it('should render it children, plus woocommerce logo and title', () => {
-            const {TitleWrapper} = Shopper()
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
                     Shopper
@@ -45,7 +45,6 @@ describe('Shopper card', () => {
 
         it('should not render because the store is missing', () => {
             mockEcomStore = undefined
-            const {TitleWrapper} = Shopper()
             const {container} = render(
                 <TitleWrapper source={fromJS({external_id: '1234'})}>
                     Shopper
