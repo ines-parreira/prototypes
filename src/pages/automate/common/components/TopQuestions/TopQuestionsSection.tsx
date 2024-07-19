@@ -16,14 +16,13 @@ type TopQuestion = {
     templateKey: string
 }
 
-type Props = {
+export type TopQuestionsSectionProps = {
     newQuestionsCount?: number
     topQuestions: TopQuestion[]
     onCreateArticle: (templateKey: string) => void
     onDismiss: (templateKey: string) => void
     helpCenterFilter?: {
         options: {name: string; helpCenterId: number}[]
-        selectedHelpCenterId: number
         setSelectedHelpCenterId: (helpCenterId: number) => void
     }
     shopFilter?: {
@@ -35,12 +34,19 @@ type Props = {
                 | IntegrationType.Magento2
             integrationId: number
         }[]
-        selectedShopIntegrationId: number
         setSelectedShopIntegrationId: (integrationId: number) => void
     }
+    shopIntegrationId: number
+    helpCenterId: number
 }
 
-const ShopFilter = (shopFilter: Required<Props>['shopFilter']) => {
+const ShopFilter = ({
+    shopIntegrationId,
+    shopFilter,
+}: {
+    shopIntegrationId: number
+    shopFilter: Required<TopQuestionsSectionProps>['shopFilter']
+}) => {
     const options = useMemo(
         () =>
             shopFilter.options.map((option) => ({
@@ -62,7 +68,7 @@ const ShopFilter = (shopFilter: Required<Props>['shopFilter']) => {
 
     return (
         <SelectField
-            value={shopFilter.selectedShopIntegrationId}
+            value={shopIntegrationId}
             onChange={(value) => {
                 shopFilter.setSelectedShopIntegrationId(value as number)
             }}
@@ -73,9 +79,13 @@ const ShopFilter = (shopFilter: Required<Props>['shopFilter']) => {
     )
 }
 
-const HelpCenterFilter = (
-    helpCenterFilter: Required<Props>['helpCenterFilter']
-) => {
+const HelpCenterFilter = ({
+    helpCenterFilter,
+    helpCenterId,
+}: {
+    helpCenterId: number
+    helpCenterFilter: Required<TopQuestionsSectionProps>['helpCenterFilter']
+}) => {
     const options = useMemo(
         () =>
             helpCenterFilter.options.map((option) => ({
@@ -99,7 +109,7 @@ const HelpCenterFilter = (
 
     return (
         <SelectField
-            value={helpCenterFilter.selectedHelpCenterId}
+            value={helpCenterId}
             onChange={(value) => {
                 helpCenterFilter.setSelectedHelpCenterId(value as number)
             }}
@@ -113,45 +123,83 @@ const HelpCenterFilter = (
 const Header = ({
     shopFilter,
     helpCenterFilter,
+    shopIntegrationId,
+    helpCenterId,
     newQuestionsCount,
-}: Pick<Props, 'shopFilter' | 'helpCenterFilter' | 'newQuestionsCount'>) => (
-    <>
-        <div className={css.header}>
-            <div className={css.headerLeft}>
-                <span className={css.headerCaption}>Recommendations</span>
-                {newQuestionsCount && (
-                    <Badge
-                        className={css.headerNewBadge}
-                        type={ColorType.LightSuccess}
-                    >
-                        {newQuestionsCount} new
-                    </Badge>
+}: Partial<
+    Pick<
+        TopQuestionsSectionProps,
+        | 'shopFilter'
+        | 'helpCenterFilter'
+        | 'newQuestionsCount'
+        | 'shopIntegrationId'
+        | 'helpCenterId'
+    >
+>) => {
+    const viewAllLink = useMemo(() => {
+        if (!helpCenterId || !shopIntegrationId) {
+            return null
+        }
+
+        const searchParams = new URLSearchParams({
+            help_center_id: helpCenterId.toString(),
+            store_integration_id: shopIntegrationId.toString(),
+        }).toString()
+
+        return `${VIEW_ALL_LINK}?${searchParams}`
+    }, [helpCenterId, shopIntegrationId])
+
+    return (
+        <>
+            <div className={css.header}>
+                <div className={css.headerLeft}>
+                    <span className={css.headerCaption}>Recommendations</span>
+                    {newQuestionsCount && (
+                        <Badge
+                            className={css.headerNewBadge}
+                            type={ColorType.LightSuccess}
+                        >
+                            {newQuestionsCount} new
+                        </Badge>
+                    )}
+                </div>
+                {viewAllLink && (
+                    <Link className={css.viewAll} to={viewAllLink}>
+                        View All{' '}
+                        <i
+                            className="material-icons rounded"
+                            style={{fontSize: 20}}
+                            aria-label="arrow forward"
+                        >
+                            arrow_forward
+                        </i>
+                    </Link>
                 )}
             </div>
-            <Link className={css.viewAll} to={VIEW_ALL_LINK}>
-                View All{' '}
-                <i
-                    className="material-icons rounded"
-                    style={{fontSize: 20}}
-                    aria-label="arrow forward"
-                >
-                    arrow_forward
-                </i>
-            </Link>
-        </div>
 
-        <div className={css.subheader}>
-            <div className={css.subheaderCaption}>
-                Top asked questions (last 90 days)
-            </div>
+            <div className={css.subheader}>
+                <div className={css.subheaderCaption}>
+                    Top asked questions (last 90 days)
+                </div>
 
-            <div className={css.filters}>
-                {shopFilter && <ShopFilter {...shopFilter} />}
-                {helpCenterFilter && <HelpCenterFilter {...helpCenterFilter} />}
+                <div className={css.filters}>
+                    {shopFilter && shopIntegrationId && (
+                        <ShopFilter
+                            shopFilter={shopFilter}
+                            shopIntegrationId={shopIntegrationId}
+                        />
+                    )}
+                    {helpCenterFilter && helpCenterId && (
+                        <HelpCenterFilter
+                            helpCenterFilter={helpCenterFilter}
+                            helpCenterId={helpCenterId}
+                        />
+                    )}
+                </div>
             </div>
-        </div>
-    </>
-)
+        </>
+    )
+}
 
 const TopQuestionsEmpty = () => (
     <div className={css.topQuestionsEmpty}>
@@ -174,7 +222,9 @@ export const TopQuestionsSection = ({
     shopFilter,
     helpCenterFilter,
     newQuestionsCount,
-}: Props) => {
+    shopIntegrationId,
+    helpCenterId,
+}: TopQuestionsSectionProps) => {
     const top4Questions = topQuestions.slice(0, 4)
 
     return (
@@ -182,6 +232,8 @@ export const TopQuestionsSection = ({
             <Header
                 shopFilter={shopFilter}
                 helpCenterFilter={helpCenterFilter}
+                shopIntegrationId={shopIntegrationId}
+                helpCenterId={helpCenterId}
                 newQuestionsCount={newQuestionsCount}
             />
 
@@ -206,9 +258,19 @@ export const TopQuestionsSection = ({
     )
 }
 
-export const TopQuestionsSectionLoading = () => (
+export const TopQuestionsSectionLoading = (
+    headerProps: Partial<
+        Pick<
+            TopQuestionsSectionProps,
+            | 'shopFilter'
+            | 'helpCenterFilter'
+            | 'shopIntegrationId'
+            | 'helpCenterId'
+        >
+    >
+) => (
     <div>
-        <Header />
+        <Header {...headerProps} />
 
         <div className={css.topQuestions}>
             <TopQuestionCardLoading />

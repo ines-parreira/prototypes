@@ -154,11 +154,11 @@ export const TopQuestionsSectionWithShopFilter: Story = {
                     integrationId: 5,
                 },
             ],
-            selectedShopIntegrationId: 1,
             setSelectedShopIntegrationId: action(
                 'setSelectedShopIntegrationId'
             ),
         },
+        shopIntegrationId: 1,
     },
 }
 
@@ -184,9 +184,9 @@ export const TopQuestionsSectionWithHelpCenterFilter: Story = {
                     helpCenterId: 2,
                 },
             ],
-            selectedHelpCenterId: 1,
             setSelectedHelpCenterId: action('setSelectedHelpCenterId'),
         },
+        helpCenterId: 1,
     },
 }
 
