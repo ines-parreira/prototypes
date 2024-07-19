@@ -32,7 +32,7 @@ const AIArticlesLibraryView = () => {
         setSelectedArticleType,
         showLinkToArticleTemplates,
         hasStoreConnection,
-        hasEmailToStoreConnection,
+        showLinkToConnectEmailToStore,
         markArticleAsReviewed,
     } = useHelpCenterAIArticlesLibrary(
         helpCenter.id,
@@ -83,8 +83,8 @@ const AIArticlesLibraryView = () => {
                                 }
                                 helpCenterId={helpCenter.id}
                                 hasStoreConnection={hasStoreConnection}
-                                hasEmailToStoreConnection={
-                                    !!hasEmailToStoreConnection
+                                showLinkToConnectEmailToStore={
+                                    !!showLinkToConnectEmailToStore
                                 }
                             />
                             <AIArticlesLibraryPreview
@@ -93,7 +93,7 @@ const AIArticlesLibraryView = () => {
                                 onEdit={onEdit}
                                 article={
                                     !hasStoreConnection ||
-                                    !hasEmailToStoreConnection ||
+                                    showLinkToConnectEmailToStore ||
                                     showLinkToArticleTemplates
                                         ? undefined
                                         : selectedArticle

@@ -1,6 +1,4 @@
 import React, {Dispatch, SetStateAction, useMemo, useRef} from 'react'
-
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
@@ -9,8 +7,6 @@ import {
 import Button from 'pages/common/components/button/Button'
 import useKey from 'hooks/useKey'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
 import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
@@ -35,7 +31,7 @@ type AIArticlesLibraryListProps = {
     setSelectedArticleType: Dispatch<SetStateAction<AIArticleToggleOptionValue>>
     showLinkToArticleTemplates: boolean
     hasStoreConnection: boolean
-    hasEmailToStoreConnection: boolean
+    showLinkToConnectEmailToStore: boolean
 }
 
 const AIArticlesLibraryList = ({
@@ -48,29 +44,9 @@ const AIArticlesLibraryList = ({
     setSelectedArticleType,
     showLinkToArticleTemplates,
     hasStoreConnection,
-    hasEmailToStoreConnection,
+    showLinkToConnectEmailToStore,
 }: AIArticlesLibraryListProps) => {
     const containerRef = useRef<HTMLDivElement>(null)
-    const isAIArticlesForMultiStoreEnabled: boolean | undefined =
-        useFlags()[
-            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
-        ]
-
-    const shopifyIntegrations = useShopifyIntegrations()
-    const hasMultiBrands = shopifyIntegrations.length > 1
-
-    const showLinkToConnectEmailToStore = useMemo(
-        () =>
-            isAIArticlesForMultiStoreEnabled &&
-            hasMultiBrands &&
-            !hasEmailToStoreConnection,
-        [
-            isAIArticlesForMultiStoreEnabled,
-            hasMultiBrands,
-            hasEmailToStoreConnection,
-        ]
-    )
-
     const showArticlesList = useMemo(
         () =>
             (!counters || counters[AIArticleToggleOptionValue.All] > 0) &&

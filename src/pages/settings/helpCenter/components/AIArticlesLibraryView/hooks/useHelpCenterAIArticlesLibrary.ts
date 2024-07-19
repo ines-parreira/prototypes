@@ -1,4 +1,5 @@
 import {useEffect, useMemo, useState} from 'react'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     AIArticle,
     AIArticleToggleOptionValue,
@@ -14,6 +15,8 @@ import {StoreMapping} from 'models/storeMapping/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -54,6 +57,26 @@ export const useHelpCenterAIArticlesLibrary = (
                     mapping.store_id === storeIntegration?.id
             ),
         [storeIntegration?.id, storeMapping]
+    )
+
+    const isAIArticlesForMultiStoreEnabled: boolean | undefined =
+        useFlags()[
+            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
+        ]
+
+    const shopifyIntegrations = useShopifyIntegrations()
+    const hasMultiBrands = shopifyIntegrations.length > 1
+
+    const showLinkToConnectEmailToStore = useMemo(
+        () =>
+            isAIArticlesForMultiStoreEnabled &&
+            hasMultiBrands &&
+            !hasEmailToStoreConnection,
+        [
+            isAIArticlesForMultiStoreEnabled,
+            hasMultiBrands,
+            hasEmailToStoreConnection,
+        ]
     )
 
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
@@ -134,7 +157,7 @@ export const useHelpCenterAIArticlesLibrary = (
             fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
         showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
         hasStoreConnection: !!storeIntegration,
-        hasEmailToStoreConnection,
+        showLinkToConnectEmailToStore,
         markArticleAsReviewed: (
             templateKey: string,
             reviewAction: ArticleTemplateReviewAction

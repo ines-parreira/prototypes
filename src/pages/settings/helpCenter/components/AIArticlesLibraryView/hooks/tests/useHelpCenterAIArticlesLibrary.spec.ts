@@ -1,5 +1,7 @@
 import {renderHook, act} from '@testing-library/react-hooks'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {assumeMock} from 'utils/testing'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     AIArticlesListFixture,
     AILibraryArticleItemsFixture,
@@ -9,12 +11,14 @@ import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useCo
 import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useListStoreMappings} from 'models/storeMapping/queries'
 import useAppSelector from 'hooks/useAppSelector'
+import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
 jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 jest.mock('models/storeMapping/queries')
 jest.mock('hooks/useAppSelector')
+jest.mock('pages/stats/convert/hooks/useShopifyIntegrations')
 
 const mockedUseConditionalGetAIArticles = assumeMock(
     useConditionalGetAIArticles
@@ -24,6 +28,7 @@ const mockedUseSelfServiceStoreIntegrationsByShopName = assumeMock(
 )
 const mockedUseListStoreMappings = assumeMock(useListStoreMappings)
 const mockedUseAppSelector = assumeMock(useAppSelector)
+const mockedUseShopifyIntegrations = assumeMock(useShopifyIntegrations)
 
 describe('useHelpCenterAIArticlesLibrary', () => {
     beforeEach(() => {
@@ -54,6 +59,16 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             {id: 3, type: 'email'},
             {id: 4, type: 'email'},
         ])
+        mockedUseShopifyIntegrations.mockImplementation(
+            () =>
+                [{id: 1}] as unknown as ReturnType<
+                    typeof useShopifyIntegrations
+                >
+        )
+        mockFlags({
+            [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]:
+                true,
+        })
     })
 
     it('should return the new AI articles with the correct counters', () => {
@@ -128,24 +143,31 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         )
     })
 
-    it('should return true when there is email-to-store connection', () => {
+    it('should return false when it is a single-store', () => {
         const {result} = renderHook(() =>
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
-        expect(result.current.hasEmailToStoreConnection).toBe(true)
+        expect(result.current.showLinkToConnectEmailToStore).toBe(false)
     })
-    it('should return false when there is no email-to-store connection', () => {
+
+    it('should return true when there is no email-to-store connection for multi-stores', () => {
         mockedUseListStoreMappings.mockImplementation(
             () =>
                 ({
                     data: [{store_id: 3}],
                 } as unknown as ReturnType<typeof useListStoreMappings>)
         )
+        mockedUseShopifyIntegrations.mockImplementation(
+            () =>
+                [{id: 1}, {id: 2}] as unknown as ReturnType<
+                    typeof useShopifyIntegrations
+                >
+        )
         const {result} = renderHook(() =>
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
-        expect(result.current.hasEmailToStoreConnection).toBe(false)
+        expect(result.current.showLinkToConnectEmailToStore).toBe(true)
     })
 })
