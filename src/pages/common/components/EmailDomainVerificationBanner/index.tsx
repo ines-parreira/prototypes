@@ -44,10 +44,9 @@ export default function EmailDomainVerificationBanner() {
 
     const message = (
         <span data-testid="email-domain-verification-banner">
-            As of February 1st, 2024, Gmail and Yahoo have stricter email
-            sending rules. Some of your email addresses need to update their
-            settings to comply.{' '}
-            <Link to="/app/settings/channels/email">Verify them now.</Link>
+            In order for your email messages to reach your audience’s inbox, you
+            need to verify your domains.{' '}
+            <Link to="/app/settings/channels/email">Click to verify.</Link>
         </span>
     )
 

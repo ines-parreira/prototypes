@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {fromJS} from 'immutable'
+import {List, fromJS} from 'immutable'
 import {render, waitFor, screen} from '@testing-library/react'
 
 import {Provider} from 'react-redux'
@@ -24,7 +24,8 @@ describe('<EmailIntegrationList/>', () => {
     function getEmailIntegration(
         id: number,
         deactivated = false,
-        provider = EmailProvider.Mailgun
+        provider = EmailProvider.Mailgun,
+        address = 'email@gorgias-test.com'
     ) {
         return {
             id,
@@ -32,8 +33,8 @@ describe('<EmailIntegrationList/>', () => {
             ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
             name: `My Email Integration ${id}`,
             meta: {
-                address: 'email@gorgias-test.com',
-                provider: provider,
+                address,
+                provider,
             },
         }
     }
@@ -107,6 +108,104 @@ describe('<EmailIntegrationList/>', () => {
             expect(
                 screen.getByText('Pending domain verification')
             ).toBeVisible()
+        })
+
+        it('should render the page with an alert when there are unverified integrations', async () => {
+            window.GORGIAS_STATE = {
+                integrations: {
+                    authentication: {
+                        email: {
+                            forwarding_email_address: 'gorgias.com',
+                        },
+                    },
+                },
+            } as any
+
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
+                {
+                    name: 'gorgias-test.com',
+                    verified: false,
+                    data: fromJS({
+                        sending_dns_records: [],
+                    }),
+                },
+            ])
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                ...(
+                                    commonProps.integrations as List<any>
+                                ).toJS(),
+                                getEmailIntegration(
+                                    2,
+                                    false,
+                                    EmailProvider.Sendgrid,
+                                    'base-email-integration@gorgias.com'
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+
+            expect(
+                screen.getByText(
+                    'In order to verify your domains, click on the emails',
+                    {exact: false}
+                )
+            ).toBeVisible()
+        })
+
+        it('should render the alert when there is just the base email integration', async () => {
+            window.GORGIAS_STATE = {
+                integrations: {
+                    authentication: {
+                        email: {
+                            forwarding_email_address: 'gorgias.com',
+                        },
+                    },
+                },
+            } as any
+
+            const get = fetchEmailDomainsMock.mockResolvedValueOnce([
+                {
+                    name: 'gorgias-test.com',
+                    verified: false,
+                    data: fromJS({
+                        sending_dns_records: [],
+                    }),
+                },
+            ])
+
+            renderWithRouter(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <EmailIntegrationList
+                            {...commonProps}
+                            integrations={fromJS([
+                                getEmailIntegration(
+                                    2,
+                                    false,
+                                    EmailProvider.Sendgrid,
+                                    'base-email-integration@gorgias.com'
+                                ),
+                            ])}
+                        />
+                    </Provider>
+                </QueryClientProvider>
+            )
+            await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
+            expect(
+                screen.queryByText(
+                    'In order to verify your domains, click on the emails',
+                    {exact: false}
+                )
+            ).not.toBeInTheDocument()
         })
 
         it('should render the page when there are no integrations', async () => {

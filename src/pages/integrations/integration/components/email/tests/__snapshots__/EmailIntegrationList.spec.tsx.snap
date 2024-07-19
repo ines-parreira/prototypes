@@ -106,6 +106,38 @@ exports[`<EmailIntegrationList/> render() should render the page without warning
           Connect your support email addresses and respond to your customers from Gorgias.
         </span>
       </div>
+      <div
+        class="alert warning"
+      >
+        <div
+          class="iconContainer"
+        >
+          <img
+            alt="icon"
+            src="test-file-stub"
+          />
+        </div>
+        <div
+          class="content"
+        >
+          <span
+            class="label"
+          >
+            In order to verify your domains, click on the emails with 'Pending domain verification status', go to the Outbound Verification tab and complete the verification process.
+            <br />
+            If you need more information
+             
+            <a
+              href="https://docs.gorgias.com/en-US/sendgrid-email-domain-verification-459392"
+              rel="noreferrer"
+              target="_blank"
+            >
+              click here
+            </a>
+             
+          </span>
+        </div>
+      </div>
     </div>
     <table
       class="table-integrations mt-3 table table-hover"

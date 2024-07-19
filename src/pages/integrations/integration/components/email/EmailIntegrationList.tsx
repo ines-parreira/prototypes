@@ -11,7 +11,11 @@ import outlookImg from 'assets/img/integrations/outlook.png'
 
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import Loader from 'pages/common/components/Loader/Loader'
-import {EmailDomain, IntegrationType} from 'models/integration/types'
+import {
+    EmailDomain,
+    IntegrationType,
+    isEmailIntegration,
+} from 'models/integration/types'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import {
@@ -23,13 +27,16 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import {fetchIntegrations} from 'state/integrations/actions'
 import {makeGetRedirectUri} from 'state/integrations/selectors'
 import useAppSelector from 'hooks/useAppSelector'
+import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import {useListStoreMappings} from 'models/storeMapping/queries'
+import {FeatureFlagKey} from 'config/featureFlags'
+
 import IntegrationList from '../IntegrationList'
-import {useListStoreMappings} from '../../../../../models/storeMapping/queries'
-import {FeatureFlagKey} from '../../../../../config/featureFlags'
 import {fetchEmailDomains} from './resources'
 import {
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
+    isOutboundDomainVerified,
     isOutboundVerifiedSendgrid,
     isSendgridEmailIntegration,
 } from './helpers'
@@ -290,8 +297,42 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
         )
     }
 
+    const areAllEmailIntegrationsVerified = integrations.every(
+        (integrationData: Map<any, any> | undefined) => {
+            const integration = integrationData?.toJS()
+            if (!isEmailIntegration(integration)) {
+                return true
+            }
+
+            if (isBaseEmailIntegration(integration)) {
+                return true
+            }
+
+            return isOutboundDomainVerified(integration)
+        }
+    )
+
     return (
         <IntegrationList
+            alert={
+                !areAllEmailIntegrationsVerified ? (
+                    <Alert icon type={AlertType.Warning}>
+                        In order to verify your domains, click on the emails
+                        with 'Pending domain verification status', go to the
+                        Outbound Verification tab and complete the verification
+                        process.
+                        <br />
+                        If you need more information{' '}
+                        <a
+                            href="https://docs.gorgias.com/en-US/sendgrid-email-domain-verification-459392"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            click here
+                        </a>{' '}
+                    </Alert>
+                ) : undefined
+            }
             integrationType={IntegrationType.Email}
             integrations={getIntegrationsByTypes(
                 integrations,
