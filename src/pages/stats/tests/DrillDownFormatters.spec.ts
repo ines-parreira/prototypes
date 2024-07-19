@@ -26,10 +26,7 @@ describe('DrillDownFormatters', () => {
                 metricField: 'metricField',
             }
 
-            const result = formatVoiceDrillDownRowData({
-                row,
-                metricField: 'metricField',
-            })
+            const result = formatVoiceDrillDownRowData(row, 'metricField')
 
             expect(result).toEqual({
                 agentId: 'agentId',

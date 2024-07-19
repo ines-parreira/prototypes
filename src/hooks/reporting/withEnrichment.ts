@@ -17,12 +17,12 @@ export const withEnrichment = <
 >(
     res: UseEnrichedPostReportingQueryData<{
         data: (KeyedRecord<T> & IDRecord<ID>)[]
-        enrichment: (KeyedRecord<K | EnrichmentFields> & IDRecord<ID>)[]
+        enrichment: KeyedRecord<K | EnrichmentFields.TicketId>[]
     }>,
     idField: ID,
     enrichmentFields: K[]
 ): UseEnrichedPostReportingQueryData<{
-    data: (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[]
+    data: (MergedRecord<T, K | EnrichmentFields.TicketId> & IDRecord<ID>)[]
 }> => {
     return {
         ...res,
@@ -43,19 +43,20 @@ const selectWithEnrichment = <
 >(
     data: {
         data: (KeyedRecord<T> & IDRecord<ID>)[]
-        enrichment: (KeyedRecord<K | EnrichmentFields> & IDRecord<ID>)[]
+        enrichment: KeyedRecord<K | EnrichmentFields.TicketId>[]
     },
     idField: ID,
     enrichmentFields: K[]
-): (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[] => {
+): (MergedRecord<T, K | EnrichmentFields.TicketId> & IDRecord<ID>)[] => {
     return data.data.map((result) => ({
         ...result,
-        ...merge<T, K | EnrichmentFields, ID>(
+        ...merge<T, K | EnrichmentFields.TicketId, ID>(
             result,
             enrichmentFields,
             data.enrichment.find(
                 (enrichedResult) =>
-                    String(enrichedResult[idField]) === String(result[idField])
+                    String(enrichedResult[EnrichmentFields.TicketId]) ===
+                    String(result[idField])
             )
         ),
     }))
@@ -65,7 +66,7 @@ const merge = <T extends string, K extends string, ID extends string>(
     result: KeyedRecord<T> & IDRecord<ID>,
     fields: K[],
     enrichment?: KeyedRecord<K>
-): MergedRecord<T, K | EnrichmentFields> & IDRecord<ID> => {
+): MergedRecord<T, K | EnrichmentFields.TicketId> & IDRecord<ID> => {
     return fields.reduce((obj, field) => {
         return {...obj, [field]: enrichment?.[field] || null}
     }, result)

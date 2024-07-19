@@ -1,6 +1,7 @@
 import {MergedRecord} from 'hooks/reporting/withEnrichment'
 import {User} from 'config/types/user'
 import {EnrichmentFields} from 'models/reporting/types'
+import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
 import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
@@ -36,7 +37,7 @@ export interface CampaignSaleDetails {
     amount: string
     currency: string
     productIds: string[]
-    customerName?: string
+    customerId: number
     campaignId: string
     createdDatetime: string
 }
@@ -47,21 +48,23 @@ export interface ConvertDrillDownRowData extends BaseDrillDownRowData {
 
 export type VoiceCallDrillDownRowData = VoiceCallSummary & BaseDrillDownRowData
 
-export type DrillDownFormatterProps = {
-    row: MergedRecord<any, any>
-    metricField: string
-    agents?: User[]
-    ticketIdField?: string
-}
+export type TicketDrillDownFormatter = (
+    row: MergedRecord<any, any>,
+    agents: User[],
+    metricField: string,
+    ticketIdField: string
+) => TicketDrillDownRowData
 
-export const formatTicketDrillDownRowData = ({
-    row,
-    agents,
-    metricField,
-    ticketIdField,
-}: DrillDownFormatterProps): TicketDrillDownRowData => ({
+export type EnrichedDrillDownFormatter = TicketDrillDownFormatter
+
+export const formatTicketDrillDownRowData = (
+    row: MergedRecord<any, any>,
+    agents: User[],
+    metricField: string,
+    ticketIdField: string
+): TicketDrillDownRowData => ({
     ticket: {
-        id: (ticketIdField && row[ticketIdField]) || null,
+        id: row[ticketIdField] || null,
         subject: row[EnrichmentFields.TicketName] || null,
         description: row[EnrichmentFields.Description] || null,
         channel: row[EnrichmentFields.Channel] || null,
@@ -75,7 +78,7 @@ export const formatTicketDrillDownRowData = ({
         ? {
               id: row[EnrichmentFields.AssigneeId],
               name:
-                  agents?.find(
+                  agents.find(
                       (agent) => agent.id === row[EnrichmentFields.AssigneeId]
                   )?.name || '',
           }
@@ -83,16 +86,16 @@ export const formatTicketDrillDownRowData = ({
     ...(row?.['slas'] ? {rowData: row['slas']} : {}),
 })
 
-export const formatConvertCampaignSalesDrillDownRowData = ({
-    row,
-    metricField,
-}: DrillDownFormatterProps): ConvertDrillDownRowData => ({
+export const formatConvertCampaignSalesDrillDownRowData = (
+    row: MergedRecord<any, any>,
+    metricField: string
+): ConvertDrillDownRowData => ({
     data: {
         id: row[OrderConversionDimension.orderId],
         amount: row[OrderConversionDimension.orderAmount],
         currency: row[OrderConversionDimension.orderCurrency],
         productIds: row[OrderConversionDimension.orderProductIds],
-        customerName: row[EnrichmentFields.CustomerIntegrationDataByExternalId],
+        customerId: row[OrderConversionDimension.customerId],
         campaignId: row[OrderConversionDimension.campaignId],
         createdDatetime: row[OrderConversionDimension.createdDatatime],
     },
@@ -100,10 +103,10 @@ export const formatConvertCampaignSalesDrillDownRowData = ({
     rowData: row,
 })
 
-export const formatVoiceDrillDownRowData = ({
-    row,
-    metricField,
-}: DrillDownFormatterProps): VoiceCallDrillDownRowData => ({
+export const formatVoiceDrillDownRowData = (
+    row: MergedRecord<any, any>,
+    metricField: string
+): VoiceCallDrillDownRowData => ({
     agentId: row[VoiceCallDimension.AgentId],
     customerId: row[VoiceCallDimension.CustomerId],
     direction: row[VoiceCallDimension.Direction],
@@ -123,3 +126,12 @@ export const formatVoiceDrillDownRowData = ({
     metricValue: row[metricField],
     rowData: row,
 })
+
+export const getEnrichedDrillDownFormatter = (
+    metricName: DrillDownMetric
+): EnrichedDrillDownFormatter => {
+    switch (metricName.metricName) {
+        default:
+            return formatTicketDrillDownRowData
+    }
+}

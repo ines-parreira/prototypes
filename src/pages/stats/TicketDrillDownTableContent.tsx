@@ -5,10 +5,7 @@ import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import css from 'pages/stats/DrillDownTable.less'
 import TableBody from 'pages/common/components/table/TableBody'
-import {
-    defaultEnrichmentFields,
-    useEnrichedDrillDownData,
-} from 'hooks/reporting/useDrillDownData'
+import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {DrillDownTicketDetailsCell} from 'pages/stats/DrillDownTicketDetailsCell'
@@ -27,7 +24,6 @@ import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import useAppSelector from 'hooks/useAppSelector'
 import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
-import {formatTicketDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -57,11 +53,7 @@ export const TicketDrillDownTableContent = ({
         getDrillDownMetricColumn
     )
 
-    const {data, isFetching} = useEnrichedDrillDownData(
-        metricData,
-        defaultEnrichmentFields,
-        formatTicketDrillDownRowData
-    )
+    const {data, isFetching} = useEnrichedDrillDownData(metricData)
 
     const columnWidths = {
         ticket: showMetric ? 300 : 440,

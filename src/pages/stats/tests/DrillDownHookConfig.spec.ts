@@ -14,23 +14,16 @@ import {
     VoiceMetric,
 } from 'state/ui/stats/types'
 import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
-import {
-    defaultEnrichmentFields,
-    useDrillDownData,
-    useEnrichedDrillDownData,
-} from 'hooks/reporting/useDrillDownData'
+import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
 import {assumeMock} from 'utils/testing'
-import {EnrichmentFields} from 'models/reporting/types'
 import {
     formatConvertCampaignSalesDrillDownRowData,
-    formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
 } from '../DrillDownFormatters'
 
 jest.mock('hooks/reporting/useDrillDownData')
 
 const useDrillDownDataMock = assumeMock(useDrillDownData)
-const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)
 
 describe('getDrillDownHook', () => {
     const agentsMetrics: AgentsMetrics[] = [
@@ -120,16 +113,12 @@ describe('getDrillDownHook', () => {
         ...agentsMetrics,
         ...channelMetrics,
         ...slaMetrics,
+        ...convertMetrics,
+        ...voiceMetrics,
     ])(
-        'should return a default hook for DrillDown metric: $metricName',
-        (metricData: DrillDownMetric) => {
-            const hook = getDrillDownHook(metricData)
-            hook(metricData)
-            expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
-                metricData,
-                defaultEnrichmentFields,
-                formatTicketDrillDownRowData
-            )
+        'should return a hook for every DrillDown metric: $metricName',
+        (metricName: DrillDownMetric) => {
+            expect(getDrillDownHook(metricName)).toEqual(expect.any(Function))
         }
     )
 
@@ -150,9 +139,8 @@ describe('getDrillDownHook', () => {
         (metricData) => {
             const hook = getDrillDownHook(metricData)
             hook(metricData)
-            expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
+            expect(useDrillDownDataMock).toHaveBeenCalledWith(
                 metricData,
-                [EnrichmentFields.CustomerIntegrationDataByExternalId],
                 formatConvertCampaignSalesDrillDownRowData
             )
         }

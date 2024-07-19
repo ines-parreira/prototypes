@@ -10,12 +10,8 @@ import {RootState, StoreDispatch} from 'state/types'
 import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
 import {assumeMock} from 'utils/testing'
 import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
-import {
-    ConvertMetric,
-    TicketFieldsMetric,
-    VoiceMetric,
-} from 'state/ui/stats/types'
-import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {VoiceMetric} from 'state/ui/stats/types'
 import {DrillDownModal} from '../DrillDownModal'
 import VoiceCallDrillDownTableContent from '../voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 
@@ -56,23 +52,40 @@ describe('<DrillDownModal />', () => {
         expect(screen.getByText(title)).toBeInTheDocument()
     })
 
-    it.each([
-        [
-            TicketFieldsMetric.TicketCustomFieldsTicketCount,
-            TicketDrillDownTableContent,
-        ],
-        [ConvertMetric.CampaignSalesCount, CampaignSalesDrillDownTableContent],
-        [VoiceMetric.AverageWaitTime, VoiceCallDrillDownTableContent],
-        [VoiceMetric.AverageTalkTime, VoiceCallDrillDownTableContent],
-    ])(
-        'should render correct drill down table content for metric %s',
-        (metric, ExpectedTableContentComponent) => {
+    it('should render the DrillDownTable and DrillDownInfobar with metricData', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <DrillDownModal />
+            </Provider>
+        )
+
+        expect(DrillDownTableMock).toHaveBeenCalledWith(
+            {
+                metricData,
+                useDataHook: useEnrichedDrillDownData,
+                TableContent: TicketDrillDownTableContent,
+            },
+            {}
+        )
+        expect(DrillDownInfobarMock).toHaveBeenCalledWith(
+            {
+                metricData,
+                useDataHook: useEnrichedDrillDownData,
+            },
+            {}
+        )
+        expect(screen.getByText(title)).toBeInTheDocument()
+    })
+
+    it.each([[VoiceMetric.AverageWaitTime], [VoiceMetric.AverageTalkTime]])(
+        'should render voice calls drill down table content for metric %s',
+        (metric) => {
             const state = {
                 ui: {
                     drillDown: {
                         isOpen: true,
                         metricData: {
-                            title: 'Metric title',
+                            title: 'voice',
                             metricName: metric,
                         },
                     },
@@ -88,19 +101,11 @@ describe('<DrillDownModal />', () => {
             expect(DrillDownTableMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     metricData: state.ui.drillDown.metricData,
-                    useDataHook: expect.any(Function),
-                    TableContent: ExpectedTableContentComponent,
+                    TableContent: VoiceCallDrillDownTableContent,
                 }),
                 {}
             )
-            expect(DrillDownInfobarMock).toHaveBeenCalledWith(
-                {
-                    metricData: state.ui.drillDown.metricData,
-                    useDataHook: expect.any(Function),
-                },
-                {}
-            )
-            expect(screen.getByText('Metric title')).toBeInTheDocument()
+            expect(screen.getByText('voice')).toBeInTheDocument()
         }
     )
 

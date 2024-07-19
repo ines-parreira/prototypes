@@ -11,7 +11,7 @@ describe('useGetCampaignSalesDrillDownData', () => {
             amount: '16.23',
             currency: 'USD',
             productIds: ['prodId1', 'prodId4'],
-            customerName: 'Archibald Hackintosh',
+            customerId: 123456,
             campaignId: campaignId,
             createdDatetime: '23/12/2023',
         },
