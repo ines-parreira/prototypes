@@ -2,7 +2,7 @@ import {useCallback, useEffect, useState} from 'react'
 import axios, {AxiosError, CancelToken} from 'axios'
 import _isEqual from 'lodash/isEqual'
 
-import {Stat, StatsFilters} from 'models/stat/types'
+import {Stat, LegacyStatsFilters} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchStat} from 'models/stat/resources'
 import {notify} from 'state/notifications/actions'
@@ -22,7 +22,7 @@ export const DEFAULT_ERROR_MESSAGE =
 type Params = {
     statName: string
     resourceName: string
-    statsFilters: StatsFilters
+    statsFilters: LegacyStatsFilters
     fetchDebounceDelay?: number
 }
 

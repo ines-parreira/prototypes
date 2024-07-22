@@ -32,6 +32,7 @@ type Props = {
     onSelectAll: () => void
     onRemoveAll: () => void
     onChangeLogicalOperator: (operator: LogicalOperatorEnum) => void
+    onDropdownOpen?: () => void
     onDropdownClosed?: () => void
 }
 
@@ -51,12 +52,16 @@ const Filter = ({
     onSelectAll,
     onRemoveAll,
     onChangeLogicalOperator,
+    onDropdownOpen = () => {},
     onDropdownClosed = () => {},
 }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const onOpenDropdown = () => setIsDropdownOpen(true)
+    const onOpenDropdown = () => {
+        onDropdownOpen()
+        setIsDropdownOpen(true)
+    }
 
     const allValues = useMemo(() => {
         return flatMap(filterOptionGroups, (option) =>

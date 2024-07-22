@@ -3,11 +3,14 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
 import {
     useMessagesSentMetric,
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -20,7 +23,7 @@ const useOnlineTimeMock = assumeMock(useOnlineTimeMetric)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('useMessagesSentPerHourPerAgent.ts', () => {
-    const statsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',
@@ -30,7 +33,7 @@ describe('useMessagesSentPerHourPerAgent.ts', () => {
         tags: [123],
     }
     const defaultState = {
-        stats: {filters: statsFilters},
+        stats: {filters: fromLegacyStatsFilters(statsFilters)},
         ui: {
             agentPerformance: initialState,
             stats: uiStatsInitialState,

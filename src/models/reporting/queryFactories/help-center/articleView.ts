@@ -22,7 +22,7 @@ export const articleViewTimeSeriesQueryFactory = (
         {
             dimension: HelpCenterTrackingEventDimensions.Timestamp,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     timezone,

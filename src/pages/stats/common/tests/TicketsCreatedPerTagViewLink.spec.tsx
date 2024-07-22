@@ -13,9 +13,9 @@ import {integrationsState} from 'fixtures/integrations'
 import {tags} from 'fixtures/tag'
 import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
-import TicketsCreatedPerTagViewLink from '../TicketsCreatedPerTagViewLink'
+import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -30,7 +30,7 @@ jest.mock('../ViewLink', () => (props: LinkProps) => (
 const logEventMock = logEvent as jest.Mock
 
 describe('TicketsCreatedPerTagViewLink', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',

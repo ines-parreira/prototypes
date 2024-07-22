@@ -20,6 +20,7 @@ import {
     agentFilter,
     calculatePercentage,
     formatReportingQueryDate,
+    getPreviousPeriod,
     HelpCenterStatsFiltersMembers,
     matchAndCalculateAllEntries,
     periodToReportingGranularity,
@@ -196,6 +197,20 @@ describe('reporting utils', () => {
                     end_datetime: '2020-01-01T12:00:00.000Z',
                 })
             ).toBe(ReportingGranularity.Hour)
+        })
+    })
+
+    describe('getPreviousPeriod', () => {
+        it('should return equal period ending second before the original starts', () => {
+            const period = {
+                start_datetime: '2020-01-05T00:00:00.000Z',
+                end_datetime: '2020-01-07T00:00:00.000Z',
+            }
+
+            expect(getPreviousPeriod(period)).toEqual({
+                start_datetime: '2020-01-02T23:59:59Z',
+                end_datetime: '2020-01-04T23:59:59Z',
+            })
         })
     })
 

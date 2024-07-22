@@ -9,14 +9,14 @@ import {
 } from 'services/channels'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 import {filterChannels} from 'pages/stats/common/filters/helpers'
 
 type Props = {
-    value: StatsFilters['channels']
+    value: LegacyStatsFilters['channels']
     channelsFilter?: ChannelIdentifier[] | ((channel: Channel) => boolean)
     variant?: 'fill' | 'ghost'
 }

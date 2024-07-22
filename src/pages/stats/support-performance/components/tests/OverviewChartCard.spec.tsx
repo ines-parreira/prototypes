@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
@@ -16,6 +16,8 @@ import {
 import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
 import {OverviewChartConfig} from 'pages/stats/SupportPerformanceOverviewConfig'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {assumeMock} from 'utils/testing'
@@ -31,7 +33,7 @@ const useMessagesSentTimeSeriesMock = assumeMock(useMessagesSentTimeSeries)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('<OverviewChartCard />', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
@@ -43,7 +45,7 @@ describe('<OverviewChartCard />', () => {
     }
     const defaultState = {
         stats: {
-            filters: defaultStatsFilters,
+            filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
             stats: uiStatsInitialState,

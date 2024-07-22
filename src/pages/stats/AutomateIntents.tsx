@@ -12,7 +12,7 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     OneDimensionalChart,
-    StatsFilters,
+    LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
 import {AutomateIntentsFilters} from 'pages/stats/AutomateIntentsFilters'
@@ -31,7 +31,7 @@ export default function AutomateIntents() {
         getCleanStatsFiltersWithTimezone
     )
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, period} = statsFilters
         return {channels, period}
     }, [statsFilters])

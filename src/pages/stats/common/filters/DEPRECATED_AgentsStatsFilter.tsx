@@ -6,14 +6,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import {getLabelledTeamsJS} from 'state/teams/selectors'
 import {getLabelledHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 import css from 'pages/stats/common/filters/AgentsStatsFilter.less'
 
 type Props = {
-    value: StatsFilters['agents']
+    value: LegacyStatsFilters['agents']
     variant?: 'fill' | 'ghost'
 }
 

@@ -14,7 +14,7 @@ import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
 
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import TrendBadge from 'pages/stats/TrendBadge'
 import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {saveReport} from 'services/reporting/automateOverviewReportingService'
@@ -112,7 +112,7 @@ describe('<AutomateOverview />', () => {
         }
     }
 
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',

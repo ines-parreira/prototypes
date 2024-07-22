@@ -4,7 +4,7 @@ import {stats as statsConfig, TICKETS_PER_TAG} from 'config/stats'
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {SupportPerformanceTagsFilters} from 'pages/stats/SupportPerformanceTagsFilters'
 
 import {
@@ -26,7 +26,7 @@ export default function SupportPerformanceTags() {
     )
     const statsFilters = useAppSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, tags, period} = statsFilters
         return {
             channels,

@@ -10,6 +10,7 @@ import {
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {addOptionalFilter} from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -31,21 +32,18 @@ export const medianFirstResponseTimeQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<TicketCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = statsFilters
-    const commonFilters: ReportingFilter[] = [
+    let commonFilters: ReportingFilter[] = [
         ...NotSpamNorTrashedTicketsFilter,
         {
             member: TicketMessagesMember.FirstHelpdeskMessageDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(statsFilters),
+            values: getFilterDateRange(statsFilters.period),
         },
     ]
-    if (agents?.length) {
-        commonFilters.push({
-            member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-            operator: ReportingFilterOperator.Equals,
-            values: agents.map((agent) => agent.toString()),
-        })
-    }
+    commonFilters = addOptionalFilter(commonFilters, agents, {
+        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
+        operator: ReportingFilterOperator.Equals,
+    })
 
     return {
         measures: [TicketMessagesMeasure.MedianFirstResponseTime],

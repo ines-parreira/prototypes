@@ -1,11 +1,16 @@
 import React, {useCallback, useState} from 'react'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import {RemovableFilter} from 'pages/stats/common/filters/types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {
+    mergeStatsFilters,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
 import {getFilterTeamsJS} from 'state/teams/selectors'
 import {getFilterAgentsJS} from 'state/agents/selectors'
-import {StatsFilters} from 'models/stat/types'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
@@ -14,17 +19,15 @@ import {DropdownOption} from 'pages/stats/types'
 import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
 
 type Props = {
-    value: StatsFilters['agents']
-}
+    value: StatsFiltersWithLogicalOperator['agents']
+} & RemovableFilter
 
 export const AGENTS_FILTER_NAME = 'Agent'
 
-export default function AgentsFilter({value = []}: Props) {
+export default function AgentsFilter({value = emptyFilter}: Props) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getFilterAgentsJS)
     const teams = useAppSelector(getFilterTeamsJS)
-    const [selectedLogicalOperator, setSelectedLogicalOperator] =
-        useState<LogicalOperatorEnum>(LogicalOperatorEnum['ONE_OF'])
     const [selectedTeamOption, setSelectedTeamOption] = useState<
         DropdownOption[]
     >([])
@@ -32,7 +35,6 @@ export default function AgentsFilter({value = []}: Props) {
 
     const handleFilterChange = useCallback(
         (values) => {
-            dispatch(statFiltersDirty())
             dispatch(mergeStatsFilters({agents: values as number[]}))
         },
         [dispatch]
@@ -53,7 +55,7 @@ export default function AgentsFilter({value = []}: Props) {
 
     const getSelectedItems = useCallback(() => {
         const agentsInValue = () =>
-            agents.filter((agent) => value.includes(Number(agent.value)))
+            agents.filter((agent) => value.values.includes(Number(agent.value)))
 
         const selectedAgents = agentsInValue().map(({label, value}) => ({
             label,
@@ -71,13 +73,16 @@ export default function AgentsFilter({value = []}: Props) {
         )
         if (teamIsSelected) {
             handleFilterChange(
-                value.filter((id) => !foundTeam.members.includes(id))
+                value.values.filter((id) => !foundTeam.members.includes(id))
             )
             setSelectedTeamOption(
                 selectedTeamOption.filter((team) => team.value !== opt.value)
             )
         } else {
-            handleFilterChange([...value, ...foundTeam.members.map((id) => id)])
+            handleFilterChange([
+                ...value.values,
+                ...foundTeam.members.map((id) => id),
+            ])
             setSelectedTeamOption([...selectedTeamOption, opt])
         }
     }
@@ -85,14 +90,14 @@ export default function AgentsFilter({value = []}: Props) {
     const handleAgentOption = (opt: DropdownOption) => {
         const foundAgent = agents.find((agent) => agent.value === opt.value)
 
-        const agentIsSelected = value.includes(Number(foundAgent?.value))
+        const agentIsSelected = value.values.includes(Number(foundAgent?.value))
 
         if (agentIsSelected) {
             handleFilterChange(
-                value.filter((id) => id !== Number(foundAgent?.value))
+                value.values.filter((id) => id !== Number(foundAgent?.value))
             )
         } else {
-            handleFilterChange([...value, Number(foundAgent?.value)])
+            handleFilterChange([...value.values, Number(foundAgent?.value)])
         }
     }
 
@@ -104,6 +109,23 @@ export default function AgentsFilter({value = []}: Props) {
         }
     }
 
+    const handleFilterOperatorChange = useCallback(
+        (operator: LogicalOperatorEnum) => {
+            dispatch(
+                mergeStatsFiltersWithLogicalOperator({
+                    agents: {
+                        values: value.values,
+                        operator: operator,
+                    },
+                })
+            )
+        },
+        [dispatch, value.values]
+    )
+
+    const handleDropdownOpen = () => {
+        dispatch(statFiltersDirty())
+    }
     const handleDropdownClosed = () => {
         dispatch(statFiltersClean())
     }
@@ -112,7 +134,7 @@ export default function AgentsFilter({value = []}: Props) {
         <Filter
             filterName={AGENTS_FILTER_NAME}
             selectedOptions={getSelectedItems()}
-            selectedLogicalOperator={selectedLogicalOperator}
+            selectedLogicalOperator={value.operator}
             logicalOperators={agentsFilterLogicalOperators}
             filterOptionGroups={filterOptions}
             onChangeOption={onOptionChange}
@@ -127,9 +149,8 @@ export default function AgentsFilter({value = []}: Props) {
                 dispatch(mergeStatsFilters({agents: []}))
                 setSelectedTeamOption([])
             }}
-            onChangeLogicalOperator={(operator) =>
-                setSelectedLogicalOperator(operator)
-            }
+            onChangeLogicalOperator={handleFilterOperatorChange}
+            onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
         />
     )

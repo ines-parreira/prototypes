@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 import {OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES} from 'config/stats'
 import {RootState, StoreDispatch} from 'state/types'
@@ -23,7 +24,7 @@ import {AccountFeature} from 'state/currentAccount/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 
 import useStatResource from 'hooks/reporting/useStatResource'
-import LiveOverview from '../LiveOverview'
+import LiveOverview from 'pages/stats/LiveOverview'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
@@ -57,8 +58,8 @@ describe('LiveOverview', () => {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-                channels: [TicketChannel.Chat],
-                agents: [agents[0].id],
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
             },
         },
         agents: fromJS({

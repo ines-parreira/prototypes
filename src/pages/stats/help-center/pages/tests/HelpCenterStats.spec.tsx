@@ -10,8 +10,8 @@ import configureStore from 'store/configureStore.prod'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {useArticleViewTimeSeries} from 'pages/stats/help-center/hooks/useArticleViewTimeSeries'
 import {InitialRootState} from 'types'
-import HelpCenterStats from '../HelpCenterStats'
-import {HELP_CENTER_STATS_TEST_IDS} from './constants'
+import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
+import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
 
 jest.mock('common/segment')
 

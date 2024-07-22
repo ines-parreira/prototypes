@@ -45,7 +45,7 @@ import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import ProductCell from 'pages/stats/common/components/charts/TableStat/cells/ProductCell'
 import css from 'pages/stats/common/components/charts/TableStat/TableStat.less'
 import TicketDetailsStat from 'pages/stats/common/components/charts/TableStat/TicketDetailsStat'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 type OwnProps = {
     data: Map<any, any>
@@ -59,7 +59,7 @@ type OwnProps = {
     selfServiceConfigurations?: SelfServiceConfiguration[]
     workflowConfigurations?: WorkflowConfigurationShallow[]
     isFlowsBuilderAnalyticsEnabled?: boolean
-    statsFilters?: StatsFilters
+    statsFilters?: LegacyStatsFilters
 }
 
 type State = {

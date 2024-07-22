@@ -4,6 +4,7 @@ import {Meta, StoryFn} from '@storybook/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {channelsQueryKeys} from 'models/channel/queries'
 import {appQueryClient} from 'api/queryClient'
 
@@ -30,7 +31,7 @@ const Template: StoryFn<ComponentProps<typeof ChannelsFilter>> = (props) => {
 
 export const Default = Template.bind({})
 Default.args = {
-    value: channels.map((channel) => channel.slug),
+    value: withDefaultLogicalOperator(channels.map((channel) => channel.slug)),
 }
 
 export default storyConfig

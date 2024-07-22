@@ -10,7 +10,7 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     OneDimensionalUnionChart,
-    StatsFilters,
+    LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
@@ -36,7 +36,7 @@ function SupportPerformanceSatisfaction() {
         getCleanStatsFiltersWithTimezone
     )
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, score, agents, tags, period} = statsFilters
         return {
             channels,

@@ -12,7 +12,6 @@ import {
     useTicketSlaAchievementRateTrend,
 } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
 import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {calculatePercentage} from 'utils/reporting'
@@ -33,7 +32,7 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 describe('useTicketSlaAchievementRate', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
-    const filters: StatsFilters = {
+    const filters = {
         period: {
             start_datetime: startDate,
             end_datetime: endDate,
@@ -116,7 +115,7 @@ describe('useTicketSlaAchievementRate', () => {
 describe('useTicketSlaAchievementRateTrend', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
-    const filters: StatsFilters = {
+    const filters = {
         period: {
             start_datetime: startDate,
             end_datetime: endDate,

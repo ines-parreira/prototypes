@@ -1,7 +1,7 @@
 import moment from 'moment'
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     Cube,
@@ -14,7 +14,7 @@ import {getDateRange} from 'pages/stats/convert/clients/utils'
 describe('campaignSalesDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

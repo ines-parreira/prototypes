@@ -13,6 +13,8 @@ import {
     AgentsTableSummaryCell,
 } from 'pages/stats/AgentsTableSummaryCell'
 import {formatMetricValue} from 'pages/stats/common/utils'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     agentPerformanceSlice,
@@ -26,7 +28,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<AgentsTableSummaryCell', () => {
     const defaultState = {
         stats: {
-            filters: {
+            filters: fromLegacyStatsFilters({
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
@@ -34,7 +36,7 @@ describe('<AgentsTableSummaryCell', () => {
                 channels: [TicketChannel.Chat],
                 tags: [1],
                 integrations: [integrationsState.integrations[0].id],
-            },
+            }),
         },
         ui: {
             stats: uiStatsInitialState,

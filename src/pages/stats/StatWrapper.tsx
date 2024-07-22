@@ -13,7 +13,7 @@ import {Tooltip} from '@gorgias/ui-kit'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import Loader from 'pages/common/components/Loader/Loader'
-import {Stat, StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {Stat, LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -33,7 +33,7 @@ type Props = {
     statDataLabelOverride?: ReactNode
     isFetchingStat: boolean
     resourceName: string
-    statsFilters: StatsFilters
+    statsFilters: LegacyStatsFilters
     helpText?: ReactNode
     visibilityLink?: {
         href: string

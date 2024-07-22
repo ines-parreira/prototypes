@@ -7,7 +7,7 @@ import {
     TICKETS_CREATED_PER_CHANNEL,
     TICKETS_CREATED_PER_CHANNEL_PER_DAY,
 } from 'config/stats'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useStatResource from 'hooks/reporting/useStatResource'
@@ -28,7 +28,7 @@ export default function SupportPerformanceChannels() {
         getCleanStatsFiltersWithTimezone
     )
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, period} = statsFilters
         return {
             channels,

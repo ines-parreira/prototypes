@@ -5,7 +5,6 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {useTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useTicketsInPolicy'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {StatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {ReportingGranularity} from 'models/reporting/types'
@@ -31,7 +30,7 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 describe('useSLAsTicketsTrends', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
-    const filters: StatsFilters = {
+    const filters = {
         period: {
             start_datetime: startDate,
             end_datetime: endDate,

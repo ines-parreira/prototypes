@@ -17,7 +17,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters, StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -133,7 +133,7 @@ describe('messagesSentTimeSeriesQueryFactory', () => {
                 {
                     dimension: HelpdeskMessageDimension.SentDatetime,
                     granularity,
-                    dateRange: getFilterDateRange(statsFilters),
+                    dateRange: getFilterDateRange(statsFilters.period),
                 },
             ],
             timezone,
@@ -144,7 +144,7 @@ describe('messagesSentTimeSeriesQueryFactory', () => {
 describe('messagesSentMetricPerAgentQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -181,7 +181,7 @@ describe('messagesSentMetricPerAgentQueryFactory', () => {
 describe('messagesSentMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

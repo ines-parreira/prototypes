@@ -63,7 +63,7 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     )
     const order = useAppSelector(getCustomFieldsOrder)
     const dateTimes = getPeriodDateTimes(
-        getFilterDateRange(cleanStatsFilters),
+        getFilterDateRange(cleanStatsFilters.period),
         granularity
     )
     const {data: timeSeriesData, isLoading} =

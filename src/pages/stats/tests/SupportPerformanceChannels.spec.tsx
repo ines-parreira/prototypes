@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -41,7 +42,7 @@ describe('SupportPerformanceChannels', () => {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-                channels: [TicketChannel.Chat],
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
             },
         },
         entities: {

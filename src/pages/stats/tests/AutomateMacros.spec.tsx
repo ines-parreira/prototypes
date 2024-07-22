@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {messagesSentPerMacro} from 'fixtures/stats'
@@ -37,8 +38,10 @@ describe('AutomateMacros', () => {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-                channels: [TicketChannel.Chat],
-                integrations: [integrationsState.integrations[0].id],
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                integrations: withDefaultLogicalOperator([
+                    integrationsState.integrations[0].id,
+                ]),
             },
         },
         integrations: fromJS(integrationsState),

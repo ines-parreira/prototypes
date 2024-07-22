@@ -14,7 +14,7 @@ import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
 import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
@@ -55,7 +55,7 @@ const componentMock = () => <div />
 
 describe('<CustomFieldsTicketCountBreakdownTable />', () => {
     const customField = {id: 123, label: 'someLabel'}
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-05-30T23:59:59+02:00',
@@ -258,7 +258,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: [dataPoint],
             dateTimes: getPeriodDateTimes(
-                getFilterDateRange(defaultStatsFilters),
+                getFilterDateRange(defaultStatsFilters.period),
                 granularity
             ),
             order: {column: 'label', direction: OrderDirection.Asc},

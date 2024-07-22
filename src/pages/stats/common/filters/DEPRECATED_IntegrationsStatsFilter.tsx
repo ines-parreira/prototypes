@@ -14,7 +14,7 @@ import {
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {AppIntegration, Integration} from 'models/integration/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
@@ -44,7 +44,7 @@ export const integrationsStatsFilterLabels = {
 }
 
 type Props = {
-    value: StatsFilters['integrations']
+    value: LegacyStatsFilters['integrations']
     integrations: Integration[]
     isMultiple?: boolean
     isRequired?: boolean

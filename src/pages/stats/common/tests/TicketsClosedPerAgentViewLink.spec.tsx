@@ -12,14 +12,14 @@ import {integrationsState} from 'fixtures/integrations'
 import {agents as agentsFixtures} from 'fixtures/agents'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {TicketChannel} from 'business/types/ticket'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
-import TicketsClosedPerAgentViewLink from '../TicketsClosedPerAgentViewLink'
+import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('common/segment')
-jest.mock('../ViewLink', () => (props: LinkProps) => (
+jest.mock('pages/stats/common/ViewLink', () => (props: LinkProps) => (
     <div>
         ViewLink Mock
         {JSON.stringify(props, null, 2)}
@@ -29,7 +29,7 @@ jest.mock('../ViewLink', () => (props: LinkProps) => (
 const logEventMock = logEvent as jest.Mock
 
 describe('TicketsClosedPerAgentViewLink', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',

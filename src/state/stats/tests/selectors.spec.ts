@@ -1,9 +1,10 @@
 import {fromJS} from 'immutable'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 import {RootState} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {IntegrationType} from 'models/integration/constants'
-import {StatsFilters} from 'models/stat/types'
+import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import {
     getStatsFilters,
@@ -13,6 +14,7 @@ import {
     getStatsMessagingAndAppIntegrations,
     getSLAPoliciesStatsFilter,
     getPageStatsFilters,
+    getPageStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
 import {initialState} from 'state/stats/statsSlice'
 
@@ -27,7 +29,7 @@ describe('stats selectors', () => {
     let defaultState: RootState
     const defaultStatsFilters = {
         period: {start_datetime: '0', end_datetime: '0'},
-    } as StatsFilters
+    } as StatsFiltersWithLogicalOperator
     const gmailIntegration = {
         id: 1,
         type: IntegrationType.Gmail,
@@ -45,16 +47,19 @@ describe('stats selectors', () => {
 
     describe('getStatsFilters', () => {
         it('should return stats filters', () => {
-            const statFilters: StatsFilters = {
+            const statFilters: StatsFiltersWithLogicalOperator = {
                 ...defaultStatsFilters,
-                integrations: [1],
+                integrations: withDefaultLogicalOperator([1]),
             }
             const state = {
                 ...defaultState,
                 stats: {filters: statFilters},
             }
 
-            expect(getStatsFilters(state)).toEqual(statFilters)
+            expect(getStatsFilters(state)).toEqual({
+                ...defaultStatsFilters,
+                integrations: [1],
+            })
         })
     })
 
@@ -111,7 +116,9 @@ describe('stats selectors', () => {
                 stats: {
                     filters: {
                         ...defaultStatsFilters,
-                        channels: [TicketChannel.Email],
+                        channels: withDefaultLogicalOperator([
+                            TicketChannel.Email,
+                        ]),
                     },
                 },
             }
@@ -125,13 +132,14 @@ describe('stats selectors', () => {
                 stats: {
                     filters: {
                         ...defaultStatsFilters,
-                        integrations: [1, 2, 3],
+                        integrations: withDefaultLogicalOperator([1, 2, 3]),
                     },
                 },
                 integrations: fromJS({
                     integrations: [gmailIntegration, shopifyIntegration],
                 }),
             }
+
             expect(selector(state)).toEqual(
                 expectedIntegrations.map((integration) => integration.id)
             )
@@ -147,11 +155,11 @@ describe('stats selectors', () => {
                 stats: {
                     filters: {
                         ...defaultStatsFilters,
-                        integrations: [
+                        integrations: withDefaultLogicalOperator([
                             gmailIntegration.id,
                             notMessagingNorAppIntegration.id,
                             nonExistentIntegrationId,
-                        ],
+                        ]),
                     },
                 },
                 integrations: fromJS({
@@ -174,6 +182,69 @@ describe('stats selectors', () => {
         })
     })
 
+    describe('getPageStatsFiltersWithLogicalOperators', () => {
+        it('should return filters with logical operators and Messaging and App integrations only', () => {
+            const notMessagingNorAppIntegration = shopifyIntegration
+            const nonExistentIntegrationId = 3
+            const state = {
+                ...defaultState,
+                stats: {
+                    filters: {
+                        ...defaultStatsFilters,
+                        integrations: withDefaultLogicalOperator([
+                            gmailIntegration.id,
+                            notMessagingNorAppIntegration.id,
+                            nonExistentIntegrationId,
+                        ]),
+                    },
+                },
+                integrations: fromJS({
+                    integrations: [gmailIntegration, shopifyIntegration],
+                }),
+            }
+
+            expect(getPageStatsFiltersWithLogicalOperators(state)).toEqual({
+                ...state.stats.filters,
+                integrations: withDefaultLogicalOperator([gmailIntegration.id]),
+                agents: undefined,
+                channels: undefined,
+                tags: undefined,
+                helpCenters: undefined,
+                localeCodes: undefined,
+                score: undefined,
+                campaigns: undefined,
+                slaPolicies: undefined,
+            })
+        })
+
+        it('should return filters with logical operators even if integrations filter is missing', () => {
+            const state = {
+                ...defaultState,
+                stats: {
+                    filters: {
+                        ...defaultStatsFilters,
+                    },
+                },
+                integrations: fromJS({
+                    integrations: [gmailIntegration, shopifyIntegration],
+                }),
+            }
+
+            expect(getPageStatsFiltersWithLogicalOperators(state)).toEqual({
+                ...state.stats.filters,
+                integrations: withDefaultLogicalOperator([]),
+                agents: undefined,
+                channels: undefined,
+                tags: undefined,
+                helpCenters: undefined,
+                localeCodes: undefined,
+                score: undefined,
+                campaigns: undefined,
+                slaPolicies: undefined,
+            })
+        })
+    })
+
     describe('getSLAPoliciesStatsFilter', () => {
         it('should return selected Sla policies ', () => {
             const state = {
@@ -181,13 +252,17 @@ describe('stats selectors', () => {
                 stats: {
                     filters: {
                         ...defaultStatsFilters,
-                        slaPolicies: ['1', '2', '3'],
+                        slaPolicies: withDefaultLogicalOperator([
+                            '1',
+                            '2',
+                            '3',
+                        ]),
                     },
                 },
             }
 
             expect(getSLAPoliciesStatsFilter(state)).toEqual(
-                state.stats.filters.slaPolicies
+                state.stats.filters.slaPolicies.values
             )
         })
 

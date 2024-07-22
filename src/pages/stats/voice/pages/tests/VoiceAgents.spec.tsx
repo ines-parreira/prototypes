@@ -9,7 +9,7 @@ import {QueryClientProvider} from '@tanstack/react-query'
 import {user} from 'fixtures/users'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
 import {billingState} from 'fixtures/billing'
 import {tags} from 'fixtures/tag'
@@ -17,6 +17,8 @@ import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
@@ -34,7 +36,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceAgents', () => {
     const renderVoiceAgents = (featureEnabled = true) => {
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 start_datetime: '2023-12-11T00:00:00.000Z',
                 end_datetime: '2023-12-11T23:59:59.999Z',
@@ -62,7 +64,7 @@ describe('VoiceAgents', () => {
             }),
             billing: fromJS(billingState),
             stats: {
-                filters: statsFilters,
+                filters: fromLegacyStatsFilters(statsFilters),
             },
             integrations: fromJS({integrations: []}),
             ui: {

@@ -1,15 +1,16 @@
-import React, {useCallback, useState} from 'react'
+import React, {useCallback} from 'react'
 import {connect} from 'react-redux'
 import {RemovableFilter} from 'pages/stats/common/filters/types'
 import {
-    getPageStatsFilters,
+    getPageStatsFiltersWithLogicalOperators,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {Integration} from 'models/integration/types'
-import {FilterKey, StatsFilters} from 'models/stat/types'
+import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
 
 import Filter from 'pages/stats/common/components/Filter'
 import {DropdownOption} from 'pages/stats/types'
@@ -21,22 +22,20 @@ import {integrationsFilterLogicalOperators} from 'pages/stats/common/filters/con
 export const INTEGRATIONS_FILTER_NAME = 'Integrations'
 
 type Props = {
-    value: StatsFilters['integrations']
+    value: StatsFiltersWithLogicalOperator['integrations']
     integrations: Integration[]
 } & RemovableFilter
 
 export default function IntegrationsFilter({
-    value,
+    value = emptyFilter,
     integrations,
     onRemove,
 }: Props) {
     const dispatch = useAppDispatch()
-    const [selectedLogicalOperator, setSelectedLogicalOperator] =
-        useState<LogicalOperatorEnum>(LogicalOperatorEnum['ONE_OF'])
 
     const getSelectedIntegrations = useCallback(() => {
         return integrations
-            .filter((integration) => value?.includes(integration.id))
+            .filter((integration) => value.values.includes(integration.id))
             .map((integration) => ({
                 label: integration.name,
                 value: `${integration.id}`,
@@ -54,34 +53,48 @@ export default function IntegrationsFilter({
         ]
     }
 
-    const handleFilterChange = useCallback(
+    const handleFilterValuesChange = useCallback(
         (values: number[]) => {
-            dispatch(statFiltersDirty())
             dispatch(
-                mergeStatsFilters({
-                    integrations: values,
+                mergeStatsFiltersWithLogicalOperator({
+                    integrations: {
+                        operator: value.operator,
+                        values,
+                    },
                 })
             )
         },
-        [dispatch]
+        [dispatch, value.operator]
+    )
+
+    const handleFilterOperatorChange = useCallback(
+        (operator: LogicalOperatorEnum) => {
+            dispatch(
+                mergeStatsFiltersWithLogicalOperator({
+                    integrations: {
+                        values: value.values,
+                        operator: operator,
+                    },
+                })
+            )
+        },
+        [dispatch, value.values]
     )
 
     const onOptionChange = (opt: DropdownOption) => {
-        const integration = integrations.find(
-            (integration) => integration.id === Number(opt.value)
-        )
-
-        if (integration && value?.includes(integration.id)) {
-            handleFilterChange(
-                value?.filter(
-                    (integrationId) => integrationId !== integration?.id
-                )
+        const id = Number(opt.value)
+        if (value.values.includes(id)) {
+            handleFilterValuesChange(
+                value.values.filter((integrationId) => integrationId !== id)
             )
-        } else if (integration && !value?.includes(integration.id)) {
-            handleFilterChange([...(value || []), integration.id])
+        } else {
+            handleFilterValuesChange([...value.values, id])
         }
     }
 
+    const handleDropdownOpen = () => {
+        dispatch(statFiltersDirty())
+    }
     const handleDropdownClosed = () => {
         dispatch(statFiltersClean())
     }
@@ -90,31 +103,36 @@ export default function IntegrationsFilter({
         <Filter
             filterName={INTEGRATIONS_FILTER_NAME}
             selectedOptions={getSelectedIntegrations()}
-            selectedLogicalOperator={selectedLogicalOperator}
+            selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}
             filterOptionGroups={integrationOptionGroups()}
             onChangeOption={onOptionChange}
             onSelectAll={() => {
-                handleFilterChange(
+                handleFilterValuesChange(
                     integrations.map((integration) => integration.id)
                 )
             }}
             onRemoveAll={() => {
-                handleFilterChange([])
+                handleFilterValuesChange([])
             }}
             onRemove={() => {
-                dispatch(mergeStatsFilters({integrations: []}))
+                dispatch(
+                    mergeStatsFiltersWithLogicalOperator({
+                        integrations: emptyFilter,
+                    })
+                )
                 onRemove?.()
             }}
-            onChangeLogicalOperator={(operator) =>
-                setSelectedLogicalOperator(operator)
-            }
+            onChangeLogicalOperator={handleFilterOperatorChange}
+            onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
         />
     )
 }
 
 export const IntegrationsFilterWithState = connect((state: RootState) => ({
-    value: getPageStatsFilters(state)[FilterKey.Integrations],
+    value: getPageStatsFiltersWithLogicalOperators(state)[
+        FilterKey.Integrations
+    ],
     integrations: getStatsMessagingAndAppIntegrations(state),
 }))(IntegrationsFilter)

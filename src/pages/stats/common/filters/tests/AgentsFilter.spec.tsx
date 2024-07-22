@@ -7,7 +7,12 @@ import thunk from 'redux-thunk'
 
 import {fromJS} from 'immutable'
 import isEqual from 'lodash/isEqual'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {
+    initialState,
+    mergeStatsFilters,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 import {Team} from 'models/team/types'
 
@@ -56,7 +61,10 @@ describe('AgentsFilter', () => {
     }
 
     beforeEach(() => {
-        component = renderWithStore(<AgentsFilter value={[]} />, defaultState)
+        component = renderWithStore(
+            <AgentsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
     })
 
     it('should render AgentsFilter component', () => {
@@ -131,10 +139,10 @@ describe('AgentsFilter', () => {
         rerender(
             <Provider store={mockStore}>
                 <AgentsFilter
-                    value={[
+                    value={withDefaultLogicalOperator([
                         ...testTeam.members.map((member) => member.id),
                         testAgent.id,
-                    ]}
+                    ])}
                 />
             </Provider>
         )
@@ -165,7 +173,9 @@ describe('AgentsFilter', () => {
         userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
         userEvent.click(screen.getByText(/select all/i))
 
-        const allAvailableAgentsIds = extendedAgents.map((agents) => agents.id)
+        const allAvailableAgentsIds = withDefaultLogicalOperator(
+            extendedAgents.map((agents) => agents.id)
+        )
 
         const areAllAgentsInDispatch =
             checkIfMockedDispatchWasCalledWithExpectedArguments(
@@ -206,7 +216,9 @@ describe('AgentsFilter', () => {
     it('should dispatch mergeStatsFilters action on deselecting one of the agent', () => {
         const {rerender} = component
 
-        const allAvailableAgentsIds = extendedAgents.map((agents) => agents.id)
+        const allAvailableAgentsIds = withDefaultLogicalOperator(
+            extendedAgents.map((agents) => agents.id)
+        )
 
         rerender(
             <Provider store={mockStore}>
@@ -234,7 +246,9 @@ describe('AgentsFilter', () => {
         const {rerender} = component
         const clearFilterIcon = 'close'
 
-        const allAvailableAgentsIds = extendedAgents.map((agents) => agents.id)
+        const allAvailableAgentsIds = withDefaultLogicalOperator(
+            extendedAgents.map((agents) => agents.id)
+        )
 
         rerender(
             <Provider store={mockStore}>
@@ -260,28 +274,34 @@ describe('AgentsFilter', () => {
         const isOneOfRadioLabel = screen.getByLabelText(
             new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
         )
-        const isOneOfRadioInput = document.querySelector(
-            `input[id=${LogicalOperatorEnum.ONE_OF}]`
-        )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
                 'i'
             )
         )
-        const isNotOneOfRadioInput = document.querySelector(
-            `input[id=${LogicalOperatorEnum.NOT_ONE_OF}]`
-        )
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(isOneOfRadioInput).not.toBeChecked()
-        expect(isNotOneOfRadioInput).toBeChecked()
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                agents: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(isOneOfRadioInput).toBeChecked()
-        expect(isNotOneOfRadioInput).not.toBeChecked()
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                agents: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
     })
 })
 

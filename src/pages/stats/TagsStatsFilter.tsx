@@ -16,7 +16,7 @@ import {tagsFetched} from 'state/entities/tags/actions'
 import {notify} from 'state/notifications/actions'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import {RootState} from 'state/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import css from './TagsStatsFilter.less'
 import SelectFilter from './common/SelectFilter'
@@ -31,7 +31,7 @@ const TagDropdownMenuWrapper = (
 ) => <TagDropdownMenu {...props} />
 
 type Props = {
-    value: StatsFilters['tags']
+    value: LegacyStatsFilters['tags']
     variant?: 'fill' | 'ghost'
 }
 

@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {render} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import useStatResource from 'hooks/reporting/useStatResource'
 
 import {RootState, StoreDispatch} from 'state/types'
@@ -196,11 +197,13 @@ describe('SupportPerformanceRevenue', () => {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-                channels: [TicketChannel.Chat],
-                integrations: [shopifyIntegration && shopifyIntegration.id],
-                agents: [agents[0].id],
-                tags: [1],
-                campaigns: [campaign.id],
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                integrations:
+                    shopifyIntegration &&
+                    withDefaultLogicalOperator([shopifyIntegration.id]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
+                tags: withDefaultLogicalOperator([1]),
+                campaigns: withDefaultLogicalOperator([campaign.id]),
             },
         },
         agents: fromJS({

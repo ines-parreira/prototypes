@@ -1,10 +1,15 @@
 import React from 'react'
 import userEvent from '@testing-library/user-event'
 import {screen} from '@testing-library/react'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import {emptyFilter} from 'pages/stats/common/filters/helpers'
 
 import {integrationsState} from 'fixtures/integrations'
 import {Integration} from 'models/integration/types'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
 import {RootState} from 'state/types'
 
 import {renderWithStore} from 'utils/testing'
@@ -19,36 +24,49 @@ import IntegrationsFilter, {
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
+const defaultState = {
+    stats: initialState,
+} as RootState
+
+const integrations: Integration[] =
+    integrationsState.integrations as Integration[]
+
+const renderComponent = () =>
+    renderWithStore(
+        <IntegrationsFilter value={emptyFilter} integrations={integrations} />,
+        defaultState
+    )
+
 describe('IntegrationsFilter', () => {
-    let component: ReturnType<typeof renderWithStore>
-
-    const defaultState = {
-        stats: initialState,
-    } as RootState
-
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
         'i'
     )
 
     const DROPDOWN_SELECT_VALUE_ELEMENT_TEXT = 'Select value...'
-    const {integrations} = integrationsState
 
-    beforeEach(() => {
-        component = renderWithStore(
+    beforeEach(() => {})
+
+    it('should render IntegrationsFilter component', () => {
+        renderComponent()
+
+        expect(screen.getByText(INTEGRATIONS_FILTER_NAME)).toBeInTheDocument()
+    })
+
+    it('should render with empty filter', () => {
+        renderWithStore(
             <IntegrationsFilter
-                value={[]}
-                integrations={integrations as Integration[]}
+                value={undefined}
+                integrations={integrations}
             />,
             defaultState
         )
-    })
 
-    it('should render IntegrationsFilter component', () => {
         expect(screen.getByText(INTEGRATIONS_FILTER_NAME)).toBeInTheDocument()
     })
 
     it('should render IntegrationsFilter options', () => {
+        renderComponent()
         userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
 
         expect(screen.getByText(integrations[0].name)).toBeInTheDocument()
@@ -56,27 +74,50 @@ describe('IntegrationsFilter', () => {
     })
 
     it('should dispatch mergeStatsFilters action on selecting an integration', () => {
+        renderComponent()
+
         userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
         userEvent.click(screen.getByText(integrations[0].name))
         userEvent.click(screen.getByText(integrations[1].name))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            3,
-            mergeStatsFilters({
-                integrations: [integrations[0].id],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator([integrations[0].id]),
             })
         )
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            5,
-            mergeStatsFilters({
-                integrations: [integrations[1].id],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator([integrations[1].id]),
+            })
+        )
+    })
+
+    it('should dispatch mergeStatsFilters action on deselecting an integration', () => {
+        renderWithStore(
+            <IntegrationsFilter
+                value={withDefaultLogicalOperator([integrations[0].id])}
+                integrations={integrations}
+            />,
+            defaultState
+        )
+
+        userEvent.click(
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+        )
+        userEvent.click(
+            screen.getByRole('option', {name: integrations[0].name})
+        )
+
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator([]),
             })
         )
     })
 
     it('should dispatch mergeStatsFilters action on selecting all integrations and deselecting all integrations', () => {
-        const {rerender} = component
+        const {rerender} = renderComponent()
         userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
         userEvent.click(screen.getByText(/select all/i))
 
@@ -84,33 +125,33 @@ describe('IntegrationsFilter', () => {
             (integration) => integration.id
         )
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            3,
-            mergeStatsFilters({
-                integrations: allAvailableIntegrationsIds,
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator(
+                    allAvailableIntegrationsIds
+                ),
             })
         )
 
         rerender(
             <IntegrationsFilter
-                value={allAvailableIntegrationsIds}
-                integrations={integrations as Integration[]}
+                value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
+                integrations={integrations}
             />
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(/deselect all/i))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            6,
-            mergeStatsFilters({
-                integrations: [],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator([]),
             })
         )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting one of the integrations', () => {
-        const {rerender} = component
+        const {rerender} = renderComponent()
 
         const allAvailableIntegrationsIds = integrations.map(
             (integration) => integration.id
@@ -118,26 +159,27 @@ describe('IntegrationsFilter', () => {
 
         rerender(
             <IntegrationsFilter
-                value={allAvailableIntegrationsIds}
-                integrations={integrations as Integration[]}
+                value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
+                integrations={integrations}
             />
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(integrations[0].name))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            4,
-            mergeStatsFilters({
-                integrations: allAvailableIntegrationsIds.filter(
-                    (channel) => channel !== integrations[0].id
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator(
+                    allAvailableIntegrationsIds.filter(
+                        (channel) => channel !== integrations[0].id
+                    )
                 ),
             })
         )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting all integrations when filters dropdown is closed', () => {
-        const {rerender} = component
+        const {rerender} = renderComponent()
         const clearFilterIcon = 'close'
 
         const allAvailableIntegrationsIds = integrations.map(
@@ -146,29 +188,27 @@ describe('IntegrationsFilter', () => {
 
         rerender(
             <IntegrationsFilter
-                value={allAvailableIntegrationsIds}
-                integrations={integrations as Integration[]}
+                value={withDefaultLogicalOperator(allAvailableIntegrationsIds)}
+                integrations={integrations}
             />
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            3,
-            mergeStatsFilters({
-                integrations: [],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: withDefaultLogicalOperator([]),
             })
         )
     })
 
     it('should change selection of logical operator when one of the options is clicked', () => {
+        renderComponent()
+
         userEvent.click(screen.getByText(DROPDOWN_SELECT_VALUE_ELEMENT_TEXT))
 
         const isOneOfRadioLabel = screen.getByLabelText(
             new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
-        )
-        const isOneOfRadioInput = document.querySelector(
-            `input[id=${LogicalOperatorEnum.ONE_OF}]`
         )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
@@ -176,18 +216,27 @@ describe('IntegrationsFilter', () => {
                 'i'
             )
         )
-        const isNotOneOfRadioInput = document.querySelector(
-            `input[id=${LogicalOperatorEnum.NOT_ONE_OF}]`
-        )
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(isOneOfRadioInput).not.toBeChecked()
-        expect(isNotOneOfRadioInput).toBeChecked()
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(isOneOfRadioInput).toBeChecked()
-        expect(isNotOneOfRadioInput).not.toBeChecked()
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                integrations: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
     })
 })

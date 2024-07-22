@@ -11,7 +11,7 @@ import {RootState, StoreDispatch} from 'state/types'
 import {integrationsState} from 'fixtures/integrations'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {reportError} from 'utils/errors'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import * as channelsService from 'services/channels'
 import {channels} from 'fixtures/channels'
 
@@ -46,7 +46,7 @@ jest.mock(
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
 describe('TicketDetailsStat', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',

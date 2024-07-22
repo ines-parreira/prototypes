@@ -5,7 +5,7 @@ import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/use
 
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 import {useTicketsCreatedMetric} from 'hooks/reporting/metrics'
 import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
@@ -20,7 +20,7 @@ const useTicketsCreatedMetricPerChannelMock = assumeMock(
 describe('usePercentageOfCreatedTicketsMetricPerChannel', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

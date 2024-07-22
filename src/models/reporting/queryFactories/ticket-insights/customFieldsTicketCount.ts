@@ -129,7 +129,7 @@ export const customFieldsTicketCountTimeSeriesQueryFactory = (
             dimension:
                 TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     timezone,

@@ -8,7 +8,7 @@ import {
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {
     BusiestTimeOfDaysMetrics,
@@ -24,7 +24,7 @@ const getCleanStatsFiltersWithTimezoneMock = assumeMock(
 )
 
 describe('<BusiestTimesOfDaysTable />', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-05-30T23:59:59+02:00',

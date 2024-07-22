@@ -10,7 +10,7 @@ import {saveReport} from 'services/reporting/automateOverviewReportingService'
 import {SegmentEvent, logEvent} from 'common/segment'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
@@ -184,7 +184,7 @@ export default function AutomateOverviewContent({
         granularity,
     } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, period} = statsFilters
         return {
             channels,

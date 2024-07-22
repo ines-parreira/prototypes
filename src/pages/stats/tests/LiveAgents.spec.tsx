@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 import {render, fireEvent, screen} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
@@ -59,8 +60,8 @@ describe('LiveAgents', () => {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
-                channels: [TicketChannel.Chat],
-                agents: [agents[0].id],
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
             },
         },
         agents: fromJS({

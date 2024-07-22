@@ -1,7 +1,11 @@
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import {
+    hasFilter,
+    isFilterWithLogicalOperator,
+} from 'models/reporting/queryFactories/utils'
 import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {StatsFilters, WithLogicalOperator} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 
 export const automationDatasetDefaultFilters = (
@@ -22,7 +26,7 @@ export const automationDatasetDefaultFilters = (
 export const automationDatasetAdditionalFilters = (
     filters: StatsFilters
 ): ReportingFilter[] => [
-    ...(filters.channels && filters.channels.length
+    ...(hasFilter(filters.channels)
         ? [
               {
                   member: AutomationDatasetFilterMember.Channel,
@@ -51,19 +55,28 @@ export const billableTicketDatasetDefaultFilters = (
 export const billableTicketDatasetAdditionalFilters = (
     filters: StatsFilters
 ): ReportingFilter[] => [
-    ...(filters.channels && filters.channels.length
+    ...(hasFilter(filters.channels)
         ? [
               {
                   member: BillableTicketDatasetFilterMember.Channel,
                   operator: ReportingFilterOperator.Equals,
-                  values: filters.channels,
+                  values: mapTicketChannelsToAutomateChannels(filters.channels),
               },
           ]
         : []),
 ]
 
-const mapTicketChannelsToAutomateChannels = (channels: string[]): string[] => {
-    return channels.map((channel) =>
-        channel === 'contact_form' ? 'contact-form' : channel
-    )
+const ticketChannelToAutomateChannel = (channel: string) =>
+    channel === 'contact_form' ? 'contact-form' : channel
+
+export const mapTicketChannelsToAutomateChannels = (
+    channels: string[] | WithLogicalOperator<string> | undefined
+): string[] => {
+    if (channels === undefined) {
+        return []
+    }
+    if (isFilterWithLogicalOperator(channels)) {
+        return channels.values.map(ticketChannelToAutomateChannel)
+    }
+    return channels.map(ticketChannelToAutomateChannel)
 }

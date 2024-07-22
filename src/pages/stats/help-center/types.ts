@@ -1,7 +1,7 @@
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 export type HelpCenterStatsFilters = Omit<
-    StatsFilters,
+    LegacyStatsFilters,
     'helpCenters' | 'localeCodes'
 > & {
     helpCenters: number[]
@@ -9,6 +9,6 @@ export type HelpCenterStatsFilters = Omit<
 }
 
 export const isHelpCenterStatsFiltersValid = (
-    filters: StatsFilters
+    filters: LegacyStatsFilters
 ): filters is HelpCenterStatsFilters =>
     Array.isArray(filters.helpCenters) && Array.isArray(filters.localeCodes)

@@ -1,20 +1,24 @@
-import React from 'react'
 import {screen} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {mergeStatsFilters, initialState} from 'state/stats/statsSlice'
-import ChannelsFilter, {
-    CHANNELS_FILTER_NAME,
-} from 'pages/stats/common/filters/ChannelsFilter'
-import {channels} from 'fixtures/channels'
-import {assumeMock, renderWithStore} from 'utils/testing'
-import {RootState} from 'state/types'
-import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
+import React from 'react'
 import {TicketMessageSourceType} from 'business/types/ticket'
+import {channels} from 'fixtures/channels'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
+import ChannelsFilter, {
+    CHANNELS_FILTER_NAME,
+} from 'pages/stats/common/filters/ChannelsFilter'
 import {getChannels, toChannel} from 'services/channels'
+import {
+    initialState,
+    mergeStatsFiltersWithLogicalOperator,
+} from 'state/stats/statsSlice'
+import {RootState} from 'state/types'
+import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
+import {assumeMock, renderWithStore} from 'utils/testing'
 
 const mockedChannels = channels
 
@@ -45,7 +49,10 @@ describe('ChannelsFilter', () => {
         mockedToChannels.mockImplementation((arg) =>
             mockedChannels.find((channel) => channel.slug === arg)
         )
-        component = renderWithStore(<ChannelsFilter value={[]} />, defaultState)
+        component = renderWithStore(
+            <ChannelsFilter value={withDefaultLogicalOperator([])} />,
+            defaultState
+        )
     })
 
     it('should render ChannelsStatsFilter component', () => {
@@ -64,17 +71,15 @@ describe('ChannelsFilter', () => {
         userEvent.click(screen.getByText(mockedChannels[0].name))
         userEvent.click(screen.getByText(mockedChannels[1].name))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            3,
-            mergeStatsFilters({
-                channels: [mockedChannels[0].slug],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: withDefaultLogicalOperator([mockedChannels[0].slug]),
             })
         )
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            5,
-            mergeStatsFilters({
-                channels: [mockedChannels[1].slug],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: withDefaultLogicalOperator([mockedChannels[1].slug]),
             })
         )
     })
@@ -88,22 +93,30 @@ describe('ChannelsFilter', () => {
             (channel) => channel.slug
         )
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            3,
-            mergeStatsFilters({
-                channels: allAvailableChannelsSlugs,
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: {
+                    values: allAvailableChannelsSlugs,
+                    operator: LogicalOperatorEnum.ONE_OF,
+                },
             })
         )
 
-        rerender(<ChannelsFilter value={allAvailableChannelsSlugs} />)
+        rerender(
+            <ChannelsFilter
+                value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
+            />
+        )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(/deselect all/i))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            6,
-            mergeStatsFilters({
-                channels: [],
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: {
+                    values: [],
+                    operator: LogicalOperatorEnum.ONE_OF,
+                },
             })
         )
     })
@@ -118,17 +131,23 @@ describe('ChannelsFilter', () => {
             )
         ) as string[]
 
-        rerender(<ChannelsFilter value={allAvailableChannelsSlugs} />)
+        rerender(
+            <ChannelsFilter
+                value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
+            />
+        )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(mockedChannels[0].name))
 
-        expect(mockedDispatch).toHaveBeenNthCalledWith(
-            4,
-            mergeStatsFilters({
-                channels: allAvailableChannelsSlugs.filter(
-                    (channel) => channel !== mockedChannels[0].slug
-                ),
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: allAvailableChannelsSlugs.filter(
+                        (channel) => channel !== mockedChannels[0].slug
+                    ),
+                },
             })
         )
     })
@@ -144,14 +163,21 @@ describe('ChannelsFilter', () => {
             )
         ) as string[]
 
-        rerender(<ChannelsFilter value={allAvailableChannelsSlugs} />)
+        rerender(
+            <ChannelsFilter
+                value={withDefaultLogicalOperator(allAvailableChannelsSlugs)}
+            />
+        )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
 
         expect(mockedDispatch).toHaveBeenNthCalledWith(
             3,
-            mergeStatsFilters({
-                channels: [],
+            mergeStatsFiltersWithLogicalOperator({
+                channels: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [],
+                },
             })
         )
     })
@@ -162,27 +188,33 @@ describe('ChannelsFilter', () => {
         const isOneOfRadioLabel = screen.getByLabelText(
             new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
         )
-        const isOneOfRadioInput = document.querySelector(
-            `input[id=${LogicalOperatorEnum.ONE_OF}]`
-        )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
                 'i'
             )
         )
-        const isNotOneOfRadioInput = document.querySelector(
-            `input[id=${LogicalOperatorEnum.NOT_ONE_OF}]`
-        )
 
         userEvent.click(isNotOneOfRadioLabel)
 
-        expect(isOneOfRadioInput).not.toBeChecked()
-        expect(isNotOneOfRadioInput).toBeChecked()
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
 
         userEvent.click(isOneOfRadioLabel)
 
-        expect(isOneOfRadioInput).toBeChecked()
-        expect(isNotOneOfRadioInput).not.toBeChecked()
+        expect(mockedDispatch).toHaveBeenCalledWith(
+            mergeStatsFiltersWithLogicalOperator({
+                channels: {
+                    operator: LogicalOperatorEnum.NOT_ONE_OF,
+                    values: [],
+                },
+            })
+        )
     })
 })

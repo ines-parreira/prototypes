@@ -35,8 +35,10 @@ import {TicketChannel} from 'business/types/ticket'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {saveReport} from 'services/reporting/supportPerformanceReportingService'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -90,7 +92,7 @@ const useWorkloadPerChannelDistributionForPreviousPeriodMock = assumeMock(
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('DownloadOverviewData', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
@@ -103,7 +105,7 @@ describe('DownloadOverviewData', () => {
 
     const defaultState = {
         stats: {
-            filters: defaultStatsFilters,
+            filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
             stats: uiStatsInitialState,

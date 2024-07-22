@@ -15,14 +15,14 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate, getFilterDateRange} from 'utils/reporting'
 
 describe('slaTickets', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
     const tags = [1, 2]
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -112,7 +112,7 @@ describe('slaTickets', () => {
                     {
                         dimension: TicketSLADimension.SlaAnchorDatetime,
                         granularity,
-                        dateRange: getFilterDateRange(statsFilters),
+                        dateRange: getFilterDateRange(statsFilters.period),
                     },
                 ],
                 timezone,
@@ -133,7 +133,7 @@ describe('slaTickets', () => {
                     {
                         dimension: TicketSLADimension.SlaAnchorDatetime,
                         granularity,
-                        dateRange: getFilterDateRange(statsFilters),
+                        dateRange: getFilterDateRange(statsFilters.period),
                     },
                 ],
                 order: [[TicketSLAMeasure.TicketCount, sorting]],

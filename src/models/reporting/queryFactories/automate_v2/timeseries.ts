@@ -36,7 +36,7 @@ export const interactionsTimeSeriesQueryFactory = (
             dimension:
                 AutomationDatasetDimension.AutomationEventCreatedDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     timezone,
@@ -58,7 +58,7 @@ export const interactionsByEventTypeTimeSeriesQueryFactory = (
             dimension:
                 AutomationDatasetDimension.AutomationEventCreatedDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     timezone,
@@ -80,7 +80,7 @@ export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
         {
             dimension: BillableTicketDatasetDimension.TicketCreatedDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     timezone,

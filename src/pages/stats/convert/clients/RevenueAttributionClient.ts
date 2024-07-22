@@ -1,4 +1,4 @@
-import {Stat, StatsFilters} from 'models/stat/types'
+import {Stat, LegacyStatsFilters} from 'models/stat/types'
 import {fetchStat} from 'models/stat/resources'
 import {REVENUE_PER_DAY} from 'config/stats'
 import {RevenueAttributionFilterParams} from 'pages/stats/convert/clients/types'
@@ -12,7 +12,7 @@ export const getTicketsPerformanceData = async ({
     channels,
 }: RevenueAttributionFilterParams): Promise<Stat> => {
     const [startDateUtc, endDateUtc] = getDateRange(startDate, endDate)
-    const filters: StatsFilters = {
+    const filters: LegacyStatsFilters = {
         period: {
             start_datetime: startDateUtc,
             end_datetime: endDateUtc,

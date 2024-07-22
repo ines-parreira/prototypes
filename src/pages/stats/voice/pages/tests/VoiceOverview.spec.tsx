@@ -20,12 +20,14 @@ import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {account} from 'fixtures/account'
 import {AccountFeature} from 'state/currentAccount/types'
 import {billingState} from 'fixtures/billing'
 import {agents} from 'fixtures/agents'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {tags} from 'fixtures/tag'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {saveReport} from 'services/reporting/voiceOverviewReportingService'
@@ -67,7 +69,7 @@ const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
 
 describe('VoiceOverview', () => {
     const renderVoiceOverview = (featureEnabled = true) => {
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 start_datetime: '2023-12-11T00:00:00.000Z',
                 end_datetime: '2023-12-11T23:59:59.999Z',
@@ -95,7 +97,7 @@ describe('VoiceOverview', () => {
             }),
             billing: fromJS(billingState),
             stats: {
-                filters: statsFilters,
+                filters: fromLegacyStatsFilters(statsFilters),
             },
             integrations: fromJS({integrations: []}),
             ui: {

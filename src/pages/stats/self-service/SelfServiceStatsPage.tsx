@@ -20,7 +20,7 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
     ORDER_MANAGEMENT,
     QUICK_RESPONSES,
@@ -71,7 +71,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
     const {cleanStatsFilters: statsFilters} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {period, integrations} = statsFilters
         return {
             period,

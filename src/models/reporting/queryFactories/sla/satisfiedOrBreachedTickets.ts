@@ -47,7 +47,7 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
         {
             dimension: TicketSLADimension.SlaAnchorDatetime,
             granularity: granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
 })
@@ -70,7 +70,7 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
         {
             dimension: TicketSLADimension.SlaAnchorDatetime,
             granularity: ReportingGranularity.Day,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     filters: [
@@ -107,7 +107,7 @@ export const breachedTicketsDrillDownQueryFactory = (
         {
             dimension: TicketSLADimension.SlaAnchorDatetime,
             granularity: ReportingGranularity.Day,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     filters: [

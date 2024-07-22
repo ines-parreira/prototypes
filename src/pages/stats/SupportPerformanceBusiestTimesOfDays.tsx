@@ -6,7 +6,7 @@ import {
 } from 'config/stats'
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import PerHourPerWeekTableStat from 'pages/stats/common/components/charts/PerHourPerWeekTableStat'
 import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
@@ -24,7 +24,7 @@ export default function SupportPerformanceBusiestTimesOfDays() {
     )
     const statsFilters = useAppSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, agents, tags, period} = statsFilters
         return {
             channels,

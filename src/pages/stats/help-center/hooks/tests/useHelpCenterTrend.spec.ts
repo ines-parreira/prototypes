@@ -1,9 +1,9 @@
 import moment from 'moment/moment'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {useHelpCenterTrend} from '../useHelpCenterTrend'
-import {HelpCenterTrackingEventMeasures} from '../../../../../models/reporting/cubes/HelpCenterTrackingEventCube'
-import {formatReportingQueryDate} from '../../../../../utils/reporting'
+import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import {formatReportingQueryDate} from 'utils/reporting'
+import {useHelpCenterTrend} from 'pages/stats/help-center/hooks/useHelpCenterTrend'
 
 jest.mock('hooks/reporting/useMetricTrend', () => jest.fn())
 
@@ -21,7 +21,7 @@ describe('useHelpCenterTrend', () => {
     it('should call metric trend hook with correct params', () => {
         const periodStart = formatReportingQueryDate(moment())
         const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 start_datetime: periodStart,
                 end_datetime: periodEnd,

@@ -13,7 +13,7 @@ import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
 import {HelpCenter} from 'models/helpCenter/types'
 import {NonEmptyArray} from 'types'
 import {isNotEmptyArray} from 'utils'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import {getSortByName} from 'utils/getSortByName'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -46,7 +46,7 @@ const DATE_WHEN_START_COLLECTION_EVENTS = '2023-11-16'
 type HelpCenterStatsComponentProps = {
     helpCenters: NonEmptyArray<HelpCenter>
     statsFilters: HelpCenterStatsFilters
-    setStatsFilters: (filter: Partial<StatsFilters>) => void
+    setStatsFilters: (filter: Partial<LegacyStatsFilters>) => void
 }
 
 const HelpCenterStatsComponent = ({

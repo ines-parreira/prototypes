@@ -6,6 +6,7 @@ import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import LD from 'launchdarkly-react-client-sdk'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {AutomateOverviewFilters} from 'pages/stats/AutomateOverviewFilters'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -24,10 +25,12 @@ describe('<AutomateOverviewFilters />', () => {
         currentAccount: fromJS(account),
         stats: {
             filters: {
-                integrations: [integrationsState.integrations[1].id],
-                channels: [TicketChannel.Chat],
-                agents: [agents[0].id],
-                tags: [1],
+                integrations: withDefaultLogicalOperator([
+                    integrationsState.integrations[1].id,
+                ]),
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
+                tags: withDefaultLogicalOperator([1]),
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
@@ -55,7 +58,7 @@ describe('<AutomateOverviewFilters />', () => {
                         ...defaultState,
                         stats: {
                             filters: {
-                                channels: [],
+                                channels: withDefaultLogicalOperator([]),
                                 period: {
                                     start_datetime: '',
                                     end_datetime: '',

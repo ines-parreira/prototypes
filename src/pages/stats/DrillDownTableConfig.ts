@@ -17,7 +17,7 @@ import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryF
 import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
 import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters, StatsFilters} from 'models/stat/types'
 import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
 import {
     ChannelColumnConfig,
@@ -40,7 +40,7 @@ import {
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
 
 export type DrillDownQueryFactory = (
-    statsFilters: StatsFilters,
+    statsFilters: LegacyStatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ) => DrillDownReportingQuery
@@ -50,7 +50,11 @@ const queryBuilderWithAgentFilter =
         agentId: number,
         queryBuilder: DrillDownQueryFactory
     ): DrillDownQueryFactory =>
-    (statsFilters: StatsFilters, timezone: string, sorting?: OrderDirection) =>
+    (
+        statsFilters: LegacyStatsFilters,
+        timezone: string,
+        sorting?: OrderDirection
+    ) =>
         queryBuilder({...statsFilters, agents: [agentId]}, timezone, sorting)
 
 const queryBuilderWithChannelFilter =
@@ -58,7 +62,11 @@ const queryBuilderWithChannelFilter =
         channel: string,
         queryBuilder: DrillDownQueryFactory
     ): DrillDownQueryFactory =>
-    (statsFilters: StatsFilters, timezone: string, sorting?: OrderDirection) =>
+    (
+        statsFilters: LegacyStatsFilters,
+        timezone: string,
+        sorting?: OrderDirection
+    ) =>
         queryBuilder({...statsFilters, channels: [channel]}, timezone, sorting)
 
 export const getDrillDownQuery = (
@@ -151,7 +159,7 @@ export const getDrillDownQuery = (
             )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
-                statsFilters: StatsFilters,
+                statsFilters: LegacyStatsFilters,
                 timezone: string,
                 sorting?: OrderDirection
             ) =>
@@ -165,7 +173,7 @@ export const getDrillDownQuery = (
                 )
         case ConvertMetric.CampaignSalesCount:
             return (
-                statsFilters: StatsFilters,
+                statsFilters: LegacyStatsFilters,
                 timezone: string,
                 sorting?: OrderDirection
             ) =>

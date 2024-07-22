@@ -13,7 +13,7 @@ import {
     customerSatisfactionMetricPerAgentQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -24,7 +24,7 @@ import {
 describe('customerSatisfactionMetricPerAgentQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -133,7 +133,7 @@ describe('customerSatisfactionMetricPerAgentQueryFactory', () => {
 describe('customerSatisfactionMetricDrillDownQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

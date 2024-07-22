@@ -40,7 +40,7 @@ export const ticketsRepliedQueryFactory = (
         {
             member: HelpdeskMessageMember.SentDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
+            values: getFilterDateRange(filters.period),
         },
         {
             member: TicketMember.PeriodStart,
@@ -81,7 +81,7 @@ export const ticketsRepliedTimeSeriesQueryFactory = (
         {
             dimension: HelpdeskMessageDimension.SentDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
 })

@@ -4,12 +4,22 @@ import {
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
+import {
+    AgentOnlyFilters,
+    Period,
+    LegacyStatsFilters,
+    StatsFiltersWithLogicalOperator,
+} from 'models/stat/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 
-export const periodAndAgentOnlyFilters = (
-    statsFilters: StatsFilters
-): StatsFilters => ({
+export const periodAndAgentOnlyFilters = (statsFilters: {
+    period: Period
+    agents?:
+        | LegacyStatsFilters['agents']
+        | StatsFiltersWithLogicalOperator['agents']
+}): AgentOnlyFilters<
+    LegacyStatsFilters['agents'] | StatsFiltersWithLogicalOperator['agents']
+> => ({
     period: statsFilters.period,
     ...(statsFilters?.agents
         ? {

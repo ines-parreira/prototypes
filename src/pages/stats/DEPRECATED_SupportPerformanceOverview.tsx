@@ -21,7 +21,7 @@ import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     OneDimensionalChart,
-    StatsFilters,
+    LegacyStatsFilters,
     TwoDimensionalChart,
 } from 'models/stat/types'
 
@@ -53,7 +53,7 @@ export default function DEPRECATED_SupportPerformanceOverview() {
     )
     const statsFilters = useAppSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, agents, tags, period} = statsFilters
         return {
             channels,

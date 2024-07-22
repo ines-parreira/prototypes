@@ -10,7 +10,7 @@ import {tags} from 'fixtures/tag'
 import {RootState} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {ReportingGranularity} from 'models/reporting/types'
 
 import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
@@ -60,14 +60,14 @@ describe('stats components utils', () => {
                 tags: _keyBy(tags, 'id'),
             },
         } as RootState
-        const defaultStatsFilters: StatsFilters = {
+        const defaultStatsFilters: LegacyStatsFilters = {
             period: {
                 start_datetime: '2021-05-29T00:00:00+02:00',
                 end_datetime: '2021-06-04T23:59:59+04:00',
             },
         }
 
-        it.each<[string, StatsFilters]>([
+        it.each<[string, LegacyStatsFilters]>([
             ['period', defaultStatsFilters],
             [
                 'single channel',

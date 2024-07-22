@@ -1,6 +1,7 @@
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {ChannelIdentifier} from 'services/channels'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
-import {CursorMeta} from '../api/types'
+import {CursorMeta} from 'models/api/types'
 
 export enum FilterKey {
     Agents = 'agents',
@@ -20,7 +21,12 @@ export interface Period {
     start_datetime: string
 }
 
-export type StatsFilters = {
+export interface WithLogicalOperator<T extends number | string> {
+    operator: LogicalOperatorEnum
+    values: T[]
+}
+
+export type LegacyStatsFilters = {
     [FilterKey.Period]: Period
     [FilterKey.Integrations]?: number[]
     [FilterKey.Tags]?: number[]
@@ -33,10 +39,32 @@ export type StatsFilters = {
     [FilterKey.SlaPolicies]?: string[]
 }
 
+export type AgentOnlyFilters<T> = T extends any
+    ? {
+          period: Period
+          agents?: T
+      }
+    : never
+
 export type WorkflowStatsFilters = {
     period: Period
     workflowId: string
 }
+
+export type StatsFiltersWithLogicalOperator = {
+    [FilterKey.Period]: Period
+    [FilterKey.Integrations]?: WithLogicalOperator<number>
+    [FilterKey.Tags]?: WithLogicalOperator<number>
+    [FilterKey.Agents]?: WithLogicalOperator<number>
+    [FilterKey.HelpCenters]?: WithLogicalOperator<number>
+    [FilterKey.LocaleCodes]?: WithLogicalOperator<string>
+    [FilterKey.Channels]?: WithLogicalOperator<ChannelIdentifier>
+    [FilterKey.Campaigns]?: WithLogicalOperator<string>
+    [FilterKey.Score]?: WithLogicalOperator<string>
+    [FilterKey.SlaPolicies]?: WithLogicalOperator<string>
+}
+
+export type StatsFilters = LegacyStatsFilters | StatsFiltersWithLogicalOperator
 
 export enum StatType {
     ArticleRecommendationAutomationRate = 'article-recommendation-automation-rate',

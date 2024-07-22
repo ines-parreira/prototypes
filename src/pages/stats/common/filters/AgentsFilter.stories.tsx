@@ -5,6 +5,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 
 import {fromJS} from 'immutable'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {initialState} from 'state/stats/statsSlice'
 
 import {RootState} from 'state/types'
@@ -37,7 +38,7 @@ const Template: StoryFn<ComponentProps<typeof AgentsFilter>> = (props) => {
 
 export const Default = Template.bind({})
 Default.args = {
-    value: extendedAgents.map((agent) => agent.id),
+    value: withDefaultLogicalOperator(extendedAgents.map((agent) => agent.id)),
 }
 
 export default storyConfig

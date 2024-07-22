@@ -1,5 +1,5 @@
 import {createAction} from '@reduxjs/toolkit'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import {
     FETCH_STAT_ENDED,
@@ -23,6 +23,6 @@ export const statFiltersDirty = createAction(STAT_FILTERS_DIRTY)
 
 export const statFiltersClean = createAction(STAT_FILTERS_CLEAN)
 
-export const statFiltersCleanWithPayload = createAction<StatsFilters>(
+export const statFiltersCleanWithPayload = createAction<LegacyStatsFilters>(
     STAT_FILTERS_CLEAN_W_PAYLOAD
 )

@@ -15,7 +15,7 @@ import {
     closedTicketsPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/closedTickets'
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -26,7 +26,7 @@ import {
 describe('closedTicketsMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -132,7 +132,7 @@ describe('closedTicketsMetricPerAgent', () => {
 describe('closedTicketsPerChannelQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -238,7 +238,7 @@ describe('closedTicketsPerChannelQueryFactory', () => {
 describe('closedTicketsPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

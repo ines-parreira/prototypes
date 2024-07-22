@@ -6,7 +6,7 @@ import thunk from 'redux-thunk'
 import {waitFor} from '@testing-library/react'
 import {produce} from 'immer'
 
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 import {RootState} from 'state/types'
 import {firstResponseTime} from 'fixtures/stats'
@@ -33,7 +33,7 @@ const mockStore = configureMockStore<RootState>([thunk])
 describe('useStatResource', () => {
     const defaultResourceName = FIRST_RESPONSE_TIME
     const defaultStatName = 'some-stat'
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-04-02T00:00:00.000Z',
             end_datetime: '2021-04-02T23:59:59.999Z',

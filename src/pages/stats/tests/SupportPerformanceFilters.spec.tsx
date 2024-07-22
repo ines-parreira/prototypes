@@ -5,6 +5,7 @@ import {Provider} from 'react-redux'
 import {MemoryRouter} from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import {TicketChannel} from 'business/types/ticket'
 import {account} from 'fixtures/account'
@@ -29,10 +30,12 @@ describe('Support Performance Filters', () => {
         integrations: fromJS(integrationsState),
         stats: {
             filters: {
-                integrations: [integrationsState.integrations[1].id],
-                channels: [TicketChannel.Chat],
-                agents: [agents[0].id],
-                tags: [1],
+                integrations: withDefaultLogicalOperator([
+                    integrationsState.integrations[1].id,
+                ]),
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
+                tags: withDefaultLogicalOperator([1]),
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
@@ -70,10 +73,10 @@ describe('Support Performance Filters', () => {
                         ...defaultState,
                         stats: {
                             filters: {
-                                integrations: [],
-                                channels: [],
-                                agents: [],
-                                tags: [],
+                                integrations: withDefaultLogicalOperator([]),
+                                channels: withDefaultLogicalOperator([]),
+                                agents: withDefaultLogicalOperator([]),
+                                tags: withDefaultLogicalOperator([]),
                                 period: {
                                     start_datetime: '',
                                     end_datetime: '',

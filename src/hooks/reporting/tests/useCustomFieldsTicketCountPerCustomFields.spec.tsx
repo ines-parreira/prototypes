@@ -14,7 +14,6 @@ import {
 import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
 import {OrderDirection} from 'models/api/types'
 import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
 import {RootState, StoreDispatch} from 'state/types'
 
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
@@ -68,7 +67,7 @@ describe('useCustomFieldsTicketCountPerCustomFields', () => {
             ],
         ],
     }
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters = {
         period: {
             start_datetime: startDate,
             end_datetime: endDate,

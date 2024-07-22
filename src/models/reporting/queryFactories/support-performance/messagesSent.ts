@@ -48,7 +48,7 @@ export const messagesSentQueryFactory = (
         {
             member: HelpdeskMessageMember.SentDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
+            values: getFilterDateRange(filters.period),
         },
         ...NotSpamNorTrashedTicketsFilter,
         ...PublicHelpdeskAndApiMessagesFilter,
@@ -74,7 +74,7 @@ export const messagesSentTimeSeriesQueryFactory = (
         {
             dimension: HelpdeskMessageDimension.SentDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
 })

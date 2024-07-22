@@ -2,17 +2,17 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 import moment from 'moment'
 import {formatReportingQueryDate} from 'utils/reporting'
-import {StatsFilters} from 'models/stat/types'
-import SearchResultDonut from '../SearchResultDonut'
-import {useSearchResultRange} from '../../../hooks/useSearchResultRange'
+import {LegacyStatsFilters} from 'models/stat/types'
+import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
+import SearchResultDonut from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut'
 
-jest.mock('../../../hooks/useSearchResultRange', () => ({
+jest.mock('pages/stats/help-center/hooks/useSearchResultRange', () => ({
     useSearchResultRange: jest.fn(),
 }))
 
 const periodStart = formatReportingQueryDate(moment())
 const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-const statsFilters: StatsFilters = {
+const statsFilters: LegacyStatsFilters = {
     period: {
         start_datetime: periodStart,
         end_datetime: periodEnd,

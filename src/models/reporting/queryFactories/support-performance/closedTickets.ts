@@ -52,7 +52,7 @@ export const closedTicketsTimeSeriesQueryFactory = (
         {
             dimension: TicketDimension.ClosedDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     order: [[TicketDimension.ClosedDatetime, OrderDirection.Asc]],

@@ -7,6 +7,7 @@ import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 
 import {QueryClientProvider} from '@tanstack/react-query'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {flushPromises, renderWithRouter} from 'utils/testing'
@@ -27,7 +28,6 @@ import {
     selfServiceTopReportedIssues,
     selfServiceTopReportedIssuesNoData,
 } from 'fixtures/stats'
-import {StatsFilters} from 'models/stat/types'
 
 import {billingState} from 'fixtures/billing'
 import {account} from 'fixtures/account'
@@ -112,15 +112,16 @@ describe('<SelfServiceStatsPage />', () => {
             },
         }
     }
+
     const defaultState = {
         stats: {
-            filters: {
+            filters: fromLegacyStatsFilters({
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
                 integrations: [integrationsState.integrations[0].id],
-            } as StatsFilters,
+            }),
         },
         currentAccount: fromJS({
             features: {

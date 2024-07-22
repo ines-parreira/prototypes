@@ -10,12 +10,14 @@ import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {tags} from 'fixtures/tag'
 import {teams} from 'fixtures/teams'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {TipQualifier} from 'services/supportPerformanceTipService'
 import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
 import {MetricName} from 'services/reporting/constants'
 import {AccountSettingType} from 'state/currentAccount/types'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 
@@ -23,7 +25,7 @@ jest.mock('hooks/reporting/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('SupportPerformanceTip', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
@@ -56,7 +58,7 @@ describe('SupportPerformanceTip', () => {
         currentAccount: fromJS(defaultAccount),
         integrations: fromJS(integrationsState),
         stats: {
-            filters: defaultStatsFilters,
+            filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         agents: fromJS({
             all: agents,

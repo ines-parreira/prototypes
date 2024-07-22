@@ -14,7 +14,7 @@ import {
     medianFirstResponseTimeQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -25,7 +25,7 @@ import {
 describe('medianFirstResponseTimeMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -150,7 +150,7 @@ describe('medianFirstResponseTimeMetricPerAgent', () => {
 describe('firstResponseTimeMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

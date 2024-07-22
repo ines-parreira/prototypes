@@ -20,7 +20,7 @@ import {
     medianResolutionTimeMetricPerChannelQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -31,7 +31,7 @@ import {
 describe('medianResolutionTimeMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -146,7 +146,7 @@ describe('medianResolutionTimeMetricPerAgent', () => {
 describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),
@@ -261,7 +261,7 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
 describe('resolutionTimeMetricPerTicketQueryFactory', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

@@ -8,6 +8,8 @@ import {
     useClosedTicketsMetric,
     useOnlineTimeMetric,
 } from 'hooks/reporting/metrics'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState} from 'state/ui/stats/agentPerformanceSlice'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
@@ -30,7 +32,7 @@ describe('useTicketsClosedPerHour.ts', () => {
         tags: [123],
     }
     const defaultState = {
-        stats: {filters: statsFilters},
+        stats: {filters: fromLegacyStatsFilters(statsFilters)},
         ui: {
             agentPerformance: initialState,
             stats: uiStatsInitialState,

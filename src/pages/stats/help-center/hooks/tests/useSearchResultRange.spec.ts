@@ -2,7 +2,7 @@ import {renderHook} from '@testing-library/react-hooks'
 import moment from 'moment'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -17,7 +17,7 @@ const mockUseMetricPerDimension = jest.mocked(useMetricPerDimension)
 
 const periodStart = formatReportingQueryDate(moment())
 const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-const statsFilters: StatsFilters = {
+const statsFilters: LegacyStatsFilters = {
     period: {
         start_datetime: periodStart,
         end_datetime: periodEnd,

@@ -3,6 +3,7 @@ import {Meta, StoryFn} from '@storybook/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 import {integrationsState} from 'fixtures/integrations'
 import IntegrationsFilter from 'pages/stats/common/filters/IntegrationsFilter'
@@ -27,7 +28,9 @@ const Template: StoryFn<ComponentProps<typeof IntegrationsFilter>> = (
 
 export const Default = Template.bind({})
 Default.args = {
-    value: integrationsState.integrations.map((integration) => integration.id),
+    value: withDefaultLogicalOperator(
+        integrationsState.integrations.map((integration) => integration.id)
+    ),
     integrations: integrationsState.integrations as Integration[],
 }
 

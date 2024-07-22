@@ -5,6 +5,7 @@ import React from 'react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
@@ -62,10 +63,12 @@ describe('<SLAPolicySelect />', () => {
     const defaultState = {
         stats: {
             filters: {
-                integrations: [integrationsState.integrations[1].id],
-                channels: [TicketChannel.Chat],
-                agents: [agents[0].id],
-                tags: [1],
+                integrations: withDefaultLogicalOperator([
+                    integrationsState.integrations[1].id,
+                ]),
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
+                agents: withDefaultLogicalOperator([agents[0].id]),
+                tags: withDefaultLogicalOperator([1]),
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
@@ -150,7 +153,7 @@ describe('<SLAPolicySelect />', () => {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                    slaPolicies: [aPolicy.uuid],
+                    slaPolicies: withDefaultLogicalOperator([aPolicy.uuid]),
                 },
             },
         })
@@ -179,7 +182,7 @@ describe('<SLAPolicySelect />', () => {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                    slaPolicies: [aPolicy.uuid],
+                    slaPolicies: withDefaultLogicalOperator([aPolicy.uuid]),
                 },
             },
         })
@@ -214,7 +217,7 @@ describe('<SLAPolicySelect />', () => {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                    slaPolicies: [],
+                    slaPolicies: withDefaultLogicalOperator([]),
                 },
             },
         })
@@ -248,7 +251,9 @@ describe('<SLAPolicySelect />', () => {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                    slaPolicies: policies.map((policy) => policy.uuid),
+                    slaPolicies: withDefaultLogicalOperator(
+                        policies.map((policy) => policy.uuid)
+                    ),
                 },
             },
         })
@@ -293,7 +298,9 @@ describe('<SLAPolicySelect />', () => {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                    slaPolicies: policies.map((policy) => policy.uuid),
+                    slaPolicies: withDefaultLogicalOperator(
+                        policies.map((policy) => policy.uuid)
+                    ),
                 },
             },
         })
@@ -323,7 +330,7 @@ describe('<SLAPolicySelect />', () => {
                         start_datetime: '2021-02-03T00:00:00.000Z',
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
-                    slaPolicies: [aPolicy.uuid],
+                    slaPolicies: withDefaultLogicalOperator([aPolicy.uuid]),
                 },
             },
         })

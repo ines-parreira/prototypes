@@ -30,7 +30,7 @@ import {
     useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import {assumeMock} from 'utils/testing'
 
@@ -43,7 +43,7 @@ const useCustomTicketFieldWithBreakdownMock = assumeMock(
 describe('metricsPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

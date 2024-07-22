@@ -17,14 +17,104 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters, StatsFilters} from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
+    formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
     TicketDrillDownFilter,
 } from 'utils/reporting'
 
 describe('ticketsCreatedQueryFactory', () => {
+    const periodStart = '2021-05-29T00:00:00.000'
+    const periodEnd = '2021-06-04T23:59:59.000'
+    const statsFilters: StatsFilters = {
+        period: {
+            start_datetime: periodStart,
+            end_datetime: periodEnd,
+        },
+    }
+    const timezone = 'UTC'
+
+    it('should build expected query', () => {
+        const query = ticketsCreatedQueryFactory(statsFilters, timezone)
+
+        expect(query).toEqual({
+            measures: [TicketMeasure.TicketCount],
+            dimensions: [],
+            filters: [
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
+                },
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [formatReportingQueryDate(periodStart)],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [formatReportingQueryDate(periodEnd)],
+                },
+            ],
+            segments: [],
+            timezone,
+        })
+    })
+
+    it('should build expected query with Agents filter and sorting', () => {
+        const agentIds = [1, 2]
+        const filters: LegacyStatsFilters = {
+            period: statsFilters.period,
+            agents: agentIds,
+        }
+        const sorting = OrderDirection.Asc
+
+        const query = ticketsCreatedQueryFactory(filters, timezone, sorting)
+
+        expect(query).toEqual({
+            measures: [TicketMeasure.TicketCount],
+            order: [[TicketMeasure.TicketCount, OrderDirection.Asc]],
+            dimensions: [],
+            filters: [
+                {
+                    member: TicketMember.CreatedDatetime,
+                    operator: ReportingFilterOperator.InDateRange,
+                    values: [periodStart, periodEnd],
+                },
+
+                ...NotSpamNorTrashedTicketsFilter,
+                {
+                    member: TicketMessagesMember.FirstHelpdeskMessageUserId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: agentIds.map(String),
+                },
+                {
+                    member: TicketMessagesMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: TicketMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [periodStart],
+                },
+                {
+                    member: TicketMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [periodEnd],
+                },
+            ],
+            segments: [TicketMessagesSegment.TicketCreatedByAgent],
+            timezone,
+        })
+    })
+})
+
+describe('ticketsCreatedTimeSeriesQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
     const periodEnd = '2021-06-04T23:59:59.000'
     const statsFilters: StatsFilters = {
@@ -74,8 +164,8 @@ describe('ticketsCreatedQueryFactory', () => {
 
     it('should build expected query with Agents filter', () => {
         const agentIds = [1, 2]
-        const filters = {
-            ...statsFilters,
+        const filters: LegacyStatsFilters = {
+            period: statsFilters.period,
             agents: agentIds,
         }
         const query = ticketsCreatedTimeSeriesQueryFactory(
@@ -124,10 +214,10 @@ describe('ticketsCreatedQueryFactory', () => {
     })
 })
 
-describe('ticketsCreatedPerTicketQueryFactory', () => {
+describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
     const periodStart = '2021-05-29T00:00:00.000'
     const periodEnd = '2021-06-04T23:59:59.000'
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: periodStart,
             end_datetime: periodEnd,

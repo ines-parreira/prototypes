@@ -1,5 +1,5 @@
 import moment from 'moment/moment'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import * as useTimeSeries from 'hooks/reporting/useTimeSeries'
 import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {formatReportingQueryDate} from 'utils/reporting'
@@ -20,7 +20,7 @@ describe('useArticleViewTimeSeries', () => {
     it('should call useTimeSeries hook with correct params', () => {
         const periodStart = formatReportingQueryDate(moment())
         const periodEnd = formatReportingQueryDate(moment().subtract(7, 'd'))
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 start_datetime: periodStart,
                 end_datetime: periodEnd,

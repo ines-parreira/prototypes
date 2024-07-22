@@ -1,7 +1,7 @@
 import {ChartArea, TooltipItem} from 'chart.js'
 import moment from 'moment'
 import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {formatPercentage} from 'pages/common/utils/numbers'
 import {comparedPeriodString, getFormat} from 'pages/stats/common/utils'
 
@@ -126,7 +126,7 @@ export const getUtcPeriodFromDateAndGranularity = (
 }
 
 export const getBadgeTooltipForPreviousPeriod = (
-    statsFilters: StatsFilters
+    statsFilters: LegacyStatsFilters
 ) => {
     const period = getPreviousPeriod(statsFilters.period)
     return comparedPeriodString(

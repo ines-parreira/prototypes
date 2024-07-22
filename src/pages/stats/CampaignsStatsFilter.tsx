@@ -2,14 +2,14 @@ import React, {ComponentProps, useCallback} from 'react'
 
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import SelectFilter from './common/SelectFilter'
 
 type Props = {
-    value: StatsFilters['campaigns']
-    selectedIntegrations: StatsFilters['integrations']
+    value: LegacyStatsFilters['campaigns']
+    selectedIntegrations: LegacyStatsFilters['integrations']
 }
 
 export const campaignsStatsFilterLabels = {

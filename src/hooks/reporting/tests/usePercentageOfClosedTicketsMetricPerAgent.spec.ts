@@ -3,7 +3,7 @@ import moment from 'moment/moment'
 
 import {TicketChannel} from 'business/types/ticket'
 import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {assumeMock} from 'utils/testing'
 import {useClosedTicketsMetric} from 'hooks/reporting/metrics'
 import {useClosedTicketsMetricPerAgent} from 'hooks/reporting/metricsPerAgent'
@@ -20,7 +20,7 @@ const useClosedTicketsMetricPerAgentMock = assumeMock(
 describe('usePercentageOfClosedTicketsMetricPerAgent', () => {
     const periodStart = moment()
     const periodEnd = periodStart.add(7, 'days')
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd.toISOString(),
             start_datetime: periodStart.toISOString(),

@@ -1,7 +1,7 @@
 import moment from 'moment/moment'
 
 import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {
     AutomationDatasetFilterMember,
@@ -12,7 +12,7 @@ import {automationDatasetQueryFactory} from '../metrics'
 describe('Automate', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
-    const statsFilters: StatsFilters = {
+    const statsFilters: LegacyStatsFilters = {
         period: {
             end_datetime: periodEnd,
             start_datetime: periodStart,

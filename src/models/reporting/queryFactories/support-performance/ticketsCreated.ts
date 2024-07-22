@@ -11,6 +11,10 @@ import {
 } from 'models/reporting/cubes/TicketMessagesCube'
 import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
 import {
+    addOptionalFilter,
+    hasFilter,
+} from 'models/reporting/queryFactories/utils'
+import {
     ReportingFilter,
     ReportingFilterOperator,
     ReportingGranularity,
@@ -34,20 +38,21 @@ export const ticketsCreatedQueryFactory = (
     sorting?: OrderDirection
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = filters
-    const commonFilters: ReportingFilter[] = [
+    let commonFilters: ReportingFilter[] = [
         {
             member: TicketMember.CreatedDatetime,
             operator: ReportingFilterOperator.InDateRange,
-            values: getFilterDateRange(filters),
+            values: getFilterDateRange(filters.period),
         },
         ...NotSpamNorTrashedTicketsFilter,
     ]
-    if (agents?.length) {
-        commonFilters.push({
-            member: TicketMessagesMember.FirstHelpdeskMessageUserId,
-            operator: ReportingFilterOperator.Equals,
-            values: agents.map((agent) => agent.toString()),
-        })
+
+    commonFilters = addOptionalFilter(commonFilters, agents, {
+        member: TicketMessagesMember.FirstHelpdeskMessageUserId,
+        operator: ReportingFilterOperator.Equals,
+    })
+
+    if (hasFilter(agents)) {
         commonFilters.push({
             member: TicketMessagesMember.PeriodStart,
             operator: ReportingFilterOperator.AfterDate,
@@ -58,7 +63,7 @@ export const ticketsCreatedQueryFactory = (
     return {
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
-        segments: agents?.length
+        segments: hasFilter(agents)
             ? [TicketMessagesSegment.TicketCreatedByAgent]
             : [],
         timezone,
@@ -86,12 +91,12 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
     granularity: ReportingGranularity
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
     const {agents, ...statFiltersWithoutAgents} = filters
-    const commonFilters: ReportingFilter[] = [...NotSpamNorTrashedTicketsFilter]
-    if (agents?.length) {
-        commonFilters.push({
+    let commonFilters: ReportingFilter[] = [...NotSpamNorTrashedTicketsFilter]
+
+    if (hasFilter(agents)) {
+        commonFilters = addOptionalFilter(commonFilters, agents, {
             member: TicketMessagesMember.FirstHelpdeskMessageUserId,
             operator: ReportingFilterOperator.Equals,
-            values: agents.map(String),
         })
         commonFilters.push({
             member: TicketMessagesMember.PeriodStart,
@@ -103,14 +108,14 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
     return {
         measures: [TicketMeasure.TicketCount],
         dimensions: [],
-        segments: agents?.length
+        segments: hasFilter(agents)
             ? [TicketMessagesSegment.TicketCreatedByAgent]
             : [],
         timeDimensions: [
             {
                 dimension: TicketDimension.CreatedDatetime,
                 granularity,
-                dateRange: getFilterDateRange(filters),
+                dateRange: getFilterDateRange(filters.period),
             },
         ],
         timezone,

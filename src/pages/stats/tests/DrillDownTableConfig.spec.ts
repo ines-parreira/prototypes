@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
 import {ChannelsTableColumns} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
@@ -41,7 +41,7 @@ const waitingTimeCallsListQueryFactoryMock = assumeMock(
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')
-const statsFilters: StatsFilters = {
+const statsFilters = {
     period: {
         end_datetime: periodEnd.toISOString(),
         start_datetime: periodStart.toISOString(),
@@ -157,7 +157,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with agentId filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),
@@ -181,7 +181,7 @@ describe('getDrillDownQuery', () => {
     it('should be populated with channel filter', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 end_datetime: periodEnd.toISOString(),
                 start_datetime: periodStart.toISOString(),

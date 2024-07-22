@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {RootState, StoreDispatch} from 'state/types'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {agents} from 'fixtures/agents'
 import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
@@ -23,7 +23,7 @@ const useMetricMock = assumeMock(useAverageTalkTimeMetric)
 
 describe('AverageTalkTimeCell', () => {
     const renderComponent = () => {
-        const statsFilters: StatsFilters = {
+        const statsFilters: LegacyStatsFilters = {
             period: {
                 start_datetime: '2023-12-11T00:00:00.000Z',
                 end_datetime: '2023-12-11T23:59:59.999Z',

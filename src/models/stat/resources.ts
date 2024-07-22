@@ -1,12 +1,12 @@
 import {AxiosRequestConfig} from 'axios'
 
-import client from '../api/resources'
+import client from 'models/api/resources'
 
-import {StatsFilters, Stat} from './types'
+import {LegacyStatsFilters, Stat} from 'models/stat/types'
 
 export async function fetchStat(
     name: string,
-    data: {filters: StatsFilters; cursor?: string},
+    data: {filters: LegacyStatsFilters; cursor?: string},
     {timeout = 180000, ...config}: AxiosRequestConfig = {}
 ) {
     const resp = await client.post<Stat>(`/api/stats/${name}/`, data, {
@@ -19,7 +19,7 @@ export async function fetchStat(
 
 export async function downloadStat(
     name: string,
-    filters: {filters: StatsFilters},
+    filters: {filters: LegacyStatsFilters},
     {timeout = 180000, ...config}: AxiosRequestConfig = {}
 ) {
     const resp = await client.post<

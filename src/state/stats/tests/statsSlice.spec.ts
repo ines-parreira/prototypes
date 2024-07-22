@@ -1,12 +1,15 @@
 import {AnyAction} from 'redux'
+import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
 
 import {
     initialState,
     mergeStatsFilters,
+    mergeStatsFiltersWithLogicalOperator,
     resetStatsFilters,
     setStatsFilters,
     statsSlice,
 } from 'state/stats/statsSlice'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 
 describe('stats reducer', () => {
     it('should return initial state', () => {
@@ -47,7 +50,7 @@ describe('stats reducer', () => {
 
             expect(statsSlice.reducer(initialState, action)).toEqual({
                 ...initialState,
-                filters,
+                filters: fromLegacyStatsFilters(filters),
             })
         })
     })
@@ -61,14 +64,44 @@ describe('stats reducer', () => {
             const action = mergeStatsFilters(filters)
             const state = {
                 ...initialState,
-                filters: {...initialState.filters, channels: ['1', '2']},
+                filters: {
+                    ...initialState.filters,
+                    channels: withDefaultLogicalOperator(['1', '2']),
+                },
             }
 
             expect(statsSlice.reducer(state, action)).toEqual({
                 ...initialState,
                 filters: {
                     ...state.filters,
-                    ...filters,
+                    tags: withDefaultLogicalOperator(filters.tags),
+                    agents: withDefaultLogicalOperator(filters.agents),
+                },
+            })
+        })
+    })
+
+    describe('mergeStatsFiltersWithLogicalOperator', () => {
+        it('should merge stats filters', () => {
+            const filters = {
+                tags: withDefaultLogicalOperator([1, 2, 4]),
+                agents: withDefaultLogicalOperator([1]),
+            }
+            const action = mergeStatsFiltersWithLogicalOperator(filters)
+            const state = {
+                ...initialState,
+                filters: {
+                    ...initialState.filters,
+                    channels: withDefaultLogicalOperator(['1', '2']),
+                },
+            }
+
+            expect(statsSlice.reducer(state, action)).toEqual({
+                ...initialState,
+                filters: {
+                    ...state.filters,
+                    tags: filters.tags,
+                    agents: filters.agents,
                 },
             })
         })

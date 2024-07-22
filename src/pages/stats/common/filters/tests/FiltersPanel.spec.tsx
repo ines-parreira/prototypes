@@ -3,6 +3,7 @@ import React from 'react'
 import {screen} from '@testing-library/react'
 import {FilterLabels} from 'pages/stats/common/filters/constants'
 import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {FilterKey} from 'models/stat/types'
@@ -117,10 +118,10 @@ describe('FiltersPanel', () => {
         const state = {
             ...defaultState,
             [statsSlice.name]: {
-                filters: {
-                    ...initialState.filters,
+                filters: fromLegacyStatsFilters({
+                    period: initialState.filters.period,
                     [optionalFilter]: ['1', '2'],
-                },
+                }),
             },
         } as RootState
 

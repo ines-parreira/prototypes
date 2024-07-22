@@ -4,7 +4,7 @@ import {
     OneDimensionalChart,
     OneDimensionalUnionChart,
     Stat,
-    StatsFilters,
+    LegacyStatsFilters,
     StatType,
     TwoDimensionalChart,
 } from 'models/stat/types'
@@ -13,7 +13,7 @@ import {
     QUICK_RESPONSES,
 } from 'pages/automate/common/components/constants'
 
-export const statsFilters: StatsFilters = {
+export const statsFilters: LegacyStatsFilters = {
     period: {
         start_datetime: '2021-05-29T00:00:00+02:00',
         end_datetime: '2021-06-04T23:59:59+02:00',

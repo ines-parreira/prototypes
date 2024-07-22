@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {Provider} from 'react-redux'
 import _noop from 'lodash/noop'
 
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {TicketChannel} from 'business/types/ticket'
 import {
@@ -37,13 +38,13 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 describe('AutomateIntents', () => {
     const defaultState = {
         stats: {
-            filters: {
+            filters: fromLegacyStatsFilters({
                 period: {
                     start_datetime: '2021-02-03T00:00:00.000Z',
                     end_datetime: '2021-02-03T23:59:59.999Z',
                 },
                 channels: [TicketChannel.Chat],
-            },
+            }),
         },
         ui: {
             stats: uiStatsInitialState,
@@ -67,6 +68,7 @@ describe('AutomateIntents', () => {
         const {container} = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <AutomateIntents />
+                channels: withDefaultLogicalOperator([TicketChannel.Chat]),
             </Provider>
         )
 

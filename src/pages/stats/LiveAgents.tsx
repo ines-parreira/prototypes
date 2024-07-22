@@ -15,7 +15,7 @@ import {
     NumericStatCell,
     OnlineTimeDetailStatCell,
     TicketDetailStatCell,
-    StatsFilters,
+    LegacyStatsFilters,
 } from 'models/stat/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 
@@ -36,7 +36,7 @@ function LiveAgents() {
         getCleanStatsFiltersWithTimezone
     )
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
         const {channels, agents} = statsFilters
         return {

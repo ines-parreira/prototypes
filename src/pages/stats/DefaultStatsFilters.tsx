@@ -11,7 +11,7 @@ import {
     setStatsFilters,
 } from 'state/stats/statsSlice'
 import {getStatsFilters} from 'state/stats/selectors'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 type Props = {
     children?: ReactNode
@@ -34,7 +34,7 @@ export default function DefaultStatsFilters({
     useEffect(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
 
-        const defaultFilters: StatsFilters = {
+        const defaultFilters: LegacyStatsFilters = {
             period: {
                 // default period: last 7 days
                 start_datetime: currentDay

@@ -2,12 +2,12 @@ import React, {ComponentProps, useCallback, useMemo} from 'react'
 
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import SelectFilter from './common/SelectFilter'
 
 type Props = {
-    value: StatsFilters['score']
+    value: LegacyStatsFilters['score']
     minValue: number
     maxValue: number
     isDescending?: boolean

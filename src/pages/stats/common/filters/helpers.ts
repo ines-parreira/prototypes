@@ -1,5 +1,6 @@
 import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
+import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
 import {Channel, ChannelIdentifier, toChannels} from 'services/channels'
 
 export function filterChannels(
@@ -15,4 +16,9 @@ export function filterChannels(
     }
 
     return channels
+}
+
+export const emptyFilter = {
+    operator: LogicalOperatorEnum['ONE_OF'],
+    values: [],
 }

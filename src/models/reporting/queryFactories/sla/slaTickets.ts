@@ -51,7 +51,7 @@ export const slaTicketsTimeSeriesQueryFactory = (
         {
             dimension: TicketSLADimension.SlaAnchorDatetime,
             granularity,
-            dateRange: getFilterDateRange(filters),
+            dateRange: getFilterDateRange(filters.period),
         },
     ],
     timezone,

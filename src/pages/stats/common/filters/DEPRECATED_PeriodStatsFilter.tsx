@@ -6,7 +6,7 @@ import {logEvent, SegmentEvent} from 'common/segment'
 import {mergeStatsFilters} from 'state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
 import {getNewSetOfRanges} from 'pages/stats/constants'
@@ -17,7 +17,7 @@ const MAX_SPAN = 90
 
 type Props = {
     initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
-    value: StatsFilters['period']
+    value: LegacyStatsFilters['period']
     variant?: 'fill' | 'ghost'
     tooltipMessageForPreviousPeriod?: string
 }

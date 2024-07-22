@@ -1,6 +1,10 @@
 import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
 import moment, {Moment} from 'moment'
+import {
+    addOptionalFilter,
+    hasFilter,
+} from 'models/reporting/queryFactories/utils'
 import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
 import {
     MetricWithDecile,
@@ -26,16 +30,16 @@ import {
     ReportingGranularity,
     ReportingQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {Period, StatsFilters} from 'models/stat/types'
 import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 
 export const formatReportingQueryDate = (date: string | Moment) =>
     moment.parseZone(date).utcOffset(0, true).format('YYYY-MM-DDTHH:mm:ss.SSS')
 
-export const getFilterDateRange = (statsFilters: StatsFilters) => [
-    formatReportingQueryDate(statsFilters.period.start_datetime),
-    formatReportingQueryDate(statsFilters.period.end_datetime),
+export const getFilterDateRange = (period: Period) => [
+    formatReportingQueryDate(period.start_datetime),
+    formatReportingQueryDate(period.end_datetime),
 ]
 
 export type StatsFiltersMembers = Record<
@@ -147,7 +151,7 @@ export const statsFiltersToReportingFilters = (
         localeCodes,
         slaPolicies,
     } = statsFilters
-    const filters: ReportingFilter[] = [
+    let filters: ReportingFilter[] = [
         {
             member: members.periodStart,
             operator: ReportingFilterOperator.AfterDate,
@@ -159,55 +163,46 @@ export const statsFiltersToReportingFilters = (
             values: [formatReportingQueryDate(period.end_datetime)],
         },
     ]
-    if (integrations?.length && members.integrations) {
-        filters.push({
+    if (hasFilter(integrations) && members.integrations) {
+        filters = addOptionalFilter(filters, integrations, {
             member: members.integrations,
             operator: ReportingFilterOperator.Equals,
-            values: integrations.map((integrationId) =>
-                integrationId.toString()
-            ),
         })
     }
-    if (helpCenters?.length && members.helpCenters) {
-        filters.push({
+    if (hasFilter(helpCenters) && members.helpCenters) {
+        filters = addOptionalFilter(filters, helpCenters, {
             member: members.helpCenters,
             operator: ReportingFilterOperator.Equals,
-            values: helpCenters.map((helpCenterId) => helpCenterId.toString()),
         })
     }
-    if (localeCodes?.length && members.localeCodes) {
-        filters.push({
+    if (hasFilter(localeCodes) && members.localeCodes) {
+        filters = addOptionalFilter(filters, localeCodes, {
             member: members.localeCodes,
             operator: ReportingFilterOperator.Equals,
-            values: localeCodes.map((localeCode) => localeCode.toLowerCase()),
         })
     }
-    if (channels?.length && members.channels) {
-        filters.push({
+    if (hasFilter(channels) && members.channels) {
+        filters = addOptionalFilter(filters, channels, {
             member: members.channels,
             operator: ReportingFilterOperator.Equals,
-            values: channels,
         })
     }
-    if (agents?.length && members.agents) {
-        filters.push({
+    if (hasFilter(agents) && members.agents) {
+        filters = addOptionalFilter(filters, agents, {
             member: members.agents,
             operator: ReportingFilterOperator.Equals,
-            values: agents.map((agent) => agent.toString()),
         })
     }
-    if (tags?.length && members.tags) {
-        filters.push({
+    if (hasFilter(tags) && members.tags) {
+        filters = addOptionalFilter(filters, tags, {
             member: members.tags,
             operator: ReportingFilterOperator.Equals,
-            values: tags.map((tag) => tag.toString()),
         })
     }
-    if (slaPolicies?.length && members.slaPolicies) {
-        filters.push({
+    if (hasFilter(slaPolicies) && members.slaPolicies) {
+        filters = addOptionalFilter(filters, slaPolicies, {
             member: members.slaPolicies,
             operator: ReportingFilterOperator.Equals,
-            values: slaPolicies.map((policyId) => policyId),
         })
     }
     return filters

@@ -12,7 +12,6 @@ import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import {assumeMock} from 'utils/testing'
 import {ReportingGranularity} from 'models/reporting/types'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {StatsFilters} from 'models/stat/types'
 import {TimeSeriesDataItem} from '../useTimeSeries'
 
 jest.mock('hooks/useAppSelector')
@@ -43,7 +42,7 @@ describe('useCreatedVsClosedTicketsTimeSeries', () => {
     const mockGranularity = ReportingGranularity.Month
 
     const mockTimezone = 'UTC'
-    const mockFilters: StatsFilters = {
+    const mockFilters = {
         period: {start_datetime: '2023-01-01', end_datetime: '2023-02-01'},
     }
     const mockClosedData = [

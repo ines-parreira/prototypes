@@ -18,7 +18,6 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {
@@ -78,7 +77,7 @@ const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 describe('DrillDownData hooks', () => {
     const periodStart = formatReportingQueryDate(moment())
     const periodEnd = formatReportingQueryDate(moment())
-    const statsFilters: StatsFilters = {
+    const statsFilters = {
         period: {
             end_datetime: periodEnd,
             start_datetime: periodStart,

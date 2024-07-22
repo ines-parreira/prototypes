@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Modal from 'pages/common/components/modal/Modal'
 import ChartCard from 'pages/stats/ChartCard'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 import HelpCenterStatsTable, {
     TableCellType,
@@ -42,7 +42,7 @@ const columns = [
 ]
 
 type SearchTermsTableProps = {
-    statsFilters: StatsFilters
+    statsFilters: LegacyStatsFilters
     timezone: string
     helpCenterDomain: string
 }

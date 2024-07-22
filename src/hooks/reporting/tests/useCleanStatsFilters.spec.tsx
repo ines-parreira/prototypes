@@ -9,7 +9,7 @@ import {statFiltersCleanWithPayload} from 'state/ui/stats/actions'
 import {getCleanStatsFilters, isCleanStatsDirty} from 'state/ui/stats/selectors'
 import {assumeMock} from 'utils/testing'
 
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
 import {TicketChannel} from 'business/types/ticket'
 
 import {RootState, StoreDispatch} from 'state/types'
@@ -22,7 +22,7 @@ const isCleanStatsDirtyMock = assumeMock(isCleanStatsDirty)
 const getCleanStatsFiltersMock = assumeMock(getCleanStatsFilters)
 
 describe('useCleanStatsFilters', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
             end_datetime: '2021-06-04T23:59:59+02:00',
@@ -70,9 +70,9 @@ describe('useCleanStatsFilters', () => {
         getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         const {result, rerender} = renderHook<
             {
-                statsFilters: StatsFilters
+                statsFilters: LegacyStatsFilters
             },
-            StatsFilters
+            LegacyStatsFilters
         >(({statsFilters}) => useCleanStatsFilters(statsFilters), {
             initialProps: {statsFilters: defaultStatsFilters},
             wrapper: ({children}) => (
@@ -95,9 +95,9 @@ describe('useCleanStatsFilters', () => {
         getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         const {result, rerender} = renderHook<
             {
-                statsFilters: StatsFilters
+                statsFilters: LegacyStatsFilters
             },
-            StatsFilters
+            LegacyStatsFilters
         >(({statsFilters}) => useCleanStatsFilters(statsFilters), {
             initialProps: {statsFilters: defaultStatsFilters},
             wrapper: ({children}) => (
@@ -139,9 +139,9 @@ describe('useCleanStatsFilters', () => {
         getCleanStatsFiltersMock.mockReturnValue(defaultStatsFilters)
         const {result} = renderHook<
             {
-                statsFilters: StatsFilters
+                statsFilters: LegacyStatsFilters
             },
-            StatsFilters
+            LegacyStatsFilters
         >(({statsFilters}) => useCleanStatsFilters(statsFilters), {
             initialProps: {statsFilters: updatingFilters},
             wrapper: ({children}) => (

@@ -2,7 +2,7 @@ import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
-import {StatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
 import {
     getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
@@ -28,7 +28,7 @@ export default function AutomateMacros() {
     )
     const statsFilters = useAppSelector(getStatsFilters)
 
-    const pageStatsFilters = useMemo<StatsFilters>(() => {
+    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const {channels, period} = statsFilters
         return {
             channels,

@@ -22,7 +22,9 @@ import {TicketChannel} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {integrationsState} from 'fixtures/integrations'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
+import {LegacyStatsFilters} from 'models/stat/types'
+
+import {fromLegacyStatsFilters} from 'state/stats/utils'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiStatsInitialState} from 'state/ui/stats/reducer'
 import {OverviewMetric} from 'state/ui/stats/types'
@@ -70,7 +72,7 @@ const useOneTouchTicketTrendMock = assumeMock(
 )
 
 describe('<TrendCard />', () => {
-    const defaultStatsFilters: StatsFilters = {
+    const defaultStatsFilters: LegacyStatsFilters = {
         period: {
             start_datetime: '2021-02-03T00:00:00.000Z',
             end_datetime: '2021-02-03T23:59:59.999Z',
@@ -83,7 +85,7 @@ describe('<TrendCard />', () => {
 
     const defaultState = {
         stats: {
-            filters: defaultStatsFilters,
+            filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
             stats: uiStatsInitialState,

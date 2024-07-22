@@ -84,7 +84,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                 ],
                 timeDimensions: [
                     {
-                        dateRange: getFilterDateRange(statsFilters),
+                        dateRange: getFilterDateRange(statsFilters.period),
                         dimension: TicketSLAMember.SlaAnchorDatetime,
                         granularity: ReportingGranularity.Day,
                     },
@@ -159,7 +159,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                 ],
                 timeDimensions: [
                     {
-                        dateRange: getFilterDateRange(statsFilters),
+                        dateRange: getFilterDateRange(statsFilters.period),
                         dimension: TicketSLAMember.SlaAnchorDatetime,
                         granularity: ReportingGranularity.Day,
                     },
