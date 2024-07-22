@@ -18,6 +18,7 @@ import {
     AgentsTableColumn,
     TicketFieldsMetric,
     ConvertMetric,
+    VoiceAgentsMetric,
 } from 'state/ui/stats/types'
 import {
     initialState,
@@ -142,6 +143,17 @@ describe('drillDownSlice', () => {
             },
         } as unknown as RootState
 
+        const voiceAgentsMetricsWithExpectedValues = Object.values(
+            VoiceAgentsMetric
+        ).map((name) => ({
+            metricData: {metricName: name, perAgentId: 123},
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        }))
+
         it('getDrillDownMetric', () => {
             expect(getDrillDownMetric(state)).toEqual(metricData)
         })
@@ -226,6 +238,7 @@ describe('drillDownSlice', () => {
                         ].format,
                 },
             },
+            ...voiceAgentsMetricsWithExpectedValues,
         ])('getDrillDownMetricColumn', ({metricData, expectedValues}) => {
             expect(
                 getDrillDownMetricColumn({

@@ -10,7 +10,11 @@ import {
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
-import {ConvertMetric, VoiceMetric} from 'state/ui/stats/types'
+import {
+    ConvertMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
+} from 'state/ui/stats/types'
 import css from 'pages/stats/DrillDownInfobar.less'
 
 const getObjectType = (metricData: DrillDownMetric) => {
@@ -19,6 +23,11 @@ const getObjectType = (metricData: DrillDownMetric) => {
             return 'orders'
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceAgentsMetric.AgentTotalCalls:
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+        case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentAverageTalkTime:
             return 'voice calls'
         default:
             return 'tickets'
@@ -29,6 +38,11 @@ const isMetricDataDownloadable = (metricData: DrillDownMetric): boolean => {
     switch (metricData.metricName) {
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceAgentsMetric.AgentTotalCalls:
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+        case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentAverageTalkTime:
             return false
         default:
             return true

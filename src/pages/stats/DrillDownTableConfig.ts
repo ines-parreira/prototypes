@@ -32,9 +32,11 @@ import {
     SlaMetric,
     TicketFieldsMetric,
     VoiceMetric,
+    VoiceAgentsMetric,
 } from 'state/ui/stats/types'
 import {
     connectedCallsListQueryFactory,
+    voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
@@ -193,5 +195,47 @@ export const getDrillDownQuery = (
                     timezone,
                     VoiceCallSegment.inboundCalls
                 )
+        case VoiceAgentsMetric.AgentTotalCalls:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallListQueryFactory(statsFilters, timezone)
+            )
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallListQueryFactory(
+                        statsFilters,
+                        timezone,
+                        VoiceCallSegment.answeredCallsByAgent
+                    )
+            )
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallListQueryFactory(
+                        statsFilters,
+                        timezone,
+                        VoiceCallSegment.missedCallsByAgent
+                    )
+            )
+        case VoiceAgentsMetric.AgentOutboundCalls:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                (statsFilters: StatsFilters, timezone: string) =>
+                    voiceCallListQueryFactory(
+                        statsFilters,
+                        timezone,
+                        VoiceCallSegment.outboundCalls
+                    )
+            )
+        case VoiceAgentsMetric.AgentAverageTalkTime:
+            return queryBuilderWithAgentFilter(
+                metricName.perAgentId,
+                (statsFilters: StatsFilters, timezone: string) =>
+                    connectedCallsListQueryFactory(statsFilters, timezone)
+            )
     }
 }

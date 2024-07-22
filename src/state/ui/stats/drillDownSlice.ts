@@ -31,6 +31,7 @@ import {
     ConvertMetric,
     VoiceMetric,
     AutoQAMetric,
+    VoiceAgentsMetric,
 } from 'state/ui/stats/types'
 
 export const SLA_FORMAT = 'sla'
@@ -116,6 +117,11 @@ export type VoiceMetrics = {
     metricName: VoiceMetric
 } & CommonMetrics
 
+export type VoiceAgentsMetrics = {
+    metricName: VoiceAgentsMetric
+    perAgentId: number
+} & CommonMetrics
+
 export type DrillDownMetric =
     | AgentsMetrics
     | AutoQAMetrics
@@ -125,6 +131,7 @@ export type DrillDownMetric =
     | SlaMetrics
     | ConvertMetrics
     | VoiceMetrics
+    | VoiceAgentsMetrics
 
 export type DrillDownState = {
     isOpen: boolean
@@ -157,6 +164,13 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     ChannelsTableColumns.ClosedTickets,
     ChannelsTableColumns.TicketsReplied,
     ConvertMetric.CampaignSalesCount,
+    VoiceMetric.AverageWaitTime,
+    VoiceMetric.AverageTalkTime,
+    VoiceAgentsMetric.AgentTotalCalls,
+    VoiceAgentsMetric.AgentInboundAnsweredCalls,
+    VoiceAgentsMetric.AgentInboundMissedCalls,
+    VoiceAgentsMetric.AgentOutboundCalls,
+    VoiceAgentsMetric.AgentAverageTalkTime,
 ]
 
 export const initialState: DrillDownState = {
@@ -276,7 +290,15 @@ export const getDrillDownMetricColumn = (
         }
     }
 
-    if ('perAgentId' in metricData) {
+    if (
+        metricData.metricName === VoiceAgentsMetric.AgentTotalCalls ||
+        metricData.metricName === VoiceAgentsMetric.AgentInboundAnsweredCalls ||
+        metricData.metricName === VoiceAgentsMetric.AgentInboundMissedCalls ||
+        metricData.metricName === VoiceAgentsMetric.AgentOutboundCalls ||
+        metricData.metricName === VoiceAgentsMetric.AgentAverageTalkTime
+    ) {
+        metricTitle = ''
+    } else if ('perAgentId' in metricData) {
         metricTitle = TableLabels[metricData.metricName]
         metricValueFormat = AgentsColumnConfig[metricData.metricName].format
     } else if ('customFieldValue' in metricData) {

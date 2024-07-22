@@ -34,6 +34,7 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
 } from 'pages/stats/voice/hooks/agentMetrics'
+import {VoiceAgentsMetric} from 'state/ui/stats/types'
 
 import AverageTalkTimeCell from './AverageTalkTimeCell'
 import CallsCountCell from './CallsCountCell'
@@ -182,32 +183,60 @@ export const VoiceAgentsTable = () => {
                                     useMetricPerAgent={
                                         useTotalCallsMetricPerAgent
                                     }
+                                    metricData={{
+                                        metricName:
+                                            VoiceAgentsMetric.AgentTotalCalls,
+                                        title: 'Total calls',
+                                    }}
                                 />
                                 <CallsCountCell
                                     agent={agent}
                                     useMetricPerAgent={
                                         useAnsweredCallsMetricPerAgent
                                     }
+                                    metricData={{
+                                        metricName:
+                                            VoiceAgentsMetric.AgentInboundAnsweredCalls,
+                                        title: 'Inbound answered',
+                                    }}
                                 />
                                 <CallsCountCell
                                     agent={agent}
                                     useMetricPerAgent={
                                         useMissedCallsMetricPerAgent
                                     }
+                                    metricData={{
+                                        metricName:
+                                            VoiceAgentsMetric.AgentInboundMissedCalls,
+                                        title: 'Inbound missed',
+                                    }}
                                 />
                                 <CallsCountCell
                                     agent={agent}
                                     useMetricPerAgent={
                                         useDeclinedCallsMetricPerAgent
                                     }
+                                    isDrillDownEnabled={false}
                                 />
                                 <CallsCountCell
                                     agent={agent}
                                     useMetricPerAgent={
                                         useOutboundCallsMetricPerAgent
                                     }
+                                    metricData={{
+                                        metricName:
+                                            VoiceAgentsMetric.AgentOutboundCalls,
+                                        title: 'Outbound',
+                                    }}
                                 />
-                                <AverageTalkTimeCell agent={agent} />
+                                <AverageTalkTimeCell
+                                    agent={agent}
+                                    metricData={{
+                                        metricName:
+                                            VoiceAgentsMetric.AgentAverageTalkTime,
+                                        title: 'Average talk time',
+                                    }}
+                                />
                             </TableBodyRow>
                         ))}
                     </TableBody>

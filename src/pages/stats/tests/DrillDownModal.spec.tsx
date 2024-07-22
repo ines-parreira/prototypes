@@ -13,6 +13,7 @@ import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableConte
 import {
     ConvertMetric,
     TicketFieldsMetric,
+    VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
 import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
@@ -64,6 +65,20 @@ describe('<DrillDownModal />', () => {
         [ConvertMetric.CampaignSalesCount, CampaignSalesDrillDownTableContent],
         [VoiceMetric.AverageWaitTime, VoiceCallDrillDownTableContent],
         [VoiceMetric.AverageTalkTime, VoiceCallDrillDownTableContent],
+        [VoiceAgentsMetric.AgentTotalCalls, VoiceCallDrillDownTableContent],
+        [
+            VoiceAgentsMetric.AgentInboundAnsweredCalls,
+            VoiceCallDrillDownTableContent,
+        ],
+        [
+            VoiceAgentsMetric.AgentInboundMissedCalls,
+            VoiceCallDrillDownTableContent,
+        ],
+        [VoiceAgentsMetric.AgentOutboundCalls, VoiceCallDrillDownTableContent],
+        [
+            VoiceAgentsMetric.AgentAverageTalkTime,
+            VoiceCallDrillDownTableContent,
+        ],
     ])(
         'should render correct drill down table content for metric %s',
         (metric, ExpectedTableContentComponent) => {

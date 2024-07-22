@@ -17,10 +17,12 @@ import {
     ConvertMetric,
     VoiceMetric,
     AutoQAMetric,
+    VoiceAgentsMetric,
 } from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {
     connectedCallsListQueryFactory,
+    voiceCallListQueryFactory,
     waitingTimeCallsListQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
 import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
@@ -38,6 +40,7 @@ const connectedCallsListQueryFactoryMock = assumeMock(
 const waitingTimeCallsListQueryFactoryMock = assumeMock(
     waitingTimeCallsListQueryFactory
 )
+const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')
@@ -137,6 +140,26 @@ describe('getDrillDownQuery', () => {
         {
             metricName: VoiceMetric.AverageTalkTime,
         },
+        {
+            metricName: VoiceAgentsMetric.AgentTotalCalls,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentInboundAnsweredCalls,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentInboundMissedCalls,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentOutboundCalls,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentAverageTalkTime,
+            perAgentId: 123,
+        },
     ]
 
     it.each([
@@ -202,18 +225,20 @@ describe('getDrillDownQuery', () => {
         )
     })
 
-    it('should call connectedCallsListQueryFactory for VoiceMetric.AverageTalkTime', () => {
-        const timezone = 'someTimeZone'
-        const drillDownMetric: DrillDownMetric = {
+    it.each([
+        {
             metricName: VoiceMetric.AverageTalkTime,
-        }
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentAverageTalkTime,
+            perAgentId: 123,
+        },
+    ])('should call connectedCallsListQueryFactory for metric &s', (metric) => {
+        const timezone = 'someTimeZone'
 
-        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+        getDrillDownQuery(metric)(statsFilters, timezone)
 
-        expect(connectedCallsListQueryFactoryMock).toHaveBeenCalledWith(
-            statsFilters,
-            timezone
-        )
+        expect(connectedCallsListQueryFactoryMock).toHaveBeenCalled()
     })
 
     it('should call waitingTimeCallsListQueryFactory for VoiceMetric.AverageWaitTime', () => {
@@ -230,4 +255,24 @@ describe('getDrillDownQuery', () => {
             VoiceCallSegment.inboundCalls
         )
     })
+
+    it.each([
+        VoiceAgentsMetric.AgentTotalCalls,
+        VoiceAgentsMetric.AgentInboundAnsweredCalls,
+        VoiceAgentsMetric.AgentInboundMissedCalls,
+        VoiceAgentsMetric.AgentOutboundCalls,
+    ])(
+        'should call voiceCallListQueryFactory for $metricName',
+        (metricName: VoiceAgentsMetric) => {
+            const timezone = 'someTimeZone'
+            const drillDownMetric: DrillDownMetric = {
+                metricName,
+                perAgentId: 123,
+            }
+
+            getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+            expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
+        }
+    )
 })

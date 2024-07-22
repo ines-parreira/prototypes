@@ -2,7 +2,12 @@ import React from 'react'
 import {render, screen} from '@testing-library/react'
 
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {ConvertMetric, OverviewMetric, VoiceMetric} from 'state/ui/stats/types'
+import {
+    ConvertMetric,
+    OverviewMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
+} from 'state/ui/stats/types'
 import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
 import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
@@ -99,10 +104,20 @@ describe('<DrillDownInfobar />', () => {
         expect(screen.getByTestId('download')).toBeInTheDocument()
     })
 
-    it.each([VoiceMetric.AverageTalkTime, VoiceMetric.AverageWaitTime])(
+    it.each([
+        VoiceMetric.AverageTalkTime,
+        VoiceMetric.AverageWaitTime,
+        VoiceAgentsMetric.AgentTotalCalls,
+        VoiceAgentsMetric.AgentInboundAnsweredCalls,
+        VoiceAgentsMetric.AgentInboundMissedCalls,
+        VoiceAgentsMetric.AgentOutboundCalls,
+        VoiceAgentsMetric.AgentAverageTalkTime,
+    ])(
         `should not render the download button when metric data is not downloadable`,
         (metric) => {
-            const metricData: DrillDownMetric = {metricName: metric}
+            const metricData: DrillDownMetric = {
+                metricName: metric,
+            } as DrillDownMetric
             useDrillDownDataMock.mockReturnValue({
                 perPage: DRILL_DOWN_PER_PAGE,
                 totalResults,
@@ -122,10 +137,15 @@ describe('<DrillDownInfobar />', () => {
 
     it.each([
         [ConvertMetric.CampaignSalesCount, 'orders'],
-        [VoiceMetric.AverageTalkTime, 'voice calls'],
         [VoiceMetric.AverageWaitTime, 'voice calls'],
+        [VoiceMetric.AverageTalkTime, 'voice calls'],
+        [VoiceAgentsMetric.AgentAverageTalkTime, 'voice calls'],
+        [VoiceAgentsMetric.AgentInboundAnsweredCalls, 'voice calls'],
+        [VoiceAgentsMetric.AgentInboundMissedCalls, 'voice calls'],
+        [VoiceAgentsMetric.AgentOutboundCalls, 'voice calls'],
+        [VoiceAgentsMetric.AgentTotalCalls, 'voice calls'],
         ['test-metric', 'tickets'],
-    ])('should render the correct object type', (metric, objectType) => {
+    ])('should render the correct object type for %s', (metric, objectType) => {
         const metricData = {metricName: metric} as DrillDownMetric
         useDrillDownDataMock.mockReturnValue({
             perPage: DRILL_DOWN_PER_PAGE,

@@ -1,5 +1,9 @@
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {ConvertMetric, VoiceMetric} from 'state/ui/stats/types'
+import {
+    ConvertMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
+} from 'state/ui/stats/types'
 import {
     defaultEnrichmentFields,
     DrillDownDataHook,
@@ -31,6 +35,11 @@ export const getDrillDownHook = (
                 )
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceAgentsMetric.AgentTotalCalls:
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+        case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentAverageTalkTime:
             return (metricData: DrillDownMetric) =>
                 useDrillDownData(metricData, formatVoiceDrillDownRowData)
         default:

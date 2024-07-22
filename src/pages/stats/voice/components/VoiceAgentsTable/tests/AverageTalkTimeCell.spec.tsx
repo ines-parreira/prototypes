@@ -5,6 +5,7 @@ import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {QueryClientProvider} from '@tanstack/react-query'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {User} from 'config/types/user'
 import {RootState, StoreDispatch} from 'state/types'
 import {LegacyStatsFilters} from 'models/stat/types'
@@ -13,14 +14,27 @@ import {assumeMock} from 'utils/testing'
 import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
 import {useAverageTalkTimeMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
+import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
 
+import {VoiceAgentsMetric} from 'state/ui/stats/types'
+import {FeatureFlagKey} from 'config/featureFlags'
 import AverageTalkTimeCell from '../AverageTalkTimeCell'
+
+const DrillDownModalTriggerSpy = jest.spyOn(
+    DrillDownModalTrigger,
+    'DrillDownModalTrigger'
+)
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/stats/voice/hooks/metricsPerDimension')
 const useMetricMock = assumeMock(useAverageTalkTimeMetricPerAgent)
+
+const metricData = {
+    metricName: VoiceAgentsMetric.AgentTotalCalls,
+    title: 'Total calls',
+}
 
 describe('AverageTalkTimeCell', () => {
     const renderComponent = () => {
@@ -53,11 +67,18 @@ describe('AverageTalkTimeCell', () => {
         return render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
-                    <AverageTalkTimeCell agent={agent} />
+                    <AverageTalkTimeCell
+                        agent={agent}
+                        metricData={metricData}
+                    />
                 </Provider>
             </QueryClientProvider>
         )
     }
+
+    beforeEach(() => {
+        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: true})
+    })
 
     it('should render not available label', () => {
         useMetricMock.mockReturnValue({
@@ -68,6 +89,12 @@ describe('AverageTalkTimeCell', () => {
 
         const {getByText} = renderComponent()
         expect(getByText('-')).toBeInTheDocument()
+        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+            {}
+        )
     })
 
     it('should render average talk time', () => {
@@ -101,5 +128,24 @@ describe('AverageTalkTimeCell', () => {
 
         const {container} = renderComponent()
         expect(container.getElementsByClassName('skeleton')).toHaveLength(1)
+    })
+
+    it('should not open drill down modal when drill down FF is disabled', () => {
+        useMetricMock.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {value: 125, decile: null, allData: []},
+        })
+
+        mockFlags({[FeatureFlagKey.VoiceCallsDrillDown]: false})
+
+        renderComponent()
+
+        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+            {}
+        )
     })
 })

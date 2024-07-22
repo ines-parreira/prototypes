@@ -3,11 +3,16 @@ import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import userEvent from '@testing-library/user-event'
 import {logEvent, SegmentEvent} from 'common/segment'
 
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
-import {OverviewMetric} from 'state/ui/stats/types'
+import {
+    OverviewMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
+} from 'state/ui/stats/types'
 import {assumeMock} from 'utils/testing'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
@@ -68,4 +73,38 @@ describe('<DrillDownModalTrigger />', () => {
 
         expect(store.getActions()).toEqual([])
     })
+
+    it.each([
+        VoiceMetric.AverageTalkTime,
+        VoiceMetric.AverageWaitTime,
+        VoiceAgentsMetric.AgentTotalCalls,
+        VoiceAgentsMetric.AgentInboundAnsweredCalls,
+        VoiceAgentsMetric.AgentInboundMissedCalls,
+        VoiceAgentsMetric.AgentOutboundCalls,
+        VoiceAgentsMetric.AgentAverageTalkTime,
+    ])(
+        'should render tooltip text based on metric name for $metricName',
+        async (metricName: string) => {
+            const store = mockStore(defaultState)
+            const metricData = {
+                metricName,
+            } as any
+
+            render(
+                <Provider store={store}>
+                    <DrillDownModalTrigger metricData={metricData}>
+                        {trigger}
+                    </DrillDownModalTrigger>
+                </Provider>
+            )
+
+            userEvent.hover(screen.getByText(trigger))
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Click to view calls')
+                ).toBeInTheDocument()
+            })
+        }
+    )
 })

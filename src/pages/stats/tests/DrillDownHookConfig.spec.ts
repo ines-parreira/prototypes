@@ -12,6 +12,7 @@ import {
     SlaMetric,
     ConvertMetric,
     VoiceMetric,
+    VoiceAgentsMetric,
 } from 'state/ui/stats/types'
 import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
 import {
@@ -113,6 +114,17 @@ describe('getDrillDownHook', () => {
     const voiceMetrics = [
         {metricName: VoiceMetric.AverageWaitTime},
         {metricName: VoiceMetric.AverageTalkTime},
+        {metricName: VoiceAgentsMetric.AgentTotalCalls, perAgentId: 123},
+        {
+            metricName: VoiceAgentsMetric.AgentInboundMissedCalls,
+            perAgentId: 123,
+        },
+        {
+            metricName: VoiceAgentsMetric.AgentInboundAnsweredCalls,
+            perAgentId: 123,
+        },
+        {metricName: VoiceAgentsMetric.AgentOutboundCalls, perAgentId: 123},
+        {metricName: VoiceAgentsMetric.AgentAverageTalkTime, perAgentId: 123},
     ]
 
     it.each([

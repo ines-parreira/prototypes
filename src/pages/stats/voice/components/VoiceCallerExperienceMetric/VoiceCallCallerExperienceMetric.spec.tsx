@@ -119,6 +119,12 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
 
         expect(getByText('Total duration')).toBeInTheDocument()
         expect(getByText('-')).toBeInTheDocument()
+        expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+            }),
+            {}
+        )
     })
 
     it('should render null values', () => {

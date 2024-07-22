@@ -1,5 +1,6 @@
 import React from 'react'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {User} from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
@@ -12,16 +13,28 @@ import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents
 import {isSortingMetricLoading} from 'state/ui/stats/agentPerformanceSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {useTotalCallsMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
+import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import {VoiceAgentsMetrics} from 'state/ui/stats/drillDownSlice'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 import css from './VoiceAgentsTable.less'
+
+type Props = {
+    agent: User
+    useMetricPerAgent: typeof useTotalCallsMetricPerAgent
+    metricData?: Omit<VoiceAgentsMetrics, 'perAgentId'>
+    isDrillDownEnabled?: boolean
+}
 
 const CallsCountCell = ({
     agent,
     useMetricPerAgent,
-}: {
-    agent: User
-    useMetricPerAgent: typeof useTotalCallsMetricPerAgent
-}) => {
+    metricData,
+    isDrillDownEnabled = true,
+}: Props) => {
+    const isVoiceCallsDrillDownEnabled =
+        useFlags()[FeatureFlagKey.VoiceCallsDrillDown]
+
     const {cleanStatsFilters, userTimezone} = useAppSelector(
         getCleanStatsFiltersWithTimezone
     )
@@ -31,19 +44,33 @@ const CallsCountCell = ({
         userTimezone,
         String(agent.id)
     )
+
     const metricValue = data?.value
     const isLoading = isFetching || isMetricLoading
+
+    const formattedValue = formatMetricValue(
+        metricValue,
+        'decimal',
+        NOT_AVAILABLE_PLACEHOLDER
+    )
 
     return (
         <BodyCell justifyContent={'right'} className={css.metricCell}>
             {isLoading ? (
                 <Skeleton inline width={VOICE_METRIC_COLUMN_WIDTH} />
+            ) : metricData ? (
+                <DrillDownModalTrigger
+                    metricData={{...metricData, perAgentId: agent.id}}
+                    enabled={
+                        isVoiceCallsDrillDownEnabled &&
+                        isDrillDownEnabled &&
+                        !!metricValue
+                    }
+                >
+                    {formattedValue}
+                </DrillDownModalTrigger>
             ) : (
-                formatMetricValue(
-                    metricValue,
-                    'decimal',
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
+                formattedValue
             )}
         </BodyCell>
     )

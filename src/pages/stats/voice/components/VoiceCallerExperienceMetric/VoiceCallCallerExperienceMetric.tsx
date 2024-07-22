@@ -73,7 +73,9 @@ function VoiceCallCallerExperienceMetric({
                 }
             >
                 <DrillDownModalTrigger
-                    enabled={isVoiceCallDrillDownEnabled}
+                    enabled={
+                        isVoiceCallDrillDownEnabled && !!voiceCallsAverageTime
+                    }
                     metricData={metricData}
                 >
                     {metricValue}

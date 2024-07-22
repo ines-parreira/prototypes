@@ -13,7 +13,11 @@ import {
     DrillDownMetric,
 } from 'state/ui/stats/drillDownSlice'
 import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
-import {ConvertMetric, VoiceMetric} from 'state/ui/stats/types'
+import {
+    ConvertMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
+} from 'state/ui/stats/types'
 import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
 import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
 import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
@@ -30,6 +34,11 @@ const getTableContent = (
             return CampaignSalesDrillDownTableContent
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceAgentsMetric.AgentTotalCalls:
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+        case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentAverageTalkTime:
             return VoiceCallDrillDownTableContent
         default:
             return TicketDrillDownTableContent

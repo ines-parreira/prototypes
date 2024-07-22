@@ -7,7 +7,12 @@ import {DrillDownMetric, setMetricData} from 'state/ui/stats/drillDownSlice'
 import css from 'pages/stats/DrillDownModalTrigger.less'
 import {hintTooltipDelay} from 'pages/stats/common/constants'
 import useId from 'hooks/useId'
-import {ConvertMetric, VoiceMetric} from 'state/ui/stats/types'
+
+import {
+    ConvertMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
+} from 'state/ui/stats/types'
 
 export const TRIGGER_ID = 'drill-down'
 
@@ -20,8 +25,13 @@ const getTooltipText = (metricName: string) => {
     switch (metricName) {
         case ConvertMetric.CampaignSalesCount:
             return 'Click to view orders'
-        case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
+        case VoiceMetric.AverageWaitTime:
+        case VoiceAgentsMetric.AgentTotalCalls:
+        case VoiceAgentsMetric.AgentInboundAnsweredCalls:
+        case VoiceAgentsMetric.AgentInboundMissedCalls:
+        case VoiceAgentsMetric.AgentOutboundCalls:
+        case VoiceAgentsMetric.AgentAverageTalkTime:
             return 'Click to view calls'
         default:
             return 'Click to view tickets'
