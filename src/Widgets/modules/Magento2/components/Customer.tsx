@@ -4,19 +4,15 @@ import type {Map} from 'immutable'
 import logo from 'assets/img/infobar/magento.svg'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
 import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
 import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-
-export default function Customer() {
-    return {
-        editionHiddenFields: ['link'],
-        TitleWrapper,
-        AfterTitle,
-    }
-}
+import {
+    ExpandAllButton,
+    CardCustomization,
+} from 'Widgets/modules/Template/modules/Card/'
 
 type AfterTitleProps = {
     source: Map<string, any>
@@ -86,4 +82,10 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
             </>
         )
     }
+}
+
+export const customerCustomization: CardCustomization = {
+    editionHiddenFields: ['link'],
+    TitleWrapper,
+    AfterTitle,
 }

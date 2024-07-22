@@ -10,18 +10,12 @@ import {RootState} from 'state/types'
 import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
 import {getTrackingUrl} from 'utils/delivery'
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
+
 import {getValueFromData} from 'Widgets/modules/Template/helpers/fieldDataMappers'
+import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
 
 import css from './Order.less'
-
-export default function Order() {
-    return {
-        BeforeContent,
-        AfterContent,
-        TitleWrapper,
-    }
-}
 
 function getIntegrationData(
     state: RootState,
@@ -325,4 +319,10 @@ class TitleWrapper extends Component<TitleWrapperProps> {
             </a>
         )
     }
+}
+
+export const orderCustomization: CardCustomization = {
+    BeforeContent,
+    AfterContent,
+    TitleWrapper,
 }

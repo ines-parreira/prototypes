@@ -24,7 +24,7 @@ import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 import List from 'Widgets/modules/Template/modules/List'
 
 import {CustomizationContext} from '../contexts/CustomizationContext'
-import {getExtensions, seekCardCustomization} from '../helpers/extensions'
+import {seekCardCustomization} from '../helpers/customization'
 import {seekNextValues} from '../helpers/iterator'
 
 type Props = {
@@ -56,8 +56,6 @@ export function Template({
     let cardCustomization: CardCustomization = {}
     if (customization) {
         cardCustomization = seekCardCustomization(customization.card, template)
-    } else {
-        cardCustomization = getExtensions(widget.type, template)
     }
 
     // DISPLAY

@@ -21,7 +21,7 @@ import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 import ListWidget from 'Widgets/modules/Template/modules/List'
 
 import {CustomizationContext} from '../../contexts/CustomizationContext'
-import {getExtensions, seekCardCustomization} from '../../helpers/extensions'
+import {seekCardCustomization} from '../../helpers/customization'
 import Template, {self} from '../Template'
 
 jest.spyOn(self, 'Template')
@@ -31,13 +31,12 @@ jest.mock('Widgets/modules/Template/modules/Card')
 jest.mock('Widgets/modules/Template/modules/Field')
 jest.mock('Widgets/modules/Template/modules/Wrapper')
 jest.mock('Widgets/modules/Template/modules/List')
-jest.mock('../../helpers/extensions')
+jest.mock('../../helpers/customization')
 jest.mock('Widgets/modules/Shopify/contexts/ShopifyContext')
 const cardMock = assumeMock(Card)
 const fieldMock = assumeMock(Field)
 const wrapperMock = assumeMock(Wrapper)
 const listMock = assumeMock(ListWidget)
-const getExtensionsMock = assumeMock(getExtensions)
 const seekCardCustomizationMock = assumeMock(seekCardCustomization)
 
 const editionHiddenFields: HiddenField[] = ['title']
@@ -47,7 +46,6 @@ const cardCustomizationMock: CardCustomization = {
     editionHiddenFields,
 }
 
-getExtensionsMock.mockReturnValue(cardCustomizationMock)
 seekCardCustomizationMock.mockReturnValue(cardCustomizationMock)
 
 const leafTemplate = {type: 'text'} as LeafTemplate
@@ -161,32 +159,6 @@ describe('Template', () => {
                 AfterTitle: expect.any(Function),
                 editionHiddenFields,
             })
-
-            expect(getLastMockCall(cardMock)[0].editionHiddenFields).toEqual(
-                editionHiddenFields
-            )
-        })
-
-        /* legacy */
-        it('should provide the correct extensions', () => {
-            render(
-                <WidgetContext.Provider value={shopifyWidget}>
-                    <Template {...minProps} />
-                </WidgetContext.Provider>
-            )
-
-            expect(getLastMockCall(cardMock)[0].extensions).toEqual({
-                AfterTitle: expect.any(Function),
-                editionHiddenFields,
-            })
-        })
-
-        it('should provide the correct editionHiddenFields', () => {
-            render(
-                <WidgetContext.Provider value={shopifyWidget}>
-                    <Template {...minProps} />
-                </WidgetContext.Provider>
-            )
 
             expect(getLastMockCall(cardMock)[0].editionHiddenFields).toEqual(
                 editionHiddenFields

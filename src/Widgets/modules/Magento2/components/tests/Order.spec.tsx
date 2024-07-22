@@ -7,14 +7,14 @@ import thunk from 'redux-thunk'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import Order, {statusColors} from '../Order'
+import {orderCustomization, statusColors} from '../Order'
 
 const mockStore = configureMockStore([thunk])
 
-const orderWidgets = Order()
-const BeforeContent = orderWidgets.BeforeContent
-const AfterContent = orderWidgets.AfterContent
-const TitleWrapper = orderWidgets.TitleWrapper
+const orderWidgets = orderCustomization
+const BeforeContent = orderWidgets.BeforeContent!
+const AfterContent = orderWidgets.AfterContent!
+const TitleWrapper = orderWidgets.TitleWrapper!
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',

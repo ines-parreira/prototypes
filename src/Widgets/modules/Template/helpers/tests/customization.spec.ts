@@ -1,33 +1,7 @@
-import {IntegrationType} from '@gorgias/api-types'
 import {Template} from 'models/widget/types'
-import magento2 from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
-import {assumeMock} from 'utils/testing'
 
-import {getExtensions, seekCardCustomization} from '../extensions'
+import {seekCardCustomization} from '../customization'
 import {TemplateCustomization} from '../../types'
-
-const editionHiddenFields = ['bar']
-
-jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/magento2'
-)
-const mockMagento2 = assumeMock(magento2)
-mockMagento2.mockImplementation(() => ({
-    AfterTitle: () => 'ok',
-    editionHiddenFields,
-}))
-
-describe('getExtensions', () => {
-    it('should return the extensions', () => {
-        const result = getExtensions(IntegrationType.Magento2, {
-            type: 'card',
-        } as Template)
-        expect(result).toEqual({
-            AfterTitle: expect.any(Function),
-            editionHiddenFields,
-        })
-    })
-})
 
 describe('seekCardCustomization', () => {
     const cardCustomization = [

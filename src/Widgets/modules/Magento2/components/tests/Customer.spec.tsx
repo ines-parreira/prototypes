@@ -4,9 +4,9 @@ import {fromJS} from 'immutable'
 
 import {IntegrationContext} from 'providers/infobar/IntegrationContext'
 
-import Customer from '../Customer'
+import {customerCustomization} from '../Customer'
 
-const TitleWrapper = Customer().TitleWrapper
+const TitleWrapper = customerCustomization.TitleWrapper!
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {

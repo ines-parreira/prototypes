@@ -4,6 +4,7 @@ import {WOOCOMMERCE_WIDGET_TYPE} from 'state/widgets/constants'
 
 import BigCommerceWidget from 'Widgets/modules/BigCommerce/'
 import HttpWidget from 'Widgets/modules/Http/'
+import Magento2Widget from 'Widgets/modules/Magento2'
 import RechargeWidget from 'Widgets/modules/Recharge'
 import ShopifyWidget from 'Widgets/modules/Shopify/'
 import SmileWidget from 'Widgets/modules/Smile'
@@ -17,6 +18,7 @@ const widgetByType: {
 } = {
     [IntegrationType.Bigcommerce]: BigCommerceWidget,
     [IntegrationType.Http]: HttpWidget,
+    [IntegrationType.Magento2]: Magento2Widget,
     [IntegrationType.Recharge]: RechargeWidget,
     [IntegrationType.Shopify]: ShopifyWidget,
     [IntegrationType.Smile]: SmileWidget,
