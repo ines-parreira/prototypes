@@ -3,12 +3,10 @@
 
 :local {
     .container {
-        width: 276.5px;
-        height: 192px;
+        min-width: 276.5px;
+        flex: 1 1 0px;
 
-        background: var(--neutral-grey-0);
-        border: 1px solid var(--neutral-grey-3);
-        border-radius: 4px;
+        height: 192px;
 
         padding: 16px;
 
@@ -16,6 +14,12 @@
         justify-content: space-between;
         flex-direction: column;
         gap: 16px;
+    }
+
+    .card {
+        background: var(--neutral-grey-0);
+        border: 1px solid var(--neutral-grey-3);
+        border-radius: 4px;
     }
 
     .header {

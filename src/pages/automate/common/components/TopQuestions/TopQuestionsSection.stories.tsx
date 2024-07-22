@@ -53,24 +53,13 @@ type Story = StoryObj<typeof TopQuestionsSectionComponent>
 export const TopQuestionsSection: Story = {
     render: (args) => (
         <MemoryRouter>
-            <TopQuestionsSectionComponent
-                {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
-            />
-        </MemoryRouter>
-    ),
-}
-
-export const TopQuestionsSectionNew: Story = {
-    render: (args) => (
-        <MemoryRouter>
-            <TopQuestionsSectionComponent
-                {...args}
-                newQuestionsCount={12}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
-            />
+            <div style={{width: '1154px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
         </MemoryRouter>
     ),
 }
@@ -90,6 +79,49 @@ export const TopQuestionsSectionLessThan4: Story = {
     ),
 }
 
+export const TopQuestionsSectionWide: Story = {
+    render: (args) => (
+        <MemoryRouter>
+            <div style={{width: '1600px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
+        </MemoryRouter>
+    ),
+}
+
+export const TopQuestionsSectionWideLessThan4: Story = {
+    render: (args) => (
+        <MemoryRouter>
+            <div style={{width: '1600px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    topQuestions={args.topQuestions.slice(0, 2)}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
+        </MemoryRouter>
+    ),
+}
+
+export const TopQuestionsSectionNew: Story = {
+    render: (args) => (
+        <MemoryRouter>
+            <div style={{width: '1154px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    newQuestionsCount={12}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
+        </MemoryRouter>
+    ),
+}
 export const TopQuestionsSectionEmpty: Story = {
     render: (args) => (
         <MemoryRouter>
@@ -110,7 +142,9 @@ export const TopQuestionsSectionLoading: StoryObj<
 > = {
     render: () => (
         <MemoryRouter>
-            <TopQuestionsSectionLoadingComponent />
+            <div style={{width: '1154px'}}>
+                <TopQuestionsSectionLoadingComponent />
+            </div>
         </MemoryRouter>
     ),
 }
@@ -118,11 +152,13 @@ export const TopQuestionsSectionLoading: StoryObj<
 export const TopQuestionsSectionWithShopFilter: Story = {
     render: (args) => (
         <MemoryRouter>
-            <TopQuestionsSectionComponent
-                {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
-            />
+            <div style={{width: '1154px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
         </MemoryRouter>
     ),
     args: {
@@ -165,11 +201,13 @@ export const TopQuestionsSectionWithShopFilter: Story = {
 export const TopQuestionsSectionWithHelpCenterFilter: Story = {
     render: (args) => (
         <MemoryRouter>
-            <TopQuestionsSectionComponent
-                {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
-            />
+            <div style={{width: '1154px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
         </MemoryRouter>
     ),
     args: {
@@ -193,16 +231,20 @@ export const TopQuestionsSectionWithHelpCenterFilter: Story = {
 export const TopQuestionsSectionWithAllFilters: Story = {
     render: (args) => (
         <MemoryRouter>
-            <TopQuestionsSectionComponent
-                {...args}
-                onDismiss={action('onDismiss')}
-                onCreateArticle={action('onCreateArticle')}
-            />
+            <div style={{width: '1154px'}}>
+                <TopQuestionsSectionComponent
+                    {...args}
+                    onDismiss={action('onDismiss')}
+                    onCreateArticle={action('onCreateArticle')}
+                />
+            </div>
         </MemoryRouter>
     ),
     args: {
         shopFilter: TopQuestionsSectionWithShopFilter.args?.shopFilter,
+        shopIntegrationId: 1,
         helpCenterFilter:
             TopQuestionsSectionWithHelpCenterFilter.args?.helpCenterFilter,
+        helpCenterId: 1,
     },
 }

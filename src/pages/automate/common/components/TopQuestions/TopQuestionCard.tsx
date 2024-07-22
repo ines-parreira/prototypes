@@ -1,5 +1,6 @@
 import React, {ReactNode} from 'react'
 
+import classNames from 'classnames'
 import Skeleton from 'pages/common/components/Skeleton/Skeleton'
 import css from './TopQuestionCard.less'
 
@@ -49,7 +50,7 @@ export const TopQuestionCard = ({
     title,
 }: Props) => {
     return (
-        <div className={css.container}>
+        <div className={classNames(css.container, css.card)}>
             <Header>
                 <TicketsCount ticketsCount={ticketsCount} />
                 <Dismiss onDismiss={onDismiss} />
@@ -62,13 +63,15 @@ export const TopQuestionCard = ({
     )
 }
 
+export const TopQuestionCardGhost = () => <div className={css.container}></div>
+
 const LoadingDiv = ({heightPx}: {heightPx: number}) => (
     <Skeleton height={heightPx} baseColor="#d2d7de" highlightColor="#f4f5f7" />
 )
 
 export const TopQuestionCardLoading = () => {
     return (
-        <div className={css.container}>
+        <div className={classNames(css.container, css.card)}>
             <LoadingDiv heightPx={24} />
             <LoadingDiv heightPx={72} />
             <LoadingDiv heightPx={32} />

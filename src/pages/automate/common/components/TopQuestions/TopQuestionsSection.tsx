@@ -6,7 +6,11 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 import {getIconFromType} from 'state/integrations/helpers'
 import Badge, {ColorType} from 'pages/common/components/Badge/Badge'
 import css from './TopQuestionsSection.less'
-import {TopQuestionCard, TopQuestionCardLoading} from './TopQuestionCard'
+import {
+    TopQuestionCard,
+    TopQuestionCardGhost,
+    TopQuestionCardLoading,
+} from './TopQuestionCard'
 
 const VIEW_ALL_LINK = '/app/automation/ai-recommendations'
 
@@ -239,17 +243,26 @@ export const TopQuestionsSection = ({
 
             <div className={css.topQuestions}>
                 {top4Questions.length > 0 ? (
-                    top4Questions.map((question) => (
-                        <TopQuestionCard
-                            key={question.templateKey}
-                            ticketsCount={question.ticketsCount}
-                            title={question.title}
-                            onCreateArticle={() =>
-                                onCreateArticle(question.templateKey)
-                            }
-                            onDismiss={() => onDismiss(question.templateKey)}
-                        />
-                    ))
+                    <>
+                        {top4Questions.map((question) => (
+                            <TopQuestionCard
+                                key={question.templateKey}
+                                ticketsCount={question.ticketsCount}
+                                title={question.title}
+                                onCreateArticle={() =>
+                                    onCreateArticle(question.templateKey)
+                                }
+                                onDismiss={() =>
+                                    onDismiss(question.templateKey)
+                                }
+                            />
+                        ))}
+                        {Array.from({length: 4 - top4Questions.length}).map(
+                            (_, index) => (
+                                <TopQuestionCardGhost key={index} />
+                            )
+                        )}
+                    </>
                 ) : (
                     <TopQuestionsEmpty />
                 )}

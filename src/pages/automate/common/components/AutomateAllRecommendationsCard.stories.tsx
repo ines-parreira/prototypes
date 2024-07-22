@@ -1,10 +1,44 @@
 import React, {ComponentProps, useState} from 'react'
 import {Meta, StoryFn, StoryObj} from '@storybook/react'
+import {Provider} from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import {BrowserRouter} from 'react-router-dom'
+import {fromJS, Map} from 'immutable'
+import {QueryClientProvider} from '@tanstack/react-query'
+import {billingState} from 'fixtures/billing'
+import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
+import {appQueryClient} from 'api/queryClient'
 import {
     AIArticleRecommendationItem,
     AllRecommendationsStatus,
 } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
+
+const currentUser = Map({
+    id: Math.random() * 1000,
+})
+
+const defaultState = {
+    currentUser,
+    chats: fromJS({}),
+    entities: {
+        helpCenter: {
+            helpCenters: {
+                helpCentersById: {
+                    1: {
+                        type: 'faq',
+                        default_locale: 'en-US',
+                        layout: HELP_CENTER_DEFAULT_LAYOUT,
+                        subdomain: 'toto',
+                        id: 1,
+                    },
+                },
+            },
+        },
+    },
+    products: fromJS({}),
+    billing: fromJS(billingState),
+}
 
 const meta: Meta<typeof AutomateAllRecommendationsCard> = {
     title: 'Automate/AllRecommendationsCard',
@@ -25,6 +59,15 @@ const meta: Meta<typeof AutomateAllRecommendationsCard> = {
         },
         currentPage: {control: 'number'},
     },
+    decorators: [
+        (story) => (
+            <Provider store={configureMockStore()(defaultState)}>
+                <QueryClientProvider client={appQueryClient}>
+                    <BrowserRouter>{story()}</BrowserRouter>
+                </QueryClientProvider>
+            </Provider>
+        ),
+    ],
 }
 
 export default meta
@@ -49,6 +92,7 @@ const Template: StoryFn<ComponentProps<typeof AutomateAllRecommendationsCard>> =
                 setStatusFilter={setStatusFilter}
                 currentPage={currentPage}
                 onPageChange={onPageChange}
+                helpCenterId={1}
             />
         )
     }
