@@ -8,7 +8,7 @@ import {
     Locale,
 } from 'models/helpCenter/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import useAppSelector from 'hooks/useAppSelector'
 import {useListStoreMappings} from 'models/storeMapping/queries'
 import {StoreMapping} from 'models/storeMapping/types'
@@ -17,6 +17,7 @@ import {isGenericEmailIntegration} from 'pages/integrations/integration/componen
 import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {IntegrationType} from 'models/integration/constants'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -29,6 +30,14 @@ export const useHelpCenterAIArticlesLibrary = (
     const [mappedArticleItems, setMappedArticleItems] = useState<
         AILibraryArticleItem[]
     >([])
+
+    const isAIArticlesForMultiStoreEnabled: boolean | undefined =
+        useFlags()[
+            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
+        ]
+
+    const shopifyIntegrations = useShopifyIntegrations()
+    const hasMultiStores = shopifyIntegrations.length > 1
 
     const integrations = useAppSelector(
         integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
@@ -46,7 +55,8 @@ export const useHelpCenterAIArticlesLibrary = (
         refetchOnWindowFocus: false,
     })
 
-    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+    const storeIntegration = useSelfServiceStoreIntegration(
+        IntegrationType.Shopify,
         helpCenterShopName ?? ''
     )
 
@@ -59,22 +69,14 @@ export const useHelpCenterAIArticlesLibrary = (
         [storeIntegration?.id, storeMapping]
     )
 
-    const isAIArticlesForMultiStoreEnabled: boolean | undefined =
-        useFlags()[
-            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
-        ]
-
-    const shopifyIntegrations = useShopifyIntegrations()
-    const hasMultiBrands = shopifyIntegrations.length > 1
-
     const showLinkToConnectEmailToStore = useMemo(
         () =>
             isAIArticlesForMultiStoreEnabled &&
-            hasMultiBrands &&
+            hasMultiStores &&
             !hasEmailToStoreConnection,
         [
             isAIArticlesForMultiStoreEnabled,
-            hasMultiBrands,
+            hasMultiStores,
             hasEmailToStoreConnection,
         ]
     )
@@ -82,9 +84,9 @@ export const useHelpCenterAIArticlesLibrary = (
     const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
         useConditionalGetAIArticles({
             helpCenterId,
-            storeIntegrationId: storeIntegration
-                ? Number(storeIntegration?.id)
-                : null,
+            storeIntegrationId: !hasMultiStores
+                ? shopifyIntegrations[0].id
+                : storeIntegration?.id ?? null,
             locale,
         })
     const fetchedArticlesCount = fetchedArticles?.length ?? 0
@@ -156,7 +158,9 @@ export const useHelpCenterAIArticlesLibrary = (
             newArticles.length > 0 &&
             fetchedArticlesCount >= MINIMUM_AI_ARTICLES,
         showLinkToArticleTemplates: fetchedArticlesCount < MINIMUM_AI_ARTICLES,
-        hasStoreConnection: !!storeIntegration,
+        hasStoreConnectionOrDefaultStore: hasMultiStores
+            ? !!storeIntegration
+            : true,
         showLinkToConnectEmailToStore,
         markArticleAsReviewed: (
             templateKey: string,

@@ -3,13 +3,14 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {renderWithRouter} from 'utils/testing'
 import {billingState} from 'fixtures/billing'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {FeatureFlagKey} from 'config/featureFlags'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
@@ -51,22 +52,8 @@ jest.mock('../../hooks/useHelpCenterIdParam', () => {
         useHelpCenterIdParam: jest.fn().mockReturnValue(1),
     }
 })
-
-jest.mock('../../hooks/useConditionalGetAIArticles', () => {
-    return {
-        useConditionalGetAIArticles: jest.fn().mockReturnValue({
-            fetchedArticles: Array(5).map((_, i) => ({
-                id: i,
-                title: `Article ${i}`,
-                content: `Article ${i} content`,
-            })),
-        }),
-    }
-})
-jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
-    id: 1,
-    name: 'My Shop',
+mockFlags({
+    [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]: true,
 })
 
 describe('<HelpCenterCustomizationView />', () => {

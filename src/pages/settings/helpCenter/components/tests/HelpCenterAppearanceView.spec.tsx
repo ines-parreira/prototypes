@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 
 import _keyBy from 'lodash/keyBy'
+import {mockFlags} from 'jest-launchdarkly-mock'
 import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
 import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
 import {initialState as uiState} from 'state/ui/helpCenter/reducer'
@@ -18,7 +19,7 @@ import {useSupportedLocales} from 'pages/settings/helpCenter/providers/Supported
 import {billingState} from 'fixtures/billing'
 import {FontCatalogueModal} from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
 import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
@@ -33,18 +34,6 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
             isReady: true,
             isLoading: false,
             getContactFormById: jest.fn(),
-        }),
-    }
-})
-
-jest.mock('../../hooks/useConditionalGetAIArticles', () => {
-    return {
-        useConditionalGetAIArticles: jest.fn().mockReturnValue({
-            fetchedArticles: Array(5).map((_, i) => ({
-                id: i,
-                title: `Article ${i}`,
-                content: `Article ${i} content`,
-            })),
         }),
     }
 })
@@ -121,10 +110,8 @@ jest.mock(
     <div id="FontCatalogueModal-mocked"></div>
 )
 
-jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
-    id: 1,
-    name: 'My Shop',
+mockFlags({
+    [FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore]: true,
 })
 
 const route = {

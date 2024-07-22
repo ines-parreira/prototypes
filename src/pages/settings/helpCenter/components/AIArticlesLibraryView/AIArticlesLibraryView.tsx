@@ -31,7 +31,7 @@ const AIArticlesLibraryView = () => {
         selectedArticleType,
         setSelectedArticleType,
         showLinkToArticleTemplates,
-        hasStoreConnection,
+        hasStoreConnectionOrDefaultStore,
         showLinkToConnectEmailToStore,
         markArticleAsReviewed,
     } = useHelpCenterAIArticlesLibrary(
@@ -82,7 +82,9 @@ const AIArticlesLibraryView = () => {
                                     showLinkToArticleTemplates
                                 }
                                 helpCenterId={helpCenter.id}
-                                hasStoreConnection={hasStoreConnection}
+                                hasStoreConnection={
+                                    hasStoreConnectionOrDefaultStore
+                                }
                                 showLinkToConnectEmailToStore={
                                     !!showLinkToConnectEmailToStore
                                 }
@@ -92,7 +94,7 @@ const AIArticlesLibraryView = () => {
                                 onPublish={onPublish}
                                 onEdit={onEdit}
                                 article={
-                                    !hasStoreConnection ||
+                                    !hasStoreConnectionOrDefaultStore ||
                                     showLinkToConnectEmailToStore ||
                                     showLinkToArticleTemplates
                                         ? undefined

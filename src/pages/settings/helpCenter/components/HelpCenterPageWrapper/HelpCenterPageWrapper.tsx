@@ -230,7 +230,6 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                 helpCenterId={helpCenter.id}
                 helpCenterShopName={helpCenter.shop_name}
                 isConnectStoreLinkEnabled={isConnectStoreLinkEnabled}
-                locale={locale}
             />
             {fluidContainer ? (
                 <Container

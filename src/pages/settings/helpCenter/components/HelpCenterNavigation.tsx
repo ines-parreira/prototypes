@@ -12,22 +12,17 @@ import {getHasAutomate} from 'state/billing/selectors'
 import Button from 'pages/common/components/button/Button'
 import {SegmentEvent, logEvent} from 'common/segment'
 import {FeatureFlagKey} from 'config/featureFlags'
-import {LocaleCode} from 'models/helpCenter/types'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {useConditionalGetAIArticles} from '../hooks/useConditionalGetAIArticles'
 import css from './HelpCenterNavigation.less'
 import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import {MINIMUM_AI_ARTICLES} from './CategoriesView/components/ArticleTemplateCard/constants'
 
 type Props = {
     helpCenterId: string | number
     helpCenterShopName?: string | null
     cannotUpdateHelpCenter?: boolean
     isConnectStoreLinkEnabled?: boolean
-    locale: LocaleCode
 }
 
 export const HelpCenterNavigation: React.FC<Props> = ({
@@ -35,7 +30,6 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     helpCenterId,
     helpCenterShopName,
     isConnectStoreLinkEnabled = true,
-    locale,
 }: Props) => {
     const baseURL = `/app/settings/help-center/${helpCenterId}`
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -47,28 +41,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
 
-    const hasAccessToAILibrary = useHasAccessToAILibrary()
-
-    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
-        helpCenterShopName ?? ''
-    )
-    const {fetchedArticles: aiArticles} = useConditionalGetAIArticles({
-        helpCenterId: Number(helpCenterId),
-        storeIntegrationId: storeIntegration
-            ? Number(storeIntegration.id)
-            : null,
-        locale,
-    })
-
-    const isAIArticlesForMultiStoreEnabled =
-        useFlags()[
-            FeatureFlagKey.ObservabilityAllowAIGeneratedArticlesForMultiStore
-        ]
-
-    const showAILibraryTab =
-        hasAccessToAILibrary &&
-        (isAIArticlesForMultiStoreEnabled ||
-            (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES)
+    const showAILibraryTab = useHasAccessToAILibrary()
 
     const logHelpCenterEvent = (version: string) => {
         if (!changeAutomateSettingButtomPosition) return

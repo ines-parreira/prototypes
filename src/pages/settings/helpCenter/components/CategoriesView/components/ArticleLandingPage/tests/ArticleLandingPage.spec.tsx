@@ -13,7 +13,8 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import ArticleLandingPage from '../ArticleLandingPage'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -31,10 +32,20 @@ jest.mock('../../../../Imports/components/ImportSection', () => ({
 }))
 
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
+;(useSelfServiceStoreIntegration as jest.Mock).mockReturnValue({
     id: 1,
     name: 'My Shop',
 })
+
+jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
+;(useShopifyIntegrations as jest.Mock).mockReturnValue([
+    {
+        id: 1,
+    },
+    {
+        id: 2,
+    },
+])
 
 const queryClient = mockQueryClient()
 
@@ -115,5 +126,63 @@ describe('<ArticleLandingPage />', () => {
         screen.getByText('Create Article').click()
 
         expect(onCreateArticle).toHaveBeenCalled()
+    })
+    it('should render when help center does not have a store connection', () => {
+        jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+        ;(useSelfServiceStoreIntegration as jest.Mock).mockReturnValue(
+            undefined
+        )
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore(initialState)}>
+                    <EditionManagerContextProvider>
+                        <ArticleLandingPage
+                            onCreateArticle={jest.fn()}
+                            onCreateArticleWithTemplate={jest.fn()}
+                            canUpdateArticle={true}
+                            showBackButton={false}
+                            onBackButtonClick={jest.fn()}
+                        />
+                    </EditionManagerContextProvider>
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText('Create Article')).toBeInTheDocument()
+
+        expect(
+            screen.getByText('Choose a customizable article template:')
+        ).toBeInTheDocument()
+    })
+    it('should render when an account has a single Shopify integration', () => {
+        jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
+        ;(useShopifyIntegrations as jest.Mock).mockReturnValue([
+            {
+                id: 1,
+            },
+        ])
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore(initialState)}>
+                    <EditionManagerContextProvider>
+                        <ArticleLandingPage
+                            onCreateArticle={jest.fn()}
+                            onCreateArticleWithTemplate={jest.fn()}
+                            canUpdateArticle={true}
+                            showBackButton={false}
+                            onBackButtonClick={jest.fn()}
+                        />
+                    </EditionManagerContextProvider>
+                </Provider>
+            </QueryClientProvider>
+        )
+
+        expect(screen.getByText('Create Article')).toBeInTheDocument()
+
+        expect(
+            screen.getByText('Choose a customizable article template:')
+        ).toBeInTheDocument()
     })
 })

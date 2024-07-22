@@ -19,7 +19,7 @@ import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getL
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {billingState} from 'fixtures/billing'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 import {SearchContextProvider} from '../../providers/SearchContext'
 import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
@@ -88,7 +88,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterCategories')
     isLoading: false,
 })
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
-;(useSelfServiceStoreIntegrationByShopName as jest.Mock).mockReturnValue({
+;(useSelfServiceStoreIntegration as jest.Mock).mockReturnValue({
     id: 1,
     name: 'My Shop',
 })

@@ -13,7 +13,8 @@ import {
     AIArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
 import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
 
@@ -21,6 +22,7 @@ jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')
 jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
+jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
 
 const mockedUseGetArticleTemplates = assumeMock(useGetArticleTemplates)
 const mockedUseGetHelpCenterArticleList = assumeMock(
@@ -30,8 +32,9 @@ const mockedUseConditionalGetAIArticles = assumeMock(
     useConditionalGetAIArticles
 )
 const mockedUseSelfServiceStoreIntegration = assumeMock(
-    useSelfServiceStoreIntegrationByShopName
+    useSelfServiceStoreIntegration
 )
+const mockedUseShopifyIntegrations = assumeMock(useShopifyIntegrations)
 
 describe('useGetHelpCenterArticles', () => {
     beforeEach(() => {
@@ -52,10 +55,14 @@ describe('useGetHelpCenterArticles', () => {
             return {
                 id: 1,
                 name: 'My Shop',
-            } as unknown as ReturnType<
-                typeof useSelfServiceStoreIntegrationByShopName
-            >
+            } as unknown as ReturnType<typeof useSelfServiceStoreIntegration>
         })
+        mockedUseShopifyIntegrations.mockImplementation(
+            () =>
+                [{id: 1}, {id: 2}] as unknown as ReturnType<
+                    typeof useShopifyIntegrations
+                >
+        )
     })
 
     describe('article templates', () => {
@@ -197,6 +204,43 @@ describe('useGetHelpCenterArticles', () => {
             expect(result.current.articles).toMatchObject(
                 AIArticlesGroupedFixture
             )
+        })
+
+        it('should return ai articles when a single store account does not have store connection', () => {
+            mockedUseShopifyIntegrations.mockImplementation(
+                () =>
+                    [{id: 1}] as unknown as ReturnType<
+                        typeof useShopifyIntegrations
+                    >
+            )
+
+            const {result} = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', null)
+            )
+
+            expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
+            expect(result.current.hasAiArticles).toBe(true)
+            expect(result.current.articles).toMatchObject(
+                AIArticlesGroupedFixture
+            )
+        })
+        it('should return empty array of articles when multi-store does not have store connection', () => {
+            mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
+                return undefined
+            })
+            mockedUseConditionalGetAIArticles.mockImplementation(() => {
+                return {
+                    fetchedArticles: null,
+                    isLoading: false,
+                } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+            })
+
+            const {result} = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', null)
+            )
+
+            expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
+            expect(result.current.hasAiArticles).toBe(false)
         })
     })
 })

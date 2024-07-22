@@ -8,23 +8,23 @@ import {
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import {useListStoreMappings} from 'models/storeMapping/queries'
 import useAppSelector from 'hooks/useAppSelector'
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
 
 jest.mock('pages/settings/helpCenter/hooks/useConditionalGetAIArticles')
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 jest.mock('models/storeMapping/queries')
 jest.mock('hooks/useAppSelector')
-jest.mock('pages/stats/convert/hooks/useShopifyIntegrations')
+jest.mock('pages/automate/common/hooks/useShopifyIntegrations')
 
 const mockedUseConditionalGetAIArticles = assumeMock(
     useConditionalGetAIArticles
 )
-const mockedUseSelfServiceStoreIntegrationsByShopName = assumeMock(
-    useSelfServiceStoreIntegrationByShopName
+const mockedUseSelfServiceStoreIntegration = assumeMock(
+    useSelfServiceStoreIntegration
 )
 const mockedUseListStoreMappings = assumeMock(useListStoreMappings)
 const mockedUseAppSelector = assumeMock(useAppSelector)
@@ -39,16 +39,12 @@ describe('useHelpCenterAIArticlesLibrary', () => {
                 isLoading: false,
             } as unknown as ReturnType<typeof useConditionalGetAIArticles>
         })
-        mockedUseSelfServiceStoreIntegrationsByShopName.mockImplementation(
-            () => {
-                return {
-                    id: 1,
-                    name: 'My Shop',
-                } as unknown as ReturnType<
-                    typeof useSelfServiceStoreIntegrationByShopName
-                >
-            }
-        )
+        mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
+            return {
+                id: 1,
+                name: 'My Shop',
+            } as unknown as ReturnType<typeof useSelfServiceStoreIntegration>
+        })
         mockedUseListStoreMappings.mockImplementation(
             () =>
                 ({
@@ -143,7 +139,13 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         )
     })
 
-    it('should return false when it is a single-store', () => {
+    it('should return false when there is no email-to-store connection for single-store', () => {
+        mockedUseListStoreMappings.mockImplementation(
+            () =>
+                ({
+                    data: [{store_id: 3}],
+                } as unknown as ReturnType<typeof useListStoreMappings>)
+        )
         const {result} = renderHook(() =>
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
@@ -168,6 +170,33 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
         )
 
+        expect(result.current.hasStoreConnectionOrDefaultStore).toBe(true)
         expect(result.current.showLinkToConnectEmailToStore).toBe(true)
+    })
+
+    it('should return empty array of articles when multi-store does not have store connection', () => {
+        mockedUseShopifyIntegrations.mockImplementation(
+            () =>
+                [{id: 1}, {id: 2}] as unknown as ReturnType<
+                    typeof useShopifyIntegrations
+                >
+        )
+        mockedUseSelfServiceStoreIntegration.mockImplementation(() => {
+            return undefined
+        })
+        mockedUseConditionalGetAIArticles.mockImplementation(() => {
+            return {
+                fetchedArticles: null,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useConditionalGetAIArticles>
+        })
+
+        const {result} = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', null)
+        )
+
+        expect(result.current.hasStoreConnectionOrDefaultStore).toBe(false)
+        expect(result.current.showLinkToConnectEmailToStore).toBe(true)
+        expect(result.current.articles).toEqual([])
     })
 })

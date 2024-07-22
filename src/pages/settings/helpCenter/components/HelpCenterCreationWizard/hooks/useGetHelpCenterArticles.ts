@@ -8,7 +8,9 @@ import {
 import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
 import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import {useSelfServiceStoreIntegrationByShopName} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import {IntegrationType} from 'models/integration/constants'
+import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {
     groupArticlesByCategory,
     mapAIHelpCenterArticleData,
@@ -26,15 +28,18 @@ export const useGetHelpCenterArticles = (
     locale: LocaleCode,
     helpCenterShopName: string | null
 ): HelpCenterArticlesOutput => {
-    const storeIntegration = useSelfServiceStoreIntegrationByShopName(
+    const shopifyIntegrations = useShopifyIntegrations()
+    const hasMultiStores = shopifyIntegrations.length > 1
+    const storeIntegration = useSelfServiceStoreIntegration(
+        IntegrationType.Shopify,
         helpCenterShopName ?? ''
     )
     const {fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading} =
         useConditionalGetAIArticles({
             helpCenterId,
-            storeIntegrationId: storeIntegration
-                ? Number(storeIntegration.id)
-                : null,
+            storeIntegrationId: !hasMultiStores
+                ? shopifyIntegrations[0].id
+                : storeIntegration?.id ?? null,
             locale,
         })
 
