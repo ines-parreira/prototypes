@@ -19,14 +19,13 @@ import {
 } from 'state/ui/stats/drillDownSlice'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
 import {
+    AgentsTableColumn,
     OverviewMetric,
     SlaMetric,
-    AgentsTableColumn,
 } from 'state/ui/stats/types'
 import {
     BaseDrillDownRowData,
-    getEnrichedDrillDownFormatter,
-    TicketDrillDownRowData,
+    DrillDownFormatterProps,
 } from 'pages/stats/DrillDownFormatters'
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -89,17 +88,22 @@ export const useDrillDownQueryWithoutLimit = (
     return withoutLimit(query)
 }
 
-export const useEnrichedDrillDownData = (
+export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
     metricData: DrillDownMetric
-): DrillDownData<TicketDrillDownRowData> => {
+) => DrillDownData<T>
+
+export function useEnrichedDrillDownData<T>(
+    metricData: DrillDownMetric,
+    enrichmentFields: EnrichmentFields[],
+    getDrillDownFormatter: (props: DrillDownFormatterProps) => T
+): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
-    const formatter = getEnrichedDrillDownFormatter(metricData)
     const query = useDrillDownQuery(metricData)
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
         query,
-        defaultEnrichmentFields
+        enrichmentFields
     )
 
     const rowData = useMemo(
@@ -125,12 +129,12 @@ export const useEnrichedDrillDownData = (
             ),
         data: rowData
             .map((row) =>
-                formatter(
+                getDrillDownFormatter({
                     row,
+                    metricField: query.dimensions[1] ?? query.measures[0],
                     agents,
-                    query.dimensions[1] ?? query.measures[0],
-                    query.dimensions[0]
-                )
+                    ticketIdField: query.dimensions[0],
+                })
             )
             .slice(
                 Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
@@ -139,16 +143,9 @@ export const useEnrichedDrillDownData = (
     }
 }
 
-export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
-    metricData: DrillDownMetric
-) => DrillDownData<T>
-
 export function useDrillDownData<T>(
     metricData: DrillDownMetric,
-    getDrillDownFormatter: (
-        row: MergedRecord<any, any>,
-        metricField: string
-    ) => T
+    getDrillDownFormatter: (props: DrillDownFormatterProps) => T
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
@@ -159,7 +156,10 @@ export function useDrillDownData<T>(
     const totalResults = rowData.length
 
     const formattedRowData = rowData.map((row) =>
-        getDrillDownFormatter(row, query.dimensions[1] ?? query.measures[0])
+        getDrillDownFormatter({
+            row,
+            metricField: query.dimensions[1] ?? query.measures[0],
+        })
     )
     const slicedRowData = formattedRowData.slice(
         Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),

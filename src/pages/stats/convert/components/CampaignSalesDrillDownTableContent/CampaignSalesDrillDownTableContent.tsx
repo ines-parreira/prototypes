@@ -4,7 +4,7 @@ import {formatConvertCampaignSalesDrillDownRowData} from 'pages/stats/DrillDownF
 import TableHead from 'pages/common/components/table/TableHead'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
-import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
+import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
@@ -17,6 +17,7 @@ import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table
 import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {useGetCampaignSalesDrillDownData} from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
 
+import {EnrichmentFields} from 'models/reporting/types'
 import css from './CampaignSalesDrillDownTableContent.less'
 
 // should add up to table width from CSS
@@ -42,8 +43,9 @@ export const CampaignSalesDrillDownTableContent = ({
 }: {
     metricData: DrillDownMetric
 }) => {
-    const {data, isFetching} = useDrillDownData(
+    const {data, isFetching} = useEnrichedDrillDownData(
         metricData,
+        [EnrichmentFields.CustomerIntegrationDataByExternalId],
         formatConvertCampaignSalesDrillDownRowData
     )
 
@@ -116,8 +118,8 @@ export const CampaignSalesDrillDownTableContent = ({
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.customer}>
-                                {item.customerId
-                                    ? item.customerId
+                                {item.customerName
+                                    ? item.customerName
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>
                             <BodyCell width={COLUMN_WIDTHS.amount}>

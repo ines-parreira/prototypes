@@ -40,11 +40,11 @@ describe('campaignSalesDrillDownQueryFactory', () => {
             )
         ).toEqual({
             dimensions: [
+                OrderConversionDimension.customerId,
                 OrderConversionDimension.orderId,
                 OrderConversionDimension.orderAmount,
                 OrderConversionDimension.orderCurrency,
                 OrderConversionDimension.orderProductIds,
-                OrderConversionDimension.customerId,
                 OrderConversionDimension.campaignId,
                 OrderConversionDimension.createdDatatime,
             ],

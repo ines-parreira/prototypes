@@ -10,10 +10,7 @@ import {
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {
-    useDrillDownData,
-    useEnrichedDrillDownData,
-} from 'hooks/reporting/useDrillDownData'
+import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
 import {NumberedPagination} from 'pages/common/components/Paginations'
 import {DrillDownTable} from 'pages/stats/DrillDownTable'
 import {SlaStatusLabel} from 'services/reporting/constants'
@@ -47,7 +44,6 @@ const numberedPaginationMock = assumeMock(NumberedPagination)
 jest.mock('state/ui/stats/drillDownSlice')
 const getDrillDownMetricColumnMock = assumeMock(getDrillDownMetricColumn)
 jest.mock('hooks/reporting/useDrillDownData')
-const useDrillDownDataMock = assumeMock(useDrillDownData)
 const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
@@ -290,13 +286,14 @@ describe('<DrillDownTable />', () => {
                 channel_connection_external_ids: [],
             },
         }
+        const customerName = 'Archibald Hackintosh'
         const exampleRow = {
             data: {
                 id: 1,
                 amount: '15.23',
                 currency: 'USD',
                 productIds: ['prodId1', 'prodId2'],
-                customerId: 123456,
+                customerName: customerName,
                 campaignId: '961f8881-ea4c-4cdc-b822-cd201736f6ad',
                 createdDatetime: '22/12/2023',
             },
@@ -310,7 +307,7 @@ describe('<DrillDownTable />', () => {
                     amount: '16.23',
                     currency: 'USD',
                     productIds: ['prodId1', 'prodId4'],
-                    customerId: 123456,
+                    customerName: undefined,
                     campaignId: campaignId,
                     createdDatetime: '23/12/2023',
                 },
@@ -326,7 +323,7 @@ describe('<DrillDownTable />', () => {
         }
 
         it('should render the table title, table header and rows', () => {
-            useDrillDownDataMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: data,
                 isFetching: false,
             } as any)
@@ -363,10 +360,11 @@ describe('<DrillDownTable />', () => {
             const {getByText} = renderTableForCampaignSales(metricData)
 
             expect(getByText(campaign.name)).toBeInTheDocument()
+            expect(getByText(customerName)).toBeInTheDocument()
         })
 
         it('should render the table with skeletons on loading', () => {
-            useDrillDownDataMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: data,
                 isFetching: true,
             } as any)
@@ -384,7 +382,7 @@ describe('<DrillDownTable />', () => {
 
         it('should render Pagination when more then one page of results', () => {
             const onPageChange = jest.fn()
-            useDrillDownDataMock.mockReturnValue({
+            useEnrichedDrillDownDataMock.mockReturnValue({
                 data: data,
                 isFetching: true,
             } as any)

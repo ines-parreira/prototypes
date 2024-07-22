@@ -126,7 +126,12 @@ describe('DrillDownData hooks', () => {
 
         it('should return formatted Data', () => {
             const {result} = renderHook(
-                () => useEnrichedDrillDownData(metricData),
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(initialState)}>
@@ -144,12 +149,12 @@ describe('DrillDownData hooks', () => {
                 totalResults: rowData.length,
                 onPageChange: expect.any(Function),
                 data: rowData.map((row) =>
-                    formatTicketDrillDownRowData(
+                    formatTicketDrillDownRowData({
                         row,
+                        metricField: metricDimension,
                         agents,
-                        metricDimension,
-                        ticketIdField
-                    )
+                        ticketIdField,
+                    })
                 ),
             })
         })
@@ -162,7 +167,12 @@ describe('DrillDownData hooks', () => {
             })
 
             const {result} = renderHook(
-                () => useEnrichedDrillDownData(metricData),
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(initialState)}>
@@ -195,13 +205,21 @@ describe('DrillDownData hooks', () => {
                     end_datetime,
                 },
             }
-            renderHook(() => useEnrichedDrillDownData(metricData), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(initialState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            renderHook(
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             expect(
                 useMetricPerDimensionWithEnrichmentMock
@@ -225,13 +243,21 @@ describe('DrillDownData hooks', () => {
                 customFieldId: 123,
                 customFieldValue: [],
             }
-            renderHook(() => useEnrichedDrillDownData(metricData), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(initialState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            renderHook(
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             expect(
                 useMetricPerDimensionWithEnrichmentMock
@@ -253,13 +279,21 @@ describe('DrillDownData hooks', () => {
             const metricData: DrillDownMetric = {
                 metricName: OverviewMetric.CustomerSatisfaction,
             }
-            renderHook(() => useEnrichedDrillDownData(metricData), {
-                wrapper: ({children}) => (
-                    <Provider store={mockStore(initialState)}>
-                        {children}
-                    </Provider>
-                ),
-            })
+            renderHook(
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
 
             expect(
                 useMetricPerDimensionWithEnrichmentMock
@@ -293,7 +327,12 @@ describe('DrillDownData hooks', () => {
             }
 
             const {result} = renderHook(
-                () => useEnrichedDrillDownData(metricData),
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(initialState)}>
@@ -333,7 +372,12 @@ describe('DrillDownData hooks', () => {
             })
 
             const {result} = renderHook(
-                () => useEnrichedDrillDownData(metricData),
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(initialState)}>
@@ -360,7 +404,12 @@ describe('DrillDownData hooks', () => {
             })
 
             const {result} = renderHook(
-                () => useEnrichedDrillDownData(metricData),
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(initialState)}>
@@ -440,7 +489,12 @@ describe('DrillDownData hooks', () => {
             }
 
             const {result} = renderHook(
-                () => useEnrichedDrillDownData(metricData),
+                () =>
+                    useEnrichedDrillDownData(
+                        metricData,
+                        defaultEnrichmentFields,
+                        formatTicketDrillDownRowData
+                    ),
                 {
                     wrapper: ({children}) => (
                         <Provider store={mockStore(initialState)}>
@@ -462,14 +516,14 @@ describe('DrillDownData hooks', () => {
     })
 
     describe('useDrillDownData', () => {
-        const metricDimension = OrderConversionDimension.orderAmount
-        const orderIdField = OrderConversionDimension.orderId
+        const metricDimension = OrderConversionDimension.orderId
+        const idField = OrderConversionDimension.customerId
         const exampleRow = {
-            [orderIdField]: 12,
+            [idField]: '1323',
+            [OrderConversionDimension.orderId]: 12,
             [OrderConversionDimension.orderAmount]: '777',
             [OrderConversionDimension.orderCurrency]: 'USD',
             [OrderConversionDimension.orderProductIds]: ['prodId1', 'prodId2'],
-            [OrderConversionDimension.customerId]: '1323',
             [OrderConversionDimension.campaignId]:
                 '14a8cca6-057f-4e2f-a588-ad435ecbe195',
             [OrderConversionDimension.createdDatatime]:
@@ -516,10 +570,46 @@ describe('DrillDownData hooks', () => {
                 totalResults: rowData.length,
                 onPageChange: expect.any(Function),
                 data: rowData.map((row) =>
-                    formatConvertCampaignSalesDrillDownRowData(
+                    formatConvertCampaignSalesDrillDownRowData({
                         row,
-                        metricDimension
-                    )
+                        metricField: metricDimension,
+                    })
+                ),
+            })
+        })
+
+        it('should return formatted Data with measure instead of dimension', () => {
+            const {result} = renderHook(
+                () =>
+                    useDrillDownData(
+                        {
+                            metricName: OverviewMetric.MessagesSent,
+                        },
+                        formatTicketDrillDownRowData
+                    ),
+                {
+                    wrapper: ({children}) => (
+                        <Provider store={mockStore(initialState)}>
+                            {children}
+                        </Provider>
+                    ),
+                }
+            )
+
+            expect(result.current).toEqual({
+                isFetching: false,
+                perPage: DRILL_DOWN_PER_PAGE,
+                currentPage: 1,
+                pagesCount: Math.ceil(rowData.length / DRILL_DOWN_PER_PAGE),
+                totalResults: rowData.length,
+                onPageChange: expect.any(Function),
+                data: rowData.map((row) =>
+                    formatTicketDrillDownRowData({
+                        row,
+                        metricField: HelpdeskMessageMeasure.MessageCount,
+                        agents,
+                        ticketIdField: TicketDimension.TicketId,
+                    })
                 ),
             })
         })
