@@ -25,12 +25,12 @@ import {NotificationStatus} from 'state/notifications/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AgentsTableColumn,
+    AutoQAMetric,
+    ConvertMetric,
     OverviewMetric,
     SlaMetric,
     TicketFieldsMetric,
-    ConvertMetric,
     VoiceMetric,
-    AutoQAMetric,
     VoiceAgentsMetric,
 } from 'state/ui/stats/types'
 
@@ -159,6 +159,7 @@ const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AgentsTableColumn.OneTouchTickets,
     AgentsTableColumn.RepliedTicketsPerHour,
     AgentsTableColumn.ClosedTicketsPerHour,
+    AutoQAMetric.ReviewedClosedTickets,
     ChannelsTableColumns.TicketsCreated,
     ChannelsTableColumns.CreatedTicketsPercentage,
     ChannelsTableColumns.ClosedTickets,
@@ -314,6 +315,7 @@ export const getDrillDownMetricColumn = (
         metricTitle = SLA_STATUS_COLUMN_LABEL
         metricValueFormat = SLA_FORMAT
     } else if (
+        metricData.metricName === AutoQAMetric.ResolvedTickets ||
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === ConvertMetric.CampaignSalesCount ||
         metricData.metricName === VoiceMetric.AverageWaitTime ||

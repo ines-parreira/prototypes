@@ -1,8 +1,9 @@
+import {useResolvedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useResolvedTicketsTrend'
 import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
 import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
 import {MetricTrendFormat} from 'pages/stats/common/utils'
 import {TooltipData} from 'pages/stats/types'
-import {AutoQAMetric, SlaMetric} from 'state/ui/stats/types'
+import {AutoQAMetric} from 'state/ui/stats/types'
 
 export const TrendCardConfig: Record<
     AutoQAMetric,
@@ -12,17 +13,29 @@ export const TrendCardConfig: Record<
         useTrend: MetricTrendHook
         interpretAs: 'more-is-better' | 'less-is-better' | 'neutral'
         metricFormat: MetricTrendFormat
-        drillDownMetric: SlaMetric
+        drillDownMetric: AutoQAMetric
     }
 > = {
     [AutoQAMetric.ReviewedClosedTickets]: {
         title: 'Number of closed tickets reviewed',
         hint: {
-            title: 'Number of closed tickets that were automatically or manually QAed during the period.',
+            title: 'Number of closed tickets that were automatically or manually reviewed during the period. \nOnly closed tickets with at least 1 customer message and 1 agent/rule message are auto-scored.',
+            link: 'https://link.gorgias.com/xxn',
         },
         interpretAs: 'more-is-better',
         metricFormat: 'decimal',
         useTrend: useReviewedClosedTicketsTrend,
-        drillDownMetric: SlaMetric.BreachedTicketsRate,
+        drillDownMetric: AutoQAMetric.ReviewedClosedTickets,
+    },
+    [AutoQAMetric.ResolvedTickets]: {
+        title: 'Resolved Tickets',
+        hint: {
+            title: 'Ratio of tickets where the agent addressed ALL the enquiries of the customer. \nThe score (0-1) is computed by AI on closed tickets with at least 1 customer message and 1 agent/rule message.',
+            link: 'https://link.gorgias.com/e4a',
+        },
+        interpretAs: 'less-is-better',
+        metricFormat: 'decimal',
+        useTrend: useResolvedTicketsTrend,
+        drillDownMetric: AutoQAMetric.ResolvedTickets,
     },
 }

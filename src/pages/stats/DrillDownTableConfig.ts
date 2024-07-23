@@ -1,6 +1,7 @@
 import {OrderDirection} from 'models/api/types'
 import {DrillDownReportingQuery} from 'models/job/types'
 import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import {resolvedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolvedTicketsQueryFactory'
 import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
 import {
     breachedTicketsDrillDownQueryFactory,
@@ -142,6 +143,8 @@ export const getDrillDownQuery = (
             )
         case AutoQAMetric.ReviewedClosedTickets:
             return reviewedClosedTicketsDrillDownQueryFactory
+        case AutoQAMetric.ResolvedTickets:
+            return resolvedTicketsDrillDownQueryFactory
         case SlaMetric.AchievementRate:
             return satisfiedOrBreachedTicketsDrillDownQueryFactory
         case SlaMetric.BreachedTicketsRate:

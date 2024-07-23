@@ -1,5 +1,6 @@
 import {screen} from '@testing-library/react'
 import React from 'react'
+import {ResolvedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard'
 import {NumberOfClosedTicketsReviewedTrendCard} from 'pages/stats/support-performance/auto-qa/NumberOfClosedTicketsReviewedTrendCard'
 import AutoQA, {
     AUTO_QA_PAGE_TITLE,
@@ -18,12 +19,15 @@ jest.mock(
 const NumberOfClosedTicketsReviewedTrendCardMock = assumeMock(
     NumberOfClosedTicketsReviewedTrendCard
 )
+jest.mock('pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard')
+const ResolvedTicketsTrendCardMock = assumeMock(ResolvedTicketsTrendCard)
 
 describe('AutoQA', () => {
     beforeEach(() => {
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(() => (
             <div />
         ))
+        ResolvedTicketsTrendCardMock.mockImplementation(() => <div />)
     })
 
     it('should render page title', () => {
@@ -31,5 +35,6 @@ describe('AutoQA', () => {
 
         expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
         expect(NumberOfClosedTicketsReviewedTrendCardMock).toHaveBeenCalled()
+        expect(ResolvedTicketsTrendCardMock).toHaveBeenCalled()
     })
 })

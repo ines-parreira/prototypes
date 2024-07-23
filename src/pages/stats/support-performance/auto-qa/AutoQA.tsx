@@ -1,4 +1,5 @@
 import React from 'react'
+import {ResolvedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ResolvedTicketsTrendCard'
 import {useGridSize} from 'hooks/useGridSize'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import {NumberOfClosedTicketsReviewedTrendCard} from 'pages/stats/support-performance/auto-qa/NumberOfClosedTicketsReviewedTrendCard'
@@ -23,8 +24,11 @@ export default function AutoQA() {
                 }
             >
                 <DashboardSection>
-                    <DashboardGridCell size={getGridCellSize(12)}>
+                    <DashboardGridCell size={getGridCellSize(6)}>
                         <NumberOfClosedTicketsReviewedTrendCard />
+                    </DashboardGridCell>
+                    <DashboardGridCell size={getGridCellSize(6)}>
+                        <ResolvedTicketsTrendCard />
                     </DashboardGridCell>
                 </DashboardSection>
                 <AnalyticsFooter />

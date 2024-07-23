@@ -1,6 +1,7 @@
 import {OrderDirection} from 'models/api/types'
 import {
     TicketQAScoreCubeWithJoins,
+    TicketQAScoreDimension,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
@@ -11,7 +12,7 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-export const reviewedClosedTicketsQueryFactory = (
+export const resolvedTicketsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
@@ -29,6 +30,16 @@ export const reviewedClosedTicketsQueryFactory = (
             operator: ReportingFilterOperator.Equals,
             values: ['closed'],
         },
+        {
+            member: TicketQAScoreDimension.DimensionName,
+            operator: ReportingFilterOperator.Equals,
+            values: ['resolution'],
+        },
+        {
+            member: TicketQAScoreDimension.Prediction,
+            operator: ReportingFilterOperator.Equals,
+            values: ['1'],
+        },
     ],
     timezone,
     ...(sorting
@@ -38,17 +49,12 @@ export const reviewedClosedTicketsQueryFactory = (
         : {}),
 })
 
-export const reviewedClosedTicketsDrillDownQueryFactory = (
+export const resolvedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
-    ...reviewedClosedTicketsQueryFactory(filters, timezone),
-    measures: [],
+    ...resolvedTicketsQueryFactory(filters, timezone, sorting),
+    measures: [TicketQAScoreMeasure.AverageScore],
     dimensions: [TicketDimension.TicketId],
-    ...(sorting
-        ? {
-              order: [[TicketDimension.CreatedDatetime, sorting]],
-          }
-        : {}),
 })
