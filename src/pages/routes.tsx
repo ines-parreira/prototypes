@@ -1533,6 +1533,9 @@ function AutomationContent() {
     const isAutomateTopQuestionsEnabled =
         useFlags()[FeatureFlagKey.ObservabilityAutomateTopQuestions]
 
+    const isNewChannelsViewEnabled: boolean | undefined =
+        useFlags()[FeatureFlagKey.NewChannelsView]
+
     return (
         <Switch>
             <Route path={`${path}/ai-recommendations`} exact>
@@ -1801,7 +1804,7 @@ function AutomationContent() {
                     <SelfServiceContactFormsProvider>
                         <Route
                             path={`${path}/:shopType/:shopName/connected-channels`}
-                            exact
+                            exact={isNewChannelsViewEnabled === false}
                             component={memoizedWithUserRoleRequired(
                                 ConnectedChannelsViewContainer,
                                 AGENT_ROLE

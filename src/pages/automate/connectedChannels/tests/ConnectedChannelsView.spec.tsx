@@ -1,143 +1,33 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {Provider} from 'react-redux'
-import {fromJS} from 'immutable'
-import _keyBy from 'lodash/keyBy'
-import {BrowserRouter} from 'react-router-dom'
-import {billingState} from 'fixtures/billing'
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {
-    useListWorkflowEntryPoints,
-    useGetWorkflowConfigurations,
-} from 'models/workflows/queries'
-import ConnectedChannelsView from '../ConnectedChannelsView'
-import {IntegrationType} from '../../../../models/integration/constants'
-import {ContactFormFixture} from '../../../settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from '../../../settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
-import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
-import {Components} from '../../../../rest_api/help_center_api/client.generated'
-import {ShopType} from '../../../../models/selfServiceConfiguration/types'
+import {screen, render} from '@testing-library/react'
+import {Router} from 'react-router-dom'
+import history from 'pages/history'
+import {ConnectedChannelsView} from '../ConnectedChannelsView'
 
-const mockHistoryPush = jest.fn()
-
-const SHOP_NAME = 'test-shop'
-
-const mockSelfServiceConfiguration = {
-    ...selfServiceConfiguration1,
-    type: 'shopify' as ShopType,
-    shop_name: 'my-shop',
-}
-jest.mock('models/workflows/queries', () => ({
-    useGetWorkflowConfigurations: jest.fn(),
-}))
-jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => {
-    return {
-        __esModule: true,
-        default: () => ({
-            isFetchPending: false,
-            isUpdatePending: false,
-            storeIntegration: undefined,
-            selfServiceConfiguration: mockSelfServiceConfiguration,
-            handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
-        }),
-    }
-})
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useParams: jest.fn().mockReturnValue({
-        shopType: 'shopify',
-        shopName: SHOP_NAME,
-    }),
-    useLocation: () => '/',
-    useHistory: () => ({
-        push: mockHistoryPush,
-    }),
+    ...jest.requireActual('react-router-dom'),
+    useParams: jest.fn(() => ({
+        shopType: 'shopType',
+        shopName: 'shopName',
+    })),
+    useRouteMatch: jest.fn(() => ({
+        path: '/app/automation/shopType/shopName/connected-channels',
+    })),
 }))
-jest.mock('models/workflows/queries', () => ({
-    useListWorkflowEntryPoints: jest.fn(),
-    useGetWorkflowConfigurations: jest.fn(),
-}))
-const mockedUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
-const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
-)
-const defaultState = {
-    integrations: fromJS({
-        integrations: [
-            {
-                id: 1,
-                type: IntegrationType.Shopify,
-                meta: {
-                    shop_name: SHOP_NAME,
-                },
-            },
-        ],
-    }),
-    billing: fromJS(billingState),
-}
 
-const mockStore = configureMockStore([thunk])
-
-const renderComponent = (
-    contactForm: Components.Schemas.ContactFormDto = ContactFormFixture
-) => {
-    const mockedStore = mockStore({
-        ...defaultState,
-        entities: {
-            contactForm: {
-                contactFormsAutomationSettings: {
-                    automationSettingsByContactFormId: {
-                        [contactForm.id]: {
-                            workflows: [],
-                            order_management: {enabled: false},
-                        },
-                    },
-                },
-                contactForms: {
-                    contactFormById: _keyBy([contactForm], 'id'),
-                },
-            },
-            selfServiceConfigurations: {},
-            helpCenter: {
-                helpCenters: {
-                    helpCentersById: {
-                        '1': getSingleHelpCenterResponseFixture,
-                    },
-                },
-                helpCentersAutomationSettings: {},
-                articles: articlesState,
-                categories: categoriesState,
-            },
-        },
-    })
-    mockedUseWorkflowConfigurations.mockReturnValue({
-        isLoading: false,
-        data: [mockSelfServiceConfiguration],
-    } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
+const renderDefault = () =>
     render(
-        <BrowserRouter>
-            <Provider store={mockedStore}>
-                <ConnectedChannelsView />
-            </Provider>
-        </BrowserRouter>
+        <Router history={history}>
+            <ConnectedChannelsView />
+        </Router>
     )
-}
-
 describe('ConnectedChannelsView', () => {
-    it('show connected channel when only contact form channels', () => {
-        mockedUseListWorkflowEntryPoints.mockReturnValue({
-            isLoading: false,
-            data: {},
-        } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
-        renderComponent({
-            ...ContactFormFixture,
-            shop_name: SHOP_NAME,
-            help_center_id: null,
-        })
-
-        expect(screen.getByTestId('connected-channels')).toBeInTheDocument()
+    it('should render', () => {
+        renderDefault()
+        expect(screen.getByText('Chat')).toBeInTheDocument()
+        expect(screen.getByText('Help Center')).toBeInTheDocument()
+        expect(screen.getByText('Contact Form')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
     })
 })

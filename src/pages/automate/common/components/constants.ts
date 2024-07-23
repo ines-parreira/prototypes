@@ -151,3 +151,10 @@ export const PaywallConfig: Record<AutomateFeatures, PaywallFeature> = {
         ],
     },
 }
+
+export const AVAILABLE_CHANNELS = {
+    CHAT: 'Chat',
+    HELP_CENTER: 'Help Center',
+    CONTACT_FORM: 'Contact Form',
+    EMAIL: 'Email',
+}
