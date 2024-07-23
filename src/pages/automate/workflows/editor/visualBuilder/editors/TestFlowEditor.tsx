@@ -327,8 +327,20 @@ export const TestFlowEditor = ({
                                         <body>
                                             ${script.outerHTML}
                                             <script type="application/javascript">
-                                            window.localStorage.setItem = function() {}
-                                            window.localStorage.getItem = function() {}
+                                            const mockLocalStorage = new Map()
+                                            
+                                            window.localStorage.setItem = function(keyName, keyValue) {
+                                                mockLocalStorage.set(keyName, keyValue)
+                                            }
+                                            window.localStorage.getItem = function(keyName) {
+                                                return mockLocalStorage.get(keyName)
+                                            }
+                                            window.localStorage.removeItem = function(keyName) {
+                                                mockLocalStorage.delete(keyName)
+                                            }
+                                            window.localStorage.clear = function() {
+                                                mockLocalStorage.clear()
+                                            }
                                             window.WebSocket = function() {}
 
                                             GorgiasChat.init().then(() => {
