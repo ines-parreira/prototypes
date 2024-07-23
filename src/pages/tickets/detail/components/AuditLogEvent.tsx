@@ -529,6 +529,8 @@ export class AuditLogEventContainer extends Component<Props> {
             (user: Map<any, any>) => user.get('id') === event.get('user_id')
         ) as Map<any, any>
 
+        const isSystemEvent = !event.get('user_id')
+
         return (
             <div
                 className={classnames(css.component, {
@@ -555,8 +557,10 @@ export class AuditLogEventContainer extends Component<Props> {
                         ) : !!event.getIn(['data', 'auto_assigned']) ? (
                             <Filler>via Team auto-assignment</Filler>
                         ) : type === CONTENTFUL_EVENT_TYPES.TicketMerged &&
-                          !user ? (
+                          isSystemEvent ? (
                             <Filler>by auto-merge service</Filler>
+                        ) : !user ? (
+                            <Filler>by deleted user</Filler>
                         ) : null}
                     </div>
 
