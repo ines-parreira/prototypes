@@ -1,3 +1,5 @@
+@import '~froala-editor/css/froala_editor.pkgd.min.css';
+
 :local {
     .label {
         margin-bottom: 8px;
@@ -27,9 +29,13 @@
                 white-space: normal;
             }
             .fr-wrapper > .fr-view {
-                p {
-                    font-size: 14px;
-                    font-family: Inter;
+                font-size: 14px;
+                font-family: Inter;
+
+                p,
+                ul,
+                ol {
+                    margin-bottom: 5px;
                 }
             }
             .fr-toolbar {
