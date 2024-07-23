@@ -24,12 +24,8 @@ import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/
 import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
 
 import css from './VoiceCallTable.less'
-import {
-    VoiceCallTableColumnName,
-    skeletonColumnsWidth,
-    tableColumns,
-} from './constants'
-import {Cell, filterAndOrderCells} from './utils'
+import {VoiceCallTableColumnName, skeletonColumnsWidth} from './constants'
+import {Cell, filterAndOrderCells, getVoiceDrillDownColumns} from './utils'
 
 type VoiceCallTableContentProps = {
     data?: VoiceCallSummary[]
@@ -62,7 +58,7 @@ export default function VoiceCallTableContent({
     }
 
     const skeletons = useMemo(() => {
-        const skeletonColumns = columns ?? tableColumns.default
+        const skeletonColumns = columns ?? getVoiceDrillDownColumns()
         const orderedSkeletonColumns = skeletonColumns.map((columnName) => [
             columnName,
             skeletonColumnsWidth[columnName],
@@ -73,7 +69,7 @@ export default function VoiceCallTableContent({
                     <BodyCell
                         key={key}
                         justifyContent={
-                            key === VoiceCallTableColumnName.Length ||
+                            key === VoiceCallTableColumnName.Duration ||
                             key === VoiceCallTableColumnName.WaitTime
                                 ? 'right'
                                 : 'left'
@@ -204,9 +200,17 @@ const getOrderedHeaderCells = ({
                 tooltip: 'Call recording or voicemail left by customer.',
             },
         },
-        [VoiceCallTableColumnName.Length]: {
+        [VoiceCallTableColumnName.Duration]: {
             props: {
-                title: VoiceCallTableColumnName.Length,
+                title: VoiceCallTableColumnName.Duration,
+                justifyContent: 'right',
+                wrapContent: true,
+                className: css.tinyCell,
+            },
+        },
+        [VoiceCallTableColumnName.TalkTime]: {
+            props: {
+                title: VoiceCallTableColumnName.TalkTime,
                 justifyContent: 'right',
                 wrapContent: true,
                 className: css.tinyCell,
@@ -316,9 +320,22 @@ const getOrderedCells = ({
                 ),
             },
         },
-        [VoiceCallTableColumnName.Length]: {
+        [VoiceCallTableColumnName.Duration]: {
             props: {
                 className: css.tinyCell,
+                justifyContent: 'right',
+                children: (
+                    <>
+                        {!!item.duration
+                            ? getFormattedDurationEndedCall(item.duration)
+                            : '-'}
+                    </>
+                ),
+            },
+        },
+        [VoiceCallTableColumnName.TalkTime]: {
+            props: {
+                className: css.smallCell,
                 justifyContent: 'right',
                 children: (
                     <>

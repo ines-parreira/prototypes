@@ -88,7 +88,7 @@ const data = [
         integrationId: null,
         createdAt: '2022-12-26T10:21:00.00.000',
         status: VoiceCallStatus.Missed,
-        duration: 102,
+        duration: null,
         ticketId: null,
         phoneNumberDestination: '+1234567890',
         phoneNumberSource: '+112',
@@ -133,7 +133,7 @@ describe('VoiceCallTableContent', () => {
         expect(getByText('Date')).toBeInTheDocument()
         expect(getByText('State')).toBeInTheDocument()
         expect(getByText('Recording')).toBeInTheDocument()
-        expect(getByText('Length')).toBeInTheDocument()
+        expect(getByText('Duration')).toBeInTheDocument()
         expect(getByText('Wait time')).toBeInTheDocument()
         expect(getByText('Ticket')).toBeInTheDocument()
     })
@@ -156,18 +156,8 @@ describe('VoiceCallTableContent', () => {
             ).toBeInTheDocument()
         )
 
-        // Length tooltip
-        fireEvent.mouseOver(helpIcons[2])
-        await waitFor(() =>
-            expect(
-                getByText(
-                    'Total duration from the moment the agent accepts the call.'
-                )
-            ).toBeInTheDocument()
-        )
-
         // Wait time tooltip
-        fireEvent.mouseOver(helpIcons[3])
+        fireEvent.mouseOver(helpIcons[2])
         await waitFor(() =>
             expect(
                 getByText(

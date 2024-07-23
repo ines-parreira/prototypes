@@ -60,7 +60,11 @@ const CallsCountCell = ({
                 <Skeleton inline width={VOICE_METRIC_COLUMN_WIDTH} />
             ) : metricData ? (
                 <DrillDownModalTrigger
-                    metricData={{...metricData, perAgentId: agent.id}}
+                    metricData={{
+                        ...metricData,
+                        perAgentId: agent.id,
+                        title: `${metricData.title} | ${agent.name}`,
+                    }}
                     enabled={
                         isVoiceCallsDrillDownEnabled &&
                         isDrillDownEnabled &&

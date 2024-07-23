@@ -46,7 +46,11 @@ const AverageTalkTimeCell = ({agent, metricData}: Props) => {
                 <Skeleton inline width={VOICE_METRIC_COLUMN_WIDTH} />
             ) : (
                 <DrillDownModalTrigger
-                    metricData={{...metricData, perAgentId: agent.id}}
+                    metricData={{
+                        ...metricData,
+                        perAgentId: agent.id,
+                        title: `${metricData.title} | ${agent.name}`,
+                    }}
                     enabled={isVoiceCallsDrillDownEnabled && !!metricValue}
                 >
                     {formatMetricValue(
