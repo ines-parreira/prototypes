@@ -153,19 +153,6 @@ export type TextStatAxisValue = {
     type: Exclude<StatType, StatType.Number>
 }
 
-export type StatAxisValue =
-    | number
-    | string
-    | {
-          name: string
-          type: Exclude<StatType, StatType.Number>
-      }
-    | {
-          name: string
-          type: StatType.Number
-          value?: number
-      }
-
 export type NumericStatAxisValue = {
     name: string
     type:

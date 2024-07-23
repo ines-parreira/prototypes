@@ -1,10 +1,7 @@
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment/moment'
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import React from 'react'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {FilterKey} from 'models/stat/types'
-import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import TipsToggle from 'pages/stats/TipsToggle'
 import {WorkloadPerChannelChart} from 'pages/stats/support-performance/components/WorkloadPerChannelChart'
@@ -16,14 +13,12 @@ import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustome
 
 import {
     currentAccountHasFeature,
-    getCurrentAccountCreatedDatetime,
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
 import {AccountFeature} from 'state/currentAccount/types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import BannerNotification from 'pages/common/components/BannerNotifications/BannerNotification'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
 import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
@@ -41,27 +36,10 @@ import {TicketsCreatedVsClosedChartCard} from './support-performance/components/
 
 const SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE = 'Support performance overview'
 export const STATS_TIPS_VISIBILITY_KEY = 'gorgias-stats-tips-visibility'
-export const AGENTS_REPORT_RELEASE_DATE = '2023-08-14'
-export const LEARN_MORE_URL =
-    'https://docs.gorgias.com/en-US/226700-5b26beb8fd254af181bd50281c5bbde6'
-
-export const BANNER_TEXT =
-    'Starting in July 2024, only this version of the report will be available.The legacy version will be deprecated.'
 
 export default function SupportPerformanceOverview() {
-    const accountCreatedDatetime = useAppSelector(
-        getCurrentAccountCreatedDatetime
-    )
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const isLegacyOverviewDeprecated = useIsLegacyOverviewDeprecated()
-    const [isVersionBannerVisible, setIsVersionBannerVisible] = useState(
-        () =>
-            moment(accountCreatedDatetime).isBefore(
-                moment(AGENTS_REPORT_RELEASE_DATE)
-            ) && !isLegacyOverviewDeprecated
-    )
-
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
         currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
     )
@@ -290,22 +268,6 @@ export default function SupportPerformanceOverview() {
                 </DashboardSection>
                 <AnalyticsFooter />
             </StatsPage>
-
-            {isVersionBannerVisible ? (
-                <BannerNotification
-                    actionHTML={
-                        <Link to="/app/stats/support-performance-overview-legacy">
-                            <i className="material-icons">refresh</i> Switch To
-                            Legacy Version
-                        </Link>
-                    }
-                    closable
-                    dismissible={false}
-                    message={<span>{BANNER_TEXT}</span>}
-                    onClose={() => setIsVersionBannerVisible(false)}
-                    borderPosition={'top'}
-                />
-            ) : null}
         </div>
     )
 }

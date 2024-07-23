@@ -1,11 +1,9 @@
-import {fromJS} from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps} from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fireEvent, render} from '@testing-library/react'
-import moment from 'moment'
 import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {TicketsCreatedVsClosedChartCard} from 'pages/stats/support-performance/components/TicketsCreatedVsClosedChartCard'
@@ -20,8 +18,6 @@ import {assumeMock} from 'utils/testing'
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 
 import SupportPerformanceOverview, {
-    AGENTS_REPORT_RELEASE_DATE,
-    BANNER_TEXT,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/SupportPerformanceOverview'
 
@@ -70,23 +66,6 @@ jest.mock('pages/stats/common/filters/FiltersPanel')
 const filtersPanelMock = assumeMock(FiltersPanel)
 
 describe('<SupportPerformanceOverview />', () => {
-    const accountCreatedBeforeRelease = {
-        created_datetime: moment(AGENTS_REPORT_RELEASE_DATE)
-            .subtract(1, 'day')
-            .toISOString(),
-    }
-    const accountCreatedAfterRelease = {
-        created_datetime: moment(AGENTS_REPORT_RELEASE_DATE)
-            .add(1, 'day')
-            .toISOString(),
-    }
-    const stateWithOldAccount = {
-        currentAccount: fromJS(accountCreatedBeforeRelease),
-    }
-    const stateWithFreshAccount = {
-        currentAccount: fromJS(accountCreatedAfterRelease),
-    }
-
     beforeEach(() => {
         jest.resetAllMocks()
         trendCardMock.mockImplementation(({tip}) => (
@@ -193,56 +172,6 @@ describe('<SupportPerformanceOverview />', () => {
         })
     })
 
-    describe('Switching to old version banner', () => {
-        it('should render a banner that allows switching to the old version if user is registered before agents report release date', () => {
-            const date = '2024-06-02T00:00:00.000-07:00'
-            Date.now = () => new Date(date).valueOf()
-
-            const {getByText} = render(
-                <Provider store={mockStore(stateWithOldAccount)}>
-                    <SupportPerformanceOverview />
-                </Provider>
-            )
-
-            expect(
-                getByText(BANNER_TEXT, {
-                    exact: false,
-                })
-            ).toBeInTheDocument()
-        })
-
-        it('should not render a banner after deprecation date', () => {
-            const date = '2024-07-02T00:00:00.000-07:00'
-            Date.now = () => new Date(date).valueOf()
-
-            const {queryByText} = render(
-                <Provider store={mockStore(stateWithOldAccount)}>
-                    <SupportPerformanceOverview />
-                </Provider>
-            )
-
-            expect(
-                queryByText(BANNER_TEXT, {
-                    exact: false,
-                })
-            ).not.toBeInTheDocument()
-        })
-
-        it('should NOT render the switching to the old version banner if user is registered after agents report release date', () => {
-            const {queryByText} = render(
-                <Provider store={mockStore(stateWithFreshAccount)}>
-                    <SupportPerformanceOverview />
-                </Provider>
-            )
-
-            expect(
-                queryByText('Welcome to the new Statistics Overview!', {
-                    exact: false,
-                })
-            ).not.toBeInTheDocument()
-        })
-    })
-
     describe('FiltersHeader', () => {
         beforeEach(() => {
             jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
@@ -252,7 +181,7 @@ describe('<SupportPerformanceOverview />', () => {
 
         it('should show New Filters Panel', () => {
             render(
-                <Provider store={mockStore(stateWithFreshAccount)}>
+                <Provider store={mockStore({})}>
                     <SupportPerformanceOverview />
                 </Provider>
             )

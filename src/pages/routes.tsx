@@ -10,7 +10,6 @@ import {
 } from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useIsLegacyOverviewDeprecated} from 'hooks/reporting/support-performance/useIsLegacyOverviewDeprecated'
 
 import {NotificationsSettings} from 'common/notifications'
 import {logPageChange} from 'common/segment'
@@ -109,7 +108,6 @@ import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisf
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import SupportPerformanceOverview from 'pages/stats/SupportPerformanceOverview'
-import DEPRECATED_SupportPerformanceOverview from 'pages/stats/DEPRECATED_SupportPerformanceOverview'
 import SupportPerformanceBusiestTimesOfDays from 'pages/stats/SupportPerformanceBusiestTimesOfDays'
 import LiveOverview from 'pages/stats/LiveOverview'
 import LiveAgents from 'pages/stats/LiveAgents'
@@ -477,8 +475,6 @@ export function StatsRoutes() {
     const location = useLocation()
     const {path} = useRouteMatch()
 
-    const isLegacyOverviewDeprecated = useIsLegacyOverviewDeprecated()
-
     const hasLiveOverviewFeature = useAppSelector(
         currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
     )
@@ -544,20 +540,6 @@ export function StatsRoutes() {
                         />
                     )}
                 />
-                <Route
-                    exact
-                    path={`${path}/support-performance-overview-legacy`}
-                    render={() => (
-                        <App
-                            content={DEPRECATED_SupportPerformanceOverview}
-                            navbar={StatsNavbarContainer}
-                        />
-                    )}
-                >
-                    {isLegacyOverviewDeprecated && (
-                        <Redirect to={`${path}/support-performance-overview`} />
-                    )}
-                </Route>
                 <Route
                     exact
                     path={`${path}/busiest-times-of-days`}
