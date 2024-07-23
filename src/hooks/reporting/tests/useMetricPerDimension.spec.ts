@@ -1,4 +1,5 @@
 import {UseQueryResult} from '@tanstack/react-query'
+import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
 import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
 import {
@@ -7,6 +8,7 @@ import {
     useMetricPerDimensionWithBreakdown,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
+import {withEnrichment} from 'hooks/reporting/withEnrichment'
 import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
 import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
@@ -19,21 +21,26 @@ import {
     usePostReporting,
 } from 'models/reporting/queries'
 import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
+import {messagesSentMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
 import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {ReportingQuery} from 'models/reporting/types'
+import {postEnrichedReporting} from 'models/reporting/resources'
+import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
 import {assumeMock} from 'utils/testing'
 import {
     BREAKDOWN_FIELD,
     TAG_SEPARATOR,
     VALUE_FIELD,
     withBreakdown,
-} from '../withBreakdown'
+} from 'hooks/reporting/withBreakdown'
 
 jest.mock('models/reporting/queries')
-jest.mock('models/reporting/resources')
 const usePostReportingMock = assumeMock(usePostReporting)
+jest.mock('models/reporting/resources')
 const useEnrichedPostReportingMock = assumeMock(useEnrichedPostReporting)
+const postEnrichedReportingMock = assumeMock(postEnrichedReporting)
+
+jest.mock('hooks/reporting/withEnrichment')
+const withEnrichmentMock = assumeMock(withEnrichment)
 
 describe('useMetricPerDimension', () => {
     const query: ReportingQuery<TicketCubeWithJoins> =
@@ -217,7 +224,7 @@ describe('useMetricPerDimensionWithBreakdown', () => {
 })
 
 describe('useMetricPerDimensionWithEnrichment', () => {
-    it('should send a query with custom queryFn', () => {
+    it('should send a query with custom queryFn', async () => {
         const timezone = 'America'
         const statsFilters = {
             period: {
@@ -225,31 +232,83 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 end_datetime: '2020-01-02T03:04:56.789-10:00',
             },
         }
-        const query = messagesSentQueryFactory(statsFilters, timezone)
+        const query = messagesSentMetricPerTicketDrillDownQueryFactory(
+            statsFilters,
+            timezone
+        )
+        const results = [
+            {[EnrichmentFields.TicketId]: 1, metric: 123},
+            {[EnrichmentFields.TicketId]: 2, metric: 456},
+            {[EnrichmentFields.TicketId]: 3, metric: 789},
+            {[EnrichmentFields.TicketId]: 4, metric: 369},
+            {[EnrichmentFields.TicketId]: 5, metric: 529},
+        ]
+        const enrichments = [
+            {
+                [EnrichmentFields.TicketId]: 1,
+                [EnrichmentFields.Status]: 'open',
+                [EnrichmentFields.Description]: 'Kowalski',
+            },
+            {
+                [EnrichmentFields.TicketId]: 2,
+                [EnrichmentFields.Status]: 'open',
+                [EnrichmentFields.Description]: 'Petrović',
+            },
+            {
+                [EnrichmentFields.TicketId]: 3,
+                [EnrichmentFields.Status]: 'closed',
+                [EnrichmentFields.Description]: 'Dupont',
+            },
+            {
+                [EnrichmentFields.TicketId]: 4,
+                [EnrichmentFields.Description]: null,
+            },
+        ]
         const mockedResponse = {
             isFetching: false,
             isError: false,
-            data: [],
+            data: {
+                data: results,
+                enrichment: enrichments,
+            },
         }
         useEnrichedPostReportingMock.mockReturnValue(mockedResponse as any)
+        postEnrichedReportingMock.mockResolvedValue(mockedResponse as any)
 
         const {result} = renderHook(() =>
-            useMetricPerDimensionWithEnrichment(query, defaultEnrichmentFields)
+            useMetricPerDimensionWithEnrichment(
+                query,
+                defaultEnrichmentFields,
+                EnrichmentFields.TicketId
+            )
         )
 
-        expect(useEnrichedPostReportingMock).toHaveBeenCalledWith(
-            {query, enrichment_fields: defaultEnrichmentFields},
-            {
-                select: expect.any(Function),
-                queryFn: expect.any(Function),
-            }
-        )
-        expect(result.current).toEqual({
-            isFetching: mockedResponse.isFetching,
-            isError: mockedResponse.isError,
-            data: {
-                allData: mockedResponse.data,
-            },
+        const queryFunction =
+            useEnrichedPostReportingMock.mock.calls[0][1]?.queryFn
+
+        await queryFunction?.({} as any)
+
+        await waitFor(() => {
+            expect(useEnrichedPostReportingMock).toHaveBeenCalledWith(
+                {query, enrichment_fields: defaultEnrichmentFields},
+                {
+                    select: expect.any(Function),
+                    queryFn: expect.any(Function),
+                }
+            )
+            expect(result.current).toEqual({
+                isFetching: mockedResponse.isFetching,
+                isError: mockedResponse.isError,
+                data: {
+                    allData: mockedResponse.data,
+                },
+            })
+            expect(withEnrichmentMock).toHaveBeenCalledWith(
+                mockedResponse,
+                query.dimensions[0],
+                defaultEnrichmentFields,
+                EnrichmentFields.TicketId
+            )
         })
     })
 })

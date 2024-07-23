@@ -46,7 +46,8 @@ export const CampaignSalesDrillDownTableContent = ({
     const {data, isFetching} = useEnrichedDrillDownData(
         metricData,
         [EnrichmentFields.CustomerIntegrationDataByExternalId],
-        formatConvertCampaignSalesDrillDownRowData
+        formatConvertCampaignSalesDrillDownRowData,
+        EnrichmentFields.OrderCustomerId
     )
 
     const {allCampaigns} = useCampaignStatsFilters()

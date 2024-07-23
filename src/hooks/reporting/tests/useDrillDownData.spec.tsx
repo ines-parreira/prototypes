@@ -4,20 +4,6 @@ import React from 'react'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {
-    TicketSLADimension,
-    TicketSLAMeasure,
-} from 'models/reporting/cubes/sla/TicketSLACube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {
-    EnrichmentFields,
-    ReportingFilterOperator,
-    ReportingGranularity,
-} from 'models/reporting/types'
 import {TicketChannel, TicketStatus} from 'business/types/ticket'
 import {agents} from 'fixtures/agents'
 import {
@@ -27,9 +13,29 @@ import {
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import {
-    useMetricPerDimensionWithEnrichment,
     useMetricPerDimension,
+    useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
+import useAppDispatch from 'hooks/useAppDispatch'
+import {OrderDirection} from 'models/api/types'
+import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketSLADimension,
+    TicketSLAMeasure,
+} from 'models/reporting/cubes/sla/TicketSLACube'
+import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import {
+    EnrichmentFields,
+    ReportingFilterOperator,
+    ReportingGranularity,
+} from 'models/reporting/types'
+import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
+import {
+    formatConvertCampaignSalesDrillDownRowData,
+    formatTicketDrillDownRowData,
+} from 'pages/stats/DrillDownFormatters'
 import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
 import {RootState, StoreDispatch} from 'state/types'
 import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
@@ -42,12 +48,6 @@ import {
 } from 'state/ui/stats/types'
 import {formatReportingQueryDate} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
-import {
-    formatConvertCampaignSalesDrillDownRowData,
-    formatTicketDrillDownRowData,
-} from 'pages/stats/DrillDownFormatters'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {OrderConversionDimension} from 'pages/stats/convert/clients/constants'
 
 const initialState = {
     ui: {
@@ -130,7 +130,8 @@ describe('DrillDownData hooks', () => {
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId
                     ),
                 {
                     wrapper: ({children}) => (
@@ -171,7 +172,8 @@ describe('DrillDownData hooks', () => {
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId
                     ),
                 {
                     wrapper: ({children}) => (
@@ -205,12 +207,15 @@ describe('DrillDownData hooks', () => {
                     end_datetime,
                 },
             }
+            const enrichmentIdField = EnrichmentFields.TicketId
+
             renderHook(
                 () =>
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        enrichmentIdField
                     ),
                 {
                     wrapper: ({children}) => (
@@ -233,7 +238,8 @@ describe('DrillDownData hooks', () => {
                         }),
                     ]),
                 }),
-                defaultEnrichmentFields
+                defaultEnrichmentFields,
+                enrichmentIdField
             )
         })
 
@@ -243,12 +249,15 @@ describe('DrillDownData hooks', () => {
                 customFieldId: 123,
                 customFieldValue: [],
             }
+            const enrichmentIdField = EnrichmentFields.TicketId
+
             renderHook(
                 () =>
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        enrichmentIdField
                     ),
                 {
                     wrapper: ({children}) => (
@@ -271,7 +280,8 @@ describe('DrillDownData hooks', () => {
                         }),
                     ]),
                 }),
-                defaultEnrichmentFields
+                defaultEnrichmentFields,
+                enrichmentIdField
             )
         })
 
@@ -279,12 +289,15 @@ describe('DrillDownData hooks', () => {
             const metricData: DrillDownMetric = {
                 metricName: OverviewMetric.CustomerSatisfaction,
             }
+            const enrichmentIdField = EnrichmentFields.TicketId
+
             renderHook(
                 () =>
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        enrichmentIdField
                     ),
                 {
                     wrapper: ({children}) => (
@@ -306,7 +319,8 @@ describe('DrillDownData hooks', () => {
                         ],
                     ],
                 }),
-                defaultEnrichmentFields
+                defaultEnrichmentFields,
+                enrichmentIdField
             )
         })
 
@@ -325,13 +339,15 @@ describe('DrillDownData hooks', () => {
             const metricData: DrillDownMetric = {
                 metricName: OverviewMetric.MessagesSent,
             }
+            const enrichmentIdField = EnrichmentFields.TicketId
 
             const {result} = renderHook(
                 () =>
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        enrichmentIdField
                     ),
                 {
                     wrapper: ({children}) => (
@@ -376,7 +392,8 @@ describe('DrillDownData hooks', () => {
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId
                     ),
                 {
                     wrapper: ({children}) => (
@@ -408,7 +425,8 @@ describe('DrillDownData hooks', () => {
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId
                     ),
                 {
                     wrapper: ({children}) => (
@@ -493,7 +511,8 @@ describe('DrillDownData hooks', () => {
                     useEnrichedDrillDownData(
                         metricData,
                         defaultEnrichmentFields,
-                        formatTicketDrillDownRowData
+                        formatTicketDrillDownRowData,
+                        EnrichmentFields.TicketId
                     ),
                 {
                     wrapper: ({children}) => (

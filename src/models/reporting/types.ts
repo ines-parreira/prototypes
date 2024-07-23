@@ -124,4 +124,5 @@ export enum EnrichmentFields {
     ContactReason = 'Ticket.contact_reason',
     IsUnread = 'Ticket.is_unread',
     CustomerIntegrationDataByExternalId = 'CustomerIntegrationDataByExternalId.id',
+    OrderCustomerId = 'OrderConversion.customerId',
 }

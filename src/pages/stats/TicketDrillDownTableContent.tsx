@@ -1,33 +1,33 @@
-import React from 'react'
-
 import classNames from 'classnames'
-import TableHead from 'pages/common/components/table/TableHead'
-import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import css from 'pages/stats/DrillDownTable.less'
-import TableBody from 'pages/common/components/table/TableBody'
+import React from 'react'
 import {
     defaultEnrichmentFields,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import useAppSelector from 'hooks/useAppSelector'
+import {EnrichmentFields} from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
+import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
+import TableBody from 'pages/common/components/table/TableBody'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import TableHead from 'pages/common/components/table/TableHead'
+import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
+import {AgentAvatar} from 'pages/stats/AgentAvatar'
+import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import {
+    formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from 'pages/stats/common/utils'
+import {formatTicketDrillDownRowData} from 'pages/stats/DrillDownFormatters'
+import css from 'pages/stats/DrillDownTable.less'
 import {DrillDownTicketDetailsCell} from 'pages/stats/DrillDownTicketDetailsCell'
+import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
+import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
 import {
     DrillDownMetric,
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {
-    formatMetricValue,
-    NOT_AVAILABLE_PLACEHOLDER,
-} from 'pages/stats/common/utils'
-import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
-import {AgentAvatar} from 'pages/stats/AgentAvatar'
-import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
-import useAppSelector from 'hooks/useAppSelector'
-import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
-import {formatTicketDrillDownRowData} from 'pages/stats/DrillDownFormatters'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -60,7 +60,8 @@ export const TicketDrillDownTableContent = ({
     const {data, isFetching} = useEnrichedDrillDownData(
         metricData,
         defaultEnrichmentFields,
-        formatTicketDrillDownRowData
+        formatTicketDrillDownRowData,
+        EnrichmentFields.TicketId
     )
 
     const columnWidths = {

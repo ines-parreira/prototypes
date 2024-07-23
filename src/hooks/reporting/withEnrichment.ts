@@ -20,7 +20,8 @@ export const withEnrichment = <
         enrichment: (KeyedRecord<K | EnrichmentFields> & IDRecord<ID>)[]
     }>,
     idField: ID,
-    enrichmentFields: K[]
+    enrichmentFields: K[],
+    enrichmentIdField: K
 ): UseEnrichedPostReportingQueryData<{
     data: (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[]
 }> => {
@@ -30,7 +31,8 @@ export const withEnrichment = <
             data: selectWithEnrichment<T, K, ID>(
                 res.data,
                 idField,
-                enrichmentFields
+                enrichmentFields,
+                enrichmentIdField
             ),
         },
     }
@@ -46,7 +48,8 @@ const selectWithEnrichment = <
         enrichment: (KeyedRecord<K | EnrichmentFields> & IDRecord<ID>)[]
     },
     idField: ID,
-    enrichmentFields: K[]
+    enrichmentFields: K[],
+    enrichmentIdField: K
 ): (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[] => {
     return data.data.map((result) => ({
         ...result,
@@ -55,7 +58,8 @@ const selectWithEnrichment = <
             enrichmentFields,
             data.enrichment.find(
                 (enrichedResult) =>
-                    String(enrichedResult[idField]) === String(result[idField])
+                    String(enrichedResult[enrichmentIdField]) ===
+                    String(result[idField])
             )
         ),
     }))

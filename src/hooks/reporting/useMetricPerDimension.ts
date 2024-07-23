@@ -153,7 +153,8 @@ export function useMetricPerDimensionWithBreakdown(
 
 export function useMetricPerDimensionWithEnrichment(
     query: DrillDownReportingQuery,
-    enrichmentFields: EnrichmentFields[]
+    enrichmentFields: EnrichmentFields[],
+    enrichmentIdField: EnrichmentFields
 ): MetricWithEnrichment<
     typeof query['measures'][0],
     typeof query['dimensions'][0]
@@ -193,7 +194,12 @@ export function useMetricPerDimensionWithEnrichment(
                     enrichment: (KeyedRecord<EnrichmentFields> &
                         IDRecord<typeof query['dimensions'][0]>)[]
                 }>(query, enrichmentFields).then((data) =>
-                    withEnrichment(data, idField, enrichmentFields)
+                    withEnrichment(
+                        data,
+                        idField,
+                        enrichmentFields,
+                        enrichmentIdField
+                    )
                 )
             },
         }

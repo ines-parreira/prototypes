@@ -95,7 +95,8 @@ export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
 export function useEnrichedDrillDownData<T>(
     metricData: DrillDownMetric,
     enrichmentFields: EnrichmentFields[],
-    getDrillDownFormatter: (props: DrillDownFormatterProps) => T
+    getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
+    enrichmentIdField: EnrichmentFields
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
@@ -103,7 +104,8 @@ export function useEnrichedDrillDownData<T>(
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
     const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
         query,
-        enrichmentFields
+        enrichmentFields,
+        enrichmentIdField
     )
 
     const rowData = useMemo(

@@ -140,7 +140,8 @@ describe('getDrillDownHook', () => {
             expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
                 metricData,
                 defaultEnrichmentFields,
-                formatTicketDrillDownRowData
+                formatTicketDrillDownRowData,
+                EnrichmentFields.TicketId
             )
         }
     )
@@ -165,7 +166,8 @@ describe('getDrillDownHook', () => {
             expect(useEnrichedDrillDownDataMock).toHaveBeenCalledWith(
                 metricData,
                 [EnrichmentFields.CustomerIntegrationDataByExternalId],
-                formatConvertCampaignSalesDrillDownRowData
+                formatConvertCampaignSalesDrillDownRowData,
+                EnrichmentFields.OrderCustomerId
             )
         }
     )

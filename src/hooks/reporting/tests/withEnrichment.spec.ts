@@ -27,9 +27,14 @@ describe('withEnrichment', () => {
     it('should merge results with enrichment', () => {
         const responseWithEnrichment = withEnrichment<
             'metric',
-            'fieldA' | 'fieldB',
+            'fieldA' | 'fieldB' | EnrichmentFields.TicketId,
             EnrichmentFields
-        >(response as any, EnrichmentFields.TicketId, enrichmentFields)
+        >(
+            response as any,
+            EnrichmentFields.TicketId,
+            enrichmentFields,
+            EnrichmentFields.TicketId
+        )
 
         expect(responseWithEnrichment.data.data).toEqual([
             {
