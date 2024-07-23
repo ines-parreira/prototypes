@@ -153,6 +153,15 @@ describe('VoiceCallTable', () => {
         fireEvent.mouseOver(helpIcons[0])
         await waitFor(() =>
             expect(
+                getByText('Total number of calls that rung an agent', {
+                    exact: false,
+                })
+            ).toBeInTheDocument()
+        )
+
+        fireEvent.mouseOver(helpIcons[1])
+        await waitFor(() =>
+            expect(
                 getByText('Average time agent spent talking to customers')
             ).toBeInTheDocument()
         )

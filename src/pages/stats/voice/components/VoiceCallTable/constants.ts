@@ -1,4 +1,4 @@
-import {VoiceMetric} from 'state/ui/stats/types'
+import {VoiceAgentsMetric, VoiceMetric} from 'state/ui/stats/types'
 
 export enum VoiceCallTableColumnName {
     Activity = 'Activity',
@@ -10,6 +10,15 @@ export enum VoiceCallTableColumnName {
     WaitTime = 'Wait time',
     Ticket = 'Ticket',
 }
+
+const voiceAgentsColumns = [
+    VoiceCallTableColumnName.Activity,
+    VoiceCallTableColumnName.Length,
+    VoiceCallTableColumnName.Integration,
+    VoiceCallTableColumnName.Date,
+    VoiceCallTableColumnName.State,
+    VoiceCallTableColumnName.Recording,
+]
 
 export const tableColumns: Record<string, VoiceCallTableColumnName[]> = {
     default: [
@@ -38,6 +47,11 @@ export const tableColumns: Record<string, VoiceCallTableColumnName[]> = {
         VoiceCallTableColumnName.State,
         VoiceCallTableColumnName.Recording,
     ],
+    [VoiceAgentsMetric.AgentTotalCalls]: voiceAgentsColumns,
+    [VoiceAgentsMetric.AgentInboundAnsweredCalls]: voiceAgentsColumns,
+    [VoiceAgentsMetric.AgentInboundMissedCalls]: voiceAgentsColumns,
+    [VoiceAgentsMetric.AgentOutboundCalls]: voiceAgentsColumns,
+    [VoiceAgentsMetric.AgentAverageTalkTime]: voiceAgentsColumns,
 }
 
 export const skeletonColumnsWidth: Record<string, number> = {

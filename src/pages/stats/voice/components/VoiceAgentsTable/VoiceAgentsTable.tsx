@@ -87,6 +87,9 @@ export const VoiceAgentsTable = () => {
                             justifyContent={'right'}
                             wrapContent={true}
                             className={css.metricCell}
+                            tooltip={
+                                'Total number of calls that rung an agent, including calls that the agent missed or declined.'
+                            }
                         />
                         <HeaderCellProperty
                             title={'Inbound Answered'}
