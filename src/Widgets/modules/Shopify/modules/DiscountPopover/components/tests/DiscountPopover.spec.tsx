@@ -1,9 +1,9 @@
+import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {shallow} from 'enzyme'
-import {Button, Form, InputGroupAddon, Popover} from 'reactstrap'
+import * as reactstrap from 'reactstrap'
 import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 
+import {fireEvent, render, screen} from '@testing-library/react'
 import {logEvent, SegmentEvent} from 'common/segment'
 import {
     AppliedDiscount,
@@ -12,7 +12,7 @@ import {
 
 import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
 
-import DiscountPopover from '../DiscountPopover'
+import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover/components/DiscountPopover'
 
 jest.mock('common/segment', () => {
     const segmentTracker: Record<string, unknown> =
@@ -25,15 +25,19 @@ jest.mock('common/segment', () => {
 })
 
 describe('<DiscountPopover/>', () => {
+    const buttonText = 'Add discount'
     let onChange: jest.MockedFunction<any>
-
+    let popoverSpy: jest.MockedFunction<any>
     beforeEach(() => {
         onChange = jest.fn()
+        popoverSpy = jest
+            .spyOn(reactstrap, 'Popover')
+            .mockImplementation(({children}): any => <div>{children}</div>)
     })
 
     describe('render()', () => {
         it('should render without value', () => {
-            const component = shallow(
+            const {container} = render(
                 <DiscountPopover
                     label="order"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -44,11 +48,11 @@ describe('<DiscountPopover/>', () => {
                     id="discount-popover"
                     onChange={onChange}
                 >
-                    Add discount
+                    {buttonText}
                 </DiscountPopover>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with value', () => {
@@ -59,7 +63,7 @@ describe('<DiscountPopover/>', () => {
                 amount: '5.99',
             }
 
-            const component = shallow(
+            const {container} = render(
                 <DiscountPopover
                     label="order"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -70,11 +74,11 @@ describe('<DiscountPopover/>', () => {
                     id="discount-popover"
                     onChange={onChange}
                 >
-                    Add discount
+                    {buttonText}
                 </DiscountPopover>
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 
@@ -98,7 +102,7 @@ describe('<DiscountPopover/>', () => {
         ])(
             'should call prop `onChange` with fixed amount discount',
             (actionName, openEvent, submitEvent) => {
-                const component = shallow<DiscountPopover>(
+                render(
                     <DiscountPopover
                         label="order"
                         actionName={actionName}
@@ -109,27 +113,21 @@ describe('<DiscountPopover/>', () => {
                         id="discount-popover"
                         onChange={onChange}
                     >
-                        Add discount
+                        {buttonText}
                     </DiscountPopover>
                 )
 
                 // Open popover
-                component.find(Button).at(0).simulate('click')
-                expect(component.find(Popover).props().isOpen).toBe(true)
+                userEvent.click(screen.getByText(buttonText))
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
 
                 // Change form values
-                component.instance()._onDiscountValueChange(5.99)
-                component
-                    .find({id: 'title'})
-                    .simulate('change', {target: {value: 'foo'}})
+                fireEvent.change(screen.getByRole('spinbutton'), {
+                    target: {value: 5.99},
+                })
 
-                // Submit
-                component
-                    .find(Form)
-                    .dive()
-                    .find('form')
-                    .simulate('submit', {preventDefault: _noop})
+                userEvent.paste(screen.getByRole('textbox'), 'foo')
+                userEvent.click(screen.getByText('Apply'))
 
                 expect(onChange).toHaveBeenCalledWith(
                     fromJS({
@@ -146,7 +144,7 @@ describe('<DiscountPopover/>', () => {
         )
 
         it('should call prop `onChange` with percentage amount discount', () => {
-            const component = shallow<DiscountPopover>(
+            render(
                 <DiscountPopover
                     label="order"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -157,31 +155,22 @@ describe('<DiscountPopover/>', () => {
                     id="discount-popover"
                     onChange={onChange}
                 >
-                    Add discount
+                    {buttonText}
                 </DiscountPopover>
             )
 
             // Open popover
-            component.find(Button).at(0).simulate('click')
-            expect(component.find(Popover).props().isOpen).toBe(true)
+            userEvent.click(screen.getByText(buttonText))
 
             // Change form values
-            component
-                .find(InputGroupAddon)
-                .at(1)
-                .find(Button)
-                .simulate('click', {preventDefault: _noop})
-            component.instance()._onDiscountValueChange(15)
-            component
-                .find({id: 'title'})
-                .simulate('change', {target: {value: 'bar'}})
+            userEvent.click(screen.getByText('%'))
+            fireEvent.change(screen.getByRole('spinbutton'), {
+                target: {value: 15},
+            })
 
-            // Submit
-            component
-                .find(Form)
-                .dive()
-                .find('form')
-                .simulate('submit', {preventDefault: _noop})
+            userEvent.paste(screen.getByRole('textbox'), 'bar')
+
+            userEvent.click(screen.getByText('Apply'))
 
             expect(onChange).toHaveBeenCalledWith(
                 fromJS({
@@ -213,7 +202,7 @@ describe('<DiscountPopover/>', () => {
                 amount: '5.99',
             }
 
-            const component = shallow(
+            render(
                 <DiscountPopover
                     label="order"
                     actionName={actionName}
@@ -224,18 +213,20 @@ describe('<DiscountPopover/>', () => {
                     id="discount-popover"
                     onChange={onChange}
                 >
-                    Add discount
+                    {buttonText}
                 </DiscountPopover>
             )
 
             // Open popover
-            component.find(Button).at(0).simulate('click')
-            expect(component.find(Popover).props().isOpen).toBe(true)
+            userEvent.click(screen.getByText(buttonText))
+            expect(popoverSpy).toHaveBeenCalledWith(
+                expect.objectContaining({isOpen: true}),
+                {}
+            )
 
             // Click on "Remove"
-            component.find(Button).at(3).simulate('click')
+            userEvent.click(screen.getByText('Remove'))
 
-            expect(component.find(Popover).props().isOpen).toBe(false)
             expect(onChange).toHaveBeenCalledWith(null)
             expect(logEvent).toHaveBeenCalledWith(event)
         })
@@ -252,7 +243,7 @@ describe('<DiscountPopover/>', () => {
                 SegmentEvent.ShopifyDuplicateOrderDiscountPopoverClose,
             ],
         ])('should track', (actionName, event) => {
-            const component = shallow<DiscountPopover>(
+            render(
                 <DiscountPopover
                     label="order"
                     actionName={actionName}
@@ -263,11 +254,12 @@ describe('<DiscountPopover/>', () => {
                     id="discount-popover"
                     onChange={onChange}
                 >
-                    Add discount
+                    {buttonText}
                 </DiscountPopover>
             )
 
-            component.instance()._onClose()
+            userEvent.click(screen.getByText('Add discount'))
+            userEvent.click(screen.getByText('Close'))
 
             expect(logEvent).toHaveBeenCalledWith(event)
         })

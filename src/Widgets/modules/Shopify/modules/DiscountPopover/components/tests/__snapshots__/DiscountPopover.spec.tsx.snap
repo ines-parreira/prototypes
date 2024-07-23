@@ -2,325 +2,307 @@
 
 exports[`<DiscountPopover/> render() should render with value 1`] = `
 <div>
-  <Button
-    className="button"
-    color="link"
-    disabled={false}
+  <button
+    class="button btn btn-link"
     id="discount-popover"
-    innerRef={[Function]}
-    onClick={[Function]}
-    tabIndex={0}
-    tag="button"
+    tabindex="0"
     type="button"
   >
     <strong>
       Add discount
     </strong>
-  </Button>
+  </button>
   <span
-    className="title"
+    class="title"
   >
     foo
   </span>
-  <Popover
-    className="popover"
-    container={<body />}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="discount-popover"
-    toggle={[Function]}
-    trigger="legacy"
-  >
-    <Form
-      onKeyDown={[Function]}
-      onSubmit={[Function]}
-      tag="form"
+  <div>
+    <form
+      class=""
     >
-      <PopoverBody
-        className="pt-3"
-        tag="div"
+      <div
+        class="pt-3 popover-body"
       >
-        <FormGroup
-          tag="div"
+        <div
+          class="form-group"
         >
-          <Label
+          <label
+            class=""
             for="discount-value"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             Discount this 
             order
              by
-          </Label>
-          <InputGroup
-            tag="div"
+          </label>
+          <div
+            class="input-group"
           >
-            <InputGroupAddon
-              addonType="prepend"
-              tag="div"
+            <div
+              class="input-group-prepend"
             >
-              <Button
-                color="secondary"
-                onClick={[Function]}
-                tabIndex={0}
-                tag="button"
+              <button
+                class="btn btn-secondary"
+                tabindex="0"
+                type="button"
               >
                 $
-              </Button>
-            </InputGroupAddon>
-            <InputGroupAddon
-              addonType="prepend"
-              tag="div"
+              </button>
+            </div>
+            <div
+              class="input-group-prepend"
             >
-              <Button
-                color="secondary"
-                onClick={[Function]}
-                tabIndex={0}
-                tag="button"
+              <button
+                class="btn btn-secondary"
+                tabindex="0"
+                type="button"
               >
                 %
-              </Button>
-            </InputGroupAddon>
-            <AmountInput
-              className="amountInput"
-              currencyCode="USD"
-              disabled={false}
-              id="discount-value"
-              max={10}
-              min={0}
-              onChange={[Function]}
-              required={true}
-              saveInputRef={[Function]}
-              symbol={null}
-              value={5.99}
-            />
-          </InputGroup>
-        </FormGroup>
-        <FormGroup
-          tag="div"
+              </button>
+            </div>
+            <div
+              class="container amountInput"
+            >
+              <span
+                class="wrapper group horizontal"
+              >
+                <span
+                  class="prefix"
+                >
+                  $
+                </span>
+                <input
+                  class="input"
+                  id="discount-value"
+                  max="10"
+                  min="0"
+                  required=""
+                  step="0.01"
+                  type="number"
+                  value="5.99"
+                />
+                <span
+                  class="controls group vertical"
+                >
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small top"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small bottom"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </button>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-group"
         >
-          <Label
+          <label
+            class=""
             for="title"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             Reason
-          </Label>
-          <Input
-            autoComplete="off"
-            className="titleInput"
+          </label>
+          <input
+            autocomplete="off"
+            class="titleInput form-control"
             id="title"
-            onChange={[Function]}
             placeholder="Damaged item, loyalty discount"
             type="text"
             value="foo"
           />
-        </FormGroup>
-      </PopoverBody>
+        </div>
+      </div>
       <hr
-        className="m-0"
+        class="m-0"
       />
-      <PopoverBody
-        className="d-flex"
-        tag="div"
+      <div
+        class="d-flex popover-body"
       >
-        <Button
-          color="danger"
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
+        <button
+          class="btn btn-danger"
+          tabindex="0"
           type="button"
         >
           Remove
-        </Button>
-        <Button
-          className="apply"
-          color="primary"
-          tabIndex={0}
-          tag="button"
+        </button>
+        <button
+          class="apply btn btn-primary"
+          tabindex="0"
           type="submit"
         >
           Apply
-        </Button>
-      </PopoverBody>
-    </Form>
-  </Popover>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;
 
 exports[`<DiscountPopover/> render() should render without value 1`] = `
 <div>
-  <Button
-    className="button"
-    color="link"
-    disabled={false}
+  <button
+    class="button btn btn-link"
     id="discount-popover"
-    innerRef={[Function]}
-    onClick={[Function]}
-    tabIndex={0}
-    tag="button"
+    tabindex="0"
     type="button"
   >
     <strong>
       Add discount
     </strong>
-  </Button>
-  <Popover
-    className="popover"
-    container={<body />}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
-    target="discount-popover"
-    toggle={[Function]}
-    trigger="legacy"
-  >
-    <Form
-      onKeyDown={[Function]}
-      onSubmit={[Function]}
-      tag="form"
+  </button>
+  <div>
+    <form
+      class=""
     >
-      <PopoverBody
-        className="pt-3"
-        tag="div"
+      <div
+        class="pt-3 popover-body"
       >
-        <FormGroup
-          tag="div"
+        <div
+          class="form-group"
         >
-          <Label
+          <label
+            class=""
             for="discount-value"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             Discount this 
             order
              by
-          </Label>
-          <InputGroup
-            tag="div"
+          </label>
+          <div
+            class="input-group"
           >
-            <InputGroupAddon
-              addonType="prepend"
-              tag="div"
+            <div
+              class="input-group-prepend"
             >
-              <Button
-                color="secondary"
-                onClick={[Function]}
-                tabIndex={0}
-                tag="button"
+              <button
+                class="btn btn-secondary"
+                tabindex="0"
+                type="button"
               >
                 $
-              </Button>
-            </InputGroupAddon>
-            <InputGroupAddon
-              addonType="prepend"
-              tag="div"
+              </button>
+            </div>
+            <div
+              class="input-group-prepend"
             >
-              <Button
-                color="secondary"
-                onClick={[Function]}
-                tabIndex={0}
-                tag="button"
+              <button
+                class="btn btn-secondary"
+                tabindex="0"
+                type="button"
               >
                 %
-              </Button>
-            </InputGroupAddon>
-            <AmountInput
-              className="amountInput"
-              currencyCode="USD"
-              disabled={false}
-              id="discount-value"
-              max={10}
-              min={0}
-              onChange={[Function]}
-              required={true}
-              saveInputRef={[Function]}
-              symbol={null}
-              value={0}
-            />
-          </InputGroup>
-        </FormGroup>
-        <FormGroup
-          tag="div"
+              </button>
+            </div>
+            <div
+              class="container amountInput"
+            >
+              <span
+                class="wrapper group horizontal"
+              >
+                <span
+                  class="prefix"
+                >
+                  $
+                </span>
+                <input
+                  class="input"
+                  id="discount-value"
+                  max="10"
+                  min="0"
+                  required=""
+                  step="0.01"
+                  type="number"
+                  value="0.00"
+                />
+                <span
+                  class="controls group vertical"
+                >
+                  <button
+                    aria-disabled="false"
+                    class="wrapper button wrapper small fill secondary small top"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_up
+                    </i>
+                  </button>
+                  <button
+                    aria-disabled="true"
+                    class="wrapper button wrapper small fill secondary small bottom isDisabled"
+                    type="button"
+                  >
+                    <i
+                      class="material-icons icon"
+                    >
+                      arrow_drop_down
+                    </i>
+                  </button>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-group"
         >
-          <Label
+          <label
+            class=""
             for="title"
-            tag="label"
-            widths={
-              [
-                "xs",
-                "sm",
-                "md",
-                "lg",
-                "xl",
-              ]
-            }
           >
             Reason
-          </Label>
-          <Input
-            autoComplete="off"
-            className="titleInput"
+          </label>
+          <input
+            autocomplete="off"
+            class="titleInput form-control"
             id="title"
-            onChange={[Function]}
             placeholder="Damaged item, loyalty discount"
             type="text"
             value=""
           />
-        </FormGroup>
-      </PopoverBody>
+        </div>
+      </div>
       <hr
-        className="m-0"
+        class="m-0"
       />
-      <PopoverBody
-        className="d-flex"
-        tag="div"
+      <div
+        class="d-flex popover-body"
       >
-        <Button
-          color="secondary"
-          onClick={[Function]}
-          tabIndex={0}
-          tag="button"
+        <button
+          class="btn btn-secondary"
+          tabindex="0"
           type="button"
         >
           Close
-        </Button>
-        <Button
-          className="apply"
-          color="primary"
-          tabIndex={0}
-          tag="button"
+        </button>
+        <button
+          class="apply btn btn-primary"
+          tabindex="0"
           type="submit"
         >
           Apply
-        </Button>
-      </PopoverBody>
-    </Form>
-  </Popover>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
 `;
