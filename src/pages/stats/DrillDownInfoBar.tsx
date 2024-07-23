@@ -60,8 +60,7 @@ const getTheInfoLabel = (totalResults: number, objectType: string) => {
     return (
         <>
             Displaying (first) <strong>{DRILLDOWN_QUERY_LIMIT}</strong>{' '}
-            {objectType}
-            used to compute the metric.
+            {objectType} used to compute the metric.
         </>
     )
 }
