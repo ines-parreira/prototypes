@@ -14,6 +14,7 @@ exports[`<TicketHeader /> should render existing ticket 1`] = `
       <input
         class="input editableTitle input"
         id="input-text-3"
+        maxlength="998"
         name="input-text-3"
         placeholder="Subject"
         tabindex="1"
@@ -120,6 +121,7 @@ exports[`<TicketHeader /> should render new ticket 1`] = `
       <input
         class="input editableTitle input"
         id="input-text-1"
+        maxlength="998"
         name="input-text-1"
         placeholder="Subject"
         tabindex="1"
@@ -160,6 +162,7 @@ exports[`<TicketHeader /> should render spam ticket 1`] = `
       <input
         class="input editableTitle input"
         id="input-text-6"
+        maxlength="998"
         name="input-text-6"
         placeholder="Subject"
         tabindex="1"
@@ -246,6 +249,7 @@ exports[`<TicketHeader /> should render trashed ticket 1`] = `
       <input
         class="input editableTitle input"
         id="input-text-9"
+        maxlength="998"
         name="input-text-9"
         placeholder="Subject"
         tabindex="1"

@@ -10,8 +10,8 @@ import React, {
 } from 'react'
 import classnames from 'classnames'
 
-import TextInput from 'pages/common/forms/input/TextInput'
 import useEffectOnce from 'hooks/useEffectOnce'
+import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './EditableTitle.less'
 

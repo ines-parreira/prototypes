@@ -265,6 +265,7 @@ const TicketHeader = ({
                     placeholder="Subject"
                     update={(subject) => dispatch(setSubject(subject))}
                     focus={!ticket.get('id')}
+                    maxLength={998}
                 />
 
                 <div className={css.actions}>

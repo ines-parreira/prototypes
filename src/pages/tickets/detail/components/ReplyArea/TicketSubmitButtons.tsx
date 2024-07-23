@@ -120,7 +120,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
             )}
         >
             <div
-                className={classnames(css.buttons)}
+                className={css.buttons}
                 id="submit-button-div"
                 data-candu-id="ticket-send-and-close-buttons"
             >
