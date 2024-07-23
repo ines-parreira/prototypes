@@ -9,7 +9,7 @@ import {assumeMock} from 'utils/testing'
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)
 
-describe('useTicketSlaTimeSeries', () => {
+describe('useSatisfiedOrBreachedTicketsTimeSeries', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
     const filters: StatsFilters = {

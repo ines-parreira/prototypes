@@ -1,12 +1,12 @@
 import {renderHook} from '@testing-library/react-hooks'
 import {
-    useTicketsInPolicyPerStatus,
-    useTicketsInPolicyPerStatusTrend,
-} from 'hooks/reporting/sla/useTicketsInPolicy'
+    useSatisfiedOrBreachedTicketsInPolicyPerStatus,
+    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
+} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
 import {OrderDirection} from 'models/api/types'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {slaTicketsQueryFactory} from 'models/reporting/queryFactories/sla/slaTickets'
+import {satisfiedOrBreachedTicketsQueryFactory} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
 import {StatsFilters} from 'models/stat/types'
 import {getPreviousPeriod} from 'utils/reporting'
 import {assumeMock} from 'utils/testing'
@@ -14,7 +14,7 @@ import {assumeMock} from 'utils/testing'
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 
-describe('useTicketsInPolicyPerStatus', () => {
+describe('useSatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
     const filters: StatsFilters = {
@@ -29,28 +29,37 @@ describe('useTicketsInPolicyPerStatus', () => {
 
     it('should call a queryFactory', () => {
         renderHook(() =>
-            useTicketsInPolicyPerStatus(filters, timeZone, sorting)
+            useSatisfiedOrBreachedTicketsInPolicyPerStatus(
+                filters,
+                timeZone,
+                sorting
+            )
         )
 
         expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            slaTicketsQueryFactory(filters, timeZone, sorting),
+            satisfiedOrBreachedTicketsQueryFactory(filters, timeZone, sorting),
             undefined
         )
     })
 
     it('should call a queryFactory with specific SlaStatus', () => {
         renderHook(() =>
-            useTicketsInPolicyPerStatus(filters, timeZone, sorting, slaStatus)
+            useSatisfiedOrBreachedTicketsInPolicyPerStatus(
+                filters,
+                timeZone,
+                sorting,
+                slaStatus
+            )
         )
 
         expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            slaTicketsQueryFactory(filters, timeZone, sorting),
+            satisfiedOrBreachedTicketsQueryFactory(filters, timeZone, sorting),
             slaStatus
         )
     })
 })
 
-describe('useTicketsInPolicyPerStatusTrend', () => {
+describe('useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend', () => {
     const startDate = '2021-05-01T00:00:00+02:00'
     const endDate = '2021-05-04T23:59:59+02:00'
     const filters: StatsFilters = {
@@ -65,17 +74,21 @@ describe('useTicketsInPolicyPerStatusTrend', () => {
 
     it('should call a queryFactory for current and previousPeriod', () => {
         renderHook(() =>
-            useTicketsInPolicyPerStatusTrend(filters, timeZone, sorting)
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
+                filters,
+                timeZone,
+                sorting
+            )
         )
 
         expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
             1,
-            slaTicketsQueryFactory(filters, timeZone, sorting),
+            satisfiedOrBreachedTicketsQueryFactory(filters, timeZone, sorting),
             undefined
         )
         expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
             2,
-            slaTicketsQueryFactory(
+            satisfiedOrBreachedTicketsQueryFactory(
                 {
                     ...filters,
                     period: getPreviousPeriod(filters.period),
@@ -89,7 +102,7 @@ describe('useTicketsInPolicyPerStatusTrend', () => {
 
     it('should call a queryFactory with specific SlaStatus', () => {
         renderHook(() =>
-            useTicketsInPolicyPerStatusTrend(
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                 filters,
                 timeZone,
                 sorting,
@@ -99,12 +112,12 @@ describe('useTicketsInPolicyPerStatusTrend', () => {
 
         expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
             1,
-            slaTicketsQueryFactory(filters, timeZone, sorting),
+            satisfiedOrBreachedTicketsQueryFactory(filters, timeZone, sorting),
             slaStatus
         )
         expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
             2,
-            slaTicketsQueryFactory(
+            satisfiedOrBreachedTicketsQueryFactory(
                 {
                     ...filters,
                     period: getPreviousPeriod(filters.period),
@@ -125,7 +138,7 @@ describe('useTicketsInPolicyPerStatusTrend', () => {
         })
 
         const {result} = renderHook(() =>
-            useTicketsInPolicyPerStatusTrend(
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                 filters,
                 timeZone,
                 sorting,
@@ -145,7 +158,7 @@ describe('useTicketsInPolicyPerStatusTrend', () => {
         })
 
         const {result} = renderHook(() =>
-            useTicketsInPolicyPerStatusTrend(
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                 filters,
                 timeZone,
                 sorting,

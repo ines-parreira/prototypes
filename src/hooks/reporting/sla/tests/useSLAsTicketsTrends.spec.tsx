@@ -3,7 +3,7 @@ import {Provider} from 'react-redux'
 import React from 'react'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {useTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useTicketsInPolicy'
+import {useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
 import {assumeMock} from 'utils/testing'
 import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
@@ -11,15 +11,14 @@ import {ReportingGranularity} from 'models/reporting/types'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     useBreachedSlaTicketsTrend,
-    usePendingSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('hooks/reporting/sla/useTicketsInPolicy')
+jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus')
 const useTicketsInPolicyPerStatusTrendMock = assumeMock(
-    useTicketsInPolicyPerStatusTrend
+    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
 )
 
 jest.mock('state/ui/stats/selectors')
@@ -54,10 +53,6 @@ describe('useSLAsTicketsTrends', () => {
         {
             hook: useSatisfiedSlaTicketsTrend,
             expectedTicketStatus: TicketSLAStatus.Satisfied,
-        },
-        {
-            hook: usePendingSlaTicketsTrend,
-            expectedTicketStatus: TicketSLAStatus.Pending,
         },
     ])(
         'should call $hook.name with correct ticket status $expectedTicketStatus',

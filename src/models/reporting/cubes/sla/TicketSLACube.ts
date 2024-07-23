@@ -40,6 +40,10 @@ export enum TicketSLAStatus {
     Pending = 'PENDING',
 }
 
+export type SatisfiedOrBreachedTicketSLAStatus =
+    | TicketSLAStatus.Breached
+    | TicketSLAStatus.Satisfied
+
 export type TicketSLATimeDimensions =
     | ValueOf<TicketSLADimension.SlaAnchorDatetime>
     | ValueOf<TicketSLADimension.PeriodStart>

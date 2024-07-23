@@ -2,12 +2,12 @@ import {OrderDirection} from 'models/api/types'
 import {
     TicketSLACubeWithJoins,
     TicketSLADimension,
+    TicketSLAMeasure,
     TicketSLAMember,
     TicketSLASegment,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
 import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {slaTicketsQueryFactory} from 'models/reporting/queryFactories/sla/slaTickets'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
@@ -15,18 +15,36 @@ import {
     TimeSeriesQuery,
 } from 'models/reporting/types'
 import {StatsFilters} from 'models/stat/types'
-import {getFilterDateRange} from 'utils/reporting'
+import {
+    getFilterDateRange,
+    NotSpamNorTrashedTicketsFilter,
+    statsFiltersToReportingFilters,
+    TicketSLAStatsFiltersMembers,
+} from 'utils/reporting'
 
 export const satisfiedOrBreachedTicketsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
-    ...slaTicketsQueryFactory(filters, timezone, sorting),
+    measures: [TicketSLAMeasure.TicketCount],
+    dimensions: [TicketSLADimension.SlaStatus],
     segments: [
         TicketSLASegment.TicketsWithSlaAnchorDatetimeDuringSelectedPeriod,
     ],
-    filters: [...slaTicketsQueryFactory(filters, timezone, sorting).filters],
+    filters: [
+        ...NotSpamNorTrashedTicketsFilter,
+        ...statsFiltersToReportingFilters(
+            TicketSLAStatsFiltersMembers,
+            filters
+        ),
+    ],
+    timezone,
+    ...(sorting
+        ? {
+              order: [[TicketSLAMeasure.TicketCount, sorting]],
+          }
+        : {}),
 })
 
 export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
@@ -34,9 +52,9 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
     timezone: string,
     granularity: ReportingGranularity
 ): TimeSeriesQuery<TicketSLACubeWithJoins> => ({
-    ...slaTicketsQueryFactory(filters, timezone),
+    ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone),
     filters: [
-        ...slaTicketsQueryFactory(filters, timezone).filters,
+        ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone).filters,
         {
             member: TicketSLAMember.SlaStatus,
             operator: ReportingFilterOperator.Equals,

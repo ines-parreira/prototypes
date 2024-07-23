@@ -4,9 +4,9 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {
-    useTicketsInPolicyPerStatus,
-    useTicketsInPolicyPerStatusTrend,
-} from 'hooks/reporting/sla/useTicketsInPolicy'
+    useSatisfiedOrBreachedTicketsInPolicyPerStatus,
+    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
+} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {
     useTicketSlaAchievementRate,
     useTicketSlaAchievementRateTrend,
@@ -19,10 +19,12 @@ import {assumeMock} from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('hooks/reporting/sla/useTicketsInPolicy')
-const useTicketsInPolicyPerStatusMock = assumeMock(useTicketsInPolicyPerStatus)
-const useTicketsInPolicyPerStatusTrendMock = assumeMock(
-    useTicketsInPolicyPerStatusTrend
+jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus')
+const useSatisfiedOrBreachedTicketsInPolicyPerStatusMock = assumeMock(
+    useSatisfiedOrBreachedTicketsInPolicyPerStatus
+)
+const useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock = assumeMock(
+    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
 )
 jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
@@ -55,16 +57,20 @@ describe('useTicketSlaAchievementRate', () => {
     ])(
         'should calculate achievement rate',
         (satisfiedTickets, breachedTickets, rate) => {
-            useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
-                data: {value: satisfiedTickets, decile: 0, allData: []},
-                isFetching: false,
-                isError: false,
-            })
-            useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
-                data: {value: breachedTickets, decile: 0, allData: []},
-                isFetching: false,
-                isError: false,
-            })
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusMock.mockReturnValueOnce(
+                {
+                    data: {value: satisfiedTickets, decile: 0, allData: []},
+                    isFetching: false,
+                    isError: false,
+                }
+            )
+            useSatisfiedOrBreachedTicketsInPolicyPerStatusMock.mockReturnValueOnce(
+                {
+                    data: {value: breachedTickets, decile: 0, allData: []},
+                    isFetching: false,
+                    isError: false,
+                }
+            )
 
             const {result} = renderHook(() => useTicketSlaAchievementRate(), {
                 wrapper: ({children}) => (
@@ -85,12 +91,12 @@ describe('useTicketSlaAchievementRate', () => {
     it('should calculate achievement rate even when data is not available', () => {
         const breachedTickets = 30
         const expectedRate = 0
-        useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
+        useSatisfiedOrBreachedTicketsInPolicyPerStatusMock.mockReturnValueOnce({
             data: null,
             isFetching: false,
             isError: false,
         })
-        useTicketsInPolicyPerStatusMock.mockReturnValueOnce({
+        useSatisfiedOrBreachedTicketsInPolicyPerStatusMock.mockReturnValueOnce({
             data: {value: breachedTickets, decile: 0, allData: []},
             isFetching: false,
             isError: false,
@@ -136,17 +142,24 @@ describe('useTicketSlaAchievementRateTrend', () => {
         const breachedTickets = 30
         const prevSatisfiedTickets = 5
         const prevBreachedTickets = 15
-        useTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce({
-            data: {value: satisfiedTickets, prevValue: prevSatisfiedTickets},
-            isFetching: false,
-            isError: false,
-        })
+        useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
+            {
+                data: {
+                    value: satisfiedTickets,
+                    prevValue: prevSatisfiedTickets,
+                },
+                isFetching: false,
+                isError: false,
+            }
+        )
 
-        useTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce({
-            data: {value: breachedTickets, prevValue: prevBreachedTickets},
-            isFetching: false,
-            isError: false,
-        })
+        useSatisfiedOrBreachedTicketsInPolicyPerStatusTrendMock.mockReturnValueOnce(
+            {
+                data: {value: breachedTickets, prevValue: prevBreachedTickets},
+                isFetching: false,
+                isError: false,
+            }
+        )
 
         const {result} = renderHook(() => useTicketSlaAchievementRateTrend(), {
             wrapper: ({children}) => (

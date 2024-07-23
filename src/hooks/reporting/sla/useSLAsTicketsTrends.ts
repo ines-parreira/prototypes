@@ -1,4 +1,4 @@
-import {useTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useTicketsInPolicy'
+import {useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
 import {MetricTrend} from 'hooks/reporting/useMetricTrend'
 import useAppSelector from 'hooks/useAppSelector'
 import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
@@ -9,7 +9,7 @@ export const useBreachedSlaTicketsTrend = (): MetricTrend => {
         getCleanStatsFiltersWithTimezone
     )
 
-    return useTicketsInPolicyPerStatusTrend(
+    return useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
         cleanStatsFilters,
         userTimezone,
         undefined,
@@ -22,23 +22,10 @@ export const useSatisfiedSlaTicketsTrend = (): MetricTrend => {
         getCleanStatsFiltersWithTimezone
     )
 
-    return useTicketsInPolicyPerStatusTrend(
+    return useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
         cleanStatsFilters,
         userTimezone,
         undefined,
         TicketSLAStatus.Satisfied
-    )
-}
-
-export const usePendingSlaTicketsTrend = (): MetricTrend => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
-    )
-
-    return useTicketsInPolicyPerStatusTrend(
-        cleanStatsFilters,
-        userTimezone,
-        undefined,
-        TicketSLAStatus.Pending
     )
 }

@@ -7,7 +7,6 @@ import {UseQueryResult} from '@tanstack/react-query'
 import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
 import {
     useBreachedSlaTicketsTrend,
-    usePendingSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
 import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
@@ -42,7 +41,6 @@ jest.mock('utils/file')
 
 jest.mock('hooks/reporting/sla/useSLAsTicketsTrends')
 const useBreachedSlaTicketsTrendMock = assumeMock(useBreachedSlaTicketsTrend)
-const usePendingSlaTicketsTrendMock = assumeMock(usePendingSlaTicketsTrend)
 const useSatisfiedSlaTicketsTrendMock = assumeMock(useSatisfiedSlaTicketsTrend)
 
 jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries')
@@ -91,13 +89,6 @@ describe('DownloadSLAsData', () => {
         ...defaultMetricTrend,
         data: {
             value: 95,
-            prevValue: 100,
-        },
-    }
-    const pendingTicketsSLAsMetricTrend = {
-        ...defaultMetricTrend,
-        data: {
-            value: 96,
             prevValue: 100,
         },
     }
@@ -154,9 +145,6 @@ describe('DownloadSLAsData', () => {
         jest.resetAllMocks()
         useBreachedSlaTicketsTrendMock.mockReturnValue(
             breachedTicketsSLAsMetricTrend
-        )
-        usePendingSlaTicketsTrendMock.mockReturnValue(
-            pendingTicketsSLAsMetricTrend
         )
         useSatisfiedSlaTicketsTrendMock.mockReturnValue(
             satisfiedTicketsSLAsMetricTrend
