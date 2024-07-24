@@ -8,6 +8,9 @@ import {IntegrationType} from 'models/integration/constants'
 import {
     TopQuestionsSection as TopQuestionsSectionComponent,
     TopQuestionsSectionLoading as TopQuestionsSectionLoadingComponent,
+    TopQuestionsSectionAllReviewed as TopQuestionsSectionAllReviewedComponent,
+    TopQuestionsSectionNoRecommendations as TopQuestionsSectionNoRecommendationsComponent,
+    TopQuestionsSectionConnectStoreToEmail as TopQuestionsSectionConnectEmailComponent,
 } from './TopQuestionsSection'
 
 const meta: Meta<typeof TopQuestionsSectionComponent> = {
@@ -41,6 +44,8 @@ const meta: Meta<typeof TopQuestionsSectionComponent> = {
                 templateKey: 'templateKey5',
             },
         ],
+        helpCenterId: 1,
+        storeIntegrationId: 1,
     },
     parameters: {
         layout: 'centered',
@@ -50,32 +55,34 @@ const meta: Meta<typeof TopQuestionsSectionComponent> = {
 export default meta
 type Story = StoryObj<typeof TopQuestionsSectionComponent>
 
+const Renderer = ({children}: {children: React.ReactNode}) => (
+    <MemoryRouter>
+        <div style={{width: '1154px'}}>{children}</div>
+    </MemoryRouter>
+)
+
 export const TopQuestionsSection: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionComponent
+                {...args}
+                onDismiss={action('onDismiss')}
+                onCreateArticle={action('onCreateArticle')}
+            />
+        </Renderer>
     ),
 }
 
 export const TopQuestionsSectionLessThan4: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    topQuestions={args.topQuestions.slice(0, 2)}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionComponent
+                {...args}
+                topQuestions={args.topQuestions.slice(0, 2)}
+                onDismiss={action('onDismiss')}
+                onCreateArticle={action('onCreateArticle')}
+            />
+        </Renderer>
     ),
 }
 
@@ -110,30 +117,38 @@ export const TopQuestionsSectionWideLessThan4: Story = {
 
 export const TopQuestionsSectionNew: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    newQuestionsCount={12}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionComponent
+                {...args}
+                newQuestionsCount={12}
+                onDismiss={action('onDismiss')}
+                onCreateArticle={action('onCreateArticle')}
+            />
+        </Renderer>
     ),
 }
-export const TopQuestionsSectionEmpty: Story = {
+
+export const TopQuestionsSectionAllReviewed: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    topQuestions={[]}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionAllReviewedComponent {...args} />
+        </Renderer>
+    ),
+}
+
+export const TopQuestionsSectionNoRecommendations: Story = {
+    render: (args) => (
+        <Renderer>
+            <TopQuestionsSectionNoRecommendationsComponent {...args} />
+        </Renderer>
+    ),
+}
+
+export const TopQuestionsSectionConnectStoreToEmail: Story = {
+    render: (args) => (
+        <Renderer>
+            <TopQuestionsSectionConnectEmailComponent {...args} />
+        </Renderer>
     ),
 }
 
@@ -141,28 +156,24 @@ export const TopQuestionsSectionLoading: StoryObj<
     typeof TopQuestionsSectionLoadingComponent
 > = {
     render: () => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionLoadingComponent />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionLoadingComponent />
+        </Renderer>
     ),
 }
 
 export const TopQuestionsSectionWithShopFilter: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionComponent
+                {...args}
+                onDismiss={action('onDismiss')}
+                onCreateArticle={action('onCreateArticle')}
+            />
+        </Renderer>
     ),
     args: {
-        shopFilter: {
+        storeFilter: {
             options: [
                 {
                     shopName: 'Brown Sugar Babe',
@@ -190,25 +201,22 @@ export const TopQuestionsSectionWithShopFilter: Story = {
                     integrationId: 5,
                 },
             ],
-            setSelectedShopIntegrationId: action(
+            setSelectedStoreIntegrationId: action(
                 'setSelectedShopIntegrationId'
             ),
         },
-        shopIntegrationId: 1,
     },
 }
 
 export const TopQuestionsSectionWithHelpCenterFilter: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionComponent
+                {...args}
+                onDismiss={action('onDismiss')}
+                onCreateArticle={action('onCreateArticle')}
+            />
+        </Renderer>
     ),
     args: {
         helpCenterFilter: {
@@ -224,27 +232,22 @@ export const TopQuestionsSectionWithHelpCenterFilter: Story = {
             ],
             setSelectedHelpCenterId: action('setSelectedHelpCenterId'),
         },
-        helpCenterId: 1,
     },
 }
 
 export const TopQuestionsSectionWithAllFilters: Story = {
     render: (args) => (
-        <MemoryRouter>
-            <div style={{width: '1154px'}}>
-                <TopQuestionsSectionComponent
-                    {...args}
-                    onDismiss={action('onDismiss')}
-                    onCreateArticle={action('onCreateArticle')}
-                />
-            </div>
-        </MemoryRouter>
+        <Renderer>
+            <TopQuestionsSectionComponent
+                {...args}
+                onDismiss={action('onDismiss')}
+                onCreateArticle={action('onCreateArticle')}
+            />
+        </Renderer>
     ),
     args: {
-        shopFilter: TopQuestionsSectionWithShopFilter.args?.shopFilter,
-        shopIntegrationId: 1,
+        storeFilter: TopQuestionsSectionWithShopFilter.args?.storeFilter,
         helpCenterFilter:
             TopQuestionsSectionWithHelpCenterFilter.args?.helpCenterFilter,
-        helpCenterId: 1,
     },
 }

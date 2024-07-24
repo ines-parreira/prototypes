@@ -56,7 +56,7 @@ describe('<TopQuestionsSection />', () => {
                     ],
                     setSelectedHelpCenterId,
                 }}
-                shopFilter={{
+                storeFilter={{
                     options: [
                         {
                             shopName: 'Brown Sugar Babe',
@@ -84,9 +84,9 @@ describe('<TopQuestionsSection />', () => {
                             integrationId: 5,
                         },
                     ],
-                    setSelectedShopIntegrationId,
+                    setSelectedStoreIntegrationId: setSelectedShopIntegrationId,
                 }}
-                shopIntegrationId={1000}
+                storeIntegrationId={1000}
                 helpCenterId={100}
             />
         )
@@ -148,7 +148,7 @@ describe('<TopQuestionsSection />', () => {
                     ],
                     setSelectedHelpCenterId: jest.fn(),
                 }}
-                shopFilter={{
+                storeFilter={{
                     options: [
                         {
                             shopName: 'Brown Sugar Babe',
@@ -161,9 +161,9 @@ describe('<TopQuestionsSection />', () => {
                             integrationId: 2,
                         },
                     ],
-                    setSelectedShopIntegrationId: jest.fn(),
+                    setSelectedStoreIntegrationId: jest.fn(),
                 }}
-                shopIntegrationId={1000}
+                storeIntegrationId={1000}
                 helpCenterId={100}
             />
         )

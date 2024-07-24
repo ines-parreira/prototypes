@@ -9,15 +9,10 @@ import {
 } from 'models/helpCenter/types'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import useAppSelector from 'hooks/useAppSelector'
-import {useListStoreMappings} from 'models/storeMapping/queries'
-import {StoreMapping} from 'models/storeMapping/types'
-import * as integrationsSelectors from 'state/integrations/selectors'
-import {isGenericEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
 import {FeatureFlagKey} from 'config/featureFlags'
 import {IntegrationType} from 'models/integration/constants'
+import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
 import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
 import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
 
@@ -39,34 +34,13 @@ export const useHelpCenterAIArticlesLibrary = (
     const shopifyIntegrations = useShopifyIntegrations()
     const hasMultiStores = shopifyIntegrations.length > 1
 
-    const integrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
-    )
-
-    const emailIntegrations = useMemo(
-        () => integrations.filter(isGenericEmailIntegration),
-        [integrations]
-    )
-    const emailIntegrationIds = useMemo(
-        () => emailIntegrations.map((emailIntegration) => emailIntegration.id),
-        [emailIntegrations]
-    )
-    const {data: storeMapping} = useListStoreMappings(emailIntegrationIds, {
-        refetchOnWindowFocus: false,
-    })
-
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
         helpCenterShopName ?? ''
     )
 
-    const hasEmailToStoreConnection = useMemo(
-        () =>
-            storeMapping?.some(
-                (mapping: StoreMapping) =>
-                    mapping.store_id === storeIntegration?.id
-            ),
-        [storeIntegration?.id, storeMapping]
+    const hasEmailToStoreConnection = useHasEmailToStoreConnection(
+        storeIntegration?.id
     )
 
     const showLinkToConnectEmailToStore = useMemo(

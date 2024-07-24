@@ -1,30 +1,37 @@
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, {useMemo} from 'react'
 
 import moment from 'moment'
-import {useHistory} from 'react-router-dom'
 import {useConditionalGetAIArticles} from 'pages/settings/helpCenter/hooks/useConditionalGetAIArticles'
-import {NonNullProperties} from 'pages/automate/aiAgent/types'
-import {useLocalStorageTopQuestions} from '../../hooks/useLocalStorageTopQuestions'
+import {ShopifyIntegration} from 'models/integration/types'
+import {HelpCenter} from 'models/helpCenter/types'
 import {useTopQuestionsFilters} from './useTopQuestionsFilters'
 
 import css from './AutomateLandingPageTopQuestions.less'
-import {TopQuestionsSection} from './TopQuestionsSection'
+import {
+    TopQuestionsSection,
+    TopQuestionsSectionAllReviewed,
+    TopQuestionsSectionConnectStoreToEmail,
+    TopQuestionsSectionLoading,
+    TopQuestionsSectionNoRecommendations,
+    TopQuestionsSectionProps,
+} from './TopQuestionsSection'
 import {filteredSortedTopQuestionsFromFetchedArticles} from './utils'
+import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
+import {useViewedOnPage} from './useViewedOnPage'
 
-type TopQuestionsSectionWithFiltersProps = NonNullProperties<
-    Omit<ReturnType<typeof useTopQuestionsFilters>, 'isLoading'>
->
+type TopQuestionsSectionWithFiltersProps = {
+    selectedStore: ShopifyIntegration
+    selectedHelpCenter: HelpCenter
+    storeFilter: TopQuestionsSectionProps['storeFilter']
+    helpCenterFilter: TopQuestionsSectionProps['helpCenterFilter']
+}
 
 const TopQuestionsSectionWithFilters = ({
     selectedStore,
-    setSelectedStore,
     selectedHelpCenter,
-    setSelectedHelpCenter,
-    storeOptions,
-    helpCentersOptions,
+    storeFilter,
+    helpCenterFilter,
 }: TopQuestionsSectionWithFiltersProps) => {
-    const history = useHistory()
-
     const {fetchedArticles, isLoading} = useConditionalGetAIArticles({
         helpCenterId: selectedHelpCenter.id,
         storeIntegrationId: selectedStore.id,
@@ -39,97 +46,110 @@ const TopQuestionsSectionWithFilters = ({
         [fetchedArticles, isLoading]
     )
 
-    const {viewedOnPages, addViewedOnPage} = useLocalStorageTopQuestions(
+    const viewedOnPage = useViewedOnPage(
         selectedStore.id,
         selectedHelpCenter.id,
-        batchDatetime
+        batchDatetime,
+        'automate-overview'
     )
-
-    const onLeavePage = useCallback(() => {
-        addViewedOnPage('automate-overview')
-    }, [addViewedOnPage])
-
-    useEffect(() => {
-        const unlisten = history.listen(onLeavePage)
-        window.addEventListener('beforeunload', onLeavePage)
-
-        return () => {
-            unlisten()
-            window.removeEventListener('beforeunload', onLeavePage)
-        }
-    }, [history, onLeavePage])
-
-    useEffect(() => history.listen(onLeavePage), [history, onLeavePage])
 
     const topQuestions = useMemo(
         () => filteredSortedTopQuestionsFromFetchedArticles(fetchedArticles),
         [fetchedArticles]
     )
 
-    const shopFilter = useMemo(
-        () =>
-            storeOptions.length > 1
-                ? {
-                      options: storeOptions.map((store) => ({
-                          shopName: store.name,
-                          shopType: store.type,
-                          integrationId: store.id,
-                      })),
-                      selectedShopIntegrationId: selectedStore.id,
-                      setSelectedShopIntegrationId: (integrationId: number) => {
-                          const selectedStore = storeOptions.find(
-                              (store) => store.id === integrationId
-                          )
-                          if (selectedStore) {
-                              setSelectedStore(selectedStore)
-                          }
-                      },
-                  }
-                : undefined,
-        [storeOptions, selectedStore, setSelectedStore]
-    )
+    const newQuestionsCount = viewedOnPage ? undefined : topQuestions.length
 
-    const helpCenterFilter = useMemo(
-        () =>
-            helpCentersOptions.length > 1
-                ? {
-                      options: helpCentersOptions.map((helpCenter) => ({
-                          name: helpCenter.name,
-                          helpCenterId: helpCenter.id,
-                      })),
-                      selectedHelpCenterId: selectedHelpCenter.id,
-                      setSelectedHelpCenterId: (helpCenterId: number) => {
-                          const selectedHelpCenter = helpCentersOptions.find(
-                              (helpCenter) => helpCenter.id === helpCenterId
-                          )
+    const isSingleStore = !storeFilter || storeFilter.options.length < 2
 
-                          if (selectedHelpCenter) {
-                              setSelectedHelpCenter(selectedHelpCenter)
-                          }
-                      },
-                  }
-                : undefined,
-        [helpCentersOptions, selectedHelpCenter, setSelectedHelpCenter]
-    )
+    // TODO: this is a placeholder for when we have create article & dismiss article actions
+    // we need to remember that the merchant has interacted with the top questions section so that,
+    // if there are less than 4 top questions, we keep showing them, not just hide them
+    const wasJustReviewed = false
 
-    if (isLoading || !fetchedArticles || fetchedArticles.length < 4) {
-        return null
+    if (isSingleStore) {
+        if (isLoading || (topQuestions.length < 4 && !wasJustReviewed)) {
+            return null
+        }
+
+        if (topQuestions.length === 0) {
+            return (
+                <div className={css.topQuestionsWrapper}>
+                    <TopQuestionsSectionAllReviewed
+                        storeFilter={storeFilter}
+                        helpCenterFilter={helpCenterFilter}
+                        storeIntegrationId={selectedStore.id}
+                        helpCenterId={selectedHelpCenter.id}
+                    />
+                </div>
+            )
+        }
+
+        return (
+            <div className={css.topQuestionsWrapper}>
+                <TopQuestionsSection
+                    newQuestionsCount={newQuestionsCount}
+                    topQuestions={topQuestions}
+                    onCreateArticle={() => {}}
+                    onDismiss={() => {}}
+                    storeFilter={storeFilter}
+                    helpCenterFilter={helpCenterFilter}
+                    storeIntegrationId={selectedStore.id}
+                    helpCenterId={selectedHelpCenter.id}
+                />
+            </div>
+        )
+    }
+
+    if (isLoading) {
+        return (
+            <div className={css.topQuestionsWrapper}>
+                <TopQuestionsSectionLoading
+                    storeFilter={storeFilter}
+                    helpCenterFilter={helpCenterFilter}
+                    storeIntegrationId={selectedStore.id}
+                    helpCenterId={selectedHelpCenter.id}
+                />
+            </div>
+        )
+    }
+
+    if (topQuestions.length < 4 && !wasJustReviewed) {
+        return (
+            <div className={css.topQuestionsWrapper}>
+                <TopQuestionsSectionNoRecommendations
+                    storeFilter={storeFilter}
+                    helpCenterFilter={helpCenterFilter}
+                    storeIntegrationId={selectedStore.id}
+                    helpCenterId={selectedHelpCenter.id}
+                />
+            </div>
+        )
+    }
+
+    if (topQuestions.length === 0) {
+        return (
+            <div className={css.topQuestionsWrapper}>
+                <TopQuestionsSectionAllReviewed
+                    storeFilter={storeFilter}
+                    helpCenterFilter={helpCenterFilter}
+                    storeIntegrationId={selectedStore.id}
+                    helpCenterId={selectedHelpCenter.id}
+                />
+            </div>
+        )
     }
 
     return (
         <div className={css.topQuestionsWrapper}>
             <TopQuestionsSection
-                newQuestionsCount={
-                    viewedOnPages.has('automate-overview')
-                        ? undefined
-                        : topQuestions.length
-                }
+                newQuestionsCount={newQuestionsCount}
                 topQuestions={topQuestions}
                 onCreateArticle={() => {}}
                 onDismiss={() => {}}
-                shopFilter={shopFilter}
+                storeFilter={storeFilter}
                 helpCenterFilter={helpCenterFilter}
-                shopIntegrationId={selectedStore.id}
+                storeIntegrationId={selectedStore.id}
                 helpCenterId={selectedHelpCenter.id}
             />
         </div>
@@ -140,31 +160,40 @@ export const AutomateLandingPageTopQuestions = () => {
     const {
         isLoading,
         selectedStore,
-        setSelectedStore,
+        storeFilter,
         selectedHelpCenter,
-        setSelectedHelpCenter,
-        storeOptions,
-        helpCentersOptions,
+        helpCenterFilter,
     } = useTopQuestionsFilters({})
 
-    if (
-        isLoading ||
-        !storeOptions ||
-        !helpCentersOptions ||
-        !selectedStore ||
-        !selectedHelpCenter
-    ) {
+    const hasEmailToStoreConnection = useHasEmailToStoreConnection(
+        selectedStore?.id
+    )
+
+    if (isLoading || !selectedStore || !selectedHelpCenter) {
         return null
+    }
+
+    const isMultiStore = storeFilter && storeFilter.options.length > 1
+
+    if (!hasEmailToStoreConnection && isMultiStore) {
+        return (
+            <div className={css.topQuestionsWrapper}>
+                <TopQuestionsSectionConnectStoreToEmail
+                    storeFilter={storeFilter}
+                    helpCenterFilter={helpCenterFilter}
+                    storeIntegrationId={selectedStore.id}
+                    helpCenterId={selectedHelpCenter.id}
+                />
+            </div>
+        )
     }
 
     return (
         <TopQuestionsSectionWithFilters
             selectedStore={selectedStore}
-            setSelectedStore={setSelectedStore}
+            storeFilter={storeFilter}
             selectedHelpCenter={selectedHelpCenter}
-            setSelectedHelpCenter={setSelectedHelpCenter}
-            storeOptions={storeOptions}
-            helpCentersOptions={helpCentersOptions}
+            helpCenterFilter={helpCenterFilter}
         />
     )
 }

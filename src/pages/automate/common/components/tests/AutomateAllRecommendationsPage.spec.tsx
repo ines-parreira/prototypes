@@ -9,44 +9,56 @@ import {RootState, StoreDispatch} from 'state/types'
 import {useSearchParam} from 'hooks/useSearchParam'
 import {assumeMock} from 'utils/testing'
 import {initialState} from 'state/ui/stats/drillDownSlice'
+import {IntegrationType} from 'models/integration/constants'
 import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
 import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
 import {useLocalStorageTopQuestions} from '../../hooks/useLocalStorageTopQuestions'
 
-const storeOptionsFixture = [
-    {
-        name: 'Store 1',
-        id: 1,
-    },
-    {
-        name: 'Store 2',
-        id: 2,
-    },
-    {
-        name: 'Store 3',
-        id: 3,
-    },
-    {
-        name: 'Store 4',
-        id: 4,
-    },
-    {
-        name: 'Store 5',
-        id: 5,
-    },
-]
+const storeFilter = {
+    options: [
+        {
+            shopName: 'Store 1',
+            shopType: IntegrationType.Shopify,
+            integrationId: 1,
+        },
+        {
+            shopName: 'Store 2',
+            shopType: IntegrationType.Shopify,
+            integrationId: 2,
+        },
+        {
+            shopName: 'Store 3',
+            shopType: IntegrationType.Shopify,
+            integrationId: 3,
+        },
+        {
+            shopName: 'Store 4',
+            shopType: IntegrationType.Shopify,
+            integrationId: 4,
+        },
+        {
+            shopName: 'Store 5',
+            shopType: IntegrationType.Shopify,
+            integrationId: 5,
+        },
+    ],
+    setSelectedStoreIntegrationId: jest.fn(),
+}
 
-const helpCenterOptionsFixture = [
-    {
-        name: 'Help Center 1',
-        id: 11,
-    },
-    {
-        name: 'Help Center 2',
-        id: 22,
-    },
-]
+const helpCenterFilter = {
+    options: [
+        {
+            name: 'Help Center 1',
+            helpCenterId: 11,
+        },
+        {
+            name: 'Help Center 2',
+            helpCenterId: 22,
+        },
+    ],
+    setSelectedHelpCenterId: jest.fn(),
+}
 
 const paginatedItemsFixture = [
     {
@@ -94,10 +106,6 @@ jest.mock('../../hooks/useLocalStorageTopQuestions')
 const mockUseLocalStorageTopQuestions = assumeMock(useLocalStorageTopQuestions)
 
 describe('<AutomateAllRecommendationsPage />', () => {
-    const param1 = 'store_integration_id'
-    const value1 = '1'
-    const param2 = 'help_center_id'
-    const value2 = '11'
     const history = createMemoryHistory()
     const defaultState = {
         ui: {
@@ -118,19 +126,23 @@ describe('<AutomateAllRecommendationsPage />', () => {
         jest.resetAllMocks()
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
-            search: `${param1}=${value1}&${param2}=${value2}`,
+            search: `store_integration_id=1&help_center_id=11`,
             state: undefined,
             hash: '',
         })
         mockUseSearchParam.mockReturnValue([null, jest.fn()])
         mockUseTopQuestionsFilters.mockReturnValue({
             isLoading: false,
-            selectedStore: storeOptionsFixture[0],
-            setSelectedStore: jest.fn(),
-            selectedHelpCenter: helpCenterOptionsFixture[0],
-            setSelectedHelpCenter: jest.fn(),
-            storeOptions: storeOptionsFixture,
-            helpCentersOptions: helpCenterOptionsFixture,
+            selectedStore: {
+                name: storeFilter.options[0].shopName,
+                id: storeFilter.options[0].integrationId,
+            },
+            storeFilter,
+            selectedHelpCenter: {
+                name: helpCenterFilter.options[0].name,
+                id: helpCenterFilter.options[0].helpCenterId,
+            },
+            helpCenterFilter,
         } as unknown as ReturnType<typeof useTopQuestionsFilters>)
         mockUseAIArticleRecommendationItems.mockReturnValue({
             paginatedItems: paginatedItemsFixture,
@@ -152,11 +164,15 @@ describe('<AutomateAllRecommendationsPage />', () => {
         mockUseTopQuestionsFilters.mockReturnValueOnce({
             isLoading: true,
             selectedStore: undefined,
-            setSelectedStore: jest.fn(),
             selectedHelpCenter: undefined,
-            setSelectedHelpCenter: jest.fn(),
-            storeOptions: [],
-            helpCentersOptions: [],
+            storeFilter: {
+                options: [],
+                setSelectedStoreIntegrationId: jest.fn(),
+            },
+            helpCenterFilter: {
+                options: [],
+                setSelectedHelpCenterId: jest.fn(),
+            },
         })
         const {container} = renderComponent()
 
@@ -171,26 +187,82 @@ describe('<AutomateAllRecommendationsPage />', () => {
         expect(screen.getByText('ARCHIVED')).toBeInTheDocument()
     })
     it('updates query params when store changes', async () => {
-        renderComponent()
+        const {rerender} = renderComponent()
 
         fireEvent.click(screen.getByText('Store 4'))
 
         await waitFor(() => {
-            expect(history.push).toHaveBeenCalledWith({
-                pathname: '/app/automation/ai-recommendations',
-                search: `${param1}=4&${param2}=${value2}`,
-            })
+            expect(
+                storeFilter.setSelectedStoreIntegrationId
+            ).toHaveBeenCalledWith(4)
         })
-    })
-    it('updates query params when Help Center changes', async () => {
-        renderComponent()
 
-        fireEvent.click(screen.getByText('Help Center 2'))
+        mockUseTopQuestionsFilters.mockReturnValue({
+            isLoading: false,
+            selectedStore: {
+                name: 'Store 4',
+                id: 4,
+            },
+            storeFilter,
+            selectedHelpCenter: {
+                name: helpCenterFilter.options[0].name,
+                id: helpCenterFilter.options[0].helpCenterId,
+            },
+            helpCenterFilter,
+        } as unknown as ReturnType<typeof useTopQuestionsFilters>)
+
+        rerender(
+            <Router history={history}>
+                <Provider store={mockStore(defaultState)}>
+                    <AutomateAllRecommendationsPage />
+                </Provider>
+            </Router>
+        )
 
         await waitFor(() => {
             expect(history.push).toHaveBeenCalledWith({
                 pathname: '/app/automation/ai-recommendations',
-                search: `${param1}=${value1}&${param2}=22`,
+                search: `store_integration_id=4&help_center_id=11`,
+            })
+        })
+    })
+    it('updates query params when Help Center changes', async () => {
+        const {rerender} = renderComponent()
+
+        fireEvent.click(screen.getByText('Help Center 2'))
+
+        await waitFor(() => {
+            expect(
+                helpCenterFilter.setSelectedHelpCenterId
+            ).toHaveBeenCalledWith(22)
+        })
+
+        mockUseTopQuestionsFilters.mockReturnValue({
+            isLoading: false,
+            selectedStore: {
+                name: storeFilter.options[0].shopName,
+                id: storeFilter.options[0].integrationId,
+            },
+            storeFilter,
+            selectedHelpCenter: {
+                name: helpCenterFilter.options[1].name,
+                id: helpCenterFilter.options[1].helpCenterId,
+            },
+            helpCenterFilter,
+        } as unknown as ReturnType<typeof useTopQuestionsFilters>)
+
+        rerender(
+            <Router history={history}>
+                <Provider store={mockStore(defaultState)}>
+                    <AutomateAllRecommendationsPage />
+                </Provider>
+            </Router>
+        )
+
+        await waitFor(() => {
+            expect(history.push).toHaveBeenCalledWith({
+                pathname: '/app/automation/ai-recommendations',
+                search: `store_integration_id=1&help_center_id=22`,
             })
         })
     })

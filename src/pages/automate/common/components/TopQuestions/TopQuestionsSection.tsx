@@ -29,7 +29,7 @@ export type TopQuestionsSectionProps = {
         options: {name: string; helpCenterId: number}[]
         setSelectedHelpCenterId: (helpCenterId: number) => void
     }
-    shopFilter?: {
+    storeFilter?: {
         options: {
             shopName: string
             shopType:
@@ -38,22 +38,22 @@ export type TopQuestionsSectionProps = {
                 | IntegrationType.Magento2
             integrationId: number
         }[]
-        setSelectedShopIntegrationId: (integrationId: number) => void
+        setSelectedStoreIntegrationId: (integrationId: number) => void
     }
-    shopIntegrationId: number
+    storeIntegrationId: number
     helpCenterId: number
 }
 
-export const ShopFilter = ({
-    shopIntegrationId,
-    shopFilter,
+export const StoreFilter = ({
+    storeIntegrationId,
+    storeFilter,
 }: {
-    shopIntegrationId: number
-    shopFilter: Required<TopQuestionsSectionProps>['shopFilter']
+    storeIntegrationId: number
+    storeFilter: Required<TopQuestionsSectionProps>['storeFilter']
 }) => {
     const options = useMemo(
         () =>
-            shopFilter.options.map((option) => ({
+            storeFilter.options.map((option) => ({
                 value: option.integrationId,
                 text: option.shopName,
                 label: (
@@ -67,14 +67,14 @@ export const ShopFilter = ({
                     </div>
                 ),
             })),
-        [shopFilter.options]
+        [storeFilter.options]
     )
 
     return (
         <SelectField
-            value={shopIntegrationId}
+            value={storeIntegrationId}
             onChange={(value) => {
-                shopFilter.setSelectedShopIntegrationId(value as number)
+                storeFilter.setSelectedStoreIntegrationId(value as number)
             }}
             options={options}
             dropdownMenuClassName={css.filterDropdownMenu}
@@ -125,33 +125,33 @@ export const HelpCenterFilter = ({
 }
 
 const Header = ({
-    shopFilter,
+    storeFilter,
     helpCenterFilter,
-    shopIntegrationId,
+    storeIntegrationId,
     helpCenterId,
     newQuestionsCount,
 }: Partial<
     Pick<
         TopQuestionsSectionProps,
-        | 'shopFilter'
+        | 'storeFilter'
         | 'helpCenterFilter'
         | 'newQuestionsCount'
-        | 'shopIntegrationId'
+        | 'storeIntegrationId'
         | 'helpCenterId'
     >
 >) => {
     const viewAllLink = useMemo(() => {
-        if (!helpCenterId || !shopIntegrationId) {
+        if (!helpCenterId || !storeIntegrationId) {
             return null
         }
 
         const searchParams = new URLSearchParams({
             help_center_id: helpCenterId.toString(),
-            store_integration_id: shopIntegrationId.toString(),
+            store_integration_id: storeIntegrationId.toString(),
         }).toString()
 
         return `${VIEW_ALL_LINK}?${searchParams}`
-    }, [helpCenterId, shopIntegrationId])
+    }, [helpCenterId, storeIntegrationId])
 
     return (
         <>
@@ -187,10 +187,10 @@ const Header = ({
                 </div>
 
                 <div className={css.filters}>
-                    {shopFilter && shopIntegrationId && (
-                        <ShopFilter
-                            shopFilter={shopFilter}
-                            shopIntegrationId={shopIntegrationId}
+                    {storeFilter && storeIntegrationId && (
+                        <StoreFilter
+                            storeFilter={storeFilter}
+                            storeIntegrationId={storeIntegrationId}
                         />
                     )}
                     {helpCenterFilter && helpCenterId && (
@@ -205,17 +205,125 @@ const Header = ({
     )
 }
 
-const TopQuestionsEmpty = () => (
-    <div className={css.topQuestionsEmpty}>
-        <div className={css.allReviewed}>
-            You’ve reviewed every recommendation!
+export const TopQuestionsSectionNoRecommendations = ({
+    storeFilter,
+    helpCenterFilter,
+    storeIntegrationId,
+    helpCenterId,
+}: Pick<
+    TopQuestionsSectionProps,
+    'storeFilter' | 'helpCenterFilter' | 'storeIntegrationId' | 'helpCenterId'
+>) => (
+    <TopQuestionsSectionWrapper
+        storeFilter={storeFilter}
+        helpCenterFilter={helpCenterFilter}
+        storeIntegrationId={storeIntegrationId}
+        helpCenterId={helpCenterId}
+    >
+        <div className={css.topQuestionsEmpty}>
+            <div className={css.noRecommendationsYet}>
+                You have no recommendations for this store yet.
+            </div>
         </div>
-        <div className={css.checkAgainLater}>Check again later for more.</div>
-        <div>
-            <Link className={css.viewAll} to={VIEW_ALL_LINK}>
-                View All
-            </Link>
+    </TopQuestionsSectionWrapper>
+)
+
+export const TopQuestionsSectionConnectStoreToEmail = ({
+    storeFilter,
+    helpCenterFilter,
+    storeIntegrationId,
+    helpCenterId,
+}: Pick<
+    TopQuestionsSectionProps,
+    'storeFilter' | 'helpCenterFilter' | 'storeIntegrationId' | 'helpCenterId'
+>) => (
+    <TopQuestionsSectionWrapper
+        storeFilter={storeFilter}
+        helpCenterFilter={helpCenterFilter}
+        storeIntegrationId={storeIntegrationId}
+        helpCenterId={helpCenterId}
+    >
+        <div className={css.topQuestionsEmpty}>
+            <div className={css.connectToEmail}>
+                This store must be connected to an email to receive
+                recommendations.
+            </div>
+
+            <div>
+                <Link
+                    className={css.link}
+                    to={'/app/settings/channels/email'}
+                    target="_blank"
+                >
+                    Connect store to email
+                </Link>
+            </div>
         </div>
+    </TopQuestionsSectionWrapper>
+)
+
+export const TopQuestionsSectionAllReviewed = ({
+    storeFilter,
+    helpCenterFilter,
+    storeIntegrationId,
+    helpCenterId,
+    newQuestionsCount,
+}: Pick<
+    TopQuestionsSectionProps,
+    | 'storeFilter'
+    | 'helpCenterFilter'
+    | 'storeIntegrationId'
+    | 'helpCenterId'
+    | 'newQuestionsCount'
+>) => (
+    <TopQuestionsSectionWrapper
+        storeFilter={storeFilter}
+        helpCenterFilter={helpCenterFilter}
+        storeIntegrationId={storeIntegrationId}
+        helpCenterId={helpCenterId}
+        newQuestionsCount={newQuestionsCount}
+    >
+        <div className={css.topQuestionsEmpty}>
+            <div className={css.allReviewed}>
+                You’ve reviewed every recommendation!
+            </div>
+            <div className={css.checkAgainLater}>
+                Check again later for more.
+            </div>
+            <div>
+                <Link className={css.link} to={VIEW_ALL_LINK}>
+                    View All
+                </Link>
+            </div>
+        </div>
+    </TopQuestionsSectionWrapper>
+)
+
+const TopQuestionsSectionWrapper = ({
+    storeFilter,
+    helpCenterFilter,
+    storeIntegrationId,
+    helpCenterId,
+    newQuestionsCount,
+    children,
+}: Pick<
+    TopQuestionsSectionProps,
+    | 'storeFilter'
+    | 'helpCenterFilter'
+    | 'storeIntegrationId'
+    | 'helpCenterId'
+    | 'newQuestionsCount'
+> & {children: React.ReactNode}) => (
+    <div className={css.container}>
+        <Header
+            storeFilter={storeFilter}
+            helpCenterFilter={helpCenterFilter}
+            storeIntegrationId={storeIntegrationId}
+            helpCenterId={helpCenterId}
+            newQuestionsCount={newQuestionsCount}
+        />
+
+        <div className={css.topQuestions}>{children}</div>
     </div>
 )
 
@@ -223,51 +331,37 @@ export const TopQuestionsSection = ({
     topQuestions,
     onCreateArticle,
     onDismiss,
-    shopFilter,
+    storeFilter,
     helpCenterFilter,
     newQuestionsCount,
-    shopIntegrationId,
+    storeIntegrationId,
     helpCenterId,
 }: TopQuestionsSectionProps) => {
     const top4Questions = topQuestions.slice(0, 4)
 
     return (
-        <div className={css.container}>
-            <Header
-                shopFilter={shopFilter}
-                helpCenterFilter={helpCenterFilter}
-                shopIntegrationId={shopIntegrationId}
-                helpCenterId={helpCenterId}
-                newQuestionsCount={newQuestionsCount}
-            />
-
-            <div className={css.topQuestions}>
-                {top4Questions.length > 0 ? (
-                    <>
-                        {top4Questions.map((question) => (
-                            <TopQuestionCard
-                                key={question.templateKey}
-                                ticketsCount={question.ticketsCount}
-                                title={question.title}
-                                onCreateArticle={() =>
-                                    onCreateArticle(question.templateKey)
-                                }
-                                onDismiss={() =>
-                                    onDismiss(question.templateKey)
-                                }
-                            />
-                        ))}
-                        {Array.from({length: 4 - top4Questions.length}).map(
-                            (_, index) => (
-                                <TopQuestionCardGhost key={index} />
-                            )
-                        )}
-                    </>
-                ) : (
-                    <TopQuestionsEmpty />
-                )}
-            </div>
-        </div>
+        <TopQuestionsSectionWrapper
+            storeFilter={storeFilter}
+            helpCenterFilter={helpCenterFilter}
+            storeIntegrationId={storeIntegrationId}
+            helpCenterId={helpCenterId}
+            newQuestionsCount={newQuestionsCount}
+        >
+            {top4Questions.map((question) => (
+                <TopQuestionCard
+                    key={question.templateKey}
+                    ticketsCount={question.ticketsCount}
+                    title={question.title}
+                    onCreateArticle={() =>
+                        onCreateArticle(question.templateKey)
+                    }
+                    onDismiss={() => onDismiss(question.templateKey)}
+                />
+            ))}
+            {Array.from({length: 4 - top4Questions.length}).map((_, index) => (
+                <TopQuestionCardGhost key={index} />
+            ))}
+        </TopQuestionsSectionWrapper>
     )
 }
 
@@ -275,9 +369,9 @@ export const TopQuestionsSectionLoading = (
     headerProps: Partial<
         Pick<
             TopQuestionsSectionProps,
-            | 'shopFilter'
+            | 'storeFilter'
             | 'helpCenterFilter'
-            | 'shopIntegrationId'
+            | 'storeIntegrationId'
             | 'helpCenterId'
         >
     >

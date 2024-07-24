@@ -2,6 +2,7 @@ import {useEffect, useMemo, useState} from 'react'
 import {ShopifyIntegration} from 'models/integration/types'
 import {HelpCenter} from 'models/helpCenter/types'
 import {useTopQuestionsStoresWithHelpCenters} from './useTopQuestionsStoresWithHelpCenters'
+import {makeHelpCenterFilter, makeStoreFilter} from './utils'
 
 type StoreWithHelpCenters = {
     store: ShopifyIntegration
@@ -11,6 +12,33 @@ type StoreWithHelpCenters = {
 type Props = {
     initialStoreId?: number
     initialHelpCenterId?: number
+}
+
+const findInitialStoreAndHelpCenter = (
+    storesWithHelpCenters: StoreWithHelpCenters[],
+    initialStoreId?: number,
+    initialHelpCenterId?: number
+) => {
+    const initialStore =
+        storesWithHelpCenters.find(({store: {id}}) => id === initialStoreId) ??
+        storesWithHelpCenters.find(({helpCenters}) =>
+            helpCenters.some(({id}) => id === initialHelpCenterId)
+        ) ??
+        storesWithHelpCenters[0]
+
+    if (!initialStore) {
+        return
+    }
+
+    const initialHelpCenter =
+        initialStore.helpCenters.find(({id}) => id === initialHelpCenterId) ??
+        initialStore.helpCenters[0]
+
+    if (!initialHelpCenter) {
+        return
+    }
+
+    return {initialStore: initialStore.store, initialHelpCenter}
 }
 
 export const useTopQuestionsFilters = ({
@@ -43,83 +71,75 @@ export const useTopQuestionsFilters = ({
     >(undefined)
 
     useEffect(() => {
-        function selectDefaultStoreAndHelpCenter() {
-            if (
-                !isLoading &&
-                !selectedStore &&
-                storesWithHelpCenters.length > 0
-            ) {
-                const {store, helpCenters} = storesWithHelpCenters[0]
-
-                setSelectedStore(store)
-
-                if (!selectedHelpCenter && helpCenters.length > 0) {
-                    setSelectedHelpCenter(helpCenters[0])
-                }
-            }
+        if (isLoading) {
+            return
         }
 
-        selectDefaultStoreAndHelpCenter()
-    }, [isLoading, selectedHelpCenter, selectedStore, storesWithHelpCenters])
+        if (!selectedStore || !selectedHelpCenter) {
+            const initialStoreAndHelpCenter = findInitialStoreAndHelpCenter(
+                storesWithHelpCenters,
+                initialStoreId,
+                initialHelpCenterId
+            )
 
-    useEffect(() => {
-        if (initialStoreId || initialHelpCenterId) {
-            let store: ShopifyIntegration | undefined
-            let helpCenter: HelpCenter | undefined
-
-            if (initialStoreId) {
-                store = storesWithHelpCenters.find(
-                    ({store}) => store.id === initialStoreId
-                )?.store
-                if (store) {
-                    if (initialHelpCenterId) {
-                        helpCenter = storesById[store.id].helpCenters.find(
-                            (hc) => hc.id === initialHelpCenterId
-                        )
-                    }
-                    if (!helpCenter) {
-                        helpCenter = storesById[store.id]?.helpCenters[0]
-                    }
-                }
-            }
-            if (!store && initialHelpCenterId) {
-                for (const {store: s, helpCenters} of storesWithHelpCenters) {
-                    const hc = helpCenters.find(
-                        (hc) => hc.id === initialHelpCenterId
-                    )
-                    if (hc) {
-                        helpCenter = hc
-                        store = s
-                        break
-                    }
-                }
+            if (initialStoreAndHelpCenter) {
+                setSelectedStore(initialStoreAndHelpCenter.initialStore)
+                setSelectedHelpCenter(
+                    initialStoreAndHelpCenter.initialHelpCenter
+                )
             }
 
-            if (store) {
-                setSelectedStore(store)
-                setSelectedHelpCenter(helpCenter)
-                return
+            return
+        }
+
+        const selectedStoreWithHelpCenters = storesWithHelpCenters.find(
+            ({store}) => store.id === selectedStore.id
+        )
+
+        if (selectedStoreWithHelpCenters) {
+            const isNotOneOfStoreHelpCenters =
+                !selectedStoreWithHelpCenters.helpCenters.some(
+                    ({id}) => id === selectedHelpCenter.id
+                )
+
+            if (isNotOneOfStoreHelpCenters) {
+                setSelectedHelpCenter(
+                    selectedStoreWithHelpCenters.helpCenters[0]
+                )
             }
         }
     }, [
         isLoading,
-        selectedStore,
-        storesWithHelpCenters,
-        selectedHelpCenter,
         initialStoreId,
         initialHelpCenterId,
-        storesById,
+        selectedStore,
+        selectedHelpCenter,
+        storesWithHelpCenters,
     ])
+
+    const storeFilter = useMemo(
+        () =>
+            makeStoreFilter(
+                storesWithHelpCenters.map(({store}) => store),
+                setSelectedStore
+            ),
+        [storesWithHelpCenters, setSelectedStore]
+    )
+
+    const helpCenterFilter = useMemo(
+        () =>
+            makeHelpCenterFilter(
+                selectedStore ? storesById[selectedStore.id].helpCenters : [],
+                setSelectedHelpCenter
+            ),
+        [selectedStore, storesById, setSelectedHelpCenter]
+    )
 
     return {
         isLoading,
         selectedStore,
-        setSelectedStore,
+        storeFilter,
         selectedHelpCenter,
-        setSelectedHelpCenter,
-        storeOptions: storesWithHelpCenters.map(({store}) => store),
-        helpCentersOptions: selectedStore
-            ? storesById[selectedStore.id].helpCenters
-            : [],
+        helpCenterFilter,
     }
 }

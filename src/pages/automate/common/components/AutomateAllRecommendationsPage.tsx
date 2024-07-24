@@ -1,8 +1,7 @@
 import React, {useCallback, useEffect} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 import {useSearchParam} from 'hooks/useSearchParam'
-import {ShopifyIntegration} from 'models/integration/types'
-import {HelpCenter} from 'models/helpCenter/types'
+
 import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
 import {useTopQuestionsFilters} from './TopQuestions/useTopQuestionsFilters'
 
@@ -23,11 +22,9 @@ const AutomateAllRecommendationsPage = () => {
     const {
         isLoading,
         selectedStore,
-        setSelectedStore,
+        storeFilter,
         selectedHelpCenter,
-        setSelectedHelpCenter,
-        storeOptions,
-        helpCentersOptions,
+        helpCenterFilter,
     } = useTopQuestionsFilters({initialStoreId, initialHelpCenterId})
 
     const [page] = useSearchParam('page')
@@ -86,24 +83,6 @@ const AutomateAllRecommendationsPage = () => {
         }
     }, [initialHelpCenterId, selectedHelpCenter, updateQueryParams])
 
-    const onStoreChange = (store: ShopifyIntegration) => {
-        if (selectedStore !== store) {
-            setSelectedStore(store)
-            updateQueryParams({
-                store_integration_id: store.id,
-            })
-        }
-    }
-
-    const onHelpCenterChange = (helpCenter: HelpCenter) => {
-        if (selectedHelpCenter !== helpCenter) {
-            setSelectedHelpCenter(helpCenter)
-            updateQueryParams({
-                help_center_id: helpCenter.id,
-            })
-        }
-    }
-
     const onPageChange = (page: number) => {
         if (currentPage !== page) {
             updateQueryParams({page})
@@ -112,8 +91,8 @@ const AutomateAllRecommendationsPage = () => {
 
     if (
         isLoading ||
-        !storeOptions ||
-        !helpCentersOptions ||
+        !selectedHelpCenter ||
+        !selectedStore ||
         !selectedStore ||
         !selectedHelpCenter
     ) {
@@ -123,11 +102,9 @@ const AutomateAllRecommendationsPage = () => {
     return (
         <AutomateAllRecommendationsView
             selectedStore={selectedStore}
-            onStoreChange={onStoreChange}
             selectedHelpCenter={selectedHelpCenter}
-            onHelpCenterChange={onHelpCenterChange}
-            storeOptions={storeOptions}
-            helpCentersOptions={helpCentersOptions}
+            storeFilter={storeFilter}
+            helpCenterFilter={helpCenterFilter}
             currentPage={currentPage}
             onPageChange={onPageChange}
         />

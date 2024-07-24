@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import React, {useState} from 'react'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
 import StatsPage from 'pages/stats/StatsPage'
 import {ShopifyIntegration} from 'models/integration/types'
@@ -8,35 +8,34 @@ import {
     AllRecommendationsStatus,
     useAIArticleRecommendationItems,
 } from '../hooks/useAIArticleRecommendationItems'
-import {useLocalStorageTopQuestions} from '../hooks/useLocalStorageTopQuestions'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
-import {HelpCenterFilter, ShopFilter} from './TopQuestions/TopQuestionsSection'
+import {
+    HelpCenterFilter,
+    StoreFilter,
+    TopQuestionsSectionProps,
+} from './TopQuestions/TopQuestionsSection'
 import css from './AutomateAllRecommendationsView.less'
+import {useViewedOnPage} from './TopQuestions/useViewedOnPage'
 
 const ITEMS_PER_PAGE = 15
 
 type AutomateAllRecommendationsViewProps = {
     selectedStore: ShopifyIntegration
-    onStoreChange: (store: ShopifyIntegration) => void
     selectedHelpCenter: HelpCenter
-    onHelpCenterChange: (helpCenter: HelpCenter) => void
-    storeOptions: ShopifyIntegration[]
-    helpCentersOptions: HelpCenter[]
     currentPage: number
     onPageChange: (page: number) => void
+    storeFilter: TopQuestionsSectionProps['storeFilter']
+    helpCenterFilter: TopQuestionsSectionProps['helpCenterFilter']
 }
 
 const AutomateAllRecommendationsView = ({
     selectedStore,
-    onStoreChange,
+    storeFilter,
     selectedHelpCenter,
-    onHelpCenterChange,
-    storeOptions,
-    helpCentersOptions,
+    helpCenterFilter,
     currentPage,
     onPageChange,
 }: AutomateAllRecommendationsViewProps) => {
-    const history = useHistory()
     const [statusFilter, setStatusFilter] = useState<AllRecommendationsStatus>(
         AllRecommendationsStatus.NotCreated
     )
@@ -56,75 +55,11 @@ const AutomateAllRecommendationsView = ({
         itemsPerPage: ITEMS_PER_PAGE,
     })
 
-    const {viewedOnPages, addViewedOnPage} = useLocalStorageTopQuestions(
+    const viewedOnPage = useViewedOnPage(
         selectedStore.id,
         selectedHelpCenter.id,
-        moment(batchDatetime).toDate()
-    )
-
-    const onLeavePage = useCallback(() => {
-        addViewedOnPage('all-recommendations')
-    }, [addViewedOnPage])
-
-    useEffect(() => {
-        window.addEventListener('beforeunload', onLeavePage)
-
-        return () => {
-            window.removeEventListener('beforeunload', onLeavePage)
-        }
-    }, [onLeavePage])
-
-    useEffect(() => {
-        const unlisten = history.listen(onLeavePage)
-
-        return () => {
-            unlisten()
-        }
-    }, [history, onLeavePage])
-
-    const shopFilter = useMemo(
-        () =>
-            storeOptions.length > 1
-                ? {
-                      options: storeOptions.map((store) => ({
-                          shopName: store.name,
-                          shopType: store.type,
-                          integrationId: store.id,
-                      })),
-                      selectedShopIntegrationId: selectedStore.id,
-                      setSelectedShopIntegrationId: (integrationId: number) => {
-                          const selectedStore = storeOptions.find(
-                              (store) => store.id === integrationId
-                          )
-                          if (selectedStore) {
-                              onStoreChange(selectedStore)
-                          }
-                      },
-                  }
-                : undefined,
-        [storeOptions, selectedStore, onStoreChange]
-    )
-
-    const helpCenterFilter = useMemo(
-        () =>
-            helpCentersOptions.length > 1
-                ? {
-                      options: helpCentersOptions.map((helpCenter) => ({
-                          name: helpCenter.name,
-                          helpCenterId: helpCenter.id,
-                      })),
-                      selectedHelpCenterId: selectedHelpCenter.id,
-                      setSelectedHelpCenterId: (helpCenterId: number) => {
-                          const selectedHelpCenter = helpCentersOptions.find(
-                              (helpCenter) => helpCenter.id === helpCenterId
-                          )
-                          if (selectedHelpCenter) {
-                              onHelpCenterChange(selectedHelpCenter)
-                          }
-                      },
-                  }
-                : undefined,
-        [helpCentersOptions, selectedHelpCenter.id, onHelpCenterChange]
+        batchDatetime ? moment(batchDatetime).toDate() : new Date(),
+        'all-recommendations'
     )
 
     return (
@@ -141,10 +76,10 @@ const AutomateAllRecommendationsView = ({
                         </Link>
                     </div>
                     <div className={css.filters}>
-                        {shopFilter && (
-                            <ShopFilter
-                                shopFilter={shopFilter}
-                                shopIntegrationId={selectedStore.id}
+                        {storeFilter && (
+                            <StoreFilter
+                                storeFilter={storeFilter}
+                                storeIntegrationId={selectedStore.id}
                             />
                         )}
                         {helpCenterFilter && (
@@ -168,10 +103,7 @@ const AutomateAllRecommendationsView = ({
                     setStatusFilter={setStatusFilter}
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    displayNewBadge={
-                        !viewedOnPages.has('all-recommendations') &&
-                        totalItemsCount > 0
-                    }
+                    displayNewBadge={!viewedOnPage && totalItemsCount > 0}
                     helpCenterId={selectedHelpCenter.id}
                 />
             </div>
