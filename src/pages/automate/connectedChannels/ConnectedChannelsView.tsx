@@ -5,6 +5,7 @@ import AutomateView from '../common/components/AutomateView'
 import {AVAILABLE_CHANNELS, CHANNELS} from '../common/components/constants'
 
 import css from './ConnectedChannelsView.less'
+import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
 
 export const ConnectedChannelsView = () => {
     const {shopType, shopName} = useParams<{
@@ -40,7 +41,11 @@ export const ConnectedChannelsView = () => {
         >
             <Container fluid className={css.pageContainer}>
                 <Switch>
-                    <Route path={path} exact component={() => <>Chat</>} />
+                    <Route
+                        path={path}
+                        exact
+                        component={() => <ConnectedChannelsChatView />}
+                    />
                     <Route
                         path={`${path}/help-center`}
                         component={() => <>Help Center</>}

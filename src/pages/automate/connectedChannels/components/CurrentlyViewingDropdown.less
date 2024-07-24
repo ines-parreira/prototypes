@@ -1,0 +1,46 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout.less';
+@import (reference) '~css/typography.less';
+
+:local {
+    .currentlyViewingDropdown {
+        display: flex;
+        flex-direction: column;
+        gap: @layout-spacing-xs;
+    }
+
+    .dropdownButton {
+        border: 1px solid #e0e0e0 !important;
+        width: 100%;
+        justify-content: flex-start;
+        gap: @layout-spacing-xs;
+    }
+
+    .chatItemIcon {
+        color: var(--neutral-grey-4);
+        width: 16px;
+        height: 16px;
+    }
+
+    .dropdownItem {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+    }
+
+    .dropdownButtonSpacer {
+        flex: 1;
+    }
+
+    .dropdownCtaItem {
+        display: flex;
+        gap: @layout-spacing-xs;
+        align-items: center;
+        color: var(--main-primary);
+        .body-regular();
+    }
+
+    .chatCtaIcon {
+        color: var(--main-primary);
+        font-size: 20px;
+    }
+}
