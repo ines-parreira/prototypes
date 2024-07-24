@@ -11,7 +11,7 @@ export const useCreateCampaign = () => {
     const queryClient = useQueryClient()
 
     return usePureCreateCampaign({
-        onSuccess: (data, [, requestData]) => {
+        onSuccess: (data) => {
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
@@ -20,7 +20,6 @@ export const useCreateCampaign = () => {
             )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                requestData?.channel_connection_id,
                 (data as unknown as Campaign).id
             )
         },

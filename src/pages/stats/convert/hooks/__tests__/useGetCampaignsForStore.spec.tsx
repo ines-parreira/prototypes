@@ -72,8 +72,12 @@ describe('useGetCampaignsForStore', () => {
         } as any)
     })
 
-    describe('no integration is selected', () => {
+    describe('no integration is selected and no request is called', () => {
         it('returns an empty list', () => {
+            // simulate hook not being enabled
+            useListCampaignMock.mockReturnValue({
+                data: undefined,
+            } as any)
             const store = createStore(
                 (state) => state as RootState,
                 defaultState

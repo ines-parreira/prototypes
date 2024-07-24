@@ -315,7 +315,7 @@ describe('<DrillDownTable />', () => {
             },
         ]
         useCampaignStatsFiltersMock.mockReturnValue({
-            allCampaigns: [campaign],
+            campaigns: [campaign],
         } as unknown as any)
 
         const renderTableForCampaignSales = (metricData: DrillDownMetric) => {

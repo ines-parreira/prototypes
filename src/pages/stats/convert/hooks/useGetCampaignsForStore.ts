@@ -5,8 +5,12 @@ import useAppSelector from 'hooks/useAppSelector'
 import {getIntegrationsByType} from 'state/integrations/selectors'
 
 import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
-import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import {
+    CampaignListOptions as CampaignListOptionsParams,
+    CampaignPreview,
+} from 'models/convert/campaign/types'
 import {useListCampaigns} from 'models/convert/campaign/queries'
+import {getCampaignStatus} from 'pages/stats/convert/utils/getCampaignStatus'
 
 export function useGetCampaignsForStore(
     selectedIntegrations: number[],
@@ -49,11 +53,14 @@ export function useGetCampaignsForStore(
             campaignListOptions.channelConnectionExternalIds?.length > 0,
     })
 
-    const campaigns = useMemo(() => {
-        return !!campaignListOptions && !!convertCampaigns
-            ? convertCampaigns
-            : []
-    }, [campaignListOptions, convertCampaigns])
+    const campaigns: CampaignPreview[] = useMemo(() => {
+        return (convertCampaigns || []).map((campaign) => {
+            return {
+                ...campaign,
+                status: getCampaignStatus(campaign),
+            } as CampaignPreview
+        })
+    }, [convertCampaigns])
 
     return {
         campaigns,

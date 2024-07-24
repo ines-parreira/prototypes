@@ -15,6 +15,8 @@ import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/Campaign
 
 import {formatNumber} from 'pages/stats/common/utils'
 
+import Badge from 'gorgias-design-system/Badge/Badge'
+import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {TotalRevenueCell} from '../TotalRevenueCell'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
@@ -87,6 +89,25 @@ export const CampaignTableCell = ({
                 </BodyCell>
             )
         }
+    }
+
+    if (column.key === CampaignTableKeys.CampaignCurrentStatus) {
+        const getColorForStatus = (status: InferredCampaignStatus) => {
+            switch (status) {
+                case InferredCampaignStatus.Active:
+                    return 'accessoryGreen'
+                case InferredCampaignStatus.Deleted:
+                    return 'accessoryRed'
+                default:
+                    return 'accessoryGrey'
+            }
+        }
+
+        return (
+            <BodyCell {...bodyCellProps}>
+                <Badge label={data} color={getColorForStatus(data)} />
+            </BodyCell>
+        )
     }
 
     if (column.format === CampaignTableValueFormat.Currency) {

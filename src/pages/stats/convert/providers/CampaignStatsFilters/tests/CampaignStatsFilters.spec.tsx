@@ -59,29 +59,6 @@ describe('CampaignStatsFilters', () => {
         useShopifyIntegrationsMock.mockReturnValue([{id: 1} as any])
     })
 
-    it('should provide the correct value for allCampaigns', () => {
-        useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
-
-        const TestComponent = () => (
-            <FiltersContext.Consumer>
-                {({allCampaigns}) =>
-                    allCampaigns.map((campaign) => (
-                        <div key={campaign.id}>{campaign.id}</div>
-                    ))
-                }
-            </FiltersContext.Consumer>
-        )
-
-        const {getByText} = render(
-            <CampaignStatsFilters>
-                <TestComponent />
-            </CampaignStatsFilters>
-        )
-
-        expect(getByText(campaign.id)).toBeInTheDocument()
-        expect(getByText(deletedCampaignId)).toBeInTheDocument()
-    })
-
     it('should provide the correct value for campaigns', () => {
         useGetCampaignsForStoreMock.mockReturnValue(campaignsForStore as any)
 
@@ -102,7 +79,7 @@ describe('CampaignStatsFilters', () => {
         )
 
         expect(getByText(campaign.id)).toBeInTheDocument()
-        expect(queryByText(deletedCampaignId)).not.toBeInTheDocument()
+        expect(queryByText(deletedCampaignId)).toBeInTheDocument()
     })
 
     it('should provide the correct value for channelConnectionExternalIds', () => {

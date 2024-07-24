@@ -22,8 +22,15 @@ export type CampaignListOptions = {
     channelConnectionExternalIds?: string[]
 }
 
+export enum InferredCampaignStatus {
+    Active = 'active',
+    Inactive = 'inactive',
+    Deleted = 'deleted',
+}
+
 export type CampaignPreview = {
     id: string
     name: string
+    status: InferredCampaignStatus
     is_light: boolean
 }

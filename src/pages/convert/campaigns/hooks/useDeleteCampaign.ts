@@ -19,7 +19,6 @@ export const useDeleteCampaign = () => {
             )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                params?.channelConnectionId,
                 params.campaign_id
             )
         },

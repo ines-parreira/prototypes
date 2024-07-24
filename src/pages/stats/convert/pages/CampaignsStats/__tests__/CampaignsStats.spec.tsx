@@ -13,7 +13,7 @@ import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 
 import {campaign} from 'fixtures/campaign'
-import {Campaign} from 'models/convert/campaign/types'
+import {CampaignPreview} from 'models/convert/campaign/types'
 import {IntegrationType} from 'models/integration/constants'
 import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
@@ -87,7 +87,7 @@ describe('CampaignsStats', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
         useGetCampaignsForStoreMock.mockReturnValue({
-            campaigns: [campaign as Campaign],
+            campaigns: [campaign as CampaignPreview],
             channelConnectionExternalIds: [],
         })
 

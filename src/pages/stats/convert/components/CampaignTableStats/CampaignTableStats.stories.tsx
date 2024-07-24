@@ -1,6 +1,7 @@
 import React, {ComponentProps} from 'react'
 import {Meta, Story} from '@storybook/react'
 
+import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {CampaignTableStats} from './CampaignTableStats'
 
 const storyConfig: Meta = {
@@ -20,6 +21,7 @@ Default.args = {
                 id: '1234',
                 name: 'Test campaign',
                 is_light: false,
+                status: InferredCampaignStatus.Active,
             },
             currency: 'USD',
             metrics: {

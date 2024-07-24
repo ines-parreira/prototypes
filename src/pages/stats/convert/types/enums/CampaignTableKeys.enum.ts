@@ -1,5 +1,6 @@
 export enum CampaignTableKeys {
     CampaignName = 'campaignName',
+    CampaignCurrentStatus = 'campaignCurrentStatus',
     // Core
     TotalRevenue = 'totalRevenue',
     TotalRevenueShare = 'totalRevenueShare',

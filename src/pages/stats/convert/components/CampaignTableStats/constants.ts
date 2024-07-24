@@ -8,6 +8,11 @@ export const CAMPAIGN_TABLE_CELLS: CampaignTableColumn[] = [
         title: 'Campaign name',
     },
     {
+        key: CampaignTableKeys.CampaignCurrentStatus,
+        title: 'Status',
+        tooltip: 'Current status of the campaign',
+    },
+    {
         key: CampaignTableKeys.TotalRevenue,
         title: 'Total revenue',
         format: CampaignTableValueFormat.Currency,

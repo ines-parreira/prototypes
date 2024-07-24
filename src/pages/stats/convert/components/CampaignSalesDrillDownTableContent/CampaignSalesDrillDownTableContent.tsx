@@ -50,9 +50,9 @@ export const CampaignSalesDrillDownTableContent = ({
         EnrichmentFields.OrderCustomerId
     )
 
-    const {allCampaigns} = useCampaignStatsFilters()
+    const {campaigns} = useCampaignStatsFilters()
 
-    const enrichedData = useGetCampaignSalesDrillDownData(data, allCampaigns)
+    const enrichedData = useGetCampaignSalesDrillDownData(data, campaigns)
 
     return (
         <>

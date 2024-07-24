@@ -9,5 +9,9 @@ export function getDataFromTableCell(
         return cell.campaign.name
     }
 
+    if (key === CampaignTableKeys.CampaignCurrentStatus) {
+        return cell.campaign.status
+    }
+
     return cell.metrics[key] ?? 0
 }

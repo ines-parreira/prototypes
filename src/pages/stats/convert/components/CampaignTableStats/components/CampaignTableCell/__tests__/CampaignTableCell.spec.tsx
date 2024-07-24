@@ -6,8 +6,11 @@ import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKe
 import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
 import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
 import {GorgiasChatIntegration} from 'models/integration/types'
+import {
+    CampaignPreview,
+    InferredCampaignStatus,
+} from 'models/convert/campaign/types'
 import {CampaignTableCell} from '../CampaignTableCell'
 
 describe('<CampaignTableCell />', () => {
@@ -17,8 +20,9 @@ describe('<CampaignTableCell />', () => {
         message_text: 'test',
         name: 'Test campaign',
         is_light: false,
+        status: InferredCampaignStatus.Active,
         triggers: [],
-    } as unknown as Campaign
+    } as unknown as CampaignPreview
     const cell = {
         campaign: campaign,
         currency: 'USD',
@@ -105,5 +109,25 @@ describe('<CampaignTableCell />', () => {
         )
 
         await findByText('Super converting campaign (light)')
+    })
+
+    it.each([
+        [InferredCampaignStatus.Active, 'active'],
+        [InferredCampaignStatus.Deleted, 'deleted'],
+        [InferredCampaignStatus.Inactive, 'inactive'],
+    ])('should render campaign status badge', async (status, expectedLabel) => {
+        const {findByText} = render(
+            <CampaignTableCell
+                column={
+                    {
+                        key: CampaignTableKeys.CampaignCurrentStatus,
+                    } as CampaignTableColumn
+                }
+                cell={cell}
+                data={status}
+            />
+        )
+
+        await findByText(expectedLabel)
     })
 })
