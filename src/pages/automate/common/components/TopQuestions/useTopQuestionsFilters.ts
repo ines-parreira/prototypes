@@ -8,7 +8,15 @@ type StoreWithHelpCenters = {
     helpCenters: HelpCenter[]
 }
 
-export const useTopQuestionsFilters = () => {
+type Props = {
+    initialStoreId?: number
+    initialHelpCenterId?: number
+}
+
+export const useTopQuestionsFilters = ({
+    initialStoreId,
+    initialHelpCenterId,
+}: Props) => {
     const {isLoading, storesWithHelpCenters} =
         useTopQuestionsStoresWithHelpCenters()
 
@@ -52,7 +60,56 @@ export const useTopQuestionsFilters = () => {
         }
 
         selectDefaultStoreAndHelpCenter()
-    }, [isLoading, selectedStore, storesWithHelpCenters, selectedHelpCenter])
+    }, [isLoading, selectedHelpCenter, selectedStore, storesWithHelpCenters])
+
+    useEffect(() => {
+        if (initialStoreId || initialHelpCenterId) {
+            let store: ShopifyIntegration | undefined
+            let helpCenter: HelpCenter | undefined
+
+            if (initialStoreId) {
+                store = storesWithHelpCenters.find(
+                    ({store}) => store.id === initialStoreId
+                )?.store
+                if (store) {
+                    if (initialHelpCenterId) {
+                        helpCenter = storesById[store.id].helpCenters.find(
+                            (hc) => hc.id === initialHelpCenterId
+                        )
+                    }
+                    if (!helpCenter) {
+                        helpCenter = storesById[store.id]?.helpCenters[0]
+                    }
+                }
+            }
+            if (!store && initialHelpCenterId) {
+                for (const {store: s, helpCenters} of storesWithHelpCenters) {
+                    const hc = helpCenters.find(
+                        (hc) => hc.id === initialHelpCenterId
+                    )
+                    if (hc) {
+                        helpCenter = hc
+                        store = s
+                        break
+                    }
+                }
+            }
+
+            if (store) {
+                setSelectedStore(store)
+                setSelectedHelpCenter(helpCenter)
+                return
+            }
+        }
+    }, [
+        isLoading,
+        selectedStore,
+        storesWithHelpCenters,
+        selectedHelpCenter,
+        initialStoreId,
+        initialHelpCenterId,
+        storesById,
+    ])
 
     return {
         isLoading,

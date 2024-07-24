@@ -44,7 +44,7 @@ export type TopQuestionsSectionProps = {
     helpCenterId: number
 }
 
-const ShopFilter = ({
+export const ShopFilter = ({
     shopIntegrationId,
     shopFilter,
 }: {
@@ -83,7 +83,7 @@ const ShopFilter = ({
     )
 }
 
-const HelpCenterFilter = ({
+export const HelpCenterFilter = ({
     helpCenterFilter,
     helpCenterId,
 }: {

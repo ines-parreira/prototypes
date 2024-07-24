@@ -6,8 +6,8 @@ import {
     getHasLegacyAutomateFeatures,
 } from 'state/billing/selectors'
 import {AutomateFeatures} from '../types'
-import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
 import AutomatePaywallView from './AutomatePaywallView'
+import AutomateAllRecommendationsPage from './AutomateAllRecommendationsPage'
 
 const AutomateAllRecommendationsContainer = () => {
     const hasAutomateFeature = useAppSelector(getHasAutomate)
@@ -30,7 +30,7 @@ const AutomateAllRecommendationsContainer = () => {
                 team: 'automate-obs',
             }}
         >
-            <AutomateAllRecommendationsView />
+            <AutomateAllRecommendationsPage />
         </ErrorBoundary>
     )
 }

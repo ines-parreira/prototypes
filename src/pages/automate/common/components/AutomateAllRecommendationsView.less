@@ -9,6 +9,12 @@
         row-gap: @layout-spacing-m;
     }
 
+    .headerSection {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
     .goBackButtonWrapper {
         padding: 6px 0;
         display: flex;
@@ -29,6 +35,12 @@
         &:hover {
             color: var(--neutral-grey-5);
         }
+    }
+
+    .filters {
+        display: flex;
+        flex-direction: row;
+        column-gap: 8px;
     }
 
     .title {

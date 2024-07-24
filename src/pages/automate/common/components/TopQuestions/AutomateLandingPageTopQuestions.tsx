@@ -145,7 +145,7 @@ export const AutomateLandingPageTopQuestions = () => {
         setSelectedHelpCenter,
         storeOptions,
         helpCentersOptions,
-    } = useTopQuestionsFilters()
+    } = useTopQuestionsFilters({})
 
     if (
         isLoading ||

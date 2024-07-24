@@ -1,48 +1,45 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {Link, useHistory, useLocation} from 'react-router-dom'
+import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import StatsPage from 'pages/stats/StatsPage'
-import {useSearchParam} from 'hooks/useSearchParam'
-import useAppSelector from 'hooks/useAppSelector'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import {ShopifyIntegration} from 'models/integration/types'
+import {HelpCenter} from 'models/helpCenter/types'
 import {
     AllRecommendationsStatus,
     useAIArticleRecommendationItems,
 } from '../hooks/useAIArticleRecommendationItems'
 import {useLocalStorageTopQuestions} from '../hooks/useLocalStorageTopQuestions'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
+import {HelpCenterFilter, ShopFilter} from './TopQuestions/TopQuestionsSection'
 import css from './AutomateAllRecommendationsView.less'
 
 const ITEMS_PER_PAGE = 15
 
-const AutomateAllRecommendationsView = () => {
-    const location = useLocation()
+type AutomateAllRecommendationsViewProps = {
+    selectedStore: ShopifyIntegration
+    onStoreChange: (store: ShopifyIntegration) => void
+    selectedHelpCenter: HelpCenter
+    onHelpCenterChange: (helpCenter: HelpCenter) => void
+    storeOptions: ShopifyIntegration[]
+    helpCentersOptions: HelpCenter[]
+    currentPage: number
+    onPageChange: (page: number) => void
+}
+
+const AutomateAllRecommendationsView = ({
+    selectedStore,
+    onStoreChange,
+    selectedHelpCenter,
+    onHelpCenterChange,
+    storeOptions,
+    helpCentersOptions,
+    currentPage,
+    onPageChange,
+}: AutomateAllRecommendationsViewProps) => {
     const history = useHistory()
-    const [helpCenterId] = useSearchParam('help_center_id')
-    const [storeIntegrationId] = useSearchParam('store_integration_id')
-    const [page] = useSearchParam('page')
-    const currentPage = Number(page) || 1
     const [statusFilter, setStatusFilter] = useState<AllRecommendationsStatus>(
         AllRecommendationsStatus.NotCreated
     )
-    const helpCenters = useAppSelector(getHelpCenterFAQList)
-    const helpCenter = helpCenters.find(
-        (helpCenter) => helpCenter.id === Number(helpCenterId)
-    )
-
-    const onPageChange = (page: number) => {
-        if (currentPage !== page) {
-            const searchParams = new URLSearchParams({
-                store_integration_id: storeIntegrationId || '',
-                help_center_id: helpCenterId || '',
-                page: String(page),
-            }).toString()
-            history.push({
-                pathname: location.pathname,
-                search: searchParams,
-            })
-        }
-    }
 
     const {
         paginatedItems,
@@ -51,19 +48,17 @@ const AutomateAllRecommendationsView = () => {
         isLoading,
         batchDatetime,
     } = useAIArticleRecommendationItems({
-        storeIntegrationId: !isNaN(Number(storeIntegrationId))
-            ? Number(storeIntegrationId)
-            : null,
-        helpCenterId: Number(helpCenterId),
-        locale: helpCenter?.default_locale ?? 'en-US',
+        storeIntegrationId: selectedStore.id,
+        helpCenterId: selectedHelpCenter.id,
+        locale: selectedHelpCenter.default_locale,
         statusFilter,
         currentPage,
         itemsPerPage: ITEMS_PER_PAGE,
     })
 
     const {viewedOnPages, addViewedOnPage} = useLocalStorageTopQuestions(
-        Number(storeIntegrationId),
-        Number(helpCenterId),
+        selectedStore.id,
+        selectedHelpCenter.id,
         moment(batchDatetime).toDate()
     )
 
@@ -87,14 +82,78 @@ const AutomateAllRecommendationsView = () => {
         }
     }, [history, onLeavePage])
 
+    const shopFilter = useMemo(
+        () =>
+            storeOptions.length > 1
+                ? {
+                      options: storeOptions.map((store) => ({
+                          shopName: store.name,
+                          shopType: store.type,
+                          integrationId: store.id,
+                      })),
+                      selectedShopIntegrationId: selectedStore.id,
+                      setSelectedShopIntegrationId: (integrationId: number) => {
+                          const selectedStore = storeOptions.find(
+                              (store) => store.id === integrationId
+                          )
+                          if (selectedStore) {
+                              onStoreChange(selectedStore)
+                          }
+                      },
+                  }
+                : undefined,
+        [storeOptions, selectedStore, onStoreChange]
+    )
+
+    const helpCenterFilter = useMemo(
+        () =>
+            helpCentersOptions.length > 1
+                ? {
+                      options: helpCentersOptions.map((helpCenter) => ({
+                          name: helpCenter.name,
+                          helpCenterId: helpCenter.id,
+                      })),
+                      selectedHelpCenterId: selectedHelpCenter.id,
+                      setSelectedHelpCenterId: (helpCenterId: number) => {
+                          const selectedHelpCenter = helpCentersOptions.find(
+                              (helpCenter) => helpCenter.id === helpCenterId
+                          )
+                          if (selectedHelpCenter) {
+                              onHelpCenterChange(selectedHelpCenter)
+                          }
+                      },
+                  }
+                : undefined,
+        [helpCentersOptions, selectedHelpCenter.id, onHelpCenterChange]
+    )
+
     return (
         <StatsPage title="Automate">
             <div className={css.wrapper}>
-                <div className={css.goBackButtonWrapper}>
-                    <i className="material-icons">arrow_back</i>
-                    <Link className={css.goBackButton} to={`/app/automation`}>
-                        Back To Dashboard
-                    </Link>
+                <div className={css.headerSection}>
+                    <div className={css.goBackButtonWrapper}>
+                        <i className="material-icons">arrow_back</i>
+                        <Link
+                            className={css.goBackButton}
+                            to={`/app/automation`}
+                        >
+                            Back To Dashboard
+                        </Link>
+                    </div>
+                    <div className={css.filters}>
+                        {shopFilter && (
+                            <ShopFilter
+                                shopFilter={shopFilter}
+                                shopIntegrationId={selectedStore.id}
+                            />
+                        )}
+                        {helpCenterFilter && (
+                            <HelpCenterFilter
+                                helpCenterFilter={helpCenterFilter}
+                                helpCenterId={selectedHelpCenter.id}
+                            />
+                        )}
+                    </div>
                 </div>
                 <div className={css.title}>
                     <div className={css.titleText}>All Recommendations</div>
@@ -109,8 +168,11 @@ const AutomateAllRecommendationsView = () => {
                     setStatusFilter={setStatusFilter}
                     currentPage={currentPage}
                     onPageChange={onPageChange}
-                    displayNewBadge={!viewedOnPages.has('all-recommendations')}
-                    helpCenterId={Number(helpCenterId)}
+                    displayNewBadge={
+                        !viewedOnPages.has('all-recommendations') &&
+                        totalItemsCount > 0
+                    }
+                    helpCenterId={selectedHelpCenter.id}
                 />
             </div>
         </StatsPage>
