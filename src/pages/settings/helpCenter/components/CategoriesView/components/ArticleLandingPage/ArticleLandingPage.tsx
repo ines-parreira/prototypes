@@ -62,7 +62,7 @@ const ArticleLandingPageComponent = ({
         useConditionalGetAIArticles({
             helpCenterId: helpCenter.id,
             storeIntegrationId: !hasMultiStores
-                ? shopifyIntegrations[0].id
+                ? shopifyIntegrations[0]?.id
                 : storeIntegration?.id ?? null,
             locale: viewLanguage,
         })

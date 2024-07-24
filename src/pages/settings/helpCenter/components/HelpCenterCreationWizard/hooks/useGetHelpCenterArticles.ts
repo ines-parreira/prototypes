@@ -38,7 +38,7 @@ export const useGetHelpCenterArticles = (
         useConditionalGetAIArticles({
             helpCenterId,
             storeIntegrationId: !hasMultiStores
-                ? shopifyIntegrations[0].id
+                ? shopifyIntegrations[0]?.id
                 : storeIntegration?.id ?? null,
             locale,
         })
