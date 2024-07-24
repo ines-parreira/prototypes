@@ -9,7 +9,7 @@ import {
 import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
     aiArticleKeys,
-    useReviewArticleTemplate,
+    useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
 import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
 import {notify} from 'state/notifications/actions'
@@ -31,7 +31,11 @@ const useAILibraryActions = (
     articles: AILibraryArticleItem[],
     markArticleAsReviewed: (
         templateKey: string,
-        reviewAction: 'publish' | 'archive' | 'saveAsDraft'
+        reviewAction:
+            | 'publish'
+            | 'archive'
+            | 'saveAsDraft'
+            | 'dismissFromTopQuestions'
     ) => void
 ) => {
     const {createArticle} = useCreateAIArticle(helpCenter)
@@ -46,7 +50,7 @@ const useAILibraryActions = (
         visibilityStatus: 'PUBLIC' | 'UNLISTED'
     } | null>(null)
 
-    const reviewArticle = useReviewArticleTemplate({
+    const reviewArticle = useUpsertArticleTemplateReview({
         onSuccess: async (__data, [__client, __pathParameters, body]) => {
             const successMessages: Record<ArticleTemplateReviewAction, string> =
                 {
@@ -55,6 +59,8 @@ const useAILibraryActions = (
                     saveAsDraft:
                         'Article saved as a draft and added to your ‘Articles’ tab.',
                     archive: 'Article archived.',
+                    dismissFromTopQuestions:
+                        'Article dismissed from Top Questions section',
                 }
 
             void appDispatch(
@@ -103,6 +109,7 @@ const useAILibraryActions = (
                 publish: 'published',
                 saveAsDraft: 'saved as draft',
                 archive: 'archived',
+                dismissFromTopQuestions: 'dismissed from Top Questions',
             }
 
             void appDispatch(

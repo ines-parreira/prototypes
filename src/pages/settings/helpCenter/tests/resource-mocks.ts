@@ -156,6 +156,17 @@ export const mockResourceServerReplies = (
             .reply(500, AIArticlesGeneric500ErrorFixture)
     }
 
+    if (options.upsertArticleTemplateReview === 'success') {
+        mockedServer
+            .onPut('/api/help-center/help-centers/1/article-templates/review')
+            .reply(204)
+    }
+    if (options.upsertArticleTemplateReview === 'error') {
+        mockedServer
+            .onPut('/api/help-center/help-centers/1/article-templates/review')
+            .reply(500, AIArticlesGeneric500ErrorFixture)
+    }
+
     return {
         fixtures: {
             ShopifyPagesListFixture,

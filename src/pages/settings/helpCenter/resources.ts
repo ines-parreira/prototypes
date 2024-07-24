@@ -140,14 +140,14 @@ export const getAIGeneratedArticlesByHelpCenterAndStore = async (
     return res.data
 }
 
-export const reviewArticleTemplate = async (
+export const upsertArticleTemplateReview = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ReviewArticleTemplate.PathParameters,
-    body: Paths.ReviewArticleTemplate.RequestBody
+    pathParameters: Paths.UpsertArticleTemplateReview.PathParameters,
+    body: Paths.UpsertArticleTemplateReview.RequestBody
 ) => {
     if (!client) return null
 
-    await client.reviewArticleTemplate(pathParameters, body)
+    await client.upsertArticleTemplateReview(pathParameters, body)
 
     return null
 }

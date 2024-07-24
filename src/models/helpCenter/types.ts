@@ -174,7 +174,7 @@ export type ArticleTemplate = Components.Schemas.ArticleTemplateDto
 export type AIArticle = Components.Schemas.AIArticleTemplateDto
 
 export type ArticleTemplateReviewAction =
-    Components.Schemas.CreateArticleTemplateReviewDto['action']
+    Components.Schemas.UpsertArticleTemplateReviewDto['action']
 
 // HELP CENTER CREATION WIZARD
 export enum HelpCenterCreationWizardStep {

@@ -13,7 +13,11 @@ export type AIArticleRecommendationItem = {
     title: string
     templateKey: string
     ticketsCount: number
-    reviewAction?: 'archive' | 'publish' | 'saveAsDraft'
+    reviewAction?:
+        | 'archive'
+        | 'publish'
+        | 'saveAsDraft'
+        | 'dismissFromTopQuestions'
 }
 
 const filterAIArticleStatusByReviewAction = (

@@ -16,6 +16,7 @@ import {
     useGetArticleTemplate,
     useGetAIArticlesByHelpCenter,
     useGetAIArticlesByHelpCenterAndStore,
+    useUpsertArticleTemplateReview,
 } from '../queries'
 import {mockResourceServerReplies} from './resource-mocks'
 
@@ -500,6 +501,69 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
                 `[Error: Request failed with status code 404]`
+            )
+        })
+    })
+})
+
+describe('useUpsertArticleTemplateReview', () => {
+    let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
+    const payload = {
+        template_key: 'ai_Generated_1',
+        action: 'publish',
+        reason: null,
+    } as const
+
+    const pathParams = {
+        help_center_id: 1,
+    }
+
+    beforeEach(async () => {
+        sdkMocks = await buildSDKMocks()
+        queryClient.getQueryCache().clear()
+        mockedUseHelpCenterApi.mockReturnValue({
+            client: sdkMocks.client,
+            isReady: true,
+        })
+    })
+
+    it('resolves with the updated article template review', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            upsertArticleTemplateReview: 'success',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useUpsertArticleTemplateReview(),
+            {
+                wrapper,
+            }
+        )
+
+        result.current.mutate([sdkMocks.client, pathParams, payload])
+
+        await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
+
+        expect(result.current.data).toBeUndefined
+    })
+
+    it('returns the error', async () => {
+        mockResourceServerReplies(sdkMocks.mockedServer, {
+            upsertArticleTemplateReview: 'error',
+        })
+
+        const {result, waitFor} = renderHook(
+            () => useUpsertArticleTemplateReview(),
+            {
+                wrapper,
+            }
+        )
+
+        result.current.mutate([sdkMocks.client, pathParams, payload])
+
+        await waitFor(() => {
+            expect(result.current.isError).toBeTruthy()
+            expect(result.current.error).toMatchInlineSnapshot(
+                `[Error: Request failed with status code 500]`
             )
         })
     })

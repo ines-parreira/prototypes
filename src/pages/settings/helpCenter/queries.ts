@@ -13,7 +13,7 @@ import {
     deletePageEmbedment,
     getArticleTemplates,
     getArticleTemplate,
-    reviewArticleTemplate,
+    upsertArticleTemplateReview,
     getAIGeneratedArticlesByHelpCenter,
     getAIGeneratedArticlesByHelpCenterAndStore,
     getAIGeneratedArticles,
@@ -341,14 +341,14 @@ export const useDeletePageEmbedment = (
     })
 }
 
-export const useReviewArticleTemplate = (
-    overrides?: MutationOverrides<typeof reviewArticleTemplate>
+export const useUpsertArticleTemplateReview = (
+    overrides?: MutationOverrides<typeof upsertArticleTemplateReview>
 ) => {
     const {client} = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters, body]) =>
-            reviewArticleTemplate(client, pathParameters, body),
+            upsertArticleTemplateReview(client, pathParameters, body),
         ...overrides,
     })
 }

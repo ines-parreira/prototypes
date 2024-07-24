@@ -3741,7 +3741,31 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CreateArticleTemplateReviewDto"
+                                "$ref": "#/components/schemas/UpsertArticleTemplateReviewDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {"204": {"description": ""}},
+                "tags": ["article-templates"]
+            },
+            "put": {
+                "operationId": "upsertArticleTemplateReview",
+                "summary": "Review an AI article template",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": {"type": "number"}
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpsertArticleTemplateReviewDto"
                             }
                         }
                     }
@@ -8025,12 +8049,17 @@
                 },
                 "required": ["emails", "contactFormUid", "shopifyShopName"]
             },
-            "CreateArticleTemplateReviewDto": {
+            "UpsertArticleTemplateReviewDto": {
                 "type": "object",
                 "properties": {
                     "template_key": {"type": "string"},
                     "action": {
-                        "enum": ["archive", "publish", "saveAsDraft"],
+                        "enum": [
+                            "archive",
+                            "dismissFromTopQuestions",
+                            "publish",
+                            "saveAsDraft"
+                        ],
                         "type": "string"
                     },
                     "reason": {
@@ -8047,7 +8076,12 @@
                     "template_key": {"type": "string"},
                     "help_center_id": {"type": "number"},
                     "action": {
-                        "enum": ["archive", "publish", "saveAsDraft"],
+                        "enum": [
+                            "archive",
+                            "dismissFromTopQuestions",
+                            "publish",
+                            "saveAsDraft"
+                        ],
                         "type": "string"
                     },
                     "reason": {
@@ -8079,7 +8113,12 @@
                     },
                     "batch_datetime": {"format": "date-time", "type": "string"},
                     "review_action": {
-                        "enum": ["archive", "publish", "saveAsDraft"],
+                        "enum": [
+                            "archive",
+                            "dismissFromTopQuestions",
+                            "publish",
+                            "saveAsDraft"
+                        ],
                         "type": "string"
                     },
                     "reviews": {

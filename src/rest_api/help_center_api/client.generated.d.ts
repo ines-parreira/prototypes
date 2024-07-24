@@ -37,7 +37,7 @@ declare namespace Components {
        */
       related_tickets_count?: number;
       batch_datetime?: string; // date-time
-      review_action?: "archive" | "publish" | "saveAsDraft";
+      review_action?: "archive" | "dismissFromTopQuestions" | "publish" | "saveAsDraft";
       reviews?: ArticleTemplateReviewDto[];
     }
     export interface AccessTokenDto {
@@ -250,7 +250,7 @@ declare namespace Components {
     export interface ArticleTemplateReviewDto {
       template_key: string;
       help_center_id: number;
-      action: "archive" | "publish" | "saveAsDraft";
+      action: "archive" | "dismissFromTopQuestions" | "publish" | "saveAsDraft";
       reason?: string | null;
     }
     export interface ArticleTranslationRatingDto {
@@ -937,11 +937,6 @@ declare namespace Components {
       };
       category_id?: number | null;
       template_key?: string | null;
-    }
-    export interface CreateArticleTemplateReviewDto {
-      template_key: string;
-      action: "archive" | "publish" | "saveAsDraft";
-      reason?: string | null;
     }
     export interface CreateArticleTranslationDto {
       /**
@@ -2580,6 +2575,11 @@ declare namespace Components {
       file: AttachmentFileDto;
       channel: AttachmentChannelDto;
     }
+    export interface UpsertArticleTemplateReviewDto {
+      template_key: string;
+      action: "archive" | "dismissFromTopQuestions" | "publish" | "saveAsDraft";
+      reason?: string | null;
+    }
     export interface UpsertAutomationSettingsDto {
       /**
        * example:
@@ -3767,7 +3767,7 @@ declare namespace Paths {
     export interface PathParameters {
       help_center_id: Parameters.HelpCenterId;
     }
-    export type RequestBody = Components.Schemas.CreateArticleTemplateReviewDto;
+    export type RequestBody = Components.Schemas.UpsertArticleTemplateReviewDto;
   }
   namespace SetArticlesPositionsInCategory {
     namespace Parameters {
@@ -4015,6 +4015,15 @@ declare namespace Paths {
     namespace Responses {
       export type $200 = Components.Schemas.NavigationLinkDto;
     }
+  }
+  namespace UpsertArticleTemplateReview {
+    namespace Parameters {
+      export type HelpCenterId = number;
+    }
+    export interface PathParameters {
+      help_center_id: Parameters.HelpCenterId;
+    }
+    export type RequestBody = Components.Schemas.UpsertArticleTemplateReviewDto;
   }
   namespace UpsertContactFormAutomationSettings {
     namespace Parameters {
@@ -4929,6 +4938,14 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetContactFormShopifyMailtoReplacementConfig.Responses.$200>
+  /**
+   * upsertArticleTemplateReview - Review an AI article template
+   */
+  'upsertArticleTemplateReview'(
+    parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
+    data?: Paths.UpsertArticleTemplateReview.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<any>
   /**
    * reviewArticleTemplate - Review an AI article template
    */
@@ -6023,6 +6040,14 @@ export interface PathsDictionary {
     'post'(
       parameters?: Parameters<Paths.ReviewArticleTemplate.PathParameters> | null,
       data?: Paths.ReviewArticleTemplate.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<any>
+    /**
+     * upsertArticleTemplateReview - Review an AI article template
+     */
+    'put'(
+      parameters?: Parameters<Paths.UpsertArticleTemplateReview.PathParameters> | null,
+      data?: Paths.UpsertArticleTemplateReview.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<any>
   }
