@@ -80,6 +80,7 @@ export enum FeatureFlagKey {
     InternalBillingInterface = 'internal-billing-interface',
     MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
+    MigrateQuickResponseToFlows = 'migrate-quick-response-to-flows',
     MLFeaturesKillswitch = 'ml-features-killswitch',
     MLFlowsRecommendation = 'ml-flows-recommendation',
     NewBillingInterface = 'new-billing-interface',

@@ -1,6 +1,6 @@
 import React from 'react'
 import {Container} from 'reactstrap'
-import {NavLink, Route, Switch, useRouteMatch} from 'react-router-dom'
+import {NavLink, Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 import _memoize from 'lodash/memoize'
 import {useFlags} from 'launchdarkly-react-client-sdk'
 import classNames from 'classnames'
@@ -79,6 +79,8 @@ export default function WorkflowsView({
 
     const isImprovedNavigationEnabled =
         useFlags()[FeatureFlagKey.ImprovedAutomateNavigation]
+    const isMigrateQuickResponseToFlows =
+        useFlags()[FeatureFlagKey.MigrateQuickResponseToFlows]
 
     useEffectOnce(() => {
         if (!changeAutomateSettingButtomPosition) return
@@ -215,9 +217,11 @@ export default function WorkflowsView({
                         {FLOWS}
                     </NavLink>
 
-                    <NavLink to={`${baseUrl}/quick-responses`} exact>
-                        {QUICK_RESPONSES}
-                    </NavLink>
+                    {!isMigrateQuickResponseToFlows && (
+                        <NavLink to={`${baseUrl}/quick-responses`} exact>
+                            {QUICK_RESPONSES}
+                        </NavLink>
+                    )}
                 </SecondaryNavbar>
             )}
 
@@ -226,14 +230,20 @@ export default function WorkflowsView({
                     <Route path={path} exact>
                         {workflowsElement}
                     </Route>
-                    <Route
-                        path={`${path}/quick-responses`}
-                        exact
-                        component={memoizedWithUserRoleRequired(
-                            QuickResponsesViewContainer,
-                            AGENT_ROLE
-                        )}
-                    />
+                    {isMigrateQuickResponseToFlows ? (
+                        <Route path={`${path}/quick-responses`} exact>
+                            <Redirect to={baseUrl} />
+                        </Route>
+                    ) : (
+                        <Route
+                            path={`${path}/quick-responses`}
+                            exact
+                            component={memoizedWithUserRoleRequired(
+                                QuickResponsesViewContainer,
+                                AGENT_ROLE
+                            )}
+                        />
+                    )}
                     <Route
                         path={`${path}/templates`}
                         exact
