@@ -18,9 +18,10 @@ import {STATUSES} from 'tickets/common/config'
 import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
 import {getMomentUtcISOString} from 'utils/date'
 import TicketTag from 'pages/common/components/TicketTag'
-
 import {sanitizeHtmlDefault} from 'utils/html'
 import ticketLanguages from 'config/ticketLanguages'
+import {getLDClient} from 'utils/launchDarkly'
+import {FeatureFlagKey} from 'config/featureFlags'
 
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
@@ -482,6 +483,11 @@ export const defaultTicketView = {
         return view
     },
     searchView: (query: string, filters?: string) => {
+        const isAdvancedSearchSortingEnabled = !!getLDClient().variation(
+            FeatureFlagKey.AdvancedSearchSorting,
+            false
+        )
+
         const searchView = baseView().merge({
             name: `Search "${query}"`,
             search: query,
@@ -496,6 +502,10 @@ export const defaultTicketView = {
             ],
             type: ViewType.TicketList,
             order_by: 'created_datetime',
+            ...(isAdvancedSearchSortingEnabled && {
+                order_by: undefined,
+                order_dir: undefined,
+            }),
         })
 
         if (filters) {

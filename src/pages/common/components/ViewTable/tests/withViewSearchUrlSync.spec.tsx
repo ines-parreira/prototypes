@@ -14,11 +14,15 @@ import {
 } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
 import * as viewsConfig from 'config/views'
 import history from 'pages/history'
+import {getLDClient} from 'utils/launchDarkly'
 
 jest.spyOn(reactRouterDom, 'useLocation')
 const mockedUseLocation = reactRouterDom.useLocation as jest.MockedFunction<
     typeof reactRouterDom.useLocation
 >
+
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
 
 const InnerComponent = ({urlSearchView}: ViewSearchUrlSyncInjectedProps) => {
     return <div>Search view: {JSON.stringify(urlSearchView.toJS())}</div>
@@ -65,14 +69,18 @@ const ticketChannelEqualChatFilter = "eq('ticket.channel', 'chat')"
 
 jest.mock('../../../../history')
 
-beforeEach(() => {
-    mockedUseLocation.mockReturnValue(createLocation())
-    ;(
-        history.push as jest.MockedFunction<typeof history.push>
-    ).mockImplementation(_noop)
-})
-
 describe('withViewSearchUrlSync', () => {
+    beforeEach(() => {
+        mockedUseLocation.mockReturnValue(createLocation())
+        ;(
+            history.push as jest.MockedFunction<typeof history.push>
+        ).mockImplementation(_noop)
+    })
+
+    beforeAll(() => {
+        variationMock.mockImplementation(() => false)
+    })
+
     it('should inject urlSearchView', () => {
         mockedUseLocation.mockReturnValue(
             createLocation({

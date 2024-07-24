@@ -89,8 +89,8 @@ export class HeaderContainer extends React.Component<Props, State> {
                     ...(!!this.props.flags?.[
                         FeatureFlagKey.AdvancedSearchSorting
                     ] && {
-                        order_by: null,
-                        order_dir: null,
+                        order_by: undefined,
+                        order_dir: undefined,
                     }),
                 }),
                 false

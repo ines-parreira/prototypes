@@ -22,6 +22,7 @@ import history from 'pages/history'
 import client from 'models/api/resources'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {ViewType} from 'models/view/types'
+import {getLDClient} from 'utils/launchDarkly'
 
 import {
     ecommerceStoreFixture,
@@ -92,6 +93,7 @@ jest.mock('state/notifications/actions', () => {
 jest.mock('pages/history')
 
 jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
 
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -104,6 +106,7 @@ describe('ticket actions', () => {
             newMessage: newMessageState,
         })
         mockServer = new MockAdapter(client)
+        variationMock.mockImplementation(() => true)
     })
 
     const endpointMatchers = {
@@ -812,6 +815,7 @@ describe('ticket actions', () => {
     })
 
     describe('goToNextTicket()', () => {
+        const defaultActiveView = {order_by: 'created_datetime'}
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
@@ -823,7 +827,13 @@ describe('ticket actions', () => {
         it('should go to first view because active view is a customer view', (done) => {
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1, type: ViewType.CustomerList}}),
+                views: fromJS({
+                    active: {
+                        ...defaultActiveView,
+                        id: 1,
+                        type: ViewType.CustomerList,
+                    },
+                }),
             })
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
@@ -832,11 +842,44 @@ describe('ticket actions', () => {
             })
         })
 
+        it('should go to first view because active view is not ordered', (done) => {
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({
+                    active: {
+                        id: 1,
+                    },
+                }),
+            })
+
+            void store.dispatch(actions.goToNextTicket(1)).then(() => {
+                expect(history.push).toHaveBeenCalledWith('/app')
+                done()
+            })
+        })
+
+        it('should not check for view ordering if FF is disabled', (done) => {
+            variationMock.mockImplementation(() => false)
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({
+                    active: {
+                        id: 1,
+                    },
+                }),
+            })
+
+            void store.dispatch(actions.goToNextTicket(1)).then(() => {
+                expect(history.push).not.toHaveBeenCalled()
+                done()
+            })
+        })
+
         it('should fetch next ticket and go to the active view because there is no ticket', (done) => {
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200)
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
@@ -850,7 +893,9 @@ describe('ticket actions', () => {
             mockServer.onPut('/api/views/0/tickets/1/next').reply(200)
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {search: 'foo'}}),
+                views: fromJS({
+                    active: {...defaultActiveView, search: 'foo'},
+                }),
             })
 
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
@@ -868,7 +913,7 @@ describe('ticket actions', () => {
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             const fetchTicketPromise = store.dispatch(actions.goToNextTicket(1))
@@ -897,7 +942,7 @@ describe('ticket actions', () => {
                     .reply(200, ticket)
                 store = mockStore({
                     ticket: initialState,
-                    views: fromJS({active: {id: 1}}),
+                    views: fromJS({active: {...defaultActiveView, id: 1}}),
                 })
 
                 const fetchTicketPromise = store.dispatch(
@@ -918,7 +963,7 @@ describe('ticket actions', () => {
                 .reply(200, {id: 2, messages: [], events: []})
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             const promise = Promise.resolve()
@@ -943,7 +988,7 @@ describe('ticket actions', () => {
             })
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             return store.dispatch(actions.goToNextTicket(1)).then(() => {
@@ -964,7 +1009,7 @@ describe('ticket actions', () => {
             })
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             return store.dispatch(actions.goToNextTicket(1)).then(() => {
@@ -974,9 +1019,27 @@ describe('ticket actions', () => {
     })
 
     describe('goToPrevTicket()', () => {
+        const defaultActiveView = {order_by: 'created_datetime'}
+
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
+                expect(history.push).toHaveBeenCalledWith('/app')
+                done()
+            })
+        })
+
+        it('should go to first view because active view is not ordered', (done) => {
+            store = mockStore({
+                ticket: initialState,
+                views: fromJS({
+                    active: {
+                        id: 1,
+                    },
+                }),
+            })
+
+            void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(history.push).toHaveBeenCalledWith('/app')
                 done()
             })
@@ -986,7 +1049,7 @@ describe('ticket actions', () => {
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200)
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
@@ -1000,7 +1063,7 @@ describe('ticket actions', () => {
             mockServer.onPut('/api/views/0/tickets/2/prev').reply(200)
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {search: 'foo'}}),
+                views: fromJS({active: {...defaultActiveView, search: 'foo'}}),
             })
 
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
@@ -1018,7 +1081,7 @@ describe('ticket actions', () => {
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             const fetchTicketPromise = store.dispatch(actions.goToPrevTicket(2))
@@ -1047,7 +1110,7 @@ describe('ticket actions', () => {
                     .reply(200, ticket)
                 store = mockStore({
                     ticket: initialState,
-                    views: fromJS({active: {id: 1}}),
+                    views: fromJS({active: {...defaultActiveView, id: 1}}),
                 })
 
                 const fetchTicketPromise = store.dispatch(
@@ -1070,7 +1133,7 @@ describe('ticket actions', () => {
                 .reply(200, {id: 1, messages: [], events: []})
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             const promise = Promise.resolve()
@@ -1097,7 +1160,7 @@ describe('ticket actions', () => {
             })
             store = mockStore({
                 ticket: initialState,
-                views: fromJS({active: {id: 1}}),
+                views: fromJS({active: {...defaultActiveView, id: 1}}),
             })
 
             return store.dispatch(actions.goToPrevTicket(2)).then(() => {
@@ -1252,7 +1315,10 @@ describe('ticket actions', () => {
 
     describe('setTypingActivityShopper()', () => {
         it('should dispatch SET_TYPING_ACTIVITY_SHOPPER action', () => {
+            const mockTimeoutSpy = jest.spyOn(window, 'setTimeout')
+            mockTimeoutSpy.mockReturnValueOnce(1 as unknown as NodeJS.Timeout)
             window.location.pathname = '/app/ticket/1'
+
             store.dispatch(actions.setTypingActivityShopper(1))
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -1314,6 +1380,7 @@ describe('ticket actions', () => {
                             id: 123,
                             search: 'test',
                             filters: 'test',
+                            order_by: 'created_datetime',
                             type: ViewType.CustomerList,
                         },
                     }),
@@ -1329,6 +1396,7 @@ describe('ticket actions', () => {
                             id: 123,
                             search: null,
                             filters: null,
+                            order_by: 'created_datetime',
                             type: null,
                         },
                     }),
@@ -1344,6 +1412,7 @@ describe('ticket actions', () => {
                             id: null,
                             search: 'test',
                             filters: null,
+                            order_by: 'created_datetime',
                             type: null,
                         },
                     }),
@@ -1359,6 +1428,7 @@ describe('ticket actions', () => {
                             id: null,
                             search: null,
                             filters: 'test',
+                            order_by: 'created_datetime',
                             type: null,
                         },
                     }),
@@ -1374,11 +1444,28 @@ describe('ticket actions', () => {
                             id: 123,
                             search: 'test',
                             filters: 'test',
+                            order_by: 'created_datetime',
                             type: 'testType',
                         },
                     }),
                 },
                 true,
+            ],
+            // view has multiple required keys, but no ordering -> isTicketNavigationAvailable = false
+            [
+                123,
+                {
+                    views: fromJS({
+                        active: {
+                            id: 123,
+                            search: 'test',
+                            filters: 'test',
+                            order_by: undefined,
+                            type: 'testType',
+                        },
+                    }),
+                },
+                false,
             ],
         ])(
             'should test if ticket navigation is available for ticketId and state',

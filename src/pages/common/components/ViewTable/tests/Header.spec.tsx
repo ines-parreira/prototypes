@@ -159,8 +159,8 @@ describe('ViewTable::Header', () => {
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 (fromJS({...viewsFixture}) as Map<any, any>).merge({
                     search: searchTerm,
-                    order_by: null,
-                    order_dir: null,
+                    order_by: undefined,
+                    order_dir: undefined,
                 }),
                 false
             )

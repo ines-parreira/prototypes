@@ -944,9 +944,18 @@ const isViewActive = () => {
         const viewId = view.get('id') as number
         const viewSearch = view.get('search') as string
         const viewFilters = view.get('filters') as string
+        const viewOrderByEnabled = !!getLDClient().variation(
+            FeatureFlagKey.AdvancedSearchSorting,
+            false
+        )
+            ? !!view.get('order_by')
+            : true
         const isCustomerView = view.get('type') === ViewType.CustomerList
 
-        return !!(viewId || viewSearch || viewFilters) && !isCustomerView
+        return (
+            !!((viewId || viewSearch || viewFilters) && viewOrderByEnabled) &&
+            !isCustomerView
+        )
     }
 }
 

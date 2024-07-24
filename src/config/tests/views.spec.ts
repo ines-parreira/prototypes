@@ -18,8 +18,12 @@ import {
     ViewVisibility,
     EntityType,
 } from 'models/view/types'
+import {getLDClient} from 'utils/launchDarkly'
 
 global.console.error = jest.fn()
+
+jest.mock('utils/launchDarkly')
+const variationMock = getLDClient().variation as jest.Mock
 
 describe('Config: views', () => {
     describe('defaultCell', () => {
@@ -344,6 +348,14 @@ describe('Config: views', () => {
             })
         }
     )
+
+    it('view config should set order properties to undefined if advanced search sorting FF is enabled', () => {
+        variationMock.mockReturnValueOnce(true)
+        const searchView = defaultTicketView.searchView('some query')
+
+        expect(searchView.get('order_by')).toBeUndefined()
+        expect(searchView.get('order_dir')).toBeUndefined()
+    })
 
     describe('getConfigByName', () => {
         it('returns correct config', () => {
