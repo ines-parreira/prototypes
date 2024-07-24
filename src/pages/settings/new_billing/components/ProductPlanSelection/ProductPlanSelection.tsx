@@ -1,5 +1,6 @@
 import React, {useCallback, useMemo, useState} from 'react'
 import classNames from 'classnames'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {Tooltip} from '@gorgias/ui-kit'
 import {Plan, PlanInterval, ProductType} from 'models/billing/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -12,8 +13,14 @@ import {getCurrentPlansByProduct} from 'state/billing/selectors'
 import {handleConvertProductRemoved} from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
 import {getCurrentAccountState} from 'state/currentAccount/selectors'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import CounterText from '../CounterText'
-import {ENTERPRISE_PRICE_ID, INTERVAL, PRODUCT_INFO} from '../../constants'
+import {
+    ENTERPRISE_PRICE_ID,
+    INTERVAL,
+    PRODUCT_INFO,
+    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+} from '../../constants'
 import Badge, {BadgeType} from '../Badge'
 import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import {formatNumTickets} from '../../utils/formatAmount'
@@ -203,19 +210,41 @@ const ProductPlanSelection = ({
         })
     }
 
+    const productDisabledForTrialingUser: boolean =
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] &&
+        !!isTrialing &&
+        (type === ProductType.Voice || type === ProductType.SMS)
+
+    const disabledTooltip = productDisabledForTrialingUser
+        ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
+        : undefined
+
     const renderHeader = () => {
         if (!selectedPlans[type].isSelected) {
             return (
-                <Button
-                    className={css.addProduct}
-                    fillStyle="ghost"
-                    intent="primary"
-                    size="small"
-                    onClick={handleOpen}
-                    isDisabled={!editingAvailable}
-                >
-                    <i className="material-icons">add</i>Add Product
-                </Button>
+                <>
+                    {disabledTooltip && (
+                        <Tooltip placement="top" target={`add-product-${type}`}>
+                            {disabledTooltip}
+                        </Tooltip>
+                    )}
+                    <Button
+                        className={css.addProduct}
+                        fillStyle="ghost"
+                        intent="primary"
+                        size="small"
+                        onClick={handleOpen}
+                        isDisabled={
+                            !editingAvailable || productDisabledForTrialingUser
+                        }
+                        id={`add-product-${type}`}
+                    >
+                        <i className="material-icons">
+                            {productDisabledForTrialingUser ? 'lock' : 'add'}
+                        </i>
+                        Add Product
+                    </Button>
+                </>
             )
         }
         if (!editingAvailable) {

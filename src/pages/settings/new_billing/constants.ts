@@ -172,3 +172,6 @@ export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =
             ],
         },
     }
+
+export const PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP =
+    'To subscribe to this product, you must have a paid Helpdesk subscription'

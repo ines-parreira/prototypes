@@ -385,6 +385,7 @@ const BillingProcessView = ({
                             setSelectedPlans={setSelectedPlans}
                             initialIndex={automationInitialIndex}
                             periodEnd={periodEnd}
+                            isTrialing={isTrialing}
                             currentUsage={currentUsage}
                             editingAvailable={
                                 !isCurrentSubscriptionScheduledToCancel

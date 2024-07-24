@@ -20,6 +20,7 @@ export enum FeatureFlagKey {
     NewChannelsView = 'new-channels-view',
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
+    BillingVoiceSmsSelfServe = 'billing-voice-sms-self-serve',
     BulkActionsDTP = 'bulk-actions-dtp',
     ChangeAutomateSettingButtomPosition = 'change-automate-settings-button-position',
     ChatAgentAvatarCustomization = 'chat-agent-avatar-customization',

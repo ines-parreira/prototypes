@@ -227,6 +227,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 <button
                   aria-disabled="false"
                   class="wrapper addProduct ghost primary small"
+                  id="add-product-automation"
                   type="button"
                 >
                   <i
@@ -264,6 +265,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 <button
                   aria-disabled="false"
                   class="wrapper addProduct ghost primary small"
+                  id="add-product-voice"
                   type="button"
                 >
                   <i
@@ -301,6 +303,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 <button
                   aria-disabled="false"
                   class="wrapper addProduct ghost primary small"
+                  id="add-product-sms"
                   type="button"
                 >
                   <i
@@ -338,6 +341,7 @@ exports[`UsageAndPlansView should render 1`] = `
                 <button
                   aria-disabled="false"
                   class="wrapper addProduct ghost primary small"
+                  id="add-product-convert"
                   type="button"
                 >
                   <i

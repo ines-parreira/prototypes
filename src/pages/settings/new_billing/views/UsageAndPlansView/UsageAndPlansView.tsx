@@ -3,6 +3,7 @@ import {Link, useHistory} from 'react-router-dom'
 import moment from 'moment'
 import classNames from 'classnames'
 import {Tooltip} from '@gorgias/ui-kit'
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import {
     getCurrentSubscription,
     hasCreditCard as getHasCreditCard,
@@ -30,6 +31,7 @@ import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
 import {isLegacyAutomate} from 'models/billing/utils'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
+import {FeatureFlagKey} from 'config/featureFlags'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -37,6 +39,7 @@ import {
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
     INTERVAL,
+    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
     PRODUCT_INFO,
 } from '../../constants'
 import ProductCard from '../../components/ProductCard'
@@ -113,6 +116,13 @@ const UsageAndPlansView = ({
 
     const hasCreditCard = useAppSelector(getHasCreditCard)
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
+
+    const productDisabledForTrialingUser: boolean =
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe] && !!isTrialing
+
+    const disabledTooltip = productDisabledForTrialingUser
+        ? PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP
+        : undefined
 
     useEffect(() => {
         if (isTrialingSubscription) {
@@ -316,14 +326,22 @@ const UsageAndPlansView = ({
                     plan={currentVoicePlan}
                     usage={currentUsage?.voice}
                     banner={voiceBanner}
-                    isDisabled={!currentVoicePlan && !!scheduledToCancelAt}
+                    isDisabled={
+                        (!currentVoicePlan && !!scheduledToCancelAt) ||
+                        productDisabledForTrialingUser
+                    }
+                    disabledTooltip={disabledTooltip}
                 />
                 <ProductCard
                     type={ProductType.SMS}
                     plan={currentSmsPlan}
                     usage={currentUsage?.sms}
                     banner={smsBanner}
-                    isDisabled={!currentSmsPlan && !!scheduledToCancelAt}
+                    isDisabled={
+                        (!currentSmsPlan && !!scheduledToCancelAt) ||
+                        productDisabledForTrialingUser
+                    }
+                    disabledTooltip={disabledTooltip}
                 />
                 <ProductCard
                     type={ProductType.Convert}

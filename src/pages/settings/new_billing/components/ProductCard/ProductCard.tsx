@@ -30,6 +30,7 @@ export type ProductCardProps = {
     usage?: CurrentUsagePerProduct | null
     banner?: BillingBanner | null
     isDisabled: boolean
+    disabledTooltip?: string
     autoUpgradeEnabled?: boolean | null
 }
 
@@ -39,6 +40,7 @@ const ProductCard = ({
     usage,
     banner,
     isDisabled,
+    disabledTooltip,
     autoUpgradeEnabled = false,
 }: ProductCardProps) => {
     const cheapestPlanByProduct = useAppSelector(getCheapestProductPrices)
@@ -127,6 +129,14 @@ const ProductCard = ({
                         /{interval}
                     </div>
                 )}
+                {isDisabled && disabledTooltip && (
+                    <Tooltip
+                        placement="top"
+                        target={`productCardButton_${type}`}
+                    >
+                        {disabledTooltip}
+                    </Tooltip>
+                )}
                 <Button
                     intent="primary"
                     isDisabled={isDisabled}
@@ -135,11 +145,29 @@ const ProductCard = ({
                     }
                     id={`productCardButton_${type}`}
                 >
+                    {isDisabled && (
+                        <i
+                            className={classNames(
+                                'material-icons',
+                                css.disabledLock
+                            )}
+                        >
+                            lock
+                        </i>
+                    )}
                     Subscribe
                 </Button>
             </div>
         )
-    }, [cheapestPlanByProduct, type, currency, interval, history, isDisabled])
+    }, [
+        cheapestPlanByProduct,
+        type,
+        currency,
+        interval,
+        history,
+        isDisabled,
+        disabledTooltip,
+    ])
 
     const updateContainer = useMemo(
         () => (

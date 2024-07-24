@@ -6,6 +6,7 @@ import {fromJS} from 'immutable'
 import * as uiKit from '@gorgias/ui-kit'
 
 import {QueryClientProvider} from '@tanstack/react-query'
+import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     AUTOMATION_PRODUCT_ID,
@@ -29,6 +30,8 @@ import {AlertType} from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCard/ProductCard'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
+import {FeatureFlagKey} from 'config/featureFlags'
+import {PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP} from 'pages/settings/new_billing/constants'
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/ui-kit', () => {
@@ -81,6 +84,14 @@ const store = mockedStore({
 
 describe('UsageAndPlansView', () => {
     const MockTooltip = jest.spyOn(uiKit, 'Tooltip')
+
+    beforeEach(() => {
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
+        })
+    })
+
     it('should render with active subscription containing Helpdesk and Convert products', () => {
         const helpdeskBanner = {
             description: 'Helpdesk banner',
@@ -553,6 +564,117 @@ describe('UsageAndPlansView', () => {
                 className: 'tooltip',
                 placement: 'top',
                 target: 'update-billing-frequency',
+            },
+            {}
+        )
+    })
+
+    it('should render with the Subscribe button disabled for trialing users', () => {
+        mockFlags({
+            [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
+        })
+
+        const helpdeskBanner = {
+            description: 'Helpdesk banner',
+            type: AlertType.Info,
+        }
+        const convertBanner = {
+            description: 'Convert banner',
+            type: AlertType.Info,
+        }
+
+        const alteredBilling = {
+            ...mockedBilling,
+            currentProductsUsage: {
+                [ProductType.Helpdesk]:
+                    currentProductsUsage[ProductType.Helpdesk],
+                [ProductType.Automation]: null,
+                [ProductType.Voice]: null,
+                [ProductType.SMS]: null,
+                [ProductType.Convert]: null,
+            },
+        }
+        const alteredStore = mockedStore({
+            billing: fromJS(alteredBilling),
+            currentAccount: fromJS({
+                ...mockedAccount,
+                current_subscription: {
+                    ...mockedAccount.current_subscription,
+                    status: 'trialing',
+                    products: {
+                        [HELPDESK_PRODUCT_ID]:
+                            basicMonthlyHelpdeskPlan.price_id,
+                    },
+                },
+            }),
+        })
+
+        render(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={alteredStore}>
+                    <UsageAndPlansView
+                        contactBilling={jest.fn()}
+                        periodEnd="2021-01-01"
+                        currentUsage={alteredBilling.currentProductsUsage}
+                        helpdeskBanner={helpdeskBanner}
+                        convertBanner={convertBanner}
+                    />
+                </Provider>
+            </QueryClientProvider>
+        )
+        expect(ProductCardMock).toHaveBeenCalledTimes(5)
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            1,
+            {
+                type: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                usage: mockedUsage[ProductType.Helpdesk],
+                banner: helpdeskBanner,
+                isDisabled: false,
+            },
+            {}
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            2,
+            {
+                type: ProductType.Automation,
+                plan: undefined,
+                usage: null,
+                isDisabled: false,
+            },
+            {}
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            3,
+            {
+                type: ProductType.Voice,
+                plan: undefined,
+                usage: null,
+                isDisabled: true,
+                disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+            },
+            {}
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            4,
+            {
+                type: ProductType.SMS,
+                plan: undefined,
+                usage: null,
+                isDisabled: true,
+                disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+            },
+            {}
+        )
+        expect(ProductCardMock).toHaveBeenNthCalledWith(
+            5,
+            {
+                type: ProductType.Convert,
+                plan: undefined,
+                usage: null,
+                banner: convertBanner,
+                isDisabled: false,
+                autoUpgradeEnabled: false,
             },
             {}
         )

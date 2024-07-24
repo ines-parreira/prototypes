@@ -77,7 +77,7 @@ describe('ProductCard', () => {
 
         expect(
             screen.getByRole('button', {
-                name: 'Subscribe',
+                name: 'lock Subscribe',
             })
         ).toHaveAttribute('aria-disabled', 'true')
     })

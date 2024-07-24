@@ -3,6 +3,7 @@ import {render, fireEvent} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
+import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
 import {PlanInterval, ProductType} from 'models/billing/types'
 import {
     basicMonthlyAutomationPlan,
@@ -13,6 +14,7 @@ import {
 import {billingState} from 'fixtures/billing'
 import {assumeMock} from 'utils/testing'
 import {logEvent, SegmentEvent} from 'common/segment'
+import {FeatureFlagKey} from 'config/featureFlags'
 import ProductPlanSelection, {
     ProductPlanSelectionProps,
 } from '../ProductPlanSelection'
@@ -54,6 +56,10 @@ describe('ProductPlanSelection', () => {
         useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
             () => false
         )
+        resetLDMocks()
+        mockFlags({
+            [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
+        })
     })
     const mockSetSelectedPlans = jest.fn()
 
@@ -333,6 +339,32 @@ describe('ProductPlanSelection', () => {
             queryByText('Click allowance auto-upgrade')
         ).not.toBeInTheDocument()
     })
+
+    it.each([ProductType.Voice, ProductType.SMS])(
+        '%p: should disable the add button for trialing users ',
+        (productType) => {
+            mockFlags({
+                [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
+            })
+            const {getByText} = render(
+                <Provider store={store}>
+                    <ProductPlanSelection
+                        {...props}
+                        selectedPlans={{
+                            ...selectedPlans,
+                            [productType]: {plan: null},
+                        }}
+                        type={productType}
+                        editingAvailable={true}
+                        isTrialing={true}
+                    />
+                </Provider>
+            )
+
+            const button = getByText('Add Product')
+            expect(button).toHaveClass('isDisabled')
+        }
+    )
 
     it.each([
         [
