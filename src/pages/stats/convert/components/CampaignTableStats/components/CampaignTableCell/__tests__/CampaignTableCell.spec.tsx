@@ -108,7 +108,8 @@ describe('<CampaignTableCell />', () => {
             />
         )
 
-        await findByText('Super converting campaign (light)')
+        await findByText('Super converting campaign')
+        await findByText('light')
     })
 
     it.each([

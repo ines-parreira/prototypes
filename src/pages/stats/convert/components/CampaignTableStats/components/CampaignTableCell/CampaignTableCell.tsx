@@ -15,7 +15,7 @@ import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/Campaign
 
 import {formatNumber} from 'pages/stats/common/utils'
 
-import Badge from 'gorgias-design-system/Badge/Badge'
+import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
 import {InferredCampaignStatus} from 'models/convert/campaign/types'
 import {TotalRevenueCell} from '../TotalRevenueCell'
 import {TicketsCreatedCell} from '../TicketsCreatedCell'
@@ -74,7 +74,6 @@ export const CampaignTableCell = ({
     if (column.key === CampaignTableKeys.CampaignName) {
         if (cell.chatIntegration) {
             const url = `/app/convert/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
-            const lightLabel = cell.campaign.is_light ? ' (light)' : ''
             return (
                 <BodyCell
                     {...bodyCellProps}
@@ -83,8 +82,14 @@ export const CampaignTableCell = ({
                     })}
                 >
                     <Link to={url}>
-                        {data}
-                        {lightLabel}
+                        <div>{data}</div>
+                        {cell.campaign.is_light && (
+                            <Badge
+                                label="light"
+                                color={'accessoryGrey'}
+                                className={css.lightBadge}
+                            />
+                        )}
                     </Link>
                 </BodyCell>
             )
@@ -99,7 +104,7 @@ export const CampaignTableCell = ({
                 case InferredCampaignStatus.Deleted:
                     return 'accessoryRed'
                 default:
-                    return 'accessoryGrey'
+                    return 'neutralGrey1' as BadgeColor
             }
         }
 
