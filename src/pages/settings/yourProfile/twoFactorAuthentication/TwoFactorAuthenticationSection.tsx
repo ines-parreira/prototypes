@@ -47,7 +47,7 @@ export default function TwoFactorAuthenticationSection() {
                     className="ml-3 "
                     type={has2FAEnabled ? ColorType.Success : ColorType.Error}
                 >
-                    {has2FAEnabled ? 'Enabled' : 'Disabled'}
+                    {has2FAEnabled ? '2FA Enabled' : '2FA Disabled'}
                 </Badge>
             </div>
             <div className={classnames('body-regular', css.mb16)}>
