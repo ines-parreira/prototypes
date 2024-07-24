@@ -82,17 +82,18 @@ describe('<SpotlightCustomerRow/>', () => {
     })
 
     it('should render a highlight when highlight is passed', () => {
+        const item = {
+            ...defaultProps.item,
+            highlights: {
+                email: ['<em>some email</em>'],
+                name: ['<em>some name</em>'],
+                channels: {
+                    address: ['<em>+32 000 000</em>'],
+                },
+            },
+        }
         const {getByText} = render(
-            <WrappedSpotlightCustomerRow
-                {...defaultProps}
-                highlights={{
-                    email: ['<em>some email</em>'],
-                    name: ['<em>some name</em>'],
-                    channels: {
-                        address: ['<em>+32 000 000</em>'],
-                    },
-                }}
-            />
+            <WrappedSpotlightCustomerRow {...defaultProps} item={item} />
         )
 
         expect(getByText('some email')).toBeInTheDocument()

@@ -1,15 +1,8 @@
 import {TicketChannel} from 'business/types/ticket'
 import {
-    CustomerHighlights,
-    CustomerWithHighlights,
-    CustomerWithHighlightsResponse,
-    PickedCustomer,
-    TicketHighlights,
-    TicketWithHighlights,
-    TicketWithHighlightsResponse,
+    PickedCustomerWithHighlights,
+    PickedTicketWithHighlights,
 } from 'models/search/types'
-import {ViewType} from 'models/view/types'
-import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 export const HIGHLIGHT_TAG = '<em>'
 const DEFAULT_HIGHLIGHT_TRIM_LENGTH = 15
@@ -41,13 +34,11 @@ const getCustomer = (
     return item.name || item.email || `Customer #${item.id}`
 }
 
-export const ticketHighlightsTransform = (
-    item: PickedTicket,
-    highlights?: TicketHighlights
-) => {
+export const ticketHighlightsTransform = (item: PickedTicketWithHighlights) => {
+    const {highlights, ...rest} = item
     if (highlights === undefined) {
         return {
-            ...item,
+            ...rest,
             customer:
                 item.customer.name ||
                 item.customer.email ||
@@ -65,7 +56,7 @@ export const ticketHighlightsTransform = (
     )
 
     return {
-        ...item,
+        ...rest,
         customer: customer,
         title: highlights.subject?.[0] || item.subject || '',
         message: highlights.messages?.body?.[0] || item.excerpt || '',
@@ -76,9 +67,9 @@ export const ticketHighlightsTransform = (
 }
 
 export const customerHighlightsTransform = (
-    highlights: CustomerHighlights | undefined,
-    item: PickedCustomer
+    item: PickedCustomerWithHighlights
 ) => {
+    const highlights = item?.highlights
     const phoneNumber = item.channels.find(
         (channel) => channel.type === TicketChannel.Phone
     )?.address
@@ -95,27 +86,6 @@ export const customerHighlightsTransform = (
             ? `Order ID: ${highlights?.order_ids[0]}`
             : undefined,
     }
-}
-
-type ResultWithHighlights<T> = T extends ViewType.TicketList
-    ? TicketWithHighlights
-    : T extends ViewType.CustomerList
-    ? CustomerWithHighlights
-    : never
-
-export function getTypedHighlightResults<T extends ViewType>(
-    data: TicketWithHighlightsResponse[] | CustomerWithHighlightsResponse[],
-    viewType: T
-): ResultWithHighlights<T>[] {
-    const entityType = viewType === ViewType.TicketList ? 'Ticket' : 'Customer'
-    return data
-        .map((result) => ({
-            type: entityType,
-            ...result,
-        }))
-        .filter(
-            (result) => result.type === entityType
-        ) as ResultWithHighlights<T>[]
 }
 
 export const trimWithEllipsisBeforeTheHighlight = (

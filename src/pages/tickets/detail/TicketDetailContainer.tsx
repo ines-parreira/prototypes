@@ -3,6 +3,7 @@ import {connect, ConnectedProps} from 'react-redux'
 import {useLocation, useParams} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import _pick from 'lodash/pick'
+import {PickedTicket, pickedTicketFields} from 'models/search/types'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {MacroActionName} from 'models/macroAction/types'
@@ -62,10 +63,6 @@ import usePrevious from 'hooks/usePrevious'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {Ticket} from 'models/ticket/types'
 import useKey from 'hooks/useKey'
-import {
-    PickedTicket,
-    pickedTicketFields,
-} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import Loader from 'pages/common/components/Loader/Loader'
 import {useSplitTicketView} from 'split-ticket-view-toggle'
 import {useListVoiceCalls} from 'models/voiceCall/queries'

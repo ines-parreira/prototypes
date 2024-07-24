@@ -1,16 +1,16 @@
 import _pick from 'lodash/pick'
-import {customer} from 'fixtures/customer'
 import {ticket} from 'fixtures/ticket'
-import {TicketHighlights, CustomerHighlights} from 'models/search/types'
-import {ViewType} from 'models/view/types'
 import {
-    getTypedHighlightResults,
+    TicketHighlights,
+    CustomerHighlights,
+    PickedTicket,
+} from 'models/search/types'
+import {
     ticketHighlightsTransform,
     customerHighlightsTransform,
     trimWithEllipsisBeforeTheHighlight,
     HIGHLIGHT_TAG,
 } from 'pages/common/components/Spotlight/helpers'
-import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {Customer} from 'models/customer/types'
 import {TicketChannel} from 'business/types/ticket'
 
@@ -54,7 +54,7 @@ describe('ticketHighlightsTransform', () => {
     it.each([
         {
             item: item,
-            highlight: highlight,
+            highlights: highlight,
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
@@ -67,7 +67,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: {
+            highlights: {
                 subject: highlight.subject,
             },
             expectedResult: {
@@ -81,7 +81,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: {
+            highlights: {
                 messages: {
                     body: [highlightedMessageBody],
                 },
@@ -97,7 +97,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: {
+            highlights: {
                 messages: {
                     from: {
                         name: [highlightedMessageSenderName],
@@ -115,7 +115,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: {
+            highlights: {
                 messages: {
                     from: {
                         address: [highlightedMessageSenderAddress],
@@ -133,7 +133,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: {
+            highlights: {
                 messages: {
                     to: {
                         name: [highlightedMessageRecipientName],
@@ -152,7 +152,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: {
+            highlights: {
                 messages: {
                     to: {
                         address: [highlightedMessageRecipientAddress],
@@ -170,7 +170,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: emptyHighlight,
+            highlights: emptyHighlight,
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
@@ -182,7 +182,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: undefined,
+            highlights: undefined,
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
@@ -194,7 +194,7 @@ describe('ticketHighlightsTransform', () => {
         },
         {
             item: {...item, subject: ''},
-            highlight: {},
+            highlights: {},
             expectedResult: {
                 itemWithHighlights: {
                     ...item,
@@ -207,8 +207,8 @@ describe('ticketHighlightsTransform', () => {
         },
     ])(
         'should check if highlight is passed and return right items with highlights $#',
-        ({item, highlight, expectedResult}) => {
-            expect(ticketHighlightsTransform(item, highlight)).toEqual(
+        ({item, highlights, expectedResult}) => {
+            expect(ticketHighlightsTransform({...item, highlights})).toEqual(
                 expectedResult.itemWithHighlights
             )
         }
@@ -248,7 +248,7 @@ describe('customerHighlightsTransform', () => {
     it.each([
         {
             item: item,
-            highlight: highlight,
+            highlights: highlight,
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -261,7 +261,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: _pick(highlight, 'email'),
+            highlights: _pick(highlight, 'email'),
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -273,7 +273,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: _pick(highlight, 'name'),
+            highlights: _pick(highlight, 'name'),
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -285,7 +285,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: _pick(highlight, 'channels.address'),
+            highlights: _pick(highlight, 'channels.address'),
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -297,7 +297,7 @@ describe('customerHighlightsTransform', () => {
         },
         {
             item: item,
-            highlight: emptyHighlight,
+            highlights: emptyHighlight,
             expectedResult: {
                 itemWithHighlights: {
                     id: item.id,
@@ -310,50 +310,15 @@ describe('customerHighlightsTransform', () => {
         },
     ])(
         'should check if highlight is passed and return item with highlights and phone number $#',
-        ({item, highlight, expectedResult}) => {
-            const transformed = customerHighlightsTransform(highlight, item)
+        ({item, highlights, expectedResult}) => {
+            const transformed = customerHighlightsTransform({
+                ...item,
+                highlights,
+            })
 
             expect(transformed).toEqual(expectedResult.itemWithHighlights)
         }
     )
-})
-
-describe('getTypedHighlightResults', () => {
-    it('should add type field to passed customers', () => {
-        const customerWithHighlights = {
-            entity: customer,
-            highlights: {},
-        }
-        const typedCustomers = getTypedHighlightResults(
-            [customerWithHighlights],
-            ViewType.CustomerList
-        )
-
-        expect(typedCustomers).toEqual([
-            {
-                ...customerWithHighlights,
-                type: 'Customer',
-            },
-        ])
-    })
-
-    it('should add type field to passed tickets', () => {
-        const ticketWithHighlights = {
-            entity: ticket as PickedTicket,
-            highlights: {},
-        }
-        const typedTicket = getTypedHighlightResults(
-            [ticketWithHighlights],
-            ViewType.TicketList
-        )
-
-        expect(typedTicket).toEqual([
-            {
-                ...ticketWithHighlights,
-                type: 'Ticket',
-            },
-        ])
-    })
 })
 
 describe('trimWithEllipsisBeforeTheHighlight', () => {

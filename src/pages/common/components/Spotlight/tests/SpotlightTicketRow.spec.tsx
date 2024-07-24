@@ -5,15 +5,14 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {fromJS} from 'immutable'
 import userEvent from '@testing-library/user-event'
+import {PickedTicket} from 'models/search/types'
 
 import {TicketStatus} from 'business/types/ticket'
 import {ticket} from 'fixtures/ticket'
 import {agents} from 'fixtures/agents'
 import {user} from 'fixtures/users'
 
-import SpotlightTicketRow, {
-    PickedTicket,
-} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const mockStore = configureMockStore([thunk])
 
@@ -214,21 +213,22 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render ticket information with highlight items', () => {
-        const {getByText} = render(
-            <WrappedSpotlightTicketRow
-                {...defaultProps}
-                highlights={{
-                    subject: ['<em>subject</em>'],
-                    messages: {
-                        to: {
-                            name: ['<em>to name</em>'],
-                        },
-                        from: {
-                            name: ['<em>from name</em>'],
-                        },
+        const item = {
+            ...defaultProps.item,
+            highlights: {
+                subject: ['<em>subject</em>'],
+                messages: {
+                    to: {
+                        name: ['<em>to name</em>'],
                     },
-                }}
-            />
+                    from: {
+                        name: ['<em>from name</em>'],
+                    },
+                },
+            },
+        }
+        const {getByText} = render(
+            <WrappedSpotlightTicketRow {...defaultProps} item={item} />
         )
 
         expect(getByText('subject')).toBeInTheDocument()

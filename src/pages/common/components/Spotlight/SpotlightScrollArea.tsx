@@ -8,15 +8,13 @@ import {
     VirtuosoProps,
 } from 'react-virtuoso'
 import {
-    CustomerWithHighlights,
-    PickedCustomer,
-    TicketWithHighlights,
+    PickedCustomerWithHighlights,
+    PickedTicketWithHighlights,
 } from 'models/search/types'
 
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 
 import css from 'pages/common/components/Spotlight/SpotlightScrollArea.less'
-import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const HEADER_HEIGHT = 32
 const ITEM_HEIGHT = 80
@@ -29,22 +27,15 @@ type VirtuosoContext = {
 
 type Props = {
     data:
-        | PickedTicket[]
-        | PickedCustomer[]
-        | (
-              | PickedTicket
-              | PickedCustomer
-              | CustomerWithHighlights
-              | TicketWithHighlights
-          )[]
+        | PickedTicketWithHighlights[]
+        | PickedCustomerWithHighlights[]
+        | (PickedTicketWithHighlights | PickedCustomerWithHighlights)[]
     canLoadMore: boolean
     loadMore: () => Promise<void>
     isLoading: boolean
     scrollerRef: React.RefObject<HTMLDivElement>
     itemContent: VirtuosoProps<
-        | PickedTicket
-        | PickedCustomer
-        | (CustomerWithHighlights | TicketWithHighlights),
+        PickedTicketWithHighlights | PickedCustomerWithHighlights,
         unknown
     >['itemContent']
     header?: ComponentType
@@ -54,10 +45,7 @@ type GroupedProps = Omit<Props, 'itemContent' | 'data' | 'loadMore'> & {
     itemContent?: (
         index: number,
         groupIndex: number,
-        data:
-            | PickedTicket
-            | PickedCustomer
-            | (CustomerWithHighlights | TicketWithHighlights)
+        data: PickedTicketWithHighlights | PickedCustomerWithHighlights
     ) => ReactNode
     groupCounts: number[]
     groupContent?: GroupContent
@@ -76,11 +64,7 @@ const SpotlightScrollArea = (
     ref: ForwardedRef<VirtuosoHandle>
 ) => {
     return (
-        <Virtuoso<
-            | PickedTicket
-            | PickedCustomer
-            | (CustomerWithHighlights | TicketWithHighlights)
-        >
+        <Virtuoso<PickedTicketWithHighlights | PickedCustomerWithHighlights>
             data={data}
             ref={ref}
             customScrollParent={scrollerRef.current || undefined}
@@ -119,9 +103,7 @@ export const GroupedSpotlightScrollAreaComponent = (
 ) => {
     return (
         <GroupedVirtuoso<
-            | PickedTicket
-            | PickedCustomer
-            | (CustomerWithHighlights | TicketWithHighlights)
+            PickedTicketWithHighlights | PickedCustomerWithHighlights
         >
             ref={ref}
             customScrollParent={scrollerRef.current || undefined}

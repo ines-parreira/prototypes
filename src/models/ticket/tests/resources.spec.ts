@@ -4,24 +4,27 @@ import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
 import {ticket} from 'fixtures/ticket'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Ticket} from 'models/ticket/types'
-import {searchTickets} from 'models/ticket/resources'
+import {
+    searchTickets,
+    searchTicketsWithHighlights,
+} from 'models/ticket/resources'
 import {assumeMock} from 'utils/testing'
 
 jest.mock('@gorgias/api-client')
 const searchTicketsMock = assumeMock(apiSearchTickets)
 
 describe('ticket resources', () => {
-    describe('searchTickets', () => {
-        const defaultData: ApiListResponseCursorPagination<Ticket[]> = {
-            data: [ticket],
-            meta: {
-                next_cursor: null,
-                prev_cursor: null,
-            },
-            object: 'list',
-            uri: '/api/tickets/search',
-        }
+    const defaultData: ApiListResponseCursorPagination<Ticket[]> = {
+        data: [ticket],
+        meta: {
+            next_cursor: null,
+            prev_cursor: null,
+        },
+        object: 'list',
+        uri: '/api/tickets/search',
+    }
 
+    describe('searchTickets', () => {
         beforeEach(() => {
             searchTicketsMock.mockResolvedValue({data: defaultData} as any)
         })
@@ -100,6 +103,41 @@ describe('ticket resources', () => {
                 {with_highlights: params.withHighlights},
                 {}
             )
+        })
+    })
+
+    describe('searchTicketsWithHighlights', () => {
+        it('should call searchTickets withHighlights and merge Tickets with their highlights', async () => {
+            const highlights = {}
+            searchTicketsMock.mockResolvedValue({
+                data: {
+                    ...defaultData,
+                    data: [
+                        {
+                            entity: ticket,
+                            highlights,
+                        },
+                    ],
+                },
+            } as any)
+            const options = {search: 'foo', filters: ''}
+
+            const response = await searchTicketsWithHighlights(options)
+
+            expect(searchTicketsMock).toHaveBeenCalledWith(
+                {
+                    ...options,
+                },
+                {with_highlights: true},
+                {}
+            )
+
+            expect(response.data.data).toEqual([
+                {
+                    ...ticket,
+                    highlights,
+                },
+            ])
         })
     })
 })

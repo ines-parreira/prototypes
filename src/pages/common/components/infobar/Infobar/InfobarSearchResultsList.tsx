@@ -12,17 +12,9 @@ import css from 'pages/common/components/infobar/Infobar.less'
 
 export const NO_CUSTOMER_FOUND_PLACEHOLDER = 'No customer found.'
 
-const isWithHighlights = (
-    item: Pick<Customer, 'id' | 'name' | 'email'> | PickedCustomerWithHighlights
-): item is PickedCustomerWithHighlights => {
-    return typeof item === 'object' && item !== null && 'highlights' in item
-}
-
 type Props = {
     errorMessage: Maybe<string>
-    searchResults:
-        | Pick<Customer, 'id' | 'name' | 'email'>[]
-        | PickedCustomerWithHighlights[]
+    searchResults: PickedCustomerWithHighlights[]
     defaultCustomerId: Maybe<number>
     onCustomerClick: (customerId: number, index: number) => Promise<void>
 }
@@ -43,11 +35,7 @@ export const InfobarSearchResultsList = ({
 
     const results: (Pick<Customer, 'id' | 'name' | 'email'> & {
         orderId?: string
-    })[] = searchResults.map((item) =>
-        isWithHighlights(item)
-            ? customerHighlightsTransform(item.highlights, item)
-            : item
-    )
+    })[] = searchResults.map((item) => customerHighlightsTransform(item))
 
     return (
         <div className="m-3">

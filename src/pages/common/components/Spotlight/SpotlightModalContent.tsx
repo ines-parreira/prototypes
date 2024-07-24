@@ -3,13 +3,12 @@ import React, {MouseEvent, RefObject, useEffect, useRef} from 'react'
 import {GroupedVirtuosoHandle, VirtuosoHandle} from 'react-virtuoso'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import {
-    CustomerWithHighlights,
     isCustomer,
-    isCustomerWithHighlights,
     isTicket,
-    isTicketWithHighlights,
     PickedCustomer,
-    TicketWithHighlights,
+    PickedCustomerWithHighlights,
+    PickedTicket,
+    PickedTicketWithHighlights,
 } from 'models/search/types'
 import {ViewType} from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
@@ -25,9 +24,7 @@ import SpotlightNoResults from 'pages/common/components/Spotlight/SpotlightNoRes
 import SpotlightScrollArea, {
     GroupedSpotlightScrollArea,
 } from 'pages/common/components/Spotlight/SpotlightScrollArea'
-import SpotlightTicketRow, {
-    PickedTicket,
-} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {Tabs} from 'pages/common/components/Spotlight/useSearch'
 
 export const RECENTLY_ACCESSED_LABEL = 'Recently accessed'
@@ -36,17 +33,11 @@ export const MORE_RESULTS_LABEL = 'More results'
 const hasNoResults = (
     tickets: unknown[],
     customers: unknown[],
-    resultsWithHighlights: unknown[],
-    searchItemsType: ViewType,
-    isSearchWithHighlights: boolean
+    searchItemsType: ViewType
 ) => {
-    if (isSearchWithHighlights) {
-        return _isEmpty(resultsWithHighlights)
-    }
-
     switch (searchItemsType) {
         case ViewType.All:
-            return _isEmpty(resultsWithHighlights)
+            return _isEmpty(customers) && _isEmpty(tickets)
         case ViewType.CustomerList:
             return _isEmpty(customers)
         case ViewType.TicketList:
@@ -70,19 +61,12 @@ const hasNoRecentResults = (
 
 const getData = (
     searchItemsType: ViewType,
-    displayedCustomers: PickedCustomer[] | CustomerWithHighlights[],
-    displayedTicket: PickedTicket[] | TicketWithHighlights[]
+    displayedCustomers: PickedCustomerWithHighlights[],
+    displayedTicket: PickedTicketWithHighlights[]
 ):
-    | PickedCustomer[]
-    | CustomerWithHighlights[]
-    | PickedTicket[]
-    | TicketWithHighlights[]
-    | (
-          | CustomerWithHighlights
-          | TicketWithHighlights
-          | PickedCustomer
-          | PickedTicket
-      )[] => {
+    | PickedCustomerWithHighlights[]
+    | PickedTicketWithHighlights[]
+    | (PickedCustomerWithHighlights | PickedTicketWithHighlights)[] => {
     switch (searchItemsType) {
         case ViewType.CustomerList: {
             return displayedCustomers
@@ -109,7 +93,6 @@ type Props = {
     searchItemsType: ViewType
     tickets: PickedTicket[]
     customers: PickedCustomer[]
-    resultsWithHighlights: (CustomerWithHighlights | TicketWithHighlights)[]
     recentTickets: PickedTicket[]
     recentCustomers: PickedCustomer[]
     goToAdvancedSearch: () => void
@@ -125,7 +108,6 @@ type Props = {
     logRecentlyAccessedSegmentEvent: (
         type: 'spotlight-ticket' | 'spotlight-customer'
     ) => void
-    isSearchWithHighlights: boolean
     onTabChange: (tab: string) => void
 }
 
@@ -134,7 +116,6 @@ export const SpotlightModalContent = ({
     searchItemsType,
     tickets,
     customers,
-    resultsWithHighlights,
     recentTickets,
     recentCustomers,
     goToAdvancedSearch,
@@ -148,7 +129,6 @@ export const SpotlightModalContent = ({
     selectedIndex,
     hasSearched,
     logRecentlyAccessedSegmentEvent,
-    isSearchWithHighlights,
     onTabChange,
 }: Props) => {
     const virtuosoRef = useRef<VirtuosoHandle | GroupedVirtuosoHandle>(null)
@@ -170,16 +150,7 @@ export const SpotlightModalContent = ({
         return <SkeletonLoader className={css.loader} />
     }
 
-    if (
-        hasSearched &&
-        hasNoResults(
-            tickets,
-            customers,
-            resultsWithHighlights,
-            searchItemsType,
-            isSearchWithHighlights
-        )
-    ) {
+    if (hasSearched && hasNoResults(tickets, customers, searchItemsType)) {
         return (
             <SpotlightNoResults
                 title="No results"
@@ -202,16 +173,8 @@ export const SpotlightModalContent = ({
         )
     }
 
-    const displayedTickets = hasSearched
-        ? isSearchWithHighlights
-            ? resultsWithHighlights.filter(isTicketWithHighlights)
-            : tickets
-        : recentTickets
-    const displayedCustomers = hasSearched
-        ? isSearchWithHighlights
-            ? resultsWithHighlights.filter(isCustomerWithHighlights)
-            : customers
-        : recentCustomers
+    const displayedTickets = hasSearched ? tickets : recentTickets
+    const displayedCustomers = hasSearched ? customers : recentCustomers
 
     const shouldDisplayRecentItems =
         !hasSearched &&
@@ -236,23 +199,11 @@ export const SpotlightModalContent = ({
         item:
             | PickedTicket
             | PickedCustomer
-            | (CustomerWithHighlights | TicketWithHighlights)
+            | PickedCustomerWithHighlights
+            | PickedTicketWithHighlights
     ) => {
         const selected = index === selectedIndex
-        if (isTicketWithHighlights(item)) {
-            return (
-                <SpotlightTicketRow
-                    id={item.entity.id}
-                    index={index}
-                    item={item.entity}
-                    highlights={item.highlights}
-                    onCloseModal={onCloseModal}
-                    onHover={handleHover}
-                    selected={selected}
-                    onClick={ticketOnClickHandler}
-                />
-            )
-        } else if (isTicket(item)) {
+        if (isTicket(item)) {
             return (
                 <SpotlightTicketRow
                     id={item.id}
@@ -262,19 +213,6 @@ export const SpotlightModalContent = ({
                     onHover={handleHover}
                     selected={selected}
                     onClick={ticketOnClickHandler}
-                />
-            )
-        } else if (isCustomerWithHighlights(item)) {
-            return (
-                <SpotlightCustomerRow
-                    id={item.entity.id}
-                    index={index}
-                    item={item.entity}
-                    highlights={item.highlights}
-                    onCloseModal={onCloseModal}
-                    onHover={handleHover}
-                    selected={selected}
-                    onClick={customerOnClickHandler}
                 />
             )
         } else if (isCustomer(item)) {

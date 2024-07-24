@@ -8,9 +8,14 @@ import client from 'models/api/resources'
 import {customer} from 'fixtures/customer'
 import {ApiListResponseCursorPagination} from 'models/api/types'
 import {Customer} from 'models/customer/types'
+import {CustomerWithHighlightsResponse} from 'models/search/types'
 import {assumeMock} from 'utils/testing'
 
-import {getCustomer, searchCustomers} from 'models/customer/resources'
+import {
+    getCustomer,
+    searchCustomers,
+    searchCustomersWithHighlights,
+} from 'models/customer/resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -103,6 +108,43 @@ describe('Customer resources', () => {
                 },
                 {}
             )
+        })
+    })
+
+    describe('searchCustomersWithHighlights', () => {
+        const customerHighlights = {}
+        const defaultData: ApiListResponseCursorPagination<
+            CustomerWithHighlightsResponse[]
+        > = {
+            data: [{entity: customer, highlights: customerHighlights}],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+            object: 'list',
+            uri: '/api/customers/search',
+        }
+
+        it('should call searchCustomers withHighlights and merge Customers with their highlights', async () => {
+            const options = {search: 'foo'}
+            apiSearchCustomersMock.mockResolvedValue({data: defaultData} as any)
+
+            const response = await searchCustomersWithHighlights(options)
+
+            expect(apiSearchCustomersMock).toHaveBeenCalledWith(
+                {
+                    ...options,
+                },
+                {with_highlights: true},
+                {}
+            )
+
+            expect(response.data.data).toEqual([
+                {
+                    ...customer,
+                    highlights: customerHighlights,
+                },
+            ])
         })
     })
 

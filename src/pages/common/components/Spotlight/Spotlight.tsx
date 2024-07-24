@@ -1,16 +1,12 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {useContext, useEffect} from 'react'
-import {FeatureFlagKey} from 'config/featureFlags'
 
 import {logEvent, SegmentEvent} from 'common/segment'
 import {SpotlightContext} from 'providers/ui/SpotlightContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 
-import SpotlightModal from './SpotlightModal'
+import SpotlightModal from 'pages/common/components/Spotlight/SpotlightModal'
 
 const Spotlight = () => {
-    const isSearchWithHighlights =
-        useFlags()[FeatureFlagKey.SearchWithHighlights] !== false
     const {isOpen, setIsOpen} = useContext(SpotlightContext)
 
     useEffect(() => {
@@ -34,7 +30,6 @@ const Spotlight = () => {
             onCloseModal={() => {
                 setIsOpen(false)
             }}
-            isSearchWithHighlights={isSearchWithHighlights}
         />
     )
 }

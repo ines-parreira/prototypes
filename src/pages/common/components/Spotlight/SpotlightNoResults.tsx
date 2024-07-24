@@ -1,6 +1,6 @@
 import React from 'react'
 
-import css from './SpotlightNoResults.less'
+import css from 'pages/common/components/Spotlight/SpotlightNoResults.less'
 
 type Props = {
     title: string

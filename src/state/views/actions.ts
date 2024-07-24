@@ -4,7 +4,6 @@ import _chunk from 'lodash/chunk'
 import {Moment} from 'moment'
 import {notify as updateNotification} from 'reapop'
 import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
 import {JOBS_PATH} from 'models/job/resources'
 
 import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
@@ -32,16 +31,14 @@ import client from 'models/api/resources'
 import {fetchViewsPaginated} from 'models/view/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
-    CustomerWithHighlights,
     SearchEngine,
     SearchType,
-    TicketWithHighlights,
 } from 'models/search/types'
 import {SearchRank} from 'hooks/useSearchRankScenario'
 import GorgiasApi from 'services/gorgiasApi'
 import {getLDClient} from 'utils/launchDarkly'
-import {searchTickets} from 'models/ticket/resources'
-import {searchCustomers} from 'models/customer/resources'
+import {searchTicketsWithHighlights} from 'models/ticket/resources'
+import {searchCustomersWithHighlights} from 'models/customer/resources'
 import {FeatureFlagKey} from 'config/featureFlags'
 
 import {activeViewUrl} from 'state/views/utils'
@@ -432,58 +429,31 @@ export function fetchViewItems(
             const isAdvancedSearchSortingEnabled = launchDarklyClient.variation(
                 FeatureFlagKey.AdvancedSearchSorting
             )
-            promise = searchTickets({
+            promise = searchTicketsWithHighlights({
                 search: activeView.get('search'),
                 filters: activeView.get('filters'),
                 cursor: cursorParam,
-                withHighlights: true,
                 cancelToken,
                 ...(isAdvancedSearchSortingEnabled && params),
-            }).then((resp) => ({
-                ...resp,
-                data: {
-                    ...resp.data,
-                    data: (resp.data?.data as TicketWithHighlights[]).map(
-                        mergeEntitiesWithHighlights
-                    ),
-                },
-            }))
+            })
         } else if (isCustomerSearch) {
-            promise = searchCustomers({
+            promise = searchCustomersWithHighlights({
                 search: activeView.get('search'),
                 cursor: cursorParam,
                 orderBy: CUSTOMER_SEARCH_ORDERING,
-                withHighlights: true,
                 cancelToken,
-            }).then((resp) => ({
-                ...resp,
-                data: {
-                    ...resp.data,
-                    data: (resp.data?.data as CustomerWithHighlights[]).map(
-                        mergeEntitiesWithHighlights
-                    ),
-                },
-            }))
+            })
         } else if (isDirty && activeViewType === ViewType.TicketList) {
             // when a view is dirty, just send the whole view data rather than just the id
             // this will allow us to test a view before submitting it to the DB
-            promise = searchTickets({
+            promise = searchTicketsWithHighlights({
                 search: activeView.get('search') || '',
                 filters: activeView.get('filters'),
                 cursor: cursorParam,
                 orderBy: 'last_message_datetime:desc',
-                withHighlights: true,
                 cancelToken,
                 ...params,
-            }).then((resp) => ({
-                ...resp,
-                data: {
-                    ...resp.data,
-                    data: (resp.data?.data as TicketWithHighlights[]).map(
-                        mergeEntitiesWithHighlights
-                    ),
-                },
-            }))
+            })
         } else {
             promise = client.get<ApiListResponsePagination<Ticket[]>>(url, {
                 ...options,

@@ -12,10 +12,16 @@ import {customer} from 'fixtures/customer'
 import {mockSearchRank} from 'fixtures/searchRank'
 import {ticket} from 'fixtures/ticket'
 import client from 'models/api/resources'
-import {searchCustomers} from 'models/customer/resources'
+import {
+    searchCustomers,
+    searchCustomersWithHighlights,
+} from 'models/customer/resources'
 import {JobType} from 'models/job/types'
 import {SEARCH_ENDPOINT} from 'models/search/resources'
-import {searchTickets} from 'models/ticket/resources'
+import {
+    searchTickets,
+    searchTicketsWithHighlights,
+} from 'models/ticket/resources'
 import {ViewType, ViewVisibility} from 'models/view/types'
 import {MoveIndexDirection} from 'pages/common/utils/keyboard'
 import socketManager from 'services/socketManager/socketManager'
@@ -29,17 +35,21 @@ import * as types from 'state/views/constants'
 import {getAST} from 'utils'
 import {getLDClient} from 'utils/launchDarkly'
 import {OrderDirection} from 'models/api/types'
-import {TicketSearchSortableProperties} from 'models/search/types'
+import {
+    CUSTOMER_SEARCH_ORDERING,
+    TicketSearchSortableProperties,
+} from 'models/search/types'
 import {FeatureFlagKey} from 'config/featureFlags'
+import {assumeMock} from 'utils/testing'
 
-import * as actions from '../actions'
-import {initialState} from '../reducers'
-import * as viewsSelectors from '../selectors'
-import {ViewNavDirection} from '../types'
+import * as actions from 'state/views/actions'
+import {initialState} from 'state/views/reducers'
+import * as viewsSelectors from 'state/views/selectors'
+import {ViewNavDirection} from 'state/views/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('state/notifications/actions.ts', () => {
     return {
         notify: jest.fn((args: unknown) => () => ({payload: args})),
     }
@@ -55,9 +65,13 @@ jest.mock('reapop', () => {
 
 jest.mock('models/ticket/resources')
 const searchTicketsMock = searchTickets as jest.Mock
+const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 
 jest.mock('models/customer/resources')
 const searchCustomersMock = searchCustomers as jest.Mock
+const searchCustomersWithHighlightsMock = assumeMock(
+    searchCustomersWithHighlights
+)
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock
@@ -87,6 +101,15 @@ beforeEach(() => {
             },
         },
     })
+    searchTicketsWithHighlightsMock.mockResolvedValue({
+        data: {
+            data: [{...ticket, highlights: {}}],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+        },
+    } as any)
     searchCustomersMock.mockResolvedValue({
         data: {
             data: [customer],
@@ -96,6 +119,15 @@ beforeEach(() => {
             },
         },
     })
+    searchCustomersWithHighlightsMock.mockResolvedValue({
+        data: {
+            data: [{...customer, highlights: {}}],
+            meta: {
+                next_cursor: null,
+                prev_cursor: null,
+            },
+        },
+    } as any)
 })
 
 afterEach(() => {
@@ -431,11 +463,12 @@ describe('actions', () => {
                     })
                 )
                 .then(() => {
-                    expect(searchTicketsMock).toHaveBeenCalledWith({
+                    expect(
+                        searchTicketsWithHighlightsMock
+                    ).toHaveBeenCalledWith({
                         filters: "eq(ticket.channel, 'chat')",
                         search: '',
                         orderBy: 'closed_datetime:asc',
-                        withHighlights: true,
                     })
                 })
         })
@@ -498,13 +531,14 @@ describe('actions', () => {
                         )
                     )
                     .then(() => {
-                        expect(searchTicketsMock).toHaveBeenCalledWith({
+                        expect(
+                            searchTicketsWithHighlightsMock
+                        ).toHaveBeenCalledWith({
                             filters: "eq(ticket.channel, 'chat')",
                             search: '',
                             orderBy: 'last_message_datetime:desc',
                             cancelToken,
                             cursor: args.expected,
-                            withHighlights: true,
                         })
                     })
             }
@@ -527,15 +561,13 @@ describe('actions', () => {
                     viewId,
                     discreet: false,
                 })
-                expect(searchTicketsMock).toHaveBeenCalledWith({
+                expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith({
                     cancelToken: undefined,
                     cursor: undefined,
                     filters: view.filters,
                     orderBy: 'last_message_datetime:desc',
                     search: '',
-                    withHighlights: true,
                 })
-                // expect(mockServer.history).toMatchSnapshot()
             })
         })
 
@@ -788,12 +820,13 @@ describe('actions', () => {
                     )
                 )
 
-                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                expect(
+                    searchTicketsWithHighlightsMock
+                ).toHaveBeenLastCalledWith({
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
                     cancelToken,
-                    withHighlights: true,
                 })
             })
 
@@ -815,12 +848,13 @@ describe('actions', () => {
                     actions.fetchViewItems(ViewNavDirection.NextView)
                 )
 
-                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                expect(
+                    searchTicketsWithHighlightsMock
+                ).toHaveBeenLastCalledWith({
                     cancelToken: undefined,
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
-                    withHighlights: true,
                 })
             })
 
@@ -842,12 +876,47 @@ describe('actions', () => {
                     actions.fetchViewItems(ViewNavDirection.PrevView)
                 )
 
-                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                expect(
+                    searchTicketsWithHighlightsMock
+                ).toHaveBeenLastCalledWith({
                     cancelToken: undefined,
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor,
-                    withHighlights: true,
+                })
+            })
+
+            it('should search customers with next_cursor when ViewNavDirection is next', async () => {
+                const customerSearchView = {
+                    ...view,
+                    search: 'foo',
+                    type: ViewType.CustomerList,
+                    dirty: true,
+                }
+                const cursor = 'next_cursor'
+                const store = mockStore({
+                    views: fromJS({
+                        active: customerSearchView,
+                        _internal: {
+                            navigation: {
+                                next_cursor: cursor,
+                                prev_cursor: null,
+                            },
+                        },
+                    }),
+                })
+
+                await store.dispatch(
+                    actions.fetchViewItems(ViewNavDirection.NextView)
+                )
+
+                expect(
+                    searchCustomersWithHighlightsMock
+                ).toHaveBeenLastCalledWith({
+                    cancelToken: undefined,
+                    search: customerSearchView.search,
+                    orderBy: CUSTOMER_SEARCH_ORDERING,
+                    cursor,
                 })
             })
 
@@ -869,12 +938,13 @@ describe('actions', () => {
                     })
                 )
 
-                expect(searchTicketsMock).toHaveBeenLastCalledWith({
+                expect(
+                    searchTicketsWithHighlightsMock
+                ).toHaveBeenLastCalledWith({
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
                     cursor: undefined,
                     orderBy: orderByParam,
-                    withHighlights: true,
                 })
             })
         })

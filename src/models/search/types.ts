@@ -6,7 +6,7 @@ import {
     OrderParams,
 } from 'models/api/types'
 import {Customer} from 'models/customer/types'
-import {PickedTicket} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import {Ticket} from 'models/ticket/types'
 
 export enum SearchType {
     Agent = 'agent',
@@ -61,22 +61,25 @@ export type TicketSearchOptions = ApiPaginationParams &
         withHighlights?: boolean
     }
 
-export const isTicketWithHighlights = (
-    item:
-        | PickedTicket
-        | TicketWithHighlights
-        | PickedCustomer
-        | CustomerWithHighlights
-): item is TicketWithHighlights => {
-    return 'type' in item && item.type === 'Ticket'
+export const pickedTicketFields = [
+    'id',
+    'channel',
+    'status',
+    'subject',
+    'excerpt',
+    'assignee_user',
+    'created_datetime',
+] as const
+export type PickedTicket = Pick<Ticket, typeof pickedTicketFields[number]> & {
+    customer: Pick<Customer, 'id' | 'name' | 'email'>
 }
 export const isTicket = (
     item:
         | PickedTicket
-        | TicketWithHighlights
+        | PickedTicketWithHighlights
         | PickedCustomer
-        | CustomerWithHighlights
-): item is PickedTicket => {
+        | PickedCustomerWithHighlights
+): item is PickedTicketWithHighlights => {
     return 'channel' in item
 }
 export type TicketHighlights = {
@@ -99,12 +102,6 @@ export type TicketWithHighlightsResponse = {
     highlights: TicketHighlights
 }
 
-export type TicketWithHighlights = {
-    type: 'Ticket'
-    entity: PickedTicket
-    highlights: TicketHighlights
-}
-
 export enum TicketSearchSortableProperties {
     UpdatedDatetime = 'updated_datetime',
     CreatedDatetime = 'created_datetime',
@@ -121,23 +118,17 @@ export type PickedCustomerWithHighlights = PickedCustomer & {
     highlights?: CustomerHighlights
 }
 
-export const isCustomerWithHighlights = (
-    item:
-        | PickedTicket
-        | TicketWithHighlights
-        | PickedCustomer
-        | CustomerWithHighlights
-): item is CustomerWithHighlights => {
-    return 'type' in item && item.type === 'Customer'
+export type PickedTicketWithHighlights = PickedTicket & {
+    highlights?: TicketHighlights
 }
 
 export const isCustomer = (
     item:
         | PickedTicket
-        | TicketWithHighlights
+        | PickedTicketWithHighlights
         | PickedCustomer
-        | CustomerWithHighlights
-): item is Customer => {
+        | PickedCustomerWithHighlights
+): item is PickedCustomerWithHighlights => {
     return 'email' in item
 }
 
@@ -149,12 +140,6 @@ export type CustomerHighlights = {
 }
 
 export type CustomerWithHighlightsResponse = {
-    entity: Customer
-    highlights: CustomerHighlights
-}
-
-export type CustomerWithHighlights = {
-    type: 'Customer'
     entity: Customer
     highlights: CustomerHighlights
 }

@@ -1,7 +1,6 @@
-import LD from 'launchdarkly-react-client-sdk'
 import React, {ComponentProps, ReactPortal} from 'react'
 import userEvent from '@testing-library/user-event'
-import {act, fireEvent, screen} from '@testing-library/react'
+import {act, fireEvent, screen, waitFor} from '@testing-library/react'
 import ReactDOM from 'react-dom'
 import {stringify} from 'qs'
 import {Provider} from 'react-redux'
@@ -9,9 +8,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {createBrowserHistory} from 'history'
 import {fromJS} from 'immutable'
-import {searchCustomers} from 'models/customer/resources'
-import {searchTickets} from 'models/ticket/resources'
-import {FeatureFlagKey} from 'config/featureFlags'
+import {searchCustomersWithHighlights} from 'models/customer/resources'
+import {searchTicketsWithHighlights} from 'models/ticket/resources'
 import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
@@ -87,10 +85,12 @@ jest.spyOn(ReactDOM, 'createPortal').mockImplementation(
 )
 
 jest.mock('models/customer/resources')
-const searchCustomersMock = assumeMock(searchCustomers)
+const searchCustomersWithHighlightsMock = assumeMock(
+    searchCustomersWithHighlights
+)
 
 jest.mock('models/ticket/resources')
-const searchTicketsMock = assumeMock(searchTickets)
+const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -113,9 +113,8 @@ const WrappedSpotlightModal = (
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
-const mockUseRecentItems = assumeMock(useRecentItems)
-
 jest.mock('hooks/useRecentItems/useRecentItems')
+const mockUseRecentItems = assumeMock(useRecentItems)
 
 jest.mock(
     'focus-trap-react',
@@ -140,7 +139,6 @@ describe('<SpotlightModal/>', () => {
     const minProps: ComponentProps<typeof SpotlightModal> = {
         isOpen: true,
         onCloseModal: mockCloseModal,
-        isSearchWithHighlights: false,
     }
 
     beforeAll(() => {
@@ -164,9 +162,6 @@ describe('<SpotlightModal/>', () => {
             reset: jest.fn(),
         })
         mockUseSearchRankScenario.mockReturnValue(mockSearchRank)
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.SearchWithHighlights]: false,
-        }))
     })
 
     afterEach(() => {
@@ -175,28 +170,16 @@ describe('<SpotlightModal/>', () => {
 
     describe('Tabs', () => {
         it('should render with Federated Search tab as default', async () => {
-            jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-                [FeatureFlagKey.SearchWithHighlights]: true,
-            }))
-
-            renderWithRouter(
-                <WrappedSpotlightModal
-                    {...minProps}
-                    isSearchWithHighlights={true}
-                />
-            )
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
             await act(flushPromises)
 
-            expect(getFederatedTab()).toHaveClass('activeTab')
+            await waitFor(() => {
+                expect(getFederatedTab()).toHaveClass('activeTab')
+            })
         })
 
         it('should set All tab on click', () => {
-            renderWithRouter(
-                <WrappedSpotlightModal
-                    {...minProps}
-                    isSearchWithHighlights={true}
-                />
-            )
+            renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
             const customersTab = getCustomersTab()
             customersTab?.focus()
@@ -231,14 +214,11 @@ describe('<SpotlightModal/>', () => {
 
     describe('Navigate to Advanced Search', () => {
         beforeEach(() => {
-            searchTicketsMock.mockClear()
+            searchTicketsWithHighlightsMock.mockClear()
         })
         it('should not navigate to advanced search on Federated Search', () => {
             const {queryByText} = renderWithRouter(
-                <WrappedSpotlightModal
-                    {...minProps}
-                    isSearchWithHighlights={true}
-                />
+                <WrappedSpotlightModal {...minProps} />
             )
 
             const advancedSearchButton = queryByText('Advanced Search')
@@ -406,7 +386,7 @@ describe('<SpotlightModal/>', () => {
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
 
-        expect(searchTicketsMock).toHaveBeenCalledWith(
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 search: searchQuery,
                 filters: '',
@@ -415,7 +395,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should end previous searchRank scenario and register a new one on enter keypress', async () => {
-        searchTicketsMock.mockResolvedValue({
+        searchTicketsWithHighlightsMock.mockResolvedValue({
             data: {data: [{foo: 'foo'}]},
         } as any)
         jest.useFakeTimers()
@@ -447,16 +427,11 @@ describe('<SpotlightModal/>', () => {
 
     it('should not fetch on enter keypress again it the search term is identical', async () => {
         jest.useFakeTimers()
-        searchTicketsMock.mockResolvedValue({
+        searchTicketsWithHighlightsMock.mockResolvedValue({
             data: {data: []},
         } as any)
 
-        renderWithRouter(
-            <WrappedSpotlightModal
-                {...minProps}
-                isSearchWithHighlights={false}
-            />
-        )
+        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
         const ticketsTab = getTicketsTab()
         ticketsTab?.focus()
@@ -468,12 +443,14 @@ describe('<SpotlightModal/>', () => {
         await userEvent.type(searchInput, '{enter}')
         await act(flushPromises)
         await userEvent.type(searchInput, '{enter}')
-        expect(searchTicketsMock).toHaveBeenCalledTimes(1)
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch items for the same search term on tab switch if search was performed', async () => {
         jest.useFakeTimers()
-        searchCustomersMock.mockResolvedValue({data: {data: []}} as any)
+        searchCustomersWithHighlightsMock.mockResolvedValue({
+            data: {data: []},
+        } as any)
 
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
@@ -486,8 +463,9 @@ describe('<SpotlightModal/>', () => {
         await act(flushPromises)
         customersTab?.focus()
         await act(flushPromises)
-        expect(searchCustomersMock).toHaveBeenCalledTimes(1)
-        expect(searchTicketsMock).toHaveBeenCalledTimes(1)
+
+        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(2)
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledTimes(1)
     })
 
     it('should fetch items for the search term on previous tab if search was not triggered for new query', async () => {
@@ -508,14 +486,14 @@ describe('<SpotlightModal/>', () => {
         customersTab?.focus()
         await act(flushPromises)
 
-        expect(searchTicketsMock).toHaveBeenCalledWith(
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 search: searchQuery,
                 filters: '',
             })
         )
-        expect(searchCustomersMock).toHaveBeenCalledTimes(1)
-        expect(searchCustomersMock).toHaveBeenCalledWith(
+        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(2)
+        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 search: searchQuery,
             })
@@ -525,12 +503,7 @@ describe('<SpotlightModal/>', () => {
     it('should not fetch items on tab switch if a search has been performed for that item type', async () => {
         jest.useFakeTimers()
 
-        renderWithRouter(
-            <WrappedSpotlightModal
-                {...minProps}
-                isSearchWithHighlights={false}
-            />
-        )
+        renderWithRouter(<WrappedSpotlightModal {...minProps} />)
 
         const searchInput = screen.getByPlaceholderText('Search...')
         const ticketsTab = getTicketsTab()
@@ -546,8 +519,8 @@ describe('<SpotlightModal/>', () => {
         ticketsTab?.focus()
         await act(flushPromises)
 
-        expect(searchCustomersMock).toHaveBeenCalledTimes(1)
-        expect(searchTicketsMock).toHaveBeenCalledTimes(1)
+        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledTimes(1)
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledTimes(2)
     })
 
     it('should not fetch items for any query on tab switch if the search was not submitted', async () => {
@@ -564,11 +537,13 @@ describe('<SpotlightModal/>', () => {
         customersTab?.focus()
         await act(flushPromises)
 
-        expect(searchTicketsMock).not.toHaveBeenCalled()
+        expect(searchTicketsWithHighlightsMock).not.toHaveBeenCalled()
     })
 
     it('should fetch customers on enter keypress', async () => {
-        searchCustomersMock.mockResolvedValue({data: {data: []}} as any)
+        searchCustomersWithHighlightsMock.mockResolvedValue({
+            data: {data: []},
+        } as any)
         jest.useFakeTimers()
         const searchQuery = 'foo2'
 
@@ -583,7 +558,7 @@ describe('<SpotlightModal/>', () => {
         jest.runOnlyPendingTimers()
         await userEvent.type(searchInput, '{enter}')
 
-        expect(searchCustomersMock).toHaveBeenCalledWith(
+        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 search: searchQuery,
             })
@@ -631,7 +606,7 @@ describe('<SpotlightModal/>', () => {
     })
 
     it('should notify when an error occurs and register searchRank scenario', async () => {
-        searchTicketsMock.mockRejectedValue({message: 'error'})
+        searchTicketsWithHighlightsMock.mockRejectedValue({message: 'error'})
         jest.useFakeTimers()
 
         const {rerender} = renderWithRouter(
@@ -666,7 +641,9 @@ describe('<SpotlightModal/>', () => {
 
     it('should cancel previous request when tab is switched and not notify on cancellation error', async () => {
         jest.useFakeTimers()
-        searchTicketsMock.mockResolvedValue({data: {data: []}} as any)
+        searchTicketsWithHighlightsMock.mockResolvedValue({
+            data: {data: []},
+        } as any)
         const searchQuery = 'foo'
 
         renderWithRouter(<WrappedSpotlightModal {...minProps} />)
@@ -682,10 +659,10 @@ describe('<SpotlightModal/>', () => {
         customersTab?.focus()
         await act(flushPromises)
 
-        expect(searchTicketsMock).toHaveBeenCalledWith(
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({search: searchQuery})
         )
-        expect(searchTicketsMock).toHaveBeenCalledWith(
+        expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 cancelToken: expect.objectContaining({
                     reason: expect.objectContaining({
@@ -696,7 +673,7 @@ describe('<SpotlightModal/>', () => {
                 }),
             })
         )
-        expect(searchCustomersMock).toHaveBeenCalledWith(
+        expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 search: searchQuery,
             })
@@ -709,8 +686,10 @@ describe('<SpotlightModal/>', () => {
         [CUSTOMERS_LABEL, customer, CUSTOMER_SPOTLIGHT_ROW_TEST_ID],
     ])(
         'should render the fetched result set with SpotlightRow for %s tab',
-        async (name, item, componentName) => {
-            searchTicketsMock.mockResolvedValue({data: {data: [item]}} as any)
+        async (_, item, componentName) => {
+            searchTicketsWithHighlightsMock.mockResolvedValue({
+                data: {data: [item]},
+            } as any)
             jest.useFakeTimers()
 
             const {rerender} = renderWithRouter(
@@ -745,10 +724,10 @@ describe('<SpotlightModal/>', () => {
                     next_cursor: 'foo',
                 },
             }
-            searchTicketsMock.mockResolvedValue({
+            searchTicketsWithHighlightsMock.mockResolvedValue({
                 data: response,
             } as any)
-            searchCustomersMock.mockResolvedValue({
+            searchCustomersWithHighlightsMock.mockResolvedValue({
                 data: response,
             } as any)
             jest.useFakeTimers()
@@ -774,11 +753,11 @@ describe('<SpotlightModal/>', () => {
             await act(flushPromises)
 
             if (name === TICKETS_LABEL) {
-                expect(searchTicketsMock).toHaveBeenCalledWith(
+                expect(searchTicketsWithHighlightsMock).toHaveBeenCalledWith(
                     expect.objectContaining({cursor: 'foo'})
                 )
             } else {
-                expect(searchCustomersMock).toHaveBeenCalledWith(
+                expect(searchCustomersWithHighlightsMock).toHaveBeenCalledWith(
                     expect.objectContaining({cursor: 'foo'})
                 )
             }
@@ -999,7 +978,7 @@ describe('<SpotlightModal/>', () => {
                 },
             ],
         ])(
-            'should check enter/ctrl+enter hotkeys open searched entry in the same/new tab - platforms other than MacOs',
+            `should check enter/ctrl+enter hotkeys open searched entry in the same/new tab - platforms other than MacOs $KBkey`,
             async (name, item, {KBkey, shouldCall, expectedResult}) => {
                 mockUseSearchRankScenario.mockImplementation((arg) => {
                     return {
@@ -1017,7 +996,11 @@ describe('<SpotlightModal/>', () => {
                         next_cursor: 'foo',
                     },
                 }
-                searchTicketsMock.mockResolvedValue({
+                searchTicketsWithHighlightsMock.mockResolvedValue({
+                    data: response,
+                } as any)
+                jest.useFakeTimers()
+                searchCustomersWithHighlightsMock.mockResolvedValue({
                     data: response,
                 } as any)
                 jest.useFakeTimers()
@@ -1097,7 +1080,7 @@ describe('<SpotlightModal/>', () => {
                 },
             ],
         ])(
-            'should check enter/ctrl+enter hotkeys open searched entry in the same/new tab - platform is MacOs',
+            'should check enter/ctrl+enter hotkeys open searched entry in the same/new tab - platform is MacOs %name',
             async (name, item, {KBkey, shouldCall, expectedResult}) => {
                 Object.defineProperty(platform, 'isMacOs', {
                     value: true,
@@ -1119,7 +1102,7 @@ describe('<SpotlightModal/>', () => {
                         next_cursor: 'foo',
                     },
                 }
-                searchTicketsMock.mockResolvedValue({
+                searchTicketsWithHighlightsMock.mockResolvedValue({
                     data: response,
                 } as any)
                 jest.useFakeTimers()
@@ -1231,7 +1214,12 @@ describe('<SpotlightModal/>', () => {
         expect(searchInput.textContent).toEqual('')
     })
 
-    it('should test hover behavior when customer row is present in template', async () => {
+    it('should change selectedItem on hover when customer row is present in template', async () => {
+        mockUseRecentItems.mockImplementation(() => ({
+            items: [customer],
+            setRecentItem: jest.fn() as any,
+            isGettingItems: false,
+        }))
         jest.useFakeTimers()
 
         const {rerender} = renderWithRouter(

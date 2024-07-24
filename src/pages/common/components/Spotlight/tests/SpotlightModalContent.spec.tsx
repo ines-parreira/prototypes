@@ -1,16 +1,18 @@
 import {render, screen, waitFor} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import React from 'react'
+import {Customer} from 'models/customer/types'
 import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
-import {CustomerWithHighlights, TicketWithHighlights} from 'models/search/types'
+import {
+    PickedCustomerWithHighlights,
+    PickedTicketWithHighlights,
+} from 'models/search/types'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import {customer} from 'fixtures/customer'
-import SpotlightTicketRow, {
-    PickedTicket,
-} from 'pages/common/components/Spotlight/SpotlightTicketRow'
+import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 import {ViewType} from 'models/view/types'
 import mockedVirtuoso from 'tests/mockedVirtuoso'
 import {
@@ -58,9 +60,9 @@ describe('<SpotlightModalContent />', () => {
         onTabChange: jest.fn(),
     }
     const highlightedContent = '<em>some Highlighted text</em>'
-    const ticketWithHighlights: TicketWithHighlights = {
-        type: 'Ticket',
-        entity: ticket as PickedTicket,
+    const ticketWithHighlights: PickedTicketWithHighlights = {
+        ...ticket,
+        customer: ticket.customer as Pick<Customer, 'name' | 'id' | 'email'>,
         highlights: {
             id: [],
             subject: [],
@@ -77,9 +79,8 @@ describe('<SpotlightModalContent />', () => {
             },
         },
     }
-    const customerWithHighlights: CustomerWithHighlights = {
-        type: 'Customer',
-        entity: customer,
+    const customerWithHighlights: PickedCustomerWithHighlights = {
+        ...customer,
         highlights: {
             channels: {
                 address: [highlightedContent],
@@ -95,12 +96,11 @@ describe('<SpotlightModalContent />', () => {
         SpotlightCustomerRowMock.mockImplementation(() => <div />)
     })
 
-    it('should render tickets', () => {
+    it('should render tickets without highlights', () => {
         const props = {
             ...defaultProps,
             searchItemsType: ViewType.TicketList,
-            tickets: [ticket as PickedTicket],
-            isSearchWithHighlights: false,
+            tickets: [ticket as PickedTicketWithHighlights],
         }
 
         render(<SpotlightModalContent {...props} />)
@@ -117,18 +117,14 @@ describe('<SpotlightModalContent />', () => {
         const props = {
             ...defaultProps,
             searchItemsType: ViewType.TicketList,
-            resultsWithHighlights: [ticketWithHighlights],
-            isSearchWithHighlights: true,
+            tickets: [ticketWithHighlights],
         }
 
-        render(
-            <SpotlightModalContent {...props} isSearchWithHighlights={true} />
-        )
+        render(<SpotlightModalContent {...props} />)
 
         expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                item: ticketWithHighlights.entity,
-                highlights: ticketWithHighlights.highlights,
+                item: ticketWithHighlights,
             }),
             {}
         )
@@ -139,7 +135,6 @@ describe('<SpotlightModalContent />', () => {
             ...defaultProps,
             searchItemsType: ViewType.CustomerList,
             customers: [customer],
-            isSearchWithHighlights: false,
         }
 
         render(<SpotlightModalContent {...props} />)
@@ -156,16 +151,14 @@ describe('<SpotlightModalContent />', () => {
         const props = {
             ...defaultProps,
             searchItemsType: ViewType.CustomerList,
-            resultsWithHighlights: [customerWithHighlights],
-            isSearchWithHighlights: true,
+            customers: [customerWithHighlights],
         }
 
         render(<SpotlightModalContent {...props} />)
 
         expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                item: customerWithHighlights.entity,
-                highlights: customerWithHighlights.highlights,
+                item: customerWithHighlights,
             }),
             {}
         )
@@ -176,26 +169,21 @@ describe('<SpotlightModalContent />', () => {
             ...defaultProps,
             data: undefined,
             searchItemsType: ViewType.All,
-            resultsWithHighlights: [
-                ticketWithHighlights,
-                customerWithHighlights,
-            ],
-            isSearchWithHighlights: true,
+            tickets: [ticketWithHighlights],
+            customers: [customerWithHighlights],
         }
         const {getByText} = render(<SpotlightModalContent {...props} />)
 
         await waitFor(() => {
             expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    item: ticketWithHighlights.entity,
-                    highlights: ticketWithHighlights.highlights,
+                    item: ticketWithHighlights,
                 }),
                 {}
             )
             expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    item: customerWithHighlights.entity,
-                    highlights: customerWithHighlights.highlights,
+                    item: customerWithHighlights,
                 }),
                 {}
             )
@@ -209,9 +197,8 @@ describe('<SpotlightModalContent />', () => {
             ...defaultProps,
             data: undefined,
             searchItemsType: ViewType.All,
-            recentTickets: [ticketWithHighlights.entity],
-            recentCustomers: [customerWithHighlights.entity],
-            isSearchWithHighlights: true,
+            recentTickets: [ticketWithHighlights],
+            recentCustomers: [customerWithHighlights],
             hasSearched: false,
         }
         const {getByText} = render(<SpotlightModalContent {...props} />)
@@ -219,13 +206,13 @@ describe('<SpotlightModalContent />', () => {
         await waitFor(() => {
             expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    item: ticketWithHighlights.entity,
+                    item: ticketWithHighlights,
                 }),
                 {}
             )
             expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    item: customerWithHighlights.entity,
+                    item: customerWithHighlights,
                 }),
                 {}
             )
@@ -238,11 +225,8 @@ describe('<SpotlightModalContent />', () => {
         const props = {
             ...defaultProps,
             searchItemsType: ViewType.All,
-            resultsWithHighlights: [
-                ticketWithHighlights,
-                customerWithHighlights,
-            ],
-            isSearchWithHighlights: true,
+            tickets: [ticketWithHighlights],
+            customers: [customerWithHighlights],
             onTabChange,
         }
         render(<SpotlightModalContent {...props} />)

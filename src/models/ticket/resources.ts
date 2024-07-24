@@ -1,6 +1,11 @@
 import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
 import {stringify} from 'qs'
-import {TicketSearchOptions} from 'models/search/types'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
+import {
+    PickedTicketWithHighlights,
+    TicketSearchOptions,
+    TicketWithHighlightsResponse,
+} from 'models/search/types'
 
 import client from 'models/api/resources'
 import {
@@ -58,3 +63,16 @@ export const searchTickets = async ({
         }
     )
 }
+
+export const searchTicketsWithHighlights = (
+    options: Omit<TicketSearchOptions, 'withHighlights'>
+) =>
+    searchTickets({...options, withHighlights: true}).then((resp) => ({
+        ...resp,
+        data: {
+            ...resp.data,
+            data: (resp.data?.data as TicketWithHighlightsResponse[]).map(
+                mergeEntitiesWithHighlights
+            ) as PickedTicketWithHighlights[],
+        },
+    }))

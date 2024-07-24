@@ -36,17 +36,11 @@ import css from 'pages/common/components/Spotlight/SpotlightModal.less'
 type Props = {
     isOpen: boolean
     onCloseModal: () => void
-    isSearchWithHighlights: boolean
 }
 
 export const FEDERATED_SEARCH_TAB_LABEL = 'All'
 export const TICKETS_ADVANCED_SEARCH_PATH = '/app/tickets/search'
 export const CUSTOMERS_ADVANCED_SEARCH_PATH = '/app/customers/search'
-
-const navigatorTabs = [
-    {label: TICKETS_LABEL, value: Tabs.Tickets},
-    {label: CUSTOMERS_LABEL, value: Tabs.Customers},
-]
 
 const navigatorTabsWithFederatedSearch = [
     {label: FEDERATED_SEARCH_TAB_LABEL, value: Tabs.All},
@@ -68,18 +62,14 @@ const viewToAdvancedSearchPath: Record<
     [ViewType.CustomerList]: CUSTOMERS_ADVANCED_SEARCH_PATH,
 }
 
-const SpotlightModal = ({
-    isOpen,
-    onCloseModal,
-    isSearchWithHighlights,
-}: Props) => {
+const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
     const {pathname} = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
     const spotlightSearchInputRef = useRef<HTMLInputElement>(null)
 
-    const search = useSearch(isSearchWithHighlights)
+    const search = useSearch()
     const {
         searchItemsType,
         handleSearchInput,
@@ -224,11 +214,7 @@ const SpotlightModal = ({
                 autoFocus
             />
             <TabNavigator
-                tabs={
-                    isSearchWithHighlights
-                        ? navigatorTabsWithFederatedSearch
-                        : navigatorTabs
-                }
+                tabs={navigatorTabsWithFederatedSearch}
                 activeTab={viewToTabMap[searchItemsType]}
                 onTabChange={handleTabChange}
                 className={css.tabNavigator}
@@ -236,7 +222,6 @@ const SpotlightModal = ({
             <ModalBody className={css.modalBody} ref={modalBodyRef}>
                 <SpotlightModalContent
                     {...search}
-                    isSearchWithHighlights={isSearchWithHighlights}
                     handleHover={handleHover}
                     onTabChange={handleTabChange}
                     onCloseModal={onCloseModal}

@@ -1,45 +1,29 @@
-import React, {ComponentProps, useMemo} from 'react'
-import moment from 'moment'
 import {fromJS} from 'immutable'
-import {EntityType} from 'hooks/useSearchRankScenario'
-import {TicketHighlights} from 'models/search/types'
-import {Customer} from 'models/customer/types'
-
-import {Ticket, TicketAssignee} from 'models/ticket/types'
-import TicketIcon from 'pages/common/components/TicketIcon'
-import {UserAssigneeLabel} from 'pages/common/utils/labels'
+import moment from 'moment'
+import React, {ComponentProps, useMemo} from 'react'
+import {DateAndTimeFormatting} from 'constants/datetime'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {formatDatetime} from 'utils'
-import {sanitizeHtmlDefault} from 'utils/html'
+import {EntityType} from 'hooks/useSearchRankScenario'
+import {PickedTicketWithHighlights} from 'models/search/types'
+
+import {TicketAssignee} from 'models/ticket/types'
 import {ticketHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import css from 'pages/common/components/Spotlight/SpotlightTicketRow.less'
-
-export const pickedTicketFields = [
-    'id',
-    'channel',
-    'status',
-    'subject',
-    'excerpt',
-    'assignee_user',
-    'created_datetime',
-] as const
-
-export type PickedTicket = Pick<Ticket, typeof pickedTicketFields[number]> & {
-    customer: Pick<Customer, 'id' | 'name' | 'email'>
-}
+import TicketIcon from 'pages/common/components/TicketIcon'
+import {UserAssigneeLabel} from 'pages/common/utils/labels'
+import {formatDatetime} from 'utils'
+import {sanitizeHtmlDefault} from 'utils/html'
 
 type SpotlightTicketRowProps = {
-    item: PickedTicket
+    item: PickedTicketWithHighlights
     onCloseModal: () => void
     id: number
     index: number
     onHover?: ComponentProps<typeof SpotlightRow>['onHover']
     selected?: boolean
     onClick: () => void
-    highlights?: TicketHighlights
 }
 
 const SpotlightTicketRow = ({
@@ -50,11 +34,10 @@ const SpotlightTicketRow = ({
     onHover,
     selected,
     onClick,
-    highlights,
 }: SpotlightTicketRowProps) => {
     const itemWithHighlights = useMemo(
-        () => ticketHighlightsTransform(item, highlights),
-        [item, highlights]
+        () => ticketHighlightsTransform(item),
+        [item]
     )
 
     return (

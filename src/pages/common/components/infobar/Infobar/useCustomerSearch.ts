@@ -1,6 +1,7 @@
 import {AxiosError, AxiosResponse, CancelToken} from 'axios'
 import {fromJS} from 'immutable'
 import {useState} from 'react'
+import {mergeEntitiesWithHighlights} from 'models/search/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
@@ -48,10 +49,7 @@ export const useCustomerSearch = () => {
 
         return {
             error,
-            data: resp?.data.data.map((item) => ({
-                ...item.entity,
-                highlights: item.highlights,
-            })),
+            data: resp?.data.data.map(mergeEntitiesWithHighlights),
         }
     }
 
