@@ -34,15 +34,29 @@ const AutomateAllRecommendationsPage = () => {
     const currentPage = Number(page) || 1
 
     const updateQueryParams = useCallback(
-        (params) => {
+        (params: {
+            help_center_id?: number
+            store_integration_id?: number
+            page?: number
+        }) => {
+            const {store_integration_id, help_center_id, page} = params
             const searchParams = new URLSearchParams(location.search)
-            Object.entries(params).forEach(([key, value]) => {
-                if (value !== null && value !== undefined) {
-                    searchParams.set(key, String(value))
-                } else {
-                    searchParams.delete(key)
-                }
-            })
+
+            if (store_integration_id !== undefined) {
+                searchParams.set(
+                    'store_integration_id',
+                    String(store_integration_id)
+                )
+                searchParams.delete('page')
+            }
+            if (help_center_id !== undefined) {
+                searchParams.set('help_center_id', String(help_center_id))
+                searchParams.delete('page')
+            }
+            if (page !== undefined) {
+                searchParams.set('page', String(page))
+            }
+
             history.push({
                 pathname: location.pathname,
                 search: searchParams.toString(),
