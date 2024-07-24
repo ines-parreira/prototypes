@@ -1,5 +1,5 @@
 import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps, ReactElement} from 'react'
+import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
 import {Virtuoso} from 'react-virtuoso'
 
 import {useFlag} from 'common/flags'
@@ -53,23 +53,40 @@ describe('<TicketListView />', () => {
         })
         VirtuosoMock.mockImplementation(
             ({
+                computeItemKey,
                 data,
                 itemContent,
                 scrollerRef,
-                components: {EmptyPlaceholder},
+                components: {EmptyPlaceholder, List},
             }: {
+                computeItemKey: (
+                    index: number,
+                    ticket: TicketPartial
+                ) => number | string
                 data: TicketPartial[]
                 itemContent: (
                     index: number,
                     ticket: TicketPartial
                 ) => ReactElement
                 scrollerRef: (ref: HTMLElement | Window | null) => void
-                components: {EmptyPlaceholder: () => ReactElement}
+                components: {
+                    EmptyPlaceholder: () => ReactElement
+                    List: ({children}: {children: ReactNode}) => ReactElement
+                }
             }) => {
                 return (
                     <div ref={scrollerRef}>
-                        {data.length === 0 && <EmptyPlaceholder />}
-                        {data.map((t) => itemContent(0, t))}
+                        {data.length === 0 ? (
+                            <EmptyPlaceholder />
+                        ) : (
+                            <List>
+                                {data.map((t, i) => (
+                                    <Fragment key={computeItemKey(i, t)}>
+                                        {itemContent(0, t)}
+                                    </Fragment>
+                                ))}
+                            </List>
+                        )}
                     </div>
                 )
             }
@@ -98,6 +115,14 @@ describe('<TicketListView />', () => {
     })
 
     it('should display a list of tickets', () => {
+        const {getByText} = render(<TicketListView viewId={123} />)
+
+        expect(getByText(ticket.id)).toBeInTheDocument()
+    })
+
+    it('should display a list of tickets with the new design', () => {
+        useFlagMock.mockReturnValue(true)
+
         const {getByText} = render(<TicketListView viewId={123} />)
 
         expect(getByText(ticket.id)).toBeInTheDocument()

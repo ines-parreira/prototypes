@@ -25,6 +25,7 @@ import {getViewPlainJS} from 'state/views/selectors'
 import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
 
 import {TICKET_HEIGHT, TICKET_HEIGHT_NEW} from '../constants'
+import useSelection from '../hooks/useSelection'
 import useSortOrder from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
@@ -50,6 +51,8 @@ export const listInfoProps = {
             'This view does not exist or you do not have the correct permission to access.',
     },
 }
+
+type TicketProps = ComponentProps<typeof Ticket>
 
 type Props = {
     activeTicketId?: number
@@ -80,6 +83,8 @@ export default function TicketListView({
     const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
         useSplitTicketView()
 
+    const {onSelect, selectedTickets} = useSelection(tickets)
+
     const initialLoadedRef = useRef(initialLoaded)
 
     const ticketHeight = hasBulkActions ? TICKET_HEIGHT_NEW : TICKET_HEIGHT
@@ -99,9 +104,11 @@ export default function TicketListView({
                 ticket={ticket}
                 viewId={viewId}
                 isNewTicket={!!newTickets[ticket.id]}
+                isSelected={!!selectedTickets[ticket.id]}
+                onSelect={onSelect}
             />
         ),
-        [activeTicketId, viewId, newTickets]
+        [activeTicketId, viewId, newTickets, onSelect, selectedTickets]
     )
 
     const setScrollerRef = useCallback(
@@ -129,49 +136,43 @@ export default function TicketListView({
         setShouldRedirectToSplitView(true)
     }, [dispatch, setShouldRedirectToSplitView, setSplitTicketView])
 
-    const virtuosoComponents: Components = useMemo(
-        () => ({
-            Item: ({
-                children,
-                ...props
-            }: Partial<ComponentProps<typeof CSSTransition>> &
-                ComponentProps<NonNullable<Components['Item']>>) => (
-                <Fragment>
-                    {Children.map<
-                        ReactElement<ComponentProps<typeof Ticket>>,
-                        ReactElement<ComponentProps<typeof Ticket>>
-                    >(
-                        children as ReactElement<ComponentProps<typeof Ticket>>,
-                        (child) => {
-                            const isVisible = props.in
+    const virtuosoComponents: Components = {
+        Item: ({
+            children,
+            ...props
+        }: Partial<ComponentProps<typeof CSSTransition>> &
+            ComponentProps<NonNullable<Components['Item']>>) => (
+            <Fragment>
+                {Children.map<
+                    ReactElement<TicketProps>,
+                    ReactElement<TicketProps>
+                >(children as ReactElement<TicketProps>, (child) => {
+                    const isVisible = props.in
 
-                            return cloneElement(child, {
-                                ...props,
-                                exit: isVisible
-                                    ? false
-                                    : !!ticketIds.current?.length &&
-                                      !ticketIds.current.includes(
-                                          child.props.ticket?.id
-                                      ),
-                            })
-                        }
-                    )}
-                </Fragment>
-            ),
-            List: forwardRef<HTMLDivElement>(({children, ...props}, ref) => (
-                <div ref={ref} {...props}>
-                    <TransitionGroup component={Fragment}>
-                        {children as Array<ReactElement>}
-                    </TransitionGroup>
-                </div>
-            )),
-            EmptyPlaceholder: () =>
-                initialLoadedRef.current ? (
-                    <TicketListInfo {...ticketListInfoProps} />
-                ) : null,
-        }),
-        [ticketIds, ticketListInfoProps]
-    )
+                    return cloneElement(child, {
+                        ...props,
+                        exit: isVisible
+                            ? false
+                            : !!ticketIds.current?.length &&
+                              !ticketIds.current.includes(
+                                  child.props.ticket?.id
+                              ),
+                    })
+                })}
+            </Fragment>
+        ),
+        List: forwardRef<HTMLDivElement>(({children, ...props}, ref) => (
+            <div ref={ref} {...props}>
+                <TransitionGroup component={Fragment}>
+                    {children as Array<ReactElement>}
+                </TransitionGroup>
+            </div>
+        )),
+        EmptyPlaceholder: () =>
+            initialLoadedRef.current ? (
+                <TicketListInfo {...ticketListInfoProps} />
+            ) : null,
+    }
 
     const virtuosoRef = useRef<VirtuosoHandle>(null)
     useScrollActiveTicketIntoView(

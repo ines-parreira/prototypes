@@ -17,8 +17,8 @@ import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIn
 import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import CheckBox from 'pages/common/forms/CheckBox'
-import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
 
+import useIsTicketViewed from '../hooks/useIsTicketViewed'
 import {TicketPartial, TicketSummary} from '../types'
 import TicketSkeleton from './TicketSkeleton'
 import css from './Ticket.less'
@@ -31,6 +31,8 @@ type Props = {
     ticket: TicketPartial | TicketSummary
     viewId: number
     isNewTicket?: boolean
+    isSelected?: boolean
+    onSelect: (id: number, selected: boolean, selectRange?: boolean) => void
 }
 
 type MergedProps = Props & Partial<InjectedProps>
@@ -47,8 +49,10 @@ export default function Ticket({
     ticket,
     viewId,
     isNewTicket,
+    isSelected,
     context, // eslint-disable-line @typescript-eslint/no-unused-vars
     style,
+    onSelect,
     ['data-index']: dataIndex,
     ['data-item-index']: dataItemIndex,
     ['data-item-group-index']: dataItemGroupIndex,
@@ -72,6 +76,13 @@ export default function Ticket({
             e.preventDefault()
         }
     }, [])
+
+    const handleClickCheckbox = useCallback(
+        (e: MouseEvent<HTMLInputElement>) => {
+            onSelect(ticket.id, e.currentTarget.checked, e.shiftKey)
+        },
+        [ticket, onSelect]
+    )
 
     if (hasBulkActions) {
         const customer =
@@ -111,7 +122,11 @@ export default function Ticket({
                                         title={agentViewingMessage}
                                     />
                                 )}
-                                <CheckBox ref={checkboxRef} isChecked={false} />
+                                <CheckBox
+                                    ref={checkboxRef}
+                                    isChecked={isSelected}
+                                    onClick={handleClickCheckbox}
+                                />
                                 <div
                                     className={cn(css.contentNew, {
                                         [css.unread]: ticket.is_unread,
