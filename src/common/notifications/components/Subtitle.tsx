@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 
 import {Notification} from '../types'
 
@@ -9,6 +9,18 @@ type Props = {
 }
 
 export default function Subtitle({notification}: Props) {
+    const senderInfo = useMemo(() => {
+        if (!('sender' in notification.payload)) return null
+
+        const {sender} = notification.payload
+        return (
+            <>
+                {' '}
+                from <strong>{sender.name}</strong>
+            </>
+        )
+    }, [notification.payload])
+
     if (notification.type === 'user.mentioned') {
         const {sender, ticket} = notification.payload
         return (
@@ -30,12 +42,7 @@ export default function Subtitle({notification}: Props) {
     return (
         <p className={css.subtitle}>
             <strong className={css.subject}>{ticket.subject} </strong>
-            {!!ticket.sender && (
-                <>
-                    {' '}
-                    from <strong>{ticket.sender.name}</strong>
-                </>
-            )}
+            {senderInfo}
         </p>
     )
 }

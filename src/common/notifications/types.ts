@@ -38,6 +38,11 @@ export type DefaultPayload = {
     ticket: Ticket
 }
 
+export type PayloadWithSender = {
+    ticket: Ticket
+    sender: PickedActor
+}
+
 export type Notification =
     | (NotificationBase & {
           type: 'ticket.snooze-expired'
@@ -45,14 +50,11 @@ export type Notification =
       })
     | (NotificationBase & {
           type: 'ticket-message.created'
-          payload: DefaultPayload
+          payload: PayloadWithSender
       })
     | (NotificationBase & {
           type: 'user.mentioned'
-          payload: {
-              sender: PickedActor
-              ticket: Ticket
-          }
+          payload: PayloadWithSender
       })
 
 export type NotificationType = Notification['type']
