@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react'
 import {Link} from 'react-router-dom'
 import {Tooltip} from '@gorgias/ui-kit'
 
+import {useFlags} from 'launchdarkly-react-client-sdk'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {fetchContact, fetchCreditCard} from 'state/billing/actions'
 import useAppSelector from 'hooks/useAppSelector'
@@ -21,6 +22,7 @@ import {countries} from 'config/countries'
 import Loader from 'pages/common/components/Loader/Loader'
 import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
 import {isLegacyAutomate} from 'models/billing/utils'
+import {FeatureFlagKey} from 'config/featureFlags'
 import SummaryPaymentSection from '../../components/SummaryPaymentSection/SummaryPaymentSection'
 import {
     BILLING_INFORMATION_PATH,
@@ -54,6 +56,8 @@ const PaymentInformationView = ({
     const isAAOLegacy =
         !!currentAutomatePlan && isLegacyAutomate(currentAutomatePlan)
     const isSubscribedToVoiceOrSms = !!currentVoicePlan || !!currentSmsPlan
+    const phoneSelfServeEnabled =
+        useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
 
     const contact = useAppSelector(getContact)?.toJS() as BillingContact
     const card = useAppSelector(creditCard)
@@ -129,7 +133,7 @@ const PaymentInformationView = ({
                         .
                     </>
                 )
-            } else if (isSubscribedToVoiceOrSms) {
+            } else if (isSubscribedToVoiceOrSms && !phoneSelfServeEnabled) {
                 toolTipContent = (
                     <>
                         To switch from monthly to yearly,{' '}
@@ -188,6 +192,7 @@ const PaymentInformationView = ({
         isSubscribedToVoiceOrSms,
         isCurrentSubscriptionCanceled,
         contactBilling,
+        phoneSelfServeEnabled,
     ])
 
     return (

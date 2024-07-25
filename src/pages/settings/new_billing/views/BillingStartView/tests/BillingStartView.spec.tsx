@@ -3,6 +3,8 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 
+import {resetLDMocks, mockFlags} from 'jest-launchdarkly-mock'
+import {screen} from '@testing-library/react'
 import {RootState, StoreDispatch} from 'state/types'
 import {
     CONVERT_PRODUCT_ID,
@@ -10,15 +12,21 @@ import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
+    SMS_PRODUCT_ID,
+    smsPlan1,
 } from 'fixtures/productPrices'
 import {assumeMock, renderWithRouter} from 'utils/testing'
-import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
+import {
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_PATH,
+} from 'pages/settings/new_billing/constants'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import {
     convertStatusLimitReached,
     convertStatusOkWarning,
     convertStatusOkWarningUpgrade,
 } from 'fixtures/convert'
+import {FeatureFlagKey} from 'config/featureFlags'
 import BillingStartView from '../BillingStartView'
 import {account} from '../../../../../../fixtures/account'
 
@@ -137,6 +145,70 @@ describe('BillingStartView', () => {
             expect(
                 queryByText(warningText, {exact: false})
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('PaymentInformation phone self-serve cadence change ', () => {
+        const phoneUserStore = mockedStore({
+            currentAccount: fromJS({
+                ...account,
+                current_subscription: {
+                    ...account.current_subscription,
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: legacyBasicHelpdeskPlan.price_id,
+                        [CONVERT_PRODUCT_ID]: convertPlan1.price_id,
+                        [SMS_PRODUCT_ID]: smsPlan1.price_id,
+                    },
+                },
+            }),
+            billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
+        })
+
+        beforeEach(() => {
+            resetLDMocks()
+            mockFlags({
+                [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
+            })
+        })
+
+        it('should allow phone user to change billing frequency from monthly to yearly', () => {
+            mockFlags({
+                [FeatureFlagKey.BillingVoiceSmsSelfServe]: true,
+            })
+            renderWithRouter(
+                <Provider store={phoneUserStore}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_PAYMENT_PATH,
+                }
+            )
+
+            const button = screen.queryByText('Change Frequency', {
+                selector: 'a',
+            })
+
+            expect(button).toBeInTheDocument()
+        })
+
+        it('should not allow phone user to change billing frequency from monthly to yearly if they dont have the flag', () => {
+            mockFlags({
+                [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
+            })
+            renderWithRouter(
+                <Provider store={phoneUserStore}>
+                    <BillingStartView />
+                </Provider>,
+                {
+                    route: BILLING_PAYMENT_PATH,
+                }
+            )
+
+            const button = screen.queryByText('Change Frequency', {
+                selector: 'a',
+            })
+
+            expect(button).not.toBeInTheDocument()
         })
     })
 })
