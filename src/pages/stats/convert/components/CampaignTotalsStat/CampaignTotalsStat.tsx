@@ -13,7 +13,6 @@ import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 
 import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
 import {ConvertMetric} from 'state/ui/stats/types'
-import {useIsConvertViewOrdersDrilldownEnabled} from 'pages/convert/common/hooks/useIsConvertViewOrdersDrilldownEnabled'
 import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import css from './CampaignTotalsStat.less'
 
@@ -60,7 +59,6 @@ export const CampaignTotalsStat = () => {
         channelConnectionExternalIds,
     } = useCampaignStatsFilters()
     const currency = useGetCurrencyForStore(selectedIntegrations)
-    const isViewDrillDownEnabled = useIsConvertViewOrdersDrilldownEnabled()
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
     const userTimezone = useAppSelector(
@@ -139,7 +137,6 @@ export const CampaignTotalsStat = () => {
                     <BigNumberMetric isLoading={isLoading}>
                         <DrillDownModalTrigger
                             enabled={
-                                isViewDrillDownEnabled &&
                                 !!data?.campaignSalesCount &&
                                 data?.campaignSalesCount !== '0'
                             }

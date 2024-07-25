@@ -51,7 +51,6 @@ export enum FeatureFlagKey {
     ContactFormNewEntrypointView = 'contact-form-new-entrypoint-view',
     ConvertUniqueDiscountCodes = 'convert-unique-discount-codes',
     ConvertSimplifiedEditor = 'convert-simplified-editor',
-    ConvertViewOrdersDrilldown = 'convert-view-orders-drilldown',
     CustomerTimelineButton = 'customer-timeline-button',
     DecoupleContactForm = 'decouple-contact-form',
     EarlyAdopter = 'early-adopter',
