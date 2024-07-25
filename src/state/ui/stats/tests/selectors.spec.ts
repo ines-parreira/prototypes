@@ -1,7 +1,9 @@
 import {fromJS} from 'immutable'
+import {integrationsStateWithShopify} from 'fixtures/integrations'
 import {user} from 'fixtures/users'
 import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
 import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
+import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
 import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
 import {getPageStatsFilters} from 'state/stats/selectors'
 import {RootState, StoreState} from 'state/types'
@@ -11,9 +13,10 @@ import {
 } from 'state/ui/stats/reducer'
 import {
     getCleanStatsFilters,
+    getCleanStatsFiltersWithInitialStoreIntegration,
     getCleanStatsFiltersWithTimezone,
     isCleanStatsDirty,
-} from '../selectors'
+} from 'state/ui/stats/selectors'
 
 const store = {
     ui: {
@@ -115,6 +118,57 @@ describe('ui/stats/selectors', () => {
             expect(
                 getCleanStatsFiltersWithTimezone(state).userTimezone
             ).toEqual(DEFAULT_TIMEZONE)
+        })
+    })
+
+    describe('getCleanStatsFiltersWithInitialStoreIntegration', () => {
+        it('should return integrations filter', () => {
+            const selectedIntegrationId = 345
+            const state = {
+                ui: {
+                    stats: {
+                        ...initialUiStatsState,
+                        cleanStatsFilters: {
+                            filters: initialStatsFiltersState.filters,
+                            integrations: [selectedIntegrationId],
+                        },
+                    },
+                },
+                stats: {
+                    filters: initialStatsFiltersState.filters,
+                    integrations: [selectedIntegrationId],
+                },
+                integrations: integrationsStateWithShopify.mergeDeep({
+                    integrations: [
+                        {
+                            id: selectedIntegrationId,
+                            type: STATS_STORE_INTEGRATION_TYPES[0],
+                        },
+                    ],
+                }),
+            } as unknown as RootState
+
+            expect(
+                getCleanStatsFiltersWithInitialStoreIntegration(state)
+                    .statsFilters.integrations
+            ).toEqual([selectedIntegrationId])
+        })
+
+        it('should return integrations filter with first storeIntegration if not set', () => {
+            const state = {
+                ui: {
+                    stats: initialUiStatsState,
+                },
+                stats: initialStatsFiltersState,
+                integrations: integrationsStateWithShopify,
+            } as unknown as RootState
+
+            expect(
+                getCleanStatsFiltersWithInitialStoreIntegration(state)
+                    .statsFilters.integrations
+            ).toEqual([
+                integrationsStateWithShopify.getIn(['integrations', 0, 'id']),
+            ])
         })
     })
 })

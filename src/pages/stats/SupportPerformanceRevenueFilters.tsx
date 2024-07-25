@@ -1,5 +1,4 @@
 import React from 'react'
-import {useCleanStatsFilters} from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
 import CampaignsStatsFilter from 'pages/stats/CampaignsStatsFilter'
@@ -7,13 +6,13 @@ import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsS
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import TagsStatsFilter from 'pages/stats/TagsStatsFilter'
-import {getStatsFilters, getStatsStoreIntegrations} from 'state/stats/selectors'
+import {getCleanStatsFiltersWithInitialStoreIntegration} from 'state/ui/stats/selectors'
 
 export const SupportPerformanceRevenueFilters = () => {
-    const statsFilters = useAppSelector(getStatsFilters)
-    useCleanStatsFilters(statsFilters)
-    const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
+    const {statsFilters, storeIntegrations} = useAppSelector(
+        getCleanStatsFiltersWithInitialStoreIntegration
+    )
 
     return (
         <>

@@ -1,5 +1,5 @@
-import React, {useMemo} from 'react'
 import {fromJS, Map} from 'immutable'
+import React, {useMemo} from 'react'
 import {
     REVENUE_OVERVIEW,
     REVENUE_PER_AGENT,
@@ -10,50 +10,28 @@ import {
 
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
-import {
-    OneDimensionalUnionChart,
-    LegacyStatsFilters,
-    TwoDimensionalChart,
-} from 'models/stat/types'
+import {OneDimensionalUnionChart, TwoDimensionalChart} from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
+import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
 import {SupportPerformanceRevenueFilters} from 'pages/stats/SupportPerformanceRevenueFilters'
 import {AccountFeature} from 'state/currentAccount/types'
 
-import {
-    getStatsStoreIntegrations,
-    getStoreIntegrationsStatsFilter,
-} from 'state/stats/selectors'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
-import {BarStat} from './common/components/charts/BarStat'
-import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
-import TableStat from './common/components/charts/TableStat/TableStat'
-import KeyMetricStatWrapper from './KeyMetricStatWrapper'
-import RevenueStatsRestrictedFeature from './RevenueStatsRestrictedFeature'
-import StatsPage from './StatsPage'
-import StatWrapper from './StatWrapper'
+import {getStatsStoreIntegrations} from 'state/stats/selectors'
+import {getCleanStatsFiltersWithInitialStoreIntegration} from 'state/ui/stats/selectors'
+import {BarStat} from 'pages/stats/common/components/charts/BarStat'
+import KeyMetricStat from 'pages/stats/common/components/charts/KeyMetricStat/KeyMetricStat'
+import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
+import KeyMetricStatWrapper from 'pages/stats/KeyMetricStatWrapper'
+import RevenueStatsRestrictedFeature from 'pages/stats/RevenueStatsRestrictedFeature'
+import StatsPage from 'pages/stats/StatsPage'
+import StatWrapper from 'pages/stats/StatWrapper'
 
 const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
 
 function SupportPerformanceRevenue() {
-    const storeIntegrations = useAppSelector(getStatsStoreIntegrations)
-    const storeStatsFilter = useAppSelector(getStoreIntegrationsStatsFilter)
-    const {cleanStatsFilters: statsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const {statsFilters: pageStatsFilters} = useAppSelector(
+        getCleanStatsFiltersWithInitialStoreIntegration
     )
-
-    const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const {channels, tags, period, campaigns} = statsFilters
-        return {
-            channels,
-            campaigns,
-            tags,
-            period,
-            integrations: storeStatsFilter.length
-                ? storeStatsFilter
-                : [storeIntegrations[0].id],
-        }
-    }, [storeStatsFilter, statsFilters, storeIntegrations])
 
     const [revenueOverview, isFetchingRevenueOverview] =
         useStatResource<OneDimensionalUnionChart>({
