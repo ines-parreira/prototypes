@@ -1,13 +1,16 @@
 import React from 'react'
 import {render, screen} from '@testing-library/react'
 import user from '@testing-library/user-event'
+import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import {
     CouponSummary,
     ProductUsages,
+    SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
 import {assumeMock} from 'utils/testing'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+import useAppDispatch from 'hooks/useAppDispatch'
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import UpcomingInvoiceCard from '../UpcomingInvoiceCard'
 
@@ -60,7 +63,7 @@ const upcomingInvoiceWithCouponApplied: UpcomingInvoiceSummary = {
 }
 
 const upcomingInvoiceCardParams = {
-    isTrialing: false,
+    subscriptionStatus: SubscriptionStatus.ACTIVE,
     endOfTrialDatetime: null,
     endOfCurrentCycleDatetime: endOfCurrentCycleDatetime,
     availableCoupons: availableCoupons,
@@ -69,6 +72,24 @@ const upcomingInvoiceCardParams = {
     hasExtendedTrial: false,
 }
 
+// Mock the use of const dispatch = useAppDispatch()
+jest.mock('hooks/useAppDispatch')
+const useAppDispatchMock = useAppDispatch as jest.Mock
+const dispatch = jest.fn()
+useAppDispatchMock.mockReturnValue(dispatch)
+
+// Mock tanstack useQueryClient
+jest.mock('@tanstack/react-query')
+const useQueryClientMock = assumeMock(useQueryClient)
+const invalidateQueriesMock = jest.fn()
+useQueryClientMock.mockImplementation(
+    () =>
+        ({
+            invalidateQueries: invalidateQueriesMock,
+        } as unknown as QueryClient)
+)
+
+// Mock useExtendTrialMock
 const useExtendTrialMutateMock = jest.fn()
 jest.mock('pages/settings/new_billing/hooks/useExtendTrialWithSideEffects')
 const useExtendTrialMock = assumeMock(useExtendTrialWithSideEffects)
@@ -99,7 +120,7 @@ describe('UpcomingInvoiceCard', () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
-                isTrialing={false}
+                subscriptionStatus={SubscriptionStatus.ACTIVE}
             />
         )
         expect(
@@ -113,7 +134,7 @@ describe('UpcomingInvoiceCard', () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
-                isTrialing={true}
+                subscriptionStatus={SubscriptionStatus.TRIALING}
             />
         )
         expect(
@@ -128,7 +149,7 @@ describe('UpcomingInvoiceCard', () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
-                isTrialing={true}
+                subscriptionStatus={SubscriptionStatus.TRIALING}
             />
         )
         user.click(screen.getByRole('button', {name: /Extend trial/i}))
@@ -144,7 +165,7 @@ describe('UpcomingInvoiceCard', () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
-                isTrialing={true}
+                subscriptionStatus={SubscriptionStatus.TRIALING}
                 hasExtendedTrial={true}
             />
         )
@@ -157,7 +178,7 @@ describe('UpcomingInvoiceCard', () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
-                isTrialing={true}
+                subscriptionStatus={SubscriptionStatus.TRIALING}
             />
         )
         user.click(screen.getByRole('button', {name: /Apply coupon/i}))
@@ -178,7 +199,7 @@ describe('UpcomingInvoiceCard', () => {
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
-                isTrialing={true}
+                subscriptionStatus={SubscriptionStatus.TRIALING}
                 currentHelpdeskAndAutomateCoupon={coupon}
                 upcomingInvoice={upcomingInvoiceWithCouponApplied}
             />

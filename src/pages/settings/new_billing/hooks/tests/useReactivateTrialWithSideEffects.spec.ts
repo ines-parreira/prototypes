@@ -2,8 +2,8 @@ import {renderHook} from '@testing-library/react-hooks'
 import {QueryClient, useQueryClient} from '@tanstack/react-query'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {assumeMock} from 'utils/testing'
-import {getBillingStateQuery, useExtendTrial} from 'models/billing/queries'
-import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+import {getBillingStateQuery, useReactivateTrial} from 'models/billing/queries'
+import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import {axiosSuccessResponse} from 'fixtures/axiosResponse'
 import {notify} from 'state/notifications/actions'
 import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
@@ -26,13 +26,13 @@ useQueryClientMock.mockImplementation(
 )
 
 jest.mock('models/billing/queries')
-const useExtendTrialMock = assumeMock(useExtendTrial)
+const useReactivateTrialMock = assumeMock(useReactivateTrial)
 
-describe('useExtendTrialWithSideEffects', () => {
-    it('should dispatch success notification on success and NOT invalidate billing state query', () => {
-        renderHook(() => useExtendTrialWithSideEffects())
+describe('useReactivateTrialWithSideEffects', () => {
+    it('should dispatch success notification on success and invalidate billing state query', () => {
+        renderHook(() => useReactivateTrialWithSideEffects())
 
-        useExtendTrialMock.mock.calls[0][0]?.onSuccess!(
+        useReactivateTrialMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(undefined),
             [],
             undefined
@@ -45,7 +45,7 @@ describe('useExtendTrialWithSideEffects', () => {
         expect(dispatch).toHaveBeenCalledTimes(1)
 
         expect(notify).toHaveBeenNthCalledWith(1, {
-            message: 'Free trial has been successfully extended.',
+            message: 'Free trial has been successfully reactivated.',
             status: NotificationStatus.Success,
             style: NotificationStyle.Alert,
             showDismissButton: true,
@@ -55,11 +55,15 @@ describe('useExtendTrialWithSideEffects', () => {
         })
     })
 
-    it('should dispatch error notification on failure and invalidate billing state query', () => {
-        renderHook(() => useExtendTrialWithSideEffects())
+    it('should dispatch error notification on failure and NOT invalidate billing state query', () => {
+        renderHook(() => useReactivateTrialWithSideEffects())
 
         const myError = {}
-        useExtendTrialMock.mock.calls[0][0]?.onError!(myError, [], undefined)
+        useReactivateTrialMock.mock.calls[0][0]?.onError!(
+            myError,
+            [],
+            undefined
+        )
 
         expect(useQueryClient().invalidateQueries).not.toHaveBeenCalled()
 

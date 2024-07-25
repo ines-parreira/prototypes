@@ -14,7 +14,7 @@ interface ProductCardForCouponProps {
     endOfTrialDatetime: string | null
     currentCoupon: CouponSummary | null
     availableCoupons?: string[]
-    plan: Plan | undefined
+    plan: Plan | null
     canApplyProductCoupon: boolean
 }
 

@@ -2,14 +2,20 @@ import React, {useState} from 'react'
 import moment from 'moment/moment'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import Button from 'pages/common/components/button/Button'
-import {CouponSummary, UpcomingInvoiceSummary} from 'models/billing/types'
+import {
+    CouponSummary,
+    SubscriptionStatus,
+    UpcomingInvoiceSummary,
+} from 'models/billing/types'
 import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+
+import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import AddSalesCouponModal from '../AddSalesCouponModal'
 import {DATE_FORMAT} from '../../constants'
 import css from './UpcomingInvoiceCard.less'
 
 interface UpcomingInvoiceCardProps {
-    isTrialing: boolean
+    subscriptionStatus: SubscriptionStatus
     endOfTrialDatetime: string | null
     endOfCurrentCycleDatetime: string
     availableCoupons: string[]
@@ -19,7 +25,7 @@ interface UpcomingInvoiceCardProps {
 }
 
 export default function UpcomingInvoiceCard({
-    isTrialing,
+    subscriptionStatus,
     endOfTrialDatetime,
     endOfCurrentCycleDatetime,
     availableCoupons,
@@ -30,6 +36,69 @@ export default function UpcomingInvoiceCard({
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const extendTrial = useExtendTrialWithSideEffects()
+    const reactivateTrial = useReactivateTrialWithSideEffects()
+
+    // no active subscription
+    if (subscriptionStatus === SubscriptionStatus.CANCELED) {
+        const inSevenDays = moment().add(7, 'days')
+
+        const reactivateTrialButton = (
+            <ConfirmationPopover
+                title={<b>Confirm trial reactivation</b>}
+                content={
+                    <p>
+                        Do you want to reactivate trial until{' '}
+                        <b>{inSevenDays.format(DATE_FORMAT)}</b>? Note, that
+                        once confirmed, the reactivation cannot be undone.
+                    </p>
+                }
+                onConfirm={() => {
+                    reactivateTrial.mutate([])
+                }}
+                confirmLabel="Confirm"
+                cancelButtonProps={{intent: 'secondary'}}
+                showCancelButton
+            >
+                {({uid, onDisplayConfirmation, elementRef}) => (
+                    <Button
+                        id={uid}
+                        ref={elementRef}
+                        fillStyle="ghost"
+                        intent="primary"
+                        size="small"
+                        onClick={onDisplayConfirmation}
+                        isLoading={
+                            reactivateTrial.isLoading ||
+                            reactivateTrial.isSuccess
+                        }
+                    >
+                        Reactivate trial
+                    </Button>
+                )}
+            </ConfirmationPopover>
+        )
+
+        return (
+            <div className={css.container}>
+                <div className={css.title}>Next invoice</div>
+                <div>
+                    <span className={css.total}>$0</span>
+                </div>
+                <div className={css.verticallyAligned}>
+                    <span className={css.caption}>
+                        {'No active subscription, '}
+                        {hasExtendedTrial ? 'Extended trial' : 'Trial'}{' '}
+                        {`ended on ${moment(endOfTrialDatetime).format(
+                            DATE_FORMAT
+                        )}`}
+                    </span>
+                    {hasExtendedTrial ? null : reactivateTrialButton}
+                </div>
+            </div>
+        )
+    }
+
+    const isTrialing = subscriptionStatus === SubscriptionStatus.TRIALING
 
     if (!upcomingInvoice) {
         return <div>No upcoming invoice for now</div>
@@ -95,6 +164,7 @@ export default function UpcomingInvoiceCard({
                     intent="primary"
                     size="small"
                     onClick={onDisplayConfirmation}
+                    isLoading={extendTrial.isLoading || extendTrial.isSuccess}
                 >
                     Extend trial
                 </Button>

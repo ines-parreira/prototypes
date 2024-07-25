@@ -153,6 +153,7 @@ export default function AddSalesCouponModal({
                         rows={4}
                         onChange={setReason}
                         maxLength={255}
+                        placeholder={'your reason'}
                     />
                 </ModalBody>
                 <ModalFooter className={css.footer}>

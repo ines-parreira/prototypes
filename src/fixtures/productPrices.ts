@@ -568,6 +568,23 @@ export const advancedYearlyAutomatePlan: AutomatePlan = {
     price_id: 'price_1LJBjgI9qXomtXqSBZoBcg7G',
 }
 
+export const automate02MonthlyMeteredPlan: MeteredAutomatePlan = {
+    name: 'Automation 02 monthly usd-5',
+    amount: 180_00,
+    num_quota_tickets: 190,
+    currency: 'usd',
+    interval: PlanInterval.Month,
+    cadence: PlanInterval.Month,
+    extra_ticket_cost: 1.9,
+    public: true,
+    custom: false,
+    internal_id: 'aut-flat-02-monthly-usd-5',
+    features: automatePlanFeatures,
+    product: ProductType.Automation,
+    product_id: 'prod_LsHD5xmSqoFBBs',
+    price_id: 'price_1NDljFI9qXomtXqSLfW8eTwt',
+}
+
 export const automate05YearlyMeteredPlan: MeteredAutomatePlan = {
     name: 'Automation 05 yearly usd-5',
     amount: 15000_00,

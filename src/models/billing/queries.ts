@@ -1,6 +1,11 @@
 import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
 import {MutationOverrides} from '../../types/query'
-import {extendTrial, getBillingState, getCouponsForSales} from './resources'
+import {
+    extendTrial,
+    getBillingState,
+    getCouponsForSales,
+    reactivateTrial,
+} from './resources'
 
 export const getBillingStateQuery = {
     queryKey: ['billingState'],
@@ -38,7 +43,16 @@ export const useExtendTrial = (
     overrides?: MutationOverrides<typeof extendTrial>
 ) => {
     return useMutation({
-        mutationFn: () => extendTrial(),
+        mutationFn: extendTrial,
+        ...overrides,
+    })
+}
+
+export const useReactivateTrial = (
+    overrides?: MutationOverrides<typeof reactivateTrial>
+) => {
+    return useMutation({
+        mutationFn: reactivateTrial,
         ...overrides,
     })
 }

@@ -27,7 +27,12 @@ export type PriceId = string
 // A Stripe product ID always starts with 'prod_'.
 export type ProductId = string
 
-export type Plan = HelpdeskPlan | AutomatePlan | SMSOrVoicePlan | ConvertPlan
+export type Plan =
+    | HelpdeskPlan
+    | AutomatePlan
+    | SMSOrVoicePlan
+    | ConvertPlan
+    | BasePlan
 
 export type Product<T = Plan> = {
     id: string
@@ -168,8 +173,14 @@ export type UpcomingInvoiceSummary = {
     usages: ProductUsages
 }
 
-type SubscriptionSummary = {
-    status: string
+export enum SubscriptionStatus {
+    ACTIVE = 'active',
+    CANCELED = 'canceled',
+    TRIALING = 'trialing',
+}
+
+export type SubscriptionSummary = {
+    status: SubscriptionStatus
     cadence: PlanInterval
     is_trialing: boolean
     trial_start_datetime: string | null
@@ -181,12 +192,25 @@ type SubscriptionSummary = {
     current_billing_cycle_start_datetime: string
     current_billing_cycle_end_datetime: string
     coupon: CouponSummary | null
-    trial_extended: boolean
+    trial_extended_until: string | null // isoformatted datetime
 }
 
+type CustomerSummary = {
+    trial_extended_until: string | null // isoformatted datetime
+}
+
+export type CurrentPlans = {
+    helpdesk: BasePlan
+    automate: BasePlan | null
+    voice: BasePlan | null
+    sms: BasePlan | null
+    convert: BasePlan | null
+}
 export type BillingState = {
     upcoming_invoice: UpcomingInvoiceSummary | null
-    subscription: SubscriptionSummary | null
+    subscription: SubscriptionSummary
+    customer: CustomerSummary
+    current_plans: CurrentPlans
 }
 
 export type CouponForSales = string[]
