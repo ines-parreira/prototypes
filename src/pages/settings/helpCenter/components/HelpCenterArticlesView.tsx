@@ -57,7 +57,7 @@ import {useEditionManager} from '../providers/EditionManagerContext'
 import {useSearchContext} from '../providers/SearchContext'
 
 import {getGenericMessageFromError} from '../utils'
-import {useGetArticleTemplate} from '../queries'
+import {useGetArticleTemplate, useUpsertArticleTemplateReview} from '../queries'
 import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
 import {CloseModal} from './articles/CloseModal'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
@@ -551,6 +551,8 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
     }
 
+    const reviewArticle = useUpsertArticleTemplateReview()
+
     const updateArticle = async (
         article: Article | null,
         isPublished: boolean
@@ -558,6 +560,11 @@ export const HelpCenterArticlesView: React.FC = () => {
         if (!article?.translation) {
             return
         }
+
+        const isAIArticle = article.template_key?.startsWith('ai_')
+        const isAlreadyPublished = article.translation.is_current
+        const updateAIArticleTemplateReview =
+            isAIArticle && !isAlreadyPublished && isPublished
 
         try {
             const updatedArticle = await articlesActions.updateArticle(
@@ -573,6 +580,14 @@ export const HelpCenterArticlesView: React.FC = () => {
 
             reloadArticle(updatedArticle)
             setShowTemplates(false)
+
+            if (updateAIArticleTemplateReview && article.template_key) {
+                await reviewArticle.mutateAsync([
+                    undefined,
+                    {help_center_id: helpCenter.id},
+                    {action: 'publish', template_key: article.template_key},
+                ])
+            }
 
             void dispatch(
                 notify({

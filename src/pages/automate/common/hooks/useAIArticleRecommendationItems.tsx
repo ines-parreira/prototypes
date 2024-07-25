@@ -33,7 +33,10 @@ const filterAIArticleStatusByReviewAction = (
                 article.review_action === 'saveAsDraft'
             )
         case AllRecommendationsStatus.NotCreated:
-            return !article.review_action
+            return (
+                article.review_action !== 'publish' &&
+                article.review_action !== 'saveAsDraft'
+            )
         default:
             return false
     }
