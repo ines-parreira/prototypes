@@ -15,8 +15,15 @@ const getLDClientMock = getLDClient as jest.Mock
 const testFlag = 'test-flag' as FeatureFlagKey
 
 describe('useFlag', () => {
+    let initialisePromise: Promise<unknown>
+    let initialiseResolve: (value?: unknown) => void
+
     beforeEach(() => {
+        initialisePromise = new Promise((resolve) => {
+            initialiseResolve = resolve
+        })
         ldClientMock.variation.mockReturnValue(false)
+        ldClientMock.waitForInitialization.mockReturnValue(initialisePromise)
         getLDClientMock.mockReturnValue(ldClientMock)
     })
 
@@ -24,6 +31,22 @@ describe('useFlag', () => {
         const {result} = renderHook(() => useFlag(testFlag, false))
 
         expect(result.current).toBe(false)
+    })
+
+    it('should set the value once client initialisation completes', async () => {
+        ldClientMock.variation.mockReturnValue(false)
+
+        const {result} = renderHook(() => useFlag(testFlag, false))
+        expect(result.current).toBe(false)
+
+        ldClientMock.variation.mockReturnValue(true)
+
+        await act(async () => {
+            initialiseResolve()
+            await initialisePromise
+        })
+
+        expect(result.current).toBe(true)
     })
 
     it('should listen for updates to the given flag', () => {

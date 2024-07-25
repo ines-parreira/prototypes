@@ -10,6 +10,13 @@ export default function useFlag<T>(flag: FeatureFlagKey, defaultValue: T): T {
     )
 
     useEffect(() => {
+        void (async () => {
+            await client.waitForInitialization(3)
+            setValue(client.variation(flag, defaultValue))
+        })()
+    }, [client, defaultValue, flag])
+
+    useEffect(() => {
         const event = `change:${flag}`
         client.on(event, setValue)
 
