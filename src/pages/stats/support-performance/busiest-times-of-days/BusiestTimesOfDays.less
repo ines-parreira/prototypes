@@ -4,4 +4,28 @@
     .legendWrapper {
         padding: 0 @layout-spacing-m;
     }
+
+    .redTransparentStripesPseudoElement {
+        &::before {
+            content: '';
+            height: 100%;
+            .redTransparentStripesMixin();
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+    }
+}
+
+.redTransparentStripesMixin {
+    position: absolute;
+    width: 5px;
+    background: repeating-linear-gradient(
+            135deg,
+            fade(black, 0),
+            fade(black, 0) 2px,
+            var(--feedback-error-2) 2px,
+            var(--feedback-error-2) 4px
+        )
+        fixed;
 }

@@ -27,8 +27,6 @@ export default function StatsNavbarView() {
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const isAnalyticsNewBusiestTime: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
     const newChannelsReport: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
 
@@ -92,38 +90,21 @@ export default function StatsNavbarView() {
                             Agents
                         </NavbarLink>
                     </div>
-                    {!isAnalyticsNewBusiestTime && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                            data-candu-id="statistics-link-busiest-times-of-days"
+
+                    <div
+                        className={classNames(
+                            cssNavbar['link-wrapper'],
+                            cssNavbar.isNested
+                        )}
+                        data-candu-id="statistics-link-busiest-times-of-days"
+                    >
+                        <NavbarLink
+                            {...COMMON_NAV_LINK_PROPS}
+                            to="/app/stats/busiest-times-of-days"
                         >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/busiest-times-of-days"
-                            >
-                                {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
-                            </NavbarLink>
-                        </div>
-                    )}
-                    {isAnalyticsNewBusiestTime && (
-                        <div
-                            className={classNames(
-                                cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
-                            )}
-                            data-candu-id="statistics-link-busiest-times-of-days"
-                        >
-                            <NavbarLink
-                                {...COMMON_NAV_LINK_PROPS}
-                                to="/app/stats/busiest-times-of-days"
-                            >
-                                {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
-                            </NavbarLink>
-                        </div>
-                    )}
+                            {BUSIEST_TIMES_OF_DAYS_NAV_LABEL}
+                        </NavbarLink>
+                    </div>
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],

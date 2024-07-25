@@ -108,7 +108,6 @@ import SupportPerformanceSatisfaction from 'pages/stats/SupportPerformanceSatisf
 import SupportPerformanceRevenue from 'pages/stats/SupportPerformanceRevenue'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import SupportPerformanceOverview from 'pages/stats/SupportPerformanceOverview'
-import SupportPerformanceBusiestTimesOfDays from 'pages/stats/SupportPerformanceBusiestTimesOfDays'
 import LiveOverview from 'pages/stats/LiveOverview'
 import LiveAgents from 'pages/stats/LiveAgents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
@@ -483,8 +482,6 @@ export function StatsRoutes() {
         useFlags()[FeatureFlagKey.AnalyticsSLAs]
     const isAutoQAEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsAutoQA]
-    const isAnalyticsNewBusiestTime: boolean | undefined =
-        useFlags()[FeatureFlagKey.AnalyticsNewBusiestTime]
     const newChannelsReport: boolean | undefined =
         useFlags()[FeatureFlagKey.AnalyticsNewChannelsReport]
 
@@ -545,11 +542,7 @@ export function StatsRoutes() {
                     path={`${path}/busiest-times-of-days`}
                     render={() => (
                         <App
-                            content={
-                                isAnalyticsNewBusiestTime
-                                    ? BusiestTimesOfDays
-                                    : SupportPerformanceBusiestTimesOfDays
-                            }
+                            content={BusiestTimesOfDays}
                             navbar={StatsNavbarContainer}
                         />
                     )}

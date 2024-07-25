@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
-import {bHoursLegend} from 'pages/stats/common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat'
 import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {useGridSize} from 'hooks/useGridSize'
 import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
@@ -11,7 +10,10 @@ import StatsPage from 'pages/stats/StatsPage'
 import {BusiestTimesOfDaysMetricSelect} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
 import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import {
+    businessHoursLegend,
+    getMetricQuery,
+} from 'pages/stats/support-performance/busiest-times-of-days/utils'
 import {SupportPerformanceFilters} from 'pages/stats/SupportPerformanceFilters'
 import Legend from 'pages/stats/common/components/Legend/Legend'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
@@ -95,7 +97,7 @@ export const BusiestTimesOfDays = () => {
                                 <Legend
                                     labels={[
                                         busiestHoursHeatmapLegend,
-                                        bHoursLegend,
+                                        businessHoursLegend,
                                     ]}
                                 />
                             </div>

@@ -27,7 +27,7 @@ import {SelectableOption} from 'pages/common/forms/SelectField/types'
 import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
 import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
 
-import css from './stats.less'
+import css from 'config/stats.less'
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
 export const TOTAL_TICKETS_CREATED = 'total-tickets-created'
@@ -41,8 +41,6 @@ export const TOTAL_ONE_TOUCH_TICKETS = 'total-one-touch-tickets'
 export const SUPPORT_VOLUME = 'support-volume'
 export const RESOLUTION_TIME = 'resolution-time'
 export const FIRST_RESPONSE_TIME = 'first-response-time'
-export const TICKETS_CREATED_PER_HOUR_PER_WEEKDAY =
-    'tickets-created-per-hour-per-weekday'
 export const TICKETS_PER_TAG = 'tickets-per-tag'
 export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
 export const TICKETS_CREATED_PER_CHANNEL_PER_DAY =
@@ -1112,11 +1110,6 @@ export const stats = toImmutable<
                 },
             },
         }),
-    },
-    [TICKETS_CREATED_PER_HOUR_PER_WEEKDAY]: {
-        helpText: 'Tickets created per hour per day of the week',
-        style: 'per-hour-per-week-table',
-        downloadable: true,
     },
     [SATISFACTION_SURVEYS]: {
         style: 'key-metrics',

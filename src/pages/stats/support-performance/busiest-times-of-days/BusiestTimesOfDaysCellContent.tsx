@@ -15,7 +15,7 @@ import {
     HOUR_COLUMN,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import css from 'pages/stats/common/components/charts/PerHourPerWeekTableStat/PerHourPerWeekTableStat.less'
+import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 
 export const BusiestTimesOfDaysCellContent = ({
     isLoading,

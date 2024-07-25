@@ -33,6 +33,22 @@ export const weekDayLabel = (weekDay: number) => {
             return null
     }
 }
+const colors = {
+    rangeOneColor: 'var(--analytics-heatmap-0)',
+    rangeTwoColor: 'var(--analytics-heatmap-2)',
+    rangeThreeColor: 'var(--analytics-heatmap-4)',
+    rangeFourColor: 'var(--analytics-heatmap-6)',
+    red: 'var(--feedback-error-2)',
+    white: 'var(--neutral-grey-0)',
+}
+
+export const businessHoursLegend = {
+    name: 'Business Hours',
+    background:
+        'repeating-linear-gradient' +
+        `(135deg, ${colors.white}, ${colors.white} 2px, ${colors.red} 2px, ${colors.red} 4px)`,
+    shape: 'square' as const,
+}
 
 export const hourFromHourIndex = (index: number) =>
     `${index}:00`.padStart(5, '0')

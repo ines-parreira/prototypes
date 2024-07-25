@@ -18,7 +18,6 @@ import {renderWithRouter} from 'utils/testing'
 import {IntegrationType} from 'models/integration/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
-    NEW_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
 import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreements'
 
@@ -73,30 +72,7 @@ describe('StatsNavbarView', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should render the link to busiest times of days', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewBusiestTime]: false,
-        }))
-
-        renderWithRouter(
-            <Provider store={mockStore(defaultState)}>
-                <DndProvider backend={HTML5Backend}>
-                    <StatsNavbarView />
-                </DndProvider>
-            </Provider>
-        )
-
-        expect(
-            screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL)
-        ).toBeInTheDocument()
-        expect(screen.queryByText(NEW_NAV_LABEL)).not.toBeInTheDocument()
-    })
-
     it('should render the link to new busiest times of days', () => {
-        jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
-            [FeatureFlagKey.AnalyticsNewBusiestTime]: true,
-        }))
-
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <DndProvider backend={HTML5Backend}>
