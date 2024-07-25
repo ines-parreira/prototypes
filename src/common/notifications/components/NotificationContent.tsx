@@ -15,10 +15,17 @@ type Props = {
     onClick?: () => void
 }
 
-const notificationTypeMap: Record<NotificationType, string> = {
-    'ticket.snooze-expired': 'Snooze expired',
-    'ticket-message.created': 'New message',
-    'user.mentioned': 'New mention',
+const notificationTypeMap: Record<
+    NotificationType,
+    {title: string; icon?: {name: string; family?: 'fill' | 'outlined'}}
+> = {
+    'ticket.snooze-expired': {title: 'Snooze expired', icon: {name: 'snooze'}},
+    'ticket-message.created': {title: 'New message'},
+    'user.mentioned': {title: 'New mention', icon: {name: 'alternate_email'}},
+    'ticket.assigned': {
+        title: 'You’ve been assigned to a ticket',
+        icon: {name: 'person', family: 'fill'},
+    },
 }
 
 export default function NotificationContent({
@@ -29,9 +36,7 @@ export default function NotificationContent({
     const {ticket} = notification.payload || {}
     if (!ticket) return null
 
-    const hasTypeIcon =
-        notification.type === 'ticket.snooze-expired' ||
-        notification.type === 'user.mentioned'
+    const iconConfig = notificationTypeMap[notification.type]?.icon
 
     return (
         <Link
@@ -41,20 +46,21 @@ export default function NotificationContent({
         >
             <div className={css.icon}>
                 <TicketIcon channel={ticket.channel} status={ticket.status} />
-                {hasTypeIcon && (
+                {!!iconConfig && (
                     <div
                         className={cn(css.typeIcon, {
-                            [css.snooze]:
-                                notification.type === 'ticket.snooze-expired',
                             [css.mention]:
                                 notification.type === 'user.mentioned',
                         })}
                     >
-                        <i className="material-icons-outlined">
-                            {notification.type === 'ticket.snooze-expired' &&
-                                'snooze'}
-                            {notification.type === 'user.mentioned' &&
-                                'alternate_email'}
+                        <i
+                            className={
+                                iconConfig.family === 'fill'
+                                    ? 'material-icons'
+                                    : 'material-icons-outlined'
+                            }
+                        >
+                            {iconConfig.name}
                         </i>
                     </div>
                 )}
@@ -62,7 +68,7 @@ export default function NotificationContent({
             <div className={css.content}>
                 <header className={css.header}>
                     <h4 className={css.type}>
-                        {notificationTypeMap[notification.type] ||
+                        {notificationTypeMap[notification.type]?.title ||
                             notification.type}
                     </h4>
                     {headerExtra}

@@ -49,6 +49,10 @@ export type Notification =
           payload: DefaultPayload
       })
     | (NotificationBase & {
+          type: 'ticket.assigned'
+          payload: DefaultPayload
+      })
+    | (NotificationBase & {
           type: 'ticket-message.created'
           payload: PayloadWithSender
       })

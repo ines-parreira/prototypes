@@ -18,6 +18,7 @@ export const notification: Notification = {
             channel: TicketChannel.Email,
             status: TicketStatus.Open,
             subject: 'Test ticket',
+            excerpt: 'Excerpt',
         },
         sender: {
             id: 1,

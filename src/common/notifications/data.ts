@@ -29,4 +29,5 @@ export const workflowMap: Record<NotificationType, string> = {
     'ticket.snooze-expired': 'ticket-snooze-expired',
     'ticket-message.created': 'ticket-message-created',
     'user.mentioned': 'user-mentioned',
+    'ticket.assigned': 'ticket-assigned',
 }

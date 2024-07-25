@@ -28,17 +28,17 @@
         border-radius: (@iconSize / 2);
         border: 1px solid var(--neutral-grey-0);
         color: var(--neutral-grey-0);
-
-        &.snooze {
-            background-color: var(--main-primary);
-        }
+        background-color: var(--main-primary);
 
         &.mention {
             background-color: var(--feedback-warning-3);
         }
 
-        :global(.material-icons-outlined) {
-            font-size: 12px;
+        :global {
+            .material-icons,
+            .material-icons-outlined {
+                font-size: 12px;
+            }
         }
     }
 
