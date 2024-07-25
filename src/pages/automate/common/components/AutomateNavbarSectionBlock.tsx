@@ -90,7 +90,7 @@ const AutomateNavbarSectionBlock = ({
                                     type={ColorType.Blue}
                                     className={cssNavbar.badge}
                                 >
-                                    BETA
+                                    NEW
                                 </Badge>
                             </NavbarLink>
                         </div>

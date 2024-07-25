@@ -238,7 +238,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for admin wit
               <div
                 class="badge badge upperCase"
               >
-                BETA
+                NEW
               </div>
             </a>
           </div>
@@ -1314,7 +1314,7 @@ exports[`<AutomateNavbar /> render() should render automate navbar for agent wit
               <div
                 class="badge badge upperCase"
               >
-                BETA
+                NEW
               </div>
             </a>
           </div>
